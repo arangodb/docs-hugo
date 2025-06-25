@@ -3,7 +3,7 @@ title: All Shortest Paths in AQL
 menuTitle: All Shortest Paths
 weight: 20
 description: >-
-  Find all paths of shortest length between a start and target vertex
+  Find all paths of shortest length between two vertices
 ---
 ## General query idea
 
@@ -57,12 +57,12 @@ FOR path
   edges are followed (outgoing, incoming, or both)
 - `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
 - **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
-  which the paths will be computed. This can be specified in the form of
+  which the paths are computed. This can be specified in the form of
   a ID string or in the form of a document with the attribute `_id`. All other
   values result in a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
 - `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
-  edge collections will be looked up.
+  edge collections are looked up for the path search.
 
 {{< info >}}
 All Shortest Paths traversals do not support edge weights.
@@ -96,7 +96,7 @@ FOR path IN OUTBOUND ALL_SHORTEST_PATHS
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows using a different
 direction for each collection in your path search.
 
