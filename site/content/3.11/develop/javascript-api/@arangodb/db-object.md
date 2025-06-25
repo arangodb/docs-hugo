@@ -42,12 +42,11 @@ The `options` attribute can be used to set defaults for collections that will
 be created in the new database (_cluster only_):
 
 - `sharding`: The sharding method to use. Valid values are: `""` or `"single"`.
-  Setting this option to `"single"` will enable the OneShard feature in the
-  Enterprise Edition.
-- `replicationFactor`: Default replication factor. Special values include
-  `"satellite"`, which will replicate the collection to every DB-Server, and
-  `1`, which disables replication.
-- `writeConcern`: how many copies of each shard are required to be in sync on
+  Setting this option to `"single"` enables the OneShard feature.
+- `replicationFactor`: Default replication factor. Special values:
+  - `"satellite"`: Replicate the collection to every DB-Server (Enterprise Edition only)
+  - `1`: Disable replication
+- `writeConcern`: How many copies of each shard are required to be in sync on
   the different DB-Servers. If there are less then these many copies in the
   cluster a shard will refuse to write. The value of `writeConcern` cannot be
   greater than `replicationFactor`.
