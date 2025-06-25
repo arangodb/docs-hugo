@@ -190,7 +190,7 @@ viewable by ArangoDB. This metadata graph links all experiments
 to the source data, feature generation activities, training runs, and prediction
 jobs, allowing you to track the entire ML pipeline without having to leave ArangoDB.
 
-### Security
+## Security
 
 Each deployment that uses GraphML has an `arangopipe` database created,
 which houses all ML Metadata information. Since this data lives within the deployment,
