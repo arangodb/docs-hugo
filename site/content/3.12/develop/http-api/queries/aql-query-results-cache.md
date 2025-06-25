@@ -225,6 +225,9 @@ paths:
                   mode:
                     description: |
                       The mode the AQL query results cache operates in.
+
+                      You can configure the default value with the
+                      `--query.cache-mode` startup option.
                     type: string
                     # Unquoted on and off are booleans in YAML 1.1!
                     enum: ["off", "on", "demand"]
@@ -232,20 +235,32 @@ paths:
                     description: |
                       The maximum number of query results that are stored per
                       database-specific cache.
+
+                      You can configure the default value with the
+                      `--query.cache-entries` startup option.
                     type: integer
                   maxResultsSize:
                     description: |
                       The maximum cumulated size of query results that are
                       stored per database-specific cache (in bytes).
+
+                      You can configure the default value with the
+                      `--query.cache-entries-max-size` startup option.
                     type: integer
                   maxEntrySize:
                     description: |
                       The maximum individual result size of queries that are
                       stored per database-specific cache (in bytes).
+
+                      You can configure the default value with the
+                      `--query.cache-entry-max-size` startup option.
                   includeSystem:
                     description: |
                       Whether results of queries that involve system collections
                       are stored in the query results cache.
+
+                      You can configure the default value with the
+                      `--query.cache-include-system-collections` startup option.
                     type: boolean
         '400':
           description: |

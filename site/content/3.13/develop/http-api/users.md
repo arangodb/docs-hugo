@@ -894,6 +894,7 @@ paths:
             Return the full set of access levels for all databases and all collections.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |

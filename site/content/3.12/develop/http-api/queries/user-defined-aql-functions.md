@@ -49,20 +49,23 @@ paths:
               properties:
                 name:
                   description: |
-                    the fully qualified name of the user functions.
+                    The fully qualified name of the user functions.
                   type: string
                 code:
                   description: |
-                    a string representation of the function body.
+                    A string representation of the JavaScript function definition.
                   type: string
                 isDeterministic:
                   description: |
-                    an optional boolean value to indicate whether the function
-                    results are fully deterministic (function return value solely depends on
-                    the input value and return value is the same for repeated calls with same
-                    input). The `isDeterministic` attribute is currently not used but may be
-                    used later for optimizations.
+                    Whether the function results are fully deterministic, i.e.
+                    the function return value solely depends on the input value
+                    and the return value is the same for repeated calls with same
+                    input.
+
+                    This attribute is currently not used but may be used for
+                    optimizations in the future.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -402,11 +405,13 @@ paths:
                           type: string
                         isDeterministic:
                           description: |
-                            an optional boolean value to indicate whether the function
-                            results are fully deterministic (function return value solely depends on
-                            the input value and return value is the same for repeated calls with same
-                            input). The `isDeterministic` attribute is currently not used but may be
-                            used later for optimizations.
+                            Whether the function results are fully deterministic, i.e.
+                            the function return value solely depends on the input value
+                            and the return value is the same for repeated calls with same
+                            input.
+
+                            This attribute is currently not used but may be used for
+                            optimizations in the future.
                           type: boolean
         '400':
           description: |

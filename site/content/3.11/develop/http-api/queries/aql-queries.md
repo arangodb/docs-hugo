@@ -320,7 +320,7 @@ paths:
                 #   forceOneShardAttributeValue
                 query:
                   description: |
-                    contains the query string to be executed
+                    The AQL query string to execute.
                   type: string
                 count:
                   description: |
@@ -2724,6 +2724,7 @@ paths:
             privileges.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -2795,6 +2796,7 @@ paths:
             privileges.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -2838,6 +2840,7 @@ paths:
             privileges.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
