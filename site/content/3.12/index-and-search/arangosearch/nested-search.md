@@ -7,8 +7,6 @@ description: >-
   each, and define how often these conditions should be fulfilled for the entire
   array
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 By default, `arangosearch` Views index arrays as if the parent attribute had
 multiple values at once. This is also supported for `search-alias` Views by enabling
 the `searchField` option. With `trackListPositions` set to `true`, every array

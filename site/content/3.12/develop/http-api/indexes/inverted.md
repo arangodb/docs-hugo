@@ -44,6 +44,7 @@ paths:
                   description: |
                     Must be equal to `"inverted"`.
                   type: string
+                  example: inverted
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -57,6 +58,7 @@ paths:
                     default options, or objects to specify options for the fields (with the
                     attribute path in the `name` property), or a mix of both.
                   type: array
+                  minItems: 1
                   items:
                     type: object
                     required:
@@ -147,8 +149,6 @@ paths:
 
                           Default: the value defined by the top-level `cache` option.
 
-                          This property is available in the Enterprise Edition only.
-
                           See the `--arangosearch.columns-cache-limit` startup option to control the
                           memory consumption of this cache. You can reduce the memory usage of the column
                           cache in cluster deployments by only using the cache for leader shards, see the
@@ -160,8 +160,6 @@ paths:
                           `fields` property, the values get indexed in a way that lets you query for
                           co-occurring values. For example, you can search the sub-objects and all the
                           conditions need to be met by a single sub-object instead of across all of them.
-
-                          This property is available in the Enterprise Edition only.
                         type: array
                         items:
                           type: object
@@ -223,8 +221,6 @@ paths:
 
                                 Default: the value defined by the top-level `cache` option.
 
-                                This property is available in the Enterprise Edition only.
-
                                 See the `--arangosearch.columns-cache-limit` startup option to control the
                                 memory consumption of this cache. You can reduce the memory usage of the column
                                 cache in cluster deployments by only using the cache for leader shards, see the
@@ -269,8 +265,6 @@ paths:
                     This can improve the performance of geo-spatial queries.
 
                     Default: `false`
-
-                    This property is available in the Enterprise Edition only.
 
                     See the `--arangosearch.columns-cache-limit` startup option to control the
                     memory consumption of this cache. You can reduce the memory usage of the column
@@ -333,8 +327,6 @@ paths:
 
                           Default: `false`
 
-                          This property is available in the Enterprise Edition only.
-
                           See the `--arangosearch.columns-cache-limit` startup option to control the
                           memory consumption of this cache. You can reduce the memory usage of the column
                           cache in cluster deployments by only using the cache for leader shards, see the
@@ -388,8 +380,6 @@ paths:
 
                         Default: `false`
 
-                        This property is available in the Enterprise Edition only.
-
                         See the `--arangosearch.columns-cache-limit` startup option to control the
                         memory consumption of this cache. You can reduce the memory usage of the column
                         cache in cluster deployments by only using the cache for leader shards, see the
@@ -430,8 +420,6 @@ paths:
                     Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
 
                     Default: `[]`
-
-                    This property is available in the Enterprise Edition only.
                   type: array
                   items:
                     type: string
@@ -487,10 +475,11 @@ paths:
                   type: integer
                 inBackground:
                   description: |
-                    This attribute can be set to `true` to create the index
-                    in the background, not write-locking the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
                 cleanupIntervalStep:
                   description: |
                     Wait at least this many commits between removing unused files in the
@@ -625,14 +614,13 @@ paths:
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and can be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```
