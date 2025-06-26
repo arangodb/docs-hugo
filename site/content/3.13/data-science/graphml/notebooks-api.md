@@ -3,7 +3,7 @@ title: How to use GraphML in a scriptable manner
 menuTitle: Notebooks & API
 weight: 15
 description: >-
-  Control all resources inside GraphML via Notebooks or API
+  Control all resources inside GraphML via Jupyter Notebooks or HTTP REST API
 aliases:
   - getting-started-with-arangographml
   - ../arangographml/getting-started
@@ -15,12 +15,12 @@ aliases:
 The ArangoDB Platform provides an easy-to-use & scalable interface to run
 Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
 managed by ArangoDB, all that is typically required are JSON specifications outlining
-individual processes to solve a Machine Learning Task.
+individual processes to solve a Machine Learning task.
 
 The `arangoml` Python package allows you to manage all the necessary
 GraphML components, including:
 - **Project Management**: Projects are a metadata-tracking entity that sit at
-  the top level of GraphML. All activities must link to a project.
+  the top level of ArangoDB GraphML. All activities must link to a project.
 - **Featurization**: The step of converting human-understandable data to
   machine-understandable data (e.g. features), such that it can be used to
   train Graph Neural Networks (GNNs).
@@ -717,7 +717,10 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `schedule`: A cron expression to schedule the prediction job (e.g. `0 0 * * *` for daily predictions). Default is `None`.
+- `schedule`: A cron expression to schedule the prediction job. The cron syntax is a set of
+  five fields in a line, indicating when the job should be executed. The format must follow
+  the following order: `minute` `hour` `day-of-month` `month` `day-of-week`
+  (e.g. `0 0 * * *` for daily predictions at 00:00). Default is `None`.
 - `embeddingsField`: The name of the field to store the generated embeddings. This is only used for Graph Embedding tasks. Default is `None`.
 
 ```py

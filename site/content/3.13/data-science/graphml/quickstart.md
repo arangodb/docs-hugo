@@ -14,7 +14,7 @@ aliases:
 The ArangoDB Platform provides enterprise-ready Graph Machine Learning in two options,
 tailored to suit diverse requirements and preferences: 
 - Using the web interface
-- In a scriptable manner, using the integrated Jupyter Notebooks and APIs
+- In a scriptable manner, using the integrated Jupyter Notebooks and the HTTP API for GraphML
 
 ## Setup
 
@@ -36,7 +36,7 @@ GraphML functionalities in a scriptable manner. To get started, see the
 [GraphML Notebooks & API](notebooks-api.md) reference documentation.
 
 {{< tip >}}
-To get access to GraphML services and packages,
+To get access to GraphML services and packages in ArangoGraph Insights Platform,
 [get in touch](https://www.arangodb.com/contact/)
 with the ArangoDB team.
 {{< /tip >}}

@@ -24,7 +24,7 @@ giving you a clear path from data to prediction:
 To create a new GraphML project using the ArangoDB Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand navigation menu, click **GenAI** to open the GraphML project management interface, then click **Run GraphML**.
+2. In the left-hand sidebar, click **GenAI** to open the GraphML project management interface, then click **Run GraphML**.
    ![Navigate to Data Science](../../../images/datascience-intro.jpg)  
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
@@ -71,41 +71,22 @@ how features are stored.
 
 ### Handling imperfect data
 
-Real-world data is often messy. It can have missing values or mismatched data
-types. This section allows you to define default rules for how the featurization
-process should handle these data quality issues for each feature type, preventing
-the job from failing unexpectedly.
+Real-world datasets often contain missing values or mismatched data types. Use
+the strategies below to control how each feature type (**Text**, **Numeric**,
+**Category**, **Label**) handles these issues during featurization.
 
-For each feature type (Text, Numeric, Category, and Label), you can set two types of strategies:
-- **Missing Strategy:** Defines what to do when an attribute is completely missing from a document.
-- **Mismatch Strategy:** Defines what to do when an attribute exists but has the wrong data type.
+| **Strategy type** | **Option**            | **Description**                                                                                     | **When to use**                                               |
+|-------------------|-----------------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| Missing           | **Raise**             | Stops the job and reports an error when a value is missing.                                         | When missing data indicates a critical issue.                 |
+|                   | **Replace**           | Substitutes missing values with a default you provide (e.g., `0` for numbers, `"unknown"` for text).                                  | When missing values are expected.         |
+| Mismatch          | **Raise**             | The strictest option. Stops the job on any data type mismatch.                                                            | When any data type mismatch indicates a critical error.                            |
+|                   | **Replace**           | Replaces mismatched values with a default you provide, without trying to convert it first.                              | When mismatched values are unreliable, and you prefer to substitute it directly.       |
+|                   | **Coerce and Raise**  | Attempts to convert (coerce) the value to the correct type (e.g. string "123" to number `123`). If the conversion is successful, it uses the new value. If it fails, the job stops.              | A balanced approach, often the best default strategy. |
+|                   | **Coerce and Replace**| The most forgiving option. The system first tries to convert the value. If it fails, it replaces the value with the specified default and continues the job.                                | For very dirty datasets where completing the job is the highest priority.          | 
 
-**Missing Value strategies**
-
-- **Raise:** The job immediately stops and reports an error if a data type
-  mismatch is found. Use this when any type mismatch indicates a critical data error.
-- **Replace:** Replaces a missing value with a default you provide (e.g., 0 for
-  numbers, "unknown" for text). The job then continues. Use this when missing values are expected.
-
-**Mismatch Value strategies**
-- **Raise:** The strictest option. The job will immediately stop and report an
- error if a data type mismatch is found. Use this when any type mismatch indicates
- a critical data error.
-- **Replace:** If a mismatch is found, the system immediately replaces the value
- with the default you specify, without attempting to convert it first. Use this
- when you don't trust the mismatched data and prefer to substitute it directly.
-- **Coerce and raise:** A balanced approach. The system first tries to convert
- (coerce) the value to the correct type (e.g., string "123" to number 123). If
- the conversion is successful, it uses the new value. If it fails, the job stops.
- This is often the best default strategy.
-- **Coerce and replace:** The most forgiving option. The system first tries to
- convert the value. If the conversion fails, it replaces the value with the default
- you specify and continues the job. Use this for very "dirty" datasets where
- completing the job is the highest priority.
-
-Once all selections are done, click the **Begin featurization** button.
-This triggers a **node embedding-compatible featurization job**. Once the job
-status changes to **Ready for training**, you can start the **Training** step.
+Once you’ve set your strategies, click **Begin featurization** to start the node
+embedding-compatible featurization job. When the job status updates to
+**Ready for training**, proceed to the **Training** step.
 
 ![Navigate to Featurization](../../../images/graph-ml-ui-featurization.png) 
 
@@ -116,7 +97,7 @@ In the training phase, you configure and launch a machine learning training
 job on your graph data.
 
 From the **Select a type of training job** dropdown menu, choose the type of
-model you want to train (Node Classification or Node Embeddings).
+model you want to train (**Node Classification** or **Node Embeddings**).
 
 #### Node classification
 
@@ -173,7 +154,7 @@ This means the model has been trained using the provided vertex and edge data
 and is now ready for evaluation.
 
 A list of trained models is displayed, along with performance metrics
-(Accuracy, Precision, Recall, F1 score, Loss). Review the results of different
+(**Accuracy**, **Precision**, **Recall**, **F1 score**, **Loss**). Review the results of different
 model runs and configurations.
 
 ![GraphML Model Selection](../../../images/graph-ml-model.png)
@@ -221,7 +202,7 @@ predictions relevant without repeating the entire ML workflow.
 ### Configuration options
 
 The Prediction screen displays the following configuration options:
-- **Selected Model**: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
+- **Select Model**: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
 - **Target Vertex Collection**: This is the vertex collection on which predictions are applied.
 - **Prediction Type**: Depending on the training job (for example, classification or embedding), the prediction outputs class labels or updated embeddings.
 
@@ -238,7 +219,7 @@ This CRON pattern executes the prediction every year on January 1st at 00:00.
 Below the CRON field, a user-friendly scheduling interface helps translate it:
 - **Period**: Options include *Hourly*, *Daily*, *Weekly*, *Monthly*, or *Yearly*.
 - **Month**: *(e.g. January)*
-- **Day of Month**: *(e.g 1)*
+- **Day of Month**: *(e.g. 1)*
 - **Day of Week**: *(optional)*
 - **Hours and Minutes**: Set the exact time for execution *(e.g. 0:00)*
 
