@@ -218,7 +218,7 @@ there are a few corner cases where it can make sense:
 
 {{< info >}}
 Starting with version 3.10, `maxProjections` can be used in 
-[Graph Traversals](../graphs/traversals.md#working-with-named-graphs) (Enterprise Edition only).
+[Graph Traversals](../graphs/traversals.md#working-with-named-graphs).
 {{< /info >}}
 
 ### `useCache`

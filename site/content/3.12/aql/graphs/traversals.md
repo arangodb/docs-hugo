@@ -189,8 +189,6 @@ If omitted or an empty array is specified, then there are no restrictions.
 
 #### `parallelism`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Parallelize traversal execution (number).
     
 If omitted or set to a value of `1`, the traversal execution is not parallelized.
@@ -206,10 +204,14 @@ execution.
 
 #### `maxProjections`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.
+
+The AQL optimizer automatically detects which document attributes you access in
+traversal queries and optimizes the data loading. This optimization is 
+beneficial if you have large documents but only access a few document attributes.
+The `maxProjections` option lets you tune when to load individual attributes
+versus the whole document.
 
 #### `indexHint`
 

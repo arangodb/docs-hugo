@@ -1,16 +1,10 @@
-{{ $img := .Page.Resources.GetMatch .Destination -}}
-{{ if and (not $img) .Page.File -}}
-  {{ $path := path.Join .Page.File.Dir .Destination -}}
-  {{ $img = resources.Get $path -}}
-  {{ if not $img -}}
-    {{ errorf "<error code=1> Broken image reference '%v' found in %s </error><br>" .Destination .Page.File -}}
-  {{ end -}}
-{{ end -}}
-{{ with $img -}}
-  <figure class="image-caption">
-    <img alt="{{ $.Text }}" src="{{ .RelPermalink }}" />
-    <figcaption>{{ with $.Title | safeHTML }}{{ . }}{{ end }}</figcaption>
-  </figure>
-{{ else -}}
-  <img src="{{ .Destination | safeURL }}" alt="{{ $.Text }}" />
-{{ end -}}
+{{- if not .Page.File }}
+  {{- errorf "<error code=1>.Page.File not defined while processing image reference '%v' for %v </error><br>" .Destination .Page.RelPermalink }}
+{{- end }}
+{{- $path := path.Join .Page.File.Dir .Destination }}
+{{- $img := resources.Get $path }}
+{{- if $img -}}
+<img alt="{{ .Text }}" src="{{ $img.RelPermalink }}">
+{{- else }}
+  {{- errorf "<error code=1>Broken image reference '%v' found in %v </error><br>" .Destination .Page.File.Path }}
+{{- end }}

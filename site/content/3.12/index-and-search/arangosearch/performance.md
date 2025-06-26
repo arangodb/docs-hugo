@@ -212,7 +212,7 @@ trade space for speed. The primary sort data is LZ4-compressed by default (`"lz4
 - Inverted indexes: `primarySort: { compression: "none" }` 
 
 You can additionally enable the **primary sort cache** to always cache the primary
-sort columns in memory, which can improve the query performance (Enterprise Edition only).
+sort columns in memory, which can improve the query performance.
 
 {{< tabs "view-definition">}}
 
@@ -277,8 +277,6 @@ to `true`.
 {{< /tabs >}}
 
 ## WAND optimization
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.12.0</small>
 
@@ -521,7 +519,7 @@ db._createView("articlesView", "search-alias", { indexes: [
 You can additionally enable the ArangoSearch column cache for stored values by
 setting the `cache` option in the `storedValues` definition of
 `arangosearch` Views or inverted indexes to `true`. This always caches
-stored values in memory, which can improve the query performance (Enterprise Edition only).
+stored values in memory, which can improve the query performance.
 
 {{< tabs "view-definition">}}
 
@@ -626,8 +624,6 @@ Also see [Faceted Search with ArangoSearch](faceted-search.md).
 
 ## Field normalization value caching and caching of Geo Analyzer auxiliary data
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
 Normalization values are computed for fields which are processed with Analyzers
@@ -711,8 +707,6 @@ still matches your expectations without normalization. It is recommended to
 use normalization for a good scoring behavior.
 
 ## Primary key caching
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
 

@@ -375,7 +375,7 @@ Display content with a tabbed interface, like for code examples using different
 languages or if there are multiple ways of achieving a goal like configuring
 ArangoDB.
 
-```markdown
+````markdown
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
@@ -392,7 +392,7 @@ level = startup=trace
 {{< /tab >}}
 
 {{< /tabs >}}
-```
+````
 
 The parameter for the `tabs` shortcode is a group identifier. If there are
 multiple tab groups in one page, changing the active tab of one of them also
@@ -403,38 +403,27 @@ active tab of each group.
 The parameter for the `tab` shortcode is the label to display for the tab in the
 tab panel. Tab groups using the same identifier should use the same tab labels.
 
-#### Figures
+#### Images
 
-If you want to add an image with a caption, use this shortcode instead of the
-native Markdown syntax `![alt](/images/file.png)`:
+Use the native Markdown syntax for including images, using a relative file path:
 
 ```markdown
-{{< image src="../images/file.png" alt="Description of image content, used as caption" >}}
+![Description](../images/file.png)
+```
+
+If you need more control over the styling of a specific image, you can use the
+`image` shortcode:
+
+```markdown
+{{< image src="../images/file.png" alt="Description" class="inline-img" style="max-height: 50vh" >}}
 ```
 
 Available attributes:
 
 - `src`: location of the image file
-- `class`: CSS class to apply
-- `style`: CSS inline styles to apply
-- `size`: image width, can be numeric or one of `small`, `medium`, `large`
 - `alt`: image description for accessibility
-
-#### Icons
-
-Display an image with special styling.
-
-```markdown
-{{< icon src="../images/file.png" alt="Description of image content, used by screen readers" >}}
-```
-
-Available attributes:
-
-- `src`: location of the image file
-- `class`: CSS class to apply
+- `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
-- `size`: image width, can be numeric or one of `small`, `medium`, `large`
-- `alt`: image description for accessibility
 
 #### Cards
 

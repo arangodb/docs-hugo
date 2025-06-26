@@ -56,8 +56,6 @@ To summarize, all you need to do is:
 
 ### Self-managed ArangoGraphML
 
-{{< tag "ArangoDB Enterprise Edition" >}}
-
 The self-managed solution enables you to deploy and manage ArangoML within your
 Kubernetes cluster using the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb).
 

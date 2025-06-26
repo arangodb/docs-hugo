@@ -64,7 +64,7 @@ your data instead of querying it.
 
 ### Get started with ArangoDB QA chain
 
-The [ArangoDB QA chain notebook](https://langchain-langchain.vercel.app/docs/use_cases/more/graph/graph_arangodb_qa.html)
+The [ArangoDB QA chain notebook](https://langchain-langchain.vercel.app/docs/integrations/providers/arangodb/)
 shows how to use LLMs to provide a natural language interface to an ArangoDB
 instance.
 

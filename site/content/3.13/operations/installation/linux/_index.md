@@ -9,8 +9,7 @@ You can install ArangoDB on most common Linux distributions. The basic
 installation steps are:
 
 1. Visit the official [Download](https://www.arangodb.com/download)
-   page of the ArangoDB web site and choose between Community and
-   Enterprise Edition.
+   page of the ArangoDB web site.
 
 2. Click the logo of the distribution that matches your operating system.
    If you use Linux Mint, click Ubuntu or Debian.
@@ -57,7 +56,7 @@ installation.
 #### Securing Unattended Installations on Debian
 
 For unattended installations, you can set the password using the
-[debconf helpers](http://www.microhowto.info/howto/perform_an_unattended_installation_of_a_debian_package.html):
+[debconf helpers](https://web.archive.org/web/20230521083047/http://www.microhowto.info/howto/perform_an_unattended_installation_of_a_debian_package.html):
 
 ```bash
 echo arangodb3 arangodb3/password password NEWPASSWORD | debconf-set-selections

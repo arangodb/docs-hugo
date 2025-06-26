@@ -42,7 +42,7 @@ used for multiple accounts.
    - For the email address option, type your desired email address in the
      email field and type a strong password in the password field.
 
-   {{< icon src="../../images/arangograph-create-account.png" alt="ArangoGraph Sign up" style="max-height: 50vh">}}
+   {{< image src="../../images/arangograph-create-account.png" alt="ArangoGraph Sign up" style="max-height: 50vh">}}
 
    Click the __Sign up__ button. You will receive a verification email. In that
    mail, click the __Verify my email address__ link or button.
@@ -80,7 +80,7 @@ used for multiple accounts.
    is changed from __Bootstrapping__ to __OK__ eventually and you also
    receive an email when it is ready.
 
-   {{< icon src="../../images/arangograph-deployment-ready-email.png" alt="ArangoGraph Deployment Ready Email" style="max-height: 50vh">}}
+   {{< image src="../../images/arangograph-deployment-ready-email.png" alt="ArangoGraph Deployment Ready Email" style="max-height: 50vh">}}
 
 3. Click the name of the deployment (or the __Open deployment details__ link in
    the email) to view the deployment details.
@@ -149,9 +149,8 @@ your billing details and at least one payment method. See:
 
 ## Managed Cloud Service vs. On-premises Comparison: Key Differences
 
-The ArangoGraph Insights Platform aims to make all features of the ArangoDB
-[Enterprise Edition](../about-arangodb/features/enterprise-edition.md) available to you, but
-there are a few key differences:
+The ArangoGraph Insights Platform aims to make all features of ArangoDB
+available to you, but there are a few key differences:
 
 - Encryption (both at rest & network traffic) is always on and cannot be
   disabled for security reasons.

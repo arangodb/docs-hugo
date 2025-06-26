@@ -3,29 +3,35 @@ title: ArangoDB JavaScript driver
 menuTitle: JavaScript driver
 weight: 25
 description: >-
-  ArangoJS is the JavaScript driver to access ArangoDB from outside the
+  arangojs is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
 aliases:
   - nodejs # 3.12 -> 3.12
 ---
 The official ArangoDB low-level JavaScript client.
 
-**Note:** if you are looking for the ArangoDB JavaScript API in
-[Foxx](https://www.arangodb.com/community-server/foxx/) (or the `arangosh` interactive shell) please
-refer to the documentation about the
-[`@arangodb` module](../foxx-microservices/reference/related-modules/_index.md#the-arangodb-module)
-instead; specifically the `db` object exported by the `@arangodb` module. The
-JavaScript driver is **only** meant to be used when accessing ArangoDB from
-**outside** the database.
-
 - Repository: <https://github.com/arangodb/arangojs>
 - Reference: <http://arangodb.github.io/arangojs/>
-- [Changelog](https://github.com/arangodb/arangojs/blob/master/CHANGELOG.md)
+- [Changelog](https://github.com/arangodb/arangojs/blob/main/CHANGELOG.md)
+
+{{< info >}}
+If you are looking for the ArangoDB JavaScript API in
+[Foxx](https://www.arangodb.com/community-server/foxx/) or the `arangosh`
+interactive shell, please refer to the documentation about the
+[`@arangodb` module](../javascript-api/@arangodb/_index.md) instead.
+
+The JavaScript driver is **only** meant to be used when accessing ArangoDB from
+**outside** the database.
+{{< /info >}}
 
 ## Compatibility
 
-ArangoJS is compatible with the latest stable version of ArangoDB available at
-the time of the driver release.
+The arangojs driver is compatible with the latest stable version of ArangoDB
+available at the time of the driver release and remains compatible with the two
+most recent Node.js LTS versions in accordance with the official
+[Node.js long-term support schedule](https://github.com/nodejs/LTS).
+Versions of ArangoDB that have reached their [end of life](https://arangodb.com/subscriptions/end-of-life-notice/)
+by the time of a driver release are explicitly not supported.
 
 The [_arangoVersion_ option](https://arangodb.github.io/arangojs/latest/types/configuration.ConfigOptions.html)
 can be used to tell arangojs to target a specific
@@ -33,21 +39,6 @@ ArangoDB version. Depending on the version this will enable or disable certain
 methods and change behavior to maintain compatibility with the given version.
 The oldest version of ArangoDB supported by arangojs when using this option
 is 2.8.0 (using `arangoVersion: 20800`).
-
-The latest yarn/npm distribution of ArangoJS is compatible with the current
-Node.js version and the active LTS versions, following the official
-[Node.js long-term support schedule](https://github.com/nodejs/LTS).
-
-The included browser build is compatible with recent
-versions of all modern browsers (Edge, Chrome, Firefox and Safari).
-
-Versions outside this range may be compatible but are not actively supported.
-
-**Note**: Starting with arangojs 6.0.0, all asynchronous functions return
-promises. If you are using a version of Node.js older than Node.js 6.x LTS
-("Boron") make sure you replace the native `Promise` implementation with a
-substitute like [bluebird](https://github.com/petkaantonov/bluebird)
-to avoid a known memory leak in older versions of the V8 JavaScript engine.
 
 ## Versions
 
@@ -69,10 +60,10 @@ version of arangojs, you can install that version using the `<name>@<version>`
 syntax:
 
 ```sh
-# for version 6.x.x
-yarn add arangojs@6
+# for version 9.x.x
+yarn add arangojs@9
 # - or -
-npm install --save arangojs@6
+npm install --save arangojs@9
 ```
 
 You can find the documentation for each version by clicking on the corresponding
@@ -81,177 +72,153 @@ date on the left in
 
 ## Install
 
-### With Yarn or NPM
+{{< tabs "js-install" >}}
 
+{{< tab "Yarn" >}}
 ```sh
 yarn add arangojs
-# - or -
+```
+{{< /tab >}}
+
+{{< tab "NPM" >}}
+```sh
 npm install --save arangojs
 ```
+{{< /tab >}}
 
-### With Bower
-
-Starting with arangojs 6.0.0 Bower is no longer supported and the browser
-build is now included in the NPM release (see below).
-
-### From source
-
-```sh
+{{< tab "From source" >}}
+```bash
 git clone https://github.com/arangodb/arangojs.git
 cd arangojs
 npm install
-npm run dist
+npm run build
 ```
 
-### For browsers
+Building natively on Windows is not supported but you can use a virtual Linux
+or Linux container.
+{{< /tab >}}
 
-For production use arangojs can be installed with Yarn or NPM like any
-other dependency. Just use arangojs like you would in your server code:
+{{< tab "For browsers" >}}
+When using modern JavaScript tooling with a bundler and compiler (e.g. Babel),
+arangojs can be installed using NPM or Yarn like any other dependency.
+
+You can also use [jsDelivr CDN](https://www.jsdelivr.com/) during development:
 
 ```js
-import { Database } from "arangojs";
-// -- or --
-var arangojs = require("arangojs");
-```
-
-Additionally the NPM release comes with a precompiled browser build:
-
-```js
-var arangojs = require("arangojs/lib/web");
-```
-
-You can also use [unpkg](https://unpkg.com) during development:
-
-```html
-< !-- note the path includes the version number (e.g. 6.0.0) -- >
-<script src="https://unpkg.com/arangojs@6.0.0/lib/web.js"></script>
-<script>
-var db = new arangojs.Database();
-db.listCollections().then(function (collections) {
-  alert("Your collections: " + collections.map(function (collection) {
-    return collection.name;
-  }).join(", "));
-});
+<script type="importmap">
+  {
+    "imports": {
+      "arangojs": "https://cdn.jsdelivr.net/npm/arangojs@10.1.0/esm/index.js?+esm"
+    }
+  }
+</script>
+<script type="module">
+  import { Database } from "arangojs";
+  const db = new Database();
+  // ...
 </script>
 ```
+{{< /tab >}}
 
-If you are targeting browsers older than Internet Explorer 11 you may want to
-use [babel](https://babeljs.io) with a
-[polyfill](https://babeljs.io/docs/usage/polyfill) to provide the missing
-functionality needed to use arangojs.
-
-When loading the browser build with a `<script>` tag make sure to load the polyfill first:
-
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
-<script src="https://unpkg.com/arangojs@6.0.0/lib/web.js"></script>
-```
+{{< /tabs >}}
 
 ## Basic usage example
 
+Modern JavaScript/TypeScript with async/await and ES Modules:
+
 ```js
-// Modern JavaScript
 import { Database, aql } from "arangojs";
+
 const db = new Database();
-(async function() {
-  const now = Date.now();
+const Pokemons = db.collection("my-pokemons");
+
+async function main() {
   try {
-    const cursor = await db.query(aql`
-      RETURN ${now}
+    const pokemons = await db.query(aql`
+      FOR pokemon IN ${Pokemons}
+      FILTER pokemon.type == "fire"
+      RETURN pokemon
     `);
-    const result = await cursor.next();
-    // ...
+    console.log("My pokemans, let me show you them:");
+    for await (const pokemon of pokemons) {
+      console.log(pokemon.name);
+    }
   } catch (err) {
-    // ...
+    console.error(err.message);
   }
-})();
+}
 
-// or plain old Node-style
-var arangojs = require("arangojs");
-var db = new arangojs.Database();
-var now = Date.now();
-db.query({
-  query: "RETURN @value",
-  bindVars: { value: now }
-})
-  .then(function(cursor) {
-    return cursor.next().then(function(result) {
-      // ...
-    });
-  })
-  .catch(function(err) {
-    // ...
-  });
-
-// Using different databases
-const db = new Database({
-  url: "http://localhost:8529"
-});
-db.useDatabase("pancakes");
-db.useBasicAuth("root", "");
-// The database can be swapped at any time
-db.useDatabase("waffles");
-db.useBasicAuth("admin", "maplesyrup");
-
-// Using ArangoDB behind a reverse proxy
-const db = new Database({
-  url: "http://myproxy.local:8000",
-  isAbsolute: true // don't automatically append database path to URL
-});
-
-// Trigger ArangoDB 2.8 compatibility mode
-const db = new Database({
-  arangoVersion: 20800
-});
+main();
 ```
 
-For AQL please check out the
+Using a different database:
+
+```js
+const db = new Database({
+  url: "http://127.0.0.1:8529",
+  databaseName: "pancakes",
+  auth: { username: "root", password: "hunter2" },
+});
+
+// The credentials can be swapped at any time
+db.useBasicAuth("admin", "maplesyrup");
+```
+
+Old-school JavaScript with promises and CommonJS:
+
+```js
+var arangojs = require("arangojs");
+var Database = arangojs.Database;
+
+var db = new Database();
+var pokemons = db.collection("pokemons");
+
+db.query({
+  query: "FOR p IN @@c FILTER p.type == 'fire' RETURN p",
+  bindVars: { "@c": "pokemons" },
+})
+  .then(function (cursor) {
+    console.log("My pokemons, let me show you them:");
+    return cursor.forEach(function (pokemon) {
+      console.log(pokemon.name);
+    });
+  })
+  .catch(function (err) {
+    console.error(err.message);
+  });
+```
+
+For AQL, please check out the
 [aql template tag](https://arangodb.github.io/arangojs/latest/functions/aql.aql.html)
 for writing parametrized AQL queries without making your code vulnerable to
 injection attacks.
 
 ## Error responses
 
-If arangojs encounters an API error, it will throw an _ArangoError_ with an
-[_errorNum_ error code](../error-codes-and-meanings.md)
-as well as a _code_ and _statusCode_ property indicating the intended and
-actual HTTP status code of the response.
+If the server returns an ArangoDB error response, arangojs throws an `ArangoError`
+with an `errorNum` property indicating the
+[ArangoDB error code](../error-codes-and-meanings.md) and expose the response body
+as the response property of the error object.
 
-For any other error responses (4xx/5xx status code), it will throw an
-_HttpError_ error with the status code indicated by the _code_ and _statusCode_ properties.
+For all other errors during the request/response cycle arangojs throws a
+`NetworkError` or a more specific subclass thereof and expose the originating
+request object as the `request` property of the error object.
 
-If the server response did not indicate an error but the response body could
-not be parsed, a _SyntaxError_ may be thrown instead.
+If the server responded with a non-2xx status code, this `NetworkError` is an
+`HttpError` with a code property indicating the HTTP status code of the response
+and a response property containing the `response` object itself.
 
-In all of these cases the error object will additionally have a _response_
-property containing the server response object.
+If the error is caused by an exception, the originating exception is available
+as the `cause` property of the error object thrown by arangojs.
+For network errors, this is often a `TypeError`.
 
-If the request failed at a network level or the connection was closed without
-receiving a response, the underlying error will be thrown instead.
-
-**Examples**
+**Example**
 
 ```js
-// Using async/await
 try {
   const info = await db.createDatabase("mydb");
   // database created
 } catch (err) {
   console.error(err.stack);
 }
-
-// Using promises with arrow functions
-db.createDatabase("mydb").then(
-  info => {
-    // database created
-  },
-  err => console.error(err.stack)
-);
 ```
-
-{{< tip >}}
-The examples in the remainder of this documentation use `async`/`await`
-and other modern language features like multi-line strings and template tags.
-When developing for an environment without support for these language features,
-substitute promises for `await` syntax as in the above example.
-{{< /tip >}}

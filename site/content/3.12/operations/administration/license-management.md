@@ -3,34 +3,31 @@ title: Enterprise Edition License Management
 menuTitle: License Management
 weight: 20
 description: >-
-  How to check and activate licenses for ArangoDB Enterprise Edition deployments
+  How to apply a license and check the licensing status of an ArangoDB deployment
 ---
-The Enterprise Edition of ArangoDB requires a license to activate the
-Enterprise Edition features. How to set a license key and to retrieve
-information about the current license via the JavaScript API is described below.
-You can also use an [HTTP API](../../develop/http-api/administration.md#license).
+The Enterprise Edition of ArangoDB requires a license so that you can use
+ArangoDB for commercial purposes and have a dataset size over 100 GiB. See
+[ArangoDB Editions](../../about-arangodb/features/_index.md#arangodb-editions)
+for details.
+
+How to set a license key and to retrieve information about the current license
+via the JavaScript API is described below.
+You can also use the [HTTP API](../../develop/http-api/administration.md#license).
 
 If you use the ArangoDB Kubernetes Operator, check the
 [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
 for more details on how to set a license key.
 
-## Active a license
+## Apply a license
 
-On the first installation of any ArangoDB Enterprise Edition instance, you can
-immediately use it for testing without restrictions for three hours.
-
-In the email with the download link, you find a fully featured but
-time-wise limited license that allows you to continue testing for two weeks.
-
-You can apply this evaluation license or a proper license you bought via
-_arangosh_ like so:
+To use the Enterprise Edition, set the license via _arangosh_ like so:
 
 ```js
 db._setLicense("<license-string>");
 ```
 
-You receive a message reporting whether the operation has been successful.
-Please be careful to copy the exact string from the email and to put it in
+You receive a message reporting whether the operation succeeded.
+Please be careful to copy the exact license key string and to put it in
 quotes as shown above.
 
 ```json
@@ -39,7 +36,7 @@ quotes as shown above.
 
 Your license has now been applied.
 
-## Check the current license
+## Check the license
 
 At any point, you may check the current state of your license in _arangosh_:
 
@@ -47,15 +44,56 @@ At any point, you may check the current state of your license in _arangosh_:
 db._getLicense();
 ```
 
+The server response is different for the Community Edition and the
+Enterprise Edition.
+
+{{< tabs "arangodb-edition" >}}
+
+{{< tab "Community Edition" >}}
 ```json
 {
+  "upgrading": false,
+  "diskUsage": {
+    "bytesUsed": 127316844,
+    "bytesLimit": 107374182400,
+    "limitReached": false,
+    "secondsUntilReadOnly": 315569520,
+    "secondsUntilShutDown": 315569520,
+    "status": "good"
+  }
+}
+```
+
+The `diskUsage.status` attribute tells you the state of your Community Edition
+deployment with regard to the dataset size limit at a glance and can have the
+following values:
+
+- `good`: The dataset size of your deployment is below the 100 GiB limit.
+- `limit-reached`: Your deployment exceeds the size limit and you have two days
+  to bring the deployment back below 100 GiB. Consider acquiring an
+  Enterprise Edition license to lift the limit.
+- `read-only`: Your deployment is in read-only mode because it exceeded the
+  size limit for two days. All read operations to the instance keep functioning
+  for two more days. However, no data or data definition changes can be made.
+- `shutdown`: The server shuts down after two days of read-only mode.
+
+The other sub-attributes of `diskUsage` indicate the dataset size limit, the
+size determined for your deployment, whether it exceeds the limit, as well as
+the time until the read-only mode and the shutdown are expected to occur if
+you are over the limit.
+{{< /tab >}}
+
+{{< tab "Enterprise Edition" >}}
+```json
+{
+  "upgrading": false,
   "features": {
-    "expires": 1632411828
+    "expires": 1743568356
   },
+  "hash": "95af ... 3de1",
   "license": "JD4E ... dnDw==",
   "version": 1,
-  "status": "good",
-  "hash": "..."
+  "status": "good"
 }
 ```
 
@@ -76,6 +114,9 @@ The attribute `expires` in `features` denotes the expiry date as Unix timestamp
 
 The `license` field holds an encrypted and base64-encoded version of the
 applied license for reference and support from ArangoDB.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Monitoring
 
