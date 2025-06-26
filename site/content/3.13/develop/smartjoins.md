@@ -6,8 +6,6 @@ description: >-
   SmartJoins allow to execute co-located join operations among identically
   sharded collections
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 ## Cluster joins without being smart
 
 When doing joins in an ArangoDB cluster, data has to be exchanged between different servers.

@@ -133,14 +133,14 @@ The following Analyzer types are available:
 - [`collation`](#collation): respects the alphabetic order of a language in range queries
 - [`minhash`](#minhash): applies another Analyzer and then a locality-sensitive
   hash function, to find candidates for set comparisons based on the
-  Jaccard index (Enterprise Edition only)
+  Jaccard index
 - [`classification`](#classification): classifies the input text using a
-  word embedding model (Enterprise Edition only)
-- [`nearest_neighbors`](#nearest_neighbors): finds the nearest neighbors of the
-  input text using a word embedding model (Enterprise Edition only)
+  word embedding model
+- [`nearest_neighbors`](#nearest_neighbors): finds tokens similar to the ones
+  in the input text using a word embedding model
 - [`geojson`](#geojson): breaks up a GeoJSON object into a set of indexable tokens
 - [`geo_s2`](#geo_s2): like `geojson` but offers more efficient formats for
-  indexing geo-spatial data (Enterprise Edition only)
+  indexing geo-spatial data
 - [`geopoint`](#geopoint): breaks up JSON data describing a coordinate pair into
   a set of indexable tokens
 
@@ -224,7 +224,7 @@ The following *features* are supported:
   [`NGRAM_MATCH()`](../aql/functions/arangosearch.md#ngram_match), and
   [`OFFSET_INFO()`](../aql/functions/arangosearch.md#offset_info).
   If present, then the `frequency` feature is also required.
-- **offset**: enable search highlighting capabilities (Enterprise Edition only).
+- **offset**: enable search highlighting capabilities.
   Required for [`OFFSET_INFO()`](../aql/functions/arangosearch.md#offset_info).
   If present, then the `position` and `frequency` features are also required.
 
@@ -1196,8 +1196,6 @@ db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_3")`).toArray();
 
 ### `minhash`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.10.0</small>
 
 An Analyzer that computes so called MinHash signatures using a
@@ -1238,8 +1236,6 @@ db._query(`
 ```
 
 ### `classification`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1298,8 +1294,6 @@ db._query(`LET str = "Which baking dish is best to bake a banana bread ?"
 ```
 
 ### `nearest_neighbors`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1478,8 +1472,6 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 ```
 
 ### `geo_s2`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.5</small>
 

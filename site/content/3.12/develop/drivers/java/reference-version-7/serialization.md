@@ -63,11 +63,15 @@ It is implemented delegating [Jackson](https://github.com/FasterXML/jackson)
 
 It supports both `JSON` and `VPACK` data formats, while offering the same API to the user.
 
-The `JSON` implementation is provided by the module `com.arangodb:jackson-serde-json`
-and transitively imported by `arangodb-java-driver`. This implementation will be
+The `JSON` implementation is provided by the
+[`com.arangodb:jackson-serde-json` module](https://github.com/arangodb/arangodb-java-driver/tree/main/jackson-serde-json)
+and transitively imported by `arangodb-java-driver`. This implementation is
 used by default.
 
-The `VPACK` implementation is provided by the optional module `com.arangodb:jackson-serde-vpack`.
+The `VPACK` implementation is provided by the optional
+[`com.arangodb:jackson-serde-vpack` module](https://github.com/arangodb/arangodb-java-driver/tree/main/jackson-serde-vpack),
+which uses the [jackson-dataformat-velocypack](https://github.com/arangodb/jackson-dataformat-velocypack)
+implementation internally.
 
 ### Mapping API
 

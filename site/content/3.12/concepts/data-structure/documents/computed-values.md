@@ -146,7 +146,7 @@ curl -XPUT -d '{"computedValues":[{"name":"title","expression":"RETURN \"TBA\"",
 ```
 
 See the [`PUT /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#change-the-properties-of-a-collection)
-endpoint in the _HTTP API_for details.
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}

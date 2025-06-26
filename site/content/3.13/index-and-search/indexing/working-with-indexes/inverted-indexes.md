@@ -611,7 +611,7 @@ FOR doc IN restaurants OPTIONS { indexHint: "inv-rest", forceIndexHint: true }
   }`);
 ```
 
-### Nested search (Enterprise Edition)
+### Nested search
 
 Example data:
 
@@ -656,5 +656,3 @@ db._query(`FOR doc IN exhibits OPTIONS { indexHint: "inv-nest", forceIndexHint: 
   RETURN doc
 `);
 ```
-
-Nested search is only available in the Enterprise Edition.

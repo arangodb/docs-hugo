@@ -123,6 +123,7 @@ or for multiple versions.
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | boolean | `commit-generated` | `true` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
