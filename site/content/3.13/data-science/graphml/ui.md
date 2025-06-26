@@ -6,7 +6,6 @@ description: >-
  Learn how to create, configure, and run a full machine learning workflow for
  GraphML using the steps and features in the ArangoDB web interface
 ---
-
 {{< tag "ArangoDB Platform" >}}
 
 ## The GraphML workflow in the web interface
@@ -14,14 +13,15 @@ description: >-
 The entire process is organized into sequential steps within a **Project**,
 giving you a clear path from data to prediction:
 
-1. **Featurization:** Select your data and convert it into numerical features.
-2. **Training:** Train a GraphSAGE model on the features and graph structure.
-3. **Model Selection:** Evaluate the trained models and choose the best one.
-4. **Prediction:** Use the selected model to generate predictions on your data. You can also automate the prediction process to run at regular intervals.
+1. **Featurization**: Select your data and convert it into numerical features.
+2. **Training**: Train a GraphSAGE model on the features and graph structure.
+3. **Model Selection**: Evaluate the trained models and choose the best one.
+4. **Prediction**: Use the selected model to generate predictions on your data.
+   You can also automate the prediction process to run at regular intervals.
 
 ## Creating a GraphML project
 
-To create a new GraphML project using the ArangoDB Web Interface, follow these steps:
+To create a new GraphML project using the ArangoDB Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
 2. In the left-hand navigation menu, click **GenAI** to open the GraphML project management interface, then click **Run GraphML**.
@@ -29,7 +29,8 @@ To create a new GraphML project using the ArangoDB Web Interface, follow these s
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
-6. After creation, the new project appears in the list under **GraphML projects**. Click the project name to begin with a Featurization job.
+6. After creation, the new project appears in the list under **GraphML projects**.
+   Click the project name to begin with a Featurization job.
 
 ## Featurization phase
 
@@ -127,11 +128,11 @@ features and structural connections within the graph.
 - Fraud detection in transaction networks
 
 **Configuration parameters:**
-- **Type of Training Job:** Node classification
-- **Target Vertex Collection:** Choose the collection to classify (e.g. `movie`)
-- **Batch Size:** The number of documents processed in a single training iteration. (e.g. `256`)
-- **Data Load Batch Size:** The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. (e.g. `50000`)
-- **Data Load Parallelism:** The number of parallel processes used when loading data from ArangoDB into memory for training. (e.g. `10`)
+- **Type of Training Job**: Node classification
+- **Target Vertex Collection**: Choose the collection to classify (e.g. `movie`)
+- **Batch Size**: The number of documents processed in a single training iteration. (e.g. `256`)
+- **Data Load Batch Size**: The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`).
+- **Data Load Parallelism**: The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`).
 
 After setting these values, click the **Begin training** button to start the job.
 
@@ -153,9 +154,9 @@ of graph nodes that capture structural and feature-based information.
 
 **Understanding Vertex Collections:**
 
-- **X Vertex Collection:** These are the source nodes used during training.
+- **Vertex Collection**: These are the source nodes used during training.
   They represent the full set of nodes on which features were computed (e.g. `person`, `movie`).
-- **Y Vertex Collection:** These are the target nodes that contain labeled data.
+- **Vertex Collection**: These are the target nodes that contain labeled data.
   The labels in this collection are used to supervise the training process and
   are the basis for evaluating prediction quality.
 
@@ -199,9 +200,9 @@ You have two important options:
   documents that have been added since the model was trained. This is useful
   for getting predictions on new data without having to retrain the model.
 - **Featurize outdated documents:** Enable this option to re-generate features
- for documents that have been modified. Outdated documents are those whose
- attributes (used during featurization) have changed since the last feature
- computation. This ensures your predictions reflect the latest changes to your data.
+  for documents that have been modified. Outdated documents are those whose
+  attributes (used during featurization) have changed since the last feature
+  computation. This ensures your predictions reflect the latest changes to your data.
 
 In addition to these settings, you can also define the target data, where to store
 results, and whether to run the job on a recurring schedule.
@@ -210,9 +211,9 @@ These options provide flexibility in handling dynamic graph data and keeping
 predictions relevant without repeating the entire ML workflow.
 
 - **Data load batch size**: Specifies the number of documents to load in a
- single batch (e.g. `500000`).
+  single batch (e.g. `500000`).
 - **Data load parallelism**: The number of parallel threads used to process
- the prediction workload (e.g. `10`).
+  the prediction workload (e.g. `10`).
 - **Prediction field**: The field in the documents where the predicted values are stored.
 
 ![GraphML prediction phase](../../../images/graph-prediction.png)

@@ -1,5 +1,5 @@
 ---
-title: Data Science & GenAI
+title: Data Science and GenAI
 menuTitle: Data Science & GenAI
 weight: 115
 description: >-

@@ -11,7 +11,7 @@ aliases:
 
 ## Web interface versus Jupyter Notebooks
 
-ArangoDB Platform provides enterprise-ready Graph Machine Learning in two options,
+The ArangoDB Platform provides enterprise-ready Graph Machine Learning in two options,
 tailored to suit diverse requirements and preferences: 
 - Using the web interface
 - In a scriptable manner, using the integrated Jupyter Notebooks and APIs
@@ -21,11 +21,9 @@ tailored to suit diverse requirements and preferences:
 {{< tabs "graphml-setup" >}}
 
 {{< tab "Web Interface" >}}
-
-The web interface within ArangoDB Platform allows you to create, configure, and
+The web interface of the ArangoDB Platform allows you to create, configure, and
 run a full machine learning workflow for GraphML. To get started, see the
-[Web interface for GraphML](./ui.md) page.
-
+[Web interface for GraphML](ui.md) page.
 {{< /tab >}}
 
 {{< tab "Notebooks" >}}
@@ -35,7 +33,7 @@ It offers a pre-configured environment where everything,
 including necessary components and configurations, comes preloaded. You don't
 need to set up or configure the infrastructure, and can immediately start using the
 GraphML functionalities in a scriptable manner. To get started, see the
-[GraphML Notebooks & API](./notebooks-api.md) reference documentation.
+[GraphML Notebooks & API](notebooks-api.md) reference documentation.
 
 {{< tip >}}
 To get access to GraphML services and packages,
@@ -54,7 +52,6 @@ with the ArangoDB team.
   - Model management
 
 ![ArangoGraphML Pipeline](../../../images/ArangoGraphML_Pipeline.png)
-
 {{< /tab >}}
 
 {{< /tabs >}}

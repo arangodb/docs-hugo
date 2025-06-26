@@ -12,12 +12,12 @@ aliases:
 
 {{< tag "ArangoDB Platform" >}}
 
-ArangoDB Platform provides an easy-to-use & scalable interface to run Graph Machine
-Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
+The ArangoDB Platform provides an easy-to-use & scalable interface to run
+Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
 managed by ArangoDB, all that is typically required are JSON specifications outlining
 individual processes to solve a Machine Learning Task.
 
-The `arangoml` is a Python Package allowing you to manage all the necessary
+The `arangoml` Python package allows you to manage all the necessary
 GraphML components, including:
 - **Project Management**: Projects are a metadata-tracking entity that sit at
   the top level of GraphML. All activities must link to a project.
@@ -25,7 +25,7 @@ GraphML components, including:
   machine-understandable data (e.g. features), such that it can be used to
   train Graph Neural Networks (GNNs).
 - **Training**: Train a set of models based on the name of the generated/existing
-  features, and a definition of the ML task we want to solve (e.g. Node Classification, Embedding Generation).
+  features, and a definition of the ML task you want to solve (e.g. Node Classification, Embedding Generation).
 - **Model Selection**: Select the best model based on the metrics generated during training.
 - **Predictions**: Generate predictions based on the selected model, and persist
   the results to the source graph (either in the source document, or in a new collection).
