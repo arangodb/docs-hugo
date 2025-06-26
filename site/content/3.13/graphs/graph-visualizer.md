@@ -20,11 +20,11 @@ from the list for for exploration and visualization.
 
 You can use the Graph Visualizer to do the following:
 
+- Filter and view specific nodes to focus on a subset of your graph.
 - Dynamically expand nodes to show more of their neighborhood to see how
   entities are connected.
 - Inspect the properties of nodes and edges.
 - Modify existing or create new nodes and edges.
-- Filter specific collections to focus on a subset of your graph.
 - Rearrange nodes automatically or manually for better visual clarity.
 - Use zoom and pan to explore large graphs more easily.
 
@@ -41,62 +41,72 @@ supported by the Graph Visualizer.
 
 ### Select and load a graph
 
-After selecting a graph from the list, it may not be immediately visualized on
-the canvas. In cases such as:
+1. In the ArangoDB Platform web interface, select the database your named graph
+   is stored in.
+2. Click **Graphs** in the main navigation.
+3. Select a graph from the list.
+4. The viewport of the Graph Visualizer opens for exploring the graph.
 
-- Using the **Clear Canvas** option
+The main area of the viewport may initially be empty in the following cases:
+
+- You opened a graph for the first time and nothing is selected for displaying yet
+- You used the **Clear Canvas** option
+<!-- TODO: Doesn't it preserve the last state? Can it be lost?
 - Reopening the Graph Visualizer after a previous session
-- Selecting a graph with no initial nodes displayed
+-->
 
-You may see a message prompting you to use the **Explore** button.  
-To view the graph:
+### The viewport
 
-- Click **Explore** and search for a node by name or ID.
-- Alternatively, use the **New Query** or **Saved Query** buttons to display part
-of the graph.
+The Graph Visualizer interface is comprised of the following components:
+
+- **Canvas**: The main area of the viewport.
+- **Explore**:
+  A widget in the top left corner that opens a dialog for selecting nodes and
+  edges to display.
+- [**Customization**](#visual-customization):
+  A sidebar on the right-hand side to adjust the styling.
+- [**Layout and Navigation**](#layouts-and-navigation-tools):
+  A minimap and multiple tools for the canvas in the bottom right corner.
+
+### Add nodes to the canvas
+
+You can add individual nodes to the canvas in addition to what is already
+displayed.
+
+1. Click **Explore**.
+2. On the **Search** tab, select a **Vertex type**. This is the name of the
+     collection that stores the node you want to select.
+3. Enter a value into the **Search** field. <!-- TODO: Which attributes?! -->
+4. Select one or more nodes from the list on the left-hand side.
+5. Optional: You can check the attributes of the selected nodes on the
+   right-hand side. Use the buttons at the bottom to switch between nodes.
+6. Click **Add _n_ vertices**.
+7. To see the neighbor nodes and the edges that connect them, right-click a node,
+   click **Expand (_n_)** and then **All (_n_)**. <!-- TODO: What other options exist? -->
+
+### Display a subgraph using a query
+
+You can run an AQL query to view a subset of the graph.
+It replaces the current content of the canvas.
+
+1. Click **Explore**.
+2. On the **New query** tab, enter an AQL query that returns edges or paths
+   (e.g. a graph traversal query).
+3. The edges and their nodes appear on the canvas.
 
 {{< tip >}}
-Use the **Explore** button to run AQL queries and render results directly on the
-graph. You can also save your queries for future use.
+You can save queries for future use: 
+
+1. Click **Explore**.
+2. On the **New query** tab, click **Save as**, enter a name and optionally a
+   description, then click **Save**.
+3. To run a saved query, click **Explore**.
+4. On the **Saved Queries** tab, you can see a list of saved queries, and the
+   following actions are available for each:
+  - **Run** the query.
+  - **Copy** the query string to the clipboard.
+  - **Delete** a no longer needed query.
 {{< /tip >}}
-
-## Search and filter data
-
-The top-left section of the Graph Visualizer includes powerful search and query
-tools for interactive exploration.
-
-### Search
-
-To find specific nodes or edges:
-
-1. Click the **Explore** button in the top-left panel of the Graph Visualizer.
-2. Use the search box to look up a node by name or ID.
-3. Matching nodes will be highlighted or loaded onto the canvas.
-
-{{< tip >}}
-You can also use the **New Query** or **Saved Query** buttons to load
-specific subgraphs using AQL queries.
-{{< /tip >}}
-
-### Saved Queries
-
-To run a saved query:
-
-1. Click the **Explore** button at the top-left of the Graph Visualizer.
-2. In the panel that opens, click the **Saved Queries** tab.
-3. Each saved query has options to:
-  - **Run** it again
-  - **Copy** to modify
-  - **Delete** if no longer needed
-
-### New Queries
-
-To run a custom query:
-
-1. Click the **Explore** button at the top-left of the Graph Visualizer.
-2. In the panel that opens, click the **New Query** tab.
-3. Enter your AQL query in the editor.
-4. Click **Run** to visualize the result on the graph canvas.
 
 ### View node and edge properties
 
@@ -105,6 +115,22 @@ You can inspect the document attributes of node or edge as follows:
 - Double-click a node or edge to open a dialog with the properties.
 - Right-click a node to open the context menu and click **View Node** to open
   the dialog with the properties.
+
+### Layouts and navigation tools
+
+These features allow you to clear, zoom, and pan the canvas, as well as rearrange
+the displayed graph data for a better spatial understanding of node clusters,
+hierarchies, and relationship flows.
+
+- **Minimap**: Small overview to navigate the graph.
+
+- **Zoom Controls**: Zoom in/out or set specific zoom.
+
+- **Fit to Screen**: Resize and center the graph view.
+
+- **Re-run Layout**: Automatically rearranges nodes.
+
+- **Layout Algorithms**: Choose between layouts to arrange the nodes.
 
 ## Edit graph data
 
@@ -123,8 +149,6 @@ canvas. This allows you to expand your graph structure.
    - Optionally specify a unique identifier (**Node ID**).
 4. Click **Create** to add the node to the canvas and database.
 
-![Create Node](../../../images/Graph-visualizer-CreateNode_1.PNG)
-
 ### Add New Edges
 
 You can add edges to the graph's edge collections directly from the canvas.
@@ -141,7 +165,7 @@ This allows you to create additional connections between nodes.
 {{< info >}}
 If you select two nodes before right-clicking to open the edge creation
 dialog, the `_from` and `_to` fields are automatically pre-filled.
-The order is not based on your selection sequence but the document key. <!-- TODO: Can we fix it in the UI? -->
+The order is not based on your selection sequence but the document key.
 {{< /info >}}
 
 ### Delete nodes
@@ -163,62 +187,18 @@ You can delete individual nodes which deletes the corresponding document.
 ## Visual customization
 
 You can adjust how the graph data is displayed, like the color, opacity, and
-labels of nodes and edges.
+labels. All styling changes are visual-only and do not affect the underlying data.
 
 1. Optional: Reset to default styling if desired.
-2. Click the _palette_ icon in the top right to open the **Customization** panel.
+2. Click the _palette_ icon in the top right to open the **Customization** panel
+   if it's closed.
 3. Adjust the styling for nodes or edges:
-   - Select a **Label** attribute to display a custom field (e.g. `name` or `type`)
-     on nodes instead of `_id`.
-   - **Reset Button:** Click **Reset** in the style panel to restore nodes and
-     edges to their original colors, opacity, and labels.  
-   - **Node Count:** The **Nodes in Graph** indicator at the top of the panel
-     shows how many nodes are currently loaded or visible. It updates automatically
-     when you run queries, apply filters, or add/delete elements.
-
-All styling changes are visual-only and do not affect the underlying data.
-
-### Node styling options 
-
-You can modify styling attributes of selected **nodes** for emphasis,
-categorization, or clarity.
-
-- **Color**: Assign a specific color to highlight elements  
-- **Opacity**: Make elements more or less transparent  
-- **Label Attribute**: Choose a field (e.g., `name`, `title`) to show instead of
-  `_id`  
-- **Reset**: Clear all styling modifications  
-
-### Edge-specific options
-
-You can modify styling attributes of selected **Edges** for emphasis,
-categorization, or clarity.
-In addition to the shared styling settings, edges offer further customization:
-
-- **Line Thickness**: Set thickness to reflect edge weight or significance  
-- **Arrowhead Styles**: Choose different arrow types for **source** and **target**
-  directions  
-- **Label Attribute**: Select an edge field to display as a label on the edge  
-
-## Layouts and Navigation Tools
-
-{{< tip >}}
-To select and move multiple nodes, hold down the `Ctrl` key (or `Cmd` on macOS)
-and drag a selection box around them. However, context menu
-actions like **Delete** only work for single selections.
-{{< /tip >}}
-
-**Graph Layout Tools**:
-
-- **Mini-map**: Small overview to navigate the graph.
-
-- **Zoom Controls**: Zoom in/out or set specific zoom.
-
-- **Fit to Screen**: Resize and center the graph view.
-
-- **Re-run Layout**: Automatically rearranges nodes.
-
-- **Layout Algorithms**: Choose between layouts to better see clusters or flows.
-
-These features allow better spatial understanding of node clusters, hierarchies,
-and relationship flows.
+   - Select a **Label Attribute** to display a custom top-level field
+     (e.g. `name` or `type`) instead of `_id`.
+   - Assign a specific **Color** to highlight and distinguish elements.
+   - Adjust how transparent elements are with the **Opacity**.
+   - Set the **Line Thickness** (edges only).
+   - Choose different **Arrowhead Styles** (edges only).
+4. You can also do the following:
+   - Clear the styling modifications.
+   - See the number of nodes respectively edges on the canvas (by collection).
