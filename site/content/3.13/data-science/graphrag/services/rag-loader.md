@@ -1,11 +1,22 @@
-# RagLoader User Guide
-
+---
+title: RagLoader Service
+menuTitle: RagLoader
+description: >-
+  The RagLoader service helps you transform your text document into knowledge graph,
+  making it easier to analyze and understand complex information
+weight: 10
+---
 ## Overview
 
-The RagLoader service helps you transform your text document into knowledge graph, making it easier to analyze and understand complex information. It works with individual text files, supporting plain text format with UTF-8 encoding or markdown files. 
+The RagLoader service lets you turn text files into a knowledge graph.
+It supports the following text formats with UTF-8 encoding:
+- Plain text
+- Markdown
 
-The Loader takes your text, analyzes it using the configured language model, and creates a structured knowledge graph. This graph is then imported into your ArangoDB database, where you can query and analyze the relationships between different concepts in your document with our RagRetriever service.
-
+The Loader takes your text, analyzes it using the configured language model, and
+creates a structured knowledge graph. This graph is then imported into your
+ArangoDB database, where you can query and analyze the relationships between
+different concepts in your document with our RagRetriever service.
 
 ## How ArangoDB Collections looks after Import Process:
 

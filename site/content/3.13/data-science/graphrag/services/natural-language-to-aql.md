@@ -1,9 +1,18 @@
-# Natural Language to AQL Translation Service (txt2aql)
-
+---
+title: Natural Language to AQL Translation Service (txt2aql)
+menuTitle: txt2aql
+description: >-
+  The Natural Language to AQL Translation Service is a powerful tool that allows
+  you to interact with your ArangoDB database using natural language queries
+weight: 20
+---
 ## Overview
-The Natural Language to AQL Translation Service is a powerful tool that allows you to interact with your ArangoDB database using natural language queries. It translates your questions and commands into AQL (ArangoDB Query Language), executes the queries, and provides responses in natural language.
+
+This service translates your questions and commands into AQL (ArangoDB Query Language),
+executes the queries, and provides responses in natural language.
 
 ## Features
+
 - Natural language to AQL query translation
 - Support for multiple LLM providers (via OpenAI API or a self-hosted Triton Inference Server)
 - RESTful and gRPC interfaces
@@ -13,12 +22,14 @@ The Natural Language to AQL Translation Service is a powerful tool that allows y
 ## Getting Started
 
 ### Prerequisites
+
 - ArangoDB instance
 - OpenAI API key (if using OpenAI as provider)
 - Triton URL and model name (if using Triton as provider)
 
 
 ### Configuration
+
 The following environment variables are set at installation time and used at runtime:
 
 ```bash
@@ -42,9 +53,11 @@ TRITON_TIMEOUT=<timeout_seconds>       # Optional
 ```
 
 ### Starting the Service
+
 To start the service, use GenAI service endpoint `CreateGraphRag`. Please refer to the documentation of GenAI service for more information on how to use it.
 
 ### Required Parameters
+
 These parameters must be provided in the install request sent to GenAI service.
 
 - `username`: Database username for authentication
@@ -63,64 +76,62 @@ These parameters must be provided in the install request sent to GenAI service.
 - `triton_url`: URL of the Triton inference server
 - `triton_model`: Model name to use with Triton
 
-
 ## API Reference
 
 ### REST Endpoints
 
 1. **Process Text** - Ask general questions to the LLM and get a natural language response. This endpoint does not query the database.
-```bash
-POST /v1/process_text
-Content-Type: application/json
-
-{
-  "input_text": "What are the advantages of graph databases?"
-}
-```
+   ```bash
+   POST /v1/process_text
+   Content-Type: application/json
+ 
+   {
+     "input_text": "What are the advantages of graph databases?"
+   }
+   ```
 
 2. **Translate Query** - Convert natural language to AQL and query the database
-```bash
-POST /v1/translate_query
-Content-Type: application/json
-
-{
-  "input_text": "Find all users who are friends with John",
-  "options": {
-    "output_formats": ["NL", "AQL", "JSON"]
-  }
-}
-```
-
+   ```bash
+   POST /v1/translate_query
+   Content-Type: application/json
+   
+   {
+     "input_text": "Find all users who are friends with John",
+     "options": {
+       "output_formats": ["NL", "AQL", "JSON"]
+     }
+   }
+   ```
 
 3. **Health Check** - Monitor service health
-```bash
-GET /v1/health
-```
+   ```bash
+   GET /v1/health
+   ```
 
 ### gRPC Endpoints
 
 The service also provides gRPC endpoints for more efficient communication:
 
 1. **Process Text**
-```bash
-grpcurl -plaintext -d '{"input_text": "Hello world"}' \
-  localhost:9090 txt2aql.Txt2AqlService/ProcessText
-```
+   ```bash
+   grpcurl -plaintext -d '{"input_text": "Hello world"}' \
+     localhost:9090 txt2aql.Txt2AqlService/ProcessText
+   ```
 
 2. **Translate Query**
-```bash
-grpcurl -plaintext -d '{
-  "input_text": "Find all characters from House Stark",
-  "options": {
-    "output_formats": ["NL","AQL","JSON"]
-  }
-}' localhost:9090 txt2aql.Txt2AqlService/TranslateQuery
-```
+   ```bash
+   grpcurl -plaintext -d '{
+     "input_text": "Find all characters from House Stark",
+     "options": {
+       "output_formats": ["NL","AQL","JSON"]
+     }
+   }' localhost:9090 txt2aql.Txt2AqlService/TranslateQuery
+   ```
 
 3. **Health Check**
-```bash
-grpcurl -plaintext localhost:9090 txt2aql.Txt2AqlService/HealthCheck
-```
+   ```bash
+   grpcurl -plaintext localhost:9090 txt2aql.Txt2AqlService/HealthCheck
+   ```
 
 ## Output Formats
 

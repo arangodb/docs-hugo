@@ -1,6 +1,6 @@
 ---
-title: Data Science
-menuTitle: Data Science
+title: Generative Artificial Intelligence (GenAI) and Data Science
+menuTitle: GenAI & Data Science
 weight: 115
 description: >-
   ArangoDB's set of tools and technologies enables analytics, machine learning,
@@ -13,7 +13,7 @@ data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that
 you can directly use for your research and product development.
 
-ArangoDB also offers a dedicated Data Science Suite, using the database core
+ArangoDB also offers a dedicated GenAI Suite, using the database core
 as the foundation for higher-level features. Whether you want to turbocharge
 generative AI applications with a GraphRAG solution or apply analytics and
 machine learning to graph data at scale, ArangoDB covers these needs.
@@ -25,17 +25,15 @@ engineering space can make use of ArangoDB's set of tools and technologies that
 enable analytics and machine learning on graph data. 
 -->
 
-## Data Science Suite
+## GenAI Suite
 
-The Data Science Suite (DSS) is comprised of three major components:
+The GenAI Suite is comprised of two major components:
 
-- [**HybridRAG**](#hybridrag): A complete solution for extracting entities
+- [**GraphRAG**](#graphrag): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
 - [**GraphML**](#graphml): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
-- [**Graph Analytics**](#graph-analytics): Run graph algorithms such as PageRank
-  on dedicated compute resources.
 
 Each component has an intuitive graphical user interface integrated into the
 ArangoDB Platform web interface, guiding you through the process.
@@ -52,7 +50,17 @@ Alongside these components, you also get the following additional features:
   the machine learning lifecycle.
 - **Adapters**: Use ArangoDB together with cuGraph, NetworkX, and other tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
-  Data Science Suite services and build your own integrations.
+  GenAI Suite services and build your own integrations.
+
+## Other tools and features
+
+<!-- TODO: Should this and the above section somehow be combined? -->
+
+The ArangoDB Platform includes the following features independent of the
+GenAI Suite:
+
+- [**Graph Analytics**](#graph-analytics): Run graph algorithms such as PageRank
+  on dedicated compute resources.
 
 ## From graph to AI
 
@@ -120,19 +128,19 @@ GraphML can answer questions like:
 For ArangoDB's enterprise-ready, graph-powered machine learning offering,
 see [ArangoGraphML](graphml/_index.md).
 
-### HybridRAG
+### GraphRAG
 
-HybridRAG is ArangoDB's turn-key solution to turn your organization's data into
+GraphRAG is ArangoDB's turn-key solution to turn your organization's data into
 a knowledge graph and let everyone utilize the knowledge by asking questions in
 natural language.
 
-HybridRAG combines vector search for retrieving related text snippets
-with graph-based retrieval augmented generation (GraphRAG) for context expansion
+GraphRAG combines vector search for retrieving related text snippets
+with graph-based retrieval augmented generation for context expansion
 and relationship discovery. This lets a large language model (LLM) generate
 answers that are accurate, context-aware, and chronologically structured.
 This approach combats the common problem of hallucination.
 
-To learn more, see the [HybridRAG](hybrid-rag.md) documentation.
+To learn more, see the [GraphRAG](graphrag/_index.md) documentation.
 
 ## Sample datasets
 

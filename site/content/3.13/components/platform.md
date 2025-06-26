@@ -41,7 +41,7 @@ to access all of the platform features.
         private or public LLMs. <!-- TODO: GenAI -->
       - **GraphRAG Importer**: Extract entities and relationships from large
         text-based files, converting unstructured data into a knowledge graph
-        stored in ArangoDB.
+        stored in ArangoDB. <!-- TODO: Change to RagLoader? -->
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
   - **GraphML**: A turnkey solution for graph machine learning for prediction

@@ -4,6 +4,8 @@ menuTitle: RDF
 weight: 25
 description: >-
   ArangoRDF allows you to export graphs from ArangoDB into RDF and vice-versa
+aliases:
+  - ../adapters/arangodb-rdf-adapter
 ---
 RDF is a standard model for data interchange on the Web. RDF has features that
 facilitate data merging even if the underlying schemas differ, and it

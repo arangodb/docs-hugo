@@ -1,8 +1,15 @@
-# RagRetriever User Guide
-
+---
+title: RagRetriever Service
+menuTitle: RagRetriever
+description: >-
+  RagRetriever is a powerful service that enables intelligent search and
+  retrieval from knowledge graphs created by the GraphRAG Importer
+# TODO: GraphRAG Importer == RagLoader?
+weight: 15
+---
 ## Summary
 
-RagRetriever is a powerful service that enables intelligent search and retrieval from knowledge graphs created by GraphRAG Importer. It offers two distinct search methods:
+The RagRetriever service offers two distinct search methods:
 
 - **Global Search**: Analyzes entire document to identify themes and patterns, perfect for high-level insights and comprehensive summaries.
 - **Local Search**: Focuses on specific entities and their relationships, ideal for detailed queries about particular concepts.
@@ -15,6 +22,8 @@ Key features:
 - Simple REST API interface
 - Integration with ArangoDB knowledge graphs
 - Configurable community hierarchy levels
+
+<!-- TODO: Summary and Overview seems redundant -->
 
 ## Overview
 

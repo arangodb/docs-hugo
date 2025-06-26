@@ -1,10 +1,15 @@
-# GenAI-Service
-
+---
+title: GenAI Orchestration Service
+menuTitle: GenAI
+description: >-
+  The GenAI orchestrator service installs, manages, and runs AI-based services
+  in your Kubernetes cluster
+# TODO: Shouldn't this refer to the ArangoDB Platform instead?
+weight: 5
+---
 ## Description
 
-The GenAI orchestrator service is a service that is able to install, manage, and run AI-based services in your Kubernetes cluster.
-
-The basic operations are:
+The basic operations that the GenAI orchestration service carries out are the following:
 - Install a service
 - Uninstall a service
 - Get the status of a service

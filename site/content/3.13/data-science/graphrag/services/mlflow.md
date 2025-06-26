@@ -1,5 +1,11 @@
-# ArangoDB-MLflow-Service
-
+---
+title: ArangoDB MLflow Service
+menuTitle: MLflow
+description: >-
+  The ArangoDB MLflow Service integrates the MLflow platform for managing the
+  full machine learning lifecycle into the ArangoDB Platform
+weight: 25
+---
 ## Overview
 
 The ArangoDB MLflow service is a service that hosts the official MLflow application in your Kubernetes cluster and connects it automatically to the ArangoDB environment, e.g. for registering the LLM to be self-hosted and used by services requiring LLMs (natural-language-service, RAGLoader, RAGRetriever).
