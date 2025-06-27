@@ -11,7 +11,7 @@ for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 You can choose one of the following:
 - [`arangodb` official Docker images](https://hub.docker.com/_/arangodb),
   verified and published by Docker.
-- [`arangodb/arangodb` Docker images](https://hub.docker.com/r/arangodb/arangodb), 
+- [`arangodb/enterprise` Docker images](https://hub.docker.com/r/arangodb/enterprise), 
   maintained and directly published by ArangoDB on a regular basis.
 
 Check also the following resources:

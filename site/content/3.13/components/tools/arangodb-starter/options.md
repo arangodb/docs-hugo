@@ -83,7 +83,7 @@ unreachable for other starters, which is only allowed for
 
 `image` is the name of a Docker image to run instead of the normal
 executable. For each started instance a Docker container is launched.
-Usually one would use the Docker image `arangodb/arangodb`.
+You typically use the `arangodb/enterprise` Docker image.
 
 - `--docker.container=containerName`
 
