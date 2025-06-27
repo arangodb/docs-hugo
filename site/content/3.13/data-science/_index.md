@@ -1,6 +1,6 @@
 ---
-title: Data Science
-menuTitle: Data Science
+title: Data Science and GenAI
+menuTitle: Data Science & GenAI
 weight: 115
 description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
@@ -69,7 +69,7 @@ GraphML can answer questions like:
 ![Graph ML](../../images/graph-ml.png)
 
 For ArangoDB's enterprise-ready, graph-powered machine learning offering,
-see [ArangoGraphML](arangographml/_index.md).
+see [ArangoGraphML](graphml/_index.md).
 
 ## Use Cases
 
