@@ -3,24 +3,22 @@ title: k Paths in AQL
 menuTitle: k Paths
 weight: 30
 description: >-
-  Determine all paths between a start and end vertex limited specified path
-  lengths
+  Find all paths between two vertices with a fixed range of path lengths
 ---
 ## General query idea
 
-This type of query finds all paths between two given documents,
-*startVertex* and *targetVertex* in your graph. The paths are restricted
-by minimum and maximum length of the paths.
+This type of query finds all paths between two given documents
+(*startVertex* and *targetVertex*) in your graph. The paths are restricted
+by a minimum and maximum length that you specify.
 
-Every such path will be returned as a JSON object with two components:
+Every such path is returned as a JSON object with two components:
 
 - an array containing the `vertices` on the path
 - an array containing the `edges` on the path
 
 **Example**
 
-Let us take a look at a simple example to explain how it works.
-This is the graph that we are going to find some paths on:
+Here is an example graph to explain how the k Paths algorithm works:
 
 ![Train Connection Map](../../../images/train_map.png)
 
@@ -30,9 +28,9 @@ between cities and are the edges of the graph. The numbers near the arrows
 describe how long it takes to get from one station to another. They are used
 as edge weights.
 
-Let us assume that we want to go from **Aberdeen** to **London** by train.
+Assume that you want to go from **Aberdeen** to **London** by train.
 
-Here we have a couple of alternatives:
+You have a couple of alternatives:
 
 a) Straight way
 
@@ -72,8 +70,9 @@ d) Detour at Edinburgh to York
    6. York
    7. London
 
-Note that we only consider paths as valid that do not contain the same vertex
-twice. The following alternative would visit Aberdeen twice and will not be returned by k Paths:
+Note that only paths that do not contain the same vertex twice are consider to
+be valid. The following alternative would visit Aberdeen twice and is **not**
+returned by the k Paths algorithm:
 
 1. Aberdeen
 2. **Inverness**
@@ -86,16 +85,16 @@ twice. The following alternative would visit Aberdeen twice and will not be retu
 ## Example Use Cases
 
 The use-cases for k Paths are about the same as for unweighted k Shortest Paths.
-The main difference is that k Shortest Paths will enumerate all paths with
-**increasing length**. It will stop as soon as a given limit is reached.
-k Paths will instead only enumerate **all paths** within a given range of
-path length, and are thereby upper-bounded.
+The main difference is that k Shortest Paths enumerates all paths with
+**increasing length**. It stops as soon as a given number of paths is reached.
+k Paths enumerates all paths within a given **range of path lengths** instead,
+and is thereby upper-bounded.
 
 The k Paths traversal can be used as foundation for several other algorithms:
 
 - **Transportation** of any kind (e.g. road traffic, network package routing)
-- **Flow problems**: We need to transfer items from A to B, which alternatives
-  do we have? What is their capacity?
+- **Flow problems**: You need to transfer items from A to B, which alternatives
+  do you have? What is their capacity?
 
 ## Syntax
 
@@ -105,8 +104,8 @@ minimum and maximum length of the path.
 
 {{< warning >}}
 It is highly recommended that you use a reasonable maximum path length or a
-**LIMIT** statement, as k Paths is a potentially expensive operation. On large
-connected graphs it can return a large number of paths.
+**LIMIT** statement, as k Paths is a potentially expensive operation. It can
+return a large number of paths for large connected graphs.
 {{< /warning >}}
 
 ### Working with named graphs
@@ -121,23 +120,23 @@ FOR path
 - `FOR`: Emits the variable **path** which contains one path as an object
   containing `vertices` and `edges` of the path.
 - `IN` `MIN..MAX`: The minimal and maximal depth for the traversal:
-  - **min** (number, *optional*): Paths returned by this query will
-    have at least a length of *min* many edges.
-    If not specified, it defaults to 1. The minimal possible value is 0.
-  - **max** (number, *optional*): Paths returned by this query will
-    have at most a length of *max* many edges.
-    If omitted, *max* defaults to *min*. Thus only the vertices and edges in
-    the range of *min* are returned. *max* cannot be specified without *min*.
+  - **min** (number, *optional*): Paths returned by this query
+    have at least a length of this many edges.
+    If not specified, it defaults to `1`. The minimal possible value is `0`.
+  - **max** (number, *optional*): Paths returned by this query
+    have at most a length of this many edges.
+    If omitted, it defaults to the value of `min`. Thus, only the vertices and
+    edges in the range of `min` are returned. You cannot specify `max` without `min`.
 - `OUTBOUND|INBOUND|ANY`: Defines in which direction
-  edges are followed (outgoing, incoming, or both)
-- `K_PATHS`: The keyword to compute all Paths
+  edges are followed (outgoing, incoming, or both).
+- `K_PATHS`: The keyword to compute all paths with the specified lengths.
 - **startVertex** `TO` **targetVertex** (both string\|object): The two vertices
-  between which the paths will be computed. This can be specified in the form of
-  a document identifier string or in the form of an object with the attribute
-  `_id`. All other values will lead to a warning and an empty result. This is
+  between which the paths are computed. This can be specified in the form of
+  a document identifier string or in the form of an object with the `_id`
+  attribute. All other values lead to a warning and an empty result. This is
   also the case if one of the specified documents does not exist.
 - `GRAPH` **graphName** (string): The name identifying the named graph.
-  Its vertex and edge collections will be looked up.
+  Its vertex and edge collections are looked up for the path search.
 
 ### Working with collection sets
 
@@ -168,14 +167,14 @@ FOR vertex IN OUTBOUND K_PATHS
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
 direction for each collection in your path search.
 
 ## Examples
 
-We load an example graph to get a named graph that reflects some possible
-train connections in Europe and North America.
+You can load the `kShortestPathsGraph` example graph to get a named graph that
+reflects some possible train connections in Europe and North America.
 
 ![Train Connection Map](../../../images/train_map.png)
 
@@ -192,7 +191,7 @@ db.places.toArray();
 db.connections.toArray();
 ```
 
-Suppose we want to query all routes from **Aberdeen** to **London**.
+Suppose you want to query all routes from **Aberdeen** to **London**.
 
 ```aql
 ---
@@ -205,7 +204,7 @@ GRAPH 'kShortestPathsGraph'
     RETURN { places: p.vertices[*].label, travelTimes: p.edges[*].travelTime }
 ```
 
-If we ask for routes that don't exist we get an empty result
+If you ask for routes that don't exist, you get an empty result
 (from **Aberdeen** to **Toronto**):
 
 ```aql

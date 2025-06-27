@@ -3,14 +3,17 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  With the shortest path algorithm, you can find one shortest path between
-  two vertices using AQL
+  Find one path of shortest length between two vertices
 ---
 ## General query idea
 
-This type of query is supposed to find the shortest path between two given documents
-(*startVertex* and *targetVertex*) in your graph. For all vertices on this shortest
-path you will get a result in form of a set with two items:
+This type of query finds the shortest path between two given documents
+(*startVertex* and *targetVertex*) in your graph. If there are multiple
+shortest paths, the path with the lowest weight or a random one (in case
+of a tie) is returned.
+
+The shortest path search emits the following two variables for every step of
+the path:
 
 1. The vertex on this path.
 2. The edge pointing to it.
@@ -63,12 +66,12 @@ FOR vertex[, edge]
 - `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
 - **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
-  which the shortest path will be computed. This can be specified in the form of
+  which the shortest path is computed. This can be specified in the form of
   an ID string or in the form of a document with the attribute `_id`. All other
-  values will lead to a warning and an empty result. If one of the specified
+  values lead to a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
 - `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
-  edge collections will be looked up.
+  edge collections are looked up for the path search.
 - `OPTIONS` **options** (object, *optional*):
   See the [path search options](#path-search-options).
 
@@ -138,7 +141,7 @@ FOR vertex IN OUTBOUND SHORTEST_PATH
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
 direction for each collection in your path search.
 
@@ -154,6 +157,7 @@ Please also consider using [`WITH`](../high-level-operations/with.md) to specify
 collections you expect to be involved.
 
 ## Examples
+
 Creating a simple symmetric traversal demonstration graph:
 
 ![traversal graph](../../../images/traversal_graph.png)
@@ -190,7 +194,7 @@ db._query(`
 ```
 
 You can see that expectations are fulfilled. You find the vertices in the
-correct ordering and the first edge is *null*, because no edge is pointing
+correct ordering and the first edge is `null`, because no edge is pointing
 to the start vertex on this path.
 
 You can also compute shortest paths based on documents found in collections:
