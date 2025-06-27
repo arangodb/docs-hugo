@@ -3,7 +3,7 @@ title: Graph Visualizer
 menuTitle: Graph Visualizer
 weight: 102
 description: >-
-  Explore your ArangoDB graphs with an intuitive and interactive interface
+  Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
 of the ArangoDB Platform. It lets you explore the connections of your named graphs
@@ -14,8 +14,8 @@ create new nodes (vertices) and relations (edges).
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
 created in the **Management** section under **Graphs** of the second-level
-navigation in the web interface. Once created, you can select a graph
-from the list for for exploration and visualization.
+navigation in the [web interface](../components/web-interface/graphs.md). Once
+created, you can select a graph from the list for exploration and visualization.
 {{< /info >}}
 
 You can use the Graph Visualizer to do the following:
@@ -55,6 +55,9 @@ The main area of the viewport may initially be empty in the following cases:
 - Reopening the Graph Visualizer after a previous session
 -->
 
+You can [Add nodes to the canvas](#add-nodes-to-the-canvas) as well as
+[Display a subgraph using a query](#display-a-subgraph-using-a-query).
+
 ### The viewport
 
 The Graph Visualizer interface is comprised of the following components:
@@ -91,7 +94,13 @@ It replaces the current content of the canvas.
 
 1. Click **Explore**.
 2. On the **New query** tab, enter an AQL query that returns edges or paths
-   (e.g. a graph traversal query).
+   (e.g. a graph traversal query), for example:
+   ```aql
+   FOR edge IN edgeColl FILTER edge.value > 10 RETURN edge
+   ```
+   ```aql
+   FOR v, e, p IN 1..3 ANY "coll/753" GRAPH "myGraph" RETURN p
+   ```
 3. The edges and their nodes appear on the canvas.
 
 {{< tip >}}
@@ -122,25 +131,26 @@ These features allow you to clear, zoom, and pan the canvas, as well as rearrang
 the displayed graph data for a better spatial understanding of node clusters,
 hierarchies, and relationship flows.
 
-- **Minimap**: Small overview to navigate the graph.
+- **Minimap**: A small overview to easier navigate the canvas.
 
-- **Zoom Controls**: Zoom in/out or set specific zoom.
+- **Zoom Controls**: Zoom in/out or reset the zoom to 100%.
 
-- **Fit to Screen**: Resize and center the graph view.
+- **Fit to Screen**: Resize and center the canvas so you can see everything.
 
-- **Re-run Layout**: Automatically rearranges nodes.
+- **Re-run Layout**: Automatically rearrange the nodes using the selected algorithm.
 
-- **Layout Algorithms**: Choose between layouts to arrange the nodes.
+- **Layout Algorithms**: Choose between different ways of arranging the nodes.
+  Which algorithm to use depends on the situation and the graph topology.
 
 ## Edit graph data
 
 While the Graph Visualizer is primarily designed for exploring graph data, you
 can also create and modify nodes and edges directly from the canvas.
 
-### Add new nodes
+### Create new nodes
 
-You can add nodes to the the graph's document collections directly from the
-canvas. This allows you to expand your graph structure.
+You can add nodes to the graph's document collections directly from the
+canvas. This allows you to create additional entities to the graph.
 
 1. In the **Graphs** section of the ArangoDB web interface, select your graph.
 2. Right-click on the canvas and choose **Create Node**.
@@ -149,7 +159,7 @@ canvas. This allows you to expand your graph structure.
    - Optionally specify a unique identifier (**Node ID**).
 4. Click **Create** to add the node to the canvas and database.
 
-### Add New Edges
+### Create New Edges
 
 You can add edges to the graph's edge collections directly from the canvas.
 This allows you to create additional connections between nodes.
@@ -167,6 +177,14 @@ If you select two nodes before right-clicking to open the edge creation
 dialog, the `_from` and `_to` fields are automatically pre-filled.
 The order is not based on your selection sequence but the document key.
 {{< /info >}}
+
+### Edit node and edge properties
+
+You can modify the document attributes of nodes and edges from the canvas as follows:
+
+1. Double-click a node or edge.
+2. In the properties dialog that opens, click **Edit**.
+3. Change the properties and click **Save**. <!-- TODO: Can't change system attributes, even though _from and _to are generally mutable -->
 
 ### Delete nodes
 
