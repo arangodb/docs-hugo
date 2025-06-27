@@ -212,16 +212,24 @@ You can configure automatic predictions using the **Enable scheduling** checkbox
 When scheduling is turned on, predictions run automatically based on a set CRON
 expression. This helps keep prediction results up-to-date as new data is added to the system.
 
-You can define a CRON expression that sets when the prediction job should run.
-For example, `0 0 1 1 *`.
-This CRON pattern executes the prediction every year on January 1st at 00:00.
+You can define a cron expression that sets when the prediction job should run.
+The cron syntax is a set of five fields in a line, indicating when the job should
+be executed. The format must follow the following order: `minute` `hour` `day-of-month` `month` `day-of-week`
+(e.g. `0 0 * * *` for daily predictions at 00:00, or `0 0 1 1 *` to execute the prediction
+on January 1st at 00:00).
+
+When a field is set to an asterisk `*`, it means that any value is allowed for that field,
+whenever the other field conditions are met.
 
 Below the CRON field, a user-friendly scheduling interface helps translate it:
-- **Period**: Options include *Hourly*, *Daily*, *Weekly*, *Monthly*, or *Yearly*.
-- **Month**: *(e.g. January)*
-- **Day of Month**: *(e.g. 1)*
-- **Day of Week**: *(optional)*
-- **Hours and Minutes**: Set the exact time for execution *(e.g. 0:00)*
+- **Period**: Options include **Hourly**, **Daily**, **Weekly**, **Monthly**, or **Yearly**.
+- **Month**: Indicates the month. For example, `1` for January.
+- **Day of Month**: Indicates the day of the month. For example, `1` for
+  the first day of the month.
+- **Day of Week** (optional): Indicates the day of the week. For example,
+  Monday is `1` and Tuesday is `2`.
+- **Hours and Minutes**: Set the exact time for execution. For example,
+  if the hour is set to `8` and the minute to `0`, then the job runs at 8:00 AM.
 
 ### Execute prediction
 

@@ -3,7 +3,7 @@ title: How to use GraphML in a scriptable manner
 menuTitle: Notebooks & API
 weight: 15
 description: >-
-  Control all resources inside GraphML via Jupyter Notebooks or HTTP REST API
+  Control all resources inside GraphML via Jupyter Notebooks or Python API
 aliases:
   - getting-started-with-arangographml
   - ../arangographml/getting-started
