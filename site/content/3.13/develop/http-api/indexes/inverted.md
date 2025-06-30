@@ -149,8 +149,6 @@ paths:
 
                           Default: the value defined by the top-level `cache` option.
 
-                          This property is available in the Enterprise Edition only.
-
                           See the `--arangosearch.columns-cache-limit` startup option to control the
                           memory consumption of this cache. You can reduce the memory usage of the column
                           cache in cluster deployments by only using the cache for leader shards, see the
@@ -162,8 +160,6 @@ paths:
                           `fields` property, the values get indexed in a way that lets you query for
                           co-occurring values. For example, you can search the sub-objects and all the
                           conditions need to be met by a single sub-object instead of across all of them.
-
-                          This property is available in the Enterprise Edition only.
                         type: array
                         items:
                           type: object
@@ -225,8 +221,6 @@ paths:
 
                                 Default: the value defined by the top-level `cache` option.
 
-                                This property is available in the Enterprise Edition only.
-
                                 See the `--arangosearch.columns-cache-limit` startup option to control the
                                 memory consumption of this cache. You can reduce the memory usage of the column
                                 cache in cluster deployments by only using the cache for leader shards, see the
@@ -271,8 +265,6 @@ paths:
                     This can improve the performance of geo-spatial queries.
 
                     Default: `false`
-
-                    This property is available in the Enterprise Edition only.
 
                     See the `--arangosearch.columns-cache-limit` startup option to control the
                     memory consumption of this cache. You can reduce the memory usage of the column
@@ -335,8 +327,6 @@ paths:
 
                           Default: `false`
 
-                          This property is available in the Enterprise Edition only.
-
                           See the `--arangosearch.columns-cache-limit` startup option to control the
                           memory consumption of this cache. You can reduce the memory usage of the column
                           cache in cluster deployments by only using the cache for leader shards, see the
@@ -390,8 +380,6 @@ paths:
 
                         Default: `false`
 
-                        This property is available in the Enterprise Edition only.
-
                         See the `--arangosearch.columns-cache-limit` startup option to control the
                         memory consumption of this cache. You can reduce the memory usage of the column
                         cache in cluster deployments by only using the cache for leader shards, see the
@@ -432,8 +420,6 @@ paths:
                     Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
 
                     Default: `[]`
-
-                    This property is available in the Enterprise Edition only.
                   type: array
                   items:
                     type: string

@@ -216,7 +216,7 @@ in the _JavaScript API_ for details.
 curl -d '{"name":"coll"}' http://localhost:8529/_db/mydb/_api/collection
 ```
 
-See the [`POST /_db/{database-name}/_api/collection`](../../develop/http-api/databases.md#create-a-database)
+See the [`POST /_db/{database-name}/_api/collection`](../../develop/http-api/collections.md#create-a-collection)
 endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
@@ -397,7 +397,7 @@ in the _JavaScript API_ for details.
 curl http://localhost:8529/_db/mydb/_api/collection
 ```
 
-See the [`GET /_db/{database-name}/_api/collection`](../../develop/http-api/collections.md#get-the-collection-information)
+See the [`GET /_db/{database-name}/_api/collection`](../../develop/http-api/collections.md#list-all-collections)
 endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 

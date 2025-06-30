@@ -10,6 +10,58 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed
 here.
 
+## All Enterprise Edition features in Community Edition
+
+<small>Introduced in: v3.12.5</small>
+
+Up to version 3.12.4, the Community Edition of ArangoDB didn't include
+certain query, performance, compliance, and security features. They used to
+be exclusive to the Enterprise Edition.
+
+From version 3.12.5 onward, the Community Edition includes all
+Enterprise Edition features without time restrictions. You still need a
+license to use version 3.12 or later for commercial purposes or for a dataset
+size over 100 GiB.
+
+The following features are now available in the Community Edition:
+
+**Performance**
+
+- [SmartGraphs](../../graphs/smartgraphs/_index.md)
+- [EnterpriseGraphs](../../graphs/enterprisegraphs/_index.md)
+- [SmartGraphs using SatelliteCollections](../../graphs/smartgraphs/_index.md)
+- [SatelliteGraphs](../../graphs/satellitegraphs/_index.md)
+- [SatelliteCollections](../../develop/satellitecollections.md)
+- [SmartJoins](../../develop/smartjoins.md)
+- [OneShard](../../deploy/oneshard.md)
+- [Traversal](../../release-notes/version-3.7/whats-new-in-3-7.md#traversal-parallelization-enterprise-edition)
+  [Parallelization](../../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition)
+- [Traversal Projections](../../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition)
+- [Parallel index creation](../../release-notes/version-3.10/whats-new-in-3-10.md#parallel-index-creation-enterprise-edition)
+- [`minhash` Analyzer](../../index-and-search/analyzers.md#minhash)
+- [`geo_s2` Analyzer](../../index-and-search/analyzers.md#geo_s2)
+- [ArangoSearch column cache](../../release-notes/version-3.10/whats-new-in-3-10.md#arangosearch-column-cache-enterprise-edition)
+- [ArangoSearch WAND optimization](../../index-and-search/arangosearch/performance.md#wand-optimization)
+- [Read from followers in clusters](../../develop/http-api/documents.md#read-from-followers)
+
+**Querying**
+
+- [Search highlighting](../../index-and-search/arangosearch/search-highlighting.md)
+- [Nested search](../../index-and-search/arangosearch/nested-search.md)
+- [`classification`](../../index-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../index-and-search/analyzers.md#nearest_neighbors) (experimental)
+- [Skip inaccessible collections](../../aql/how-to-invoke-aql/with-arangosh.md#skipinaccessiblecollections)
+
+**Security**
+
+- [Auditing](../../operations/security/audit-logging.md)
+- [Encryption at Rest](../../operations/security/encryption-at-rest.md)
+- [Encrypted Backups](../../components/tools/arangodump/examples.md#encryption)
+- [Hot Backups](../../operations/backup-and-restore.md#hot-backups)
+- [Enhanced Data Masking](../../components/tools/arangodump/maskings.md#masking-functions)
+- Key rotation for [JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+  and [on-disk encryption](../../develop/http-api/security.md#encryption-at-rest)
+- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--sslserver-name-indication)
+
 ## ArangoSearch
 
 ### WAND optimization (Enterprise Edition)
@@ -28,7 +80,8 @@ of a scoring function in descending order (`DESC`).
 See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#wand-optimization)
 for examples.
 
-This feature is only available in the Enterprise Edition.
+This feature is only available in the Enterprise Edition up to v3.12.4 and
+included in all Editions from v3.12.5 onward.
 
 ### `SEARCH` parallelization
 
@@ -1635,6 +1688,18 @@ The following startup options for cluster deployments have been added:
   The delay (in seconds) before shutting down a Coordinator if no heartbeat can
   be sent. Set to `0` to deactivate this shutdown.
 
+### Limit for shard synchronization actions
+
+<small>Introduced in: v3.11.14, v3.12.5</small>
+
+The number of `SynchronizeShard` actions that can be scheduled internally by the
+cluster maintenance has been restricted to prevent these actions from blocking
+`TakeoverShardLeadership` actions with a higher priority, which could lead to
+service interruption during upgrades and after failovers.
+
+The new `--server.maximal-number-sync-shard-actions` startup option controls
+how many `SynchronizeShard` actions can be queued at any given time.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
@@ -2093,6 +2158,37 @@ DB-Servers in a cluster has been added:
 | Label | Description |
 |:------|:------------|
 | `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
+
+### API call recording
+
+<small>Introduced in: v3.12.5</small>
+
+A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
+list of the most recent requests with a timestamp and the endpoint. This feature
+is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup options:
+
+- `--server.number-of-api-call-lists`:
+  The size of the ring buffer for API call record lists (default: `256`).
+- `--server.memory-per-api-call-list`: 
+  The amount of memory used for a single API call record list (default: `100000` bytes)
+
+This means that approximately 25 MB of memory are reserved by default.
+
+
+API call recording is enabled by default but you can disable it via the new
+`--server.api-call-recording` startup option.
+
+A metric has been added for the time spent on API call recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
 
 ## Client tools
 
