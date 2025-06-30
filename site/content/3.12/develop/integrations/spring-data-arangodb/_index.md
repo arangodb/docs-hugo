@@ -53,7 +53,7 @@ Create a Maven `pom.xml`:
         <relativePath/>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.4</version>
+        <version>x.y.z</version>
     </parent>
 
     <groupId>com.arangodb</groupId>
@@ -76,15 +76,16 @@ Create a Maven `pom.xml`:
         <dependency>
             <groupId>com.arangodb</groupId>
             <artifactId>arangodb-spring-data</artifactId>
-            <version>4.4.2</version>
+            <version>x.y.z</version>
         </dependency>
     </dependencies>
 
 </project>
 ```
 
-Substitute the versions with the latest available versions that are compatible.
+Substitute `x.y.z` with the latest available versions that are compatible.
 See the [Supported versions](#supported-versions) for details.
+You may also adjust the Java version.
 
 ### Entity classes
 

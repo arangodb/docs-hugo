@@ -52,7 +52,7 @@ Create a Maven `pom.xml`:
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.3</version>
+        <version>x.y.z</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -75,7 +75,7 @@ Create a Maven `pom.xml`:
         <dependency>
             <groupId>com.arangodb</groupId>
             <artifactId>arangodb-spring-boot-starter</artifactId>
-            <version>3.1-0</version>
+            <version>x.y.z</version>
         </dependency>
     </dependencies>
 
@@ -91,8 +91,9 @@ Create a Maven `pom.xml`:
 </project>
 ```
 
-Substitute the versions with the latest available versions that are compatible.
+Substitute `x.y.z` with the latest available versions that are compatible.
 See the [Supported versions](#supported-versions) for details.
+You may also adjust the Java version.
 
 ### Monitor the server health
 
