@@ -32,7 +32,7 @@ expected two shortest paths are:
 2. Carlisle – York – London
 
 Another path that connects Carlisle and London is
-Carlisle – Glasgow – Edinburgh – York – London, but it is has two more stops and
+Carlisle – Glasgow – Edinburgh – York – London, but it has two more stops and
 is therefore not a path of the shortest length.
 
 ## Syntax
