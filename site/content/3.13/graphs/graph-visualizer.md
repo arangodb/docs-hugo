@@ -147,6 +147,8 @@ hierarchies, and relationship flows.
 While the Graph Visualizer is primarily designed for exploring graph data, you
 can also create and modify nodes and edges directly from the canvas.
 
+You need to have write access for the database and the collections for this.
+
 ### Create new nodes
 
 You can add nodes to the graph's document collections directly from the
