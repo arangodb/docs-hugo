@@ -53,8 +53,8 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
-is available for the ArangoGraph Insights Platform. See
-[Graph Analytics](graph-analytics.md) for details.
+is available for the ArangoGraph Insights Platform. See 
+[Graph Analytics](../graphs/graph-analytics.md) for details.
 
 ### GraphML
 
