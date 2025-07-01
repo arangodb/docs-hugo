@@ -1,7 +1,7 @@
 ---
 title: Graph Analytics
 menuTitle: Graph Analytics
-weight: 123
+weight: 115
 description: |
   ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
   data separately from your ArangoDB deployments
