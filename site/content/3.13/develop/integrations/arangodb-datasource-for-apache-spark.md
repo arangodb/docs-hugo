@@ -59,6 +59,8 @@ To import ArangoDB Datasource for Apache Spark in a Maven project:
   </dependencies>
 ```
 
+Substitute `x.y.z` with the latest available version that is compatible.
+
 To use in an external Spark cluster, submit your application with the following parameter:
 
 ```sh

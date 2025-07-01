@@ -1688,6 +1688,18 @@ The following startup options for cluster deployments have been added:
   The delay (in seconds) before shutting down a Coordinator if no heartbeat can
   be sent. Set to `0` to deactivate this shutdown.
 
+### Limit for shard synchronization actions
+
+<small>Introduced in: v3.11.14, v3.12.5</small>
+
+The number of `SynchronizeShard` actions that can be scheduled internally by the
+cluster maintenance has been restricted to prevent these actions from blocking
+`TakeoverShardLeadership` actions with a higher priority, which could lead to
+service interruption during upgrades and after failovers.
+
+The new `--server.maximal-number-sync-shard-actions` startup option controls
+how many `SynchronizeShard` actions can be queued at any given time.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
