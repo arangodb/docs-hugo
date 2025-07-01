@@ -1,5 +1,5 @@
 ---
-title: GraphML
+title: ArangoDB GraphML
 menuTitle: GraphML
 weight: 125
 description: >-

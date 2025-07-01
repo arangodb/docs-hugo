@@ -1,10 +1,10 @@
 ---
-title: How to use GraphML in the Web Interface
+title: How to use GraphML in the ArangoDB Platform web interface
 menuTitle: Web Interface
 weight: 10
 description: >-
  Learn how to create, configure, and run a full machine learning workflow for
- GraphML using the steps and features in the ArangoDB web interface
+ GraphML in four steps using the features in the ArangoDB web interface
 ---
 {{< tag "ArangoDB Platform" >}}
 
@@ -13,13 +13,13 @@ description: >-
 The entire process is organized into sequential steps within a **Project**,
 giving you a clear path from data to prediction:
 
-1. **Featurization**: Select your data and convert it into numerical features.
+1. **Featurization**: Select your data and convert it into numerical representations.
 2. **Training**: Train a GraphSAGE model on the features and graph structure.
 3. **Model Selection**: Evaluate the trained models and choose the best one.
 4. **Prediction**: Use the selected model to generate predictions on your data.
    You can also automate the prediction process to run at regular intervals.
 
-## Creating a GraphML project
+## Create a GraphML project
 
 To create a new GraphML project using the ArangoDB Platform web interface, follow these steps:
 
@@ -36,8 +36,8 @@ To create a new GraphML project using the ArangoDB Platform web interface, follo
 
 After clicking on a project name, you are taken to a screen where you can
 configure and start a new Featurization job. Follow these steps:
-1. **Select a Graph**: In the **Features** section, choose your target graph from the **Select a graph** dropdown.
-2. **Select Vertex Collections**: Pick the vertex collections that you want to include for feature extraction.
+1. **Select a Graph**: In the **Features** section, choose your target graph from the **Select a graph** dropdown menu.
+2. **Select Vertex Collection(s)**: Pick the vertex collection(s) that you want to include for feature extraction.
 3. **Select Attributes**: Choose the attributes from your vertex collection to
   convert into machine-understandable features. Attributes cannot be used if their values are lists or arrays.
 
@@ -55,17 +55,17 @@ format on the right side of the screen for transparency.
 
 In the **Configuration** tab, you can control the overall featurization job and
 how features are stored.
-- **Batch size** – The number of documents to process in a single batch.
-- **Run analysis checks** – Whether to run analysis checks to perform a high-level
+- **Batch size**: The number of documents to process in a single batch.
+- **Run analysis checks**: Whether to run analysis checks to perform a high-level
   analysis of the data quality before proceeding. The default value is `true`.
-- **Skip labels** – Skip the featurization process for attributes marked as labels.
+- **Skip labels**: Skip the featurization process for attributes marked as labels.
   The default value is `false`.
-- **Overwrite FS graph** – Whether to overwrite the Feature Store graph if features
+- **Overwrite FS graph**: Whether to overwrite the Feature Store graph if features
   were previously generated. The default value is `false`, therefore features are
   written to an existing Feature Store graph.
-- **Write to source graph** – Whether to store the generated features on the Source
+- **Write to source graph**: Whether to store the generated features on the Source
  Graph. The default value is `true`.
-- **Use feature store** – Enable the use of the Feature Store database, which
+- **Use feature store**: Enable the use of the Feature Store database, which
  allows you to store features separately from your Source Database. The default
  value is `false`, therefore features are written to the source graph.
 
@@ -209,7 +209,7 @@ The Prediction screen displays the following configuration options:
 ### Enable scheduling
 
 You can configure automatic predictions using the **Enable scheduling** checkbox.
-When scheduling is turned on, predictions run automatically based on a set CRON
+When scheduling is enabled, predictions run automatically based on a set CRON
 expression. This helps keep prediction results up-to-date as new data is added to the system.
 
 You can define a cron expression that sets when the prediction job should run.
