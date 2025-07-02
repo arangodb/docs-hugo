@@ -186,7 +186,7 @@ function get_docker_imageid() {
   ## Get the docker image id to run of the server
   image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
   if [ "$image_id" == "" ]; then
-    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/arangodb:tag
+    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/enterprise:tag
   fi
   echo "$image_id"
 }
