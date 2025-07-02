@@ -126,6 +126,32 @@ You can save queries for future use:
   - **Delete** a no longer needed query.
 {{< /tip >}}
 
+### Add nodes and edges using a query based on a selection
+
+You can select nodes and edges on the canvas and then use a **Canvas Action**.
+This runs an AQL query to add a nodes, edges, or paths of the graph to the canvas.
+The query has access to the current selection via special bind variables.
+
+1. Create a selection. You have different options:
+   - Click a node or edge to select only this element.
+   - Hold the **Shift** or **Ctrl** key and click multiple nodes and edges.
+   - Hold the **Shift** or **Ctrl** key and drag the mouse to perform a box selection.
+2. Right-click the canvas, click **Canvas Action**, and select a saved action.
+3. Depending on the query, additional nodes or edges with their nodes are added
+   to the canvas.
+4. To create a custom Canvas Action query, click **Queries** of the top-left widget.
+5. Click **Canvas Actions**, then **New action**.
+6. Enter an AQL query that makes use of the special bind variable `@nodes`,
+   `@edges`, or both and returns nodes, edges, or paths. Examples:
+   ```aql
+   FOR selectedNode IN @nodes
+     FOR v, e, p IN 1..3 ANY selectedNode GRAPH "myGraph"
+     FILTER p.edges[*].value ALL < 7
+     LIMIT 20
+     RETURN p
+   ```
+7. Enter a name and optionally a description for the action and click **Save**.
+
 ### View node and edge properties
 
 You can inspect the document attributes of node or edge as follows:
