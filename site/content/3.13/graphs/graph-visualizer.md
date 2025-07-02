@@ -63,55 +63,64 @@ You can [Add nodes to the canvas](#add-nodes-to-the-canvas) as well as
 The Graph Visualizer interface is comprised of the following components:
 
 - **Canvas**: The main area of the viewport.
-- **Explore**:
-  A widget in the top left corner that opens a dialog for selecting nodes and
-  edges to display.
+- **Search & add nodes to canvas** and **Queries**:
+  A widget in the top left corner that opens dialogs for selecting nodes and
+  edges to display (manually or using queries).
 - [**Customization**](#visual-customization):
   A sidebar on the right-hand side to adjust the styling.
 - [**Layout and Navigation**](#layouts-and-navigation-tools):
   A minimap and multiple tools for the canvas in the bottom right corner.
 
-### Add nodes to the canvas
+### Add nodes to the canvas manually
 
 You can add individual nodes to the canvas in addition to what is already
 displayed.
 
-1. Click **Explore**.
-2. On the **Search** tab, select a **Vertex type**. This is the name of the
-     collection that stores the node you want to select.
-3. Enter a value into the **Search** field. <!-- TODO: Which attributes?! -->
+1. Click **Search & add nodes to canvas**.
+2. Select a **Node type**. This is the name of the collection that stores the
+   node you want to select.
+3. Enter a value into the **Search** field. This searches common attributes
+   as indicated by the placeholder text and finds up to 10 nodes that contain
+   this text in one of these attributes (case-insensitive).
 4. Select one or more nodes from the list on the left-hand side.
 5. Optional: You can check the attributes of the selected nodes on the
    right-hand side. Use the buttons at the bottom to switch between nodes.
 6. Click **Add _n_ vertices**.
 7. To see the neighbor nodes and the edges that connect them, right-click a node,
-   click **Expand (_n_)** and then **All (_n_)**. <!-- TODO: What other options exist? -->
+   click **Expand (_n_)** and then **All (_n_)**.
 
-### Display a subgraph using a query
+### Add nodes and edges using a query
 
-You can run an AQL query to view a subset of the graph.
-It replaces the current content of the canvas.
+You can run an AQL query to add a nodes, edges, or paths of the graph to the canvas.
 
-1. Click **Explore**.
-2. On the **New query** tab, enter an AQL query that returns edges or paths
+1. Click **Queries** of the top-left widget.
+2. Click **New query**.
+3. Enter an AQL query that returns nodes, edges, or paths
    (e.g. a graph traversal query), for example:
    ```aql
-   FOR edge IN edgeColl FILTER edge.value > 10 RETURN edge
+   FOR node IN coll LIMIT 10 RETURN node  // [ { "_id": "..." }, ... ]
    ```
    ```aql
-   FOR v, e, p IN 1..3 ANY "coll/753" GRAPH "myGraph" RETURN p
+   FOR edge IN edgeColl FILTER edge.value > 10 RETURN edge  // [ { "_from": "...", "_to": "...", "_id": "..." }, ... ]
    ```
-3. The edges and their nodes appear on the canvas.
+   ```aql
+   FOR v, e, p IN 1..3 ANY "coll/753" GRAPH "myGraph" RETURN p  // [ { "vertices": [...], "edges": [...] }, ... ]
+   ```
+4. Click **Run query**. Depending on what the query returns, either only nodes
+   or edges with their nodes appear on the canvas, in addition to what is
+   already displayed.
 
 {{< tip >}}
 You can save queries for future use: 
 
-1. Click **Explore**.
-2. On the **New query** tab, click **Save as**, enter a name and optionally a
-   description, then click **Save**.
-3. To run a saved query, click **Explore**.
-4. On the **Saved Queries** tab, you can see a list of saved queries, and the
-   following actions are available for each:
+1. Click **Queries** of the top-left widget.
+2. Click **New query**.
+3. Enter or edit the AQL query you want to save. You can optionally use
+   bind variables to parameterize saved queries.
+4. Enter a name and optionally a description, then click **Save**.
+5. To run a saved query, click **Queries** of the top-left widget.
+6. Select a query from the list. The following actions are available for each query:
+  - **Bind Variables** to set for the query.
   - **Run** the query.
   - **Copy** the query string to the clipboard.
   - **Delete** a no longer needed query.
