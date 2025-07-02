@@ -1257,6 +1257,18 @@ to some extent.
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
 for details.
 
+### Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.12.6</small>
+
+The `GEO_POINT()` function now accepts an optional third argument to create a
+GeoJSON Point with three coordinates: `[longitude, latitude, elevation]`.
+Furthermore, points with an elevation do no longer fail validation when using
+geo-spatial functions. However, ArangoDB does not take any elevation into account
+in geo-spatial calculations.
+
+See [Geo-spatial functions in AQL](../../aql/functions/geo.md) for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
