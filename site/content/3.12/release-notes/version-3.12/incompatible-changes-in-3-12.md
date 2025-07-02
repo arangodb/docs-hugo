@@ -905,11 +905,15 @@ the following steps.
 <small>Introduced in: v3.12.6</small>
 
 GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
-Points with an elevation do no longer fail validation when using geo-spatial
-functions. However, ArangoDB does not take any elevation into account
-in geo-spatial calculations.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
 
-See [Geo-spatial functions in AQL](../../aql/functions/geo.md) for details.
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
 ## HTTP RESTful API
 
