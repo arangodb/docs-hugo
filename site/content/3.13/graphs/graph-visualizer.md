@@ -55,8 +55,9 @@ The main area of the viewport may initially be empty in the following cases:
 - Reopening the Graph Visualizer after a previous session
 -->
 
-You can [Add nodes to the canvas](#add-nodes-to-the-canvas) as well as
-[Display a subgraph using a query](#display-a-subgraph-using-a-query).
+You can [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually)
+as well as [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query).
+Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection).
 
 ### The viewport
 
