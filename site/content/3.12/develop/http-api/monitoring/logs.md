@@ -864,7 +864,9 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database.
+            to this database and administrate access to the `_system` database.
+            If `--log.recording-api-enabled` is set to `jwt`, you need to use
+            a superuser token to access the endpoint.
           schema:
             type: string
       responses:
@@ -996,6 +998,176 @@ Content-Length: 257
         "requestType": "GET",
         "path": "/_api/version",
         "database": "myDB"
+      }
+    ]
+  }
+}
+```
+{{< /expand >}}
+
+## Get recent AQL queries
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/server/aql-queries:
+    get:
+      operationId: getRecentAqlQueries
+      description: |
+        Get a list of the most recent AQL queries with a timestamp and
+        information about the submitted query.
+        This feature is for debugging purposes.
+
+        You can control how much memory is used to record AQL queries with the
+        `--server.aql-recording-memory-limit` startup option.
+
+        You can disable AQL query and API call recording via the
+        `--log.recording-api-enabled` startup option.
+        The endpoint returns an empty list of queries in this case.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+            If `--log.recording-api-enabled` is set to `jwt`, you need to use
+            a superuser token to access the endpoint.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The 
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The request result.
+                    type: object
+                    required:
+                      - queries
+                    properties:
+                      queries:
+                        description: |
+                          A list of the recent AQL queries.
+                          Empty if AQL query and API call recording is disabled.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            timeStamp:
+                              description: |
+                                The date and time of the request in ISO 8601 format.
+                              type: string
+                              format: date-time
+                            queryString:
+                              description: |
+                                The AQL query.
+                              type: string
+                            bindParameters:
+                              description: |
+                                Key/value pairs representing the bind variables.
+                              type: object
+                            database:
+                              description: |
+                                The database name.
+                              type: string
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Monitoring
+```
+
+{{< comment >}}
+Example not generated because it changes on every run and there can be many internal queries.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/aql-queries
+```
+
+{{< expand title="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 377
+
+{
+  "error": false,
+  "code": 200,
+  "result": {
+    "queries": [
+      {
+        "timeStamp": "2025-07-02T16:33:32Z",
+        "queryString": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
+        "database": "_system",
+        "bindParameters": {
+          "@collection": "_statistics",
+          "start": 1751470412.3836362
+        }
+      },
+      {
+        "timeStamp": "2025-07-02T16:26:01Z",
+        "queryString": "FOR doc IN coll RETURN doc",
+        "database": "_system",
+        "bindParameters": {}
       }
     ]
   }

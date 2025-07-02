@@ -2174,8 +2174,7 @@ You can configure the memory limit for this feature with the following startup o
 - `--server.memory-per-api-call-list`: 
   The amount of memory used for a single API call record list (default: `100000` bytes)
 
-This means that approximately 25 MB of memory are reserved by default.
-
+This means that approximately 25 MB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
@@ -2188,6 +2187,35 @@ impact of this feature:
 | `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
 
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted query. This feature is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.aql-recording-memory-limit`: 
+  The amount of memory used for recording AQL queries (default: `25600000` bytes)
+
+This means that approximately 25 MB of memory is reserved by default.
+
+API call recording is enabled by default but you can disable it via the new
+`--log.recording-api-enabled` startup option, which also affects the
+API call recording. You can set it to `jwt` to require a superuser token instead
+of write access to the `_system` database for accessing the endpoint.
+
+A metric has been added for the time spent on AQL query recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_recording_call_time` | Execution time histogram for AQL recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
 ## Client tools
