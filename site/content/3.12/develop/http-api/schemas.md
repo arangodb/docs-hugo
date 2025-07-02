@@ -1,14 +1,25 @@
 ---
-title: GET Schema Endpoint
-menuTitle: http-api
-description: Returns information about graphs, views, and collections in the database.
+
+title: HTTP interface for database structures (schema, graph, view)
+menuTitle: Schemas
+description: >-
+   HTTP interface for database structures gives you information about 
+   graphs, views, collections and schemas in the database.
+# GET /_api/schema
+# GET /_api/schema/graph/{graph-name}
+# GET /_api/schema/view/{view-name}
+# GET /_api/schema/collection/{collection-name}
+
 ---
 
-## GET Schema Endpoint `/_api/schema`
+The interface provides the means to collect information on database 
+structures including graphs, views, collections and their schemas 
+at one stop. This information is helpful if you want to understand 
+the overall shape and structure of the database.
 
-### Introduction
-This endpoint shows the structure of the current database. It returns three types of information:
+---
 
+## Information the interface gives you
 1. **graphs** – each graph shows its name and how it connects collections using edges (`_from` and `_to`).
 2. **views** – each view shows its name and which collections and fields it links to.
 3. **collections** – each collection shows:
@@ -17,43 +28,90 @@ This endpoint shows the structure of the current database. It returns three type
     - whether the attribute is optional (meaning some documents/edges may not have it)
     - and example documents or edges for reference
 
-This information is helpful if you want to understand the overall shape and structure of the data in the database.
-Additionally, this endpoint also support the following paths:
-1. [**/_api/schema/graph/&lt;graph-name&gt;**](#api-schema-graphgraph-name)
-2. [**/_api/schema/view/&lt;view-name&gt;**](#api-schema-viewview-name)
-3. [**/_api/schema/collection/&lt;collection-name&gt;**](#api-schema-collectioncollection-name)
+---
+
+## Paths the interface supports
+1. [**GET /_api/schema**](#api-schema-graphgraph-name) - Gives you all the information above on the database.
+1. [**GET /_api/schema/graph/&lt;graph-name&gt;**](#api-schema-graphgraph-name) - Provides the specified graph and the connected collections. 
+2. [**GET /_api/schema/view/&lt;view-name&gt;**](#api-schema-viewview-name) - Shows the specified view and the linked collections.
+3. [**GET /_api/schema/collection/&lt;collection-name&gt;**](#api-schema-collectioncollection-name) - Displays the specified collection.
 
 ---
 
-### Parameters
+## GET /_api/schema
 
-The endpoint supports two optional query parameters:
-
-#### `sampleNum` (default value: 100)
-
-- This tells the endpoint how many documents/edges to look at when examining the schema of each collection.
-- For example, if `sampleNum` is 100, it will examine up to 100 documents/edges from each collection.
-- That is, the more samples you use, the more accurate the schema result becomes.
-- If a collection has fewer documents/edges than the number you pass, it will just use all of them.
-- This must be a **natural number**.
-- If you pass `0`, a negative number, a decimal, or a non-number, it will result in an error.
-
-#### `exampleNum` (default value: 1)
-
-- This controls how many example documents/edges will be shown for each collection.
-- If you set it to `0`, no examples will be shown.
-- If the number is larger than the actual number of documents/edges, it will just show all of them.
-- Like `sampleNum`, this must be a non-negative whole number. Invalid input will cause an error.
-
----
-
-### Example Request and Response
-#### HTTP Request
-```http request
-GET /_db/<database-name>/_api/schema?sampleNum=100&exampleNum=1
+```openapi
+paths:
+   /_db/{database-name}/_api/schema:
+      get:
+         operationId: getAllSchemas
+         description: |
+            Show all the information on the database including graphs, views and collections.
+         parameters:
+            - name: database-name
+              in: path
+              required: true
+              example: _system
+              description: |
+                The name of a database that you want to examine its structures and schemas.
+              schema:
+                type: string
+                
+            - name: sampleNum
+              in: query
+              required: false
+              description: |
+                The number of documents/edges to examine per collection when determining
+                attribute types and whether an attribute is optional.
+                Must be a positive integer. Defaults to `100`.
+                If larger than the number of documents, it will only use the available ones.
+              schema:
+                type: integer
+                minimum: 1
+                default: 100
+            
+            - name: exampleNum
+              in: query
+              required: false
+              description: |
+                The number of example documents/edges to return per collection.
+                Must be a non-negative integer and not be larger than `sampleNum`.
+                If `0`, no examples will be returned. Defaults to `1`.
+              schema:
+                type: integer
+                minimum: 0
+                default: 1
+         
+         responses:
+            '200 OK':
+               description: |
+                  The schema overview was successfully returned.
+            '400 Bad Request':
+               description: |
+                  Invalid query parameters (e.g., negative or non-numeric values).
+            '404 Not Found':
+               description: |
+                  Collection, view or graph not found on the database.
+            '405 Method Not Allowed':
+               description: |
+                  When request method is not GET. This endpoint only supports GET.
+            '500 Internal Server Error':
+               description: |
+                  Internal server error.
+         tags:
+            - Schema
 ```
-#### HTTP Response (JSON format)
-```http response
+
+**Examples**
+<summary>HTTP Request</summary>
+
+```http request
+GET /_db/_system/_api/schema?sampleNum=100&exampleNum=1
+```
+<details>
+<summary>HTTP Response (click to show)</summary>
+
+```json
 {
   "graphs": [
     {
@@ -396,17 +454,92 @@ GET /_db/<database-name>/_api/schema?sampleNum=100&exampleNum=1
   ]
 }
 ```
+</details>
 
-### /_api/schema/graph/<graph-name>
+---
 
-This endpoint returns the structure of a specific graph, including its edge definitions and the `_from` and `_to` collections.
+## GET /_api/schema/graph/{graph-name}
 
-#### Example Request
-```http request
-GET /_db/<database-name>/_api/schema/graph/purchaseHistory?sampleNum=100&exampleNum=1
+```openapi
+paths:
+   /_db/{database-name}/_api/schema/graph/{graph-name}:
+      get:
+         operationId: getGraph
+         description: |
+            Show the specified graph information and its connected colletions.
+         parameters:
+            - name: database-name
+              in: path
+              required: true
+              example: _system
+              description: |
+                The name of a database that you want to examine its structures and schemas.
+              schema:
+                type: string
+            
+            - name: graph-name
+              in: path
+              required: true
+              description: |
+                The name of a graph that you want to examine its structures and schemas.
+              schema:
+                type: string
+                
+            - name: sampleNum
+              in: query
+              required: false
+              description: |
+                The number of documents/edges to examine per collection
+                when determining attribute types and whether an attribute is optional.
+                Must be a positive integer. Defaults to `100`.
+                If larger than the number of documents, it will only use the available ones.
+              schema:
+                type: integer
+                minimum: 1
+                default: 100
+            
+            - name: exampleNum
+              in: query
+              required: false
+              description: |
+                The number of example documents/edges to return per collection.
+                Must be a non-negative integer and not be larger than `sampleNum`.
+                If `0`, no examples will be returned. Defaults to `1`.
+              schema:
+                type: integer
+                minimum: 0
+                default: 1
+         
+         responses:
+            '200 OK':
+               description: |
+                  The schema overview was successfully returned.
+            '400 Bad Request':
+               description: |
+                  Invalid query parameters (e.g., negative or non-numeric values).
+            '404 Not Found':
+               description: |
+                  Unknown path suffix (e.g., /schema/foo/bar). Collection or graph not found on the database.
+            '405 Method Not Allowed':
+               description: |
+                  When request method is not GET. This endpoint only supports GET.
+            '500 Internal Server Error':
+               description: |
+                  Internal server error.
+         tags:
+            - Schema
 ```
-#### Example Response (JSON format)
-```http response
+
+**Examples**
+<summary>HTTP Request</summary>
+
+```http request
+GET /_db/_system/_api/schema/graph/purchaseHistory?sampleNum=100&exampleNum=1
+```
+<details>
+<summary>HTTP Response (click to show)</summary>
+
+```json
 {
   "graphs": [
     {
@@ -596,17 +729,92 @@ GET /_db/<database-name>/_api/schema/graph/purchaseHistory?sampleNum=100&example
   ]
 }
 ```
+</details>
 
-### /_api/schema/view/<view-name>
+---
 
-This endpoint shows the configuration of an specified ArangoSearch view, including its linked collections and fields.
+## GET /_api/schema/view/{view-name}
 
-#### Example Request
-```http request
-GET /_db/<database-name>/_api/schema/view/descView?sampleNum=100&exampleNum=1
+```openapi
+paths:
+   /_db/{database-name}/_api/schema/view/{view-name}:
+      get:
+         operationId: getView
+         description: |
+            Show the specified view information and its linked colletions.
+         parameters:
+            - name: database-name
+              in: path
+              required: true
+              example: _system
+              description: |
+                The name of a database that you want to examine its structures and schemas.
+              schema:
+                type: string
+            
+            - name: view-name
+              in: path
+              required: true
+              description: |
+                The name of a view that you want to examine its structures and schemas.
+              schema:
+                type: string
+                
+            - name: sampleNum
+              in: query
+              required: false
+              description: |
+                The number of documents/edges to examine per collection
+                when determining attribute types and whether an attribute is optional.
+                Must be a positive integer. Defaults to `100`.
+                If larger than the number of documents, it will only use the available ones.
+              schema:
+                type: integer
+                minimum: 1
+                default: 100
+            
+            - name: exampleNum
+              in: query
+              required: false
+              description: |
+                The number of example documents/edges to return per collection.
+                Must be a non-negative integer and not be larger than `sampleNum`.
+                If `0`, no examples will be returned. Defaults to `1`.
+              schema:
+                type: integer
+                minimum: 0
+                default: 1
+         
+         responses:
+            '200 OK':
+               description: |
+                  The schema overview was successfully returned.
+            '400 Bad Request':
+               description: |
+                  Invalid query parameters (e.g., negative or non-numeric values).
+            '404 Not Found':
+               description: |
+                  Unknown path suffix (e.g., /schema/foo/bar). Collection or view not found on the database.
+            '405 Method Not Allowed':
+               description: |
+                  When request method is not GET. This endpoint only supports GET.
+            '500 Internal Server Error':
+               description: |
+                  Internal server error.
+         tags:
+            - Schema
 ```
-#### Example Response (JSON format)
-```http response
+
+**Examples**
+<summary>HTTP Request</summary>
+
+```http request
+GET /_db/_system/_api/schema/view/descViewy?sampleNum=100&exampleNum=1
+```
+<details>
+<summary>HTTP Response (click to show)</summary>
+
+```json
 {
   "views": [
     {
@@ -758,16 +966,92 @@ GET /_db/<database-name>/_api/schema/view/descView?sampleNum=100&exampleNum=1
   ]
 }
 ```
-### /_api/schema/collection/<collection-name>
+</details>
 
-This endpoint returns schema information for a specific collection, such as attribute names, types, and example documents.
+---
 
-#### Example Request
-```http request
-GET /_db/<database-name>/_api/schema/collection/products?sampleNum=100&exampleNum=1
+## GET /_api/schema/collection/{collection-name}
+
+```openapi
+paths:
+   /_db/{database-name}/_api/schema/collection/{collection-name}:
+      get:
+         operationId: getCollection
+         description: |
+            Show the specified collection information and its schemas.
+         parameters:
+            - name: database-name
+              in: path
+              required: true
+              example: _system
+              description: |
+                The name of a database that you want to examine its structures and schemas.
+              schema:
+                type: string
+            
+            - name: collection-name
+              in: path
+              required: true
+              description: |
+                The name of a collection that you want to examine its schemas.
+              schema:
+                type: string
+                
+            - name: sampleNum
+              in: query
+              required: false
+              description: |
+                The number of documents/edges to examine per collection
+                when determining attribute types and whether an attribute is optional.
+                Must be a positive integer. Defaults to `100`.
+                If larger than the number of documents, it will only use the available ones.
+              schema:
+                type: integer
+                minimum: 1
+                default: 100
+            
+            - name: exampleNum
+              in: query
+              required: false
+              description: |
+                The number of example documents/edges to return per collection.
+                Must be a non-negative integer and not be larger than `sampleNum`.
+                If `0`, no examples will be returned. Defaults to `1`.
+              schema:
+                type: integer
+                minimum: 0
+                default: 1
+         
+         responses:
+            '200 OK':
+               description: |
+                  The schema overview was successfully returned.
+            '400 Bad Request':
+               description: |
+                  Invalid query parameters (e.g., negative or non-numeric values).
+            '404 Not Found':
+               description: |
+                  Unknown path suffix (e.g., /schema/foo/bar). Collection not found on the database.
+            '405 Method Not Allowed':
+               description: |
+                  When request method is not GET. This endpoint only supports GET.
+            '500 Internal Server Error':
+               description: |
+                  Internal server error.
+         tags:
+            - Schema
 ```
-#### Example Response (JSON format)
-```http response
+
+**Examples**
+<summary>HTTP Request</summary>
+
+```http request
+GET /_db/_system/_api/schema/view/descViewy?sampleNum=100&exampleNum=1
+```
+<details>
+<summary>HTTP Response (click to show)</summary>
+
+```json
 {
       "collectionName": "products",
       "collectionType": "document",
@@ -827,3 +1111,4 @@ GET /_db/<database-name>/_api/schema/collection/products?sampleNum=100&exampleNu
       ]
     }
 ```
+</details>
