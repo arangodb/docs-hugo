@@ -19,10 +19,10 @@ the overall shape and structure of the database.
 
 ---
 
-## Information the interface gives you
+## What This Interface Returns
 1. **graphs** – each graph shows its name and how it connects collections using edges (`_from` and `_to`).
 2. **views** – each view shows its name and which collections and fields it links to.
-3. **collections** – each collection shows:
+3. **collections** – only connected or linked collections are shown. Each collection shows:
     - a list of attributes (fields)
     - the data types of each attribute (`string`, `number`, `bool`, or `object`)
     - whether the attribute is optional (meaning some documents/edges may not have it)
@@ -30,15 +30,15 @@ the overall shape and structure of the database.
 
 ---
 
-## Paths the interface supports
-1. [**GET /_api/schema**](#api-schema-graphgraph-name) - Gives you all the information above on the database.
-1. [**GET /_api/schema/graph/&lt;graph-name&gt;**](#api-schema-graphgraph-name) - Provides the specified graph and the connected collections. 
-2. [**GET /_api/schema/view/&lt;view-name&gt;**](#api-schema-viewview-name) - Shows the specified view and the linked collections.
-3. [**GET /_api/schema/collection/&lt;collection-name&gt;**](#api-schema-collectioncollection-name) - Displays the specified collection.
+## Supported API Paths
+1. [**GET /_api/schema**](#get-apischema) – Returns all graphs, views, and collections in the database.
+2. [**GET /_api/schema/graph/&lt;graph-name&gt;**](#get-apischemagraphgraph-name) – Returns the specified graph and its connected collections.
+3. [**GET /_api/schema/view/&lt;view-name&gt;**](#get-apischemaviewview-name) – Returns the specified view and its linked collections.
+4. [**GET /_api/schema/collection/&lt;collection-name&gt;**](#get-apischemacollectioncollection-name) – Returns the specified collection and its schema.
 
 ---
 
-## GET /_api/schema
+<h2 id="get-apischema">GET /_api/schema</h2>
 
 ```openapi
 paths:
@@ -458,7 +458,8 @@ GET /_db/_system/_api/schema?sampleNum=100&exampleNum=1
 
 ---
 
-## GET /_api/schema/graph/{graph-name}
+
+<h2 id="get-apischemagraphgraph-name">GET /_api/schema/graph/&lt;graph-name&gt;</h2>
 
 ```openapi
 paths:
@@ -733,7 +734,8 @@ GET /_db/_system/_api/schema/graph/purchaseHistory?sampleNum=100&exampleNum=1
 
 ---
 
-## GET /_api/schema/view/{view-name}
+
+<h2 id="get-apischemaviewview-name">GET /_api/schema/view/&lt;view-name&gt;</h2>
 
 ```openapi
 paths:
@@ -809,7 +811,7 @@ paths:
 <summary>HTTP Request</summary>
 
 ```http request
-GET /_db/_system/_api/schema/view/descViewy?sampleNum=100&exampleNum=1
+GET /_db/_system/_api/schema/view/descView?sampleNum=100&exampleNum=1
 ```
 <details>
 <summary>HTTP Response (click to show)</summary>
@@ -970,7 +972,7 @@ GET /_db/_system/_api/schema/view/descViewy?sampleNum=100&exampleNum=1
 
 ---
 
-## GET /_api/schema/collection/{collection-name}
+<h2 id="get-apischemacollectioncollection-name">GET /_api/schema/collection/&lt;collection-name&gt;</h2>
 
 ```openapi
 paths:
@@ -1046,7 +1048,7 @@ paths:
 <summary>HTTP Request</summary>
 
 ```http request
-GET /_db/_system/_api/schema/view/descViewy?sampleNum=100&exampleNum=1
+GET /_db/_system/_api/schema/collection/products?sampleNum=100&exampleNum=1
 ```
 <details>
 <summary>HTTP Response (click to show)</summary>
