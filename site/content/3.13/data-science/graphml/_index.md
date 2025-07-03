@@ -1,7 +1,7 @@
 ---
 title: ArangoDB GraphML
 menuTitle: GraphML
-weight: 125
+weight: 15
 description: >-
   Boost your machine learning models with graph data using ArangoDB's advanced GraphML capabilities
 aliases:
