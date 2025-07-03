@@ -18,7 +18,7 @@ and experimenting with graph-powered data, GenAI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebooks offer a
 pre-configured environment where everything, including all the necessary services
 and configurations, comes preloaded. You don't need to set up or configure the
-infrastructure, and can immediately start using the data science and GenAI
+infrastructure, and can immediately start using the GraphML and GenAI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
@@ -27,13 +27,23 @@ The notebooks are primarily focused on the following solutions:
   natural language interface.
 - **GraphML**: Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
-- **Adapters** : Use ArangoDB together with cuGraph, NetworkX, and other tools. 
+- **Integrations** : Use ArangoDB together with cuGraph, NetworkX, and other data science tools. 
 
 <!-- TODO: Add links to corressponding pages -->
 
 ## Quickstart
 
-<!-- TODO: Describe how to create and manage Notebooks in the ArangoDB Platform UI -->
+1. In the ArangoDB Platform web interface, select a database.
+2. Under **GenAI Tools**, click **Notebook servers**.
+3. The **Notebook servers** page displays an overview of the notebook services. Click
+  **New notebook server** to create a new one.
+4. After your notebook service is launched, you can start interacting with the
+  Jupyter interface.
+
+{{< tip >}}
+To get a better understanding of how to interact with ArangoDB, use
+the `GettingStarted.ipynb` template from the file browser.
+{{< /tip >}}       
 
 <!-- TODO: Describe underlying services? -->
 
