@@ -29,7 +29,7 @@ for details.
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/edges/{collection-id}:
+  /_db/{database-name}/_api/edges/{collection}:
     get:
       operationId: getVertexEdges
       description: |
@@ -44,11 +44,11 @@ paths:
             The name of the database.
           schema:
             type: string
-        - name: collection-id
+        - name: collection
           in: path
           required: true
           description: |
-            The id of the collection.
+            The name of the edge collection you want to retrieve edges from.
           schema:
             type: string
         - name: vertex
@@ -62,10 +62,13 @@ paths:
           in: query
           required: false
           description: |
-            Selects `in` or `out` direction for edges. If not set, any edges are
-            returned.
+            - `"in"`: Return edges that reference the `vertex` in the `_to` attribute.
+            - `"out"`: Return edges that reference the `vertex` in the `_from` attribute.
+            - `"any"`: Return edges that reference the `vertex` in the `_from` or `_to` attribute.
           schema:
             type: string
+            enum: [any, in, out]
+            default: any
         - name: x-arango-allow-dirty-read
           in: header
           required: false
