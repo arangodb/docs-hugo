@@ -1,67 +1,22 @@
 ---
-title: ArangoGraphML # Rename as well?
+title: ArangoDB GraphML
 menuTitle: GraphML
-weight: 20
+weight: 125
 description: >-
-  Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
+  Boost your machine learning models with graph data using ArangoDB's advanced GraphML capabilities
 aliases:
   - arangographml
 ---
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with
-specialized teams of data scientists. ArangoGraphML simplifies the utilization of GraphML,
+specialized teams of data scientists. ArangoDB simplifies the utilization of Graph Machine Learning,
 enabling a broader range of personas to extract profound insights from their data.
 
-## Use cases
-
-GraphML capabilities of using more data outperform conventional deep learning
-methods and **solve high-computational complexity graph problems**, such as: 
-- Drug discovery, repurposing, and predicting adverse effects.
-- Personalized product/service recommendation.
-- Supply chain and logistics.
-
-With GraphML, you can also **predict relationships and structures**, such as:
-- Predict molecules for treating diseases (precision medicine).
-- Predict fraudulent behavior, credit risk, purchase of product or services.
-- Predict relationships among customers, accounts.
-
-ArangoDB uses well-known GraphML frameworks like
-[Deep Graph Library](https://www.dgl.ai)
-and [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/en/latest/) 
-and connects to these external machine learning libraries. When coupled to
-ArangoDB, you are essentially integrating them with your graph dataset.
-
-#### Example: ArangoFlix
-
-ArangoFlix is a complete movie recommendation application that predicts missing
-links between a user and the movies they have not watched yet.
-
-This [interactive tutorial](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/Integrate_ArangoDB_with_PyG.ipynb) 
-demonstrates how to integrate ArangoDB with PyTorch Geometric to
-build recommendation systems using Graph Neural Networks (GNNs).
-
-The full ArangoFlix demo website is accessible from the ArangoGraph Insights Platform,
-the managed cloud for ArangoDB. You can open the demo website that connects to
-your running database from the **Examples** tab of your deployment.
-
-{{< tip >}}
-You can try out the ArangoGraph Insights Platform free of charge for 14 days.
-Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-{{< /tip >}}
-
-The ArangoFlix demo uses five different recommendation methods:
-- Content-Based using AQL
-- Collaborative Filtering using AQL
-- Content-Based using ML
-- Matrix Factorization
-- Graph Neural Networks 
-
-![ArangoFlix demo](../../../images/data-science-arangoflix.png)
-
-The ArangoFlix website not only offers an example of how the user recommendations might
-look like in real life, but it also provides information on a recommendation method,
-an AQL query, a custom graph visualization for each movie, and more.
+With ArangoDB, you can solve high-computational graph problems using Graph Machine
+Learning. Apply it on a selected graph to predict connections, get better product
+recommendations, classify nodes, and perform node embeddings. You can configure and run
+the whole machine learning flow entirely through the web interface or programmatically.
 
 ## How GraphML works
 
@@ -71,18 +26,29 @@ traditional ML, which primarily operates on tabular data, GraphML applies
 specialized algorithms like Graph Neural Networks (GNNs), node embeddings, and
 link prediction to uncover complex patterns and insights.
 
+The underlying framework for ArangoDB's GraphML is **[GraphSAGE](https://snap.stanford.edu/graphsage/)**.
+GraphSAGE (Graph Sample and AggreGatE) is a powerful Graph Neural Network (GNN)
+**framework** designed for inductive representation learning on large graphs.
+It is used to generate low-dimensional vector representations for nodes and is
+especially useful for graphs that have rich node attribute information.
+The overall process involves the following steps:
+
 1. **Graph Construction**:
-   Raw data is transformed into a graph structure, defining nodes and edges based
+   - Raw data is transformed into a graph structure, defining nodes and edges based
    on real-world relationships.
-2. **Featurization**:
-   Nodes and edges are enriched with features that help in training predictive models.
-3. **Model Training**:
-  Machine learning techniques are applied on GNNs to identify patterns and make predictions.
+2. **Featurization**: Your raw graph data is transformed into numerical representations that the model can understand.
+   - The system iterates over your selected vertices and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
+    - All of these numerical features are then combined (concatenated).
+    - Finally, **Incremental PCA** (Incremental Principal Component Analysis a dimensionality reduction technique) is used to reduce the size of the combined features, which helps remove noise and keep only the most important information.
+3. **Training**: The model learns from the graph's structure by sampling and aggregating information from each node's local neighborhood.
+    - For each node, GraphSAGE looks at connections up to **2 hops away**.
+    - Specifically, it uniformly samples up to **25 direct neighbors** (depth 1) and for each of those, it samples up to **10 of their neighbors** (depth 2).
+    - By aggregating feature information from this sampled neighborhood, the model creates a rich "embedding" for each node that captures both its own features and its role in the graph.
 4. **Inference & Insights**:
-   The trained model is used to classify nodes, detect anomalies, recommend items,
+   - The trained model is used to classify nodes, detect anomalies, recommend items,
    or predict future connections.
 
-ArangoGraphML streamlines these steps, providing an intuitive and scalable
+ArangoDB streamlines these steps, providing an intuitive and scalable
 framework to integrate GraphML into various applications, from fraud detection
 to recommendation systems.
 
@@ -90,16 +56,18 @@ to recommendation systems.
 
 ![GraphML Workflow](../../../images/GraphML-How-it-works.webp)
 
-It is no longer necessary to understand the complexities involved with graph
-machine learning, thanks to the accessibility of the ArangoML package.
-Solutions with ArangoGraphML only require input from a user about
-their data, and the ArangoGraphML managed service handles the rest.
+You no longer need to understand the complexities of graph machine learning to
+benefit from it. Solutions with ArangoDB's GraphML only require input from a user about
+their data, and the GraphML managed service handles the rest.
 
 The platform comes preloaded with all the tools needed to prepare your graph
 for machine learning, high-accuracy training, and persisting predictions back
 to the database for application use.
 
-## Supported Tasks
+## What you can do with GraphML
+
+GraphML directly supports two primary machine learning tasks:
+**Node Classification** and **Node Embeddings**.
 
 ### Node Classification
 
@@ -108,7 +76,7 @@ predict the label of a node based on both its own features and its relationships
 within the graph. It requires a set of labeled nodes to train a model, which then
 classifies unlabeled nodes based on learned patterns.
 
-**How it works in ArangoGraphML**
+**How it works in ArangoDB**
 
 - A portion of the nodes in a graph is labeled for training.
 - The model learns patterns from both **node features** and
@@ -147,7 +115,7 @@ into numerical vector representations, preserving their **structural relationshi
 within the graph. Unlike simple feature aggregation, node embeddings
 **capture the influence of neighboring nodes and graph topology**, making
 them powerful for downstream tasks like clustering, anomaly detection,
-and link prediction. These combinations can provide valuable insights.
+and link prediction. This combination provides valuable insights.
 Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 capabilities to find similar nodes based on their embeddings.
 
@@ -166,7 +134,7 @@ Essentially, they aggregate both the node's attributes and the connectivity patt
 within the graph. This fusion helps capture not only the individual properties of
 a node but also its position and role within the network.
 
-**How it works in ArangoGraphML**
+**How it works in ArangoDB**
 
 - The model learns an embedding (a vector representation) for each node based on its
   **position within the graph and its connections**.
@@ -211,21 +179,21 @@ a node but also its position and role within the network.
 | **Key Advantage**     | Learns labels based on node connections and attributes | Learns structural patterns and node relationships |
 | **Use Cases**         | Fraud detection, customer segmentation, disease classification | Recommendations, anomaly detection, link prediction |
 
-ArangoGraphML provides the infrastructure to efficiently train and apply these
+GraphML provides the infrastructure to efficiently train and apply these
 models, helping users extract meaningful insights from complex graph data.
 
 ## Metrics and Compliance
 
-ArangoGraphML supports tracking your ML pipeline by storing all relevant metadata
+GraphML supports tracking your ML pipeline by storing all relevant metadata
 and metrics in a Graph called ArangoPipe. This is only available to you and is never
 viewable by ArangoDB. This metadata graph links all experiments
 to the source data, feature generation activities, training runs, and prediction
 jobs, allowing you to track the entire ML pipeline without having to leave ArangoDB.
 
-### Security
+## Security
 
-Each deployment that uses ArangoGraphML has an `arangopipe` database created,
+Each deployment that uses GraphML has an `arangopipe` database created,
 which houses all ML Metadata information. Since this data lives within the deployment,
 it benefits from the ArangoGraph security features and SOC 2 compliance.
-All ArangoGraphML services live alongside the ArangoGraph deployment and are only
+All GraphML services live alongside the ArangoGraph deployment and are only
 accessible within that organization.
