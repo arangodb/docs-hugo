@@ -130,7 +130,7 @@ You can save queries for future use:
 ### Add nodes and edges using a query based on a selection
 
 You can select nodes and edges on the canvas and then use a **Canvas Action**.
-This runs an AQL query to add a nodes, edges, or paths of the graph to the canvas.
+This runs an AQL query to add nodes, edges, or paths of the graph to the canvas.
 The query has access to the current selection via special bind variables.
 
 1. Create a selection. You have different options:
