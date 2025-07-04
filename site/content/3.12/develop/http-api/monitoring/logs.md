@@ -918,7 +918,7 @@ paths:
                               description: |
                                 The HTTP request method.
                               type: string
-                              enum: [get, patch, put, delete, head]
+                              enum: [GET, PATCH, PUT, DELETE, HEAD]
                             path:
                               description: |
                                 The HTTP request path excluding the database prefix (`/_db/<database-name>`).
