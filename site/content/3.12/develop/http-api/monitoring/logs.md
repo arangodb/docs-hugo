@@ -858,7 +858,7 @@ paths:
 
         Whether API calls are recorded is independently controlled by the
         `--server.api-call-recording` startup option.
-        The endpoint returns an empty list of queries if turned off.
+        The endpoint returns an empty list of calls if turned off.
       parameters:
         - name: database-name
           in: path
