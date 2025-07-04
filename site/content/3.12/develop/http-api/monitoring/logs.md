@@ -560,7 +560,7 @@ paths:
                     Logs various information related to ArangoDB's use of the
                     RocksDB storage engine, like the initialization and
                     file operations.
-                    
+
                     RocksDB's internal log messages are passed through using the
                     `rocksdb` log topic.
                   type: string
@@ -848,14 +848,17 @@ paths:
       operationId: getRecentApiCalls
       description: |
         Get a list of the most recent requests with a timestamp and the endpoint.
-         This feature is for debugging purposes.
+        This feature is for debugging purposes.
 
         You can control how much memory is used to record API calls with the
-        `--server.memory-per-api-call-list` and `--server.number-of-api-call-lists`
-        startup options.
+        `--server.api-recording-memory-limit` startup option.
 
-        You can disable API call recording via the `--server.api-call-recording`
-        startup option. The endpoint returns an empty list of calls in this case.
+        You can disable this and the `/_admin/server/aql-queries` endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether API calls are recorded is independently controlled by the
+        `--server.api-call-recording` startup option.
+        The endpoint returns an empty list of queries if turned off.
       parameters:
         - name: database-name
           in: path
@@ -872,7 +875,7 @@ paths:
       responses:
         '200':
           description: |
-            The 
+            Returns the recorded API calls.
           content:
             application/json:
               schema:
@@ -955,6 +958,68 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Monitoring
 ```
@@ -1020,9 +1085,12 @@ paths:
         You can control how much memory is used to record AQL queries with the
         `--server.aql-recording-memory-limit` startup option.
 
-        You can disable AQL query and API call recording via the
-        `--log.recording-api-enabled` startup option.
-        The endpoint returns an empty list of queries in this case.
+        You can disable this and the `/_admin/server/api-calls` endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether AQL queries are recorded is independently controlled by the
+        `--server.aql-query-recording` startup option.
+        The endpoint returns an empty list of queries if turned off.
       parameters:
         - name: database-name
           in: path
@@ -1039,7 +1107,7 @@ paths:
       responses:
         '200':
           description: |
-            The 
+            Returns the recorded AQL queries.
           content:
             application/json:
               schema:
@@ -1069,7 +1137,7 @@ paths:
                       queries:
                         description: |
                           A list of the recent AQL queries.
-                          Empty if AQL query and API call recording is disabled.
+                          Empty if AQL query recording is disabled.
                         type: array
                         items:
                           type: object
@@ -1114,6 +1182,68 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
