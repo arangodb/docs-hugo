@@ -1147,11 +1147,11 @@ paths:
                                 The date and time of the request in ISO 8601 format.
                               type: string
                               format: date-time
-                            queryString:
+                            query:
                               description: |
                                 The AQL query.
                               type: string
-                            bindParameters:
+                            bindVars:
                               description: |
                                 Key/value pairs representing the bind variables.
                               type: object
@@ -1277,7 +1277,7 @@ X-Content-Type-Options: nosniff
 Server: ArangoDB
 Connection: Keep-Alive
 Content-Type: application/json; charset=utf-8
-Content-Length: 377
+Content-Length: 353
 
 {
   "error": false,
@@ -1286,18 +1286,18 @@ Content-Length: 377
     "queries": [
       {
         "timeStamp": "2025-07-02T16:33:32Z",
-        "queryString": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
+        "query": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
         "database": "_system",
-        "bindParameters": {
+        "bindVars": {
           "@collection": "_statistics",
           "start": 1751470412.3836362
         }
       },
       {
         "timeStamp": "2025-07-02T16:26:01Z",
-        "queryString": "FOR doc IN coll RETURN doc",
+        "query": "FOR doc IN coll RETURN doc",
         "database": "_system",
-        "bindParameters": {}
+        "bindVars": {}
       }
     ]
   }

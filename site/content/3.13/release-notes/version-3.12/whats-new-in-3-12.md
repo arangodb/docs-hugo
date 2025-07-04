@@ -2167,18 +2167,19 @@ A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
 list of the most recent requests with a timestamp and the endpoint. This feature
 is for debugging purposes.
 
-You can configure the memory limit for this feature with the following startup options:
+You can configure the memory limit for this feature with the following startup option:
 
-- `--server.number-of-api-call-lists`:
-  The size of the ring buffer for API call record lists (default: `256`).
-- `--server.memory-per-api-call-list`: 
-  The amount of memory used for a single API call record list (default: `100000` bytes)
+- `--server.api-recording-memory-limit`:
+  Size limit for the list of API call records (default: `26214400`).
 
-This means that approximately 25 MB of memory are reserved by default.
-
+This means that 25 MiB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
+
+The `/_admin/server/api-calls` endpoint exposes the recorded API calls.
+It is enabled by default. You can disable it altogether by setting the new
+`--log.recording-api-enabled` startup option to `false`.
 
 A metric has been added for the time spent on API call recording to track the
 impact of this feature:
@@ -2188,6 +2189,41 @@ impact of this feature:
 | `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
 
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+
+### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted query. This feature is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.aql-recording-memory-limit`:
+  Size limit for the list of AQL query records (default: `26214400` bytes)
+
+This means that 25 MiB of memory is reserved by default.
+
+AQL query recording is enabled by default but you can disable it via the new
+`--server.aql-query-recording` startup option.
+
+This and the `/_admin/server/api-calls` endpoint are referred to as the
+recording API, which exposes the recorded API calls and AQL queries. It is
+enabled by default. Users with administrative access to the `_system` database
+can call the endpoints. You can further restrict the access to only the
+superuser by setting `--log.recording-api-enabled` to `jwt`, or disable the
+endpoints altogether by setting the option to `false`.
+
+A metric has been added for the time spent on AQL query recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_recording_call_time` | Execution time histogram for AQL recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
 ## Client tools
