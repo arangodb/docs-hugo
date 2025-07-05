@@ -848,6 +848,8 @@ paths:
       operationId: getRecentApiCalls
       description: |
         Get a list of the most recent requests with a timestamp and the endpoint.
+        In cluster deployments, the list contains only those requests that were
+        submitted to the Coordinator you call this endpoint on.
         This feature is for debugging purposes.
 
         You can control how much memory is used to record API calls with the
@@ -1079,8 +1081,9 @@ paths:
       operationId: getRecentAqlQueries
       description: |
         Get a list of the most recent AQL queries with a timestamp and
-        information about the submitted query.
-        This feature is for debugging purposes.
+        information about the submitted query. In cluster deployments, the list
+        contains only those queries that were submitted to the Coordinator you
+        call this endpoint on. This feature is for debugging purposes.
 
         You can control how much memory is used to record AQL queries with the
         `--server.aql-recording-memory-limit` startup option.
