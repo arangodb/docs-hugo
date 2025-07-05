@@ -1,52 +1,31 @@
 ---
-
-title: HTTP interface for database structures (schema, graph, view)
+title: HTTP interface for sampled schemas of collection in graph and view.
 menuTitle: Schemas
+weight: 15
 description: >-
-   HTTP interface for database structures gives you information about 
-   graphs, views, collections and schemas in the database.
-# GET /_api/schema
-# GET /_api/schema/graph/{graph-name}
-# GET /_api/schema/view/{view-name}
-# GET /_api/schema/collection/{collection-name}
-
+   This HTTP interface gives you sampled document and edge structures
+   for collections connected by graphs or linked by views. The interface
+   also supports API paths to inspect individual graphs, views and collections.
+---
+This interface gives you a unified overview of the structure of graphs and views,
+along with sampled schemas for the involved collections.  
+The interface also supports API paths to inspect a specific graph, view, or collection individually.
 ---
 
-The interface provides the means to collect information on database 
-structures including graphs, views, collections and their schemas 
-at one stop. This information is helpful if you want to understand 
-the overall shape and structure of the database.
-
----
-
-## What This Interface Returns
-1. **graphs** – each graph shows its name and how it connects collections using edges (`_from` and `_to`).
-2. **views** – each view shows its name and which collections and fields it links to.
-3. **collections** – only connected or linked collections are shown. Each collection shows:
-    - a list of attributes (fields)
-    - the data types of each attribute (`string`, `number`, `bool`, or `object`)
-    - whether the attribute is optional (meaning some documents/edges may not have it)
-    - and example documents or edges for reference
-
----
-
-## Supported API Paths
-1. [**GET /_api/schema**](#get-apischema) – Returns all graphs, views, and collections in the database.
-2. [**GET /_api/schema/graph/&lt;graph-name&gt;**](#get-apischemagraphgraph-name) – Returns the specified graph and its connected collections.
-3. [**GET /_api/schema/view/&lt;view-name&gt;**](#get-apischemaviewview-name) – Returns the specified view and its linked collections.
-4. [**GET /_api/schema/collection/&lt;collection-name&gt;**](#get-apischemacollectioncollection-name) – Returns the specified collection and its schema.
-
----
-
-<h2 id="get-apischema">GET /_api/schema</h2>
+### Get all graphs, views, collections and their schemas
 
 ```openapi
 paths:
    /_db/{database-name}/_api/schema:
       get:
-         operationId: getAllSchemas
+         operationId: listSchemas
          description: |
-            Show all the information on the database including graphs, views and collections.
+            Show all graphs, views and collections in the database along with their sampled schemas.
+            - Each graph shows its name and how it connects collections using edges (`_from` and `_to`).
+            - Each view shows its name and which collections and fields it links to.
+            - Each collections shows a list of attribute, the data types of each attribute,
+              whether the attribute is optional (meaning some documents/edges mat not have it),
+              and example documents or edges for reference.
          parameters:
             - name: database-name
               in: path
@@ -76,26 +55,20 @@ paths:
               description: |
                 The number of example documents/edges to return per collection.
                 Must be a non-negative integer and not be larger than `sampleNum`.
-                If `0`, no examples will be returned. Defaults to `1`.
+                If set to `0`, no examples are returned. Defaults to `1`.
               schema:
                 type: integer
                 minimum: 0
                 default: 1
          
          responses:
-            '200 OK':
+            '200':
                description: |
                   The schema overview was successfully returned.
-            '400 Bad Request':
+            '400':
                description: |
                   Invalid query parameters (e.g., negative or non-numeric values).
-            '404 Not Found':
-               description: |
-                  Collection, view or graph not found on the database.
-            '405 Method Not Allowed':
-               description: |
-                  When request method is not GET. This endpoint only supports GET.
-            '500 Internal Server Error':
+            '500':
                description: |
                   Internal server error.
          tags:
@@ -103,371 +76,80 @@ paths:
 ```
 
 **Examples**
-<summary>HTTP Request</summary>
 
-```http request
-GET /_db/_system/_api/schema?sampleNum=100&exampleNum=1
-```
-<details>
-<summary>HTTP Response (click to show)</summary>
+```curl
+---
+description: Create a graph, view and collections, insert sample documents, and fetch their schema
+name: create_graph_view_and_collection_and_get_schema
+---
+var cn1 = "customers";
+var cn2 = "restaurants";
+var cn3 = "reviewed";
+var gn = "reviewGraph";
+var vn = "restaurantView";
 
-```json
-{
-  "graphs": [
-    {
-      "name": "purchaseHistory",
-      "relations": [
-        {
-          "collection": "purchased",
-          "from": [
-            "customers"
-          ],
-          "to": [
-            "products"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "manufacture",
-      "relations": [
-        {
-          "collection": "manufactured",
-          "from": [
-            "company"
-          ],
-          "to": [
-            "products"
-          ]
-        }
-      ]
-    }
-  ],
-  "views": [
-    {
-      "viewName": "descView",
-      "links": [
-        {
-          "collectionName": "customers",
-          "fields": [
-            {
-              "attribute": "comment",
-              "analyzers": [
-                "text_en"
-              ]
-            }
-          ]
-        },
-        {
-          "collectionName": "products",
-          "fields": [
-            {
-              "attribute": "description",
-              "analyzers": [
-                "text_en"
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "collections": [
-    {
-      "collectionName": "company",
-      "collectionType": "document",
-      "numOfDocuments": 3,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "address",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "established",
-          "types": [
-            "number",
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "public",
-          "types": [
-            "bool"
-          ],
-          "optional": true
-        }
-      ],
-      "examples": [
-        {
-          "_id": "company/224680",
-          "_key": "224680",
-          "address": "San Francisco",
-          "established": 1989,
-          "name": "Company A"
-        }
-      ]
-    },
-    {
-      "collectionName": "customers",
-      "collectionType": "document",
-      "numOfDocuments": 10,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "address",
-          "types": [
-            "string",
-            "object"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "age",
-          "types": [
-            "number",
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "comment",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_id": "customers/263",
-          "_key": "263",
-          "age": 35,
-          "name": "Ken"
-        }
-      ]
-    },
-    {
-      "collectionName": "manufactured",
-      "collectionType": "edge",
-      "numOfEdges": 2,
-      "schema": [
-        {
-          "attribute": "_from",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_to",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "amount",
-          "types": [
-            "number"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_from": "company/224680",
-          "_id": "manufactured/224827",
-          "_key": "224827",
-          "_to": "products/32291",
-          "amount": 1200
-        }
-      ]
-    },
-    {
-      "collectionName": "products",
-      "collectionType": "document",
-      "numOfDocuments": 5,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "description",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "price",
-          "types": [
-            "number"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "version",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        }
-      ],
-      "examples": [
-        {
-          "_id": "products/32235",
-          "_key": "32235",
-          "description": "This car was made in Japan, and used",
-          "name": "car",
-          "price": 120.95
-        }
-      ]
-    },
-    {
-      "collectionName": "purchased",
-      "collectionType": "edge",
-      "numOfEdges": 1,
-      "schema": [
-        {
-          "attribute": "_from",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_to",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "date",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_from": "customers/273",
-          "_id": "purchased/100727",
-          "_key": "100727",
-          "_to": "products/32235",
-          "date": "5/25/2026"
-        }
-      ]
-    }
-  ]
-}
+var gm = require("@arangodb/general-graph");
+
+try { db._drop(cn1); } catch (e) {}
+try { db._drop(cn2); } catch (e) {}
+try { db._drop(cn3); } catch (e) {}
+try { gm._drop(gn, true); } catch (e) {}
+try { db._dropView(vn); } catch (e) {}
+
+var coll1 = db._create(cn1, { waitForSync: true });
+coll1.save({_key: "Alice", name: "Alice", age: 20, address: "Cologne"});
+coll1.save({_key: "Bob", name: "Bob", age: 30, address: "San Francisco"});
+coll1.save({_key: "Charlie", name: "Charlie", age: 40, address: "Tokyo"});
+
+var coll2 = db._create(cn2, { waitForSync: true });
+coll2.save({_key: "Italian", name: "Italian Restaurant", address: "Milano", description: "Traditional Italian"});
+coll2.save({_key: "American", name: "American Diner", address: "New York", description: "Typical American"});
+coll2.save({_key: "Sushi", name: "Sushi Bar", address: "Kyoto", description: "Casual Japanese"});
+
+gm._create(gn, [gm._relation(cn3, cn1, cn2)]);
+var graph = gm._graph(gn);
+graph.reviewed.save({_from: "customers/Alice", _to: "restaurants/Italian", rating: 5});
+graph.reviewed.save({_from: "customers/Bob", _to: "restaurants/American", rating: 4});
+graph.reviewed.save({_from: "customers/Charlie", _to: "restaurants/Sushi", rating: 3});
+
+db._createView(vn, "arangosearch", { links: { 
+   restaurants : { 
+      fields: { 
+         description: { 
+            analyzers: ["text_en"] 
+         } 
+      } 
+   } 
+}});
+
+var url = "/_api/schema";
+var response = logCurlRequest('GET', url);
+assert(response.code === 200);
+logJsonResponse(response);
+
+db._drop(cn1);
+db._drop(cn2);
+db._drop(cn3);
+gm._drop(gn, true);
+db._dropView(vn);
 ```
-</details>
 
 ---
 
 
-<h2 id="get-apischemagraphgraph-name">GET /_api/schema/graph/&lt;graph-name&gt;</h2>
+### Get a graph, its connected collections, and their schemas
 
 ```openapi
 paths:
    /_db/{database-name}/_api/schema/graph/{graph-name}:
       get:
-         operationId: getGraph
+         operationId: listGraphsAndSchemas
          description: |
-            Show the specified graph information and its connected colletions.
+            Show the specified graph and its connected colletions along with their sampled schemas.
+            - The graph shows its name and how it connects collections using edges (`_from` and `_to`).
+            - Each collection shows a list of attributes, the data types of each attribute,
+              whether the attribute is optional (meaning some documents/edges may not have it),
+              and example documents or edges for reference.
          parameters:
             - name: database-name
               in: path
@@ -505,26 +187,23 @@ paths:
               description: |
                 The number of example documents/edges to return per collection.
                 Must be a non-negative integer and not be larger than `sampleNum`.
-                If `0`, no examples will be returned. Defaults to `1`.
+                If set to `0`, no examples are returned. Defaults to `1`.
               schema:
                 type: integer
                 minimum: 0
                 default: 1
          
          responses:
-            '200 OK':
+            '200':
                description: |
                   The schema overview was successfully returned.
-            '400 Bad Request':
+            '400':
                description: |
                   Invalid query parameters (e.g., negative or non-numeric values).
-            '404 Not Found':
+            '404':
                description: |
                   Unknown path suffix (e.g., /schema/foo/bar). Collection or graph not found on the database.
-            '405 Method Not Allowed':
-               description: |
-                  When request method is not GET. This endpoint only supports GET.
-            '500 Internal Server Error':
+            '500':
                description: |
                   Internal server error.
          tags:
@@ -532,218 +211,65 @@ paths:
 ```
 
 **Examples**
-<summary>HTTP Request</summary>
 
-```http request
-GET /_db/_system/_api/schema/graph/purchaseHistory?sampleNum=100&exampleNum=1
+```curl
+---
+description: Create a graph and collections, insert sample documents, and fetch their schema
+name: create_graph_and_collection_and_get_schema
+---
+var cn1 = "customers";
+var cn2 = "restaurants";
+var cn3 = "reviewed";
+var gn = "reviewGraph";
+
+var gm = require("@arangodb/general-graph");
+
+try { db._drop(cn1); } catch (e) {}
+try { db._drop(cn2); } catch (e) {}
+try { db._drop(cn3); } catch (e) {}
+try { gm._drop(gn, true); } catch (e) {}
+
+var coll1 = db._create(cn1, { waitForSync: true });
+coll1.save({_key: "Alice", name: "Alice", age: 20, address: "Cologne"});
+coll1.save({_key: "Bob", name: "Bob", age: 30, address: "San Francisco"});
+coll1.save({_key: "Charlie", name: "Charlie", age: 40, address: "Tokyo"});
+
+var coll2 = db._create(cn2, { waitForSync: true });
+coll2.save({_key: "Italian", name: "Italian Restaurant", address: "Milano", description: "Traditional Italian"});
+coll2.save({_key: "American", name: "American Diner", address: "New York", description: "Typical American"});
+coll2.save({_key: "Sushi", name: "Sushi Bar", address: "Kyoto", description: "Casual Japanese"});
+
+gm._create(gn, [gm._relation(cn3, cn1, cn2)]);
+var graph = gm._graph(gn);
+graph.reviewed.save({_from: "customers/Alice", _to: "restaurants/Italian", rating: 5});
+graph.reviewed.save({_from: "customers/Bob", _to: "restaurants/American", rating: 4});
+graph.reviewed.save({_from: "customers/Charlie", _to: "restaurants/Sushi", rating: 3});
+
+var url = "/_api/schema/graph/" + gn;
+var response = logCurlRequest('GET', url);
+assert(response.code === 200);
+logJsonResponse(response);
+
+db._drop(cn1);
+db._drop(cn2);
+db._drop(cn3);
+gm._drop(gn, true);
 ```
-<details>
-<summary>HTTP Response (click to show)</summary>
-
-```json
-{
-  "graphs": [
-    {
-      "name": "purchaseHistory",
-      "relations": [
-        {
-          "collection": "purchased",
-          "from": [
-            "customers"
-          ],
-          "to": [
-            "products"
-          ]
-        }
-      ]
-    }
-  ],
-  "collections": [
-    {
-      "collectionName": "customers",
-      "collectionType": "document",
-      "numOfDocuments": 10,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "address",
-          "types": [
-            "string",
-            "object"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "age",
-          "types": [
-            "number",
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "comment",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_id": "customers/263",
-          "_key": "263",
-          "age": 35,
-          "name": "Ken"
-        }
-      ]
-    },
-    {
-      "collectionName": "products",
-      "collectionType": "document",
-      "numOfDocuments": 5,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "description",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "price",
-          "types": [
-            "number"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "version",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        }
-      ],
-      "examples": [
-        {
-          "_id": "products/32235",
-          "_key": "32235",
-          "description": "This car was made in Japan, and used",
-          "name": "car",
-          "price": 120.95
-        }
-      ]
-    },
-    {
-      "collectionName": "purchased",
-      "collectionType": "edge",
-      "numOfEdges": 1,
-      "schema": [
-        {
-          "attribute": "_from",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_to",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "date",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_from": "customers/273",
-          "_id": "purchased/100727",
-          "_key": "100727",
-          "_to": "products/32235",
-          "date": "5/25/2026"
-        }
-      ]
-    }
-  ]
-}
-```
-</details>
-
 ---
 
-
-<h2 id="get-apischemaviewview-name">GET /_api/schema/view/&lt;view-name&gt;</h2>
+### Get a view, its linked collections, and their schemas
 
 ```openapi
 paths:
    /_db/{database-name}/_api/schema/view/{view-name}:
       get:
-         operationId: getView
+         operationId: listViewsAndSchemas
          description: |
-            Show the specified view information and its linked colletions.
+            Show the specified view and its linked collections along with their sample schemas
+            - The view shows its name and which collections and fields it links to.
+            - Each collection shows a list of attributes, the data types of each attribute
+              whether the attribute is optional (meaning some documents/edges may not have it),
+              and example documents or edges for reference
          parameters:
             - name: database-name
               in: path
@@ -781,26 +307,23 @@ paths:
               description: |
                 The number of example documents/edges to return per collection.
                 Must be a non-negative integer and not be larger than `sampleNum`.
-                If `0`, no examples will be returned. Defaults to `1`.
+                If set to `0`, no examples are returned. Defaults to `1`.
               schema:
                 type: integer
                 minimum: 0
                 default: 1
          
          responses:
-            '200 OK':
+            '200':
                description: |
                   The schema overview was successfully returned.
-            '400 Bad Request':
+            '400':
                description: |
                   Invalid query parameters (e.g., negative or non-numeric values).
-            '404 Not Found':
+            '404':
                description: |
                   Unknown path suffix (e.g., /schema/foo/bar). Collection or view not found on the database.
-            '405 Method Not Allowed':
-               description: |
-                  When request method is not GET. This endpoint only supports GET.
-            '500 Internal Server Error':
+            '500':
                description: |
                   Internal server error.
          tags:
@@ -808,179 +331,55 @@ paths:
 ```
 
 **Examples**
-<summary>HTTP Request</summary>
 
-```http request
-GET /_db/_system/_api/schema/view/descView?sampleNum=100&exampleNum=1
-```
-<details>
-<summary>HTTP Response (click to show)</summary>
+```curl
+---
+description: Create a view and collections, insert sample documents, and fetch their schema
+name: create_view_and_collection_and_get_schema
+---
+var cn = "restaurants";
+var vn = "restaurantView";
+try { db._drop(cn); } catch (e) {}
+try { db._dropView(vn); } catch (e) {}
 
-```json
-{
-  "views": [
-    {
-      "viewName": "descView",
-      "links": [
-        {
-          "collectionName": "customers",
-          "fields": [
-            {
-              "attribute": "comment",
-              "analyzers": [
-                "text_en"
-              ]
-            }
-          ]
-        },
-        {
-          "collectionName": "products",
-          "fields": [
-            {
-              "attribute": "description",
-              "analyzers": [
-                "text_en"
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "collections": [
-    {
-      "collectionName": "customers",
-      "collectionType": "document",
-      "numOfDocuments": 10,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "address",
-          "types": [
-            "string",
-            "object"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "age",
-          "types": [
-            "number",
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "comment",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        }
-      ],
-      "examples": [
-        {
-          "_id": "customers/263",
-          "_key": "263",
-          "age": 35,
-          "name": "Ken"
-        }
-      ]
-    },
-    {
-      "collectionName": "products",
-      "collectionType": "document",
-      "numOfDocuments": 5,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "description",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "price",
-          "types": [
-            "number"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "version",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        }
-      ],
-      "examples": [
-        {
-          "_id": "products/32235",
-          "_key": "32235",
-          "description": "This car was made in Japan, and used",
-          "name": "car",
-          "price": 120.95
-        }
-      ]
-    }
-  ]
-}
+var coll = db._create(cn, { waitForSync: true });
+coll.save({name: "Italian Restaurant", address: "Milano", description: "Traditional Italian"});
+coll.save({name: "American Diner", address: "New York", description: "Typical American"});
+coll.save({name: "Sushi Bar", address: "Kyoto", description: "Casual Japanese"});
+
+db._createView(vn, "arangosearch", { links: { 
+   restaurants : { 
+      fields: { 
+         description: { 
+            analyzers: ["text_en"] 
+         } 
+      } 
+   } 
+}});
+
+var url = "/_api/schema/view/" + vn;
+var response = logCurlRequest('GET', url);
+assert(response.code === 200);
+logJsonResponse(response);
+
+db._dropView(vn);
+db._drop(cn)
 ```
-</details>
 
 ---
 
-<h2 id="get-apischemacollectioncollection-name">GET /_api/schema/collection/&lt;collection-name&gt;</h2>
+### Get a collection, and its schemas
 
 ```openapi
 paths:
    /_db/{database-name}/_api/schema/collection/{collection-name}:
       get:
-         operationId: getCollection
+         operationId: listCollectionAndSchemas
          description: |
-            Show the specified collection information and its schemas.
+            Show the specified collection and its sampled schemas.
+            The schema shows a list of attributes (fields), the data types of each attribute
+            whether the attribute is optional (meaning some documents/edges may not have it),
+            and example documents or edges for reference
          parameters:
             - name: database-name
               in: path
@@ -1018,26 +417,23 @@ paths:
               description: |
                 The number of example documents/edges to return per collection.
                 Must be a non-negative integer and not be larger than `sampleNum`.
-                If `0`, no examples will be returned. Defaults to `1`.
+                If set to `0`, no examples are returned. Defaults to `1`.
               schema:
                 type: integer
                 minimum: 0
                 default: 1
          
          responses:
-            '200 OK':
+            '200':
                description: |
                   The schema overview was successfully returned.
-            '400 Bad Request':
+            '400 ':
                description: |
                   Invalid query parameters (e.g., negative or non-numeric values).
-            '404 Not Found':
+            '404':
                description: |
                   Unknown path suffix (e.g., /schema/foo/bar). Collection not found on the database.
-            '405 Method Not Allowed':
-               description: |
-                  When request method is not GET. This endpoint only supports GET.
-            '500 Internal Server Error':
+            '500':
                description: |
                   Internal server error.
          tags:
@@ -1045,72 +441,26 @@ paths:
 ```
 
 **Examples**
-<summary>HTTP Request</summary>
 
-```http request
-GET /_db/_system/_api/schema/collection/products?sampleNum=100&exampleNum=1
-```
-<details>
-<summary>HTTP Response (click to show)</summary>
+```curl
+---
+description: Create a collection, insert sample documents, and fetch its schema
+name: create_collection_and_get_schema
+---
+var cn = "customers";
+try { db._drop(cn); } catch (e) {}
 
-```json
-{
-      "collectionName": "products",
-      "collectionType": "document",
-      "numOfDocuments": 5,
-      "schema": [
-        {
-          "attribute": "_id",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "_key",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "description",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "name",
-          "types": [
-            "string"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "price",
-          "types": [
-            "number"
-          ],
-          "optional": false
-        },
-        {
-          "attribute": "version",
-          "types": [
-            "string"
-          ],
-          "optional": true
-        }
-      ],
-      "examples": [
-        {
-          "_id": "products/32235",
-          "_key": "32235",
-          "description": "This car was made in Japan, and used",
-          "name": "car",
-          "price": 120.95
-        }
-      ]
-    }
+var coll = db._create(cn, { waitForSync: true });
+coll.save({name: "Alice", age: 20, address: "Cologne"});
+coll.save({name: "Bob", age: 30, address: "San Francisco"});
+coll.save({name: "Charlie", age: 40, address: "Tokyo"});
+
+var url = "/_api/schema/collection/" + cn;
+
+var response = logCurlRequest('GET', url);
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+db._drop(cn);
 ```
-</details>
