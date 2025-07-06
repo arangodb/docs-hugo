@@ -1,7 +1,7 @@
 ---
 title: HTTP interface for sampled schemas of collection in graph and view.
 menuTitle: Schemas
-weight: 15
+weight: 33
 description: >-
    This HTTP interface gives you sampled document and edge structures
    for collections connected by graphs or linked by views. The interface
