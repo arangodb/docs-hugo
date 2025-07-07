@@ -848,14 +848,17 @@ paths:
       operationId: getRecentApiCalls
       description: |
         Get a list of the most recent requests with a timestamp and the endpoint.
-         This feature is for debugging purposes.
+        This feature is for debugging purposes.
 
         You can control how much memory is used to record API calls with the
-        `--server.memory-per-api-call-list` and `--server.number-of-api-call-lists`
-        startup options.
+        `--server.api-recording-memory-limit` startup option.
 
-        You can disable API call recording via the `--server.api-call-recording`
-        startup option. The endpoint returns an empty list of calls in this case.
+        You can disable this endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether API calls are recorded is independently controlled by the
+        `--server.api-call-recording` startup option.
+        The endpoint returns an empty list of calls if turned off.
       parameters:
         - name: database-name
           in: path
@@ -870,7 +873,7 @@ paths:
       responses:
         '200':
           description: |
-            The 
+            Returns the recorded API calls.
           content:
             application/json:
               schema:
@@ -913,7 +916,7 @@ paths:
                               description: |
                                 The HTTP request method.
                               type: string
-                              enum: [get, patch, put, delete, head]
+                              enum: [GET, PATCH, PUT, DELETE, HEAD]
                             path:
                               description: |
                                 The HTTP request path excluding the database prefix (`/_db/<database-name>`).
@@ -945,6 +948,68 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.

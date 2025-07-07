@@ -2167,18 +2167,19 @@ A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
 list of the most recent requests with a timestamp and the endpoint. This feature
 is for debugging purposes.
 
-You can configure the memory limit for this feature with the following startup options:
+You can configure the memory limit for this feature with the following startup option:
 
-- `--server.number-of-api-call-lists`:
-  The size of the ring buffer for API call record lists (default: `256`).
-- `--server.memory-per-api-call-list`: 
-  The amount of memory used for a single API call record list (default: `100000` bytes)
+- `--server.api-recording-memory-limit`:
+  Size limit for the list of API call records (default: `25600000`).
 
-This means that approximately 25 MB of memory are reserved by default.
-
+This means that 25 MB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
+
+The `/_admin/server/api-calls` endpoint exposes the recorded API calls.
+It is enabled by default. You can disable it altogether by setting the new
+`--log.recording-api-enabled` startup option to `false`.
 
 A metric has been added for the time spent on API call recording to track the
 impact of this feature:
