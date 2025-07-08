@@ -2,7 +2,7 @@
 title: RagLoader Service
 menuTitle: RagLoader
 description: >-
-  The RagLoader service helps you transform your text document into knowledge graph,
+  The RagLoader service helps you transform your text document into a knowledge graph,
   making it easier to analyze and understand complex information
 weight: 10
 ---
@@ -13,109 +13,145 @@ It supports the following text formats with UTF-8 encoding:
 - Plain text
 - Markdown
 
-The Loader takes your text, analyzes it using the configured language model, and
+The RagLoader takes your text, analyzes it using the configured language model, and
 creates a structured knowledge graph. This graph is then imported into your
 ArangoDB database, where you can query and analyze the relationships between
-different concepts in your document with our RagRetriever service.
+different concepts in your document with the RagRetriever service.
 
-## How ArangoDB Collections looks after Import Process:
+## How ArangoDB collections look like  
 
-The RagLoader creates several collections in ArangoDB to store different aspects of your knowledge graph. Here's a detailed explanation of each collection:
+The RagLoader creates several collections in ArangoDB to store different
+aspects of your knowledge graph. See below a detailed explanation of each
+collection.
 
-### Documents Collection
-- **Purpose**: Stores the original text document that were processed
+### Documents collection
+
+- **Purpose**: Stores the original text document that were processed.
 - **Key Fields**:
-  - `_key`: Unique identifier for the document
-  - `content`: The full text content of the document
-- **Usage**: Acts as the root level container for all document-related data
+  - `_key`: Unique identifier for the document.
+  - `content`: The full text content of the document.
+- **Usage**: Acts as the root level container for all document-related data.
 
 ### Chunks Collection
-- **Purpose**: Stores text chunks extracted from documents for better processing and analysis
+
+- **Purpose**: Stores text chunks extracted from documents for better processing and analysis.
 - **Key Fields**:
-  - `_key`: Unique identifier for the chunk
-  - `content`: The text content of the chunk
-  - `tokens`: Number of tokens in the chunk
-  - `chunk_order_index`: Position of the chunk in the original document
-- **Usage**: Enables granular analysis of document content and maintains document structure
+  - `_key`: Unique identifier for the chunk.
+  - `content`: The text content of the chunk.
+  - `tokens`: Number of tokens in the chunk.
+  - `chunk_order_index`: Position of the chunk in the original document.
+- **Usage**: Enables granular analysis of document content and maintains document structure.
 
 ### Entities Collection
+
 - **Purpose**: Stores entities extracted from the text, such as persons, organizations, concepts, etc.
 - **Key Fields**:
-  - `_key`: Unique identifier for the entity
-  - `entity_name`: Name of the entity
-  - `entity_type`: Type of entity (e.g., person, organization)
-  - `description`: Description of the entity
-  - `embedding`: Vector representation of the entity for similarity search
-  - `clusters`: Community clusters the entity belongs to
-- **Usage**: Enables entity-based querying and semantic search
+  - `_key`: Unique identifier for the entity.
+  - `entity_name`: Name of the entity.
+  - `entity_type`: Type of entity (e.g., person, organization).
+  - `description`: Description of the entity.
+  - `embedding`: Vector representation of the entity for similarity search.
+  - `clusters`: Community clusters the entity belongs to.
+- **Usage**: Enables entity-based querying and semantic search.
 
 ### Communities Collection
-- **Purpose**: Stores thematic clusters of related entities that form meaningful communities within your documents. Each community represents a cohesive group of concepts, characters, or themes that are closely related and interact with each other. These communities help identify and analyze the main narrative threads, character relationships, and thematic elements in your documents.
+
+- **Purpose**: Stores thematic clusters of related entities that form meaningful
+  communities within your documents. Each community represents a cohesive group
+  of concepts, characters, or themes that are closely related and interact with
+  each other. These communities help identify and analyze the main narrative
+  threads, character relationships, and thematic elements in your documents.
 - **Key Fields**:
-  - `_key`: Unique identifier for the community
-  - `title`: Cluster ID to which this community belongs to
-  - `report_string`: A detailed markdown-formatted analysis that explains the community's theme, key relationships, and significance. This includes sections on main characters, their roles, relationships, and the impact of key events or locations.
+  - `_key`: Unique identifier for the community.
+  - `title`: Cluster ID to which this community belongs to.
+  - `report_string`: A detailed markdown-formatted analysis that explains the
+    community's theme, key relationships, and significance. This includes
+    sections on main characters, their roles, relationships, and the impact of key events or locations.
   - `report_json`: Structured data containing:
-    - `title`: The main theme or focus of the community
-    - `summary`: A concise overview of the community's central narrative
-    - `rating`: A numerical score indicating the community's significance (higher the better)
-    - `rating_explanation`: Justification for the rating
-    - `findings`: An array of detailed analyses, each containing a summary and explanation of key aspects
-  - `level`: The hierarchical level of the community (e.g., 1 for top-level communities)
-  - `occurrence`: A normalized score (ranging from 0 to 1) showing the relative frequency with which this community is mentioned or identified throughout your documents. A value close to 1 means this community is very common in your data and a value near 0 means it is rare.
-  - `sub_communities`: References to more specific sub-communities that are part of this larger community
+    - `title`: The main theme or focus of the community.
+    - `summary`: A concise overview of the community's central narrative.
+    - `rating`: A numerical score indicating the community's significance (the higher, the better).
+    - `rating_explanation`: Justification for the rating.
+    - `findings`: An array of detailed analyses, each containing a summary and explanation of key aspects.
+  - `level`: The hierarchical level of the community (e.g., `1` for top-level communities).
+  - `occurrence`: A normalized score (ranging from `0` to `1`) showing the relative frequency with which this community is mentioned or identified throughout your documents. A value close to 1 means this community is very common in your data and a value near `0` means it is rare.
+  - `sub_communities`: References to more specific sub-communities that are part of this larger community.
 - **Usage**: Enables you to:
-  - Identify and analyze major narrative threads and themes
-  - Understand complex relationships between characters and concepts
-  - Track the significance and impact of different story elements
-  - Navigate through hierarchical relationships between themes
-  - Discover patterns and recurring elements in your documents
+  - Identify and analyze major narrative threads and themes.
+  - Understand complex relationships between characters and concepts.
+  - Track the significance and impact of different story elements.
+  - Navigate through hierarchical relationships between themes.
+  - Discover patterns and recurring elements in your documents.
 
 ### Relations Collection
-- **Purpose**: Stores relationships between different nodes in the graph
+
+- **Purpose**: Stores relationships between different nodes in the graph.
 - **Key Fields**:
-  - `_from`: Source node reference
-  - `_to`: Target node reference
-  - `type`: Type of relationship (e.g., "PART_OF", "MENTIONED_IN", "RELATED_TO", "IN_COMMUNITY")
+  - `_from`: Source node reference.
+  - `_to`: Target node reference.
+  - `type`: Type of relationship (e.g., **PART_OF**, **MENTIONED_IN**, **RELATED_TO**, **IN_COMMUNITY**).
   - Additional metadata depending on relationship type (Entity to Entity):
-    - `weight`: Relationship strength (higher the better)
-    - `description`: Description of the relationship
-    - `source_id`: Source of the relationship
-    - `order`: Order of the relationship
-- **Usage**: Enables traversal and analysis of relationships between different elements
+    - `weight`: Relationship strength (the higher, the better).
+    - `description`: Description of the relationship.
+    - `source_id`: Source of the relationship.
+    - `order`: Order of the relationship.
+- **Usage**: Enables traversal and analysis of relationships between different elements.
 
 ### Relationship Types
+
 The system creates several types of relationships between nodes:
 
-1. **PART_OF**: Links chunks to their parent documents
-2. **MENTIONED_IN**: Connects entities to the chunks where they are mentioned
-3. **RELATED_TO**: Shows relationships between different entities
-4. **IN_COMMUNITY**: Associates entities with their community groups
+1. **PART_OF**: Links chunks to their parent documents.
+2. **MENTIONED_IN**: Connects entities to the chunks where they are mentioned.
+3. **RELATED_TO**: Shows relationships between different entities.
+4. **IN_COMMUNITY**: Associates entities with their community groups.
 
 ### Vector Search Capabilities
+
 The system automatically creates vector indexes on the `embedding` field in the Entities collection, enabling:
 - Semantic similarity search
 - Nearest neighbor queries
 - Efficient vector-based retrieval
 
-## Available Deployment Options:
+## Deployment options
 
 You can choose between two deployment options based on your needs:
 
-1. If you're working in an air-gapped environment or need to keep your data private, you can use the private LLM mode with Triton Inference Server. This option allows you to run the service completely within your own infrastructure. The Triton Inference Server is a crucial component when running in private LLM mode. It serves as the backbone for running your language (LLM) and embedding models on youe own machines, ensuring your data never leaves your infrastructure. The server handles all the complex model operations, from processing text to generating embeddings, and provides both HTTP and gRPC interfaces for communication.
+### Private LLM
 
-2. Alternatively, if you prefer a simpler setup and don't have specific privacy requirements, you can use the public LLM mode. This option connects to cloud-based services like OpenAI's models via the OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
+If you're working in an air-gapped environment or need to keep your data
+private, you can use the private LLM mode with Triton Inference Server.
+This option allows you to run the service completely within your own
+infrastructure. The Triton Inference Server is a crucial component when
+running in private LLM mode. It serves as the backbone for running your
+language (LLM) and embedding models on your own machines, ensuring your
+data never leaves your infrastructure. The server handles all the complex
+model operations, from processing text to generating embeddings, and provides
+both HTTP and gRPC interfaces for communication.
+
+### Public LLM
+
+Alternatively, if you prefer a simpler setup and don't have specific privacy
+requirements, you can use the public LLM mode. This option connects to cloud-based
+services like OpenAI's models via the OpenAI API or a large array of models
+(Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
 
 
-### How to install RagLoader Service
+## Installation
 
-As mentioned RagLoader service can be configured to use either Triton Inference Server (for private LLM deployments) or OpenAI / OpenRouter (for public LLM deployments). 
-To start the service, use GenAI service endpoint `/v1/graphragimporter`. Please refer to the documentation of GenAI service for more information on how to use it.
+The RagLoader service can be configured to use either:
+- Triton Inference Server (for private LLM deployments)
+- OpenAI (for public LLM deployments)
+- OpenRouter (for public LLM deployments)
+
+To start the service, use the GenAI service endpoint `/v1/graphragimporter`. 
+Please refer to the documentation of [GenAI service](gen-ai.md) for more
+information on how to use it.
 Here are the configuration options for all three options:
 
-#### Option 1: Using Triton Inference Server (Private LLM)
+### Using Triton Inference Server (Private LLM)
 
-First setup and install LLM-Host service with LLM and embedding models of your choice. The setup will use Triton Inference Server and mlflow at the backend. Please refer to below documentation for more dtetail:
+First setup and install LLM Host service with LLM and embedding models of your choice. The setup will use Triton Inference Server and mlflow at the backend. Please refer to below documentation for more detail:
 // @docs-team please insert reference to GenAI/Triton documentation here
 
 Once the LLM-host service is installed and running successfully, then you can start the loader service using the below reference:
@@ -132,13 +168,14 @@ Once the LLM-host service is installed and running successfully, then you can st
 }
 ```
 
+Where:
 - `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `api_provider`: Specifies which LLM provider to use
 - `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your LLM-host service is running
 - `triton_model`: Name of the LLM model to use for text processing
 
-#### Using OpenAI
+### Using OpenAI (Public LLM)
 
 ```json
 {
@@ -151,19 +188,26 @@ Once the LLM-host service is installed and running successfully, then you can st
 }
 ```
 
+Where:
 - `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `api_provider`: Specifies which LLM provider to use
 - `openai_api_key`: Your OpenAI API key
 
-Note: By default for openai api we use gpt-4o-mini and text-embedding-3-small models as LLM and embedding model respectively.
-
+{{< info >}}
+By default, for OpenAI API, the service is using
+`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
+embedding model respectively.
+{{< /info >}}
 
 ### Using OpenRouter (Gemini, Anthropic, etc.)
 
-OpenRouter makes it possible to connect to a huge array of LLM API providers, including non-OpenAI LLMs like Gemini Flash, Anthropic Claude and publicly hosted open-source models.
+OpenRouter makes it possible to connect to a huge array of LLM API
+providers, including non-OpenAI LLMs like Gemini Flash, Anthropic Claude
+and publicly hosted open-source models.
 
-When using the OpenRouter option, the LLM responses are served via OpenRouter while OpenAI is used for the embedding model.
+When using the OpenRouter option, the LLM responses are served via OpenRouter
+while OpenAI is used for the embedding model.
 
 ```json
     {
@@ -178,6 +222,7 @@ When using the OpenRouter option, the LLM responses are served via OpenRouter wh
     }
 ```
 
+Where:
 - `username`: ArangoDB database user with permissions to access collections  
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored  
 - `api_provider`: Specifies which LLM provider to use  
@@ -185,14 +230,17 @@ When using the OpenRouter option, the LLM responses are served via OpenRouter wh
 - `openrouter_api_key`: Your OpenRouter API key (for the LLM)  
 - `openrouter_model`: Desired LLM (optional; default is `mistral-nemo`)
 
-> **Note**  
-> When using OpenRouter, we default to `mistral-nemo` for generation (via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
+{{< info >}}
+When using OpenRouter, the service defaults to `mistral-nemo` for generation
+(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
+{{< /info >}}
+
 ## Building Knowledge Graphs
 
-Once service is installed successfully, you can follow the following steps to send an input file to the loader service:
+Once the service is installed successfully, you can follow the following steps
+to send an input file to the loader service:
 
-1. Prepare your text document for processing (text format with UTF-8 encoding or markdown files)
-
+1. Prepare your text document for processing (text format with UTF-8 encoding or markdown files).
 2. Send the document to the RagLoader service using HTTP:
    ```bash
    # Base64 encode your document
@@ -208,23 +256,22 @@ Once service is installed successfully, you can follow the following steps to se
    ```
 
    Replace the following placeholders:
-   - `<your-arangodb-platform-url>`: Your ArangoDB Platform URL
-   - `<url-postfix>`: The URL postfix configured in your deployment
+   - `<your-arangodb-platform-url>`: Your ArangoDB Platform URL.
+   - `<url-postfix>`: The URL postfix configured in your deployment.
 
 
    The service will:
-   - Process the document using the configured LLM model 
-   - Generate embeddings using the embedding model 
-   - Build a knowledge graph
-   - Import the graph into your ArangoDB database
+   - Process the document using the configured LLM model.
+   - Generate embeddings using the embedding model.
+   - Build a knowledge graph.
+   - Import the graph into your ArangoDB database.
 
-
-### Verifying the Import
+### Verifying the import
 
 You can verify that the import was successful by checking your ArangoDB database:
 
-1. Connect to your ArangoDB instance
-2. Navigate to the specified database
+1. Connect to your ArangoDB instance.
+2. Navigate to the specified database.
 3. Verify that the following collections exist:
    - `knowledge_graph_vertices`: Contains the nodes of the knowledge graph i.e. documents, chunks, communities, and entities.
    - `knowledge_graph_edges`: Contains the relationships between nodes i.e. relations.

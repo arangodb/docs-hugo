@@ -7,23 +7,26 @@ description: >-
 # TODO: Shouldn't this refer to the ArangoDB Platform instead?
 weight: 5
 ---
-## Description
 
 The basic operations that the GenAI orchestration service carries out are the following:
 - Install a service
 - Uninstall a service
 - Get the status of a service
 
-Each unique service does have its own API endpoint for the deployment.
+Each unique service has its own API endpoint for the deployment.
 
 **Endpoint LLM Host:**
 `https://<ExternalEndpoint>:8529/gen-ai/v1/llmhost`
 
-While they have their own unique endpoint, all services share the same creation request body and the same response body structure. While the env field is used to define the service specific parameters, like e.g. the model name to use for a llm host service, the labels can be used to filter and identify the services in the platform. All services do support the 'profiles' field, which can be used to define the profile to use for the service. One use case is defining a GPU profile that enables the service to run an LLM on GPU resources.
+While services have their own unique endpoint, they share the same creation
+request body and the same response body structure. The `env` field is used
+to define the service specific parameters, like the model name to use for a
+`llmhost` service, and the labels can be used to filter and identify the services
+in the platform. All services support the `profiles` field, which you can use
+to define the profile to use for the service. For example, you can define a
+GPU profile that enables the service to run an LLM on GPU resources.
 
-## Examples
-
-### LLM Host Service Creation Request Body
+## LLM Host Service Creation Request Body
 
 ```json
 {
@@ -33,7 +36,7 @@ While they have their own unique endpoint, all services share the same creation 
 }
 ```
 
-### Using Labels in Creation Request Body
+## Using Labels in Creation Request Body
 
 ```json
 {
@@ -46,10 +49,13 @@ While they have their own unique endpoint, all services share the same creation 
     }
 }
 ```
+{{< info >}}
+Labels are optional. Labels can be used to filter and identify services in
+the platform. If you want to use labels, define them as a key-value pair in `labels`
+within the `env` field.
+{{< /info >}}
 
-**Note:** Labels are optional. Labels can be used to filter and identify services in the platform. If you want to use labels, define them as a key-value pair in the `labels` within the `env` field.
-
-### Using Profiles in Creation Request Body
+## Using Profiles in Creation Request Body
 
 ```json
 {
@@ -60,24 +66,34 @@ While they have their own unique endpoint, all services share the same creation 
 }
 ```
 
-**Note:** The `profiles` field is optional. If it is not set, the service will be created with the default profile. Profiles must be present and created in the platform before they can be used. If you want to use profiles, define them as a comma-separated string in the `profiles` within the `env` field.
+{{< info >}}
+The `profiles` field is optional. If it is not set, the service is created with
+the default profile. Profiles must be present and created in the platform before
+they can be used. If you want to use profiles, define them as a comma-separated
+string in `profiles` within the `env` field.
+{{< /info >}}
 
-The service specific required parameters for the deployment are defined in the corresponding service documentation.
+The service specific required parameters for the deployment are defined in the
+corresponding service documentation.
 
 ## Obtaining a Bearer Token
 
-Before you can authenticate with the GenAI service, you need to obtain a Bearer token. You can generate this token using the ArangoDB authentication API:
+Before you can authenticate with the GenAI service, you need to obtain a
+Bearer token. You can generate this token using the ArangoDB authentication API:
 
 ```bash
 curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
   -d '{"username": "your-username", "password": "your-password"}'
 ```
 
-This will return a JWT token that you can use as your Bearer token. For more details about ArangoDB authentication and JWT tokens, see the [ArangoDB Authentication Documentation](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens).
+This returns a JWT token that you can use as your Bearer token. For more
+details about ArangoDB authentication and JWT tokens, see
+the [ArangoDB Authentication](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens)
+documentation.
 
 ## Complete Service Lifecycle Example
 
-Here's a complete example showing how to install, monitor, and uninstall a RAGLoader service:
+The example below shows how to install, monitor, and uninstall a RAGLoader service.
 
 ### Step 1: Install the Service
 
@@ -146,10 +162,10 @@ curl -X DELETE https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphr
 }
 ```
 
-**Notes:**
-
+{{< info >}}
 - **Service ID**: The `serviceId` from Step 1's response (`arangodb-graphrag-importer-of1ml`) is used in Steps 2 and 3
 - **Authentication**: All requests use the same Bearer token in the `Authorization` header
+{{< /info >}}
 
 ### Customizing the Example
 
@@ -178,8 +194,12 @@ curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/health
 
 Expected output on success: `{"status":"OK"}`
 
-**Note:** Keep in mind that this request requires a valid Bearer token. Without a valid Bearer token, the request will fail.
+{{< info >}}
+Keep in mind that this request requires a valid Bearer token. Without a valid
+Bearer token, the request fails.
+{{< /info >}}
 
 ## API Reference
 
-For detailed API documentation, visit: [GenAI-Service API Reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
+For detailed API documentation, see the
+[GenAI-Service API Reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).
