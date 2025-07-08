@@ -26,6 +26,7 @@ paths:
         - Each collections shows a list of attribute, the data types of each attribute,
           whether the attribute is optional (meaning some documents/edges mat not have it),
           and example documents or edges for reference.
+          Any indexes defined on the collection’s attributes are shown, if available.
       parameters:
         - name: database-name
           in: path
@@ -144,6 +145,7 @@ paths:
         - Each collection shows a list of attributes, the data types of each attribute,
           whether the attribute is optional (meaning some documents/edges may not have it),
           and example documents or edges for reference.
+          Any indexes defined on the collection’s attributes are shown, if available.
       parameters:
         - name: database-name
           in: path
@@ -258,7 +260,8 @@ paths:
         - The view shows its name and which collections and fields it links to.
         - Each collection shows a list of attributes, the data types of each attribute
           whether the attribute is optional (meaning some documents/edges may not have it),
-          and example documents or edges for reference
+          and example documents or edges for reference.
+          Any indexes defined on the collection’s attributes are shown, if available.
       parameters:
         - name: database-name
           in: path
@@ -362,7 +365,8 @@ paths:
         Show the specified collection and its sampled schemas.
         The schema shows a list of attributes (fields), the data types of each attribute
         whether the attribute is optional (meaning some documents/edges may not have it),
-        and example documents or edges for reference
+        and example documents or edges for reference.
+        Any indexes defined on the collection’s attributes are shown, if available.
       parameters:
         - name: database-name
           in: path
