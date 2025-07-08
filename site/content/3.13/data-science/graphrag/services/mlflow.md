@@ -26,7 +26,7 @@ MLflow model registry.
 
 {{< info >}}
 You can find detailed instructions about how to organize the format of a model for a
-dedicated LLM host service in the official [MLflow](https://mlflow.org/docs/latest/genai/)
+dedicated LLM host service in the official [MLflow]((https://mlflow.org/docs/latest/index.html)
 documentation.
 {{< /info >}}
 
@@ -46,7 +46,7 @@ MLflow consists of the following core components:
 - **Evaluation**: Provides tools for in-depth model analysis, facilitating objective model comparison.
 - **Observability**: Ensures that the ML lifecycle is traceable and reproducible through various metrics and logs.
 
-## Getting Started
+## Quickstart
 
 The ArangoDB MLflow service is **started by default**.
 
@@ -90,11 +90,11 @@ First, install the MLflow client:
 pip install mlflow
 ```
 
-### Programmatic Access
+### Programmatic access
 
-There are two approaches for programmatic access to your ArangoDB MLflow service:
+There are two approaches for programmatic access to your ArangoDB MLflow service.
 
-#### Approach 1: Configure in Python Code
+#### Configuration in Python
 
 ```python
 import mlflow
@@ -109,7 +109,7 @@ with mlflow.start_run():
     mlflow.log_artifact("local_file.txt")
 ```
 
-#### Approach 2: Use Environment Variables
+#### Using environment variables
 
 Set the environment variables in your shell:
 
@@ -128,7 +128,7 @@ with mlflow.start_run():
     mlflow.log_artifact("local_file.txt")
 ```
 
-### Health Check
+### Health check
 
 To test whether the service is running, you can use the following snippet:
 
@@ -136,14 +136,9 @@ To test whether the service is running, you can use the following snippet:
 curl -H "Authorization: Bearer your-bearer-token-here" https://<ExternalEndpoint>:8529/mlflow/health
 ```
 
-Expected output on success: HTTP `200` status with response body `OK`
+Expected output on success: HTTP `200` status with response body `OK`.
 
 ## API Reference
 
 For detailed API documentation, refer to the official
 [MLflow REST API Reference](https://mlflow.org/docs/latest/api_reference/rest-api.html).
-
-## Additional Resources
-
-The official MLflow documentation can be found at:
-[MLflow Documentation](https://mlflow.org/docs/latest/index.html)

@@ -147,7 +147,6 @@ The RagLoader service can be configured to use either:
 To start the service, use the GenAI service endpoint `/v1/graphragimporter`. 
 Please refer to the documentation of [GenAI service](gen-ai.md) for more
 information on how to use it.
-Here are the configuration options for all three options:
 
 ### Using Triton Inference Server (Private LLM)
 
