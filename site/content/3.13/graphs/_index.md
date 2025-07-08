@@ -27,12 +27,16 @@ relations. This lets you form a graph that is a social network in this case.
 The specific terms to refer to nodes and relations in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
 and mathematics, the terms **vertices** (singular: vertex) and **edges** are
-commonly used to refer to nodes and relations, respectively. In information
+commonly used to refer to **nodes** and **relations**, respectively. In information
 science and data analysis, they are referred to as _entities_ and _connection_.
 In social sciences, they are often called _actors_ and _ties_ or _links_.
 They may also be called _points_ and _arcs_.
 
-Using graphs with vertices to represent things and edges to define how they
+{{< info >}}
+In ArangoDB, **vertices** are also referred to as **nodes**.
+{{< /info >}}
+
+Using graphs with nodes to represent things and edges to define how they
 relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
@@ -40,11 +44,11 @@ complex relationships and interactions of basically everything.
 ![Mary - bought - Book, is friend of - John](../../images/data-model-graph-relations.png)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
-one vertex to another vertex in a specific direction. This lets you model
+one node to another node in a specific direction. This lets you model
 directional relationships, such as cause and effect or the flow of material,
 energy, or information. In undirected graphs, edges don't have a direction and
-the relationship between two vertices is considered to be the same in both
-directions. For example, a friendship is a symmetrical relationships. If _Mary_
+the relationship between two nodes is considered to be the same in both
+directions. For example, a friendship is a symmetrical relationship. If _Mary_
 is a friend of _John_, then _John_ is equally a friend of _Mary_. On the other
 hand, _Mary_ may subscribe to what _John_ posts online, but this does not
 automatically make _John_ a subscriber of _Mary_'s posts. It is an asymmetrical
@@ -71,10 +75,10 @@ separately, without an identifier for each statement.
 Furthermore, ArangoDB's graph model can be classified as a **labeled** property
 graph because you can group related edges using edge collections, with the
 collection name being the label, but you can also use a property to assign one
-or more types to an edge. You can also organize vertices in different
+or more types to an edge. You can also organize nodes in different
 collections based on the types of entities.
 
-Edges can only be stored in **edge collections**. Vertices are stored in
+Edges can only be stored in **edge collections**. Nodes are stored in
 **document collections** which are also referred to as **vertex collections**
 in the context of graphs. You can technically also use edges as vertices but
 the usefulness is limited.
@@ -83,7 +87,7 @@ Edges in ArangoDB are always directed. Every edge document has special `_from`
 and `_to` attributes to reference one other document in each of the two
 attributes.
 
-Vertices are referenced by their document identifiers. For example,
+Nodes are referenced by their document identifiers. For example,
 a friendship edge that connects _Mary_ with _John_ could look like
 `{"_from": "Person/Mary", "_to": "Person/John", "_id": "isFriendOf/1234"}`.
 Using this directed graph model means that relations you create with edges are
@@ -108,7 +112,7 @@ may be doable in RDBMSes with SQL using several nested joins, graph databases
 can handle an arbitrary and variable number of these hops over edge collections
 which is called **traversal**.
 
-Moreover, edges in one edge collection may point to vertices in different
+Moreover, edges in one edge collection may point to nodes in different
 vertex collections. It is common to have attributes attached to edges, like a
 *label* naming the type of connection.
 
@@ -173,11 +177,11 @@ additional layer on top of these collections to provide integrity guarantees by
 doing the following:
 
 - Execute all modifications transactionally
-- Check that vertices references by edges in the `_from` and `_to` attributes
+- Check that nodes references by edges in the `_from` and `_to` attributes
   actually exist
-- Only allow to reference vertices from collections as specified by the
+- Only allow to reference nodes from collections as specified by the
   definition of the graph
-- Delete edges when a connected vertex is deleted to avoid dangling edges
+- Delete edges when a connected node is deleted to avoid dangling edges
 - Prohibit to use an edge collections in an edge definition with a different
   set of *from* and *to* vertex collections than an existing edge definition
   of any graph
@@ -232,7 +236,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 
 The EnterpriseGraphs are designed for large-scale graph use cases in enterprise
 environments. While data is also randomly sharded, this graph type ensures that
-all edges adjacent to a vertex are co-located on the same server. This
+all edges adjacent to a node are co-located on the same server. This
 optimization significantly improves query performance by reducing network hops.
 
 {{< tip >}}
@@ -245,7 +249,7 @@ using EnterpriseGraphs.
 #### When to use SatelliteGraphs
 
 SatelliteGraphs replicate one or more graphs to all machines within a cluster
-so queries can be executed locally. All vertices and edges are available on
+so queries can be executed locally. All nodes and edges are available on
 every node for maximum data locality, therefore no network hops are required
 to traverse the graph.
 
@@ -258,7 +262,7 @@ all graph data to every server in your cluster, consider SmartGraphs.
 ### Anonymous graphs
 
 An anonymous graph is the graph that your data implicitly defines by edges that
-reference vertices and that you directly use by defining the vertex and edge
+reference nodes and that you directly use by defining the vertex and edge
 collections for graph operations such as traversals and path finding algorithms
 in queries. You can also work with [edges](working-with-edges.md) directly.
 
@@ -280,30 +284,30 @@ information extraction (high-level)
 ## Model data with graphs
 
 Graphs can have different structures, called **topologies**. The topology
-describes how the vertices and edges are arranged by classifying the pattern of
+describes how the nodes and edges are arranged by classifying the pattern of
 connections. Some relevant classes are:
 
 - Cyclic: a graph that contains at least one path that starts and ends at the
-  same node. An edge can also originate from and point to the same vertex.
+  same node. An edge can also originate from and point to the same node.
 - Acyclic: a graph that contains no cycles
 - Tree: a directed acyclic graph (DAG) without cycles and exactly one path
-  between any two vertices in the graph
-- Dense: a graph with edges between most pairs of vertices
-- Sparse: a graph where only few pairs of vertices are connected by edges
+  between any two nodes in the graph
+- Dense: a graph with edges between most pairs of nodes
+- Sparse: a graph where only few pairs of nodes are connected by edges
 
 The topology for your graphs will vary depending on your data and requirements
 but you always have a degree of freedom when modeling the data.
 
-### What information should be stored in edges and what in vertices
+### What information should be stored in edges and what in nodes
 
 The main objects in your data model, such as users, groups, or articles, are
-usually considered to be vertices. For each type of object, a document collection
+usually considered to be nodes. For each type of object, a document collection
 should store the individual entities. Entities can be connected by edges to
-express and classify relations between vertices. It often makes sense to have
+express and classify relations between nodes. It often makes sense to have
 an edge collection per relation type.
 
 ArangoDB does not require you to store your data in graph structures with edges
-and vertices. You can also decide to embed attributes such as which groups a
+and nodes. You can also decide to embed attributes such as which groups a
 user is part of or store `_id`s of documents in another document instead of
 connecting the documents with edges. It can be a meaningful performance
 optimization for *1:n* relationships if your data is not focused on relations
@@ -311,7 +315,7 @@ and you don't need graph traversal with varying depth. It usually means
 to introduce some redundancy and possibly inconsistencies if you embed data, but
 it can be an acceptable tradeoff.
 
-**Vertices**:
+**Nodes (Vertices)**:
 Assume you have two vertex collections, `Users` and `Groups`. Documents in the
 `Groups` collection contain the attributes of the group, i.e. when it was founded,
 its subject, and so on. Documents in the `Users` collection contain the data
@@ -330,7 +334,7 @@ this group, the date when John joined the group, and so on.
 ![User in group example](../../images/graph_user_in_group.png)
 
 As a rule of thumb, if you use documents and their attributes in a sentence,
-nouns would typically be vertices, and the verbs the edges.
+nouns would typically be nodes, and the verbs the edges.
 You can see this in the [Knows Graph](example-graphs.md#knows-graph):
 
     Alice knows Bob, who in term knows Charlie.
