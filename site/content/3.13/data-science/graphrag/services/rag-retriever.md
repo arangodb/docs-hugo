@@ -80,10 +80,14 @@ information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)
 
-First setup and install LLM-Host service with LLM and embedding models of your choice. The setup will use Triton Inference Server and mlflow at the backend. Please refer to below documentation for more detail:
-// @docs-team please insert reference to GenAI/Triton documentation here
+The first step is to install the LLM Host service with the LLM and
+embedding models of your choice. The setup will the use the 
+Triton Inference Server and MLflow at the backend. 
+For more details, please refer to the [Triton Inference Server](./triton-inference-server.md)
+and [Mlflow](./mlflow.md) documentation.
 
-Once the LLM-host service is installed and running successfully, then you can start the retriever service using the below reference:
+Once the `llmhost` service is up-and-running, then you can start the RAGloader
+service using the below configuration:
 
 ```json
 {
@@ -101,7 +105,7 @@ Where:
 - `username`: ArangoDB database user with permissions to access collections.
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
 - `api_provider`: Specifies which LLM provider to use.
-- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `LLM-host` service is running.
+- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `llmhost` service is running.
 - `triton_model`: Name of the LLM model to use for text processing.
 
 ### Using OpenAI (Public LLM)
@@ -118,10 +122,10 @@ Where:
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to access collections
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `api_provider`: Specifies which LLM provider to use
-- `openai_api_key`: Your OpenAI API key
+- `username`: ArangoDB database user with permissions to access collections.
+- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
+- `api_provider`: Specifies which LLM provider to use.
+- `openai_api_key`: Your OpenAI API key.
 
 {{< info >}}
 By default, for OpenAI API, the service is using

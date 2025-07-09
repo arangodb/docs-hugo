@@ -10,15 +10,15 @@ weight: 10
 
 The RagLoader service lets you turn text files into a knowledge graph.
 It supports the following text formats with UTF-8 encoding:
-- Plain text
-- Markdown
+- `.txt` (Plain text)
+- `.md` (Markdown)
 
 The RagLoader takes your text, analyzes it using the configured language model, and
 creates a structured knowledge graph. This graph is then imported into your
 ArangoDB database, where you can query and analyze the relationships between
 different concepts in your document with the RagRetriever service.
 
-## How ArangoDB collections look like  
+## What ArangoDB Collections look like after import
 
 The RagLoader creates several collections in ArangoDB to store different
 aspects of your knowledge graph. See below a detailed explanation of each
@@ -115,7 +115,7 @@ The system automatically creates vector indexes on the `embedding` field in the 
 
 ## Deployment options
 
-You can choose between two deployment options based on your needs:
+You can choose between two deployment options based on your needs.
 
 ### Private LLM
 
@@ -137,7 +137,7 @@ services like OpenAI's models via the OpenAI API or a large array of models
 (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
 
 
-## Installation
+## Installation and configuration
 
 The RagLoader service can be configured to use either:
 - Triton Inference Server (for private LLM deployments)
@@ -150,10 +150,14 @@ information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)
 
-First setup and install LLM Host service with LLM and embedding models of your choice. The setup will use Triton Inference Server and mlflow at the backend. Please refer to below documentation for more detail:
-// @docs-team please insert reference to GenAI/Triton documentation here
+The first step is to install the LLM Host service with the LLM and
+embedding models of your choice. The setup will the use the 
+Triton Inference Server and MLflow at the backend. 
+For more details, please refer to the [Triton Inference Server](./triton-inference-server.md)
+and [Mlflow](./mlflow.md) documentation.
 
-Once the LLM-host service is installed and running successfully, then you can start the loader service using the below reference:
+Once the `llmhost` service is up-and-running, then you can start the RAGloader
+service using the below configuration:
 
 ```json
 {
@@ -168,11 +172,11 @@ Once the LLM-host service is installed and running successfully, then you can st
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to create and modify collections
-- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `api_provider`: Specifies which LLM provider to use
-- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your LLM-host service is running
-- `triton_model`: Name of the LLM model to use for text processing
+- `username`: ArangoDB database user with permissions to create and modify collections.
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored.
+- `api_provider`: Specifies which LLM provider to use.
+- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `llmhost` service is running.
+- `triton_model`: Name of the LLM model to use for text processing.
 
 ### Using OpenAI (Public LLM)
 
@@ -236,8 +240,8 @@ When using OpenRouter, the service defaults to `mistral-nemo` for generation
 
 ## Building Knowledge Graphs
 
-Once the service is installed successfully, you can follow the following steps
-to send an input file to the loader service:
+Once the service is installed successfully, you can follow these steps
+to send an input file to the RAGloader service:
 
 1. Prepare your text document for processing (text format with UTF-8 encoding or markdown files).
 2. Send the document to the RagLoader service using HTTP:
@@ -265,7 +269,7 @@ to send an input file to the loader service:
    - Build a knowledge graph.
    - Import the graph into your ArangoDB database.
 
-### Verifying the import
+## Verifying the import
 
 You can verify that the import was successful by checking your ArangoDB database:
 

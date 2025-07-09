@@ -8,29 +8,31 @@ weight: 30
 
 ## Overview
 
-The **LLM Host Triton** service provides scalable deployment of Large Language Models (LLMs) using NVIDIA Triton Inference Server. It enables efficient serving of machine learning models with support for HTTP/gRPC APIs, customizable routing, and seamless Kubernetes integration.
+The **LLM Host Triton** service provides scalable deployment of Large Language Models (LLMs) using the NVIDIA Triton Inference Server. It enables an efficient serving of machine learning models with support for HTTP and gRPC APIs, customizable routing, and seamless Kubernetes integration.
 
-## Service Deployment
+## Deployment
 
-The service is deployed as a **Kubernetes application** using Helm charts in the ArangoDB platform ecosystem. It integrates with:
+The service is deployed as a **Kubernetes application** using Helm charts in the ArangoDB Platform ecosystem. It integrates with:
 - MLFlow model registry for model management
 - Storage sidecar for artifact storage
 
-## Installation via Gen-AI Service API
+## Installation via GenAI Service API
 
-To install the LLM Host Triton service, send an API request to the **gen-ai service** with the following parameters:
+To install the LLM Host Triton service, send an API request to the **GenAI service** with the following parameters:
 
-### Required Parameters
+### Required parameters
 
 ```json
 {
-  "models": "model_name@version,model_name2@version2",
-
-
+  "models": "model_name",
 }
 ```
+You can also pass multiple models:
+- Without versions: `"model_name_1, model_name_2"`
+- With versions: `"model_name_1@version1, model_name_2@version2"`
+- Mixed: `"model_name_1, model_name_2@version4"`
 
-### Optional Parameters
+### Optional parameters
 
 ```json
 {
@@ -45,7 +47,7 @@ To install the LLM Host Triton service, send an API request to the **gen-ai serv
 }
 ```
 
-### Parameter Descriptions
+### Parameter descriptions
 
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|---------|
@@ -57,13 +59,14 @@ To install the LLM Host Triton service, send an API request to the **gen-ai serv
 | `log_level` | ❌ | Logging level | `"INFO"` (default) |
 | `profiles` | ❌ | Platform profiles to apply | `"gpu,performance"` |
 
-## Model Requirements
+## Model requirements
 
-### Python Backend Mandatory
+### Python Backend
 
-All models deployed on this service **must use the Python backend**. Each model requires:
+All models **must use the Python backend** for compatibility with the Triton service. Each model requires two files:
 
-1. **`model.py`** - Python implementation with:
+1. **`model.py`**
+   Implements the Python backend:
    ```python
    class TritonPythonModel:
        def initialize(self, args):
@@ -79,7 +82,8 @@ All models deployed on this service **must use the Python backend**. Each model 
            pass
    ```
 
-2. **`config.pbtxt`** - Triton configuration:
+2. **`config.pbtxt`**
+   Triton model configuration file:
    ```
    name: "your_model_name"
    backend: "python"
@@ -88,13 +92,18 @@ All models deployed on this service **must use the Python backend**. Each model 
    output: [...]
    ```
 
-### Model Storage
+## Uploading a model using MLFLow
 
-Models must be stored in the **MLFlow model registry** and will be automatically downloaded and loaded by the service.
+<!-- Add instructions -->
 
-For detailed guidance on creating and uploading a python-backend model, refer to the [LLM Host Registry Services documentation](https://arangodb.atlassian.net/wiki/spaces/TUP/pages/2724757505/LLM+Host+Registry+Services).
+## Model storage
 
-## Service Endpoints
+**All models must be registered in MLFlow.**  
+The service will automatically download and load models from the MLFlow registry.
+
+<!-- Add instructions on how to create and upload a python-backend model? -->
+
+## Service endpoints
 
 Once deployed, the service exposes two endpoints:
 
@@ -103,20 +112,34 @@ Once deployed, the service exposes two endpoints:
 | 8000 | HTTP/REST | Model inference, management, status |
 | 8001 | gRPC | High-performance binary communication |
 
+
+{{< info >}}
 Triton Inference Server is not intended to be used in a standalone mode, but rather through other services
 consuming these endpoints to send infer requests for example. So please refer to the service with which you are using Triton Inference Server for more details.
+{{< /info >}}
 
-Therefore, Triton service http endpoint can be accessed from inside the ArangoDB platform as follows: `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000`,
-where KUBERNETES_NAMESPACE is the namespace of the ArangoDB platform and you can find it in an environment
-variable called `KUBERNETES_NAMESPACE`. And SERVICE_ID is the ID of the LLM Host Triton service, which can be found in the `gen-ai service` response. For example, to check the server health, you need to send a GET request to `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000/v2/health/ready`.
+- **Internal access (within ArangoDB Platform)**:
+  `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000`
+  - `KUBERNETES_NAMESPACE` is available as an environment variable.
+  - `SERVICE_ID` is returned by the GenAI service API.
 
-Similarly, you can access gRPC endpoints on port 8001, please refer to the official Triton documentation below for more details.
+  **Example**:
+  To check server health:
+  `GET https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000/v2/health/ready`
 
-From outside the ArangoDB platform, you can access the Triton Inference Server http endpoints using the following URL: `https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/`, where BASE_URL is the base URL of the ArangoDB platform and service_postfix is the postfix of the LLM Host Triton service, it is the last 5 characters of the service ID.
-For example, to check the server health from outside the platform, send a GET request to `https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/v2/health/ready`.
+- **External access (outside ArangoDB Platform)**:
+  `https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/`
+  - `BASE_URL`: Your ArangoDB Platform base URL.
+  - `SERVICE_POSTFIX`: Last 5 characters of the service ID.
 
-## Triton Inference Server Endpoints
+  **Example**:
+  To check server health:
+  `GET https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/v2/health/ready`
 
-The service exposes all standard Triton Inference Server endpoints at port 8000 for http protocol or port 8001 for gRPC protocol for internal uage inside ArangoDB platform, and only http protocol is supported from outside the ArangoDB platform. This includes the following endpoints: model inference, model management, model status, and health check.
+{{< info >}}
+Only HTTP protocol is supported externally (from outside the ArangoDB Platform). For gRPC, use internal endpoints. This includes the following endpoints: model inference, model management, model status, and health check.
+{{< /info >}}
 
-For complete documentation on available endpoints and their usage, refer to the [Triton Inference Server HTTP API documentation](https://docs.nvidia.com/deeplearning/triton-inference-server/archives/triton_inference_server_1120/triton-inference-server-guide/docs/http_grpc_api.html#section-api-health).
+## Triton Inference Server API
+
+For complete documentation on available endpoints and their usage, refer to the [Triton Inference Server HTTP API](https://docs.nvidia.com/deeplearning/triton-inference-server/archives/triton_inference_server_1120/triton-inference-server-guide/docs/http_grpc_api.html#section-api-health) documentation.

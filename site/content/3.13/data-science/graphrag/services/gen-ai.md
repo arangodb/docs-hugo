@@ -91,11 +91,11 @@ details about ArangoDB authentication and JWT tokens, see
 the [ArangoDB Authentication](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens)
 documentation.
 
-## Complete Service Lifecycle Example
+## Complete Service lifecycle example
 
 The example below shows how to install, monitor, and uninstall a RAGLoader service.
 
-### Step 1: Install the Service
+### Step 1: Installing the service
 
 ```bash
 curl -X POST https://<ExternalEndpoint>:8529/gen-ai/v1/graphragimporter \
@@ -124,7 +124,7 @@ curl -X POST https://<ExternalEndpoint>:8529/gen-ai/v1/graphragimporter \
 }
 ```
 
-### Step 2: Check Service Status
+### Step 2: Checking the service status
 
 ```bash
 curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-importer-of1ml \
@@ -143,7 +143,7 @@ curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-
 }
 ```
 
-### Step 3: Uninstall the Service
+### Step 3: Uninstaling the service
 
 ```bash
 curl -X DELETE https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-importer-of1ml \
@@ -167,24 +167,24 @@ curl -X DELETE https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphr
 - **Authentication**: All requests use the same Bearer token in the `Authorization` header
 {{< /info >}}
 
-### Customizing the Example
+### Customizing the example
 
 Replace the following values with your actual configuration:
-- `<your-username>` - Your database username
-- `<your-database-name>` - Target database name
-- `<your-api-provider>` - Your API provider (e.g., "triton")
-- `<your-arangodb-llm-host-url>` - Your LLM host service URL
-- `<your-triton-model>` - Your Triton model name (e.g., "mistral-nemo-instruct")
-- `<your-bearer-token>` - Your authentication token
+- `<your-username>` - Your database username.
+- `<your-database-name>` - Target database name.
+- `<your-api-provider>` - Your API provider (e.g., `triton`)
+- `<your-arangodb-llm-host-url>` - Your LLM host service URL.
+- `<your-triton-model>` - Your Triton model name (e.g., `mistral-nemo-instruct`).
+- `<your-bearer-token>` - Your authentication token.
 
-## Service Configuration
+## Service configuration
 
 The GenAI orchestrator service is **started by default**. 
 
 It will be available at the following URL:
 `https://<ExternalEndpoint>:8529/gen-ai/v1/service`
 
-### Health Check
+## Health check
 
 To test whether the service is running, you can use the following snippet:
 

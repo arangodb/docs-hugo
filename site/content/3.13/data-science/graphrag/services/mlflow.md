@@ -26,7 +26,7 @@ MLflow model registry.
 
 {{< info >}}
 You can find detailed instructions about how to organize the format of a model for a
-dedicated LLM host service in the official [MLflow]((https://mlflow.org/docs/latest/index.html)
+dedicated LLM host service in the official [MLflow](https://mlflow.org/docs/latest/index.html)
 documentation.
 {{< /info >}}
 
@@ -67,7 +67,7 @@ The ArangoDB MLflow service requires authentication. You need a valid
 Bearer token to access the service.
 {{< /info >}}
 
-#### Obtaining a Bearer Token
+### Obtaining a Bearer Token
 
 Before you can authenticate with the MLflow service, you need to obtain a
 Bearer token. You can generate this token using the ArangoDB authentication API:
@@ -82,19 +82,18 @@ For more details about ArangoDB authentication and JWT tokens, see the
 [ArangoDB Authentication](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens)
 documentation.
 
-### Installation
+## Installation
 
 First, install the MLflow client:
 
 ```bash
 pip install mlflow
 ```
+There are two approaches for programmatic access to your ArangoDB MLflow service:
+- Configuration in Python
+- Using environment variables
 
-### Programmatic access
-
-There are two approaches for programmatic access to your ArangoDB MLflow service.
-
-#### Configuration in Python
+### Configuration in Python
 
 ```python
 import mlflow
@@ -109,7 +108,7 @@ with mlflow.start_run():
     mlflow.log_artifact("local_file.txt")
 ```
 
-#### Using environment variables
+### Using environment variables
 
 Set the environment variables in your shell:
 
@@ -128,7 +127,7 @@ with mlflow.start_run():
     mlflow.log_artifact("local_file.txt")
 ```
 
-### Health check
+## Health check
 
 To test whether the service is running, you can use the following snippet:
 
