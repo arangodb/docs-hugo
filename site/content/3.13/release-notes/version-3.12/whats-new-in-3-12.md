@@ -1264,10 +1264,10 @@ for details.
 The `use-index-for-collect` optimizer rule has been further extended.
 Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
 refers to attributes covered by a persistent index and no other variables can
-now utilize this index.
+now utilize this index. The index must not be sparse.
 
 Reading the data from the index instead of the stored documents for aggregations
-can significantly increase the perform if the there are few different values.
+can increase the performance by a factor of two.
 
 ```aql
 FOR doc IN coll
@@ -1275,8 +1275,9 @@ FOR doc IN coll
   RETURN { a, b }
 ```
 
-If there is a persistent index over the attributes `a` and `b`, then the query
-explain output shows an `IndexCollectNode` if the optimization is applied:
+If there is a persistent index over the attributes `a` and `b`, then the above
+example query has an `IndexCollectNode` in the explain output and the index
+usage is indicated if the optimization is applied:
 
 ```aql
 Execution plan:
