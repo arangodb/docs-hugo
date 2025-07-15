@@ -55,7 +55,6 @@ paths:
               type: object
               required:
                 - user
-                - passwd
               properties:
                 user:
                   description: |
@@ -125,7 +124,8 @@ paths:
     put:
       operationId: replaceUserData
       description: |
-        Replaces the data of an existing user. You need server access level
+        Replaces the data of an existing user. This resets the user's
+        access levels for databases and collections. You need server access level
         *Administrate* in order to execute this REST call. Additionally, users can
         change their own data.
       parameters:
@@ -151,8 +151,6 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - passwd
               properties:
                 passwd:
                   description: |
@@ -246,8 +244,6 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - passwd
               properties:
                 passwd:
                   description: |
