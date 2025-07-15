@@ -59,15 +59,15 @@ the following tasks:
 ## How GraphRAG works
 
 ArangoDB's GraphRAG solution democratizes the creation and usage of knowledge
-graphs with a unique combination of vector search, graphs, and LLMs in a
-single product.
+graphs with a unique combination of vector search, graphs, and LLMs (private or public)
+in a single product.
 
 The overall process of GraphRAG involves:
 - **Creating a Knowledge Graph** from raw text data.
 - **Identifying and extract entities, relationships, and their connections** within the data.
 - **Storing the structured information** in ArangoDB.
 - **Using this structured representation** as the foundation for efficient and accurate information retrieval.
-- **Integrating retrieval methods with LLMs** to augment responses using both structured and unstructured data.
+- **Integrating retrieval methods with LLMs (private or public)** to augment responses using both structured and unstructured data.
 - **Enhancing the reliability and depth** of responses by combining these approaches.
 
 GraphRAG is particularly valuable for:
@@ -138,3 +138,24 @@ Local retrieval is a more focused approach for:
 Local retrieval can answer questions like _**What is the relationship between entity X and entity Y**_?
 
 This query focuses only on the subgraph involving entities X and Y, extracting detailed relationships and context.
+
+### Private LLMs
+
+If you're working in an air-gapped environment or need to keep your data
+private, you can use the private LLM mode with 
+[Triton Inference Server](./services/triton-inference-server.md).
+
+This option allows you to run the service completely within your own
+infrastructure. The Triton Inference Server is a crucial component when
+running in private LLM mode. It serves as the backbone for running your
+language (LLM) and embedding models on your own machines, ensuring your
+data never leaves your infrastructure. The server handles all the complex
+model operations, from processing text to generating embeddings, and provides
+both HTTP and gRPC interfaces for communication.
+
+### Public LLMs
+
+Alternatively, if you prefer a simpler setup and don't have specific privacy
+requirements, you can use the public LLM mode. This option connects to cloud-based
+services like OpenAI's models via the OpenAI API or a large array of models
+(Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
