@@ -1263,8 +1263,9 @@ for details.
 
 The `use-index-for-collect` optimizer rule has been further extended.
 Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
-refers to attributes covered by a persistent index and no other variables can
-now utilize this index. The index must not be sparse.
+refers to attributes covered by a persistent index (and no other variables nor
+contains calls of aggregation functions with constant values) can now utilize
+this index. The index must not be sparse.
 
 Reading the data from the index instead of the stored documents for aggregations
 can increase the performance by a factor of two.
