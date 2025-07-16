@@ -1257,6 +1257,42 @@ to some extent.
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
 for details.
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+The `use-index-for-collect` optimizer rule has been further extended.
+Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
+refers to attributes covered by a persistent index (and no other variables nor
+contains calls of aggregation functions with constant values) can now utilize
+this index. The index must not be sparse.
+
+Reading the data from the index instead of the stored documents for aggregations
+can increase the performance by a factor of two.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a AGGREGATE b = MAX(doc.b)
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the above
+example query has an `IndexCollectNode` in the explain output and the index
+usage is indicated if the optimization is applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode         4999     - FOR doc IN coll COLLECT a = doc.`a` AGGREGATE b = MAX(doc.`b`) /* full index scan */
+  6   CalculationNode      ✓   4999     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               4999     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1836452431376941056   persistent   coll   
+```
+
 ## Indexing
 
 ### Multi-dimensional indexes
