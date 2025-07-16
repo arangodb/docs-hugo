@@ -1,24 +1,43 @@
 ---
-title: Triton Inference Server
-menuTitle: Triton Inference Server
+title: Triton LLM Host
+menuTitle: Triton LLM Host
 description: >-
-  Private LLM using the Triton Inference Server 
+  Enable your GraphRAG pipeline to use private LLMs via Triton Inference Server 
 weight: 30
 ---
 
-## Overview
+The **Triton LLM Host** service provides scalable deployment of Large Language
+Models (LLMs) using the NVIDIA Triton Inference Server. It efficiently serves
+machine learning models with support for HTTP and gRPC APIs, customizable routing,
+and seamless Kubernetes integration.
 
-The **LLM Host Triton** service provides scalable deployment of Large Language Models (LLMs) using the NVIDIA Triton Inference Server. It enables an efficient serving of machine learning models with support for HTTP and gRPC APIs, customizable routing, and seamless Kubernetes integration.
+## Workflow
+
+The Triton LLM Host enables your GraphRAG pipeline to use privately hosted
+LLMs directly from the ArangoDB Platform environment. The process involves the
+following steps:
+
+1. Install the Triton LLM Host service.
+2. Register your LLM model to MLflow by uploading the required files.
+3. Configure the [RagLoader](rag-loader.md#using-triton-inference-server-private-llm) service to use your LLM model.
+4. Configure the [RagRetriever](rag-retriever.md#using-triton-inference-server-private-llm) service to use your LLM model.
+
+{{< tip >}}
+Check out the dedicated [ArangoDB MLflow](mlflow.md) documentation page to learn
+more about the service and how to interact with it.
+{{< /tip >}}
 
 ## Deployment
 
-The service is deployed as a **Kubernetes application** using Helm charts in the ArangoDB Platform ecosystem. It integrates with:
-- MLFlow model registry for model management
-- Storage sidecar for artifact storage
+The Triton LLM Host service is deployed as a **Kubernetes application** using Helm charts in
+the ArangoDB Platform ecosystem. It integrates with the:
+- MLFlow model registry for model management.
+- Storage sidecar for artifact storage.
 
 ## Installation via GenAI Service API
 
-To install the LLM Host Triton service, send an API request to the **GenAI service** with the following parameters:
+To install the Triton LLM Host service, send an API request to the
+**GenAI service** using the following parameters:
 
 ### Required parameters
 
@@ -27,7 +46,7 @@ To install the LLM Host Triton service, send an API request to the **GenAI servi
   "models": "model_name",
 }
 ```
-You can also pass multiple models:
+You can also specify multiple models:
 - Without versions: `"model_name_1, model_name_2"`
 - With versions: `"model_name_1@version1, model_name_2@version2"`
 - Mixed: `"model_name_1, model_name_2@version4"`
@@ -63,10 +82,12 @@ You can also pass multiple models:
 
 ### Python Backend
 
-All models **must use the Python backend** for compatibility with the Triton service. Each model requires two files:
+All models **must use the Python backend** to ensure compatibility with the
+Triton service. Each model requires the following two files:
 
 1. **`model.py`**
-   Implements the Python backend:
+   Implements the Python backend model. Triton uses this file to load and 
+   execute your model for inference.
    ```python
    class TritonPythonModel:
        def initialize(self, args):
@@ -83,7 +104,8 @@ All models **must use the Python backend** for compatibility with the Triton ser
    ```
 
 2. **`config.pbtxt`**
-   Triton model configuration file:
+   This is the Triton model configuration file that defines essential parameters
+   such as the model name, backend, and input/output tensors.
    ```
    name: "your_model_name"
    backend: "python"
@@ -92,16 +114,32 @@ All models **must use the Python backend** for compatibility with the Triton ser
    output: [...]
    ```
 
-## Uploading a model using MLFLow
+## Model management with MLflow
 
-<!-- Add instructions -->
+{{< info >}}
+To prepare your Python backend model for the Triton LLM Host, you must first
+register it in MLflow. The Triton LLM Host service automatically downloads
+and load models from the MLflow registry.
+{{< /info >}}
 
-## Model storage
+### How to register a model in MLflow
 
-**All models must be registered in MLFlow.**  
-The service will automatically download and load models from the MLFlow registry.
+Registering a Python backend model in MLflow involves packaging your
+`model.py` and `config.pbtxt` files and passing them as an artifact. The Triton
+service will look for a directory named after your model (e.g., `my-private-llm-model`)
+within the MLflow registry store and expects to find the `model.py` and `config.pbtxt`
+files inside it.
 
-<!-- Add instructions on how to create and upload a python-backend model? -->
+```py
+try:
+    mlflow.set_tracking_uri(MLFLOW_SERVICE_URI)
+    with mlflow.start_run() as run:
+        run_id = run.info.run_id
+        model_uri = f"runs:/{run_id}/model"
+        mlflow.register_model(model_uri=model_uri, name=model_name)
+        # Log the entire model directory as an artifact, preserving the Triton structure
+        mlflow.log_artifact(local_path=str(local_model_dir))
+```
 
 ## Service endpoints
 
@@ -114,8 +152,10 @@ Once deployed, the service exposes two endpoints:
 
 
 {{< info >}}
-Triton Inference Server is not intended to be used in a standalone mode, but rather through other services
-consuming these endpoints to send infer requests for example. So please refer to the service with which you are using Triton Inference Server for more details.
+The Triton Inference Server is not intended to be used in a standalone mode.
+Instead, other services consume these endpoints to send inference
+requests for example. Refer to the specific service with which you are using
+Triton Inference Server for more details.
 {{< /info >}}
 
 - **Internal access (within ArangoDB Platform)**:
@@ -137,9 +177,12 @@ consuming these endpoints to send infer requests for example. So please refer to
   `GET https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/v2/health/ready`
 
 {{< info >}}
-Only HTTP protocol is supported externally (from outside the ArangoDB Platform). For gRPC, use internal endpoints. This includes the following endpoints: model inference, model management, model status, and health check.
+Only HTTP protocol is supported for external access (outside the ArangoDB
+Platform). For gRPC, use internal endpoints. This limitation applies to model
+inference, model management, model status, and health check endpoints.
 {{< /info >}}
 
 ## Triton Inference Server API
 
-For complete documentation on available endpoints and their usage, refer to the [Triton Inference Server HTTP API](https://docs.nvidia.com/deeplearning/triton-inference-server/archives/triton_inference_server_1120/triton-inference-server-guide/docs/http_grpc_api.html#section-api-health) documentation.
+For complete documentation on available endpoints and their usage,
+refer to the [Triton Inference Server HTTP API](https://docs.nvidia.com/deeplearning/triton-inference-server/archives/triton_inference_server_1120/triton-inference-server-guide/docs/http_grpc_api.htm) documentation.
