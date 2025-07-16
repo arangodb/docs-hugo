@@ -57,7 +57,8 @@ The main area of the viewport may initially be empty in the following cases:
 
 You can [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually)
 as well as [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query).
-Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection).
+Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection)
+as well as [Remove nodes from the canvas](#remove-nodes-from-the-canvas).
 
 ### The viewport
 
@@ -152,6 +153,22 @@ The query has access to the current selection via special bind variables.
      RETURN p
    ```
 7. Enter a name and optionally a description for the action and click **Save**.
+
+### Remove nodes from the canvas
+
+You can dismiss nodes to show less nodes and edges on the canvas to focus on the
+relevant parts of the graph at a given time. This only changes what is displayed
+on the canvas. It doesn't delete the underlying documents and you can add the
+dismissed nodes and their edges back to the canvas later on.
+
+1. Decide which nodes you want to either dismiss or keep. You can select nodes
+   in different ways:
+   - Right-click a single node to select only this node.
+   - Hold the **Shift** or **Ctrl** key and click multiple nodes or drag the
+     mouse to perform a box selection, then right-click one of the selected nodes.
+2. In the context menu, click **Dismiss _n_ nodes** to hide the selected nodes,
+   or click **Dismiss other nodes** to only keep the selection.
+3. The canvas updates to only display the remaining nodes, with no dangling edges.
 
 ### View node and edge properties
 
