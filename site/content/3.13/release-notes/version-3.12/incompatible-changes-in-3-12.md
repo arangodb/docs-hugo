@@ -900,6 +900,21 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
+## Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
