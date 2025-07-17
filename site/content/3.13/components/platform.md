@@ -18,6 +18,8 @@ to access all of the platform features.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   ArangoDB Platform, running them in containers for safety and scalability.
+- **Helm**: A package manager for Kubernetes. It is used to install Platform
+  services with the correct versions.
 - **Licenses**: If you want to use any paid features, you need to purchase the
   respective packages.
 
@@ -28,12 +30,9 @@ to access all of the platform features.
   Enterprise Edition.
 - **Graph visualizer**: A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
-- **Data-science suite**: A set of paid machine learning services, APIs, and
+- **GenAI Suite**: A set of paid machine learning services, APIs, and
   user interfaces that are available as a package as well as individual products.
-  - **Vector embeddings**: You can train machine learning models for later use
-    in vector search in conjunction with the core database system's `vector`
-    index type. It allows you to find similar items in your dataset. <!-- TODO: GraphRAG importer/retriever -->
-  - **GraphRAG solutions**: Leverage ArangoDB's Graph, Document, Key-Value,
+  - **GraphRAG**: Leverage ArangoDB's Graph, Document, Key-Value,
       Full-Text Search, and Vector Search features to streamline knowledge
       extraction and retrieval.
       - **Txt2AQL**: Unlock natural language querying with a service that converts
@@ -47,14 +46,20 @@ to access all of the platform features.
   - **GraphML**: A turnkey solution for graph machine learning for prediction
     use cases such as fraud detection, supply chain, healthcare, retail, and
     cyber security.
-  - **Graph Analytics**: A suite of graph algorithms including PageRank,
-    community detection, and centrality measures with support for GPU
-    acceleration thanks to Nvidia cuGraph.
-  - **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
-    interactive notebooks for experimentation and development of applications
-    that use ArangoDB as their backend.
 
 <!-- TODO: Which product requires what license, free trial -->
+
+## Additional features of the ArangoDB Platform
+
+- **Vector embeddings**: You can train machine learning models for later use
+  in vector search in conjunction with the core database system's `vector`
+  index type. It allows you to find similar items in your dataset. <!-- TODO: GraphRAG importer/retriever -->
+- **Graph Analytics**: A suite of graph algorithms including PageRank,
+  community detection, and centrality measures with support for GPU
+  acceleration thanks to Nvidia cuGraph.
+- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
+  interactive notebooks for experimentation and development of applications
+  that use ArangoDB as their backend.
 
 ## Get started with the ArangoDB Platform
 
