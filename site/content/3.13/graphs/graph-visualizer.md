@@ -5,6 +5,9 @@ weight: 102
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
+
+{{< tag "ArangoDB Platform" >}}
+
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
 of the ArangoDB Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes
