@@ -1257,6 +1257,42 @@ to some extent.
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
 for details.
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+The `use-index-for-collect` optimizer rule has been further extended.
+Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
+refers to attributes covered by a persistent index (and no other variables nor
+contains calls of aggregation functions with constant values) can now utilize
+this index. The index must not be sparse.
+
+Reading the data from the index instead of the stored documents for aggregations
+can increase the performance by a factor of two.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a AGGREGATE b = MAX(doc.b)
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the above
+example query has an `IndexCollectNode` in the explain output and the index
+usage is indicated if the optimization is applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode         4999     - FOR doc IN coll COLLECT a = doc.`a` AGGREGATE b = MAX(doc.`b`) /* full index scan */
+  6   CalculationNode      ✓   4999     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               4999     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1836452431376941056   persistent   coll   
+```
+
 ### Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
@@ -2185,18 +2221,19 @@ A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
 list of the most recent requests with a timestamp and the endpoint. This feature
 is for debugging purposes.
 
-You can configure the memory limit for this feature with the following startup options:
+You can configure the memory limit for this feature with the following startup option:
 
-- `--server.number-of-api-call-lists`:
-  The size of the ring buffer for API call record lists (default: `256`).
-- `--server.memory-per-api-call-list`: 
-  The amount of memory used for a single API call record list (default: `100000` bytes)
+- `--server.api-recording-memory-limit`:
+  Size limit for the list of API call records (default: `25600000`).
 
-This means that approximately 25 MB of memory are reserved by default.
-
+This means that 25 MB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
+
+The `/_admin/server/api-calls` endpoint exposes the recorded API calls.
+It is enabled by default. You can disable it altogether by setting the new
+`--log.recording-api-enabled` startup option to `false`.
 
 A metric has been added for the time spent on API call recording to track the
 impact of this feature:
