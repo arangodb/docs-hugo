@@ -902,7 +902,7 @@ the following steps.
 
 ## Optional elevation for GeoJSON Points
 
-<small>Introduced in: v3.12.6</small>
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
 
 GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
 However, ArangoDB does not take any elevation into account in geo-spatial

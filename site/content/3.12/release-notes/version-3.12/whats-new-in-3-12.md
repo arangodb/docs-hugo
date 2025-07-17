@@ -1259,7 +1259,7 @@ for details.
 
 ### Optional elevation for GeoJSON Points
 
-<small>Introduced in: v3.12.6</small>
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
 
 The `GEO_POINT()` function now accepts an optional third argument to create a
 GeoJSON Point with three coordinates: `[longitude, latitude, elevation]`.

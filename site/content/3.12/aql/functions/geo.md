@@ -764,7 +764,7 @@ Construct a valid GeoJSON Point.
 - **longitude** (number): The longitude portion of the point.
 - **latitude** (number): The latitude portion of the point.
 - **elevation** (number, *optional*): The elevation portion of the point
-  (introduced in v3.12.6).
+  (introduced in v3.11.14-2 and v3.12.6).
 - returns **geoJson** (object): A valid GeoJSON Point.
 
 ```aql
