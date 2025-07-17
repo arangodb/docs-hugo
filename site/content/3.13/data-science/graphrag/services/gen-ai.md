@@ -8,6 +8,8 @@ description: >-
 weight: 5
 ---
 
+{{< tag "ArangoDB Platform" >}}
+
 The basic operations that the GenAI orchestration service carries out are the following:
 - Install a service
 - Uninstall a service

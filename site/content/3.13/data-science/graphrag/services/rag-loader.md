@@ -6,6 +6,9 @@ description: >-
   making it easier to analyze and understand complex information
 weight: 10
 ---
+
+{{< tag "ArangoDB Platform" >}}
+
 ## Overview
 
 The RagLoader service lets you turn text files into a knowledge graph.

@@ -6,6 +6,8 @@ description: >-
 weight: 30
 ---
 
+{{< tag "ArangoDB Platform" >}}
+
 The **Triton LLM Host** service provides scalable deployment of Large Language
 Models (LLMs) using the NVIDIA Triton Inference Server. It efficiently serves
 machine learning models with support for HTTP and gRPC APIs, customizable routing,

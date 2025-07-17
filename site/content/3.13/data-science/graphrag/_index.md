@@ -9,6 +9,8 @@ aliases:
   llm-knowledge-graphs
 ---
 
+{{< tag "ArangoDB Platform" >}}
+
 ## Introduction
 
 Large language models (LLMs) and knowledge graphs are two prominent and

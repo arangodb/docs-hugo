@@ -8,6 +8,9 @@ description: >-
 aliases:
   - data-science/overview
 ---
+
+{{< tag "ArangoDB Platform" >}} 
+
 ArangoDB provides a wide range of functionality that can be utilized for
 data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that

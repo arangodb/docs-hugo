@@ -6,6 +6,9 @@ description: >-
   full machine learning lifecycle into the ArangoDB Platform
 weight: 25
 ---
+
+{{< tag "ArangoDB Platform" >}}
+
 ## Overview
 
 The ArangoDB MLflow service is a service that hosts the official MLflow

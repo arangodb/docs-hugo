@@ -6,6 +6,9 @@ description: >-
   retrieval from knowledge graphs created by the RAGLoader
 weight: 15
 ---
+
+{{< tag "ArangoDB Platform" >}}
+
 ## Overview
 
 The RagRetriever service offers two distinct search methods:
