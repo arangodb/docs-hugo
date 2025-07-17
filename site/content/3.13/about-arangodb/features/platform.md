@@ -28,14 +28,22 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
   you access its features in an intuitive way. Optional products like the
   GenAI Suite seamlessly integrate into the UI if installed.
 
-## Included features
+## Features
 
 - [**ArangoDB Core**](core.md): The ArangoDB database system with support for
   graphs, documents, key-value, full-text search, and vector search.
 
+- [**Graph visualizer**](../../graphs/graph-visualizer.md):
+  A web-based tool for exploring your graph data with an intuitive interface and
+  sophisticated querying capabilities.
+
 - [**Graph Analytics**](../../graphs/graph-analytics.md):
   A service that can efficiently load graph data from the core database system
   and run graph algorithms such as PageRank.
+
+- [**GenAI Suite**](../../data-science/_index.md):
+  ArangoDB's GraphML and GraphRAG solutions for graph-powered machine learning
+  and GenAI applications.
 
 - [**Notebook servers**](../../data-science/notebook-servers.md):
   Run Jupyter kernels in the Platform for hosting interactive, Python-based
@@ -44,13 +52,3 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
 - [**MLflow integration**](../../data-science/graphrag/services/mlflow.md):
   Use the popular MLflow for machine learning practitioners as part of the
   ArangoDB Platform.
-
-## Additional products
-
-- [**Graph visualizer**](../../graphs/graph-visualizer.md):
-  A web-based tool for exploring your graph data with an intuitive interface and
-  sophisticated querying capabilities.
-
-- [**GenAI Suite**](../../data-science/_index.md):
-  ArangoDB's GraphML and GraphRAG solutions for graph-powered machine learning
-  and GenAI applications.

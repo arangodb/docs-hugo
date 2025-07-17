@@ -23,43 +23,51 @@ to access all of the platform features.
 - **Licenses**: If you want to use any paid features, you need to purchase the
   respective packages.
 
-## Products available in the ArangoDB Platform
+## Features of the ArangoDB Platform
 
 - **Core database system**: The ArangoDB graph database system for storing
   interconnected data. You can use the free Community Edition or the commercial
   Enterprise Edition.
 - **Graph visualizer**: A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
+- **Graph Analytics**: A suite of graph algorithms including PageRank,
+  community detection, and centrality measures with support for GPU
+  acceleration thanks to Nvidia cuGraph.
+- **GraphML**: A turnkey solution for graph machine learning for prediction
+  use cases such as fraud detection, supply chain, healthcare, retail, and
+  cyber security.
 - **GenAI Suite**: A set of paid machine learning services, APIs, and
   user interfaces that are available as a package as well as individual products.
-  - **GraphRAG**: Leverage ArangoDB's Graph, Document, Key-Value,
-      Full-Text Search, and Vector Search features to streamline knowledge
+  - **GraphRAG**: Leverage ArangoDB's graph, document, key-value,
+      full-text search, and vector search features to streamline knowledge
       extraction and retrieval.
+      {{< comment >}}TODO: Not available in prerelease version
       - **Txt2AQL**: Unlock natural language querying with a service that converts
         user input into ArangoDB Query Language (AQL), powered by fine-tuned
         private or public LLMs. <!-- TODO: GenAI -->
+      {{< /comment >}}
       - **GraphRAG Importer**: Extract entities and relationships from large
         text-based files, converting unstructured data into a knowledge graph
         stored in ArangoDB. <!-- TODO: Change to RagLoader? -->
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
-  - **GraphML**: A turnkey solution for graph machine learning for prediction
-    use cases such as fraud detection, supply chain, healthcare, retail, and
-    cyber security.
+      - **MLflow integration**: Use the popular MLflow for machine learning
+        practitioners as part of the ArangoDB Platform.
+- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
+  interactive notebooks for experimentation and development of applications
+  that use ArangoDB as their backend.
+{{< comment >}}TODO: Mostly unrelated to Platform, vector index in core, 
+- **Vector embeddings**: You can train machine learning models for later use
+  in vector search in conjunction with the core database system's `vector`
+  index type. It allows you to find similar items in your dataset.
+{{< /comment >}}
 
 <!-- TODO: Which product requires what license, free trial -->
 
 ## Additional features of the ArangoDB Platform
 
-- **Vector embeddings**: You can train machine learning models for later use
-  in vector search in conjunction with the core database system's `vector`
-  index type. It allows you to find similar items in your dataset. <!-- TODO: GraphRAG importer/retriever -->
-- **Graph Analytics**: A suite of graph algorithms including PageRank,
-  community detection, and centrality measures with support for GPU
-  acceleration thanks to Nvidia cuGraph.
-- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
-  interactive notebooks for experimentation and development of applications
-  that use ArangoDB as their backend.
+
+
 
 ## Get started with the ArangoDB Platform
 
