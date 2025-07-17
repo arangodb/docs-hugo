@@ -19,13 +19,13 @@ infrastructure, and can immediately start using the GraphML and GenAI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
-- [GraphRAG](./graphrag/_index.md): A complete solution for extracting entities
+- [GraphRAG](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
-- [GraphML](./graphml/_index.md): Apply machine learning to graphs for link prediction,
+- [GraphML](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
-- [Integrations](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX, and other
-  data science tools.
+- [Integrations](integrations/_index.md): Use ArangoDB together with cuGraph,
+  NetworkX, and other data science tools.
 
 The ArangoDB Notebooks include the following:
 - Automatically connect to ArangoDB databases and GenAI platform services
@@ -45,8 +45,8 @@ The ArangoDB Notebooks include the following:
 ## Examples
 
 - To get a better understanding of how to interact with ArangoDB using notebooks,
-open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
+  open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
 - To get started with GraphRAG using ArangoDB's integrated notebook servers, see
-  the [GraphRAG Notebook Tutorial](./graphrag/tutorial-notebook.md).
+  the [GraphRAG Notebook Tutorial](graphrag/tutorial-notebook.md).
 - To get started with GraphML using ArangoDB's integrated notebook servers, see
-  the [GraphML Notebooks and API](./graphml/notebooks-api.md) documentation.
+  the [GraphML Notebooks and API](graphml/notebooks-api.md) documentation.
