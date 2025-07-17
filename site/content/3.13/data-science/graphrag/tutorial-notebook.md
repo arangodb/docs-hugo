@@ -30,7 +30,7 @@ You will learn how to:
 
 Before you begin, ensure you have the following:
 - **ArangoDB deployment:** Access to an ArangoDB deployment where you can
-  create and manage databases. You need the endpoint, your username and password, and
+  create and manage databases. You need the endpoint, your username, and
   write access to your chosen database.
 - **Python environment:** A Python 3.x environment with `pip` installed.
 - **Jupyter Notebook:** This tutorial is designed to be run in ArangoDB's integrated
@@ -75,10 +75,6 @@ from typing import Dict, Optional
 from pprint import pprint
 import time
 ```
-
-### Authentication
-
-
 
 ## Step 1: Prepare your document
 
@@ -161,7 +157,6 @@ parameters.
 importer_config = {
     "db_name": DB_NAME,
     "username": os.environ["USERNAME"],
-    "password": os.environ["PASSWORD"],
     "api_provider": "openai", # Switch the provider if needed (e.g., 'ollama' or 'openai')
     "openai_api_key": os.environ["OPENAI_API_KEY"], # Required if api_provider is 'openai'
 }
@@ -235,7 +230,6 @@ and uses an LLM to formulate answers to your queries.
   `openai` is selected as the provider.
 - `db_name`: The name of the database where your Knowledge Graph was created.
 - `username`: The ArangoDB username. This user needs to have write access to the specified database.
-- `password`: The password for the specified ArangoDB user.
 
 ### Start the RagRetriever service
 
@@ -246,7 +240,6 @@ and uses an LLM to formulate answers to your queries.
 retriever_config = {
     "db_name": DB_NAME,
     "username": os.environ["USERNAME"],
-    "password": os.environ["PASSWORD"],
     "api_provider": "openai", # Change this provider if needed
     "openai_api_key": os.environ["OPENAI_API_KEY"],
 }

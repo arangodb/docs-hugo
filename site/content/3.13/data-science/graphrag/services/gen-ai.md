@@ -4,7 +4,6 @@ menuTitle: GenAI
 description: >-
   The GenAI orchestrator service installs, manages, and runs AI-based services
   in your Kubernetes cluster
-# TODO: Shouldn't this refer to the ArangoDB Platform instead?
 weight: 5
 ---
 
@@ -145,7 +144,7 @@ curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-
 }
 ```
 
-### Step 3: Uninstaling the service
+### Step 3: Uninstalling the service
 
 ```bash
 curl -X DELETE https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-importer-of1ml \
