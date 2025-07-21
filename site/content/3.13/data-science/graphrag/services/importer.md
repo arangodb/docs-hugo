@@ -1,8 +1,8 @@
 ---
-title: RagLoader Service
-menuTitle: RagLoader
+title: Importer Service
+menuTitle: Importer
 description: >-
-  The RagLoader service helps you transform your text document into a knowledge graph,
+  The Importer service helps you transform your text document into a knowledge graph,
   making it easier to analyze and understand complex information
 weight: 10
 ---
@@ -11,19 +11,19 @@ weight: 10
 
 ## Overview
 
-The RagLoader service lets you turn text files into a knowledge graph.
+The Importer service lets you turn text files into a knowledge graph.
 It supports the following text formats with UTF-8 encoding:
 - `.txt` (Plain text)
 - `.md` (Markdown)
 
-The RagLoader takes your text, analyzes it using the configured language model, and
+The Importer takes your text, analyzes it using the configured language model, and
 creates a structured knowledge graph. This graph is then imported into your
 ArangoDB database, where you can query and analyze the relationships between
-different concepts in your document with the RagRetriever service.
+different concepts in your document with the Retriever service.
 
 ## What ArangoDB Collections look like after import
 
-The RagLoader creates several collections in ArangoDB to store different
+The Importer creates several collections in ArangoDB to store different
 aspects of your knowledge graph. See below a detailed explanation of each
 collection.
 
@@ -142,7 +142,7 @@ services like OpenAI's models via the OpenAI API or a large array of models
 
 ## Installation and configuration
 
-The RagLoader service can be configured to use either:
+The Importer service can be configured to use either:
 - Triton Inference Server (for private LLM deployments)
 - OpenAI (for public LLM deployments)
 - OpenRouter (for public LLM deployments)
@@ -159,7 +159,7 @@ Triton Inference Server and MLflow at the backend.
 For more details, please refer to the [Triton Inference Server](./triton-inference-server.md)
 and [Mlflow](./mlflow.md) documentation.
 
-Once the `llmhost` service is up-and-running, then you can start the RAGloader
+Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:
 
 ```json
@@ -244,10 +244,10 @@ When using OpenRouter, the service defaults to `mistral-nemo` for generation
 ## Building Knowledge Graphs
 
 Once the service is installed successfully, you can follow these steps
-to send an input file to the RAGloader service:
+to send an input file to the Importer service:
 
 1. Prepare your text document for processing (text format with UTF-8 encoding or markdown files).
-2. Send the document to the RagLoader service using HTTP:
+2. Send the document to the Importer service using HTTP:
    ```bash
    # Base64 encode your document
    base64_content=$(base64 -i your_document.txt)

@@ -81,7 +81,7 @@ GraphRAG is particularly valuable for:
 
 ### Turn text files into a Knowledge Graph
 
-The RagLoader service is the entry point of the GraphRAG pipeline. It takes a
+The Importer service is the entry point of the GraphRAG pipeline. It takes a
 raw text file as input, processes it using an LLM to extract entities and
 relationships, and generates a Knowledge Graph. The Knowledge Graph is then
 stored in an ArangoDB database for further use. The Knowledge Graph represents
@@ -92,18 +92,18 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[RagLoader](./services/rag-loader.md) documentation.
+[Importer](./services/importer.md) service documentation.
 
 ### Extract information from the Knowledge Graph
 
-The RagRetriever service enables intelligent search and retrieval of information
+The Retriever service enables intelligent search and retrieval of information
 from your previously created Knowledge Graph.
 You can extract information from Knowledge Graphs using two distinct methods:
 - Global retrieval
 - Local retrieval
 
 For detailed information about the service, see the
-[RagRetriever](./services/rag-retriever.md) documentation.
+[Retriever](./services/retriever.md) service documentation.
 
 #### Global retrieval
 

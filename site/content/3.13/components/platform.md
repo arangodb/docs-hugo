@@ -48,7 +48,7 @@ to access all of the platform features.
       {{< /comment >}}
       - **GraphRAG Importer**: Extract entities and relationships from large
         text-based files, converting unstructured data into a knowledge graph
-        stored in ArangoDB. <!-- TODO: Change to RagLoader? -->
+        stored in ArangoDB.
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
       - **MLflow integration**: Use the popular MLflow for machine learning

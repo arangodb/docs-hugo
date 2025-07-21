@@ -1,9 +1,9 @@
 ---
-title: RagRetriever Service
-menuTitle: RagRetriever
+title: Retriever Service
+menuTitle: Retriever
 description: >-
-  RagRetriever is a powerful service that enables intelligent search and
-  retrieval from knowledge graphs created by the RAGLoader
+  The Retriever is a powerful service that enables intelligent search and
+  retrieval from knowledge graphs created by the Importer service
 weight: 15
 ---
 
@@ -11,7 +11,7 @@ weight: 15
 
 ## Overview
 
-The RagRetriever service offers two distinct search methods:
+The Retriever service offers two distinct search methods:
 - **Global search**: Analyzes entire document to identify themes and patterns,
   perfect for high-level insights and comprehensive summaries.
 - **Local search**: Focuses on specific entities and their relationships, ideal
@@ -31,9 +31,9 @@ graph and get contextually relevant responses.
 
 ## Search methods
 
-The RagRetriever service enables intelligent search and retrieval of information
+The Retriever service enables intelligent search and retrieval of information
 from your knowledge graph. It provides two powerful search methods, global Search
-and local Search, that leverage the structured knowledge graph created by the RAGLoader
+and local Search, that leverage the structured knowledge graph created by the Importer
 to deliver accurate and contextually relevant responses to your natural language queries.
 
 ### Global search
@@ -74,7 +74,7 @@ entities, or relationships.
 
 ## Installation
 
-The RagRetriever service can be configured to use either the Triton Inference Server
+The Retriever service can be configured to use either the Triton Inference Server
 (for private LLM deployments) or OpenAI/OpenRouter (for public LLM deployments).
 
 To start the service, use the GenAI service endpoint `/v1/graphragretriever`. 
@@ -89,7 +89,7 @@ Triton Inference Server and MLflow at the backend.
 For more details, please refer to the [Triton Inference Server](./triton-inference-server.md)
 and [Mlflow](./mlflow.md) documentation.
 
-Once the `llmhost` service is up-and-running, then you can start the RAGloader
+Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:
 
 ```json
@@ -173,7 +173,7 @@ When using OpenRouter, the service defaults to `mistral-nemo` for generation
 
 ## Executing queries
 
-After the RagRetriever service is installed successfully, you can interact with 
+After the Retriever service is installed successfully, you can interact with 
 it using the following HTTP endpoints, based on the selected search method.
 
 {{< tabs "executing-queries" >}}

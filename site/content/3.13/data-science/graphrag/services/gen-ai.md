@@ -94,7 +94,7 @@ documentation.
 
 ## Complete Service lifecycle example
 
-The example below shows how to install, monitor, and uninstall a RAGLoader service.
+The example below shows how to install, monitor, and uninstall the Importer service.
 
 ### Step 1: Installing the service
 

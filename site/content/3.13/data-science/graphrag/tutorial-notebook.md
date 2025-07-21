@@ -19,10 +19,10 @@ to provide precise and contextually relevant responses from unstructured text da
 You will learn how to:
 - Prepare your raw text data (PDFs in this case) into a structured format
   suitable for Knowledge Graph extraction using Docling.
-- Utilize the ArangoDB RagLoader service to automatically extract
+- Utilize the ArangoDB Importer service to automatically extract
   entities and relationships from your prepared text and store them as a
   Knowledge Graph in ArangoDB.
-- Query your newly created Knowledge Graph using the ArangoDB RagRetriever
+- Query your newly created Knowledge Graph using the ArangoDB Retriever
   service for both broad (global) and targeted (local) information retrieval.
 - Set up a simple Gradio interface to interact with your GraphRAG pipeline.
 
@@ -117,7 +117,7 @@ except Exception as e:
 ```
 
 The next step is to encode the content of the Markdown file into Base64,
-which is required for the RagLoader service.
+which is required for the Importer service.
 
 ```py
 %%time
@@ -140,14 +140,14 @@ file_content = encode_file_content(f"./{FILE_NAME}_docling.md")
 
 ## Step 2: Import your document to generate the Knowledge Graph
 
-Once your document is prepared, you can start the RagLoader service. This
+Once your document is prepared, you can start the Importer service. This
 service takes your processed Markdown content, extracts entities and relationships,
 and then stores this structured information as a Knowledge Graph within
 your specified ArangoDB database.
 
-### Start the RagLoader (Importer) service
+### Start the Importer service
 
-Start the RagLoader importer service providing the necessary configuration
+Start the Importer service providing the necessary configuration
 parameters.
 
 ```py
@@ -216,10 +216,10 @@ You can also configure the display options:
 - Set the **Entities** label to `entity_name`.
 - For **Edges** (relations), set the label to `type`.
 
-## Step 3: Query the Knowledge Graph with the RagRetriever service
+## Step 3: Query the Knowledge Graph with the Retriever service
 
 To retrieve information from the Knowledge Graph, you need to deploy the
-GraphRAG Retriever service. This service interacts with your Knowledge Graph
+Retriever service. This service interacts with your Knowledge Graph
 and uses an LLM to formulate answers to your queries.
 
 ### Startup parameters
@@ -231,7 +231,7 @@ and uses an LLM to formulate answers to your queries.
 - `db_name`: The name of the database where your Knowledge Graph was created.
 - `username`: The ArangoDB username. This user needs to have write access to the specified database.
 
-### Start the RagRetriever service
+### Start the Retriever service
 
 ```py
 %%time
@@ -252,7 +252,7 @@ retriever_service_id = response["serviceInfo"]["serviceId"].split("-")[-1]
 print(f"Retriever Service ID: {retriever_service_id}")
 ```
 
-The RagRetriever service is available at the following endpoint, which allows you 
+The Retriever service is available at the following endpoint, which allows you 
 to send queries to the Knowledge Graph:
 ```
 /graphrag/retriever/{service_id}/v1/graphrag-query
@@ -334,7 +334,7 @@ pprint(retrieverResponse["result"])
 
 To make querying your Knowledge Graph more interactive, you can use Gradio to
 create a simple chat interface. This allows you to submit queries and see real-time
-responses from the RagRetriever.
+responses from the Retriever.
 
 First, define the functions that handle the queries through the Gradio interface:
 
