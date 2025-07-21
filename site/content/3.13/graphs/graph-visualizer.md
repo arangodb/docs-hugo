@@ -8,6 +8,12 @@ description: >-
 
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
 of the ArangoDB Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes

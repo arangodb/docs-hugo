@@ -6,6 +6,13 @@ description: >-
   The ArangoDB Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
 ---
+
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 The ArangoDB Platform is a technical infrastructure that acts as the umbrella
 for hosting the entire ArangoDB offering of products. The Platform makes it easy
 to deploy and operate the core ArangoDB database system along with any additional

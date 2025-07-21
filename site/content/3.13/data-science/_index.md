@@ -11,6 +11,12 @@ aliases:
 
 {{< tag "ArangoDB Platform" >}} 
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 ArangoDB provides a wide range of functionality that can be utilized for
 data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that

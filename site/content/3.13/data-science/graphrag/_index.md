@@ -11,6 +11,12 @@ aliases:
 
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 ## Introduction
 
 Large language models (LLMs) and knowledge graphs are two prominent and

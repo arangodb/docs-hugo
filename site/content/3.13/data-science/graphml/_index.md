@@ -10,6 +10,12 @@ aliases:
 
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with

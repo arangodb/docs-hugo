@@ -9,6 +9,12 @@ aliases:
 ---
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, GenAI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are
