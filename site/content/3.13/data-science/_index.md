@@ -46,29 +46,29 @@ The GenAI Suite is comprised of two major components:
 
 Each component has an intuitive graphical user interface integrated into the
 ArangoDB Platform web interface, guiding you through the process.
-<!-- TODO: Not Graph Analytics? -->
 
 Alongside these components, you also get the following additional features:
 
-- **Graph visualizer**: A web-based tool for exploring your graph data with an
+- [**Graph visualizer**](../graphs/graph-visualizer.md): A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
-- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
+- [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
-- **MLflow integration**: Built-in support for the popular management tool for
+- [**MLflow integration**](./graphrag/services/mlflow.md): Built-in support for the popular management tool for
   the machine learning lifecycle.
-- **Adapters**: Use ArangoDB together with cuGraph, NetworkX, and other tools. 
+- [**Integrations**](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
+  and other data science tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
-  GenAI Suite services and build your own integrations.
+  GenAI Suite services and build your own integrations. See the
+  [API reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html) documentation
+  for more details.
 
 ## Other tools and features
-
-<!-- TODO: Should this and the above section somehow be combined? -->
 
 The ArangoDB Platform includes the following features independent of the
 GenAI Suite:
 
-- [**Graph Analytics**](#graph-analytics): Run graph algorithms such as PageRank
+- [**Graph Analytics**](../graphs/graph-analytics.md): Run graph algorithms such as PageRank
   on dedicated compute resources.
 
 ## From graph to AI
