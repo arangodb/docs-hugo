@@ -8,6 +8,14 @@ weight: 30
 
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
+## Overview
+
 The **Triton LLM Host** service provides scalable deployment of Large Language
 Models (LLMs) using the NVIDIA Triton Inference Server. It efficiently serves
 machine learning models with support for HTTP and gRPC APIs, customizable routing,
