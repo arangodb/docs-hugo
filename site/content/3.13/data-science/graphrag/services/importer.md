@@ -9,6 +9,12 @@ weight: 10
 
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 ## Overview
 
 The Importer service lets you turn text files into a knowledge graph.
