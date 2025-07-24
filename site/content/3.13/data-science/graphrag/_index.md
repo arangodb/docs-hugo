@@ -166,3 +166,13 @@ Alternatively, if you prefer a simpler setup and don't have specific privacy
 requirements, you can use the public LLM mode. This option connects to cloud-based
 services like OpenAI's models via the OpenAI API or a large array of models
 (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
+
+## Limitations
+
+The pre-release version of ArangoDB GraphRAG has the following limitations:
+
+- You can only import a single file.
+- The knowledge graph generated from the file is imported into a named graph
+  with a fixed name of `KnowledgeGraph` and set of collections which also have
+  fixed names.
+- Natural language querying is not available.

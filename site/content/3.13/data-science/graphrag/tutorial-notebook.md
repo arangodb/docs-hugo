@@ -84,9 +84,11 @@ import time
 ## Step 1: Prepare your document
 
 {{< warning >}}
-GraphRAG currently supports `.txt` and `.md` formats only. You can only import one
-file at a time. If your document is in `.pdf` format, you must convert it into a
-structured Markdown format using Docling.
+GraphRAG currently supports `.txt` and `.md` formats only. If your document is
+in `.pdf` format, you must convert it into a structured Markdown format using Docling.
+
+You can only import one file using the pre-release version of ArangoDB GraphRAG.
+Importing another file overwrites the knowledge graph.
 {{< /warning >}}
 
 [Docling](https://docling-project.github.io/docling/) from IBM is an AI-based PDF
