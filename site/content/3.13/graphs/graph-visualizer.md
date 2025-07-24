@@ -19,6 +19,8 @@ to visually understand the structure as well as to inspect and edit the attribut
 of individual nodes and edges. It also offers query capabilities and you can
 create new nodes (vertices) and relations (edges).
 
+![A screenshot of the Graph Visualizer user interface showing some persons and movies as circles with arrows indicting who acted in or directed a movie](../../images/graph-visualizer.png)
+
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
 created in the **Management** section under **Graphs** of the second-level
@@ -99,6 +101,8 @@ displayed.
 7. To see the neighbor nodes and the edges that connect them, right-click a node,
    click **Expand (_n_)** and then **All (_n_)**.
 
+![A screenshot of the dialog for adding nodes with two persons selected](../../images/graph-visualizer-add-nodes.png)
+
 ### Add nodes and edges using a query
 
 You can run an AQL query to add a nodes, edges, or paths of the graph to the canvas.
@@ -136,6 +140,8 @@ You can save queries for future use:
   - **Delete** a no longer needed query.
 {{< /tip >}}
 
+![A screenshot of the dialog with a query expanded and a bind variable filled in](../../images/graph-visualizer-queries.png)
+
 ### Add nodes and edges using a query based on a selection
 
 You can select nodes and edges on the canvas and then use a **Canvas Action**.
@@ -162,6 +168,8 @@ The query has access to the current selection via special bind variables.
    ```
 7. Enter a name and optionally a description for the action and click **Save**.
 
+![A screenshot of the context menu for a node showing the available Canvas Actions](../../images/graph-visualizer-menu-canvas-action.png)
+
 ### Remove nodes from the canvas
 
 You can dismiss nodes to show less nodes and edges on the canvas to focus on the
@@ -185,6 +193,8 @@ You can inspect the document attributes of node or edge as follows:
 - Double-click a node or edge to open a dialog with the properties.
 - Right-click a node to open the context menu and click **View Node** to open
   the dialog with the properties.
+
+![A screenshot of the properties dialog with the keys and values of a node](../../images/graph-visualizer-node-properties.png)
 
 ### Layouts and navigation tools
 
@@ -238,8 +248,10 @@ This allows you to create additional connections between nodes.
 {{< info >}}
 If you select two nodes before right-clicking to open the edge creation
 dialog, the `_from` and `_to` fields are automatically pre-filled.
-The order is not based on your selection sequence but the document key.
+You may need to swap the IDs as the order is not based on your selection sequence.
 {{< /info >}}
+
+![A screenshot of the dialog for creating an edge with the From and To fields filled in](../../images/graph-visualizer-create-edge.png)
 
 ### Edit node and edge properties
 
@@ -283,3 +295,5 @@ labels. All styling changes are visual-only and do not affect the underlying dat
 4. You can also do the following:
    - Clear the styling modifications.
    - See the number of nodes respectively edges on the canvas (by collection).
+
+![A screenshot of the Customization panel with a popover dialog for edge styling open](../../images/graph-visualizer-customization.png)
