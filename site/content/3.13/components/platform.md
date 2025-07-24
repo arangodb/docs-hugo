@@ -6,7 +6,6 @@ description: >-
   The ArangoDB Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
 ---
-
 {{< tip >}}
 The ArangoDB Platform & GenAI suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
@@ -20,15 +19,6 @@ ArangoDB products for machine learning, data explorations, and more. You can
 run it on-premise or in the cloud yourself on top of Kubernetes, as well as use
 ArangoDB's managed service, the [ArangoGraph Insights Platform](../arangograph/_index.md)
 to access all of the platform features.
-
-## Requirements for self-hosting
-
-- **Kubernetes**: Orchestrates the selected services that comprise the
-  ArangoDB Platform, running them in containers for safety and scalability.
-- **Helm**: A package manager for Kubernetes. It is used to install Platform
-  services with the correct versions.
-- **Licenses**: If you want to use any paid features, you need to purchase the
-  respective packages.
 
 ## Features of the ArangoDB Platform
 
@@ -69,23 +59,162 @@ to access all of the platform features.
   index type. It allows you to find similar items in your dataset.
 {{< /comment >}}
 
-<!-- TODO: Which product requires what license, free trial -->
-
-## Additional features of the ArangoDB Platform
-
-
-
-
 ## Get started with the ArangoDB Platform
 
 ### Use the ArangoDB Platform as a managed service
 
-<!-- TODO: Sign up at https://dashboard.arangodb.cloud -->
+The ArangoDB Platform is not available as a managed service yet, but it will
+become available for the [ArangoGraph Insights Platform](../arangograph/_index.md)
+in the future. Until then, you can request early access to the self-hosted
+ArangoDB Platform for testing.
 
 ### Self-host the ArangoDB Platform
 
-<!-- TODO: Adam's installer -->
+You can set up and run the ArangoDB Platform on-premises or in the cloud and
+manage this deployment yourself.
+
+#### Requirements for self-hosting
+
+- **Early access to the ArangoDB Platform**:
+  [Get in touch](https://arangodb.com/contact/) with the ArangoDB team to get
+  exclusive early access to the pre-release of the ArangoDB Platform & GenAI Suite.
+
+- **Kubernetes**: Orchestrates the selected services that comprise the
+  ArangoDB Platform, running them in containers for safety and scalability.
+
+  Set up a [Kubernetes](https://kubernetes.io/) cluster if you don't have one
+  available yet.
+
+- **kubectl**: A command line tool for communicating with a Kubernetes cluster's
+  control plane.
+
+  Install [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for applying
+  specifications such as for creating the ArangoDB Core deployment, as well as
+  for checking pods, logs, etc.
+
+- **Helm**: A package manager for Kubernetes.
+
+  You need to have [helm](https://helm.sh/docs/intro/install/) installed in order
+  to install the required certificate manager and the ArangoDB Kubernetes Operator
+  as part of the Platform setup.
+
+- **Container registry**: A repository for storing and accessing container images.
+
+  You need to have a container registry for installing the images of the Platform
+  services. It can be a local registry.
+
+{{< comment >}}
+- **Licenses**: If you want to use any paid features, you need to purchase the
+  respective packages.
+{{< /comment >}}
+
+#### Setup
+
+1. Obtain a zip package of the ArangoDB Platform for the offline installation.
+   It includes helm charts, manifests, and blobs of the container image layers.
+   You also receive a package configuration file from the ArangoDB team.
+
+2. Install the certificate manager. You can check <https://github.com/cert-manager/cert-manager>
+   for the available releases.
+
+   ```sh
+   VERSION_CERT='1.18.2' # Use a newer version if a available
+   helm repo add jetstack https://charts.jetstack.io
+   helm repo update
+
+   helm upgrade --install cert-manager \
+     --namespace cert-manager --create-namespace \
+     --version "v${VERSION_CERT}" \
+     jetstack/cert-manager \
+     --set crds.enabled=true
+   ```
+
+3. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
+   with options to enable webhooks, certificates, and the gateway feature
+
+   ```sh
+   VERSION_OPERATOR='1.2.50'
+
+   helm upgrade --install operator \
+     --namespace arangodb --create-namespace \
+     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-${VERSION_OPERATOR}.tgz" \
+     --set "webhooks.enabled=true" \
+     --set "certificate.enabled=true" \
+     --set "operator.args[0]=--deployment.feature.gateway=true" \
+     --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
+   ```
+
+4. Create an `ArangoDeployment` specification for the ArangoDB Core. See the
+   [ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
+   and the linked reference.
+
+   You need to enable the gateway feature by setting `spec.gateway.enabled` and
+   `spec.gateway.dynamic` to `true` in the specification:
+
+    ```yaml
+    apiVersion: "database.arangodb.com/v1"
+    kind: "ArangoDeployment"
+    metadata:
+      name: "platform-example"
+    spec:
+      gateway:
+        enabled: true
+        dynamic: true
+      # ...
+    ```
+
+5. Download the ArangoDB Platform CLI tool `arangodb_operator_platform` from
+   <https://github.com/arangodb/kube-arangodb/releases>.
+   It is available for Linux and macOS, for the x86-64 as well as 64-bit ARM
+   architecture (e.g. `arangodb_operator_platform_linux_amd64`).
+
+   It is recommended to rename the downloaded executable to
+   `arangodb_operator_platform` and add it to the `PATH` environment variable
+   to make it available as a command in the system.
+
+   The Platform CLI tool simplifies the further setup and later management of
+   the Platform's Kubernetes services.
+
+6. Import the zip package of the ArangoDB Platform into the container registry.
+   Replace `platform.zip` with file path of the offline installation package.
+   Replace `gcr.io/my-reg` with the address of your registry.
+
+   ```sh
+   arangodb_operator_platform package import \
+     --registry-docker-credentials \
+     gcr.io/my-reg \
+     ./platform.zip \
+     platform.imported.yaml
+   ```
+
+7. Install the package using the package configuration you received from the
+   ArangoDB team (`platform.yaml`) and the configuration generated by the
+   previous command (`platform.imported.yaml`). These configurations are merged,
+   allowing for targeted upgrades and user-defined overrides.
+
+   The package installation creates and enables various services, including
+   the unified web interface of the Platform.
+
+   ```sh
+   arangodb_operator_platform --context arangodb package install \
+     --platform.name platform-example \
+     ./platform.yaml \
+     ./platform.imported.yaml
+   ```
 
 ## Interfaces
 
-<!-- TODO: UIs, APIs (with links to generated docs) -->
+The ArangoDB Platform uses a gateway to make all its services available via a
+single port at the external address of the deployment. For a local deployment,
+the base path is `https://127.0.0.1:8529`.
+
+### Unified web interface
+
+You can access the ArangoDB Platform web interface with a browser by appending
+`/ui/` to the base path, e.g. `https://127.0.0.1:8529/ui/`.
+
+### ArangoDB Core
+
+The HTTP API of the ArangoDB Core database system is available at the base path.
+For example, the endpoint of the Cursor API for submitting AQL queries is
+`POST https://127.0.0.1:8529/_db/_system/_api/cursor`.
