@@ -5,7 +5,7 @@ description: >-
   The Natural Language to AQL Translation Service is a powerful tool that allows
   you to interact with your ArangoDB database using natural language queries
 weight: 20
-draft: true
+draft: true # Not available in pre-release
 ---
 ## Overview
 
@@ -39,12 +39,12 @@ ARANGODB_NAME=<your_database_name>
 ARANGODB_USER=<your_username>
 
 # LLM Provider Configuration
-API_PROVIDER=<provider>                 # "openai" or "triton"
+API_PROVIDER=<provider>                # "openai" or "triton"
 
 # If using OpenAI
 OPENAI_API_KEY=<your_api_key>
 OPENAI_MODEL=<model_name>              # Optional, defaults to GPT-4
-OPENAI_TEMPERATURE=<temperature>        # Optional
+OPENAI_TEMPERATURE=<temperature>       # Optional
 OPENAI_MAX_RETRIES=<retries>           # Optional
 
 # If using Triton
@@ -235,9 +235,7 @@ Common issues and solutions:
      Therefore we recommend using an AQL-capable coding model (e.g. a frontier AQL-capable
      LLM or a fine-tuned AQL-capable coding model) for better results.
 
-## Support
+## API Reference
 
-For issues and feature requests, please refer to:
-- GitHub Issues
-- Documentation
-- Community Forums
+For detailed API documentation, see the
+[Natural Language Service API Reference](https://arangoml.github.io/platform-dss-api/natural-language-service/proto/index.html).

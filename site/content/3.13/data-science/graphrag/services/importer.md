@@ -6,7 +6,6 @@ description: >-
   making it easier to analyze and understand complex information
 weight: 10
 ---
-
 {{< tag "ArangoDB Platform" >}}
 
 {{< tip >}}
@@ -287,3 +286,8 @@ You can verify that the import was successful by checking your ArangoDB database
 3. Verify that the following collections exist:
    - `knowledge_graph_vertices`: Contains the nodes of the knowledge graph i.e. documents, chunks, communities, and entities.
    - `knowledge_graph_edges`: Contains the relationships between nodes i.e. relations.
+
+## API Reference
+
+For detailed API documentation, see the
+[GraphRAG Importer API Reference](https://arangoml.github.io/platform-dss-api/graphrag_importer/proto/index.html).

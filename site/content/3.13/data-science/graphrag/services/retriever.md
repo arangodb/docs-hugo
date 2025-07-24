@@ -240,3 +240,8 @@ GET /v1/health
 - **Performance considerations**:
    - Global search may take longer due to its map-reduce process.
    - Local search is typically faster for concrete queries.
+
+## API Reference
+
+For detailed API documentation, see the
+[GraphRAG Retrievers API Reference](https://arangoml.github.io/platform-dss-api/graphrag_retrievers/proto/index.html).

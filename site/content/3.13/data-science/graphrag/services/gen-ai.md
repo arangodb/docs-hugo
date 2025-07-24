@@ -6,7 +6,6 @@ description: >-
   in your Kubernetes cluster
 weight: 5
 ---
-
 {{< tag "ArangoDB Platform" >}}
 
 {{< tip >}}

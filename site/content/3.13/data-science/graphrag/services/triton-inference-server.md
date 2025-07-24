@@ -5,7 +5,6 @@ description: >-
   Enable your GraphRAG pipeline to use private LLMs via Triton Inference Server 
 weight: 30
 ---
-
 {{< tag "ArangoDB Platform" >}}
 
 {{< tip >}}
