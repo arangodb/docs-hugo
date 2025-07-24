@@ -30,11 +30,11 @@ to access all of the platform features.
 - **Graph Analytics**: A suite of graph algorithms including PageRank,
   community detection, and centrality measures with support for GPU
   acceleration thanks to Nvidia cuGraph.
-- **GraphML**: A turnkey solution for graph machine learning for prediction
-  use cases such as fraud detection, supply chain, healthcare, retail, and
-  cyber security.
 - **GenAI Suite**: A set of paid machine learning services, APIs, and
   user interfaces that are available as a package as well as individual products.
+  - **GraphML**: A turnkey solution for graph machine learning for prediction
+    use cases such as fraud detection, supply chain, healthcare, retail, and
+    cyber security.
   - **GraphRAG**: Leverage ArangoDB's graph, document, key-value,
       full-text search, and vector search features to streamline knowledge
       extraction and retrieval.
