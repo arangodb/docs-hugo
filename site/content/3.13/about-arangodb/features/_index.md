@@ -21,6 +21,10 @@ aliases:
 
 See the full [Feature list of the ArangoDB core database system](core.md).
 
+For a scalable architecture based on Kubernetes that supports the full offering
+of ArangoDB including graph-powered machine learning and GenAI features, see
+the [Feature list of the ArangoDB Platform](platform.md).
+
 ## On-premises versus Cloud
 
 ### Fully managed cloud service

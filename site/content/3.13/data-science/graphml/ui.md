@@ -24,8 +24,8 @@ giving you a clear path from data to prediction:
 To create a new GraphML project using the ArangoDB Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **GenAI** to open the GraphML project management interface, then click **Run GraphML**.
-   ![Navigate to Data Science](../../../images/datascience-intro.jpg)  
+2. In the left-hand sidebar, click **GenAI Suite** to open the GraphML project management interface, then click **Run GraphML**.
+   ![Create GraphML Project](../../../images/create-graphml-project-ui.png)  
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
