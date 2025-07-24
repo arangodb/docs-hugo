@@ -247,9 +247,9 @@ paths:
         `cacheEnabled` defaults to `false` and should only be used for indexes that
         are known to benefit from an extra layer of caching.
 
-        The optional attribute **inBackground** can be set to `true` to create the index
-        in the background, which will not write-lock the underlying collection for
-        as long as if the index is built in the foreground.
+        The optional attribute **inBackground** can be set to `true` to keep the
+        collection/shards available for write operations by not using an exclusive
+        write lock for the duration of the index creation.
       parameters:
         - name: database-name
           in: path
