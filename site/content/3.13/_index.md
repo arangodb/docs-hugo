@@ -26,8 +26,13 @@ ArangoDB's Query Language AQL lets you use graphs, JSON documents, and search
 via a single, composable query language.
 {{% /card %}}
 
-{{% card title="Data Science" link="data-science/" %}}
-Discover the graph analytics and machine learning features of ArangoDB.
+{{% card title="GenAI & Data Science" link="data-science/" %}}
+Discover the graph-powered machine learning and GraphRAG features of ArangoDB.
+{{% /card %}}
+
+{{% card title="Platform" link="components/platform/" %}}
+The ArangoDB Platform is the umbrella for hosting the entire ArangoDB offering
+of products, including GraphML and GraphRAG.
 {{% /card %}}
 
 {{% card title="Deploy" link="deploy/" %}}
