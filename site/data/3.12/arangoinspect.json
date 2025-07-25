@@ -772,7 +772,7 @@
   },
   "javascript.startup-directory" : {
     "category" : "option",
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "The startup paths containing the JavaScript files.",
     "dynamic" : false,
@@ -1628,7 +1628,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
