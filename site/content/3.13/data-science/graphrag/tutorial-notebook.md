@@ -3,7 +3,7 @@ title: GraphRAG Notebook Tutorial
 menuTitle: Notebook Tutorial
 description: >-
   Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
-weight: 5
+weight: 10
 ---
 {{< tag "ArangoDB Platform" >}}
 
