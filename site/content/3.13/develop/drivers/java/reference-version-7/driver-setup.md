@@ -80,6 +80,9 @@ Here are examples to integrate configuration properties from different sources:
 - `jwt(String)`:                 JWT for authentication
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
+- `sslCertValue(String)`:        SSL certificate value as Base64 encoded String
+- `sslAlgorithm(String)`:        name of the SSL Trust manager algorithm (default: `SunX509`)
+- `sslProtocol(String)`:         name of the SSLContext protocol (default: `TLS`)
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
 - `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000`)
@@ -134,6 +137,9 @@ The properties read are:
 - `password`
 - `jwt`
 - `useSsl`
+- `sslCertValue`: SSL certificate as Base64 encoded string
+- `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
+- `sslProtocol`: SSLContext protocol (default: `TLS`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -151,8 +157,9 @@ The properties read are:
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
+To use SSL, you have to set the configuration `useSsl` to `true`.
+By default, the driver will use the default `SSLContext`.
+This can be changed by providing the `SSLContext` instance to be used:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -160,6 +167,20 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .sslContext(sc)
   .build();
 ```
+
+Alternatively, the driver can create a new `SSLContext` using the provided configuration. In this case,
+it is required to set the configuration `sslCertValue` with the SSL certificate value as Base64 encoded String:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslCertValue("<certificate>") // SSL certificate as Base64 encoded String
+  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
+  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java) for more details on SSL configuration.
 
 ## Connection Pooling
 
@@ -198,9 +219,9 @@ To use this feature just call the method `host(String, int)` multiple times.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .host("host1", 8529)
-  .host("host2", 8529)
-  .build();
+        .host("host1", 8529)
+        .host("host2", 8529)
+        .build();
 ```
 
 The driver is also able to acquire a list of known hosts in a cluster. For this the driver has
@@ -210,8 +231,8 @@ feature:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .acquireHostList(true)
-  .build();
+        .acquireHostList(true)
+        .build();
 ```
 
 ## Load Balancing
@@ -225,8 +246,8 @@ host than the request before.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
+        .build();
 ```
 
 The second load balancing strategy picks a random host from host list
@@ -235,8 +256,8 @@ connection is open.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
+        .build();
 ```
 
 ## Connection time to live
@@ -245,8 +266,8 @@ The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
-  .connectionTtl(5 * 60 * 1000) // ms
-  .build();
+        .connectionTtl(5 * 60 * 1000) // ms
+        .build();
 ```
 
 In this example, inactive connections are closed after 5 minutes.
@@ -259,19 +280,19 @@ If set to `null`, no automatic connection closure is performed.
 
 The driver allows configuring the underlying Vert.x WebClient to work
 with HTTP proxies. The configuration is specific to the HTTP protocol
-and uses the `io.vertx.core.net.ProxyOptions` class of 
+and uses the `io.vertx.core.net.ProxyOptions` class of
 [Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
-    // ...
-    .protocolConfig(HttpProtocolConfig.builder()
-        .proxyOptions(new ProxyOptions()
-            .setType(ProxyType.HTTP)
-            .setHost("172.28.0.1")
-            .setPort(8888)
-            .setUsername("user")
-            .setPassword("password"))
-        .build())
-    .build();
+        // ...
+        .protocolConfig(HttpProtocolConfig.builder()
+                .proxyOptions(new ProxyOptions()
+                        .setType(ProxyType.HTTP)
+                        .setHost("172.28.0.1")
+                        .setPort(8888)
+                        .setUsername("user")
+                        .setPassword("password"))
+                .build())
+        .build();
 ```

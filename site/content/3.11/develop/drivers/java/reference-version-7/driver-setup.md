@@ -80,6 +80,9 @@ Here are examples to integrate configuration properties from different sources:
 - `jwt(String)`:                 JWT for authentication
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
+- `sslCertValue(String)`:        SSL certificate value as Base64 encoded String
+- `sslAlgorithm(String)`:        name of the SSL Trust manager algorithm (default: `SunX509`)
+- `sslProtocol(String)`:         name of the SSLContext protocol (default: `TLS`)
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
@@ -133,6 +136,9 @@ The properties read are:
 - `password`
 - `jwt`
 - `useSsl`
+- `sslCertValue`: SSL certificate as Base64 encoded string
+- `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
+- `sslProtocol`: SSLContext protocol (default: `TLS`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -147,8 +153,9 @@ The properties read are:
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
+To use SSL, you have to set the configuration `useSsl` to `true`.
+By default, the driver will use the default `SSLContext`.
+This can be changed by providing the `SSLContext` instance to be used:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -156,6 +163,20 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .sslContext(sc)
   .build();
 ```
+
+Alternatively, the driver can create a new `SSLContext` using the provided configuration. In this case,
+it is required to set the configuration `sslCertValue` with the SSL certificate value as Base64 encoded String:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslCertValue("<certificate>") // SSL certificate as Base64 encoded String
+  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
+  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java) for more details on SSL configuration.
 
 ## Connection Pooling
 
@@ -269,7 +290,7 @@ If set to `null`, no automatic connection closure is performed.
 
 The driver allows configuring the underlying Vert.x WebClient to work
 with HTTP proxies. The configuration is specific to the HTTP protocol
-and uses the `io.vertx.core.net.ProxyOptions` class of 
+and uses the `io.vertx.core.net.ProxyOptions` class of
 [Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
 
 ```java
