@@ -16,7 +16,7 @@ The ArangoDB Platform is a technical infrastructure that acts as the umbrella
 for hosting the entire ArangoDB offering of products. The Platform makes it easy
 to deploy and operate the core ArangoDB database system along with any additional
 ArangoDB products for machine learning, data explorations, and more. You can
-run it on-premise or in the cloud yourself on top of Kubernetes, as well as use
+run it on-premises or in the cloud yourself on top of Kubernetes, as well as use
 ArangoDB's managed service, the [ArangoGraph Insights Platform](../arangograph/_index.md)
 to access all of the platform features.
 
@@ -118,7 +118,7 @@ manage this deployment yourself.
    for the available releases.
 
    ```sh
-   VERSION_CERT='1.18.2' # Use a newer version if a available
+   VERSION_CERT='1.18.2' # Use a newer version if available
    helm repo add jetstack https://charts.jetstack.io
    helm repo update
 
@@ -130,10 +130,10 @@ manage this deployment yourself.
    ```
 
 3. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
-   with options to enable webhooks, certificates, and the gateway feature
+   with options to enable webhooks, certificates, and the gateway feature.
 
    ```sh
-   VERSION_OPERATOR='1.2.50'
+   VERSION_OPERATOR='1.2.50' # Use a newer version if available
 
    helm upgrade --install operator \
      --namespace arangodb --create-namespace \
@@ -176,7 +176,7 @@ manage this deployment yourself.
    the Platform's Kubernetes services.
 
 6. Import the zip package of the ArangoDB Platform into the container registry.
-   Replace `platform.zip` with file path of the offline installation package.
+   Replace `platform.zip` with the file path of the offline installation package.
    Replace `gcr.io/my-reg` with the address of your registry.
 
    ```sh
@@ -206,15 +206,15 @@ manage this deployment yourself.
 
 The ArangoDB Platform uses a gateway to make all its services available via a
 single port at the external address of the deployment. For a local deployment,
-the base path is `https://127.0.0.1:8529`.
+the base URL is `https://127.0.0.1:8529`.
 
 ### Unified web interface
 
 You can access the ArangoDB Platform web interface with a browser by appending
-`/ui/` to the base path, e.g. `https://127.0.0.1:8529/ui/`.
+`/ui/` to the base URL, e.g. `https://127.0.0.1:8529/ui/`.
 
 ### ArangoDB Core
 
-The HTTP API of the ArangoDB Core database system is available at the base path.
-For example, the endpoint of the Cursor API for submitting AQL queries is
-`POST https://127.0.0.1:8529/_db/_system/_api/cursor`.
+The HTTP API of the ArangoDB Core database system is available at the base URL.
+For example, the URL of the Cursor API for submitting AQL queries (against the `_system` database) is
+`https://127.0.0.1:8529/_db/_system/_api/cursor`.

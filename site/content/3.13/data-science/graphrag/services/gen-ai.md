@@ -57,9 +57,10 @@ GPU profile that enables the service to run an LLM on GPU resources.
     }
 }
 ```
+
 {{< info >}}
 Labels are optional. Labels can be used to filter and identify services in
-the platform. If you want to use labels, define them as a key-value pair in `labels`
+the Platform. If you want to use labels, define them as a key-value pair in `labels`
 within the `env` field.
 {{< /info >}}
 
@@ -76,12 +77,12 @@ within the `env` field.
 
 {{< info >}}
 The `profiles` field is optional. If it is not set, the service is created with
-the default profile. Profiles must be present and created in the platform before
+the default profile. Profiles must be present and created in the Platform before
 they can be used. If you want to use profiles, define them as a comma-separated
 string in `profiles` within the `env` field.
 {{< /info >}}
 
-The service specific required parameters for the deployment are defined in the
+The parameters required for the deployment of each service are defined in the
 corresponding service documentation.
 
 ## Obtaining a Bearer Token
@@ -96,7 +97,7 @@ curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
 
 This returns a JWT token that you can use as your Bearer token. For more
 details about ArangoDB authentication and JWT tokens, see
-the [ArangoDB Authentication](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens)
+the [ArangoDB Authentication](../../../develop/http-api/authentication/#jwt-user-tokens)
 documentation.
 
 ## Complete Service lifecycle example
@@ -121,6 +122,7 @@ curl -X POST https://<ExternalEndpoint>:8529/gen-ai/v1/graphragimporter \
 ```
 
 **Response:**
+
 ```json
 {
   "serviceInfo": {

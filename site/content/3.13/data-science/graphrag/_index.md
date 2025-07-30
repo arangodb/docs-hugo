@@ -3,7 +3,7 @@ title: GraphRAG
 menuTitle: GraphRAG
 weight: 10
 description: >-
-  ArangoDB's GraphRAG solution combines graph-based retrieval augmented generation
+  ArangoDB's GraphRAG solution combines graph-based retrieval-augmented generation
   with Large Language Models (LLMs) for turbocharged GenAI solutions
 aliases:
   llm-knowledge-graphs
@@ -23,7 +23,7 @@ contrasting concepts, each possessing unique characteristics and functionalities
 that significantly impact the methods we employ to extract valuable insights from
 constantly expanding and complex datasets.
 
-LLMs, exemplified by OpenAI's ChatGPT, represent a class of powerful language
+LLMs, such as those powering OpenAI's ChatGPT, represent a class of powerful language
 transformers. These models leverage advanced neural networks to exhibit a
 remarkable proficiency in understanding, generating, and participating in
 contextually-aware conversations.
@@ -48,7 +48,7 @@ A knowledge graph can be thought of as a dynamic and interconnected network of
 real-world entities and the intricate relationships that exist between them.
 
 Key aspects of knowledge graphs:
-- **Domain specific knowledge**: You can tailor knowledge graphs to specific
+- **Domain-specific knowledge**: You can tailor knowledge graphs to specific
   domains and industries.
 - **Structured information**: Makes it easy to query, analyze, and extract
   meaningful insights from your data.
@@ -66,16 +66,16 @@ the following tasks:
 ## How GraphRAG works
 
 ArangoDB's GraphRAG solution democratizes the creation and usage of knowledge
-graphs with a unique combination of vector search, graphs, and LLMs (private or public)
+graphs with a unique combination of vector search, graphs, and LLMs (privately or publicly hosted)
 in a single product.
 
 The overall process of GraphRAG involves:
 - **Creating a Knowledge Graph** from raw text data.
-- **Identifying and extract entities, relationships, and their connections** within the data.
+- **Identifying and extract entities and relationships** within the data.
 - **Storing the structured information** in ArangoDB.
-- **Using this structured representation** as the foundation for efficient and accurate information retrieval.
-- **Integrating retrieval methods with LLMs (private or public)** to augment responses using both structured and unstructured data.
-- **Enhancing the reliability and depth** of responses by combining these approaches.
+- **Clustering each closely connected set of entities into semantic contexts** via topology-based algorithms and summarization.
+- **Using such semantically augmented structured representation** as the foundation for efficient and accurate information retrieval via lexical and semantic search.
+- **Integrating retrieval methods with LLMs (privately or publicly hosted)** to augment responses using both structured and unstructured data, providing accurate responses with the desired format and degree of detail for each query.
 
 GraphRAG is particularly valuable for:
 - Applications requiring in-depth knowledge retrieval

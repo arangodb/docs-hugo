@@ -39,7 +39,7 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
 
 - [**Graph Analytics**](../../graphs/graph-analytics.md):
   A service that can efficiently load graph data from the core database system
-  and run graph algorithms such as PageRank.
+  and run graph algorithms such as PageRank and many more.
 
 - [**GenAI Suite**](../../data-science/_index.md):
   ArangoDB's GraphML and GraphRAG solutions for graph-powered machine learning
