@@ -150,8 +150,8 @@ The query has access to the current selection via special bind variables.
 
 1. Create a selection. You have different options:
    - Click a node or edge to select only this element.
-   - Hold the **Shift** or **Ctrl** key and click multiple nodes and edges.
-   - Hold the **Shift** or **Ctrl** key and drag the mouse to perform a box selection.
+   - Hold the {{< kbd "Shift" >}} or {{< kbd "Ctrl" >}} key and click multiple nodes and edges.
+   - Hold the {{< kbd "Shift" >}} or {{< kbd "Ctrl" >}} key and drag the mouse to perform a box selection.
 2. Right-click the canvas, click **Canvas Action**, and select a saved action.
 3. Depending on the query, additional nodes or edges with their nodes are added
    to the canvas.
@@ -180,7 +180,7 @@ dismissed nodes and their edges back to the canvas later on.
 1. Decide which nodes you want to either dismiss or keep. You can select nodes
    in different ways:
    - Right-click a single node to select only this node.
-   - Hold the **Shift** or **Ctrl** key and click multiple nodes or drag the
+   - Hold the {{< kbd "Shift" >}} or {{< kbd "Ctrl" >}} key and click multiple nodes or drag the
      mouse to perform a box selection, then right-click one of the selected nodes.
 2. In the context menu, click **Dismiss _n_ nodes** to hide the selected nodes,
    or click **Dismiss other nodes** to only keep the selection.
