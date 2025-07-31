@@ -30,9 +30,7 @@ contextually-aware conversations.
 
 On the other hand, knowledge graphs contain carefully structured data and are
 designed to capture intricate relationships among discrete and seemingly
-unrelated information. With knowledge graphs, you can explore contextual
-insights and execute structured queries that reveal hidden connections within
-complex datasets. 
+unrelated information.
 
 ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
@@ -42,24 +40,29 @@ The GraphRAG component of the GenAI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
+GraphRAG is particularly valuable for:
+- Applications requiring in-depth knowledge retrieval
+- Contextual question answering,
+- Reasoning over interconnected information
+
 ## How GraphRAG works
 
 ArangoDB's GraphRAG solution democratizes the creation and usage of knowledge
 graphs with a unique combination of vector search, graphs, and LLMs (privately or publicly hosted)
 in a single product.
 
-The overall process of GraphRAG involves:
-- **Creating a Knowledge Graph** from raw text data.
-- **Identifying and extract entities and relationships** within the data.
-- **Storing the structured information** in ArangoDB.
-- **Clustering each closely connected set of entities into semantic contexts** via topology-based algorithms and summarization.
-- **Using such semantically augmented structured representation** as the foundation for efficient and accurate information retrieval via lexical and semantic search.
-- **Integrating retrieval methods with LLMs (privately or publicly hosted)** to augment responses using both structured and unstructured data, providing accurate responses with the desired format and degree of detail for each query.
-
-GraphRAG is particularly valuable for:
-- Applications requiring in-depth knowledge retrieval
-- Contextual question answering,
-- Reasoning over interconnected information
+The overall workflow involves the following steps:
+1. **Chunking**:
+  - Breaking down raw documents into text chunks
+2. **Entity and relation extraction for Knowledge Graph construction**:
+  - LLM-assisted description of entities and relations
+  - Entities get inserted as nodes with embeddings
+  - Relations get inserted as edges, these include: entity-entity, entity-chunk, chunk-document
+3. **Topology-based clustering into mini-topics (called communities)**:
+  - Each entity points to its community
+  - Each community points to its higher-level community, if available (mini-topics point to major topics)
+4. **LLM-assisted community summarization**:
+  - Community summarization is based on all information available about each topic
 
 ### Turn text files into a Knowledge Graph
 
@@ -103,7 +106,10 @@ Global retrieval focuses on:
 
 Global retrieval can answer questions like _**What are the main themes or topics covered in the document**_?
 
-This would involve analyzing the entire KG to identify and summarize the dominant entities, their relationships, and associated themes.
+During import, the entire Knowledge Graph is analyzed to identify and summarize
+the dominant entities, their relationships, and associated themes. Global
+retrieval uses these community summaries to answer questions from different
+perspectives, then the information gets aggregated into the final response.
 
 #### Local retrieval
 
@@ -121,7 +127,9 @@ Local retrieval is a more focused approach for:
 
 Local retrieval can answer questions like _**What is the relationship between entity X and entity Y**_?
 
-This query focuses only on the subgraph involving entities X and Y, extracting detailed relationships and context.
+Local queries use hybrid search (semantic and lexical) over the Entities
+collection, and then it expands that subgraph over related entities, relations
+(and its LLM-generated verbal descriptions), text chunks and communities.
 
 ### Private LLMs
 
