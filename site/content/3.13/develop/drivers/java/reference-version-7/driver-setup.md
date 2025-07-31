@@ -72,31 +72,31 @@ Here are examples to integrate configuration properties from different sources:
 
 `ArangoDB.Builder` has the following configuration methods:
 
-- `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
-- `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
-- `user(String)`:                username for authentication, (default: `root`)
-- `password(String)`:            password for authentication
+- `host(String, int)`:           Adds a host (hostname and port) to connect to, multiple hosts can be added
+- `protocol(Protocol)`:          Communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
+- `timeout(Integer)`:            Connection and request timeout (ms), (default `0`, no timeout)
+- `user(String)`:                Username for authentication, (default: `root`)
+- `password(String)`:            Password for authentication
 - `jwt(String)`:                 JWT for authentication
-- `useSsl(Boolean)`:             use SSL connection, (default: `false`)
+- `useSsl(Boolean)`:             Use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
-- `sslCertValue(String)`:        SSL certificate value as Base64 encoded String
-- `sslAlgorithm(String)`:        name of the SSL Trust manager algorithm (default: `SunX509`)
-- `sslProtocol(String)`:         name of the SSLContext protocol (default: `TLS`)
-- `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `maxConnections(Integer)`:     max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
-- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000`)
-- `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
-- `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
-- `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
-- `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `compression(Compression)`:      the `content-encoding` and `accept-encoding` to use for HTTP requests, possible values are: `NONE`, `DEFLATE`, `GZIP`, (default: `NONE`)
-- `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
-- `compressionLevel`:              compression level between 0 and 9, (default: `6`)
-- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
-- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
-- `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
-- `pipelining(Boolean):`:           use HTTP pipelining, (`HTTP/1.1` only, default `false`)
+- `sslCertValue(String)`:        SSL certificate value as Base64-encoded String
+- `sslAlgorithm(String)`:        Name of the SSL Trust manager algorithm (default: `SunX509`)
+- `sslProtocol(String)`:         Name of the SSLContext protocol (default: `TLS`)
+- `verifyHost(Boolean)`:         Enable hostname verification, (HTTP only, default: `true`)
+- `maxConnections(Integer)`:     Max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
+- `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000`)
+- `acquireHostList(Boolean)`:    Acquire the list of available hosts, (default: `false`)
+- `acquireHostListInterval(Integer)`:             The interval for acquiring the host list (ms), (default: `3_600_000`, 1 hour)
+- `loadBalancingStrategy(LoadBalancingStrategy)`: Load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
+- `responseQueueTimeSamples(Integer)`:            Amount of samples kept for queue time metrics, (default: `10`)
+- `compression(Compression)`:      The `content-encoding` and `accept-encoding` to use for HTTP requests, possible values are: `NONE`, `DEFLATE`, `GZIP`, (default: `NONE`)
+- `compressionThreshold(Integer)`: The minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
+- `compressionLevel`:              Compression level between 0 and 9, (default: `6`)
+- `serde(ArangoSerde)`:            Serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: Serde provider to be used to instantiate the user-data serde
+- `protocolConfig(ProtocolConfig)`: Configuration specific for the used protocol provider implementation
+- `pipelining(Boolean):`:           Use HTTP pipelining, (`HTTP/1.1` only, default `false`)
 
 ### HTTP Protocol Provider Configuration
 
@@ -137,7 +137,7 @@ The properties read are:
 - `password`
 - `jwt`
 - `useSsl`
-- `sslCertValue`: SSL certificate as Base64 encoded string
+- `sslCertValue`: SSL certificate as Base64-encoded string
 - `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
 - `sslProtocol`: SSLContext protocol (default: `TLS`)
 - `verifyHost`
@@ -158,8 +158,8 @@ The properties read are:
 ## SSL
 
 To use SSL, you have to set the configuration `useSsl` to `true`.
-By default, the driver will use the default `SSLContext`.
-This can be changed by providing the `SSLContext` instance to be used:
+By default, the driver uses the default `SSLContext`.
+To change this, you can provide the `SSLContext` instance to use:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -168,19 +168,21 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-Alternatively, the driver can create a new `SSLContext` using the provided configuration. In this case,
-it is required to set the configuration `sslCertValue` with the SSL certificate value as Base64 encoded String:
+Alternatively, the driver can create a new `SSLContext` using the provided
+configuration. In this case, it is required to set the configuration `sslCertValue`
+with the SSL certificate value as Base64-encoded String:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
   .useSsl(true)
-  .sslCertValue("<certificate>") // SSL certificate as Base64 encoded String
+  .sslCertValue("<certificate>") // SSL certificate as Base64-encoded String
   .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
   .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
   .build();
 ```
 
-See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java) for more details on SSL configuration.
+See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)
+for more details on SSL configuration.
 
 ## Connection Pooling
 
