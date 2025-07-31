@@ -1,6 +1,6 @@
 ---
 title: Feature list of the ArangoDB Platform
-menuTitle: Platform
+menuTitle: ArangoDB Platform
 weight: 10
 description: >-
   The ArangoDB Platform is a scalable architecture that gets you all features
@@ -16,7 +16,8 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
   of the ArangoDB Platform.
 
 - **Kubernetes**: An open-source container orchestration system for automating
-  software deployment, scaling, and management designed by Google.
+  software deployment, scaling, and management designed by Google. It is the
+  autopilot for operating ArangoDB clusters and the additional Platform services.
 
 - **Helm**: A package manager for Kubernetes that enables consistent, repeatable
   installations and version control.
@@ -33,7 +34,7 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
 - [**ArangoDB Core**](core.md): The ArangoDB database system with support for
   graphs, documents, key-value, full-text search, and vector search.
 
-- [**Graph visualizer**](../../graphs/graph-visualizer.md):
+- [**Graph Visualizer**](../../graphs/graph-visualizer.md):
   A web-based tool for exploring your graph data with an intuitive interface and
   sophisticated querying capabilities.
 
@@ -42,8 +43,10 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
   and run graph algorithms such as PageRank and many more.
 
 - [**GenAI Suite**](../../data-science/_index.md):
-  ArangoDB's GraphML and GraphRAG solutions for graph-powered machine learning
-  and GenAI applications.
+  ArangoDB's graph-powered machine learning (GraphML) as well as GraphRAG for
+  automatically building knowledge graphs from text and taking advantage of both
+  excerpts and higher-level summaries as context for turbocharging GenAI
+  applications.
 
 - [**Notebook servers**](../../data-science/notebook-servers.md):
   Run Jupyter kernels in the Platform for hosting interactive, Python-based

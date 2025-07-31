@@ -16,21 +16,20 @@ The ArangoDB Platform is a technical infrastructure that acts as the umbrella
 for hosting the entire ArangoDB offering of products. The Platform makes it easy
 to deploy and operate the core ArangoDB database system along with any additional
 ArangoDB products for machine learning, data explorations, and more. You can
-run it on-premises or in the cloud yourself on top of Kubernetes, as well as use
-ArangoDB's managed service, the [ArangoGraph Insights Platform](../arangograph/_index.md)
-to access all of the platform features.
+run it on-premises or in the cloud yourself on top of Kubernetes to access all
+of the platform features.
 
 ## Features of the ArangoDB Platform
 
 - **Core database system**: The ArangoDB graph database system for storing
-  interconnected data. You can use the free Community Edition or the commercial
-  Enterprise Edition.
-- **Graph visualizer**: A web-based tool for exploring your graph data with an
+  interconnected data.{{< comment >}} You can use the free Community Edition or the commercial
+  Enterprise Edition.{{< /comment >}}
+- **Graph Visualizer**: A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
 - **Graph Analytics**: A suite of graph algorithms including PageRank,
   community detection, and centrality measures with support for GPU
   acceleration thanks to Nvidia cuGraph.
-- **GenAI Suite**: A set of paid machine learning services, APIs, and
+- **GenAI Suite**: A set of machine learning services, APIs, and
   user interfaces that are available as a package as well as individual products.
   - **GraphML**: A turnkey solution for graph machine learning for prediction
     use cases such as fraud detection, supply chain, healthcare, retail, and
@@ -41,7 +40,7 @@ to access all of the platform features.
       {{< comment >}}TODO: Not available in prerelease version
       - **Txt2AQL**: Unlock natural language querying with a service that converts
         user input into ArangoDB Query Language (AQL), powered by fine-tuned
-        private or public LLMs. <!-- TODO: GenAI -->
+        private or public LLMs.
       {{< /comment >}}
       - **GraphRAG Importer**: Extract entities and relationships from large
         text-based files, converting unstructured data into a knowledge graph

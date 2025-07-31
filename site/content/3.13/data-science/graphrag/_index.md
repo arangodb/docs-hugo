@@ -82,8 +82,6 @@ GraphRAG is particularly valuable for:
 - Contextual question answering,
 - Reasoning over interconnected information
 
-![ArangoDB Knowledge Graphs and LLMs](../../../images/ArangoDB-knowledge-graphs-meets-llms.png)
-
 ### Turn text files into a Knowledge Graph
 
 The Importer service is the entry point of the GraphRAG pipeline. It takes a
@@ -175,4 +173,3 @@ The pre-release version of ArangoDB GraphRAG has the following limitations:
 - The knowledge graph generated from the file is imported into a named graph
   with a fixed name of `KnowledgeGraph` and set of collections which also have
   fixed names.
-- Natural language querying is not available.

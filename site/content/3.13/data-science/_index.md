@@ -48,7 +48,7 @@ ArangoDB Platform web interface, guiding you through the process.
 
 Alongside these components, you also get the following additional features:
 
-- [**Graph visualizer**](../graphs/graph-visualizer.md): A web-based tool for exploring your graph data with an
+- [**Graph Visualizer**](../graphs/graph-visualizer.md): A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
@@ -79,21 +79,6 @@ It starts with running a simple query that shows what is the path that goes from
 one node to another, continues with more complex tasks like graph classification,
 link prediction, and node classification, and ends with generative AI solutions
 powered by graph relationships and vector embeddings.
-
-### Foundational features
-
-ArangoDB comes with the following key features:
-
-- **Scalable**: Designed to support true scalability with high performance for
-  enterprise use cases.
-- **Simple Ingestion**: Easy integration in existing data infrastructure with
-  connectors to all leading data processing and data ecosystems.
-- **Source-Available**: Extensibility and community.
-- **NLP Support**: Built-in text processing, search, and similarity ranking.
-
-<!-- TODO: This is actually GraphML specific... -->
-
-![ArangoDB Machine Learning Architecture](../../images/machine-learning-architecture.png)
 
 ### Graph Queries
 
@@ -138,7 +123,7 @@ see [ArangoGraphML](graphml/_index.md).
 
 ### GraphRAG
 
-GraphRAG is ArangoDB's turn-key solution to turn your organization's data into
+GraphRAG is ArangoDB's turn-key solution to transform your organization's data into
 a knowledge graph and let everyone utilize the knowledge by asking questions in
 natural language.
 

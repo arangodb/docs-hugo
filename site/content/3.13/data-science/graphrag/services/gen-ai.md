@@ -3,7 +3,7 @@ title: GenAI Orchestration Service
 menuTitle: GenAI
 description: >-
   The GenAI orchestrator service installs, manages, and runs AI-based services
-  in your Kubernetes cluster
+  for GraphRAG in your Kubernetes cluster
 weight: 5
 ---
 {{< tag "ArangoDB Platform" >}}
