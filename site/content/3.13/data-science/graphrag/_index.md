@@ -42,27 +42,6 @@ The GraphRAG component of the GenAI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
-## Knowledge Graphs
-
-A knowledge graph can be thought of as a dynamic and interconnected network of
-real-world entities and the intricate relationships that exist between them.
-
-Key aspects of knowledge graphs:
-- **Domain-specific knowledge**: You can tailor knowledge graphs to specific
-  domains and industries.
-- **Structured information**: Makes it easy to query, analyze, and extract
-  meaningful insights from your data.
-- **Accessibility**: You can build a Semantic Web knowledge graph or using
-  custom data.
-
-LLMs can help distill knowledge graphs from natural language by performing
-the following tasks:
-- Entity discovery
-- Relation extraction
-- Coreference resolution
-- End-to-end knowledge graph construction
-- (Text) Embeddings
-
 ## How GraphRAG works
 
 ArangoDB's GraphRAG solution democratizes the creation and usage of knowledge

@@ -135,6 +135,27 @@ This approach combats the common problem of hallucination.
 
 To learn more, see the [GraphRAG](graphrag/_index.md) documentation.
 
+## Knowledge Graphs
+
+A knowledge graph can be thought of as a dynamic and interconnected network of
+real-world entities and the intricate relationships that exist between them.
+
+Key aspects of knowledge graphs:
+- **Domain-specific knowledge**: You can tailor knowledge graphs to specific
+  domains and industries.
+- **Structured information**: Makes it easy to query, analyze, and extract
+  meaningful insights from your data.
+- **Accessibility**: You can build a Semantic Web knowledge graph or using
+  custom data.
+
+LLMs can help distill knowledge graphs from natural language by performing
+the following tasks:
+- Entity discovery
+- Relation extraction
+- Coreference resolution
+- End-to-end knowledge graph construction
+- (Text) Embeddings
+
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
