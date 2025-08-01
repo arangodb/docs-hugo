@@ -1,10 +1,12 @@
 ---
-title: Adapters
-menuTitle: Adapters
-weight: 140
+title: ArangoDB integrations for data science
+menuTitle: Integrations
+weight: 50
 description: >-
   ArangoDB offers multiple adapters that enable seamless integration with
   data science tools
+aliases:
+  - adapters
 ---
 ArangoDB Adapters provide a convenient way to integrate ArangoDB with popular
 data science tools. By enabling you to to use your preferred programming
