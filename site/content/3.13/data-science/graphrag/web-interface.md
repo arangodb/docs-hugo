@@ -31,7 +31,8 @@ To create a new GraphRAG project using the ArangoDB Platform web interface, foll
 2. In the left-hand sidebar, click **GenAI Suite** to open the GraphRAG project management
    interface, then click **Run GraphRAG**.
 3. In the **GraphRAG projects** view, click **Add new project**.
-4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally a description for your project.
+4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally
+   a description for your project.
 5. Click the **Create project** button to finalize the creation.
 
 ## Configure the Importer service
@@ -63,7 +64,8 @@ configure and start a new importer service job. Follow the steps below.
 3. Click the **Start importer service** button.
 
 {{< info >}}
-When using the OpenRouter option, the LLM responses are served via OpenRouter while OpenAI is used for the embedding model.
+When using the OpenRouter option, the LLM responses are served via OpenRouter
+while OpenAI is used for the embedding model.
 {{< /info >}}
 
 ![Configure Importer service using OpenRouter](../../../images/graphrag-ui-configure-importer-openrouter.png)
@@ -88,8 +90,9 @@ See also the [GraphRAG Importer](./services/importer.md) service documentation.
 
 ## Upload your file
 
-1. Upload a file by dragging and dropping it in the designated upload area. The importer service
-  you previously launched parses and creates the Knowledge Graph automatically. 
+1. Upload a file by dragging and dropping it in the designated upload area.
+   The importer service you previously launched parses and creates the
+   Knowledge Graph automatically.
 2. Enter a file name.
 3. Click the **Start import** button.
 
@@ -131,7 +134,8 @@ the generated Knowledge Graph. Follow the steps below to configure the service.
 4. Click the **Start retriever service** button.
 
 {{< info >}}
-When using the OpenRouter option, the LLM responses are served via OpenRouter while OpenAI is used for the embedding model.
+When using the OpenRouter option, the LLM responses are served via OpenRouter
+while OpenAI is used for the embedding model.
 {{< /info >}}
 
 ![Configure Retriever Service using OpenRouter](../../../images/graphrag-ui-configure-retriever-openrouter.png)
