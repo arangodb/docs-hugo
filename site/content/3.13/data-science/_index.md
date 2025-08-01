@@ -127,13 +127,18 @@ GraphRAG is ArangoDB's turn-key solution to transform your organization's data i
 a knowledge graph and let everyone utilize the knowledge by asking questions in
 natural language.
 
-The overall process of GraphRAG involves:
+The overall process of GraphRAG involves the following:
 - **Creating a Knowledge Graph** from raw text data.
 - **Identifying and extract entities and relationships** within the data.
 - **Storing the structured information** in ArangoDB.
-- **Clustering each closely connected set of entities into semantic contexts** via topology-based algorithms and summarization.
-- **Using such semantically augmented structured representation** as the foundation for efficient and accurate information retrieval via lexical and semantic search.
-- **Integrating retrieval methods with LLMs (privately or publicly hosted)** to augment responses using both structured and unstructured data, providing accurate responses with the desired format and degree of detail for each query.
+- **Clustering each closely connected set of entities into semantic contexts**
+  via topology-based algorithms and summarization.
+- **Using such semantically augmented structured representation** as the
+  foundation for efficient and accurate information retrieval via lexical and
+  semantic search.
+- **Integrating retrieval methods with LLMs (privately or publicly hosted)**
+  to augment responses using both structured and unstructured data, providing
+  accurate responses with the desired format and degree of detail for each query.
 
 To learn more, see the [GraphRAG](graphrag/_index.md) documentation.
 

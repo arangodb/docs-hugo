@@ -40,9 +40,9 @@ The GraphRAG component of the GenAI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
-GraphRAG is particularly valuable for:
+GraphRAG is particularly valuable for use cases like the following:
 - Applications requiring in-depth knowledge retrieval
-- Contextual question answering,
+- Contextual question answering
 - Reasoning over interconnected information
 
 ## How GraphRAG works
@@ -53,16 +53,17 @@ in a single product.
 
 The overall workflow involves the following steps:
 1. **Chunking**:
-  - Breaking down raw documents into text chunks
+   - Breaking down raw documents into text chunks
 2. **Entity and relation extraction for Knowledge Graph construction**:
-  - LLM-assisted description of entities and relations
-  - Entities get inserted as nodes with embeddings
-  - Relations get inserted as edges, these include: entity-entity, entity-chunk, chunk-document
+   - LLM-assisted description of entities and relations
+   - Entities get inserted as nodes with embeddings
+   - Relations get inserted as edges, these include: entity-entity, entity-chunk, chunk-document
 3. **Topology-based clustering into mini-topics (called communities)**:
-  - Each entity points to its community
-  - Each community points to its higher-level community, if available (mini-topics point to major topics)
+   - Each entity points to its community
+   - Each community points to its higher-level community, if available
+     (mini-topics point to major topics)
 4. **LLM-assisted community summarization**:
-  - Community summarization is based on all information available about each topic
+   - Community summarization is based on all information available about each topic
 
 ### Turn text files into a Knowledge Graph
 
@@ -129,7 +130,7 @@ Local retrieval can answer questions like _**What is the relationship between en
 
 Local queries use hybrid search (semantic and lexical) over the Entities
 collection, and then it expands that subgraph over related entities, relations
-(and its LLM-generated verbal descriptions), text chunks and communities.
+(and its LLM-generated verbal descriptions), text chunks, and communities.
 
 ### Private LLMs
 
