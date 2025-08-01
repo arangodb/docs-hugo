@@ -5,9 +5,8 @@ weight: 5
 description: >-
   Features and improvements in the ArangoDB Platform
 ---
-
 {{< tip >}}
-The ArangoDB Platform & GenAI suite is available as a pre-release. To get
+The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -21,7 +20,7 @@ of the core ArangoDB database system along with graph-powered machine learning
 and GenAI capabilities as a single solution with a unified interface. Deploy the
 Platform on-premise or in the cloud on top of Kubernetes.
 
-To get started, explore the Platform setup documentation.
+To get started, see [Self-host the ArangoDB Platform](../components/platform.md#self-host-the-arangodb-platform).
 
 ### GenAI Suite
 
@@ -36,4 +35,5 @@ user-friendly interface seamlessly integrated into the ArangoDB Platform web int
 - MLflow integration
 - Graph Visualizer
 
-Discover the complete feature list of the ArangoDB Platform.
+To learn more, see the [GenAI Suite](../data-science/_index.md#genai-suite)
+documentation.

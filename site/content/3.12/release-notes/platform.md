@@ -20,7 +20,7 @@ of the core ArangoDB database system along with graph-powered machine learning
 and GenAI capabilities as a single solution with a unified interface. Deploy the
 Platform on-premise or in the cloud on top of Kubernetes.
 
-To get started, explore the Platform setup documentation.
+To get started, see [Self-host the ArangoDB Platform](../components/platform.md#self-host-the-arangodb-platform).
 
 ### GenAI Suite
 
@@ -35,4 +35,5 @@ user-friendly interface seamlessly integrated into the ArangoDB Platform web int
 - MLflow integration
 - Graph Visualizer
 
-Discover the complete feature list of the ArangoDB Platform.
+To learn more, see the [GenAI Suite](../data-science/_index.md#genai-suite)
+documentation.
