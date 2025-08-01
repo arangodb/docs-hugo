@@ -81,5 +81,5 @@ Calling it displays helpful information.
 
 _arangosh_ also provides auto-completion. Additional information on available 
 commands and methods is thus provided by typing the first few letters of a
-variable and then pressing the tab key. It is recommend to try this with entering
-`db.` (without pressing return) and then pressing tab.
+variable and then pressing the {{< kbd "Tab" >}} key. It is recommend to try this with entering
+`db.` (without pressing {{< kbd "Return" >}}) and then pressing {{< kbd "Tab" >}}.
