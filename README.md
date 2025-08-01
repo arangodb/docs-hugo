@@ -425,6 +425,15 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+#### Keyboard shortcuts
+
+To document hotkeys and key combinations to press in a terminal or graphical
+user interface, use the `kbd` shortcode:
+
+```markdown
+Hit {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
+```
+
 #### Cards
 
 To prominently link to other content, you may use cards:

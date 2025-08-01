@@ -9,6 +9,12 @@ aliases:
 ---
 {{< tag "ArangoDB Platform" >}}
 
+{{< tip >}}
+The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, GenAI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are
@@ -19,15 +25,13 @@ infrastructure, and can immediately start using the GraphML and GenAI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
-- **GraphRAG**: A complete solution for extracting entities
+- [GraphRAG](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
-- **GraphML**: Apply machine learning to graphs for link prediction,
+- [GraphML](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
-- **Integrations** : Use ArangoDB together with cuGraph, NetworkX, and other
-  data science tools.
-
-<!-- TODO: Add links to corresponding pages -->
+- [Integrations](integrations/_index.md): Use ArangoDB together with cuGraph,
+  NetworkX, and other data science tools.
 
 The ArangoDB Notebooks include the following:
 - Automatically connect to ArangoDB databases and GenAI platform services
@@ -44,9 +48,11 @@ The ArangoDB Notebooks include the following:
 3. After your notebook service has been deployed, you can click the ID to start
    interacting with the Jupyter interface.
 
-{{< tip >}}
-To get a better understanding of how to interact with ArangoDB using notebooks,
-open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
-{{< /tip >}}
+## Examples
 
-<!-- TODO: Add links to interactive tutorials? -->
+- To get a better understanding of how to interact with ArangoDB using notebooks,
+  open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
+- To get started with GraphRAG using ArangoDB's integrated notebook servers, see
+  the [GraphRAG Notebook Tutorial](graphrag/tutorial-notebook.md).
+- To get started with GraphML using ArangoDB's integrated notebook servers, see
+  the [GraphML Notebooks and API](graphml/notebooks-api.md) documentation.

@@ -1,12 +1,20 @@
 ---
 title: ArangoDB GraphML
 menuTitle: GraphML
-weight: 125
+weight: 15
 description: >-
   Boost your machine learning models with graph data using ArangoDB's advanced GraphML capabilities
 aliases:
   - arangographml
 ---
+{{< tag "ArangoDB Platform" >}}
+
+{{< tip >}}
+The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+exclusive early access, [get in touch](https://arangodb.com/contact/) with
+the ArangoDB team.
+{{< /tip >}}
+
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with

@@ -8,6 +8,7 @@ description: >-
 aliases:
   - ../arangographml/deploy  
 ---
+{{< tag "ArangoDB Platform" >}}
 
 ## Web interface versus Jupyter Notebooks
 
