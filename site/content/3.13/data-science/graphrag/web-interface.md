@@ -4,7 +4,7 @@ menuTitle: Web Interface
 weight: 5
 description: >-
  Learn how to create, configure, and run a full GraphRAG workflow in four steps
- using the features in the ArangoDB web interface
+ using the Platform web interface
 ---
 {{< tag "ArangoDB Platform" >}}
 
@@ -47,7 +47,7 @@ configure and start a new importer service job. Follow the steps below.
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-  the service is using **O4 Mini**.
+   the service is using **O4 Mini**.
 3. Enter your **OpenAI API Key**.
 4. Click the **Start importer service** button.
 
@@ -57,10 +57,11 @@ configure and start a new importer service job. Follow the steps below.
 {{< tab "OpenRouter" >}}
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-  the service is using **Mistral AI - Mistral Nemo**.
+   the service is using **Mistral AI - Mistral Nemo**.
 1. Enter your **OpenAI API Key**.
 2. Enter your **OpenRouter API Key**.
 3. Click the **Start importer service** button.
+
 {{< info >}}
 When using the OpenRouter option, the LLM responses are served via OpenRouter while OpenAI is used for the embedding model.
 {{< /info >}}
@@ -72,6 +73,7 @@ When using the OpenRouter option, the LLM responses are served via OpenRouter wh
 1. Select **Triton** from the **LLM API Provider** dropdown menu.
 2. Select the Triton model you want to use from the **Model** dropdown menu.
 3. Click the **Start importer service** button.
+
 {{< info >}}
 Note that you must first register your model in MLflow. The [Triton LLM Host](./services/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
@@ -114,7 +116,7 @@ the generated Knowledge Graph. Follow the steps below to configure the service.
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-  the service is using **O4 Mini**.
+   the service uses **O4 Mini**.
 3. Enter your **OpenAI API Key**.
 4. Click the **Start retriever service** button.
 
@@ -124,10 +126,10 @@ the generated Knowledge Graph. Follow the steps below to configure the service.
 {{< tab "OpenRouter" >}}
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-  the service is using **Mistral AI - Mistral Nemo**.
-1. Enter your **OpenAI API Key**.
-2. Enter your **OpenRouter API Key**.
-3. Click the **Start retriever service** button.
+   the service uses **Mistral AI - Mistral Nemo**.
+3. Enter your **OpenRouter API Key**.
+4. Click the **Start retriever service** button.
+
 {{< info >}}
 When using the OpenRouter option, the LLM responses are served via OpenRouter while OpenAI is used for the embedding model.
 {{< /info >}}
@@ -139,6 +141,7 @@ When using the OpenRouter option, the LLM responses are served via OpenRouter wh
 1. Select **Triton** from the **LLM API Provider** dropdown menu.
 2. Select the Triton model you want to use from the **Model** dropdown menu.
 3. Click the **Start retriever service** button.
+
 {{< info >}}
 Note that you must first register your model in MLflow. The [Triton LLM Host](./services/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
@@ -161,7 +164,7 @@ The Retriever service provides two search methods:
 
 ![Chat with your Knowledge Graph](../../../images/graphrag-ui-chat.png)
 
-In addition to querying the Knowledge Graph, the chat service allows you to:
+In addition to querying the Knowledge Graph, the chat service allows you to do the following:
 - Switch the search method from **Local Query** to **Global Query** and vice-versa
   directly in the chat
 - Change the retriever service

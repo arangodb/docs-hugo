@@ -30,7 +30,7 @@ via a single, composable query language.
 Discover the graph-powered machine learning and GraphRAG features of ArangoDB.
 {{% /card %}}
 
-{{% card title="Platform" link="components/platform/" %}}
+{{% card title="ArangoDB Platform" link="components/platform/" %}}
 The ArangoDB Platform is the umbrella for hosting the entire ArangoDB offering
 of products, including GraphML and GraphRAG.
 {{% /card %}}
