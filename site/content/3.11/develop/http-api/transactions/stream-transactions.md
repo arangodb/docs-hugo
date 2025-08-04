@@ -132,10 +132,6 @@ paths:
                     value will be used. Setting `lockTimeout` to `0` will make ArangoDB
                     not time out waiting for a lock.
                   type: integer
-                maxTransactionSize:
-                  description: |
-                    Transaction size limit in bytes.
-                  type: integer
       responses:
         '201':
           description: |
