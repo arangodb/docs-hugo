@@ -398,6 +398,8 @@ Cluster statistics are now integrated into the web interface as well. Additional
 menu item "Help us" has been added to easily provide the ArangoDB team feedback about
 the product.
 
+{{< comment >}} NOTE: This feature doesn't work properly anymore!
+
 The frontend may now be mounted behind a reverse proxy on a different path. For this to work
 the proxy should send a X-Script-Name header containing the path.
 
@@ -418,6 +420,7 @@ accept paths from trusted frontend proxies. Trusted proxies may be added on star
 
 To disable the check and blindly accept any x-script-name set --frontend.proxy-request-check
 to false.
+{{< /comment >}}
 
 ## Foxx improvements
 

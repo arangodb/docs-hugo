@@ -72,27 +72,30 @@ Here are examples to integrate configuration properties from different sources:
 
 `ArangoDB.Builder` has the following configuration methods:
 
-- `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
-- `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
-- `user(String)`:                username for authentication, (default: `root`)
-- `password(String)`:            password for authentication
+- `host(String, int)`:           Adds a host (hostname and port) to connect to, multiple hosts can be added
+- `protocol(Protocol)`:          Communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `timeout(Integer)`:            Connection and request timeout (ms), (default `0`, no timeout)
+- `user(String)`:                Username for authentication, (default: `root`)
+- `password(String)`:            Password for authentication
 - `jwt(String)`:                 JWT for authentication
-- `useSsl(Boolean)`:             use SSL connection, (default: `false`)
+- `useSsl(Boolean)`:             Use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
-- `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
+- `sslCertValue(String)`:        SSL certificate value as Base64-encoded String
+- `sslAlgorithm(String)`:        Name of the SSL Trust manager algorithm (default: `SunX509`)
+- `sslProtocol(String)`:         Name of the SSLContext protocol (default: `TLS`)
+- `verifyHost(Boolean)`:         Enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
-- `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
+- `maxConnections(Integer)`:     Max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
+- `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
-- `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
-- `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
-- `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
-- `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
-- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
-- `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
-- `pipelining(Boolean):`:           use HTTP pipelining, (`HTTP/1.1` only, default `false`)
+- `acquireHostList(Boolean)`:    Acquire the list of available hosts, (default: `false`)
+- `acquireHostListInterval(Integer)`:             The interval for acquiring the host list (ms), (default: `3_600_000`, 1 hour)
+- `loadBalancingStrategy(LoadBalancingStrategy)`: Load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
+- `responseQueueTimeSamples(Integer)`:            Amount of samples kept for queue time metrics, (default: `10`)
+- `serde(ArangoSerde)`:            Serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: Serde provider to be used to instantiate the user-data serde
+- `protocolConfig(ProtocolConfig)`: Configuration specific for the used protocol provider implementation
+- `pipelining(Boolean):`:           Use HTTP pipelining, (`HTTP/1.1` only, default `false`)
 
 ### HTTP Protocol Provider Configuration
 
@@ -133,6 +136,9 @@ The properties read are:
 - `password`
 - `jwt`
 - `useSsl`
+- `sslCertValue`: SSL certificate as Base64-encoded string
+- `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
+- `sslProtocol`: SSLContext protocol (default: `TLS`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -147,8 +153,9 @@ The properties read are:
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
+To use SSL, you have to set the configuration `useSsl` to `true`.
+By default, the driver uses the default `SSLContext`.
+To change this, you can provide the `SSLContext` instance to use:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -156,6 +163,22 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .sslContext(sc)
   .build();
 ```
+
+Alternatively, the driver can create a new `SSLContext` using the provided
+configuration. In this case, it is required to set the configuration `sslCertValue`
+with the SSL certificate value as Base64-encoded String:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslCertValue("<certificate>") // SSL certificate as Base64-encoded String
+  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
+  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)
+for more details on SSL configuration.
 
 ## Connection Pooling
 
@@ -194,9 +217,9 @@ To use this feature just call the method `host(String, int)` multiple times.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .host("host1", 8529)
-  .host("host2", 8529)
-  .build();
+        .host("host1", 8529)
+        .host("host2", 8529)
+        .build();
 ```
 
 The driver is also able to acquire a list of known hosts in a cluster. For this the driver has
@@ -206,8 +229,8 @@ feature:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .acquireHostList(true)
-  .build();
+        .acquireHostList(true)
+        .build();
 ```
 
 ## Load Balancing
@@ -221,8 +244,8 @@ host than the request before.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
+        .build();
 ```
 
 The second load balancing strategy picks a random host from host list
@@ -231,8 +254,8 @@ connection is open.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
+        .build();
 ```
 
 ## Active Failover
@@ -255,8 +278,8 @@ The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
-  .connectionTtl(5 * 60 * 1000) // ms
-  .build();
+        .connectionTtl(5 * 60 * 1000) // ms
+        .build();
 ```
 
 In this example, inactive connections are closed after 5 minutes.
@@ -269,21 +292,21 @@ If set to `null`, no automatic connection closure is performed.
 
 The driver allows configuring the underlying Vert.x WebClient to work
 with HTTP proxies. The configuration is specific to the HTTP protocol
-and uses the `io.vertx.core.net.ProxyOptions` class of 
+and uses the `io.vertx.core.net.ProxyOptions` class of
 [Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
-    // ...
-    .protocolConfig(HttpProtocolConfig.builder()
-        .proxyOptions(new ProxyOptions()
-            .setType(ProxyType.HTTP)
-            .setHost("172.28.0.1")
-            .setPort(8888)
-            .setUsername("user")
-            .setPassword("password"))
-        .build())
-    .build();
+        // ...
+        .protocolConfig(HttpProtocolConfig.builder()
+                .proxyOptions(new ProxyOptions()
+                        .setType(ProxyType.HTTP)
+                        .setHost("172.28.0.1")
+                        .setPort(8888)
+                        .setUsername("user")
+                        .setPassword("password"))
+                .build())
+        .build();
 ```
 
 ## VST Keep-Alive
