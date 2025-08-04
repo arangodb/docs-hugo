@@ -62,9 +62,10 @@ paths:
                   type: string
                 passwd:
                   description: |
-                    The user password as a string. If not specified, it will default to an empty
+                    The user password as a string. If not specified, it default to an empty
                     string.
                   type: string
+                  default: ""
                 active:
                   description: |
                     Whether the user account should be able to log in to the database system.
@@ -154,9 +155,10 @@ paths:
               properties:
                 passwd:
                   description: |
-                    The user password as a string. If not specified, it will default to an empty
+                    The user password as a string. If not specified, it defaults to an empty
                     string.
                   type: string
+                  default: ""
                 active:
                   description: |
                     Whether the user account should be able to log in to the database system.

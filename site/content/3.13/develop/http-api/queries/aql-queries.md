@@ -5,6 +5,8 @@ weight: 5
 description: >-
   The HTTP API for AQL queries lets you to execute, track, kill, explain, and
   validate queries written in ArangoDB's query language
+# Undocumented on purpose:
+#   PUT /_db/{database-name}/_api/cursor/{cursor-identifier}  (deprecated)
 ---
 ## Cursors
 
@@ -347,12 +349,12 @@ paths:
                     respect to the `ttl`. The cursor will be removed on the server automatically
                     after the specified amount of time. This is useful to ensure garbage collection
                     of cursors that are not fully fetched by clients.
-                    
-                    You can configure a default TTL with the `--query.registry-ttl` startup option.
-                    If not set, the defaults are 30 seconds for single servers and 600 seconds for
-                    Coordinators of a cluster deployment.
 
                     The time-to-live is renewed upon every access to the cursor.
+
+                    Default: Controlled by the `--query.registry-ttl` startup option.
+                    If not set, the defaults are 30 seconds for single servers and 600 seconds for
+                    Coordinators of a cluster deployment.
                   type: integer
                 memoryLimit:
                   description: |
@@ -362,7 +364,7 @@ paths:
                     no memory limit, but the `--query.global-memory-limit` startup option
                     may still limit it.
 
-                    You can configure a default per-query memory limit with the
+                    Default: You can configure a default per-query memory limit with the
                     `--query.memory-limit` startup option. You can only increase
                     this default memory limit if `--query.memory-limit-override`
                     is enabled.
@@ -408,15 +410,18 @@ paths:
                     maxNumberOfPlans:
                       description: |
                         Limits the maximum number of plans that are created by the AQL query optimizer.
+
+                        Default: Controlled by the `--query.optimizer-max-plans` startup option.
                       type: integer
                     maxNodesPerCallstack:
                       description: |
                         The number of execution nodes in the query plan after that stack splitting is
-                        performed to avoid a potential stack overflow. Defaults to the configured value
-                        of the startup option `--query.max-nodes-per-callstack`.
+                        performed to avoid a potential stack overflow.
 
                         This option is only useful for testing and debugging and normally does not need
                         any adjustment.
+
+                        Default: Controlled by the `--query.max-nodes-per-callstack` startup option.
                       type: integer
                     maxWarningCount:
                       description: |
@@ -427,11 +432,12 @@ paths:
                     failOnWarning:
                       description: |
                         If set to `true`, the query throws an exception and aborts instead of producing
-                        a warning. This option should be used during development to catch potential issues
+                        a warning. You should use this option during development to catch potential issues
                         early. When the attribute is set to `false`, warnings are not propagated to
                         exceptions and are returned with the query result.
-                        There is also a `--query.fail-on-warning` startup option for setting the
-                        default value for `failOnWarning`, so it does not need to be set on a per-query basis.
+
+                        Default: Controlled by the `--query.fail-on-warning` startup option,
+                        so you don't need to set it on a per-query basis.
                       type: boolean
                     allowRetry:
                       description: |
@@ -517,7 +523,7 @@ paths:
                         for the query. If you set it to `true`, the query cache is checked for a cached result
                         **if** the query cache mode is either set to `on` or `demand`.
 
-                        You can configure a default mode with the `--query.cache-mode` startup option.
+                        Default: Controlled by the `--query.cache-mode` startup option.
                       type: boolean
                     usePlanCache:
                       description: |
@@ -545,7 +551,7 @@ paths:
                         for the directory to store the temporary data in with the
                         `--temp.intermediate-results-path` startup option.
 
-                        Default value: 128 MiB, respectively the value of the
+                        Default: 128 MiB, respectively the value of the
                         `--temp.intermediate-results-spillover-threshold-memory-usage`
                         startup option.
 
@@ -570,7 +576,7 @@ paths:
                         for the directory to store the temporary data in with the
                         `--temp.intermediate-results-path` startup option.
 
-                        Default value: 5 million rows, respectively the value of the
+                        Default: 5 million rows, respectively the value of the
                         `--temp.intermediate-results-spillover-threshold-num-rows`
                         startup option.
 
@@ -588,10 +594,13 @@ paths:
                       properties:
                         rules:
                           description: |
-                            A list of to-be-included or to-be-excluded optimizer rules can be put into this
-                            attribute, telling the optimizer to include or exclude specific rules. To disable
-                            a rule, prefix its name with a `-`, to enable a rule, prefix it with a `+`. There is
-                            also a pseudo-rule `all`, which matches all optimizer rules. `-all` disables all rules.
+                            A list of optimizer rules, telling the optimizer to
+                            include or exclude specific rules. See the
+                            [List of optimizer rules](../../../aql/execution-and-performance/query-optimization.md#list-of-optimizer-rules).
+
+                            To disable a rule, prefix its name with `-`. To enable a rule,
+                            prefix it with `+`. There is also a pseudo-rule `all` that
+                            matches all optimizer rules. `-all` disables all rules.
                           type: array
                           items:
                             type: string
@@ -603,6 +612,7 @@ paths:
                         per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
                         Additionally, the query plan is returned in the `extra.plan` sub-attribute.
                       type: integer
+                      default: 0
                     satelliteSyncWait:
                       description: |
                         This parameter allows to configure how long a DB-Server has time
@@ -614,9 +624,10 @@ paths:
                     maxRuntime:
                       description: |
                         The query has to be executed within the given runtime or it is killed.
-                        The value is specified in seconds. The default value is `0.0` (no timeout).
+                        The value is specified in seconds. A value of `0.0` means no timeout.
+                        
+                        Default: Controlled by the `--query.max-runtime` startup option.
                       type: number
-                      default: 0.0
                     maxDNFConditionMembers:
                       description: |
                         A threshold for the maximum number of `OR` sub-nodes in the internal
@@ -633,28 +644,28 @@ paths:
                         condition, the conversion is aborted, and the query continues with a simplified
                         internal representation of the condition, which **cannot be used for index lookups**.
 
-                        You can set the threshold globally instead of per query with the
-                        `--query.max-dnf-condition-members` startup option.
+                        Default: Controlled by the `--query.max-dnf-condition-members` startup option
+                        to set the threshold globally instead of per query.
                       type: integer
                     maxTransactionSize:
                       description: |
                         The transaction size limit in bytes.
 
-                        You can configure the default with the `--rocksdb.max-transaction-size` startup option.
+                        Default: Controlled by the `--rocksdb.max-transaction-size` startup option.
                       type: integer
                     intermediateCommitSize:
                       description: |
                         The maximum total size of operations after which an intermediate commit is performed
                         automatically.
 
-                        You can configure the default with the `--rocksdb.intermediate-commit-size` startup option.
+                        Default: Controlled by `--rocksdb.intermediate-commit-size` startup option.
                       type: integer
                     intermediateCommitCount:
                       description: |
                         The maximum number of operations after which an intermediate commit is performed
                         automatically.
 
-                        You can configure the default with the `--rocksdb.intermediate-commit-count` startup option.
+                        Default: Controlled by the `--rocksdb.intermediate-commit-count` startup option.
                       type: integer
                     skipInaccessibleCollections:
                       description: |
@@ -665,6 +676,7 @@ paths:
                         execute AQL queries on that graph. You can naturally limit the accessible
                         results by changing the access rights of users on collections.
                       type: boolean
+                      default: false
                     allowDirtyReads:
                       description: |
                         If you set this option to `true` and execute the query against a cluster
@@ -675,7 +687,13 @@ paths:
                         namely obsolete revisions of documents because changes have not yet been
                         replicated to the follower, as well as changes to documents before they are
                         officially committed on the leader.
+
+                        The option is ignored if this operation is part of a Stream Transaction
+                        (`x-arango-trx-id` header). The `x-arango-allow-dirty-read` header set
+                        when creating the transaction decides about dirty reads for the entire
+                        transaction, not the individual read operations.
                       type: boolean
+                      default: false
       responses:
         '201':
           description: |
@@ -1870,143 +1888,6 @@ assert(response.code === 404);
 logJsonResponse(response);
 ```
 
-### Read the next batch from a cursor (deprecated)
-
-```openapi
-paths:
-  /_db/{database-name}/_api/cursor/{cursor-identifier}:
-    put:
-      operationId: getNextAqlQueryCursorBatchPut
-      description: |
-        {{</* warning */>}}
-        This endpoint is deprecated in favor its functionally equivalent POST counterpart.
-        {{</* /warning */>}}
-
-        If the cursor is still alive, returns an object with the following
-        attributes:
-
-        - `id`: a `cursor-identifier`
-        - `result`: a list of documents for the current batch
-        - `hasMore`: `false` if this was the last batch
-        - `count`: if present the total number of elements
-        - `code`: an HTTP status code
-        - `error`: a boolean flag to indicate whether an error occurred
-        - `errorNum`: a server error number (if `error` is `true`)
-        - `errorMessage`: a descriptive error message (if `error` is `true`)
-        - `extra`: an object with additional information about the query result, with
-          the nested objects `stats` and `warnings`. Only delivered as part of the last
-          batch in case of a cursor with the `stream` option enabled.
-
-        Note that even if `hasMore` returns `true`, the next call might
-        still return no documents. If, however, `hasMore` is `false`, then
-        the cursor is exhausted.  Once the `hasMore` attribute has a value of
-        `false`, the client can stop.
-
-        If the cursor is not fully consumed, the time-to-live for the cursor
-        is renewed by this API call.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: cursor-identifier
-          in: path
-          required: true
-          description: |
-            The name of the cursor
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Successfully fetched the batch.
-        '400':
-          description: |
-            The cursor identifier is missing.
-        '404':
-          description: |
-            A cursor with the specified identifier cannot be found.
-        '410':
-          description: |
-            A server which processes the query or the leader of a shard which is
-            used in the query stops responding, but the connection has not been closed.
-        '503':
-          description: |
-            A server which processes the query or the leader of a shard which is used
-            in the query is down, either for going through a restart, a failure,
-            or connectivity issues.
-      tags:
-        - Queries
-```
-
-**Examples**
-
-```curl
----
-description: |-
-  Valid request for next batch
-name: RestCursorForLimitReturnCont
----
-var url = "/_api/cursor";
-var cn = "products";
-db._drop(cn);
-db._create(cn);
-
-db.products.save({"hello1":"world1"});
-db.products.save({"hello2":"world1"});
-db.products.save({"hello3":"world1"});
-db.products.save({"hello4":"world1"});
-db.products.save({"hello5":"world1"});
-
-var url = "/_api/cursor";
-var body = {
-  query: "FOR p IN products LIMIT 5 RETURN p",
-  count: true,
-  batchSize: 2
-};
-var response = logCurlRequest('POST', url, body);
-
-response = logCurlRequest('PUT', url + '/' + response.parsedBody.id, '');
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-```curl
----
-description: |-
-  Missing identifier
-name: RestCursorMissingCursorIdentifier
----
-var url = "/_api/cursor";
-
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 400);
-
-logJsonResponse(response);
-```
-
-```curl
----
-description: |-
-  Unknown identifier
-name: RestCursorInvalidCursorIdentifier
----
-var url = "/_api/cursor/123123";
-
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 404);
-
-logJsonResponse(response);
-```
-
 ### Read a batch from the cursor again
 
 ```openapi
@@ -2674,7 +2555,7 @@ paths:
                     If set to `true`, then queries are tracked. If set to
                     `false`, neither regular queries nor slow queries are tracked.
 
-                    You can configure the default value with the `--query.tracking` startup option.
+                    Default: Controlled by the `--query.tracking` startup option.
                   type: boolean
                 trackSlowQueries:
                   description: |
@@ -2683,14 +2564,14 @@ paths:
                     `slowQueryThreshold`. In order for slow queries to be tracked, the `enabled`
                     property must also be set to `true`.
 
-                    You can configure the default value with the `--query.tracking-slow-queries` startup option.
+                    Default: Controlled by the `--query.tracking-slow-queries` startup option.
                   type: boolean
                 trackBindVars:
                   description: |
                     If set to `true`, then the bind variables used in queries are tracked
                     along with queries.
 
-                    You can configure the default value with the `--query.tracking-with-bindvars` startup option.
+                    Default: Controlled by the `--query.tracking-with-bindvars` startup option.
                   type: boolean
                 maxSlowQueries:
                   description: |
@@ -2698,13 +2579,14 @@ paths:
                     of slow queries. If the list of slow queries is full, the oldest entry
                     is discarded when additional slow queries occur.
                   type: integer
+                  default: 64
                 slowQueryThreshold:
                   description: |
                     The threshold value for treating a query as slow (in seconds).
                     A query with a runtime greater or equal to this threshold value is
                     put into the list of slow queries if slow query tracking is enabled.
 
-                    You can configure the default value with the `--query.slow-threshold` startup option.
+                    Default: Controlled by the `--query.slow-threshold` startup option.
                   type: integer
                 slowStreamingQueryThreshold:
                   description: |
@@ -2713,7 +2595,7 @@ paths:
                     threshold value is put into the list of slow queries if slow query tracking
                     is enabled.
 
-                    You can configure the default value with the `--query.slow-streaming-threshold` startup option.
+                    Default: Controlled by the `--query.slow-streaming-threshold` startup option.
                   type: integer
                 maxQueryStringLength:
                   description: |
@@ -3085,8 +2967,8 @@ paths:
                     #   explainRegisters
                     allPlans:
                       description: |
-                        if set to `true`, all possible execution plans will be returned.
-                        The default is `false`, meaning only the optimal plan will be returned.
+                        If set to `true`, all possible execution plans are returned.
+                        The default is `false`, meaning only the optimal plan is returned.
                       type: boolean
                       default: false
                     maxNumberOfPlans:
@@ -3094,6 +2976,8 @@ paths:
                         The maximum number of plans that the optimizer is allowed to
                         generate. Setting this attribute to a low value allows to put a
                         cap on the amount of work the optimizer does.
+
+                        Default: Controlled by the `--query.optimizer-max-plans` startup option.
                       type: integer
                     fullCount:
                       description: |
@@ -3109,14 +2993,16 @@ paths:
                         If set to `2`, the response includes the time it took to process
                         each optimizer rule under `stats.rules`.
                       type: integer
+                      default: 0
                     maxNodesPerCallstack:
                       description: |
                         The number of execution nodes in the query plan after that stack splitting is
-                        performed to avoid a potential stack overflow. Defaults to the configured value
-                        of the startup option `--query.max-nodes-per-callstack`.
+                        performed to avoid a potential stack overflow.
 
                         This option is only useful for testing and debugging and normally does not need
                         any adjustment.
+
+                        Default: Controlled by the `--query.max-nodes-per-callstack` startup option.
                       type: integer
                     maxWarningCount:
                       description: |
@@ -3131,8 +3017,8 @@ paths:
                         early. When the attribute is set to `false`, warnings are not propagated to
                         exceptions and are returned with the query result.
 
-                        You can use the `--query.fail-on-warning` startup option to adjust the
-                        default value for `failOnWarning` so you don't need to set it on a per-query basis.
+                        Default: Controlled by the `--query.fail-on-warning` startup option,
+                        so you don't need to set it on a per-query basis.
                       type: boolean
                     optimizer:
                       description: |
@@ -3141,10 +3027,13 @@ paths:
                       properties:
                         rules:
                           description: |
-                            A list of to-be-included or to-be-excluded optimizer rules can be put into this
-                            attribute, telling the optimizer to include or exclude specific rules. To disable
-                            a rule, prefix its name with a `-`, to enable a rule, prefix it with a `+`. There is
-                            also a pseudo-rule `all`, which matches all optimizer rules. `-all` disables all rules.
+                            A list of optimizer rules, telling the optimizer to
+                            include or exclude specific rules. See the
+                            [List of optimizer rules](../../../aql/execution-and-performance/query-optimization.md#list-of-optimizer-rules).
+
+                            To disable a rule, prefix its name with `-`. To enable a rule,
+                            prefix it with `+`. There is also a pseudo-rule `all` that
+                            matches all optimizer rules. `-all` disables all rules.
                           type: array
                           items:
                             type: string

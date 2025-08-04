@@ -149,6 +149,8 @@ paths:
                               description: |
                                 The replication factor used for every new collection in the graph.
                                 For SatelliteGraphs, it is the string `"satellite"`.
+
+                                Default: The `replicationFactor` defined by the database.
                               type: integer
                             writeConcern:
                               description: |
@@ -293,7 +295,7 @@ paths:
                   default: false
                 options:
                   description: |
-                    a JSON object to define options for creating collections within this graph.
+                    Options for creating collections within this graph.
                     It can contain the following attributes:
                   type: object
                   properties:
@@ -319,11 +321,14 @@ paths:
                         The number of shards that is used for every collection within this graph.
                         Cannot be modified later.
                       type: integer
+                      default: 1
                     replicationFactor:
                       description: |
                         The replication factor used when initially creating collections for this graph.
                         Can be set to `"satellite"` to create a SatelliteGraph, which then ignores
                         `numberOfShards`, `minReplicationFactor`, and `writeConcern`.
+
+                        Default: The `replicationFactor` defined by the database.
                       type: integer
                     writeConcern:
                       description: |
@@ -336,9 +341,6 @@ paths:
                         For SatelliteGraphs, the `writeConcern` is automatically controlled to equal the
                         number of DB-Servers and the attribute is not available. _(cluster only)_
                       type: integer
-                  required:
-                    - numberOfShards
-                    - replicationFactor
       responses:
         '201':
           description: |
@@ -1874,6 +1876,7 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -3730,8 +3733,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if the response should contain the complete
-            new version of the document.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -4378,8 +4381,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -4387,8 +4390,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -4823,8 +4826,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -4832,8 +4835,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -5258,8 +5261,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -5584,8 +5587,8 @@ paths:
           in: query
           required: false
           description: |
-            Define if the response should contain the complete
-            new version of the document.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -6331,20 +6334,22 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -6835,20 +6840,22 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -7350,10 +7357,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: If-Match
           in: header
           required: false

@@ -55,7 +55,6 @@ paths:
               type: object
               required:
                 - user
-                - passwd
               properties:
                 user:
                   description: |
@@ -63,9 +62,10 @@ paths:
                   type: string
                 passwd:
                   description: |
-                    The user password as a string. If not specified, it will default to an empty
+                    The user password as a string. If not specified, it default to an empty
                     string.
                   type: string
+                  default: ""
                 active:
                   description: |
                     Whether the user account should be able to log in to the database system.
@@ -125,7 +125,8 @@ paths:
     put:
       operationId: replaceUserData
       description: |
-        Replaces the data of an existing user. You need server access level
+        Replaces the data of an existing user. This resets the user's
+        access levels for databases and collections. You need server access level
         *Administrate* in order to execute this REST call. Additionally, users can
         change their own data.
       parameters:
@@ -151,14 +152,13 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - passwd
               properties:
                 passwd:
                   description: |
-                    The user password as a string. If not specified, it will default to an empty
+                    The user password as a string. If not specified, it defaults to an empty
                     string.
                   type: string
+                  default: ""
                 active:
                   description: |
                     Whether the user account should be able to log in to the database system.
@@ -246,8 +246,6 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - passwd
               properties:
                 passwd:
                   description: |

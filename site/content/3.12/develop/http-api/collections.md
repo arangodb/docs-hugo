@@ -51,6 +51,7 @@ paths:
             Whether system collections should be excluded from the result.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1684,15 +1685,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The request body must be a JSON object with at least the shard key
+                attributes set to some values, but it may also be a full document.
               type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    The request body must be a JSON object with at least the shard key
-                    attributes set to some values, but it may also be a full document.
-                  type: object
       responses:
         '200':
           description: |
@@ -2384,7 +2380,7 @@ paths:
       responses:
         '200':
           description: |
-            All collection properties but additionally the collection `revision`.
+            All collection properties but additionally the `revision` of the collection.
           content:
             application/json:
               schema:
@@ -2828,16 +2824,18 @@ paths:
           in: query
           required: false
           description: |
-            Whether or not to include document revision ids in the checksum calculation.
+            Whether to include document revision ids in the checksum calculation.
           schema:
             type: boolean
+            default: false
         - name: withData
           in: query
           required: false
           description: |
-            Whether or not to include document body data in the checksum calculation.
+            Whether to include document body data in the checksum calculation.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -3192,7 +3190,7 @@ paths:
 
                         - The `autoincrement` key generator generates numerical keys in ascending order,
                           the initial offset and the spacing can be configured (**note**: `autoincrement`
-                          is currently only supported for non-sharded collections).
+                          is only supported for non-sharded collections).
                           The sequence of generated keys is not guaranteed to be gap-free, because a new key
                           will be generated on every document insert attempt, not just for successful
                           inserts.
@@ -3238,11 +3236,13 @@ paths:
                         The increment value for the `autoincrement` key generator.
                         Not allowed for other key generator types.
                       type: integer
+                      default: 1
                     offset:
                       description: |
                         The initial offset value for the `autoincrement` key generator.
                         Not allowed for other key generator types.
                       type: integer
+                      default: 0
                 type:
                   description: |
                     The type of the collection to create.
@@ -3295,8 +3295,9 @@ paths:
 
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
+
+                    Default: The `replicationFactor` defined by the database.
                   type: integer
-                  default: 1
                 writeConcern:
                   description: |
                     Determines how many copies of each shard are required to be
@@ -3305,7 +3306,7 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    If `distributeShardsLike` is set, the default `writeConcern`
+                    Default: If `distributeShardsLike` is set, the default `writeConcern`
                     is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
@@ -3392,7 +3393,7 @@ paths:
                     This feature requires the
                     `distributeShardsLike` attribute of the collection to be set to the name
                     of another collection. It also requires the `shardKeys` attribute of the
-                    collection to be set to a single shard key attribute, with an additional ':'
+                    collection to be set to a single shard key attribute, with an additional `:`
                     at the end.
                     A further restriction is that whenever documents are stored or updated in the
                     collection, the value stored in the `smartJoinAttribute` must be a string.
@@ -3823,10 +3824,11 @@ paths:
           in: query
           required: false
           description: |
-            Whether or not the collection to drop is a system collection. This parameter
+            Whether the collection to drop is a system collection. This parameter
             must be set to `true` in order to drop a system collection.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |

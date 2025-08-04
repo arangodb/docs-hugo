@@ -111,7 +111,7 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one
+            If the `If-None-Match` header is given, then it must contain exactly one
             ETag. The document is returned, if it has a different revision than the
             given ETag. Otherwise an *HTTP 304* is returned.
           schema:
@@ -274,7 +274,7 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one
+            If the `If-None-Match` header is given, then it must contain exactly one
             ETag. If the current document revision is not equal to the specified ETag,
             an *HTTP 200* response is returned. If the current document revision is
             identical to the specified ETag, then an *HTTP 304* is returned.
@@ -431,8 +431,8 @@ paths:
           in: query
           required: false
           description: |
-            Additionally return the complete new document under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -440,8 +440,9 @@ paths:
           in: query
           required: false
           description: |
-            Additionally return the complete old document under the attribute `old`
-            in the result. Only available if the overwrite option is used.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result. Only available if the `overwriteMode`
+            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -906,8 +907,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            document under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -915,8 +916,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete new document under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -1270,8 +1271,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            document under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -1279,8 +1280,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete new document under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -1552,8 +1553,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            document under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -1783,9 +1784,9 @@ paths:
         software does not support payload bodies in `GET` requests.
         {{</* /warning */>}}
 
-        Returns the documents identified by their `_key` in the body objects.
+        Returns the documents identified by their `_key` attribute.
         The body of the request _must_ contain a JSON array of either
-        strings (the `_key` values to lookup) or search documents.
+        strings (the `_key` values to look up) or search documents.
 
         A search document _must_ contain at least a value for the `_key` field.
         A value for `_rev` _may_ be specified to verify whether the document
@@ -1862,8 +1863,13 @@ paths:
               description: |
                 An array of documents to retrieve.
               type: array
-              items:
-                type: object
+              #items:
+              #  type: [string, object]
+              #required:
+              #  - _key
+              #properties:
+              #  _key:
+              #    type: string
       responses:
         '200':
           description: |
@@ -1992,8 +1998,8 @@ paths:
           in: query
           required: false
           description: |
-            Additionally return the complete new document under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -2001,8 +2007,9 @@ paths:
           in: query
           required: false
           description: |
-            Additionally return the complete old document under the attribute `old`
-            in the result. Only available if the overwrite option is used.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result. Only available if the `overwriteMode`
+            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -2358,8 +2365,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            documents under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -2367,8 +2374,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete new documents under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -2623,8 +2630,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            documents under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -2632,8 +2639,8 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete new documents under the attribute `new`
-            in the result.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
             default: false
@@ -2827,10 +2834,11 @@ paths:
           in: query
           required: false
           description: |
-            Return additionally the complete previous revision of the changed
-            document under the attribute `old` in the result.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -2843,6 +2851,7 @@ paths:
             to the inputs of your request.
           schema:
             type: boolean
+            default: false
         - name: ignoreRevs
           in: query
           required: false
