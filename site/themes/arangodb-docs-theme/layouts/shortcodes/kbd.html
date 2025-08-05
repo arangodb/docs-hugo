@@ -1,0 +1,5 @@
+{{ $keys := (.Get 0) -}}
+{{ range $i, $v := split $keys " " -}}
+  {{ if gt $i 0 }}&nbsp;+&nbsp;{{ end -}}
+  <kbd>{{ $v }}</kbd>
+{{- end -}}
