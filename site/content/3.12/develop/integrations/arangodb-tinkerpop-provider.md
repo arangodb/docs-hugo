@@ -55,7 +55,38 @@ implementation 'com.arangodb:arangodb-tinkerpop-provider:x.y.z'
 
 ### Gremlin Console
 
-TODO (DE-1062)
+To use the provider in the Gremlin Console, first you need to install it:
+
+```text
+:install com.arangodb arangodb-tinkerpop-provider 3.0.0
+```
+
+Then, after restarting the console, you can use it:
+
+```text
+gremlin> conf = [
+......1>     "gremlin.graph":"com.arangodb.tinkerpop.gremlin.structure.ArangoDBGraph",
+......2>     "gremlin.arangodb.conf.graph.enableDataDefinition":"true",
+......3>     "gremlin.arangodb.conf.driver.hosts":"172.28.0.1:8529",
+......4>     "gremlin.arangodb.conf.driver.password":"test",
+......5> ]
+==>gremlin.graph=com.arangodb.tinkerpop.gremlin.structure.ArangoDBGraph
+==>gremlin.arangodb.conf.graph.enableDataDefinition=true
+==>gremlin.arangodb.conf.driver.hosts=172.28.0.1:8529
+==>gremlin.arangodb.conf.driver.password=test
+
+gremlin> graph = GraphFactory.open(conf)
+==>arangodbgraph[ArangoDBGraphConfig{dbName='_system', graphName='tinkerpop', graphType=SIMPLE, vertices=[tinkerpop_vertex], edges=[tinkerpop_edge], edgeDefinitions=[tinkerpop_edge:[tinkerpop_vertex]->[tinkerpop_vertex]], orphanCollections=[], driverConfig=ArangoConfigPropertiesImpl{prefix='', properties={password=test, hosts=172.28.0.1:8529}}}]
+
+gremlin> g = graph.traversal()
+==>graphtraversalsource[arangodbgraph[ArangoDBGraphConfig{dbName='_system', graphName='tinkerpop', graphType=SIMPLE, vertices=[tinkerpop_vertex], edges=[tinkerpop_edge], edgeDefinitions=[tinkerpop_edge:[tinkerpop_vertex]->[tinkerpop_vertex]], orphanCollections=[], driverConfig=ArangoConfigPropertiesImpl{prefix='', properties={password=test, hosts=172.28.0.1:8529}}}], standard]
+
+gremlin> g.addV("person").property("name", "marko")
+==>v[4586117]
+
+gremlin> g.V().hasLabel("person").values("name")
+==>marko
+```
 
 ### Server Plugin
 
