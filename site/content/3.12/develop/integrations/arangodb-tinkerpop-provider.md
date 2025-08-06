@@ -175,7 +175,7 @@ Configuration object.
 
 The property `gremlin.graph` must be set to: `com.arangodb.tinkerpop.gremlin.structure.ArangoDBGraph`.
 
-Configuration examples can be found [here](./src/test/java/example).
+Configuration examples can be found [here](https://github.com/arangodb/arangodb-tinkerpop-provider/tree/main/src/test/java/example).
 
 ### Graph Configuration Properties
 
@@ -642,7 +642,7 @@ log level for the logger `com.arangodb.internal.net.Communication`.
 
 ## Examples and Demo
 
-The [demo](./demo) project contains comprehensive usage examples of this library.
+The [demo](https://github.com/arangodb/arangodb-tinkerpop-provider/tree/main/demo) project contains comprehensive usage examples of this library.
 
 For additional examples, check
 the [Gremlin tutorial](https://tinkerpop.apache.org/docs/3.7.3/tutorials/getting-started/).
@@ -654,4 +654,4 @@ the [arangodb-community/arangodb-tinkerpop-provider](https://github.com/arangodb
 project.
 
 We gratefully acknowledge the efforts of [Horacio Hoyos Rodriguez](https://github.com/arcanefoam) and other contributors
-of the community repository, see [AUTHORS.md](./AUTHORS.md).
+of the community repository, see [AUTHORS.md](https://github.com/arangodb/arangodb-tinkerpop-provider/blob/main/AUTHORS.md).
