@@ -531,24 +531,24 @@ This library supports the following features:
 >-- ServiceCall: false
 > VariableFeatures
 >-- Variables: true
+>-- LongArrayValues: true
+>-- StringArrayValues: true
 >-- BooleanValues: true
 >-- ByteValues: false
 >-- DoubleValues: true
 >-- FloatValues: false
 >-- IntegerValues: true
 >-- LongValues: true
->-- MapValues: false
->-- MixedListValues: false
+>-- MapValues: true
+>-- MixedListValues: true
 >-- SerializableValues: false
 >-- StringValues: true
->-- UniformListValues: false
+>-- UniformListValues: true
 >-- BooleanArrayValues: true
 >-- ByteArrayValues: false
 >-- DoubleArrayValues: true
 >-- FloatArrayValues: false
 >-- IntegerArrayValues: true
->-- LongArrayValues: true
->-- StringArrayValues: true
 > VertexFeatures
 >-- DuplicateMultiProperties: false
 >-- AddVertices: true
@@ -575,24 +575,24 @@ This library supports the following features:
 >-- CustomIds: true
 >-- AnyIds: false
 >-- Properties: true
+>-- LongArrayValues: true
+>-- StringArrayValues: true
 >-- BooleanValues: true
 >-- ByteValues: false
 >-- DoubleValues: true
 >-- FloatValues: false
 >-- IntegerValues: true
 >-- LongValues: true
->-- MapValues: false
->-- MixedListValues: false
+>-- MapValues: true
+>-- MixedListValues: true
 >-- SerializableValues: false
 >-- StringValues: true
->-- UniformListValues: false
+>-- UniformListValues: true
 >-- BooleanArrayValues: true
 >-- ByteArrayValues: false
 >-- DoubleArrayValues: true
 >-- FloatArrayValues: false
 >-- IntegerArrayValues: true
->-- LongArrayValues: true
->-- StringArrayValues: true
 > EdgeFeatures
 >-- Upsert: false
 >-- AddEdges: true
@@ -608,24 +608,24 @@ This library supports the following features:
 >-- AnyIds: false
 > EdgePropertyFeatures
 >-- Properties: true
+>-- LongArrayValues: true
+>-- StringArrayValues: true
 >-- BooleanValues: true
 >-- ByteValues: false
 >-- DoubleValues: true
 >-- FloatValues: false
 >-- IntegerValues: true
 >-- LongValues: true
->-- MapValues: false
->-- MixedListValues: false
+>-- MapValues: true
+>-- MixedListValues: true
 >-- SerializableValues: false
 >-- StringValues: true
->-- UniformListValues: false
+>-- UniformListValues: true
 >-- BooleanArrayValues: true
 >-- ByteArrayValues: false
 >-- DoubleArrayValues: true
 >-- FloatArrayValues: false
 >-- IntegerArrayValues: true
->-- LongArrayValues: true
->-- StringArrayValues: true
 ```
 
 ## Current Limitations
