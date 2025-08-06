@@ -53,8 +53,10 @@ Alongside these components, you also get the following additional features:
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
-- [**MLflow integration**](./graphrag/services/mlflow.md): Built-in support for the popular management tool for
-  the machine learning lifecycle.
+- **Public and private LLM support**: Use public LLMs such as OpenAI
+  or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).  
+- [**MLflow integration**](./graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
+  or to run machine learning experiments as part of the ArangoDB Platform.
 - [**Integrations**](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
   and other data science tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
