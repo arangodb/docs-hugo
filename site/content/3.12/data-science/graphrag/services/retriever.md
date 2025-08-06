@@ -35,6 +35,10 @@ graph and get contextually relevant responses.
 - Integration with ArangoDB knowledge graphs
 - Configurable community hierarchy levels
 
+{{< tip >}}
+You can also use the GraphRAG Retriever service via the ArangoDB [web interface](../web-interface.md).
+{{< /tip >}}
+
 ## Search methods
 
 The Retriever service enables intelligent search and retrieval of information
@@ -228,6 +232,24 @@ You can also monitor the service health:
 
 ```bash
 GET /v1/health
+```
+
+## Verify status
+
+You can verify the state of the retriever process via the following endpoint:
+
+```
+GET /gen-ai/v1/project_by_name/<your_project>
+```
+
+For example, the `status` object found within `retrieverServices` may contain the following
+properties:
+
+```json
+"status": {
+    "status": "service_started",
+    "progress": 100,
+}
 ```
 
 ## Best Practices
