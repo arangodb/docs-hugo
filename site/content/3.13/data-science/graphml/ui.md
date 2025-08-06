@@ -133,14 +133,6 @@ of graph nodes that capture structural and feature-based information.
 - **Target Vertex Collection:** Select the collection to generate embeddings for (e.g. `movie` or `person`)
 - No label is required for training in this mode
 
-**Understanding Vertex Collections:**
-
-- **Vertex Collection**: These are the source nodes used during training.
-  They represent the full set of nodes on which features were computed (e.g. `person`, `movie`).
-- **Vertex Collection**: These are the target nodes that contain labeled data.
-  The labels in this collection are used to supervise the training process and
-  are the basis for evaluating prediction quality.
-
 The target collection is where the model's predictions are stored when running a prediction job.
 
 Once the configuration is complete, click **Begin training** to start the embedding job.
