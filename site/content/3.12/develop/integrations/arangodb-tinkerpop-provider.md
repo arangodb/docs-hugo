@@ -332,8 +332,8 @@ gremlin:
 
 If `edgeDefinitions` are not configured, the default names will be used:
 
-- `<graphName>_vertex` will be used for the vertex collection
-- `<graphName>_edge` will be used for the edge collection
+- `vertex` will be used for the vertex collection
+- `edge` will be used for the edge collection
 
 Using a `SIMPLE` graph configured as in the example above and creating a new element like:
 
@@ -343,7 +343,8 @@ graph.addVertex("person", T.id, "foo");
 ```
 [//]: <> (@formatter:on)
 
-would result in creating a document in the vertex collection `myGraph_v` with `_id` equals to `myGraph_v/foo`.
+would result in creating a document in the vertex collection `myGraph_v` with `_key` equals to `foo` (and `_id` equals
+to `myGraph_v/foo`).
 
 ### COMPLEX Graph Type
 
@@ -358,8 +359,7 @@ edge definitions. It has the following advantages:
 
 But on the other side has the following constraints:
 
-- Element IDs must have the format: `<graph>_<label>/<key>`, where:
-  - `<graph>` is the graph name
+- Element IDs must have the format: `<label>/<key>`, where:
   - `<label>` is the element label
   - `<key>` is the database document key
 - Only labels corresponding to graph collections can be used
@@ -388,7 +388,8 @@ graph.addVertex("person", T.id, "foo");
 ```
 [//]: <> (@formatter:on)
 
-would result in creating a document in the vertex collection `myGraph_person` with `_id` equals to `myGraph_person/foo`.
+would result in creating a document in the vertex collection `myGraph_person` with `_key` equals to `foo` (and `_id`
+equals to `myGraph_person/foo`).
 
 ## Naming Constraints
 
@@ -399,7 +400,6 @@ When using the ArangoDB TinkerPop Provider, be aware of these naming constraints
   cannot be used in:
   - Graph name (`gremlin.arangodb.conf.graph.name`)
   - Labels
-  - Element IDs
 
 ## Persistent Structure
 
@@ -408,7 +408,7 @@ The ArangoDB TinkerPop Provider maps TinkerPop data structures to ArangoDB data 
 ### Vertices
 
 Vertices are stored as documents in vertex collections. In a `SIMPLE` graph, all vertices are stored in a single
-collection named `<graphName>_vertex`. In a `COMPLEX` graph, vertices are stored in collections named
+collection, by default named `<graphName>_vertex`. In a `COMPLEX` graph, vertices are stored in collections named
 `<graphName>_<label>`.
 
 Each vertex document contains:
@@ -448,8 +448,8 @@ creates a document like this:
 
 ### Edges
 
-Edges are stored as documents in edge collections. In a `SIMPLE` graph, all edges are stored in a single collection
-named `<graphName>_edge`. In a `COMPLEX` graph, edges are stored in collections named `<graphName>_<label>`.
+Edges are stored as documents in edge collections. In a `SIMPLE` graph, all edges are stored in a single collection, by
+default named `<graphName>_edge`. In a `COMPLEX` graph, edges are stored in collections named `<graphName>_<label>`.
 
 Each edge document contains:
 
