@@ -50,7 +50,8 @@ All the relevant ArangoDB collections (such as documents, chunks, entities,
 relationships, and communities) created during the import process will
 have the project name as a prefix. For example, the Documents collection will
 become `<project_name>_Documents`. The Knowledge Graph will also use the project
-name as a prefix.
+name as a prefix. If no project name is specified, then all collections
+are prefixed with `default_project`, e.g., `default_project_Documents`.
 
 ### Project metadata
 
