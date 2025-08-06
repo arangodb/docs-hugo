@@ -15,8 +15,9 @@ aliases:
 
 - [**Graph Database**](../../concepts/data-models.md#graph-model):
   Native support for storing and querying graphs comprised of vertices and edges.
-  You can model complex domains because edges are documents without any
-  restrictions in complexity.
+  You can model complex domains because both vertices and edges are fully-fledged
+  documents, without restrictions in complexity. Edges can connect vertex documents
+  to express m:n relations with any depth.
 
 - [**Document Database**](../../concepts/data-models.md#document-model):
   A modern document database system that allows you to model data intuitively
@@ -73,11 +74,7 @@ aliases:
   collection, you can configure how many copies of each shard are kept in the cluster.
 
 - [**Automatic Failover Cluster**](../../deploy/cluster/_index.md#automatic-failover):
-  If a node goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
-
-{{% comment %}}
-  TODO: - **Master/Master Conflict Resolution**: What does this refer to? How does it work? MVCC?
-{{% /comment %}}
+  If a cluster node goes down, another node takes over to avoid downtime.
 
 - **Load-Balancer Support**:
   Round-robin load-balancer support for cloud environments.
@@ -111,18 +108,14 @@ aliases:
   insert-or-ignore requests, that result in one or the other operation depending
   on whether the target document exists already.
 
-- **Graph Relations**:
-  Edges can connect vertex and even edge documents to express complex m:n
-  relations with any depth, creating graphs and hyper-graphs.
-  <!-- TODO: does this refer to the data model, graph traversals, or something else? -->
-
 - [**Relational Joins**](../../aql/examples-and-query-patterns/joins.md):
   Joins similar to those in relational database systems can be leveraged to
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../../aql/graphs/traversals-explained.md) with AQL to
-  retrieve direct and indirect neighbor nodes using a fixed or variable depth.
+  Graphs can be [traversed](../../aql/graphs/traversals-explained.md) with AQL
+  in outbound, inbound, or both directions to retrieve direct and indirect
+  neighbor vertices using a fixed or variable depth.
   The [traversal order](../../aql/graphs/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
   ("Weighted Traversals"). Stop conditions for pruning paths are supported.
