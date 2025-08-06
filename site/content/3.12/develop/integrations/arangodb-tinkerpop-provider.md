@@ -90,7 +90,74 @@ gremlin> g.V().hasLabel("person").values("name")
 
 ### Server Plugin
 
-TODO (DE-1061)
+To use the provider as Gremlin Server plugin, first you need to install it:
+
+```text
+./bin/gremlin-server.sh install com.arangodb arangodb-tinkerpop-provider 3.0.0
+```
+
+Then, you need to create the graph configuration, e.g. in the file
+`conf/arangodb.yaml`:
+
+```yaml
+gremlin:
+  graph: "com.arangodb.tinkerpop.gremlin.structure.ArangoDBGraph"
+  arangodb:
+    conf:
+      graph:
+        enableDataDefinition: true
+      driver:
+        hosts:
+          - "172.28.0.1:8529"
+        password: test
+```
+
+and then configure the server to load the plugin and the graph configuration, e.g. in the file
+`conf/gremlin-server-arangodb.yaml`:
+
+```yaml
+host: 0.0.0.0
+port: 8182
+graphs: {
+  graph: conf/arangodb.yaml}
+scriptEngines: {
+  gremlin-groovy: {
+    plugins: { org.apache.tinkerpop.gremlin.server.jsr223.GremlinServerGremlinPlugin: {},
+               org.apache.tinkerpop.gremlin.tinkergraph.jsr223.TinkerGraphGremlinPlugin: {},
+               com.arangodb.tinkerpop.gremlin.jsr223.ArangoDBGremlinPlugin: {},
+               org.apache.tinkerpop.gremlin.jsr223.ImportGremlinPlugin: {classImports: [java.lang.Math], methodImports: [java.lang.Math#*]},
+               org.apache.tinkerpop.gremlin.jsr223.ScriptFileGremlinPlugin: {files: [scripts/empty-sample.groovy]}}}}
+serializers:
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphSONMessageSerializerV3, config: { ioRegistries: [org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3] }}            # application/json
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV1 }                                                                                                           # application/vnd.graphbinary-v1.0
+  - { className: org.apache.tinkerpop.gremlin.util.ser.GraphBinaryMessageSerializerV1, config: { serializeResultToString: true }}                                                                 # application/vnd.graphbinary-v1.0-stringd
+processors:
+  - { className: org.apache.tinkerpop.gremlin.server.op.session.SessionOpProcessor, config: { sessionTimeout: 28800000 }}
+  - { className: org.apache.tinkerpop.gremlin.server.op.traversal.TraversalOpProcessor}
+```
+
+and finally start the server:
+
+```shell
+./bin/gremlin-server.sh conf/gremlin-server-arangodb.yaml
+```
+
+You can now connect to the server using the Gremlin Console:
+
+```shell
+gremlin> :remote connect tinkerpop.server conf/remote.yaml
+
+gremlin> :remote console
+==>All scripts will now be sent to Gremlin Server - [localhost/127.0.0.1:8182] - type ':remote console' to return to local mode
+
+gremlin> g.addV("person").property("name", "marko")
+==>v[4587713]
+
+gremlin> g.V().hasLabel("person").values("name")
+==>marko
+```
+
+You can find the reference documentation [here](https://tinkerpop.apache.org/docs/3.7.3/reference/#_configuring_2).
 
 ## Quick Start
 
