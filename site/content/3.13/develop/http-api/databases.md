@@ -278,7 +278,7 @@ paths:
                       type: number
                 users:
                   description: |
-                    An array of user objects. The users is granted *Administrate* permissions
+                    An array of user objects. The users are granted *Administrate* permissions
                     for the new database. Users that do not exist yet are created.
                     If `users` is not specified or does not contain any users, the default user
                     `root` is used to ensure that the new database is accessible after it

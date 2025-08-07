@@ -62,7 +62,7 @@ paths:
                   type: string
                 passwd:
                   description: |
-                    The user password as a string. If not specified, it default to an empty
+                    The user password as a string. If not specified, it defaults to an empty
                     string.
                   type: string
                   default: ""

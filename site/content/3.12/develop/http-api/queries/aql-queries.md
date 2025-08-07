@@ -613,10 +613,8 @@ paths:
                       default: 0
                     satelliteSyncWait:
                       description: |
-                        This parameter allows to configure how long a DB-Server has time
-                        to bring the SatelliteCollections involved in the query into sync.
-                        The default value is `60.0` seconds. When the maximal time is reached, the query
-                        is stopped.
+                        How long a DB-Server has time (in seconds) to bring the SatelliteCollections
+                        involved in the query into sync. When the maximal time is reached, the query is stopped.
                       type: number
                       default: 60.0
                     maxRuntime:
