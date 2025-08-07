@@ -20,6 +20,7 @@ The basic operations that the GenAI orchestration service carries out are the fo
 - Install a service
 - Uninstall a service
 - Get the status of a service
+- List all installed and deployed services
 
 Each unique service has its own API endpoint for the deployment.
 
