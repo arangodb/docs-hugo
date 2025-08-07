@@ -61,8 +61,9 @@ paths:
                 timeout:
                   description: |
                     The time in seconds that the operation tries to get a consistent
-                    snapshot. The default is 120 seconds.
-                  type: number
+                    snapshot.
+                  type: integer
+                  default: 120
                 allowInconsistent:
                   description: |
                     If this flag is set to `true` and no global transaction lock can be
@@ -70,6 +71,7 @@ paths:
                     is taken. The default for this flag is `false` and in this case
                     a timeout results in an HTTP 408 error.
                   type: boolean
+                  default: false
                 force:
                   description: |
                     If this flag is set to `true` and no global transaction lock can be acquired
@@ -84,6 +86,7 @@ paths:
                     `allowInconsistent` and `force` are set to `true`, then the latter takes
                     precedence and transactions are aborted. This is only available in the cluster.
                   type: boolean
+                  default: false
       responses:
         '201':
           description: |
@@ -393,7 +396,7 @@ paths:
                   description: |
                     Configuration of remote repository. This is required when an upload
                     operation is scheduled. In this case leave out the `uploadId`
-                    attribute. See the description of the _arangobackup_ program in the manual
+                    attribute. See [Rclone Configuration](../../components/tools/arangobackup/examples/#rclone-configuration)
                     for a description of the `config` object.
                   type: object
                 uploadId:
@@ -407,6 +410,7 @@ paths:
                     Set this to `true` if a running upload operation should be aborted. In
                     this case, the only other body parameter which is needed is `uploadId`.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -523,6 +527,9 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - remoteRepository
+                - config
               properties:
                 id:
                   description: |
@@ -545,7 +552,7 @@ paths:
                   description: |
                     Configuration of remote repository. This is required when a download
                     operation is scheduled. In this case leave out the `downloadId`
-                    attribute. See the description of the _arangobackup_ program in the manual
+                    attribute. See [Rclone Configuration](../../components/tools/arangobackup/examples/#rclone-configuration)
                     for a description of the `config` object.
                   type: object
                 downloadId:
@@ -559,9 +566,7 @@ paths:
                     Set this to `true` if a running download operation should be aborted. In
                     this case, the only other body parameter which is needed is `downloadId`.
                   type: boolean
-              required:
-                - remoteRepository
-                - config
+                  default: false
       responses:
         '200':
           description: |

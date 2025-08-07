@@ -67,8 +67,9 @@ paths:
                     type: string
                 parallelism:
                   description: |
-                    The number of threads to use for indexing. Default: `2`
+                    The number of threads to use for indexing.
                   type: integer
+                  default: 2
                 inBackground:
                   description: |
                     Set this option to `true` to keep the collection/shards available for

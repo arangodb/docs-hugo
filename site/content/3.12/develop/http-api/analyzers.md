@@ -54,8 +54,8 @@ paths:
                 features:
                   description: |
                     The set of features to set on the Analyzer generated fields.
-                    The default value is an empty array.
                   type: array
+                  default: []
                   uniqueItems: true
                   items:
                     type: string
@@ -249,9 +249,9 @@ paths:
           required: false
           description: |
             The Analyzer configuration should be removed even if it is in-use.
-            The default value is `false`.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |

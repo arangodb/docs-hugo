@@ -75,15 +75,17 @@ paths:
                   type: array
                   minItems: 1
                   maxItems: 2
+                  uniqueItems: true
                   items:
                     type: string
                 geoJson:
                   description: |
-                    If a geo-spatial index on a `location` is constructed
-                    and `geoJson` is `true`, then the order within the array is longitude
-                    followed by latitude. This corresponds to the format described in
+                    If you create a geo-spatial index over a single attribute and `geoJson`
+                    is `true`, then the coordinate order within the attribute's array is
+                    longitude followed by latitude. This corresponds to the format described in
                     <http://geojson.org/geojson-spec.html#positions>
                   type: boolean
+                  default: false
                 legacyPolygons:
                   description: |
                     If `geoJson` is set to `true`, then this option controls how GeoJSON Polygons
