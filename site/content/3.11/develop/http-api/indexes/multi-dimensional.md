@@ -57,6 +57,7 @@ paths:
                     An array of attribute names used for each dimension. Array expansions are not allowed.
                   type: array
                   minItems: 1
+                  uniqueItems: true
                   items:
                     type: string
                 fieldValueTypes:

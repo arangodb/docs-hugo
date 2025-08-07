@@ -342,8 +342,8 @@ error is thrown. For information about the naming constraints for collections, s
   servers holding copies take over, usually without an error being
   reported.
 
-  When using the *Enterprise Edition* of ArangoDB the replicationFactor
-  may be set to "satellite" making the collection locally joinable
+  When using the *Enterprise Edition* of ArangoDB, the `replicationFactor`
+  may be set to `"satellite"` making the collection locally joinable
   on every DB-Server. This reduces the number of network hops
   dramatically when using joins in AQL at the costs of reduced write
   performance on these collections.

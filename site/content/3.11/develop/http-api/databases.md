@@ -196,7 +196,7 @@ paths:
 description: ''
 name: RestDatabaseGet
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
@@ -280,7 +280,7 @@ paths:
                       type: number
                 users:
                   description: |
-                    An array of user objects. The users is granted *Administrate* permissions
+                    An array of user objects. The users are granted *Administrate* permissions
                     for the new database. Users that do not exist yet are created.
                     If `users` is not specified or does not contain any users, the default user
                     `root` is used to ensure that the new database is accessible after it
@@ -341,7 +341,7 @@ description: |-
   Creating a database named `example`.
 name: RestDatabaseCreate
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "example";
 try {
   db._dropDatabase(name);
@@ -372,7 +372,7 @@ description: |-
   the newly created database.
 name: RestDatabaseCreateUsers
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "mydb";
 try {
   db._dropDatabase(name);
@@ -449,7 +449,7 @@ paths:
 description: ''
 name: RestDatabaseDrop
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "example";
 
 db._createDatabase(name);
