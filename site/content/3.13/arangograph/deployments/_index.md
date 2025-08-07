@@ -176,7 +176,7 @@ end-to-end audit traceability for a given user, as well as integration with
 ArangoGraph SSO.
 
 You can enable this feature in the **Deployment details** section by turning
-the **Use auto login for database UI toggle** on. Please note
+the **USE AUTO LOGIN FOR DATABASE UI** toggle on. Please note
 that it may take a few minutes to get activated.
 Once enabled, you no longer have to fill in the `root` user and password of
 your ArangoDB deployment.
