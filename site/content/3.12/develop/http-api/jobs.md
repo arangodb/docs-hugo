@@ -624,6 +624,7 @@ paths:
             or `done` as `job-id` to list jobs.
           schema:
             type: number
+            default: 100
       responses:
         '200':
           description: |

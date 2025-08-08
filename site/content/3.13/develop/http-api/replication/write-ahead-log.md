@@ -270,9 +270,10 @@ paths:
           description: |
             Whether operations for all databases should be included. If set to `false`,
             only the operations for the current database are included. The value `true` is
-            only valid on the `_system` database. The default is `false`.
+            only valid on the `_system` database.
           schema:
             type: boolean
+            default: false
         - name: from
           in: query
           required: false

@@ -249,14 +249,15 @@ paths:
                   description: |
                     The name of the task.
                   type: string
+                  default: "user-defined task"
                 command:
                   description: |
                     The JavaScript code to be executed.
                   type: string
                 params:
                   description: |
-                    The parameters to be passed to the command.
-                  type: string
+                    The value to be passed to the command.
+                    It can be of any type.
                 period:
                   description: |
                     The number of seconds between the executions.
@@ -265,6 +266,7 @@ paths:
                   description: |
                     The number of seconds for the initial delay.
                   type: integer
+                  default: 0
       responses:
         '200':
           description: |
@@ -397,8 +399,8 @@ paths:
                   type: string
                 params:
                   description: |
-                    The parameters to be passed to the command.
-                  type: string
+                    The value to be passed to the command.
+                    It can be of any type.
                 period:
                   description: |
                     The number of seconds between the executions.
@@ -407,6 +409,7 @@ paths:
                   description: |
                     The number of seconds for the initial delay.
                   type: integer
+                  default: 0
       responses:
         '200':
           description: |

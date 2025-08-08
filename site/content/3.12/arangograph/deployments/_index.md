@@ -156,10 +156,10 @@ periodically to improve security.
 
 1. Navigate to the __Deployment__ for which you want to enable an automatic
    password rotation for the root user.
-2. In the __Quick start__ section, click the button with the __gear__ icon next to the
+2. In the __Deployment details__ section, click the button with the __gear__ icon next to the
    __ROOT PASSWORD__.
 3. In the __Password Settings__ dialog, turn the automatic password rotation on
-   and click the __Confirm__ button.
+   and click the __Save__ button.
 
    ![ArangoGraph Deployment Password Rotation](../../../images/arangograph-deployment-password-rotation.png)
 4. You can expand the __Root password__ panel to see when the password was
@@ -175,7 +175,8 @@ are shared between ArangoGraph and your database, you can benefit from
 end-to-end audit traceability for a given user, as well as integration with
 ArangoGraph SSO.
 
-You can enable this feature in the **Password Settings** dialog. Please note
+You can enable this feature in the **Deployment details** section by turning
+the **USE AUTO LOGIN FOR DATABASE UI** toggle on. Please note
 that it may take a few minutes to get activated.
 Once enabled, you no longer have to fill in the `root` user and password of
 your ArangoDB deployment.
@@ -201,7 +202,7 @@ the ArangoDB database web interface as all permissions are managed by the
 ArangoGraph platform.
 {{< /warning >}}
 
-Before getting started, make sure you are signed into ArangoGraph as a user
+Before getting started, make sure you are signed in to ArangoGraph as a user
 with one of the following permissions in your project:
 - `data.deployment.full-access`
 - `data.deployment.read-only-access`

@@ -26,100 +26,44 @@ creates a structured knowledge graph. This graph is then imported into your
 ArangoDB database, where you can query and analyze the relationships between
 different concepts in your document with the Retriever service.
 
-## What ArangoDB Collections look like after import
+{{< tip >}}
+You can also use the GraphRAG Importer service via the ArangoDB [web interface](../web-interface.md).
+{{< /tip >}}
 
-The Importer creates several collections in ArangoDB to store different
-aspects of your knowledge graph. See below a detailed explanation of each
-collection.
+## Creating a new project
 
-### Documents collection
+To create a new GraphRAG project, use the `CreateProject` method by sending a
+`POST` request to the `genai/v1/project` endpoint. You must provide a unique
+`project_name` and a `project_type` in the request body. Optionally, you can
+provide a `project_description`.
 
-- **Purpose**: Stores the original text document that were processed.
-- **Key Fields**:
-  - `_key`: Unique identifier for the document.
-  - `content`: The full text content of the document.
-- **Usage**: Acts as the root level container for all document-related data.
+```curl
+curl -X POST "https://<ExternalEndpoint>:8529/gen-ai/v1/project" \
+-H "Content-Type: application/json" \
+-d '{
+  "project_name": "docs",
+  "project_type": "graphrag",
+  "project_description": "A documentation project for GraphRAG."
+}'
+```
+All the relevant ArangoDB collections (such as documents, chunks, entities,
+relationships, and communities) created during the import process will
+have the project name as a prefix. For example, the Documents collection will
+become `<project_name>_Documents`. The Knowledge Graph will also use the project
+name as a prefix. If no project name is specified, then all collections
+are prefixed with `default_project`, e.g., `default_project_Documents`.
 
-### Chunks Collection
+### Project metadata
 
-- **Purpose**: Stores text chunks extracted from documents for better processing and analysis.
-- **Key Fields**:
-  - `_key`: Unique identifier for the chunk.
-  - `content`: The text content of the chunk.
-  - `tokens`: Number of tokens in the chunk.
-  - `chunk_order_index`: Position of the chunk in the original document.
-- **Usage**: Enables granular analysis of document content and maintains document structure.
+Additional project metadata is accessible via the following endpoint, replacing
+`<your_project>` with the actual name of your project:
 
-### Entities Collection
+```
+GET /gen-ai/v1/project_by_name/<your_project>
+```
 
-- **Purpose**: Stores entities extracted from the text, such as persons, organizations, concepts, etc.
-- **Key Fields**:
-  - `_key`: Unique identifier for the entity.
-  - `entity_name`: Name of the entity.
-  - `entity_type`: Type of entity (e.g., person, organization).
-  - `description`: Description of the entity.
-  - `embedding`: Vector representation of the entity for similarity search.
-  - `clusters`: Community clusters the entity belongs to.
-- **Usage**: Enables entity-based querying and semantic search.
-
-### Communities Collection
-
-- **Purpose**: Stores thematic clusters of related entities that form meaningful
-  communities within your documents. Each community represents a cohesive group
-  of concepts, characters, or themes that are closely related and interact with
-  each other. These communities help identify and analyze the main narrative
-  threads, character relationships, and thematic elements in your documents.
-- **Key Fields**:
-  - `_key`: Unique identifier for the community.
-  - `title`: Cluster ID to which this community belongs to.
-  - `report_string`: A detailed markdown-formatted analysis that explains the
-    community's theme, key relationships, and significance. This includes
-    sections on main characters, their roles, relationships, and the impact of key events or locations.
-  - `report_json`: Structured data containing:
-    - `title`: The main theme or focus of the community.
-    - `summary`: A concise overview of the community's central narrative.
-    - `rating`: A numerical score indicating the community's significance (the higher, the better).
-    - `rating_explanation`: Justification for the rating.
-    - `findings`: An array of detailed analyses, each containing a summary and explanation of key aspects.
-  - `level`: The hierarchical level of the community (e.g., `1` for top-level communities).
-  - `occurrence`: A normalized score (ranging from `0` to `1`) showing the relative frequency with which this community is mentioned or identified throughout your documents. A value close to 1 means this community is very common in your data and a value near `0` means it is rare.
-  - `sub_communities`: References to more specific sub-communities that are part of this larger community.
-- **Usage**: Enables you to:
-  - Identify and analyze major narrative threads and themes.
-  - Understand complex relationships between characters and concepts.
-  - Track the significance and impact of different story elements.
-  - Navigate through hierarchical relationships between themes.
-  - Discover patterns and recurring elements in your documents.
-
-### Relations Collection
-
-- **Purpose**: Stores relationships between different nodes in the graph.
-- **Key Fields**:
-  - `_from`: Source node reference.
-  - `_to`: Target node reference.
-  - `type`: Type of relationship (e.g., **PART_OF**, **MENTIONED_IN**, **RELATED_TO**, **IN_COMMUNITY**).
-  - Additional metadata depending on relationship type (Entity to Entity):
-    - `weight`: Relationship strength (the higher, the better).
-    - `description`: Description of the relationship.
-    - `source_id`: Source of the relationship.
-    - `order`: Order of the relationship.
-- **Usage**: Enables traversal and analysis of relationships between different elements.
-
-### Relationship Types
-
-The system creates several types of relationships between nodes:
-
-1. **PART_OF**: Links chunks to their parent documents.
-2. **MENTIONED_IN**: Connects entities to the chunks where they are mentioned.
-3. **RELATED_TO**: Shows relationships between different entities.
-4. **IN_COMMUNITY**: Associates entities with their community groups.
-
-### Vector Search Capabilities
-
-The system automatically creates vector indexes on the `embedding` field in the Entities collection, enabling:
-- Semantic similarity search
-- Nearest neighbor queries
-- Efficient vector-based retrieval
+The endpoint provides comprehensive metadata about your project's components,
+including its importer and retriever services and their status.
 
 ## Deployment options
 
@@ -279,13 +223,126 @@ to send an input file to the Importer service:
 
 ## Verifying the import
 
-You can verify that the import was successful by checking your ArangoDB database:
+You can verify the state of the import process via the following endpoint:
+
+```
+GET /gen-ai/v1/project_by_name/<your_project>
+```
+
+For example, the `status` object found within `importerServices` may contain the following
+properties:
+
+```json
+"status": {
+    "status": "service_completed",
+    "progress": 100,
+    "message": ""
+}
+```
+
+Alternatively, you can also see if the import was successful by checking your ArangoDB database:
 
 1. Connect to your ArangoDB instance.
 2. Navigate to the specified database.
 3. Verify that the following collections exist:
    - `knowledge_graph_vertices`: Contains the nodes of the knowledge graph i.e. documents, chunks, communities, and entities.
    - `knowledge_graph_edges`: Contains the relationships between nodes i.e. relations.
+
+
+## What ArangoDB Collections look like after import
+
+The Importer creates several collections in ArangoDB to store different
+aspects of your knowledge graph. See below a detailed explanation of each
+collection. All collections are using the name of your project as a prefix.
+
+### Documents collection
+
+- **Purpose**: Stores the original text document that were processed.
+- **Key Fields**:
+  - `_key`: Unique identifier for the document.
+  - `content`: The full text content of the document.
+- **Usage**: Acts as the root level container for all document-related data.
+
+### Chunks Collection
+
+- **Purpose**: Stores text chunks extracted from documents for better processing and analysis.
+- **Key Fields**:
+  - `_key`: Unique identifier for the chunk.
+  - `content`: The text content of the chunk.
+  - `tokens`: Number of tokens in the chunk.
+  - `chunk_order_index`: Position of the chunk in the original document.
+- **Usage**: Enables granular analysis of document content and maintains document structure.
+
+### Entities Collection
+
+- **Purpose**: Stores entities extracted from the text, such as persons, organizations, concepts, etc.
+- **Key Fields**:
+  - `_key`: Unique identifier for the entity.
+  - `entity_name`: Name of the entity.
+  - `entity_type`: Type of entity (e.g., person, organization).
+  - `description`: Description of the entity.
+  - `embedding`: Vector representation of the entity for similarity search.
+  - `clusters`: Community clusters the entity belongs to.
+- **Usage**: Enables entity-based querying and semantic search.
+
+### Communities Collection
+
+- **Purpose**: Stores thematic clusters of related entities that form meaningful
+  communities within your documents. Each community represents a cohesive group
+  of concepts, characters, or themes that are closely related and interact with
+  each other. These communities help identify and analyze the main narrative
+  threads, character relationships, and thematic elements in your documents.
+- **Key Fields**:
+  - `_key`: Unique identifier for the community.
+  - `title`: Cluster ID to which this community belongs to.
+  - `report_string`: A detailed markdown-formatted analysis that explains the
+    community's theme, key relationships, and significance. This includes
+    sections on main characters, their roles, relationships, and the impact of key events or locations.
+  - `report_json`: Structured data containing:
+    - `title`: The main theme or focus of the community.
+    - `summary`: A concise overview of the community's central narrative.
+    - `rating`: A numerical score indicating the community's significance (the higher, the better).
+    - `rating_explanation`: Justification for the rating.
+    - `findings`: An array of detailed analyses, each containing a summary and explanation of key aspects.
+  - `level`: The hierarchical level of the community (e.g., `1` for top-level communities).
+  - `occurrence`: A normalized score (ranging from `0` to `1`) showing the relative frequency with which this community is mentioned or identified throughout your documents. A value close to 1 means this community is very common in your data and a value near `0` means it is rare.
+  - `sub_communities`: References to more specific sub-communities that are part of this larger community.
+- **Usage**: Enables you to:
+  - Identify and analyze major narrative threads and themes.
+  - Understand complex relationships between characters and concepts.
+  - Track the significance and impact of different story elements.
+  - Navigate through hierarchical relationships between themes.
+  - Discover patterns and recurring elements in your documents.
+
+### Relations Collection
+
+- **Purpose**: Stores relationships between different nodes in the graph.
+- **Key Fields**:
+  - `_from`: Source node reference.
+  - `_to`: Target node reference.
+  - `type`: Type of relationship (e.g., **PART_OF**, **MENTIONED_IN**, **RELATED_TO**, **IN_COMMUNITY**).
+  - Additional metadata depending on relationship type (Entity to Entity):
+    - `weight`: Relationship strength (the higher, the better).
+    - `description`: Description of the relationship.
+    - `source_id`: Source of the relationship.
+    - `order`: Order of the relationship.
+- **Usage**: Enables traversal and analysis of relationships between different elements.
+
+### Relationship Types
+
+The system creates several types of relationships between nodes:
+
+1. **PART_OF**: Links chunks to their parent documents.
+2. **MENTIONED_IN**: Connects entities to the chunks where they are mentioned.
+3. **RELATED_TO**: Shows relationships between different entities.
+4. **IN_COMMUNITY**: Associates entities with their community groups.
+
+### Vector Search Capabilities
+
+The system automatically creates vector indexes on the `embedding` field in the Entities collection, enabling:
+- Semantic similarity search
+- Nearest neighbor queries
+- Efficient vector-based retrieval
 
 ## API Reference
 
