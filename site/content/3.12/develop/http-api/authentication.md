@@ -270,6 +270,162 @@ jwtgen -s <my-secret> -e 3600 -v -a "HS256" -c 'iss=arangodb' -c 'server_id=mycl
 curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 'iss=arangodb' -c 'server_id=myclient')" http://<database-ip>:8529/_api/version
 ```
 
+## Access tokens
+
+Access tokens act like passwords in authentication. Unlike normal credentials
+comprised of a username and a password, you can create multiple access tokens
+for a single user account. This is akin to having multiple passwords. You can
+set a desired expiration date for each access token (typically a few weeks or months)
+and individually revoke tokens on the server-side if necessary. You can use
+every access tokens for a different purpose, like different services that access
+ArangoDB using the same account, for fine-grained access control without having
+to change the password if you want to revoke access for one of the services.
+
+You can use access tokens instead of the password to generate
+[JWT session tokens](#create-a-jwt-session-token) (recommended) or use them
+directly as password in [HTTP Basic Authentication](#http-basic-authentication)
+(for backwards compatibility).
+
+You need to create any user accounts first that you want to add access tokens to,
+see [Create a user](users.md#create-a-user).
+
+### Create an access token
+
+```openapi
+paths:
+  /_api/token/{user}:
+      operationId: createAccessToken
+      description: |
+        TODO
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to create an access token for a
+        different user. You can always create an access token for yourself,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - valid_until
+              properties:
+                name:
+                  description: |
+                    A name for the access token to make identification easier,
+                    like a short description.
+                  type: string
+                valid_until:
+                  description: |
+                    A Unix timestamp in seconds to set the expiration date and time.
+                  type: integer
+      responses:
+        '200':
+          description: |
+            Is returned if the user data can be replaced by the server.
+          content:
+            application/json:
+              schema:
+                required:
+                  - id
+                  - name
+                  - valid_until
+                  - created_at
+                  - fingerprint
+                  - active
+                  - token
+                type: object
+                properties:
+                  id:
+                    description: |
+                      A unique identifier. It is only needed for calling the
+                      endpoint for revoking an access token.
+                    type: integer
+                  name:
+                    description: |
+                      The name for the access token you specified to make
+                      identification easier.
+                    type: string
+                  valid_until:
+                    description: |
+                      A Unix timestamp in seconds with the configured expiration date and time.
+                    type: integer
+                  created_at:
+                    description: |
+                      A Unix timestamp in seconds with the creation date and time of the access token.
+                    type: integer
+                  fingerprint:
+                    description: |
+                      The beginning and end of the access token string, showing the
+                      version and the last few hexadecimal digits for identification,
+                      like `v1...54227d`.
+                    type: string
+                  active:
+                    description: |
+                      Whether the access token is valid based on the expiration date
+                      and time (`valid_until`).
+                    type: boolean
+                  token:
+                    description: |
+                      The actual access token string. Store it in a secure manner.
+                      This is the only time it is shown to you.
+                    type: string
+        '400':
+          description: |
+            The JSON representation is malformed or mandatory data is missing from the request
+        '401':
+          description: |
+            Returned if you have *No access* database access level to the *_system*
+            database.
+        '403':
+          description: |
+            Returned if you have *No access* server access level.
+        '404':
+          description: |
+            The specified user does not exist
+        '409':
+          description: |
+            Duplicate access token `name`.
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  Create an access token for the `root` user:
+name: RestAccessTokenCreate
+---
+var nextYear = new Date().getFullYear() + 1;
+var expires = Date.UTC(nextYear, 6, 1) / 1000;
+
+var url = "/_api/token/root";
+var body = {
+  name: "Token for Service A",
+  valid_until: expires,
+};
+
+var response = logCurlRequest('POST', url, body);
+assert(response.code === 200);
+assert(response.parsedBody.active === true);
+logJsonResponse(response);
+
+db._drop(cn);
+```
+
+### List all access tokens
+
+### Delete an access token
+
 ## Hot-reload JWT secrets
 
 {{< tip >}}
