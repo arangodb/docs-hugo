@@ -50,7 +50,7 @@ ArangoDB product offering with a unified interface in a Kubernetes cluster.
 It is offered for self-hosting on-prem or in the cloud and as a managed service,
 superseding the ArangoGraph Insights Platform.
 
-See [The ArangoDB Platform](../components/platform.md) for details.
+See [The ArangoDB Platform](../../platform/about-the-platform/_index.md) for details.
 
 ## How to deploy
 

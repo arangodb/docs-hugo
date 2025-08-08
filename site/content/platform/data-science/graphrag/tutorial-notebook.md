@@ -201,7 +201,7 @@ pprint(importerResponse)
 ### Visualize and interact with the Knowledge Graph
 
 Once the importer service has processed the document, you can visualize and
-interact with the generated Knowledge Graph using the [Graph Visualizer](../../graphs/graph-visualizer.md)
+interact with the generated Knowledge Graph using the [Graph Visualizer](../../graph-intelligence/graph-visualizer.md)
 directly from the ArangoDB Platform web interface.
 
 1. In the ArangoDB Platform web interface, select the database you have previously used.
