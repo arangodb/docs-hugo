@@ -1293,6 +1293,24 @@ Indexes used:
  10   idx_1836452431376941056   persistent   coll   
 ```
 
+### Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+The `GEO_POINT()` function now accepts an optional third argument to create a
+GeoJSON Point with three coordinates: `[longitude, latitude, elevation]`.
+
+GeoJSON Points may now have three coordinates in general.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
 ## Indexing
 
 ### Multi-dimensional indexes
