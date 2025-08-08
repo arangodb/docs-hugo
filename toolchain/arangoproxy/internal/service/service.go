@@ -226,6 +226,9 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() {
 	models.Logger.Summary("<h2>OPENAPI</h2>")
 
 	for _, version := range Versions {
+		if version.Name == "platform" {
+			continue
+		}
 		wg.Add(1)
 		go service.ValidateFile(version.Name, &wg)
 	}

@@ -1,7 +1,7 @@
 ---
 title: What's new in the ArangoDB Platform
-menuTitle: ArangoDB Platform
-weight: 5
+menuTitle: Release notes
+weight: 50
 description: >-
   Features and improvements in the ArangoDB Platform
 ---
@@ -20,7 +20,7 @@ of the core ArangoDB database system along with graph-powered machine learning
 and GenAI capabilities as a single solution with a unified interface. Deploy the
 Platform on-premise or in the cloud on top of Kubernetes.
 
-To get started, see [Self-host the ArangoDB Platform](../components/platform.md#self-host-the-arangodb-platform).
+To get started, see [Self-host the ArangoDB Platform](about-the-platform/_index.md#self-host-the-arangodb-platform).
 
 ### GenAI Suite
 
@@ -35,5 +35,5 @@ user-friendly interface seamlessly integrated into the ArangoDB Platform web int
 - MLflow integration
 - Graph Visualizer
 
-To learn more, see the [GenAI Suite](../data-science/_index.md#genai-suite)
+To learn more, see the [GenAI Suite](data-science/_index.md#genai-suite)
 documentation.

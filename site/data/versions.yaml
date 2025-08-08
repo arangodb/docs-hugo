@@ -1,3 +1,8 @@
+- name: "platform"
+  version: "0.1.0"
+  alias: "platform"
+  deprecated: false
+
 - name: "3.13"
   version: "3.13.0"
   alias: "devel"

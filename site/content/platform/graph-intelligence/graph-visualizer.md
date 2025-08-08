@@ -1,7 +1,7 @@
 ---
 title: Graph Visualizer
 menuTitle: Graph Visualizer
-weight: 102
+weight: 10
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
@@ -24,7 +24,7 @@ create new nodes (vertices) and relations (edges).
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
 created in the **Management** section under **Graphs** of the second-level
-navigation in the [web interface](../components/web-interface/graphs.md). Once
+navigation in the [web interface](../../3.12/components/web-interface/graphs.md). Once
 created, you can select a graph from the list for exploration and visualization.
 {{< /info >}}
 

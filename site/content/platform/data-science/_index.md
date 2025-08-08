@@ -1,7 +1,7 @@
 ---
 title: Generative Artificial Intelligence (GenAI) and Data Science
 menuTitle: GenAI & Data Science
-weight: 115
+weight: 15
 description: >-
   ArangoDB's set of tools and technologies enables analytics, machine learning,
   and GenAI applications powered by graph data
@@ -48,16 +48,16 @@ ArangoDB Platform web interface, guiding you through the process.
 
 Alongside these components, you also get the following additional features:
 
-- [**Graph Visualizer**](../graphs/graph-visualizer.md): A web-based tool for exploring your graph data with an
+- [**Graph Visualizer**](../graph-intelligence/graph-visualizer.md): A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public LLMs such as OpenAI
-  or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).  
-- [**MLflow integration**](./graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
+  or private LLMs with [Triton Inference Server](graphrag/services/triton-inference-server.md).  
+- [**MLflow integration**](graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
   or to run machine learning experiments as part of the ArangoDB Platform.
-- [**Integrations**](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
+- [**Integrations**](integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
   and other data science tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
   GenAI Suite services and build your own integrations. See the
@@ -69,7 +69,7 @@ Alongside these components, you also get the following additional features:
 The ArangoDB Platform includes the following features independent of the
 GenAI Suite:
 
-- [**Graph Analytics**](../graphs/graph-analytics.md): Run graph algorithms such as PageRank
+- [**Graph Analytics**](../graph-intelligence/graph-analytics.md): Run graph algorithms such as PageRank
   on dedicated compute resources.
 
 ## From graph to AI
@@ -92,7 +92,7 @@ Graph queries can answer questions like _**Who can introduce me to person X**_?
 
 ![Graph Query](../../images/graph-query.png)
 
-See [Graphs in AQL](../aql/graphs/_index.md) for the supported graph queries.
+See [Graphs in AQL](../../3.12/aql/graphs/_index.md) for the supported graph queries.
 
 ### Graph Analytics
 
@@ -106,7 +106,7 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
 is available for the ArangoGraph Insights Platform. See 
-[Graph Analytics](../graphs/graph-analytics.md) for details.
+[Graph Analytics](../graph-intelligence/graph-analytics.md) for details.
 
 ### GraphML
 
@@ -168,5 +168,5 @@ the following tasks:
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango-datasets` Python package](../components/tools/arango-datasets.md)
+[`arango-datasets` Python package](../../3.12/components/tools/arango-datasets.md)
 to load sample datasets into a deployment.

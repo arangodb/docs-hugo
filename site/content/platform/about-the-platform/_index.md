@@ -1,7 +1,7 @@
 ---
 title: The ArangoDB Platform
 menuTitle: Platform
-weight: 169
+weight: 5
 description: >-
   The ArangoDB Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
@@ -65,7 +65,7 @@ of the platform features.
 ### Use the ArangoDB Platform as a managed service
 
 The ArangoDB Platform is not available as a managed service yet, but it will
-become available for the [ArangoGraph Insights Platform](../arangograph/_index.md)
+become available for the [ArangoGraph Insights Platform](../../3.12/arangograph/_index.md)
 in the future. Until then, you can request early access to the self-hosted
 ArangoDB Platform for testing.
 

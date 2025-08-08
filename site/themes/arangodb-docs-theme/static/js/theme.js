@@ -466,8 +466,13 @@ function changeVersion() {
         changeVersion();
     }
 
-    
-    var newUrl = window.location.pathname.replace(getVersionFromURL(), getVersionInfo(newVersion).alias) + window.location.hash;
+    var currentVersion = getVersionFromURL();
+    var newVersionAlias = getVersionInfo(newVersion).alias;
+    if (currentVersion == "platform" || newVersion == "platform") {
+      var newUrl = window.location.pathname = "/" + newVersionAlias + "/";
+    } else {
+      var newUrl = window.location.pathname.replace(currentVersion, newVersionAlias) + window.location.hash;
+    }
     updateHistory(newUrl);
 }
 

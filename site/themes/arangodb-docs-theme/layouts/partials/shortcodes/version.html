@@ -6,7 +6,9 @@
     {{- $page.Store.Set "versionShort" $version.name }}
     {{- $page.Store.Set "alias" $version.alias }}
     {{- $page.Store.Set "deprecated" $version.deprecated }}
-    {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
+    {{- if ne $version.name "platform" }}
+      {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
+    {{- end }}
   {{- end }}
 {{- end }}
 
