@@ -282,6 +282,15 @@ application has to handle connection failures by retrying operations if needed.
 
 ![ArangoGraph Connecting Drivers Example](../../../images/arangograph-connecting-drivers-example.png)
 
+## How to pause a deployment
+
+1. In the __Deployments__ page, click the deployment you wish to pause.
+2. Click the __Delete/Lock__ entry in the navigation.
+3. Click the __Pause deployment...__ button.
+4. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
+   deployment being paused displays the __Hibernated__ status until it has been
+   successfully resumed.
+
 ## How to delete a deployment
 
 {{< danger >}}
@@ -289,15 +298,13 @@ Deleting a deployment deletes all its data and backups.
 This operation is **irreversible**. Please proceed with caution.
 {{< /danger >}}
 
-1. In the main navigation, in the __Projects__ section, click the project that
-   holds the deployment you wish to delete.
-2. In the __Deployments__ page, click the deployment you wish to delete.
-3. Click the __Delete/Lock__ entry in the navigation.
-4. Click the __Delete deployment...__ button.
-5. In the modal dialog, confirm the deletion by entering `Delete!` into the
+1. In the __Deployments__ page, click the deployment you wish to delete.
+2. Click the __Delete/Lock__ entry in the navigation.
+3. Click the __Delete deployment...__ button.
+4. In the modal dialog, confirm the deletion by entering `Delete!` into the
    designated text field.
-6. Confirm the deletion by pressing the __Yes__ button.
-7. You will be taken back to the deployments page of the project.
+5. Confirm the deletion by pressing the __Yes__ button.
+6. You will be taken back to the __Deployments__ page of the project.
    The deployment being deleted will display the __Deleting__ status until it has
    been successfully removed.
 
@@ -305,14 +312,3 @@ This operation is **irreversible**. Please proceed with caution.
 Locked deployments cannot be deleted. Learn more about
 [locked resources](../security-and-access-control/_index.md#locked-resources) in ArangoGraph.
 {{< /info >}}
-
-## How to pause a deployment
-
-1. In the main navigation, in the __Projects__ section, click the project that
-   holds the deployment you wish to delete.
-2. In the __Deployments__ page, click the deployment you wish to delete.
-3. Click the __Delete/Lock__ entry in the navigation.
-4. Click the __Pause deployment...__ button.
-5. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
-   deployment being paused displays the __Hibernated__ status until it has been
-   successfully resumed.
