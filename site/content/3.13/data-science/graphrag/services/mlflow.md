@@ -32,6 +32,12 @@ ArangoDB environment. For example, any spawned LLM host service is automatically
 linked to the MLflow service and is able to fetch any registered model from the
 MLflow model registry.
 
+{{< tip >}}
+ArangoDB's MLflow integration is only required when working with private LLMs.
+For more information, see the [Triton LLM host](triton-inference-server.md)
+documentation.
+{{< /tip >}}
+
 {{< info >}}
 You can find detailed instructions about how to organize the format of a model for a
 dedicated LLM host service in the official [MLflow](https://mlflow.org/docs/latest/index.html)
@@ -87,7 +93,7 @@ curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
 
 This returns a JWT token that you can use as your Bearer token.
 For more details about ArangoDB authentication and JWT tokens, see the
-[ArangoDB Authentication](https://docs.arangodb.com/stable/develop/http-api/authentication/#jwt-user-tokens)
+[ArangoDB Authentication](../../../develop/http-api/authentication.md#jwt-user-tokens)
 documentation.
 
 ## Installation
@@ -95,8 +101,13 @@ documentation.
 First, install the MLflow client:
 
 ```bash
-pip install mlflow
+pip install mlflow=2.22.1
 ```
+{{< warning >}}
+MLflow version 3 introduces a breaking change that affects this workflow, so it is
+important to use MLflow version 2.
+{{< /warning >}}
+
 There are two approaches for programmatic access to your ArangoDB MLflow service:
 - Configuration in Python
 - Using environment variables

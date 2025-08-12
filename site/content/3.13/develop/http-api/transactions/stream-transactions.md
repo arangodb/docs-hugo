@@ -22,7 +22,7 @@ ArangoDB. No `action` attribute is supported.
 The Stream Transaction API works in *conjunction* with other APIs in ArangoDB.
 To use the transaction for a supported operation a client needs to specify
 the transaction identifier in the `x-arango-trx-id` HTTP header on each request.
-This will automatically cause these operations to use the specified transaction.
+This automatically causes these operations to use the specified transaction.
 
 Supported transactional API operations include:
 
@@ -51,7 +51,7 @@ paths:
         until the entire transaction times out.
 
         The transaction description must be passed in the body of the POST request.
-        If the transaction can be started on the server, *HTTP 201* will be returned.
+        If the transaction can be started on the server, *HTTP 201* is returned.
 
         For successfully started transactions, the returned JSON object has the
         following properties:
@@ -66,9 +66,9 @@ paths:
             - `status`: containing the string 'running'
 
         If the transaction specification is either missing or malformed, the server
-        will respond with *HTTP 400* or *HTTP 404*.
+        responds with *HTTP 400* or *HTTP 404*.
 
-        The body of the response will then contain a JSON object with additional error
+        The body of the response then contains a JSON object with additional error
         details. The object has the following attributes:
 
         - `error`: boolean flag to indicate that an error occurred (`true` in this case)
@@ -108,33 +108,59 @@ paths:
               properties:
                 collections:
                   description: |
-                    `collections` must be a JSON object that can have one or all sub-attributes
+                    Must be a JSON object that can have one or all sub-attributes
                     `read`, `write` or `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
                     transaction must be declared with the `write` or `exclusive` attribute or it
                     will fail, whereas non-declared collections from which is solely read will be
                     added lazily.
                   type: object
+                  properties:
+                    read:
+                      description: |
+                        A single collection or a list of collections to use in
+                        the transaction in read-only mode.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
+                    write:
+                      description: |
+                        A single collection or a list of collections to use in
+                        the transaction in write or read mode.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
+                    exclusive:
+                      description: |
+                        A single collection or a list of collections to acquire
+                        exclusive write access for.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
                 waitForSync:
                   description: |
-                    an optional boolean flag that, if set, will force the
+                    An optional boolean flag that, if set, forces the
                     transaction to write all data to disk before returning.
                   type: boolean
                 allowImplicit:
                   description: |
                     Allow reading from undeclared collections.
                   type: boolean
+                  default: true
                 lockTimeout:
                   description: |
-                    an optional numeric value that can be used to set a
-                    timeout in seconds for waiting on collection locks. This option is only
-                    meaningful when using exclusive locks. If not specified, a default
-                    value will be used. Setting `lockTimeout` to `0` will make ArangoDB
-                    not time out waiting for a lock.
+                    The timeout in seconds for waiting on collection locks.
+                    This option is only meaningful when using exclusive locks.
+                    Set `lockTimeout` to `0` to make ArangoDB not time out
+                    waiting for a lock.
                   type: integer
+                  default: 900
                 maxTransactionSize:
                   description: |
                     Transaction size limit in bytes.
+
+                    Default: Controlled by the `--transaction.streaming-max-transaction-size`
+                    startup option.
                   type: integer
                 skipFastLockRound:
                   description: |
@@ -301,7 +327,7 @@ paths:
         Commit a running server-side transaction. Committing is an idempotent operation.
         It is not an error to commit a transaction more than once.
 
-        If the transaction can be committed, *HTTP 200* will be returned.
+        If the transaction can be committed, *HTTP 200* is returned.
         The returned JSON object has the following properties:
 
         - `error`: boolean flag to indicate if an error occurred (`false`
@@ -315,9 +341,9 @@ paths:
 
         If the transaction cannot be found, committing is not allowed or the
         transaction was aborted, the server
-        will respond with *HTTP 400*, *HTTP 404* or *HTTP 409*.
+        responds with *HTTP 400*, *HTTP 404* or *HTTP 409*.
 
-        The body of the response will then contain a JSON object with additional error
+        The body of the response then contains a JSON object with additional error
         details. The object has the following attributes:
 
         - `error`: boolean flag to indicate that an error occurred (`true` in this case)
@@ -402,7 +428,7 @@ paths:
         Abort a running server-side transaction. Aborting is an idempotent operation.
         It is not an error to abort a transaction more than once.
 
-        If the transaction can be aborted, *HTTP 200* will be returned.
+        If the transaction can be aborted, *HTTP 200* is returned.
         The returned JSON object has the following properties:
 
         - `error`: boolean flag to indicate if an error occurred (`false`
@@ -416,9 +442,9 @@ paths:
 
         If the transaction cannot be found, aborting is not allowed or the
         transaction was already committed, the server
-        will respond with *HTTP 400*, *HTTP 404* or *HTTP 409*.
+        responds with *HTTP 400*, *HTTP 404* or *HTTP 409*.
 
-        The body of the response will then contain a JSON object with additional error
+        The body of the response then contains a JSON object with additional error
         details. The object has the following attributes:
 
         - `error`: boolean flag to indicate that an error occurred (`true` in this case)
@@ -502,7 +528,7 @@ paths:
       description: |
         The result is an object with the `transactions` attribute, which contains
         an array of transactions.
-        In a cluster the array will contain the transactions from all Coordinators.
+        In a cluster, the array contains the transactions from all Coordinators.
 
         Each array entry contains an object with the following attributes:
 

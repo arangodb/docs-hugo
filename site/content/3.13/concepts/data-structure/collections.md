@@ -119,29 +119,42 @@ ArangoDB as opaque strings when they store or use them locally.
 
 ## Key generators
 
-ArangoDB allows using key generators for each collection. Key generators
-have the purpose of auto-generating values for the `_key` attribute of a document
-if none was specified by the user. By default, ArangoDB uses the traditional
-key generator. The traditional key generator auto-generates key values that
-are strings with ever-increasing numbers. The increment values it uses are
-non-deterministic.
+ArangoDB allows you to use different key generators for each collection.
+Key generators have the purpose of auto-generating a value for the `_key`
+attribute of a document if none was specified by the user.
 
-Contrary, the auto-increment key generator auto-generates deterministic key
-values. Both the start value and the increment value can be defined when the
-collection is created. The default start value is `0` and the default increment
-is `1`, meaning the key values it creates by default are:
+- **traditional** (default): The `traditional` key generator auto-generates
+  key values that are strings with ever-increasing numbers. The increment values
+  it uses are non-deterministic (e.g. `"137"`, `"140"`, `"141"`, `"145"`, ...).
 
-1, 2, 3, 4, 5, ...
+- **autoincrement**: The `autoincrement` key generator auto-generates
+  deterministic key values. You can define both the start value (`offset`) and
+  the `increment` value when creating the collection. The default start value is
+  `0` and the default increment is `1` (`"1"`, `"2"`, `"3"`, `"4"`, `"5"`, ...).
+  With an `increment` of `5` and `offset` of `2`: `"2"`, `"7"`, `"12"`, `"17"`, `"22"`, ...
 
-When creating a collection with the auto-increment key generator and an
-increment of `5`, the generated keys would be:
+  The auto-increment values are increased and handed out on each document insert
+  attempt. Even if an insert fails, the auto-increment value is never rolled back.
+  That means there may exist gaps in the sequence of assigned auto-increment values
+  if inserts fail.
 
-1, 6, 11, 16, 21, ...
+  The `autoincrement` key generator is only supported for collections with a
+  single shard.
 
-The auto-increment values are increased and handed out on each document insert
-attempt. Even if an insert fails, the auto-increment value is never rolled back.
-That means there may exist gaps in the sequence of assigned auto-increment values
-if inserts fails.
+- **padded**: The `padded` key generator generates keys of a fixed length
+  (16 bytes) in ascending lexicographical sort order. This is ideal for the
+  RocksDB storage engine, which slightly benefits keys that are inserted in
+  lexicographically ascending order. The sequence of generated keys is not
+  guaranteed to be gap-free (e.g. `"00000000005bb4d9"`, `"00000000005bb4e6"`, ...).
+
+- **uuid**: The `uuid` key generator generates universally unique 128 bit keys,
+  which are stored in hexadecimal human-readable format. The keys produced by
+  this key generator are not lexicographically sorted (e.g.
+  `"04648089-bdeb-4852-b570-f5280f68cf19"`, `"d0f1069c-e38b-4327-8e1e-6bdf7fd33865"`, ...).
+
+If you specify keys for some documents but rely on key generation for other
+documents targeting the same collection, conflicts may occur. You can set
+`allowUserKeys` to `false` to only permit auto-generated keys for a collection.
 
 ## Synchronous replication of collections
 

@@ -47,8 +47,10 @@ of the platform features.
         stored in ArangoDB.
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
-      - **MLflow integration**: Use the popular MLflow for machine learning
-        practitioners as part of the ArangoDB Platform.
+      - **Public and private LLM support**: Use public LLMs such as OpenAI
+        or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).
+      - **MLflow integration**: Use the popular MLflow as a model registry for private LLMs
+        or to run machine learning experiments as part of the ArangoDB Platform.
 - **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.

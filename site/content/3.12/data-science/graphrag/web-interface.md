@@ -77,7 +77,7 @@ while OpenAI is used for the embedding model.
 3. Click the **Start importer service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](./services/triton-inference-server.md)
+Note that you must first register your model in MLflow. The [Triton LLM Host](services/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 
@@ -86,7 +86,7 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [GraphRAG Importer](./services/importer.md) service documentation.
+See also the [GraphRAG Importer](services/importer.md) service documentation.
 
 ## Upload your file
 
@@ -147,7 +147,7 @@ while OpenAI is used for the embedding model.
 3. Click the **Start retriever service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](./services/triton-inference-server.md)
+Note that you must first register your model in MLflow. The [Triton LLM Host](services/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 
@@ -156,14 +156,14 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [GraphRAG Retriever](./services/retriever.md) documentation.
+See also the [GraphRAG Retriever](services/retriever.md) documentation.
 
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Local search](./services/retriever.md#local-search): Local queries let you
+- [Local search](services/retriever.md#local-search): Local queries let you
   explore specific nodes and their direct connections.
-- [Global search](./services/retriever.md#global-search): Global queries uncover
+- [Global search](services/retriever.md#global-search): Global queries uncover
   broader patters and relationships across the entire Knowledge Graph.
 
 ![Chat with your Knowledge Graph](../../../images/graphrag-ui-chat.png)

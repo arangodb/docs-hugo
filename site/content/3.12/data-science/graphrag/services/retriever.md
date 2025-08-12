@@ -35,6 +35,10 @@ graph and get contextually relevant responses.
 - Integration with ArangoDB knowledge graphs
 - Configurable community hierarchy levels
 
+{{< tip >}}
+You can also use the GraphRAG Retriever service via the ArangoDB [web interface](../web-interface.md).
+{{< /tip >}}
+
 ## Search methods
 
 The Retriever service enables intelligent search and retrieval of information
@@ -92,8 +96,8 @@ information on how to use it.
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will the use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](./triton-inference-server.md)
-and [Mlflow](./mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](triton-inference-server.md)
+and [Mlflow](mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:
@@ -228,6 +232,24 @@ You can also monitor the service health:
 
 ```bash
 GET /v1/health
+```
+
+## Verify status
+
+You can verify the state of the retriever process via the following endpoint:
+
+```
+GET /gen-ai/v1/project_by_name/<your_project>
+```
+
+For example, the `status` object found within `retrieverServices` may contain the following
+properties:
+
+```json
+"status": {
+    "status": "service_started",
+    "progress": 100,
+}
 ```
 
 ## Best Practices

@@ -76,7 +76,7 @@ _longitude_. The `geoJson` flag is implicitly _false_ in this mode.
 
 Alternatively you can specify only one field:
 
-`collection.ensureIndex({ type: "geo", fields: [ "location" ], geoJson:false })`
+`collection.ensureIndex({ type: "geo", fields: [ "location" ], geoJson: false })`
 
 It creates a geospatial index on all documents using `location` as the path to the
 coordinates. The value of the attribute has to be an array with at least two

@@ -67,10 +67,11 @@ paths:
                     type: string
                 minLength:
                   description: |
-                    Minimum character length of words to index. Will default
-                    to a server-defined value if unspecified. It is thus recommended to set
-                    this value explicitly when creating the index.
+                    Minimum character length of words to index. The default is
+                    low, thus it is recommended to set this value explicitly
+                    when creating the index.
                   type: integer
+                  default: 2
                 inBackground:
                   description: |
                     Set this option to `true` to keep the collection/shards available for

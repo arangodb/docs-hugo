@@ -46,6 +46,7 @@ paths:
             the `details` object may vary depending on platform and ArangoDB version.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1308,6 +1309,7 @@ paths:
              - Ongoing low priority requests
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1436,13 +1438,13 @@ paths:
                 changeLevel:
                   description: |
                     whether or not compacted data should be moved to the minimum possible level.
-                    The default value is `false`.
                   type: boolean
+                  default: false
                 compactBottomMostLevel:
                   description: |
                     Whether or not to compact the bottommost level of data.
-                    The default value is `false`.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -1509,16 +1511,10 @@ paths:
         The call returns an object with the servers request information
       requestBody:
         content:
-          application/json:
+          application/octet-stream:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body can be of any type and is simply forwarded.
-                  type: string
+              description: |
+                The request body can be of any type and is simply forwarded.
       parameters:
         - name: database-name
           in: path
@@ -1701,8 +1697,9 @@ paths:
         directly, otherwise a string produced by JSON.stringify will be
         returned.
 
-        Note that this API endpoint will only be present if the server was
-        started with the option `--javascript.allow-admin-execute true`.
+        Note that this API endpoint is available if the server has been
+        started with the `--javascript.allow-admin-execute` startup options
+        enabled.
 
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
@@ -1718,16 +1715,10 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          text/javascript:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body is the JavaScript code to be executed.
-                  type: string
+              description: |
+                The request body is the JavaScript code to be executed.
       responses:
         '200':
           description: |
