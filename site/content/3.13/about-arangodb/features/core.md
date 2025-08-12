@@ -14,9 +14,9 @@ aliases:
 ## General
 
 - [**Graph Database**](../../concepts/data-models.md#graph-model):
-  Native support for storing and querying graphs comprised of vertices and edges.
-  You can model complex domains because both vertices and edges are fully-fledged
-  documents, without restrictions in complexity. Edges can connect vertex documents
+  Native support for storing and querying graphs comprised of nodes and edges.
+  You can model complex domains because both nodes and edges are fully-fledged
+  documents, without restrictions in complexity. Edges can connect node documents
   to express m:n relations with any depth.
 
 - [**Document Database**](../../concepts/data-models.md#document-model):
@@ -115,14 +115,14 @@ aliases:
 - **Advanced Path-Finding with Multiple Algorithms**:
   Graphs can be [traversed](../../aql/graphs/traversals-explained.md) with AQL
   in outbound, inbound, or both directions to retrieve direct and indirect
-  neighbor vertices using a fixed or variable depth.
+  neighbor nodes using a fixed or variable depth.
   The [traversal order](../../aql/graphs/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
   ("Weighted Traversals"). Stop conditions for pruning paths are supported.
   Traversal algorithms to get a [shortest path](../../aql/graphs/shortest-path.md),
   [all shortest paths](../../aql/graphs/all-shortest-paths.md), paths in order of
   increasing length ("[k Shortest Paths](../../aql/graphs/k-shortest-paths.md)"),
-  and to enumerate all paths between two vertices
+  and to enumerate all paths between two nodes
   ("[k Paths](../../aql/graphs/k-paths.md)") are available, too.
 
 - [**ArangoSearch for Text Search and Ranking**](../../index-and-search/arangosearch/_index.md):
@@ -228,7 +228,7 @@ aliases:
 
 - [**Traversal**](../../release-notes/version-3.7/whats-new-in-3-7.md#traversal-parallelization-enterprise-edition)
   [**Parallelization**](../../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition):
-  Parallel execution of traversal queries with many start vertices, leading to
+  Parallel execution of traversal queries with many start nodes, leading to
   faster results.
 
 - [**Traversal Projections**](../../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition):

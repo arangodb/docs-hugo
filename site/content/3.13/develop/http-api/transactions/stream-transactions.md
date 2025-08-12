@@ -30,7 +30,7 @@ Supported transactional API operations include:
 - Get the number of documents via the [Collection API](../collections.md#get-the-document-count-of-a-collection)
 - Truncate a collection via the [Collection API](../collections.md#truncate-a-collection)
 - Create an AQL cursor via the [Cursor API](../queries/aql-queries.md#create-a-cursor)
-- Handle [vertices](../graphs/named-graphs.md#vertices) and [edges](../graphs/named-graphs.md#edges)
+- Handle [nodes](../graphs/named-graphs.md#nodes) and [edges](../graphs/named-graphs.md#edges)
   of managed graphs (_General Graph_ / _Gharial_ API)
 
 ## Begin a Stream Transaction

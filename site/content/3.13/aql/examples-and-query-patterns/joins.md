@@ -439,7 +439,7 @@ arangosh> db._query(
 ...> "LET authorsByBook = ( " +
 ...> "    FOR author, writtenBy IN INBOUND b written " +
 ...> "    RETURN { " +
-...> "        vertex: author, " +
+...> "        node: author, " +
 ...> "        edge: writtenBy " +
 ...> "    } " +
 ...> ") " +
@@ -461,7 +461,7 @@ arangosh> db._query(
     },
     "authors" : [
       {
-        "vertex" : {
+        "node" : {
           "_key" : "2935261693",
           "_id" : "authors/2935261693",
           "_rev" : "2935261693",
@@ -480,7 +480,7 @@ arangosh> db._query(
         }
       },
       {
-        "vertex" : {
+        "node" : {
           "_key" : "2938210813",
           "_id" : "authors/2938210813",
           "_rev" : "2938210813",
@@ -503,7 +503,7 @@ arangosh> db._query(
 ]
 ```
 
-Or if you want only the information stored in the vertices, you can use this query:
+Or if you want only the information stored in the nodes, you can use this query:
 
 ```js
 arangosh> db._query(

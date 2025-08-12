@@ -10,30 +10,31 @@ description: >-
 aliases:
   - graphs/first-steps
 ---
-Graphs are information networks comprised of **nodes** and **relations**. Nodes
-can represent objects, entities, abstract concepts, or ideas. Relations between
-nodes can represent physical and social connections, temporal and causal
-relationships, flows of information, energy, and material, interactions and
+Graphs are information networks comprised of **nodes** and **edges**. Nodes
+can represent objects, entities, abstract concepts, or ideas. edges between
+nodes can represent relations like physical and social connections, temporal and
+causal relationships, flows of information, energy, and material, interactions and
 transactions, dependency and hierarchy, as well as similarity and relatedness of
 any kind.
 
-![Node - Relation - Node](../../images/data-model-graph-relation-abstract.png)
+![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../images/data-model-graph-relation-abstract-edge.png)
 
 For example, you can represent people by nodes and their friendships by
-relations. This lets you form a graph that is a social network in this case.
+edges. This lets you form a graph that is a social network in this case.
 
-![Mary - is friend of - John](../../images/data-model-graph-relation-concrete.png)
+![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../images/data-model-graph-relation-concrete.png)
 
-The specific terms to refer to nodes and relations in a graph vary depending
+The specific terms to refer to nodes and edges in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
-and mathematics, the terms **vertices** (singular: vertex) and **edges** are
-commonly used to refer to **nodes** and **relations**, respectively. In information
-science and data analysis, they are referred to as _entities_ and _connection_.
+and mathematics, the terms **nodes** and **vertices** (singular: vertex) are
+used interchangeably, and you can refer to **edges** as **relations**. In information
+science and data analysis, they are also referred to as _entities_ and _connection_.
 In social sciences, they are often called _actors_ and _ties_ or _links_.
-They may also be called _points_ and _arcs_.
+They may also be called _points_ and _arcs_ or _circles_  and _arrows_ based on
+how they are typically represented visually.
 
 {{< info >}}
-In ArangoDB, **vertices** are also referred to as **nodes**.
+In ArangoDB, **nodes** are also referred to as **vertices**.
 {{< /info >}}
 
 Using graphs with nodes to represent things and edges to define how they
@@ -41,7 +42,7 @@ relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Mary - bought - Book, is friend of - John](../../images/data-model-graph-relations.png)
+![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../../images/data-model-graph-relations.png)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one node to another node in a specific direction. This lets you model
@@ -66,7 +67,7 @@ Graph database systems like ArangoDB can store graphs and provide means to query
 the connected data.
 
 ArangoDB's graph model is that of a **property graph**. Every record, whether
-vertex or edge, can have an arbitrary number of properties. Each document is a
+node or edge, can have an arbitrary number of properties. Each document is a
 fully-fledged JSON object and has a unique identifier.
 This is different to the RDF graph model, where information is broken down into
 triples of a subject, a predicate, and an object and where each triple is stored
@@ -79,9 +80,8 @@ or more types to an edge. You can also organize nodes in different
 collections based on the types of entities.
 
 Edges can only be stored in **edge collections**. Nodes are stored in
-**document collections** which are also referred to as **vertex collections**
-in the context of graphs. You can technically also use edges as vertices but
-the usefulness is limited.
+**document collections** which are also referred to as **node collections**
+or vertex collections in the context of graphs.
 
 Edges in ArangoDB are always directed. Every edge document has special `_from`
 and `_to` attributes to reference one other document in each of the two
@@ -105,7 +105,7 @@ You can query graphs with ArangoDB's query language, see
 In relational database management systems (RDBMS), you have the construct of
 a relation table to store *m:n* relations between two data tables.
 An edge collection is somewhat similar to these relation tables.
-Vertex collections resemble the data tables with the objects to connect.
+Node collections resemble the data tables with the objects to connect.
 
 While simple graph queries with a fixed number of hops via the relation table
 may be doable in RDBMSes with SQL using several nested joins, graph databases
@@ -113,7 +113,7 @@ can handle an arbitrary and variable number of these hops over edge collections
 which is called **traversal**.
 
 Moreover, edges in one edge collection may point to nodes in different
-vertex collections. It is common to have attributes attached to edges, like a
+node collections. It is common to have attributes attached to edges, like a
 *label* naming the type of connection.
 
 Edges have a direction, with their relations stored in the special `_from` and
@@ -135,17 +135,17 @@ In queries, you can define in which directions the edge relations may be followe
 
 ## Managed and unmanaged graphs
 
-You can use vertex and edge collections directly, using them as an unmanaged
+You can use node and edge collections directly, using them as an unmanaged
 **anonymous graph**. In queries, you need to specify the involved collections
 for graph operations like traversals.
 
-You can also create a managed **named graph** to define a set of vertex and
+You can also create a managed **named graph** to define a set of node and
 edge collections along with the allowed relations. In queries, you only need to
-specify the graph instead of the individual vertex and edge collections. There
+specify the graph instead of the individual node and edge collections. There
 are additional integrity checks when using the named graph interfaces.
 
 Named graphs ensure graph integrity, both when inserting or removing edges or
-vertices. You won't encounter dangling edges, even if you use the same vertex
+nodes. You won't encounter dangling edges, even if you use the same node
 collection in several named graphs. This involves more operations inside the
 database system, which come at a cost. Therefore, anonymous graphs may be faster
 in many operations. You can choose between no integrity guarantees, additional
@@ -168,7 +168,7 @@ the best performance and scalability for your data-intensive applications.
 
 Which collections are used within a named graph is defined via 
 **edge definitions**. They describe which edge collections connect which
-vertex collections. This is defined separately for the *from* and the *to*
+node collections. This is defined separately for the *from* and the *to*
 per edge collection. A named graph can have one or more edge definitions.
 
 The underlying collections of named graphs are still accessible using the
@@ -183,7 +183,7 @@ doing the following:
   definition of the graph
 - Delete edges when a connected node is deleted to avoid dangling edges
 - Prohibit to use an edge collections in an edge definition with a different
-  set of *from* and *to* vertex collections than an existing edge definition
+  set of *from* and *to* node collections than an existing edge definition
   of any graph
 - Depending on the named graph type, there can be additional restrictions to
   ensure a well-formed graph
@@ -191,7 +191,7 @@ doing the following:
 Your edge collections will only contain valid edges and you will never have
 loose ends. These guarantees are lost if you access the collections in any other
 way than the graph modules. For example, if you delete documents from your
-vertex collections directly, the edges pointing to them remain in place.
+node collections directly, the edges pointing to them remain in place.
 Note that existing inconsistencies in your data are not corrected when you create
 a named graph. Therefore, make sure you start with sound data as otherwise there
 could be dangling edges after all. The graph modules guarantee to not introduce
@@ -262,11 +262,11 @@ all graph data to every server in your cluster, consider SmartGraphs.
 ### Anonymous graphs
 
 An anonymous graph is the graph that your data implicitly defines by edges that
-reference nodes and that you directly use by defining the vertex and edge
+reference nodes and that you directly use by defining the node and edge
 collections for graph operations such as traversals and path finding algorithms
 in queries. You can also work with [edges](working-with-edges.md) directly.
 
-Anonymous graphs don't have edge definitions describing which vertex collection
+Anonymous graphs don't have edge definitions describing which node collection
 is connected by which edge collection. The graph model has to be maintained by
 the client-side code. This gives you more freedom than the strict named graphs
 such as the ability to let an edge reference documents from any collections in
@@ -315,8 +315,8 @@ and you don't need graph traversal with varying depth. It usually means
 to introduce some redundancy and possibly inconsistencies if you embed data, but
 it can be an acceptable tradeoff.
 
-**Nodes (Vertices)**:
-Assume you have two vertex collections, `Users` and `Groups`. Documents in the
+**Nodes (vertices)**:
+Assume you have two node collections, `Users` and `Groups`. Documents in the
 `Groups` collection contain the attributes of the group, i.e. when it was founded,
 its subject, and so on. Documents in the `Users` collection contain the data
 specific to a user, like name, birthday, hobbies, et cetera.
@@ -362,7 +362,7 @@ queries if you only want to follow the friend edges.
 Another way, which may be more efficient in some cases, is to use different
 edge collections for different types of edges. You could have `friend_edges`,
 `family_edges`, `married_edges`, and `workmate_edges` as edge collections.
-You can then limit the query to a subset of the edge and vertex collections.
+You can then limit the query to a subset of the edge and node collections.
 To only follow friend edges, you would specify `friend_edges` as sole edge collection.
 
 Both approaches have advantages and disadvantages. `FILTER` operations on edge
@@ -419,5 +419,5 @@ restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up
   named graphs as the graph definitions are stored in this collection.
-- You need to back up all vertex and edge collections your graph consists of.
+- You need to back up all node and edge collections your graph consists of.
   A partial dump/restore may not work.

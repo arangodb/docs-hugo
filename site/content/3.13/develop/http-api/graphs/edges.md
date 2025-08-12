@@ -3,18 +3,18 @@ title: HTTP interface for edges
 menuTitle: Edges
 weight: 10
 description: >-
-  The Edge API lets you retrieve the connected edges of a single vertex,
+  The Edge API lets you retrieve the connected edges of a single node,
   optionally restricted to incoming or outgoing edges
 # Undocumented on purpose:
 #   POST /_api/edges/{coll}  (internal)
 ---
 You can use the general [Document API](../documents.md) to create,
 read, modify, and delete edge documents. The only difference to working with
-vertex documents is that the `_from` and `_to` attributes are mandatory and
+node documents is that the `_from` and `_to` attributes are mandatory and
 must contain document identifiers.
 
 The Edge API is useful if you want to look up the inbound and outbound edges of
-a vertex with low overhead. You can also retrieve edges with AQL queries, but
+a node with low overhead. You can also retrieve edges with AQL queries, but
 queries need to be parsed and planned, and thus have an overhead. On the other
 hand, AQL is far more powerful, letting you perform graph traversals, for
 instance.
@@ -29,11 +29,11 @@ for details.
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/edges/{collection-id}:
+  /_db/{database-name}/_api/edges/{collection}:
     get:
       operationId: getVertexEdges
       description: |
-        Returns an array of edges starting or ending in the vertex identified by
+        Returns an array of edges starting or ending in the node identified by
         `vertex`.
       parameters:
         - name: database-name
@@ -44,18 +44,18 @@ paths:
             The name of the database.
           schema:
             type: string
-        - name: collection-id
+        - name: collection
           in: path
           required: true
           description: |
-            The id of the collection.
+            The name of the collection.
           schema:
             type: string
         - name: vertex
           in: query
           required: true
           description: |
-            The id of the start vertex.
+            The document identifier of the start node.
           schema:
             type: string
         - name: direction
@@ -97,26 +97,26 @@ description: |-
 name: RestEdgesReadEdgesAny
 ---
 var db = require("@arangodb").db;
-db._create("vertices");
+db._create("nodes");
 db._createEdgeCollection("edges");
 
-db.vertices.save({_key: "1"});
-db.vertices.save({_key: "2"});
-db.vertices.save({_key: "3"});
-db.vertices.save({_key: "4"});
+db.nodes.save({_key: "1"});
+db.nodes.save({_key: "2"});
+db.nodes.save({_key: "3"});
+db.nodes.save({_key: "4"});
 
-db.edges.save({_from: "vertices/1", _to: "vertices/3", _key: "5", "$label": "v1 -> v3"});
-db.edges.save({_from: "vertices/2", _to: "vertices/1", _key: "6", "$label": "v2 -> v1"});
-db.edges.save({_from: "vertices/4", _to: "vertices/1", _key: "7", "$label": "v4 -> v1"});
+db.edges.save({_from: "nodes/1", _to: "nodes/3", _key: "5", "$label": "v1 -> v3"});
+db.edges.save({_from: "nodes/2", _to: "nodes/1", _key: "6", "$label": "v2 -> v1"});
+db.edges.save({_from: "nodes/4", _to: "nodes/1", _key: "7", "$label": "v4 -> v1"});
 
-var url = "/_api/edges/edges?vertex=vertices/1";
+var url = "/_api/edges/edges?vertex=nodes/1";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
 
 logJsonResponse(response);
 db._drop("edges");
-db._drop("vertices");
+db._drop("nodes");
 ```
 
 ```curl
@@ -126,26 +126,26 @@ description: |-
 name: RestEdgesReadEdgesIn
 ---
 var db = require("@arangodb").db;
-db._create("vertices");
+db._create("nodes");
 db._createEdgeCollection("edges");
 
-db.vertices.save({_key: "1"});
-db.vertices.save({_key: "2"});
-db.vertices.save({_key: "3"});
-db.vertices.save({_key: "4"});
+db.nodes.save({_key: "1"});
+db.nodes.save({_key: "2"});
+db.nodes.save({_key: "3"});
+db.nodes.save({_key: "4"});
 
-db.edges.save({_from: "vertices/1", _to: "vertices/3", _key: "5", "$label": "v1 -> v3"});
-db.edges.save({_from: "vertices/2", _to: "vertices/1", _key: "6", "$label": "v2 -> v1"});
-db.edges.save({_from: "vertices/4", _to: "vertices/1", _key: "7", "$label": "v4 -> v1"});
+db.edges.save({_from: "nodes/1", _to: "nodes/3", _key: "5", "$label": "v1 -> v3"});
+db.edges.save({_from: "nodes/2", _to: "nodes/1", _key: "6", "$label": "v2 -> v1"});
+db.edges.save({_from: "nodes/4", _to: "nodes/1", _key: "7", "$label": "v4 -> v1"});
 
-var url = "/_api/edges/edges?vertex=vertices/1&direction=in";
+var url = "/_api/edges/edges?vertex=nodes/1&direction=in";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
 
 logJsonResponse(response);
 db._drop("edges");
-db._drop("vertices");
+db._drop("nodes");
 ```
 
 ```curl
@@ -155,24 +155,24 @@ description: |-
 name: RestEdgesReadEdgesOut
 ---
 var db = require("@arangodb").db;
-db._create("vertices");
+db._create("nodes");
 db._createEdgeCollection("edges");
 
-db.vertices.save({_key: "1"});
-db.vertices.save({_key: "2"});
-db.vertices.save({_key: "3"});
-db.vertices.save({_key: "4"});
+db.nodes.save({_key: "1"});
+db.nodes.save({_key: "2"});
+db.nodes.save({_key: "3"});
+db.nodes.save({_key: "4"});
 
-db.edges.save({_from: "vertices/1", _to: "vertices/3", _key: "5", "$label": "v1 -> v3"});
-db.edges.save({_from: "vertices/2", _to: "vertices/1", _key: "6", "$label": "v2 -> v1"});
-db.edges.save({_from: "vertices/4", _to: "vertices/1", _key: "7", "$label": "v4 -> v1"});
+db.edges.save({_from: "nodes/1", _to: "nodes/3", _key: "5", "$label": "v1 -> v3"});
+db.edges.save({_from: "nodes/2", _to: "nodes/1", _key: "6", "$label": "v2 -> v1"});
+db.edges.save({_from: "nodes/4", _to: "nodes/1", _key: "7", "$label": "v4 -> v1"});
 
-var url = "/_api/edges/edges?vertex=vertices/1&direction=out";
+var url = "/_api/edges/edges?vertex=nodes/1&direction=out";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
 
 logJsonResponse(response);
 db._drop("edges");
-db._drop("vertices");
+db._drop("nodes");
 ```

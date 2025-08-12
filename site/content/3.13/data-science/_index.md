@@ -82,9 +82,9 @@ powered by graph relationships and vector embeddings.
 
 ### Graph Queries
 
-When you run an AQL query on a graph, a traversal query can go from a vertex to
-multiple edges, and then the edges indicate what the next connected vertices are.
-Graph queries can also determine the shortest paths between vertices.
+When you run an AQL query on a graph, a traversal query can go from a node to
+multiple edges, and then the edges indicate what the next connected nodes are.
+Graph queries can also determine the shortest paths between nodes.
 
 Graph queries can answer questions like _**Who can introduce me to person X**_?
 
@@ -109,7 +109,7 @@ is available for the ArangoGraph Insights Platform. See
 ### GraphML
 
 When applying machine learning on a graph, you can predict connections, get 
-better product recommendations, and also classify vertices, edges, and graphs.
+better product recommendations, and also classify nodes, edges, and graphs.
 
 GraphML can answer questions like:
 - _**Is there a connection between person X and person Y?**_
