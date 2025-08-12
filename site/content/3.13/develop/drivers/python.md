@@ -9,10 +9,17 @@ description: >-
 The Python-Arango driver is the recommended driver for using ArangoDB as the
 database backend from Python. It is maintained by ArangoDB and the community.
 
-- Repository: <https://github.com/ArangoDB-Community/python-arango>
+- Repository: <https://github.com/arangodb/python-arango>
 - Reference: <https://docs.python-arango.com/>
 - [Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
-- [Releases](https://github.com/ArangoDB-Community/python-arango/releases)
+- [Releases](https://github.com/arangodb/python-arango/releases)
+
+Note that the official asyncio counterpart is `python-arango-async`.
+
+- Repository: <https://github.com/arangodb/python-arango-async>
+- Reference: <https://python-arango-async.readthedocs.io/en/latest/>
+- [Tutorial](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
+- [Releases](https://github.com/arangodb/python-arango-async/releases)
 
 ## Installation
 
