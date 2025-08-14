@@ -5,7 +5,7 @@ weight: 35
 description: >-
   Example queries showing different AQL query features and combinations of them
 ---
-Given a graph `[actors] – actsIn → [movies]` with two vertex collections
+Given a graph `[actors] – actsIn → [movies]` with two node collections
 **actors** and **movies** and an edge collection **actsIn** with edges pointing
 from actor to movie, plenty of interesting queries are possible:
 
@@ -287,7 +287,7 @@ db._query(`
 ### All common movies between "actor1" and "actor2"
 
 This is actually identical to the question about common actors in movie1 and
-movie2. We just have to change the starting vertices. As an example let us find
+movie2. We just have to change the starting nodes. As an example let us find
 all movies where Hugo Weaving and Keanu Reeves are co-starring:
 
 ```js
@@ -316,7 +316,7 @@ db._query(`
 ### All actors who acted in 3 or more movies
 
 Will make use of the edge index and the `COLLECT` statement of AQL for
-grouping. The basic idea is to group all edges by their start vertex
+grouping. The basic idea is to group all edges by their start node
 (which in this dataset is always the actor). Then we remove all actors with
 less than 3 movies from the result. Below query also returns the computed
 number of movies an actor has acted in:

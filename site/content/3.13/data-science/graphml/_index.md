@@ -45,7 +45,7 @@ The overall process involves the following steps:
    - Raw data is transformed into a graph structure, defining nodes and edges based
    on real-world relationships.
 2. **Featurization**: Your raw graph data is transformed into numerical representations that the model can understand.
-   - The system iterates over your selected vertices and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
+   - The system iterates over your selected nodes and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
     - All of these numerical features are then combined (concatenated).
     - Finally, **Incremental PCA** (Incremental Principal Component Analysis a dimensionality reduction technique) is used to reduce the size of the combined features, which helps remove noise and keep only the most important information.
 3. **Training**: The model learns from the graph's structure by sampling and aggregating information from each node's local neighborhood.

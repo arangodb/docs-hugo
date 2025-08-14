@@ -3,28 +3,28 @@ title: AQL graph traversals explained
 menuTitle: Traversals explained
 weight: 5
 description: >-
-  Traversing a graph means to follow edges connected to a start vertex and
-  neighboring vertices until a specified depth
+  Traversing a graph means to follow edges connected to a start node and
+  neighboring nodes until a specified depth
 ---
 ## General query idea
 
-A traversal starts at one specific document (*startVertex*) and follows all
-edges connected to this document. For all documents (*vertices*) that are
+A traversal starts at one specific document (*startNode*) and follows all
+edges connected to this document. For all documents (*nodes*) that are
 targeted by these edges it will again follow all edges connected to them and
 so on. It is possible to define how many of these follow iterations should be
 executed at least (*min* depth) and at most (*max* depth).
 
-For all vertices that were visited during this process in the range between
+For all nodes that were visited during this process in the range between
 *min* depth and *max* depth iterations you will get a result in form of a
 set with three items:
 
-1. The visited vertex.
+1. The visited node.
 2. The edge pointing to it.
-3. The complete path from startVertex to the visited vertex as object with an
-  attribute *edges* and an attribute *vertices*, each a list of the corresponding
-  elements. These lists are sorted, which means the first element in *vertices*
-  is the *startVertex* and the last is the visited vertex, and the n-th element
-  in *edges* connects the n-th element with the (n+1)-th element in *vertices*.
+3. The complete path from startNode to the visited node as object with an
+  attribute *edges* and an attribute *nodes*, each a list of the corresponding
+  elements. These lists are sorted, which means the first element in *nodes*
+  is the *startNode* and the last is the visited node, and the n-th element
+  in *edges* connects the n-th element with the (n+1)-th element in *nodes*.
 
 ## Example execution
 
@@ -35,7 +35,7 @@ This is the graph that we are going to traverse:
 
 We use the following parameters for our query:
 
-1. We start at the vertex **A**.
+1. We start at the node **A**.
 2. We use a *min* depth of 1.
 3. We use a *max* depth of 2.
 4. We follow only in `OUTBOUND` direction of edges

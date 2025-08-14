@@ -3,19 +3,19 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  Find one path of shortest length between two vertices
+  Find one path of shortest length between two nodes
 ---
 ## General query idea
 
 This type of query finds the shortest path between two given documents
-(*startVertex* and *targetVertex*) in your graph. If there are multiple
+(*startNode* and *endNode*) in your graph. If there are multiple
 shortest paths, the path with the lowest weight or a random one (in case
 of a tie) is returned.
 
 The shortest path search emits the following two variables for every step of
 the path:
 
-1. The vertex on this path.
+1. The node on this path.
 2. The edge pointing to it.
 
 ### Example execution
@@ -27,22 +27,22 @@ This is the graph that you are going to find a shortest path on:
 
 You can use the following parameters for the query:
 
-1. You start at the vertex **A**.
-2. You finish with the vertex **D**.
+1. You start at the node **A**.
+2. You finish with the node **D**.
 
-So, obviously, you have the vertices **A**, **B**, **C** and **D** on the
+So, obviously, you have the nodes **A**, **B**, **C** and **D** on the
 shortest path in exactly this order. Then, the shortest path statement
 returns the following pairs:
 
-| Vertex | Edge  |
-|--------|-------|
-|    A   | null  |
-|    B   | A → B |
-|    C   | B → C |
-|    D   | C → D |
+| Node  | Edge  |
+|-------|-------|
+|   A   | null  |
+|   B   | A → B |
+|   C   | B → C |
+|   D   | C → D |
 
 Note that the first edge is always `null` because there is no edge pointing
-to the *startVertex*.
+to the *startNode*.
 
 ## Syntax
 
@@ -53,24 +53,24 @@ collections (anonymous graph).
 ### Working with named graphs
 
 ```aql
-FOR vertex[, edge]
+FOR node[, edge]
   IN OUTBOUND|INBOUND|ANY SHORTEST_PATH
-  startVertex TO targetVertex
+  startNode TO endNode
   GRAPH graphName
   [OPTIONS options]
 ```
 
 - `FOR`: Emits up to two variables:
-  - **vertex** (object): The current vertex on the shortest path
-  - **edge** (object, *optional*): The edge pointing to the vertex
+  - **node** (object): The current node on the shortest path
+  - **edge** (object, *optional*): The edge pointing to the node
 - `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
-- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
+- **startNode** `TO` **endNode** (both string\|object): The two nodes between
   which the shortest path is computed. This can be specified in the form of
   an ID string or in the form of a document with the attribute `_id`. All other
   values lead to a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its node and
   edge collections are looked up for the path search.
 - `OPTIONS` **options** (object, *optional*):
   See the [path search options](#path-search-options).
@@ -85,15 +85,15 @@ number, then the query is aborted with an error.
 ### Working with collection sets
 
 ```aql
-FOR vertex[, edge]
+FOR node[, edge]
   IN OUTBOUND|INBOUND|ANY SHORTEST_PATH
-  startVertex TO targetVertex
+  startNode TO endNode
   edgeCollection1, ..., edgeCollectionN
   [OPTIONS options]
 ```
 
 Instead of `GRAPH graphName` you may specify a list of edge collections (anonymous
-graph). The involved vertex collections are determined by the edges of the given
+graph). The involved node collections are determined by the edges of the given
 edge collections. The rest of the behavior is similar to the named version.
 
 ### Path search options
@@ -136,8 +136,8 @@ account. In this case you can use `OUTBOUND` as general search direction and `AN
 specifically for *edges2* as follows:
 
 ```aql
-FOR vertex IN OUTBOUND SHORTEST_PATH
-  startVertex TO targetVertex
+FOR node IN OUTBOUND SHORTEST_PATH
+  startNode TO endNode
   edges1, ANY edges2, edges3
 ```
 
@@ -193,9 +193,9 @@ db._query(`
 `);
 ```
 
-You can see that expectations are fulfilled. You find the vertices in the
+You can see that expectations are fulfilled. You find the nodes in the
 correct ordering and the first edge is `null`, because no edge is pointing
-to the start vertex on this path.
+to the start node on this path.
 
 You can also compute shortest paths based on documents found in collections:
 

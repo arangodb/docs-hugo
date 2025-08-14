@@ -66,11 +66,11 @@ to what can be achieved.
 
 Graph databases are particularly good at queries on graphs that involve
 paths in the graph of an a priori unknown length. For example, finding
-the shortest path between two vertices in a graph, or finding all
-paths that match a certain pattern starting at a given vertex are such
+the shortest path between two nodes in a graph, or finding all
+paths that match a certain pattern starting at a given node are such
 examples.
 
-However, if the vertices and edges along the occurring paths are
+However, if the nodes and edges along the occurring paths are
 distributed across the cluster, then a lot of communication is
 necessary between nodes, and performance suffers. To achieve good
 performance at scale, it is therefore necessary to get the
@@ -79,5 +79,5 @@ right. Most of the time, the application developers and users of
 ArangoDB know best, how their graphs are structured. Therefore, 
 ArangoDB allows users to specify, according to which attributes
 the graph data is sharded. A useful first step is usually to make
-sure that the edges originating at a vertex reside on the same
-cluster node as the vertex.
+sure that the edges originating at a node reside on the same
+cluster node as the node.

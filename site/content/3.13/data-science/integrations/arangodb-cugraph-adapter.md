@@ -69,7 +69,7 @@ cug_g = adbcug_adapter.arangodb_graph_to_cugraph("fraud-detection")
 
 cug_g = adbcug_adapter.arangodb_collections_to_cugraph(
     "fraud-detection",
-    {"account", "bank", "branch", "Class", "customer"},  #  Vertex collections
+    {"account", "bank", "branch", "Class", "customer"},  #  Node collections
     {"accountHolder", "Relationship", "transaction"},  # Edge collections
 )
 ```

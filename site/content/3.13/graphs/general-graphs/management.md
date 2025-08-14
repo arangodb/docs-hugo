@@ -79,24 +79,24 @@ Define a directed relation:
   The name of the edge collection where the edges should be stored.
   It is created if it does not exist yet.
 - `fromVertexCollections` (string\|array):
-  One or a list of collection names. Source vertices for the edges
+  One or a list of collection names. Source nodes for the edges
   have to be stored in these collections. Collections are created if they
   do not exist.
 - `toVertexCollections` (string\|array):
-  One or a list of collection names. Target vertices for the edges
+  One or a list of collection names. Target nodes for the edges
   have to be stored in these collections. Collections are created if they
   do not exist.
 
 The `relationName` defines the name of this relation and references to the
 underlying edge collection. The `fromVertexCollections` is an Array of document
-collections holding the start vertices. The `toVertexCollections` is an array
-of document collections holding the target vertices. Relations are only allowed
+collections holding the start nodes. The `toVertexCollections` is an array
+of document collections holding the target nodes. Relations are only allowed
 in the direction from any collection in `fromVertexCollections` to any
 collection in `toVertexCollections`.
 
 **Examples**
 
-A relation from one vertex collection to another:
+A relation from one node collection to another:
 
 ```js
 ---
@@ -107,7 +107,7 @@ var graph_module = require("@arangodb/general-graph");
 graph_module._relation("has_bought", "Customer", "Product");
 ```
 
-A relation from multiple vertex collections to multiple others:
+A relation from multiple node collections to multiple others:
 
 ```js
 ---
@@ -137,13 +137,13 @@ The following edge definition options are supported:
 - `edgeDefinitions` (array, _optional_):
   List of relation definition objects
 - `orphanCollections` (array, _optional_):
-  List of additional vertex collection names
+  List of additional node collection names
 
 The creation of a graph requires the name of the graph and a definition of
 its edges.
 
 For every type of edge definition a convenience method exists that can be used
-to create a graph. Optionally a list of vertex collections can be added, which
+to create a graph. Optionally a list of node collections can be added, which
 are not used in any edge definition. These collections are referred to as
 orphan collections within this chapter. All collections used within the
 creation process are created if they do not exist.
@@ -163,7 +163,7 @@ graph = graph_module._create("myGraph");
 ```
 
 Create a graph using an edge collection `edges` and a single
-vertex collection `vertices`:
+node collection `nodes`:
 
 ```js
 ---
@@ -171,9 +171,9 @@ name: generalGraphCreateGraphSingle
 description: ''
 ---
 ~db._drop("edges");
-~db._drop("vertices");
+~db._drop("nodes");
 var graph_module = require("@arangodb/general-graph");
-var edgeDefinitions = [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ];
+var edgeDefinitions = [ { collection: "edges", "from": [ "nodes" ], "to" : [ "nodes" ] } ];
 graph = graph_module._create("myGraph", edgeDefinitions);
 ~graph_module._drop("myGraph", true);
 ```
@@ -276,7 +276,7 @@ name: generalGraphListObjects
 description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
-~graph_module._create("myGraph", [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ]);
+~graph_module._create("myGraph", [ { collection: "edges", "from": [ "nodes" ], "to" : [ "nodes" ] } ]);
 ~graph_module._create("myStore", [ { collection: "friend_of", from: [ "Customer" ], to: [ "Customer" ] }, { collection: "has_bought", from: [ "Customer", "Company" ], to: [ "Groceries", "Electronics" ] } ]);
 graph_module._listObjects();
 ~graph_module._drop("myGraph", true);
@@ -364,7 +364,7 @@ db._collection("relation");
 ## Modify a Graph definition at runtime
 
 After you have created a graph its definition is not immutable.
-You can still add, delete or modify edge definitions and vertex collections.
+You can still add, delete or modify edge definitions and node collections.
 
 ### Extend the Edge Definitions
 
@@ -414,7 +414,7 @@ Modify a relation definition:
 
 Edits one relation definition of a graph. The edge definition used as argument
 replaces the existing edge definition of the graph which has the same collection.
-Vertex Collections of the replaced edge definition that are not used in the new
+Node Collections of the replaced edge definition that are not used in the new
 definition are transformed to an orphan. Orphans that are used in this new edge
 definition are deleted from the list of orphans. Other graphs with the same edge
 definition are modified, too.
@@ -488,28 +488,28 @@ db._collection("myEC1");
 ~graph_module._drop("myGraph", true);
 ```
 
-### Extend Vertex Collections
+### Extend Node Collections
 
-Each graph can have an arbitrary amount of vertex collections, which are not
+Each graph can have an arbitrary amount of node collections, which are not
 part of any edge definition of the graph. These collections are called orphan
 collections. If the graph is extended with an edge definition using one of the
 orphans, it is removed from the set of orphan collection automatically.
 
-#### Add a Vertex Collection
+#### Add a Node Collection
 
-Add a vertex collection to the graph:
+Add a node collection to the graph:
 
 `graph._addVertexCollection(vertexCollectionName, createCollection, options)`
 
 - `vertexCollectionName` (string):
-  Name of vertex collection.
+  Name of node collection.
 - `createCollection` (bool, _optional_):
   If `true`, the collection is created if it does not exist. Default: `true`
 - `options` (object, _optional_):
   Additional options related to the edge definition itself.
   See [Edge Definition Options](#edge-definition-options).
 
-Adds a vertex collection to the set of orphan collections of the graph. If the
+Adds a node collection to the set of orphan collections of the graph. If the
 collection does not exist, it is created. If it is already used by any edge
 definition of the graph, an error is thrown.
 
@@ -535,7 +535,7 @@ Get all orphan collections:
 
 `graph._orphanCollections()`
 
-Returns all vertex collections of the graph that are not used in any
+Returns all node collections of the graph that are not used in any
 edge definition.
 
 **Examples**
@@ -553,19 +553,19 @@ graph._orphanCollections();
 ~graph_module._drop("myGraph", true);
 ```
 
-#### Remove a Vertex Collection
+#### Remove a Node Collection
 
-Remove a vertex collection from the graph:
+Remove a node collection from the graph:
 
 `graph._removeVertexCollection(vertexCollectionName, dropCollection)`
 
 - `vertexCollectionName` (string):
-  Name of vertex collection.
+  Name of node collection.
 - `dropCollection` (bool, _optional_):
   If `true`, the collection is dropped if it is not used in any other graph.
   Default: `false`
 
-Removes a vertex collection from the graph.
+Removes a node collection from the graph.
 Only collections not used in any relation definition can be removed.
 Optionally the collection can be deleted, if it is not used in any other graph.
 
@@ -588,16 +588,16 @@ graph._orphanCollections();
 ~graph_module._drop("myGraph", true);
 ```
 
-## Manipulating Vertices
+## Manipulating nodes
 
-### Save a Vertex
+### Save a Node
 
-Create a new vertex in `vertexCollectionName`:
+Create a new node in `vertexCollectionName`:
 
 `graph.vertexCollectionName.save(data, options)`
 
 - `data` (object):
-  JSON data of vertex.
+  JSON data of node.
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 
@@ -614,16 +614,16 @@ graph.male.save({name: "Floyd", _key: "floyd"}, { returnNew: true });
 ~examples.dropGraph("social");
 ```
 
-### Replace a Vertex
+### Replace a Node
 
-Replaces the data of a vertex in collection `vertexCollectionName`:
+Replaces the data of a node in collection `vertexCollectionName`:
 
 `graph.vertexCollectionName.replace(vertexId, data, options)`
 
 - `vertexId` (string):
-  `_id` attribute of the vertex
+  `_id` attribute of the node
 - `data` (object):
-  JSON data of vertex.
+  JSON data of node.
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 
@@ -641,16 +641,16 @@ graph.male.replace("male/john", {name: "John"}, { returnOld: true, returnNew: tr
 ~examples.dropGraph("social");
 ```
 
-### Update a Vertex
+### Update a Node
 
-Updates the data of a vertex in collection `vertexCollectionName`.
+Updates the data of a node in collection `vertexCollectionName`.
 
 `graph.vertexCollectionName.update(vertexId, data, options)`
 
 - `vertexId` (string):
-  `_id` attribute of the vertex
+  `_id` attribute of the node
 - `data` (object):
-  JSON data of vertex.
+  JSON data of node.
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
 
@@ -668,15 +668,15 @@ graph.female.update("female/linda", {name: "Linda", _key: "linda"}, { returnOld:
 ~examples.dropGraph("social");
 ```
 
-### Remove a Vertex
+### Remove a Node
 
-Removes a vertex from a collection of the named graph. Additionally removes all
-incoming and outgoing edges of the vertex.
+Removes a node from a collection of the named graph. Additionally removes all
+incoming and outgoing edges of the node.
 
 `graph.vertexCollectionName.remove(vertexId, options)`
 
 - `vertexId` (string):
-  `_id` attribute of the vertex
+  `_id` attribute of the node
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
 
@@ -700,15 +700,15 @@ db._exists("male/kermit");
 
 ### Save a new Edge
 
-Creates an edge from vertex `data._from` to vertex `data._to` in collection
+Creates an edge from node `data._from` to node `data._to` in collection
 `edgeCollectionName`.
 
 `graph.edgeCollectionName.save(data, options)`
 
 - `data` (object):
   JSON data of the edge. Needs to include a `_from` attribute with the document
-  identifier of the source vertex and a `_to` attribute with the document
-  identifier of the target vertex.
+  identifier of the source node and a `_to` attribute with the document
+  identifier of the target node.
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 
@@ -807,7 +807,7 @@ graph.relation.update("relation/aliceAndDiana",
 ### Remove an Edge
 
 Removes an edge from an edge collection of the named graph. Any other edges
-that directly reference this edge like a vertex are removed, too.
+that directly reference this edge like a node are removed, too.
 
 `graph.edgeCollectionName.remove(edgeId, options)`
 

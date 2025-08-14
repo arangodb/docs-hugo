@@ -86,7 +86,7 @@ db._executeTransaction({
   },
   action: function () {
     const db = require("@arangodb").db;
-    /* Execute an AQL query that traverses a graph starting at a "users" vertex.
+    /* Execute an AQL query that traverses a graph starting at a "users" node.
        It is yet unknown into which other collections the query might traverse */
     db._createStatement({ 
       query: `FOR v IN ANY "users/1234" connections RETURN v`
@@ -145,7 +145,7 @@ will fail, unless that other collection is added to the declaration as well.
 
 Note that if a document handle is used as starting point for a traversal, e.g.
 `FOR v IN ANY "users/not_linked" ...` or `FOR v IN ANY {_id: "users/not_linked"} ...`,
-then no error is raised in the case of the start vertex not having any edges to
+then no error is raised in the case of the start node not having any edges to
 follow, with `allowImplicit: false` and *users* not being declared for read access.
 AQL only sees a string and does not consider it a read access, unless there are
 edges connected to it. `FOR v IN ANY DOCUMENT("users/not_linked") ...` will fail

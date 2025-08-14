@@ -6,23 +6,23 @@ description: >-
   Edges are documents with special `_from` and `_to` attributes to reference
   other documents by their ID to form a graph
 ---
-Edges are used in [graphs](_index.md) to link vertices together.
+Edges are used in [graphs](_index.md) to link nodes together.
 They are documents with two additional system attributes that you set, a
 `_from` and a `_to` attribute. They need to be stored in **edge collections**.
 
-Together with vertex documents stored in _document collections_ (also called
-_vertex collections_ in this context), edges form graphs.
+Together with node documents stored in _document collections_ (also called
+_node collections_ or vertex collections in this context), edges form graphs.
 
 **Example**
 
 - An edge collection stores the information that a company's reception is a
   sub-unit to the services unit and the services unit is sub-unit to the
   CEO. You would express this relationship with the `_from` and `_to` attributes.
-- A vertex collection stores all the properties about the reception, for example,
+- A node collection stores all the properties about the reception, for example,
   that 20 people are working there, the room number, and so on.
-- The `_from` attribute of an edge is the document ID of the linked vertex
+- The `_from` attribute of an edge is the document ID of the linked node
   (incoming relation).
-- The `_to` attribute of an edge is the document ID of the linked vertex
+- The `_to` attribute of an edge is the document ID of the linked node
   (outgoing relation).
 
 ## Edges API

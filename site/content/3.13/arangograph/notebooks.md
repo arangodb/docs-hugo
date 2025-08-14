@@ -126,7 +126,7 @@ Single line commands have `%` prefix and multi-line commands have `%%` prefix.
 - `%getCollection collectionName` - gets a collection for variable assignment,
   e.g. `student` = `% getCollection Student`.
 - `%createEdgeCollection` - creates an edge collection.
-- `%createVertexCollection` - creates a vertex collection.
+- `%createVertexCollection` - creates a node collection.
 - `%createEdgeDefinition` - creates an edge definition.
 - `%deleteCollection collectionName` - deletes the collection.
 - `%truncateCollection collectionName` - truncates the collection.

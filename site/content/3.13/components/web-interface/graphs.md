@@ -43,7 +43,7 @@ create them, see [Graphs](../../graphs/_index.md).
    click the _edit_ icon in the **Actions** column.
 2. Click the **Delete** button.
 3. Optional: Enable the **Also drop collections** toggle if you want to
-   delete the vertex and edge collections of the graph in addition to the
+   delete the node and edge collections of the graph in addition to the
    graph definition. This deletes the collections with all the documents
    they contain and is irreversible!
 4. Confirm the deletion by clicking the **Delete** button.

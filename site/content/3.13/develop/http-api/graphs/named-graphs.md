@@ -112,14 +112,14 @@ paths:
                                     type: string
                                   from:
                                     description: |
-                                      List of vertex collection names.
+                                      List of node collection names.
                                       Edges in collection can only be inserted if their _from is in any of the collections here.
                                     type: array
                                     items:
                                       type: string
                                   to:
                                     description: |
-                                      List of vertex collection names.
+                                      List of node collection names.
 
                                       Edges in collection can only be inserted if their _to is in any of the collections here.
                                     type: array
@@ -127,7 +127,7 @@ paths:
                                       type: string
                             orphanCollections:
                               description: |
-                                An array of additional vertex collections.
+                                An array of additional node collections.
                                 Documents in these collections do not have edges within this graph.
                               type: array
                               items:
@@ -260,7 +260,7 @@ paths:
                         type: string
                       from:
                         description: |
-                          A list of vertex collection names.
+                          A list of node collection names.
                           Edges you later insert into `collection` can only reference vertices
                           from these collections in their `_from` attribute (if you use the
                           interface for named graphs).
@@ -269,7 +269,7 @@ paths:
                           type: string
                       to:
                         description: |
-                          A list of vertex collection names.
+                          A list of node collection names.
                           Edges you later insert into `collection` can only reference vertices
                           from these collections in their `_to` attribute (if you use the
                           interface for named graphs).
@@ -278,7 +278,7 @@ paths:
                           type: string
                 orphanCollections:
                   description: |
-                    An array of additional vertex collections.
+                    An array of additional node collections.
                     Documents in these collections do not have edges within this graph.
                   type: array
                   items:
@@ -303,8 +303,8 @@ paths:
                       description: |
                         Required to create a SmartGraph.
 
-                        The attribute name that is used to smartly shard the vertices of a graph.
-                        Every vertex in this SmartGraph has to have this attribute.
+                        The attribute name that is used to smartly shard the nodes of a graph.
+                        Every node in this SmartGraph has to have this attribute.
                         Cannot be modified later.
                       type: string
                     satellites:
@@ -404,14 +404,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -419,7 +419,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -531,14 +531,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -546,7 +546,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -666,7 +666,7 @@ paths:
             Returned if there is a conflict storing the graph. This can occur
             either if a graph with this name already exists, or if there is an
             edge definition with the same edge collection but different `from`
-            and `to` vertex collections in any other graph.
+            and `to` node collections in any other graph.
           content:
             application/json:
               schema:
@@ -717,8 +717,8 @@ body = {
   name: "myGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }]
 };
 
@@ -747,10 +747,10 @@ body = {
   name: "smartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     replicationFactor: 2,
@@ -774,7 +774,7 @@ description: |-
   Create a disjoint SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
   Note that as you are using a disjoint version, you can only
-  create edges between vertices sharing the same region.
+  create edges between nodes sharing the same region.
 name: HttpGharialCreateDisjointSmart
 ---
 var graph = require("@arangodb/general-graph");
@@ -786,10 +786,10 @@ body = {
   name: "disjointSmartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     isDisjoint: true,
@@ -811,9 +811,9 @@ graph._drop("disjointSmartGraph", true);
 ```curl
 ---
 description: |-
-  Create a SmartGraph with a satellite vertex collection.
-  It uses the collection "endVertices" as a satellite collection.
-  This collection is cloned to all servers, all other vertex
+  Create a SmartGraph with a satellite node collection.
+  It uses the collection "endNodes" as a satellite collection.
+  This collection is cloned to all servers, all other node
   collections are split into 9 shards
   and are sharded by the "region" attribute.
 name: HttpGharialCreateSmartWithSatellites
@@ -827,16 +827,16 @@ body = {
   name: "smartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     replicationFactor: 2,
     numberOfShards: 9,
     smartGraphAttribute: "region",
-    satellites: [ "endVertices" ]
+    satellites: [ "endNodes" ]
   }
 };
 
@@ -865,8 +865,8 @@ body = {
   name: "enterpriseGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
   orphanCollections: [ ],
   isSmart: true,
@@ -903,8 +903,8 @@ body = {
   name: "satelliteGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
   orphanCollections: [ ],
   options: {
@@ -1010,14 +1010,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1025,7 +1025,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1123,8 +1123,8 @@ if (graph._exists("myGraph")) {
 }
 graph._create("myGraph", [{
   collection: "edges",
-  from: [ "startVertices" ],
-  to: [ "endVertices" ]
+  from: [ "startNodes" ],
+  to: [ "endNodes" ]
 }]);
 var url = "/_api/gharial/myGraph";
 
@@ -1287,7 +1287,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### List vertex collections
+### List node collections
 
 ```openapi
 paths:
@@ -1295,7 +1295,7 @@ paths:
     get:
       operationId: listVertexCollections
       description: |
-        Lists all vertex collections within this graph, including orphan collections.
+        Lists all node collections within this graph, including orphan collections.
       parameters:
         - name: database-name
           in: path
@@ -1337,8 +1337,8 @@ paths:
                     example: 200
                   collections:
                     description: |
-                      The list of all vertex collections within this graph.
-                      Includes the vertex collections used in edge definitions
+                      The list of all node collections within this graph.
+                      Includes the node collections used in edge definitions
                       as well as orphan collections.
                     type: array
                     items:
@@ -1396,10 +1396,10 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Add a vertex collection
+### Add a node collection
 
-Adding a vertex collection on its own to a graph adds it as an orphan collection.
-If you want to use an additional vertex collection for graph relations, add it
+Adding a node collection on its own to a graph adds it as an orphan collection.
+If you want to use an additional node collection for graph relations, add it
 by [adding a new edge definition](#add-an-edge-definition) or
 [modifying an existing edge definition](#replace-an-edge-definition) instead.
 
@@ -1409,7 +1409,7 @@ paths:
     post:
       operationId: addVertexCollection
       description: |
-        Adds a vertex collection to the set of orphan collections of the graph.
+        Adds a node collection to the set of orphan collections of the graph.
         If the collection does not exist, it is created.
       parameters:
         - name: database-name
@@ -1437,11 +1437,11 @@ paths:
               properties:
                 collection:
                   description: |
-                    The name of the vertex collection to add to the graph definition.
+                    The name of the node collection to add to the graph definition.
                   type: string
                 options:
                   description: |
-                    A JSON object to set options for creating vertex collections.
+                    A JSON object to set options for creating node collections.
                   type: object
                   properties:
                     satellites:
@@ -1516,14 +1516,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1531,7 +1531,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1643,14 +1643,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1658,7 +1658,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1819,7 +1819,7 @@ var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 body = {
-  collection: "otherVertices"
+  collection: "otherNodes"
 };
 var response = logCurlRequest('POST', url, body);
 
@@ -1829,7 +1829,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Remove a vertex collection
+### Remove a node collection
 
 ```openapi
 paths:
@@ -1837,13 +1837,13 @@ paths:
     delete:
       operationId: deleteVertexCollection
       description: |
-        Removes a vertex collection from the list of the graph's
+        Removes a node collection from the list of the graph's
         orphan collections. It can optionally delete the collection if it is
         not used in any other graph.
 
-        You cannot remove vertex collections that are used in one of the
+        You cannot remove node collections that are used in one of the
         edge definitions of the graph. You need to modify or remove the
-        edge definition first in order to fully remove a vertex collection from
+        edge definition first in order to fully remove a node collection from
         the graph.
       parameters:
         - name: database-name
@@ -1865,7 +1865,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection.
+            The name of the node collection.
           schema:
             type: string
         - name: dropCollection
@@ -1880,7 +1880,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex collection was removed from the graph successfully
+            Returned if the node collection was removed from the graph successfully
             and `waitForSync` is `true`.
           content:
             application/json:
@@ -1939,14 +1939,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1954,7 +1954,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2064,14 +2064,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2079,7 +2079,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2131,7 +2131,7 @@ paths:
                         type: boolean
         '400':
           description: |
-            Returned if the vertex collection is still used in an edge definition.
+            Returned if the node collection is still used in an edge definition.
             In this case it cannot be removed from the graph yet, it has to be
             removed from the edge definition first.
           content:
@@ -2165,7 +2165,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -2235,26 +2235,26 @@ paths:
 ```curl
 ---
 description: |-
-  You can remove vertex collections that are not used in any edge definition:
+  You can remove node collections that are not used in any edge definition:
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("social");
-g._addVertexCollection("otherVertices");
-var url = "/_api/gharial/social/vertex/otherVertices";
+g._addVertexCollection("otherNodes");
+var url = "/_api/gharial/social/vertex/otherNodes";
 var response = logCurlRequest('DELETE', url);
 
 assert(response.code === 202);
 
 logJsonResponse(response);
 examples.dropGraph("social");
-db._drop("otherVertices");
+db._drop("otherNodes");
 ```
 
 ```curl
 ---
 description: |-
-  You cannot remove vertex collections that are used in edge definitions:
+  You cannot remove node collections that are used in edge definitions:
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2387,7 +2387,7 @@ paths:
         Adds an additional edge definition to the graph.
 
         This edge definition has to contain a `collection` and an array of
-        each `from` and `to` vertex collections. An edge definition can only
+        each `from` and `to` node collections. An edge definition can only
         be added if this definition is either not used in any other graph, or
         it is used with exactly the same definition. For example, it is not
         possible to store a definition "e" from "v1" to "v2" in one graph, and
@@ -2427,13 +2427,13 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    One or many node collections that can contain source nodes.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    One or many node collections that can contain target nodes.
                   type: array
                   items:
                     type: string
@@ -2515,14 +2515,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2530,7 +2530,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2642,14 +2642,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2657,7 +2657,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2712,7 +2712,7 @@ paths:
             Returned if the edge definition can not be added.
             This can be because it is ill-formed, or if there is an
             edge definition with the same edge collection but different `from`
-            and `to` vertex collections in any other graph.
+            and `to` node collections in any other graph.
           content:
             application/json:
               schema:
@@ -2840,7 +2840,7 @@ paths:
     put:
       operationId: replaceEdgeDefinition
       description: |
-        Change the vertex collections of one specific edge definition.
+        Change the node collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: database-name
@@ -2897,13 +2897,13 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    One or many node collections that can contain source nodes.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    One or many node collections that can contain target nodes.
                   type: array
                   items:
                     type: string
@@ -2983,14 +2983,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2998,7 +2998,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3108,14 +3108,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3123,7 +3123,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3207,7 +3207,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3305,7 +3305,7 @@ paths:
       operationId: deleteEdgeDefinition
       description: |
         Remove one edge definition from the graph. This only removes the
-        edge collection from the graph definition. The vertex collections of the
+        edge collection from the graph definition. The node collections of the
         edge definition become orphan collections but otherwise remain untouched
         and can still be used in your queries.
       parameters:
@@ -3409,14 +3409,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3424,7 +3424,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3535,14 +3535,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3550,7 +3550,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3603,7 +3603,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3688,9 +3688,9 @@ db._drop("relation");
 examples.dropGraph("social");
 ```
 
-## Vertices
+## Nodes
 
-### Create a vertex
+### Create a node
 
 ```openapi
 paths:
@@ -3698,7 +3698,7 @@ paths:
     post:
       operationId: createVertex
       description: |
-        Adds a vertex to the given collection.
+        Adds a node to the given collection.
       parameters:
         - name: database-name
           in: path
@@ -3719,7 +3719,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex should be inserted into.
+            The name of the node collection the node should be inserted into.
           schema:
             type: string
         - name: waitForSync
@@ -3751,12 +3751,12 @@ paths:
           application/json:
             schema:
               description: |
-                The body has to be a JSON object you want to store as a vertex document.
+                The body has to be a JSON object you want to store as a node document.
               type: object
       responses:
         '201':
           description: |
-            Returned if the vertex can be added and `waitForSync` is `true`.
+            Returned if the node can be added and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -3778,7 +3778,7 @@ paths:
                     example: 201
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -3799,7 +3799,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -3845,7 +3845,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes generated while storing the vertex.
+                      The internal attributes generated while storing the node.
                       Does not include any attribute given in request body.
                     type: object
                     required:
@@ -3867,7 +3867,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -3892,7 +3892,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert vertices into the graph, you need to have at least the following privileges:
+            In order to insert nodes into the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -4015,7 +4015,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Get a vertex
+### Get a node
 
 ```openapi
 paths:
@@ -4023,7 +4023,7 @@ paths:
     get:
       operationId: getVertex
       description: |
-        Gets a vertex from the given collection.
+        Gets a node from the given collection.
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4046,14 +4046,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: If-Match
@@ -4085,7 +4085,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex can be found.
+            Returned if the node can be found.
           content:
             application/json:
               schema:
@@ -4107,7 +4107,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The complete vertex.
+                      The complete node.
                     type: object
                     required:
                       - _id
@@ -4129,8 +4129,8 @@ paths:
         '304':
           description: |
             The `If-None-Match` header has been specified and the currently
-            stored vertex still has this revision value. There was no update since
-            the last time the vertex was fetched by the caller.
+            stored node still has this revision value. There was no update since
+            the last time the node was fetched by the caller.
           content:
             application/json:
               schema:
@@ -4162,7 +4162,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Read Only` access on the given collection.
           content:
@@ -4198,7 +4198,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex does not exist.
+            - The node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -4317,7 +4317,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Update a vertex
+### Update a node
 
 ```openapi
 paths:
@@ -4325,7 +4325,7 @@ paths:
     patch:
       operationId: updateVertex
       description: |
-        Updates the data of the specific vertex in the collection.
+        Updates the data of the specific node in the collection.
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4348,14 +4348,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -4423,7 +4423,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex can be updated, and `waitForSync` is `true`.
+            Returned if the node can be updated, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4445,7 +4445,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4466,7 +4466,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4490,7 +4490,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4535,7 +4535,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4556,7 +4556,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4580,7 +4580,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4604,7 +4604,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -4640,7 +4640,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to update does not exist.
+            - The node to update does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -4762,7 +4762,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Replace a vertex
+### Replace a node
 
 ```openapi
 paths:
@@ -4770,7 +4770,7 @@ paths:
     put:
       operationId: replaceVertex
       description: |
-        Replaces the data of a vertex in the collection.
+        Replaces the data of a node in the collection.
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -4793,14 +4793,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -4863,12 +4863,12 @@ paths:
             schema:
               description: |
                 The body has to be a JSON object you want to replace the existing
-                vertex document with.
+                node document with.
               type: object
       responses:
         '200':
           description: |
-            Returned if the vertex can be replaced, and `waitForSync` is `true`.
+            Returned if the node can be replaced, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4890,7 +4890,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4911,7 +4911,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4935,7 +4935,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4958,7 +4958,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the vertex can be replaced, and `waitForSync` is `false`.
+            Returned if the node can be replaced, and `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -4980,7 +4980,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -5001,7 +5001,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -5025,7 +5025,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5049,7 +5049,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace vertices in the graph, you need to have at least the following privileges:
+            In order to replace nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -5085,7 +5085,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to replace does not exist.
+            - The node to replace does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -5208,7 +5208,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Remove a vertex
+### Remove a node
 
 ```openapi
 paths:
@@ -5216,8 +5216,8 @@ paths:
     delete:
       operationId: deleteVertex
       description: |
-        Removes a vertex from a collection of the named graph. Additionally removes all
-        incoming and outgoing edges of the vertex.
+        Removes a node from a collection of the named graph. Additionally removes all
+        incoming and outgoing edges of the node.
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -5240,14 +5240,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -5286,7 +5286,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex can be removed.
+            Returned if the node can be removed.
           content:
             application/json:
               schema:
@@ -5312,7 +5312,7 @@ paths:
                     type: boolean
                   old:
                     description: |
-                      The complete deleted vertex document.
+                      The complete deleted node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5361,7 +5361,7 @@ paths:
                     type: boolean
                   old:
                     description: |
-                      The complete deleted vertex document.
+                      The complete deleted node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5385,7 +5385,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you need to have at least the following privileges:
+            In order to delete nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -5421,7 +5421,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to remove does not exist.
+            - The node to remove does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -5551,7 +5551,7 @@ paths:
       operationId: createEdge
       description: |
         Creates a new edge in the specified collection.
-        Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
+        Within the body the edge has to contain a `_from` and `_to` value referencing to valid nodes in the graph.
         Furthermore, the edge has to be valid according to the edge definitions.
       parameters:
         - name: database-name
@@ -5613,12 +5613,12 @@ paths:
               properties:
                 _from:
                   description: |
-                    The source vertex of this edge. Has to be valid within
+                    The source node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
                 _to:
                   description: |
-                    The target vertex of this edge. Has to be valid within
+                    The target node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
       responses:
@@ -5868,9 +5868,9 @@ paths:
             Returned in any of the following cases:
             - The graph cannot be found.
             - The edge collection is not part of the graph.
-            - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
-            - The vertex collection is part of the graph, but does not exist.
-            - `_from` or `_to` vertex does not exist.
+            - The node collection referenced in the `_from` or `_to` attribute is not part of the graph.
+            - The node collection is part of the graph, but does not exist.
+            - `_from` or `_to` node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -6119,7 +6119,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Read Only` access on the given collection.
           content:
@@ -6313,7 +6313,7 @@ paths:
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -6659,7 +6659,7 @@ paths:
             - The graph cannot be found.
             - The collection is not part of the graph.
             - The edge to update does not exist.
-            - Either `_from` or `_to` vertex does not exist (if updated).
+            - Either `_from` or `_to` node does not exist (if updated).
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -6819,7 +6819,7 @@ paths:
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -6890,12 +6890,12 @@ paths:
               properties:
                 _from:
                   description: |
-                    The source vertex of this edge. Has to be valid within
+                    The source node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
                 _to:
                   description: |
-                    The target vertex of this edge. Has to be valid within
+                    The target node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
       responses:
@@ -7179,7 +7179,7 @@ paths:
             - The graph cannot be found.
             - The collection is not part of the graph.
             - The edge to replace does not exist.
-            - Either `_from` or `_to` vertex does not exist.
+            - Either `_from` or `_to` node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -7313,7 +7313,7 @@ paths:
       operationId: deleteEdge
       description: |
         Removes an edge from an edge collection of the named graph. Any other edges
-        that directly reference this edge like a vertex are removed, too.
+        that directly reference this edge like a node are removed, too.
       parameters:
         # Purposefully undocumented:
         #   rev (use If-Match header)
@@ -7501,7 +7501,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you need to have at least the following privileges:
+            In order to delete nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:

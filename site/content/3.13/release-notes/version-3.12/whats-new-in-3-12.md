@@ -759,7 +759,7 @@ aren't chosen automatically, you can make the optimizer prefer the indexes you
 specify. This can be done per edge collection, direction, and level/depth:
 
 ```aql
-FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+FOR v, e, p IN 1..4 OUTBOUND startNode edgeCollection
 OPTIONS {
   indexHint: {
     "edgeCollection": {
@@ -806,7 +806,7 @@ You can set this option to `false` to not make a large graph operation pollute
 the edge cache.
 
 ```aql
-FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+FOR v, e, p IN 1..5 OUTBOUND "nodes/123" edges
   OPTIONS { useCache: false }
   ...
 ```
@@ -1017,7 +1017,7 @@ regressed while others improved. In particular shortest path queries like
 `K_SHORTEST_PATHS` queries became slower for certain datasets compared to
 version 3.10. The performance should now be similar again due to a switch from
 a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
-of neighbor vertices in one case.
+of neighbor nodes in one case.
 
 In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been

@@ -360,13 +360,13 @@ error is thrown. For information about the naming constraints for collections, s
     (excluding smart edge collections)
   - `"enterprise-hash-smart-edge"`: default sharding used for new
     smart edge collections starting from version 3.4
-  - `enterprise-hex-smart-vertex`: sharding used for vertex collections of
+  - `enterprise-hex-smart-vertex`: sharding used for node collections of
     EnterpriseGraphs
 
   If no sharding strategy is specified, the default is `hash` for
   all normal collections, `enterprise-hash-smart-edge` for all smart edge
   collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
-  vertex collections.
+  node collections.
   Manually overriding the sharding strategy does not yet provide a 
   benefit, but it may later in case other sharding strategies are added.
   
@@ -397,10 +397,10 @@ error is thrown. For information about the naming constraints for collections, s
   This is an internal property.
 
 - `smartGraphAttribute` (string, _optional_):
-  The attribute that is used for sharding: vertices with the same value of
-  this attribute are placed in the same shard. All vertices are required to
+  The attribute that is used for sharding: nodes with the same value of
+  this attribute are placed in the same shard. All nodes are required to
   have this attribute set and it has to be a string. Edges derive the
-  attribute from their connected vertices.
+  attribute from their connected nodes.
 
 - `smartJoinAttribute` (string, _optional_): In a cluster, this attribute 
   determines an attribute of the collection that must contain the shard key value 

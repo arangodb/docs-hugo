@@ -28,7 +28,7 @@ The `knows` graph is a set of persons knowing each other:
 
 ![Persons relation Example Graph](../../images/knows_graph.png)
 
-The graph consists of a `persons` vertex collection connected via a `knows`
+The graph consists of a `persons` node collection connected via a `knows`
 edge collection.
 There are five persons, *Alice*, *Bob*, *Charlie*, *Dave*, and *Eve*.
 They have the following directed relations:
@@ -39,7 +39,7 @@ They have the following directed relations:
 - *Eve* knows *Alice*
 - *Eve* knows *Bob*
 
-Example of how to create the graph, inspect its vertices and edges, and delete
+Example of how to create the graph, inspect its nodes and edges, and delete
 it again:
 
 ```js
@@ -60,7 +60,7 @@ see all edges of this graph by default.
 ## Traversal Graph
 
 The `traversalGraph` has been designed to demonstrate filters in traversals.
-It has some labels to filter on it. The graph's vertices are in a collection
+It has some labels to filter on it. The graph's nodes are in a collection
 called `circles`, and it has an edge collection `edges` to connect them.
 
 ![Traversal Graph](../../images/traversal_graph.png)
@@ -89,7 +89,7 @@ see all edges of this graph by default.
 
 ## k Shortest Paths Graph
 
-The vertices in the `kShortestPathsGraph` graph are train stations of cities in
+The nodes in the `kShortestPathsGraph` graph are train stations of cities in
 Europe and North America. The edges represent train connections between them,
 with the travel time for both directions as edge weight.
 
@@ -114,7 +114,7 @@ examples.dropGraph("kShortestPathsGraph");
 The `mps_graph` has been created to demonstrate shortest path algorithms and
 the abbreviation stands for **m**ultiple **p**ath **s**earch.
 
-The example graph consists of vertices in the `mps_verts` collection and edges
+The example graph consists of nodes in the `mps_verts` collection and edges
 in the `mps_edges` collection. It is a simple traversal graph with start node
 *A* and end node *C*.
 
@@ -125,7 +125,7 @@ get the shortest path *A* - *B* - *C* or *A* - *D* - *C*. With the
 [All Shortest Paths](../aql/graphs/all-shortest-paths.md) algorithm, both
 shortest paths are returned.
 
-Example of how to create the graph, inspect its vertices and edges, and delete
+Example of how to create the graph, inspect its nodes and edges, and delete
 it again:
 
 ```js
@@ -152,7 +152,7 @@ In some cases, edge directions aren't forward. Therefore, it may get displayed
 disjunct in the graph viewer.
 
 You can create the graph as a named graph using the name `worldCountry`, or as
-an anonymous graph (vertex and edge collections only) using the name
+an anonymous graph (node and edge collections only) using the name
 `worldCountryUnManaged`.
 
 ```js
@@ -172,12 +172,12 @@ examples.dropGraph("worldCountryUnManaged");
 ## Social Graph
 
 The `social` graph is a set of persons and their relations. The graph has
-`female` and `male` persons as vertices in two vertex collections.
+`female` and `male` persons as nodes in two node collections.
 The edges are their connections and stored in the `relation` edge collection.
 
 ![Social Example Graph](../../images/social_graph.png)
 
-Example of how to create the graph, inspect its vertices and edges, and delete
+Example of how to create the graph, inspect its nodes and edges, and delete
 it again:
 
 ```js
@@ -196,14 +196,14 @@ examples.dropGraph("social");
 ## City Graph
 
 The `routeplanner` graph is a set of european cities and their fictional
-traveling distances as connections. The graph has the cities as vertices in
-multiple vertex collections (`germanCity` and `frenchCity`). The edges are their
+traveling distances as connections. The graph has the cities as nodes in
+multiple node collections (`germanCity` and `frenchCity`). The edges are their
 interconnections in several edge collections (`frenchHighway`, `germanHighway`,
 `internationalHighway`).
 
 ![Cities Example Graph](../../images/cities_graph.png)
 
-Example of how to create the graph, inspect its edges and vertices, and delete
+Example of how to create the graph, inspect its edges and nodes, and delete
 it again:
 
 ```js
@@ -223,7 +223,7 @@ examples.dropGraph("routeplanner");
 
 ## Connected Components Graph
 
-A small example graph comprised of `components` (vertices) and `connections`
+A small example graph comprised of `components` (nodes) and `connections`
 (edges). Good for trying out graph algorithms such as Weakly Connected
 Components (WCC).
 

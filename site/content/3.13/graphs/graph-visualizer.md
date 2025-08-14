@@ -17,7 +17,7 @@ The **Graph Visualizer** is a browser-based tool integrated into the web interfa
 of the ArangoDB Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes
 of individual nodes and edges. It also offers query capabilities and you can
-create new nodes (vertices) and relations (edges).
+create new nodes (vertices) and edges (relations).
 
 ![A screenshot of the Graph Visualizer user interface showing some persons and movies as circles with arrows indicting who acted in or directed a movie](../../images/graph-visualizer.png)
 

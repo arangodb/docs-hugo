@@ -7,7 +7,7 @@ description: >-
   or more additional edge attributes to improve certain graph traversals
 ---
 All edge collections in ArangoDB have a special edge index that enables fast
-graph operations. If you have graphs that contain supernodes (vertices that have
+graph operations. If you have graphs that contain supernodes (nodes that have
 an exceptionally high amount of connected edges) and you apply filters in graph
 traversal queries, you can create so-called vertex-centric indexes that can
 perform better than the default edge indexes. You can use the `persistent` and
@@ -15,10 +15,10 @@ perform better than the default edge indexes. You can use the `persistent` and
 
 ## Motivation
 
-The idea of a vertex-centric index is to index a combination of a vertex, the
+The idea of a vertex-centric index is to index a combination of a node, the
 direction, and an arbitrary set of attributes on the edges. This can be achieved
 by indexing the `_from` or `_to` attribute of an edge as the first field,
-which contains the document identifier of a vertex and implicitly captures the
+which contains the document identifier of a node and implicitly captures the
 direction, followed by any number of other attributes of an edge.
 
 To support traversals in `OUTBOUND` direction, you need to index the `_from`
@@ -29,7 +29,7 @@ the other as the first attribute the index is over.
 
 For example, if you have an attribute called `type` on the edges and traverse
 in `OUTBOUND` direction, you can create a vertex-centric `persistent` index over
-`["_from", "type"]` to find all edges attached to a vertex with a given `type`.
+`["_from", "type"]` to find all edges attached to a node with a given `type`.
 The following query can benefit from such an index:
 
 ```aql
@@ -39,9 +39,9 @@ FOR v, e, p IN 3..5 OUTBOUND @start GRAPH @graphName
 ```
 
 Using the built-in edge-index, ArangoDB can find the list of all edges attached
-to the vertex fast but it still it has to walk through this list and check if
+to the node fast but it still it has to walk through this list and check if
 all of them have the attribute `type == "friend"`. A vertex-centric index allows
-ArangoDB to find all edges with the attribute `type == "friend"` for the vertex
+ArangoDB to find all edges with the attribute `type == "friend"` for the node
 in one go, saving the iteration to verify the condition.
 
 If you have numeric attributes on edges and want to filter by them using value
@@ -122,6 +122,6 @@ explicitly filter on `_from` respectively `_to` and the other indexed attributes
 
 ```aql
 FOR edge IN edgeCollection
-  FILTER edge._from == "vertices/123456" AND edge.type == "friend"
+  FILTER edge._from == "nodes/123456" AND edge.type == "friend"
   RETURN edge
 ```

@@ -26,12 +26,12 @@ from a `general-graph` to an `enterprise-graph`.
 
 The creation and usage of EnterpriseGraphs are similar to [SmartGraphs](../smartgraphs/getting-started.md).
 However, the latter requires the selection of an appropriate sharding key.
-This is known as the `smartGraphAttribute`, a value that is stored in every vertex,
-which ensures data co-location of all vertices sharing this attribute and their
+This is known as the `smartGraphAttribute`, a value that is stored in every node,
+which ensures data co-location of all nodes sharing this attribute and their
 immediate edges.
 
 EnterpriseGraphs come with a concept of "random sharding", meaning that the
-sharding key is randomly selected while ensuring that all vertices with the
+sharding key is randomly selected while ensuring that all nodes with the
 same sharding key and their adjacent edges are co-located on the same servers,
 whenever possible. This approach provides significant advantages as it
 minimizes the impact of having suboptimal sharding keys defined when creating

@@ -1,23 +1,25 @@
 ---
-title: Remove vertices with AQL
-menuTitle: Remove vertex
+title: Remove nodes with AQL
+menuTitle: Remove nodes
 weight: 45
 description: >-
-  Removing connected edges along with vertex documents directly in AQL is
+  Removing connected edges along with node documents directly in AQL is
   possible in a limited way
+aliases:
+  - remove-vertex
 ---
-Deleting vertices with associated edges is currently not handled via AQL while 
-the [graph management interface](../../graphs/general-graphs/management.md#remove-a-vertex)
+Deleting nodes with associated edges is currently not handled via AQL while 
+the [graph management interface](../../graphs/general-graphs/management.md#remove-a-node)
 and the
-[REST API for the graph module](../../develop/http-api/graphs/named-graphs.md#remove-a-vertex)
-offer a vertex deletion functionality.
+[REST API for the graph module](../../develop/http-api/graphs/named-graphs.md#remove-a-node)
+offer a node deletion functionality.
 However, as shown in this example based on the
 [Knows Graph](../../graphs/example-graphs.md#knows-graph), a query for this 
 use case can be created.
 
 ![Example Graph](../../../images/knows_graph.png)
 
-When deleting vertex **eve** from the graph, we also want the edges
+When deleting node **eve** from the graph, we also want the edges
 `eve -> alice` and `eve -> bob` to be removed.
 The involved graph and its only edge collection has to be known. In this case it 
 is the graph **knows_graph** and the edge collection **knows**.
@@ -38,7 +40,7 @@ REMOVE 'eve' IN persons
 This query executed several actions:
 - use a graph traversal of depth 1 to get the `_key` of **eve's** adjacent edges
 - remove all of these edges from the `knows` collection
-- remove vertex **eve** from the `persons` collection
+- remove node **eve** from the `persons` collection
 
 The following query shows a different design to achieve the same result:
 
@@ -53,10 +55,10 @@ LET edgeKeys = (FOR v, e IN 1..1 ANY 'persons/eve' GRAPH 'knows_graph'
 REMOVE 'eve' IN persons
 ```
 
-**Note**: The query has to be adjusted to match a graph with multiple vertex/edge collections.
+**Note**: The query has to be adjusted to match a graph with multiple node/edge collections.
 
 For example, the [City Graph](../../graphs/example-graphs.md#city-graph) 
-contains several vertex collections - `germanCity` and `frenchCity` and several 
+contains several node collections - `germanCity` and `frenchCity` and several 
 edge collections -  `french / german / international Highway`.
 
 ![Example Graph2](../../../images/cities_graph.png)

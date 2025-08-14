@@ -18,8 +18,8 @@ Instead, the collections are only known at runtime of the query. Such dynamic
 collection access is invisible to the AQL query parser at query compile time.
 Dynamic access is possible via the `DOCUMENT()` function as well as with
 graph traversals (in particular the variant using collection sets), because
-edges may point to arbitrary vertex collections. Additionally, if you specify
-the start vertex of a traversal using a string, its collection needs to be
+edges may point to arbitrary node collections. Additionally, if you specify
+the start node of a traversal using a string, its collection needs to be
 declared as well.
 
 Collections that are explicitly used in a query are automatically detected by
@@ -40,7 +40,7 @@ at the very start of the query.
 ## Usage
 
 The `WITH` operation is only required if you use a cluster deployment and only
-for AQL queries that dynamically read from vertex collections as part of
+for AQL queries that dynamically read from node collections as part of
 graph traversals.
 
 You can enable the `--query.require-with` startup option to make single server
@@ -49,7 +49,7 @@ see [Requiring `WITH` statements](../../components/arangodb-server/options.md#--
 
 Dynamic access via the `DOCUMENT()` function does not require you to list the
 involved collections. Using named graphs in traversals (`GRAPH "graph-name"`)
-does not require it either, assuming that all vertices are in collections that
+does not require it either, assuming that all nodes are in collections that
 are part of the graph, as enforced by the [Graph API](../../develop/http-api/graphs/named-graphs.md).
 That means, it is only necessary for traversals using anonymous graphs /
 [collection sets](../graphs/traversals.md#working-with-collection-sets).
@@ -58,9 +58,9 @@ The following example query specifies an edge collection `usersHaveManagers`
 to perform a graph traversal. It is the only explicitly specified collection in
 the query. It does not need to be declared using the `WITH` operation.
 
-However, the involved vertex collections need to be declared. In this example,
-the start vertex is specified as a string and it is stored in the `users`
-collections. Furthermore, the edges of the edge collection reference vertices of
+However, the involved node collections need to be declared. In this example,
+the start node is specified as a string and it is stored in the `users`
+collections. Furthermore, the edges of the edge collection reference nodes of
 a collection called `managers`. Both collections are declared at the beginning
 of the query using the `WITH` operation:
 

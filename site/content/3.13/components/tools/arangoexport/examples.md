@@ -137,11 +137,11 @@ Correct:
 arangoexport \
   --type xgmml \
   --graph-name mygraph \
-  --collection vertex \
+  --collection node \
   --collection edge
 ```
 
-This exports an unnamed graph with the vertex collection named `vertex` and the edge collection
+This exports an unnamed graph with the node collection named `node` and the edge collection
 named `edge` into the `mygraph.xgmml` XGMML file.
 
 **Export based on a named graph**

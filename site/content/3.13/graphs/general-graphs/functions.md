@@ -6,7 +6,7 @@ description: >-
   Utility functions available for named graphs
 ---
 This chapter describes [various functions on a graph](../_index.md).
-A lot of these accept a vertex (or edge) example as parameter as defined in the next section.
+A lot of these accept a node (or edge) example as parameter as defined in the next section.
 
 Examples explain the API using the [City Graph](../example-graphs.md#city-graph):
 
@@ -25,13 +25,13 @@ These *examples* can have the following values:
 - A *list* containing example *objects* and/or *strings*.
   All results matching at least one of the elements in the list are returned.
 
-## Get vertices from edges
+## Get nodes from edges
 
-### Get the source vertex of an edge
+### Get the source node of an edge
 
 `graph._fromVertex(edgeId)`
 
-Returns the vertex defined with the attribute `_from` of the edge with `edgeId` as its `_id`.
+Returns the node defined with the attribute `_from` of the edge with `edgeId` as its `_id`.
 
 - `edgeId` (required): `_id` attribute of the edge
 
@@ -49,11 +49,11 @@ graph._fromVertex("relation/" + any._key);
 ~examples.dropGraph("social");
 ```
 
-### Get the target vertex of an edge
+### Get the target node of an edge
 
 `graph._toVertex(edgeId)`
 
-Returns the vertex defined with the attribute `_to` of the edge with `edgeId` as its `_id`.
+Returns the node defined with the attribute `_to` of the edge with `edgeId` as its `_id`.
 
 - `edgeId` (required): `_id` attribute of the edge
 
@@ -73,13 +73,13 @@ graph._toVertex("relation/" + any._key);
 
 ## _neighbors
 
-Get all neighbors of the vertices defined by the example.
+Get all neighbors of the nodes defined by the example.
 
 `graph._neighbors(vertexExample, options)`
 
 The function accepts an id, an example, a list of examples or even an empty
 example as parameter for vertexExample.
-The complexity of this method is `O(n * m^x)` with `n` being the vertices defined by the
+The complexity of this method is `O(n * m^x)` with `n` being the nodes defined by the
 `vertexExample` parameter, the average amount of neighbors `m`, and the maximal depths `x`.
 Hence, the default call has a complexity of `O(n * m)`;
 
@@ -87,11 +87,11 @@ Hence, the default call has a complexity of `O(n * m)`;
 - `options` (optional): An object defining further options. Can have the following values:
   - `direction`: The direction of the edges. Possible values are `"outbound"`, `"inbound"`, and `"any"` (default).
   - `edgeExamples`: Filter the edges, see [Definition of examples](#definition-of-examples)
-  - `neighborExamples`: Filter the neighbor vertices, see [Definition of examples](#definition-of-examples)
+  - `neighborExamples`: Filter the neighbor nodes, see [Definition of examples](#definition-of-examples)
   - `edgeCollectionRestriction`: One or a list of edge-collection names that should be
     considered to be on the path.
-  - `vertexCollectionRestriction`: One or a list of vertex-collection names that should be
-    considered on the intermediate vertex steps.
+  - `vertexCollectionRestriction`: One or a list of node-collection names that should be
+    considered on the intermediate node steps.
   - `minDepth`: Defines the minimal number of intermediate steps to neighbors (default is 1).
   - `maxDepth`: Defines the maximal number of intermediate steps to neighbors (default is 1).
 
@@ -125,7 +125,7 @@ graph._neighbors('germanCity/Hamburg', {direction : 'outbound', maxDepth : 2});
 
 ## _commonNeighbors
 
-Get all common neighbors of the vertices defined by the examples.
+Get all common neighbors of the nodes defined by the examples.
 
 `graph._commonNeighbors(vertex1Example, vertex2Examples, optionsVertex1, optionsVertex2)`
 
@@ -133,7 +133,7 @@ This function returns the intersection of `graph_module._neighbors(vertex1Exampl
 and `graph_module._neighbors(vertex2Example, optionsVertex2)`.
 For parameter documentation see [_neighbors](#_neighbors).
 
-The complexity of this method is **O(n\*m^x)** with *n* being the maximal amount of vertices
+The complexity of this method is **O(n\*m^x)** with *n* being the maximal amount of nodes
 defined by the parameters vertexExamples, *m* the average amount of neighbors and *x* the
 maximal depths.
 Hence the default call would have a complexity of **O(n\*m)**;
@@ -173,7 +173,7 @@ graph._commonNeighbors(
 
 ## _countCommonNeighbors
 
-Get the amount of common neighbors of the vertices defined by the examples.
+Get the amount of common neighbors of the nodes defined by the examples.
 
 `graph._countCommonNeighbors(vertex1Example, vertex2Examples, optionsVertex1, optionsVertex2)`
 
@@ -213,24 +213,24 @@ graph._countCommonNeighbors('germanCity/Hamburg', {}, options, options);
 
 ## _commonProperties
 
-Get the vertices of the graph that share common properties.
+Get the nodes of the graph that share common properties.
 
 `graph._commonProperties(vertex1Example, vertex2Examples, options)`
 
 The function accepts an id, an example, a list of examples or even an empty
 example as parameter for vertex1Example and vertex2Example.
 
-The complexity of this method is **O(n)** with *n* being the maximal amount of vertices
+The complexity of this method is **O(n)** with *n* being the maximal amount of nodes
 defined by the parameters vertexExamples.
 
-- `vertex1Examples` (optional): Filter the set of source vertices, see [Definition of examples](#definition-of-examples)
+- `vertex1Examples` (optional): Filter the set of source nodes, see [Definition of examples](#definition-of-examples)
 
-- `vertex2Examples` (optional): Filter the set of vertices compared to, see [Definition of examples](#definition-of-examples)
+- `vertex2Examples` (optional): Filter the set of nodes compared to, see [Definition of examples](#definition-of-examples)
 - options (optional) An object defining further options. Can have the following values:
-  - `vertex1CollectionRestriction` : One or a list of vertex-collection names that should be
-    searched for source vertices.
-  - `vertex2CollectionRestriction` : One or a list of vertex-collection names that should be
-    searched for compare vertices.
+  - `vertex1CollectionRestriction` : One or a list of node-collection names that should be
+    searched for source nodes.
+  - `vertex2CollectionRestriction` : One or a list of node-collection names that should be
+    searched for compare nodes.
   - `ignoreProperties` : One or a list of attribute names of a document that should be ignored.
 
 **Examples**
@@ -263,7 +263,7 @@ graph._commonProperties({}, {}, { ignoreProperties: 'population' });
 
 ## _countCommonProperties
 
-Get the amount of vertices of the graph that share common properties.
+Get the amount of nodes of the graph that share common properties.
 
 `graph._countCommonProperties(vertex1Example, vertex2Examples, options)`
 
@@ -310,7 +310,7 @@ The _paths function returns all paths of a graph.
 
 This function determines all available paths in a graph.
 
-The complexity of this method is **O(n\*n\*m)** with *n* being the amount of vertices in
+The complexity of this method is **O(n\*n\*m)** with *n* being the amount of nodes in
 the graph and *m* the average amount of connected edges;
 
 - `options` (optional): An object containing options, see below:
@@ -356,29 +356,29 @@ g._paths({ direction: 'inbound', minLength: 1, maxLength: 2 });
 
 The _shortestPath function returns all shortest paths of a graph.
 
-`graph._shortestPath(startVertexExample, endVertexExample, options)`
+`graph._shortestPath(startNodeExample, endVertexExample, options)`
 
 This function determines all shortest paths in a graph.
 The function accepts an id, an example, a list of examples
 or even an empty example as parameter for
-start and end vertex.
-The length of a path is by default the amount of edges from one start vertex to
-an end vertex. The option weight allows the user to define an edge attribute
+start and end node.
+The length of a path is by default the amount of edges from one start node to
+an end node. The option weight allows the user to define an edge attribute
 representing the length.
 
-- `startVertexExample` (optional): An example for the desired start Vertices (see [Definition of examples](#definition-of-examples)).
-- `endVertexExample` (optional): An example for the desired end Vertices (see [Definition of examples](#definition-of-examples)).
+- `startVertexExample` (optional): An example for the desired start nodes (see [Definition of examples](#definition-of-examples)).
+- `endVertexExample` (optional): An example for the desired end nodes (see [Definition of examples](#definition-of-examples)).
 - `options` (optional): An object containing options, see below:
   - `direction`: The direction of the edges as a string.
     Possible values are `"outbound"`, `"inbound"`, and `"any"` (default).
   - `edgeCollectionRestriction`: One or multiple edge
     collection names. Only edges from these collections will be considered for the path.
-  - `startVertexCollectionRestriction`: One or multiple vertex
-    collection names. Only vertices from these collections will be considered as
-    start vertex of a path.
-  - `endVertexCollectionRestriction`: One or multiple vertex
-    collection names. Only vertices from these collections will be considered as
-    end vertex of a path.
+  - `startVertexCollectionRestriction`: One or multiple node
+    collection names. Only nodes from these collections will be considered as
+    start node of a path.
+  - `endVertexCollectionRestriction`: One or multiple node
+    collection names. Only nodes from these collections will be considered as
+    end node of a path.
   - `weight`: The name of the attribute of
     the edges containing the length as a string.
   - `defaultWeight`: Only used with the option `weight`.
@@ -429,7 +429,7 @@ The _distanceTo function returns all paths and there distance within a graph.
 `graph._distanceTo(startVertexExample, endVertexExample, options)`
 
 This function is a wrapper of [graph._shortestPath](#_shortestpath).
-It does not return the actual path but only the distance between two vertices.
+It does not return the actual path but only the distance between two nodes.
 
 **Examples**
 
@@ -470,22 +470,22 @@ g._distanceTo([
 
 Get the
 [eccentricity](http://en.wikipedia.org/wiki/Distance_%28graph_theory%29)
-of the vertices defined by the examples.
+of the nodes defined by the examples.
 
 `graph._absoluteEccentricity(vertexExample, options)`
 
 The function accepts an id, an example, a list of examples or even an empty
 example as parameter for vertexExample.
 
-- `vertexExample` (optional): Filter the vertices, see [Definition of examples](#definition-of-examples)
+- `vertexExample` (optional): Filter the nodes, see [Definition of examples](#definition-of-examples)
 - `options` (optional): An object defining further options. Can have the following values:
   - `direction`: The direction of the edges. Possible values are `"outbound"`, `"inbound"`, and `"any"` (default).
   - `edgeCollectionRestriction` : One or a list of edge-collection names that should be
     considered to be on the path.
-  - `startVertexCollectionRestriction` : One or a list of vertex-collection names that should be
-    considered for source vertices.
-  - `endVertexCollectionRestriction` : One or a list of vertex-collection names that should be
-    considered for target vertices.
+  - `startVertexCollectionRestriction` : One or a list of node-collection names that should be
+    considered for source nodes.
+  - `endVertexCollectionRestriction` : One or a list of node-collection names that should be
+    considered for target nodes.
   - `weight`: The name of the attribute of the edges containing the weight.
   - `defaultWeight`: Only used with the option `weight`.
     If an edge does not have the attribute named as defined in option `weight` this default
@@ -544,7 +544,7 @@ graph._absoluteEccentricity({}, {
 
 Get the normalized
 [eccentricity](http://en.wikipedia.org/wiki/Distance_%28graph_theory%29)
-of the vertices defined by the examples.
+of the nodes defined by the examples.
 
 `graph._eccentricity(vertexExample, options)`
 
@@ -582,22 +582,22 @@ graph._eccentricity({ weight: 'distance' });
 
 Get the
 [closeness](http://en.wikipedia.org/wiki/Centrality#Closeness_centrality)
-of the vertices defined by the examples.
+of the nodes defined by the examples.
 
 `graph._absoluteCloseness(vertexExample, options)`
 
 The function accepts an id, an example, a list of examples or even an empty
 example as parameter for `vertexExample`.
 
-- `vertexExample` (optional): Filter the vertices, see [Definition of examples](#definition-of-examples)
+- `vertexExample` (optional): Filter the nodes, see [Definition of examples](#definition-of-examples)
 - options (optional) An object defining further options. Can have the following values:
   - `direction`: The direction of the edges. Possible values are `"outbound"`, `"inbound"`, and `"any"` (default).
   - `edgeCollectionRestriction` : One or a list of edge-collection names that should be
     considered to be on the path.
-  - `startVertexCollectionRestriction` : One or a list of vertex-collection names that should be
-    considered for source vertices.
-  - `endVertexCollectionRestriction` : One or a list of vertex-collection names that should be
-    considered for target vertices.
+  - `startVertexCollectionRestriction` : One or a list of node-collection names that should be
+    considered for source nodes.
+  - `endVertexCollectionRestriction` : One or a list of node-collection names that should be
+    considered for target nodes.
   - `weight`: The name of the attribute of the edges containing the weight.
   - `defaultWeight`: Only used with the option `weight`.
     If an edge does not have the attribute named as defined in option `weight` this default
@@ -656,7 +656,7 @@ graph._absoluteCloseness({}, {
 
 Get the normalized
 [closeness](http://en.wikipedia.org/wiki/Centrality#Closeness_centrality)
-of graphs vertices.
+of graphs nodes.
 
 `graph._closeness(options)`
 
@@ -709,11 +709,11 @@ graph._closeness({ direction: 'outbound', weight: 'distance' });
 
 Get the
 [betweenness](http://en.wikipedia.org/wiki/Betweenness_centrality)
-of all vertices in the graph.
+of all nodes in the graph.
 
 `graph._absoluteBetweenness(vertexExample, options)`
 
-- `vertexExample` (optional): Filter the vertices, see [Definition of examples](#definition-of-examples)
+- `vertexExample` (optional): Filter the nodes, see [Definition of examples](#definition-of-examples)
 - `options` (optional): An object defining further options. Can have the following values:
   - `direction`: The direction of the edges. Possible values are `"outbound"`, `"inbound"`, and `"any"` (default).
   - `weight`: The name of the attribute of the edges containing the weight.
@@ -770,7 +770,7 @@ graph._absoluteBetweenness({ direction: 'outbound', weight: 'distance' });
 
 Get the normalized
 [betweenness](http://en.wikipedia.org/wiki/Betweenness_centrality)
-of graphs vertices.
+of graphs nodes.
 
 `graph_module._betweenness(options)`
 
