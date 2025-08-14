@@ -115,10 +115,13 @@ manage this deployment yourself.
    It includes helm charts, manifests, and blobs of the container image layers.
    You also receive a package configuration file from the ArangoDB team.
 
-2. Create a Kubernetes secret with your Enterprise Edition license key.
-   Substitute `<license-string>` with the actual license string:
+2. Create a Kubernetes namespace for ArangoDB and a secret with your
+   Enterprise Edition license key. Substitute `<license-string>` with the actual
+   license string:
 
    ```sh
+   kubectl create namespace arangodb
+
    kubectl create secret generic arango-license-key \
      --namespace arangodb \
      --from-literal=token-v2="<license-string>"
@@ -146,7 +149,7 @@ manage this deployment yourself.
    VERSION_OPERATOR='1.3.0' # Use a newer version if available
 
    helm upgrade --install operator \
-     --namespace arangodb --create-namespace \
+     --namespace arangodb \
      "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
      --set "webhooks.enabled=true" \
      --set "certificate.enabled=true" \
