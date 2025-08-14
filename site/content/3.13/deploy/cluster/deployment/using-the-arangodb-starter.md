@@ -140,10 +140,16 @@ to elect a leader for the runtime phase.
 The _Starter_ can also be used to launch clusters based on ArangoDB
 _Docker_ containers.
 
-If you use `arangodb` in a Docker container, it runs all servers in a Docker
+If you use the `arangodb/arangodb-starter` Docker image, it runs all servers in a container
 using the `arangodb/arangodb:latest` Docker image by default. If you wish to run
 a specific Docker image for the servers, specify it using the `--docker.image`
 option.
+
+{{< info >}}
+From ArangoDB version 3.12.5 onward, no new `arangodb/arangodb` images are
+published anymore. Use the `arangodb/enterprise` images instead, e.g.
+`--docker.image arangodb/enterprise:latest`.
+{{< /info >}}
 
 If you use Docker, it is important to care about the volume mappings on
 the container. Typically, you start the executable in Docker with the following

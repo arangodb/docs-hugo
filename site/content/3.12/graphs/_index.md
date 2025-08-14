@@ -1,6 +1,6 @@
 ---
 title: Graphs
-menuTitle: Graphs
+menuTitle: Graph Intelligence
 weight: 75
 description: >-
   Graphs let you represent things and the relationships between them using

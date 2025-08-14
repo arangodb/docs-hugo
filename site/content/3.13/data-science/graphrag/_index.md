@@ -78,7 +78,7 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](./services/importer.md) service documentation.
+[Importer](services/importer.md) service documentation.
 
 ### Extract information from the Knowledge Graph
 
@@ -89,7 +89,7 @@ You can extract information from Knowledge Graphs using two distinct methods:
 - Local retrieval
 
 For detailed information about the service, see the
-[Retriever](./services/retriever.md) service documentation.
+[Retriever](services/retriever.md) service documentation.
 
 #### Global retrieval
 
@@ -136,7 +136,7 @@ collection, and then it expands that subgraph over related entities, relations
 
 If you're working in an air-gapped environment or need to keep your data
 private, you can use the private LLM mode with 
-[Triton Inference Server](./services/triton-inference-server.md).
+[Triton Inference Server](services/triton-inference-server.md).
 
 This option allows you to run the service completely within your own
 infrastructure. The Triton Inference Server is a crucial component when

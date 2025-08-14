@@ -55,9 +55,9 @@ Alongside these components, you also get the following additional features:
   that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public LLMs such as OpenAI
   or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).  
-- [**MLflow integration**](./graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
+- [**MLflow integration**](graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
   or to run machine learning experiments as part of the ArangoDB Platform.
-- [**Integrations**](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
+- [**Integrations**](integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
   and other data science tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
   GenAI Suite services and build your own integrations. See the
