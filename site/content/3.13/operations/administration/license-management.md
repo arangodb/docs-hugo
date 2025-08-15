@@ -60,8 +60,10 @@ endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
+Make sure to put the license string in quotes as shown:
+
 ```js
-await db.setLicense("<licenseString>");
+await db.setLicense('"<licenseString>"');
 ```
 
 See [`Database.setLicense()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#setLicense)
@@ -86,8 +88,10 @@ The Java driver does not support setting a license key yet.
 {{< /tab >}}
 
 {{< tab "Python" >}}
+Make sure to put the license string in quotes as shown:
+
 ```py
-info = db.set_license("<licenseString>")
+err = db.set_license('"<licenseString>"')
 ```
 
 See [`StandardDatabase.setLicense()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.set_license)
@@ -140,7 +144,7 @@ endpoint in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
-const info = await db.getLicense();
+const license = await db.getLicense();
 ```
 
 See [`Database.getLicense()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#getLicense)
