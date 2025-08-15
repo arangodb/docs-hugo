@@ -1117,7 +1117,7 @@ paths:
           in: query
           required: false
           description: |
-            Set to `true` to change the license even if it expires sooner than the current one.
+            Whether to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
             default: false
@@ -1126,7 +1126,7 @@ paths:
           application/json:
             schema:
               description: |
-                The request body has to contain the Base64-encoded string wrapped in double quotes.
+                The request body has to contain the Base64-encoded license string wrapped in double quotes.
               type: string
               example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:

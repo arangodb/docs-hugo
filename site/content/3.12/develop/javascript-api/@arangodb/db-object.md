@@ -1270,12 +1270,16 @@ require("@arangodb").db._version();
 
 Returns the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-license).
+Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(licenseString)`
+### `db._setLicense(licenseString[, force])`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense()`](../../../operations/administration/license-management.md#apply-a-license).
+- `licenseString` (string): The Base64-encoded license string.
+- `force` (boolean, _optional_): Whether to change the license even if it expires
+  sooner than the current one. Default: `false`.
+
+Also see [Apply a license](../../../operations/administration/license-management.md#apply-a-license).
