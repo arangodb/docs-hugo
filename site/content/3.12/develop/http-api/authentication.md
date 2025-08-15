@@ -294,6 +294,7 @@ see [Create a user](users.md#create-a-user).
 ```openapi
 paths:
   /_api/token/{user}:
+    post:
       operationId: createAccessToken
       description: |
         TODO
@@ -418,13 +419,174 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 assert(response.parsedBody.active === true);
 logJsonResponse(response);
-
-db._drop(cn);
 ```
 
 ### List all access tokens
 
+```openapi
+paths:
+  /_api/token/{user}:
+    get:
+      operationId: listAccessTokens
+      description: |
+        TODO
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to create an access token for a
+        different user. You can always create an access token for yourself,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            TODO
+          content:
+            application/json:
+              schema:
+                description: |
+                  TODO
+                type: object
+                required:
+                  - tokens
+                properties:
+                  tokens:
+                    description: |
+                      A list with information about the user's access tokens.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - valid_until
+                        - created_at
+                        - fingerprint
+                        - active
+                      properties:
+                        id:
+                          description: |
+                            A unique identifier. It is only needed for calling the
+                            endpoint for revoking an access token.
+                          type: integer
+                        name:
+                          description: |
+                            The name for the access token you specified to make
+                            identification easier.
+                          type: string
+                        valid_until:
+                          description: |
+                            A Unix timestamp in seconds with the configured expiration date and time.
+                          type: integer
+                        created_at:
+                          description: |
+                            A Unix timestamp in seconds with the creation date and time of the access token.
+                          type: integer
+                        fingerprint:
+                          description: |
+                            The beginning and end of the access token string, showing the
+                            version and the last few hexadecimal digits for identification,
+                            like `v1...54227d`.
+                          type: string
+                        active:
+                          description: |
+                            Whether the access token is valid based on the expiration date
+                            and time (`valid_until`).
+                          type: boolean
+        '401':
+          description: |
+            Returned if you have *No access* database access level to the *_system*
+            database.
+        '403':
+          description: |
+            Returned if you have *No access* server access level.
+        '404':
+          description: |
+            The specified user does not exist
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  List the access tokens of the `root` user:
+name: RestAccessTokenList
+---
+var url = "/_api/token/root";
+var response = logCurlRequest('GET', url);
+
+assert(response.code === 200);
+assert(response.parsedBody.tokens?.length === 1);
+logJsonResponse(response);
+```
+
 ### Delete an access token
+
+
+```openapi
+paths:
+  /_api/token/{user}/{token-id}:
+    delete:
+      operationId: deleteAccessToken
+      description: |
+        TODO
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to create an access token for a
+        different user. You can always create an access token for yourself,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+        - name: token-id
+          in: path
+          required: true
+          description: |
+            The identifier of the access token.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: |
+            TODO
+          content:
+            application/json:
+              schema:
+                description: |
+                  The response does not have a body.
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  Delete an access tokens of the `root` user:
+name: RestAccessTokenDelete
+---
+var url = "/_api/token/root";
+var response = internal.arango.GET(url);
+assert(response.tokens?.length === 1);
+
+response = logCurlRequest('DELETE', url + "/" + response.tokens[0].id);
+assert(response.code === 200);
+logRawResponse(response);
+
+response = internal.arango.GET(url);
+assert(response.tokens?.length === 0);
+```
 
 ## Hot-reload JWT secrets
 
