@@ -1,18 +1,13 @@
 import argparse
 import re
-import json
 import traceback
 
-parser = argparse.ArgumentParser(description='Optional app description')
-parser.add_argument('--src', type=str,
-                    help='errors.dat file path')
-parser.add_argument('--dst', type=str,
-                    help='errors.yaml file path')
+parser = argparse.ArgumentParser(description='Convert errors file to YAML')
+parser.add_argument('--src', type=str, required=True,
+                    help='Input file path (errors.dat)')
+parser.add_argument('--dst', type=str, required=True,
+                    help='Output file path (errors.yaml)')
 args = parser.parse_args()
-
-if args.src is None or args.dst is None:
-	print("Args are required")
-	exit(1)
 
 # Handle Windows and trailing path separators
 src = args.src.replace("\\", "/").rstrip("/")

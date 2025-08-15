@@ -34,7 +34,7 @@ echo "[INIT] Environment variables:"
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer"
+  GENERATORS="examples metrics error-codes exit-codes options optimizer"
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
@@ -67,7 +67,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes exit-codes options optimizer oasisctl"
 fi
 
 
@@ -427,6 +427,10 @@ function generators_from_source() {
     generate_error_codes "$version"
   fi
 
+  if [[ $GENERATORS == *"exit-codes"* ]]; then
+    generate_exit_codes "$version"
+  fi
+
   if [[ $GENERATORS == *"metrics"* ]]; then
     generate_metrics "$version"
   fi
@@ -514,6 +518,32 @@ function generate_error_codes() {
   echo "</li>" >> /home/summary.md
 
   log "[generate_error_codes] Done"
+}
+
+function generate_exit_codes() {
+  echo "<li><strong>Exit Codes</strong>:" >> /home/summary.md
+
+  version=$1
+
+  if [ $version == "" ]; then
+    log "[generate_exit_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
+  touch ../../site/data/$version/exitcodes.yaml
+
+  log "[generate_exit_codes] Launching generate exit-codes script"
+  log "[generate_exit_codes] $PYTHON_EXECUTABLE generators/generateExitCodes.py --src /tmp/"$1"/lib/Basics/exitcodes.dat --dst ../../site/data/$version/exitcodes.yaml"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateExitCodes.py --src /tmp/"$1"/lib/Basics/exitcodes.dat --dst ../../site/data/$version/exitcodes.yaml) 2>&1)
+
+  if [ $? -ne 0 ]; then
+    log "[generate_exit_codes] [ERROR] $res"
+    echo "<error code=9><strong> ERROR: $res</strong></error>" >> /home/summary.md
+  fi
+
+  echo " &#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
+  log "[generate_exit_codes] Done"
 }
 
 function generate_metrics() {

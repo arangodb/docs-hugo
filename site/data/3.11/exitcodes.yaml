@@ -1,0 +1,87 @@
+- group: General
+- name: EXIT_SUCCESS
+  text: success
+  desc: No error has occurred.
+  code: 0
+- name: EXIT_FAILED
+  text: exit with error
+  desc: Will be returned when a general error occurred.
+  code: 1
+- name: EXIT_CODE_RESOLVING_FAILED
+  text: exit code resolving failed
+  desc: unspecified exit code
+  code: 2
+- name: EXIT_INVALID_OPTION_NAME
+  text: invalid startup option name
+  desc: invalid/unknown startup option name was used
+  code: 3
+- name: EXIT_INVALID_OPTION_VALUE
+  text: invalid startup option value
+  desc: invalid startup option value was used
+  code: 4
+- name: EXIT_BINARY_NOT_FOUND
+  text: binary not found
+  desc: Will be returned if a referenced binary was not found
+  code: 5
+- name: EXIT_CONFIG_NOT_FOUND
+  text: config not found or invalid
+  desc: Will be returned if no valid configuration was found or its contents are structurally invalid
+  code: 6
+- group: Internal
+- name: EXIT_UPGRADE_FAILED
+  text: upgrade failed
+  desc: Will be returned when the database upgrade failed
+  code: 10
+- name: EXIT_UPGRADE_REQUIRED
+  text: db upgrade required
+  desc: Will be returned when a database upgrade is required
+  code: 11
+- name: EXIT_DOWNGRADE_REQUIRED
+  text: db downgrade required
+  desc: Will be returned when a database upgrade is required
+  code: 12
+- name: EXIT_VERSION_CHECK_FAILED
+  text: version check failed
+  desc: Will be returned when there is a version mismatch
+  code: 13
+- group: Startup
+- name: EXIT_ALREADY_RUNNING
+  text: already running
+  desc: Will be returned when arangod is already running according to PID-file
+  code: 20
+- name: EXIT_COULD_NOT_BIND_PORT
+  text: port blocked
+  desc: Will be returned when the configured tcp endpoint is already occupied by another process
+  code: 21
+- name: EXIT_COULD_NOT_LOCK
+  text: could not lock - another process could be running
+  desc: Will be returned if another ArangoDB process is running, or the state can not be cleared
+  code: 22
+- name: EXIT_RECOVERY
+  text: recovery failed
+  desc: Will be returned if the automatic database startup recovery fails
+  code: 23
+- name: EXIT_DB_NOT_EMPTY
+  text: database not empty
+  desc: Will be returned when commanding to initialize a non empty directory as database
+  code: 24
+- name: EXIT_UNSUPPORTED_STORAGE_ENGINE
+  text: unsupported storage engine
+  desc: Will be returned when trying to start with an unsupported storage engine
+  code: 25
+- name: EXIT_ICU_INITIALIZATION_FAILED
+  text: failed to initialize ICU library
+  desc: Will be returned if icudtl.dat is not found, of the wrong version or invalid. Check for an incorrectly set ICU_DATA environment variable
+  code: 26
+- name: EXIT_TZDATA_INITIALIZATION_FAILED
+  text: failed to locate tzdata
+  desc: Will be returned if tzdata is not found
+  code: 27
+- name: EXIT_RESOURCES_TOO_LOW
+  text: the system restricts resources below what is required to start arangod
+  desc: Will be returned if i.e. ulimit is too restrictive
+  code: 28
+- name: EXIT_SST_FILE_CHECK
+  text: sst file check unsuccessful
+  desc: Will be returned when either sst file open or sst file check was unsuccessful i.e. sst file is not valid
+  code: 29
