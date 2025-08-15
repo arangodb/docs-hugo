@@ -283,17 +283,11 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          'text/plain; charset=utf-8':
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The multipart batch request, consisting of the envelope and the individual
-                    batch parts.
-                  type: string
+              description: |
+                The multipart batch request, consisting of the envelope and the individual
+                batch parts.
       responses:
         '200':
           description: |

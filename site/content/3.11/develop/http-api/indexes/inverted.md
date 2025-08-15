@@ -44,6 +44,7 @@ paths:
                   description: |
                     Must be equal to `"inverted"`.
                   type: string
+                  example: inverted
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -57,6 +58,8 @@ paths:
                     default options, or objects to specify options for the fields (with the
                     attribute path in the `name` property), or a mix of both.
                   type: array
+                  minItems: 1
+                  uniqueItems: true
                   items:
                     type: object
                     required:
@@ -250,9 +253,8 @@ paths:
                     array (`[*]`), then the elements are indexed separately. Otherwise, the array is
                     indexed as a whole, but only `geopoint` and `aql` Analyzers accept array inputs.
                     You cannot use an array expansion if `searchField` is enabled.
-
-                    Default: `false`
                   type: boolean
+                  default: false
                 cache:
                   description: |
                     Enable this option to always cache the field normalization values in memory
@@ -268,8 +270,6 @@ paths:
                     fields that are indexed with Geo Analyzers in memory for all fields by default.
                     This can improve the performance of geo-spatial queries.
 
-                    Default: `false`
-
                     This property is available in the Enterprise Edition only.
 
                     See the `--arangosearch.columns-cache-limit` startup option to control the
@@ -277,6 +277,7 @@ paths:
                     cache in cluster deployments by only using the cache for leader shards, see the
                     `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
                   type: boolean
+                  default: false
                 storedValues:
                   description: |
                     The optional `storedValues` attribute can contain an array of objects with paths
@@ -314,6 +315,7 @@ paths:
                         description: |
                           A list of attribute paths. The `.` character denotes sub-attributes.
                         type: array
+                        #uniqueItems: true # Duplicate values are silently ignored
                         items:
                           type: string
                       compression:
@@ -331,8 +333,6 @@ paths:
                           memory-mapped and it is up to the operating system to load them from disk into
                           memory and to evict them from memory.
 
-                          Default: `false`
-
                           This property is available in the Enterprise Edition only.
 
                           See the `--arangosearch.columns-cache-limit` startup option to control the
@@ -340,6 +340,7 @@ paths:
                           cache in cluster deployments by only using the cache for leader shards, see the
                           `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
                         type: boolean
+                        default: false
                 primarySort:
                   description: |
                     You can define a primary sort order to enable an AQL optimization. If a query
@@ -386,8 +387,6 @@ paths:
                         Otherwise, these values are memory-mapped and it is up to the operating system
                         to load them from disk into memory and to evict them from memory.
 
-                        Default: `false`
-
                         This property is available in the Enterprise Edition only.
 
                         See the `--arangosearch.columns-cache-limit` startup option to control the
@@ -395,6 +394,7 @@ paths:
                         cache in cluster deployments by only using the cache for leader shards, see the
                         `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
                       type: boolean
+                      default: false
                 primaryKeyCache:
                   description: |
                     Enable this option to always cache the primary key column in memory. This can
@@ -402,20 +402,18 @@ paths:
                     values are memory-mapped and it is up to the operating system to load them from
                     disk into memory and to evict them from memory.
 
-                    Default: `false`
-
                     See the `--arangosearch.columns-cache-limit` startup option to control the
                     memory consumption of this cache. You can reduce the memory usage of the column
                     cache in cluster deployments by only using the cache for leader shards, see the
                     `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
                   type: boolean
+                  default: false
                 analyzer:
                   description: |
                     The name of an Analyzer to use by default. This Analyzer is applied to the
                     values of the indexed fields for which you don't define Analyzers explicitly.
-
-                    Default: `identity`
                   type: string
+                  default: identity
                 features:
                   description: |
                     A list of Analyzer features. You can set this option to overwrite what features
@@ -435,13 +433,12 @@ paths:
                     sub-attributes that are configured in the `fields` array (and their sub-attributes).
                     The `analyzer` and `features` properties apply to the sub-attributes.
 
-                    Default: `false`
-
                     {{</* warning */>}}
                     Using `includeAllFields` for a lot of attributes in combination
                     with complex Analyzers may significantly slow down the indexing process.
                     {{</* /warning */>}}
                   type: boolean
+                  default: false
                 trackListPositions:
                   description: |
                     This option only applies if you use the inverted index in a `search-alias` Views,
@@ -455,20 +452,23 @@ paths:
                     You don't specify an array element in queries, e.g. `doc.attr == "valueY"`, and
                     all elements are searched for a match.
                   type: boolean
+                  default: false
                 parallelism:
                   description: |
-                    The number of threads to use for indexing the fields. Default: `2`
+                    The number of threads to use for indexing the fields.
                   type: integer
+                  default: 2
                 inBackground:
                   description: |
-                    This attribute can be set to `true` to create the index
-                    in the background, not write-locking the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
                 cleanupIntervalStep:
                   description: |
                     Wait at least this many commits between removing unused files in the
-                    ArangoSearch data directory (default: 2, to disable use: 0).
+                    ArangoSearch data directory (set to `0` to disable).
                     For the case where the consolidation policies merge segments often (i.e. a lot
                     of commit+consolidate), a lower value causes a lot of disk space to be
                     wasted.
@@ -484,11 +484,11 @@ paths:
                       However, the files for the released states/snapshots are left on disk, and
                       only removed by "cleanup" operation.
                   type: integer
+                  default: 2
                 commitIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between committing inverted index data store
-                    changes and making documents visible to queries (default: 1000, to disable
-                    use: 0).
+                    changes and making documents visible to queries (set to `0` to disable).
                     For the case where there are a lot of inserts/updates, a higher value causes the
                     index not to account for them and memory usage continues to grow until the commit.
                     A lower value impacts performance, including the case where there are no or only a
@@ -507,11 +507,12 @@ paths:
                       subsequent ArangoDB transactions, in-progress ArangoDB transactions will
                       still continue to return a repeatable-read state.
                   type: integer
+                  default: 1000
                 consolidationIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between applying `consolidationPolicy` to
                     consolidate the inverted index data store and possibly release space on the filesystem
-                    (default: 1000, to disable use: 0).
+                    (set to `0` to disable).
                     For the case where there are a lot of data modification operations, a higher
                     value could potentially have the data store consume more space and file handles.
                     For the case where there are a few data modification operations, a lower value
@@ -525,10 +526,10 @@ paths:
                       compaction operations are governed by `consolidationIntervalMsec` and the
                       candidates for compaction are selected via `consolidationPolicy`.
                   type: integer
+                  default: 1000
                 consolidationPolicy:
                   description: |
-                    The consolidation policy to apply for selecting which segments should be merged
-                    (default: {}).
+                    The consolidation policy to apply for selecting which segments should be merged.
 
                     _Background:_
                       With each ArangoDB transaction that inserts documents, one or more
@@ -549,64 +550,70 @@ paths:
                         upon several possible configurable formulas as defined by their types.
                         The supported types are:
 
-                        - `"tier"` (default): consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size and live
                           document count as dictated by the customization attributes.
                       type: string
+                      default: tier
                     segmentsBytesFloor:
                       description: |
                         Defines the value (in bytes) to treat all smaller segments as equal for
-                        consolidation selection. Default: `2097152`
+                        consolidation selection.
                       type: integer
+                      default: 2097152
                     segmentsBytesMax:
                       description: |
                         The maximum allowed size of all consolidated segments in bytes.
-                        Default: `5368709120`
                       type: integer
+                      default: 5368709120
                     segmentsMax:
                       description: |
                         The maximum number of segments that are evaluated as candidates for
-                        consolidation. Default: `10`
+                        consolidation.
                       type: integer
+                      default: 10
                     segmentsMin:
                       description: |
                         The minimum number of segments that are evaluated as candidates for
-                        consolidation. Default: `1`
+                        consolidation.
                       type: integer
+                      default: 1
                     minScore:
                       description: |
-                        Filter out consolidation candidates with a score less than this. Default: `0`
+                        Filter out consolidation candidates with a score less than this.
                       type: integer
+                      default: 0
                 writebufferIdle:
                   description: |
                     Maximum number of writers (segments) cached in the pool
-                    (default: 64, use 0 to disable)
+                    (set to `0` to disable).
                   type: integer
+                  default: 64
                 writebufferActive:
                   description: |
                     Maximum number of concurrent active writers (segments) that perform a
                     transaction. Other writers (segments) wait till current active writers
-                    (segments) finish (default: 0, use 0 to disable)
+                    (segments) finish (set to `0` to disable).
                   type: integer
+                  default: 0
                 writebufferSizeMax:
                   description: |
                     Maximum memory byte size per writer (segment) before a writer (segment) flush
                     is triggered. `0` value turns off this limit for any writer (buffer) and data
                     is flushed periodically based on the value defined for the flush thread
                     (ArangoDB server startup option). `0` value should be used carefully due to
-                    high potential memory consumption
-                    (default: 33554432, use 0 to disable)
+                    high potential memory consumption (set to `0 `to disable).
                   type: integer
+                  default: 33554432
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and can be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```
