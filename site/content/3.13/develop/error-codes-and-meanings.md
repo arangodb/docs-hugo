@@ -1,10 +1,10 @@
 ---
-title: Error codes and meanings
-menuTitle: Error codes and meanings
+title: The error codes of the ArangoDB Core and their meanings
+menuTitle: Error codes
 weight: 280
 description: >-
-  An error reply from ArangoDB servers contain a code, error number, and message
-  and you can look up additional information for a specific kind of error
+  Error replies from ArangoDB servers contain a code, error number, and message
+  and you can look up additional information for a specific kind of error here
 pageToc:
   maxHeadlineLevel: 3
 ---
@@ -67,7 +67,7 @@ used to provide context for developers.
 ## List of error codes
 
 In the following, you find the error kinds that exist in ArangoDB, grouped into
-categories. The format is `number - message` for headlines and the error
-descriptions as the text.
+categories. Each error has a headline with the format `number - name` and the
+error description as the text.
 
 {{% error-codes %}}
