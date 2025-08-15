@@ -1393,7 +1393,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735568384,
+    "default" : 7735569408,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1610,7 +1610,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server as\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: Use the same value on all Coordinators and all DBServers!",
+    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: Use the same value on all Coordinators and all DBServers!",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -2255,6 +2255,32 @@
     "section" : "database",
     "type" : "boolean"
   },
+  "database.auto-upgrade-full-compaction" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Perform a full RocksDB compaction after database upgrade.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "longDescription" : "If this option is specified together with \n--database.auto-upgrade, the server will perform a full RocksDB compaction \nafter the database upgrade has completed successfully but before shutting down.\n\nThis performs a complete compaction of all column families with both \nchangeLevel and compactBottomMostLevel options enabled, which can help \noptimize the database files after an upgrade.\n\nThe server will exit with an error code if the compaction fails.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "database",
+    "type" : "boolean"
+  },
   "database.check-version" : {
     "category" : "command",
     "component" : [
@@ -2779,7 +2805,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6188454707,
+    "default" : 6188455526,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -4152,13 +4178,13 @@
     ],
     "default" : "true",
     "deprecatedIn" : null,
-    "description" : "Whether the log API is enabled (true) or not (false), or only enabled for superuser JWT (jwt).",
+    "description" : "Whether the log API is enabled (true) or not (false), or only enabled for the superuser (jwt).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "Credentials are not written to log files.\nNevertheless, some logged data might be sensitive depending on the context of\nthe deployment. For example, if request logging is switched on, user requests\nand corresponding data might end up in log files. Therefore, a certain care\nwith log files is recommended.\n\nSince the database server offers an API to control logging and query logging\ndata, this API has to be secured properly. By default, the API is accessible\nfor admin users (administrative access to the `_system` database). However,\nyou can lock this down further.\n\nThe possible values for this option are:\n\n - `true`: The `/_admin/log` API is accessible for admin users.\n - `jwt`: The `/_admin/log` API is accessible for the superuser only\n   (authentication with JWT token and empty username).\n - `false`: The `/_admin/log` API is not accessible at all.",
+    "longDescription" : "Credentials are not written to log files.\nNevertheless, some logged data might be sensitive depending on the context of\nthe deployment. For example, if request logging is switched on, user requests\nand corresponding data might end up in log files. Therefore, a certain care\nwith log files is recommended.\n\nSince the database server offers an API to control logging and query logging\ndata, this API has to be secured properly. By default, the API is accessible\nfor admin users (administrative access to the `_system` database).\nHowever, you can restrict it further to the superuser or disable it altogether:\n\n - `true`: The `/_admin/log` API is accessible for admin users.\n - `jwt`: The `/_admin/log` API is accessible for the superuser only\n   (authentication with JWT superuser token and empty username).\n - `false`: The `/_admin/log` API is not accessible at all.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -4724,6 +4750,31 @@
     "requiresValue" : false,
     "section" : "log",
     "type" : "boolean"
+  },
+  "log.recording-api-enabled" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : "true",
+    "deprecatedIn" : null,
+    "description" : "Whether the recording API is enabled (true) or not (false), or only enabled for the superuser (jwt).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "longDescription" : "The `/_admin/server/api-calls` and\n`/_admin/server/aql-queries` endpoints provide access to recorded API calls\nand AQL queries respectively. They are referred to as the recording API.\n\nSince this data might be sensitive depending on the context of the deployment,\nthese endpoints need to be properly secured. By default, the recording API is\naccessible for admin users (users with administrative access to the `_system`\ndatabase). However, you can restrict it further to the superuser or disable it\naltogether:\n\n- `true`: The recording API is accessible for admin users.\n- `jwt`: The recording API is accessible for the superuser only\n  (authentication with JWT superuser token and empty username).\n- `false`: The recording API is not accessible at all.\n\nWhether API calls and AQL queries are recorded is independent of this option.\nIt is controlled by the `--server.api-call-recording` and\n`--server.aql-query-recording` startup options.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "log",
+    "type" : "string"
   },
   "log.request-parameters" : {
     "category" : "option",
@@ -5669,7 +5720,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089757184,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5677,7 +5728,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802703319,
+    "default" : 26802706636,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6004,7 +6055,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33089757184,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6012,7 +6063,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853854311,
+    "default" : 19853856768,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7060,6 +7111,36 @@
     "section" : "rocksdb",
     "type" : "uint64"
   },
+  "rocksdb.blob-file-starting-level" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The level from which on to use blob files in the documents column family. Requires `--rocksdb.enable-blob-files`.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "uint32"
+  },
   "rocksdb.blob-garbage-collection-age-cutoff" : {
     "base" : 1,
     "category" : "option",
@@ -7145,6 +7226,36 @@
     "section" : "rocksdb",
     "type" : "boolean"
   },
+  "rocksdb.block-cache-estimated-entry-charge" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The estimated charge of cache entries (in bytes) for the hyper-clock cache.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "uint64"
+  },
   "rocksdb.block-cache-jemalloc-allocator" : {
     "category" : "option",
     "component" : [
@@ -7209,7 +7320,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282682060,
+    "default" : 9282683289,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -7229,6 +7340,33 @@
     "requiresValue" : true,
     "section" : "rocksdb",
     "type" : "uint64"
+  },
+  "rocksdb.block-cache-type" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : "lru",
+    "deprecatedIn" : null,
+    "description" : "The block cache type to use (note: the 'hyper-clock' cache type is experimental).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "string",
+    "values" : "Possible values: \"hyper-clock\", \"lru\""
   },
   "rocksdb.bloom-filter-bits-per-key" : {
     "base" : 1,
@@ -7343,7 +7481,7 @@
       "agent",
       "single"
     ],
-    "default" : 2097152,
+    "default" : 8388608,
     "deprecatedIn" : null,
     "description" : "If non-zero, bigger reads are performed when doing compaction. If you run RocksDB on spinning disks, you should set this to at least 2 MB. That way, RocksDB's compaction does sequential instead of random reads.",
     "dynamic" : false,
@@ -7507,6 +7645,32 @@
     "hidden" : false,
     "introducedIn" : null,
     "longDescription" : "If set to `true`, the amount of data in each level\nof the LSM tree is determined dynamically to minimize the space amplification.\nOtherwise, the level sizes are fixed. The dynamic sizing allows RocksDB to\nmaintain a well-structured LSM tree regardless of total data size.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.enable-blob-cache" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Enable caching of blobs in the block cache for the documents column family.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
     "obsolete" : false,
     "os" : [
       "linux"
@@ -7887,6 +8051,7 @@
     "introducedIn" : [
       "v3.10.0"
     ],
+    "longDescription" : "Note that format version 6 can only be read by RocksDB versions\n>= 8.6.0. Thus switching to format version 6 will make the database files\nincompatible with ArangoDB versions with a lower RocksDB version in case of\ndowngrading.",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -7898,7 +8063,7 @@
     "requiresValue" : true,
     "section" : "rocksdb",
     "type" : "uint32",
-    "values" : "Possible values: 3, 4, 5"
+    "values" : "Possible values: 3, 4, 5, 6"
   },
   "rocksdb.intermediate-commit-count" : {
     "base" : 1,
@@ -8222,7 +8387,7 @@
       "agent",
       "single"
     ],
-    "default" : 2,
+    "default" : 4,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent sub-jobs for a background compaction.",
     "dynamic" : false,
@@ -8250,7 +8415,7 @@
       "agent",
       "single"
     ],
-    "default" : 83886080,
+    "default" : 268435456,
     "deprecatedIn" : null,
     "description" : "The maximum total size of WAL files that force a flush of stale column families.",
     "dynamic" : false,
@@ -8957,7 +9122,7 @@
     "section" : "rocksdb",
     "type" : "boolean"
   },
-  "rocksdb.partition-files-for-documents" : {
+  "rocksdb.optimize-filters-for-memory" : {
     "category" : "option",
     "component" : [
       "dbserver",
@@ -8965,6 +9130,32 @@
       "single"
     ],
     "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Optimize RocksDB bloom filters to reduce internal memory fragmentation.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.partition-files-for-documents" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "If enabled, the document data for different collections/shards will end up in different .sst files.",
     "dynamic" : false,
@@ -9126,7 +9317,7 @@
       "agent",
       "single"
     ],
-    "default" : 131072,
+    "default" : 1073741824,
     "deprecatedIn" : null,
     "description" : "The number of pending compaction bytes that triggers a write slowdown.",
     "dynamic" : false,
@@ -9156,7 +9347,7 @@
       "agent",
       "single"
     ],
-    "default" : 17179869184,
+    "default" : 34359738368,
     "deprecatedIn" : null,
     "description" : "The number of pending compaction bytes that triggers a full write stop.",
     "dynamic" : false,
@@ -9248,6 +9439,32 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.prepopulate-blob-cache" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Pre-populate the blob cache on flushes.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.6"
+    ],
     "obsolete" : false,
     "os" : [
       "linux"
@@ -9739,7 +9956,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376909414,
+    "default" : 12376911052,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -9800,8 +10017,10 @@
       "single"
     ],
     "default" : 1000,
-    "deprecatedIn" : null,
-    "description" : "If positive, specifies the wait timeout in milliseconds when  a transaction attempts to lock a document. A negative value is not recommended as it can lead to deadlocks (0 = no waiting, < 0 no timeout)",
+    "deprecatedIn" : [
+      "v3.12.6"
+    ],
+    "description" : "If positive, specifies the wait timeout in milliseconds when  a transaction attempts to lock a document. A negative value is not recommended as it can lead to deadlocks (0 = no waiting, < 0 no timeout). This is deprecated since we internally control the lock timeout for different cases.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -10149,15 +10368,16 @@
     "type" : "boolean"
   },
   "server.api-call-recording" : {
-    "category" : "command",
+    "category" : "option",
     "component" : [
       "coordinator",
       "dbserver",
       "agent",
       "single"
     ],
+    "default" : true,
     "deprecatedIn" : null,
-    "description" : "Record recent API calls for debugging purposes (default: true).",
+    "description" : "Whether to record recent API calls for debugging purposes.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -10167,25 +10387,86 @@
     "os" : [
       "linux"
     ],
+    "required" : false,
     "requiresValue" : false,
     "section" : "server",
     "type" : "boolean"
   },
   "server.api-recording-memory-limit" : {
-    "category" : "command",
+    "base" : 1,
+    "category" : "option",
     "component" : [
       "coordinator",
       "dbserver",
       "agent",
       "single"
     ],
+    "default" : 26214400,
     "deprecatedIn" : null,
-    "description" : "Memory limit for the list of ApiCallRecords.",
+    "description" : "Size limit for the list of API call records.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 274877906944,
+    "minInclusive" : true,
+    "minValue" : 262144,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
+  "server.aql-query-recording" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : true,
+    "deprecatedIn" : null,
+    "description" : "Whether to record recent AQL queries for debugging purposes.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "server",
+    "type" : "boolean"
+  },
+  "server.aql-recording-memory-limit" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 26214400,
+    "deprecatedIn" : null,
+    "description" : "Size limit for the list of AQL query records.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 274877906944,
+    "minInclusive" : true,
+    "minValue" : 262144,
     "obsolete" : false,
     "os" : [
       "linux"
@@ -10714,6 +10995,64 @@
     "introducedIn" : null,
     "maxInclusive" : true,
     "maxValue" : 120,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
+  "server.license-disk-usage-grace-period-readonly" : {
+    "base" : 172800,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 172800,
+    "deprecatedIn" : null,
+    "description" : "The warning duration until the server enters read-only mode when exceeding the dataset size limit (in seconds). The maximum is 2 days.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 172800,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
+  "server.license-disk-usage-grace-period-shutdown" : {
+    "base" : 172800,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 172800,
+    "deprecatedIn" : null,
+    "description" : "The read-only duration until the server shuts down when exceeding the dataset size limit (in seconds). The maximum is 2 days.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 172800,
     "minInclusive" : true,
     "minValue" : 1,
     "obsolete" : false,
