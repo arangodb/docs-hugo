@@ -49,7 +49,7 @@ Because UDFs use the V8 JavaScript engine, the engine's default memory limit of 
 Using UDFs in clusters may thus result in a higher resource allocation
 in terms of used V8 contexts and server threads. If you run out 
 of these resources, your query may abort with a
-[**cluster backend unavailable**](../develop/error-codes-and-meanings.md) error.
+[**cluster backend unavailable**](../develop/error-codes.md) error.
 
 To overcome these mentioned limitations, you may want to increase the
 [number of available V8 contexts](../components/arangodb-server/options.md#--javascriptv8-contexts)
