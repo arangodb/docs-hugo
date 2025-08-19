@@ -27,8 +27,8 @@ following startup options:
 
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: username
-- `--server.password <string>`: password to use (omit this and you'll be prompted for the
-  password)
+- `--server.password <string>`: password or access token to use
+  (omit this and you'll be prompted for the password)
 - `--server.authentication <bool>`: whether or not to use authentication
 
 If you want to connect to a different database or dump all databases you can additionally
