@@ -84,7 +84,9 @@ in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
-The Java driver does not support setting a license key yet.
+{{< info >}}
+The Java driver does not support setting a license key.
+{{< /info >}}
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -167,7 +169,9 @@ in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
-The Java driver does not support getting the license information yet.
+{{< info >}}
+The Java driver does not support getting the license information.
+{{< /info >}}
 {{< /tab >}}
 
 {{< tab "Python" >}}
