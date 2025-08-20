@@ -110,11 +110,11 @@ class Custom_ADBNX_Controller(ADBNX_Controller):
     """
 
     def _prepare_arangodb_vertex(self, adb_vertex: dict, col: str) -> None:
-        """Prepare an ArangoDB vertex before it gets inserted into the NetworkX
+        """Prepare an ArangoDB node before it gets inserted into the NetworkX
         graph.
 
-        :param adb_vertex: The ArangoDB vertex object to (optionally) modify.
-        :param col: The ArangoDB collection the vertex belongs to.
+        :param adb_vertex: The ArangoDB node object to (optionally) modify.
+        :param col: The ArangoDB collection the node belongs to.
         """
         adb_vertex["foo"] = "bar"
 

@@ -241,7 +241,7 @@ type IntKeyValue struct {
 }
 
 // A typical node type must have field matching _key
-type MyVertexNode struct {
+type MyNode struct {
     Key     string   `json:"_key"` // mandatory field (handle) - short name
     // other fields … e.g.
     Data    string   `json: "data"`   // Longer description or bulk string data
@@ -249,7 +249,7 @@ type MyVertexNode struct {
 }
 
 // A typical edge type must have fields matching _from and _to
-type MyEdgeLink struct {
+type MyEdge struct {
     Key     string   `json:"_key"`  // mandatory field (handle)
     From    string   `json:"_from"` // mandatory field
     To      string   `json:"_to"`   // mandatory field
