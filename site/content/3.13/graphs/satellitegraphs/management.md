@@ -32,7 +32,7 @@ graph_module._create(graphName, edgeDefinitions, orphanCollections);
 - `edgeDefinitions` (array):
   List of relation definition objects, may be empty
 - `orphanCollections` (array):
-  List of additional vertex collection names, may be empty
+  List of additional node collection names, may be empty
 
 Both `edgeDefinitions` and `orphanCollections` are optional.
 You can also add collections later, after the SatelliteGraph creation took place.
@@ -40,7 +40,7 @@ You can also add collections later, after the SatelliteGraph creation took place
 The `edgeDefinitions` can be created using the convenience method `_relation()`
 known from the `general-graph` module, which is also available here.
 
-`orphanCollections` again is just a list of additional vertex collections which
+`orphanCollections` again is just a list of additional node collections which
 are not yet connected via edges but should follow the same sharding to be
 connected later on.
 
@@ -65,8 +65,8 @@ satelliteGraphModule._graph("satelliteGraph");
 ~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
-Create a graph using an edge collection `edges` and a single vertex collection
-`vertices` as relation:
+Create a graph using an edge collection `edges` and a single node collection
+`nodes` as relation:
 
 ```js
 ---
@@ -75,7 +75,7 @@ description: ''
 type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
-var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
+var edgeDefinitions = [ graph_module._relation("edges", "nodes", "nodes") ];
 var graph = graph_module._create("myGraph", edgeDefinitions);
 graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
@@ -105,21 +105,21 @@ However there is one important difference: You can only add collections that
 either *do not exist*, or that have been created with the correct collection
 properties (either through the graph module or manually).
 
-### Remove a vertex collection
+### Remove a node collection
 
-Remove a vertex collection from the graph:
+Remove a node collection from the graph:
 
-`graph._removeVertexCollection(vertexCollectionName, dropCollection)`
+`graph._removeVertexCollection(nodeCollectionName, dropCollection)`
 
-- `vertexCollectionName` (string):
-  Name of vertex collection.
+- `nodeCollectionName` (string):
+  Name of node collection.
 - `dropCollection` (bool, _optional_):
   If true the collection will be dropped if it is not used in any other graph.
   Default: false.
 
 In most cases this function works identically to the General Graph one.
-But there is one special case: The first vertex collection added to the graph
-(either orphan or a vertex collection within a relation) defines the sharding
+But there is one special case: The first node collection added to the graph
+(either orphan or a node collection within a relation) defines the sharding
 for all collections within the graph. They have their `distributeShardsLike`
 attribute set to the name of the
 [prototype collection](details.md#the-prototype-collection)
@@ -128,7 +128,8 @@ This collection cannot be dropped as long as other collections follow its shardi
 
 **Examples**
 
-Create a SatelliteGraph and list its orphan collections:
+Create an SatelliteGraph but add an orphan collection later on, so that it cannot
+become the initial collection, then list the orphan collections of the SatelliteGraph:
 
 ```js
 ---
@@ -137,8 +138,11 @@ description: ''
 type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
-var relation = graph_module._relation("edges", "vertices", "vertices");
-var graph = graph_module._create("myGraph", [relation], ["other"]);
+var relation = graph_module._relation("edges", "nodes", "nodes");
+// The orphan collection "other" could end up as initial collection with this:
+//var graph = graph_module._create("myGraph", [relation], ["other"]);
+var graph = graph_module._create("myGraph", [relation], []);
+graph._addVertexCollection("other");
 graph._orphanCollections();
 ~graph_module._drop("myGraph", true);
 ```
@@ -152,8 +156,9 @@ description: ''
 type: cluster
 ---
 ~var graph_module = require("@arangodb/satellite-graph");
-~var relation = graph_module._relation("edges", "vertices", "vertices");
-~var graph = graph_module._create("myGraph", [relation], ["other"]);
+~var relation = graph_module._relation("edges", "nodes", "nodes");
+~var graph = graph_module._create("myGraph", [relation], []);
+~graph._addVertexCollection("other");
 graph._removeVertexCollection("other", true);
 graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
@@ -168,13 +173,13 @@ description: ''
 type: cluster
 ---
 ~var graph_module = require("@arangodb/satellite-graph");
-~var relation = graph_module._relation("edges", "vertices", "vertices");
+~var relation = graph_module._relation("edges", "nodes", "nodes");
 ~var graph = graph_module._create("myGraph", [relation], []);
-graph._removeVertexCollection("vertices"); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
+graph._removeVertexCollection("nodes"); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
 ~graph_module._drop("myGraph", true);
 ```
 
-You cannot drop the prototype collection (`vertices`) as long as it defines the
+You cannot drop the prototype collection (`nodes`) as long as it defines the
 sharding for other collections (`edges`).
 
 ```js
@@ -184,14 +189,14 @@ description: ''
 type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
-var relation = graph_module._relation("edges", "vertices", "vertices");
+var relation = graph_module._relation("edges", "nodes", "nodes");
 var graph = graph_module._create("myGraph", [relation], []);
 graph._deleteEdgeDefinition("edges");
-graph._removeVertexCollection("vertices");
-db._drop("vertices"); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
+graph._removeVertexCollection("nodes");
+db._drop("nodes"); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~graph_module._drop("myGraph", true);
 ~db._drop("edges");
-~db._drop("vertices");
+~db._drop("nodes");
 ```
 
 You may drop the complete graph including the underlying collections by setting
@@ -206,13 +211,13 @@ description: ''
 type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
-var relation = graph_module._relation("edges", "vertices", "vertices");
+var relation = graph_module._relation("edges", "nodes", "nodes");
 var graph = graph_module._create("myGraph", [relation], []);
-graph._deleteEdgeDefinition("edges");      // Remove edge collection from graph definition
-graph._removeVertexCollection("vertices"); // Remove vertex collection from graph definition
-graph_module._drop("myGraph", true);       // Does not drop any collections because none are left in the graph definition
-db._drop("edges"); // Manually clean up the collections that were left behind, drop 'edges' before sharding-defining 'vertices' collection
-db._drop("vertices");
+graph._deleteEdgeDefinition("edges");   // Remove edge collection from graph definition
+graph._removeVertexCollection("nodes"); // Remove node collection from graph definition
+graph_module._drop("myGraph", true);    // Does not drop any collections because none are left in the graph definition
+db._drop("edges"); // Manually clean up the collections that were left behind, drop 'edges' before sharding-defining 'nodes' collection
+db._drop("nodes");
 ```
 
 Alternatively, you can `truncate()` all collections of the graph if you just
@@ -241,14 +246,14 @@ description: ''
 type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
-var relation = graph_module._relation("edges", "vertices", "vertices");
+var relation = graph_module._relation("edges", "nodes", "nodes");
 var graph = graph_module._create("myGraph", [relation], []);
 graph._deleteEdgeDefinition("edges", true);
 graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
 ```
 
-It is allowed to remove the vertex collection `vertices` if it is not used in
+It is allowed to remove the node collection `nodes` if it is not used in
 any relation (i.e. after the deletion of the edge definition):
 
 ```js
@@ -258,16 +263,16 @@ description: ''
 type: cluster
 ---
 ~var graph_module = require("@arangodb/satellite-graph");
-~var relation = graph_module._relation("edges", "vertices", "vertices");
+~var relation = graph_module._relation("edges", "nodes", "nodes");
 ~var graph = graph_module._create("myGraph", [relation], []);
 graph._deleteEdgeDefinition("edges");
-graph._removeVertexCollection("vertices");
+graph._removeVertexCollection("nodes");
 ~graph_module._drop("myGraph", true);
 ~db._drop("edges");
-~db._drop("vertices");
+~db._drop("nodes");
 ```
 
-Keep in mind that you cannot drop the `vertices` collection until no other
+Keep in mind that you cannot drop the `nodes` collection until no other
 collection references it anymore (`distributeShardsLike` collection property).
 
 ## Remove a Graph
@@ -292,8 +297,9 @@ description: ''
 type: cluster
 ---
 ~var graph_module = require("@arangodb/satellite-graph");
-~var relation = graph_module._relation("edges", "vertices", "vertices");
-~var graph = graph_module._create("myGraph", [relation], ["other"]);
+~var relation = graph_module._relation("edges", "nodes", "nodes");
+~var graph = graph_module._create("myGraph", [relation], []);
+~graph._addVertexCollection("other");
 graph_module._drop("myGraph", true);
 ```
 
@@ -311,10 +317,11 @@ description: ''
 type: cluster
 ---
 ~var graph_module = require("@arangodb/satellite-graph");
-~var relation = graph_module._relation("edges", "vertices", "vertices");
-~var graph = graph_module._create("myGraph", [relation], ["other"]);
+~var relation = graph_module._relation("edges", "nodes", "nodes");
+~var graph = graph_module._create("myGraph", [relation], []);
+~graph._addVertexCollection("other");
 graph._removeVertexCollection("other");
 graph_module._drop("myGraph", true); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~db._drop("other");
-~db._drop("vertices");
+~db._drop("nodes");
 ```

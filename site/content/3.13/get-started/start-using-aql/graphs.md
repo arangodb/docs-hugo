@@ -93,13 +93,13 @@ Breakdown of the query:
 
 ## Traverse to the parents
 
-Now that edges link character documents (vertices), it is a graph you can
+Now that edges link character documents (nodes), it is a graph you can
 query to find out who the parents are of another character – or in
-graph terms, you want to start at a vertex and follow the edges to other
-vertices in an [AQL graph traversal](../../aql/graphs/traversals.md):
+graph terms, you want to start at a node and follow the edges to other
+nodes in an [AQL graph traversal](../../aql/graphs/traversals.md):
 
 ```aql
-// Declare collection of start vertex (cluster only)
+// Declare collection of start node (cluster only)
 WITH Characters
 
 FOR v IN 1..1 OUTBOUND "Characters/bran" ChildOf
@@ -107,16 +107,16 @@ FOR v IN 1..1 OUTBOUND "Characters/bran" ChildOf
 ```
 
 This `FOR` loop doesn't iterate over a collection or an array, it walks the
-graph and iterates over the connected vertices it finds, with the vertex
+graph and iterates over the connected nodes it finds, with the node
 document assigned to a variable (here: `v`). It can also emit the edges it
 walked as well as the full path from start to end to
 [another two variables](../../aql/graphs/traversals.md#syntax).
 
 In above query, the traversal is restricted to a minimum and maximum traversal
-depth of 1 (how many steps to take from the start vertex), and to only follow
+depth of 1 (how many steps to take from the start node), and to only follow
 edges in `OUTBOUND` direction. Our edges point from child to parent, and the
 parent is one step away from the child, thus it gives you the parents of the
-child you start at. `"Characters/bran"` is that start vertex.
+child you start at. `"Characters/bran"` is that start node.
 
 To determine the ID of e.g. the Joffrey Baratheon document, you may iterate over
 the collection of characters, filter by the name or other criteria, and return
@@ -133,7 +133,7 @@ FOR c IN Characters
 ```
 
 You may also combine this query with the traversal directly, to easily change
-the start vertex by adjusting the filter condition(s):
+the start node by adjusting the filter condition(s):
 
 ```aql
 FOR c IN Characters
@@ -142,7 +142,7 @@ FOR c IN Characters
     RETURN v.name
 ```
 
-The start vertex is followed by `ChildOf`, which is our edge collection. The
+The start node is followed by `ChildOf`, which is our edge collection. The
 example query returns only the name of each parent to keep the result short:
 
 ```json
@@ -176,7 +176,7 @@ FOR c IN Characters
 
 You can achieve a more useful output by returning the result of each traversal
 as a separate list and set the minimum traversal depth to `0` to include the
-start vertex. This lets you see the child's name as the first element of each
+start node. This lets you see the child's name as the first element of each
 array, followed by the parent name(s) if this information is available.
 
 ```aql
@@ -262,7 +262,7 @@ Tywin <- Cersei <- Joffrey
 As a quick fix, change the last line of the query to `RETURN DISTINCT v.name`
 to return each value only once. However, there are
 [traversal options](../../aql/graphs/traversals.md#syntax) including one to
-suppress duplicate vertices early on for the entire traversal (which requires
+suppress duplicate nodes early on for the entire traversal (which requires
 breadth-first search):
 
 ```aql
