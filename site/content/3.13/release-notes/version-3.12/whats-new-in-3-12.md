@@ -1736,6 +1736,22 @@ service interruption during upgrades and after failovers.
 The new `--server.maximal-number-sync-shard-actions` startup option controls
 how many `SynchronizeShard` actions can be queued at any given time.
 
+### Full RocksDB compaction on upgrade
+
+<small>Introduced in: v3.12.5-2</small>
+
+A new `--database.auto-upgrade-full-compaction` startup option has been added
+that you can use together with `--database.auto-upgrade` for upgrading.
+
+With the new option enabled, the server will perform a full RocksDB compaction
+after the database upgrade has completed successfully but before shutting down.
+This performs a complete compaction of all column families with the `changeLevel`
+and `compactBottomMostLevel` options enabled, which can help optimize the
+database files after an upgrade.
+
+The server process terminates with the new exit code 30
+(`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
