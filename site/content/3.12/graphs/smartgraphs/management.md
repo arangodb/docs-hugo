@@ -162,7 +162,8 @@ other collections follow its sharding (i.e. they need to be dropped first).
 
 **Examples**
 
-Create a SmartGraph and list its orphan collections:
+Create a SmartGraph but add an orphan collection later on, so that it cannot
+become the initial collection, then list the orphan collections of the SmartGraph:
 
 ```js
 ---
@@ -172,7 +173,10 @@ type: cluster
 ---
 var graph_module = require("@arangodb/smart-graph");
 var relation = graph_module._relation("edges", "nodes", "nodes");
-var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
+// The orphan collection "other" could end up as initial collection with this:
+//var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
+var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
+graph._addVertexCollection("other");
 graph._orphanCollections();
 ~graph_module._drop("myGraph", true);
 ```
@@ -187,7 +191,8 @@ type: cluster
 ---
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "nodes", "nodes");
-~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
+~var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
+~graph._addVertexCollection("other");
 graph._removeVertexCollection("other", true);
 graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
@@ -242,9 +247,9 @@ type: cluster
 var graph_module = require("@arangodb/smart-graph");
 var relation = graph_module._relation("edges", "nodes", "nodes");
 var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
-graph._deleteEdgeDefinition("edges");      // Remove edge collection from graph definition
+graph._deleteEdgeDefinition("edges");   // Remove edge collection from graph definition
 graph._removeVertexCollection("nodes"); // Remove node collection from graph definition
-graph_module._drop("myGraph", true);       // Does not drop any collections because none are left in the graph definition
+graph_module._drop("myGraph", true);    // Does not drop any collections because none are left in the graph definition
 db._drop("edges"); // Manually clean up the collections that were left behind, drop 'edges' before sharding-defining 'nodes' collection
 db._drop("nodes");
 ```
@@ -327,7 +332,8 @@ type: cluster
 ---
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "nodes", "nodes");
-~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
+~var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
+~graph._addVertexCollection("other");
 graph_module._drop("myGraph", true);
 ```
 
@@ -346,7 +352,8 @@ type: cluster
 ---
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "nodes", "nodes");
-~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
+~var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
+~graph._addVertexCollection("other");
 graph._removeVertexCollection("other");
 graph_module._drop("myGraph", true); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~db._drop("other");
