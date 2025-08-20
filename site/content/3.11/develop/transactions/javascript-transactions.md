@@ -297,7 +297,7 @@ db._executeTransaction({
 ```
 
 For a complete list of possible ArangoDB errors, see
-[Error codes and meanings](../error-codes-and-meanings.md).
+[Error codes and meanings](../error-codes.md).
 
 ### Custom Exceptions
 

@@ -202,7 +202,7 @@ def workflow_generate_scheduled(config):
     generators = ""
 
     if args.workflow == "generate-scheduled":
-        generators = "metrics error-codes options optimizer"
+        generators = "metrics error-codes exit-codes options optimizer"
     elif args.workflow == "generate-oasisctl":
         generators = "oasisctl"
 
