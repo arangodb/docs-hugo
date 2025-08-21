@@ -25,8 +25,8 @@ or use authentication, you can use the following command-line options:
 - `--server.database <string>`: the name of the database to connect to
 - `--server.endpoint <string>`: the endpoint to connect to
 - `--server.username <string>`: the username
-- `--server.password <string>`: the password to use (omit this to get prompted
-  for the password)
+- `--server.password <string>`: password or access token to use
+  (omit this and you'll be prompted for the password)
 - `--server.authentication <bool>`: whether or not to use authentication
 
 Here is an example of exporting data from a non-standard endpoint, using a dedicated
