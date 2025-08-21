@@ -156,14 +156,14 @@ but you can substitute them as follows for a schema description in terms of JSON
     therefore dimensionality reduction is applied after Featurization by default.
     - `size` (int): The number of dimensions to reduce the feature length to. Default is `512`.
 
-  - `defaultsPerFeatureType` (dict): A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
+  - `defaultsPerFeatureType` (dict): A dictionary mapping each feature type to how missing or mismatched values should be handled. The keys of this dictionary are the feature types, and the values are sub-dictionaries:
     - `text` / `numeric` / `category` / `label`:
       - `missing` (dict): A sub-dictionary detailing how missing values should be handled.
         - `strategy` (str): The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
-        - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
+        - `replacement` (int/float for `numeric`, otherwise str): The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
       - `mismatch` (dict): A sub-dictionary detailing how mismatched values should be handled.
         - `strategy` (str): The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
-        - `replacement` (str): The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
+        - `replacement` (int/float for `numeric`, otherwise str): The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
 
 - `jobConfiguration` (dict, _optional): A set of configurations that are applied to the job.
   - `batchSize` (int): The number of documents to process in a single batch. Default is `32`.
@@ -430,7 +430,7 @@ The Training Service depends on a **Training Specification**:
   - `vertexCollections` (dict): A dictionary mapping the collection names to a configuration dictionary:
     - _collection name_ (dict):
       - `x` (str): The name of the feature to be used as input.
-      - `y`: The name of the attribute to be predicted. Can only be specified for one collection.
+      - `y` (str): The name of the attribute to be predicted. Can only be specified for one collection.
   - `edgeCollections` (dict): A dictionary mapping the edge collection names to an empty dictionary, as edge features are not currently supported.
     - _collection name_ (dict): An empty dictionary.
 
