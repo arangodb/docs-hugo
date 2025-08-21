@@ -128,8 +128,7 @@ paths:
                     competing indexes in AQL queries when there are multiple candidate indexes to
                     choose from.
 
-                    The `estimates` attribute is optional and defaults to `true` if not set.
-                    It has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
+                    The option has no effect on indexes other than `persistent`, `mdi`, `mdi-prefixed`, and `ttl` indexes.
                     It cannot be disabled for non-unique `mdi` indexes because they have a fixed
                     selectivity estimate of `1`.
                   type: boolean

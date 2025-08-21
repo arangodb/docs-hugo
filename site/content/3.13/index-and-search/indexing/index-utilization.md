@@ -20,7 +20,7 @@ to an index, an index can become more selective and thus reduce the number of do
 queries need to process.
 
 ArangoDB's `primary` and `edge` indexes automatically provide selectivity estimates.
-The `persistent`, `mdi`, and `mdi-prefixed` indexes do too, by default.
+The `persistent`, `mdi`, `mdi-prefixed`, and `ttl` indexes do too, by default.
 Index selectivity estimates are provided in the web interface, the `indexes()` return 
 value and in the `explain()` output for a given query. 
 

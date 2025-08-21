@@ -139,7 +139,7 @@ paths:
                     competing indexes in AQL queries when there are multiple candidate indexes to
                     choose from.
 
-                    The option has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
+                    The option has no effect on indexes other than `persistent`, `mdi`, `mdi-prefixed`, and `ttl` indexes.
                   type: boolean
                   default: true
                 cacheEnabled:
