@@ -414,24 +414,11 @@ function setVersionSelector(version) {
   }
 }
 
-function handleOldDocsVersion(version) {
-    var legacyUrl = "https://www.arangodb.com/docs/" + version + "/";
-    var handle = window.open(legacyUrl, "_blank");
-    if (!handle) window.location.href = legacyUrl;
-    return;
-}
-
 function getCurrentVersion() {
   var urlVersion = stableVersion.name
 
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionFromURL()
-
-    if (newVersion === "3.8" || newVersion === "3.9") {
-      handleOldDocsVersion(newVersion)
-      versionSelector.value = urlVersion;
-      return;
-    }
 
     if (getVersionInfo(newVersion) == undefined) {
       loadNotFoundPage();
@@ -450,12 +437,6 @@ function changeVersion() {
     var oldVersion = localStorage.getItem('docs-version');
     var versionSelector = document.getElementById("arangodb-version");
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
-
-    if (newVersion === "3.8" || newVersion === "3.9") {
-        handleOldDocsVersion(newVersion)
-        versionSelector.value = oldVersion;
-        return;
-    }
 
     try {
         localStorage.setItem('docs-version', newVersion);
