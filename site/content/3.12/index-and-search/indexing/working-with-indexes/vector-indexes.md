@@ -65,15 +65,18 @@ centroids and the quality of vector search thus degrades.
 - **fields** (array of strings): A list with a single attribute path to specify
   where the vector embedding is stored in each document. The vector data needs
   to be populated before creating the index.
-  
+
   If you want to index another vector embedding attribute, you need to create a
   separate vector index.
+- **sparse** (boolean): Whether to create a sparse index that excludes documents
+  with the attribute for indexing missing or set to `null`. This attribute is
+  defined by `fields`. Default: `false`.
 - **parallelism** (number):
-  The number of threads to use for indexing. The default is `2`.
+  The number of threads to use for indexing. Default: `2`.
 - **inBackground** (boolean):
   Set this option to `true` to keep the collection/shards available for
   write operations by not using an exclusive write lock for the duration
-  of the index creation. The default is `false`.
+  of the index creation. Default: `false`.
 - **params**: The parameters as used by the Faiss library.
   - **metric** (string): Whether to use `cosine` or `l2` (Euclidean) distance calculation.
   - **dimension** (number): The vector dimension. The attribute to index needs to
@@ -89,11 +92,11 @@ centroids and the quality of vector search thus degrades.
     number of documents.
   - **defaultNProbe** (number, _optional_): How many neighboring centroids to
     consider for the search results by default. The larger the number, the slower
-    the search but the better the search results. The default is `1`. You should
+    the search but the better the search results. Default: `1`. You should
     generally use a higher value here or per query via the `nProbe` option of
     the vector similarity functions.
   - **trainingIterations** (number, _optional_): The number of iterations in the
-    training process. The default is `25`. Smaller values lead to a faster index
+    training process. Default: `25`. Smaller values lead to a faster index
     creation but may yield worse search results. 
   - **factory** (string, _optional_): You can specify an index factory string that is
     forwarded to the underlying Faiss library, allowing you to combine different
