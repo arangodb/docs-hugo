@@ -8,7 +8,7 @@ description: >-
 ## General query idea
 
 This type of query finds the first *k* paths in order of length
-(or weight) between two given documents (*startVertex* and *targetVertex*) in
+(or weight) between two given documents (*startNode* and *endNode*) in
 your graph.
 
 Every such path is returned as a JSON object with three components:
@@ -28,14 +28,14 @@ Here is an example graph to explain how the k Shortest Paths algorithm works:
 ![Train Connection Map](../../../images/train_map.png)
 
 Each ellipse stands for a train station with the name of the city written inside
-of it. They are the vertices of the graph. Arrows represent train connections
+of it. They are the nodes of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
 describe how long it takes to get from one station to another. They are used
 as edge weights.
 
 Let us assume that you want to go from **Aberdeen** to **London** by train.
 
-You expect to see the following vertices on *the* shortest path, in this order:
+You expect to see the following nodes on *the* shortest path, in this order:
 
 1. Aberdeen
 2. Leuchars
@@ -77,7 +77,7 @@ The path weight is lower: 1.5 + 1.5 + 1.0 + 1.0 + 2.0 + 1.5 = **8.5**.
 The syntax for k Shortest Paths queries is similar to the one for
 [Shortest Path](shortest-path.md) and there are also two options to
 either use a named graph or a set of edge collections. It only emits a path
-variable however, whereas `SHORTEST_PATH` emits a vertex and an edge variable.
+variable however, whereas `SHORTEST_PATH` emits a node and an edge variable.
 
 {{< warning >}}
 It is highly recommended that you use a **LIMIT** statement, as
@@ -91,23 +91,23 @@ graphs it can return a large number of paths, or perform an expensive
 ```aql
 FOR path
   IN OUTBOUND|INBOUND|ANY K_SHORTEST_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   GRAPH graphName
   [OPTIONS options]
   [LIMIT offset, count]
 ```
 
 - `FOR`: Emits the variable **path** which contains one path as an object containing 
-   `vertices`, `edges`, and the `weight` of the path.
+   `vertices` (nodes), `edges`, and the `weight` of the path.
 - `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both).
 - `K_SHORTEST_PATHS`: The keyword to compute k Shortest Paths
-- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
+- **startNode** `TO` **endNode** (both string\|object): The two nodes between
   which the paths are computed. This can be specified in the form of
   a ID string or in the form of a document with the attribute `_id`. All other
   values lead to a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its node and
   edge collections are looked up by the path search.
 - `OPTIONS` **options** (object, *optional*):
   See the [path search options](#path-search-options).
@@ -127,14 +127,14 @@ number, then the query is aborted with an error.
 ```aql
 FOR path
   IN OUTBOUND|INBOUND|ANY K_SHORTEST_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   edgeCollection1, ..., edgeCollectionN
   [OPTIONS options]
   [LIMIT offset, count]
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
-The involved vertex collections are determined by the edges of the given
+The involved node collections are determined by the edges of the given
 edge collections. 
 
 ### Path search options
@@ -177,8 +177,8 @@ account. In this case you can use `OUTBOUND` as general search direction and `AN
 specifically for *edges2* as follows:
 
 ```aql
-FOR vertex IN OUTBOUND K_SHORTEST_PATHS
-  startVertex TO targetVertex
+FOR node IN OUTBOUND K_SHORTEST_PATHS
+  startNode TO endNode
   edges1, ANY edges2, edges3
 ```
 

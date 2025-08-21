@@ -12,7 +12,7 @@ fresh EnterpriseGraph.
 When creating an EnterpriseGraph, you cannot have different number of shards per
 collection. To preserve the sharding pattern, the `_from` and `_to` attributes
 of the edges cannot be modified. 
-You can define any `_key` value on vertices, including existing ones.
+You can define any `_key` value on nodes, including existing ones.
 
 ## Migrating to EnterpriseGraphs
 
@@ -32,7 +32,7 @@ when using `arangoimport` because these values are immutable.
 Let us assume you have a `general-graph` in ArangoDB
 that you want to migrate over to be an `enterprise-graph` to benefit from
 the sharding strategy. In this example, the graph has only two collections:
-`old_vertices` which is a document collection and `old_edges` which is the
+`old_nodes` which is a document collection and `old_edges` which is the
 corresponding edge collection.
 
 **Export `general-graph` data**
@@ -41,7 +41,7 @@ The first step is to export the raw data of those
 collections using `arangoexport`:
 
 ```sh
-arangoexport --type jsonl --collection  old_vertices --output-directory docOutput --overwrite true
+arangoexport --type jsonl --collection  old_nodes --output-directory docOutput --overwrite true
 arangoexport --type jsonl --collection  old_edges --output-directory docOutput --overwrite true
 ```
 
@@ -56,18 +56,18 @@ therefore has no artificial restrictions on the data.
 After this step, two files are generated in the `docOutput` folder, that
 should look like this:
 
-1. `docOutput/old_vertices.jsonl`:
+1. `docOutput/old_nodes.jsonl`:
    ```
-   {"_key":"Alice","_id":"old_vertices/Alice","_rev":"_edwXFGm---","attribute1":"value1"}
-   {"_key":"Bob","_id":"old_vertices/Bob","_rev":"_edwXFGm--_","attribute1":"value2"}
-   {"_key":"Charly","_id":"old_vertices/Charly","_rev":"_edwXFGm--B","attribute1":"value3"}
+   {"_key":"Alice","_id":"old_nodes/Alice","_rev":"_edwXFGm---","attribute1":"value1"}
+   {"_key":"Bob","_id":"old_nodes/Bob","_rev":"_edwXFGm--_","attribute1":"value2"}
+   {"_key":"Charly","_id":"old_nodes/Charly","_rev":"_edwXFGm--B","attribute1":"value3"}
    ```    
 
 2. `docOutput/old_edges.jsonl`:
    ```
-   {"_key":"121","_id":"old_edges/121","_from":"old_vertices/Bob","_to":"old_vertices/Charly","_rev":"_edwW20----","attribute2":"value2"}
-   {"_key":"122","_id":"old_edges/122","_from":"old_vertices/Charly","_to":"old_vertices/Alice","_rev":"_edwW20G---","attribute2":"value3"}
-   {"_key":"120","_id":"old_edges/120","_from":"old_vertices/Alice","_to":"old_vertices/Bob","_rev":"_edwW20C---","attribute2":"value1"}
+   {"_key":"121","_id":"old_edges/121","_from":"old_nodes/Bob","_to":"old_nodes/Charly","_rev":"_edwW20----","attribute2":"value2"}
+   {"_key":"122","_id":"old_edges/122","_from":"old_nodes/Charly","_to":"old_nodes/Alice","_rev":"_edwW20G---","attribute2":"value3"}
+   {"_key":"120","_id":"old_edges/120","_from":"old_nodes/Alice","_to":"old_nodes/Bob","_rev":"_edwW20C---","attribute2":"value1"}
    ```
 
 **Create new Graph**
@@ -91,10 +91,10 @@ and just changing the sharding strategy.
 
 The empty collections that are now in the target ArangoDB cluster, 
 have to be filled with data.
-All vertices can be imported without any change:
+All nodes can be imported without any change:
 
 ```sh
-arangoimport --collection old_vertices --file docOutput/old_vertices.jsonl
+arangoimport --collection old_nodes --file docOutput/old_nodes.jsonl
 ```
 
 On the edges, EnterpriseGraphs disallow storing the `_key` value, so this attribute
@@ -109,25 +109,25 @@ After this step, the graph has been migrated.
 **Import data while changing collection names**
 
 This example describes a scenario in which the collections names have changed,
-assuming that you have renamed `old_vertices` to `vertices`.
+assuming that you have renamed `old_nodes` to `nodes`.
 
-For the vertex data this change is not relevant, the `_id` values are adjusted
+For the node data this change is not relevant, the `_id` values are adjusted
 automatically, so you can import the data again, and just target the new
 collection name:
 
 ```sh
-arangoimport --collection vertices --file docOutput/old_vertices.jsonl
+arangoimport --collection nodes --file docOutput/old_nodes.jsonl
 ```
 
 For the edges you need to apply more changes, as they need to be rewired.
-To make the change of vertex collection, you need to set
+To make the change of node collection, you need to set
 `--overwrite-collection-prefix` to `true`.
 
 To migrate the graph and also change to new collection names, run the following
 command:
 
 ```sh
-arangoimport --collection edges --file docOutput/old_edges.jsonl --remove-attribute "_key" --from-collection-prefix "vertices" --to-collection-prefix "vertices" --overwrite-collection-prefix true
+arangoimport --collection edges --file docOutput/old_edges.jsonl --remove-attribute "_key" --from-collection-prefix "nodes" --to-collection-prefix "nodes" --overwrite-collection-prefix true
 ```
 
 Note that:
@@ -135,7 +135,7 @@ Note that:
 - Because you have changed the name of the `_from` collection, you need
   to provide a `--from-collection-prefix`. The same is true for the `_to` collection,
   so you also need to provide a `--to-collection-prefix`.
-- To make the actual name change to the vertex collection, you need to
+- To make the actual name change to the node collection, you need to
   allow `--overwrite-collection-prefix`. If this option is not enabled, only values
   without a collection name prefix are changed. This is helpful if your data is not
   exported by ArangoDB in the first place.   
@@ -146,16 +146,16 @@ respectively `_to`.
 This means that, even if you use different collections in `_from` and `_to`, 
 their names are modified based on the prefix that is specified.  
 
-Consider the following example where `_to` points to a vertex in a different collection,
-`users_vertices/Bob`. When using `--to-collection-prefix "vertices"` to rename
+Consider the following example where `_to` points to a node in a different collection,
+`users_nodes/Bob`. When using `--to-collection-prefix "nodes"` to rename
 the collections, all collection names on the `_to` side are renamed to
-`vertices` as this transformation solely allows for the replacement of all
+`nodes` as this transformation solely allows for the replacement of all
 collection names within the edge attribute.
 
 ```json
-{"_key":"121", "_from":"old_vertices/Bob", "_to":"old_vertices/Charly", ... }
-{"_key":"122", "_from":"old_vertices/Charly", "_to":"old_vertices/Alice", ... }
-{"_key":"120", "_from":"old_vertices/Alice", "_to":"users_vertices/Bob", ... }
+{"_key":"121", "_from":"old_nodes/Bob", "_to":"old_nodes/Charly", ... }
+{"_key":"122", "_from":"old_nodes/Charly", "_to":"old_nodes/Alice", ... }
+{"_key":"120", "_from":"old_nodes/Alice", "_to":"users_nodes/Bob", ... }
 ```
 
 ## Collections in EnterpriseGraphs
@@ -167,7 +167,7 @@ fresh EnterpriseGraph.
 The creation of an EnterpriseGraph graph requires the name of the graph and a
 definition of its edges. All collections used within the creation process are
 automatically created by the `enterprise-graph` module. Make sure to only use
-non-existent collection names for both vertices and edges.
+non-existent collection names for both nodes and edges.
 
 ## Create an EnterpriseGraph using the web interface
 
@@ -185,7 +185,7 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
      desired copies of the data in the cluster.
    - Optional: For **Write concern**, enter the total number of copies
      of the data in the cluster required for each write operation.
-   - Optional: For **SatelliteCollections**, insert vertex collections
+   - Optional: For **SatelliteCollections**, insert node collections
      that are being used in your edge definitions. These collections are
      then created as satellites, and thus replicated to all DB-Servers.
    - For **Edge definition**, insert a single non-existent name to define
@@ -196,16 +196,16 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
      To define multiple relations, press the **Add relation** button.
      To remove a relation, press the **Remove relation** button.
      {{< /tip >}}
-   - For **fromCollections**, insert a list of vertex collections
-     that contain the start vertices of the relation.
-   - For **toCollections**, insert a list of vertex collections that
-     contain the end vertices of the relation.
+   - For **fromCollections**, insert a list of node collections
+     that contain the start nodes of the relation.
+   - For **toCollections**, insert a list of node collections that
+     contain the end nodes of the relation.
    {{< tip >}}
    Insert only non-existent collection names. Collections are automatically
    created during the graph setup and are displayed in the
    **Collections** tab of the left sidebar menu.
    {{< /tip >}}
-   - For **Orphan collections**, insert a list of vertex collections
+   - For **Orphan collections**, insert a list of node collections
      that are part of the graph but not used in any edge definition.
 5. Click **Create**. 
 6. Click the name or row of the newly created graph to open the Graph Viewer if
@@ -230,7 +230,7 @@ graph;
 ~graph_module._drop("myGraph");
 ```
 
-### Add vertex collections
+### Add node collections
 
 The **collections must not exist** when creating the EnterpriseGraph. The EnterpriseGraph
 module creates them for you automatically to set up the sharding for all
@@ -280,7 +280,7 @@ graph = graph_module._graph("myGraph");
 ### Create an EnterpriseGraph using SatelliteCollections
 
 When creating a collection, you can decide whether it's a SatelliteCollection
-or not. For example, a vertex collection can be satellite as well. 
+or not. For example, a node collection can be satellite as well. 
 SatelliteCollections don't require sharding as the data is distributed
 globally on all DB-Servers. The `smartGraphAttribute` is also not required.
 
@@ -288,11 +288,11 @@ In addition to the attributes you would set to create a EnterpriseGraph, there i
 additional attribute `satellites` you can optionally set. It needs to be an array of
 one or more collection names. These names can be used in edge definitions
 (relations) and these collections are created as SatelliteCollections.
-However, all vertex collections on one side of the relation have to be of
+However, all node collections on one side of the relation have to be of
 the same type - either all satellite or all smart. This is because `_from`
 and `_to` can have different types based on the sharding pattern.
 
-In this example, both vertex collections are created as SatelliteCollections.
+In this example, both node collections are created as SatelliteCollections.
 
 {{< info >}}
 When providing a satellite collection that is not used in a relation,

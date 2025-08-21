@@ -156,8 +156,8 @@ arangoml.projects.list_projects()
   - `overwriteFSGraph`: Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.s
   - `writeToSourceGraph`: Whether to store the generated features on the Source Graph. Default is `true`.
 
-- `metagraph`: Metadata to represent the vertex & edge collections of the graph.
-  - `vertexCollections`: A dictionary mapping the vertex collection names to the following values:
+- `metagraph`: Metadata to represent the node & edge collections of the graph.
+  - `vertexCollections`: A dictionary mapping the node collection names to the following values:
     - `features`: A dictionary mapping document properties to the following values:
       - `featureType`: The type of feature. Options include `text`, `category`, `numeric`, or `label`.
     - `config`: Collection-level configuration settings.
@@ -405,7 +405,7 @@ Training Graph Machine Learning Models with GraphML requires two steps:
     - `batchSize`: The number of documents to process in a single training batch. Default is `64`.
     - `generateEmbeddings`: Whether to generate embeddings on the training dataset. Default is `false`.
 
-- `metagraph`: Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
+- `metagraph`: Metadata to represent the node & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph`: The ArangoDB graph name.
   - `vertexCollections`: A dictionary mapping the collection names to the following values:
     - `x`: The name of the feature to be used as input.

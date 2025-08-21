@@ -496,6 +496,7 @@ a.section-link {
 
 .tab-panel .tab-item {
     display: none;
+    margin: 1rem;
 }
 
 .tab-panel .tab-item.selected {
@@ -504,11 +505,12 @@ a.section-link {
 
 .tab-panel {
     margin: 1rem 0;
+    border: 2px solid var(--gray-300);
+    border-radius: 7px;
 }
 
 .tab-nav {
     border-bottom: 2px solid var(--gray-300);
-    margin-bottom: 1rem;
 }
 
 .tab-nav-button {

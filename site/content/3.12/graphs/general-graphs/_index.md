@@ -46,11 +46,11 @@ General Graphs. To get started, follow the steps outlined below.
      To define multiple relations, press the **Add relation** button.
      To remove a relation, press the **Remove relation** button.
      {{< /tip >}}
-   - For **fromCollections**, insert a list of vertex collections
-     that contain the start vertices of the relation.
-   - For **toCollections**, insert a list of vertex collections that
-     contain the end vertices of the relation.
-6. If you want to use vertex collections that are part of the graph
+   - For **fromCollections**, insert a list of node collections
+     that contain the start nodes of the relation.
+   - For **toCollections**, insert a list of node collections that
+     contain the end nodes of the relation.
+6. If you want to use node collections that are part of the graph
    but not used in any edge definition, you can insert them via
    **Orphan collections**.
 7. Click **Create**. 
@@ -74,7 +74,7 @@ graph;
 ~graph_module._drop("myGraph", true);
 ```
 
-**Add some vertex collections**
+**Add some node collections**
 
 ```js
 ---

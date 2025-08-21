@@ -12,9 +12,9 @@ All collections that are being used in SmartGraphs need to be part of the same
 `distributeShardslike` group. The `smartGraphAttribute` and the number of
 shards are immutable.
 The `smartGraphAttribute` attribute is used to inform the database how to shard
-data and, as a consequence, all vertices must have this attribute. The `_from`
+data and, as a consequence, all nodes must have this attribute. The `_from`
 and `_to` attributes that point _from_ one document _to_ another document
-stored in vertex collections are set by default, following the same smart
+stored in node collections are set by default, following the same smart
 sharding pattern.
 
 ## Create a SmartGraph using the web interface
@@ -34,9 +34,9 @@ SmartGraphs. To get started, follow the steps outlined below.
    - Optional: For **Write concern**, enter the total number of copies
      of the data in the cluster required for each write operation.
    - For **SmartGraph Attribute**, insert the attribute that is used to
-     smartly shard the vertices of the graph. Every vertex in your graph
+     smartly shard the nodes of the graph. Every node in your graph
      needs to have this attribute. Note that it cannot be modified later.
-   - Optional: For **SatelliteCollections**, insert vertex collections
+   - Optional: For **SatelliteCollections**, insert node collections
      that are used in your edge definitions. These collections are
      then created as satellites, and thus replicated to all DB-Servers.
 5. Define the relations on the graph:       
@@ -48,16 +48,16 @@ SmartGraphs. To get started, follow the steps outlined below.
      To define multiple relations, press the **Add relation** button.
      To remove a relation, press the **Remove relation** button.
      {{< /tip >}}
-   - For **fromCollections**, insert a list of vertex collections
-     that contain the start vertices of the relation.
-   - For **toCollections**, insert a list of vertex collections that
-     contain the end vertices of the relation.
+   - For **fromCollections**, insert a list of node collections
+     that contain the start nodes of the relation.
+   - For **toCollections**, insert a list of node collections that
+     contain the end nodes of the relation.
    {{< tip >}}
    Insert only non-existent collection names. Collections are automatically
    created during the graph setup and are displayed in the
    **Collections** tab of the left sidebar menu.
    {{< /tip >}}
-   - For **Orphan collections**, insert a list of vertex collections
+   - For **Orphan collections**, insert a list of node collections
      that are part of the graph but not used in any edge definition.
 6. Click **Create**. 
 7. Click the name or row of the newly created graph to open the Graph Viewer if
@@ -101,7 +101,7 @@ graph;
 ~graph_module._drop("myGraph");
 ```
 
-## Add vertex collections
+## Add node collections
 
 This is analogous to General Graphs. Unlike with General Graphs, the
 **collections must not exist** when creating the SmartGraph. The SmartGraph
@@ -152,7 +152,7 @@ graph = graph_module._graph("myGraph");
 ## Using SatelliteCollections in SmartGraphs
 
 When creating a collection, you can decide whether it's a SatelliteCollection
-or not. For example, a vertex collection can be satellite as well. 
+or not. For example, a node collection can be satellite as well. 
 SatelliteCollections don't require sharding as the data will be distributed
 globally on all DB-Servers. The `smartGraphAttribute` is also not required.
 
@@ -162,11 +162,11 @@ In addition to the attributes you would set to create a SmartGraph, there is an
 additional attribute `satellites` you can optionally set. It needs to be an array of
 one or more collection names. These names can be used in edge definitions
 (relations) and these collections will be created as SatelliteCollections.
-However, all vertex collections on one side of the relation have to be of
+However, all node collections on one side of the relation have to be of
 the same type - either all satellite or all smart. This is because `_from`
 and `_to` can have different types based on the sharding pattern.
 
-In this example, both vertex collections are created as SatelliteCollections.
+In this example, both node collections are created as SatelliteCollections.
 
 {{< info >}}
 When providing a satellite collection that is not used in a relation,
@@ -190,7 +190,7 @@ graph;
 ### Create a Disjoint SmartGraph using SatelliteCollections
 
 The option `isDisjoint` needs to be set to `true` in addition to the other
-options for a SmartGraph using SatelliteCollections. Only the `shop` vertex collection is created
+options for a SmartGraph using SatelliteCollections. Only the `shop` node collection is created
 as a SatelliteCollection in this example:
 
 ```js

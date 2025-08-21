@@ -16,9 +16,9 @@ customers, and yet another for orders.
 
 - The regular type of collection is a **document collection**. If you use
   document collections for a graph, then they are referred to as
-  **vertex collections**.
+  **node collections** or vertex collections.
 
-- To store connections between the vertices of a graph, you need to use
+- To store connections between the nodes of a graph, you need to use
   **edge collections**. The documents they contain have a `_from` and a `_to`
   attribute to reference documents by their ID.
 
