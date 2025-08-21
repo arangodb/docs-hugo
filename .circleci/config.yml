@@ -88,17 +88,21 @@ jobs:
             mkdir -p .circleci && cd .circleci
             fetched=false
             for i in $(seq 1 6); do
-              res=$(curl -fsS https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1)
-              status=$?
-              if [[ "$status" -eq 0 ]]; then
-                urls=$(echo "$res" | jq ".[].download_url")
-                status=$?
-                if [[ "$status" -eq 0 ]]; then
+              echo ""
+              res=$(curl -fsS https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1) || curlStatus=$?
+              if [[ -z "${curlStatus:-}" ]]; then
+                urls=$(echo "$res" | jq ".[].download_url") || jqStatus=$?
+                if [[ -z "${jqStatus:-}" ]]; then
                   fetched=true
                   break
                 fi
+                echo "jq failed with $jqStatus, input:"
+                echo "$res"
+              else
+                echo "curl failed with $curlStatus"
               fi
-              echo "$res"
+              unset curlStatus
+              unset jqStatus
               sleep 10
             done
             if [[ "$fetched" = false ]]; then
