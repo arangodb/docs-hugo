@@ -59,6 +59,20 @@ paths:
                   maxItems: 1
                   items:
                     type: string
+                estimates:
+                  description: |
+                    This attribute controls whether index selectivity estimates are maintained for the
+                    index. Not maintaining index selectivity estimates can have a slightly positive
+                    impact on write performance.
+
+                    The downside of turning off index selectivity estimates is that
+                    the query optimizer is not able to determine the usefulness of different
+                    competing indexes in AQL queries when there are multiple candidate indexes to
+                    choose from.
+
+                    The option has no effect on indexes other than `persistent`, `mdi`, `mdi-prefixed`, and `ttl` indexes.
+                  type: boolean
+                  default: true
                 expireAfter:
                   description: |
                     The time interval (in seconds) from the point in time stored in the `fields`
