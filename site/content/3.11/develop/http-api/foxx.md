@@ -500,7 +500,7 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON object mapping configuration option names to their new values.
+                A JSON object, mapping configuration option names to their new values.
                 Any omitted options will be ignored.
               type: object
       responses:
@@ -543,7 +543,7 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON object mapping configuration option names to their new values.
+                A JSON object, mapping configuration option names to their new values.
                 Any omitted options will be reset to their default values or marked as unconfigured.
               type: object
       responses:
