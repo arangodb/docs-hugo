@@ -173,8 +173,8 @@ but you can substitute them as follows for a schema description in terms of JSON
   - `overwriteFSGraph` (bool): Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.
   - `writeToSourceGraph` (bool): Whether to store the generated features on the Source Graph. Default is `true`.
 
-- `metagraph` (dict): Metadata to represent the vertex & edge collections of the graph.
-  - `vertexCollections` (dict): A dictionary mapping the vertex collection names to a configuration dictionary:
+- `metagraph` (dict): Metadata to represent the node & edge collections of the graph.
+  - `vertexCollections` (dict): A dictionary mapping the node collection names to a configuration dictionary:
     - _collection name_ (dict):
       - `features` (dict): A dictionary mapping document properties to the following values:
         - `featureType` (str): The type of feature. Options include `text`, `category`, `numeric`, or `label`.
@@ -425,7 +425,7 @@ The Training Service depends on a **Training Specification**:
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
     - `generateEmbeddings` (bool): Whether to generate embeddings on the training dataset. Default is `false`.
 
-- `metagraph` (dict): Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
+- `metagraph` (dict): Metadata to represent the node & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph` (str): The ArangoDB graph name.
   - `vertexCollections` (dict): A dictionary mapping the collection names to a configuration dictionary:
     - _collection name_ (dict):

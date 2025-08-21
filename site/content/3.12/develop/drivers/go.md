@@ -159,8 +159,8 @@ log.Printf("Async job result: %s", info.Version)
 Key types you need to know about to work with ArangoDB using the Go driver:
 
 - `Database` – to maintain a handle to an open database
-- `Collection` – as a handle for a collection of records (vertex, edge, or document) within a database
-- `Graph` – as a handle for a graph overlay containing vertices and edges (nodes and links)
+- `Collection` – as a handle for a collection of records (node, edge, or document) within a database
+- `Graph` – as a handle for a graph overlay containing nodes and edges
 - `EdgeDefinition` – a named collection of edges used to help a graph in distributed searching
 
 These are declared as in the following examples:
@@ -240,8 +240,8 @@ type IntKeyValue struct {
     Value  int     `json:"value"`
 }
 
-// A typical vertex type must have field matching _key
-type MyVertexNode struct {
+// A typical node type must have field matching _key
+type MyNode struct {
     Key     string   `json:"_key"` // mandatory field (handle) - short name
     // other fields … e.g.
     Data    string   `json: "data"`   // Longer description or bulk string data
@@ -249,7 +249,7 @@ type MyVertexNode struct {
 }
 
 // A typical edge type must have fields matching _from and _to
-type MyEdgeLink struct {
+type MyEdge struct {
     Key     string   `json:"_key"`  // mandatory field (handle)
     From    string   `json:"_from"` // mandatory field
     To      string   `json:"_to"`   // mandatory field

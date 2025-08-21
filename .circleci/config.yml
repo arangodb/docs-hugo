@@ -86,7 +86,26 @@ jobs:
           name: Checkout
           command: |
             mkdir -p .circleci && cd .circleci
-            curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            fetched=false
+            for i in $(seq 1 6); do
+              res=$(curl -fsS https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1)
+              status=$?
+              if [[ "$status" -eq 0 ]]; then
+                urls=$(echo "$res" | jq ".[].download_url")
+                status=$?
+                if [[ "$status" -eq 0 ]]; then
+                  fetched=true
+                  break
+                fi
+              fi
+              echo "$res"
+              sleep 10
+            done
+            if [[ "$fetched" = false ]]; then
+              echo "Failed to fetch download URLs"
+              exit 1
+            fi
+            echo "$urls" | xargs wget
             wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
 
             pip install pyyaml requests
