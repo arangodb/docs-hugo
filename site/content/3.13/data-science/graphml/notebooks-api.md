@@ -133,6 +133,8 @@ but you can substitute them as follows for a schema description in terms of JSON
 | `str`   | string |
 {{< /tip >}}
 
+- `databaseName` (str): The database name the source data is in.
+
 - `featurizationName` (str): A name for the featurization task.
 
 - `projectName` (str): The associated project name. You can use `project.name` here
