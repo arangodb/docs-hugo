@@ -81,7 +81,7 @@ sampled and includes the following attributes:
 - `modificationQuery`: Whether the query created, modified, or deleted any documents.
 - `warnings`: The number of warnings issued by the query.
 - `exitCode`: The exit code of the query (`0` = success, any other exit code
-  indicates a specific [error](../../develop/error-codes-and-meanings.md)).
+  indicates a specific [error](../../develop/error-codes.md)).
 
 You can retrieve and analyze the stored query metadata by running AQL queries on
 the `_queries` collection in the `_system` database. You can use arbitrary
