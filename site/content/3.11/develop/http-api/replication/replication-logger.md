@@ -244,9 +244,10 @@ paths:
           in: query
           required: false
           description: |
-            Include system collections in the result. The default value is `true`.
+            Include system collections in the result.
           schema:
             type: boolean
+            default: true
       responses:
         '200':
           description: |

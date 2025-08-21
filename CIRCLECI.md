@@ -205,7 +205,7 @@ Invoke Args:
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| string | `generators` | `metrics error-codes optimizer options` |
+| string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |
 | string | `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |

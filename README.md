@@ -206,14 +206,15 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 - `examples`
 - `metrics`
 - `error-codes`
+- `exit-codes`
 - `optimizer`
 - `options`
 - `oasisctl`
 
 The generators entry is a space-separated string.
 
-If `metrics` or `error-codes` is in the `generators` string, the following
-environment variable has to be exported:
+If `metrics`, `error-codes`, or `exit-coddes` is in the `generators` string,
+the following environment variable has to be exported:
 
 ```sh
 export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
@@ -425,6 +426,15 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+#### Keyboard shortcuts
+
+To document hotkeys and key combinations to press in a terminal or graphical
+user interface, use the `kbd` shortcode:
+
+```markdown
+Hit {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
+```
+
 #### Cards
 
 To prominently link to other content, you may use cards:
@@ -475,6 +485,8 @@ The following shortcodes also exist but are rarely used:
   component like the ArangoDB server (`arangod`) or shell (`arangosh`).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
+
+- `{{% exit-codes %}}` renders the ArangoDB client and server exit codes and their meaning.
 
 - `{{% metrics %}}` renders the list of ArangoDB server metrics.
 
@@ -1052,7 +1064,7 @@ It makes a warning show at the top of every page for that version.
    |:-----|:-----|:------|
    | string | `workflow` | `generate` |
    | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
-   | string | `generators` | `examples metrics error-codes optimizer options` |
+   | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
    | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
    | boolean | `commit-generated` | `true` |
 
@@ -1220,7 +1232,7 @@ db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_
 ```
 
 This will make the example generation continue despite the error. See
-[Error codes and meanings](https://docs.arangodb.com/3.12/develop/error-codes-and-meanings/)
+[Error codes and meanings](https://docs.arangodb.com/stable/develop/error-codes-and-meanings/)
 for a list of all error codes and their names. If a unexpected error is raised,
 then the example generation will abort with an error.
 

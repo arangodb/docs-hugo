@@ -72,8 +72,8 @@ The `_rev` value is maintained by ArangoDB automatically.
 
 Edge documents in edge collections have two additional system attributes:
 
-- The document identifier of the source vertex stored in the `_from` attribute.
-- The document identifier of the target vertex stored in the `_to` attribute.
+- The document identifier of the source node stored in the `_from` attribute.
+- The document identifier of the target node stored in the `_to` attribute.
 
 More system attributes may get added in the future without notice. Therefore,
 you should avoid using own attribute names starting with an underscore.

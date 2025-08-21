@@ -210,7 +210,7 @@ Each object has a `code` property corresponding to the `errorNum` found on
 `ArangoError` errors.
 
 For a complete list of the error names and codes you may encounter see the
-[appendix on error codes](../../error-codes-and-meanings.md).
+[appendix on error codes](../../error-codes.md).
 
 **Examples**
 

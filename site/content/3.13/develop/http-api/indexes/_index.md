@@ -60,6 +60,7 @@ paths:
             Whether to include figures and estimates in the result.
           schema:
             type: boolean
+            default: false
         - name: withHidden
           in: query
           required: false
@@ -69,6 +70,7 @@ paths:
             background are hidden.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -270,14 +272,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The options for the index. The available attributes depend on the index type.
               type: object
-              required:
-                - index-details
-              properties:
-                index-details:
-                  description: |
-                    The options for the index.
-                  type: object
       responses:
         '200':
           description: |

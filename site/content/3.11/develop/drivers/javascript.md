@@ -197,7 +197,7 @@ injection attacks.
 
 If the server returns an ArangoDB error response, arangojs throws an `ArangoError`
 with an `errorNum` property indicating the
-[ArangoDB error code](../error-codes-and-meanings.md) and expose the response body
+[ArangoDB error code](../error-codes.md) and expose the response body
 as the response property of the error object.
 
 For all other errors during the request/response cycle arangojs throws a

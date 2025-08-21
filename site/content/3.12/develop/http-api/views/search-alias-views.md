@@ -1035,6 +1035,18 @@ paths:
             The name of the View to rename.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  description: |
+                    The new name for the View.
+                  type: string
       responses:
         '200':
           description: |
