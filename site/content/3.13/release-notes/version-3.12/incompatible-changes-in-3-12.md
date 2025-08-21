@@ -931,8 +931,8 @@ For example, the following function calls now fail to validate and raise a
 warning because of invalid points in the data:
 
 ```aql
-GEO_LINESTRING([[1,2], []])
 GEO_MULTIPOINT([[1], [2,3]])
+GEO_LINESTRING([[1,2], []])
 GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
 ```
 
