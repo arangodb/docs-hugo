@@ -915,6 +915,27 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+## Additional validation by AQL GeoJSON functions
+
+<small>Introduced in: v3.12.6</small>
+
+The following AQL functions to construct GeoJSON objects now validate that the
+provided input uses either two or three coordinates for every point
+(`[longitude, latitude]` or `[longitude, latitude, elevation]`):
+
+- `GEO_MULTIPOINT()`
+- `GEO_LINESTRING()`
+- `GEO_MULTILINESTRING()`
+
+For example, the following function calls now fail to validate and raise a
+warning because of invalid points in the data:
+
+```aql
+GEO_LINESTRING([[1,2], []])
+GEO_MULTIPOINT([[1], [2,3]])
+GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
+```
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
