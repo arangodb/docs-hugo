@@ -501,13 +501,6 @@ function initClickHandlers() {
         $(event.target).toggleClass("collapsed");
         $(event.target).next(".openapi-table").toggleClass("hidden");
     });
-
-    $('#search-by').keypress(
-        function(event){
-          if (event.which == '13') {
-            event.preventDefault();
-          }
-      });
     
 }
 
