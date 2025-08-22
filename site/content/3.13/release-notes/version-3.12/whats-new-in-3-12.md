@@ -1443,6 +1443,13 @@ utilizing vector indexes in queries.
 Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
 has been added.
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+Vector indexes can now be sparse to exclude documents with the embedding attribute
+for indexing missing or set to `null`.
+
 ## Server options
 
 ### Effective and available startup options
