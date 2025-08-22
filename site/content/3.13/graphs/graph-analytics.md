@@ -8,6 +8,8 @@ description: |
 aliases:
   - ../data-science/graph-analytics
 ---
+{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
 It ranges from basic measures that characterize graphs, over PageRank, to complex
@@ -16,12 +18,13 @@ and network flow analysis.
 
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+and included in the [ArangoDB Platform](../components/platform.md).
 
 Key features:
 
 - **Separation of storage and compute**: GAEs are a solution that lets you run
-  graph analytics independent of your ArangoDB deployments on dedicated machines
+  graph analytics independent of your ArangoDB Core on dedicated machines <!-- TODO: Is this supported in the platform? -->
   optimized for compute tasks. This separation of OLAP and OLTP workloads avoids
   affecting the performance of the transaction-oriented database systems.
 
@@ -37,11 +40,31 @@ Key features:
 The following lists outlines how you can use Graph Analytics Engines (GAEs).
 How to perform the steps is detailed in the subsequent sections.
 
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+1. Determine the approximate size of the data that you will load into the GAE
+   to select an engine size with sufficient memory. The data as well as the
+   temporarily needed space for computations and results needs to fit in memory.{{< comment >}}TODO{{< /comment >}}
+2. Start a `graphanalytics` service via the GenAI service that manages various
+   Platform components for graph intelligence and machine learning.
+   It only takes a few seconds until the engine service can be used. The engine
+   runs adjacent to the pods of the ArangoDB Core.
+3. Load graph data from the ArangoDB Core into the engine. You can load
+   named graphs or sets of node and edge collections. This loads the edge
+   information and a configurable subset of the node attributes.
+4. Run graph algorithms on the data. You only need to load the data once per
+   engine and can then run various algorithms with different settings.
+5. Write the computation results back to the ArangoDB Core.
+6. Stop the engine service once you are done.
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 {{< info >}}
 Before you can use Graph Analytics Engines, you need to request the feature
 via __Request help__ in the ArangoGraph dashboard for a deployment.
 
-The deployment needs to use **AWS** as the cloud provider.
+The deployment needs to use **AWS** as the cloud provider.{{< comment >}}TODO{{< /comment >}}
 
 Single server deployments using ArangoDB version 3.11 are not supported.
 {{< /info >}}
@@ -59,9 +82,30 @@ Single server deployments using ArangoDB version 3.11 are not supported.
    engine and can then run various algorithms with different settings.
 5. Write the computation results back to ArangoDB.
 6. Delete the engine once you are done.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Authentication
 
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+You can use any of the supported authentication methods the ArangoDB Platform
+supports to start and stop `graphanalytics` services via the GenAI service as
+well as to authenticate requests to the [Engine API](#engine-api).
+
+- HTTP Basic Authentication
+- Access tokens
+- JWT session tokens
+<!-- TODO
+- Single Sign-On (SSO)
+
+$JWT = $(curl -sSk -d '{"username":"root", "password": ""}' https://127.0.0.1:8529/_open/auth | jq -r .jwt)
+-->
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 The [Management API](#management-api) for deploying and deleting engines requires
 an ArangoGraph **API key**. See
 [Generating an API Key](../arangograph/api/get-started.md#generating-an-api-key)
@@ -81,8 +125,56 @@ setting in ArangoGraph:
   These session tokens need to be renewed every hour by default. See
   [HTTP API Authentication](../develop/http-api/authentication.md#jwt-user-tokens)
   for details.
+{{< /tab >}}
 
-## Management API
+{{< /tabs >}}
+
+## Start and stop Graph Analytics Engines
+
+The interface for managing the engines depends on the environment you use:
+
+- **ArangoDB Platform**: [GenAI service](#genai-service)
+- **ArangoGraph**: [Management API](#management-api)
+
+### GenAI service
+
+{{< tag "ArangoDB Platform" >}}
+
+GAEs are deployed and deleted via the [GenAI service](../data-science/graphrag/services/gen-ai.md)
+in the ArangoDB Platform.
+
+If you use cURL, you need to use the `-k` / `--insecure` option for requests
+if the Platform deployment uses a self-signed certificate (default).
+
+#### Deploy
+
+```sh
+#$JWT="<token>" # TODO: Rename from JWT to token? Can be access token or session token, perhaps also superuser token (and HTTP Basic auth should work too)
+Service=$(curl -sSk -H "Authorization: bearer $JWT" -XPOST https://127.0.0.1:8529/gen-ai/v1/graphanalytics)
+$ServiceID = $(echo $Service | jq -r .serviceInfo.serviceId)
+if [[ "$ServiceID" == "null" ]]; then 
+  echo "Error starting gral engine"
+else
+  echo "Engine started successfully"
+fi
+echo "$Service" | jq
+```
+
+#### List
+
+```sh
+curl -sSk -H "Authorization: bearer $JWT" -XPOST https://127.0.0.1:8529/gen-ai/v1/list_services | jq
+```
+
+#### Delete
+
+```sh
+curl -sSk -H "Authorization: bearer $JWT" -XDELETE https://127.0.0.1:8529/gen-ai/v1/service/$ServiceID | jq
+```
+
+### Management API
+
+{{< tag "ArangoGraph" >}}
 
 You can save an ArangoGraph access token created with `oasisctl login` in a
 variable to ease scripting. Note that this should be the token string only and
@@ -119,7 +211,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 
 Request and response payloads are JSON-encoded in the management API.
 
-### Get the API version
+#### Get the API version
 
 `GET <BASE_URL>/api-version`
 
@@ -129,7 +221,7 @@ Retrieve the version information of the management API.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 ```
 
-### List engine sizes
+#### List engine sizes
 
 `GET <BASE_URL>/enginesizes`
 
@@ -140,7 +232,7 @@ and the size of the RAM, starting at 1 CPU and 4 GiB of memory (`e4`).
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginesizes"
 ```
 
-### List engine types
+#### List engine types
 
 `GET <BASE_URL>/enginetypes`
 
@@ -151,7 +243,7 @@ called `gral`.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginetypes"
 ```
 
-### Deploy an engine
+#### Deploy an engine
 
 `POST <BASE_URL>/engines`
 
@@ -162,7 +254,7 @@ engine size of `e4`.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d '{"type_id":"gral","size_id":"e4"}' "$BASE_URL/engines"
 ```
 
-### List all engines
+#### List all engines
 
 `GET <BASE_URL>/engines`
 
@@ -172,7 +264,7 @@ List all deployed GAEs of a ArangoGraph deployment.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/engines"
 ```
 
-### Get an engine
+#### Get an engine
 
 `GET <BASE_URL>/engines/<ENGINE_ID>`
 
@@ -183,7 +275,7 @@ ENGINE_ID="zYxWvU9876"
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/engines/$ENGINE_ID"
 ```
 
-### Delete an engine
+#### Delete an engine
 
 `DELETE <BASE_URL>/engines/<ENGINE_ID>`
 
@@ -196,6 +288,40 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "$BASE_URL/engines
 
 ## Engine API
 
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+To determine the base URL of the engine API, use the base URL of the Platform
+deployment and append `/gral/<SERVICE_ID>`, e.g.
+`https://127.0.0.1:8529/gral/arangodb-gral-tqcge`.
+
+Store the base URL in a variable called `ENGINE_URL`:
+
+```bash
+ENGINE_URL='https://...'
+```
+
+To authenticate requests, you need to use a bearer token in HTTP header:
+```
+Authorization: bearer <TOKEN>
+```
+
+You can save the token in a variable to ease scripting. Note that this should be
+the token string only and not include quote marks. The following examples assume
+Bash as the shell and that the `curl` and `jq` commands are available.
+
+An example of authenticating a request using cURL and a session token:
+
+```bash
+PLATFORM_BASEURL="https://127.0.0.1:8529"
+
+ADB_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PASS>\"}" "$PLATFORM_BASEURL/_open/auth" | jq -r '.jwt')
+
+curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
+```
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 To determine the base URL of the engine API, use the ArangoGraph dashboard
 and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph data
 you want to analyze. Replace the port with `8829` and append
@@ -230,6 +356,9 @@ ADB_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PA
 
 curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 All requests to the engine API start jobs, each representing an operation.
 You can check the progress of operations and check if errors occurred.
