@@ -2007,6 +2007,7 @@ nav.pagination {
     padding: 0.75rem 1rem 2rem;
     display: flex;
     grid-area: footer;
+    margin-bottom: 5rem;
 }
 
 nav.pagination span {
