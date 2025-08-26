@@ -133,6 +133,7 @@ paths:
                         - `"IVF100,SQ4"`
                         - `"IVF10_HNSW5,Flat"`
                         - `"IVF100_HNSW5,PQ256x16"`
+
                         The base index must be an inverted file (IVF) to work with ArangoDB.
                         If you don't specify an index factory, the value is equivalent to
                         `IVF<nLists>,Flat`. For more information on how to create these custom
