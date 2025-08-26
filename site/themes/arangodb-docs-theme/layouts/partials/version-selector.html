@@ -1,5 +1,5 @@
 <div class="version-selector">
-    <select id="arangodb-version" onchange="changeVersion();">
+    <select class="arangodb-version" onchange="changeVersion();">
     {{ $versions := site.Data.versions }}
     {{ range $i, $version := $versions }}
         <option value="{{ $version.name }}">{{ $version.name }}</option>
