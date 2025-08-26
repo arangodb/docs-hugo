@@ -476,7 +476,7 @@ paths:
     patch:
       operationId: updateFoxxConfiguration
       description: |
-        Replaces the given service's configuration.
+        Replaces the given service's configuration partially.
 
         Returns an object mapping all configuration option names to their new values.
       parameters:
@@ -499,15 +499,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON object, mapping configuration option names to their new values.
+                Any omitted options will be ignored.
               type: object
-              required:
-                - options
-              properties:
-                options:
-                  description: |
-                    A JSON object mapping configuration option names to their new values.
-                    Any omitted options will be ignored.
-                  type: object
       responses:
         '200':
           description: |
@@ -547,15 +542,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON object, mapping configuration option names to their new values.
+                Any omitted options will be reset to their default values or marked as unconfigured.
               type: object
-              required:
-                - options
-              properties:
-                options:
-                  description: |
-                    A JSON object mapping configuration option names to their new values.
-                    Any omitted options will be reset to their default values or marked as unconfigured.
-                  type: object
       responses:
         '200':
           description: |
