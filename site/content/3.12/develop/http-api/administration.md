@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -246,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
