@@ -35,7 +35,7 @@ to enable process intercommunication.
 An example configuration might look like this:
 
 ```bash
-docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8529 arangodb/arangodb arangod \
+docker run -e ARANGO_NO_AUTH=1 -p 192.168.1.1:10000:8529 arangodb/enterprise arangod \
   --server.endpoint tcp://0.0.0.0:8529\
 ```
 
@@ -66,8 +66,10 @@ options:
 
    Let ArangoDB generate a random root password.
        
-For an in depth guide about Docker and ArangoDB please check the official documentation:
-[hub.docker.com/r/arangodb/arangodb/](https://hub.docker.com/r/arangodb/arangodb/).
-Note that we are using the image `arangodb/arangodb` here which is always the most current one.
-There is also the "official" one called `arangodb` whose documentation is here:
-[hub.docker.com/\_/arangodb/](https://hub.docker.com/_/arangodb/)
+For an in-depth guide about Docker and ArangoDB please check the official documentation:
+[hub.docker.com/\_/arangodb/](https://hub.docker.com/_/arangodb/).
+The `arangodb` images are the "official" images built and approved by Docker.
+
+You can also use the `arangodb/enterprise` images published directly by ArangoDB.
+New releases are available here first:
+[hub.docker.com/r/arangodb/enterprise/](https://hub.docker.com/r/arangodb/enterprise/)

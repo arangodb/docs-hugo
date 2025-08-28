@@ -21,21 +21,21 @@ cloud service, the [ArangoGraph Insights Platform](../arangograph/_index.md).
 
 ## What are Graphs?
 
-Graphs are information networks comprised of nodes and relations.
+Graphs are information networks comprised of nodes and edges.
 
-![Node - Relation - Node](../../images/data-model-graph-relation-abstract.png)
+![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../images/data-model-graph-relation-abstract-edge.png)
 
 A social network is a common example of a graph. People are represented by nodes
 and their friendships by relations.
 
-![Mary - is friend of - John](../../images/data-model-graph-relation-concrete.png)
+![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../images/data-model-graph-relation-concrete.png)
 
-Nodes are also called vertices (singular: vertex), and relations are edges that
-connect vertices.
-A vertex typically represents a specific entity (a person, a book, a sensor
+Nodes are also called vertices (singular: vertex), and edges are relations that
+connect nodes.
+A node typically represents a specific entity (a person, a book, a sensor
 reading, etc.) and an edge defines how one entity relates to another.
 
-![Mary - bought - Book, is friend of - John](../../images/data-model-graph-relations.png)
+![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../../images/data-model-graph-relations.png)
 
 This paradigm of storing data feels natural because it closely matches the
 cognitive model of humans. It is an expressive data model that allows you to
@@ -50,19 +50,14 @@ JSON objects, without having to connect these objects to form a graph.
 
 ![Person Mary, Book ArangoDB](../../images/data-model-document.png)
 
-<!-- TODO:
-Seems too disconnected, what is the relation?
-Maybe multiple docs, maybe also include folders (collections)?
--->
-
 Depending on your needs, you may mix graphs and unconnected data.
 ArangoDB is designed from the ground up to support multiple data models with a
 single, composable query language.
 
 ```aql
 FOR book IN Books
-  FILTER book.title == "ArangoDB"
-  FOR person IN 2..2 INBOUND book Sales, OUTBOUND People
+  FILTER book.title == "Arango"
+  FOR person IN 2..2 INBOUND book transferred, OUTBOUND knows
     RETURN person.name
 ```
 

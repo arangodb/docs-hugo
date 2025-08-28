@@ -26,7 +26,7 @@ function menuEntryClickListener() {
             return
         }
         updateHistory(event.target.getAttribute('href'))
-        $('#sidebar.mobile').removeClass("active")
+        $('.sidebar.mobile').removeClass("active")
 
     });
 }
@@ -74,7 +74,7 @@ function loadMenu(url) {
 }
 
 function showSidebarHandler() {
-    $("#sidebar").toggleClass("active");
+    $(".sidebar").toggleClass("active");
   }
 
 
@@ -228,7 +228,7 @@ function initArticle(url) {
   internalLinkListener();
   codeShowMoreListener();
   aliazeLinks('article', 'a.link:not([target]), a.card-link, a.header-link');
-  aliazeLinks('#breadcrumbs', 'a')
+  aliazeLinks('.breadcrumbs', 'a')
 }
 
 
@@ -256,7 +256,7 @@ function getAllAnchors() {
     let tocIds = [];
     let headlineIds = [];
     // Exclude headline anchors that are not in the ToC
-    document.querySelectorAll("#TableOfContents a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
+    document.querySelectorAll(".TableOfContents a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
     document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6").forEach(a => { if (tocIds.indexOf(a.id) !== -1) { headlineIds.push(a); } });
     return headlineIds;
 }
@@ -264,7 +264,7 @@ function removeActiveFromAllAnchors() {
   var anchors = getAllAnchors();
   anchors.forEach(anchor => {
       var heading = anchor.getAttribute('id')
-      let oldHRef = document.querySelector('#TableOfContents a[href="#' + heading + '"]');
+      let oldHRef = document.querySelector('.TableOfContents a[href="#' + heading + '"]');
       oldHRef.parentElement.classList.remove('is-active');
   });
 }
@@ -279,11 +279,11 @@ function tocHiglighter() {
     const rect = anchor.getBoundingClientRect();
     const top = rect.top;
     const id = anchor.id;
-    const currentHighlighted = document.querySelector('#TableOfContents .is-active a');
+    const currentHighlighted = document.querySelector('.TableOfContents .is-active a');
     const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
     if (top < 240 && currentHighlightedHref !== '#' + id) {
       removeActiveFromAllAnchors();
-      const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
+      const highlightedHref = document.querySelector('.TableOfContents a[href="#' + id + '"]');
       highlightedHref.parentElement.classList.add('is-active');
       //highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
     }
@@ -407,18 +407,11 @@ function aliazeLinks(parentSelector, linkSelector) {
 }
 
 function setVersionSelector(version) {
-  for(let option of document.getElementById("arangodb-version").options) {
+  for(let option of document.querySelector(".arangodb-version").options) {
     if (option.value == version) {
       option.selected = true;
     }
   }
-}
-
-function handleOldDocsVersion(version) {
-    var legacyUrl = "https://www.arangodb.com/docs/" + version + "/";
-    var handle = window.open(legacyUrl, "_blank");
-    if (!handle) window.location.href = legacyUrl;
-    return;
 }
 
 function getCurrentVersion() {
@@ -426,12 +419,6 @@ function getCurrentVersion() {
 
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionFromURL()
-
-    if (newVersion === "3.8" || newVersion === "3.9") {
-      handleOldDocsVersion(newVersion)
-      versionSelector.value = urlVersion;
-      return;
-    }
 
     if (getVersionInfo(newVersion) == undefined) {
       loadNotFoundPage();
@@ -448,14 +435,8 @@ function getCurrentVersion() {
 
 function changeVersion() {
     var oldVersion = localStorage.getItem('docs-version');
-    var versionSelector = document.getElementById("arangodb-version");
+    var versionSelector = document.querySelector(".arangodb-version");
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
-
-    if (newVersion === "3.8" || newVersion === "3.9") {
-        handleOldDocsVersion(newVersion)
-        versionSelector.value = oldVersion;
-        return;
-    }
 
     try {
         localStorage.setItem('docs-version', newVersion);
@@ -520,13 +501,6 @@ function initClickHandlers() {
         $(event.target).toggleClass("collapsed");
         $(event.target).next(".openapi-table").toggleClass("hidden");
     });
-
-    $('#search-by').keypress(
-        function(event){
-          if (event.which == '13') {
-            event.preventDefault();
-          }
-      });
     
 }
 
@@ -585,12 +559,11 @@ window.onload = () => {
     window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
     trackPageView(document.title, window.location.pathname);
 
-    var iframe =  document.getElementById('menu-iframe');
+    var iframe =  document.querySelector('.menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
-    content = iFrameBody.getElementById('sidebar');
+    content = iFrameBody.querySelector('.sidebar');
 
-    $("#menu-iframe").replaceWith(content);
-
+    iframe.replaceWith(content);
 
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
@@ -609,9 +582,9 @@ window.onload = () => {
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        $('#sidebar').addClass("mobile");
-        $('#sidebar.mobile').removeClass("active");
+        $('.sidebar').addClass("mobile");
+        $('.sidebar.mobile').removeClass("active");
     }
 
-    $('#page-wrapper').css("opacity", "1")
+    $('.page-wrapper').css("opacity", "1")
 }

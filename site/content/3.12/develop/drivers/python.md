@@ -170,7 +170,7 @@ await client.close()
 {{< /tabs >}}
 
 The following example shows how to create a [named graph](../../graphs/_index.md),
-populate it with vertices and edges, and query it with a graph traversal:
+populate it with nodes and edges, and query it with a graph traversal:
 
 {{< tabs "python-driver" >}}
 
@@ -192,7 +192,7 @@ eegraph = db.create_graph(
     name="school",
     smart=True)
 
-# Create vertex collections for the graph.
+# Create node collections for the graph.
 students = graph.create_vertex_collection("students")
 lectures = graph.create_vertex_collection("lectures")
 
@@ -203,12 +203,12 @@ edges = graph.create_edge_definition(
     to_vertex_collections=["lectures"]
 )
 
-# Insert vertex documents into "students" (from) vertex collection.
+# Insert node documents into "students" (from) node collection.
 students.insert({"_key": "01", "full_name": "Anna Smith"})
 students.insert({"_key": "02", "full_name": "Jake Clark"})
 students.insert({"_key": "03", "full_name": "Lisa Jones"})
 
-# Insert vertex documents into "lectures" (to) vertex collection.
+# Insert node documents into "lectures" (to) node collection.
 lectures.insert({"_key": "MAT101", "title": "Calculus"})
 lectures.insert({"_key": "STA101", "title": "Statistics"})
 lectures.insert({"_key": "CSC101", "title": "Algorithms"})
@@ -225,7 +225,7 @@ edges.insert({"_from": "students/03", "_to": "lectures/CSC101"})
 query = """
     FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
     OPTIONS { bfs: true, uniqueVertices: 'global' }
-    RETURN {vertex: v, edge: e, path: p}
+    RETURN {node: v, edge: e, path: p}
     """
 cursor = db.aql.execute(query)
 ```

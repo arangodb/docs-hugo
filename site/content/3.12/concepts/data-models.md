@@ -41,27 +41,31 @@ values, and more.
 
 ## Graph Model
 
-Graphs are comprised of **vertices** and **edges**. Both are documents in
+Graphs are comprised of **nodes** and **edges**. Both are documents in
 ArangoDB. Edges have two special attributes, `_from` and `_to`, that reference
-the source and target vertices by their document identifiers.
+the source and target nodes by their document identifiers.
 
-You can store vertices and edges with as many properties as you need, as both
+{{< info >}}
+In ArangoDB, **nodes** are also referred to as **vertices**.
+{{< /info >}}
+
+You can store nodes and edges with as many properties as you need, as both
 are fully-fledged documents (JSON objects).
 
-You can organize vertices and edges in sets using collections, with vertices in
-**document collections** (also referred to as **vertex collections**) and edges
+You can organize nodes and edges in sets using collections, with nodes in
+**document collections** (also referred to as **node collections** or vertex collections) and edges
 in **edge collections**. This [graph](../graphs/_index.md) model makes ArangoDB classify
 as a **Labeled Property Graph** store.
 
 The design with edges stored in edge collections enables true graph scalability,
 while keeping the promise of performant graph queries regardless of the number
-of vertices and edges.
+of nodes and edges.
 
 Edges are always **directed** in ArangoDB, which means they point from one
-vertex to another. They cannot point both ways. However, you can create multiple
-edges between a pair of vertices in both directions. When you **traverse** a
-graph - a basic graph query algorithm that starts at a given vertex and then
-walks along the connected edges to discover neighboring vertices - you can
+node to another. They cannot point both ways. However, you can create multiple
+edges between a pair of nodes in both directions. When you **traverse** a
+graph - a basic graph query algorithm that starts at a given node and then
+walks along the connected edges to discover neighboring nodes - you can
 specify whether you want to follow edges in the direction they are defined in
 (**outbound**), the opposite direction (**inbound**), or regardless of the
 direction (**any**). This means that you do not need to create an opposing edge
@@ -69,14 +73,14 @@ for every edge that you want to be able to follow in both directions.
 
 Aside from basic graph traversal, ArangoDB offers
 [graph algorithms](../graphs/_index.md#supported-graph-algorithms) to find one
-or multiple shortest paths between two vertices and can return a specified amount
-of paths between two vertices in order of increasing length.
+or multiple shortest paths between two nodes and can return a specified amount
+of paths between two nodes in order of increasing length.
 
 You can perform operations directly on the documents of graphs and run graph
-traversals using ad-hoc sets of vertex and edge collections. These are called
+traversals using ad-hoc sets of node and edge collections. These are called
 **anonymous graphs**. However, no graph consistency is enforced. You can create
 **named graphs** and use the interfaces for named graphs, which ensure graph
-consistency. For example, removing a vertex removes all connected edges, too.
+consistency. For example, removing a node removes all connected edges, too.
 Low-level operations can still cause dangling edges, nonetheless.
 
 <!--

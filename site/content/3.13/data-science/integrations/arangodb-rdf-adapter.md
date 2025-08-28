@@ -125,7 +125,7 @@ or fully expanded as `"Fred" ^^http://…"`. Literals can also contain language
 and locale tags, for example, `"cat@en" ^^xsd:String` and `"chat@fr"^^xsd:String`. 
 These language tags can be useful and would ideally be preserved. 
 
-Literals could be added as a property instead of creating a separate vertex; this 
+Literals could be added as a property instead of creating a separate node; this 
 takes better advantage of using a property graph. If you are coming from a triple 
 store or downloading your data using a [SPARQL](https://www.w3.org/TR/rdf-sparql-query/) query you could handle these properties when 
 exporting. 
@@ -145,7 +145,7 @@ to append the prefix and form the full URI as a property.
 URIs (e.g `http://dbpedia.org/resource/`) are used as universal identifiers in 
 RDF but contain contain special characters, namely `:` and `/`, which make them not 
 suitable for use as an ArangoDB `_key` attribute. Consequently, a hashing algorithm
-is used within `ArangoRDF` to store the URI as an ArangoDB Vertex.
+is used within ArangoRDF to store the URI as an ArangoDB graph node.
 
 ### Blank Nodes
 
