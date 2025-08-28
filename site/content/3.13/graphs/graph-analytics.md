@@ -265,6 +265,8 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginetypes"
 Set up a GAE adjacent to the ArangoGraph deployment, for example, using an
 engine size of `e4`.
 
+The engine ID is returned in the `id` attribute.
+
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d '{"type_id":"gral","size_id":"e4"}' "$BASE_URL/engines"
 ```
@@ -274,6 +276,8 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d '{"type_id":"gral
 `GET <BASE_URL>/engines`
 
 List all deployed GAEs of a ArangoGraph deployment.
+
+The engine IDs are in the `id` attributes.
 
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/engines"
@@ -352,6 +356,7 @@ and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph dat
 you want to analyze. Replace the port with `8829` and append
 `/graph-analytics/engines/<ENGINE_ID>`, e.g.
 `https://<123456abcdef>.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876`.
+If you can't remember the engine ID, you can [List all engines](#list-all-engines).
 
 Store the base URL in a variable called `ENGINE_URL`:
 
