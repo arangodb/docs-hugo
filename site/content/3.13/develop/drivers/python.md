@@ -15,6 +15,7 @@ database backend from Python. It is maintained by ArangoDB and the community.
 - [Releases](https://github.com/arangodb/python-arango/releases)
 
 There is also an asyncio counterpart called `python-arango-async`.
+It has a similar API and features type wrappers.
 
 - Repository: <https://github.com/arangodb/python-arango-async>
 - Reference: <https://python-arango-async.readthedocs.io/>
@@ -443,6 +444,9 @@ collection_list = db.collections()
 
 To create a new collection, connect to the database and call `create_collection()`.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Create a new collection for doctors
 doctors_col = db.create_collection(name="doctors")
@@ -450,6 +454,19 @@ doctors_col = db.create_collection(name="doctors")
 # Create another new collection for patients
 patients_col = db.create_collection(name="patients")
 ```
+{{< /tab >}}
+
+{{< tab "python-arango-async" >}}
+```python
+    # Create a new collection for doctors
+    doctors_col = await db.create_collection(name="doctors")
+
+    # Create another new collection for patients
+    patients_col = await db.create_collection(name="patients")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### Delete a collection
 
@@ -457,10 +474,23 @@ To delete a collection, connect to the database and call `delete_collection()`,
 passing the name of the collection to be deleted as a parameter. Make sure to
 specify the correct collection name when you delete collections.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Delete the 'doctors' collection
 db.delete_collection(name="doctors")
 ```
+{{< /tab >}}
+
+{{< tab "python-arango-async" >}}
+```python
+    # Delete the 'doctors' collection
+    ok = await db.delete_collection(name="doctors")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Work with documents
 
@@ -470,16 +500,33 @@ To create a new document, get a reference to the collection and call its
 `insert()` method, passing the object/document to be created in ArangoDB as
 a parameter.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Get a reference to the 'patients' collection
 patients_col = db.collection(name="patients")
 
 # Insert two new documents into the 'patients' collection
-patients_col.insert({"name": "Jane", "age": 39})
-patients_col.insert({"name": "John", "age": 18})
+meta1 = patients_col.insert({"name": "Jane", "age": 39})
+meta2 = patients_col.insert({"name": "John", "age": 18})
 ```
+{{< /tab >}}
 
-John's patient record is:
+{{< tab "python-arango-async" >}}
+```python
+    # Get a reference to the 'patients' collection
+    patients_col = db.collection(name="patients")
+
+    # Insert two new documents into the 'patients' collection
+    meta1 = await patients_col.insert({"name": "Jane", "age": 39})
+    meta2 = await patients_col.insert({"name": "John", "age": 18})
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+In this example, John's patient record is as follows:
 
 ```json
 {
@@ -497,12 +544,25 @@ To patch or partially update a document, call the `update()` method of the
 collection and pass the object/document as a parameter. The document must have
 a property named `_key` holding the unique key assigned to the document.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Patch John's patient record by adding a city property to the document
-patients_col.update({ "_key": "741603", "city": "Cleveland" })
+meta = patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
+{{< /tab >}}
 
-After the patching operation, John's document is as follows:
+{{< tab "python-arango-async" >}}
+```python
+    # Patch John's patient record by adding a city property to the document
+    meta = await patients_col.update({ "_key": "741603", "city": "Cleveland" })
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+After the patching operation, John's document is as follows for example:
 
 ```json
 {
@@ -515,8 +575,8 @@ After the patching operation, John's document is as follows:
 }
 ```
 
-Notice that the record was patched by adding a `city` property to the document
- All other properties remain the same.
+Notice that the record was patched by adding a `city` property to the document.
+All other properties remain the same.
 
 ### Replace a document
 
@@ -525,10 +585,23 @@ collection and pass the object/document that fully replaces thee existing
 document as a parameter. The document must have a property named `_key` holding
 the unique key assigned to the document.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Replace John's document
-patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
+meta = patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
+{{< /tab >}}
+
+{{< tab "python-arango-async" >}}
+```python
+    # Replace John's document
+    meta = await patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 After the replacement operation, John's document is as follows:
 
@@ -551,10 +624,23 @@ not specified in the request when the document was fully replaced.
 To delete a document, call the `delete()` method of the collection and pass an
 document containing at least the `_key` attribute as a parameter.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Delete John's document
 patients_col.delete({ "_key": "741603" })
 ```
+{{< /tab >}}
+
+{{< tab "python-arango-async" >}}
+```python
+    # Delete John's document
+    meta = await patients_col.delete({ "_key": "741603" })
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Work with AQL
 
@@ -564,11 +650,29 @@ To run a query, connect to the desired database and call `aql.execute()`.
 This returns a cursor, which lets you fetch the results in batches. You can
 iterate over the cursor to automatically fetch the data.
 
+{{< tabs "python-driver" >}}
+
+{{< tab "python-arango" >}}
 ```python
 # Run a query
 cursor = db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 
 # Print the results
 for doc in cursor:
-  print(doc)
+    print(doc)
 ```
+{{< /tab >}}
+
+{{< tab "python-arango-async" >}}
+```python
+    # Run a query
+    cursor = await db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
+
+    # Print the results
+    async with cursor:
+        async for doc in cursor:
+            print(doc)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
