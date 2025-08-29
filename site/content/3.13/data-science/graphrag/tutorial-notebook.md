@@ -41,8 +41,7 @@ Before you begin, ensure you have the following:
 - **Jupyter Notebook:** This tutorial is designed to be run in ArangoDB's integrated
   Notebook servers.
 - **OpenAI API key (optional):** If you plan to use OpenAI's models for LLM
-  processing, you need an OpenAI API key. Alternatively, you can configure the
-  services to use other providers like Ollama.
+  processing, you need an OpenAI API key.
 
 ## Environment setup
 
@@ -164,7 +163,7 @@ parameters.
 importer_config = {
     "db_name": DB_NAME,
     "username": os.environ["USERNAME"],
-    "api_provider": "openai", # Switch the provider if needed (e.g., 'ollama' or 'openai')
+    "api_provider": "openai", # Switch the provider if needed
     "openai_api_key": os.environ["OPENAI_API_KEY"], # Required if api_provider is 'openai'
 }
 
@@ -231,8 +230,7 @@ and uses an LLM to formulate answers to your queries.
 
 ### Startup parameters
 
-- `api_provider`: Defines to which LLM provider you want to connect (e.g., `ollama`, `openai`).
-  `ollama` is intended for private LLM usage.
+- `api_provider`: Defines to which LLM provider you want to connect (e.g., `openai`).
 - `openai_api_key`: An API key for usage with ChatGPT. This is only required when
   `openai` is selected as the provider.
 - `db_name`: The name of the database where your Knowledge Graph was created.
