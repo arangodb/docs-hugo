@@ -120,6 +120,7 @@ func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	OPENAPIService.ProcessOpenapiSpec(openapiYaml, r.Header, OpenapiGlobalChannel)
+	w.Header().Set("Content-Type", "text/plain") // Any allow-listed media type
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -127,6 +128,7 @@ func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
 	models.Logger.Printf("Validate openapi specs")
 
 	OPENAPIService.ValidateOpenapiGlobalSpec()
+	w.Header().Set("Content-Type", "text/plain") // Any allow-listed media type
 	w.WriteHeader(http.StatusOK)
 }
 
