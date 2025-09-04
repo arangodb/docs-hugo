@@ -231,8 +231,8 @@ It provides a vast performance benefit for all graphs sharded in an ArangoDB Clu
 To add a SmartGraph you need a SmartGraph attribute that partitions your
 graph into several smaller sub-graphs. Ideally these sub-graphs follow a
 "natural" structure in your data. These subgraphs have a large amount of edges
-that only connect vertices in the same subgraph and only have few edges
-connecting vertices from other subgraphs.
+that only connect nodes in the same subgraph and only have few edges
+connecting nodes from other subgraphs.
 
 All the usual considerations for sharding keys also apply for smart attributes,
 for more information see [SmartGraphs](../graphs/smartgraphs/_index.md)

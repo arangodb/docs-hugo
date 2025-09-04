@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
@@ -146,7 +145,7 @@ func init() {
 
 	for _, version := range Versions {
 		tags := []map[string]string{}
-		yamlFile, err := ioutil.ReadFile("/home/site/data/openapi_tags.yaml")
+		yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
 		if err != nil {
 			models.Logger.Printf("[ERROR] Opening openapi_tags file: %s", err.Error())
 			os.Exit(1)
@@ -240,7 +239,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 	defer wg.Done()
 
 	file, _ := json.MarshalIndent(OpenapiGlobalMap[version], "", " ")
-	ioutil.WriteFile("/home/site/data/"+version+"/api-docs.json", file, 0644)
+	os.WriteFile("/home/site/data/"+version+"/api-docs.json", file, 0644)
 
 	cmd := exec.Command("swagger-cli", "validate", "/home/site/data/"+version+"/api-docs.json")
 

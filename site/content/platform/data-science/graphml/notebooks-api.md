@@ -118,54 +118,73 @@ arangoml.projects.list_projects()
 
 **API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
 
-**The Featurization Service depends on a `Featurization Specification` that contains**:
-- `featurizationName`: A name for the featurization task.
+The Featurization Service depends on a **Featurization Specification**:
 
-- `projectName`: The associated project name. You can use `project.name` here
+{{< tip >}}
+The descriptions of the specifications on this page indicate the Python data types,
+but you can substitute them as follows for a schema description in terms of JSON:
+
+| Python  | JSON   |
+|:--------|:-------|
+| `dict`  | object |
+| `list`  | array  |
+| `int`   | number |
+| `float` | number |
+| `str`   | string |
+{{< /tip >}}
+
+- `databaseName` (str): The database name the source data is in.
+
+- `featurizationName` (str): A name for the featurization task.
+
+- `projectName` (str): The associated project name. You can use `project.name` here
   if it was created or retrieved as described above.
 
-- `graphName`: The associated graph name that exists within the database.
+- `graphName` (str): The associated graph name that exists within the database.
 
-- `featureSetID` Optional: The ID of an existing Feature Set to re-use. If provided, the `metagraph` dictionary can be ommitted. Defaults to `None`.
+- `featureSetID` (str, _optional_): The ID of an existing Feature Set to re-use. If provided, the `metagraph` dictionary can be omitted. Defaults to `None`.
 
-- `featurizationConfiguration` Optional: The optional default configuration to be applied
+- `featurizationConfiguration` (dict, _optional_): The optional default configuration to be applied
   across all features. Individual collection feature settings override this option.
 
-  - `featurePrefix`: The prefix to be applied to all individual features generated. Default is `feat_`. 
+  - `featurePrefix` (str): The prefix to be applied to all individual features generated. Default is `feat_`. 
 
-  - `outputName`: Adjust the default feature name. This can be any valid ArangoDB attribute name. Defaults to `x`.
+  - `outputName` (str): Adjust the default feature name. This can be any valid ArangoDB attribute name. Defaults to `x`.
 
-  - `dimensionalityReduction`: Object configuring dimensionality reduction.
-    - `disabled`: Whether to disable dimensionality reduction. Default is `false`,
+  - `dimensionalityReduction` (dict): Object configuring dimensionality reduction.
+    - `disabled` (bool): Whether to disable dimensionality reduction. Default is `false`,
     therefore dimensionality reduction is applied after Featurization by default.
-    - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
+    - `size` (int): The number of dimensions to reduce the feature length to. Default is `512`.
 
-  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
-    - `missing`: A sub-dictionary detailing how missing values should be handled.
-      - `strategy`: The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
-      - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
-    - `mismatch`: A sub-dictionary detailing how mismatched values should be handled.
-      - `strategy`: The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
-      - `replacement`: The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
+  - `defaultsPerFeatureType` (dict): A dictionary mapping each feature type to how missing or mismatched values should be handled. The keys of this dictionary are the feature types, and the values are sub-dictionaries:
+    - `text` / `numeric` / `category` / `label`:
+      - `missing` (dict): A sub-dictionary detailing how missing values should be handled.
+        - `strategy` (str): The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
+        - `replacement` (int/float for `numeric`, otherwise str): The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
+      - `mismatch` (dict): A sub-dictionary detailing how mismatched values should be handled.
+        - `strategy` (str): The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
+        - `replacement` (int/float for `numeric`, otherwise str): The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
 
-- `jobConfiguration` Optional: A set of configurations that are applied to the job.
-  - `batchSize`: The number of documents to process in a single batch. Default is `32`.
-  - `runAnalysisChecks`: Whether to run analysis checks, used  to perform a high-level analysis of the data quality before proceeding. Default is `true`.
-  - `skipLabels`: Skips the featurization process for attributes marked as `label`. Default is `false`.
-  - `useFeatureStore`: Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
-  - `overwriteFSGraph`: Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.s
-  - `writeToSourceGraph`: Whether to store the generated features on the Source Graph. Default is `true`.
+- `jobConfiguration` (dict, _optional): A set of configurations that are applied to the job.
+  - `batchSize` (int): The number of documents to process in a single batch. Default is `32`.
+  - `runAnalysisChecks` (bool): Whether to run analysis checks, used  to perform a high-level analysis of the data quality before proceeding. Default is `true`.
+  - `skipLabels` (bool): Skips the featurization process for attributes marked as `label`. Default is `false`.
+  - `useFeatureStore` (bool): Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
+  - `overwriteFSGraph` (bool): Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.
+  - `writeToSourceGraph` (bool): Whether to store the generated features on the Source Graph. Default is `true`.
 
-- `metagraph`: Metadata to represent the vertex & edge collections of the graph.
-  - `vertexCollections`: A dictionary mapping the vertex collection names to the following values:
-    - `features`: A dictionary mapping document properties to the following values:
-      - `featureType`: The type of feature. Options include `text`, `category`, `numeric`, or `label`.
-    - `config`: Collection-level configuration settings.
-      - `featurePrefix`: Identical to global `featurePrefix` but for this collection.
-      - `dimensionalityReduction`: Identical to global `dimensionalityReduction` but for this collection.
-      - `outputName`: Identical to global `outputName`, but specifically for this collection.
-      - `defaultsPerFeatureType`: Identical to global `defaultsPerFeatureType`, but specifically for this collection.
-  - `edgeCollections`: A dictionary mapping the edge collection names to an empty dictionary, as edge attributes are not currently supported.
+- `metagraph` (dict): Metadata to represent the node & edge collections of the graph.
+  - `vertexCollections` (dict): A dictionary mapping the node collection names to a configuration dictionary:
+    - _collection name_ (dict):
+      - `features` (dict): A dictionary mapping document properties to the following values:
+        - `featureType` (str): The type of feature. Options include `text`, `category`, `numeric`, or `label`.
+      - `config` (dict): Collection-level configuration settings.
+        - `featurePrefix` (str): Identical to global `featurePrefix` but for this collection.
+        - `dimensionalityReduction` (dict): Identical to global `dimensionalityReduction` but for this collection.
+        - `outputName` (str): Identical to global `outputName`, but specifically for this collection.
+        - `defaultsPerFeatureType` (dict): Identical to global `defaultsPerFeatureType`, but specifically for this collection.
+  - `edgeCollections` (dict): A dictionary mapping the edge collection names to an empty dictionary, as edge attributes are not currently supported.
+    - _collection name_ (dict): An empty dictionary.
 
 The Featurization Specification example is used for the GDELT dataset:
 - It featurizes the `name` attribute of the `Actor`, `Class`, `Country`,
@@ -383,34 +402,37 @@ Training Graph Machine Learning Models with GraphML requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
-**The Training Service depends on a `Training Specification` that contains**:
-- `featureSetID`: The feature set ID that was generated during the Featurization Job (if any). It replaces the need to provide the `metagraph`, `databaseName`, and `projectName` fields.
+The Training Service depends on a **Training Specification**:
 
-- `databaseName`: The database name the source data is in. Can be omitted if `featureSetID` is provided.
+- `featureSetID` (str): The feature set ID that was generated during the Featurization Job (if any). It replaces the need to provide the `metagraph`, `databaseName`, and `projectName` fields.
 
-- `projectName`: The top-level project to which all the experiments will link back. Can be omitted if `featureSetID` is provided.
+- `databaseName` (str): The database name the source data is in. Can be omitted if `featureSetID` is provided.
 
-- `useFeatureStore`: Boolean for enabling or disabling the use of the feature store. Default is `false`.
+- `projectName` (str): The top-level project to which all the experiments will link back. Can be omitted if `featureSetID` is provided.
 
-- `mlSpec`: Describes the desired machine learning task, input features, and
+- `useFeatureStore` (bool): Boolean for enabling or disabling the use of the feature store. Default is `false`.
+
+- `mlSpec` (dict): Describes the desired machine learning task, input features, and
     the attribute label to be predicted.
-  - `classification`: Dictionary to describe the Node Classification Task Specification.
-    - `targetCollection`: The ArangoDB collection name that contains the prediction label.
-    - `inputFeatures`: The name of the feature to be used as input.
-    - `labelField`: The name of the attribute to be predicted.
-    - `batchSize`: The number of documents to process in a single training batch. Default is `64`.
-  - `graphEmbeddings`: Dictionary to describe the Graph Embedding Task Specification.
-    - `targetCollection`: The ArangoDB collection used to generate the embeddings. 
-    - `embeddingSize`: The size of the embedding vector. Default is `128`.
-    - `batchSize`: The number of documents to process in a single training batch. Default is `64`.
-    - `generateEmbeddings`: Whether to generate embeddings on the training dataset. Default is `false`.
+  - `classification` (dict): Dictionary to describe the Node Classification Task Specification.
+    - `targetCollection` (str): The ArangoDB collection name that contains the prediction label.
+    - `inputFeatures` (str): The name of the feature to be used as input.
+    - `labelField` (str): The name of the attribute to be predicted.
+    - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
+  - `graphEmbeddings` (dict): Dictionary to describe the Graph Embedding Task Specification.
+    - `targetCollection` (str): The ArangoDB collection used to generate the embeddings. 
+    - `embeddingSize` (int): The size of the embedding vector. Default is `128`.
+    - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
+    - `generateEmbeddings` (bool): Whether to generate embeddings on the training dataset. Default is `false`.
 
-- `metagraph`: Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
-  - `graph`: The ArangoDB graph name.
-  - `vertexCollections`: A dictionary mapping the collection names to the following values:
-    - `x`: The name of the feature to be used as input.
-    - `y`: The name of the attribute to be predicted. Can only be specified for one collection.
-  - `edgeCollections`: A dictionary mapping the edge collection names to an empty dictionary, as edge features are not currently supported.
+- `metagraph` (dict): Metadata to represent the node & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
+  - `graph` (str): The ArangoDB graph name.
+  - `vertexCollections` (dict): A dictionary mapping the collection names to a configuration dictionary:
+    - _collection name_ (dict):
+      - `x` (str): The name of the feature to be used as input.
+      - `y` (str): The name of the attribute to be predicted. Can only be specified for one collection.
+  - `edgeCollections` (dict): A dictionary mapping the edge collection names to an empty dictionary, as edge features are not currently supported.
+    - _collection name_ (dict): An empty dictionary.
 
 A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
@@ -705,23 +727,22 @@ print(best_model)
 
 **API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
 
-Final step!
-
 After selecting a model, a Prediction Job can be created. The Prediction Job
 will generate predictions and persist them to the source graph in a new
 collection, or within the source documents.
 
-**The Prediction Service depends on a `Prediction Specification` that contains**:
-- `projectName`: The top-level project to which all the experiments will link back.
-- `databaseName`: The database name the source data is in.
-- `modelID`: The model ID to use for generating predictions.
-- `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
-- `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `schedule`: A cron expression to schedule the prediction job. The cron syntax is a set of
+The Prediction Service depends on a **Prediction Specification**:
+
+- `projectName` (str): The top-level project to which all the experiments will link back.
+- `databaseName` (str): The database name the source data is in.
+- `modelID` (str): The model ID to use for generating predictions.
+- `featurizeNewDocuments` (bool): Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
+- `featurizeOutdatedDocuments` (bool): Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
+- `schedule` (str): A cron expression to schedule the prediction job. The cron syntax is a set of
   five fields in a line, indicating when the job should be executed. The format must follow
   the following order: `minute` `hour` `day-of-month` `month` `day-of-week`
   (e.g. `0 0 * * *` for daily predictions at 00:00). Default is `None`.
-- `embeddingsField`: The name of the field to store the generated embeddings. This is only used for Graph Embedding tasks. Default is `None`.
+- `embeddingsField` (str): The name of the field to store the generated embeddings. This is only used for Graph Embedding tasks. Default is `None`.
 
 ```py
 # 1. Define the Prediction Specification

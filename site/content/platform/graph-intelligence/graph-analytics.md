@@ -8,6 +8,8 @@ description: |
 aliases:
   - ../data-science/graph-analytics
 ---
+{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
 It ranges from basic measures that characterize graphs, over PageRank, to complex
@@ -16,12 +18,13 @@ and network flow analysis.
 
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+and included in the [ArangoDB Platform](../components/platform.md).
 
 Key features:
 
 - **Separation of storage and compute**: GAEs are a solution that lets you run
-  graph analytics independent of your ArangoDB deployments on dedicated machines
+  graph analytics independent of your ArangoDB Core, including on dedicated machines
   optimized for compute tasks. This separation of OLAP and OLTP workloads avoids
   affecting the performance of the transaction-oriented database systems.
 
@@ -37,6 +40,26 @@ Key features:
 The following lists outlines how you can use Graph Analytics Engines (GAEs).
 How to perform the steps is detailed in the subsequent sections.
 
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+1. Determine the approximate size of the data that you will load into the GAE
+   and ensure the machine to run the engine on has sufficient memory. The data as well as the
+   temporarily needed space for computations and results needs to fit in memory.
+2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the GenAI service
+   that manages various Platform components for graph intelligence and machine learning.
+   It only takes a few seconds until the engine service can be used. The engine
+   runs adjacent to the pods of the ArangoDB Core.
+3. [Load graph data](#load-data) from the ArangoDB Core into the engine. You can load
+   named graphs or sets of node and edge collections. This loads the edge
+   information and a configurable subset of the node attributes.
+4. [Run graph algorithms](#run-algorithms) on the data. You only need to load the data once per
+   engine and can then run various algorithms with different settings.
+5. [Write the computation results back](#store-job-results) to the ArangoDB Core.
+6. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 {{< info >}}
 Before you can use Graph Analytics Engines, you need to request the feature
 via __Request help__ in the ArangoGraph dashboard for a deployment.
@@ -53,15 +76,34 @@ Single server deployments using ArangoDB version 3.11 are not supported.
    seconds until the engine can be used. The engine runs adjacent to a particular
    ArangoGraph deployment.
 3. Load graph data from ArangoDB into the engine. You can load named graphs or
-   sets of vertex and edge collections. This loads the edge information and a
-   configurable subset of the vertex attributes.
+   sets of node and edge collections. This loads the edge information and a
+   configurable subset of the node attributes.
 4. Run graph algorithms on the data. You only need to load the data once per
    engine and can then run various algorithms with different settings.
 5. Write the computation results back to ArangoDB.
 6. Delete the engine once you are done.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Authentication
 
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+You can use any of the available authentication methods the ArangoDB Platform
+supports to start and stop `graphanalytics` services via the GenAI service as
+well as to authenticate requests to the [Engine API](#engine-api).
+
+- HTTP Basic Authentication
+- Access tokens
+- JWT session tokens
+<!-- TODO
+- Single Sign-On (SSO)
+-->
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 The [Management API](#management-api) for deploying and deleting engines requires
 an ArangoGraph **API key**. See
 [Generating an API Key](../../3.12/arangograph/api/get-started.md#generating-an-api-key)
@@ -81,17 +123,73 @@ setting in ArangoGraph:
   These session tokens need to be renewed every hour by default. See
   [HTTP API Authentication](../../3.12/develop/http-api/authentication.md#jwt-user-tokens)
   for details.
+{{< /tab >}}
 
-## Management API
+{{< /tabs >}}
 
-You can save an ArangoGraph access token created with `oasisctl login` in a
-variable to ease scripting. Note that this should be the token string only and
-not include quote marks. The following examples assume Bash as the shell and
-that the `curl` and `jq` commands are available.
+## Start and stop Graph Analytics Engines
 
-```bash
-ARANGO_GRAPH_TOKEN="$(oasisctl login --key-id "<AG_KEY_ID>" --key-secret "<AG_KEY_SECRET>")"
+The interface for managing the engines depends on the environment you use:
+
+- **ArangoDB Platform**: [GenAI service](#genai-service)
+- **ArangoGraph**: [Management API](#management-api)
+
+### GenAI service
+
+{{< tag "ArangoDB Platform" >}}
+
+GAEs are deployed and deleted via the [GenAI service](../data-science/graphrag/services/gen-ai.md)
+in the ArangoDB Platform.
+
+If you use cURL, you need to use the `-k` / `--insecure` option for requests
+if the Platform deployment uses a self-signed certificate (default).
+
+#### Start a `graphanalytics` service
+
+`POST <ENGINE_URL>/gen-ai/v1/graphanalytics`
+
+Start a GAE via the GenAI service with an empty request body:
+
+```sh
+# Example with a JWT session token
+ADB_TOKEN=$(curl -sSk -d '{"username":"root", "password": ""}' -X POST https://127.0.0.1:8529/_open/auth | jq -r .jwt)
+
+Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/graphanalytics)
+ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
+if [[ "$ServiceID" == "null" ]]; then 
+  echo "Error starting gral engine"
+else
+  echo "Engine started successfully"
+fi
+echo "$Service" | jq
 ```
+
+#### List the services
+
+`POST <ENGINE_URL>/gen-ai/v1/list_services`
+
+You can list all running services managed by the GenAI service, including the
+`graphanalytics` services:
+
+```sh
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/list_services | jq
+```
+
+#### Stop a `graphanalytics` service
+
+Delete the desired engine via the GenAI service using the service ID:
+
+```sh
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/gen-ai/v1/service/$ServiceID | jq
+```
+
+### Management API
+
+{{< tag "ArangoGraph" >}}
+
+GAEs are deployed and deleted with the Management API for graph analytics on the
+ArangoGraph Insights Platform. You can also list the available engine sizes and
+get information about deployed engines.
 
 To determine the base URL of the management API, use the ArangoGraph dashboard
 and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph data
@@ -111,7 +209,16 @@ To authenticate requests, you need to use the following HTTP header:
 Authorization: bearer <ARANGO_GRAPH_TOKEN>
 ```
 
-For example, with cURL and using the token variable:
+You can create an ArangoGraph access token with `oasisctl login`. Save it in a
+variable to ease scripting. Note that this should be the token string only and
+not include quote marks. The following examples assume Bash as the shell and
+that the `curl` and `jq` commands are available.
+
+```bash
+ARANGO_GRAPH_TOKEN="$(oasisctl login --key-id "<AG_KEY_ID>" --key-secret "<AG_KEY_SECRET>")"
+```
+
+Example with cURL that uses the token variable:
 
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
@@ -119,7 +226,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 
 Request and response payloads are JSON-encoded in the management API.
 
-### Get the API version
+#### Get the API version
 
 `GET <BASE_URL>/api-version`
 
@@ -129,7 +236,7 @@ Retrieve the version information of the management API.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 ```
 
-### List engine sizes
+#### List engine sizes
 
 `GET <BASE_URL>/enginesizes`
 
@@ -140,7 +247,7 @@ and the size of the RAM, starting at 1 CPU and 4 GiB of memory (`e4`).
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginesizes"
 ```
 
-### List engine types
+#### List engine types
 
 `GET <BASE_URL>/enginetypes`
 
@@ -151,28 +258,32 @@ called `gral`.
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginetypes"
 ```
 
-### Deploy an engine
+#### Deploy an engine
 
 `POST <BASE_URL>/engines`
 
 Set up a GAE adjacent to the ArangoGraph deployment, for example, using an
 engine size of `e4`.
 
+The engine ID is returned in the `id` attribute.
+
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d '{"type_id":"gral","size_id":"e4"}' "$BASE_URL/engines"
 ```
 
-### List all engines
+#### List all engines
 
 `GET <BASE_URL>/engines`
 
 List all deployed GAEs of a ArangoGraph deployment.
 
+The engine IDs are in the `id` attributes.
+
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/engines"
 ```
 
-### Get an engine
+#### Get an engine
 
 `GET <BASE_URL>/engines/<ENGINE_ID>`
 
@@ -183,7 +294,7 @@ ENGINE_ID="zYxWvU9876"
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/engines/$ENGINE_ID"
 ```
 
-### Delete an engine
+#### Delete an engine
 
 `DELETE <BASE_URL>/engines/<ENGINE_ID>`
 
@@ -196,11 +307,56 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "$BASE_URL/engines
 
 ## Engine API
 
+### Determine the engine URL
+
+{{< tabs "platforms" >}}
+
+{{< tab "ArangoDB Platform" >}}
+To determine the base URL of the engine API, use the base URL of the Platform
+deployment and append `/gral/<SERVICE_ID>`, e.g.
+`https://127.0.0.1:8529/gral/arangodb-gral-tqcge`.
+
+The service ID is returned by the call to the GenAI service for
+[starting the `graphanalytics` service](#start-a-graphanalytics-service).
+You can also list the service IDs like so:
+
+```sh
+kubectl -n arangodb get svc arangodb-gral -o jsonpath="{.spec.selector.release}"
+```
+
+Store the base URL in a variable called `ENGINE_URL`:
+
+```bash
+ENGINE_URL='https://...'
+```
+
+To authenticate requests, you need to use a bearer token in HTTP header:
+```
+Authorization: bearer <TOKEN>
+```
+
+You can save the token in a variable to ease scripting. Note that this should be
+the token string only and not include quote marks. The following examples assume
+Bash as the shell and that the `curl` and `jq` commands are available.
+
+An example of authenticating a request using cURL and a session token:
+
+```bash
+PLATFORM_BASEURL="https://127.0.0.1:8529"
+
+ADB_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PASS>\"}" "$PLATFORM_BASEURL/_open/auth" | jq -r '.jwt')
+
+curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
+```
+{{< /tab >}}
+
+{{< tab "ArangoGraph Insights Platform" >}}
 To determine the base URL of the engine API, use the ArangoGraph dashboard
 and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph data
 you want to analyze. Replace the port with `8829` and append
 `/graph-analytics/engines/<ENGINE_ID>`, e.g.
 `https://<123456abcdef>.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876`.
+If you can't remember the engine ID, you can [List all engines](#list-all-engines).
 
 Store the base URL in a variable called `ENGINE_URL`:
 
@@ -230,6 +386,9 @@ ADB_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PA
 
 curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 All requests to the engine API start jobs, each representing an operation.
 You can check the progress of operations and check if errors occurred.
@@ -245,7 +404,7 @@ Request and response payloads are JSON-encoded in the engine API.
 `POST <ENGINE_URL>/v1/loaddata`
 
 Import graph data from a database of the ArangoDB deployment. You can import
-named graphs as well as sets of vertex and edge collections (see
+named graphs as well as sets of node and edge collections (see
 [Managed and unmanaged graphs](../../3.12/graphs/_index.md#managed-and-unmanaged-graphs)).
 
 ```bash
@@ -258,32 +417,32 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","gra
 
 `POST <ENGINE_URL>/v1/pagerank`
 
-PageRank is a well known algorithm to rank vertices in a graph: the more
-important a vertex, the higher rank it gets. It goes back to L. Page and S. Brin's
+PageRank is a well known algorithm to rank nodes in a graph: the more
+important a node, the higher rank it gets. It goes back to L. Page and S. Brin's
 [paper](http://infolab.stanford.edu/pub/papers/google.pdf) and
 is used to rank pages in in search engines (hence the name). The algorithm runs
 until the execution converges. To run for a fixed number of iterations, use the
 `maximum_supersteps` parameter.
 
-The rank of a vertex is a positive real number. The algorithm starts with every
-vertex having the same rank (one divided by the number of vertices) and sends its
+The rank of a node is a positive real number. The algorithm starts with every
+node having the same rank (one divided by the number of nodes) and sends its
 rank to its out-neighbors. The computation proceeds in iterations. In each iteration,
 the new rank is computed according to the formula
-`( (1 - damping_factor) / total number of vertices) + (damping_factor * the sum of all incoming ranks)`.
+`( (1 - damping_factor) / total number of nodes) + (damping_factor * the sum of all incoming ranks)`.
 The value sent to each of the out-neighbors is the new rank divided by the number
 of those neighbors, thus every out-neighbor gets the same part of the new rank.
 
 The algorithm stops when at least one of the two conditions is satisfied:
 - The maximum number of iterations is reached. This is the same `maximum_supersteps`
   parameter as for the other algorithms.
-- Every vertex changes its rank in the last iteration by less than a certain
+- Every node changes its rank in the last iteration by less than a certain
   threshold. The threshold is hardcoded to `0.0000001`.
 
-It is possible to specify an initial distribution for the vertex documents in
+It is possible to specify an initial distribution for the node documents in
 your graph. To define these seed ranks / centralities, you can specify a
 `seeding_attribute` in the properties for this algorithm. If the specified field is
 set on a document _and_ the value is numeric, then it is used instead of
-the default initial rank of `1 / numVertices`.
+the default initial rank of `1 / numNodes`.
 
 Parameters:
 - `graph_id`
@@ -291,7 +450,7 @@ Parameters:
 - `maximum_supersteps`
 - `seeding_attribute` (optional, for seeded PageRank)
 
-Result: the rank of each vertex
+Result: the rank of each node
 
 ```bash
 GRAPH_ID="234"
@@ -303,21 +462,21 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 `POST <ENGINE_URL>/v1/single_source_shortest_path`
 
-The algorithm computes the shortest path from a given source vertex to all other
-vertices and returns the length of this path (distance). The algorithm returns a
-distance of `-1` for a vertex that cannot be reached from the source, and `0`
-for the source vertex itself.
+The algorithm computes the shortest path from a given source node to all other
+nodes and returns the length of this path (distance). The algorithm returns a
+distance of `-1` for a node that cannot be reached from the source, and `0`
+for the source node itself.
 
 Parameters:
 - `graph_id`
-- `source_vertex`: The document ID of the source vertex.
+- `source_vertex`: The document ID of the source node.
 - `undirected`: Determines whether the algorithm respects the direction of edges.
 
-Result: the distance of each vertex to the `source_vertex`
+Result: the distance of each node to the `source_vertex`
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"source_vertex\":\"vertex/345\",\"undirected\":false}" "$ENGINE_URL/v1/single_source_shortest_path"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"source_vertex\":\"node/345\",\"undirected\":false}" "$ENGINE_URL/v1/single_source_shortest_path"
 ```
 {{< /comment >}}
 
@@ -326,18 +485,18 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 `POST <ENGINE_URL>/v1/wcc`
 
 The weakly connected component algorithm partitions a graph into maximal groups
-of vertices, so that within a group, all vertices are reachable from each vertex
+of nodes, so that within a group, all nodes are reachable from each node
 by following the edges, ignoring their direction.
 
 In other words, each weakly connected component is a maximal subgraph such that
-there is a path between each pair of vertices where one can also follow edges
+there is a path between each pair of nodes where one can also follow edges
 against their direction in a directed graph.
 
 Parameters:
 - `graph_id`
 
-Result: a component ID for each vertex. All vertices from the same component
-obtain the same component ID, every two vertices from different components
+Result: a component ID for each node. All nodes from the same component
+obtain the same component ID, every two nodes from different components
 obtain different IDs.
 
 ```bash
@@ -350,11 +509,11 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" 
 `POST <ENGINE_URL>/v1/scc`
 
 The strongly connected components algorithm partitions a graph into maximal
-groups of vertices, so that within a group, all vertices are reachable from each
-vertex by following the edges in their direction.
+groups of nodes, so that within a group, all nodes are reachable from each
+node by following the edges in their direction.
 
 In other words, a strongly connected component is a maximal subgraph, where for
-every two vertices, there is a path from one of them to the other, forming a
+every two nodes, there is a path from one of them to the other, forming a
 cycle. In contrast to a weakly connected component, one cannot follow edges
 against their direction.
 
@@ -362,8 +521,8 @@ Parameters:
 
 - `graph_id`
 
-Result: a component ID for each vertex. All vertices from the same component
-obtain the same component ID, every two vertices from different components
+Result: a component ID for each node. All nodes from the same component
+obtain the same component ID, every two nodes from different components
 obtain different IDs.
 
 ```bash
@@ -373,13 +532,13 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" 
 
 #### Vertex Centrality
 
-Centrality measures help identify the most important vertices in a graph.
+Centrality measures help identify the most important nodes in a graph.
 They can be used in a wide range of applications:
 to identify influencers in social networks, or middlemen in terrorist
 networks.
 
 There are various definitions for centrality, the simplest one being the
-vertex degree. These definitions were not designed with scalability in mind.
+node degree. These definitions were not designed with scalability in mind.
 It is probably impossible to discover an efficient algorithm which computes
 them in a distributed way. Fortunately there are scalable substitutions
 available, which should be equally usable for most use cases.
@@ -391,19 +550,19 @@ available, which should be equally usable for most use cases.
 `POST <ENGINE_URL>/v1/betweennesscentrality`
 
 A relatively expensive algorithm with complexity `O(V*E)` where `V` is the
-number of vertices and `E` is the number of edges in the graph.
+number of nodes and `E` is the number of edges in the graph.
 
 Betweenness-centrality can be approximated by cheaper algorithms like
 Line Rank but this algorithm strives to compute accurate centrality measures.
 
 Parameters:
 - `graph_id`
-- `k` (number of start vertices, 0 = all)
+- `k` (number of start nodes, 0 = all)
 - `undirected`
 - `normalized`
 - `parallelism`
 
-Result: a centrality measure for each vertex
+Result: a centrality measure for each node
 
 ```bash
 GRAPH_ID="234"
@@ -414,14 +573,14 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 ##### Effective Closeness
 
 A common definitions of centrality is the **closeness centrality**
-(or closeness). The closeness of a vertex in a graph is the inverse average
-length of the shortest path between the vertex and all other vertices.
-For vertices *x*, *y* and shortest distance `d(y, x)` it is defined as:
+(or closeness). The closeness of a node in a graph is the inverse average
+length of the shortest path between the node and all other nodes.
+For nodes *x*, *y* and shortest distance `d(y, x)` it is defined as:
 
 ![Vertex Closeness Formula](../../images/closeness.png)
 
 Effective Closeness approximates the closeness measure. The algorithm works by
-iteratively estimating the number of shortest paths passing through each vertex.
+iteratively estimating the number of shortest paths passing through each node.
 The score approximates the real closeness score, since it is not possible
 to actually count all shortest paths due to the horrendous `O(n^2 * d)` memory
 requirements. The algorithm is from the paper
@@ -430,15 +589,15 @@ requirements. The algorithm is from the paper
 ArangoDBs implementation approximates the number of shortest paths in each
 iteration by using a HyperLogLog counter with 64 buckets. This should work well
 on large graphs and on smaller ones as well. The memory requirements should be
-**O(n * d)** where *n* is the number of vertices and *d* the diameter of your
-graph. Each vertex stores a counter for each iteration of the algorithm.
+**O(n * d)** where *n* is the number of nodes and *d* the diameter of your
+graph. Each node stores a counter for each iteration of the algorithm.
 
 Parameters:
 - `graph_id`
 - `undirected`: Whether to ignore the direction of edges
 - `maximum_supersteps`
 
-Result: a closeness measure for each vertex
+Result: a closeness measure for each node
 
 ```bash
 GRAPH_ID="234"
@@ -451,22 +610,22 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 `POST <ENGINE_URL>/v1/linerank`
 
 Another common measure is the [*betweenness* centrality](https://en.wikipedia.org/wiki/Betweenness_centrality):
-It measures the number of times a vertex is part of shortest paths between any
-pairs of vertices. For a vertex *v* betweenness is defined as:
+It measures the number of times a node is part of shortest paths between any
+pairs of nodes. For a node *v* betweenness is defined as:
 
 ![Vertex Betweenness Formula](../../images/betweenness.png)
 
 Where the &sigma; represents the number of shortest paths between *x* and *y*,
-and &sigma;(v) represents the number of paths also passing through a vertex *v*.
-By intuition a vertex with higher betweenness centrality has more
+and &sigma;(v) represents the number of paths also passing through a node *v*.
+By intuition a node with higher betweenness centrality has more
 information passing through it.
 
-**LineRank** approximates the random walk betweenness of every vertex in a
-graph. This is the probability that someone, starting on an arbitrary vertex,
+**LineRank** approximates the random walk betweenness of every node in a
+graph. This is the probability that someone, starting on an arbitrary node,
 visits this node when they randomly choose edges to visit.
 
 The algorithm essentially builds a line graph out of your graph
-(switches the vertices and edges), and then computes a score similar to PageRank.
+(switches the nodes and edges), and then computes a score similar to PageRank.
 This can be considered a scalable equivalent to vertex betweenness, which can
 be executed distributedly in ArangoDB. The algorithm is from the paper
 *Centralities in Large Networks: Algorithms and Observations (U Kang et.al. 2011)*.
@@ -476,7 +635,7 @@ Parameters:
 - `damping_factor`
 - `maximum_supersteps`
 
-Result: the line rank of each vertex
+Result: the line rank of each node
 
 ```bash
 GRAPH_ID="234"
@@ -486,7 +645,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 #### Community Detection
 
 Graphs based on real world networks often have a community structure.
-This means it is possible to find groups of vertices such that each vertex
+This means it is possible to find groups of nodes such that each node
 group is internally more densely connected than outside the group.
 This has many applications when you want to analyze your networks, for example
 Social networks include community groups (the origin of the term, in fact)
@@ -499,22 +658,22 @@ based on common location, interests, occupation, etc.
 [*Label Propagation*](https://arxiv.org/pdf/0709.2938) can be used to implement
 community detection on large graphs.
 
-The algorithm assigns an initial community identifier to every vertex in the
-graph using a user-defined attribute. The idea is that each vertex should be in
+The algorithm assigns an initial community identifier to every node in the
+graph using a user-defined attribute. The idea is that each node should be in
 the community that most of its neighbors are in at the end of the computation.
 
-In each iteration of the computation, a vertex sends its current community ID to
-all its neighbor vertices, inbound and outbound (ignoring edge directions).
-After that, each vertex adopts the community ID it received most frequently in
+In each iteration of the computation, a node sends its current community ID to
+all its neighbor nodes, inbound and outbound (ignoring edge directions).
+After that, each node adopts the community ID it received most frequently in
 the last step.
 
-It can happen that a vertex receives multiple most frequent community IDs.
+It can happen that a node receives multiple most frequent community IDs.
 In this case, one is chosen either randomly or using a deterministic choice
 depending on a setting for the algorithm. The rules for a deterministic tiebreak
 are as follows:
-- If a vertex obtains only one community ID and the ID of the vertex from the
+- If a node obtains only one community ID and the ID of the node from the
   previous step, its old ID, is less than the obtained ID, the old ID is kept.
-- If a vertex obtains more than one ID, its new ID is the lowest ID among the
+- If a node obtains more than one ID, its new ID is the lowest ID among the
   most frequently obtained IDs. For example, if the initial IDs are numbers and
   the obtained IDs are 1, 2, 2, 3, 3, then 2 is the new ID.
 - If, however, no ID arrives more than once, the new ID is the minimum of the
@@ -523,14 +682,14 @@ are as follows:
 
 The algorithm runs until it converges or reaches the maximum iteration bound.
 It may not converge on large graphs if the synchronous variant is used.
-- **Synchronous**: The new community ID of a vertex is based on the
+- **Synchronous**: The new community ID of a node is based on the
   community IDs of its neighbors from the previous iteration. With (nearly)
   [bipartite](https://en.wikipedia.org/wiki/Bipartite_graph) subgraphs, this may
   lead to the community IDs changing back and forth in each iteration within the
   two halves of the subgraph.
-- **Asynchronous**: A vertex determines the new community ID using the most
+- **Asynchronous**: A node determines the new community ID using the most
   up-to-date community IDs of its neighbors, whether those updates occurred in
-  the current iteration or the previous one. The order in which vertices are
+  the current iteration or the previous one. The order in which nodes are
   updated in each iteration is chosen randomly. This leads to more stable
   community IDs.
 
@@ -541,7 +700,7 @@ Parameters:
 - `random_tiebreak`
 - `maximum_supersteps`
 
-Result: a community ID for each vertex
+Result: a community ID for each node
 
 ```bash
 GRAPH_ID="234"
@@ -556,16 +715,16 @@ The attribute propagation algorithm can be used to implement community detection
 It works similar to the label propagation algorithm, but every node additionally
 accumulates a memory of observed labels instead of forgetting all but one label.
 
-The algorithm assigns an initial value to every vertex in the graph using a
+The algorithm assigns an initial value to every node in the graph using a
 user-defined attribute. The attribute value can be a list of strings to
 initialize the set of labels with multiple labels.
 
 In each iteration of the computation, the following steps are executed:
 
-1. Each vertex propagates its set of labels along the edges to all direct
-   neighbor vertices. Whether inbound or outbound edges are followed depends on
+1. Each node propagates its set of labels along the edges to all direct
+   neighbor nodes. Whether inbound or outbound edges are followed depends on
    an algorithm setting.
-2. Each vertex adds the labels it receives to its own set of labels.
+2. Each node adds the labels it receives to its own set of labels.
 
   After a specified maximal number of iterations or if no label set changes any
   more, the algorithm stops.
@@ -578,13 +737,13 @@ In each iteration of the computation, the following steps are executed:
 Parameters:
 - `graph_id`
 - `start_label_attribute`: The attribute to initialize labels with.
-   Use `"@id"` to use the document IDs of the vertices.
+   Use `"@id"` to use the document IDs of the nodes.
 - `synchronous`: Whether synchronous or asynchronous label propagation is used.
 - `backwards`: Whether labels are propagated in edge direction (`false`) or the
   opposite direction (`true`).
 - `maximum_supersteps`: Maximum number of iterations.
 
-Result: The set of accumulated labels of each vertex.
+Result: The set of accumulated labels of each node.
 
 ```bash
 GRAPH_ID="234"
@@ -611,11 +770,11 @@ Parameters:
 - `graph_id`
 - `function`: A string with Python code. It must define a function `def worker(graph):`
   that returns a dataframe or dictionary with the results. The key inside that
-  dict must represent the vertex ID. The value can be of any type.
+  dict must represent the node ID. The value can be of any type.
 - `use_cugraph`: Use cugraph (or regular pandas/pyarrow).
 
 Result: Depends on the algorithm. If multiple values are returned for a single
-vertex, a JSON object with multiple keys is stored. <!-- TODO: verify -->
+node, a JSON object with multiple keys is stored. <!-- TODO: verify -->
 
 ```bash
 GRAPH_ID="234"
@@ -633,7 +792,7 @@ the results to. They need to exist already.
 You also need to specify a list of `job_ids` with one or more jobs that have run
 graph algorithms.
 
-Each algorithm outputs one value for each vertex, and you can define the target
+Each algorithm outputs one value for each node, and you can define the target
 attribute to store the information in with `attribute_names`. It has to be a
 list with one attribute name for every job in the `job_ids` list.
 

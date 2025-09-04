@@ -296,10 +296,10 @@ In a cluster setup, the result also contains the following attributes:
   disjoint. This is an internal property.
 
 - `smartGraphAttribute` (string):
-  The attribute that is used for sharding: vertices with the same value of
-  this attribute are placed in the same shard. All vertices are required to
+  The attribute that is used for sharding: nodes with the same value of
+  this attribute are placed in the same shard. All nodes are required to
   have this attribute set and it has to be a string. Edges derive the
-  attribute from their connected vertices.
+  attribute from their connected nodes.
 
 - `smartJoinAttribute` (string):
   In a cluster, this attribute determines an attribute
@@ -1730,23 +1730,23 @@ db.example.byExample({ Hello: "foo" }).toArray()
 
 ## Edge documents
 
-### `edge-collection.edges(vertex)`
+### `edge-collection.edges(node)`
 
 Edges are normal documents that always contain a `_from` and a `_to`
 attribute. Therefore, you can use the document methods to operate on
 edges. The following methods, however, are specific to edges.
 
-`edge-collection.edges(vertex)`
+`edge-collection.edges(node)`
 
 The `edges()` operator finds all edges starting from (outbound) or ending
-in (inbound) `vertex`.
+in (inbound) `node`.
 
 ---
 
-`edge-collection.edges(vertices)`
+`edge-collection.edges(nodes)`
 
 The `edges` operator finds all edges starting from (outbound) or ending
-in (inbound) a document from `vertices`, which must be a list of documents
+in (inbound) a document from `nodes`, which must be a list of documents
 or document identifiers.
 
 ```js
@@ -1754,28 +1754,28 @@ or document identifiers.
 name: EDGCOL_02_Relation
 description: ''
 ---
-var vcoll = db._create("vertex");
+var vcoll = db._create("node");
 var ecoll = db._createEdgeCollection("relation");
 var myGraph = {};
-myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
-myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
+myGraph.v1 = db.node.insert({ name : "node 1" });
+myGraph.v2 = db.node.insert({ name : "node 2" });
 myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.edges(myGraph.e1._id);
 ~db._drop("relation");
-~db._drop("vertex");
+~db._drop("node");
 ```
 
-### `edge-collection.inEdges(vertex)`
+### `edge-collection.inEdges(node)`
 
-The `inEdges()` operator finds all edges ending in (inbound) `vertex`.
+The `inEdges()` operator finds all edges ending in (inbound) `node`.
 
 ---
 
-`edge-collection.inEdges(vertices)`
+`edge-collection.inEdges(nodes)`
 
 The `inEdges()` operator finds all edges ending in (inbound) a document from
-`vertices`, which must be a list of documents or document identifiers.
+`nodes`, which must be a list of documents or document identifiers.
 
 **Examples**
 
@@ -1784,30 +1784,30 @@ The `inEdges()` operator finds all edges ending in (inbound) a document from
 name: EDGCOL_02_inEdges
 description: ''
 ---
-var vcoll = db._create("vertex");
+var vcoll = db._create("node");
 var ecoll = db._createEdgeCollection("relation");
 var myGraph = {};
-myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
-myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
+myGraph.v1 = db.node.insert({ name : "node 1" });
+myGraph.v2 = db.node.insert({ name : "node 2" });
 myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.inEdges(myGraph.v1._id);
 db.relation.inEdges(myGraph.v2._id);
 ~db._drop("relation");
-~db._drop("vertex");
+~db._drop("node");
 ```
 
-### `edge-collection.outEdges(vertex)`
+### `edge-collection.outEdges(node)`
 
 The `outEdges()` operator finds all edges starting from (outbound)
-`vertices`.
+`nodes`.
 
 ---
 
-`edge-collection.outEdges(vertices)`
+`edge-collection.outEdges(nodes)`
 
 The `outEdges()` operator finds all edges starting from (outbound) a document
-from `vertices`, which must be a list of documents or document identifiers.
+from `nodes`, which must be a list of documents or document identifiers.
 
 **Examples**
 
@@ -1816,15 +1816,15 @@ from `vertices`, which must be a list of documents or document identifiers.
 name: EDGCOL_02_outEdges
 description: ''
 ---
-var vcoll = db._create("vertex");
+var vcoll = db._create("node");
 var ecoll = db._createEdgeCollection("relation");
 var myGraph = {};
-myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
-myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
+myGraph.v1 = db.node.insert({ name : "node 1" });
+myGraph.v2 = db.node.insert({ name : "node 2" });
 myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.outEdges(myGraph.v1._id);
 db.relation.outEdges(myGraph.v2._id);
 ~db._drop("relation");
-~db._drop("vertex");
+~db._drop("node");
 ```

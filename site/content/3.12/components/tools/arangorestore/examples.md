@@ -25,7 +25,7 @@ following startup options:
 
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: username
-- `--server.password <string>`: password to use
+- `--server.password <string>`: password or access token to use
   (omit this and you'll be prompted for the password)
 - `--server.authentication <bool>`: whether or not to use authentication
 

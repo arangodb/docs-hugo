@@ -10,4 +10,8 @@
       {{ .Content | safeHTML }}
     </article>
   {{- end -}}
+  {{/* Trigger validation at the end of the build (kind "home" is called once) */ -}}
+  {{ with templates.Defer -}}
+    {{ partial "openapi-validate.html" -}}
+  {{ end -}}
 {{ end -}}

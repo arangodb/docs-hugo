@@ -377,13 +377,13 @@ error is thrown. For information about the naming constraints for collections, s
     (excluding smart edge collections)
   - `"enterprise-hash-smart-edge"`: default sharding used for new
     smart edge collections starting from version 3.4
-  - `enterprise-hex-smart-vertex`: sharding used for vertex collections of
+  - `enterprise-hex-smart-vertex`: sharding used for node collections of
     EnterpriseGraphs
 
   If no sharding strategy is specified, the default is `hash` for
   all normal collections, `enterprise-hash-smart-edge` for all smart edge
   collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
-  vertex collections.
+  node collections.
   Manually overriding the sharding strategy does not yet provide a 
   benefit, but it may later in case other sharding strategies are added.
   
@@ -414,10 +414,10 @@ error is thrown. For information about the naming constraints for collections, s
   This is an internal property.
 
 - `smartGraphAttribute` (string, _optional_):
-  The attribute that is used for sharding: vertices with the same value of
-  this attribute are placed in the same shard. All vertices are required to
+  The attribute that is used for sharding: nodes with the same value of
+  this attribute are placed in the same shard. All nodes are required to
   have this attribute set and it has to be a string. Edges derive the
-  attribute from their connected vertices.
+  attribute from their connected nodes.
 
 - `smartJoinAttribute` (string, _optional_): In a cluster, this attribute 
   determines an attribute of the collection that must contain the shard key value 
@@ -1270,12 +1270,16 @@ require("@arangodb").db._version();
 
 Returns the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-license).
+Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(licenseString)`
+### `db._setLicense(licenseString[, force])`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense()`](../../../operations/administration/license-management.md#apply-a-license).
+- `licenseString` (string): The Base64-encoded license string.
+- `force` (boolean, _optional_): Whether to change the license even if it expires
+  sooner than the current one. Default: `false`.
+
+Also see [Apply a license](../../../operations/administration/license-management.md#apply-a-license).

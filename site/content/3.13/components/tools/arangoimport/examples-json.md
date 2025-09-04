@@ -209,7 +209,7 @@ By default, the endpoint `tcp://127.0.0.1:8529` is used. If you want to
 specify a different endpoint, you can use the `--server.endpoint` option. You
 probably want to specify a database user and password as well. You can do so by
 using the options `--server.username` and `--server.password`. If you do not
-specify a password, you are prompted for one.
+specify a password (or access token), you are prompted for one.
 
 ```
 arangoimport --server.endpoint tcp://127.0.0.1:8529 --server.username root ...
