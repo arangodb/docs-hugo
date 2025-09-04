@@ -1,7 +1,7 @@
 {{- $page := .page }}
 {{- $versions := site.Data.versions }}
 {{- range $i, $version := $versions }}
-  {{- if eq $page.Type $version.name }}
+  {{- if or (eq $page.Type $version.name) (eq $page.Type $version.alias) }}
     {{- $page.Store.Set "version" $version.version }}
     {{- $page.Store.Set "versionShort" $version.name }}
     {{- $page.Store.Set "alias" $version.alias }}
@@ -9,6 +9,7 @@
     {{- if ne $version.name "platform" }}
       {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
     {{- end }}
+    {{- break }}
   {{- end }}
 {{- end }}
 
