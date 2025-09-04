@@ -19,7 +19,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [ArangoDB Platform](../components/platform.md).
+and included in the [ArangoDB Platform](../about-the-platform/_index.md).
 
 Key features:
 
