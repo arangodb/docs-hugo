@@ -221,8 +221,8 @@ paths:
         insert a value into the index that already exists in the index always fails,
         regardless of the value of this attribute.
 
-        The optional **estimates** attribute is supported by persistent indexes.
-        This attribute controls whether index selectivity estimates are
+        The optional **estimates** attribute is supported by `persistent`, `mdi`, and
+        `mdi-prefixed` indexes. This attribute controls whether index selectivity estimates are
         maintained for the index. Not maintaining index selectivity estimates can have
         a slightly positive impact on write performance.
         The downside of turning off index selectivity estimates will be that

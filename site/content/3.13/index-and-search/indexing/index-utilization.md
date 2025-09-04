@@ -19,8 +19,9 @@ It is often beneficial to create an index on more than just one attribute. By ad
 to an index, an index can become more selective and thus reduce the number of documents that 
 queries need to process.
 
-ArangoDB's primary indexes, edges indexes and hash indexes will automatically provide selectivity
-estimates. Index selectivity estimates are provided in the web interface, the `indexes()` return 
+ArangoDB's `primary` and `edge` indexes automatically provide selectivity estimates.
+The `persistent`, `mdi`, and `mdi-prefixed` indexes do too, by default.
+Index selectivity estimates are provided in the web interface, the `indexes()` return 
 value and in the `explain()` output for a given query. 
 
 The more selective an index is, the more documents it will filter on average. The index selectivity 

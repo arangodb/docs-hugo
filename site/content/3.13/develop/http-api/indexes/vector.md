@@ -57,7 +57,7 @@ paths:
                     A list with exactly one attribute path to specify
                     where the vector embedding is stored in each document. The vector data needs
                     to be populated before creating the index.
-                    
+
                     If you want to index another vector embedding attribute, you need to create a
                     separate vector index.
                   type: array
@@ -65,6 +65,13 @@ paths:
                   maxItems: 1
                   items:
                     type: string
+                sparse:
+                  description: |
+                    Whether to create a sparse index that excludes documents with
+                    the attribute for indexing missing or set to `null`. This
+                    attribute is defined by `fields`.
+                  type: boolean
+                  default: false
                 parallelism:
                   description: |
                     The number of threads to use for indexing.

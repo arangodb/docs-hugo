@@ -23,7 +23,7 @@ authentication.
 In this example we'll use two collections: a `users` collection to store the
 user objects with names and credentials, and a `sessions` collection to store
 the session data. We'll also make sure usernames are unique
-by adding a hash index:
+by adding a `persistent` index:
 
 ```js
 "use strict";
@@ -37,7 +37,7 @@ if (!db._collection(sessions)) {
   db._createDocumentCollection(sessions);
 }
 module.context.collection("users").ensureIndex({
-  type: "hash",
+  type: "persistent",
   unique: true,
   fields: ["username"]
 });
