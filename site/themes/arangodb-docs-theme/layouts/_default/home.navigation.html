@@ -3,14 +3,11 @@
     <div class="sidenav-navigation">
       <div class="content-wrapper highlightable">
         <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
-          {{- range .Site.Sections.ByWeight }}
-            {{/* version folders */}}
-            {{- if ne .Type "hooks" }}
-              <ul class="version-menu {{ .Type }} {{ .Store.Get "alias" }}">{{/* TODO: hide non-stable versions by default? */}}
-                {{- template "section-tree-nav" . }}
-              </ul>
-            {{- end }}
-          {{- end }}
+        {{- range .Site.Sections.ByWeight }}
+          <ul class="version-menu version-{{ replace .Type "." "_" }}">{{/* TODO: hide non-stable versions by default? */}}
+            {{- template "section-tree-nav" . }}
+          </ul>
+        {{- end }}
         </ul>
         <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
       </div>

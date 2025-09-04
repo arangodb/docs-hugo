@@ -1,7 +1,7 @@
 ---
 title: Graph Analytics
 menuTitle: Graph Analytics
-weight: 115
+weight: 5
 description: |
   ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
   data separately from your ArangoDB deployments
@@ -19,7 +19,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [ArangoDB Platform](../components/platform.md).
+and included in the [ArangoDB Platform](../about-the-platform/_index.md).
 
 Key features:
 
@@ -106,22 +106,22 @@ well as to authenticate requests to the [Engine API](#engine-api).
 {{< tab "ArangoGraph Insights Platform" >}}
 The [Management API](#management-api) for deploying and deleting engines requires
 an ArangoGraph **API key**. See
-[Generating an API Key](../arangograph/api/get-started.md#generating-an-api-key)
+[Generating an API Key](../../3.12/arangograph/api/get-started.md#generating-an-api-key)
 on how to create one.
 
 You then need to generate an **access token** using the API key. See
-[Authenticating with Oasisctl](../arangograph/api/get-started.md#authenticating-with-oasisctl)
+[Authenticating with Oasisctl](../../3.12/arangograph/api/get-started.md#authenticating-with-oasisctl)
 on how to do so using `oasisctl login`.
 
 The [Engine API](#engine-api) uses one of two authentication methods, depending
-on the [__auto login to database UI__](../arangograph/deployments/_index.md#auto-login-to-database-ui)
+on the [__auto login to database UI__](../../3.12/arangograph/deployments/_index.md#auto-login-to-database-ui)
 setting in ArangoGraph:
 - **Enabled**: You can use an ArangoGraph access token created with an API key
   (see above), allowing you to use one token for both the Management API and
   the Engine API.
 - **Disabled**: You need use a JWT user token created from ArangoDB credentials.
   These session tokens need to be renewed every hour by default. See
-  [HTTP API Authentication](../develop/http-api/authentication.md#jwt-user-tokens)
+  [HTTP API Authentication](../../3.12/develop/http-api/authentication.md#jwt-user-tokens)
   for details.
 {{< /tab >}}
 
@@ -405,7 +405,7 @@ Request and response payloads are JSON-encoded in the engine API.
 
 Import graph data from a database of the ArangoDB deployment. You can import
 named graphs as well as sets of node and edge collections (see
-[Managed and unmanaged graphs](../graphs/_index.md#managed-and-unmanaged-graphs)).
+[Managed and unmanaged graphs](../../3.12/graphs/_index.md#managed-and-unmanaged-graphs)).
 
 ```bash
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","graph_name":"connectedComponentsGraph"}' "$ENGINE_URL/v1/loaddata"

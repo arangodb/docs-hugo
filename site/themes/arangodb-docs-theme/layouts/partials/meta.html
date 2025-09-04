@@ -25,9 +25,3 @@
   {{- end }}
   <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}
-{{- if or (eq .Type "hooks") (.IsHome) }}
-  {{- $redirectPath := printf "/%s" (index (where site.Data.versions "alias" "stable") 0).alias }}
-  <script>
-    window.location.href = "{{ $redirectPath }}/";
-  </script>
-{{- end }}

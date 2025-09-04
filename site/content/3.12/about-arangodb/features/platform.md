@@ -8,7 +8,7 @@ description: >-
   solution with a unified interface
 ---
 For in-depth information about the ArangoDB Platform as a whole and how to
-deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
+deploy and use it, see [The ArangoDB Platform](../../../platform/about-the-platform/_index.md).
 
 ## Architecture
 
@@ -34,24 +34,24 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
 - [**ArangoDB Core**](core.md): The ArangoDB database system with support for
   graphs, documents, key-value, full-text search, and vector search.
 
-- [**Graph Visualizer**](../../graphs/graph-visualizer.md):
+- [**Graph Visualizer**](../../../platform/graph-intelligence/graph-visualizer.md):
   A web-based tool for exploring your graph data with an intuitive interface and
   sophisticated querying capabilities.
 
-- [**Graph Analytics**](../../graphs/graph-analytics.md):
+- [**Graph Analytics**](../../../platform/graph-intelligence/graph-analytics.md):
   A service that can efficiently load graph data from the core database system
   and run graph algorithms such as PageRank and many more.
 
-- [**GenAI Suite**](../../data-science/_index.md):
+- [**GenAI Suite**](../../../platform/data-science/_index.md):
   ArangoDB's graph-powered machine learning (GraphML) as well as GraphRAG for
   automatically building knowledge graphs from text and taking advantage of both
   excerpts and higher-level summaries as context for turbocharging GenAI
   applications.
 
-- [**Notebook servers**](../../data-science/notebook-servers.md):
+- [**Notebook servers**](../../../platform/data-science/notebook-servers.md):
   Run Jupyter kernels in the Platform for hosting interactive, Python-based
   notebooks to experiment and develop applications.
 
-- [**MLflow integration**](../../data-science/graphrag/services/mlflow.md):
+- [**MLflow integration**](../../../platform/data-science/graphrag/services/mlflow.md):
   Use the popular MLflow for machine learning practitioners as part of the
   ArangoDB Platform.
