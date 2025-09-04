@@ -8,6 +8,8 @@ description: >-
 aliases:
   - data-science/overview
 ---
+- [Link to 3.12](../../3.12/aql/_index.md)
+
 {{< tag "ArangoDB Platform" >}} 
 
 {{< tip >}}
