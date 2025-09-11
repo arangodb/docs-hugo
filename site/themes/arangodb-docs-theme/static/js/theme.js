@@ -537,18 +537,6 @@ function copyURI(evt) {
     });
 }
 
-function toggleExpandShortcode(event) {
-    var t = $(event.target.closest("a"));
-    if (t.parent('.expand-expanded.expand-marked').length) {
-        t.next().css('display','none');
-    } else if (t.parent('.expand-marked').length) {
-        t.next().css('display','block')
-    } else {
-        t.next('.expand-content').slideToggle(100);
-    }
-    t.parent().toggleClass('expand-expanded');
-}
-
 
 window.onload = () => {
     window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);

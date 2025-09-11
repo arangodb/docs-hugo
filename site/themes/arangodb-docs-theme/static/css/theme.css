@@ -1715,48 +1715,45 @@ blockquote p {
 }
 
 
-/* Expand shortcode */
-.expand {
-    margin-top: 1rem;
+/* Expand shortcode and OpenAPI properties */
 
-}
-
-.expand-label {
-    font-size: 1.1rem;
+summary {
+    list-style: none;
     cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 1rem;
 }
 
-.expand-label::before {
-    font-family: "Font Awesome 5 Free";
-   content: "\f054";
-   display: inline-block;
-   padding-right: 3px;
-   vertical-align: middle;
-   font-weight: 900;
-   font-size: 10px;
-   color: grey;
-    margin-bottom: 5px;
+summary:hover, summary:focus-visible {
+    color: #005580;
 }
 
-.expand-expanded > .expand-label::before {
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::marker {
+    display: none;
+}
+
+details > summary::before {
     font-family: "Font Awesome 5 Free";
-    content: "\f078";
+    content: "\f054";
     display: inline-block;
-    padding-right: 3px;
+    padding-right: 0.5rem;
     vertical-align: middle;
     font-weight: 900;
+    font-size: 10px;
+    color: grey;
 }
 
-.expand-content {
-    margin-top: 12px;
+details[open] > summary::before {
+    content: "\f078";
 }
+
 /* */
-
-
 
 
 
@@ -1871,27 +1868,6 @@ blockquote p {
     margin-bottom: 8px;
     text-align: left;
     color: var(--H2-COLOR);
-}
-
-.openapi-prop::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f054";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
-    color: grey;
-}
-
-details[open] > .openapi-prop::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f078";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
 }
 
 .openapi-prop > a > .fa-link {
