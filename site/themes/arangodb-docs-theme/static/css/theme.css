@@ -1839,24 +1839,6 @@ blockquote p {
     margin-left: 0;
 }
 
-.show-children {
-    border: 1px solid #d0dadc;
-    padding: 5px;
-    border-radius: 6px;
-    font-size: 13px;
-}
-
-.show-children.collapsed::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f078";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
-    color: grey;
-}
-
 .openapi-property-name {
     color: #3c4257;
     font-size: 14px;
@@ -1880,16 +1862,6 @@ blockquote p {
     border-radius: 6px;
     font-size: 13px;
     font-weight: 400;
-}
-
-.show-children::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f054";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
 }
 
 .openapi-table-title {

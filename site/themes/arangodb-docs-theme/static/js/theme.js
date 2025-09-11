@@ -497,11 +497,6 @@ function initClickHandlers() {
         }
     });
     
-    $(".openapi-table.show-children").on("click", function(event) {
-        $(event.target).toggleClass("collapsed");
-        $(event.target).next(".openapi-table").toggleClass("hidden");
-    });
-    
 }
 
 
