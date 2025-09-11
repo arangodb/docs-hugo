@@ -706,12 +706,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -1067,12 +1069,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate that an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       the server error number
@@ -1459,12 +1463,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -2096,12 +2102,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -2453,19 +2461,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       A server error number (if `error` is `true`).
                     type: integer
                   errorMessage:
                     description: |
-                      A descriptive error message (if `error` is `true`).
+                      A descriptive error message.
                     type: string
         '404':
           description: |

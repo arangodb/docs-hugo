@@ -329,12 +329,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   time:
                     description: |
                       The current system time as a Unix timestamp with microsecond precision of the server

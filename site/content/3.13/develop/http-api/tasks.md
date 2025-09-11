@@ -541,8 +541,9 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code, 200 in this case.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   error:
                     description: |
                       `false` in this case
@@ -561,15 +562,17 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code, 404 in this case.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
                   error:
                     description: |
-                      `true` in this case
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   errorMessage:
                     description: |
-                      A plain text message stating what went wrong.
+                      A descriptive error message.
                     type: string
       tags:
         - Tasks

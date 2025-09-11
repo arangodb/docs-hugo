@@ -82,12 +82,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   isNewlyCreated:
                     description: |
                       boolean flag to indicate whether the function was newly created (`false` in this case)
@@ -107,12 +109,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   isNewlyCreated:
                     description: |
                       boolean flag to indicate whether the function was newly created (`true` in this case)
@@ -133,19 +137,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       the server error number
                     type: integer
                   errorMessage:
                     description: |
-                      a descriptive error message
+                      A descriptive error message.
                     type: string
       tags:
         - Queries
@@ -227,12 +233,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   deletedCount:
                     description: |
                       The number of deleted user functions, always `1` when `group` is set to `false`.
@@ -253,19 +261,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       the server error number
                     type: integer
                   errorMessage:
                     description: |
-                      a descriptive error message
+                      A descriptive error message.
                     type: string
         '404':
           description: |
@@ -282,19 +292,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       the server error number
                     type: integer
                   errorMessage:
                     description: |
-                      a descriptive error message
+                      A descriptive error message.
                     type: string
       tags:
         - Queries
@@ -380,12 +392,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       All functions, or the ones matching the `namespace` parameter
@@ -430,19 +444,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       the server error number
                     type: integer
                   errorMessage:
                     description: |
-                      a descriptive error message
+                      A descriptive error message.
                     type: string
       tags:
         - Queries

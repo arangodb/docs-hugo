@@ -318,12 +318,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.
@@ -384,12 +386,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.

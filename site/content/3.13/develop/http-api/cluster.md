@@ -121,12 +121,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code - 200
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   endpoints:
                     description: |
                       A list of active cluster endpoints.
@@ -196,12 +198,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      always `false`
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code, always 200
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   errorNum:
                     description: |
                       the server error number
@@ -302,12 +306,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Whether an error occurred. `false` in this case.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The status code. `200` in this case.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object with the status. This attribute is omitted if the DB-Server
@@ -395,8 +401,9 @@ paths:
                 properties:
                   error:
                     description: |
-                      Whether an error occurred. `false` in this case.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
                       The status code. `200` in this case.
@@ -659,12 +666,14 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   error:
                     description: |
-                      Whether an error occurred. `false` in this case.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   result:
                     description: |
                       The result object.
@@ -866,12 +875,14 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   error:
                     description: |
-                      Whether an error occurred. `false` in this case.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   result:
                     description: |
                       The result object.
@@ -1283,12 +1294,14 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   error:
                     description: |
-                      Whether an error occurred. `false` in this case.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   result:
                     description: |
                       The result object.
