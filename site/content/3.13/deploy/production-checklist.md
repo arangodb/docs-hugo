@@ -10,7 +10,7 @@ have been performed on your production system before you go live.
 
 ## Operating System
 
-- Executed the OS optimization scripts if you run ArangoDB on Linux.
+- Executed the operating system (OS) optimization scripts if you run ArangoDB on Linux.
   See [Installing ArangoDB on Linux](../operations/installation/linux/_index.md) and its sub pages
   [Linux Operating System Configuration](../operations/installation/linux/operating-system-configuration.md) and
   [Linux OS Tuning Script Examples](../operations/installation/linux/linux-os-tuning-script-examples.md) for details.
@@ -27,7 +27,7 @@ have been performed on your production system before you go live.
 
 ## ArangoDB
 
-- **Use the latest versions**: Deploy the latest bug fix version and latest major version
+- **Use the latest versions**: Deploy the latest version series
   of ArangoDB to benefit from performance improvements and security fixes.
 
 - **Testing environments**: Use UAT (User Acceptance Testing) and QA environments
@@ -38,7 +38,7 @@ have been performed on your production system before you go live.
 - The user _root_ is not used to run any ArangoDB processes
   (if you run ArangoDB on Linux).
 
-- **Access control**: Restrict access to the cluster to authorized personnel only.
+- **Access control**: Restrict access to the deployment to authorized personnel only.
   Implement proper authentication and authorization mechanisms.
 
 - **Encryption**: Enable [Encryption at Rest](../operations/security/encryption-at-rest.md)
@@ -79,10 +79,6 @@ have been performed on your production system before you go live.
   it will try to use those x GB. Memory accounting has been vastly improved in 3.12,
   but occasional overshooting by a few kB may still occur.
 
-- For versions prior to 3.8, make sure to change the
-  [`--query.memory-limit`](../components/arangodb-server/options.md#--querymemory-limit)
-  query option according to the node size and workload.
-
 - Disable swap space to avoid slowdown which can result in servers being incorrectly 
   detected as failed.
 
@@ -120,12 +116,12 @@ have been performed on your production system before you go live.
   be careful with burst mode guarantees as ArangoDB requires a sustainable
   high IOPS rate.
 
-- **IO bandwidth**: Give considerations to IO bandwidth, especially considering 
+- **I/O bandwidth**: Give considerations to I/O bandwidth, especially considering 
   RocksDB write-amplification which can easily be 10x or more.
 
 - **Block storage**: Whenever possible use block storage. Database data is based on append
   operations, so filesystems which support this should be used for best
-  performance. We would not recommend using NFS for performance reasons,
+  performance. ArangoDB does not recommend using NFS for performance reasons,
   furthermore we experienced some issues with hard links required for
   Hot Backup.
 
