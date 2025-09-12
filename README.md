@@ -353,13 +353,13 @@ paragraphs will not be part of the blockquote.
 Admonitions inside of other shortcodes need to use the special syntax, too:
 
 ```markdown
-{{< expand title="Outer shortcode" >}}
+{{< details summary="Outer shortcode" >}}
 
 {{</* tip */>}}
 Inner shortcode
 {{</* /tip */>}}
 
-{{< /expand >}}
+{{< /details >}}
 ```
 
 #### Tags
@@ -472,9 +472,9 @@ Content or reminder that should not be rendered.
 The following shortcodes also exist but are rarely used:
 
 - ```markdown
-  {{< expand title="A short description" >}}
+  {{< details summary="A short description" >}}
   Content that is collapsed by default but can be expanded.
-  {{< /expand >}}
+  {{< /details >}}
   ```
 
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
