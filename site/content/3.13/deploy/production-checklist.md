@@ -30,7 +30,7 @@ have been performed on your production system before you go live.
 - **Use the latest versions**: Deploy the latest version series
   of ArangoDB to benefit from performance improvements and security fixes.
 
-- **Testing environments**: Use UAT (User Acceptance Testing) and QA environments
+- **Testing environments**: Use QA environments and UAT (User Acceptance Testing)
   to test all changes before going live with production deployments.
 
 ### Security
@@ -60,6 +60,8 @@ have been performed on your production system before you go live.
   - Configure your monitoring system (Prometheus/Grafana) to scrape the `/_admin/metrics/v2` endpoint
   - See [HTTP interface for server metrics](../develop/http-api/monitoring/metrics.md) for detailed information
 
+- **Enable RocksDB statistics**: Consider enabling [`--rocksdb.enable-statistics`](../components/arangodb-server/options.md#--rocksdbenable-statistics) to `true` for detailed RocksDB performance metrics.
+
 - Monitor the ArangoDB provided metrics with alerting based on the threshold guidelines:
   - Disk usage: 60% (red line)
   - CPU usage: 90% (red line)
@@ -77,7 +79,7 @@ have been performed on your production system before you go live.
 
 - Note that if ArangoDB "sees" x GB of memory in a pod,
   it will try to use those x GB. Memory accounting has been vastly improved in 3.12,
-  but occasional overshooting by a few kB may still occur.
+  but overshooting in certain cases may still occur.
 
 - Disable swap space to avoid slowdown which can result in servers being incorrectly 
   detected as failed.
