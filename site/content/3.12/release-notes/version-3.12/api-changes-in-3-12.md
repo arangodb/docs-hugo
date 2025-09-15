@@ -309,6 +309,22 @@ is for debugging purposes.
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
+#### Access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+New endpoints have been added to let you manage access tokens.
+
+- `POST /_api/token/{user}`
+- `GET /_api/token/{user}`
+- `DELETE /_api/token/{user}/{token-id}`
+
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
+
+Also see [Authentication with access tokens](#authentication-with-access-tokens)
+for related API changes.
+
 ### Endpoints augmented
 
 #### View API
@@ -634,6 +650,37 @@ curl -XPUT -d '{"global":{"queries":"DEBUG"},"appenders":{"-":{"requests":"ERROR
 Setting a global log level applies the value to all outputs for the specified
 topic. You can only change the log levels for individual log outputs (appenders)
 but not add new outputs at runtime.
+
+#### Authentication with access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+The newly added access tokens can be used for either creating JWT session tokens
+or directly authenticate with an access token instead of a password.
+
+If you use an access token when calling the `POST /_open/auth` endpoint to create
+a session token, you only need to provide the access token as the `password`.
+You don't need to specify the `username`, but if you do, it must match the
+user name encoded in the access token.
+
+```sh
+# Access token of user "root"
+curl -d '{"password":"v1.7b2265...71227d"}' http://localhost:8529/_open/auth
+curl -d '{"username":"root", "password":"v1.7b2265...71227d"}' http://localhost:8529/_open/auth
+```
+
+Similarly, if you use an access token for HTTP Basic authentication, you can
+leave out the user name. If you don't, it needs to match the name in the token.
+Example:
+
+```sh
+# Access token of user "root" 
+curl -u:v1.7b2265...71227d http://localhost:8529/_api/database
+curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
+```
+
+Note that it is recommended to use access tokens for creating
+[JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
 
 ### Endpoints deprecated
 

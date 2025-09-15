@@ -1,9 +1,9 @@
 <!-- HEADER -->
-  <header id="header" style="transition: 0.5s padding ease-out, 0.15s" class="zn_header_white header-splash-new nav-down header-splash-wrap header1">
+  <header style="transition: 0.5s padding ease-out, 0.15s" class="header zn_header_white header-splash-new nav-down header-splash-wrap header1">
     <!--LOGO-->
     <div class="header-block-left">
     <div class="mobile-menu-toggle">
-      <button id="sidebar-toggle-navigation" onclick="showSidebarHandler()">
+      <button class="sidebar-toggle-navigation" onclick="showSidebarHandler()">
         <svg width="1.33em" height="1.33em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
     </div>
@@ -24,7 +24,7 @@
     </div>
     <div class="search-and-version-container" >
       <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
-      <div id="searchbox">
+      <div class="docsearch">
       </div>
       {{ partialCached "inkeep-widget.html" . -}}
       {{ partialCached "version-selector.html" . }}

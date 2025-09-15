@@ -15,7 +15,7 @@ command-line options:
 - `--server.database <string>`: name of the database to connect to
 - `--server.endpoint <string>`: endpoint to connect to
 - `--server.username <string>`: database username
-- `--server.password <string>`: password to use when connecting 
+- `--server.password <string>`: password or access token to use when connecting 
 - `--server.authentication <bool>`: whether or not to use authentication
 
 For example, to connect to an ArangoDB server on IP `192.168.173.13` on port
@@ -26,7 +26,9 @@ arangosh --server.endpoint tcp://192.168.173.13:8530 --server.username foo --ser
 ```
 
 _arangosh_ then displays a password prompt and tries to connect to the 
-server after the password is entered.
+server after the password is entered. You can also use an access token instead
+of a password (but make sure `--server.username` is set to the same user name as
+encoded in the access token).
 
 {{< warning >}}
 At signs `@` in startup option arguments need to be escaped as `@@`.

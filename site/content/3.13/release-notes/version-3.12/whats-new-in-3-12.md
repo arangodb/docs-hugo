@@ -2250,6 +2250,20 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
+### Access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+A new authentication feature has been added that lets you use access tokens
+for either creating JWT session tokens or directly authenticate with an
+access token instead of a password.
+
+You can create multiple access tokens for a single user account, set expiration
+dates, and individually revoke tokens.
+
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
