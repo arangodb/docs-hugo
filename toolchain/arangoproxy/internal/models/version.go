@@ -1,7 +1,7 @@
 package models
 
 import (
-	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v3"
 )
@@ -15,7 +15,7 @@ type Version struct {
 
 func LoadVersions() []Version {
 	versions := []Version{}
-	yamlFile, _ := ioutil.ReadFile("/home/site/data/versions.yaml")
+	yamlFile, _ := os.ReadFile("/home/site/data/versions.yaml")
 
 	yaml.Unmarshal(yamlFile, &versions)
 

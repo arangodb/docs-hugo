@@ -2,7 +2,7 @@ package models
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 )
 
 type Dataset struct {
@@ -14,7 +14,7 @@ var Datasets = make(map[string]Dataset)
 
 func LoadDatasets(datasetsFile string) error {
 
-	fileStream, err := ioutil.ReadFile(datasetsFile)
+	fileStream, err := os.ReadFile(datasetsFile)
 	if err != nil {
 		return err
 	}

@@ -283,17 +283,11 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          'text/plain; charset=utf-8':
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The multipart batch request, consisting of the envelope and the individual
-                    batch parts.
-                  type: string
+              description: |
+                The multipart batch request, consisting of the envelope and the individual
+                batch parts.
       responses:
         '200':
           description: |
@@ -365,7 +359,7 @@ DELETE /_api/collection/products HTTP/1.1
 EOF
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 content-type: multipart/form-data
@@ -518,7 +512,7 @@ Content-Length: 39
 
 --SomeBoundaryValue--
 ```
-{{< /expand >}}
+{{< /details >}}
 
 Sending a batch request, setting the boundary implicitly. The server tries
 to find the boundary at the beginning of the request body in this case.
@@ -542,7 +536,7 @@ DELETE _api/collection/nonexistent2 HTTP/1.1
 EOF
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 content-type: unset
@@ -592,4 +586,4 @@ Content-Length: 101
 
 --SomeBoundaryValue--
 ```
-{{< /expand >}}
+{{< /details >}}

@@ -33,7 +33,7 @@ startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
 
 1. Enable the experimental vector index feature.
-2. Calculate vector embeddings using [ArangoDB's GraphML](../../../data-science/arangographml/_index.md)
+2. Calculate vector embeddings using [ArangoDB's GraphML](../../../data-science/graphml/_index.md)
    capabilities (available in ArangoGraph) or using external tools.
    Store each vector as an attribute in the respective document.
 3. Create a vector index over this attribute. You need to choose which
@@ -102,6 +102,7 @@ centroids and the quality of vector search thus degrades.
     - `"IVF100,SQ4"`
     - `"IVF10_HNSW5,Flat"`
     - `"IVF100_HNSW5,PQ256x16"`
+
     The base index must be an inverted file (IVF) to work with ArangoDB.
     If you don't specify an index factory, the value is equivalent to
     `IVF<nLists>,Flat`. For more information on how to create these custom
