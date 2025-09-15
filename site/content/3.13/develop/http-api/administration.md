@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -246,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
@@ -1233,7 +1231,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1255,7 +1253,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 
