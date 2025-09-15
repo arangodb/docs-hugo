@@ -3,12 +3,12 @@ title: k Paths in AQL
 menuTitle: k Paths
 weight: 30
 description: >-
-  Find all paths between two vertices with a fixed range of path lengths
+  Find all paths between two nodes with a fixed range of path lengths
 ---
 ## General query idea
 
 This type of query finds all paths between two given documents
-(*startVertex* and *targetVertex*) in your graph. The paths are restricted
+(*startNode* and *endNode*) in your graph. The paths are restricted
 by a minimum and maximum length that you specify.
 
 Every such path is returned as a JSON object with two components:
@@ -23,7 +23,7 @@ Here is an example graph to explain how the k Paths algorithm works:
 ![Train Connection Map](../../../images/train_map.png)
 
 Each ellipse stands for a train station with the name of the city written inside
-of it. They are the vertices of the graph. Arrows represent train connections
+of it. They are the nodes of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
 describe how long it takes to get from one station to another. They are used
 as edge weights.
@@ -70,7 +70,7 @@ d) Detour at Edinburgh to York
    6. York
    7. London
 
-Note that only paths that do not contain the same vertex twice are consider to
+Note that only paths that do not contain the same node twice are consider to
 be valid. The following alternative would visit Aberdeen twice and is **not**
 returned by the k Paths algorithm:
 
@@ -113,31 +113,31 @@ return a large number of paths for large connected graphs.
 ```aql
 FOR path
   IN MIN..MAX OUTBOUND|INBOUND|ANY K_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   GRAPH graphName
   [OPTIONS options]
 ```
 
 - `FOR`: Emits the variable **path** which contains one path as an object
-  containing `vertices` and `edges` of the path.
+  containing `vertices` (nodes) and `edges` of the path.
 - `IN` `MIN..MAX`: The minimal and maximal depth for the traversal:
   - **min** (number, *optional*): Paths returned by this query
     have at least a length of this many edges.
     If not specified, it defaults to `1`. The minimal possible value is `0`.
   - **max** (number, *optional*): Paths returned by this query
     have at most a length of this many edges.
-    If omitted, it defaults to the value of `min`. Thus, only the vertices and
+    If omitted, it defaults to the value of `min`. Thus, only the nodes and
     edges in the range of `min` are returned. You cannot specify `max` without `min`.
 - `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both).
 - `K_PATHS`: The keyword to compute all paths with the specified lengths.
-- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices
+- **startNode** `TO` **endNode** (both string\|object): The two nodes
   between which the paths are computed. This can be specified in the form of
   a document identifier string or in the form of an object with the `_id`
   attribute. All other values lead to a warning and an empty result. This is
   also the case if one of the specified documents does not exist.
 - `GRAPH` **graphName** (string): The name identifying the named graph.
-  Its vertex and edge collections are looked up for the path search.
+  Its node and edge collections are looked up for the path search.
 - `OPTIONS` **options** (object, *optional*):
   See the [path search options](#path-search-options).
 
@@ -146,13 +146,13 @@ FOR path
 ```aql
 FOR path
   IN MIN..MAX OUTBOUND|INBOUND|ANY K_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   edgeCollection1, ..., edgeCollectionN
   [OPTIONS options]
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
-The involved vertex collections are determined by the edges of the given
+The involved node collections are determined by the edges of the given
 edge collections.
 
 ### Path search options
@@ -179,8 +179,8 @@ into account. In this case you can use `OUTBOUND` as general search direction
 and `ANY` specifically for *edges2* as follows:
 
 ```aql
-FOR vertex IN OUTBOUND K_PATHS
-  startVertex TO targetVertex
+FOR node IN OUTBOUND K_PATHS
+  startNode TO endNode
   edges1, ANY edges2, edges3
 ```
 

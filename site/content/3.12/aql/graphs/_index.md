@@ -16,7 +16,7 @@ The two options in managing graphs are to either use
 
 Named graphs can be defined through the [graph-module](../../graphs/general-graphs/_index.md)
 or via the [web interface](../../components/web-interface/_index.md).
-The definition contains the name of the graph, and the vertex and edge collections
+The definition contains the name of the graph, and the node and edge collections
 involved. Since the management functions are layered on top of simple sets of
 document and edge collections, you can also use regular AQL functions to work with them. 
 
@@ -24,7 +24,7 @@ Both variants (named graphs and loosely coupled collection sets a.k.a. anonymous
 are supported by the AQL language constructs for graph querying. These constructs
 make full use of optimizations and therefore best performance is to be expected:
 
-- [AQL Traversals](traversals.md) to follow edges connected to a start vertex,
+- [AQL Traversals](traversals.md) to follow edges connected to a start node,
   up to a variable depth. It can be combined with AQL filter conditions.
 
 - [AQL Shortest Path](shortest-path.md) to find one shortest path

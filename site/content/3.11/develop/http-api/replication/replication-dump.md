@@ -112,16 +112,19 @@ paths:
           in: query
           required: false
           description: |
-            Include system collections in the result. The default value is `true`.
+            Include system collections in the result.
           schema:
             type: boolean
+            default: true
         - name: global
           in: query
           required: false
           description: |
-            Include all databases in the response. Only works on `_system` The default value is `false`.
+            Include all databases in the response. Only works in the context of
+            the `_system` database.
           schema:
             type: boolean
+            default: false
         - name: batchId
           in: query
           required: true
@@ -197,7 +200,7 @@ paths:
           in: query
           required: false
           description: |
-            setting `state` to true will make the response also contain
+            Setting `state` to `true` makes the response also contain
             a `state` attribute with information about the leader state.
             This is used only internally during the replication process
             and should not be used by client applications.
@@ -969,9 +972,10 @@ paths:
           in: query
           required: false
           description: |
-            Include system collections in the result. The default value is `true`.
+            Include system collections in the result.
           schema:
             type: boolean
+            default: true
       responses:
         '200':
           description: |

@@ -57,6 +57,7 @@ paths:
                     An array of attribute names used for each dimension. Array expansions are not allowed.
                   type: array
                   minItems: 1
+                  uniqueItems: true
                   items:
                     type: string
                 fieldValueTypes:
@@ -69,6 +70,7 @@ paths:
 
                     An array of attribute names used as search prefix. Array expansions are not allowed.
                   type: array
+                  uniqueItems: true
                   items:
                     type: string
                 storedValues:
@@ -99,6 +101,7 @@ paths:
 
                     The maximum number of attributes in `storedValues` is 32.
                   type: array
+                  uniqueItems: true
                   items:
                     type: string
                 unique:

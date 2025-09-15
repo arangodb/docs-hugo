@@ -2,7 +2,6 @@ package models
 
 import (
 	"io"
-	"io/ioutil"
 	"strings"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
@@ -12,7 +11,7 @@ import (
 var formatter = format.OpenapiFormatter{}
 
 func ParseOpenapiPayload(request io.Reader) (map[string]interface{}, error) {
-	req, err := ioutil.ReadAll(request)
+	req, err := io.ReadAll(request)
 	if err != nil {
 		Logger.Printf("Error reading Example body: %s\n", err.Error())
 		return nil, err

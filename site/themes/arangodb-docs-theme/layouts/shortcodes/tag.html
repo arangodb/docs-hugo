@@ -1,5 +1,10 @@
+{{ $tooltips := dict
+  "ArangoGraph"       "This feature is available in the ArangoGraph Insights Platform"
+  "ArangoDB Platform" "This feature is available in the unified ArangoDB Platform"
+  "arangosh"          "This feature is available in the ArangoDB Shell"
+-}}
 <p class="labels">
-    {{ range $.Params }}
-        <span class="label">{{ . }}</span>
-    {{ end }}
+{{ range $.Params }}
+  <span class="label"{{ with index $tooltips . }} title="{{ . }}"{{ end }}>{{ . }}</span>
+{{ end }}
 </p>

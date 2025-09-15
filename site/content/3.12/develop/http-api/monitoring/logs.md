@@ -44,9 +44,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -59,10 +60,11 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries such that their log entry identifier (`lid` .)
+            Returns all log entries such that their log entry identifier (`id` value)
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -78,6 +80,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -91,9 +94,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `id` values. Note that the `id`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -149,9 +153,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -168,6 +173,7 @@ paths:
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -183,6 +189,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -196,9 +203,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `lid` values. Note that the `lid`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -1034,7 +1042,7 @@ Example not generated because it changes on every run and returns up to 25MB of 
 curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 X-Arango-Queue-Time-Seconds: 0.000000
@@ -1070,7 +1078,6 @@ Content-Length: 257
   }
 }
 ```
-{{< /expand >}}
 
 ## Get recent AQL queries
 
@@ -1306,4 +1313,3 @@ Content-Length: 353
   }
 }
 ```
-{{< /expand >}}

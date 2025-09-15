@@ -84,18 +84,18 @@ in the toolbar or via shortcut (see below).
 
 ### AQL Editor Shortcuts
 
-| Key combination | Action |
-|:----------------|:-------|
-| `Ctrl`/`Cmd` + `Return` | Execute query
-| `Ctrl`/`Cmd` + `Alt` + `Return` | Execute selected query
-| `Ctrl`/`Cmd` + `Shift` + `Return` | Explain query
-| `Ctrl`/`Cmd` + `Shift` + `S` | Save query
-| `Ctrl`/`Cmd` + `Shift` + `C` | Toggle comments
-| `Ctrl`/`Cmd` + `Z` | Undo last change
-| `Ctrl`/`Cmd` + `Shift` + `Z` | Redo last change
-| `Shift` + `Alt` + `Up` | Increase font size
-| `Shift` + `Alt` + `Down` | Decrease font size
-| `Ctrl` + `Space` | Open up the spotlight search
+| Key combination (regular)       | (Apple / macOS)                | Action
+|:--------------------------------|:-------------------------------|:-------------
+| {{< kbd "Ctrl Return" >}}       | {{< kbd "Cmd Return" >}}       | Execute query
+| {{< kbd "Ctrl Alt Return" >}}   | {{< kbd "Cmd Alt Return" >}}   | Execute selected query
+| {{< kbd "Ctrl Shift Return" >}} | {{< kbd "Cmd Shift Return" >}} | Explain query
+| {{< kbd "Ctrl Shift S" >}}      | {{< kbd "Cmd Shift S" >}}      | Save query
+| {{< kbd "Ctrl Shift C" >}}      | {{< kbd "Cmd Shift C" >}}      | Toggle comments
+| {{< kbd "Ctrl Z" >}}            | {{< kbd "Cmd Z" >}}            | Undo last change
+| {{< kbd "Ctrl Shift Z" >}}      | {{< kbd "Cmd Shift Z" >}}      | Redo last change
+| {{< kbd "Shift Alt Up" >}}      | {{< kbd "Shift Alt Up" >}}     | Increase font size
+| {{< kbd "Shift Alt Down" >}}    | {{< kbd "Shift Alt Down" >}}   | Decrease font size
+| {{< kbd "Ctrl Space" >}}        | {{< kbd "Ctrl Space" >}}       | Open up the spotlight search
 
 ## Running Queries
 

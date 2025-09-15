@@ -82,6 +82,7 @@ paths:
                     You can expand one array attribute with `[*]`.
                   type: array
                   minItems: 1
+                  uniqueItems: true
                   items:
                     type: string
                 storedValues:
@@ -105,23 +106,27 @@ paths:
                     type: string
                 unique:
                   description: |
-                    If `true`, then create a unique index. Defaults to `false`.
+                    Whether to create the index with a uniqueness constraint.
                     In unique indexes, only the attributes in `fields` are checked for uniqueness,
                     but the attributes in `storedValues` are not checked for their uniqueness.
                   type: boolean
+                  default: false
                 sparse:
                   description: |
-                    If `true`, then create a sparse index. Defaults to `false`.
+                    Whether create a sparse index that excludes documents with at least
+                    one of the `fields` missing or set to `null`.
                   type: boolean
+                  default: false
                 deduplicate:
                   description: |
                     The attribute controls whether inserting duplicate index values
-                    from the same document into a unique array index will lead to a unique constraint
-                    error or not. The default value is `true`, so only a single instance of each
-                    non-unique index value will be inserted into the index per document. Trying to
-                    insert a value into the index that already exists in the index will always fail,
+                    from the same document into a unique array index lead to a unique constraint
+                    error or not. Only a single instance of each non-unique index value
+                    is inserted into the index per document by default. Trying to
+                    insert a value into the index that already exists in the index always fails,
                     regardless of the value of this attribute.
                   type: boolean
+                  default: true
                 estimates:
                   description: |
                     This attribute controls whether index selectivity estimates are maintained for the
@@ -133,9 +138,9 @@ paths:
                     competing indexes in AQL queries when there are multiple candidate indexes to
                     choose from.
 
-                    The `estimates` attribute is optional and defaults to `true` if not set.
-                    It has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
+                    The option has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
                   type: boolean
+                  default: true
                 cacheEnabled:
                   description: |
                     This attribute controls whether an extra in-memory hash cache is
@@ -157,6 +162,7 @@ paths:
                     `cacheEnabled` defaults to `false` and should only be used for indexes that
                     are known to benefit from an extra layer of caching.
                   type: boolean
+                  default: false
                 inBackground:
                   description: |
                     Set this option to `true` to keep the collection/shards available for

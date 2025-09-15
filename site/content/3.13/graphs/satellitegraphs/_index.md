@@ -64,7 +64,7 @@ execution times for graph queries in cluster deployments.
 
 - **SatelliteGraph**:
   Make the entire graph available on all DB-Servers using synchronous
-  replication. All vertices and edges will be available on every node for
+  replication. All nodes and edges will be available on every node for
   maximum data locality. No network hops are required to traverse the graph.
   The graph data must fit on each node, therefore it will typically be a small
   to medium sized graph. The performance will be the highest if you are not
