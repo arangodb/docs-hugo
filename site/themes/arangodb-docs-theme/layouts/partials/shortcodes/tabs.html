@@ -11,7 +11,7 @@
           {{- cond (eq $idx 0) " selected" ""}}" onclick="switchTab('{{ $groupid }}','{{ .name }}',event)">
           <span>{{ .name | markdownify }}</span>
         </button>
-      {{ end -}}
+      {{- end -}}
     {{ end -}}
     </div>
     {{ range $idx, $tab := $tabs -}}

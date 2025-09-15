@@ -138,7 +138,7 @@ fully transactional in a single instance.
 ## SmartGraphs
 
 In SmartGraphs there are restrictions on the values of the `_key`
-attributes. Essentially, the `_key` attribute values for vertices must
+attributes. Essentially, the `_key` attribute values for nodes must
 be prefixed with the string value of the SmartGraph attribute and a
 colon. A similar restriction applies for the edges.
 

@@ -48,6 +48,7 @@ paths:
             Whether or not system services should be excluded from the result.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -165,6 +166,7 @@ paths:
             Set to `true` to enable development mode.
           schema:
             type: boolean
+            default: false
         - name: setup
           in: query
           required: false
@@ -172,6 +174,7 @@ paths:
             Set to `false` to not run the service's setup script.
           schema:
             type: boolean
+            default: true
         - name: legacy
           in: query
           required: false
@@ -179,6 +182,7 @@ paths:
             Set to `true` to install the service in 2.8 legacy compatibility mode.
           schema:
             type: boolean
+            default: false
       responses:
         '201':
           description: |
@@ -221,6 +225,7 @@ paths:
             Set to `false` to not run the service's teardown script.
           schema:
             type: boolean
+            default: true
       responses:
         '204':
           description: |
@@ -294,6 +299,7 @@ paths:
             Set to `false` to not run the old service's teardown script.
           schema:
             type: boolean
+            default: true
         - name: setup
           in: query
           required: false
@@ -301,6 +307,7 @@ paths:
             Set to `false` to not run the new service's setup script.
           schema:
             type: boolean
+            default: true
         - name: legacy
           in: query
           required: false
@@ -308,6 +315,7 @@ paths:
             Set to `true` to install the new service in 2.8 legacy compatibility mode.
           schema:
             type: boolean
+            default: false
         - name: force
           in: query
           required: false
@@ -315,6 +323,7 @@ paths:
             Set to `true` to force service install even if no service is installed under given mount.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -388,6 +397,7 @@ paths:
             Set to `true` to run the old service's teardown script.
           schema:
             type: boolean
+            default: false
         - name: setup
           in: query
           required: false
@@ -395,6 +405,7 @@ paths:
             Set to `false` to not run the new service's setup script.
           schema:
             type: boolean
+            default: true
         - name: legacy
           in: query
           required: false
@@ -402,6 +413,7 @@ paths:
             Set to `true` to install the new service in 2.8 legacy compatibility mode.
           schema:
             type: boolean
+            default: false
         - name: force
           in: query
           required: false
@@ -409,6 +421,7 @@ paths:
             Set to `true` to force service install even if no service is installed under given mount.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -463,7 +476,7 @@ paths:
     patch:
       operationId: updateFoxxConfiguration
       description: |
-        Replaces the given service's configuration.
+        Replaces the given service's configuration partially.
 
         Returns an object mapping all configuration option names to their new values.
       parameters:
@@ -486,15 +499,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON object, mapping configuration option names to their new values.
+                Any omitted options will be ignored.
               type: object
-              required:
-                - options
-              properties:
-                options:
-                  description: |
-                    A JSON object mapping configuration option names to their new values.
-                    Any omitted options will be ignored.
-                  type: object
       responses:
         '200':
           description: |
@@ -534,15 +542,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON object, mapping configuration option names to their new values.
+                Any omitted options will be reset to their default values or marked as unconfigured.
               type: object
-              required:
-                - options
-              properties:
-                options:
-                  description: |
-                    A JSON object mapping configuration option names to their new values.
-                    Any omitted options will be reset to their default values or marked as unconfigured.
-                  type: object
       responses:
         '200':
           description: |
@@ -758,12 +761,9 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                data:
-                  description: |
-                    An arbitrary JSON value that will be parsed and passed to the
-                    script as its first argument.
+              description: |
+                An arbitrary JSON value that will be parsed and passed to the
+                script as its first argument.
       responses:
         '200':
           description: |

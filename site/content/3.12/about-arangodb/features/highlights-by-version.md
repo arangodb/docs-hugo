@@ -131,7 +131,7 @@ Also see [What's New in 3.11](../../release-notes/version-3.11/whats-new-in-3-11
   `arangosearch` View support that allows you to implement entity resolution.
 
 - [**Parallelism for sharded graphs**](../../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition):
-  Parallel execution of AQL traversal queries with many start vertices for all
+  Parallel execution of AQL traversal queries with many start nodes for all
   types of sharded graphs, leading to faster results.
 
 - [**Traversal Projections**](../../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition): 
@@ -169,7 +169,7 @@ Also see [What's New in 3.9](../../release-notes/version-3.9/whats-new-in-3-9.md
 - [**Weighted traversals**](../../release-notes/version-3.8/whats-new-in-3-8.md#weighted-traversals)
   and [**k Paths**](../../release-notes/version-3.8/whats-new-in-3-8.md#k-paths):
   Two new AQL graph traversal methods to emit paths in order of increasing
-  weights and to enumerate all paths between a source and a target vertex that
+  weights and to enumerate all paths between a start and a end node that
   match a given length.
 
 - **ArangoSearch**:
@@ -236,7 +236,7 @@ Also see [What's New in 3.8](../../release-notes/version-3.8/whats-new-in-3-8.md
 
 - [**Disjoint SmartGraphs**](../../release-notes/version-3.7/whats-new-in-3-7.md#disjoint-smartgraphs):
   Improve traversal execution times for SmartGraphs without edges between
-  vertices with different SmartGraph attributes.
+  nodes with different SmartGraph attribute values.
 
 - [**Traversal parallelization**](../../release-notes/version-3.7/whats-new-in-3-7.md#traversal-parallelization-enterprise-edition):
   Optional parallel execution of nested traversals for single servers and
