@@ -101,8 +101,6 @@ displayed.
 7. To see the neighbor nodes and the edges that connect them, right-click a node,
    click **Expand (_n_)** and then **All (_n_)**.
 
-![A screenshot of the dialog for adding nodes with two persons selected](../../images/graph-visualizer-add-nodes.png)
-
 ### Add nodes and edges using a query
 
 You can run an AQL query to add a nodes, edges, or paths of the graph to the canvas.
