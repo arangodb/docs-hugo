@@ -1,10 +1,10 @@
-<div class="box notices cstyle tip">
-    <div class="box-content-container">
-        <div class="box-content">
-            <i class="fas fa-check"></i>
-            <div class="box-text">
-                {{ .InnerDeindent | .Page.RenderString }}
-            </div>
-        </div>
-    </div>
+<div class="box notices cstyle tip">{{/* */ -}}
+  <div class="box-content-container">{{/* */ -}}
+    <div class="box-content">{{/* */ -}}
+      <i class="fas fa-check"></i>{{/* */ -}}
+      <div class="box-text">
+        {{- .InnerDeindent | .Page.RenderString -}}
+      </div>{{/* */ -}}
+    </div>{{/* */ -}}
+  </div>{{/* */ -}}
 </div>

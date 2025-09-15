@@ -18,6 +18,8 @@ description: >-
 <dependencies>
 ```
 
+Substitute `7.x.x` with the latest available driver version.
+
 ## Gradle Setup
 
 ```groovy
@@ -148,13 +150,15 @@ there are in your project other libraries depending on different versions of Jac
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
             <artifactId>jackson-bom</artifactId>
-            <version>...</version>
+            <version>x.y.z</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
     </dependencies>
 </dependencyManagement>
 ```
+
+Substitute `x.y.z` with the latest stable version.
 
 The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client`,
 which in turn depends on packages from `io.netty`.

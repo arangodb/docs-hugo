@@ -44,9 +44,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -59,10 +60,11 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries such that their log entry identifier (`lid` .)
+            Returns all log entries such that their log entry identifier (`id` value)
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -78,6 +80,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -91,9 +94,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `id` values. Note that the `id`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -149,9 +153,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -168,6 +173,7 @@ paths:
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -183,6 +189,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -196,9 +203,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `lid` values. Note that the `lid`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -848,14 +856,17 @@ paths:
       operationId: getRecentApiCalls
       description: |
         Get a list of the most recent requests with a timestamp and the endpoint.
-         This feature is for debugging purposes.
+        This feature is for debugging purposes.
 
         You can control how much memory is used to record API calls with the
-        `--server.memory-per-api-call-list` and `--server.number-of-api-call-lists`
-        startup options.
+        `--server.api-recording-memory-limit` startup option.
 
-        You can disable API call recording via the `--server.api-call-recording`
-        startup option. The endpoint returns an empty list of calls in this case.
+        You can disable this endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether API calls are recorded is independently controlled by the
+        `--server.api-call-recording` startup option.
+        The endpoint returns an empty list of calls if turned off.
       parameters:
         - name: database-name
           in: path
@@ -870,7 +881,7 @@ paths:
       responses:
         '200':
           description: |
-            The 
+            Returns the recorded API calls.
           content:
             application/json:
               schema:
@@ -913,7 +924,7 @@ paths:
                               description: |
                                 The HTTP request method.
                               type: string
-                              enum: [get, patch, put, delete, head]
+                              enum: [GET, PATCH, PUT, DELETE, HEAD]
                             path:
                               description: |
                                 The HTTP request path excluding the database prefix (`/_db/<database-name>`).
@@ -953,6 +964,68 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Monitoring
 ```
@@ -965,7 +1038,7 @@ Example not generated because it changes on every run and returns up to 25MB of 
 curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 X-Arango-Queue-Time-Seconds: 0.000000
@@ -1001,4 +1074,4 @@ Content-Length: 257
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}

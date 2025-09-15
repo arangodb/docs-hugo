@@ -38,7 +38,7 @@ automation systems Maven and Gradle.
 ### Maven
 
 To add the driver to your project with Maven, add the following code to your
-`pom.xml` (substitute `7.x.x` with the latest driver version):
+`pom.xml`:
 
 ```xml
 <dependencies>
@@ -49,6 +49,8 @@ To add the driver to your project with Maven, add the following code to your
   </dependency>
 </dependencies>
 ```
+
+Substitute `7.x.x` with the latest driver version.
 
 ### Gradle
 

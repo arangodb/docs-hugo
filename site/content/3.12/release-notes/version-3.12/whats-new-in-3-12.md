@@ -759,7 +759,7 @@ aren't chosen automatically, you can make the optimizer prefer the indexes you
 specify. This can be done per edge collection, direction, and level/depth:
 
 ```aql
-FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+FOR v, e, p IN 1..4 OUTBOUND startNode edgeCollection
 OPTIONS {
   indexHint: {
     "edgeCollection": {
@@ -806,7 +806,7 @@ You can set this option to `false` to not make a large graph operation pollute
 the edge cache.
 
 ```aql
-FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+FOR v, e, p IN 1..5 OUTBOUND "nodes/123" edges
   OPTIONS { useCache: false }
   ...
 ```
@@ -1017,7 +1017,7 @@ regressed while others improved. In particular shortest path queries like
 `K_SHORTEST_PATHS` queries became slower for certain datasets compared to
 version 3.10. The performance should now be similar again due to a switch from
 a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
-of neighbor vertices in one case.
+of neighbor nodes in one case.
 
 In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been
@@ -1256,6 +1256,42 @@ to some extent.
 
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
 for details.
+
+---
+
+<small>Introduced in: v3.12.5</small>
+
+The `use-index-for-collect` optimizer rule has been further extended.
+Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
+refers to attributes covered by a persistent index (and no other variables nor
+contains calls of aggregation functions with constant values) can now utilize
+this index. The index must not be sparse.
+
+Reading the data from the index instead of the stored documents for aggregations
+can increase the performance by a factor of two.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a AGGREGATE b = MAX(doc.b)
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the above
+example query has an `IndexCollectNode` in the explain output and the index
+usage is indicated if the optimization is applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode         4999     - FOR doc IN coll COLLECT a = doc.`a` AGGREGATE b = MAX(doc.`b`) /* full index scan */
+  6   CalculationNode      ✓   4999     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               4999     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1836452431376941056   persistent   coll   
+```
 
 ## Indexing
 
@@ -1711,6 +1747,22 @@ service interruption during upgrades and after failovers.
 
 The new `--server.maximal-number-sync-shard-actions` startup option controls
 how many `SynchronizeShard` actions can be queued at any given time.
+
+### Full RocksDB compaction on upgrade
+
+<small>Introduced in: v3.12.5-2</small>
+
+A new `--database.auto-upgrade-full-compaction` startup option has been added
+that you can use together with `--database.auto-upgrade` for upgrading.
+
+With the new option enabled, the server will perform a full RocksDB compaction
+after the database upgrade has completed successfully but before shutting down.
+This performs a complete compaction of all column families with the `changeLevel`
+and `compactBottomMostLevel` options enabled, which can help optimize the
+database files after an upgrade.
+
+The server process terminates with the new exit code 30
+(`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
 
 ## Miscellaneous changes
 
@@ -2179,18 +2231,19 @@ A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
 list of the most recent requests with a timestamp and the endpoint. This feature
 is for debugging purposes.
 
-You can configure the memory limit for this feature with the following startup options:
+You can configure the memory limit for this feature with the following startup option:
 
-- `--server.number-of-api-call-lists`:
-  The size of the ring buffer for API call record lists (default: `256`).
-- `--server.memory-per-api-call-list`: 
-  The amount of memory used for a single API call record list (default: `100000` bytes)
+- `--server.api-recording-memory-limit`:
+  Size limit for the list of API call records (default: `25600000`).
 
-This means that approximately 25 MB of memory are reserved by default.
-
+This means that 25 MB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
+
+The `/_admin/server/api-calls` endpoint exposes the recorded API calls.
+It is enabled by default. You can disable it altogether by setting the new
+`--log.recording-api-enabled` startup option to `false`.
 
 A metric has been added for the time spent on API call recording to track the
 impact of this feature:
@@ -2201,6 +2254,20 @@ impact of this feature:
 
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
+
+### Access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+A new authentication feature has been added that lets you use access tokens
+for either creating JWT session tokens or directly authenticate with an
+access token instead of a password.
+
+You can create multiple access tokens for a single user account, set expiration
+dates, and individually revoke tokens.
+
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
 
 ## Client tools
 

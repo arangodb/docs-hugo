@@ -85,7 +85,7 @@ paths:
               properties:
                 collections:
                   description: |
-                    `collections` must be a JSON object that can have one or all sub-attributes
+                    Must be a JSON object that can have one or all sub-attributes
                     `read`, `write` or `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
                     transaction must be declared with the `write` or `exclusive` attribute or it
@@ -94,42 +94,60 @@ paths:
                     to let transactions fail in case of undeclared collections for reading.
                     Collections for reading should be fully declared if possible, to avoid
                     deadlocks.
-                  type: string
+                  type: object
+                  properties:
+                    read:
+                      description: |
+                        A single collection or a list of collections to use in
+                        the transaction in read-only mode.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
+                    write:
+                      description: |
+                        A single collection or a list of collections to use in
+                        the transaction in write or read mode.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
+                    exclusive:
+                      description: |
+                        A single collection or a list of collections to acquire
+                        exclusive write access for.
+                    #  type: [string, array]
+                    #  items:
+                    #    type: string
                 action:
                   description: |
-                    the actual transaction operations to be executed, in the
-                    form of stringified JavaScript code. The code will be executed on server
+                    The actual transaction operations to be executed, in the
+                    form of stringified JavaScript code. The code is executed on the server
                     side, with late binding. It is thus critical that the code specified in
                     `action` properly sets up all the variables it needs.
                     If the code specified in `action` ends with a return statement, the
-                    value returned will also be returned by the REST API in the `result`
+                    value returned is also returned by the REST API in the `result`
                     attribute if the transaction committed successfully.
                   type: string
                 waitForSync:
                   description: |
-                    an optional boolean flag that, if set, will force the
+                    An optional boolean flag that, if set, forces the
                     transaction to write all data to disk before returning.
                   type: boolean
                 allowImplicit:
                   description: |
                     Allow reading from undeclared collections.
                   type: boolean
+                  default: true
                 lockTimeout:
                   description: |
-                    an optional numeric value that can be used to set a
-                    timeout in seconds for waiting on collection locks. This option is only
-                    meaningful when using exclusive locks. If not specified, a default value of
-                    900 seconds will be used. Setting `lockTimeout` to `0` will make ArangoDB
-                    not time out waiting for a lock.
+                    The timeout in seconds for waiting on collection locks.
+                    This option is only meaningful when using exclusive locks.
+                    Set `lockTimeout` to `0` to make ArangoDB not time out
+                    waiting for a lock.
                   type: integer
+                  default: 900
                 params:
                   description: |
-                    optional arguments passed to `action`.
-                  type: string
-                maxTransactionSize:
-                  description: |
-                    Transaction size limit in bytes.
-                  type: integer
+                    Optional argument passed to `action`. Can be of any type.
       responses:
         '200':
           description: |
