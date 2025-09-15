@@ -1078,6 +1078,7 @@ Content-Length: 257
   }
 }
 ```
+{{< /details >}}
 
 ## Get recent AQL queries
 
@@ -1274,7 +1275,7 @@ Example not generated because it changes on every run and there can be many inte
 curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/aql-queries
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 X-Arango-Queue-Time-Seconds: 0.000000
@@ -1313,3 +1314,4 @@ Content-Length: 353
   }
 }
 ```
+{{< /details >}}
