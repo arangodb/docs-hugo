@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -246,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
@@ -1117,7 +1115,7 @@ paths:
           in: query
           required: false
           description: |
-            Set to `true` to change the license even if it expires sooner than the current one.
+            Whether to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
             default: false
@@ -1126,7 +1124,7 @@ paths:
           application/json:
             schema:
               description: |
-                The request body has to contain the Base64-encoded string wrapped in double quotes.
+                The request body has to contain the Base64-encoded license string wrapped in double quotes.
               type: string
               example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:
@@ -1233,7 +1231,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1255,7 +1253,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 

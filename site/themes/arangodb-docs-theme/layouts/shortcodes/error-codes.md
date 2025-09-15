@@ -8,8 +8,9 @@
 ### {{ .group }}
 
 {{ else }}
+<a name="{{ .code }}" id="{{ .code }}"></a>
 
-#### {{ .code }} - {{ .name }} {#{{ .code }}}
+#### {{ .code }} - {{ .name }} {#{{ .name }}}
 
 <p>{{ .desc }}</p>
 {{- end }}

@@ -32,7 +32,7 @@ The same relocation rule is also applied to its subclasses (`ArrayNode`, `Object
 The **user-data serde** is used to serialize and deserialize the user-data,
 namely the data representing:
 - documents
-- vertexes
+- nodes
 - edges
 - AQL bind variables
 - transactions parameters

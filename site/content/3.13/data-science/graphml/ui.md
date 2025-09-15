@@ -37,12 +37,12 @@ To create a new GraphML project using the ArangoDB Platform web interface, follo
 After clicking on a project name, you are taken to a screen where you can
 configure and start a new Featurization job. Follow these steps:
 1. **Select a Graph**: In the **Features** section, choose your target graph from the **Select a graph** dropdown menu.
-2. **Select Vertex Collection(s)**: Pick the vertex collection(s) that you want to include for feature extraction.
-3. **Select Attributes**: Choose the attributes from your vertex collection to
+2. **Select Vertex Collection(s)**: Pick the node collection(s) that you want to include for feature extraction.
+3. **Select Attributes**: Choose the attributes from your node collection to
   convert into machine-understandable features. Attributes cannot be used if their values are lists or arrays.
 
 {{< info >}}
-A metagraph is basically just the configured subset of a graph (the vertex and
+A metagraph is basically just the configured subset of a graph (the node and
 edge collections and the specified attributes). This is what you see represented
 in the metagraph object in the JSON specification on the right.
 {{< /info >}}
@@ -133,14 +133,6 @@ of graph nodes that capture structural and feature-based information.
 - **Target Vertex Collection:** Select the collection to generate embeddings for (e.g. `movie` or `person`)
 - No label is required for training in this mode
 
-**Understanding Vertex Collections:**
-
-- **Vertex Collection**: These are the source nodes used during training.
-  They represent the full set of nodes on which features were computed (e.g. `person`, `movie`).
-- **Vertex Collection**: These are the target nodes that contain labeled data.
-  The labels in this collection are used to supervise the training process and
-  are the basis for evaluating prediction quality.
-
 The target collection is where the model's predictions are stored when running a prediction job.
 
 Once the configuration is complete, click **Begin training** to start the embedding job.
@@ -150,7 +142,7 @@ Once the configuration is complete, click **Begin training** to start the embedd
 ## Model selection phase
 
 Once the training is finished, the job status updates to **READY FOR MODEL SELECTION**.
-This means the model has been trained using the provided vertex and edge data
+This means the model has been trained using the provided node and edge data
 and is now ready for evaluation.
 
 A list of trained models is displayed, along with performance metrics
@@ -203,7 +195,7 @@ predictions relevant without repeating the entire ML workflow.
 
 The Prediction screen displays the following configuration options:
 - **Select Model**: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
-- **Target Vertex Collection**: This is the vertex collection on which predictions are applied.
+- **Target Vertex Collection**: This is the node collection on which predictions are applied.
 - **Prediction Type**: Depending on the training job (for example, classification or embedding), the prediction outputs class labels or updated embeddings.
 
 ### Enable scheduling
@@ -240,5 +232,5 @@ the Web Interface or export them for downstream use.
 ## Limitations
 
 - **Edge Attributes**: The current version of GraphML does not support the use of edge attributes as features.
-- **Dangling Edges**: Edges that point to non-existent vertices ("dangling edges") are not caught during the featurization analysis. They may cause errors later, during the Training phase.
+- **Dangling Edges**: Edges that point to non-existent nodes ("dangling edges") are not caught during the featurization analysis. They may cause errors later, during the Training phase.
 - **Memory Usage**: Both featurization and training can be memory-intensive. Out-of-memory errors can occur on large graphs with insufficient system resources.
