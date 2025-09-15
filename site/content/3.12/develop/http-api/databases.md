@@ -232,7 +232,7 @@ paths:
                     Has to contain a valid database name. The name must conform to the selected
                     naming convention for databases. If the name contains Unicode characters, the
                     name must be [NFC-normalized](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-                    Non-normalized names will be rejected by arangod.
+                    Non-normalized names are rejected.
                   type: string
                 options:
                   description: |
@@ -241,15 +241,26 @@ paths:
                   properties:
                     sharding:
                       description: |
-                        The sharding method to use for new collections in this database. Valid values
-                        are: "", "flexible", or "single". The first two are equivalent. _(cluster only)_
+                        The sharding method to use for new collections in this database. _(cluster only)_
+                        Valid values are:
+                        - `""` or `"flexible"`: Create a database where collections can
+                          be sharded independently.
+                        - `"single"`: Create a OneShard database where all collections have a
+                          single shard and all leader shards are co-located on the same DB-Server.
                       type: string
+                      enum: ["", flexible, single]
+                      default: ""
                     replicationFactor:
                       description: |
                         Default replication factor for new collections created in this database.
-                        Special values include "satellite", which will replicate the collection to
-                        every DB-Server (Enterprise Edition only), and 1, which disables replication.
                         _(cluster only)_
+
+                        Special values:
+                        - `"satellite"`: Replicate the collection to every DB-Server
+                        - `1`: Disable replication
+
+                        You can configure the global default with the
+                        `--cluster.default-replication-factor` startup option.
                       type: integer
                     writeConcern:
                       description: |
@@ -267,10 +278,10 @@ paths:
                       type: number
                 users:
                   description: |
-                    An array of user objects. The users will be granted *Administrate* permissions
-                    for the new database. Users that do not exist yet will be created.
+                    An array of user objects. The users are granted *Administrate* permissions
+                    for the new database. Users that do not exist yet are created.
                     If `users` is not specified or does not contain any users, the default user
-                    `root` will be used to ensure that the new database will be accessible after it
+                    `root` is used to ensure that the new database is accessible after it
                     is created. The `root` user is created with an empty password should it not
                     exist. Each user object can contain the following attributes:
                   type: array
@@ -285,21 +296,21 @@ paths:
                         type: string
                       passwd:
                         description: |
-                          The user password as a string. If not specified, it will default to an empty
+                          The user password as a string. If not specified, it defaults to an empty
                           string. The attribute is ignored for users that already exist.
                         type: string
                       active:
                         description: |
-                          A flag indicating whether the user account should be activated or not.
-                          The default value is `true`. If set to `false`, then the user won't be able to
-                          log into the database. The default is `true`. The attribute is ignored for users
-                          that already exist.
+                          Whether the user account should be able to log in to the database system.
+
+                          The attribute is ignored for users that already exist.
                         type: boolean
+                        default: true
                       extra:
                         description: |
                           A JSON object with extra user information. It is used by the web interface
                           to store graph viewer settings and saved queries. Should not be set or
-                          modified by end users, as custom attributes will not be preserved.
+                          modified by end users, as custom attributes are not preserved.
                         type: object
       responses:
         '201':

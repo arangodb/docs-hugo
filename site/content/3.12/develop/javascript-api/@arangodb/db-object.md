@@ -42,12 +42,11 @@ The `options` attribute can be used to set defaults for collections that will
 be created in the new database (_cluster only_):
 
 - `sharding`: The sharding method to use. Valid values are: `""` or `"single"`.
-  Setting this option to `"single"` will enable the OneShard feature in the
-  Enterprise Edition.
-- `replicationFactor`: Default replication factor. Special values include
-  `"satellite"`, which will replicate the collection to every DB-Server, and
-  `1`, which disables replication.
-- `writeConcern`: how many copies of each shard are required to be in sync on
+  Setting this option to `"single"` enables the OneShard feature.
+- `replicationFactor`: Default replication factor. Special values:
+  - `"satellite"`: Replicate the collection to every DB-Server
+  - `1`: Disable replication
+- `writeConcern`: How many copies of each shard are required to be in sync on
   the different DB-Servers. If there are less then these many copies in the
   cluster a shard will refuse to write. The value of `writeConcern` cannot be
   greater than `replicationFactor`.
@@ -343,8 +342,8 @@ error is thrown. For information about the naming constraints for collections, s
   servers holding copies take over, usually without an error being
   reported.
 
-  When using the *Enterprise Edition* of ArangoDB the replicationFactor
-  may be set to "satellite" making the collection locally joinable
+  The `replicationFactor`
+  may be set to `"satellite"`, making the collection locally joinable
   on every DB-Server. This reduces the number of network hops
   dramatically when using joins in AQL at the costs of reduced write
   performance on these collections.
@@ -378,13 +377,13 @@ error is thrown. For information about the naming constraints for collections, s
     (excluding smart edge collections)
   - `"enterprise-hash-smart-edge"`: default sharding used for new
     smart edge collections starting from version 3.4
-  - `enterprise-hex-smart-vertex`: sharding used for vertex collections of
+  - `enterprise-hex-smart-vertex`: sharding used for node collections of
     EnterpriseGraphs
 
   If no sharding strategy is specified, the default is `hash` for
   all normal collections, `enterprise-hash-smart-edge` for all smart edge
   collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
-  vertex collections (the latter two require the *Enterprise Edition* of ArangoDB).
+  node collections.
   Manually overriding the sharding strategy does not yet provide a 
   benefit, but it may later in case other sharding strategies are added.
   
@@ -396,8 +395,7 @@ error is thrown. For information about the naming constraints for collections, s
   collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
   properties from the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
-  the other collection. In an Enterprise Edition cluster, this data co-location is
-  utilized to optimize queries.
+  the other collection. This data co-location is utilized to optimize queries.
 
   You need to use the same number of `shardKeys` as the prototype collection, but
   you can use different attributes.
@@ -410,26 +408,24 @@ error is thrown. For information about the naming constraints for collections, s
   {{< /info >}}
 
 - `isSmart` (boolean): Whether the collection is for a SmartGraph or
-  EnterpriseGraph (Enterprise Edition only). This is an internal property.
+  EnterpriseGraph. This is an internal property.
 
-- `isDisjoint` (boolean): Whether the collection is for a Disjoint SmartGraph
-  (Enterprise Edition only). This is an internal property.
+- `isDisjoint` (boolean): Whether the collection is for a Disjoint SmartGraph.
+  This is an internal property.
 
 - `smartGraphAttribute` (string, _optional_):
-  The attribute that is used for sharding: vertices with the same value of
-  this attribute are placed in the same shard. All vertices are required to
+  The attribute that is used for sharding: nodes with the same value of
+  this attribute are placed in the same shard. All nodes are required to
   have this attribute set and it has to be a string. Edges derive the
-  attribute from their connected vertices.
+  attribute from their connected nodes.
 
-  This feature can only be used in the *Enterprise Edition*.
-
-- `smartJoinAttribute` (string, _optional_): In an *Enterprise Edition* cluster, this attribute 
+- `smartJoinAttribute` (string, _optional_): In a cluster, this attribute 
   determines an attribute of the collection that must contain the shard key value 
   of the referred-to SmartJoin collection. Additionally, the sharding key 
   for a document in this collection must contain the value of this attribute, 
   followed by a colon, followed by the actual primary key of the document.
 
-  This feature can only be used in the *Enterprise Edition* and requires the
+  This feature requires the
   `distributeShardsLike` attribute of the collection to be set to the name
   of another collection. It also requires the `shardKeys` attribute of the
   collection to be set to a single shard key attribute, with an additional `:`
@@ -1274,12 +1270,16 @@ require("@arangodb").db._version();
 
 Returns the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-current-license).
+Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(licenseString)`
+### `db._setLicense(licenseString[, force])`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense()`](../../../operations/administration/license-management.md#active-a-license).
+- `licenseString` (string): The Base64-encoded license string.
+- `force` (boolean, _optional_): Whether to change the license even if it expires
+  sooner than the current one. Default: `false`.
+
+Also see [Apply a license](../../../operations/administration/license-management.md#apply-a-license).

@@ -8,14 +8,31 @@ description: >-
 aliases:
   - ../introduction/features
 ---
+## Feature overview
+
+- One database core for all graph, document, key-value, search, and vector needs
+- A single composable query language for all data models
+- Cluster deployments for high availability and resilience, with a multi-tenant
+  deployment option for the transactional guarantees and performance of a single server
+- Performance options to smartly shard and replicate graphs and datasets for
+  optimal data locality
+- Enhanced data security with on-disk and backup encryption, key rotation,
+  audit logging, and incremental backups without downtime
+
+See the full [Feature list of the ArangoDB core database system](core.md).
+
+For a scalable architecture based on Kubernetes that supports the full offering
+of ArangoDB including graph-powered machine learning and GenAI features, see
+the [Feature list of the ArangoDB Platform](platform.md).
+
 ## On-premises versus Cloud
 
 ### Fully managed cloud service
 
 The fully managed multi-cloud
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-is the easiest and fastest way to get started. It runs the Enterprise Edition
-of ArangoDB, lets you deploy clusters with just a few clicks, and is operated
+is the easiest and fastest way to get started.
+It lets you deploy clusters with just a few clicks, and is operated
 by a dedicated team of ArangoDB engineers day and night. You can choose from a
 variety of support plans to meet your needs.
 
@@ -63,28 +80,28 @@ Kubernetes cluster.
 
 ## ArangoDB Editions
 
-### Community Edition
+Up to version 3.12.4, the Community Edition of ArangoDB didn't include
+certain query, performance, compliance, and security features. They used to
+be exclusive to the Enterprise Edition.
 
-ArangoDB is available in a **Community Edition** governed by the
-[ArangoDB Community License](https://arangodb.com/community-license/).
+From version 3.12.5 onward, the **Community Edition** includes all
+Enterprise Edition features without time restrictions. It is governed by the
+[ArangoDB Community License](https://arangodb.com/community-license).
 You can download the extensively tested prepackaged binaries and official
-Docker images for free.
+Docker images for free. The use for commercial purposes is prohibited for
+production. The Community Edition does not include the right to distribute, embed
+within other products, or combine with ArangoDB's Enterprise Edition of the software.
+The dataset size is limited to a 100 GiB. If you exceed the size limit, you get
+warnings for two days and can bring the deployment back below 100 GiB. If you don't,
+then the deployment enters read-only mode for two days and then shuts down.
 
-- One database core for all graph, document, key-value, and search needs
-- A single composable query language for all data models
-- Extensible through microservices with custom REST APIs and user-definable
-  query functions
-- Cluster deployments for high availability and resilience
+The **Enterprise Edition** is an ArangoDB deployment with an activated license.
+It allows you to use ArangoDB for commercial purposes and removes the 100 GiB
+dataset size limit of the Community Edition.
 
-See all [Community Edition Features](community-edition.md).
-
-The Community Edition is a fully-featured version without time
-restrictions and includes cluster support. It is limited to a 100 GB on dataset
-size in production and you cannot use it for any commercial purposes, only
-internal business purposes.
-
-The source code of the Community Edition is available under the
-[Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE).
+The source code of ArangoDB is available under the
+[Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE),
+excluding the source code of the formerly exclusive Enterprise Edition features.
 Copying, modification, redistribution, non-commercial use, and commercial use in
 a non-production context are always allowed. Additionally, you can deploy
 BUSL-licensed ArangoDB source code for any purpose (including production) as
@@ -92,45 +109,3 @@ long as you are not creating a commercial derivative work or offering, or are
 including it in a commercial product, application, or service. On the fourth
 anniversary of the first publicly available distribution of a specific version,
 the license changes to the permissive Apache 2.0 open-source license.
-
-### Enterprise Edition
-
-ArangoDB is also available in a commercial version, called the
-**Enterprise Edition**. It includes additional features for performance and
-security, such as for scaling graphs and managing your data safely.
-
-- Includes all Community Edition features
-- Performance options to smartly shard and replicate graphs and datasets for
-  optimal data locality
-- Multi-tenant deployment option for the transactional guarantees and
-  performance of a single server
-- Enhanced data security with on-disk and backup encryption, key rotation,
-  and audit logging
-- Incremental backups without downtime and off-site replication
-
-See all [Enterprise Edition Features](enterprise-edition.md).
-
-### Differences between the Editions
-
-| Community Edition | Enterprise Edition |
-|-------------------|--------------------|
-| ArangoDB Community License for prepackaged binaries and Docker images, BUSL-1.1 for the source code | Commercial License |
-| Sharding using consistent hashing on the default or custom shard keys | In addition, **smart sharding** for improved data locality |
-| Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** with an automatic sharding key selection |
-| Only regular collection replication without data locality optimizations | **SatelliteCollections** to replicate collections on all cluster nodes and data locality optimizations for queries |
-| No optimizations when querying sharded graphs and replicated collections together | **SmartGraphs using SatelliteCollections** to enable more local execution of graph queries |
-| Only regular graph replication without local execution optimizations | **SatelliteGraphs** to execute graph traversals locally on a cluster node |
-| Collections can be sharded alike but joins do not utilize co-location | **SmartJoins** for co-located joins in a cluster using identically sharded collections |
-| Graph traversals without parallel execution | **Parallel execution of traversal queries** with many start vertices |
-| Graph traversals always load full documents | **Traversal projections** optimize the data loading of AQL traversal queries if only a few document attributes are accessed |
-| Inverted indexes and Views without support for search highlighting and nested search | **Search highlighting** for getting the substring positions of matches and **nested search** for matching arrays with all the conditions met by a single object |
-| Only standard Jaccard index calculation | **Jaccard similarity approximation** with MinHash for entity resolution, such as for finding duplicate records, based on how many common elements they have |{{% comment %}} Experimental feature
-| No fastText model support | Classification of text tokens and finding similar tokens using supervised **fastText word embedding models** |
-{{% /comment %}}
-| Only regular cluster deployments | **OneShard** deployment option to store all collections of a database on a single cluster node, to combine the performance of a single server and ACID semantics with a fault-tolerant cluster setup |
-| ACID transactions for multi-document / multi-collection queries on single servers, for single document operations in clusters, and for multi-document queries in clusters for collections with a single shard | In addition, ACID transactions for multi-collection queries using the OneShard feature |
-| Always read from leader shards in clusters | Optionally allow dirty reads to **read from followers** to scale reads |
-| TLS key and certificate rotation | In addition, **key rotation for JWT secrets** and **server name indication** (SNI) |
-| Only server logs | **Audit log** of server interactions |
-| No on-disk encryption | **Encryption at Rest** with hardware-accelerated on-disk encryption and key rotation |
-| Only unencrypted backups and basic data masking for backups | **Hot Backups**, **encrypted backups**, and **enhanced data masking** for backups |

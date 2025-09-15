@@ -3,12 +3,12 @@ title: All Shortest Paths in AQL
 menuTitle: All Shortest Paths
 weight: 20
 description: >-
-  Find all paths of shortest length between a start and target vertex
+  Find all paths of shortest length between two nodes
 ---
 ## General query idea
 
 This type of query finds all paths of shortest length between two given
-documents (*startVertex* and *targetVertex*) in your graph.
+documents (*startNode* and *endNode*) in your graph.
 
 Every returned path is a JSON object with two attributes:
 
@@ -22,7 +22,7 @@ A visual representation of the example graph:
 ![Train Connection Map](../../../images/train_map.png)
 
 Each ellipse stands for a train station with the name of the city written inside
-of it. They are the vertices of the graph. Arrows represent train connections
+of it. They are the nodes of the graph. Arrows represent train connections
 between cities and are the edges of the graph.
 
 Assuming that you want to go from **Carlisle** to **London** by train, the
@@ -32,7 +32,7 @@ expected two shortest paths are:
 2. Carlisle – York – London
 
 Another path that connects Carlisle and London is
-Carlisle – Glasgow – Edinburgh – York – London, but it is has two more stops and
+Carlisle – Glasgow – Edinburgh – York – London, but it has two more stops and
 is therefore not a path of the shortest length.
 
 ## Syntax
@@ -40,30 +40,30 @@ is therefore not a path of the shortest length.
 The syntax for All Shortest Paths queries is similar to the one for
 [Shortest Path](shortest-path.md) and there are also two options to
 either use a named graph or a set of edge collections. It only emits a path
-variable however, whereas `SHORTEST_PATH` emits a vertex and an edge variable.
+variable however, whereas `SHORTEST_PATH` emits a node and an edge variable.
 
 ### Working with named graphs
 
 ```aql
 FOR path
   IN OUTBOUND|INBOUND|ANY ALL_SHORTEST_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   GRAPH graphName
   [OPTIONS options]
 ```
 
 - `FOR`: Emits the variable **path** which contains one shortest path as an
-  object, with the `vertices` and `edges` of the path.
+  object, with the `vertices` (nodes) and `edges` of the path.
 - `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
 - `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
-- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
-  which the paths will be computed. This can be specified in the form of
+- **startNode** `TO` **endNode** (both string\|object): The two nodes between
+  which the paths are computed. This can be specified in the form of
   a ID string or in the form of a document with the attribute `_id`. All other
   values result in a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
-  edge collections will be looked up.
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its node and
+  edge collections are looked up for the path search.
 - `OPTIONS` **options** (object, *optional*):
   See the [path search options](#path-search-options).
 
@@ -76,12 +76,12 @@ All Shortest Paths traversals do not support edge weights.
 ```aql
 FOR path
   IN OUTBOUND|INBOUND|ANY ALL_SHORTEST_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   edgeCollection1, ..., edgeCollectionN
 ```
 
 Instead of `GRAPH graphName` you can specify a list of edge collections.
-The involved vertex collections are determined by the edges of the given
+The involved node collections are determined by the edges of the given
 edge collections. 
 
 ### Path search options
@@ -109,11 +109,11 @@ specifically for *edges2* as follows:
 
 ```aql
 FOR path IN OUTBOUND ALL_SHORTEST_PATHS
-  startVertex TO targetVertex
+  startNode TO endNode
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows using a different
 direction for each collection in your path search.
 

@@ -10,6 +10,58 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed
 here.
 
+## All Enterprise Edition features in Community Edition
+
+<small>Introduced in: v3.12.5</small>
+
+Up to version 3.12.4, the Community Edition of ArangoDB didn't include
+certain query, performance, compliance, and security features. They used to
+be exclusive to the Enterprise Edition.
+
+From version 3.12.5 onward, the Community Edition includes all
+Enterprise Edition features without time restrictions. You still need a
+license to use version 3.12 or later for commercial purposes or for a dataset
+size over 100 GiB.
+
+The following features are now available in the Community Edition:
+
+**Performance**
+
+- [SmartGraphs](../../graphs/smartgraphs/_index.md)
+- [EnterpriseGraphs](../../graphs/enterprisegraphs/_index.md)
+- [SmartGraphs using SatelliteCollections](../../graphs/smartgraphs/_index.md)
+- [SatelliteGraphs](../../graphs/satellitegraphs/_index.md)
+- [SatelliteCollections](../../develop/satellitecollections.md)
+- [SmartJoins](../../develop/smartjoins.md)
+- [OneShard](../../deploy/oneshard.md)
+- [Traversal](../../release-notes/version-3.7/whats-new-in-3-7.md#traversal-parallelization-enterprise-edition)
+  [Parallelization](../../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition)
+- [Traversal Projections](../../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition)
+- [Parallel index creation](../../release-notes/version-3.10/whats-new-in-3-10.md#parallel-index-creation-enterprise-edition)
+- [`minhash` Analyzer](../../index-and-search/analyzers.md#minhash)
+- [`geo_s2` Analyzer](../../index-and-search/analyzers.md#geo_s2)
+- [ArangoSearch column cache](../../release-notes/version-3.10/whats-new-in-3-10.md#arangosearch-column-cache-enterprise-edition)
+- [ArangoSearch WAND optimization](../../index-and-search/arangosearch/performance.md#wand-optimization)
+- [Read from followers in clusters](../../develop/http-api/documents.md#read-from-followers)
+
+**Querying**
+
+- [Search highlighting](../../index-and-search/arangosearch/search-highlighting.md)
+- [Nested search](../../index-and-search/arangosearch/nested-search.md)
+- [`classification`](../../index-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../index-and-search/analyzers.md#nearest_neighbors) (experimental)
+- [Skip inaccessible collections](../../aql/how-to-invoke-aql/with-arangosh.md#skipinaccessiblecollections)
+
+**Security**
+
+- [Auditing](../../operations/security/audit-logging.md)
+- [Encryption at Rest](../../operations/security/encryption-at-rest.md)
+- [Encrypted Backups](../../components/tools/arangodump/examples.md#encryption)
+- [Hot Backups](../../operations/backup-and-restore.md#hot-backups)
+- [Enhanced Data Masking](../../components/tools/arangodump/maskings.md#masking-functions)
+- Key rotation for [JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+  and [on-disk encryption](../../develop/http-api/security.md#encryption-at-rest)
+- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--sslserver-name-indication)
+
 ## ArangoSearch
 
 ### WAND optimization (Enterprise Edition)
@@ -28,7 +80,8 @@ of a scoring function in descending order (`DESC`).
 See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#wand-optimization)
 for examples.
 
-This feature is only available in the Enterprise Edition.
+This feature is only available in the Enterprise Edition up to v3.12.4 and
+included in all Editions from v3.12.5 onward.
 
 ### `SEARCH` parallelization
 
@@ -706,7 +759,7 @@ aren't chosen automatically, you can make the optimizer prefer the indexes you
 specify. This can be done per edge collection, direction, and level/depth:
 
 ```aql
-FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+FOR v, e, p IN 1..4 OUTBOUND startNode edgeCollection
 OPTIONS {
   indexHint: {
     "edgeCollection": {
@@ -753,7 +806,7 @@ You can set this option to `false` to not make a large graph operation pollute
 the edge cache.
 
 ```aql
-FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+FOR v, e, p IN 1..5 OUTBOUND "nodes/123" edges
   OPTIONS { useCache: false }
   ...
 ```
@@ -964,7 +1017,7 @@ regressed while others improved. In particular shortest path queries like
 `K_SHORTEST_PATHS` queries became slower for certain datasets compared to
 version 3.10. The performance should now be similar again due to a switch from
 a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
-of neighbor vertices in one case.
+of neighbor nodes in one case.
 
 In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been
@@ -1204,6 +1257,42 @@ to some extent.
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
 for details.
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+The `use-index-for-collect` optimizer rule has been further extended.
+Queries where a `COLLECT` operation has an `AGGREGATE` clause that exclusively
+refers to attributes covered by a persistent index (and no other variables nor
+contains calls of aggregation functions with constant values) can now utilize
+this index. The index must not be sparse.
+
+Reading the data from the index instead of the stored documents for aggregations
+can increase the performance by a factor of two.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a AGGREGATE b = MAX(doc.b)
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the above
+example query has an `IndexCollectNode` in the explain output and the index
+usage is indicated if the optimization is applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode         4999     - FOR doc IN coll COLLECT a = doc.`a` AGGREGATE b = MAX(doc.`b`) /* full index scan */
+  6   CalculationNode      ✓   4999     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               4999     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1836452431376941056   persistent   coll   
+```
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1325,14 +1414,23 @@ you to find items with similar properties by comparing vector embeddings, which
 are numerical representations generated by machine learning models.
 
 To try out this feature, start an ArangoDB server (`arangod`) with the
-`--experimental-vector-index` startup option and follow the guide in this
-blog post:
+`--experimental-vector-index` startup option. You need to generate
+vector embeddings before creating a vector index. For more information about
+the vector index type including the available settings, see the
+[Vector indexes](../../index-and-search/indexing/working-with-indexes/vector-indexes.md)
+documentation.
+
+You can also follow the guide in this blog post:
 [Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 
 If the vector index type is enabled, the following new AQL functions are
-available:
+available to retrieve similar documents:
+
 - `APPROX_NEAR_COSINE()`
 - `APPROX_NEAR_L2()`
+
+For how to use these functions as well as query examples, see
+[Vector search functions in AQL](../../aql/functions/vector.md).
 
 Two startup options for the storage engine related to vector indexes
 have been added:
@@ -1625,6 +1723,34 @@ The following startup options for cluster deployments have been added:
 - `--cluster.no-heartbeat-delay-before-shutdown`:
   The delay (in seconds) before shutting down a Coordinator if no heartbeat can
   be sent. Set to `0` to deactivate this shutdown.
+
+### Limit for shard synchronization actions
+
+<small>Introduced in: v3.11.14, v3.12.5</small>
+
+The number of `SynchronizeShard` actions that can be scheduled internally by the
+cluster maintenance has been restricted to prevent these actions from blocking
+`TakeoverShardLeadership` actions with a higher priority, which could lead to
+service interruption during upgrades and after failovers.
+
+The new `--server.maximal-number-sync-shard-actions` startup option controls
+how many `SynchronizeShard` actions can be queued at any given time.
+
+### Full RocksDB compaction on upgrade
+
+<small>Introduced in: v3.12.5-2</small>
+
+A new `--database.auto-upgrade-full-compaction` startup option has been added
+that you can use together with `--database.auto-upgrade` for upgrading.
+
+With the new option enabled, the server will perform a full RocksDB compaction
+after the database upgrade has completed successfully but before shutting down.
+This performs a complete compaction of all column families with the `changeLevel`
+and `compactBottomMostLevel` options enabled, which can help optimize the
+database files after an upgrade.
+
+The server process terminates with the new exit code 30
+(`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
 
 ## Miscellaneous changes
 
@@ -2118,6 +2244,52 @@ The following RocksDB metrics have been added:
 | `rocksdb_live_blob_file_garbage_size` | Size of garbage in live RocksDB .blob files.
 | `rocksdb_live_blob_file_size` | Size of live RocksDB .blob files.
 | `rocksdb_num_blob_files` | Number of live RocksDB .blob files.
+
+### API call recording
+
+<small>Introduced in: v3.12.5</small>
+
+A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
+list of the most recent requests with a timestamp and the endpoint. This feature
+is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.api-recording-memory-limit`:
+  Size limit for the list of API call records (default: `25600000`).
+
+This means that 25 MB of memory is reserved by default.
+
+API call recording is enabled by default but you can disable it via the new
+`--server.api-call-recording` startup option.
+
+The `/_admin/server/api-calls` endpoint exposes the recorded API calls.
+It is enabled by default. You can disable it altogether by setting the new
+`--log.recording-api-enabled` startup option to `false`.
+
+A metric has been added for the time spent on API call recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+
+### Access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+A new authentication feature has been added that lets you use access tokens
+for either creating JWT session tokens or directly authenticate with an
+access token instead of a password.
+
+You can create multiple access tokens for a single user account, set expiration
+dates, and individually revoke tokens.
+
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
 
 ## Client tools
 

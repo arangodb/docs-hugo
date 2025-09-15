@@ -174,13 +174,13 @@ The available sharding strategies are:
   (excluding smart edge collections)
 - `enterprise-hash-smart-edge`: default sharding used for new
   smart edge collections starting from version 3.4
-- `enterprise-hex-smart-vertex`: sharding used for vertex collections of
+- `enterprise-hex-smart-vertex`: sharding used for node collections of
   EnterpriseGraphs
 
 If no sharding strategy is specified, the default is `hash` for
 all normal collections, `enterprise-hash-smart-edge` for all smart edge
 collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
-vertex collections (the latter two require the Enterprise Edition of ArangoDB).
+node collections.
 Manually overriding the sharding strategy does not yet provide a
 benefit, but it may later in case other sharding strategies are added.
 

@@ -112,14 +112,14 @@ paths:
                                     type: string
                                   from:
                                     description: |
-                                      List of vertex collection names.
+                                      List of node collection names.
                                       Edges in collection can only be inserted if their _from is in any of the collections here.
                                     type: array
                                     items:
                                       type: string
                                   to:
                                     description: |
-                                      List of vertex collection names.
+                                      List of node collection names.
 
                                       Edges in collection can only be inserted if their _to is in any of the collections here.
                                     type: array
@@ -127,7 +127,7 @@ paths:
                                       type: string
                             orphanCollections:
                               description: |
-                                An array of additional vertex collections.
+                                An array of additional node collections.
                                 Documents in these collections do not have edges within this graph.
                               type: array
                               items:
@@ -148,7 +148,9 @@ paths:
                             replicationFactor:
                               description: |
                                 The replication factor used for every new collection in the graph.
-                                For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                                For SatelliteGraphs, it is the string `"satellite"`.
+
+                                Default: The `replicationFactor` defined by the database.
                               type: integer
                             writeConcern:
                               description: |
@@ -163,19 +165,19 @@ paths:
                               type: integer
                             isSmart:
                               description: |
-                                Whether the graph is a SmartGraph (Enterprise Edition only).
+                                Whether the graph is a SmartGraph.
                               type: boolean
                             isDisjoint:
                               description: |
-                                Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                                Whether the graph is a Disjoint SmartGraph.
                               type: boolean
                             smartGraphAttribute:
                               description: |
-                                Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                                Name of the sharding attribute in the SmartGraph case.
                               type: string
                             isSatellite:
                               description: |
-                                Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                                Whether the graph is a SatelliteGraph.
                               type: boolean
       tags:
         - Graphs
@@ -258,52 +260,57 @@ paths:
                         type: string
                       from:
                         description: |
-                          List of vertex collection names.
-                          Edges in collection can only be inserted if their _from is in any of the collections here.
+                          A list of node collection names.
+                          Edges you later insert into `collection` can only reference vertices
+                          from these collections in their `_from` attribute (if you use the
+                          interface for named graphs).
                         type: array
                         items:
                           type: string
                       to:
                         description: |
-                          List of vertex collection names.
-
-                          Edges in collection can only be inserted if their _to is in any of the collections here.
+                          A list of node collection names.
+                          Edges you later insert into `collection` can only reference vertices
+                          from these collections in their `_to` attribute (if you use the
+                          interface for named graphs).
                         type: array
                         items:
                           type: string
                 orphanCollections:
                   description: |
-                    An array of additional vertex collections.
+                    An array of additional node collections.
                     Documents in these collections do not have edges within this graph.
                   type: array
                   items:
                     type: string
                 isSmart:
                   description: |
-                    Define if the created graph should be smart (Enterprise Edition only).
+                    Define if the created graph should be smart.
                   type: boolean
+                  default: false
                 isDisjoint:
                   description: |
-                    Whether to create a Disjoint SmartGraph instead of a regular SmartGraph
-                    (Enterprise Edition only).
+                    Whether to create a Disjoint SmartGraph instead of a regular SmartGraph.
                   type: boolean
+                  default: false
                 options:
                   description: |
-                    a JSON object to define options for creating collections within this graph.
+                    Options for creating collections within this graph.
                     It can contain the following attributes:
                   type: object
                   properties:
                     smartGraphAttribute:
                       description: |
-                        Only has effect in Enterprise Edition and it is required if isSmart is true.
-                        The attribute name that is used to smartly shard the vertices of a graph.
-                        Every vertex in this SmartGraph has to have this attribute.
+                        Required to create a SmartGraph.
+
+                        The attribute name that is used to smartly shard the nodes of a graph.
+                        Every node in this SmartGraph has to have this attribute.
                         Cannot be modified later.
                       type: string
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -314,12 +321,14 @@ paths:
                         The number of shards that is used for every collection within this graph.
                         Cannot be modified later.
                       type: integer
+                      default: 1
                     replicationFactor:
                       description: |
                         The replication factor used when initially creating collections for this graph.
                         Can be set to `"satellite"` to create a SatelliteGraph, which then ignores
-                        `numberOfShards`, `minReplicationFactor`, and `writeConcern`
-                        (Enterprise Edition only).
+                        `numberOfShards`, `minReplicationFactor`, and `writeConcern`.
+
+                        Default: The `replicationFactor` defined by the database.
                       type: integer
                     writeConcern:
                       description: |
@@ -332,9 +341,6 @@ paths:
                         For SatelliteGraphs, the `writeConcern` is automatically controlled to equal the
                         number of DB-Servers and the attribute is not available. _(cluster only)_
                       type: integer
-                  required:
-                    - numberOfShards
-                    - replicationFactor
       responses:
         '201':
           description: |
@@ -398,14 +404,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -413,7 +419,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -434,7 +440,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -449,19 +455,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -525,14 +531,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -540,7 +546,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -561,7 +567,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -576,19 +582,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -660,7 +666,7 @@ paths:
             Returned if there is a conflict storing the graph. This can occur
             either if a graph with this name already exists, or if there is an
             edge definition with the same edge collection but different `from`
-            and `to` vertex collections in any other graph.
+            and `to` node collections in any other graph.
           content:
             application/json:
               schema:
@@ -711,8 +717,8 @@ body = {
   name: "myGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }]
 };
 
@@ -730,7 +736,6 @@ graph._drop("myGraph", true);
 description: |-
   Create a SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSmart
 ---
 var graph = require("@arangodb/general-graph");
@@ -742,10 +747,10 @@ body = {
   name: "smartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     replicationFactor: 2,
@@ -768,9 +773,8 @@ graph._drop("smartGraph", true);
 description: |-
   Create a disjoint SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
   Note that as you are using a disjoint version, you can only
-  create edges between vertices sharing the same region.
+  create edges between nodes sharing the same region.
 name: HttpGharialCreateDisjointSmart
 ---
 var graph = require("@arangodb/general-graph");
@@ -782,10 +786,10 @@ body = {
   name: "disjointSmartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     isDisjoint: true,
@@ -807,12 +811,11 @@ graph._drop("disjointSmartGraph", true);
 ```curl
 ---
 description: |-
-  Create a SmartGraph with a satellite vertex collection.
-  It uses the collection "endVertices" as a satellite collection.
-  This collection is cloned to all servers, all other vertex
+  Create a SmartGraph with a satellite node collection.
+  It uses the collection "endNodes" as a satellite collection.
+  This collection is cloned to all servers, all other node
   collections are split into 9 shards
   and are sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSmartWithSatellites
 ---
 var graph = require("@arangodb/general-graph");
@@ -824,16 +827,16 @@ body = {
   name: "smartGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
-  orphanCollections: [ "orphanVertices" ],
+  orphanCollections: [ "orphanNodes" ],
   isSmart: true,
   options: {
     replicationFactor: 2,
     numberOfShards: 9,
     smartGraphAttribute: "region",
-    satellites: [ "endVertices" ]
+    satellites: [ "endNodes" ]
   }
 };
 
@@ -851,7 +854,6 @@ graph._drop("smartGraph", true);
 description: |-
   Create an EnterpriseGraph. This graph uses 9 shards,
   it does not make use of specific sharding attributes.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateEnterprise
 ---
 var graph = require("@arangodb/general-graph");
@@ -863,8 +865,8 @@ body = {
   name: "enterpriseGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
   orphanCollections: [ ],
   isSmart: true,
@@ -890,7 +892,6 @@ description: |-
   shards, but uses "satellite" as replicationFactor.
   Make sure to keep this graph small as it is cloned
   to every server.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSatellite
 ---
 var graph = require("@arangodb/general-graph");
@@ -902,8 +903,8 @@ body = {
   name: "satelliteGraph",
   edgeDefinitions: [{
     collection: "edges",
-    from: [ "startVertices" ],
-    to: [ "endVertices" ]
+    from: [ "startNodes" ],
+    to: [ "endNodes" ]
   }],
   orphanCollections: [ ],
   options: {
@@ -1009,14 +1010,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1024,7 +1025,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1045,7 +1046,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1060,19 +1061,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '404':
           description: |
@@ -1122,8 +1123,8 @@ if (graph._exists("myGraph")) {
 }
 graph._create("myGraph", [{
   collection: "edges",
-  from: [ "startVertices" ],
-  to: [ "endVertices" ]
+  from: [ "startNodes" ],
+  to: [ "endNodes" ]
 }]);
 var url = "/_api/gharial/myGraph";
 
@@ -1171,6 +1172,7 @@ paths:
             dropped if they are not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '202':
           description: |
@@ -1285,7 +1287,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### List vertex collections
+### List node collections
 
 ```openapi
 paths:
@@ -1293,7 +1295,7 @@ paths:
     get:
       operationId: listVertexCollections
       description: |
-        Lists all vertex collections within this graph, including orphan collections.
+        Lists all node collections within this graph, including orphan collections.
       parameters:
         - name: database-name
           in: path
@@ -1335,8 +1337,8 @@ paths:
                     example: 200
                   collections:
                     description: |
-                      The list of all vertex collections within this graph.
-                      Includes the vertex collections used in edge definitions
+                      The list of all node collections within this graph.
+                      Includes the node collections used in edge definitions
                       as well as orphan collections.
                     type: array
                     items:
@@ -1394,10 +1396,10 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Add a vertex collection
+### Add a node collection
 
-Adding a vertex collection on its own to a graph adds it as an orphan collection.
-If you want to use an additional vertex collection for graph relations, add it
+Adding a node collection on its own to a graph adds it as an orphan collection.
+If you want to use an additional node collection for graph relations, add it
 by [adding a new edge definition](#add-an-edge-definition) or
 [modifying an existing edge definition](#replace-an-edge-definition) instead.
 
@@ -1407,7 +1409,7 @@ paths:
     post:
       operationId: addVertexCollection
       description: |
-        Adds a vertex collection to the set of orphan collections of the graph.
+        Adds a node collection to the set of orphan collections of the graph.
         If the collection does not exist, it is created.
       parameters:
         - name: database-name
@@ -1435,17 +1437,17 @@ paths:
               properties:
                 collection:
                   description: |
-                    The name of the vertex collection to add to the graph definition.
+                    The name of the node collection to add to the graph definition.
                   type: string
                 options:
                   description: |
-                    A JSON object to set options for creating vertex collections.
+                    A JSON object to set options for creating node collections.
                   type: object
                   properties:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -1514,14 +1516,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1529,7 +1531,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1550,7 +1552,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1565,19 +1567,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -1641,14 +1643,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1656,7 +1658,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1677,7 +1679,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1692,19 +1694,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -1817,7 +1819,7 @@ var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 body = {
-  collection: "otherVertices"
+  collection: "otherNodes"
 };
 var response = logCurlRequest('POST', url, body);
 
@@ -1827,7 +1829,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Remove a vertex collection
+### Remove a node collection
 
 ```openapi
 paths:
@@ -1835,13 +1837,13 @@ paths:
     delete:
       operationId: deleteVertexCollection
       description: |
-        Removes a vertex collection from the list of the graph's
+        Removes a node collection from the list of the graph's
         orphan collections. It can optionally delete the collection if it is
         not used in any other graph.
 
-        You cannot remove vertex collections that are used in one of the
+        You cannot remove node collections that are used in one of the
         edge definitions of the graph. You need to modify or remove the
-        edge definition first in order to fully remove a vertex collection from
+        edge definition first in order to fully remove a node collection from
         the graph.
       parameters:
         - name: database-name
@@ -1863,7 +1865,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection.
+            The name of the node collection.
           schema:
             type: string
         - name: dropCollection
@@ -1874,10 +1876,11 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
-            Returned if the vertex collection was removed from the graph successfully
+            Returned if the node collection was removed from the graph successfully
             and `waitForSync` is `true`.
           content:
             application/json:
@@ -1936,14 +1939,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -1951,7 +1954,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -1972,7 +1975,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1987,19 +1990,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -2061,14 +2064,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2076,7 +2079,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2097,7 +2100,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2112,23 +2115,23 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
-            Returned if the vertex collection is still used in an edge definition.
+            Returned if the node collection is still used in an edge definition.
             In this case it cannot be removed from the graph yet, it has to be
             removed from the edge definition first.
           content:
@@ -2162,7 +2165,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -2232,26 +2235,26 @@ paths:
 ```curl
 ---
 description: |-
-  You can remove vertex collections that are not used in any edge definition:
+  You can remove node collections that are not used in any edge definition:
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("social");
-g._addVertexCollection("otherVertices");
-var url = "/_api/gharial/social/vertex/otherVertices";
+g._addVertexCollection("otherNodes");
+var url = "/_api/gharial/social/vertex/otherNodes";
 var response = logCurlRequest('DELETE', url);
 
 assert(response.code === 202);
 
 logJsonResponse(response);
 examples.dropGraph("social");
-db._drop("otherVertices");
+db._drop("otherNodes");
 ```
 
 ```curl
 ---
 description: |-
-  You cannot remove vertex collections that are used in edge definitions:
+  You cannot remove node collections that are used in edge definitions:
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2384,7 +2387,7 @@ paths:
         Adds an additional edge definition to the graph.
 
         This edge definition has to contain a `collection` and an array of
-        each `from` and `to` vertex collections. An edge definition can only
+        each `from` and `to` node collections. An edge definition can only
         be added if this definition is either not used in any other graph, or
         it is used with exactly the same definition. For example, it is not
         possible to store a definition "e" from "v1" to "v2" in one graph, and
@@ -2424,13 +2427,13 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    One or many node collections that can contain source nodes.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    One or many node collections that can contain target nodes.
                   type: array
                   items:
                     type: string
@@ -2443,7 +2446,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -2512,14 +2515,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2527,7 +2530,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2548,7 +2551,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2563,19 +2566,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -2639,14 +2642,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2654,7 +2657,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -2675,7 +2678,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2690,26 +2693,26 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
             Returned if the edge definition can not be added.
             This can be because it is ill-formed, or if there is an
             edge definition with the same edge collection but different `from`
-            and `to` vertex collections in any other graph.
+            and `to` node collections in any other graph.
           content:
             application/json:
               schema:
@@ -2837,7 +2840,7 @@ paths:
     put:
       operationId: replaceEdgeDefinition
       description: |
-        Change the vertex collections of one specific edge definition.
+        Change the node collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: database-name
@@ -2877,6 +2880,7 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       requestBody:
         content:
           application/json:
@@ -2893,13 +2897,13 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    One or many node collections that can contain source nodes.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    One or many node collections that can contain target nodes.
                   type: array
                   items:
                     type: string
@@ -2912,7 +2916,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -2979,14 +2983,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -2994,7 +2998,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3015,7 +3019,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3030,19 +3034,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -3104,14 +3108,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3119,7 +3123,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3140,7 +3144,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3155,19 +3159,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -3203,7 +3207,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3301,7 +3305,7 @@ paths:
       operationId: deleteEdgeDefinition
       description: |
         Remove one edge definition from the graph. This only removes the
-        edge collection from the graph definition. The vertex collections of the
+        edge collection from the graph definition. The node collections of the
         edge definition become orphan collections but otherwise remain untouched
         and can still be used in your queries.
       parameters:
@@ -3342,6 +3346,7 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '201':
           description: |
@@ -3404,14 +3409,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3419,7 +3424,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3440,7 +3445,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3455,19 +3460,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -3530,14 +3535,14 @@ paths:
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
                                 Edges in collection can only be inserted if their _from is in any of the collections here.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                List of node collection names.
 
                                 Edges in collection can only be inserted if their _to is in any of the collections here.
                               type: array
@@ -3545,7 +3550,7 @@ paths:
                                 type: string
                       orphanCollections:
                         description: |
-                          An array of additional vertex collections.
+                          An array of additional node collections.
                           Documents in these collections do not have edges within this graph.
                         type: array
                         items:
@@ -3566,7 +3571,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3581,24 +3586,24 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you need to have at least the following privileges:
+            In order to drop a node, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3683,9 +3688,9 @@ db._drop("relation");
 examples.dropGraph("social");
 ```
 
-## Vertices
+## Nodes
 
-### Create a vertex
+### Create a node
 
 ```openapi
 paths:
@@ -3693,7 +3698,7 @@ paths:
     post:
       operationId: createVertex
       description: |
-        Adds a vertex to the given collection.
+        Adds a node to the given collection.
       parameters:
         - name: database-name
           in: path
@@ -3714,7 +3719,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex should be inserted into.
+            The name of the node collection the node should be inserted into.
           schema:
             type: string
         - name: waitForSync
@@ -3728,10 +3733,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if the response should contain the complete
-            new version of the document.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: x-arango-trx-id
           in: header
           required: false
@@ -3744,18 +3750,13 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to store as a node document.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to be the JSON object to be stored.
-                  type: object
       responses:
         '201':
           description: |
-            Returned if the vertex can be added and `waitForSync` is `true`.
+            Returned if the node can be added and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -3777,7 +3778,7 @@ paths:
                     example: 201
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -3798,7 +3799,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -3844,7 +3845,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes generated while storing the vertex.
+                      The internal attributes generated while storing the node.
                       Does not include any attribute given in request body.
                     type: object
                     required:
@@ -3866,7 +3867,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -3891,7 +3892,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert vertices into the graph, you need to have at least the following privileges:
+            In order to insert nodes into the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -4014,7 +4015,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Get a vertex
+### Get a node
 
 ```openapi
 paths:
@@ -4022,8 +4023,10 @@ paths:
     get:
       operationId: getVertex
       description: |
-        Gets a vertex from the given collection.
+        Gets a node from the given collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -4043,41 +4046,32 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
-        - name: rev
-          in: query
-          required: false
-          description: |
-            Must contain a revision.
-            If this is set a document is only returned if
-            it has exactly this revision.
-            Also see if-match header as an alternative to this.
-          schema:
-            type: string
-        - name: if-match
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an query parameter `rev`.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is returned if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
-        - name: if-none-match
+        - name: If-None-Match
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
+            If you provide an `If-None-Match` header, it must contain exactly one ETag.
+            The document is returned if it has a different revision as the given ETag.
+            Otherwise, an error with HTTP status code 304 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -4091,7 +4085,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex can be found.
+            Returned if the node can be found.
           content:
             application/json:
               schema:
@@ -4113,7 +4107,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The complete vertex.
+                      The complete node.
                     type: object
                     required:
                       - _id
@@ -4134,10 +4128,9 @@ paths:
                         type: string
         '304':
           description: |
-            Returned if the if-none-match header is given and the
-            currently stored vertex still has this revision value.
-            So there was no update between the last time the vertex
-            was fetched by the caller.
+            The `If-None-Match` header has been specified and the currently
+            stored node still has this revision value. There was no update since
+            the last time the node was fetched by the caller.
           content:
             application/json:
               schema:
@@ -4169,7 +4162,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Read Only` access on the given collection.
           content:
@@ -4205,7 +4198,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex does not exist.
+            - The node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -4272,7 +4265,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -4323,7 +4317,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Update a vertex
+### Update a node
 
 ```openapi
 paths:
@@ -4331,8 +4325,10 @@ paths:
     patch:
       operationId: updateVertex
       description: |
-        Updates the data of the specific vertex in the collection.
+        Updates the data of the specific node in the collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -4352,14 +4348,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -4380,29 +4376,32 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is updated if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -4417,18 +4416,14 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object containing exactly the attributes
+                that should be overwritten. All other attributes remain unchanged.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to contain a JSON object containing exactly the attributes that should be overwritten, all other attributes remain unchanged.
-                  type: object
       responses:
         '200':
           description: |
-            Returned if the vertex can be updated, and `waitForSync` is `true`.
+            Returned if the node can be updated, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4450,7 +4445,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4471,7 +4466,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4495,7 +4490,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4540,7 +4535,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4561,7 +4556,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4585,7 +4580,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4609,7 +4604,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -4645,7 +4640,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to update does not exist.
+            - The node to update does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -4712,7 +4707,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -4766,7 +4762,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Replace a vertex
+### Replace a node
 
 ```openapi
 paths:
@@ -4774,8 +4770,10 @@ paths:
     put:
       operationId: replaceVertex
       description: |
-        Replaces the data of a vertex in the collection.
+        Replaces the data of a node in the collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -4795,14 +4793,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -4823,29 +4821,32 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is replaced if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -4860,18 +4861,14 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to replace the existing
+                node document with.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to be the JSON object to be stored.
-                  type: object
       responses:
         '200':
           description: |
-            Returned if the vertex can be replaced, and `waitForSync` is `true`.
+            Returned if the node can be replaced, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4893,7 +4890,7 @@ paths:
                     example: 200
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -4914,7 +4911,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -4938,7 +4935,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -4961,7 +4958,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the vertex can be replaced, and `waitForSync` is `false`.
+            Returned if the node can be replaced, and `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -4983,7 +4980,7 @@ paths:
                     example: 202
                   vertex:
                     description: |
-                      The internal attributes for the vertex.
+                      The internal attributes for the node.
                     type: object
                     required:
                       - _id
@@ -5004,7 +5001,7 @@ paths:
                         type: string
                   new:
                     description: |
-                      The complete newly written vertex document.
+                      The complete newly written node document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
                       Only present if `returnNew` is `true`.
@@ -5028,7 +5025,7 @@ paths:
                         type: string
                   old:
                     description: |
-                      The complete overwritten vertex document.
+                      The complete overwritten node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5052,7 +5049,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace vertices in the graph, you need to have at least the following privileges:
+            In order to replace nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -5088,7 +5085,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to replace does not exist.
+            - The node to replace does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -5155,7 +5152,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -5210,7 +5208,7 @@ logJsonResponse(response);
 examples.dropGraph("social");
 ```
 
-### Remove a vertex
+### Remove a node
 
 ```openapi
 paths:
@@ -5218,9 +5216,11 @@ paths:
     delete:
       operationId: deleteVertex
       description: |
-        Removes a vertex from a collection of the named graph. Additionally removes all
-        incoming and outgoing edges of the vertex.
+        Removes a node from a collection of the named graph. Additionally removes all
+        incoming and outgoing edges of the node.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -5240,14 +5240,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the vertex collection the vertex belongs to.
+            The name of the node collection the node belongs to.
           schema:
             type: string
         - name: vertex
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -5261,17 +5261,18 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is deleted if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -5285,7 +5286,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex can be removed.
+            Returned if the node can be removed.
           content:
             application/json:
               schema:
@@ -5311,7 +5312,7 @@ paths:
                     type: boolean
                   old:
                     description: |
-                      The complete deleted vertex document.
+                      The complete deleted node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5360,7 +5361,7 @@ paths:
                     type: boolean
                   old:
                     description: |
-                      The complete deleted vertex document.
+                      The complete deleted node document.
                       Includes all attributes stored before this operation.
                       Only present if `returnOld` is `true`.
                     type: object
@@ -5384,7 +5385,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you need to have at least the following privileges:
+            In order to delete nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -5420,7 +5421,7 @@ paths:
             Returned in the following cases:
             - The graph cannot be found.
             - The collection is not part of the graph.
-            - The vertex to remove does not exist.
+            - The node to remove does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -5487,7 +5488,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -5549,7 +5551,7 @@ paths:
       operationId: createEdge
       description: |
         Creates a new edge in the specified collection.
-        Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
+        Within the body the edge has to contain a `_from` and `_to` value referencing to valid nodes in the graph.
         Furthermore, the edge has to be valid according to the edge definitions.
       parameters:
         - name: database-name
@@ -5585,10 +5587,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if the response should contain the complete
-            new version of the document.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: x-arango-trx-id
           in: header
           required: false
@@ -5601,6 +5604,8 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to store as an edge document.
               type: object
               required:
                 - _from
@@ -5608,12 +5613,12 @@ paths:
               properties:
                 _from:
                   description: |
-                    The source vertex of this edge. Has to be valid within
+                    The source node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
                 _to:
                   description: |
-                    The target vertex of this edge. Has to be valid within
+                    The target node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
       responses:
@@ -5863,9 +5868,9 @@ paths:
             Returned in any of the following cases:
             - The graph cannot be found.
             - The edge collection is not part of the graph.
-            - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
-            - The vertex collection is part of the graph, but does not exist.
-            - `_from` or `_to` vertex does not exist.
+            - The node collection referenced in the `_from` or `_to` attribute is not part of the graph.
+            - The node collection is part of the graph, but does not exist.
+            - `_from` or `_to` node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -5967,6 +5972,8 @@ paths:
       description: |
         Gets an edge from the given collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -5996,31 +6003,22 @@ paths:
             The `_key` attribute of the edge.
           schema:
             type: string
-        - name: rev
-          in: query
-          required: false
-          description: |
-            Must contain a revision.
-            If this is set a document is only returned if
-            it has exactly this revision.
-            Also see if-match header as an alternative to this.
-          schema:
-            type: string
-        - name: if-match
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is returned if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
-        - name: if-none-match
+        - name: If-None-Match
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
+            If you provide an `If-None-Match` header, it must contain exactly one ETag.
+            The document is returned if it has a different revision as the given ETag.
+            Otherwise, an error with HTTP status code 304 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -6087,10 +6085,9 @@ paths:
                         type: string
         '304':
           description: |
-            Returned if the if-none-match header is given and the
-            currently stored edge still has this revision value.
-            So there was no update between the last time the edge
-            was fetched by the caller.
+            The `If-None-Match` header has been specified and the currently
+            stored edge still has this revision value. There was no update since
+            the last time the edge was fetched by the caller.
           content:
             application/json:
               schema:
@@ -6122,7 +6119,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you need to have at least the following privileges:
+            In order to update nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Read Only` access on the given collection.
           content:
@@ -6225,7 +6222,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -6287,6 +6285,8 @@ paths:
       description: |
         Partially modify the data of the specific edge in the collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -6313,7 +6313,7 @@ paths:
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -6334,29 +6334,32 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is updated if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -6371,14 +6374,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object containing exactly the attributes
+                that should be overwritten. All other attributes remain unchanged.
               type: object
-              required:
-                - edge
-              properties:
-                edge:
-                  description: |
-                    The body has to contain a JSON object containing exactly the attributes that should be overwritten, all other attributes remain unchanged.
-                  type: object
       responses:
         '200':
           description: |
@@ -6660,7 +6659,7 @@ paths:
             - The graph cannot be found.
             - The collection is not part of the graph.
             - The edge to update does not exist.
-            - Either `_from` or `_to` vertex does not exist (if updated).
+            - Either `_from` or `_to` node does not exist (if updated).
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -6727,7 +6726,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -6791,6 +6791,8 @@ paths:
       description: |
         Replaces the data of an edge in the collection.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -6817,7 +6819,7 @@ paths:
           in: path
           required: true
           description: |
-            The `_key` attribute of the vertex.
+            The `_key` attribute of the node.
           schema:
             type: string
         - name: waitForSync
@@ -6838,29 +6840,32 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
           description: |
-            Define if a presentation of the new document should
-            be returned within the response object.
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is replaced if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -6875,6 +6880,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to replace an existing
+                edge document with.
               type: object
               required:
                 - _from
@@ -6882,12 +6890,12 @@ paths:
               properties:
                 _from:
                   description: |
-                    The source vertex of this edge. Has to be valid within
+                    The source node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
                 _to:
                   description: |
-                    The target vertex of this edge. Has to be valid within
+                    The target node of this edge. Has to be valid within
                     the used edge definition.
                   type: string
       responses:
@@ -7171,7 +7179,7 @@ paths:
             - The graph cannot be found.
             - The collection is not part of the graph.
             - The edge to replace does not exist.
-            - Either `_from` or `_to` vertex does not exist.
+            - Either `_from` or `_to` node does not exist.
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction but the transaction ID specified in the
@@ -7238,7 +7246,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:
@@ -7304,8 +7313,10 @@ paths:
       operationId: deleteEdge
       description: |
         Removes an edge from an edge collection of the named graph. Any other edges
-        that directly reference this edge like a vertex are removed, too.
+        that directly reference this edge like a node are removed, too.
       parameters:
+        # Purposefully undocumented:
+        #   rev (use If-Match header)
         - name: database-name
           in: path
           required: true
@@ -7346,17 +7357,18 @@ paths:
           in: query
           required: false
           description: |
-            Define if a presentation of the deleted document should
-            be returned within the response object.
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If you provide an `If-Match` header, it must contain exactly one ETag.
+            The document is deleted if it has the same revision as the given ETag.
+            Otherwise, an error with HTTP status code 412 is returned.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -7489,7 +7501,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you need to have at least the following privileges:
+            In order to delete nodes in the graph, you need to have at least the following privileges:
             - `Read Only` access on the database.
             - `Write` access on the given collection.
           content:
@@ -7592,7 +7604,8 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            The `If-Match` header has been specified but the stored document's
+            revision is different.
           content:
             application/json:
               schema:

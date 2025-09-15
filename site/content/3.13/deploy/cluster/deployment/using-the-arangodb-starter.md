@@ -140,10 +140,16 @@ to elect a leader for the runtime phase.
 The _Starter_ can also be used to launch clusters based on ArangoDB
 _Docker_ containers.
 
-If you use `arangodb` in a Docker container, it runs all servers in a Docker
+If you use the `arangodb/arangodb-starter` Docker image, it runs all servers in a container
 using the `arangodb/arangodb:latest` Docker image by default. If you wish to run
 a specific Docker image for the servers, specify it using the `--docker.image`
 option.
+
+{{< info >}}
+From ArangoDB version 3.12.5 onward, no new `arangodb/arangodb` images are
+published anymore. Use the `arangodb/enterprise` images instead, e.g.
+`--docker.image arangodb/enterprise:latest`.
+{{< /info >}}
 
 If you use Docker, it is important to care about the volume mappings on
 the container. Typically, you start the executable in Docker with the following
@@ -179,9 +185,9 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     --docker.net-mode=default
 ```
 
-If you use the Enterprise Edition Docker image, you have to set the license key
+If you have a license for the Enterprise Edition, set the license key
 in an environment variable by adding this option to the above `docker` command
-(place `<the-key>` with the actual license key):
+(replace `<the-key>` with the actual license key):
 
 ```
     -e ARANGO_LICENSE_KEY=<the-key>
@@ -189,11 +195,7 @@ in an environment variable by adding this option to the above `docker` command
 
 The Starter hands the license key to the Docker containers it launches for ArangoDB.
 
-You can get a free evaluation license key by visiting:
-
-[www.arangodb.com/download-arangodb-enterprise/](https://www.arangodb.com/download-arangodb-enterprise/)
-
-**TLS verified Docker services**
+**TLS-verified Docker services**
 
 Oftentimes, one needs to harden Docker services using client certificate 
 and TLS verification. The Docker API allows subsequently only certified access.

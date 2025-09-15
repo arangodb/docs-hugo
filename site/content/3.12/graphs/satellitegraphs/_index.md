@@ -3,10 +3,8 @@ title: SatelliteGraphs
 menuTitle: SatelliteGraphs
 weight: 90
 description: >-
-  Graphs synchronously replicated to all servers, available in the Enterprise Edition
+  Graphs synchronously replicated to all servers to enable local traversals
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 ## What is a SatelliteGraph?
 
 _SatelliteGraphs_ are a specialized _named graph_ type available for cluster
@@ -42,8 +40,8 @@ operation can also be executed without talking to other DB-Servers.
 
 ## When to use SatelliteGraphs?
 
-While General Graphs are available in all Editions, the Enterprise Edition
-offers two more _named graph_ types to achieve single-server alike query
+While General Graphs can be used in clusters, they don't offer any optimizations.
+There are two more _named graph_ types to achieve single server-alike query
 execution times for graph queries in cluster deployments.
 
 - **General Graphs**:
@@ -66,7 +64,7 @@ execution times for graph queries in cluster deployments.
 
 - **SatelliteGraph**:
   Make the entire graph available on all DB-Servers using synchronous
-  replication. All vertices and edges will be available on every node for
+  replication. All nodes and edges will be available on every node for
   maximum data locality. No network hops are required to traverse the graph.
   The graph data must fit on each node, therefore it will typically be a small
   to medium sized graph. The performance will be the highest if you are not

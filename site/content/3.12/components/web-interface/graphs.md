@@ -17,9 +17,9 @@ subsets of a graph or an entire graph.
 1. In the **Graphs** section, click **Add graph**.
 2. Select a tab depending on which type of named graph you want to create.
    The **SatelliteGraph**, **SmartGraph**, and **EnterpriseGraph** tabs are
-   only available for cluster deployments using the Enterprise Edition.
-   For non-cluster deployments and in the Community Edition, only the
-   **Examples** and **GeneralGraph** tabs are available.
+   only available for cluster deployments.
+   For non-cluster deployments and in the Community Edition up to v3.12.4,
+   only the **Examples** and **GeneralGraph** tabs are available.
 3. Fill in the fields of the dialog. Required fields have an asterisk (`*`)
    in their label. Hover over the gray circle with a white `i` in it next to
    a field to show the tooltip with an explanation.
@@ -43,7 +43,7 @@ create them, see [Graphs](../../graphs/_index.md).
    click the _edit_ icon in the **Actions** column.
 2. Click the **Delete** button.
 3. Optional: Enable the **Also drop collections** toggle if you want to
-   delete the vertex and edge collections of the graph in addition to the
+   delete the node and edge collections of the graph in addition to the
    graph definition. This deletes the collections with all the documents
    they contain and is irreversible!
 4. Confirm the deletion by clicking the **Delete** button.

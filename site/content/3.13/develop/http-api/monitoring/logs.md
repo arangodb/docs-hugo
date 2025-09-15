@@ -44,9 +44,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -59,10 +60,11 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries such that their log entry identifier (`lid` .)
+            Returns all log entries such that their log entry identifier (`id` value)
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -78,6 +80,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -91,9 +94,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `id` values. Note that the `id`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -149,9 +153,10 @@ paths:
             - `warning` or `2`
             - `info` or `3`
             - `debug` or `4`
-            The default value is `info`.
+            - `trace` or `5`
           schema:
-            type: string
+            #type: [string, integer]
+            default: info
         - name: level
           in: query
           required: false
@@ -168,6 +173,7 @@ paths:
             is greater or equal to `start`.
           schema:
             type: number
+            default: 0
         - name: size
           in: query
           required: false
@@ -183,6 +189,7 @@ paths:
             and `size` can be used for pagination.
           schema:
             type: number
+            default: 0
         - name: search
           in: query
           required: false
@@ -196,9 +203,10 @@ paths:
           description: |
             Sort the log entries either ascending (if `sort` is `asc`) or descending
             (if `sort` is `desc`) according to their `lid` values. Note that the `lid`
-            imposes a chronological order. The default value is `asc`.
+            imposes a chronological order.
           schema:
             type: string
+            default: asc
         - name: serverId
           in: query
           required: false
@@ -462,44 +470,42 @@ paths:
                 audit-authentication:
                   description: |
                     Controls whether events such as successful logins and
-                    missing or wrong credentials are written to the audit log
-                    (_Enterprise Edition only_).
+                    missing or wrong credentials are written to the audit log.
                   type: string
                 audit-authorization:
                   description: |
                     Controls whether events such as users trying to access databases
-                    without the necessary permissions are written to the audit log
-                    (_Enterprise Edition only_).
+                    without the necessary permissions are written to the audit log.
                   type: string
                 audit-collection:
                   description: |
                     Controls whether events about collections creation, truncation,
-                    and deletion are written to the audit log (_Enterprise Edition only_).
+                    and deletion are written to the audit log.
                   type: string
                 audit-database:
                   description: |
                     Controls whether events about database creation and deletion
-                    are written to the audit log (_Enterprise Edition only_).
+                    are written to the audit log.
                   type: string
                 audit-document:
                   description: |
                     Controls whether document read and write events are written
-                    to the audit log (_Enterprise Edition only_).
+                    to the audit log.
                   type: string
                 audit-hotbackup:
                   description: |
                     Controls whether the Hot Backup creation, restore, and delete
-                    events are written to the audit log (_Enterprise Edition only_).
+                    events are written to the audit log.
                   type: string
                 audit-service:
                   description: |
                     Controls whether the start and stop events of the audit
-                    service are written to the audit log (_Enterprise Edition only_).
+                    service are written to the audit log.
                   type: string
                 audit-view:
                   description: |
                     Controls whether events about View creation and deletion
-                    are written to the audit log (_Enterprise Edition only_).
+                    are written to the audit log.
                   type: string
                 authentication:
                   description: |
@@ -512,7 +518,7 @@ paths:
                   type: string
                 backup:
                   description: |
-                    Logs events related to Hot Backup (_Enterprise Edition only_).
+                    Logs events related to Hot Backup.
                   type: string
                 bench:
                   description: |
@@ -600,7 +606,7 @@ paths:
                 license:
                   description: |
                     Logs events related to the license management like the
-                    expiration of a license (_Enterprise Edition only_).
+                    expiration of a license.
                   type: string
                 maintenance:
                   description: |
@@ -840,3 +846,232 @@ paths:
       tags:
         - Monitoring
 ```
+
+## Get recent API calls
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/server/api-calls:
+    get:
+      operationId: getRecentApiCalls
+      description: |
+        Get a list of the most recent requests with a timestamp and the endpoint.
+        This feature is for debugging purposes.
+
+        You can control how much memory is used to record API calls with the
+        `--server.api-recording-memory-limit` startup option.
+
+        You can disable this endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether API calls are recorded is independently controlled by the
+        `--server.api-call-recording` startup option.
+        The endpoint returns an empty list of calls if turned off.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the recorded API calls.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The request result.
+                    type: object
+                    required:
+                      - calls
+                    properties:
+                      calls:
+                        description: |
+                          A list of the recent API calls. Empty if API call recording is disabled.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            timeStamp:
+                              description: |
+                                The date and time of the request in ISO 8601 format.
+                              type: string
+                              format: date-time
+                            requestType:
+                              description: |
+                                The HTTP request method.
+                              type: string
+                              enum: [GET, PATCH, PUT, DELETE, HEAD]
+                            path:
+                              description: |
+                                The HTTP request path excluding the database prefix (`/_db/<database-name>`).
+                              type: string
+                            database:
+                              description: |
+                                The database name.
+                              type: string
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Monitoring
+```
+
+{{< comment >}}
+Example not generated because it changes on every run and returns up to 25MB of data.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
+```
+
+{{< details summary="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 257
+
+{
+  "error": false,
+  "code": 200,
+  "result": {
+    "calls": [
+      {
+        "timeStamp": "2025-06-11T14:41:53Z",
+        "requestType": "GET",
+        "path": "/_admin/server/api-calls",
+        "database": "_system"
+      },
+      {
+        "timeStamp": "2025-06-11T14:41:51Z",
+        "requestType": "GET",
+        "path": "/_api/version",
+        "database": "myDB"
+      }
+    ]
+  }
+}
+```
+{{< /details >}}

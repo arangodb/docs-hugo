@@ -14,7 +14,7 @@ The general syntax for iterating over collections and arrays is:
 
 There is also a special variant for [graph traversals](../graphs/traversals.md):
 
-<pre><code>FOR <em>vertexVariableName</em> [, <em>edgeVariableName</em> [, <em>pathVariableName</em> ] ] IN <em>traversalExpression</em></code></pre>
+<pre><code>FOR <em>nodeVariableName</em> [, <em>edgeVariableName</em> [, <em>pathVariableName</em> ] ] IN <em>traversalExpression</em></code></pre>
 
 For Views, there is a special (optional) [`SEARCH` keyword](search.md):
 
@@ -24,7 +24,7 @@ For Views, there is a special (optional) [`SEARCH` keyword](search.md):
 Views cannot be used as edge collections in traversals:
 
 ```aql
-FOR v IN 1..3 ANY startVertex viewName /* invalid! */
+FOR v IN 1..3 ANY startNode viewName /* invalid! */
 ```
 {{< /info >}}
 
@@ -218,7 +218,7 @@ there are a few corner cases where it can make sense:
 
 {{< info >}}
 Starting with version 3.10, `maxProjections` can be used in 
-[Graph Traversals](../graphs/traversals.md#working-with-named-graphs) (Enterprise Edition only).
+[Graph Traversals](../graphs/traversals.md#working-with-named-graphs).
 {{< /info >}}
 
 ### `useCache`

@@ -47,9 +47,9 @@ In contrast to General Graphs and SmartGraphs, you do not need to take care of
 the sharding and replication properties. The properties `distributeShardsLike`,
 `replicationFactor` and `numberOfShards` will be set automatically.
 
-### Add vertex collections
+### Add node collections
 
-Adding vertex collections is analogous to General Graphs:
+Adding node collections is analogous to General Graphs:
 
 ```js
 ---
@@ -59,12 +59,12 @@ type: cluster
 ---
 ~var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
-graph._addVertexCollection("aVertexCollection");
+graph._addVertexCollection("aNodeCollection");
 graph = satelliteGraphModule._graph("satelliteGraph");
 ~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
-If the collection `"aVertexCollection"` doesn't exist yet, then the
+If the collection `"aNodeCollection"` doesn't exist yet, then the
 SatelliteGraph module creates it automatically with the correct
 properties. If it exists already, then its properties must be suitable for a
 SatelliteGraph (see [prototype collection](#the-prototype-collection)).
@@ -124,7 +124,7 @@ graph;
 ~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
-Creating an empty SatelliteGraph, then adding a document (vertex) collection.
+Creating an empty SatelliteGraph, then adding a document (node) collection.
 This leads to the creation of a prototype collection `"myPrototypeColl"`
 (assuming that no collection with this name existed before):
 
@@ -143,7 +143,7 @@ graph = satelliteGraphModule._graph("satelliteGraph");
 
 Creating an empty SatelliteGraph, then adding an edge definition.
 This will select the collection `"person"` as prototype collection, as it is
-the only document (vertex) collection. If you supply more than one document
+the only document (node) collection. If you supply more than one document
 collection, then one of the collections will be chosen arbitrarily as
 prototype collection.
 
@@ -162,10 +162,10 @@ graph = satelliteGraphModule._graph("satelliteGraph");
 ```
 
 The prototype collection can and also is automatically selected during the
-graph creation process if at least one document (vertex) collection is supplied
+graph creation process if at least one document (node) collection is supplied
 directly. If more then one are available, they are chosen randomly as well,
 regardless whether they are set inside the edge definition itself or set as a
-vertex/orphan collection.
+node/orphan collection.
 
 ## Utilizing SatelliteGraphs
 
@@ -187,8 +187,8 @@ and a SatelliteGraph traversal query:
    ---
    var graphModule = require("@arangodb/general-graph");
    var satelliteGraphModule = require("@arangodb/satellite-graph");
-   graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-   satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   graphModule._create("normalGraph", [ graphModule._relation("edges", "nodes", "nodes") ], [], {});
+   satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satNodes", "satNodes") ], [], {});
    db._create("collection", {numberOfShards: 8});
    ~db._drop("collection");
    ~satelliteGraphModule._drop("satelliteGraph", true);
@@ -205,10 +205,10 @@ and a SatelliteGraph traversal query:
    ---
    ~var graphModule = require("@arangodb/general-graph");
    ~var satelliteGraphModule = require("@arangodb/satellite-graph");
-   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "nodes", "nodes") ], [], {});
+   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satNodes", "satNodes") ], [], {});
    ~db._create("collection", {numberOfShards: 8});
-   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "normalGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
+   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "nodes/start" GRAPH "normalGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
    ~db._drop("collection");
    ~satelliteGraphModule._drop("satelliteGraph", true);
    ~graphModule._drop("normalGraph", true);
@@ -228,10 +228,10 @@ and a SatelliteGraph traversal query:
    ---
    ~var graphModule = require("@arangodb/general-graph");
    ~var satelliteGraphModule = require("@arangodb/satellite-graph");
-   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "nodes", "nodes") ], [], {});
+   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satNodes", "satNodes") ], [], {});
    ~db._create("collection", {numberOfShards: 8});
-   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "satelliteGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
+   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "nodes/start" GRAPH "satelliteGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
    ~db._drop("collection");
    ~satelliteGraphModule._drop("satelliteGraph", true);
    ~graphModule._drop("normalGraph", true);

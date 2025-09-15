@@ -37,13 +37,20 @@ You can deploy systems that dynamically scale up and down according to demand.
 
 ### OneShard
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 [OneShard deployments](oneshard.md) are cluster deployments but with the data of
 each database restricted to a single shard. This allows queries to run locally
 on a single DB-Server node for better performance and with transactional
 guarantees similar to a single server deployment. OneShard is primarily intended
 for multi-tenant use cases.
+
+### ArangoDB Platform
+
+The ArangoDB Platform is the umbrella for deploying and operating the entire
+ArangoDB product offering with a unified interface in a Kubernetes cluster.
+It is offered for self-hosting on-prem or in the cloud and as a managed service,
+superseding the ArangoGraph Insights Platform.
+
+See [The ArangoDB Platform](../components/platform.md) for details.
 
 ## How to deploy
 

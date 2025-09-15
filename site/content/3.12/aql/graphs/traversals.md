@@ -19,38 +19,38 @@ The syntax for AQL graph traversals using named graphs is as follows
 (square brackets denote optional parts and `|` denotes alternatives):
 
 ```aql
-FOR vertex[, edge[, path]]
+FOR node[, edge[, path]]
   IN [min[..max]]
-  OUTBOUND|INBOUND|ANY startVertex
+  OUTBOUND|INBOUND|ANY startNode
   GRAPH graphName
   [PRUNE [pruneVariable = ]pruneCondition]
   [OPTIONS options]
 ```
 
 - `FOR`: emits up to three variables:
-  - **vertex** (object): the current vertex in a traversal
+  - **node** (object): the current node in a traversal
   - **edge** (object, *optional*): the current edge in a traversal
   - **path** (object, *optional*): representation of the current path with
     two members:
-    - `vertices`: an array of all vertices on this path
+    - `vertices`: an array of all nodes on this path
     - `edges`: an array of all edges on this path
 - `IN` `min..max`: the minimal and maximal depth for the traversal:
-  - **min** (number, *optional*): edges and vertices returned by this query
-    start at the traversal depth of *min* (thus edges and vertices below it are
+  - **min** (number, *optional*): edges and nodes returned by this query
+    start at the traversal depth of *min* (thus edges and nodes below it are
     not returned). If not specified, it defaults to 1. The minimal
     possible value is 0.
   - **max** (number, *optional*): up to *max* length paths are traversed.
-    If omitted, *max* defaults to *min*. Thus only the vertices and edges in
+    If omitted, *max* defaults to *min*. Thus only the nodes and edges in
     the range of *min* are returned. *max* cannot be specified without *min*.
 - `OUTBOUND|INBOUND|ANY`: follow outgoing, incoming, or edges pointing in either
   direction in the traversal. Note that this can't be replaced by a bind parameter.
-- **startVertex** (string\|object): a vertex where the traversal originates from.
+- **startNode** (string\|object): a node where the traversal originates from.
   This can be specified in the form of an ID string or in the form of a document
   with the `_id` attribute. All other values lead to a warning and an empty
   result. If the specified document does not exist, the result is empty as well
   and there is no warning.
 - `GRAPH` **graphName** (string): the name identifying the named graph.
-  Its vertex and edge collections are looked up. Note that the graph name
+  Its node and edge collections are looked up. Note that the graph name
   is like a regular string, hence it must be enclosed by quote marks, like
   `GRAPH "graphName"`.
 - `PRUNE` **expression** (AQL expression, *optional*):
@@ -83,10 +83,10 @@ The syntax for AQL graph traversals using collection sets is as follows
 (square brackets denote optional parts and `|` denotes alternatives):
 
 ```aql
-[WITH vertexCollection1[, vertexCollection2[, vertexCollectionN]]]
-FOR vertex[, edge[, path]]
+[WITH nodeCollection1[, nodeCollection2[, nodeCollectionN]]]
+FOR node[, edge[, path]]
   IN [min[..max]]
-  OUTBOUND|INBOUND|ANY startVertex
+  OUTBOUND|INBOUND|ANY startNode
   edgeCollection1[, edgeCollection2[, edgeCollectionN]]
   [PRUNE [pruneVariable = ]pruneCondition]
   [OPTIONS options]
@@ -95,11 +95,11 @@ FOR vertex[, edge[, path]]
 - `WITH`: Declaration of collections. Optional for single server instances, but
   required for [graph traversals in a cluster](#graph-traversals-in-a-cluster).
   Needs to be placed at the very beginning of the query.
-  - **collections** (collection, *repeatable*): list of vertex collections that
+  - **collections** (collection, *repeatable*): list of node collections that
     are involved in the traversal
 - **edgeCollections** (collection, *repeatable*): One or more edge collections
   to use for the traversal (instead of using a named graph with `GRAPH graphName`).
-  Vertex collections are determined by the edges in the edge collections.
+  Node collections are determined by the edges in the edge collections.
   
   You can override the default traversal direction by setting `OUTBOUND`,
   `INBOUND`, or `ANY` before any of the edge collections.
@@ -122,10 +122,10 @@ graph traversal. If you specify unknown options, query warnings are raised.
 
 Specify which traversal algorithm to use (string):
 - `"bfs"` – the traversal is executed breadth-first. The results
-  first contain all vertices at depth 1, then all vertices at depth 2 and so on.
+  first contain all nodes at depth 1, then all nodes at depth 2 and so on.
 - `"dfs"` (default) – the traversal is executed depth-first. It
-  first returns all paths from *min* depth to *max* depth for one vertex at
-  depth 1, then for the next vertex at depth 1 and so on.
+  first returns all paths from *min* depth to *max* depth for one node at
+  depth 1, then for the next node at depth 1 and so on.
 - `"weighted"` - the traversal is a weighted traversal
   (introduced in v3.8.0). Paths are enumerated with increasing cost.
   Also see `weightAttribute` and `defaultWeight`. A returned path has an
@@ -139,20 +139,20 @@ Deprecated, use `order: "bfs"` instead.
 
 #### `uniqueVertices`
 
-Ensure vertex uniqueness (string):
+Ensure node uniqueness (string):
 
-- `"path"` – it is guaranteed that there is no path returned with a duplicate vertex
-- `"global"` – it is guaranteed that each vertex is visited at most once during
-  the traversal, no matter how many paths lead from the start vertex to this one.
-  If you start with a `min depth > 1` a vertex that was found before *min* depth
+- `"path"` – it is guaranteed that there is no path returned with a duplicate node
+- `"global"` – it is guaranteed that each node is visited at most once during
+  the traversal, no matter how many paths lead from the start node to this one.
+  If you start with a `min depth > 1` a node that was found before *min* depth
   might not be returned at all (it still might be part of a path).
   It is required to set `order: "bfs"` or `order: "weighted"` because with
   depth-first search the results would be unpredictable. **Note:**
   Using this configuration the result is not deterministic any more. If there
-  are multiple paths from *startVertex* to *vertex*, one of those is picked.
+  are multiple paths from *startNode* to *node*, one of those is picked.
   In case of a `weighted` traversal, the path with the lowest weight is
   picked, but in case of equal weights it is undefined which one is chosen.
-- `"none"` (default) – no uniqueness check is applied on vertices
+- `"none"` (default) – no uniqueness check is applied on nodes
 
 #### `uniqueEdges`
 
@@ -176,20 +176,18 @@ If omitted or an empty array is specified, then there are no restrictions.
 
 #### `vertexCollections`
 
-Restrict vertex collections the traversal may visit (string\|array).
+Restrict node collections the traversal may visit (string\|array).
 
 If omitted or an empty array is specified, then there are no restrictions.
 
 - A string parameter is treated as the equivalent of an array with a single
   element.
 - Each element of the array should be a string containing the name of a
-  vertex collection.
-- The starting vertex is always allowed, even if it does not belong to one
+  node collection.
+- The starting node is always allowed, even if it does not belong to one
   of the collections specified by a restriction.
 
 #### `parallelism`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 Parallelize traversal execution (number).
     
@@ -199,17 +197,21 @@ used for concurrently executing the traversal. The value is capped by the number
 of available cores on the target machine.
 
 Parallelizing a traversal is normally useful when there are many inputs (start
-vertices) that the nested traversal can work on concurrently. This is often the
+nodes) that the nested traversal can work on concurrently. This is often the
 case when a nested traversal is fed with several tens of thousands of start
-vertices, which can then be distributed randomly to worker threads for parallel
+nodes, which can then be distributed randomly to worker threads for parallel
 execution.
 
 #### `maxProjections`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.
+
+The AQL optimizer automatically detects which document attributes you access in
+traversal queries and optimizes the data loading. This optimization is 
+beneficial if you have large documents but only access a few document attributes.
+The `maxProjections` option lets you tune when to load individual attributes
+versus the whole document.
 
 #### `indexHint`
 
@@ -247,7 +249,7 @@ enclose them in quotes to avoid query parse errors.
 Example:
 
 ```aql
-FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+FOR v, e, p IN 1..4 OUTBOUND startNode edgeCollection
 OPTIONS {
   indexHint: {
     "edgeCollection": {
@@ -323,8 +325,8 @@ In this case you can use `OUTBOUND` as general traversal direction and `ANY`
 specifically for *edges2* as follows:
 
 ```aql
-FOR vertex IN OUTBOUND
-  startVertex
+FOR node IN OUTBOUND
+  startNode
   edges1, ANY edges2, edges3
 ```
 
@@ -334,7 +336,7 @@ collection in your traversal.
 
 ### Graph traversals in a cluster
 
-Due to the nature of graphs, edges may reference vertices from arbitrary
+Due to the nature of graphs, edges may reference nodes from arbitrary
 collections. Following the paths can thus involve documents from various
 collections and it is not possible to predict which are visited in a
 traversal. Which collections need to be loaded by the graph engine can only be
@@ -355,7 +357,7 @@ traversal down specific paths early.
 {{< youtube id="4LVeeC0ciCQ" >}}
 
 You can specify one `PRUNE` expression per graph traversal, but it can contain
-an arbitrary number of conditions. You can use the vertex, edge, and path
+an arbitrary number of conditions. You can use the node, edge, and path
 variables emitted by the traversal in a prune expression, as well as all other
 variables defined before the `FOR` operation. Note that `PRUNE` is an optional
 clause of the `FOR` operation and that the `OPTIONS` clause needs to be placed
@@ -387,7 +389,7 @@ prune expression.
 The traversal along paths is stopped as soon as the prune expression evaluates
 to `true` for a given path. The current depth is still included in the result,
 however. This can be seen in the query result of the example which includes the
-Edmonton vertex at which it stopped.
+Edmonton node at which it stopped.
 
 The following example starts a traversal at **London** (middle right), with a
 depth between 2 and 3, and every station is only visited once. The station names
@@ -404,7 +406,7 @@ FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
   RETURN CONCAT_SEPARATOR(" -- ", INTERLEAVE(p.vertices[*].label, p.edges[*].travelTime))
 ```
 
-The same example with an added prune expression, with vertex and edge conditions:
+The same example with an added prune expression, with node and edge conditions:
 
 ```aql
 ---
@@ -418,14 +420,14 @@ FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
   RETURN CONCAT_SEPARATOR(" -- ", INTERLEAVE(p.vertices[*].label, p.edges[*].travelTime))
 ```
 
-If either the **Carlisle** vertex or an edge with a travel time of over three
+If either the **Carlisle** node or an edge with a travel time of over three
 hours is encountered, the subsequent paths are pruned. In the example, this
 removes the train connections to **Birmingham**, **Glasgow**, and **York**,
 which come after **Carlisle**, as well as the connections to and via
 **Edinburgh** because of the four hour duration for the section from **York**
 to **Edinburgh**.
 
-If your graph is comprised of multiple vertex or edge collections, you can
+If your graph is comprised of multiple node or edge collections, you can
 also prune as soon as you reach a certain collection, using a condition like
 `PRUNE IS_SAME_COLLECTION("stopCollection", v)`.
 
@@ -491,7 +493,7 @@ FOR v, e, p IN 2..5 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
 {{< info >}}
 The prune expression is **evaluated at every step of the traversal**. This
 includes any traversal depths below the specified minimum depth, despite not
-becoming part of the result. It also includes depth 0, which is the start vertex
+becoming part of the result. It also includes depth 0, which is the start node
 and a `null` edge.
 
 If you add prune conditions using the edge variable, make sure to account for
@@ -533,12 +535,12 @@ FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
 The problem is that `null`, `false`, and `true` are all less than any number (`< 2.5`)
 because of AQL's [Type and value order](../fundamentals/type-and-value-order.md), and
 because the edge at depth 0 is always `null`. The prune condition is accidentally
-fulfilled at the start vertex, stopping the traversal too early. This similarly
+fulfilled at the start node, stopping the traversal too early. This similarly
 happens if you check an edge attribute for inequality (`!=`) and compare it to
 string, for instance, which evaluates to `true` for the `null` value.
 
 The depth at which a traversal is stopped by pruning is considered as a result,
-but in the above example, the minimum depth of `2` filters the start vertex out.
+but in the above example, the minimum depth of `2` filters the start node out.
 If you lower the minimum depth to `0`, you get **London** as the sole result.
 This confirms that the traversal stopped at the start vertex.
 
@@ -588,7 +590,7 @@ statements. For some of these filter statements the optimizer can detect that it
 is possible to prune paths of traversals earlier, hence filtered results are
 not emitted to the variables in the first place. This may significantly
 improve the performance of your query. Whenever a filter is not fulfilled,
-the complete set of `vertex`, `edge` and `path` is skipped. All paths
+the complete set of `node`, `edge` and `path` is skipped. All paths
 with a length greater than the `max` depth are never computed.
 
 Filter conditions that are `AND`-combined can be optimized, but `OR`-combined
@@ -618,9 +620,9 @@ FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
     RETURN { vertices: p.vertices[*]._key, edges: p.edges[*].label }
 ```
 
-#### Filtering vertices on the path
+#### Filtering nodes on the path
 
-Similar to filtering the edges on the path, you can also filter the vertices:
+Similar to filtering the edges on the path, you can also filter the nodes:
 
 ```aql
 ---
@@ -651,7 +653,7 @@ FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
 ```
 
 The query filters all paths where the first edge has the attribute
-`theTruth` equal to `true`, the first vertex is `"G"` and the second edge has
+`theTruth` equal to `true`, the first node is `"G"` and the second edge has
 the attribute `theFalse` equal to `false`. The resulting paths are up to
 5 items long.
 
@@ -705,19 +707,19 @@ FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
 ```
 
 It is guaranteed that at least one, but potentially more edges fulfill the condition.
-All of the above filters can be defined on vertices in the exact same way.
+All of the above filters can be defined on nodes in the exact same way.
 
-### Filtering on the path vs. filtering on vertices or edges
+### Filtering on the path vs. filtering on nodes or edges
 
 Filtering on the path influences the Iteration on your graph. If certain conditions 
 aren't met, the traversal may stop continuing along this path.
 
-In contrast filters on vertex or edge only express whether you're interested in the actual value of these
+In contrast filters on node or edge only express whether you're interested in the actual value of these
 documents. Thus, it influences the list of returned documents (if you return v or e) similar 
 as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
 two nodes of these paths has to be executed - you just won't see them in your result array. 
 
-Similar are filters on vertices or edges - the traverser has to walk along these nodes, since 
+Similar are filters on nodes or edges - the traverser has to walk along these nodes, since 
 you may be interested in documents further down the path.
 
 ### Examples
@@ -742,7 +744,7 @@ examples.dropGraph("traversalGraph");
 ```
 
 To get started we select the full graph. For better overview we only return
-the vertex IDs:
+the node IDs:
 
 ```aql
 ---
@@ -763,7 +765,7 @@ dataset: traversalGraph
 FOR v IN 1..3 OUTBOUND 'circles/A' edges RETURN v._key
 ```
 
-We can nicely see that it is heading for the first outer vertex, then goes back to
+We can nicely see that it is heading for the first outer node, then goes back to
 the branch to descend into the next tree. After that it returns to our start node,
 to descend again. As we can see both queries return the same result, the first one
 uses the named graph, the second uses the edge collections directly.
@@ -799,7 +801,7 @@ parameter.
 Now let's start to add some filters. We want to cut of the branch on the right
 side of the graph, we may filter in two ways:
 
-- we know the vertex at depth 1 has `_key` == `G`
+- we know the node at depth 1 has `_key` == `G`
 - we know the `label` attribute of the edge connecting **A** to **G** is `right_foo`
 
 ```aql
@@ -824,8 +826,8 @@ FOR v, e, p IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
     RETURN v._key
 ```
 
-As we can see, all vertices behind **G** are skipped in both queries.
-The first filters on the vertex `_key`, the second on an edge label.
+As we can see, all nodes behind **G** are skipped in both queries.
+The first filters on the node `_key`, the second on an edge label.
 Note again, as soon as a filter is not fulfilled for any of the three elements
 `v`, `e` or `p`, the complete set of these is excluded from the result.
 
@@ -899,7 +901,7 @@ Therefore from **E** we only can see **F**. Walking in reverse direction
 (`INBOUND`), we see the path to **A**: **B** → **A**.
 
 Walking in forward and reverse direction (`ANY`) we can see a more diverse result.
-First of all, we see the simple paths to **F** and **A**. However, these vertices
+First of all, we see the simple paths to **F** and **A**. However, these nodes
 have edges in other directions and they are traversed.
 
 **Note**: The traverser may use identical edges multiple times. For instance,

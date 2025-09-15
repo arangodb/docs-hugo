@@ -1,7 +1,7 @@
-<div id="sidebar" class="default-animation active">
+<div class="sidebar default-animation active">
   <div class="sidenav-container-flex">
     <div class="sidenav-navigation">
-      <div id="content-wrapper" class="highlightable">
+      <div class="content-wrapper highlightable">
         <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
           {{- range .Site.Sections.ByWeight }}
             {{/* version folders */}}
@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <button id="sidebar-toggle-navigation" class="desktop-menu-toggle" onclick="showSidebarHandler();"></button>
+  <button class="sidebar-toggle-navigation desktop-menu-toggle" onclick="showSidebarHandler();"></button>
 </div>
 
 {{- define "section-tree-nav" }}

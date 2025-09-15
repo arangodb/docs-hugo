@@ -46,6 +46,7 @@ paths:
             the `details` object may vary depending on platform and ArangoDB version.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -601,6 +602,11 @@ paths:
       description: |
         Return availability information about a server.
 
+        The response is a JSON object with an attribute "mode". The "mode" can either
+        be "readonly", if the server is in read-only mode, or "default", if it is not.
+        Please note that the JSON object with "mode" is only returned in case the server
+        does not respond with HTTP response code 503.
+
         This is a public API so it does *not* require authentication. It is meant to be
         used only in the context of server monitoring.
       responses:
@@ -1069,7 +1075,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1091,7 +1097,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 
@@ -1146,6 +1152,7 @@ paths:
              - Ongoing low priority requests
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1280,13 +1287,13 @@ paths:
                 changeLevel:
                   description: |
                     whether or not compacted data should be moved to the minimum possible level.
-                    The default value is `false`.
                   type: boolean
+                  default: false
                 compactBottomMostLevel:
                   description: |
                     Whether or not to compact the bottommost level of data.
-                    The default value is `false`.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -1353,16 +1360,10 @@ paths:
         The call returns an object with the servers request information
       requestBody:
         content:
-          application/json:
+          application/octet-stream:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body can be of any type and is simply forwarded.
-                  type: string
+              description: |
+                The request body can be of any type and is simply forwarded.
       parameters:
         - name: database-name
           in: path
@@ -1545,8 +1546,9 @@ paths:
         directly, otherwise a string produced by JSON.stringify will be
         returned.
 
-        Note that this API endpoint will only be present if the server was
-        started with the option `--javascript.allow-admin-execute true`.
+        Note that this API endpoint is available if the server has been
+        started with the `--javascript.allow-admin-execute` startup options
+        enabled.
 
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
@@ -1562,16 +1564,10 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          text/javascript:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body is the JavaScript code to be executed.
-                  type: string
+              description: |
+                The request body is the JavaScript code to be executed.
       responses:
         '200':
           description: |

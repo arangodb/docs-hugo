@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -46,6 +45,7 @@ paths:
             the `details` object may vary depending on platform and ArangoDB version.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -245,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
@@ -801,9 +800,8 @@ paths:
               that is not ready for production yet
             - `obsolete` (boolean): Whether the option has been deprecated and
               no effect anymore
-            - `enterpriseOnly` (boolean): Whether the option is only available in
-              the Enterprise Edition. The Community Edition does have most of the
-              Enterprise Edition startup options and they are thus not reported
+            - `enterpriseOnly` (boolean): Whether the option is implemented in
+              the non-public enterprise code.
             - `requiresValue` (boolean): Whether the option can be specified
               without a value to enable it
             - `os` (array of strings): The operating systems the startup option
@@ -963,11 +961,13 @@ paths:
               schema:
                 type: object
                 required:
-                  - license
+                  - upgrading
                 properties:
                   features:
                     description: |
                       The properties of the license.
+
+                      This attribute is only present if an Enterprise Edition license is applied.
                     type: object
                     required:
                       - expires
@@ -980,24 +980,29 @@ paths:
                         example: 1683173040
                   license:
                     description: |
-                      The encrypted license key in Base64 encoding, or `"none"`
-                      in the Community Edition.
+                      The encrypted license key in Base64 encoding.
+
+                      This attribute is only present if an Enterprise Edition license is applied.
                     type: string
                     example: V0h/W...wEDw==
                   hash:
                     description: |
                       The hash value of the license.
+
+                      This attribute is only present if an Enterprise Edition license is applied.
                     type: string
                     example: 982db5...44f3
                   version:
                     description: |
                       The license version number.
+
+                      This attribute is only present if an Enterprise Edition license is applied.
                     type: number
                     example: 1
                   status:
                     description: |
-                      The `status` key allows you to confirm the state of the installed license on a
-                      glance.
+                      The `status` attribute allows you to confirm the state of the
+                      applied license at a glance.
 
                       - `good`: The license is valid for more than 2 weeks.
                       - `expiring`: The license is valid for less than 2 weeks.
@@ -1005,6 +1010,8 @@ paths:
                         Enterprise Edition features can be utilized.
                       - `read-only`: The license is expired over 2 weeks. The instance is now
                         restricted to read-only mode.
+
+                      This attribute is only present if an Enterprise Edition license is applied.
                     type: string
                     enum: [good, expiring, expired, read-only]
                     example: good
@@ -1013,6 +1020,57 @@ paths:
                       Whether the server is performing a database upgrade.
                     type: boolean
                     example: false
+                  diskUsage:
+                    description: |
+                      Information about the dataset size limit if you use the
+                      Community Edition.
+                      
+                      This attribute is not present if an Enterprise Edition
+                      license is applied.
+                    type: object
+                    required:
+                      - bytesUsed
+                      - bytesLimit
+                      - limitReached
+                      - secondsUntilReadOnly
+                      - secondsUntilShutDown
+                      - status
+                    properties:
+                      bytesUsed:
+                        description: |
+                          The determined dataset size of your deployment.
+                        type: integer
+                      bytesLimit:
+                        description: |
+                          The maximum dataset size for your Community Edition deployment.
+                        type: integer
+                      limitReached:
+                        description: |
+                          Whether the dataset size exceeds the limit.
+                        type: boolean
+                      secondsUntilReadOnly:
+                        description: |
+                          The time until read-only mode is entered if you are over the limit.
+                        type: integer
+                      secondsUntilShutDown:
+                        description: |
+                          The time until shutdown if you are over the limit.
+                        type: integer
+                      status:
+                        description: |
+                          The state of your Community Edition deployment with regard to
+                          the dataset size limit at a glance.
+
+                          - `good`: The dataset size of your deployment is below the 100 GiB limit.
+                          - `limit-reached`: Your deployment exceeds the size limit and you have two days
+                            to bring the deployment back below 100 GiB. Consider acquiring an
+                            Enterprise Edition license to lift the limit.
+                          - `read-only`: Your deployment is in read-only mode because it exceeded the
+                            size limit for two days. All read operations to the instance keep functioning
+                            for two more days. However, no data or data definition changes can be made.
+                          - `shutdown`: The server shuts down after two days of read-only mode.
+                        type: string
+                        enum: [good, limit-reached, read-only, shutdown]
       tags:
         - Administration
 ```
@@ -1057,7 +1115,7 @@ paths:
           in: query
           required: false
           description: |
-            Set to `true` to change the license even if it expires sooner than the current one.
+            Whether to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
             default: false
@@ -1066,7 +1124,7 @@ paths:
           application/json:
             schema:
               description: |
-                The request body has to contain the Base64-encoded string wrapped in double quotes.
+                The request body has to contain the Base64-encoded license string wrapped in double quotes.
               type: string
               example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:
@@ -1130,7 +1188,7 @@ paths:
                     type: string
         '501':
           description: |
-            If you try to apply a license in the Community Edition.
+            If you try to apply a license using a custom build of the public source code.
           content:
             application/json:
               schema:
@@ -1173,7 +1231,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1195,7 +1253,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 
@@ -1249,6 +1307,7 @@ paths:
              - Ongoing low priority requests
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1377,13 +1436,13 @@ paths:
                 changeLevel:
                   description: |
                     whether or not compacted data should be moved to the minimum possible level.
-                    The default value is `false`.
                   type: boolean
+                  default: false
                 compactBottomMostLevel:
                   description: |
                     Whether or not to compact the bottommost level of data.
-                    The default value is `false`.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -1450,16 +1509,10 @@ paths:
         The call returns an object with the servers request information
       requestBody:
         content:
-          application/json:
+          application/octet-stream:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body can be of any type and is simply forwarded.
-                  type: string
+              description: |
+                The request body can be of any type and is simply forwarded.
       parameters:
         - name: database-name
           in: path
@@ -1642,8 +1695,9 @@ paths:
         directly, otherwise a string produced by JSON.stringify will be
         returned.
 
-        Note that this API endpoint will only be present if the server was
-        started with the option `--javascript.allow-admin-execute true`.
+        Note that this API endpoint is available if the server has been
+        started with the `--javascript.allow-admin-execute` startup options
+        enabled.
 
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
@@ -1659,16 +1713,10 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          text/javascript:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body is the JavaScript code to be executed.
-                  type: string
+              description: |
+                The request body is the JavaScript code to be executed.
       responses:
         '200':
           description: |

@@ -57,8 +57,10 @@
 {{- if $option.experimental }}
   {{- $badges = $badges | append "Experimental"}}
 {{- end }}
-{{- if $option.enterpriseOnly }}
-  {{- $badges = $badges | append "Enterprise Edition" }}
+{{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}{{/* Only one Edition v3.12.5+ */}}
+  {{- if $option.enterpriseOnly }}
+    {{- $badges = $badges | append "Enterprise Edition" }}
+  {{- end }}
 {{- end }}
 {{- if $badges }}
 <p class="labels">
@@ -111,12 +113,7 @@ Effective on {{ delimit . ", " " and " }} only.
 {{ end }}
 
 {{ with $option.longDescription }}
-  {{- partial "shortcodes/expand.html" (dict
-    "context" $context
-    "content" .
-    "open"    "open"
-    "title"   "Show details"
-  ) }}
+<details><summary>Show details</summary>{{ . | $context.Page.RenderString (dict "display" "block") }}</details>
 {{ end }}
 
 ---
