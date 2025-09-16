@@ -286,6 +286,7 @@ Graph configuration properties are prefixed with `gremlin.arangodb.conf.graph`:
 | `gremlin.arangodb.conf.graph.name`                 | ArangoDB graph name                   | `tinkerpop` |
 | `gremlin.arangodb.conf.graph.enableDataDefinition` | Flag to allow data definition changes | `false`     |
 | `gremlin.arangodb.conf.graph.type`                 | Graph type: `SIMPLE` or `COMPLEX`     | `SIMPLE`    |
+| `gremlin.arangodb.conf.graph.labelField`           | Label field name                      | `_label`    |
 | `gremlin.arangodb.conf.graph.orphanCollections`    | List of orphan collections names      | -           |
 | `gremlin.arangodb.conf.graph.edgeDefinitions`      | List of edge definitions              | -           |
 
@@ -398,6 +399,11 @@ The ArangoDB TinkerPop Provider supports two graph types, which can be configure
 From an application perspective, this is the most flexible graph type that is backed by an ArangoDB graph composed of
 only 1 vertex collection and 1 edge definition.
 
+The `label` of each element is stored in a database document field. The label field name is configurable by setting the
+configuration property `graph.labelField`, `_label` by default.
+
+The `SIMPLE` graph type is the default graph type.
+
 It has the following advantages:
 
 - It closely matches the Tinkerpop property graph
@@ -410,7 +416,7 @@ It has the following disadvantages:
 - All vertex types will be stored in the same vertex collection
 - All edge types will be stored in the same edge collection
 - It could not leverage the full potential of ArangoDB graph traversal
-- It could require an index on the `_label` field to improve performance
+- It could require an index on the label field to improve performance
 
 Example configuration:
 
@@ -446,7 +452,11 @@ to `v/foo`).
 ### COMPLEX Graph Type
 
 The `COMPLEX` graph type is backed by an ArangoDB graph composed potentially of multiple vertex collections and multiple
-edge definitions. It has the following advantages:
+edge definitions.
+
+The `label` of each element is used as name for the related database collection.
+
+It has the following advantages:
 
 - It closely matches the ArangoDB graph structure
 - It allows multiple vertex collections and multiple edge collections
@@ -505,9 +515,11 @@ collection, by default named `vertex`. In a `COMPLEX` graph, vertices are stored
 Each vertex document contains:
 
 - Standard ArangoDB fields (`_id`, `_key`, `_rev`)
-- The field `_label`
 - Vertex properties as document fields
 - Meta-properties nested in the nested map `_meta`
+
+Additionally, in a `SIMPLE` graph:
+- The label field (`_label` by default)
 
 For example, the following Java code:
 
@@ -545,8 +557,10 @@ default named `edge`. In a `COMPLEX` graph, edges are stored in collections name
 Each edge document contains:
 
 - Standard ArangoDB edge fields (`_id`, `_key`, `_rev`, `_from`, `_to`)
-- The field `_label`
 - Edge properties as document fields
+
+Additionally, in a `SIMPLE` graph:
+- The label field (`_label` by default)
 
 For example, the following Java code:
 
