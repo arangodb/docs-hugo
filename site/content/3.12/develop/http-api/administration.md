@@ -1233,7 +1233,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1255,7 +1255,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 

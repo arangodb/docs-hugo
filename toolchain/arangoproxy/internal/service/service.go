@@ -10,7 +10,6 @@ import (
 	"reflect"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -220,7 +219,7 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() {
-	time.Sleep(time.Second * 4)
+	//time.Sleep(time.Second * 4)
 	var wg sync.WaitGroup
 	models.Logger.Summary("<h2>OPENAPI</h2>")
 

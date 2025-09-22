@@ -1561,3 +1561,112 @@ paths:
       tags:
         - Cluster
 ```
+
+## Miscellaneous
+
+### Reserve globally unique IDs
+
+<small>Introduced in: v3.12.5-3</small>
+
+```openapi
+paths:
+  /_admin/cluster/uniqId:
+    put:
+      operationId: reserveUniqueIDs
+      description: |
+        Reserve or skip globally unique identifiers that are used as automatically
+        generated document keys when using the `traditional` or `padded` key generators.
+
+        Either the `number` or the `minimum` query parameter needs to be specified.
+
+        {{</* warning */>}}
+        Only use this endpoint to resolve issues with the key generation,
+        in particular of cluster deployments created with v3.12.5-2 or older.
+        {{</* /warning */>}}
+      parameters:
+        - name: number
+          in: query
+          description: |
+            Reserve as many globally unique IDs as specified.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000000
+        - name: minimum
+          in: query
+          description: |
+            Make sure that globally unique IDs used in the future will always be
+            at least as large as the specified value.
+
+            Coordinators and DB-Servers will use these larger IDs only after a restart.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: |
+            Successfully reserved/skipped the globally unique IDs.
+          content:
+            application/json:
+              schema:
+                description: |
+                  The range of the reserved/skipped IDs.
+                type: object
+                required:
+                  - code
+                  - error
+                  - smallest
+                  - largest
+                properties:
+                  code:
+                    description: |
+                      The status code.
+                    type: integer
+                    example: 200
+                  error:
+                    description: |
+                      Whether an error occurred. `false` in this case.
+                    type: boolean
+                  smallest:
+                    description: |
+                      The lower bound of the IDs that have been reserved (`number`)
+                      respectively skipped (`minimum`).
+                    type: string
+                  largest:
+                    description: |
+                      The upper bound of the IDs that have been reserved (`number`)
+                      respectively skipped (`minimum`).
+                    type: string
+        '400':
+          description: |
+            Either the `number` or the `minimum` query parameter must be provided.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Cluster
+```
