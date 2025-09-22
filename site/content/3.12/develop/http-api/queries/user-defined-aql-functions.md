@@ -147,7 +147,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -271,7 +271,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -302,7 +302,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -454,7 +454,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

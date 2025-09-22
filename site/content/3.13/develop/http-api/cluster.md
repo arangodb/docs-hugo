@@ -208,7 +208,7 @@ paths:
                     example: 200
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   role:
                     description: |

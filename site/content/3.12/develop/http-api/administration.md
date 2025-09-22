@@ -1153,7 +1153,7 @@ paths:
                         example: false
                       code:
                         description: |
-                          The HTTP status code.
+                          The HTTP response status code.
                         type: integer
                         example: 201
         '400':
@@ -1177,12 +1177,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 400
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1208,12 +1208,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 501
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

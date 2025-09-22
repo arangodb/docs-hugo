@@ -1081,7 +1081,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2336,7 +2336,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      A server error number (if `error` is `true`).
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
