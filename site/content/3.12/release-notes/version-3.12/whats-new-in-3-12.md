@@ -2257,6 +2257,24 @@ dates, and individually revoke tokens.
 See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
 documentation.
 
+### `@PID@` and `@TEMP_BASE_DIR@` placeholders for startup options
+
+<small>Introduced in: v3.12.6</small>
+
+You can use special placeholders in startup options like `--log.output` that get
+substituted as follows:
+
+- `@PID@`: Replaced at runtime with the actual process ID. This has already
+  been supported using a literal occurrence of `$PID`.
+- `@TEMP_BASE_DIR@`: Replaced at runtime with the current temporary directory,
+  e.g. `/tmp/arangodb_i37Xxh` (automatically created on startup with a randomly
+  generated suffix).
+
+Keep in mind that `@NAME@` is also the syntax for using the value of an
+environment variable `NAME`. If there is an environment variable called `PID` or
+`TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
+value of the respective environment variable.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
