@@ -226,7 +226,8 @@ paths:
                   type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully created a session token.
           content:
             application/json:
               schema:
@@ -971,7 +972,8 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully retrieved the JWT secret information.
           content:
             application/json:
               schema:
@@ -1039,7 +1041,8 @@ paths:
         will be _HTTP 403 Forbidden_.
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully reloaded the JWT secrets.
           content:
             application/json:
               schema:

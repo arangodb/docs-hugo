@@ -2461,9 +2461,9 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag indicating that no error occurred.
+                      A flag indicating that an error occurred.
                     type: boolean
-                    example: false
+                    example: true
                   code:
                     description: |
                       The HTTP response status code.

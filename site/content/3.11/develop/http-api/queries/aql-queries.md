@@ -662,6 +662,7 @@ paths:
 
                         This feature is only available in the Enterprise Edition.
                       type: boolean
+                      default: false
                     allowDirtyReads:
                       description: |
                         If you set this option to `true` and execute the query against a cluster
@@ -2387,9 +2388,9 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag indicating that no error occurred.
+                      A flag indicating that an error occurred.
                     type: boolean
-                    example: false
+                    example: true
                   code:
                     description: |
                       The HTTP response status code.

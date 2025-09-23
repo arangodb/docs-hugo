@@ -90,7 +90,8 @@ If you use a tool like cURL, you can manually specify this header as follows:
 curl -H 'Authorization: Basic dXNlcjpwYXNz' ...
 ```
 
-However, cURL can also take care of the authentication for you:
+However, cURL can also take care of the authentication and specifically the
+encoding of the credentials for you:
 
 ```
 curl -u user:pass ...
@@ -114,19 +115,19 @@ For more information on JWT please consult RFC7519 and [jwt.io](https://jwt.io).
 
 ### JWT user tokens
 
-To authenticate with a specific user you need to supply a JWT token containing
-the `preferred_username` field with the username.
+To authenticate with a specific user account, you need to supply a JWT token
+containing the `preferred_username` field with the username.
 You can either let ArangoDB generate this token for you via an API call
 or you can generate it yourself (only if you know the JWT secret).
 
 ArangoDB offers a RESTful API to generate user tokens for you if you know the
-username and password. To do so send a POST request to:
+username and password. To do so, send a POST request to this endpoint:
 
 ```
 /_open/auth
 ```
 
-… containing `username` and `password` JSON-encoded like so:
+The request body needs to contain the `username` and `password` JSON-encoded like so:
 
 ```json
 {
@@ -203,7 +204,8 @@ paths:
                   type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully created a session token.
           content:
             application/json:
               schema:
@@ -304,7 +306,8 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully retrieved the JWT secret information.
           content:
             application/json:
               schema:
@@ -372,7 +375,8 @@ paths:
         will be _HTTP 403 Forbidden_.
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully reloaded the JWT secrets.
           content:
             application/json:
               schema:

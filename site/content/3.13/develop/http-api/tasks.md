@@ -14,7 +14,7 @@ paths:
     get:
       operationId: listTasks
       description: |
-        fetches all existing tasks on the server
+        Fetches all existing tasks on the server.
       parameters:
         - name: database-name
           in: path
@@ -29,12 +29,12 @@ paths:
       responses:
         '200':
           description: |
-            The list of tasks
+            The list of tasks.
           content:
             application/json:
               schema:
                 description: |
-                  a list of all tasks
+                  A list of all tasks.
                 type: array
                 items:
                   type: object
@@ -133,12 +133,12 @@ paths:
       responses:
         '200':
           description: |
-            The requested task
+            The requested task.
           content:
             application/json:
               schema:
                 description: |
-                  The function in question
+                  The function in question.
                 type: object
                 required:
                   - name

@@ -43,6 +43,7 @@ paths:
                     The type of the View. Must be equal to `"search-alias"`.
                     This option is immutable.
                   type: string
+                  example: search-alias
                 indexes:
                   description: |
                     A list of inverted indexes to add to the View.
@@ -85,6 +86,7 @@ paths:
                     description: |
                       The type of the View (`"search-alias"`).
                     type: string
+                    example: search-alias
                   id:
                     description: |
                       A unique identifier of the View (deprecated).
@@ -264,7 +266,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"search-alias"`).
-                    type: integer
+                    type: string
                     example: search-alias
                   id:
                     description: |
@@ -393,6 +395,7 @@ paths:
                     description: |
                       The type of the View (`"search-alias"`).
                     type: string
+                    example: search-alias
                   id:
                     description: |
                       A unique identifier of the View (deprecated).
