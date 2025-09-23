@@ -497,11 +497,6 @@ function initClickHandlers() {
         }
     });
     
-    $(".openapi-table.show-children").on("click", function(event) {
-        $(event.target).toggleClass("collapsed");
-        $(event.target).next(".openapi-table").toggleClass("hidden");
-    });
-    
 }
 
 
@@ -540,18 +535,6 @@ function copyURI(evt) {
     ).then(() => {}, () => {
       console.log("clipboard copy failed");
     });
-}
-
-function toggleExpandShortcode(event) {
-    var t = $(event.target.closest("a"));
-    if (t.parent('.expand-expanded.expand-marked').length) {
-        t.next().css('display','none');
-    } else if (t.parent('.expand-marked').length) {
-        t.next().css('display','block')
-    } else {
-        t.next('.expand-content').slideToggle(100);
-    }
-    t.parent().toggleClass('expand-expanded');
 }
 
 
