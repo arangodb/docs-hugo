@@ -31,15 +31,19 @@ have been performed on your production system before you go live.
   of ArangoDB to benefit from performance improvements and security fixes.
 
 - **Testing environments**: Use QA environments and UAT (User Acceptance Testing)
-  to test all changes before going live with production deployments.
+  to test all changes, in particular queries, before going live with production deployments.
 
 ### Security
 
-- The user _root_ is not used to run any ArangoDB processes
+- Create a dedicated system user and group (e.g., "arango")
+  to run ArangoDB processes. Never use the _root_ user to run any ArangoDB processes
   (if you run ArangoDB on Linux).
 
 - **Access control**: Restrict access to the deployment to authorized personnel only.
   Implement proper authentication and authorization mechanisms.
+
+- **JWT authentication**: Enable JWT authentication
+  for production deployments. See [JWT authentication](../develop/http-api/authentication.md#jwt-user-tokens) for more details.
 
 - **Encryption**: Enable [Encryption at Rest](../operations/security/encryption-at-rest.md)
   for sensitive data. Make sure to safely store any secret keys you create for this.
@@ -84,6 +88,10 @@ have been performed on your production system before you go live.
 - Disable swap space to avoid slowdown which can result in servers being incorrectly 
   detected as failed.
 
+- **Query memory limits**: Configure appropriate memory limits for AQL queries:
+  - Set [`--query.max-memory-per-query`](../components/arangodb-server/options.md#--querymax-memory-per-query) to limit memory usage per individual query.
+  - Consider setting [`--query.global-memory-limit`](../components/arangodb-server/options.md#--queryglobal-memory-limit) to limit total memory used by all concurrent queries.
+
 ### Service Management
 
 - Ensure ArangoDB will be automatically restarted (e.g. by using a systemd service file). Typically
@@ -99,11 +107,11 @@ have been performed on your production system before you go live.
 
 ### Cluster Configuration
 
-- If you have deployed a Cluster, the _replication factor_  and 
-  _minimal_replication_factor_ of your collections
-  are set to a value equal or higher than 2, otherwise you run the risk of
-  losing data in case of a node failure. See
-  [cluster startup options](../components/arangodb-server/options.md#cluster).
+- **Replication configuration**: For production clusters, configure collections with:
+  - _replication factor_ of 3 for optimal data availability and fault tolerance.
+  - _minimal_replication_factor_ of a value equal or higher than 2.
+  - _writeConcern_ of 2.
+  See [cluster startup options](../components/arangodb-server/options.md#cluster).
 
 - **Shard limits**: Keep the total number of shards below 10,000 across your cluster
   to maintain optimal performance and avoid resource exhaustion.
@@ -117,6 +125,8 @@ have been performed on your production system before you go live.
   so make sure to check your storage provider for details. Furthermore, you should
   be careful with burst mode guarantees as ArangoDB requires a sustainable
   high IOPS rate.
+
+- **DB-Server storage limit**: Keep individual DB-Server storage below 2TB per server to maintain optimal performance.
 
 - **I/O bandwidth**: Give considerations to I/O bandwidth, especially considering 
   RocksDB write-amplification which can easily be 10x or more.
@@ -137,6 +147,11 @@ have been performed on your production system before you go live.
 
 - **arangodump backups**: Take backups with arangodump from time to time as an
   additional backup strategy alongside Hot Backups.
+
+- **Secure backup storage**: Store backups in a secure, separate location from your
+  production systems. Use encrypted storage and ensure backups are geographically
+  distributed to protect against regional disasters. Implement proper access controls
+  for backup storage locations.
 
 - **Retry mechanisms**: Implement exponential retry with jitter in your applications
   when connecting to ArangoDB to handle temporary network issues and failovers gracefully.
