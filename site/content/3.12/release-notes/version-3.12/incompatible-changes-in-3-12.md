@@ -909,9 +909,6 @@ The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
 As part of this storage engine upgrade, the default values of the following
 RocksDB-related startup options have been changed:
 
-- `--rocksdb.compaction-read-ahead-size` has been changed from 2 MiB to 8 MiB.
-- `--rocksdb.max-subcompactions` has been changed from 2 to 4.
-- `--rocksdb.max-total-wal-size` has been changed from 80 MiB to 256 MiB.
 - `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128 KiB to 1 GiB.
 - `--rocksdb.pending-compactions-stop-trigger` has been changed from 16 GiB to 32 GiB.
 - `--rocksdb.partition-files-for-documents` has been changed from false to true.
