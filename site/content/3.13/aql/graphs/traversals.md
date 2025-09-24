@@ -331,7 +331,7 @@ FOR node IN OUTBOUND
 ```
 
 All collections in the list that do not specify their own direction use the
-direction defined after `IN`. This allows to use a different direction for each
+direction defined after `IN`. This allows you to use a different direction for each
 collection in your traversal.
 
 ### Graph traversals in a cluster

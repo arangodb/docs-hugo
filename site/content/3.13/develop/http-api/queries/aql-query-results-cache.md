@@ -58,7 +58,7 @@ paths:
                   properties:
                     hash:
                       description: |
-                        The hash value calculated from the the query string,
+                        The hash value calculated from the query string,
                         certain query options, and the bind variables.
                       type: string
                     query:

@@ -21,7 +21,7 @@ cloud service, the [ArangoGraph Insights Platform](../arangograph/_index.md).
 
 ## What are Graphs?
 
-Graphs are information networks comprised of nodes and edges.
+Graphs are information networks composed of nodes and edges.
 
 ![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../images/data-model-graph-relation-abstract-edge.png)
 

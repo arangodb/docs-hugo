@@ -151,7 +151,7 @@ based on the costs it estimates, even if a vertex-centric index might
 in fact be faster. Vertex-centric indexes are more likely to be chosen
 for highly connected graphs.
 
-You can also use use prefixed multi-dimensional indexes to combine graph
+You can also use prefixed multi-dimensional indexes to combine graph
 traversals with range queries:
 
 ```aql

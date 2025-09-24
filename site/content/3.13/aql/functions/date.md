@@ -9,12 +9,12 @@ description: >-
 ## Date and time representations
 
 AQL offers functionality to work with dates, but it does not have a special data type
-for dates (neither does JSON, which is usually used as format to ship data into and
+for dates (neither does JSON, which is usually used as a format to ship data into and
 out of ArangoDB). Instead, dates in AQL are represented by either numbers or strings.
 
 All date function operations are done in the *Unix time* system. Unix time counts
-all non leap seconds beginning with January 1st 1970 00:00:00.000 UTC, also know as
-the Unix epoch. A point in time is called timestamp. A timestamp has the same value
+all non leap seconds beginning with January 1st 1970 00:00:00.000 UTC, also known as
+the Unix epoch. A point in time is called a timestamp. A timestamp has the same value
 at every point on earth. The date functions use millisecond precision for timestamps.
 
 Time unit definitions:
@@ -148,7 +148,7 @@ The date time string always uses UTC / Zulu time, indicated by the `Z` at its en
 
 `DATE_ISO8601(year, month, day, hour, minute, second, millisecond) → dateString`
 
-Return a ISO 8601 date time string from `date`, but allows to specify the individual
+Return an ISO 8601 date time string from `date`, but allows you to specify the individual
 date components separately. All parameters after `day` are optional.
 
 - **year** (number): typically in the range 0..9999, e.g. `2017`
@@ -174,7 +174,7 @@ To convert the return value to seconds, divide it by 1000.
 
 `DATE_TIMESTAMP(year, month, day, hour, minute, second, millisecond) → timestamp`
 
-Create a timestamp value, but allows to specify the individual date components
+Create a timestamp value, but allows you to specify the individual date components
 separately. All parameters after `day` are optional.
 
 - **year** (number): typically in the range 0..9999, e.g. `2017`
@@ -779,7 +779,7 @@ RETURN DATE_DAYS_IN_MONTH("2020-02-01")
 ---
 name: datedysmn4
 description: |
-  Determine the number of days in February in a a non-leap year using a date time string:
+  Determine the number of days in February in a non-leap year using a date time string:
 ---
 RETURN DATE_DAYS_IN_MONTH("2021-02-01")
 ```
