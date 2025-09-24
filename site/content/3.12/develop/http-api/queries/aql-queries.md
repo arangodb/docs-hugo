@@ -3107,7 +3107,7 @@ paths:
                     maxNumberOfPlans:
                       description: |
                         The maximum number of plans that the optimizer is allowed to
-                        generate. Setting this attribute to a low value allows to put a
+                        generate. Setting this attribute to a low value allows you to put a
                         cap on the amount of work the optimizer does.
 
                         Default: Controlled by the `--query.optimizer-max-plans` startup option.

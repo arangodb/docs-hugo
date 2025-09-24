@@ -39,7 +39,7 @@ arango> var db = require("@arangodb").db; db.geo.count();
 ```
 
 The emergency console provides a JavaScript console directly running in the
-arangod server process. This allows to debug and examine collections and
+arangod server process. This allows you to debug and examine collections and
 documents as with the normal ArangoDB shell, but without client/server
 communication.
 

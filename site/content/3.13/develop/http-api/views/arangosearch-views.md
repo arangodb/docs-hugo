@@ -200,7 +200,7 @@ paths:
                       ```
 
                     The `storedValues` option is not to be confused with the `storeValues` option,
-                    which allows to store meta data about attribute values in the View index.
+                    which allows you to store meta data about attribute values in the View index.
                   type: array
                   default: []
                   items:

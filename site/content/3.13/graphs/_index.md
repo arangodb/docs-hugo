@@ -10,7 +10,7 @@ description: >-
 aliases:
   - graphs/first-steps
 ---
-Graphs are information networks comprised of **nodes** and **edges**. Nodes
+Graphs are information networks composed of **nodes** and **edges**. Nodes
 can represent objects, entities, abstract concepts, or ideas. edges between
 nodes can represent relations like physical and social connections, temporal and
 causal relationships, flows of information, energy, and material, interactions and
