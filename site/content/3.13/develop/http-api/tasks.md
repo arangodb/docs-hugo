@@ -14,7 +14,7 @@ paths:
     get:
       operationId: listTasks
       description: |
-        fetches all existing tasks on the server
+        Fetches all existing tasks on the server.
       parameters:
         - name: database-name
           in: path
@@ -29,12 +29,12 @@ paths:
       responses:
         '200':
           description: |
-            The list of tasks
+            The list of tasks.
           content:
             application/json:
               schema:
                 description: |
-                  a list of all tasks
+                  A list of all tasks.
                 type: array
                 items:
                   type: object
@@ -133,12 +133,12 @@ paths:
       responses:
         '200':
           description: |
-            The requested task
+            The requested task.
           content:
             application/json:
               schema:
                 description: |
-                  The function in question
+                  The function in question.
                 type: object
                 required:
                   - name
@@ -541,8 +541,9 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code, 200 in this case.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   error:
                     description: |
                       `false` in this case
@@ -561,15 +562,17 @@ paths:
                 properties:
                   code:
                     description: |
-                      The status code, 404 in this case.
-                    type: number
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
                   error:
                     description: |
-                      `true` in this case
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   errorMessage:
                     description: |
-                      A plain text message stating what went wrong.
+                      A descriptive error message.
                     type: string
       tags:
         - Tasks

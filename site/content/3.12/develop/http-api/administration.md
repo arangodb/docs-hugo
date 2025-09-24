@@ -327,12 +327,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   time:
                     description: |
                       The current system time as a Unix timestamp with microsecond precision of the server
@@ -1151,7 +1153,7 @@ paths:
                         example: false
                       code:
                         description: |
-                          The HTTP status code.
+                          The HTTP response status code.
                         type: integer
                         example: 201
         '400':
@@ -1175,12 +1177,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 400
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1206,12 +1208,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 501
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
