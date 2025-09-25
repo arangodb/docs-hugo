@@ -75,19 +75,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   time:
                     description: |
                       the current server timestamp
                     type: integer
                   errorMessage:
                     description: |
-                      a descriptive error message
+                      A descriptive error message.
                     type: string
                   enabled:
                     description: |
@@ -660,8 +662,9 @@ paths:
                           type: string
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   error:
                     description: |
                       the error, `false` in this case

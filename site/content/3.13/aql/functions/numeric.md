@@ -261,10 +261,10 @@ DEGREES(3.141592653589793) // 180
 
 `EXP(value) → num`
 
-Return Euler's constant (2.71828...) raised to the power of *value*.
+Return Euler's constant (2.71828...) raised to the power of the *value*.
 
 - **value** (number): the input value
-- returns **num** (number): Euler's constant raised to the power of *value*
+- returns **num** (number): Euler's constant raised to the power of the *value*
 
 ```aql
 EXP(1) // 2.718281828459045
@@ -276,10 +276,10 @@ EXP(0) // 1
 
 `EXP2(value) → num`
 
-Return 2 raised to the power of *value*.
+Return 2 raised to the power of the *value*.
 
 - **value** (number): the input value
-- returns **num** (number): 2 raised to the power of *value*
+- returns **num** (number): 2 raised to the power of the *value*
 
 ```aql
 EXP2(16) // 65536

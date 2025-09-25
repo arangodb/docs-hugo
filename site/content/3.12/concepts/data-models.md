@@ -41,7 +41,7 @@ values, and more.
 
 ## Graph Model
 
-Graphs are comprised of **nodes** and **edges**. Both are documents in
+Graphs are composed of **nodes** and **edges**. Both are documents in
 ArangoDB. Edges have two special attributes, `_from` and `_to`, that reference
 the source and target nodes by their document identifiers.
 

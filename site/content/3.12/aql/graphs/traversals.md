@@ -331,7 +331,7 @@ FOR node IN OUTBOUND
 ```
 
 All collections in the list that do not specify their own direction use the
-direction defined after `IN`. This allows to use a different direction for each
+direction defined after `IN`. This allows you to use a different direction for each
 collection in your traversal.
 
 ### Graph traversals in a cluster
@@ -542,7 +542,7 @@ string, for instance, which evaluates to `true` for the `null` value.
 The depth at which a traversal is stopped by pruning is considered as a result,
 but in the above example, the minimum depth of `2` filters the start node out.
 If you lower the minimum depth to `0`, you get **London** as the sole result.
-This confirms that the traversal stopped at the start vertex.
+This confirms that the traversal stopped at the start node.
 
 To avoid this problem, exclude the `null` value. For example, you can use
 `e.travelTime > 0 AND e.travelTime < 2.5`, but more generic solutions are to

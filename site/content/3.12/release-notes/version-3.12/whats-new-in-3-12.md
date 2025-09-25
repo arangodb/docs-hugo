@@ -1528,7 +1528,7 @@ certain minimum size, e.g. 250 bytes.
 
 <small>Introduced in: v3.11.2</small>
 
-LZ4 compression of edge index cache values allows to store more data in main
+LZ4 compression of edge index cache values allows you to store more data in main
 memory than without compression, so the available memory can be used more
 efficiently. The compression is transparent and does not require any change to
 queries or applications.

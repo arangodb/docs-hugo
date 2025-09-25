@@ -55,7 +55,7 @@ paths:
           in: query
           required: true
           description: |
-            The id of the start vertex.
+            The document identifier of the start vertex.
           schema:
             type: string
         - name: direction

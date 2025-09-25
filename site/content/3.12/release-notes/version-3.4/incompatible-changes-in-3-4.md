@@ -171,7 +171,7 @@ than the all-or-nothing file syncs that were performed by previous versions of A
 The syncing interval can be configured by adjusting the configuration option 
 `--rocksdb.sync-interval`.
 
-Note: this option is not supported on Windows platforms. Setting the sync interval to
+Note: this option is not supported on Windows platforms. Setting the sync interval
 to a value greater than 0 will produce a startup warning on Windows.
 
 ## RocksDB write buffer size

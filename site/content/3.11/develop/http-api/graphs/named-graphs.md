@@ -321,6 +321,7 @@ paths:
                         The number of shards that is used for every collection within this graph.
                         Cannot be modified later.
                       type: integer
+                      default: 1
                     replicationFactor:
                       description: |
                         The replication factor used when initially creating collections for this graph.

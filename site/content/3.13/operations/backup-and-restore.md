@@ -274,7 +274,7 @@ not be suited for.
 
   Especially in the cluster, the result of these successively longer tries to
   obtain the global transaction lock might become visible in periods of apparent
-  dead time. Locks might be obtained on some machines and and not on others, so
+  dead time. Locks might be obtained on some machines and not on others, so
   that the process has to be retried over and over. Every unsuccessful try would
   then lead to the release of all partial locks.
 

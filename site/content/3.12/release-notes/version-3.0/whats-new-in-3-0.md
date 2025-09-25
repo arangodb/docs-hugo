@@ -173,9 +173,9 @@ The following AQL functions have been added in 3.0:
 
 - *LOG10(value)*: Returns the base 10 logarithm of *value*.
 
-- *EXP(value)*: Returns Euler's constant (2.71828...) raised to the power of *value*.
+- *EXP(value)*: Returns Euler's constant (2.71828...) raised to the power of the *value*.
 
-- *EXP2(value)*: Returns 2 raised to the power of *value*.
+- *EXP2(value)*: Returns 2 raised to the power of the *value*.
 
 - *SIN(value)*: Returns the sine of *value*.
 

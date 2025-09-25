@@ -56,18 +56,18 @@ into three categories:
 - database actions
 - collection actions
 
-The **server actions** are
+The **server actions** are as follows:
 
-- **create user**: allows to create a new user.
+- **create user**: allows you to create a new user.
 
-- **update user**: allows to change the access levels and details of an existing
-user.
+- **update user**: allows you to change the access levels and details of an existing
+  user.
 
-- **drop user**: allows to delete an existing user.
+- **drop user**: allows you to delete an existing user.
 
-- **create database**: allows to create a new database.
+- **create database**: allows you to create a new database.
 
-- **drop database**: allows to delete an existing database.
+- **drop database**: allows you to delete an existing database.
 
 - **shutdown server**: remove server from cluster and shutdown
 
@@ -75,16 +75,16 @@ The **database actions** are tied to a given database, and access
 levels must be set
 for each database individually. For a given database the actions are
 
-- **create collection**: allows to create a new collection in the given database.
+- **create collection**: allows you to create a new collection in the given database.
 
-- **update collection**: allows to update properties of an existing collection.
+- **update collection**: allows you to update properties of an existing collection.
 
-- **drop collection**: allows to delete an existing collection.
+- **drop collection**: allows you to delete an existing collection.
 
-- **create index**: allows to create an index for an existing collection in the
-given database.
+- **create index**: allows you to create an index for an existing collection in the
+  given database.
 
-- **drop index**: allows to delete an index of an existing collection in the given
+- **drop index**: allows you to delete an index of an existing collection in the given
 database.
 
 The **collection actions** are tied to a given collection of a given

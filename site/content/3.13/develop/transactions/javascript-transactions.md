@@ -307,7 +307,7 @@ For a complete list of possible ArangoDB errors, see
 ### Custom Exceptions
 
 You may want to define custom exceptions inside of a transaction. To have the
-exception propagate upwards properly, please throw an an instance of base
+exception propagate upwards properly, please throw an instance of the base
 JavaScript `Error` class or a derivative. To specify an error number, include it
 as the `errorNumber` field. As an example:
 

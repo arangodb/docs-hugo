@@ -8,7 +8,7 @@ description: ''
 The changes suggested here can be useful to reduce the memory usage of 
 ArangoDB servers, but they can cause side-effects on performance and other 
 aspects.
-Do not apply any of the changes suggested here before you have tested them in
+Do not apply any of the changes suggested here before you have tested them
 in a development or staging environment.
 {{< /warning >}}
 

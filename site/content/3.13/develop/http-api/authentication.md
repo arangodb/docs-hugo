@@ -226,7 +226,8 @@ paths:
                   type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully created a session token.
           content:
             application/json:
               schema:
@@ -431,7 +432,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -462,7 +463,7 @@ paths:
                     example: 401
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -494,7 +495,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -525,7 +526,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -556,7 +557,7 @@ paths:
                     example: 409
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -691,7 +692,7 @@ paths:
                     example: 401
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -723,7 +724,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -754,7 +755,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -843,7 +844,7 @@ paths:
                     example: 401
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -875,7 +876,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -906,7 +907,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -971,7 +972,8 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully retrieved the JWT secret information.
           content:
             application/json:
               schema:
@@ -985,12 +987,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.
@@ -1037,7 +1041,8 @@ paths:
         will be _HTTP 403 Forbidden_.
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully reloaded the JWT secrets.
           content:
             application/json:
               schema:
@@ -1051,12 +1056,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.

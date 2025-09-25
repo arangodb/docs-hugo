@@ -66,7 +66,7 @@ See [Securing Starter Deployments](../operations/security/securing-starter-deplo
 <!-- NOT ON-PREMISES SPECIFIC!
 Authentication
 
-ArangoDB allows to restrict access to databases to certain users. All
+ArangoDB allows you to restrict access to databases to certain users. All
 users of the system database are considered administrators. During
 installation a default user *root* is created, which has access to
 all databases.

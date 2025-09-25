@@ -143,7 +143,7 @@ to append the prefix and form the full URI as a property.
 #### Identifiers
 
 URIs (e.g `http://dbpedia.org/resource/`) are used as universal identifiers in 
-RDF but contain contain special characters, namely `:` and `/`, which make them not 
+RDF but contain special characters, namely `:` and `/`, which make them not 
 suitable for use as an ArangoDB `_key` attribute. Consequently, a hashing algorithm
 is used within ArangoRDF to store the URI as an ArangoDB graph node.
 

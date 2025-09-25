@@ -225,7 +225,7 @@ cancel them as well.
 ##### Async execution and authentication
 
 If a request requires authentication, the authentication procedure is run before 
-queueing. The request is only queued if the authentication is successful. If the
+queueing. The request is only queued if the authentication is successful.
 Otherwise, it is not queued but rejected instantly in the same way as a regular,
 non-queued request.
 
