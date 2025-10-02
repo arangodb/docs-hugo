@@ -600,6 +600,47 @@ String id = graph.elementId(v);
 
 This is useful when you need to reference the element directly in AQL queries.
 
+
+## Query Optimization
+
+ArangoDB TinkerPop Provider includes an optimization strategy that can push certain Gremlin traversal steps down to
+the database layer for improved performance.
+This is applied by `com.arangodb.tinkerpop.gremlin.process.traversal.strategy.optimization.ArangoStepStrategy`.
+
+### HasStep Pushdown
+
+The optimizer analyzes the traversal steps and attempts to convert filter steps of type
+`org.apache.tinkerpop.gremlin.process.traversal.step.filter.HasStep` into AQL queries that execute directly on the
+database. This reduces the amount of data transferred and processed in the client application.
+
+All Gremlin predefined predicate values from `org.apache.tinkerpop.gremlin.process.traversal.P` are supported:
+- **comparison predicates**: `eq`, `neq`, `lt`, `gt`, etc.
+- **collection predicates**: `within`, `without`
+- **text predicates**: `containing`, `startingWith`, `endingWith`, `regex`
+- **logical combinations**: `and`, `or`, `not`
+
+For example, a traversal like:
+
+[//]: <> (@formatter:off)
+```groovy
+g.V().has("value", "foo")
+```
+[//]: <> (@formatter:on)
+
+will be optimized to execute the filtering logic in ArangoDB using AQL and transferring to the client only the matching
+vertices, rather than retrieving all vertices and filtering them in the client.
+
+### Disabling Optimization
+
+If you need to disable this optimization strategy for any reason, you can do so when creating the traversal source:
+
+[//]: <> (@formatter:off)
+```java
+GraphTraversalSource g = graph.traversal().withoutStrategies(ArangoStepStrategy.class);
+```
+[//]: <> (@formatter:on)
+
+
 ## AQL Queries
 
 For complex queries or performance-critical operations, you can use ArangoDB's native query language (AQL) directly:
