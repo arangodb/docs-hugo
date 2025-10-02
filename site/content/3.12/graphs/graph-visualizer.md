@@ -74,6 +74,8 @@ as well as [Remove nodes from the canvas](#remove-nodes-from-the-canvas).
 
 The Graph Visualizer interface is comprised of the following components:
 
+- **Top bar**: The name and type of the graph, as well as a button to get
+  back to the list of named graphs.
 - **Canvas**: The main area of the viewport.
 - **Search & add nodes to canvas** and **Queries**:
   A widget in the top left corner that opens dialogs for selecting nodes and
@@ -134,10 +136,11 @@ You can save queries for future use:
 4. Enter a name and optionally a description, then click **Save**.
 5. To run a saved query, click **Queries** of the top-left widget.
 6. Select a query from the list. The following actions are available for each query:
+  - {{< icon "clone" >}} Copy the query string to the clipboard.
   - **Bind Variables** to set for the query.
-  - **Run** the query.
-  - **Copy** the query string to the clipboard.
-  - **Delete** a no longer needed query.
+  - {{< icon "edit" >}} Edit the query.
+  - {{< icon "trash-alt" >}} Delete a no longer needed query.
+  - {{< icon "caret-right" >}} Run the query.
 {{< /tip >}}
 
 ![A screenshot of the dialog with a query expanded and a bind variable filled in](../../images/graph-visualizer-queries.png)
