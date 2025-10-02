@@ -209,7 +209,7 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link {
     text-decoration: none;
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--green-400);
 }
 
 .link:hover{
@@ -699,7 +699,7 @@ body .page-container {
     position: relative;
     height: 64px;
     align-items: center;
-    padding: 6px 10px 0 10px;
+    padding-left: 10px;
 }
 
 header .logo {
@@ -1008,7 +1008,7 @@ header .logo {
 .sidebar ul.topics li.active > a > .menu-title,
 .sidebar ul.topics li.alwaysopen > a > .menu-title {
     font-weight: 400;
-    color: var(--green-500);
+    color: var(--green-300);
 }
 
 .sidebar ul li li {
@@ -2130,6 +2130,6 @@ nav.pagination .next {
     color: white;
 }
 .ag-banner .logo {
-    height: 50px !important;
+    height: 36px !important;
     width: 200px !important;
 }
