@@ -900,6 +900,15 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
+### Added error reporting for invalid requests
+
+<small>Introduced in: v3.12.6</small>
+
+When _arangod_ parses HTTP requests and encounters an unexpected `Content-Length`
+header or an invalid URL, it now sends a response with an error object instead
+of closing the connection, e.g. that the URL is corrupt with an HTTP status code
+of 400.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
