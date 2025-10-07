@@ -359,7 +359,7 @@ DELETE /_api/collection/products HTTP/1.1
 EOF
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 content-type: multipart/form-data
@@ -512,7 +512,7 @@ Content-Length: 39
 
 --SomeBoundaryValue--
 ```
-{{< /expand >}}
+{{< /details >}}
 
 Sending a batch request, setting the boundary implicitly. The server tries
 to find the boundary at the beginning of the request body in this case.
@@ -536,7 +536,7 @@ DELETE _api/collection/nonexistent2 HTTP/1.1
 EOF
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 content-type: unset
@@ -586,4 +586,4 @@ Content-Length: 101
 
 --SomeBoundaryValue--
 ```
-{{< /expand >}}
+{{< /details >}}

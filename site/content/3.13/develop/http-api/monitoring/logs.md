@@ -958,7 +958,7 @@ paths:
                     example: 401
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -989,7 +989,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1020,7 +1020,7 @@ paths:
                     example: 501
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1038,7 +1038,7 @@ Example not generated because it changes on every run and returns up to 25MB of 
 curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 200 OK
 X-Arango-Queue-Time-Seconds: 0.000000
@@ -1074,4 +1074,4 @@ Content-Length: 257
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
