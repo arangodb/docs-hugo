@@ -237,6 +237,11 @@ attached to your role. Read more about [roles and permissions](../security-and-a
    - Change the deployment name
    - Change the deployment description
 4. In the **Sizing** section, you can do the following:
+   
+   {{< tip >}}
+   Before changing deployment models, especially from **Single Server** to clustered configurations,
+   consider creating a backup of your data.
+   {{< /tip >}}
    - Change **OneShard** deployments into **Sharded** deployments. To do so,
      select **Sharded** in the **Model** dropdown list. You can select the
      number of nodes for your deployment. This can also be modified later on.
@@ -245,7 +250,12 @@ attached to your role. Read more about [roles and permissions](../security-and-a
      {{< /warning >}}
    - Change **Single Server** deployments into **OneShard** or **Sharded** deployments.
      {{< warning >}}
-     You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     **Important considerations for Single Server upgrades:**
+     - You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     - Changing **Single Server** deployments into **OneShard** or **Sharded** deployments
+       will cause downtime and may take a considerable amount of time to complete. Plan this switch
+       during a maintenance window when your application can tolerate service interruption.
+       Your data remains safe throughout the process.
      {{< /warning >}}
    - Scale up or down the node size.
      {{< warning >}}
