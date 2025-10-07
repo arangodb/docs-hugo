@@ -2911,18 +2911,21 @@
   "experimental-vector-index" : {
     "category" : "option",
     "component" : [
+      "coordinator",
+      "dbserver",
+      "single"
     ],
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Turn on experimental vector index feature.",
+    "description" : "Enable the experimental vector index feature.Once in use, this option cannot be turned off again.",
     "dynamic" : false,
     "enterpriseOnly" : false,
-    "experimental" : false,
+    "experimental" : true,
     "hidden" : false,
     "introducedIn" : [
       "v3.12.4"
     ],
-    "longDescription" : "Turn on experimental vector index features. If this is enabled\ndowngrading from this version will no longer be possible.",
+    "longDescription" : "This startup option should not be enabled for\nAgents in a cluster as it has no effect on them other than that you need to\nleave the option enabled.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -4657,13 +4660,13 @@
     "default" : [
     ],
     "deprecatedIn" : null,
-    "description" : "Log destination(s), e.g. file:///path/to/file (any occurrence of $PID is replaced with the process ID).",
+    "description" : "Log destination(s), e.g. file:///path/to/file (any literal occurrence of $PID and @PID@ is replaced with the process ID, and @TEMP_BASE_DIR@ with the path of the current temporary directory).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdout\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.\n\nTo change the log levels for the specified output you can add a comma separated\nlist of topics with their respective level after the output definition, separated\nby a semicolon:\n`--log.output file:///path/to/file;queries=trace,requests=info`\n`--log.output -;all=error`",
+    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdout\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nFor file-based logging, the folders of the destination path need to exist\nalready. They are not created implicitly.\n\nAny occurrence of `$PID` and `@PID` in the log output value is replaced at\nruntime with the actual process ID. This enables logging to process-specific\nfiles:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that the dollar sign may need extra escaping when specified on a\ncommand-line such as Bash. You can typically wrap the entire value in single\nquote marks to prevent variable substitution.\n\nAny occurrence of `@TEMP_BASE_DIR@` in the log output value is replaced at\nruntime with the current temporary directory, e.g. `/tmp/arangodb_i37Xxh`\n(automatically created on startup with a randomly generated suffix).\n\nKeep in mind that `@NAME@` is also the syntax for using the value of an\nenvironment variable `NAME`. If there is a environment variable called `PID` or\n`TEMP_BASE_DIR`, then `@PID@` and `@TEMP_BASE_DIR@` are substituted with the\nvalue of the respective environment variable.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.\n\nTo change the log levels for the specified output you can add a comma separated\nlist of topics with their respective level after the output definition, separated\nby a semicolon:\n`--log.output file:///path/to/file;queries=trace,requests=info`\n`--log.output -;all=error`",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -7481,7 +7484,7 @@
       "agent",
       "single"
     ],
-    "default" : 8388608,
+    "default" : 2097152,
     "deprecatedIn" : null,
     "description" : "If non-zero, bigger reads are performed when doing compaction. If you run RocksDB on spinning disks, you should set this to at least 2 MB. That way, RocksDB's compaction does sequential instead of random reads.",
     "dynamic" : false,
@@ -8387,7 +8390,7 @@
       "agent",
       "single"
     ],
-    "default" : 4,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent sub-jobs for a background compaction.",
     "dynamic" : false,
@@ -8415,7 +8418,7 @@
       "agent",
       "single"
     ],
-    "default" : 268435456,
+    "default" : 83886080,
     "deprecatedIn" : null,
     "description" : "The maximum total size of WAL files that force a flush of stale column families.",
     "dynamic" : false,
