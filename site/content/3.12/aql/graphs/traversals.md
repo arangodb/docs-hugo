@@ -346,6 +346,12 @@ Use the [`WITH` statement](../high-level-operations/with.md) to specify the coll
 expect to be involved. This is required for traversals using collection sets
 in cluster deployments.
 
+{{< tip >}}
+From v3.12.6 onward, vertex collections are automatically deduced for graph
+queries using collection sets / anonymous graphs if there is a named graph with
+a matching edge collection in its edge definitions.
+{{< /tio >}}
+
 ## Pruning
 
 You can define stop conditions for graph traversals to return specific data and
