@@ -309,6 +309,18 @@ is for debugging purposes.
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
+
+#### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted queries. This feature is for debugging purposes.
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
+for details.
+
 #### Access tokens
 
 <small>Introduced in: v3.12.5</small>
