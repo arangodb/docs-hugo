@@ -1,7 +1,7 @@
 ---
 title: How to use GraphRAG in the ArangoDB Platform web interface
 menuTitle: Web Interface
-weight: 5
+weight: 20
 description: >-
  Learn how to create, configure, and run a full GraphRAG workflow in four steps
  using the Platform web interface
