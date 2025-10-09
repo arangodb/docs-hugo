@@ -22,7 +22,7 @@ normalized before insertion and search.
 ## How to use vector indexes
 
 {{< warning >}}
-The vector index is an experimental feature that you need to enable for the
+You need to enable the vector index feature for the
 ArangoDB server with the `--experimental-vector-index` startup option.
 Once enabled for a deployment, it cannot be disabled anymore because it
 permanently changes how the data is managed by the RocksDB storage engine
@@ -32,7 +32,7 @@ To restore a dump that contains vector indexes, the `--experimental-vector-index
 startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
 
-1. Enable the experimental vector index feature.
+1. Enable the vector index feature.
 2. Calculate vector embeddings using [ArangoDB's GraphML](../../../data-science/graphml/_index.md)
    capabilities (available in ArangoGraph) or using external tools.
    Store each vector as an attribute in the respective document.
@@ -115,7 +115,6 @@ centroids and the quality of vector search thus degrades.
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
-{{< comment >}}TODO: Only in v3.12.6+
 1. In the **Collections** section, click the name or row of the desired collection.
 2. Go to the **Indexes** tab.
 3. Click **Add index**.
@@ -125,8 +124,6 @@ centroids and the quality of vector search thus degrades.
    under `param`.
 7. Optionally give the index a user-defined name.
 8. Click **Create**.
-{{< /comment >}}
-The web interface does not support vector indexes yet.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}

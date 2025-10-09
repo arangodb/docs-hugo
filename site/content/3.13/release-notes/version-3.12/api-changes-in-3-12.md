@@ -452,11 +452,11 @@ add the `withHidden=true` query parameter to the call of the endpoint.
 curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
-#### Vector indexes (experimental)
+#### Vector indexes
 
 <small>Introduced in: v3.12.4</small>
 
-A new `vector` index type has been added as an experimental feature.
+A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
 
