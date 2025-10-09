@@ -3,7 +3,7 @@ title: GraphRAG Notebook Tutorial
 menuTitle: Notebook Tutorial
 description: >-
   Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
-weight: 10
+weight: 25
 ---
 {{< tip >}}
 The Arango Data Platform & GenAI Suite is available as a pre-release. To get
