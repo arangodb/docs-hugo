@@ -900,6 +900,17 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
+## Cosine similarity fix for vector indexes
+
+<small>Introduced in: v3.12.6</small>
+
+A normalization issue has been addressed for the experimental vector index type.
+It was possible for the cosine similarity value returned by `APPROX_NEAR_COSINE()`
+to be outside the expected range of `[-1, 1]`.
+
+It is recommended to recreate all vector indexes that use the `cosine` metric
+after upgrading to v3.12.6 or later.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
