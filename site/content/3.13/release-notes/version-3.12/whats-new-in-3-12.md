@@ -1443,6 +1443,22 @@ utilizing vector indexes in queries.
 Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
 has been added.
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+Vector indexes now support filtering. You can add `FILTER` operations between
+`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Example:
+
+```aql
+FOR doc IN coll
+  FILTER doc.val > 3
+  SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
+  LIMIT 5
+  RETURN doc
+```
+
 ## Server options
 
 ### Effective and available startup options
