@@ -16,13 +16,13 @@ You can calculate vector embeddings using [ArangoDB's GraphML](../../data-scienc
 capabilities (available in ArangoGraph) or using external tools.
 
 {{< warning >}}
-The vector index is an experimental feature that you need to enable for the
-ArangoDB server with the `--experimental-vector-index` startup option.
+You need to enable the vector index feature for the
+ArangoDB server with the `--vector-index` startup option.
 Once enabled for a deployment, it cannot be disabled anymore because it
 permanently changes how the data is managed by the RocksDB storage engine
 (it adds an additional column family).
 
-To restore a dump that contains vector indexes, the `--experimental-vector-index`
+To restore a dump that contains vector indexes, the `--vector-index`
 startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
 
