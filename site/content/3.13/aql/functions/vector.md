@@ -17,12 +17,12 @@ capabilities (available in ArangoGraph) or using external tools.
 
 {{< warning >}}
 You need to enable the vector index feature for the
-ArangoDB server with the `--experimental-vector-index` startup option.
+ArangoDB server with the `--vector-index` startup option.
 Once enabled for a deployment, it cannot be disabled anymore because it
 permanently changes how the data is managed by the RocksDB storage engine
 (it adds an additional column family).
 
-To restore a dump that contains vector indexes, the `--experimental-vector-index`
+To restore a dump that contains vector indexes, the `--vector-index`
 startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
 
