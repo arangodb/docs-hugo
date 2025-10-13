@@ -367,8 +367,8 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-ArangoDB Platform, the ArangoGraph Insights Platform, or both.
-See [Environment remarks](#environment-remarks) for details.
+GenAI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
+of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
 version 3.12.5.
@@ -570,7 +570,7 @@ The following shortcodes also exist but are rarely used:
   - _DB-Server_, not ~~dbserver~~, ~~db-server~~, ~~DBserver~~ (unless it is a code value)
   - _Coordinator_ (uppercase C)
   - _Agent_, _Agency_ (uppercase A)
-  - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
+  - _Arango Managed Platform (AMP)_ and _ArangoGraph_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
@@ -586,7 +586,7 @@ For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
 
 ```markdown
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud)
 ```
 
 For internal links, use relative paths to the Markdown files. Always link to
@@ -674,25 +674,26 @@ deprecated features in the same manner with `Deprecated in: ...`.
 ### Environment remarks
 
 Pages and sections about features that are only available in certain environments
-such as the ArangoDB Platform, the ArangoGraph Insight Platform, or the
+such as the GenAI Suite, the Data Platform, the Arango Managed Platform (AMP), or the
 ArangoDB Shell should indicate where they are available using the `tag` shortcode.
 
-In the unified Platform and ArangoGraph but not in the Core:
+In the Data Platform (and therefore also in the GenAI Data Suite) and
+Arango Managed Platform but not in ArangoDB:
 
 ```markdown
-{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+{{< tag "Data Platform" "AMP" >}}
 ```
 
-In the unified Platform only:
+In the GenAI Data Platform only:
 
 ```markdown
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 ```
 
-In ArangoGraph only:
+In the Arango Managed Platform only:
 
 ```markdown
-{{< tag "ArangoGraph" >}}
+{{< tag "AMP" >}}
 ```
 
 In the ArangoDB Shell but not the server-side JavaScript API:
