@@ -19,20 +19,20 @@ module:
     - source: "static"
       target: "static"
 
-    - source: content/3.12
-      target: content/stable
+#   - source: content/arangodb/3.12
+#     target: content/arangodb/stable
 
-    - source: content/3.13
-      target: content/devel
+#   - source: content/arangodb/3.13
+#     target: content/arangodb/devel
 
 # Version folders can be ignored temporarily for faster local builds
 # of a single version (here: 3.12)
-#   - excludeFiles:
-#       - 3.10/*
-#       - 3.11/*
-#       - 3.13/*
-#     source: content
-#     target: content
+    - source: content
+      target: content
+      excludeFiles:
+        - arangodb/3.10/*
+        - arangodb/3.11/*
+#       - arangodb/3.13/*
 
 markup:
   highlight:
