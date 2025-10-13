@@ -3,11 +3,7 @@
     <div class="sidenav-navigation">
       <div class="content-wrapper highlightable">
         <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
-        {{- range .Site.Sections.ByWeight }}
-          <ul class="version-menu version-{{ replace .Type "." "_" }}">{{/* TODO: hide non-stable versions by default? */}}
-            {{- template "section-tree-nav" . }}
-          </ul>
-        {{- end }}
+          {{- template "section-tree-nav" dict "Pages" .Site.Sections }}
         </ul>
         <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
       </div>
@@ -26,9 +22,21 @@
         <a href="{{ .RelPermalink }}" class="toggle sect menu-link">
           <div class="menu-title">{{ .Params.menuTitle | markdownify }}</div>
         </a>
+        {{ $isVersioned := eq $page.Path "/arangodb" }}
+        {{ if $isVersioned }}
+          {{ partial "version-selector.html" . }}
+          {{ range $versionPage := $page.Pages }}
+            <div class="version-menu version-{{ replace (index (split $versionPage.Path "/") 2) "." "_" }}">
+              <ul class="submenu">
+                {{- template "section-tree-nav" $versionPage }}
+              </ul>
+            </div>
+          {{ end }}
+        {{ else }}
         <ul class="submenu">
           {{- template "section-tree-nav" $page }}
         </ul>
+        {{ end }}
       </li>
     {{- else }}
       {{- /* page (or section without children) */}}

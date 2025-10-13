@@ -6,7 +6,7 @@
         {{ if ne $version.name $version.alias }}
         <option value="{{ $version.alias }}">{{ $version.alias }}</option>
         {{ end }}
-        <option value="{{ $version.name }}">{{ $version.name }}</option>
+        <option value="{{ $version.name }}"{{ if eq $version.name "3.12" }} selected{{ end }}>{{ $version.name }}</option>
     {{ end }}
     </select>
 </div>

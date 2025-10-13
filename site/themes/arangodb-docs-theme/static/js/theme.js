@@ -10,6 +10,11 @@ function toggleMenuItem(event) {
 
     listItem.querySelector("label").classList.toggle("open");
     slideToggle(listItem.querySelector(".submenu"));
+
+    const versionSelector = listItem.querySelector(".version-selector")
+    if (versionSelector) {
+      versionSelector.style.display = listItem.classList.contains("open") ? "block" : "none";
+    }
 }
 
 // Vanilla JS slideToggle implementation
@@ -28,23 +33,31 @@ function menuToggleClick(event) {
 }
 
 function renderVersion() {
-    var version = getVersionFromURL();
+    var urlVersion = getVersionFromURL();
 
+    /*
     var versionSelector = document.querySelector(".arangodb-version");
     if (!version || version === "platform") {
       versionSelector.style.display = "none";
     } else {
       versionSelector.style.display = "block";
     }
+    */
 
-    version = "version-" + version.replace('.', '_');
-    var menuEntry = document.getElementsByClassName('version-menu');
-    for ( let entry of menuEntry ) {
-        if (entry.classList.contains(version)) {
-            entry.style.display = 'block';
-        } else {
-            entry.style.display = 'none';
-        }
+    if (urlVersion) {
+      var versionSelector = document.querySelector(".version-selector");
+      if (versionSelector) {
+        versionSelector.style.display = "block";
+      }
+      var version = "version-" + urlVersion.replace('.', '_');
+      var menuEntry = document.querySelectorAll('.version-menu .submenu');
+      for ( let entry of menuEntry ) {
+          if (entry.classList.contains(version)) {
+              entry.style.display = 'block';
+          } else {
+              entry.style.display = 'none';
+          }
+      }
     }
 }
 
@@ -52,18 +65,25 @@ function closeAllEntries() {
     document.querySelectorAll(".dd-item.active").forEach(el => el.classList.remove("active"));
     document.querySelectorAll(".dd-item > label.open").forEach(el => el.classList.remove("open"));
     document.querySelectorAll(".submenu").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".version-selector").forEach(el => el.style.display = "none");
     document.querySelectorAll(".dd-item.parent").forEach(el => el.classList.remove("parent"));
 }
 
 function loadMenu(url) {
     closeAllEntries();
     var version = getVersionFromURL()
+    if (version) {
 
-    document.querySelectorAll('.version-menu.version-' + version.replace('.', '_') + ' a').forEach(function(link) {
-        const oldHref = link.getAttribute('href');
-        const newHref = oldHref.replace(oldHref.split("/")[1], version);
-        link.setAttribute('href', newHref);
-    });
+      document.querySelector(".version-selector").style.display = "block";
+
+      /*
+      document.querySelectorAll('.version-menu.version-' + version.replace('.', '_') + ' a').forEach(function(link) {
+          const oldHref = link.getAttribute('href');
+          const newHref = oldHref.replace(oldHref.split("/")[1], version);
+          link.setAttribute('href', newHref);
+      });
+      */
+    }
 
     // Try to find the menu item - first try exact match, then try without hash
     console.log('loadMenu: Looking for URL:', url);
@@ -98,6 +118,10 @@ function loadMenu(url) {
                 if (label) {
                     label.classList.add("open");
                     console.log('loadMenu: Added open class to label');
+                }
+                const versionSelector = current.querySelector(".version-selector");
+                if (versionSelector) {
+                  versionSelector.style.display = "block";
                 }
                 const submenu = current.querySelector(".submenu");
                 if (submenu) {
@@ -196,17 +220,22 @@ function loadNotFoundPage() {
 function loadPage(target) {
   var href = target;
 
+  /*
   var versionUrl = getVersionFromURL();
   if (versionUrl !== "platform" && getVersionInfo(versionUrl) == undefined) {
     loadNotFoundPage();
     return;
   }
-
+  */
+  /*
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
   var version = getVersionInfo(getVersionFromURL()).name;
-  href = href.replace(getVersionFromURL(), version);
+  href = href.replace(getVersionFromURL(), version);*/
+  var menuPathName = new URL(href).pathname;
+  console.log(menuPathName);
+  loadMenu(menuPathName);
   fetch(href)
     .then(response => {
       if (response.url && href.replace(/#.*/, "") !== response.url) {
@@ -414,7 +443,9 @@ function getVersionInfo(version) {
 }
 
 function getVersionFromURL() {
-  return window.location.pathname.split("/")[1]
+  // TODO: Make this data-driven
+  var splitUrl = window.location.pathname.split("/");
+  if (splitUrl[1] == "arangodb") return splitUrl[2];
 }
 
 function isUsingAlias() {
@@ -452,11 +483,12 @@ function setVersionSelector(version) {
 }
 
 function getCurrentVersion(href) {
+  if (!stableVersion) return; // Only defined for /arangodb
   var newVersion = stableVersion.name
 
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionFromURL();
-    if (newVersion === "platform") {
+    if (newVersion !== "arangodb") {
       return;
     }
     if ((href === "" || href === "/") && getVersionInfo(newVersion) == undefined) {
@@ -485,7 +517,7 @@ function changeVersion() {
 
     var currentVersion = getVersionFromURL();
     //var newVersionAlias = getVersionInfo(newVersion).alias;
-    if (currentVersion == "platform" || newVersion == "platform") {
+    if (!currentVersion) {
       var newUrl = window.location.pathname = "/" + newVersion + "/";
     } else {
       var newUrl = window.location.pathname.replace(currentVersion, newVersion) + window.location.hash;
@@ -555,7 +587,7 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = "/" + getVersionFromURL() + "/";
+    var homepage = "/"; // + getVersionFromURL() + "/";
     updateHistory(homepage);
 }
 
@@ -585,7 +617,7 @@ function toggleExpandShortcode(event) {
 
 function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
-  if (currentVersion !== "platform") return;
+  if (!currentVersion) return;
   document.querySelectorAll("a.link:not([target])").forEach(el => {
     const matches = el.getAttribute("href").match(/^\/(\d\.\d{1,2})(\/.*)/);
     const previousVersion = localStorage.getItem('docs-version') || "stable";
@@ -736,6 +768,6 @@ window.onload = () => {
         document.querySelectorAll('.sidebar.mobile').forEach(el => el.classList.remove("active"));
     }
 
-    const pageWrapper = document.querySelector('.page-wrapper');
-    if (pageWrapper) pageWrapper.style.opacity = "1";
+    //const pageWrapper = document.querySelector('.page-wrapper');
+    //if (pageWrapper) pageWrapper.style.opacity = "1";
 }
