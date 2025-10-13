@@ -6,7 +6,7 @@ description: >-
   For understanding the performance of specific queries, you can profile them to
   identify slow parts of query execution plans
 ---
-ArangoDB allows to execute your query with special instrumentation code enabled.
+ArangoDB allows you to execute your query with special instrumentation code enabled.
 It provides you a query plan with detailed execution statistics.
 
 To use this in an interactive fashion on the shell you can use
@@ -184,13 +184,13 @@ mistakes that we see quite often:
 Bad example:
 
 ```aql
-LET vertices = (
-  FOR v IN 1..2 ANY @startVertex GRAPH 'my_graph'
+LET nodes = (
+  FOR n IN 1..2 ANY @startNode GRAPH 'my_graph'
     // <-- add a LIMIT 1 here
-    RETURN v
+    RETURN n
 )
 FOR doc IN collection
-  FILTER doc.value == vertices[0].value
+  FILTER doc.value == nodes[0].value
   RETURN doc
 ```
 
@@ -201,7 +201,7 @@ computing all paths.
 Another mistake is to start a graph traversal from the wrong side
 (if both ends are known).
 
-Assume we have two vertex collections _users_ and _products_ as well as an
+Assume we have two node collections _users_ and _products_ as well as an
 edge collection _purchased_. The graph model looks like this:
 `(users) <--[purchased]--> (products)`, i.e. every user is connected with an
 edge in _purchased_ to zero or more _products_.
@@ -212,8 +212,8 @@ as well as products of `type` _legwarmer_ we could use this query:
 ```aql
 FOR prod IN products
   FILTER prod.type == 'legwarmer'
-  FOR v,e,p IN 2..2 OUTBOUND prod purchased
-    FILTER v._key == 'playstation' // <-- last vertex of the path
+  FOR v, e, p IN 2..2 OUTBOUND prod purchased
+    FILTER v._key == 'playstation' // <-- last node of the path
     RETURN p.vertices[1] // <-- the user
 ```
 
@@ -223,7 +223,7 @@ the known _playstation_ product. This way we only need a single traversal
 to achieve the same result:
 
 ```aql
-FOR v,e,p IN 2..2 OUTBOUND 'product/playstation' purchased
-  FILTER v.type == 'legwarmer' // <-- last vertex of the path
+FOR v, e, p IN 2..2 OUTBOUND 'product/playstation' purchased
+  FILTER v.type == 'legwarmer' // <-- last node of the path
   RETURN p.vertices[1] // <-- the user
 ```

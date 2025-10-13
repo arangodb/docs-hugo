@@ -1,5 +1,7 @@
 {{ $keys := (.Get 0) -}}
-{{ range $i, $v := split $keys " " -}}
-  {{ if gt $i 0 }}&nbsp;+&nbsp;{{ end -}}
+<span style="white-space: nowrap;">
+{{- range $i, $v := split $keys " " -}}
+  {{ if gt $i 0 }} + {{ end -}}
   <kbd>{{ $v }}</kbd>
 {{- end -}}
+</span>

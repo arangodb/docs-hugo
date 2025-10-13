@@ -51,6 +51,7 @@ paths:
             Whether system collections should be excluded from the result.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -566,10 +567,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -630,7 +631,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -661,7 +662,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1015,10 +1016,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -1495,10 +1496,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -1559,7 +1560,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1590,7 +1591,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1684,15 +1685,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The request body must be a JSON object with at least the shard key
+                attributes set to some values, but it may also be a full document.
               type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    The request body must be a JSON object with at least the shard key
-                    attributes set to some values, but it may also be a full document.
-                  type: object
       responses:
         '200':
           description: |
@@ -1746,7 +1742,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1777,7 +1773,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1808,7 +1804,7 @@ paths:
                     example: 501
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1848,11 +1844,12 @@ paths:
     get:
       operationId: getCollectionShards
       description: |
-        Returns a JSON array with the shard IDs of the collection.
-
-        If the `details` parameter is set to `true`, it returns a JSON object with the
-        shard IDs as object attribute keys, and the responsible servers for each shard mapped to them.
-        In the detailed response, the leader shards come first in the arrays.
+        The response contains a list of the collection's shard IDs.
+        
+        If the `details` parameter is set to `true`, it returns an object instead
+        of a list, with the shard IDs as object attribute keys, and an array with
+        the responsible servers for each shard mapped to them as attribute values.
+        The first element of each array is the leader shard.
 
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
@@ -1884,185 +1881,13 @@ paths:
       responses:
         '200':
           description: |
-            Returns the collection's shards.
-          # TODO: polymorphic structural description?
-        '400':
-          description: |
-            The `collection-name` parameter is missing.
+            All collection properties but additionally the `shards` of the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '501':
-          description: |
-            The method has been called on a single server.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 501
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: |-
-  Retrieves the list of shards:
-name: RestGetShards
-type: cluster
----
-var cn = "testCollection";
-db._drop(cn);
-db._create(cn, { numberOfShards: 3 });
-
-var response = logCurlRequest('GET', "/_api/collection/" + cn + "/shards");
-
-assert(response.code === 200);
-logRawResponse(response);
-db._drop(cn);
-```
-
-```curl
----
-description: |-
-  Retrieves the list of shards with the responsible servers:
-name: RestGetShardsWithDetails
-type: cluster
----
-var cn = "testCollection";
-db._drop(cn);
-db._create(cn, { numberOfShards: 3 });
-
-var response = logCurlRequest('GET', "/_api/collection/" + cn + "/shards?details=true");
-
-assert(response.code === 200);
-logRawResponse(response);
-db._drop(cn);
-```
-
-### Get the collection revision ID
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/revision:
-    get:
-      operationId: getCollectionRevision
-      description: |
-        The response contains the collection's latest used revision ID.
-        The revision ID is a server-generated string that clients can use to
-        check whether data in a collection has changed since the last revision check.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            All collection properties but additionally the collection `revision`.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - revision
+                  - shards
                   - error
                   - code
                   - name
@@ -2088,10 +1913,35 @@ paths:
                   #   status (legacy)
                   #   statusString (legacy)
                 properties:
-                  revision:
+                  shards:
                     description: |
-                      The collection revision ID as a string.
-                    type: string
+                      The type and value depend on the setting of the `details` parameter:
+                      - `false`: An array of the collection shard IDs.
+                      - `true`: An object where the keys are shard IDs and the
+                        values are arrays with the responsible DB-Server names
+                        (shard leader first).
+                    # TODO: polymorphic structural description? Complex to render
+                    #type: [array, object]
+                    #items:
+                    #  type: string
+                    #  pattern: "^s\\d+$"
+                    #patternProperties:
+                    #  "^s\\d+$":
+                    #    type: array
+                    #    items:
+                    #      type: string
+                    # --- or ---
+                    #oneOf:
+                    #  - type: array
+                    #    items:
+                    #      type: string
+                    #      pattern: "^s\\d+$"
+                    #  - type: object
+                    #    patternProperties:
+                    #      "^s\\d+$":
+                    #        type: array
+                    #        items:
+                    #          type: string
                   status:
                     description: |
                       The status of the collection (deprecated).
@@ -2383,7 +2233,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2414,7 +2264,481 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has been called on a single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: |-
+  Retrieves the list of shards:
+name: RestGetShards
+type: cluster
+---
+var cn = "testCollection";
+db._drop(cn);
+db._create(cn, { numberOfShards: 3 });
+
+var response = logCurlRequest('GET', "/_api/collection/" + cn + "/shards");
+
+assert(response.code === 200);
+assert(response.parsedBody.hasOwnProperty("shards"));
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Retrieves the list of shards with the responsible servers:
+name: RestGetShardsWithDetails
+type: cluster
+---
+var cn = "testCollection";
+db._drop(cn);
+db._create(cn, { numberOfShards: 3 });
+
+var response = logCurlRequest('GET', "/_api/collection/" + cn + "/shards?details=true");
+
+assert(response.code === 200);
+assert(response.parsedBody.hasOwnProperty("shards"));
+logJsonResponse(response);
+db._drop(cn);
+```
+
+### Get the collection revision ID
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/revision:
+    get:
+      operationId: getCollectionRevision
+      description: |
+        The response contains the collection's latest used revision ID.
+        The revision ID is a server-generated string that clients can use to
+        check whether data in a collection has changed since the last revision check.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            All collection properties but additionally the `revision` of the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - revision
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
+                  # Purposefully undocumented:
+                  #   internalValidatorType (internal)
+                  #   isSmartChild (internal)
+                  #   minReplicationFactor (now writeConcern)
+                  #   shadowCollections (internal)
+                  #   usesRevisionsAsDocumentIds (internal)
+                  # For backward compatibility:
+                  #   status (legacy)
+                  #   statusString (legacy)
+                properties:
+                  revision:
+                    description: |
+                      The collection revision ID as a string.
+                    type: string
+                  status:
+                    description: |
+                      The status of the collection (deprecated).
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  statusString:
+                    description: |
+                      The status of the collection as a descriptive string (deprecated).
+                    type: string
+                    enum: [loaded, deleted]
+                    example: loaded
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      The configuration of the collection-level schema validation for documents.
+                    type: object
+                    required:
+                      - rule
+                      - level
+                      - message
+                      - type
+                    properties:
+                      rule:
+                        description: |
+                          A [JSON Schema](https://json-schema.org/specification-links#draft-4)
+                          object (draft-4, without remote schemas).
+
+                          See [Document Schema Validation](../../concepts/data-structure/documents/schema-validation.md)
+                          for details.
+                        type: object
+                      level:
+                        description: |
+                          The level controls when the validation is triggered:
+                          - `"none"`: The rule is inactive and validation thus turned off.
+                          - `"new"`: Only newly inserted documents are validated.
+                          - `"moderate"`: New and modified documents must pass validation,
+                            except for modified documents where the OLD value did not pass
+                            validation already. This level is useful if you have documents
+                            which do not match your target structure, but you want to stop
+                            the insertion of more invalid documents and prohibit that valid
+                            documents are changed to invalid documents.
+                          - `"strict"`: All new and modified document must strictly pass
+                            validation. No exceptions are made.
+                        type: string
+                        enum: [none, new, moderate, strict]
+                        default: strict
+                      message:
+                        description: |
+                          The error message to raise if the schema validation fails
+                          for a document.
+                        type: string
+                      type:
+                        description: |
+                          The schema validation type. Only JSON Schema is supported.
+                        type: string
+                        enum: [json]
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum: [insert, update, replace]
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator.
+                        type: string
+                        enum: [traditional, autoincrement, uuid, padded]
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections. _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the default `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+                    type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards` and `shardingStrategy` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph.
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint.
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected nodes. _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection. _(cluster only)_
+                    type: string
+                  name:
+                    description: |
+                      The name of this collection.
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  type:
+                    description: |
+                      The type of the collection:
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
+                    type: integer
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                  syncByRevision:
+                    description: |
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2500,16 +2824,18 @@ paths:
           in: query
           required: false
           description: |
-            Whether or not to include document revision ids in the checksum calculation.
+            Whether to include document revision ids in the checksum calculation.
           schema:
             type: boolean
+            default: false
         - name: withData
           in: query
           required: false
           description: |
-            Whether or not to include document body data in the checksum calculation.
+            Whether to include document body data in the checksum calculation.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -2864,7 +3190,7 @@ paths:
 
                         - The `autoincrement` key generator generates numerical keys in ascending order,
                           the initial offset and the spacing can be configured (**note**: `autoincrement`
-                          is currently only supported for non-sharded collections).
+                          is only supported for non-sharded collections).
                           The sequence of generated keys is not guaranteed to be gap-free, because a new key
                           will be generated on every document insert attempt, not just for successful
                           inserts.
@@ -2888,6 +3214,7 @@ paths:
                         keys are generated on the leader DB-Server, which has full control over the key
                         sequence.
                       type: string
+                      default: traditional
                     allowUserKeys:
                       description: |
                         If set to `true`, then you are allowed to supply own key values in the
@@ -2903,16 +3230,19 @@ paths:
                         auto-generate keys in this case are not aware of all keys which are already used.
                         {{</* /warning */>}}
                       type: boolean
+                      default: true
                     increment:
                       description: |
                         The increment value for the `autoincrement` key generator.
                         Not allowed for other key generator types.
                       type: integer
+                      default: 1
                     offset:
                       description: |
                         The initial offset value for the `autoincrement` key generator.
                         Not allowed for other key generator types.
                       type: integer
+                      default: 0
                 type:
                   description: |
                     The type of the collection to create.
@@ -2965,8 +3295,9 @@ paths:
 
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
+
+                    Default: The `replicationFactor` defined by the database.
                   type: integer
-                  default: 1
                 writeConcern:
                   description: |
                     Determines how many copies of each shard are required to be
@@ -2975,7 +3306,7 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    If `distributeShardsLike` is set, the default `writeConcern`
+                    Default: If `distributeShardsLike` is set, the default `writeConcern`
                     is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
@@ -3004,13 +3335,13 @@ paths:
                       (excluding smart edge collections)
                     - `enterprise-hash-smart-edge`: default sharding used for new
                       smart edge collections starting from version 3.4
-                    - `enterprise-hex-smart-vertex`: sharding used for vertex collections of
+                    - `enterprise-hex-smart-vertex`: sharding used for node collections of
                       EnterpriseGraphs
 
                     If no sharding strategy is specified, the default is `hash` for
                     all normal collections, `enterprise-hash-smart-edge` for all smart edge
                     collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
-                    vertex collections.
+                    node collections.
                     Manually overriding the sharding strategy does not yet provide a
                     benefit, but it may later in case other sharding strategies are added.
                   type: string
@@ -3046,10 +3377,10 @@ paths:
                   type: boolean
                 smartGraphAttribute:
                   description: |
-                    The attribute that is used for sharding: vertices with the same value of
-                    this attribute are placed in the same shard. All vertices are required to
+                    The attribute that is used for sharding: nodes with the same value of
+                    this attribute are placed in the same shard. All nodes are required to
                     have this attribute set and it has to be a string. Edges derive the
-                    attribute from their connected vertices.
+                    attribute from their connected nodes.
                   type: string
                 smartJoinAttribute:
                   description: |
@@ -3062,7 +3393,7 @@ paths:
                     This feature requires the
                     `distributeShardsLike` attribute of the collection to be set to the name
                     of another collection. It also requires the `shardKeys` attribute of the
-                    collection to be set to a single shard key attribute, with an additional ':'
+                    collection to be set to a single shard key attribute, with an additional `:`
                     at the end.
                     A further restriction is that whenever documents are stored or updated in the
                     collection, the value stored in the `smartJoinAttribute` must be a string.
@@ -3328,10 +3659,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -3393,7 +3724,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3493,10 +3824,11 @@ paths:
           in: query
           required: false
           description: |
-            Whether or not the collection to drop is a system collection. This parameter
+            Whether the collection to drop is a system collection. This parameter
             must be set to `true` in order to drop a system collection.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -3549,7 +3881,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3580,7 +3912,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3758,7 +4090,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3793,7 +4125,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3825,7 +4157,7 @@ paths:
                     example: 410
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4287,10 +4619,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -4351,7 +4683,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4382,7 +4714,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4515,7 +4847,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4546,7 +4878,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4886,10 +5218,10 @@ paths:
                     type: boolean
                   smartGraphAttribute:
                     description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
+                      The attribute that is used for sharding: nodes with the same value of
+                      this attribute are placed in the same shard. All nodes are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices. _(cluster only)_
+                      attribute from their connected nodes. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
@@ -4953,7 +5285,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4984,7 +5316,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5098,7 +5430,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5129,7 +5461,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5261,7 +5593,7 @@ paths:
                     example: 401
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5421,7 +5753,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5452,7 +5784,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5608,7 +5940,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5639,7 +5971,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

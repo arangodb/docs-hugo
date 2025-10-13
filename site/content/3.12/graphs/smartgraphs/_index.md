@@ -9,10 +9,10 @@ SmartGraphs are specifically targeted at graphs that need scalability and
 high performance. They let you intelligently shard large graph datasets for
 distributing data across multiple servers with minimal network latency.
 
-Most graphs have one feature - a value that is stored in every vertex - that
+Most graphs have one feature - a value that is stored in every node - that
 divides the entire graph into several smaller subgraphs. These subgraphs have a
-large amount of edges that only connect vertices in the same subgraph and only
-have few edges connecting vertices from other subgraphs. If this feature is
+large amount of edges that only connect nodes in the same subgraph and only
+have few edges connecting nodes from other subgraphs. If this feature is
 known, SmartGraphs can make use if it.
 
 Examples for such graphs are:
@@ -75,13 +75,13 @@ hops traversals require.
 
 SmartGraphs come with a concept of a `smartGraphAttribute` that is used to
 inform the database how exactly to shard data. When defining this attribute,
-think of it as a value that is stored in every vertex. For instance, in
+think of it as a value that is stored in every node. For instance, in
 social network datasets, this attribute can be the ID or the region/country of
 the users. 
 
-The graph will than be automatically sharded in such a way that all vertices
+The graph will than be automatically sharded in such a way that all nodes
 with the same value are stored on the same physical machine, all edges
-connecting vertices with identical `smartGraphAttribute` values are stored on
+connecting nodes with identical `smartGraphAttribute` values are stored on
 this machine as well. Sharding with this attribute means that the relevant data
 is now co-located on servers, whenever possible.
 
@@ -94,7 +94,7 @@ _The outcome of moving the data like this is that you retain the scalability as 
 SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
 to enable more local execution of graph queries.
 
-You can specify SatelliteCollections in graph definitions as vertex collections to
+You can specify SatelliteCollections in graph definitions as node collections to
 create relations between SmartCollections and SatelliteCollections. As SatelliteCollections
 (and the edge collections between SmartGraph collections and SatelliteCollections)
 are globally replicated to each participating DB-Server, graph traversals
@@ -106,7 +106,7 @@ whenever data from the SatelliteCollections is required.
 
 ## Disjoint SmartGraphs
 
-Disjoint SmartGraphs are are useful for use cases which have to deal with a
+Disjoint SmartGraphs are useful for use cases which have to deal with a
 large forest of graphs, when you have clearly separated subgraphs in your
 graph dataset. Disjoint SmartGraphs enable the automatic sharding of these
 subgraphs and prohibit edges connecting them.
@@ -120,5 +120,5 @@ these type of queries._
 ## Disjoint SmartGraphs using SatelliteCollections
 
 Disjoint SmartGraphs using SatelliteCollections prohibit
-edges between vertices with different `smartGraphAttribute` values.
-All SmartVertices can be connected to SatelliteVertices.
+edges between nodes with different `smartGraphAttribute` values.
+All smart nodes can be connected to satellite nodes.

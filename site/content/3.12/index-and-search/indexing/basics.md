@@ -73,8 +73,8 @@ mechanism to create user-defined primary indexes.
 Every [edge collection](../../concepts/data-models.md#graph-model) also has an 
 automatically created *edge index*. The edge index provides quick access to
 documents by either their `_from` or `_to` attributes. It can therefore be
-used to quickly find connections between vertex documents and is invoked when 
-the connecting edges of a vertex are queried.
+used to quickly find connections between node documents and is invoked when 
+the connecting edges of a node are queried.
 
 Edge indexes are used from within AQL when performing equality lookups on `_from`
 or `_to` values in an edge collections. There are also dedicated functions to 
@@ -105,14 +105,14 @@ An edge index cannot be dropped or changed.
 As mentioned above, the most important indexes for graphs are the edge
 indexes, indexing the `_from` and `_to` attributes of edge collections.
 They provide very quick access to all edges originating in or arriving
-at a given vertex, which allows you to quickly find all neighbors of a vertex
+at a given node, which allows you to quickly find all neighbors of a node
 in a graph.
 
 In many cases one would like to run more specific queries, for example
-finding amongst the edges originating from a given vertex only those
+finding amongst the edges originating from a given node only those
 with a timestamp greater than or equal to some date and time. Exactly this
-is achieved with "vertex-centric indexes". In a sense these are localized
-indexes for an edge collection, which sit at every single vertex.
+is achieved with "vertex-centric indexes". In a sense, these are localized
+indexes for an edge collection, which sit at every single node.
 
 Technically, they are implemented in ArangoDB as indexes, which sort the 
 complete edge collection first by `_from` and then by other attributes
@@ -145,13 +145,13 @@ FOR v, e, p IN 1..1 OUTBOUND "V/1" edges
 ```
 
 will be considerably faster in case there are many edges originating
-from vertex `"V/1"` but only few with a recent timestamp. Note that the
+from node `"V/1"` but only few with a recent timestamp. Note that the
 optimizer may prefer the default edge index over vertex-centric indexes
 based on the costs it estimates, even if a vertex-centric index might
 in fact be faster. Vertex-centric indexes are more likely to be chosen
 for highly connected graphs.
 
-You can also use use prefixed multi-dimensional indexes to combine graph
+You can also use prefixed multi-dimensional indexes to combine graph
 traversals with range queries:
 
 ```aql
@@ -596,10 +596,10 @@ cannot use array indexes currently.
 You can create a combined index over the edge attributes `_from` and `_to`
 with the unique option enabled to prevent duplicate relations from being created.
 
-For example, a document collection `users` might contain vertices with the document
+For example, a document collection `users` might contain nodes with the document
 handles `user/A`, `user/B` and `user/C`. Relations between these documents can
 be stored in an edge collection `knows`, for instance. You may want to make sure
-that the vertex `user/A` is never linked to `user/B` by an edge more than once.
+that the node `user/A` is never linked to `user/B` by an edge more than once.
 This can be achieved by adding a unique, non-sparse persistent index for the
 fields `_from` and `_to`:
 

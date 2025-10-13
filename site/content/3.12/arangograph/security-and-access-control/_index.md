@@ -122,7 +122,7 @@ export OASIS_TOKEN='<TOKEN>'
 ./oasisctl list roles --organization-id <ID> --format json | jq -r '.[] | select(.predefined == true) | "**\(.description)** (`\(.id)`):\n\(.permissions | split(", ") | map("- `\(.)`\n") | join(""))"'
 {{% /comment %}}
 
-{{< expand title="List of predefined roles and their permissions" >}}
+{{< details summary="List of predefined roles and their permissions" >}}
 
 {{</* tip */>}}
 The roles below are described following this pattern:
@@ -475,7 +475,7 @@ The roles below are described following this pattern:
 - `iam.user.get-personal-data`
 - `iam.user.update`
 
-{{< /expand >}}
+{{< /details >}}
 
 ### How to create a custom role
 

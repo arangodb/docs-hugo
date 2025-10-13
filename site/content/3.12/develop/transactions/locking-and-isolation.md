@@ -48,7 +48,7 @@ be a write-write conflict, and one of the transactions will abort with error 120
 accept the failure.
 
 In order to guard long-running or complex transactions against concurrent operations
-on the same data, the RocksDB engine allows to access collections in exclusive mode.
+on the same data, the RocksDB engine allows you to access collections in exclusive mode.
 Exclusive accesses will internally acquire a write-lock on the collections, so they 
 are not executed in parallel with any other write operations. Read operations can still
 be carried out by other concurrent transactions.
@@ -86,7 +86,7 @@ db._executeTransaction({
   },
   action: function () {
     const db = require("@arangodb").db;
-    /* Execute an AQL query that traverses a graph starting at a "users" vertex.
+    /* Execute an AQL query that traverses a graph starting at a "users" node.
        It is yet unknown into which other collections the query might traverse */
     db._createStatement({ 
       query: `FOR v IN ANY "users/1234" connections RETURN v`
@@ -145,7 +145,7 @@ will fail, unless that other collection is added to the declaration as well.
 
 Note that if a document handle is used as starting point for a traversal, e.g.
 `FOR v IN ANY "users/not_linked" ...` or `FOR v IN ANY {_id: "users/not_linked"} ...`,
-then no error is raised in the case of the start vertex not having any edges to
+then no error is raised in the case of the start node not having any edges to
 follow, with `allowImplicit: false` and *users* not being declared for read access.
 AQL only sees a string and does not consider it a read access, unless there are
 edges connected to it. `FOR v IN ANY DOCUMENT("users/not_linked") ...` will fail
@@ -208,7 +208,7 @@ db._executeTransaction({
 
 In the above example, a deadlock will occur if transaction T1 and T2 have both
 acquired their write locks (T1 for collection `c1` and T2 for collection `c2`) and
-are then trying to read from the other other (T1 will read from `c2`, T2 will read
+are then trying to read from the other (T1 will read from `c2`, T2 will read
 from `c1`). T1 will then try to acquire the read lock on collection `c2`, which
 is prevented by transaction T2. T2 however will wait for the read lock on 
 collection `c1`, which is prevented by transaction T1. 

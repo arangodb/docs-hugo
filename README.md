@@ -206,14 +206,15 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 - `examples`
 - `metrics`
 - `error-codes`
+- `exit-codes`
 - `optimizer`
 - `options`
 - `oasisctl`
 
 The generators entry is a space-separated string.
 
-If `metrics` or `error-codes` is in the `generators` string, the following
-environment variable has to be exported:
+If `metrics`, `error-codes`, or `exit-coddes` is in the `generators` string,
+the following environment variable has to be exported:
 
 ```sh
 export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
@@ -352,13 +353,13 @@ paragraphs will not be part of the blockquote.
 Admonitions inside of other shortcodes need to use the special syntax, too:
 
 ```markdown
-{{< expand title="Outer shortcode" >}}
+{{< details summary="Outer shortcode" >}}
 
 {{</* tip */>}}
 Inner shortcode
 {{</* /tip */>}}
 
-{{< /expand >}}
+{{< /details >}}
 ```
 
 #### Tags
@@ -366,8 +367,11 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-Enterprise Edition of ArangoDB, the ArangoGraph Insights Platform, or both.
-See [Edition remarks](#edition-remarks) for details.
+ArangoDB Platform, the ArangoGraph Insights Platform, or both.
+See [Environment remarks](#environment-remarks) for details.
+
+It is also used for [Edition remarks](#edition-remarks) in content before
+version 3.12.5.
 
 #### Tabs
 
@@ -468,9 +472,9 @@ Content or reminder that should not be rendered.
 The following shortcodes also exist but are rarely used:
 
 - ```markdown
-  {{< expand title="A short description" >}}
+  {{< details summary="A short description" >}}
   Content that is collapsed by default but can be expanded.
-  {{< /expand >}}
+  {{< /details >}}
   ```
 
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
@@ -484,6 +488,8 @@ The following shortcodes also exist but are rarely used:
   component like the ArangoDB server (`arangod`) or shell (`arangosh`).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
+
+- `{{% exit-codes %}}` renders the ArangoDB client and server exit codes and their meaning.
 
 - `{{% metrics %}}` renders the list of ArangoDB server metrics.
 
@@ -665,57 +671,55 @@ extended by a new (sub-)option in a `x.x.0` release.
 While version remarks are mostly `Introduced in: ...`, you can also mark
 deprecated features in the same manner with `Deprecated in: ...`.
 
-### Edition Remarks
+### Environment remarks
 
-Pages and sections about Enterprise Edition features should indicate that the
-Enterprise Edition is required using a hint box. Use the following include in
-the general case:
+Pages and sections about features that are only available in certain environments
+such as the ArangoDB Platform, the ArangoGraph Insight Platform, or the
+ArangoDB Shell should indicate where they are available using the `tag` shortcode.
+
+In the unified Platform and ArangoGraph but not in the Core:
 
 ```markdown
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+```
+
+In the unified Platform only:
+
+```markdown
+{{< tag "ArangoDB Platform" >}}
+```
+
+In ArangoGraph only:
+
+```markdown
+{{< tag "ArangoGraph" >}}
+```
+
+In the ArangoDB Shell but not the server-side JavaScript API:
+
+```markdown
+{{< tag "arangosh" >}}
 ```
 
 This shortcode should be placed immediately after a headline, before any version
 remarks (`<small>Introduced in: ...</small>`).
 
-To tag options in lists, place the shortcode as follows:
+You can define a tooltip for each tag in the
+[`tag.html` template](site/themes/arangodb-docs-theme/layouts/shortcodes/tag.html).
+
+### Edition remarks
+
+From version 3.12.5 onward, all features formerly exclusive to the
+Enterprise Edition are also included in the Community Edition.
+Therefore, using tags and other kinds of remarks to indicate what features
+require the Enterprise Edition should not be necessary.
+
+In the content **before version 3.12.5**, pages and sections about
+Enterprise Edition features should indicate that the Enterprise Edition is
+required using a tag. Use the following include in the general case:
 
 ```markdown
-- **optionName** (data type):
-
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
-  Version remarks and description of the option
-```
-
-Most Enterprise Edition features are also available in ArangoGraph, but some
-features are not or in a different form (e.g. Hot Backup). If a feature
-is not available in ArangoGraph, use the following include instead:
-
-```markdown
-{{< tag "ArangoDB Enterprise Enterprise" >}}
-```
-
-In the release notes, add the following at the end of a section about a new
-Enterprise Edition feature:
-
-```markdown
-This feature is only available in the Enterprise Edition.
-```
-
-HTTP API options, that is options described in an `` ```openapi `` code block,
-should have a remark as follows if they are only available in the Enterprise Edition:
-
-```markdown
-- `enterpriseOption` (boolean, _optional_): ...
-  (Enterprise Edition only).
-```
-
-If there are both a version remark and an Enterprise Edition remark, use:
-
-```markdown
-- `enterpriseOption` (boolean, _optional_): ...
-  (introduced in v3.11.5 and v3.12.2, Enterprise Edition only).
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 ```
 
 ### Add lead paragraphs
@@ -1061,7 +1065,7 @@ It makes a warning show at the top of every page for that version.
    |:-----|:-----|:------|
    | string | `workflow` | `generate` |
    | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
-   | string | `generators` | `examples metrics error-codes optimizer options` |
+   | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
    | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
    | boolean | `commit-generated` | `true` |
 
@@ -1229,7 +1233,7 @@ db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_
 ```
 
 This will make the example generation continue despite the error. See
-[Error codes and meanings](https://docs.arangodb.com/3.12/develop/error-codes-and-meanings/)
+[Error codes and meanings](https://docs.arangodb.com/stable/develop/error-codes-and-meanings/)
 for a list of all error codes and their names. If a unexpected error is raised,
 then the example generation will abort with an error.
 

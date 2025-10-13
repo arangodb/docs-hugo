@@ -67,8 +67,9 @@ paths:
                     type: string
                 parallelism:
                   description: |
-                    The number of threads to use for indexing. Default: `2`
+                    The number of threads to use for indexing.
                   type: integer
+                  default: 2
                 inBackground:
                   description: |
                     Set this option to `true` to keep the collection/shards available for
@@ -132,6 +133,7 @@ paths:
                         - `"IVF100,SQ4"`
                         - `"IVF10_HNSW5,Flat"`
                         - `"IVF100_HNSW5,PQ256x16"`
+
                         The base index must be an inverted file (IVF) to work with ArangoDB.
                         If you don't specify an index factory, the value is equivalent to
                         `IVF<nLists>,Flat`. For more information on how to create these custom

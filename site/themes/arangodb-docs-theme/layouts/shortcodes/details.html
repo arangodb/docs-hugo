@@ -1,0 +1,3 @@
+{{ $summary := .Get "summary" -}}
+{{ if not $summary }}{{ errorf "Missing summary for %q shortcode at %s" .Name .Position }}{{ end -}}
+<details><summary>{{ $summary | markdownify }}</summary>{{ .Inner | .Page.RenderString (dict "display" "block") }}</details>

@@ -47,8 +47,10 @@ of the platform features.
         stored in ArangoDB.
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
-      - **MLflow integration**: Use the popular MLflow for machine learning
-        practitioners as part of the ArangoDB Platform.
+      - **Public and private LLM support**: Use public LLMs such as OpenAI
+        or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).
+      - **MLflow integration**: Use the popular MLflow as a model registry for private LLMs
+        or to run machine learning experiments as part of the ArangoDB Platform.
 - **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
@@ -113,7 +115,19 @@ manage this deployment yourself.
    It includes helm charts, manifests, and blobs of the container image layers.
    You also receive a package configuration file from the ArangoDB team.
 
-2. Install the certificate manager. You can check <https://github.com/cert-manager/cert-manager>
+2. Create a Kubernetes namespace for ArangoDB and a secret with your
+   Enterprise Edition license key. Substitute `<license-string>` with the actual
+   license string:
+
+   ```sh
+   kubectl create namespace arangodb
+
+   kubectl create secret generic arango-license-key \
+     --namespace arangodb \
+     --from-literal=token-v2="<license-string>"
+   ```
+
+3. Install the certificate manager. You can check <https://github.com/cert-manager/cert-manager>
    for the available releases.
 
    ```sh
@@ -128,27 +142,31 @@ manage this deployment yourself.
      --set crds.enabled=true
    ```
 
-3. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
+4. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
    with options to enable webhooks, certificates, and the gateway feature.
 
    ```sh
-   VERSION_OPERATOR='1.2.50' # Use a newer version if available
+   VERSION_OPERATOR='1.3.0' # Use a newer version if available
 
    helm upgrade --install operator \
-     --namespace arangodb --create-namespace \
-     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-${VERSION_OPERATOR}.tgz" \
+     --namespace arangodb \
+     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
      --set "webhooks.enabled=true" \
      --set "certificate.enabled=true" \
      --set "operator.args[0]=--deployment.feature.gateway=true" \
+     --set "operator.features.platform=true" \
+     --set "operator.features.ml=true" \
      --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
    ```
 
-4. Create an `ArangoDeployment` specification for the ArangoDB Core. See the
+5. Create an `ArangoDeployment` specification for the ArangoDB Core. See the
    [ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
    and the linked reference.
 
    You need to enable the gateway feature by setting `spec.gateway.enabled` and
-   `spec.gateway.dynamic` to `true` in the specification:
+   `spec.gateway.dynamic` to `true` in the specification. You also need to set
+   `spec.license` to the secret created earlier. Example for an ArangoDB cluster
+   deployment using version 3.12.5 with three DB-Servers and two Coordinators:
 
     ```yaml
     apiVersion: "database.arangodb.com/v1"
@@ -156,13 +174,23 @@ manage this deployment yourself.
     metadata:
       name: "platform-example"
     spec:
+      mode: Cluster
+      image: "arangodb/enterprise:3.12.5"
       gateway:
         enabled: true
         dynamic: true
+      gateways:
+        count: 1
+      dbservers:
+        count: 3
+      coordinators:
+        count: 2
+      license:
+        secretName: arango-license-key
       # ...
     ```
 
-5. Download the ArangoDB Platform CLI tool `arangodb_operator_platform` from
+6. Download the ArangoDB Platform CLI tool `arangodb_operator_platform` from
    <https://github.com/arangodb/kube-arangodb/releases>.
    It is available for Linux and macOS, for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
@@ -174,7 +202,7 @@ manage this deployment yourself.
    The Platform CLI tool simplifies the further setup and later management of
    the Platform's Kubernetes services.
 
-6. Import the zip package of the ArangoDB Platform into the container registry.
+7. Import the zip package of the ArangoDB Platform into the container registry.
    Replace `platform.zip` with the file path of the offline installation package.
    Replace `gcr.io/my-reg` with the address of your registry.
 
@@ -186,7 +214,7 @@ manage this deployment yourself.
      platform.imported.yaml
    ```
 
-7. Install the package using the package configuration you received from the
+8. Install the package using the package configuration you received from the
    ArangoDB team (`platform.yaml`) and the configuration generated by the
    previous command (`platform.imported.yaml`). These configurations are merged,
    allowing for targeted upgrades and user-defined overrides.

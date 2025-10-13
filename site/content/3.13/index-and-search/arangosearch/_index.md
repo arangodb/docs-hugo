@@ -323,7 +323,7 @@ English text.
  5. In the **General** panel, give the index a **Name** like `inv-idx-name-en`
      to make it easier for you to identify the index.
  6. Click **Create**.
-    The inverted indexes indexes the `name` attribute of the documents with the
+    The inverted index indexes the `name` attribute of the documents with the
     `text_en` Analyzer, which splits strings into tokens so that you can search
     for individual words.
  7. In the **Views** section, click **Add view**.

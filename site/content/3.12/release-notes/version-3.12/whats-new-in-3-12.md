@@ -759,7 +759,7 @@ aren't chosen automatically, you can make the optimizer prefer the indexes you
 specify. This can be done per edge collection, direction, and level/depth:
 
 ```aql
-FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+FOR v, e, p IN 1..4 OUTBOUND startNode edgeCollection
 OPTIONS {
   indexHint: {
     "edgeCollection": {
@@ -806,7 +806,7 @@ You can set this option to `false` to not make a large graph operation pollute
 the edge cache.
 
 ```aql
-FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+FOR v, e, p IN 1..5 OUTBOUND "nodes/123" edges
   OPTIONS { useCache: false }
   ...
 ```
@@ -1017,7 +1017,7 @@ regressed while others improved. In particular shortest path queries like
 `K_SHORTEST_PATHS` queries became slower for certain datasets compared to
 version 3.10. The performance should now be similar again due to a switch from
 a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
-of neighbor vertices in one case.
+of neighbor nodes in one case.
 
 In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been
@@ -1528,7 +1528,7 @@ certain minimum size, e.g. 250 bytes.
 
 <small>Introduced in: v3.11.2</small>
 
-LZ4 compression of edge index cache values allows to store more data in main
+LZ4 compression of edge index cache values allows you to store more data in main
 memory than without compression, so the available memory can be used more
 efficiently. The compression is transparent and does not require any change to
 queries or applications.
@@ -1735,6 +1735,22 @@ service interruption during upgrades and after failovers.
 
 The new `--server.maximal-number-sync-shard-actions` startup option controls
 how many `SynchronizeShard` actions can be queued at any given time.
+
+### Full RocksDB compaction on upgrade
+
+<small>Introduced in: v3.12.5-2</small>
+
+A new `--database.auto-upgrade-full-compaction` startup option has been added
+that you can use together with `--database.auto-upgrade` for upgrading.
+
+With the new option enabled, the server will perform a full RocksDB compaction
+after the database upgrade has completed successfully but before shutting down.
+This performs a complete compaction of all column families with the `changeLevel`
+and `compactBottomMostLevel` options enabled, which can help optimize the
+database files after an upgrade.
+
+The server process terminates with the new exit code 30
+(`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
 
 ## Miscellaneous changes
 
@@ -2226,6 +2242,20 @@ impact of this feature:
 
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
+
+### Access tokens
+
+<small>Introduced in: v3.12.5</small>
+
+A new authentication feature has been added that lets you use access tokens
+for either creating JWT session tokens or directly authenticate with an
+access token instead of a password.
+
+You can create multiple access tokens for a single user account, set expiration
+dates, and individually revoke tokens.
+
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
 
 ## Client tools
 

@@ -230,7 +230,7 @@ This is only the case if all of the following conditions are true:
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
-- The glibc version of your system is different than the one used by ArangoDB,
+- The glibc version of your system is different from the one used by ArangoDB,
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
@@ -342,7 +342,7 @@ specific exit code in these cases.
 <small>Introduced in: v3.10.13, v3.11.7</small>
 
 The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
-changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+changed in the documents of SmartGraph node collections. This is now strictly enforced.
 See [API Changes in ArangoDB 3.12](api-changes-in-3-12.md#validation-of-smartgraphattribute-in-smartgraphs)
 for details and instructions on how to repair affected attributes.
 
@@ -357,7 +357,7 @@ This may require changes in the client application code that drops individual
 collections from graphs for clean-up purposes. You can drop an entire graph
 and its collections along with it, as long as they aren't used in another graph.
 To remove individual collections, update or remove edge definitions first to not
-include the desired collections anymore. In case of vertex collections, they
+include the desired collections anymore. In case of node collections, they
 become orphan collections that you need to remove from the graph definition as
 well to drop the collections.
 
@@ -940,13 +940,13 @@ server:
 ### Graph API (Gharial) behavior
 
 - The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
-  edges in named graphs now validates the referenced vertex when modifying either
+  edges in named graphs now validates the referenced node when modifying either
   the `_from` or `_to` edge attribute. Previously, the validation only occurred if
   both were set in the request.
 
 - A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
   has been added is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
-  with the code `1947` if you attempt to read from or write to a vertex collection
+  with the code `1947` if you attempt to read from or write to a node collection
   through the graph API but the collection is not part of the graph definition.
 
 - The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`

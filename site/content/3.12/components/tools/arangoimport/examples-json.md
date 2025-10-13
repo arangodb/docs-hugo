@@ -209,7 +209,7 @@ By default, the endpoint `tcp://127.0.0.1:8529` is used. If you want to
 specify a different endpoint, you can use the `--server.endpoint` option. You
 probably want to specify a database user and password as well. You can do so by
 using the options `--server.username` and `--server.password`. If you do not
-specify a password, you are prompted for one.
+specify a password (or access token), you are prompted for one.
 
 ```
 arangoimport --server.endpoint tcp://127.0.0.1:8529 --server.username root ...
@@ -258,7 +258,7 @@ arangoimport --threads 4 --file "data.jsonl" --type jsonl --collection users
 Using multiple threads may lead to a non-sequential import of the input
 data. Data that appears later in the input file may be imported earlier than data
 that appears earlier in the input file. This is normally not a problem but may cause
-issues when when there are data dependencies or duplicates in the import data. In
+issues when there are data dependencies or duplicates in the import data. In
 this case, the number of threads should be set to 1. Also, using parallelism with
 the `--threads X` parameter together with the `--on-duplicate` parameter set to `ignore`,
 `update` or `replace` can lead to a race condition, when there are duplicates e.g. multiple 

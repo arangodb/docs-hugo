@@ -90,7 +90,8 @@ If you use a tool like cURL, you can manually specify this header as follows:
 curl -H 'Authorization: Basic dXNlcjpwYXNz' ...
 ```
 
-However, cURL can also take care of the authentication for you:
+However, cURL can also take care of the authentication and specifically the
+encoding of the credentials for you:
 
 ```
 curl -u user:pass ...
@@ -103,6 +104,15 @@ encoded credentials by accident. It is recommended to secure connections with
 ArangoDB servers using TLS for encryption in transit.
 {{< /security >}}
 
+You can also authenticate with [Access tokens](#access-tokens). Use the
+access token as the password. You can omit the user name in this case:
+
+```
+curl -u:the_access_token
+```
+
+If you specify the user name, it must match the name encoded in the token.
+
 ## Bearer Token Authentication
 
 ArangoDB uses a standard JWT-based authentication method.
@@ -114,19 +124,19 @@ For more information on JWT please consult RFC7519 and [jwt.io](https://jwt.io).
 
 ### JWT user tokens
 
-To authenticate with a specific user you need to supply a JWT token containing
-the `preferred_username` field with the username.
+To authenticate with a specific user account, you need to supply a JWT token
+containing the `preferred_username` field with the username.
 You can either let ArangoDB generate this token for you via an API call
 or you can generate it yourself (only if you know the JWT secret).
 
 ArangoDB offers a RESTful API to generate user tokens for you if you know the
-username and password. To do so send a POST request to:
+username and password. To do so, send a POST request to this endpoint:
 
 ```
 /_open/auth
 ```
 
-… containing `username` and `password` JSON-encoded like so:
+The request body needs to contain the `username` and `password` JSON-encoded like so:
 
 ```json
 {
@@ -134,6 +144,16 @@ username and password. To do so send a POST request to:
   "password": "rootPassword"
 }
 ```
+
+You can also use [Access tokens](#access-tokens) for creating JWTs. Provide the
+access token as the `password`. You can omit the `username`:
+
+```json
+{
+  "password": "theAccessToken"
+}
+
+If you specify the user name, it must match the name encoded in the token.
 
 On success, the endpoint returns a **200 OK** and an answer containing
 the JWT in a JSON-encoded object like so:
@@ -178,7 +198,8 @@ paths:
     post:
       operationId: createSessionToken
       description: |
-        Obtain a JSON Web Token (JWT) from the credentials of an ArangoDB user account.
+        Obtain a JSON Web Token (JWT) from the credentials of an ArangoDB user account
+        or a user's access token.
         You can use the JWT in the `Authorization` HTTP header as a `Bearer` token to
         authenticate requests.
 
@@ -190,20 +211,23 @@ paths:
             schema:
               type: object
               required:
-                - username
                 - password
               properties:
                 username:
                   description: |
                     The name of an ArangoDB user.
+                    
+                    It is optional if you specify an access token in `password`
+                    but required if you use the user's password.
                   type: string
                 password:
                   description: |
-                    The password of the ArangoDB user.
+                    The password of the ArangoDB user or an access token.
                   type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully created a session token.
           content:
             application/json:
               schema:
@@ -270,6 +294,647 @@ jwtgen -s <my-secret> -e 3600 -v -a "HS256" -c 'iss=arangodb' -c 'server_id=mycl
 curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 'iss=arangodb' -c 'server_id=myclient')" http://<database-ip>:8529/_api/version
 ```
 
+## Access tokens
+
+Access tokens act like passwords in authentication. Unlike normal credentials
+comprised of a username and a password, you can create multiple access tokens
+for a single user account. This is akin to having multiple passwords. You can
+set a desired expiration date for each access token (typically a few weeks or months)
+and individually revoke tokens on the server-side if necessary. You can use
+every access tokens for a different purpose, like different services that access
+ArangoDB using the same account, for fine-grained access control without having
+to change the password if you want to revoke access for one of the services.
+
+You can use access tokens instead of the password to generate
+[JWT session tokens](#create-a-jwt-session-token) (recommended) or use them
+directly as password in [HTTP Basic Authentication](#http-basic-authentication)
+(for backwards compatibility).
+
+You need to create any user accounts first that you want to add access tokens to,
+see [Create a user](users.md#create-a-user).
+
+### Create an access token
+
+```openapi
+paths:
+  /_api/token/{user}:
+    post:
+      operationId: createAccessToken
+      description: |
+        Create a new access token for the given user.
+
+        The response includes the actual access token string that you need to
+        store in a secure manner. It is only shown once.
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to create an access token for a
+        different user. You can always create an access token for yourself,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - valid_until
+              properties:
+                name:
+                  description: |
+                    A name for the access token to make identification easier,
+                    like a short description.
+                  type: string
+                valid_until:
+                  description: |
+                    A Unix timestamp in seconds to set the expiration date and time.
+                  type: integer
+      responses:
+        '200':
+          description: |
+            Is returned if the user data can be replaced by the server.
+          content:
+            application/json:
+              schema:
+                required:
+                  - id
+                  - name
+                  - valid_until
+                  - created_at
+                  - fingerprint
+                  - active
+                  - token
+                type: object
+                properties:
+                  id:
+                    description: |
+                      A unique identifier. It is only needed for calling the
+                      endpoint for revoking an access token.
+                    type: integer
+                  name:
+                    description: |
+                      The name for the access token you specified to make
+                      identification easier.
+                    type: string
+                  valid_until:
+                    description: |
+                      A Unix timestamp in seconds with the configured expiration date and time.
+                    type: integer
+                  created_at:
+                    description: |
+                      A Unix timestamp in seconds with the creation date and time of the access token.
+                    type: integer
+                  fingerprint:
+                    description: |
+                      The beginning and end of the access token string, showing the
+                      version and the last few hexadecimal digits for identification,
+                      like `v1...54227d`.
+                    type: string
+                  active:
+                    description: |
+                      Whether the access token is valid based on the expiration date
+                      and time (`valid_until`).
+                    type: boolean
+                  token:
+                    description: |
+                      The actual access token string. Store it in a secure manner.
+                      This is the only time it is shown to you.
+                    type: string
+        '400':
+          description: |
+            The JSON representation is malformed or mandatory data is missing from the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '401':
+          description: |
+            The request is not authenticated correctly (e.g. wrong credentials, inactive user account).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The user's access level for the `_system` database is too low.
+            It needs to be *Administrate* to manage access tokens for other users.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            The user specified in the path does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '409':
+          description: |
+            Duplicate access token `name`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 409
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  Create an access token for the `root` user:
+name: RestAccessTokenCreate
+---
+var nextYear = new Date().getFullYear() + 1;
+var expires = Date.UTC(nextYear, 6, 1) / 1000;
+
+var url = "/_api/token/root";
+var body = {
+  name: "Token for Service A",
+  valid_until: expires,
+};
+
+var response = logCurlRequest('POST', url, body);
+assert(response.code === 200);
+assert(response.parsedBody.active === true);
+logJsonResponse(response);
+```
+
+### List all access tokens
+
+```openapi
+paths:
+  /_api/token/{user}:
+    get:
+      operationId: listAccessTokens
+      description: |
+        List the access tokens for a given user.
+
+        This only returns the access token metadata.
+        The actual access token strings are only shown when creating tokens. 
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to list the access tokens for a
+        different user. You can always list your own access tokens,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The metadata of the user's access tokens.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - tokens
+                properties:
+                  tokens:
+                    description: |
+                      A list with information about the user's access tokens.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - valid_until
+                        - created_at
+                        - fingerprint
+                        - active
+                      properties:
+                        id:
+                          description: |
+                            A unique identifier. It is only needed for calling the
+                            endpoint for revoking an access token.
+                          type: integer
+                        name:
+                          description: |
+                            The name for the access token you specified to make
+                            identification easier.
+                          type: string
+                        valid_until:
+                          description: |
+                            A Unix timestamp in seconds with the configured expiration date and time.
+                          type: integer
+                        created_at:
+                          description: |
+                            A Unix timestamp in seconds with the creation date and time of the access token.
+                          type: integer
+                        fingerprint:
+                          description: |
+                            The beginning and end of the access token string, showing the
+                            version and the last few hexadecimal digits for identification,
+                            like `v1...54227d`.
+                          type: string
+                        active:
+                          description: |
+                            Whether the access token is valid based on the expiration date
+                            and time (`valid_until`).
+                          type: boolean
+        '401':
+          description: |
+            The request is not authenticated correctly (e.g. wrong credentials, inactive user account).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The user's access level for the `_system` database is too low.
+            It needs to be *Administrate* to manage access tokens for other users.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            The user specified in the path does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  List the access tokens of the `root` user:
+name: RestAccessTokenList
+---
+var url = "/_api/token/root";
+var response = logCurlRequest('GET', url);
+
+assert(response.code === 200);
+assert(response.parsedBody.tokens?.length === 1);
+logJsonResponse(response);
+```
+
+### Delete an access token
+
+```openapi
+paths:
+  /_api/token/{user}/{token-id}:
+    delete:
+      operationId: deleteAccessToken
+      description: |
+        Delete an access token with the specified identifier for the given user.
+
+        The user account you authenticate with needs to have administrate access
+        to the `_system` database if you want to delete an access token for a
+        different user. You can always delete your own access tokens,
+        regardless of database access levels.
+      parameters:
+        - name: user
+          in: path
+          required: true
+          description: |
+            The name of the user.
+          schema:
+            type: string
+        - name: token-id
+          in: path
+          required: true
+          description: |
+            The identifier of the access token.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: |
+            The request is valid and the access token has been deleted if it
+            existed. However, the request also succeeds if the specified user
+            doesn't have an access token with the given identifier.
+          content:
+            application/json:
+              schema:
+                description: |
+                  The response does not have a body.
+        '401':
+          description: |
+            The request is not authenticated correctly (e.g. wrong credentials, inactive user account).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The user's access level for the `_system` database is too low.
+            It needs to be *Administrate* to manage access tokens for other users.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            The user specified in the path does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Authentication
+```
+
+```curl
+---
+description: |-
+  Delete an access tokens of the `root` user:
+name: RestAccessTokenDelete
+---
+var url = "/_api/token/root";
+var response = internal.arango.GET(url);
+assert(response.tokens?.length === 1);
+
+response = logCurlRequest('DELETE', url + "/" + response.tokens[0].id);
+assert(response.code === 200);
+logRawResponse(response);
+
+response = internal.arango.GET(url);
+assert(response.tokens?.length === 0);
+```
+
 ## Hot-reload JWT secrets
 
 {{< tip >}}
@@ -307,7 +972,8 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully retrieved the JWT secret information.
           content:
             application/json:
               schema:
@@ -321,12 +987,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.
@@ -373,7 +1041,8 @@ paths:
         will be _HTTP 403 Forbidden_.
       responses:
         '200':
-          description: ''
+          description: |
+            Successfully reloaded the JWT secrets.
           content:
             application/json:
               schema:
@@ -387,12 +1056,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code - 200 in this case
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       The result object.

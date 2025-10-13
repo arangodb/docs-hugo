@@ -43,11 +43,32 @@ paths:
                     The type of the View. Must be equal to `"arangosearch"`.
                     This option is immutable.
                   type: string
+                  example: arangosearch
                 links:
                   description: |
                     Expects an object with the attribute keys being names of to be linked collections,
-                    and the link properties as attribute values. See
-                    [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    and the link properties as attribute values. Example:
+
+                    ```json
+                    {
+                      "name": "arangosearch",
+                      "links": {
+                        "coll": {
+                          "fields": {
+                            "my_attribute": {
+                              "fields": {
+                                "my_sub_attribute": {
+                                  "analyzers": ["text_en"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    ```
+
+                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 primarySort:
@@ -63,6 +84,7 @@ paths:
                     (attribute path) and a sort direction:
                     `[ { "field": "attr", "direction": "asc"}, … ]`
                   type: array
+                  default: []
                   items:
                     type: object
                     required:
@@ -158,6 +180,7 @@ paths:
                     The `storedValues` option is not to be confused with the `storeValues` option,
                     which allows to store meta data about attribute values in the View index.
                   type: array
+                  default: []
                   items:
                     type: object
                     required:
@@ -385,7 +408,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -581,7 +604,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -612,7 +635,7 @@ paths:
                     example: 409
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -700,7 +723,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -735,7 +758,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -852,7 +875,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -1048,7 +1071,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1079,7 +1102,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1257,8 +1280,28 @@ paths:
                 links:
                   description: |
                     Expects an object with the attribute keys being names of to be linked collections,
-                    and the link properties as attribute values. See
-                    [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    and the link properties as attribute values. Example:
+
+                    ```json
+                    {
+                      "name": "arangosearch",
+                      "links": {
+                        "coll": {
+                          "fields": {
+                            "my_attribute": {
+                              "fields": {
+                                "my_sub_attribute": {
+                                  "analyzers": ["text_en"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    ```
+
+                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 cleanupIntervalStep:
@@ -1429,7 +1472,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -1625,7 +1668,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1656,7 +1699,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1744,8 +1787,28 @@ paths:
                 links:
                   description: |
                     Expects an object with the attribute keys being names of to be linked collections,
-                    and the link properties as attribute values. See
-                    [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    and the link properties as attribute values. Example:
+                    
+                    ```json
+                    {
+                      "name": "arangosearch",
+                      "links": {
+                        "coll": {
+                          "fields": {
+                            "my_attribute": {
+                              "fields": {
+                                "my_sub_attribute": {
+                                  "analyzers": ["text_en"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    ```
+
+                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 cleanupIntervalStep:
@@ -1912,7 +1975,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -2108,7 +2171,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2139,7 +2202,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2274,7 +2337,7 @@ paths:
                   type:
                     description: |
                       The type of the View (`"arangosearch"`).
-                    type: integer
+                    type: string
                     example: arangosearch
                   id:
                     description: |
@@ -2470,7 +2533,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2501,7 +2564,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2606,7 +2669,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2637,7 +2700,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

@@ -50,25 +50,21 @@ Alongside these components, you also get the following additional features:
 
 - [**Graph Visualizer**](../graphs/graph-visualizer.md): A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
+- [**Graph Analytics**](graph-analytics.md): Run graph algorithms such as PageRank
+  on dedicated compute resources.  
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
-- [**MLflow integration**](./graphrag/services/mlflow.md): Built-in support for the popular management tool for
-  the machine learning lifecycle.
-- [**Integrations**](./integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
+- **Public and private LLM support**: Use public LLMs such as OpenAI
+  or private LLMs with [Triton Inference Server](../data-science/graphrag/services/triton-inference-server.md).  
+- [**MLflow integration**](graphrag/services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
+  or to run machine learning experiments as part of the ArangoDB Platform.
+- [**Integrations**](integrations/_index.md): Use ArangoDB together with cuGraph, NetworkX,
   and other data science tools. 
 - **Application Programming Interfaces**: Use the underlying APIs of the
   GenAI Suite services and build your own integrations. See the
   [API reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html) documentation
   for more details.
-
-## Other tools and features
-
-The ArangoDB Platform includes the following features independent of the
-GenAI Suite:
-
-- [**Graph Analytics**](../graphs/graph-analytics.md): Run graph algorithms such as PageRank
-  on dedicated compute resources.
 
 ## From graph to AI
 
@@ -82,9 +78,9 @@ powered by graph relationships and vector embeddings.
 
 ### Graph Queries
 
-When you run an AQL query on a graph, a traversal query can go from a vertex to
-multiple edges, and then the edges indicate what the next connected vertices are.
-Graph queries can also determine the shortest paths between vertices.
+When you run an AQL query on a graph, a traversal query can go from a node to
+multiple edges, and then the edges indicate what the next connected nodes are.
+Graph queries can also determine the shortest paths between nodes.
 
 Graph queries can answer questions like _**Who can introduce me to person X**_?
 
@@ -104,12 +100,12 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
 is available for the ArangoGraph Insights Platform. See 
-[Graph Analytics](../graphs/graph-analytics.md) for details.
+[Graph Analytics](graph-analytics.md) for details.
 
 ### GraphML
 
 When applying machine learning on a graph, you can predict connections, get 
-better product recommendations, and also classify vertices, edges, and graphs.
+better product recommendations, and also classify nodes, edges, and graphs.
 
 GraphML can answer questions like:
 - _**Is there a connection between person X and person Y?**_

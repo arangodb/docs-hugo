@@ -58,7 +58,7 @@ paths:
                   properties:
                     hash:
                       description: |
-                        The hash value calculated from the the query string,
+                        The hash value calculated from the query string,
                         certain query options, and the bind variables.
                       type: string
                     query:
@@ -303,6 +303,8 @@ paths:
                 mode:
                   description: |
                      The mode the AQL query cache shall operate in.
+
+                     Default: Controlled by the `--query.cache-mode` startup option.
                   type: string
                   # Unquoted on and off are booleans in YAML 1.1!
                   enum: ["off", "on", "demand"]
@@ -310,21 +312,30 @@ paths:
                   description: |
                     The maximum number of query results that are stored per
                     database-specific cache.
+
+                    Default: Controlled by the  `--query.cache-entries` startup option.
                   type: integer
                 maxResultsSize:
                   description: |
                     The maximum cumulated size of query results that are stored
                     per database-specific cache (in bytes).
+
+                    Default: Controlled by the `--query.cache-entries-max-size` startup option.
                   type: integer
                 maxEntrySize:
                   description: |
                     The maximum individual size of query results that are stored
                     per database-specific cache (in bytes).
+
+                    Default: Controlled by the `--query.cache-entry-max-size` startup option.
                   type: integer
                 includeSystem:
                   description: |
                     Whether to store results of queries that involve
                     system collections in the cache.
+
+                    Default: Controlled by the `--query.cache-include-system-collections`
+                    startup option
                   type: boolean
       responses:
         '200':

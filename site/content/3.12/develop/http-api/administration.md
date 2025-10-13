@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -46,6 +45,7 @@ paths:
             the `details` object may vary depending on platform and ArangoDB version.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -245,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
@@ -328,12 +327,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   time:
                     description: |
                       The current system time as a Unix timestamp with microsecond precision of the server
@@ -1116,7 +1117,7 @@ paths:
           in: query
           required: false
           description: |
-            Set to `true` to change the license even if it expires sooner than the current one.
+            Whether to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
             default: false
@@ -1125,7 +1126,7 @@ paths:
           application/json:
             schema:
               description: |
-                The request body has to contain the Base64-encoded string wrapped in double quotes.
+                The request body has to contain the Base64-encoded license string wrapped in double quotes.
               type: string
               example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:
@@ -1152,7 +1153,7 @@ paths:
                         example: false
                       code:
                         description: |
-                          The HTTP status code.
+                          The HTTP response status code.
                         type: integer
                         example: 201
         '400':
@@ -1176,12 +1177,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 400
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1207,12 +1208,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 501
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1232,7 +1233,7 @@ Example not generated because it would require a valid license to demonstrate th
 curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
 ```
 
-{{< expand title="Show output" >}}
+{{< details summary="Show output" >}}
 ```bash
 HTTP/1.1 201 Created
 content-type: application/json
@@ -1254,7 +1255,7 @@ x-content-type-options: nosniff
   }
 }
 ```
-{{< /expand >}}
+{{< /details >}}
 
 ## Shutdown
 
@@ -1308,6 +1309,7 @@ paths:
              - Ongoing low priority requests
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -1436,13 +1438,13 @@ paths:
                 changeLevel:
                   description: |
                     whether or not compacted data should be moved to the minimum possible level.
-                    The default value is `false`.
                   type: boolean
+                  default: false
                 compactBottomMostLevel:
                   description: |
                     Whether or not to compact the bottommost level of data.
-                    The default value is `false`.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
@@ -1509,16 +1511,10 @@ paths:
         The call returns an object with the servers request information
       requestBody:
         content:
-          application/json:
+          application/octet-stream:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body can be of any type and is simply forwarded.
-                  type: string
+              description: |
+                The request body can be of any type and is simply forwarded.
       parameters:
         - name: database-name
           in: path
@@ -1701,8 +1697,9 @@ paths:
         directly, otherwise a string produced by JSON.stringify will be
         returned.
 
-        Note that this API endpoint will only be present if the server was
-        started with the option `--javascript.allow-admin-execute true`.
+        Note that this API endpoint is available if the server has been
+        started with the `--javascript.allow-admin-execute` startup options
+        enabled.
 
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
@@ -1718,16 +1715,10 @@ paths:
             type: string
       requestBody:
         content:
-          application/json:
+          text/javascript:
             schema:
-              type: object
-              required:
-                - body
-              properties:
-                body:
-                  description: |
-                    The request body is the JavaScript code to be executed.
-                  type: string
+              description: |
+                The request body is the JavaScript code to be executed.
       responses:
         '200':
           description: |
