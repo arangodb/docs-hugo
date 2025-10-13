@@ -48,9 +48,9 @@ allows you to export data from Apache Kafka to ArangoDB.
 - [Demo](https://github.com/arangodb/kafka-connect-arangodb/tree/main/demo)
 - [Changelog](https://github.com/arangodb/kafka-connect-arangodb/blob/main/ChangeLog.md)
 
-## Tinkerpop Provider
+## TinkerPop Provider
 
-The [**ArangoDB Tinkerpop Provider**](arangodb-tinkerpop-provider.md) is an implementation of 
+The [**ArangoDB TinkerPop Provider**](arangodb-tinkerpop-provider.md) is an implementation of 
 the [Apache TinkerPop OLTP Provider](https://tinkerpop.apache.org/docs/3.7.3/dev/provider) API 
 for ArangoDB.
 
