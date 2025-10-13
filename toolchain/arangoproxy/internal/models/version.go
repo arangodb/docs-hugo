@@ -13,8 +13,8 @@ type Version struct {
 	Alias      string `yaml:"alias,omitempty" json:"alias,omitempty"`
 }
 
-func LoadVersions() []Version {
-	versions := []Version{}
+func LoadVersions() map[string][]Version {
+	versions := map[string][]Version{}
 	yamlFile, _ := os.ReadFile("/home/site/data/versions.yaml")
 
 	yaml.Unmarshal(yamlFile, &versions)

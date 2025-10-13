@@ -7,8 +7,9 @@
       <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
       <a itemprop="item" class="link" href="{{ .RelPermalink }}">
         <span itemprop="name" class="breadcrumb-entry">
-        {{ if eq (len .Ancestors) 1 -}}
-          {{ template "getVersionLong" dict "pageType" .Page.Type -}}
+        {{ if eq .Path "/arangodb/" -}}
+          {{ $coreVersion := index (split .Path "/") 2 }}
+          {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
         {{ else -}}
           {{ .Params.menuTitle | markdownify -}}
         {{ end -}}
@@ -23,8 +24,9 @@
     <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
     <a itemprop="item" class="link" href="{{ .RelPermalink }}">
       <span itemprop="name" class="breadcrumb-entry">
-      {{ if eq (len .Ancestors) 1 -}}
-        {{ template "getVersionLong" dict "pageType" .Page.Type -}}
+      {{ if eq .Path "/arangodb/" -}}
+        {{ $coreVersion := index (split .Path "/") 2 }}
+        {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
       {{ else -}}
         {{ .Params.menuTitle | markdownify -}}
       {{ end -}}
@@ -36,10 +38,10 @@
 </nav>
 
 {{ define "getVersionLong" -}}
-  {{ $pageType := .pageType -}}
-  {{ $versions := site.Data.versions -}}
+  {{ $coreVersion := .coreVersion -}}
+  {{ $versions := index site.Data.versions "/arangodb/" -}}
   {{ range $i, $version := $versions -}}
-    {{ if eq $pageType $version.name -}}
+    {{ if eq $coreVersion $version.name -}}
       {{ $version.version -}}
     {{ end -}}
   {{ end -}}

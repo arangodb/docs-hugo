@@ -1,7 +1,7 @@
 {{- $title := .Get "title" }}
 {{- $link := .Get "link" }}
 {{- $image := resources.GetMatch (printf "images/%s" ( .Get "icon" )) }}
-{{- $versions := .Site.Data.versions }}
+{{- $versions := index .Site.Data.versions "/arangodb/" }}
 {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
 {{- /* TODO: Check if relative links are resolved in the context of the linking page */}}
 {{- partial "shortcodes/card.html" (dict

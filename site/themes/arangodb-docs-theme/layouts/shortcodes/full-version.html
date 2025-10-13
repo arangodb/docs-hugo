@@ -1,5 +1,5 @@
 {{ $ver := (.Get 0) -}}
-{{- $versions := (where .Site.Data.versions "name" $ver) -}}
+{{- $versions := (where (index .Site.Data.versions "/arangodb/") "name" $ver) -}}
 {{ if $versions -}}
   {{ (index $versions 0).version | htmlEscape -}}
 {{ else -}}

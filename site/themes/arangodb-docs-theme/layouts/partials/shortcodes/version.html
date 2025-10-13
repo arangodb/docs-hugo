@@ -1,15 +1,18 @@
 {{- $page := .page }}
-{{- $versions := site.Data.versions }}
-{{- range $i, $version := $versions }}
-  {{- if or (eq $page.Type $version.name) (eq $page.Type $version.alias) }}
-    {{- $page.Store.Set "version" $version.version }}
-    {{- $page.Store.Set "versionShort" $version.name }}
-    {{- $page.Store.Set "alias" $version.alias }}
-    {{- $page.Store.Set "deprecated" $version.deprecated }}
-    {{- if ne $version.name "platform" }}
-      {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
+{{- if hasPrefix $page.Path "/arangodb/" }}
+  {{- $versions := index site.Data.versions "/arangodb/" }}
+  {{- $coreVersion := index (split $page.Path "/") 2 }}
+  {{- range $i, $version := $versions }}
+    {{- if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) }}
+      {{- $page.Store.Set "version" $version.version }}
+      {{- $page.Store.Set "versionShort" $version.name }}
+      {{- $page.Store.Set "alias" $version.alias }}
+      {{- $page.Store.Set "deprecated" $version.deprecated }}
+      {{- if ne $version.name "platform" }}
+        {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
+      {{- end }}
+      {{- break }}
     {{- end }}
-    {{- break }}
   {{- end }}
 {{- end }}
 

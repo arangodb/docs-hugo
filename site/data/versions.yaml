@@ -1,24 +1,21 @@
-- name: "platform"
-  version: "0.1.0"
-  alias: "platform"
-  deprecated: false
+/arangodb/:
 
-- name: "3.13"
-  version: "3.13.0"
-  alias: "devel"
-  deprecated: false
+  - name: "3.13"
+    version: "3.13.0"
+    alias: "devel"
+    deprecated: false
 
-- name: "3.12"
-  version: "3.12.5"
-  alias: "stable"
-  deprecated: false
+  - name: "3.12"
+    version: "3.12.5"
+    alias: "stable"
+    deprecated: false
 
-- name: "3.11"
-  version: "3.11.14"
-  alias: "3.11"
-  deprecated: true
+  - name: "3.11"
+    version: "3.11.14"
+    alias: "3.11"
+    deprecated: true
 
-- name: "3.10"
-  version: "3.10.14"
-  alias: "3.10"
-  deprecated: true
+  - name: "3.10"
+    version: "3.10.14"
+    alias: "3.10"
+    deprecated: true
