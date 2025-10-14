@@ -23,13 +23,14 @@ create new nodes (vertices) and edges (relations).
 
 You can use the Graph Visualizer to do the following:
 
-- Filter and view specific nodes to focus on a subset of your graph.
+- Select and view specific nodes including with custom queries to focus on a
+  subset of your graph.
 - Dynamically expand nodes to show more of their neighborhood to see how
   entities are connected.
 - Inspect the properties of nodes and edges.
 - Modify existing or create new nodes and edges.
-- Rearrange nodes automatically or manually for better visual clarity.
-- Use zoom and pan to explore large graphs more easily.
+- Rearrange nodes automatically or manually as well as assign colors and icons
+  for better visual clarity.
 
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
@@ -80,7 +81,7 @@ The Graph Visualizer interface is comprised of the following components:
 - **Search & add nodes to canvas** and **Queries**:
   A widget in the top left corner that opens dialogs for selecting nodes and
   edges to display (manually or using queries).
-- [**Legend**](#visual-customization):
+- [**Legend**](#legend):
   A panel on the right-hand side that shows you what colors and icons are used
   for nodes and edges, as well as to adjust the styling, and to select all
   items of a type.
@@ -103,10 +104,10 @@ up to 10 nodes that contain this text in one of these attributes
 4. Select one or more nodes from the list on the left-hand side.
 5. Optional: You can inspect the attributes of the selected nodes on the
    right-hand side. Use the buttons at the bottom
-   ({{< icon "caret-left" >}} {{< icon "caret-right" >}}) to switch between nodes.
-6. Click **Add _n_ nodes**.
+   ({{< icon "caret-left" >}}, {{< icon "caret-right" >}}) to switch between nodes.
+6. Click **Add # nodes**.
 7. To see the neighbor nodes and the edges that connect them, right-click a node,
-   click **Expand (_n_)** and then **All (_n_)**.
+   click **Expand (#)** and then **All (#)**.
 
 ![A screenshot of the dialog for adding nodes with two persons selected](../../images/graph-visualizer-add-nodes.png)
 
@@ -178,6 +179,25 @@ The query has access to the current selection via special bind variables.
 
 ![A screenshot of the context menu for a node showing the available Canvas Actions](../../images/graph-visualizer-menu-canvas-action.png)
 
+### Explore connections
+
+You can explore the connections between entities of your graph in the following
+ways:
+
+- **Expand a node**: Right-click a node, then click **Expand (#)** and **All (#)**.
+  This adds the direct neighbor nodes as well as the connecting edges to the canvas.
+
+- **Shortest Path**: Select exactly two nodes, right-click one of them, and click
+  **Shortest Path**. If there is a path between both nodes, the nodes and edges
+  of one shortest path between them are added to the canvas.
+
+- [**Queries**](#add-nodes-and-edges-using-a-query) and
+  [**Canvas Actions**](#add-nodes-and-edges-using-a-query-based-on-a-selection):
+  You can run AQL graph queries (also based on the selection) to add connected
+  nodes to the canvas. For example, you can use traversals to expand multiple
+  levels of a node at once, or use path searches like `ALL_SHORTEST_PATHS`.
+  This can be selective if you use `FILTER` operations.
+
 ### Remove nodes from the canvas
 
 You can dismiss nodes to show less nodes and edges on the canvas to focus on the
@@ -190,7 +210,7 @@ dismissed nodes and their edges back to the canvas later on.
    - Right-click a single node to select only this node.
    - Hold the {{< kbd "Shift" >}} or {{< kbd "Ctrl" >}} key and click multiple nodes or drag the
      mouse to perform a box selection, then right-click one of the selected nodes.
-2. In the context menu, click **Dismiss _n_ nodes** to hide the selected nodes,
+2. In the context menu, click **Dismiss # nodes** to hide the selected nodes,
    or click **Dismiss other nodes** to only keep the selection.
 3. The canvas updates to only display the remaining nodes, with no dangling edges.
 
@@ -305,23 +325,45 @@ You can delete individual nodes which deletes the corresponding document.
 2. Click **Delete Edge**.
 3. Confirm the deletion by clicking **Delete**.
 
-## Visual customization
+## Legend
 
-You can adjust how the graph data is displayed, like the color, opacity, and
-labels. All styling changes are visual-only and do not affect the underlying data.
+### Visual customization
 
-1. Optional: Reset to default styling if desired.
-2. Click the _palette_ icon in the top right to open the **Customization** panel
+You can adjust how the graph data is displayed, like the colors and labels.
+All styling changes are visual-only and do not affect the underlying data.
+
+1. Click the **Legend** button in the top right to open the **Legend** panel
    if it's closed.
-3. Adjust the styling for nodes or edges:
-   - Select a **Label Attribute** to display a custom top-level field
-     (e.g. `name` or `type`) instead of `_id`.
-   - Assign a specific **Color** to highlight and distinguish elements.
-   - Adjust how transparent elements are with the **Opacity**.
-   - Set the **Line Thickness** (edges only).
-   - Choose different **Arrowhead Styles** (edges only).
-4. You can also do the following:
-   - Clear the styling modifications.
-   - See the number of nodes respectively edges on the canvas (by collection).
+2. Select the **Nodes (#)** tab and click one of the node collections.
+   You can filter by name if there are many.
+4. You have the following theming options for nodes:
+   - **Color**
+   - **Icon**
+   - **Display**: What attribute to use for the label and what information
+     to show in the tooltip when hovering a nodes.
+5. Select the **Edges (#)** tab and click one of the edge collections.
+   You can filter by name if there are many.
+6. You have the following theming options for edges:
+   - **Line Styling**: Color, thickness, and arrow styling.
+   - **Display**: What attribute to use for the label.
+7. To save the changes, open the drop-down menu next to **Legend**, click
+   **Add new theme**,  enter a **Name**, leave **Start with** set to
+   **Current theme**, and then **Save**. After additional customizations, you
+   can save the changes to the existing theme you created ({{< icon "save" >}}).
+8. You can revert unsaved customizations of a specific collection via the
+   collection list or customization panel ({{< icon "reset" >}}), or revert all
+   unsaved changes via the theme drop-down menu ({{< icon "reset-all" >}}).
+
+### Select all nodes or edges of a type
+
+1. Click the **Legend** button in the top right to open the **Legend** panel
+   if it's closed.
+2. Select the **Nodes (#)** or **Edges (#)** tab.
+3. You can see the number of nodes and edges (per collection) that are on the canvas.
+4. You can sort the collection list by number instead of name by clicking the icon
+   in the filter input field ({{< icon "swap" >}}) and selecting **Count**.
+5. Click the icon ({{< icon "select-all" >}}) next to the number to select all
+   nodes or edges that belong to the respective collection. This clears any
+   previous selection.
 
 ![A screenshot of the Customization panel with a popover dialog for edge styling open](../../images/graph-visualizer-customization.png)
