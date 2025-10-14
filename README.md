@@ -674,15 +674,13 @@ deprecated features in the same manner with `Deprecated in: ...`.
 ### Environment remarks
 
 Pages and sections about features that are only available in certain environments
-such as the GenAI Suite, the Data Platform, the Arango Managed Platform (AMP), or the
-ArangoDB Shell should indicate where they are available using the `tag` shortcode.
+such as in ArangoDB Shell should indicate where they are available using the
+`tag` shortcode.
 
-In the Data Platform (and therefore also in the GenAI Data Suite) and
-Arango Managed Platform but not in ArangoDB:
-
-```markdown
-{{< tag "Data Platform" "AMP" >}}
-```
+Features exclusive to the Data Platform, GenAI Data Platform,
+Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
+because they are in dedicated parts of the documentation. However, if there are
+subsections with different procedures, each can be tagged accordingly.
 
 In the GenAI Data Platform only:
 

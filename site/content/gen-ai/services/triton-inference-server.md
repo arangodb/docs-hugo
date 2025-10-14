@@ -5,8 +5,6 @@ description: >-
   Enable your GraphRAG pipeline to use private LLMs via Triton Inference Server 
 weight: 30
 ---
-{{< tag "GenAI Data Platform" >}}
-
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with

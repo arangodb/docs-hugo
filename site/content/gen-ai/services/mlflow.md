@@ -6,8 +6,6 @@ description: >-
   full machine learning lifecycle into the ArangoDB Platform
 weight: 25
 ---
-{{< tag "GenAI Data Platform" >}}
-
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with

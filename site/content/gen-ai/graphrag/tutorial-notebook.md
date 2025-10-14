@@ -5,8 +5,6 @@ description: >-
   Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
 weight: 10
 ---
-{{< tag "GenAI Data Platform" >}}
-
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with

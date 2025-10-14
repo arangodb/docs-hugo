@@ -10,8 +10,6 @@ aliases:
 ---
 - [Link to 3.12](../arangodb/3.12/aql/_index.md)
 
-{{< tag "GenAI Data Platform" >}} 
-
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
