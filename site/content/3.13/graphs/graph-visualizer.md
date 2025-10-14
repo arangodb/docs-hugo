@@ -344,8 +344,10 @@ All styling changes are visual-only and do not affect the underlying data.
 5. Select the **Edges (#)** tab and click one of the edge collections.
    You can filter by name if there are many.
 6. You have the following theming options for edges:
-   - **Line Styling**: Color, thickness, and arrow styling.
-   - **Display**: What attribute to use for the label.
+   - **Color**
+   - **Line Style**: Thickness and arrowheads.
+   - **Label**: What attribute to use for the label and what information
+     to show in the tooltip when hovering an edge.
 7. To save the changes, open the drop-down menu next to **Legend**, click
    **Add new theme**,  enter a **Name**, leave **Start with** set to
    **Current theme**, and then **Save**. After additional customizations, you
