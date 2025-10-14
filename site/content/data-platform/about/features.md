@@ -1,16 +1,16 @@
 ---
-title: Feature list of the ArangoDB Platform
-menuTitle: ArangoDB Platform
+title: Feature list of the Arango Data Platform
+menuTitle: Arango Data Platform
 weight: 10
 description: >-
-  The ArangoDB Platform is a scalable architecture that gets you all features
+  The Arango Data Platform is a scalable architecture that gets you all features
   of ArangoDB including graph-powered machine learning and GenAI as a single
   solution with a unified interface
 ---
 ## Architecture
 
 - **Core Database**: The ArangoDB database system forms the solid core
-  of the ArangoDB Platform.
+  of the Arango Data Platform.
 
 - **Kubernetes**: An open-source container orchestration system for automating
   software deployment, scaling, and management designed by Google. It is the
@@ -20,7 +20,7 @@ description: >-
   installations and version control.
 
 - **Envoy**: A high-performance service proxy that acts as the gateway for the
-  ArangoDB Platform for centralizing authentication and routing.
+  Arango Data Platform for centralizing authentication and routing.
 
 - **Web interface**: The Platform includes a unified, browser-based UI that lets
   you access its features in an intuitive way. Optional products like the
@@ -51,4 +51,4 @@ description: >-
 
 - [**MLflow integration**](../../gen-ai/services/mlflow.md):
   Use the popular MLflow for machine learning practitioners as part of the
-  ArangoDB Platform.
+  Arango Data Platform.

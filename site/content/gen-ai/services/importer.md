@@ -7,7 +7,7 @@ description: >-
 weight: 10
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -209,7 +209,7 @@ to send an input file to the Importer service:
    ```
 
    Replace the following placeholders:
-   - `<your-arangodb-platform-url>`: Your ArangoDB Platform URL.
+   - `<your-arangodb-platform-url>`: Your Arango Data Platform URL.
    - `<url-postfix>`: The URL postfix configured in your deployment.
 
 

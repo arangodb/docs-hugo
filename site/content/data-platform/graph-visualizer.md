@@ -6,13 +6,13 @@ description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & GenAI Suite is available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
 
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
-of the ArangoDB Platform. It lets you explore the connections of your named graphs
+of the Arango Data Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes
 of individual nodes and edges. It also offers query capabilities and you can
 create new nodes (vertices) and edges (relations).
@@ -49,7 +49,7 @@ supported by the Graph Visualizer.
 
 ### Select and load a graph
 
-1. In the ArangoDB Platform web interface, select the database your named graph
+1. In the Arango Data Platform web interface, select the database your named graph
    is stored in.
 2. Click **Graphs** in the main navigation.
 3. Select a graph from the list.

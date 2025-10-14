@@ -17,7 +17,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [ArangoDB Platform](../data-platform/about/_index.md).
+and included in the [Arango Data Platform](../data-platform/about/_index.md).
 
 Key features:
 
@@ -40,7 +40,7 @@ How to perform the steps is detailed in the subsequent sections.
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
+{{< tab "Arango Data Platform" >}}
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
@@ -88,8 +88,8 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
-You can use any of the available authentication methods the ArangoDB Platform
+{{< tab "Arango Data Platform" >}}
+You can use any of the available authentication methods the Arango Data Platform
 supports to start and stop `graphanalytics` services via the GenAI service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
@@ -129,7 +129,7 @@ setting in ArangoGraph:
 
 The interface for managing the engines depends on the environment you use:
 
-- **ArangoDB Platform**: [GenAI service](#genai-service)
+- **Arango Data Platform**: [GenAI service](#genai-service)
 - **ArangoGraph**: [Management API](#management-api)
 
 ### GenAI service
@@ -137,7 +137,7 @@ The interface for managing the engines depends on the environment you use:
 {{< tag "GenAI Data Platform" >}}
 
 GAEs are deployed and deleted via the [GenAI service](services/gen-ai.md)
-in the ArangoDB Platform.
+in the Arango Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
 if the Platform deployment uses a self-signed certificate (default).
@@ -309,7 +309,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "$BASE_URL/engines
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
+{{< tab "Arango Data Platform" >}}
 To determine the base URL of the engine API, use the base URL of the Platform
 deployment and append `/gral/<SERVICE_ID>`, e.g.
 `https://127.0.0.1:8529/gral/arangodb-gral-tqcge`.

@@ -7,8 +7,8 @@ layout: default
 
 {{< cards >}}
 
-{{% card title="What is the ArangoDB Platform?" link="about/" %}}
-The ArangoDB Platform is the umbrella for hosting the entire ArangoDB offering
+{{% card title="What is the Arango Data Platform?" link="about/" %}}
+The Arango Data Platform is the umbrella for hosting the entire ArangoDB offering
 of products, including GraphML and GraphRAG.
 {{% /card %}}
 
