@@ -1053,7 +1053,7 @@ header .logo {
 .sidebar ul.topics li.active > a > .menu-title,
 .sidebar ul.topics li.alwaysopen > a > .menu-title {
     font-weight: 400;
-    color: var(--green-300);
+    color: var(--color-electric-lime);
 }
 
 .sidebar ul li li {
