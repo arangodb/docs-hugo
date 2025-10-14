@@ -491,11 +491,11 @@ a.section-link {
 }
 
 .card-title {
+    font-family: var(--font-headlines);
     font-weight: 600;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 1.3rem;
     color: var(--gray-950);
 }
 
@@ -1373,7 +1373,7 @@ article.notfound {
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
     color: var(--HEADERS-COLOR);
-    font-family: "Urbanist", sans-serif;
+    font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
 }
@@ -1478,8 +1478,9 @@ article ul li {
 }
 
 .lead {
-    font-size: 1.3em;
-    margin-bottom: 24px;
+    font-size: 1.3rem;
+    font-family: var(--font-headlines);
+    margin-bottom: 1.5rem;
     font-weight: 600;
     color: var(--gray-800);
 }
@@ -1561,14 +1562,14 @@ li > code {
 
 .copy-to-clipboard-button::after{
     content: 'Copy';
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
     color: var(--green-700);
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-content)
     padding: 0 5px;
     font-weight: bold;
     color: var(--green-700);
@@ -1600,7 +1601,7 @@ pre > code {
 pre > .code-show-more {
     font-size: 1rem;
     background: var(--gray-200);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-content);
     padding: 5px 5px;
     font-weight: 500;
     opacity: 0.7;
