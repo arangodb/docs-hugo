@@ -174,7 +174,7 @@ You can find the reference documentation [here](https://tinkerpop.apache.org/doc
 
 ## Quick Start
 
-Follow the steps below to get started with creating nodes, edges, and querying the graph
+Follow the steps below to get started with creating vertices, edges, and querying the graph.
 
 ### Step 1: Configure and Create the Graph
 
@@ -196,10 +196,10 @@ ArangoDBGraph graph = (ArangoDBGraph) GraphFactory.open(conf);
 // Get a traversal source
 GraphTraversalSource g = graph.traversal();
 ```
-### Step 2: Add Nodes (vertices) and Edges
+### Step 2: Add Vertices and Edges
 
 ```java
-// Add nodes with properties
+// Add vertices with properties
 Vertex person = g.addV("person")
         .property("name", "Alice")
         .property("age", 30)
@@ -211,7 +211,7 @@ Vertex software = g.addV("software")
         .property("lang", "Java")
         .next();
 
-// Create relationships between nodes
+// Create relationships between vertices
 Edge created = g.addE("created")
         .from(person)
         .to(software)
@@ -262,7 +262,7 @@ g.V()
     .drop()
     .iterate();
 
-// Check the updated node
+// Check the updated vertex
 Map<?, ?> alice = g.V()
     .hasLabel("person")
     .has("name", "Alice")
@@ -285,7 +285,7 @@ g.E()
     .drop()
     .iterate();
 
-// Remove a node (and its incident edges)
+// Remove a vertex (and its incident edges)
 g.V()
     .hasLabel("person")
     .has("name", "Alice")
@@ -546,10 +546,10 @@ When using the ArangoDB TinkerPop Provider, be aware that Element IDs must be st
 
 The ArangoDB TinkerPop Provider maps TinkerPop data structures to ArangoDB data as follows:
 
-### Nodes (Vertices)
+### Vertices
 
-Nodes (vertices) are stored as documents in vertex collections. In a `SIMPLE` graph, all nodes are stored in a single
-collection, by default named `vertex`. In a `COMPLEX` graph, nodes are stored in collections named
+Vertices are stored as documents in vertex collections. In a `SIMPLE` graph, all vertices are stored in a single
+collection, by default named `vertex`. In a `COMPLEX` graph, vertices are stored in collections named
 `<label>`.
 
 Each vertex document contains:
@@ -660,7 +660,7 @@ All Gremlin predefined predicate values from `org.apache.tinkerpop.gremlin.proce
 - **logical combinations**: `and`, `or`, `not`
 
 For example, the following traversal is optimized to execute the filtering logic in ArangoDB using AQL and transferring to the client only the matching
-nodes, rather than retrieving all nodes and filtering them in the client.
+vertices, rather than retrieving all vertices and filtering them in the client.
 
 [//]: <> (@formatter:off)
 ```groovy
