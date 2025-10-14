@@ -8,7 +8,7 @@ description: |
 aliases:
   - ../data-science/graph-analytics
 ---
-{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+{{< tag "GenAI Data Platform" "AMP" >}}
 
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
@@ -136,7 +136,7 @@ The interface for managing the engines depends on the environment you use:
 
 ### GenAI service
 
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 
 GAEs are deployed and deleted via the [GenAI service](services/gen-ai.md)
 in the ArangoDB Platform.
@@ -185,7 +185,7 @@ curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529
 
 ### Management API
 
-{{< tag "ArangoGraph" >}}
+{{< tag "AMP" >}}
 
 GAEs are deployed and deleted with the Management API for graph analytics on the
 Arango Managed Platform (AMP). You can also list the available engine sizes and

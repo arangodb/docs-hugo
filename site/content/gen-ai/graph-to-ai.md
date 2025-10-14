@@ -10,7 +10,7 @@ aliases:
 ---
 - [Link to 3.12](../arangodb/3.12/aql/_index.md)
 
-{{< tag "ArangoDB Platform" >}} 
+{{< tag "GenAI Data Platform" >}} 
 
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get

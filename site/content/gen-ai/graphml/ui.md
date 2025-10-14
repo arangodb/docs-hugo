@@ -6,7 +6,7 @@ description: >-
  Learn how to create, configure, and run a full machine learning workflow for
  GraphML in four steps using the features in the ArangoDB web interface
 ---
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 
 ## The GraphML workflow in the web interface
 

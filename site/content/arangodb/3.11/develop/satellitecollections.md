@@ -5,7 +5,7 @@ weight: 250
 description: >-
   Collections synchronously replicated to all servers to enable local joins
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 When doing joins in an ArangoDB cluster data has to be exchanged between different servers.
 

@@ -69,7 +69,7 @@ procedure is recommended.
 
 ## Hot Backups
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 Hot backup and restore associated operations can be performed with the
 [_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the

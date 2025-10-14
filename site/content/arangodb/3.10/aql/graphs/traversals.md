@@ -126,7 +126,7 @@ FOR vertex[, edge[, path]]
       of the collections specified by a restriction.
   - **parallelism** (number, *optional*):
 
-    {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+    {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
     Optionally parallelize traversal execution. If omitted or set to a value of `1`,
     traversal execution is not parallelized. If set to a value greater than `1`,
@@ -141,7 +141,7 @@ FOR vertex[, edge[, path]]
     execution.
   - **maxProjections** (number, *optional*):
 
-    {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+    {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
     Specifies the number of document attributes per `FOR` loop to be used as
     projections. The default value is `5`.

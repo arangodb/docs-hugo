@@ -6,7 +6,7 @@ description: >-
   The OneShard feature offers a practicable solution that enables significantly
   improved performance and transactional guarantees for cluster deployments
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 The OneShard option for ArangoDB clusters restricts all collections of a
 database to a single shard so that every collection has `numberOfShards` set to `1`,

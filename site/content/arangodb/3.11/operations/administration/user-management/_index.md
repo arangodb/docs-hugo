@@ -408,7 +408,7 @@ or the web interface.
 
 ### LDAP Users
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 ArangoDB supports LDAP as an external authentication system. For detailed
 information please have look into the

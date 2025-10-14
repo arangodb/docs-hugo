@@ -5,7 +5,7 @@ weight: 10
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
-{{< tag "ArangoDB Platform" >}}
+{{< tag "Data Platform" >}}
 
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get

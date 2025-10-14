@@ -214,7 +214,7 @@ During view modification the following directives apply:
 
 - **cache** (_optional_; type: `boolean`; default: `false`)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -257,7 +257,7 @@ During view modification the following directives apply:
 
 - **primarySortCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -276,7 +276,7 @@ During view modification the following directives apply:
 
 - **primaryKeyCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.6, v3.10.2</small>
 

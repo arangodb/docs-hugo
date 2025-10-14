@@ -6,7 +6,7 @@ description: >-
   You can retrieve the positions of matches within strings when querying
   Views with ArangoSearch, to highlight what was found in search results
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 ArangoSearch lets you search for terms and phrases in full-text, and more.
 It only returns matching documents, however. With search highlighting, you can

@@ -6,7 +6,7 @@ description: >-
  Learn how to create, configure, and run a full GraphRAG workflow in four steps
  using the Platform web interface
 ---
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get

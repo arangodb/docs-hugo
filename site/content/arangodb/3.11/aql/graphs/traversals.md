@@ -189,7 +189,7 @@ If omitted or an empty array is specified, then there are no restrictions.
 
 #### `parallelism`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 Parallelize traversal execution (number).
     
@@ -206,7 +206,7 @@ execution.
 
 #### `maxProjections`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.

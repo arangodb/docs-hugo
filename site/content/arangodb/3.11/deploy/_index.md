@@ -44,7 +44,7 @@ You can deploy systems that dynamically scale up and down according to demand.
 
 ### OneShard
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 [OneShard deployments](oneshard.md) are cluster deployments but with the data of
 each database restricted to a single shard. This allows queries to run locally

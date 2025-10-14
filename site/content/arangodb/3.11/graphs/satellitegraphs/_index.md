@@ -5,7 +5,7 @@ weight: 90
 description: >-
   Graphs synchronously replicated to all servers, available in the Enterprise Edition
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 ## What is a SatelliteGraph?
 

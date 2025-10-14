@@ -177,7 +177,7 @@ During view modification the following directives apply:
 
 - **cache** (_optional_; type: `boolean`; default: `false`)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -229,7 +229,7 @@ cache-related options and thus recreate inverted indexes and Views. See
 
 - **primarySortCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -248,7 +248,7 @@ cache-related options and thus recreate inverted indexes and Views. See
 
 - **primaryKeyCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
   <small>Introduced in: v3.9.6, v3.10.2</small>
 

@@ -720,7 +720,7 @@ Enterprise Edition features should indicate that the Enterprise Edition is
 required using a tag. Use the following include in the general case:
 
 ```markdown
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 ```
 
 ### Add lead paragraphs

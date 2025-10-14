@@ -5,7 +5,7 @@ weight: 10
 description: >-
   LDAP authentication options in the ArangoDB server
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 ## Basics Concepts
 

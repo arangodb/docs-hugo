@@ -10,7 +10,7 @@ aliases:
   - ../arangographml-getting-started-with-arangographml
 ---
 
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 
 The ArangoDB Platform provides an easy-to-use & scalable interface to run
 Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is

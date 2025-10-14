@@ -6,7 +6,7 @@ description: >-
   for GraphRAG in your Kubernetes cluster
 weight: 5
 ---
-{{< tag "ArangoDB Platform" >}}
+{{< tag "GenAI Data Platform" >}}
 
 {{< tip >}}
 The ArangoDB Platform & GenAI Suite is available as a pre-release. To get

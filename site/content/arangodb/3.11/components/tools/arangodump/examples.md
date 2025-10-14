@@ -156,7 +156,7 @@ INFO [66c0e] {dump} Processed 2 collection(s) from 1 database(s) in 0.132990 s t
 
 ## Encryption
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 You can encrypt dumps using an encryption keyfile, which must contain exactly 32
 bytes of data (required by the AES block cipher).

@@ -6,7 +6,7 @@ description: >-
   EnterpriseGraphs enable you to manage graphs at scale with automated sharding
   key selection
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 This chapter describes the `enterprise-graph` module, a specialized version of
 [SmartGraphs](../smartgraphs/_index.md).

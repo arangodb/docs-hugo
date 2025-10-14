@@ -536,7 +536,7 @@ Also see [Faceted Search with ArangoSearch](faceted-search.md).
 
 ## Field normalization value caching and caching of Geo Analyzer auxiliary data
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -622,7 +622,7 @@ use normalization for a good scoring behavior.
 
 ## Primary key caching
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
 

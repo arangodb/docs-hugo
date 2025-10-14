@@ -1074,7 +1074,7 @@ db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u20
 
 ### `minhash`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1117,7 +1117,7 @@ db._query(`
 
 ### `classification`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1177,7 +1177,7 @@ db._query(`LET str = "Which baking dish is best to bake a banana bread ?"
 
 ### `nearest_neighbors`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1357,7 +1357,7 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 
 ### `geo_s2`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.10.5</small>
 

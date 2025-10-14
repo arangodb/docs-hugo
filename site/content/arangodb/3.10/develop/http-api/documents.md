@@ -2537,7 +2537,7 @@ db._drop(cn);
 
 ### Read from followers
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 <small>Introduced in: v3.10.0</small>
 

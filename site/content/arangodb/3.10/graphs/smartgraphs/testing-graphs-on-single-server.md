@@ -6,7 +6,7 @@ description: >-
   Simulate SmartGraphs and SatelliteGraphs on a single server to make it easier
   to port them to an ArangoDB cluster later
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 ## General idea
 
