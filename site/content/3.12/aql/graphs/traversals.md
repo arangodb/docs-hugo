@@ -350,7 +350,7 @@ in cluster deployments.
 From v3.12.6 onward, vertex collections are automatically deduced for graph
 queries using collection sets / anonymous graphs if there is a named graph with
 a matching edge collection in its edge definitions.
-{{< /tio >}}
+{{< /tip >}}
 
 ## Pruning
 
