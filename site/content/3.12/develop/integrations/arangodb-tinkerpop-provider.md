@@ -818,7 +818,7 @@ This library supports the following features:
 ## Current Limitations
 
 - This library implements the Online Transactional Processing Graph Systems (OLTP) API only. The Online Analytics Processing Graph Systems (OLAP) API is currently not implemented.
-- This library implements the Structure API only. The Process API is currently not implemented. For optimal query performance, it is recommended to use [AQL queries](#aql-queries).
+- Some generated queries might not be optimized, since the Process API is only partially implemented (see [Query Optimization](#query-optimization)). For optimal query performance is recommended to use [AQL queries](#aql-queries).
 
 ## Logging
 
