@@ -116,7 +116,7 @@ up to 10 nodes that contain this text in one of these attributes
 You can run an AQL query to add nodes, edges, or paths of the graph to the canvas.
 
 1. Click **Queries** of the top-left widget.
-2. On the **QUeries** tab, click **New query**.
+2. On the **Queries** tab, click **New query**.
 3. Enter an AQL query that returns nodes, edges, or paths
    (e.g. a graph traversal query), for example:
    ```aql
@@ -360,8 +360,8 @@ All styling changes are visual-only and do not affect the underlying data.
    if it's closed.
 2. Select the **Nodes (#)** or **Edges (#)** tab.
 3. You can see the number of nodes and edges (per collection) that are on the canvas.
-4. You can sort the collection list by number instead of name by clicking the icon
-   in the filter input field ({{< icon "swap" >}}) and selecting **Count**.
+4. You can sort the collection list by the number instead of name by clicking the icon
+   in the filter input field ({{< icon "sort-by" >}}) and selecting **Count**.
 5. Click the icon ({{< icon "select-all" >}}) next to the number to select all
    nodes or edges that belong to the respective collection. This clears any
    previous selection.
