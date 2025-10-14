@@ -436,11 +436,17 @@ the `icon` shortcode to inline an SVG file for a visual reference as
 demonstrated below:
 
 ```markdown
-First off, select all nodes ({{< icon "select-all" >}}), then right-click.
+Select all nodes ({{< icon "select-all" >}}), then right-click.
 ```
 
 Icons are supposed to supplement the text, i.e. not be embedded in sentences.
 They are hidden from screen readers.
+
+To add new icons to the toolchain, save them to `site/content/images/icons/`.
+They are referenced by file name (without extension) in the shortcode.
+
+SVG icon files should not define the attributes `width`, `height`, `aria-hidden`,
+and `focusable` on the `<svg>` tag.
 
 #### Keyboard shortcuts
 
