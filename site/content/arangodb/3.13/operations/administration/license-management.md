@@ -9,7 +9,7 @@ aliases:
 ---
 The Enterprise Edition of ArangoDB requires a license so that you can use
 ArangoDB for commercial purposes and have a dataset size over 100 GiB. See
-[ArangoDB Editions](../../about/features/_index.md#arangodb-editions)
+[ArangoDB Editions](../../features/_index.md#arangodb-editions)
 for details.
 
 How to set a license key and to retrieve information about the current license

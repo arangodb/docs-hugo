@@ -1,7 +1,7 @@
 ---
 title: Recommended Resources
 menuTitle: '3.11'
-weight: 1
+weight: 98
 layout: default
 ---
 {{< cloudbanner >}}
