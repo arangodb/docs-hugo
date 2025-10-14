@@ -1,1 +1,10 @@
-<i class="far fa-{{ .Get 0 }}"></i>
+<span class="inline-icon" aria-hidden="true">
+  {{- $iconName := .Get 0 }}
+  {{- $iconPath := printf "/images/icons/%s.svg" $iconName }}
+  {{- $iconSvg := readFile $iconPath }}
+  {{- if $iconSvg }}
+    {{- $iconSvg | safeHTML }}
+  {{- else }}
+    {{- errorf "Icon '%v' not found for '%v'" $iconName .Page.File.Path }}
+  {{- end -}}
+</span>
