@@ -1,10 +1,9 @@
 ---
-title: Recommended Resources
-menuTitle: 'GenAI Data Platform'
+title: GenAI Suite
+menuTitle: GenAI Suite
 weight: 2
 layout: default
 ---
-{{< cloudbanner >}}
 
 {{< cards >}}
 

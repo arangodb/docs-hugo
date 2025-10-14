@@ -1,10 +1,9 @@
 ---
-title: Recommended Resources
-menuTitle: Data Platform
+title: Arango Data Platform
+menuTitle: Arango Data Platform
 weight: 1
 layout: default
 ---
-{{< cloudbanner >}}
 
 {{< cards >}}
 
