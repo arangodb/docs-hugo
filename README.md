@@ -429,6 +429,19 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+#### Icons
+
+If a web interface uses icons, especially as buttons without labels, use
+the `icon` shortcode to inline an SVG file for a visual reference as
+demonstrated below:
+
+```markdown
+First off, select all nodes ({{< icon "select-all" >}}), then right-click.
+```
+
+Icons are supposed to supplement the text, i.e. not be embedded in sentences.
+They are hidden from screen readers.
+
 #### Keyboard shortcuts
 
 To document hotkeys and key combinations to press in a terminal or graphical

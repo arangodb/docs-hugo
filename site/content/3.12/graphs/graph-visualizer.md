@@ -143,7 +143,7 @@ You can save queries for future use:
 6. Select a query from the list. The following actions are available for each query:
   - Copy ({{< icon "duplicate" >}}) the query string to the clipboard.
   - **Bind Variables** to set for the query.
-  - Edit ({{< icon "edit_square" >}}) the query.
+  - Edit ({{< icon "edit-square" >}}) the query.
   - Delete ({{< icon "delete" >}}) a no longer needed query.
   - Run ({{< icon "run" >}}) the query.
 {{< /tip >}}
@@ -220,8 +220,8 @@ displayed.
 - **Fit to Screen**: Resize and center the canvas so you can see everything
   ({{< icon "fit" >}}).
 
-- **Zoom Controls**: Zoom in ({{< icon "zoom_in" >}}), zoom out
-  ({{< icon "zoom_out" >}}), or reset the zoom to 100%.
+- **Zoom Controls**: Zoom in ({{< icon "zoom-in" >}}), zoom out
+  ({{< icon "zoom-out" >}}), or reset the zoom to 100%.
 
 - **Download screenshot**: Save a PNG image of what is currently displayed on
   the canvas ({{< icon "download" >}}).
