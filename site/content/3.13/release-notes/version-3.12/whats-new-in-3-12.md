@@ -191,6 +191,10 @@ of the following:
 - Aggregating with `COLLECT ... AGGREGATE`.
 - Deduplicating results with `RETURN DISTINCT`.
 - Using the `MERGE()` function to combine objects.
+- Internal buffers for late materialization, building results, and distributing
+  AQL queries in cluster deployments.
+- Internal buffers for decay, distance, and replace functions.
+- Internal buffers used by the query parser and optimizer.
 
 It is expected that the reported memory consumption is now higher.
 
