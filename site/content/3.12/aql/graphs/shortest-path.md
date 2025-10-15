@@ -145,6 +145,54 @@ All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows you to use a different
 direction for each collection in your path search.
 
+### Graph path searches in a cluster
+
+Due to the nature of graphs, edges may reference nodes from arbitrary
+collections. Following the paths can thus involve documents from various
+collections and it is not possible to predict which are visited in a
+traversal. Which collections need to be loaded by the graph engine can only be
+determined at run time.
+
+Use the [`WITH` operation](../high-level-operations/with.md) to specify the
+node collections you expect to be involved. This is required for traversals
+using collection sets in cluster deployments. Declare the collection of the
+start node as well if it's not declared already (like by a `FOR` loop).
+
+{{< tip >}}
+From v3.12.6 onward, node collections are automatically deduced for graph
+queries using collection sets / anonymous graphs if there is a named graph with
+a matching edge collection in its edge definitions.
+
+For example, suppose you have two node collections, `person` and `movie`, and
+an `acts_in` edge collection that connects them. If you want to run a path search
+query that starts (and ends) at a person that you specify with its document ID,
+you need to declare both node collections at the beginning of the query:
+
+```aql
+WITH person, movie
+FOR v IN ANY SHORTEST_PATH "person/1544" TO "person/52560" acts_in
+  RETURN v.label
+```
+
+However, if there is a named graph that includes an edge definition for the
+`acts_in` edge collection, with `person` as the _from_ collection and `movie`
+as the _to_ collection, you can omit `WITH person, movie`. That is, if you
+specify `acts_in` as an edge collection in an anonymous graph query, all
+named graphs are checked for this edge collection, and if there is a matching
+edge definition, its node collections are automatically added as data sources to
+the query.
+
+```aql
+FOR v,e,p IN 1..1 OUTBOUND "person/1544" acts_in
+  RETURN v.label
+
+// Chris Rock --> Dogma <-- Ben Affleck --> Surviving Christmas <-- Jennifer Morrison
+```
+
+You can still declare collections manually, in which case they are added as
+data sources in addition to automatically deduced collections.
+{{< /tip >}}
+
 ## Conditional shortest path
 
 The `SHORTEST_PATH` computation only finds an unconditioned shortest path.
