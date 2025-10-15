@@ -1312,7 +1312,8 @@ beginning of the query:
 
 ```aql
 WITH person, movie
-FOR v,e,p IN 1..1 OUTBOUND "person/1544" acts_in
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
   RETURN v.label
 ```
 
@@ -1328,7 +1329,8 @@ added as data sources to the query. You no longer have to manually declare the
 `person` and `movie` collections:
 
 ```aql
-FOR v,e,p IN 1..1 OUTBOUND "person/1544" acts_in
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
   RETURN v.label
 ```
 
