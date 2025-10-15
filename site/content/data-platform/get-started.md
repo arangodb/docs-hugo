@@ -1,7 +1,7 @@
 ---
-title: The Arango Data Platform
-menuTitle: Platform
-weight: 5
+title: Get Started with the Arango Data Platform
+menuTitle: Get Started
+weight: 10
 description: >-
   The Arango Data Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
@@ -19,62 +19,25 @@ ArangoDB products for machine learning, data explorations, and more. You can
 run it on-premises or in the cloud yourself on top of Kubernetes to access all
 of the platform features.
 
-## Features of the Arango Data Platform
-
-- **Core database system**: The ArangoDB graph database system for storing
-  interconnected data.{{< comment >}} You can use the free Community Edition or the commercial
-  Enterprise Edition.{{< /comment >}}
-- **Graph Visualizer**: A web-based tool for exploring your graph data with an
-  intuitive interface and sophisticated querying capabilities.
-- **Graph Analytics**: A suite of graph algorithms including PageRank,
-  community detection, and centrality measures with support for GPU
-  acceleration thanks to Nvidia cuGraph.
-- **GenAI Suite**: A set of machine learning services, APIs, and
-  user interfaces that are available as a package as well as individual products.
-  - **GraphML**: A turnkey solution for graph machine learning for prediction
-    use cases such as fraud detection, supply chain, healthcare, retail, and
-    cyber security.
-  - **GraphRAG**: Leverage ArangoDB's graph, document, key-value,
-      full-text search, and vector search features to streamline knowledge
-      extraction and retrieval.
-      {{< comment >}}TODO: Not available in prerelease version
-      - **Txt2AQL**: Unlock natural language querying with a service that converts
-        user input into ArangoDB Query Language (AQL), powered by fine-tuned
-        private or public LLMs.
-      {{< /comment >}}
-      - **GraphRAG Importer**: Extract entities and relationships from large
-        text-based files, converting unstructured data into a knowledge graph
-        stored in ArangoDB.
-      - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
-        insights from graph communities with global and local queries.
-      - **Public and private LLM support**: Use public LLMs such as OpenAI
-        or private LLMs with [Triton Inference Server](../../gen-ai/services/triton-inference-server.md).
-      - **MLflow integration**: Use the popular MLflow as a model registry for private LLMs
-        or to run machine learning experiments as part of the Arango Data Platform.
-- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
-  interactive notebooks for experimentation and development of applications
-  that use ArangoDB as their backend.
-{{< comment >}}TODO: Mostly unrelated to Platform, vector index in core, 
-- **Vector embeddings**: You can train machine learning models for later use
-  in vector search in conjunction with the core database system's `vector`
-  index type. It allows you to find similar items in your dataset.
-{{< /comment >}}
-
-## Get started with the Arango Data Platform
-
-### Use the Arango Data Platform as a managed service
+## Use the Arango Data Platform as a managed service
 
 The Arango Data Platform is not available as a managed service yet, but it will
 become available for the [Arango Managed Platform (AMP)](../../amp/_index.md)
 in the future. Until then, you can request early access to the self-hosted
 Arango Data Platform for testing.
 
-### Self-host the Arango Data Platform
+## Self-host the Arango Data Platform
 
 You can set up and run the Arango Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
-#### Requirements for self-hosting
+{{< info >}}
+**Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 
+environments and relies on the official [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) 
+to provide automated deployment, scaling, and management capabilities.
+{{< /info >}}
+
+### Requirements for self-hosting
 
 - **Early access to the Arango Data Platform**:
   [Get in touch](https://arangodb.com/contact/) with the ArangoDB team to get
@@ -109,7 +72,7 @@ manage this deployment yourself.
   respective packages.
 {{< /comment >}}
 
-#### Setup
+### Setup
 
 1. Obtain a zip package of the Arango Data Platform for the offline installation.
    It includes helm charts, manifests, and blobs of the container image layers.
@@ -142,7 +105,7 @@ manage this deployment yourself.
      --set crds.enabled=true
    ```
 
-4. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
+4. Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) `kube-arangodb` with helm,
    with options to enable webhooks, certificates, and the gateway feature.
 
    ```sh

@@ -20,7 +20,7 @@ of the core ArangoDB database system along with graph-powered machine learning
 and GenAI capabilities as a single solution with a unified interface. Deploy the
 Platform on-premise or in the cloud on top of Kubernetes.
 
-To get started, see [Self-host the Arango Data Platform](about/_index.md#self-host-the-arango-data-platform).
+To get started, see [Self-host the Arango Data Platform](./get-started.md#self-host-the-arango-data-platform).
 
 ### GenAI Suite
 
