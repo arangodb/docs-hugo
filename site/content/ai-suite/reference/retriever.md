@@ -88,7 +88,83 @@ To start the service, use the AI service endpoint `/v1/graphragretriever`.
 Please refer to the documentation of [AI service](gen-ai.md) for more
 information on how to use it.
 
-### Using Triton Inference Server (Private LLM)
+### Using OpenAI for chat and embedding
+
+
+```json
+{
+  "env": {
+    "username": "your_username",
+    "db_name": "your_database_name",
+    "chat_api_provider": "openai",
+    "chat_api_url": "https://api.openai.com/v1",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "gpt-4o",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openai_api_key",
+    "embedding_api_key": "your_openai_api_key"
+  },
+}
+```
+
+Where:
+- `username`: ArangoDB database user with permissions to create and modify collections
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: API provider for language model services
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
+
+{{< info >}}
+By default, for OpenAI API, the service is using
+`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
+embedding model respectively.
+{{< /info >}}
+
+### Using OpenRouter for chat and OpenAI for embedding
+
+OpenRouter makes it possible to connect to a huge array of LLM API providers,
+including non-OpenAI LLMs like Gemini Flash, Anthropic Claude and publicly hosted
+open-source models.
+
+When using the OpenRouter option, the LLM responses are served via OpenRouter while
+OpenAI is used for the embedding model.
+
+```json
+    {
+      "env": {
+        "db_name": "your_database_name",
+        "username": "your_username",
+        "chat_api_provider": "openai",
+        "embedding_api_provider": "openai",
+        "chat_api_url": "https://openrouter.ai/api/v1",
+        "embedding_api_url": "https://api.openai.com/v1",
+        "chat_model": "mistral-nemo",
+        "embedding_model": "text-embedding-3-small",
+        "chat_api_key": "your_openrouter_api_key",
+        "embedding_api_key": "your_openai_api_key"
+      },
+    }
+```
+
+Where:
+- `username`: ArangoDB database user with permissions to access collections
+- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
+- `chat_api_provider`: API provider for language model services
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
+
+{{< info >}}
+When using OpenRouter, the service defaults to `mistral-nemo` for generation
+(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
+{{< /info >}}
+
+### Using Triton Inference Server for chat and embedding
 
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will the use the 
@@ -104,79 +180,25 @@ service using the below configuration:
   "env": {
     "username": "your_username",
     "db_name": "your_database_name",
-    "api_provider": "triton",
-    "triton_url": "your-arangodb-llm-host-url",
-    "triton_model": "mistral-nemo-instruct"
+    "chat_api_provider": "triton",
+    "embedding_api_provider": "triton",
+    "chat_api_url": "your-arangodb-llm-host-url",
+    "embedding_api_url": "your-arangodb-llm-host-url",
+    "chat_model": "mistral-nemo-instruct",
+    "embedding_model": "nomic-embed-text-v1"
   },
 }
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `llmhost` service is running.
-- `triton_model`: Name of the LLM model to use for text processing.
-
-### Using OpenAI (Public LLM)
-
-```json
-{
-  "env": {
-    "openai_api_key": "your_openai_api_key",
-    "username": "your_username",
-    "db_name": "your_database_name",
-    "api_provider": "openai"
-  },
-}
-```
-
-Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `openai_api_key`: Your OpenAI API key.
-
-{{< info >}}
-By default, for OpenAI API, the service is using
-`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
-embedding model respectively.
-{{< /info >}}
-
-### Using OpenRouter (Gemini, Anthropic, etc.)
-
-OpenRouter makes it possible to connect to a huge array of LLM API providers,
-including non-OpenAI LLMs like Gemini Flash, Anthropic Claude and publicly hosted
-open-source models.
-
-When using the OpenRouter option, the LLM responses are served via OpenRouter while
-OpenAI is used for the embedding model.
-
-```json
-    {
-      "env": {
-        "db_name": "your_database_name",
-        "username": "your_username",
-        "api_provider": "openrouter",
-        "openai_api_key": "your_openai_api_key",
-        "openrouter_api_key": "your_openrouter_api_key",
-        "openrouter_model": "mistralai/mistral-nemo"  // Specify a model here
-      },
-    }
-```
-
-Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `openai_api_key`: Your OpenAI API key (for the embedding model).
-- `openrouter_api_key`: Your OpenRouter API key (for the LLM).
-- `openrouter_model`: Desired LLM (optional; default is `mistral-nemo`).
-
-{{< info >}}
-When using OpenRouter, the service defaults to `mistral-nemo` for generation
-(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
-{{< /info >}}
+- `username`: ArangoDB database user with permissions to create and modify collections
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Specifies which LLM provider to use for language model services
+- `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
 
 ## Executing queries
 
