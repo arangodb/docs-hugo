@@ -186,7 +186,7 @@ edge definition, its node collections are automatically added as data sources to
 the query.
 
 ```aql
-FOR v,e,p IN 1..1 OUTBOUND "person/1544" acts_in
+FOR v IN ANY SHORTEST_PATH "person/1544" TO "person/52560" acts_in
   RETURN v.label
 
 // Chris Rock --> Dogma <-- Ben Affleck --> Surviving Christmas <-- Jennifer Morrison

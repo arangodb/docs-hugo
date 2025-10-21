@@ -362,8 +362,8 @@ you need to declare both node collections at the beginning of the query:
 
 ```aql
 WITH person, movie
-FOR v IN 1 OUTBOUND "person/1544" acts_in
-  LIMIT 3
+FOR v, IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
   RETURN v.label
 ```
 
