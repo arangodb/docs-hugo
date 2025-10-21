@@ -7,7 +7,7 @@ description: ''
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 
 - [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
-- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example)
+- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/test-non-functional/src/test/java/example)
 - [Reference](reference-version-7/_index.md)
 - [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html)
 - [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md)
