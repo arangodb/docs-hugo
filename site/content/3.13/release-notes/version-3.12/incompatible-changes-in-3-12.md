@@ -900,6 +900,20 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
+## RocksDB upgrade
+
+<small>Introduced in: v3.12.6</small>
+
+The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
+
+As part of this storage engine upgrade, the default values of the following
+RocksDB-related startup options have been changed:
+
+- `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128 KiB to 1 GiB.
+- `--rocksdb.pending-compactions-stop-trigger` has been changed from 16 GiB to 32 GiB.
+- `--rocksdb.partition-files-for-documents` has been changed from false to true.
+- `--rocksdb.throttle-slow-down-writes-trigger` has been obsoleted.
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
