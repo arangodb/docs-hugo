@@ -1311,6 +1311,50 @@ Indexes used:
  10   idx_1836452431376941056   persistent   coll   
 ```
 
+### Deduction of node collection for graph queries
+
+<small>Introduced in: v3.12.6</small>
+
+AQL graph traversals and path searches using anonymous graphs / collection sets
+require that you declare all involved node collections upfront for cluster
+deployments. That is, you need to use the `WITH` operation to list the collections
+edges may point to, as well as the collection of the start node if not declared
+otherwise. This also applies to single servers if the `--query.require-with`
+startup option is enabled for parity between both deployment modes.
+
+For example, assume you have two node collections, `person` and `movie`, and
+edges pointing from one to the other stored in an `acts_in` edge collection.
+If you want to run a traversal query starting from a person that you specify
+with its document ID, you need to declare both node collections at the
+beginning of the query:
+
+```aql
+WITH person, movie
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+```
+
+From v3.12.6 onward, the node collections can be automatically inferred if there
+is a named graph using the same edge collection(s).
+
+For example, assume there is a named graph that includes an edge definition for
+the `acts_in` edge collection, with `person` as the _from_ collection and `movie`
+as the _to_ collection. If you now specify `acts_in` as an edge collection in
+an anonymous graph query, all named graphs are checked for this edge collection,
+and if there is a matching edge definition, its node collections are automatically
+added as data sources to the query. You no longer have to manually declare the
+`person` and `movie` collections:
+
+```aql
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+```
+
+You can still declare collections manually, in which case they are added as
+data sources in addition to automatically deduced collections.
+
 ### Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
