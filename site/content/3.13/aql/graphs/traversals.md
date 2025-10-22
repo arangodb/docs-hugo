@@ -338,13 +338,56 @@ collection in your traversal.
 
 Due to the nature of graphs, edges may reference nodes from arbitrary
 collections. Following the paths can thus involve documents from various
-collections and it is not possible to predict which are visited in a
-traversal. Which collections need to be loaded by the graph engine can only be
-determined at run time.
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
 
-Use the [`WITH` statement](../high-level-operations/with.md) to specify the collections you
-expect to be involved. This is required for traversals using collection sets
-in cluster deployments.
+If you use anonymous graphs / collection sets for graph queries, which node
+collections need to be loaded by the graph engine can deduced automatically if
+there is a named graph with a matching edge collection in its edge definitions
+(introduced in v3.12.6). Edge collections are always declared explicitly in
+queries, directly or via referencing a named graph.
+
+Without a named graph, the involved node collections can only be determined at
+run time. Use the [`WITH` operation](../high-level-operations/with.md) to
+declare the node collections upfront. This is required for traversals
+using collection sets in cluster deployments (if there is no named graph to
+deduce the node collections from). Declare the collection of the start node as
+well if it's not declared already (like by a `FOR` loop).
+
+For example, suppose you have two node collections, `person` and `movie`, and
+an `acts_in` edge collection that connects them. If you want to run a traversal
+query that starts at a person that you specify with its document ID,
+you need to declare both node collections at the beginning of the query:
+
+```aql
+WITH person, movie
+FOR v, IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+```
+
+However, if there is a named graph that includes an edge definition for the
+`acts_in` edge collection, with `person` as the _from_ collection and `movie`
+as the _to_ collection, you can omit `WITH person, movie`. That is, if you
+specify `acts_in` as an edge collection in an anonymous graph query, all
+named graphs are checked for this edge collection, and if there is a matching
+edge definition, its node collections are automatically added as data sources to
+the query.
+
+```aql
+FOR v, IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+
+// Chris Rock
+// A.I. Artificial Intelligence
+// Lethal Weapon 4
+// Madagascar
+```
+
+You can still declare collections manually, in which case they are added as
+data sources in addition to automatically deduced collections.
 
 ## Pruning
 
