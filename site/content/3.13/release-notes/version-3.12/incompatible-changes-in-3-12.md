@@ -1122,6 +1122,16 @@ background compactions. The changed default ensures this cleanup to happen more
 frequently. Compactions can potentially lead to spikes in CPU, memory, and I/O
 usage. You may now observe this daily instead of monthly.
 
+### RocksDB transaction lock timeout controlled internally
+
+<small>Deprecated in: v3.12.6</small>
+
+The `--rocksdb.transaction-lock-timeout` startup option has been deprecated.
+It was supposed to let you configure the wait timeout in milliseconds for
+locking a document in a transaction. However, the lock timeout is actually set
+to differnet values internally, depending on what is a meaningful timeout for
+a given case.
+
 ## Client tools
 
 ### arangodump
