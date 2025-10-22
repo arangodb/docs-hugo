@@ -367,7 +367,7 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-GenAI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
+AI Services, the Data Platform, the Arango Managed Platform (AMP), or multiple
 of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
@@ -677,15 +677,15 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, GenAI Data Platform,
+Features exclusive to the Data Platform, AI Services Data Platform,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
 
-In the GenAI Data Platform only:
+In the AI Services Data Platform only:
 
 ```markdown
-{{< tag "GenAI Data Platform" >}}
+{{< tag "AI Services Data Platform" >}}
 ```
 
 In the Arango Managed Platform only:

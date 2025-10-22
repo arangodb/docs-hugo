@@ -7,7 +7,7 @@ description: >-
 weight: 15
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -84,8 +84,8 @@ entities, or relationships.
 The Retriever service can be configured to use either the Triton Inference Server
 (for private LLM deployments) or OpenAI/OpenRouter (for public LLM deployments).
 
-To start the service, use the GenAI service endpoint `/v1/graphragretriever`. 
-Please refer to the documentation of [GenAI service](gen-ai.md) for more
+To start the service, use the AI service endpoint `/v1/graphragretriever`. 
+Please refer to the documentation of [AI service](gen-ai.md) for more
 information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)
@@ -236,7 +236,7 @@ GET /v1/health
 You can verify the state of the retriever process via the following endpoint:
 
 ```
-GET /gen-ai/v1/project_by_name/<your_project>
+GET /ai/v1/project_by_name/<your_project>
 ```
 
 For example, the `status` object found within `retrieverServices` may contain the following

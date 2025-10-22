@@ -44,7 +44,7 @@ How to perform the steps is detailed in the subsequent sections.
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
-2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the GenAI service
+2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the AI service
    that manages various Platform components for graph intelligence and machine learning.
    It only takes a few seconds until the engine service can be used. The engine
    runs adjacent to the pods of the ArangoDB Core.
@@ -90,7 +90,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 
 {{< tab "Arango Data Platform" >}}
 You can use any of the available authentication methods the Arango Data Platform
-supports to start and stop `graphanalytics` services via the GenAI service as
+supports to start and stop `graphanalytics` services via the AI service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
 - HTTP Basic Authentication
@@ -129,14 +129,14 @@ setting in ArangoGraph:
 
 The interface for managing the engines depends on the environment you use:
 
-- **Arango Data Platform**: [GenAI service](#genai-service)
+- **Arango Data Platform**: [AI service](#ai-service)
 - **ArangoGraph**: [Management API](#management-api)
 
-### GenAI service
+### AI service
 
-{{< tag "GenAI Data Platform" >}}
+{{< tag "AI Services Data Platform" >}}
 
-GAEs are deployed and deleted via the [GenAI service](services/gen-ai.md)
+GAEs are deployed and deleted via the [AI service](reference/gen-ai.md)
 in the Arango Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
@@ -144,15 +144,15 @@ if the Platform deployment uses a self-signed certificate (default).
 
 #### Start a `graphanalytics` service
 
-`POST <ENGINE_URL>/gen-ai/v1/graphanalytics`
+`POST <ENGINE_URL>/ai/v1/graphanalytics`
 
-Start a GAE via the GenAI service with an empty request body:
+Start a GAE via the AI service with an empty request body:
 
 ```sh
 # Example with a JWT session token
 ADB_TOKEN=$(curl -sSk -d '{"username":"root", "password": ""}' -X POST https://127.0.0.1:8529/_open/auth | jq -r .jwt)
 
-Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/graphanalytics)
+Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/ai/v1/graphanalytics)
 ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
 if [[ "$ServiceID" == "null" ]]; then 
   echo "Error starting gral engine"
@@ -164,21 +164,21 @@ echo "$Service" | jq
 
 #### List the services
 
-`POST <ENGINE_URL>/gen-ai/v1/list_services`
+`POST <ENGINE_URL>/ai/v1/list_services`
 
-You can list all running services managed by the GenAI service, including the
+You can list all running services managed by the AI service, including the
 `graphanalytics` services:
 
 ```sh
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/list_services | jq
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/ai/v1/list_services | jq
 ```
 
 #### Stop a `graphanalytics` service
 
-Delete the desired engine via the GenAI service using the service ID:
+Delete the desired engine via the AI service using the service ID:
 
 ```sh
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/gen-ai/v1/service/$ServiceID | jq
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/ai/v1/service/$ServiceID | jq
 ```
 
 ### Management API
@@ -314,7 +314,7 @@ To determine the base URL of the engine API, use the base URL of the Platform
 deployment and append `/gral/<SERVICE_ID>`, e.g.
 `https://127.0.0.1:8529/gral/arangodb-gral-tqcge`.
 
-The service ID is returned by the call to the GenAI service for
+The service ID is returned by the call to the AI service for
 [starting the `graphanalytics` service](#start-a-graphanalytics-service).
 You can also list the service IDs like so:
 

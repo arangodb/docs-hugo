@@ -8,7 +8,7 @@ description: >-
 ---
 
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -17,7 +17,7 @@ The Arango Data Platform is a **Kubernetes-native** technical infrastructure tha
 for hosting the entire ArangoDB offering of products. Built from the ground up for 
 cloud-native orchestration, the platform leverages the power of Kubernetes to make it easy
 to deploy, scale, and operate the core ArangoDB database system along with any additional
-GenAI solutions for GraphRAG, graph machine learning, data explorations, and more. You can
+AI solutions for GraphRAG, graph machine learning, data explorations, and more. You can
 run it on-premises or in the cloud yourself on top of Kubernetes to access all
 of the platform features with enterprise-grade automation and reliability.
 
@@ -25,7 +25,7 @@ of the platform features with enterprise-grade automation and reliability.
 
 {{% card title="Get started with the Arango Data Platform" link="get-started/" %}}
 Deploy the core ArangoDB database system with Kubernetes orchestration.
-Optionally add the GenAI Suite to turn data into an AI-powered knowledge engine.
+Optionally add AI Services to turn data into an AI-powered knowledge engine.
 {{% /card %}}
 
 {{% card title="Features and Architecture" link="features/" %}}
@@ -40,7 +40,7 @@ Learn about the official ArangoDB Kubernetes Operator that powers the Arango Dat
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
 {{% /card %}}
 
-{{% card title="GenAI Suite" link="../../gen-ai/" %}}
+{{% card title="AI Services" link="../../ai-services/" %}}
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 

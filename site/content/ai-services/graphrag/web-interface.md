@@ -7,7 +7,7 @@ description: >-
  using the Platform web interface
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -26,7 +26,7 @@ The entire process is organized into sequential steps within a **Project**:
 To create a new GraphRAG project using the Arango Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **GenAI Suite** to open the GraphRAG project management
+2. In the left-hand sidebar, click **AI Services** to open the GraphRAG project management
    interface, then click **Run GraphRAG**.
 3. In the **GraphRAG projects** view, click **Add new project**.
 4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally
@@ -75,7 +75,7 @@ while OpenAI is used for the embedding model.
 3. Click the **Start importer service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](../services/triton-inference-server.md)
+Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 
@@ -84,7 +84,7 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [GraphRAG Importer](../services/importer.md) service documentation.
+See also the [GraphRAG Importer](../reference/importer.md) service documentation.
 
 ## Upload your file
 
@@ -145,7 +145,7 @@ while OpenAI is used for the embedding model.
 3. Click the **Start retriever service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](../services/triton-inference-server.md)
+Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 
@@ -154,14 +154,14 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [GraphRAG Retriever](../services/retriever.md) documentation.
+See also the [GraphRAG Retriever](../reference/retriever.md) documentation.
 
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Local search](../services/retriever.md#local-search): Local queries let you
+- [Local search](../reference/retriever.md#local-search): Local queries let you
   explore specific nodes and their direct connections.
-- [Global search](../services/retriever.md#global-search): Global queries uncover
+- [Global search](../reference/retriever.md#global-search): Global queries uncover
   broader patters and relationships across the entire Knowledge Graph.
 
 ![Chat with your Knowledge Graph](../../images/graphrag-ui-chat.png)

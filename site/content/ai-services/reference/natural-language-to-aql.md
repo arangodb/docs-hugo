@@ -55,11 +55,11 @@ TRITON_TIMEOUT=<timeout_seconds>       # Optional
 
 ### Starting the Service
 
-To start the service, use GenAI service endpoint `CreateGraphRag`. Please refer to the documentation of GenAI service for more information on how to use it.
+To start the service, use AI service endpoint `CreateGraphRag`. Please refer to the documentation of AI service for more information on how to use it.
 
 ### Required Parameters
 
-These parameters must be provided in the install request sent to GenAI service.
+These parameters must be provided in the install request sent to AI service.
 
 - `username`: Database username for authentication
 - `db_name`: Name of the ArangoDB database

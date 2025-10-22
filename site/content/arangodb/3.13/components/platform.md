@@ -7,7 +7,7 @@ description: >-
   solution that you can deploy on-prem or use as a managed service
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The ArangoDB Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -29,7 +29,7 @@ of the platform features.
 - **Graph Analytics**: A suite of graph algorithms including PageRank,
   community detection, and centrality measures with support for GPU
   acceleration thanks to Nvidia cuGraph.
-- **GenAI Suite**: A set of machine learning services, APIs, and
+- **AI Services**: A set of machine learning services, APIs, and
   user interfaces that are available as a package as well as individual products.
   - **GraphML**: A turnkey solution for graph machine learning for prediction
     use cases such as fraud detection, supply chain, healthcare, retail, and
@@ -48,7 +48,7 @@ of the platform features.
       - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
         insights from graph communities with global and local queries.
       - **Public and private LLM support**: Use public LLMs such as OpenAI
-        or private LLMs with [Triton Inference Server](../../../gen-ai/services/triton-inference-server.md).
+        or private LLMs with [Triton Inference Server](../../../ai-services/reference/triton-inference-server.md).
       - **MLflow integration**: Use the popular MLflow as a model registry for private LLMs
         or to run machine learning experiments as part of the ArangoDB Platform.
 - **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
@@ -78,7 +78,7 @@ manage this deployment yourself.
 
 - **Early access to the ArangoDB Platform**:
   [Get in touch](https://arangodb.com/contact/) with the ArangoDB team to get
-  exclusive early access to the pre-release of the ArangoDB Platform & GenAI Suite.
+  exclusive early access to the pre-release of the ArangoDB Platform & AI Services.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   ArangoDB Platform, running them in containers for safety and scalability.

@@ -4,12 +4,12 @@ menuTitle: GraphRAG
 weight: 5
 description: >-
   ArangoDB's GraphRAG solution combines graph-based retrieval-augmented generation
-  with Large Language Models (LLMs) for turbocharged GenAI solutions
+  with Large Language Models (LLMs) for turbocharged AI solutions
 aliases:
   llm-knowledge-graphs
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -56,5 +56,5 @@ relationships and connections becoming more sophisticated over time.
 - **[GraphRAG Tutorial using integrated Notebook servers](tutorial-notebook.md)**: Follow hands-on examples and implementation guidance via Jupyter Notebooks.
 
 For deeper implementation details, explore the individual services:
-- **[Importer Service](../services/importer.md)**: Transform documents into knowledge graphs.
-- **[Retriever Service](../services/retriever.md)**: Query and extract insights from your knowledge graphs.
+- **[Importer Service](../reference/importer.md)**: Transform documents into knowledge graphs.
+- **[Retriever Service](../reference/retriever.md)**: Query and extract insights from your knowledge graphs.

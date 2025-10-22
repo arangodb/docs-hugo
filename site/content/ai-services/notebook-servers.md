@@ -8,18 +8,18 @@ aliases:
   - arangograph-notebooks
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
 
 ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
-and experimenting with graph-powered data, GenAI, and graph machine learning
+and experimenting with graph-powered data, AI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are
 embedded in the Arango Data Platform ecosystem and offer a
 pre-configured environment where everything, including all the necessary services
 and configurations, comes preloaded. You don't need to set up or configure the
-infrastructure, and can immediately start using the GraphML and GenAI
+infrastructure, and can immediately start using the GraphML and AI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
@@ -32,14 +32,14 @@ The notebooks are primarily focused on the following solutions:
   NetworkX, and other data science tools.
 
 The ArangoDB Notebooks include the following:
-- Automatically connect to ArangoDB databases and GenAI platform services
+- Automatically connect to ArangoDB databases and AI platform services
 - [Magic commands](../amp/notebooks.md#arangograph-magic-commands)
   that simplify database interactions
 - Example notebooks for learning
 
 ## Quickstart
 
-1. In the Arango Data Platform web interface, expand **GenAI Tools** in the
+1. In the Arango Data Platform web interface, expand **AI Tools** in the
    main navigation and click **Notebook servers**.
 2. The page displays an overview of the notebook services.
    Click **New notebook server** to create a new one.

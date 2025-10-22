@@ -6,7 +6,7 @@ description: >-
 weight: 30
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -41,10 +41,10 @@ the Arango Data Platform ecosystem. It integrates with the:
 - MLFlow model registry for model management.
 - Storage sidecar for artifact storage.
 
-## Installation via GenAI Service API
+## Installation via AI Service API
 
 To install the Triton LLM Host service, send an API request to the
-**GenAI service** using the following parameters:
+**AI service** using the following parameters:
 
 ### Required parameters
 
@@ -168,7 +168,7 @@ Triton Inference Server for more details.
 - **Internal access (within Arango Data Platform)**:
   `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000`
   - `KUBERNETES_NAMESPACE` is available as an environment variable.
-  - `SERVICE_ID` is returned by the GenAI service API.
+  - `SERVICE_ID` is returned by the AI service API.
 
   **Example**:
   To check server health:

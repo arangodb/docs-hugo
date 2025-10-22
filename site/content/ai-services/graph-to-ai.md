@@ -4,13 +4,13 @@ menuTitle: From Graph to AI
 weight: 25
 description: >-
   ArangoDB's set of tools and technologies enables analytics, machine learning,
-  and GenAI applications powered by graph data
+  and AI applications powered by graph data
 aliases:
   - data-science/overview
 ---
 
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -20,7 +20,7 @@ data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that
 you can directly use for your research and product development.
 
-ArangoDB also offers a dedicated GenAI Suite, using the database core
+ArangoDB also offers dedicated AI Services, using the database core
 as the foundation for higher-level features. Whether you want to turbocharge
 generative AI applications with a GraphRAG solution or apply analytics and
 machine learning to graph data at scale, ArangoDB covers these needs.

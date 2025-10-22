@@ -7,7 +7,7 @@ description: >-
   solution that you can deploy on-prem or use as a managed service
 ---
 {{< tip >}}
-The Arango Data Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -41,7 +41,7 @@ to provide automated deployment, scaling, and management capabilities.
 
 - **Early access to the Arango Data Platform**:
   [Get in touch](https://arangodb.com/contact/) with the ArangoDB team to get
-  exclusive early access to the pre-release of the Arango Data Platform & GenAI Suite.
+  exclusive early access to the pre-release of the Arango Data Platform & AI Services.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Data Platform, running them in containers for safety and scalability.
