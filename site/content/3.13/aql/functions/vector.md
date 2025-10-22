@@ -56,8 +56,23 @@ be found depends on the data as well as the search effort (see the `nProbe` opti
 {{< info >}}
 - If there is more than one suitable vector index over the same attribute, it is
   undefined which one is selected.
-- You cannot have any `FILTER` operation between `FOR` and `LIMIT` for
-  pre-filtering.
+
+- In v3.12.4 and v3.12.5, you cannot have any `FILTER` operation between `FOR`
+  and `LIMIT` for pre-filtering. From v3.12.6 onward, you can add `FILTER`
+  operations between `FOR` and `SORT` that are then applied during the lookup in
+  the vector index. Example:
+
+  ```aql
+  FOR doc IN coll
+    FILTER doc.val > 3
+    SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
+    LIMIT 5
+    RETURN doc
+  ```
+
+  Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
+  as many neighboring Voronoi cells as necessary, but it rather considers only as
+  many as configured via the `nProbes` parameter.
 {{< /info >}}
 
 ### APPROX_NEAR_COSINE()

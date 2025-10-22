@@ -1483,6 +1483,20 @@ has been added.
 
 <small>Introduced in: v3.12.6</small>
 
+Vector indexes now support filtering. You can add `FILTER` operations between
+`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
+as many neighboring Voronoi cells as necessary, but it rather considers only as
+many as configured via the `nProbes` parameter. Example:
+
+```aql
+FOR doc IN coll
+  FILTER doc.val > 3
+  SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
+  LIMIT 5
+  RETURN doc
+```
+
 Vector indexes can now be sparse to exclude documents with the embedding attribute
 for indexing missing or set to `null`.
 
