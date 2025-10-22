@@ -2252,9 +2252,9 @@ is for debugging purposes.
 You can configure the memory limit for this feature with the following startup option:
 
 - `--server.api-recording-memory-limit`:
-  Size limit for the list of API call records (default: `25600000`).
+  Size limit for the list of API call records (default: `26214400`).
 
-This means that 25 MB of memory is reserved by default.
+This means that 25 MiB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
@@ -2271,6 +2271,42 @@ impact of this feature:
 | `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
 
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+
+
+### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted query. This feature is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.aql-recording-memory-limit`:
+  Size limit for the list of AQL query records (default: `26214400` bytes)
+
+This means that 25 MiB of memory is reserved by default.
+
+AQL query recording is enabled by default but you can disable it via the new
+`--server.aql-query-recording` startup option.
+
+This and the `/_admin/server/api-calls` endpoint are referred to as the
+recording API, which exposes the recorded API calls and AQL queries. It is
+enabled by default. Users with administrative access to the `_system` database
+can call the endpoints. You can further restrict the access to only the
+superuser by setting `--log.recording-api-enabled` to `jwt`, or disable the
+endpoints altogether by setting the option to `false`.
+
+A metric has been added for the time spent on AQL query recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_recording_call_time` | Execution time histogram for AQL recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
 ### Access tokens
