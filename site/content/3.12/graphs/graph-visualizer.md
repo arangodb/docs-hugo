@@ -5,16 +5,14 @@ weight: 102
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
-{{< tag "ArangoDB Platform" >}}
-
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
 
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
-of the ArangoDB Platform. It lets you explore the connections of your named graphs
+of the Arango Data Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes
 of individual nodes and edges. It also offers query capabilities and you can
 create new nodes (vertices) and edges (relations).
@@ -52,7 +50,7 @@ supported by the Graph Visualizer.
 
 ### Select and load a graph
 
-1. In the Data Platform web interface, select the database your named graph
+1. In the Arango Data Platform web interface, select the database your named graph
    is stored in.
 2. Click **Graphs** in the main navigation.
 3. Select a graph from the list.
@@ -68,7 +66,7 @@ The main area of the viewport may initially be empty in the following cases:
 
 You can [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually)
 as well as [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query).
-Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection)
+Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection-canvas-actions)
 as well as [Remove nodes from the canvas](#remove-nodes-from-the-canvas).
 
 ### The viewport
@@ -151,11 +149,25 @@ You can save queries for future use:
 
 ![A screenshot of the dialog with a query expanded and a bind variable filled in](../../images/graph-visualizer-queries.png)
 
-### Add nodes and edges using a query based on a selection
+### Add nodes and edges using a query based on a selection (Canvas Actions)
 
-You can select nodes and edges on the canvas and then use a **Canvas Action**.
+**Canvas Actions** are stored AQL queries that work with your current selection
+of nodes and edges on the canvas. Think of them as tools that let you discover
+related data for what you have selected. Unlike regular queries that work on the
+entire graph, Canvas Actions use special bind variables (`@nodes` and `@edges`)
+in their AQL query to reference your selected items, making them context-aware
+and interactive.
+
+You can select nodes, edges, or both on the canvas and then use a **Canvas Action**.
 This runs an AQL query to add nodes, edges, or paths of the graph to the canvas.
-The query has access to the current selection via special bind variables.
+For example, you could select and movie and use a Canvas Action that adds all
+other movies with the same runtime as the one you selected. Or you could select
+two persons and use a Canvas Action to add all movies and persons that are on
+the shortest paths between the selected persons.
+
+The query of a Canvas Action has access to the current selection via the
+`@nodes` and `@edges` bind variables. Both are arrays with the document IDs of
+the currently selected nodes respectively edges.
 
 1. Create a selection. You have different options:
    - Click a node or edge to select only this element.
@@ -167,7 +179,10 @@ The query has access to the current selection via special bind variables.
 4. To create a custom Canvas Action query, click **Queries** of the top-left widget.
 5. Go to the **Canvas actions** tab and click **New action**.
 6. Enter an AQL query that makes use of the special bind variable `@nodes`,
-   `@edges`, or both and returns nodes, edges, or paths. Examples:
+   `@edges`, or both and returns nodes, edges, or paths. For example, iterate
+   over the document IDs of the selected nodes, perform a graph traversal for
+   each node, filter and limit the results, and add all of the items on the path
+   to the canvas:
    ```aql
    FOR selectedNode IN @nodes
      FOR v, e, p IN 1..3 ANY selectedNode GRAPH "myGraph"
@@ -192,7 +207,7 @@ ways:
   of one shortest path between them are added to the canvas.
 
 - [**Queries**](#add-nodes-and-edges-using-a-query) and
-  [**Canvas Actions**](#add-nodes-and-edges-using-a-query-based-on-a-selection):
+  [**Canvas Actions**](#add-nodes-and-edges-using-a-query-based-on-a-selection-canvas-actions):
   You can run AQL graph queries (also based on the selection) to add connected
   nodes to the canvas. For example, you can use traversals to expand multiple
   levels of a node at once, or use path searches like `ALL_SHORTEST_PATHS`.
@@ -216,7 +231,7 @@ dismissed nodes and their edges back to the canvas later on.
 
 ### View node and edge properties
 
-You can inspect the document attributes of node or edge as follows:
+You can inspect the document attributes of a node or edge as follows:
 
 - Double-click a node or edge to open a dialog with the properties.
 - Right-click a node to open the context menu and click **View Node** to open
@@ -226,12 +241,12 @@ You can inspect the document attributes of node or edge as follows:
 
 ### Layouts and navigation tools
 
-These features allow you to clear, zoom, and pan the canvas, as well as rearrange
-the displayed graph data for a better spatial understanding of node clusters,
-hierarchies, and relationship flows. You can also download an image of what is
-displayed.
+These features located in the bottom right of the viewport allow you to clear,
+zoom, and pan the canvas, as well as rearrange the displayed graph data for a
+better spatial understanding of node clusters, hierarchies, and relationship
+flows. You can also download an image of what is displayed.
 
-- **Minimap**: A small overview to easier navigate the canvas.
+- **Minimap**: A small overview for easier canvas navigation.
   You can optionally hide it ({{< icon "caret-right" >}}).
 
 - **Clear graph**: Remove all nodes and edges from the canvas ({{< icon "clear" >}}).
@@ -252,6 +267,9 @@ displayed.
 - **Layout Algorithms**: Choose between different ways of arranging the nodes.
   Which algorithm to use depends on the situation and the graph topology.
 
+  You can also move nodes around manually by clicking and dragging them on the
+  canvas.
+
 ## Edit graph data
 
 While the Graph Visualizer is primarily designed for exploring graph data, you
@@ -264,7 +282,8 @@ You need to have write access for the database and the collections for this.
 You can add nodes to the graph's document collections directly from the
 canvas. This allows you to create additional entities to the graph.
 
-1. In the **Graphs** section of the Data Platform web interface, select your graph.
+1. In the **Graphs** section of the Arango Data Platform web interface,
+   select your graph.
 2. Right-click the canvas, **Create node**, and choose a node collection to
    store the new node in.
 3. A dialog opens with the following options:
@@ -273,12 +292,13 @@ canvas. This allows you to create additional entities to the graph.
    - Optionally provide a JSON body to use as the document content.
 4. Click **Create** to add the node to the canvas and database.
 
-### Create New Edges
+### Create new edges
 
 You can add edges to the graph's edge collections directly from the canvas.
 This allows you to create additional connections between nodes.
 
-1. In the **Graphs** section of the Data Platform web interface, select your graph.
+1. In the **Graphs** section of the Arango Data Platform web interface,
+   select your graph.
 2. Right-click the canvas, **Create edge**, and choose an edge collection to
    store the new edge in.
 3. A dialog opens with the following options:
@@ -327,34 +347,69 @@ You can delete individual nodes which deletes the corresponding document.
 
 ## Legend
 
-### Visual customization
+The legend panel lists the collections of the nodes and edges that are currently
+on the canvas, how many there are of each type, and you can select all elements
+of a type.
 
-You can adjust how the graph data is displayed, like the colors and labels.
-All styling changes are visual-only and do not affect the underlying data.
+It also lets you adjust how the graph data is displayed, like the colors and
+labels. You can create and select different themes for these visual
+customizations. All styling changes are visual-only and do not affect the
+underlying data.
+
+### Customize the appearance of nodes
 
 1. Click the **Legend** button in the top right to open the **Legend** panel
    if it's closed.
 2. Select the **Nodes (#)** tab and click one of the node collections.
    You can filter by name if there are many.
-4. You have the following theming options for nodes:
-   - **Color**
-   - **Icon**
-   - **Display**: What attribute to use for the label and what information
-     to show in the tooltip when hovering a nodes.
-5. Select the **Edges (#)** tab and click one of the edge collections.
+3. You have the following theming options for nodes:
+   - **Color**: Select a fill color for the circles that depict nodes.
+     This lets you distinguish between different types of nodes at a glance.
+   - **Icon**: Select a pictogram to be drawn inside the circles that resembles
+     the kind of entity you store in a node collection. This allows you to
+     quickly tell what type of node you look at.
+   - **Display**: Select what attribute to use for the **Label** that is shown
+     below a node, and what information to show in the tooltip when hovering
+     over a node (**Hover info**). These options let you view a part of the
+     node properties more quickly without opening the full
+     [properties dialog](#view-node-and-edge-properties).
+
+### Customize the appearance of edges
+
+1. Click the **Legend** button in the top right to open the **Legend** panel
+   if it's closed.
+2. Select the **Edges (#)** tab and click one of the edge collections.
    You can filter by name if there are many.
-6. You have the following theming options for edges:
-   - **Color**
-   - **Line Style**: Thickness and arrowheads.
-   - **Label**: What attribute to use for the label and what information
-     to show in the tooltip when hovering an edge.
-7. To save the changes, open the drop-down menu next to **Legend**, click
-   **Add new theme**,  enter a **Name**, leave **Start with** set to
-   **Current theme**, and then **Save**. After additional customizations, you
-   can save the changes to the existing theme you created ({{< icon "save" >}}).
-8. You can revert unsaved customizations of a specific collection via the
+3. You have the following theming options for edges:
+   - **Color**: Select a stroke color for the lines that depict edges.
+     This lets you distinguish between different types of edges at a glance.
+   - **Line Style**: Adjust the stroke **Thickness** and the arrowheads of lines
+     (**Source arrow** and **Target arrow**). These options let you customize
+     how prominent edges are drawn and let you better tell different types of
+     edges apart, especially when the label is not visible.
+   - **Label**: What attribute to use for the **Label** that is shown along an
+     edge, and what information to show in the tooltip when hovering an edge
+     (**Hover info**). These options let you view a part of the edge properties
+     more quickly without opening the full [properties dialog](#view-node-and-edge-properties).
+
+### Save and manage themes
+
+Themes are stored settings for the node and edge appearance. They are stored
+per graph. You can switch between multiple themes to highlight different
+aspects of the graph data.
+
+1. If the **Legend** panel is closed, click the **Legend** button in the
+   top right corner.
+2. Open the drop-down menu at the top of the **Legend** panel.
+3. To save visual customizations as a new theme, click **Add new theme**.
+4. Enter a **Name** and optionally a **Description**.
+5. Leave **Start with** set to **Current theme** to use the current settings.
+6. Click **Save**. After additional customizations, you can save the changes to
+   the theme you created via the drop-down menu ({{< icon "save" >}}).
+7. You can revert unsaved customizations of a specific collection via the
    collection list or customization panel ({{< icon "reset" >}}), or revert all
    unsaved changes via the theme drop-down menu ({{< icon "reset-all" >}}).
+8. To switch to a different theme, click its name in the theme drop-down menu.
 
 ### Select all nodes or edges of a type
 
