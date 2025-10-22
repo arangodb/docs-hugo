@@ -2309,7 +2309,6 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
-
 ### AQL query recording
 
 <small>Introduced in: v3.12.6</small>
