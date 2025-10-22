@@ -1465,10 +1465,12 @@ has been added.
 
 <small>Introduced in: v3.12.6</small>
 
+Vector indexes can now be sparse to exclude documents with the embedding attribute
+for indexing missing or set to `null`.
+
 Another metric has been added. The `innerProduct` is a vector similarity measure
 calculated using the dot product of two vectors without normalizing them.
 Therefore, it compares not only the angle but also the magnitudes.
-
 The accompanying AQL function is the following:
 
 - `APPROX_NEAR_INNER_PRODUCT()`
