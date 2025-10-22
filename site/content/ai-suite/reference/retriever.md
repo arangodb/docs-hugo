@@ -98,6 +98,7 @@ information on how to use it.
     "db_name": "your_database_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
+    "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
     "chat_model": "gpt-4o",
     "embedding_model": "text-embedding-3-small",
@@ -111,6 +112,7 @@ Where:
 - `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `chat_api_provider`: API provider for language model services
+- `emebdding_api_provider`: API provider for embedding model services
 - `embedding_api_url`: API endpoint URL for the embedding model service
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
@@ -153,6 +155,7 @@ Where:
 - `username`: ArangoDB database user with permissions to access collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
 - `chat_api_provider`: API provider for language model services
+- `embedding_api_provider`: API provider for embedding model services
 - `embedding_api_url`: API endpoint URL for the embedding model service
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
