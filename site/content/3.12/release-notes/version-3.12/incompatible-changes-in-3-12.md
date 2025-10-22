@@ -320,6 +320,15 @@ per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aq
 or its default using the `--query.memory-limit` startup option. You can adjust
 the global limit with the `--query.global-memory-limit` startup option.
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+The memory accounting for AQL queries has been extended to track the memory usage
+of the `MERGE()` function, `RETURN DISTINCT`, and certain uses of the `COLLECT`
+operation. More queries compared to previous 3.12 versions may get killed due to
+exceeding the memory limit as a result of the improved tracking.
+
 ## Adjustable Stream Transaction size
 
 [Stream Transactions](../../develop/transactions/stream-transactions.md) may
@@ -900,7 +909,68 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
-### Added error reporting for invalid requests
+## RocksDB upgrade
+
+<small>Introduced in: v3.12.6</small>
+
+The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
+
+As part of this storage engine upgrade, the default values of the following
+RocksDB-related startup options have been changed:
+
+- `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128 KiB to 1 GiB.
+- `--rocksdb.pending-compactions-stop-trigger` has been changed from 16 GiB to 32 GiB.
+- `--rocksdb.partition-files-for-documents` has been changed from false to true.
+- `--rocksdb.throttle-slow-down-writes-trigger` has been obsoleted.
+
+## Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
+## Additional validation by AQL GeoJSON functions
+
+<small>Introduced in: v3.12.6</small>
+
+The following AQL functions to construct GeoJSON objects now validate that the
+provided input uses either two or three coordinates for every point
+(`[longitude, latitude]` or `[longitude, latitude, elevation]`):
+
+- `GEO_MULTIPOINT()`
+- `GEO_LINESTRING()`
+- `GEO_MULTILINESTRING()`
+
+For example, the following function calls now fail to validate and raise a
+warning because of invalid points in the data:
+
+```aql
+GEO_MULTIPOINT([[1], [2,3]])
+GEO_LINESTRING([[1,2], []])
+GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
+```
+
+## Cosine similarity fix for vector indexes
+
+<small>Introduced in: v3.12.6</small>
+
+A normalization issue has been addressed for the experimental vector index type.
+It was possible for the cosine similarity value returned by `APPROX_NEAR_COSINE()`
+to be outside the expected range of `[-1, 1]`.
+
+It is recommended to recreate all vector indexes that use the `cosine` metric
+after upgrading to v3.12.6 or later.
+
+## Added error reporting for invalid requests
 
 <small>Introduced in: v3.12.6</small>
 
@@ -1083,6 +1153,16 @@ Certain deleted keys ranges in RocksDB may only get compacted by periodic
 background compactions. The changed default ensures this cleanup to happen more
 frequently. Compactions can potentially lead to spikes in CPU, memory, and I/O
 usage. You may now observe this daily instead of monthly.
+
+### RocksDB transaction lock timeout controlled internally
+
+<small>Deprecated in: v3.12.6</small>
+
+The `--rocksdb.transaction-lock-timeout` startup option has been deprecated.
+It was supposed to let you configure the wait timeout in milliseconds for
+locking a document in a transaction. However, the lock timeout is actually set
+to differnet values internally, depending on what is a meaningful timeout for
+a given case.
 
 ## Client tools
 
