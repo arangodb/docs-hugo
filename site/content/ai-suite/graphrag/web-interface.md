@@ -3,7 +3,7 @@ title: How to use GraphRAG in the Arango Data Platform web interface
 menuTitle: Web Interface
 weight: 20
 description: >-
- Learn how to create, configure, and run a full GraphRAG workflow in just a few steps using the Platform web interface
+ Learn how to create, configure, and run a full GraphRAG workflow in just a few steps
 ---
 {{< tip >}}
 The Arango Data Platform & AI Suite are available as a pre-release. To get
@@ -59,8 +59,6 @@ configure and start a new importer service job. Follow the steps below.
    the service is using **O4 Mini**.
 3. Enter your **OpenAI API Key**.
 4. Click the **Start importer service** button.
-
-![Configure Importer service using OpenAI](../../images/graphrag-ui-configure-importer-openai.png) 
 {{< /tab >}}
 
 {{< tab "OpenRouter" >}}
@@ -75,8 +73,6 @@ configure and start a new importer service job. Follow the steps below.
 When using OpenRouter, you need both API keys because the LLM responses are served
 via OpenRouter while OpenAI is used for the embedding model.
 {{< /info >}}
-
-![Configure Importer service using OpenRouter](../../images/graphrag-ui-configure-importer-openrouter.png)
 {{< /tab >}}
 
 {{< tab "Triton LLM Host" >}}
@@ -88,13 +84,11 @@ via OpenRouter while OpenAI is used for the embedding model.
 Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
-
-![Configure Importer service using Triton](../../images/graphrag-ui-configure-importer-triton.png)
 {{< /tab >}}
 
 {{< /tabs >}}
 
-See also the [GraphRAG Importer](../reference/importer.md) service documentation.
+See also the [Importer](../reference/importer.md) service documentation.
 
 ## Add data source
 
@@ -152,8 +146,6 @@ the generated Knowledge Graph. To configure the retriever service, open the
    the service uses **O4 Mini**.
 3. Enter your **OpenAI API Key**.
 4. Click the **Start retriever service** button.
-
-![Configure Retriever Service using OpenAI](../../images/graphrag-ui-configure-retriever-openai.png)
 {{< /tab >}}
 
 {{< tab "OpenRouter" >}}
@@ -167,8 +159,6 @@ the generated Knowledge Graph. To configure the retriever service, open the
 When using OpenRouter, the LLM responses are served via OpenRouter while OpenAI
 is used for the embedding model.
 {{< /info >}}
-
-![Configure Retriever Service using OpenRouter](../../images/graphrag-ui-configure-retriever-openrouter.png)
 {{< /tab >}}
 
 {{< tab "Triton LLM Host" >}}
@@ -180,27 +170,28 @@ is used for the embedding model.
 Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
-
-![Configure Retriever Service using Triton](../../images/graphrag-ui-configure-retriever-triton.png)
 {{< /tab >}}
 
 {{< /tabs >}}
 
-See also the [GraphRAG Retriever](../reference/retriever.md) documentation.
+See also the [Retriever](../reference/retriever.md) documentation.
 
 ## Chat with your Knowledge Graph
 
-The Retriever service provides two search methods:
-- [Local search](../reference/retriever.md#local-search): Local queries let you
-  explore specific nodes and their direct connections.
-- [Global search](../reference/retriever.md#global-search): Global queries uncover
-  broader patters and relationships across the entire Knowledge Graph.
-
-![Chat with your Knowledge Graph](../../images/graphrag-ui-chat.png)
+The chat interface provides two search methods:
+- **Instant search**: Instant queries provide fast responses.
+- **Deep search**: This option will take longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
-- Switch the search method from **Local Query** to **Global Query** and vice-versa
+- Switch the search method from **Instant search** to **Deep research** and vice-versa
   directly in the chat
-- Change the retriever service
+- Change or create a new retriever service
 - Clear the chat
-- Integrate the Knowledge Graph chat service into your own applications
+
+## Integrate the Knowledge Graph chat service into your application
+
+To integrate any service into your own applications,
+go to **Project Settings** and use the copy button next to each service to
+copy its integration endpoint. You cam make `POST` requests to the endpoints
+with your queries, the services accept `JSON` payloads and return structured
+responses for building custom interfaces.
