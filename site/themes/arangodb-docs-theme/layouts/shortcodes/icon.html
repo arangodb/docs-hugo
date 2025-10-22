@@ -1,6 +1,6 @@
 <span class="inline-icon" aria-hidden="true">
   {{- $iconName := .Get 0 }}
-  {{- $iconPath := printf "/images/icons/%s.svg" $iconName }}
+  {{- $iconPath := printf "/site/content/images/icons/%s.svg" $iconName }}
   {{- $iconSvg := readFile $iconPath }}
   {{- if $iconSvg }}
     {{- $iconSvg | safeHTML }}
