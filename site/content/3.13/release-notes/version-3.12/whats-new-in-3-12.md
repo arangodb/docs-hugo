@@ -180,6 +180,24 @@ The following new metrics have been added for memory observability:
 | `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
 | `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+The memory accounting for AQL queries has been extended to track the memory usage
+of the following:
+
+- Grouping with the `COLLECT` operation if the `sorted` method is used.
+- Aggregating with `COLLECT ... AGGREGATE`.
+- Deduplicating results with `RETURN DISTINCT`.
+- Using the `MERGE()` function to combine objects.
+- Internal buffers for execution blocks, late materialization, building results,
+  and distributing AQL queries in cluster deployments.
+- Internal buffers for decay, distance, and replace functions.
+- Internal buffers used by the query parser and optimizer.
+
+It is expected that the reported memory consumption is now higher.
+
 ## Web interface
 
 ### Shard rebalancing
@@ -1293,6 +1311,68 @@ Indexes used:
  10   idx_1836452431376941056   persistent   coll   
 ```
 
+### Deduction of node collection for graph queries
+
+<small>Introduced in: v3.12.6</small>
+
+AQL graph traversals and path searches using anonymous graphs / collection sets
+require that you declare all involved node collections upfront for cluster
+deployments. That is, you need to use the `WITH` operation to list the collections
+edges may point to, as well as the collection of the start node if not declared
+otherwise. This also applies to single servers if the `--query.require-with`
+startup option is enabled for parity between both deployment modes.
+
+For example, assume you have two node collections, `person` and `movie`, and
+edges pointing from one to the other stored in an `acts_in` edge collection.
+If you want to run a traversal query starting from a person that you specify
+with its document ID, you need to declare both node collections at the
+beginning of the query:
+
+```aql
+WITH person, movie
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+```
+
+From v3.12.6 onward, the node collections can be automatically inferred if there
+is a named graph using the same edge collection(s).
+
+For example, assume there is a named graph that includes an edge definition for
+the `acts_in` edge collection, with `person` as the _from_ collection and `movie`
+as the _to_ collection. If you now specify `acts_in` as an edge collection in
+an anonymous graph query, all named graphs are checked for this edge collection,
+and if there is a matching edge definition, its node collections are automatically
+added as data sources to the query. You no longer have to manually declare the
+`person` and `movie` collections:
+
+```aql
+FOR v IN 0..1 OUTBOUND "person/1544" acts_in
+  LIMIT 4
+  RETURN v.label
+```
+
+You can still declare collections manually, in which case they are added as
+data sources in addition to automatically deduced collections.
+
+### Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+The `GEO_POINT()` function now accepts an optional third argument to create a
+GeoJSON Point with three coordinates: `[longitude, latitude, elevation]`.
+
+GeoJSON Points may now have three coordinates in general.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1442,6 +1522,34 @@ utilizing vector indexes in queries.
 
 Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
 has been added.
+
+---
+
+<small>Introduced in: v3.12.6</small>
+
+Vector indexes now support filtering. You can add `FILTER` operations between
+`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
+as many neighboring Voronoi cells as necessary, but it rather considers only as
+many as configured via the `nProbes` parameter. Example:
+
+```aql
+FOR doc IN coll
+  FILTER doc.val > 3
+  SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
+  LIMIT 5
+  RETURN doc
+```
+
+Vector indexes can now be sparse to exclude documents with the embedding attribute
+for indexing missing or set to `null`.
+
+Another metric has been added. The `innerProduct` is a vector similarity measure
+calculated using the dot product of two vectors without normalizing them.
+Therefore, it compares not only the angle but also the magnitudes.
+The accompanying AQL function is the following:
+
+- `APPROX_NEAR_INNER_PRODUCT()`
 
 ## Server options
 
@@ -2211,6 +2319,40 @@ DB-Servers in a cluster has been added:
 |:------|:------------|
 | `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
+### RocksDB upgrade
+
+<small>Introduced in: v3.12.6</small>
+
+The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
+
+As a result, you may see performance improvements while using slightly less
+resources especially for mixed workloads.
+
+The following new RocksDB functionality is exposed in ArangoDB:
+
+- Different types of block caches, LRU and HyperClockCache (HCC), selectable via
+  the new `--rocksdb.block-cache-type` startup option
+- A `--rocksdb.block-cache-estimated-entry-charge` startup option to configure the HCC.
+- RocksDB table format version 6 (not downwards-compatible to older versions of RocksDB).
+- RocksDB blob caching (if blobs are enabled for the documents column family),
+  which you can enable via `--rocksdb.enable-blob-cache`.
+- Using blob files only from a certain level onwards (if blobs are enabled for
+  the documents column family), which you can enable via
+  `--rocksdb.blob-file-starting-level`.
+- Blob cache prepopulation, which you can enable via `--rocksdb.prepopulate-blob-cache`.
+- An option to generate Bloom/Ribbon filters that minimize memory internal
+  fragmentation, which you can enable with `--rocksdb.optimize-filters-for-memory`.
+
+The following RocksDB metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `rocksdb_block_cache_charge_per_entry` | Average size of entries in RocksDB block cache.
+| `rocksdb_block_cache_entries` | Number of entries in the RocksDB block cache.
+| `rocksdb_live_blob_file_garbage_size` | Size of garbage in live RocksDB .blob files.
+| `rocksdb_live_blob_file_size` | Size of live RocksDB .blob files.
+| `rocksdb_num_blob_files` | Number of live RocksDB .blob files.
+
 ### API call recording
 
 <small>Introduced in: v3.12.5</small>
@@ -2222,9 +2364,9 @@ is for debugging purposes.
 You can configure the memory limit for this feature with the following startup option:
 
 - `--server.api-recording-memory-limit`:
-  Size limit for the list of API call records (default: `25600000`).
+  Size limit for the list of API call records (default: `26214400`).
 
-This means that 25 MB of memory is reserved by default.
+This means that 25 MiB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
@@ -2243,6 +2385,41 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
+### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted query. This feature is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.aql-recording-memory-limit`:
+  Size limit for the list of AQL query records (default: `26214400` bytes)
+
+This means that 25 MiB of memory is reserved by default.
+
+AQL query recording is enabled by default but you can disable it via the new
+`--server.aql-query-recording` startup option.
+
+This and the `/_admin/server/api-calls` endpoint are referred to as the
+recording API, which exposes the recorded API calls and AQL queries. It is
+enabled by default. Users with administrative access to the `_system` database
+can call the endpoints. You can further restrict the access to only the
+superuser by setting `--log.recording-api-enabled` to `jwt`, or disable the
+endpoints altogether by setting the option to `false`.
+
+A metric has been added for the time spent on AQL query recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_recording_call_time` | Execution time histogram for AQL recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
+for details.
+
 ### Access tokens
 
 <small>Introduced in: v3.12.5</small>
@@ -2256,6 +2433,24 @@ dates, and individually revoke tokens.
 
 See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
 documentation.
+
+### `@PID@` and `@TEMP_BASE_DIR@` placeholders for startup options
+
+<small>Introduced in: v3.12.6</small>
+
+You can use special placeholders in startup options like `--log.output` that get
+substituted as follows:
+
+- `@PID@`: Replaced at runtime with the actual process ID. This has already
+  been supported using a literal occurrence of `$PID`.
+- `@TEMP_BASE_DIR@`: Replaced at runtime with the current temporary directory,
+  e.g. `/tmp/arangodb_i37Xxh` (automatically created on startup with a randomly
+  generated suffix).
+
+Keep in mind that `@NAME@` is also the syntax for using the value of an
+environment variable `NAME`. If there is an environment variable called `PID` or
+`TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
+value of the respective environment variable.
 
 ## Client tools
 
