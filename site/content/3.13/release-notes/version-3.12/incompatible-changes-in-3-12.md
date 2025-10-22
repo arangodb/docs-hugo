@@ -900,6 +900,42 @@ the following steps.
 4. Restore the dump to the new deployment. You can directly move from any
    3.11 or 3.12 version to 3.12.4 (or later) this way.
 
+## Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
+## Additional validation by AQL GeoJSON functions
+
+<small>Introduced in: v3.12.6</small>
+
+The following AQL functions to construct GeoJSON objects now validate that the
+provided input uses either two or three coordinates for every point
+(`[longitude, latitude]` or `[longitude, latitude, elevation]`):
+
+- `GEO_MULTIPOINT()`
+- `GEO_LINESTRING()`
+- `GEO_MULTILINESTRING()`
+
+For example, the following function calls now fail to validate and raise a
+warning because of invalid points in the data:
+
+```aql
+GEO_MULTIPOINT([[1], [2,3]])
+GEO_LINESTRING([[1,2], []])
+GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
+```
+
 ## Cosine similarity fix for vector indexes
 
 <small>Introduced in: v3.12.6</small>
