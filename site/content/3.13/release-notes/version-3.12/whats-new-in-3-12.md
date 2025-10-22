@@ -180,6 +180,24 @@ The following new metrics have been added for memory observability:
 | `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
 | `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+The memory accounting for AQL queries has been extended to track the memory usage
+of the following:
+
+- Grouping with the `COLLECT` operation if the `sorted` method is used.
+- Aggregating with `COLLECT ... AGGREGATE`.
+- Deduplicating results with `RETURN DISTINCT`.
+- Using the `MERGE()` function to combine objects.
+- Internal buffers for execution blocks, late materialization, building results,
+  and distributing AQL queries in cluster deployments.
+- Internal buffers for decay, distance, and replace functions.
+- Internal buffers used by the query parser and optimizer.
+
+It is expected that the reported memory consumption is now higher.
+
 ## Web interface
 
 ### Shard rebalancing

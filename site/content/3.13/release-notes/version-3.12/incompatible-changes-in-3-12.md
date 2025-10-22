@@ -320,6 +320,15 @@ per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aq
 or its default using the `--query.memory-limit` startup option. You can adjust
 the global limit with the `--query.global-memory-limit` startup option.
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+The memory accounting for AQL queries has been extended to track the memory usage
+of the `MERGE()` function, `RETURN DISTINCT`, and certain uses of the `COLLECT`
+operation. More queries compared to previous 3.12 versions may get killed due to
+exceeding the memory limit as a result of the improved tracking.
+
 ## Adjustable Stream Transaction size
 
 [Stream Transactions](../../develop/transactions/stream-transactions.md) may
