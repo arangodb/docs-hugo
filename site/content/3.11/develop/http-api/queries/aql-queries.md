@@ -662,6 +662,7 @@ paths:
 
                         This feature is only available in the Enterprise Edition.
                       type: boolean
+                      default: false
                     allowDirtyReads:
                       description: |
                         If you set this option to `true` and execute the query against a cluster
@@ -697,12 +698,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -1039,15 +1042,17 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate that an error occurred (`true` in this case)
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
-                      the server error number
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1428,12 +1433,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -2041,12 +2048,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   result:
                     description: |
                       An array of result documents for the current batch
@@ -2379,19 +2388,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      A flag to indicate that an error occurred (`false` in this case).
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
-                      A server error number (if `error` is `true`).
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A descriptive error message (if `error` is `true`).
+                      A descriptive error message.
                     type: string
         '404':
           description: |

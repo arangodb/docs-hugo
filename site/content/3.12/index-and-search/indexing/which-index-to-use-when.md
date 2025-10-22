@@ -53,7 +53,7 @@ different usage scenarios:
   but unlike other index types.
   It may thus not be a suitable index type depending on your requirements.
 
-  You can add one more more inverted indexes to a `search-alias` View for
+  You can add one or more inverted indexes to a `search-alias` View for
   federated searching over multiple collections, for ranking results by
   relevance, and for search highlighting capabilities. It is a lightweight
   alternative to an `arangosearch` View.
@@ -65,7 +65,7 @@ different usage scenarios:
   documents shall expire at the point in time or a given number of seconds after
   the point in time.
 
-- **multi-dimensional index**: a multi dimensional index allows to
+- **multi-dimensional index**: a multi dimensional index allows you to
   efficiently intersect multiple range queries. Typical use cases are querying
   intervals that intersect a given point or interval. For example, if intervals
   are stored in documents like

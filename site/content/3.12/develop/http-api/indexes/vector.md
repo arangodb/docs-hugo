@@ -95,9 +95,14 @@ paths:
                   properties:
                     metric:
                       description: |
-                        Whether to use `cosine` or `l2` (Euclidean) distance calculation.
-                      type: string
-                      enum: ["cosine", "l2"]
+                        The measure for calculating the vector similarity:
+                        - `"cosine"`: Angular similarity. Vectors are automatically
+                          normalized before insertion and search.
+                        - `"innerProduct"` (introduced in v3.12.6):
+                          Similarity in terms of angle and magnitude.
+                          Vectors are not normalized, making it faster than `cosine`.
+                        - `"l2":` Euclidean distance.
+                      enum: ["cosine", "innerProduct", "l2"]
                     dimension:
                       description: |
                         The vector dimension. The attribute to index needs to

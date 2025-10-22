@@ -38,7 +38,7 @@ deploy and use it, see [The ArangoDB Platform](../../components/platform.md).
   A web-based tool for exploring your graph data with an intuitive interface and
   sophisticated querying capabilities.
 
-- [**Graph Analytics**](../../graphs/graph-analytics.md):
+- [**Graph Analytics**](../../data-science/graph-analytics.md):
   A service that can efficiently load graph data from the core database system
   and run graph algorithms such as PageRank and many more.
 

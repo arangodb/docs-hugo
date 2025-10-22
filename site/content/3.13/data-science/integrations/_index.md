@@ -9,7 +9,7 @@ aliases:
   - adapters
 ---
 ArangoDB Adapters provide a convenient way to integrate ArangoDB with popular
-data science tools. By enabling you to to use your preferred programming
+data science tools. By enabling you to use your preferred programming
 languages and libraries, these adapters simplify the data analysis
 process and make it easier to leverage the power of ArangoDB in data science.
 

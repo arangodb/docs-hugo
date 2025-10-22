@@ -14,10 +14,7 @@ data numerically and can be generated with machine learning models.
 You can then quickly find a given number of semantically similar documents by
 searching for close neighbors in a high-dimensional vector space.
 
-The vector index implementation uses the [Faiss library](https://github.com/facebookresearch/faiss/)
-to support L2 and cosine metrics. The index used is IndexIVFFlat, the quantizer
-for L2 is IndexFlatL2, and the cosine uses IndexFlatIP, where vectors are
-normalized before insertion and search.
+The vector index implementation uses the [Faiss library](https://github.com/facebookresearch/faiss/).
 
 ## How to use vector indexes
 
@@ -78,7 +75,13 @@ centroids and the quality of vector search thus degrades.
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
 - **params**: The parameters as used by the Faiss library.
-  - **metric** (string): Whether to use `cosine` or `l2` (Euclidean) distance calculation.
+  - **metric** (string): The measure for calculating the vector similarity:
+    - `"cosine"`: Angular similarity. Vectors are automatically
+      normalized before insertion and search.
+    - `"innerProduct"` (introduced in v3.12.6):
+      Similarity in terms of angle and magnitude.
+      Vectors are not normalized, making it faster than `cosine`.
+    - `"l2":` Euclidean distance.
   - **dimension** (number): The vector dimension. The attribute to index needs to
     have this many elements in the array that stores the vector embedding.
   - **nLists** (number): The number of Voronoi cells to partition the vector space
@@ -118,7 +121,6 @@ centroids and the quality of vector search thus degrades.
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
-{{< comment >}}TODO: Only in v3.12.6+
 1. In the **Collections** section, click the name or row of the desired collection.
 2. Go to the **Indexes** tab.
 3. Click **Add index**.
@@ -128,8 +130,6 @@ centroids and the quality of vector search thus degrades.
    under `param`.
 7. Optionally give the index a user-defined name.
 8. Click **Create**.
-{{< /comment >}}
-The web interface does not support vector indexes yet.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
