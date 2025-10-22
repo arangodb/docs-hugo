@@ -1,6 +1,6 @@
 module github.com/arangodb/docs/migration-tools/arangoproxy
 
-go 1.25
+go 1.24
 
 require (
 	github.com/dlclark/regexp2 v1.11.5
