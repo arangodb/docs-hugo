@@ -121,7 +121,7 @@ Where:
 - `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `chat_api_provider`: API provider for language model services
-- `embeddinga_api_provider`: API provider for embedding model services
+- `embedding_api_provider`: API provider for embedding model services
 - `embedding_api_url`: API endpoint URL for the embedding model service
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
