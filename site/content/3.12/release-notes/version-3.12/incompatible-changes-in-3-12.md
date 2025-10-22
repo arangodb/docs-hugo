@@ -958,8 +958,7 @@ A normalization issue has been addressed for the experimental vector index type.
 It was possible for the cosine similarity value returned by `APPROX_NEAR_COSINE()`
 to be outside the expected range of `[-1, 1]`.
 
-It is recommended to recreate all vector indexes that use the `cosine` metric
->>>>>>> d596f51d616abbd909c7632f960467e150628442
+It is recommended to recreate all vector indexes that use the `cosine` metric.
 
 ## HTTP RESTful API
 
