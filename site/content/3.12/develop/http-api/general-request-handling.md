@@ -206,7 +206,7 @@ cancel them as well.
 ##### Async execution and authentication
 
 If a request requires authentication, the authentication procedure is run before 
-queueing. The request is only queued if the authentication is successful. If the
+queueing. The request is only queued if the authentication is successful.
 Otherwise, it is not queued but rejected instantly in the same way as a regular,
 non-queued request.
 
@@ -215,7 +215,7 @@ non-queued request.
 The following should be noted about how ArangoDB handles client errors in its
 HTTP layer:
 
-- client requests using an HTTP version signature different than `HTTP/1.0` or
+- client requests using an HTTP version signature different from `HTTP/1.0` or
   `HTTP/1.1` will get an **HTTP 505** (HTTP Version Not Supported) error in return.
 - ArangoDB will reject client requests with a negative value in the
   `Content-Length` request header by closing the connection.

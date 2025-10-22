@@ -568,7 +568,7 @@ paths:
                     Logs various information related to ArangoDB's use of the
                     RocksDB storage engine, like the initialization and
                     file operations.
-                    
+
                     RocksDB's internal log messages are passed through using the
                     `rocksdb` log topic.
                   type: string
@@ -856,12 +856,14 @@ paths:
       operationId: getRecentApiCalls
       description: |
         Get a list of the most recent requests with a timestamp and the endpoint.
+        In cluster deployments, the list contains only those requests that were
+        submitted to the Coordinator you call this endpoint on.
         This feature is for debugging purposes.
 
         You can control how much memory is used to record API calls with the
         `--server.api-recording-memory-limit` startup option.
 
-        You can disable this endpoint
+        You can disable this and the `/_admin/server/aql-queries` endpoint
         with the `--log.recording-api-enabled` startup option.
 
         Whether API calls are recorded is independently controlled by the
@@ -875,7 +877,9 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database.
+            to this database and administrate access to the `_system` database.
+            If `--log.recording-api-enabled` is set to `jwt`, you need to use
+            a superuser token to access the endpoint.
           schema:
             type: string
       responses:
@@ -929,6 +933,239 @@ paths:
                               description: |
                                 The HTTP request path excluding the database prefix (`/_db/<database-name>`).
                               type: string
+                            database:
+                              description: |
+                                The database name.
+                              type: string
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The recording API has been disabled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            The method has not been called on a Coordinator or single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Monitoring
+```
+
+{{< comment >}}
+Example not generated because it changes on every run and returns up to 25MB of data.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
+```
+
+{{< details summary="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 257
+
+{
+  "error": false,
+  "code": 200,
+  "result": {
+    "calls": [
+      {
+        "timeStamp": "2025-06-11T14:41:53Z",
+        "requestType": "GET",
+        "path": "/_admin/server/api-calls",
+        "database": "_system"
+      },
+      {
+        "timeStamp": "2025-06-11T14:41:51Z",
+        "requestType": "GET",
+        "path": "/_api/version",
+        "database": "myDB"
+      }
+    ]
+  }
+}
+```
+{{< /details >}}
+
+## Get recent AQL queries
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/server/aql-queries:
+    get:
+      operationId: getRecentAqlQueries
+      description: |
+        Get a list of the most recent AQL queries with a timestamp and
+        information about the submitted query. In cluster deployments, the list
+        contains only those queries that were submitted to the Coordinator you
+        call this endpoint on. This feature is for debugging purposes.
+
+        You can control how much memory is used to record AQL queries with the
+        `--server.aql-recording-memory-limit` startup option.
+
+        You can disable this and the `/_admin/server/api-calls` endpoint
+        with the `--log.recording-api-enabled` startup option.
+
+        Whether AQL queries are recorded is independently controlled by the
+        `--server.aql-query-recording` startup option.
+        The endpoint returns an empty list of queries if turned off.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+            If `--log.recording-api-enabled` is set to `jwt`, you need to use
+            a superuser token to access the endpoint.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the recorded AQL queries.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The request result.
+                    type: object
+                    required:
+                      - queries
+                    properties:
+                      queries:
+                        description: |
+                          A list of the recent AQL queries.
+                          Empty if AQL query recording is disabled.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            timeStamp:
+                              description: |
+                                The date and time of the request in ISO 8601 format.
+                              type: string
+                              format: date-time
+                            query:
+                              description: |
+                                The AQL query.
+                              type: string
+                            bindVars:
+                              description: |
+                                Key/value pairs representing the bind variables.
+                              type: object
                             database:
                               description: |
                                 The database name.
@@ -1031,11 +1268,11 @@ paths:
 ```
 
 {{< comment >}}
-Example not generated because it changes on every run and returns up to 25MB of data.
+Example not generated because it changes on every run and there can be many internal queries.
 {{< /comment >}}
 
 ```bash
-curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/aql-queries
 ```
 
 {{< details summary="Show output" >}}
@@ -1051,24 +1288,27 @@ X-Content-Type-Options: nosniff
 Server: ArangoDB
 Connection: Keep-Alive
 Content-Type: application/json; charset=utf-8
-Content-Length: 257
+Content-Length: 353
 
 {
   "error": false,
   "code": 200,
   "result": {
-    "calls": [
+    "queries": [
       {
-        "timeStamp": "2025-06-11T14:41:53Z",
-        "requestType": "GET",
-        "path": "/_admin/server/api-calls",
-        "database": "_system"
+        "timeStamp": "2025-07-02T16:33:32Z",
+        "query": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
+        "database": "_system",
+        "bindVars": {
+          "@collection": "_statistics",
+          "start": 1751470412.3836362
+        }
       },
       {
-        "timeStamp": "2025-06-11T14:41:51Z",
-        "requestType": "GET",
-        "path": "/_api/version",
-        "database": "myDB"
+        "timeStamp": "2025-07-02T16:26:01Z",
+        "query": "FOR doc IN coll RETURN doc",
+        "database": "_system",
+        "bindVars": {}
       }
     ]
   }

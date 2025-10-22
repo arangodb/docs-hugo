@@ -111,7 +111,10 @@ paths:
                   default: false
                 sparse:
                   description: |
-                    If `true`, then create a sparse index.
+                    Whether to create a sparse index that excludes documents with
+                    at least one of the attributes for indexing missing or set to
+                    `null`. These attributes are defined by `fields` and (for
+                    `mdi-prefixed` indexes) by `prefixFields`.
                   type: boolean
                   default: false
                 estimates:

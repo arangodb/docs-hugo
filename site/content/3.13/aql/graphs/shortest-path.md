@@ -142,7 +142,7 @@ FOR node IN OUTBOUND SHORTEST_PATH
 ```
 
 All collections in the list that do not specify their own direction use the
-direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
+direction defined after `IN` (here: `OUTBOUND`). This allows you to use a different
 direction for each collection in your path search.
 
 ## Conditional shortest path

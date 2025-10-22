@@ -53,7 +53,7 @@ different usage scenarios:
   but unlike other index types.
   It may thus not be a suitable index type depending on your requirements.
 
-  You can add one more more inverted indexes to a `search-alias` View for
+  You can add one or more inverted indexes to a `search-alias` View for
   federated searching over multiple collections, for ranking results by
   relevance, and for search highlighting capabilities. It is a lightweight
   alternative to an `arangosearch` View.
@@ -65,7 +65,7 @@ different usage scenarios:
   documents shall expire at the point in time or a given number of seconds after
   the point in time.
 
-- **multi-dimensional index**: a multi dimensional index allows to
+- **multi-dimensional index**: a multi dimensional index allows you to
   efficiently intersect multiple range queries. Typical use cases are querying
   intervals that intersect a given point or interval. For example, if intervals
   are stored in documents like
@@ -175,11 +175,11 @@ db.collection.ensureIndex({ type: "persistent", fields: [ "attributeName1", "att
 When not explicitly set, the `sparse` attribute defaults to `false` for new indexes.
 Indexes other than persistent do not support the `sparse` option.
 
-As sparse indexes may exclude some documents from the collection, they cannot be used for
-all types of queries. Sparse hash indexes cannot be used to find documents for which at
-least one of the indexed attributes has a value of `null`. For example, the following AQL
-query cannot use a sparse index, even if one was created on attribute `attr`:
-<!-- TODO Remove above statement? -->
+As sparse indexes may exclude some documents from the collection, they cannot
+be used for all types of queries. For example, sparse persistent indexes cannot
+be used to find documents for which at least one of the indexed attributes
+is missing or has a value of `null`. For example, the following AQL
+query cannot use a sparse index over the attribute `attr`:
 
 ```aql
 FOR doc In collection
@@ -189,15 +189,25 @@ FOR doc In collection
 
 If the lookup value is non-constant, a sparse index may or may not be used, depending on
 the other types of conditions in the query. If the optimizer can safely determine that
-the lookup value cannot be `null`, a sparse index may be used. When uncertain, the optimizer
-does not make use of a sparse index in a query in order to produce correct results.
+the lookup value cannot be `null`, a sparse index may be used.
+
+```aql
+FOR doc In collection
+  LET random = RAND() * 5
+  FILTER doc.attr < random // Includes numbers < random but also true, false, and null!
+  FILTER doc.attr != null  // Explicitly exclude null to make a sparse index eligible
+  RETURN doc
+```
+
+When uncertain, the optimizer does not make use of a sparse index in a query in
+order to produce correct results.
 
 For example, the following queries cannot use a sparse index on `attr` because the optimizer
 does not know beforehand whether the values which are compared to `doc.attr` include `null`:
 
 ```aql
 FOR doc In collection 
-  FILTER doc.attr == SOME_FUNCTION(...) 
+  FILTER doc.attr == SOME_FUNCTION(...)
   RETURN doc
 ```
 

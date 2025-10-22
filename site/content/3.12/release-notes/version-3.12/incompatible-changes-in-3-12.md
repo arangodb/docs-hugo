@@ -230,7 +230,7 @@ This is only the case if all of the following conditions are true:
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
-- The glibc version of your system is different than the one used by ArangoDB,
+- The glibc version of your system is different from the one used by ArangoDB,
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
@@ -914,6 +914,53 @@ RocksDB-related startup options have been changed:
 - `--rocksdb.partition-files-for-documents` has been changed from false to true.
 - `--rocksdb.throttle-slow-down-writes-trigger` has been obsoleted.
 
+## Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
+## Additional validation by AQL GeoJSON functions
+
+<small>Introduced in: v3.12.6</small>
+
+The following AQL functions to construct GeoJSON objects now validate that the
+provided input uses either two or three coordinates for every point
+(`[longitude, latitude]` or `[longitude, latitude, elevation]`):
+
+- `GEO_MULTIPOINT()`
+- `GEO_LINESTRING()`
+- `GEO_MULTILINESTRING()`
+
+For example, the following function calls now fail to validate and raise a
+warning because of invalid points in the data:
+
+```aql
+GEO_MULTIPOINT([[1], [2,3]])
+GEO_LINESTRING([[1,2], []])
+GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
+```
+
+## Cosine similarity fix for vector indexes
+
+<small>Introduced in: v3.12.6</small>
+
+A normalization issue has been addressed for the experimental vector index type.
+It was possible for the cosine similarity value returned by `APPROX_NEAR_COSINE()`
+to be outside the expected range of `[-1, 1]`.
+
+It is recommended to recreate all vector indexes that use the `cosine` metric
+>>>>>>> d596f51d616abbd909c7632f960467e150628442
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1088,6 +1135,16 @@ Certain deleted keys ranges in RocksDB may only get compacted by periodic
 background compactions. The changed default ensures this cleanup to happen more
 frequently. Compactions can potentially lead to spikes in CPU, memory, and I/O
 usage. You may now observe this daily instead of monthly.
+
+### RocksDB transaction lock timeout controlled internally
+
+<small>Deprecated in: v3.12.6</small>
+
+The `--rocksdb.transaction-lock-timeout` startup option has been deprecated.
+It was supposed to let you configure the wait timeout in milliseconds for
+locking a document in a transaction. However, the lock timeout is actually set
+to differnet values internally, depending on what is a meaningful timeout for
+a given case.
 
 ## Client tools
 
