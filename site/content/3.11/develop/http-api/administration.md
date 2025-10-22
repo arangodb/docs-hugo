@@ -22,8 +22,7 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
-        Returns the server name and version number. The response is a JSON object
-        with the following attributes:
+        Returns the server name and version number.
       parameters:
         - name: database-name
           in: path
@@ -246,7 +245,6 @@ paths:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
-        The response is a JSON object with the following attributes:
       parameters:
         - name: database-name
           in: path
@@ -329,12 +327,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (`false` in this case)
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      the HTTP status code
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   time:
                     description: |
                       The current system time as a Unix timestamp with microsecond precision of the server
@@ -959,7 +959,7 @@ paths:
           in: query
           required: false
           description: |
-            Set to `true` to change the license even if it expires sooner than the current one.
+            Whether to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
             default: false
@@ -968,7 +968,7 @@ paths:
           application/json:
             schema:
               description: |
-                The request body has to contain the Base64-encoded string wrapped in double quotes.
+                The request body has to contain the Base64-encoded license string wrapped in double quotes.
               type: string
               example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:
@@ -995,7 +995,7 @@ paths:
                         example: false
                       code:
                         description: |
-                          The HTTP status code.
+                          The HTTP response status code.
                         type: integer
                         example: 201
         '400':
@@ -1019,12 +1019,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 400
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1050,12 +1050,12 @@ paths:
                     example: true
                   code:
                     description: |
-                      The HTTP status code.
+                      The HTTP response status code.
                     type: integer
                     example: 501
                   errorNum:
                     description: |
-                      The ArangoDB error number.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

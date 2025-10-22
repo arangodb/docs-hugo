@@ -47,7 +47,7 @@ accessible from every view. There are two elements:
 1. Hover over or click the user icon of the __User Toolbar__ in the top right corner.
 2. Click __My organizations__ in the __My account__ section.
 3. Click the __New organization__ button.
-4. Enter a name and and a description for the new organization and click the
+4. Enter a name and a description for the new organization and click the
    __Create__ button.
 
 {{< info >}}

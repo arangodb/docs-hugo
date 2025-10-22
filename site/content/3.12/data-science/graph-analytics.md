@@ -3,10 +3,10 @@ title: Graph Analytics
 menuTitle: Graph Analytics
 weight: 115
 description: |
-  ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
-  data separately from your ArangoDB deployments
+  Graph analytics analyzes information networks to extract insights from data
+  relationships using algorithms like PageRank for fraud detection, recommendations, and network analysis
 aliases:
-  - ../data-science/graph-analytics
+  - ../graphs/graph-analytics  
 ---
 {{< tag "ArangoDB Platform" "ArangoGraph" >}}
 
@@ -420,7 +420,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","gra
 PageRank is a well known algorithm to rank nodes in a graph: the more
 important a node, the higher rank it gets. It goes back to L. Page and S. Brin's
 [paper](http://infolab.stanford.edu/pub/papers/google.pdf) and
-is used to rank pages in in search engines (hence the name). The algorithm runs
+is used to rank pages in search engines (hence the name). The algorithm runs
 until the execution converges. To run for a fixed number of iterations, use the
 `maximum_supersteps` parameter.
 

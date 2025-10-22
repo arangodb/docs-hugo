@@ -230,7 +230,7 @@ This is only the case if all of the following conditions are true:
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
-- The glibc version of your system is different than the one used by ArangoDB,
+- The glibc version of your system is different from the one used by ArangoDB,
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
@@ -935,6 +935,17 @@ GEO_MULTIPOINT([[1], [2,3]])
 GEO_LINESTRING([[1,2], []])
 GEO_MULTILINESTRING([[[1,2,3,4],[5,6]],[[7,8],[9,0]]])
 ```
+
+## Cosine similarity fix for vector indexes
+
+<small>Introduced in: v3.12.6</small>
+
+A normalization issue has been addressed for the experimental vector index type.
+It was possible for the cosine similarity value returned by `APPROX_NEAR_COSINE()`
+to be outside the expected range of `[-1, 1]`.
+
+It is recommended to recreate all vector indexes that use the `cosine` metric
+after upgrading to v3.12.6 or later.
 
 ## HTTP RESTful API
 

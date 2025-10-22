@@ -1461,6 +1461,18 @@ utilizing vector indexes in queries.
 Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
 has been added.
 
+---
+
+<small>Introduced in: v3.12.6</small>
+
+Another metric has been added. The `innerProduct` is a vector similarity measure
+calculated using the dot product of two vectors without normalizing them.
+Therefore, it compares not only the angle but also the magnitudes.
+
+The accompanying AQL function is the following:
+
+- `APPROX_NEAR_INNER_PRODUCT()`
+
 ## Server options
 
 ### Effective and available startup options
@@ -1546,7 +1558,7 @@ certain minimum size, e.g. 250 bytes.
 
 <small>Introduced in: v3.11.2</small>
 
-LZ4 compression of edge index cache values allows to store more data in main
+LZ4 compression of edge index cache values allows you to store more data in main
 memory than without compression, so the available memory can be used more
 efficiently. The compression is transparent and does not require any change to
 queries or applications.
