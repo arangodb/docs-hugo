@@ -1293,6 +1293,24 @@ Indexes used:
  10   idx_1836452431376941056   persistent   coll   
 ```
 
+### Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2, v3.12.6</small>
+
+The `GEO_POINT()` function now accepts an optional third argument to create a
+GeoJSON Point with three coordinates: `[longitude, latitude, elevation]`.
+
+GeoJSON Points may now have three coordinates in general.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1449,7 +1467,9 @@ has been added.
 
 Vector indexes now support filtering. You can add `FILTER` operations between
 `FOR` and `SORT` that are then applied during the lookup in the vector index.
-Example:
+Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
+as many neighboring Voronoi cells as necessary, but it rather considers only as
+many as configured via the `nProbes` parameter. Example:
 
 ```aql
 FOR doc IN coll
@@ -1458,6 +1478,16 @@ FOR doc IN coll
   LIMIT 5
   RETURN doc
 ```
+
+Vector indexes can now be sparse to exclude documents with the embedding attribute
+for indexing missing or set to `null`.
+
+Another metric has been added. The `innerProduct` is a vector similarity measure
+calculated using the dot product of two vectors without normalizing them.
+Therefore, it compares not only the angle but also the magnitudes.
+The accompanying AQL function is the following:
+
+- `APPROX_NEAR_INNER_PRODUCT()`
 
 ## Server options
 
@@ -1544,7 +1574,7 @@ certain minimum size, e.g. 250 bytes.
 
 <small>Introduced in: v3.11.2</small>
 
-LZ4 compression of edge index cache values allows to store more data in main
+LZ4 compression of edge index cache values allows you to store more data in main
 memory than without compression, so the available memory can be used more
 efficiently. The compression is transparent and does not require any change to
 queries or applications.
@@ -2227,6 +2257,40 @@ DB-Servers in a cluster has been added:
 |:------|:------------|
 | `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
+### RocksDB upgrade
+
+<small>Introduced in: v3.12.6</small>
+
+The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
+
+As a result, you may see performance improvements while using slightly less
+resources especially for mixed workloads.
+
+The following new RocksDB functionality is exposed in ArangoDB:
+
+- Different types of block caches, LRU and HyperClockCache (HCC), selectable via
+  the new `--rocksdb.block-cache-type` startup option
+- A `--rocksdb.block-cache-estimated-entry-charge` startup option to configure the HCC.
+- RocksDB table format version 6 (not downwards-compatible to older versions of RocksDB).
+- RocksDB blob caching (if blobs are enabled for the documents column family),
+  which you can enable via `--rocksdb.enable-blob-cache`.
+- Using blob files only from a certain level onwards (if blobs are enabled for
+  the documents column family), which you can enable via
+  `--rocksdb.blob-file-starting-level`.
+- Blob cache prepopulation, which you can enable via `--rocksdb.prepopulate-blob-cache`.
+- An option to generate Bloom/Ribbon filters that minimize memory internal
+  fragmentation, which you can enable with `--rocksdb.optimize-filters-for-memory`.
+
+The following RocksDB metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `rocksdb_block_cache_charge_per_entry` | Average size of entries in RocksDB block cache.
+| `rocksdb_block_cache_entries` | Number of entries in the RocksDB block cache.
+| `rocksdb_live_blob_file_garbage_size` | Size of garbage in live RocksDB .blob files.
+| `rocksdb_live_blob_file_size` | Size of live RocksDB .blob files.
+| `rocksdb_num_blob_files` | Number of live RocksDB .blob files.
+
 ### API call recording
 
 <small>Introduced in: v3.12.5</small>
@@ -2238,9 +2302,9 @@ is for debugging purposes.
 You can configure the memory limit for this feature with the following startup option:
 
 - `--server.api-recording-memory-limit`:
-  Size limit for the list of API call records (default: `25600000`).
+  Size limit for the list of API call records (default: `26214400`).
 
-This means that 25 MB of memory is reserved by default.
+This means that 25 MiB of memory is reserved by default.
 
 API call recording is enabled by default but you can disable it via the new
 `--server.api-call-recording` startup option.
@@ -2259,6 +2323,41 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
 for details.
 
+### AQL query recording
+
+<small>Introduced in: v3.12.6</small>
+
+A new `/_admin/server/aql-queries` endpoint has been added to let you retrieve a
+list of the most recent AQL queries with a timestamp and information about the
+submitted query. This feature is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup option:
+
+- `--server.aql-recording-memory-limit`:
+  Size limit for the list of AQL query records (default: `26214400` bytes)
+
+This means that 25 MiB of memory is reserved by default.
+
+AQL query recording is enabled by default but you can disable it via the new
+`--server.aql-query-recording` startup option.
+
+This and the `/_admin/server/api-calls` endpoint are referred to as the
+recording API, which exposes the recorded API calls and AQL queries. It is
+enabled by default. Users with administrative access to the `_system` database
+can call the endpoints. You can further restrict the access to only the
+superuser by setting `--log.recording-api-enabled` to `jwt`, or disable the
+endpoints altogether by setting the option to `false`.
+
+A metric has been added for the time spent on AQL query recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_recording_call_time` | Execution time histogram for AQL recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
+for details.
+
 ### Access tokens
 
 <small>Introduced in: v3.12.5</small>
@@ -2272,6 +2371,24 @@ dates, and individually revoke tokens.
 
 See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
 documentation.
+
+### `@PID@` and `@TEMP_BASE_DIR@` placeholders for startup options
+
+<small>Introduced in: v3.12.6</small>
+
+You can use special placeholders in startup options like `--log.output` that get
+substituted as follows:
+
+- `@PID@`: Replaced at runtime with the actual process ID. This has already
+  been supported using a literal occurrence of `$PID`.
+- `@TEMP_BASE_DIR@`: Replaced at runtime with the current temporary directory,
+  e.g. `/tmp/arangodb_i37Xxh` (automatically created on startup with a randomly
+  generated suffix).
+
+Keep in mind that `@NAME@` is also the syntax for using the value of an
+environment variable `NAME`. If there is an environment variable called `PID` or
+`TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
+value of the respective environment variable.
 
 ## Client tools
 

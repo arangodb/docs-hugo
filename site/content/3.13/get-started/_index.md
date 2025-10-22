@@ -49,7 +49,7 @@ MariaDB or PostgreSQL, you should be familiar with the SQL query language.
 ArangoDB's query language is called AQL. There are some similarities between both
 languages despite the different data models of the database systems. The most
 notable difference is probably the concept of loops in AQL, which makes it feel
-more like a programming language. It suits the schema-less model more natural
+more like a programming language. It suits the schema-less model more naturally
 and makes the query language very powerful while remaining easy to read and write.
 
 To get started with AQL, sign up for [ArangoDB University](https://university.arangodb.com/)

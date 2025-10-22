@@ -67,7 +67,7 @@ This is only the case if all of the following conditions are true:
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
-- The glibc version of your system is different than the one used by ArangoDB,
+- The glibc version of your system is different from the one used by ArangoDB,
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
@@ -112,7 +112,7 @@ If the feature is enabled, then any endpoints that contain database, collection,
 View, or index names in the URL may contain special characters that were
 previously not allowed (percent-encoded). They are also to be expected in
 payloads that contain database, collection, View, or index names, as well as
-document identifiers (because they are comprised of the collection name and the
+document identifiers (because they are composed of the collection name and the
 document key). If client applications assemble URLs with extended names
 programmatically, they need to ensure that extended names are properly
 URL-encoded.
@@ -662,7 +662,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 
