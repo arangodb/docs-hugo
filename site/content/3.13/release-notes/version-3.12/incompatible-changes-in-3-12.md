@@ -970,6 +970,15 @@ to be outside the expected range of `[-1, 1]`.
 It is recommended to recreate all vector indexes that use the `cosine` metric
 after upgrading to v3.12.6 or later.
 
+## Added error reporting for invalid requests
+
+<small>Introduced in: v3.12.6</small>
+
+When _arangod_ parses HTTP requests and encounters an unexpected `Content-Length`
+header or an invalid URL, it now sends a response with an error object instead
+of closing the connection, e.g. that the URL is corrupt with an HTTP status code
+of 400.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
