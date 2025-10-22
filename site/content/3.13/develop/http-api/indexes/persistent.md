@@ -113,8 +113,9 @@ paths:
                   default: false
                 sparse:
                   description: |
-                    Whether create a sparse index that excludes documents with at least
-                    one of the `fields` missing or set to `null`.
+                    Whether to create a sparse index that excludes documents with
+                    at least one of the attributes for indexing missing or set to
+                    `null`. These attributes are defined by `fields`.
                   type: boolean
                   default: false
                 deduplicate:
