@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735568384,
+    "default" : 7735569408,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -7575,7 +7575,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089757184,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7583,7 +7583,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802703319,
+    "default" : 26802706636,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7873,7 +7873,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33089757184,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7881,7 +7881,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853854311,
+    "default" : 19853856768,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9116,7 +9116,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282682060,
+    "default" : 9282683289,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11725,7 +11725,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376909414,
+    "default" : 12376911052,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
