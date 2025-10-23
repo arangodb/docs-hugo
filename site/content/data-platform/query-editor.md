@@ -1,6 +1,6 @@
 ---
-title: Query editor
-menuTitle: Query editor
+title: The Query Editor of the Arango Data Platform
+menuTitle: Query Editor
 weight: 30
 description: >-
   Write, run, and analyze AQL queries using an IDE-like interface
@@ -9,7 +9,7 @@ description: >-
 
 ## Features
 
-The query editor of the Arango Data Platform offers the following features:
+The Query Editor of the Arango Data Platform offers the following features:
 
 - **Tabbed interface**:
   Work on multiple queries concurrently via tabs.
@@ -31,7 +31,7 @@ The query editor of the Arango Data Platform offers the following features:
   in the current database.  
   
 - **Remembered queries and results**:
-  The query editor remembers its state including unsaved queries as well as
+  The Query Editor remembers its state including unsaved queries as well as
   results across sessions using your local browser storage.
 
 - **Re-organizable viewport**:
@@ -40,11 +40,11 @@ The query editor of the Arango Data Platform offers the following features:
 
 - **Ask AI for AQL Queries (AQLizer)**:
   Describe what you want in natural language and generate AQL queries right
-  from the query editor. This feature is only available if you have the
+  from the Query Editor. This feature is only available if you have the
   AI Services Data Platform.
 
 {{< info >}}
-The query editor of the Data Platform is not feature-complete. It currently
+The Query Editor of the Data Platform is not feature-complete. It currently
 lacks features like a way to set query options, a list of running and slow
 queries, syntax highlighting, and so on. Use the query editor of ArangoDB
 instead if you need these features. You can find it under **Management** in the
@@ -84,7 +84,7 @@ question.
 ## Adjust the viewport
 
 The following options for re-organizing how tabs and panels are arranged in the
-query editor are available:
+Query Editor are available:
 
 - You can drag a tab with your mouse to a different place in the tab list to
   change the order of the tabs or move a tab to a different panel.
