@@ -2143,7 +2143,7 @@ nav.pagination .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: url("/images/bottom-cta-background.jpg") no-repeat center center;
+    background: linear-gradient(40deg, var(--color-avocado) 50%, var(--color-evergreen));
     background-position: center;
     color: var(--gray-50)
 }
