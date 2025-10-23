@@ -26,18 +26,27 @@ The query editor of the Arango Data Platform offers the following features:
   You can individually collapse and expand the entries, as well as clear the
   entire history.
 
+- **Saved queries**:
+  You can save frequently used queries to add them to a sidebar for all users
+  in the current database.  
+  
+- **Remembered queries and results**:
+  The query editor remembers its state including unsaved queries as well as
+  results across sessions using your local browser storage.
+
 - **Re-organizable viewport**:
   You can drag and drop tabs to re-order them and move them between existing
   panels, as well as split panels vertically and horizontally into more panels.
 
 - **Ask AI for AQL Queries (AQLizer)**:
   Describe what you want in natural language and generate AQL queries right
-  from the query editor. This feature requires the AI Services component.
+  from the query editor. This feature is only available if you have the
+  AI Services Data Platform.
 
 {{< info >}}
 The query editor of the Data Platform is not feature-complete. It currently
-lacks features such as remembering entered queries and results, a way to set
-query options, syntax highlighting, and so on. Use the query editor of ArangoDB
+lacks features like a way to set query options, a list of running and slow
+queries, syntax highlighting, and so on. Use the query editor of ArangoDB
 instead if you need these features. You can find it under **Management** in the
 Data Platform web interface, and then **Queries** in the second-level navigation.
 {{< /info >}}
@@ -45,21 +54,27 @@ Data Platform web interface, and then **Queries** in the second-level navigation
 ## Work with queries
 
 You can enter your AQL query code into the default tab, or open more query tabs
-at any point by clicking the `+` button at the top of a panel.<!-- TODO: use icon shortcode -->
-You close tabs with the `x` button, except for the last remaining tab.
+at any point by clicking the `+` button at the top of a panel.
+You can close tabs with the `x` button, but the viewport ensures that one tab
+always remains.<!-- TODO: use icon shortcode -->
 
 A floating panel in the top right corner lets you enter values for
 **Bind variables** if there are any such placeholders in the query. You can
 minimize this panel to a button.
 
 The following buttons are available at the bottom of a query tab:
+
+- **Save**: Store the query and the bind variables under a name you provide.
+  The saved queries of the current database are listed in the sidebar on the
+  left-hand side under **Saved**, where you can also clone, rename, and delete them.
+- **AQLizer**: See [Generate queries](#generate-queries).
 - **Run query**: Execute the AQL query normally.
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.
 
 ## Generate queries
 
-{{< tag "AI Services" >}}
+{{< tag "AI Services Data Platform" >}}
 
 Click the **AQLizer** button to open the panel for generating AQL queries with
 AI. The interface is like a chat, where you enter a question in natural language
