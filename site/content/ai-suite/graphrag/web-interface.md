@@ -183,7 +183,7 @@ The chat interface provides two search methods:
 - **Deep search**: This option will take longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
-- Switch the search method from **Instant search** to **Deep research** and vice-versa
+- Switch the search method from **Instant search** to **Deep search** and vice-versa
   directly in the chat
 - Change or create a new retriever service
 - Clear the chat
