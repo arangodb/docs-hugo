@@ -41,7 +41,7 @@ At its core, the Arango Data Platform is purpose-built for Kubernetes environmen
 
 The Arango Data Platform provides these core capabilities out of the box:
 
-- [**ArangoDB Core**](../../arangodb/3.12/_index.md): The ArangoDB database system with support for
+- [**ArangoDB Core**](../arangodb/3.12/_index.md): The ArangoDB database system with support for
   graphs, documents, key-value, full-text search, and vector search.
 
 - [**Graph Visualizer**](graph-visualizer.md):
@@ -50,17 +50,17 @@ The Arango Data Platform provides these core capabilities out of the box:
 
 ## Extend the Arango Data Platform with AI capabilities
 
-Take your Arango Data Platform to the next level with [**AI Services**](../../ai-services/_index.md) that offers advanced AI and machine learning capabilities that integrate seamlessly into the platform's unified web interface.
+Take your Arango Data Platform to the next level with [**AI Services**](../ai-services/_index.md) that offers advanced AI and machine learning capabilities that integrate seamlessly into the platform's unified web interface.
 
 What you get with AI Services:
 
-- [GraphRAG](../../ai-services/graphrag/): Generate knowledge graphs from documents and enable
+- [GraphRAG](../ai-services/graphrag/): Generate knowledge graphs from documents and enable
    conversational querying of your data.
-- [GraphML](../../ai-services/graphml/): Apply machine learning algorithms that leverage graph
+- [GraphML](../ai-services/graphml/): Apply machine learning algorithms that leverage graph
   structure for better predictions.
-- [Graph Analytics](../../ai-services/graph-analytics/): Run advanced algorithms like PageRank
+- [Graph Analytics](../ai-services/graph-analytics/): Run advanced algorithms like PageRank
   to discover influential nodes and patterns.
-- [Jupyter notebooks](../../ai-services/notebook-servers.md): Run Jupyter Notebooks to build and
+- [Jupyter notebooks](../ai-services/notebook-servers.md): Run Jupyter Notebooks to build and
   experiment with graph-powered data, AI, and machine learning workflows directly connected
   to ArangoDB databases. 
 - Public and private LLM support: Use public LLMs such as OpenAI
