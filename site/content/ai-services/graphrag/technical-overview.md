@@ -6,7 +6,6 @@ description: >-
   Technical overview of ArangoDB's GraphRAG solution, including
   architecture, services, and deployment options
 ---
-{{< tag "ArangoDB Platform" >}}
 
 {{< tip >}}
 The ArangoDB Platform & AI Services are available as a pre-release. To get
