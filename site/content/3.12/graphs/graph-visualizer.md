@@ -233,11 +233,12 @@ dismissed nodes and their edges back to the canvas later on.
 
 ### View node and edge properties
 
-You can inspect the document attributes of a node or edge as follows:
+You can inspect (and edit) the document attributes of a node or edge via a
+properties dialog that you can open as follows:
 
-- Double-click a node or edge to open a dialog with the properties.
-- Right-click a node to open the context menu and click **View Node** to open
-  the dialog with the properties.
+- Double-click a node or edge.
+- Right-click a node to open the context menu and click **View node**.
+- Right-click an edge to open the context menu and click **View edge**.
 
 ![A screenshot of the properties dialog with the keys and values of a node](../../images/graph-visualizer-node-properties.png)
 
@@ -376,6 +377,8 @@ underlying data.
      node properties more quickly without opening the full
      [properties dialog](#view-node-and-edge-properties).
 
+![A screenshot of the Legend panel and a node styling dialog](../../images/graph-visualizer-customization.png)
+
 ### Customize the appearance of edges
 
 1. Click the **Legend** button in the top right to open the **Legend** panel
@@ -424,5 +427,3 @@ aspects of the graph data.
 5. Click the icon ({{< icon "select-all" >}}) next to the number to select all
    nodes or edges that belong to the respective collection. This clears any
    previous selection.
-
-![A screenshot of the Customization panel with a popover dialog for edge styling open](../../images/graph-visualizer-customization.png)
