@@ -50,24 +50,26 @@ supported by the Graph Visualizer.
 
 ### Select and load a graph
 
-1. In the Arango Data Platform web interface, select the database your named graph
-   is stored in.
+1. In the Arango Data Platform web interface, select the database your
+   named graph is stored in.
 2. Click **Graphs** in the main navigation.
 3. Select a graph from the list.
 4. The viewport of the Graph Visualizer opens for exploring the graph.
 
-The main area of the viewport may initially be empty in the following cases:
-
-- You open a graph for the first time and nothing is selected for displaying yet
-- You previously used the **Clear graph** option
-<!-- TODO: Doesn't it preserve the last state? Can it be lost?
-- Reopening the Graph Visualizer after a previous session
--->
+When you open a graph for the first time or previously used the **Clear graph**
+option, the Graph Visualizer automatically populates the canvas with an initial
+neighborhood. You can right-click the canvas and choose **Clear Canvas** to start
+with an empty canvas.
 
 You can [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually)
 as well as [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query).
 Afterwards, you can also [Add nodes and edges using a query based on a selection](#add-nodes-and-edges-using-a-query-based-on-a-selection-canvas-actions)
 as well as [Remove nodes from the canvas](#remove-nodes-from-the-canvas).
+
+For each graph, the Graph Visualizer remembers the nodes and edges that are on
+the canvas across sessions using the local browser storage. It also remembers
+the theme settings including unsaved visual customizations, but not the specific
+spatial arrangement of the nodes.
 
 ### The viewport
 
@@ -79,7 +81,7 @@ The Graph Visualizer interface is comprised of the following components:
 - **Search & add nodes to canvas** and **Queries**:
   A widget in the top left corner that opens dialogs for selecting nodes and
   edges to display (manually or using queries).
-- [**Legend**](#legend):
+- [**Legend**](#legend-and-visual-customization):
   A panel on the right-hand side that shows you what colors and icons are used
   for nodes and edges, as well as to adjust the styling, and to select all
   items of a type.
@@ -160,7 +162,7 @@ and interactive.
 
 You can select nodes, edges, or both on the canvas and then use a **Canvas Action**.
 This runs an AQL query to add nodes, edges, or paths of the graph to the canvas.
-For example, you could select and movie and use a Canvas Action that adds all
+For example, you could select a movie and use a Canvas Action that adds all
 other movies with the same runtime as the one you selected. Or you could select
 two persons and use a Canvas Action to add all movies and persons that are on
 the shortest paths between the selected persons.
@@ -345,7 +347,7 @@ You can delete individual nodes which deletes the corresponding document.
 2. Click **Delete Edge**.
 3. Confirm the deletion by clicking **Delete**.
 
-## Legend
+## Legend and visual customization
 
 The legend panel lists the collections of the nodes and edges that are currently
 on the canvas, how many there are of each type, and you can select all elements
