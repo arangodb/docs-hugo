@@ -3,10 +3,10 @@ title: Graph Analytics
 menuTitle: Graph Analytics
 weight: 115
 description: |
-  ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
-  data separately from your ArangoDB deployments
+  Graph analytics analyzes information networks to extract insights from data
+  relationships using algorithms like PageRank for fraud detection, recommendations, and network analysis
 aliases:
-  - ../data-science/graph-analytics
+  - ../graphs/graph-analytics
 ---
 {{< tag "ArangoDB Platform" "ArangoGraph" >}}
 
