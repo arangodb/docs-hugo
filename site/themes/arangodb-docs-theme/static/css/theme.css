@@ -1652,36 +1652,24 @@ div.box {
     border-radius: 7px;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    border: 3px solid black;
 }
 
 div.box.info {
-    border:1px solid var(--INFO-BORDER-COLOR);
-    background: var(--INFO-BG-COLOR);
-    box-shadow: inset 0 0 0 2px var(--INFO-BORDER-COLOR), 0 0 0 0 transparent;
+    border-color: var(--state-info-dark);
 }
 
-div.box.warning {
-    border: 1px solid var(--WARNING-BORDER-COLOR);
-    background: var(--WARNING-BG-COLOR);
-    box-shadow: 0 0 0 2px var(--WARNING-BORDER-COLOR) inset,0 0 0 0 transparent
+div.box.warning,
+div.box.security {
+    border-color: var(--state-warning-dark);
 }
 
 div.box.danger {
-    border: 1px solid var(--DANGER-BORDER-COLOR);
-    background:var(--DANGER-BG-COLOR);
-    box-shadow: inset 0 0 0 2px var(--DANGER-BORDER-COLOR), 0 0 0 0 transparent;
+    border-color: var(--state-danger);
 }
 
 div.box.tip {
-    border: 1px solid var(--TIP-BORDER-COLOR);
-    background:  var(--TIP-BG-COLOR);
-    box-shadow: 0 0 0 2px  var(--TIP-BORDER-COLOR) inset,0 0 0 0 transparent;
-}
-
-div.box.security {
-    border: 1px solid var(--SECURITY-BORDER-COLOR);
-    background: var(--SECURITY-BG-COLOR);
-    box-shadow: 0 0 0 2px var(--SECURITY-BORDER-COLOR) inset,0 0 0 0 transparent
+    border-color: var(--state-success-dark);
 }
 
 div.box-content {
@@ -1690,27 +1678,23 @@ div.box-content {
 }
 
 div.box.info > .box-content-container > .box-content > i {
-    color: var(--INFO-ICON-COLOR);
+    color: var(--state-info-dark);
     font-size: 1.2em;
 }
 
-div.box.warning > .box-content-container > .box-content > i {
-    color: var(--WARNING-ICON-COLOR);
+div.box.warning > .box-content-container > .box-content > i,
+div.box.security > .box-content-container > .box-content > i {
+    color: var(--state-warning-dark);
     font-size: 1.2em;
 }
 
 div.box.danger > .box-content-container > .box-content > i {
-    color: var(--DANGER-ICON-COLOR);
+    color: var(--state-danger);
     font-size: 1.2em;
 }
 
 div.box.tip > .box-content-container > .box-content > i {
-    color: var(--TIP-ICON-COLOR);
-    font-size: 1.2em;
-}
-
-div.box.security > .box-content-container > .box-content > i {
-    color: var(--SECURITY-ICON-COLOR);
+    color: var(--state-success-dark);
     font-size: 1.2em;
 }
 
