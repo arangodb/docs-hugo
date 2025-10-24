@@ -39,6 +39,10 @@ The Natural Language to AQL Translation Service also includes the following feat
 
 When creating the service, you provide parameters in the API request that become environment variables used at runtime.
 
+{{< info >}}
+Replace `<ExternalEndpoint>` in all examples below with your Arango Data Platform deployment URL.
+{{< /info >}}
+
 {{< tabs >}}
 
 {{< tab "Required Parameters" >}}
@@ -79,7 +83,7 @@ The first step is to create a new project:
 
 ```bash
 curl --request POST \
-  --url https://arangodb-platform-dev.pilot.arangodb.com/gen-ai/v1/project \
+  --url https://<ExternalEndpoint>:8529/ai-services/v1/project \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -104,7 +108,7 @@ Create the service instance with your configuration:
 
 ```bash
 curl --request POST \
-  --url https://arangodb-platform-dev.pilot.arangodb.com/gen-ai/v1/graphrag \
+  --url https://<ExternalEndpoint>:8529/ai-services/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -202,7 +206,7 @@ POST /v1/process_text
 
 ```bash
 curl --request POST \
-  --url https://arangodb-platform-dev.pilot.arangodb.com/graph-rag/<serviceID>/v1/process_text \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -230,7 +234,7 @@ POST /v1/process_text_stream
 
 ```bash
 curl --request POST \
-  --url https://arangodb-platform-dev.pilot.arangodb.com/graph-rag/<serviceID>/v1/process_text_stream \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text_stream \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -261,7 +265,7 @@ POST /v1/translate_query
 
 ```bash
 curl --request POST \
-  --url https://arangodb-platform-dev.pilot.arangodb.com/graph-rag/<serviceID>/v1/translate_query \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/translate_query \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
