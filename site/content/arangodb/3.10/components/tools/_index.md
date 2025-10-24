@@ -31,4 +31,4 @@ Additional tools which are available separately:
 |-----------------|-------------------|
 | [Foxx CLI](foxx-cli/_index.md) | Command line tool for managing and developing Foxx services
 | [kube-arangodb](../../deploy/kubernetes.md) | Operators to manage Kubernetes deployments
-| [Oasisctl](../../../../amp/oasisctl/_index.md) | Command-line tool for managing the Arango Managed Platform (AMP)
+| [oasisctl](../../../../amp/oasisctl/_index.md) | Command-line tool for managing the Arango Managed Platform (AMP)

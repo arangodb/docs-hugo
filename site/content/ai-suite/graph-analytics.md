@@ -108,7 +108,7 @@ an AMP **API key**. See
 on how to create one.
 
 You then need to generate an **access token** using the API key. See
-[Authenticating with Oasisctl](../amp/api/get-started.md#authenticating-with-oasisctl)
+[Authenticating with oasisctl](../amp/api/get-started.md#authenticating-with-oasisctl)
 on how to do so using `oasisctl login`.
 
 The [Engine API](#engine-api) uses one of two authentication methods, depending

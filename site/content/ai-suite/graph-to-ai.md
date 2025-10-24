@@ -10,7 +10,7 @@ aliases:
 ---
 
 {{< tip >}}
-The Arango Data Platform & AI Services are available as a pre-release. To get
+The Arango Data Platform & AI Suite are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -20,7 +20,7 @@ data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that
 you can directly use for your research and product development.
 
-ArangoDB also offers dedicated AI Services, using the database core
+ArangoDB also offers dedicated AI Suite, using the database core
 as the foundation for higher-level features. Whether you want to turbocharge
 generative AI applications with a GraphRAG solution or apply analytics and
 machine learning to graph data at scale, ArangoDB covers these needs.

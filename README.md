@@ -367,7 +367,7 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-AI Services, the Data Platform, the Arango Managed Platform (AMP), or multiple
+AI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
 of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
@@ -591,6 +591,8 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
+  - _Arango Data Platform_, _Arango AI Data Platform_, and _AI Suite_, but not
+    ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~, ~~AI Services~~, or ~~GenAI Suite~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write

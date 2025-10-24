@@ -7,7 +7,7 @@ description: >-
 weight: 10
 ---
 {{< tip >}}
-The Arango Data Platform & AI Services are available as a pre-release. To get
+The Arango Data Platform & AI Suite are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}

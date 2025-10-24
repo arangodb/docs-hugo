@@ -7,7 +7,7 @@ description: >-
  using the Platform web interface
 ---
 {{< tip >}}
-The Arango Data Platform & AI Services are available as a pre-release. To get
+The Arango Data Platform & AI Suite are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -26,7 +26,7 @@ The entire process is organized into sequential steps within a **Project**:
 To create a new GraphRAG project using the Arango Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **AI Services** to open the GraphRAG project management
+2. In the left-hand sidebar, click **AI Suite** to open the GraphRAG project management
    interface, then click **Run GraphRAG**.
 3. In the **GraphRAG projects** view, click **Add new project**.
 4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally

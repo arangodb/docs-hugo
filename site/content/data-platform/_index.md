@@ -8,7 +8,7 @@ description: >-
 ---
 
 {{< tip >}}
-The Arango Data Platform & AI Services are available as a pre-release. To get
+The Arango Data Platform & AI Suite are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -25,7 +25,7 @@ of the platform features with enterprise-grade automation and reliability.
 
 {{% card title="Get started with the Arango Data Platform" link="get-started/" %}}
 Deploy the core ArangoDB database system with Kubernetes orchestration.
-Optionally add AI Services to turn data into an AI-powered knowledge engine.
+Optionally add AI Suite to turn data into an AI-powered knowledge engine.
 {{% /card %}}
 
 {{% card title="Features and Architecture" link="features/" %}}
@@ -40,7 +40,7 @@ Learn about the official ArangoDB Kubernetes Operator that powers the Arango Dat
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
 {{% /card %}}
 
-{{% card title="AI Services" link="../../ai-services/" %}}
+{{% card title="AI Suite" link="../../ai-suite/" %}}
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 

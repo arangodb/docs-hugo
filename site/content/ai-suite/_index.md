@@ -1,14 +1,17 @@
 ---
-title: AI Services
-menuTitle: AI Services
+title: AI Suite
+menuTitle: AI Suite
 weight: 2
 description: >-
-  A comprehensive AI solution that transforms your data into intelligent knowledge graphs with GraphRAG capabilities, applies advanced machine learning with GraphML, and provides enterprise-grade tools for analytics, natural language querying, and AI-powered insights, all through an intuitive web interface
+  A comprehensive AI solution that transforms your data into intelligent
+  knowledge graphs with GraphRAG capabilities, applies advanced machine learning
+  with GraphML, and provides enterprise-grade tools for analytics,
+  natural language querying, and AI-powered insights, all through an intuitive
+  web interface
 ---
-
 ## What's included
 
-AI Services are comprised of two major components:
+AI Suite are comprised of two major components:
 
 - [**GraphRAG**](./graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
@@ -31,6 +34,6 @@ Alongside these components, you also get the following additional features:
 - [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a model registry for private LLMs
   or to run machine learning experiments as part of the Arango Data Platform.
 - **Application Programming Interfaces**: Use the underlying APIs of the
-  AI Services and build your own integrations. See the
+  AI Suite and build your own integrations. See the
   [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.

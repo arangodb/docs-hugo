@@ -619,7 +619,7 @@ Deployment Z of project DEF                  | ✓ | — | —
 
 ## Restricting access to organizations
 
-To enhance security, you can implement the following restrictions via [Oasisctl](../oasisctl/_index.md):
+To enhance security, you can implement the following restrictions via [oasisctl](../oasisctl/_index.md):
 
 1. Limit allowed authentication providers.
 2. Specify an allowed domain list.

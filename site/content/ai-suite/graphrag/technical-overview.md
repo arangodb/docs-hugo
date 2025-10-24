@@ -8,7 +8,7 @@ description: >-
 ---
 
 {{< tip >}}
-The Arango Data Platform & AI Services are available as a pre-release. To get
+The Arango Data Platform & AI Suite are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -33,7 +33,7 @@ ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
-The GraphRAG component of AI Services brings all the capabilities
+The GraphRAG component of AI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
