@@ -9,7 +9,7 @@ aliases:
   - ../arangographml/getting-started
   - ../arangographml-getting-started-with-arangographml
 ---
-The ArangoDB Platform provides an easy-to-use & scalable interface to run
+The Arango Data Platform provides an easy-to-use & scalable interface to run
 Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
 managed by ArangoDB, all that is typically required are JSON specifications outlining
 individual processes to solve a Machine Learning task.
@@ -80,7 +80,7 @@ news sources, and locations are interconnected into a large graph.
 ![Example Event](../../images/ArangoML_open_intelligence_visualization.png)
 
 The [`arango-datasets`](../../arangodb/3.12/components/tools/arango-datasets.md) Python package
-allows you to load pre-defined datasets into ArangoDB Platform. It comes pre-installed in the
+allows you to load pre-defined datasets into Arango Data Platform. It comes pre-installed in the
 GraphML notebook environment.
 
 ```py

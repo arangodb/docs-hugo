@@ -17,7 +17,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [AI Data Platform](../data-platform/about/_index.md).
+and included in the [AI Data Platform](../data-platform/_index.md).
 
 Key features:
 
@@ -89,7 +89,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 {{< tabs "platforms" >}}
 
 {{< tab "AI Data Platform" >}}
-You can use any of the available authentication methods the AI Data Platform
+You can use any of the available authentication methods the Data Platform
 supports to start and stop `graphanalytics` services via the AI service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
@@ -136,7 +136,7 @@ The interface for managing the engines depends on the environment you use:
 
 {{< tag "AI Data Platform" >}}
 
-GAEs are deployed and deleted via the [AI service](services/gen-ai.md)
+GAEs are deployed and deleted via the [AI service](reference/gen-ai.md)
 in the AI Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
@@ -144,7 +144,7 @@ if the Platform deployment uses a self-signed certificate (default).
 
 #### Start a `graphanalytics` service
 
-`POST <ENGINE_URL>/gen-ai/v1/graphanalytics`
+`POST <ENGINE_URL>/ai/v1/graphanalytics`
 
 Start a GAE via the AI service with an empty request body:
 
@@ -152,7 +152,7 @@ Start a GAE via the AI service with an empty request body:
 # Example with a JWT session token
 ADB_TOKEN=$(curl -sSk -d '{"username":"root", "password": ""}' -X POST https://127.0.0.1:8529/_open/auth | jq -r .jwt)
 
-Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/graphanalytics)
+Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/ai/v1/graphanalytics)
 ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
 if [[ "$ServiceID" == "null" ]]; then 
   echo "Error starting gral engine"
@@ -164,13 +164,13 @@ echo "$Service" | jq
 
 #### List the services
 
-`POST <ENGINE_URL>/gen-ai/v1/list_services`
+`POST <ENGINE_URL>/ai/v1/list_services`
 
 You can list all running services managed by the AI service, including the
 `graphanalytics` services:
 
 ```sh
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/gen-ai/v1/list_services | jq
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/ai/v1/list_services | jq
 ```
 
 #### Stop a `graphanalytics` service
@@ -178,7 +178,7 @@ curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/g
 Delete the desired engine via the AI service using the service ID:
 
 ```sh
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/gen-ai/v1/service/$ServiceID | jq
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/ai/v1/service/$ServiceID | jq
 ```
 
 ### Management API

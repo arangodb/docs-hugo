@@ -3,10 +3,10 @@ title: GraphRAG Notebook Tutorial
 menuTitle: Notebook Tutorial
 description: >-
   Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
-weight: 10
+weight: 25
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -199,9 +199,9 @@ pprint(importerResponse)
 
 Once the importer service has processed the document, you can visualize and
 interact with the generated Knowledge Graph using the [Graph Visualizer](../../data-platform/graph-visualizer.md)
-directly from the ArangoDB Platform web interface.
+directly from the Arango Data Platform web interface.
 
-1. In the ArangoDB Platform web interface, select the database you have previously used.
+1. In the Arango Data Platform web interface, select the database you have previously used.
 2. Click **Graphs** in the main navigation.
 3. Select the graph named **Knowledge Graph** from the list.
 4. The viewport of the Graph Visualizer opens for exploring the graph.

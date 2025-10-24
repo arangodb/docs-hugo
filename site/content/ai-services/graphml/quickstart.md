@@ -3,14 +3,14 @@ title: How to get started with GraphML
 menuTitle: Quickstart
 weight: 5
 description: >-
-  You can use GraphML straight within the ArangoDB Platform, via the web interface
+  You can use GraphML straight within the Arango Data Platform, via the web interface
   or via Notebooks
 aliases:
   - ../arangographml/deploy  
 ---
 ## Web interface versus Jupyter Notebooks
 
-The ArangoDB Platform provides enterprise-ready Graph Machine Learning in two options,
+The Arango Data Platform provides enterprise-ready Graph Machine Learning in two options,
 tailored to suit diverse requirements and preferences: 
 - Using the web interface
 - In a scriptable manner, using the integrated Jupyter Notebooks and the HTTP API for GraphML
@@ -20,7 +20,7 @@ tailored to suit diverse requirements and preferences:
 {{< tabs "graphml-setup" >}}
 
 {{< tab "Web Interface" >}}
-The web interface of the ArangoDB Platform allows you to create, configure, and
+The web interface of the Arango Data Platform allows you to create, configure, and
 run a full machine learning workflow for GraphML. To get started, see the
 [Web interface for GraphML](ui.md) page.
 {{< /tab >}}

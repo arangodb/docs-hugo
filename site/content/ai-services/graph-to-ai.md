@@ -1,17 +1,16 @@
 ---
-title: Generative Artificial Intelligence (GenAI) and Data Science
-menuTitle: GenAI & Data Science
+title: From Graph to AI
+menuTitle: From Graph to AI
 weight: 25
 description: >-
   ArangoDB's set of tools and technologies enables analytics, machine learning,
-  and GenAI applications powered by graph data
+  and AI applications powered by graph data
 aliases:
   - data-science/overview
 ---
-- [Link to 3.12](../arangodb/3.12/aql/_index.md)
 
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -21,7 +20,7 @@ data science applications. The core database system includes multi-model storage
 of information with scalable graph and information retrieval capabilities that
 you can directly use for your research and product development.
 
-ArangoDB also offers a dedicated GenAI Suite, using the database core
+ArangoDB also offers dedicated AI Services, using the database core
 as the foundation for higher-level features. Whether you want to turbocharge
 generative AI applications with a GraphRAG solution or apply analytics and
 machine learning to graph data at scale, ArangoDB covers these needs.
@@ -32,39 +31,6 @@ in data science and data analytics. Multiple data science personas within the
 engineering space can make use of ArangoDB's set of tools and technologies that
 enable analytics and machine learning on graph data. 
 -->
-
-## GenAI Suite
-
-The GenAI Suite is comprised of two major components:
-
-- [**GraphRAG**](#graphrag): A complete solution for extracting entities
-  from text files to create a knowledge graph that you can then query with a
-  natural language interface.
-- [**GraphML**](#graphml): Apply machine learning to graphs for link prediction,
-  classification, and similar tasks.
-
-Each component has an intuitive graphical user interface integrated into the
-ArangoDB Platform web interface, guiding you through the process.
-
-Alongside these components, you also get the following additional features:
-
-- [**Graph Visualizer**](../data-platform/graph-visualizer.md): A web-based tool for exploring your graph data with an
-  intuitive interface and sophisticated querying capabilities.
-- [**Graph Analytics**](graph-analytics.md): Run graph algorithms such as PageRank
-  on dedicated compute resources.
-- [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
-  interactive notebooks for experimentation and development of applications
-  that use ArangoDB as their backend.
-- **Public and private LLM support**: Use public LLMs such as OpenAI
-  or private LLMs with [Triton Inference Server](services/triton-inference-server.md).  
-- [**MLflow integration**](services/mlflow.md): Use the popular MLflow as a model registry for private LLMs
-  or to run machine learning experiments as part of the ArangoDB Platform.
-- [**Adapters**](../ecosystem/adapters/_index.md): Use ArangoDB together with cuGraph, NetworkX,
-  and other data science tools. 
-- **Application Programming Interfaces**: Use the underlying APIs of the
-  GenAI Suite services and build your own integrations. See the
-  [API reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html) documentation
-  for more details.
 
 ## From graph to AI
 

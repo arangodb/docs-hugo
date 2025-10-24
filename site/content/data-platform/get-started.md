@@ -1,87 +1,50 @@
 ---
-title: The ArangoDB Platform
-menuTitle: Platform
-weight: 5
+title: Get Started with the Arango Data Platform
+menuTitle: Get Started
+weight: 10
 description: >-
-  The ArangoDB Platform brings everything ArangoDB offers together to a single
+  The Arango Data Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
 
-The ArangoDB Platform is a technical infrastructure that acts as the umbrella
+The Arango Data Platform is a technical infrastructure that acts as the umbrella
 for hosting the entire ArangoDB offering of products. The Platform makes it easy
 to deploy and operate the core ArangoDB database system along with any additional
 ArangoDB products for machine learning, data explorations, and more. You can
 run it on-premises or in the cloud yourself on top of Kubernetes to access all
 of the platform features.
 
-## Features of the ArangoDB Platform
+## Use the Arango Data Platform as a managed service
 
-- **Core database system**: The ArangoDB graph database system for storing
-  interconnected data.{{< comment >}} You can use the free Community Edition or the commercial
-  Enterprise Edition.{{< /comment >}}
-- **Graph Visualizer**: A web-based tool for exploring your graph data with an
-  intuitive interface and sophisticated querying capabilities.
-- **Graph Analytics**: A suite of graph algorithms including PageRank,
-  community detection, and centrality measures with support for GPU
-  acceleration thanks to Nvidia cuGraph.
-- **GenAI Suite**: A set of machine learning services, APIs, and
-  user interfaces that are available as a package as well as individual products.
-  - **GraphML**: A turnkey solution for graph machine learning for prediction
-    use cases such as fraud detection, supply chain, healthcare, retail, and
-    cyber security.
-  - **GraphRAG**: Leverage ArangoDB's graph, document, key-value,
-      full-text search, and vector search features to streamline knowledge
-      extraction and retrieval.
-      {{< comment >}}TODO: Not available in prerelease version
-      - **Txt2AQL**: Unlock natural language querying with a service that converts
-        user input into ArangoDB Query Language (AQL), powered by fine-tuned
-        private or public LLMs.
-      {{< /comment >}}
-      - **GraphRAG Importer**: Extract entities and relationships from large
-        text-based files, converting unstructured data into a knowledge graph
-        stored in ArangoDB.
-      - **GraphRAG Retriever**: Perform semantic similarity searches or aggregate
-        insights from graph communities with global and local queries.
-      - **Public and private LLM support**: Use public LLMs such as OpenAI
-        or private LLMs with [Triton Inference Server](../../gen-ai/services/triton-inference-server.md).
-      - **MLflow integration**: Use the popular MLflow as a model registry for private LLMs
-        or to run machine learning experiments as part of the ArangoDB Platform.
-- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
-  interactive notebooks for experimentation and development of applications
-  that use ArangoDB as their backend.
-{{< comment >}}TODO: Mostly unrelated to Platform, vector index in core, 
-- **Vector embeddings**: You can train machine learning models for later use
-  in vector search in conjunction with the core database system's `vector`
-  index type. It allows you to find similar items in your dataset.
-{{< /comment >}}
-
-## Get started with the ArangoDB Platform
-
-### Use the ArangoDB Platform as a managed service
-
-The ArangoDB Platform is not available as a managed service yet, but it will
+The Arango Data Platform is not available as a managed service yet, but it will
 become available for the [Arango Managed Platform (AMP)](../../amp/_index.md)
 in the future. Until then, you can request early access to the self-hosted
-ArangoDB Platform for testing.
+Arango Data Platform for testing.
 
-### Self-host the ArangoDB Platform
+## Self-host the Arango Data Platform
 
-You can set up and run the ArangoDB Platform on-premises or in the cloud and
+You can set up and run the Arango Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
-#### Requirements for self-hosting
+{{< info >}}
+**Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 
+environments and relies on the official [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) 
+to provide automated deployment, scaling, and management capabilities.
+{{< /info >}}
 
-- **Early access to the ArangoDB Platform**:
+### Requirements for self-hosting
+
+- **Early access to the Arango Data Platform**:
   [Get in touch](https://arangodb.com/contact/) with the ArangoDB team to get
-  exclusive early access to the pre-release of the ArangoDB Platform & GenAI Suite.
+  exclusive early access to the pre-release of the Arango Data Platform & AI Services.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
-  ArangoDB Platform, running them in containers for safety and scalability.
+  Arango Data Platform, running them in containers for safety and scalability.
 
   Set up a [Kubernetes](https://kubernetes.io/) cluster if you don't have one
   available yet.
@@ -109,9 +72,9 @@ manage this deployment yourself.
   respective packages.
 {{< /comment >}}
 
-#### Setup
+### Setup
 
-1. Obtain a zip package of the ArangoDB Platform for the offline installation.
+1. Obtain a zip package of the Arango Data Platform for the offline installation.
    It includes helm charts, manifests, and blobs of the container image layers.
    You also receive a package configuration file from the ArangoDB team.
 
@@ -142,7 +105,7 @@ manage this deployment yourself.
      --set crds.enabled=true
    ```
 
-4. Install the ArangoDB operator for Kubernetes `kube-arangodb` with helm,
+4. Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) `kube-arangodb` with helm,
    with options to enable webhooks, certificates, and the gateway feature.
 
    ```sh
@@ -190,7 +153,7 @@ manage this deployment yourself.
       # ...
     ```
 
-6. Download the ArangoDB Platform CLI tool `arangodb_operator_platform` from
+6. Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
    <https://github.com/arangodb/kube-arangodb/releases>.
    It is available for Linux and macOS, for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
@@ -202,7 +165,7 @@ manage this deployment yourself.
    The Platform CLI tool simplifies the further setup and later management of
    the Platform's Kubernetes services.
 
-7. Import the zip package of the ArangoDB Platform into the container registry.
+7. Import the zip package of the Arango Data Platform into the container registry.
    Replace `platform.zip` with the file path of the offline installation package.
    Replace `gcr.io/my-reg` with the address of your registry.
 
@@ -231,13 +194,13 @@ manage this deployment yourself.
 
 ## Interfaces
 
-The ArangoDB Platform uses a gateway to make all its services available via a
+The Arango Data Platform uses a gateway to make all its services available via a
 single port at the external address of the deployment. For a local deployment,
 the base URL is `https://127.0.0.1:8529`.
 
 ### Unified web interface
 
-You can access the ArangoDB Platform web interface with a browser by appending
+You can access the Arango Data Platform web interface with a browser by appending
 `/ui/` to the base URL, e.g. `https://127.0.0.1:8529/ui/`.
 
 ### ArangoDB Core

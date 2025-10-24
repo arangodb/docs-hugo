@@ -1,20 +1,20 @@
 ---
-title: GenAI Orchestration Service
-menuTitle: GenAI
+title: AI Orchestration Service
+menuTitle: AI Orchestrator
 description: >-
-  The GenAI orchestrator service installs, manages, and runs AI-based services
+  The AI orchestrator service installs, manages, and runs AI-based services
   for GraphRAG in your Kubernetes cluster
 weight: 5
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
 
 ## Overview
 
-The basic operations that the GenAI orchestration service carries out are the following:
+The basic operations that the AI orchestration service carries out are the following:
 - Install a service
 - Uninstall a service
 - Get the status of a service
@@ -23,7 +23,7 @@ The basic operations that the GenAI orchestration service carries out are the fo
 Each unique service has its own API endpoint for the deployment.
 
 **Endpoint LLM Host:**
-`https://<ExternalEndpoint>:8529/gen-ai/v1/llmhost`
+`https://<ExternalEndpoint>:8529/ai/v1/llmhost`
 
 While services have their own unique endpoint, they share the same creation
 request body and the same response body structure. The `env` field is used
@@ -86,7 +86,7 @@ corresponding service documentation.
 
 ## Obtaining a Bearer Token
 
-Before you can authenticate with the GenAI service, you need to obtain a
+Before you can authenticate with the AI service, you need to obtain a
 Bearer token. You can generate this token using the ArangoDB authentication API:
 
 ```bash
@@ -106,7 +106,7 @@ The example below shows how to install, monitor, and uninstall the Importer serv
 ### Step 1: Installing the service
 
 ```bash
-curl -X POST https://<ExternalEndpoint>:8529/gen-ai/v1/graphragimporter \
+curl -X POST https://<ExternalEndpoint>:8529/ai/v1/graphragimporter \
   -H "Authorization: Bearer <your-bearer-token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -136,7 +136,7 @@ curl -X POST https://<ExternalEndpoint>:8529/gen-ai/v1/graphragimporter \
 ### Step 2: Checking the service status
 
 ```bash
-curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-importer-of1ml \
+curl -X GET https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -155,7 +155,7 @@ curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-
 ### Step 3: Uninstalling the service
 
 ```bash
-curl -X DELETE https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graphrag-importer-of1ml \
+curl -X DELETE https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -188,17 +188,17 @@ Replace the following values with your actual configuration:
 
 ## Service configuration
 
-The GenAI orchestrator service is **started by default**. 
+The AI orchestrator service is **started by default**. 
 
 It will be available at the following URL:
-`https://<ExternalEndpoint>:8529/gen-ai/v1/service`
+`https://<ExternalEndpoint>:8529/ai/v1/service`
 
 ## Health check
 
 To test whether the service is running, you can use the following snippet:
 
 ```bash
-curl -X GET https://<ExternalEndpoint>:8529/gen-ai/v1/health
+curl -X GET https://<ExternalEndpoint>:8529/ai/v1/health
 ```
 
 Expected output on success: `{"status":"OK"}`

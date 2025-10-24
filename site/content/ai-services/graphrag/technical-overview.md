@@ -1,15 +1,14 @@
 ---
-title: GraphRAG
-menuTitle: GraphRAG
-weight: 5
+title: GraphRAG Technical Overview
+menuTitle: Technical Overview
+weight: 15
 description: >-
-  ArangoDB's GraphRAG solution combines graph-based retrieval-augmented generation
-  with Large Language Models (LLMs) for turbocharged GenAI solutions
-aliases:
-  llm-knowledge-graphs
+  Technical overview of ArangoDB's GraphRAG solution, including
+  architecture, services, and deployment options
 ---
+
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The ArangoDB Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -34,7 +33,7 @@ ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
-The GraphRAG component of the GenAI Suite brings all the capabilities
+The GraphRAG component of AI Services brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
@@ -76,7 +75,7 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../services/importer.md) service documentation.
+[Importer](../reference/importer.md) service documentation.
 
 ### Extract information from the Knowledge Graph
 
@@ -87,7 +86,7 @@ You can extract information from Knowledge Graphs using two distinct methods:
 - Local retrieval
 
 For detailed information about the service, see the
-[Retriever](../services/retriever.md) service documentation.
+[Retriever](../reference/retriever.md) service documentation.
 
 #### Global retrieval
 
@@ -134,7 +133,7 @@ collection, and then it expands that subgraph over related entities, relations
 
 If you're working in an air-gapped environment or need to keep your data
 private, you can use the private LLM mode with 
-[Triton Inference Server](../services/triton-inference-server.md).
+[Triton Inference Server](../reference/triton-inference-server.md).
 
 This option allows you to run the service completely within your own
 infrastructure. The Triton Inference Server is a crucial component when

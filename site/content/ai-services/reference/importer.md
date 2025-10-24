@@ -7,7 +7,7 @@ description: >-
 weight: 10
 ---
 {{< tip >}}
-The ArangoDB Platform & GenAI Suite is available as a pre-release. To get
+The Arango Data Platform & AI Services are available as a pre-release. To get
 exclusive early access, [get in touch](https://arangodb.com/contact/) with
 the ArangoDB team.
 {{< /tip >}}
@@ -36,7 +36,7 @@ To create a new GraphRAG project, use the `CreateProject` method by sending a
 provide a `project_description`.
 
 ```curl
-curl -X POST "https://<ExternalEndpoint>:8529/gen-ai/v1/project" \
+curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
 -H "Content-Type: application/json" \
 -d '{
   "project_name": "docs",
@@ -57,7 +57,7 @@ Additional project metadata is accessible via the following endpoint, replacing
 `<your_project>` with the actual name of your project:
 
 ```
-GET /gen-ai/v1/project_by_name/<your_project>
+GET /ai/v1/project_by_name/<your_project>
 ```
 
 The endpoint provides comprehensive metadata about your project's components,
@@ -94,8 +94,8 @@ The Importer service can be configured to use either:
 - OpenAI (for public LLM deployments)
 - OpenRouter (for public LLM deployments)
 
-To start the service, use the GenAI service endpoint `/v1/graphragimporter`. 
-Please refer to the documentation of [GenAI service](gen-ai.md) for more
+To start the service, use the AI service endpoint `/v1/graphragimporter`. 
+Please refer to the documentation of [AI service](gen-ai.md) for more
 information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)
@@ -209,7 +209,7 @@ to send an input file to the Importer service:
    ```
 
    Replace the following placeholders:
-   - `<your-arangodb-platform-url>`: Your ArangoDB Platform URL.
+   - `<your-arangodb-platform-url>`: Your Arango Data Platform URL.
    - `<url-postfix>`: The URL postfix configured in your deployment.
 
 
@@ -224,7 +224,7 @@ to send an input file to the Importer service:
 You can verify the state of the import process via the following endpoint:
 
 ```
-GET /gen-ai/v1/project_by_name/<your_project>
+GET /ai/v1/project_by_name/<your_project>
 ```
 
 For example, the `status` object found within `importerServices` may contain the following
