@@ -100,7 +100,7 @@ html {
  }
 
 body {
-    font-family: var(--MAIN-FONT);
+    font-family: var(--font-content);
     padding: 0;
     margin: 0;
     line-height: 1.5rem;
@@ -192,7 +192,7 @@ button {
 }
 
 button.green {
-    background-color: var(--HEADERS-COLOR);
+    background-color: var(--color-avocado);
 }
 
 button.grey {
@@ -560,7 +560,7 @@ a.section-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--HEADERS-COLOR);
+    color: var(--color-avocado);
     padding: 12px 16px;
 }
 
@@ -574,7 +574,7 @@ a.section-link {
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--HEADERS-COLOR)
+    background-color: var(--color-avocado)
 }
 
 .tab-nav-button > span {
@@ -1183,7 +1183,7 @@ header .logo {
 .edit-page > .edit-page-icon:after {
     content: "Contribute";
     margin-left: 10px;
-    font-family: var(--MAIN-FONT);
+    font-family: var(--font-content);
 }
 
 @media screen and (max-width: 480px) {
@@ -1363,7 +1363,7 @@ article.notfound {
 }
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
-    color: var(--HEADERS-COLOR);
+    color: var(--color-avocado);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
