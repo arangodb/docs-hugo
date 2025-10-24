@@ -356,6 +356,19 @@ img {
     margin-bottom: 20px;
 }
 
+.inline-icon {
+    display: inline-block;
+    width: var(--TYPOGRAPHY-BODY-TEXT);
+    height: var(--TYPOGRAPHY-BODY-TEXT);
+    margin: 0 .1rem;
+    position: relative;
+    top: .2rem;
+}
+
+.inline-icon svg {
+    margin: 0;
+}
+
 /* end Images */
 
 /* Tables */

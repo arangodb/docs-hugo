@@ -14,27 +14,24 @@ data numerically and can be generated with machine learning models.
 You can then quickly find a given number of semantically similar documents by
 searching for close neighbors in a high-dimensional vector space.
 
-The vector index implementation uses the [Faiss library](https://github.com/facebookresearch/faiss/)
-to support L2 and cosine metrics. The index used is IndexIVFFlat, the quantizer
-for L2 is IndexFlatL2, and the cosine uses IndexFlatIP, where vectors are
-normalized before insertion and search.
+The vector index implementation uses the [Faiss library](https://github.com/facebookresearch/faiss/).
 
 ## How to use vector indexes
 
 {{< warning >}}
-The vector index is an experimental feature that you need to enable for the
-ArangoDB server with the `--experimental-vector-index` startup option.
+You need to enable the vector index feature for the
+ArangoDB server with the `--vector-index` startup option.
 Once enabled for a deployment, it cannot be disabled anymore because it
 permanently changes how the data is managed by the RocksDB storage engine
 (it adds an additional column family).
 
-To restore a dump that contains vector indexes, the `--experimental-vector-index`
+To restore a dump that contains vector indexes, the `--vector-index`
 startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
 
-1. Enable the experimental vector index feature.
-2. Calculate vector embeddings using [ArangoDB's GraphML](../../../../../gen-ai/graphml/_index.md)
-   capabilities (available in ArangoGraph) or using external tools.
+1. Enable the vector index feature.
+2. Calculate vector embeddings using [Arango's GraphML](../../../../../gen-ai/graphml/_index.md)
+   capabilities (available in the AI Data Platform) or using external tools.
    Store each vector as an attribute in the respective document.
 3. Create a vector index over this attribute. You need to choose which
    similarity metric you want to use later for querying. See
@@ -65,17 +62,26 @@ centroids and the quality of vector search thus degrades.
 - **fields** (array of strings): A list with a single attribute path to specify
   where the vector embedding is stored in each document. The vector data needs
   to be populated before creating the index.
-  
+
   If you want to index another vector embedding attribute, you need to create a
   separate vector index.
+- **sparse** (boolean): Whether to create a sparse index that excludes documents
+  with the attribute for indexing missing or set to `null`. This attribute is
+  defined by `fields`. Default: `false`.
 - **parallelism** (number):
-  The number of threads to use for indexing. The default is `2`.
+  The number of threads to use for indexing. Default: `2`.
 - **inBackground** (boolean):
   Set this option to `true` to keep the collection/shards available for
   write operations by not using an exclusive write lock for the duration
-  of the index creation. The default is `false`.
+  of the index creation. Default: `false`.
 - **params**: The parameters as used by the Faiss library.
-  - **metric** (string): Whether to use `cosine` or `l2` (Euclidean) distance calculation.
+  - **metric** (string): The measure for calculating the vector similarity:
+    - `"cosine"`: Angular similarity. Vectors are automatically
+      normalized before insertion and search.
+    - `"innerProduct"` (introduced in v3.12.6):
+      Similarity in terms of angle and magnitude.
+      Vectors are not normalized, making it faster than `cosine`.
+    - `"l2":` Euclidean distance.
   - **dimension** (number): The vector dimension. The attribute to index needs to
     have this many elements in the array that stores the vector embedding.
   - **nLists** (number): The number of Voronoi cells to partition the vector space
@@ -89,11 +95,11 @@ centroids and the quality of vector search thus degrades.
     number of documents.
   - **defaultNProbe** (number, _optional_): How many neighboring centroids to
     consider for the search results by default. The larger the number, the slower
-    the search but the better the search results. The default is `1`. You should
+    the search but the better the search results. Default: `1`. You should
     generally use a higher value here or per query via the `nProbe` option of
     the vector similarity functions.
   - **trainingIterations** (number, _optional_): The number of iterations in the
-    training process. The default is `25`. Smaller values lead to a faster index
+    training process. Default: `25`. Smaller values lead to a faster index
     creation but may yield worse search results. 
   - **factory** (string, _optional_): You can specify an index factory string that is
     forwarded to the underlying Faiss library, allowing you to combine different

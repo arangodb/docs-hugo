@@ -3,10 +3,10 @@ title: Graph Analytics
 menuTitle: Graph Analytics
 weight: 15
 description: |
-  ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
-  data separately from your ArangoDB deployments
+  Graph analytics analyzes information networks to extract insights from data
+  relationships using algorithms like PageRank for fraud detection, recommendations, and network analysis
 aliases:
-  - ../data-science/graph-analytics
+  - ../graphs/graph-analytics  
 ---
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
@@ -17,7 +17,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [ArangoDB Platform](../data-platform/about/_index.md).
+and included in the [AI Data Platform](../data-platform/about/_index.md).
 
 Key features:
 
@@ -40,11 +40,11 @@ How to perform the steps is detailed in the subsequent sections.
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
+{{< tab "Arango Data Platform" >}}
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
-2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the GenAI service
+2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the AI service
    that manages various Platform components for graph intelligence and machine learning.
    It only takes a few seconds until the engine service can be used. The engine
    runs adjacent to the pods of the ArangoDB Core.
@@ -88,9 +88,9 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
-You can use any of the available authentication methods the ArangoDB Platform
-supports to start and stop `graphanalytics` services via the GenAI service as
+{{< tab "AI Data Platform" >}}
+You can use any of the available authentication methods the AI Data Platform
+supports to start and stop `graphanalytics` services via the AI service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
 - HTTP Basic Authentication
@@ -129,15 +129,15 @@ setting in ArangoGraph:
 
 The interface for managing the engines depends on the environment you use:
 
-- **ArangoDB Platform**: [GenAI service](#genai-service)
-- **ArangoGraph**: [Management API](#management-api)
+- **Arango AI Data Platform**: [AI service](#ai-service)
+- **Arango Managed Platform (AMP)**: [Management API](#management-api)
 
-### GenAI service
+### AI service
 
-{{< tag "GenAI Data Platform" >}}
+{{< tag "AI Data Platform" >}}
 
-GAEs are deployed and deleted via the [GenAI service](services/gen-ai.md)
-in the ArangoDB Platform.
+GAEs are deployed and deleted via the [AI service](services/gen-ai.md)
+in the AI Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
 if the Platform deployment uses a self-signed certificate (default).
@@ -146,7 +146,7 @@ if the Platform deployment uses a self-signed certificate (default).
 
 `POST <ENGINE_URL>/gen-ai/v1/graphanalytics`
 
-Start a GAE via the GenAI service with an empty request body:
+Start a GAE via the AI service with an empty request body:
 
 ```sh
 # Example with a JWT session token
@@ -166,7 +166,7 @@ echo "$Service" | jq
 
 `POST <ENGINE_URL>/gen-ai/v1/list_services`
 
-You can list all running services managed by the GenAI service, including the
+You can list all running services managed by the AI service, including the
 `graphanalytics` services:
 
 ```sh
@@ -175,7 +175,7 @@ curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X POST https://127.0.0.1:8529/g
 
 #### Stop a `graphanalytics` service
 
-Delete the desired engine via the GenAI service using the service ID:
+Delete the desired engine via the AI service using the service ID:
 
 ```sh
 curl -sSk -H "Authorization: bearer $ADB_TOKEN" -X DELETE https://127.0.0.1:8529/gen-ai/v1/service/$ServiceID | jq
@@ -309,12 +309,12 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "$BASE_URL/engines
 
 {{< tabs "platforms" >}}
 
-{{< tab "ArangoDB Platform" >}}
+{{< tab "AI Data Platform" >}}
 To determine the base URL of the engine API, use the base URL of the Platform
 deployment and append `/gral/<SERVICE_ID>`, e.g.
 `https://127.0.0.1:8529/gral/arangodb-gral-tqcge`.
 
-The service ID is returned by the call to the GenAI service for
+The service ID is returned by the call to the AI service for
 [starting the `graphanalytics` service](#start-a-graphanalytics-service).
 You can also list the service IDs like so:
 

@@ -50,7 +50,7 @@ ArangoDB product offering with a unified interface in a Kubernetes cluster.
 It is offered for self-hosting on-prem or in the cloud and as a managed service,
 superseding the Arango Managed Platform (AMP).
 
-See [The ArangoDB Platform](../components/platform.md) for details.
+See [The ArangoDB Platform](../../../data-platform/about/_index.md) for details.
 
 ## How to deploy
 

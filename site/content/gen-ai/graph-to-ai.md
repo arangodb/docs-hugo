@@ -50,6 +50,8 @@ Alongside these components, you also get the following additional features:
 
 - [**Graph Visualizer**](../data-platform/graph-visualizer.md): A web-based tool for exploring your graph data with an
   intuitive interface and sophisticated querying capabilities.
+- [**Graph Analytics**](graph-analytics.md): Run graph algorithms such as PageRank
+  on dedicated compute resources.
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the platform for hosting
   interactive notebooks for experimentation and development of applications
   that use ArangoDB as their backend.
@@ -63,14 +65,6 @@ Alongside these components, you also get the following additional features:
   GenAI Suite services and build your own integrations. See the
   [API reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html) documentation
   for more details.
-
-## Other tools and features
-
-The ArangoDB Platform includes the following features independent of the
-GenAI Suite:
-
-- [**Graph Analytics**](graph-analytics.md): Run graph algorithms such as PageRank
-  on dedicated compute resources.
 
 ## From graph to AI
 
@@ -105,7 +99,7 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
-is available for the Arango Managed Platform (AMP). See 
+is available for the Arango Managed Platform (AMP). See
 [Graph Analytics](graph-analytics.md) for details.
 
 ### GraphML
