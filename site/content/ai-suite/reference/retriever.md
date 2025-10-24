@@ -15,9 +15,9 @@ the Arango team.
 ## Overview
 
 The Retriever service offers two distinct search methods:
-- **Global search**: Analyzes entire document to identify themes and patterns,
+- **Instant search**: Analyzes entire document to identify themes and patterns,
   perfect for high-level insights and comprehensive summaries.
-- **Local search**: Focuses on specific entities and their relationships, ideal
+- **Deep search**: Focuses on specific entities and their relationships, ideal
   for detailed queries about particular concepts.
 
 The service supports both private (Triton Inference Server) and public (OpenAI)
@@ -33,19 +33,19 @@ graph and get contextually relevant responses.
 - Configurable community hierarchy levels
 
 {{< tip >}}
-You can also use the GraphRAG Retriever service via the ArangoDB [web interface](../graphrag/web-interface.md).
+You can also use the GraphRAG Retriever service via the [web interface](../graphrag/web-interface.md).
 {{< /tip >}}
 
 ## Search methods
 
 The Retriever service enables intelligent search and retrieval of information
-from your knowledge graph. It provides two powerful search methods, global Search
-and local Search, that leverage the structured knowledge graph created by the Importer
+from your knowledge graph. It provides two powerful search methods, instant search
+and deep search, that leverage the structured knowledge graph created by the Importer
 to deliver accurate and contextually relevant responses to your natural language queries.
 
-### Global search
+### Deep search
 
-Global search is designed for queries that require understanding and aggregation
+Deep search is designed for queries that require understanding and aggregation
 of information across your entire document. It's particularly effective for questions
 about overall themes, patterns, or high-level insights in your data.
 
@@ -60,9 +60,9 @@ about overall themes, patterns, or high-level insights in your data.
 - "Summarize the key findings across all documents"
 - "What are the most important concepts discussed?"
 
-### Local search
+### Instant search
 
-Local search focuses on specific entities and their relationships within your
+Instant search focuses on specific entities and their relationships within your
 knowledge graph. It is ideal for detailed queries about particular concepts,
 entities, or relationships.
 
@@ -210,28 +210,32 @@ it using the following HTTP endpoints, based on the selected search method.
 
 {{< tabs "executing-queries" >}}
 
-{{< tab "Local search" >}}
+{{< tab "Instant search" >}}
 ```bash
-curl -X POST /v1/graphrag-query \
+curl -X POST /v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is the AR3 Drone?",
-    "query_type": 2,
-    "provider": 0
+    "query_type": "UNIFIED",
+    "provider": 0,
+    "include_metadata": true,
+    "use_llm_planner": false
   }'
 ```
 {{< /tab >}}
 
-{{< tab "Global search" >}}
+{{< tab "Deep search" >}}
 
 ```bash
 curl -X POST /v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "What is the AR3 Drone?",
+    "query": "What are the main themes and topics discussed in the documents?",
     "level": 1,
-    "query_type": 1,
-    "provider": 0
+    "query_type": "LOCAL",
+    "provider": 0,
+    "include_metadata": true,
+    "use_llm_planner": true
   }'
 ```
 {{< /tab >}}
@@ -240,13 +244,15 @@ curl -X POST /v1/graphrag-query \
 
 The request parameters are the following:
 - `query`: Your search query text.
-- `level`: The community hierarchy level to use for the search (`1` for top-level communities).
+- `level`: The community hierarchy level to use for the search (`1` for top-level communities). Defaults to `2` if not provided.
 - `query_type`: The type of search to perform.
-  - `1`: Global search.
-  - `2`: Local search.
-- `provider`: The LLM provider to use
+  - `UNIFIED`: Instant search.
+  - `LOCAL`: Deep search.
+- `provider`: The LLM provider to use:
   - `0`: OpenAI (or OpenRouter)
   - `1`: Triton
+- `include_metadata`: Whether to include metadata in the response. If not specified, defaults to `true`.
+- `use_llm_planner`: Whether to use the LLM planner for intelligent query processing. If not specified, defaults to `true`.
 
 ## Health check
 
@@ -273,17 +279,6 @@ properties:
     "progress": 100,
 }
 ```
-
-## Best Practices
-
-- **Choose the right search method**:
-   - Use global search for broad, thematic queries.
-   - Use local search for specific entity or relationship queries.
-
-
-- **Performance considerations**:
-   - Global search may take longer due to its map-reduce process.
-   - Local search is typically faster for concrete queries.
 
 ## API Reference
 
