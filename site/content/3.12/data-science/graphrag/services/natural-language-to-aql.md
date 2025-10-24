@@ -1,19 +1,20 @@
 ---
-title: Natural Language to AQL Translation Service (txt2aql)
-menuTitle: txt2aql
+title: Natural Language to AQL Translation Service
+menuTitle: Natural Language to AQL
 description: >-
-  The Natural Language to AQL Translation Service is a powerful tool that allows
-  you to interact with your ArangoDB database using natural language queries
+  Query your ArangoDB database using natural language or get LLM-powered answers
+  to general questions
 weight: 20
 ---
 ## Overview
 
 The Natural Language to AQL Translation Service provides two distinct capabilities:
 
-**1. [Process Text](#process-text)**: Ask general questions and get natural language responses without querying your database.
+**1. [Process Text](#process-text)**: Ask general questions and get natural language responses without querying your database. Supports both standard and [streaming](#process-text-stream) responses.
 Ideal for:
 - General knowledge questions  
 - Text analysis and processing
+- Real-time response generation with streaming
 
 **2. [Translate Query](#translate-query)**: Convert natural language questions into AQL queries and execute them against your ArangoDB database.
 Ideal for:
@@ -217,6 +218,28 @@ curl --request POST \
 }
 ```
 
+### Process Text Stream
+
+The **Process Text Stream** endpoint works like Process Text but streams the response in chunks as they are generated, providing real-time output. This is useful for long-form responses where you want to show progressive results.
+
+```bash
+POST /v1/process_text_stream
+```
+
+**Example**:
+
+```bash
+curl --request POST \
+  --url https://arangodb-platform-dev.pilot.arangodb.com/graph-rag/<serviceID>/v1/process_text_stream \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "What are the advantages of graph databases?"
+  }'
+```
+
+The streaming endpoint accepts the same request format as the standard Process Text endpoint but returns the response incrementally as chunks.
+
 ## Translate Query
 
 The **Translate Query** endpoint converts natural language questions into AQL queries and executes them against your ArangoDB database. **This endpoint queries your actual data** and returns results in multiple formats.
@@ -318,6 +341,13 @@ The service also provides gRPC endpoints for more efficient communication.
 ```bash
 grpcurl -plaintext -d '{"input_text": "Hello world"}' \
   localhost:9090 txt2aql.Txt2AqlService/ProcessText
+```
+
+### Process Text Stream (gRPC)
+
+```bash
+grpcurl -plaintext -d '{"input_text": "What are the advantages of graph databases?"}' \
+  localhost:9090 txt2aql.Txt2AqlService/ProcessTextStream
 ```
 
 ### Translate Query (gRPC)
