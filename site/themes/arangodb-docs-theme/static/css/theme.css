@@ -245,11 +245,11 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link {
     text-decoration: none;
-    border-bottom: 2px solid var(--green-400);
+    border-bottom: 2px solid var(--color-evergreen);
 }
 
 .link:hover{
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-leaf-green);
     color: var(--gray-950);
 }
 
@@ -259,12 +259,12 @@ ul ul, ul ol, ol ul, ol ol {
 }
 
 .link > p {
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-evergreen);
     color: var(--gray-950);
 }
 
 .link:has(code) {
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-evergreen);
     font-size: 14px;
     overflow: auto;
     word-wrap: break-word;
