@@ -31,7 +31,7 @@ startup option needs to be enabled on the deployment you want to restore to.
 
 1. Enable the vector index feature.
 2. Calculate vector embeddings using [Arango's GraphML](../../../../../gen-ai/graphml/_index.md)
-   capabilities (available in the AI Services Data Platform) or using external tools.
+   capabilities (available in the AI Data Platform) or using external tools.
    Store each vector as an attribute in the respective document.
 3. Create a vector index over this attribute. You need to choose which
    similarity metric you want to use later for querying. See
