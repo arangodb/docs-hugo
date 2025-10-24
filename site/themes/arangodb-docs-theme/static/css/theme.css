@@ -1710,7 +1710,7 @@ div > .box-content-container {
     display: inline-block;
     padding: 0.2rem 0.8rem;
     border-radius: 0.25rem;
-    background: var(--COLOR-LIGHT-GREEN);
+    background: var(--color-electric-lime);
     color: #0d0c0c;
     line-height: 21px;
     font-size: 1em;
