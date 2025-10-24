@@ -3,10 +3,10 @@
 <html lang="{{ .Page.Language | default "en" }}">
 
   <head>
-    {{- partial "stylesheet.html" . }}
+    {{- partialCached "stylesheet.html" . }}
     {{- partial "meta.html" . }}
-    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
-    {{- partial "javascript.html" . }}
+    {{- partialCached "favicon.html" . }}
+    {{- partialCached "javascript.html" . }}
   </head>
 
 <body>

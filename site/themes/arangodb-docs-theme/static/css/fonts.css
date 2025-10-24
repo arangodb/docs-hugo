@@ -34,3 +34,12 @@
     src: url("../fonts/inter-v12-latin-600.woff2")
         format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
+
+/* Urbanist variable font */
+@font-face {
+    font-display: swap;
+    font-family: "Urbanist";
+    font-style: normal;
+    font-weight: 100 900;
+    src: url("../fonts/Urbanist[ital,wght].woff2") format("woff2");
+}
