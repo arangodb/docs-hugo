@@ -159,10 +159,10 @@ See also the [GraphRAG Retriever](../reference/retriever.md) documentation.
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Local search](../reference/retriever.md#local-search): Local queries let you
-  explore specific nodes and their direct connections.
-- [Global search](../reference/retriever.md#global-search): Global queries uncover
-  broader patters and relationships across the entire Knowledge Graph.
+- [Instant search](../reference/retriever.md#instant-search): Instant
+  queries provide fast responses.
+- [Deep search](../reference/retriever.md#deep-search): This option will take
+  longer to return a response.
 
 ![Chat with your Knowledge Graph](../../images/graphrag-ui-chat.png)
 

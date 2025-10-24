@@ -15,10 +15,10 @@ the Arango team.
 ## Overview
 
 The Retriever service offers two distinct search methods:
-- **Instant search**: Analyzes entire document to identify themes and patterns,
-  perfect for high-level insights and comprehensive summaries.
-- **Deep search**: Focuses on specific entities and their relationships, ideal
-  for detailed queries about particular concepts.
+- **Instant search**: Focuses on specific entities and their relationships, ideal
+  for fast queries about particular concepts.
+- **Deep search**: Analyzes the knowledge graph structure to identify themes and patterns,
+  perfect for comprehensive insights and detailed summaries.
 
 The service supports both private (Triton Inference Server) and public (OpenAI)
 LLM deployments, making it flexible for various security and infrastructure
@@ -43,14 +43,17 @@ from your knowledge graph. It provides two powerful search methods, instant sear
 and deep search, that leverage the structured knowledge graph created by the Importer
 to deliver accurate and contextually relevant responses to your natural language queries.
 
-### Deep search
+### Deep Search
 
-Deep search is designed for queries that require understanding and aggregation
-of information across your entire document. It's particularly effective for questions
-about overall themes, patterns, or high-level insights in your data.
+Deep Search is designed for highly detailed, accurate responses that require understanding
+what kind of information is available in different parts of the knowledge graph and
+sequentially retrieving information in an LLM-guided research process. Use whenever
+detail and accuracy are required (e.g. aggregation of highly technical details) and
+very short latency is not (i.e. caching responses for frequently asked questions,
+or use case with agents or research use cases).
 
 - **Community-Based Analysis**: Uses pre-generated community reports from your
-  knowledge graph to understand the overall structure and themes of your data,
+  knowledge graph to understand the overall structure and themes of your data.
 - **Map-Reduce Processing**:
    - **Map Stage**: Processes community reports in parallel, generating intermediate responses with rated points.
    - **Reduce Stage**: Aggregates the most important points to create a comprehensive final response.
@@ -60,11 +63,12 @@ about overall themes, patterns, or high-level insights in your data.
 - "Summarize the key findings across all documents"
 - "What are the most important concepts discussed?"
 
-### Instant search
+### Instant Search
 
-Instant search focuses on specific entities and their relationships within your
-knowledge graph. It is ideal for detailed queries about particular concepts,
-entities, or relationships.
+Instant Search is designed for responses with very short latency. It triggers
+fast unified retrieval over relevant parts of the knowledge graph via hybrid
+(semantic and lexical) search and graph expansion algorithms, producing a fast,
+streamed natural-language response with clickable references to the relevant documents.
 
 - **Entity Identification**: Identifies relevant entities from the knowledge graph based on the query.
 - **Context Gathering**: Collects:
