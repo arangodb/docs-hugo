@@ -1493,7 +1493,7 @@ h6:hover .header-link {
 
 /* Codeblocks */
 pre {
-    border-radius: 0;
+    border-radius: 7px;
     background: var(--gray-100);
     box-shadow: none;
     position: relative;
