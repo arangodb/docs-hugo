@@ -1,25 +1,66 @@
 :root {
-    --green-50: #f5faeb;
-    --green-100: #e9f4d3;
-    --green-200: #d5e9ad;
-    --green-300: #b8da7c;
-    --green-400: #9dc853;
-    --green-500: #7ead35;
-    --green-600: #608726;
-    --green-700: #4b6922;
-    --green-800: #3e5420;
-    --green-900: #35481f;
+
+    --color-avocado: #044926;
+    --color-blue-tide: #02245f;
+    --color-electric-lime: #b9ff38;
+    --color-night: #151d25;
+    --color-seaglass: #016f73;
+    --color-plum: #470878;
+    --color-leaf-green: #58df20;
+    --color-meadow: #befe99;
+    --color-sunbeam: #fffc4e;
+    --color-mist: #f4f4f4;
+    --color-slate-blue: #4f6d8b;
+    --color-evergreen: #007339;
+
+    --neutral-black: #000000;
+    --neutral-gray-darkest: #323b40;
+    --neutral-gray-darker: #435057;
+    --neutral-gray-dark: #576770;
+    --neutral-gray: #71808a;
+    --neutral-gray-light: #c2cbd5;
+    --neutral-gray-lighter: #e9f0f9;
+    --neutral-gray-lightest: #f7faff;
+    --neutral-white: #ffffff;
+
+    --state-info: #76e7e7;
+    --state-info-dark: #006585;
+    --state-success: #85da66;
+    --state-success-dark: #3b7044;
+    --state-warning: #ffec44;
+    --state-warning-dark: #dc6409;
+    --state-danger: #dc084b;
+    --state-danger-dark: #8f001d;
+
+    --font-headlines: "Urbanist", sans-serif;
+    --font-content: "Inter", sans-serif;
+
+    /*
+    Rounding?
+    Icon set?
+    */
+
+    --green-50: #e3f2e0;
+    --green-100: #dcebd9;
+    --green-200: #98D78C;
+    --green-300: #55AB45;
+    --green-400: #217846;
+    --green-500: #007339;
+    --green-600: #006532;
+    --green-700: #005329;
+    --green-800: #004020;
+    --green-900: #002e17;
     --green-950: #1a270c;
-    --red-50: #fff2f1;
-    --red-100: #ffe1df;
-    --red-200: #ffc7c4;
-    --red-300: #ffa19b;
-    --red-400: #ff6a61;
-    --red-500: #ff3b30;
-    --red-600: #e6190d;
-    --red-700: #cc1409;
-    --red-800: #a8150c;
-    --red-900: #8b1811;
+    --red-50: #f8c5c6;
+    --red-100: #f5acae;
+    --red-200: #f18b8e;
+    --red-300: #ed6a6e;
+    --red-400: #e9494d;
+    --red-500: #e63035;
+    --red-600: #da1a20;
+    --red-700: #b3161a;
+    --red-800: #8b1114;
+    --red-900: #630c0e;
     --red-950: #4c0703;
     --orange-50: #fff4ed;
     --orange-100: #ffe6d5;
@@ -209,7 +250,7 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link {
     text-decoration: none;
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--green-400);
 }
 
 .link:hover{
@@ -313,6 +354,19 @@ img {
     float: right;
     padding: 0 20px;
     margin-bottom: 20px;
+}
+
+.inline-icon {
+    display: inline-block;
+    width: var(--TYPOGRAPHY-BODY-TEXT);
+    height: var(--TYPOGRAPHY-BODY-TEXT);
+    margin: 0 .1rem;
+    position: relative;
+    top: .2rem;
+}
+
+.inline-icon svg {
+    margin: 0;
 }
 
 /* end Images */
@@ -450,11 +504,11 @@ a.section-link {
 }
 
 .card-title {
+    font-family: var(--font-headlines);
     font-weight: 600;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 1.3rem;
     color: var(--gray-950);
 }
 
@@ -699,7 +753,7 @@ body .page-container {
     position: relative;
     height: 64px;
     align-items: center;
-    padding: 6px 10px 0 10px;
+    padding-left: 10px;
 }
 
 header .logo {
@@ -774,18 +828,20 @@ header .logo {
 .version-selector {
     border: none;
     margin-left: 1rem;
-    color: var(--gray-950);
-}
-
-@media screen and (max-width: 768px) {
-    .version-selector {
-        border: none;
-    }
 }
 
 .arangodb-version {
     border: none;
-    background: none;
+    padding: 0 .75rem;
+    color: var(--gray-50);
+    background: black;
+}
+
+/*
+@media screen and (max-width: 768px) {
+    .version-selector {
+        border: none;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -793,6 +849,8 @@ header .logo {
         width: 4rem;
     }
 }
+*/
+
 /* end Header */
 
 /* Menu */
@@ -928,7 +986,7 @@ header .logo {
 
 
 .sidebar ul.topics > li a {
-    font-size: 13px;
+    /*font-size: 13px;*/
     line-height: 1.3rem;
 }
 
@@ -1008,7 +1066,7 @@ header .logo {
 .sidebar ul.topics li.active > a > .menu-title,
 .sidebar ul.topics li.alwaysopen > a > .menu-title {
     font-weight: 400;
-    color: var(--green-500);
+    color: var(--color-electric-lime);
 }
 
 .sidebar ul li li {
@@ -1328,6 +1386,7 @@ article.notfound {
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
     color: var(--HEADERS-COLOR);
+    font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
 }
@@ -1432,8 +1491,9 @@ article ul li {
 }
 
 .lead {
-    font-size: 1.3em;
-    margin-bottom: 24px;
+    font-size: 1.3rem;
+    font-family: var(--font-headlines);
+    margin-bottom: 1.5rem;
     font-weight: 600;
     color: var(--gray-800);
 }
@@ -1515,14 +1575,14 @@ li > code {
 
 .copy-to-clipboard-button::after{
     content: 'Copy';
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
     color: var(--green-700);
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-content)
     padding: 0 5px;
     font-weight: bold;
     color: var(--green-700);
@@ -1554,7 +1614,7 @@ pre > code {
 pre > .code-show-more {
     font-size: 1rem;
     background: var(--gray-200);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-content);
     padding: 5px 5px;
     font-weight: 500;
     opacity: 0.7;
@@ -2130,6 +2190,6 @@ nav.pagination .next {
     color: white;
 }
 .ag-banner .logo {
-    height: 50px !important;
+    height: 36px !important;
     width: 200px !important;
 }

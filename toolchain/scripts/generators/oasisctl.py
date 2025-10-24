@@ -129,7 +129,7 @@ def rewrite_content(data, section, filename, weight):
         if flags["inFrontMatter"] and not flags["endFrontMatter"]:
             if line.startswith("description: "):
                 if filename.endswith("/options.md"):
-                    content = content + "description: Command-line client tool for managing ArangoGraph\n"
+                    content = content + "description: Command-line client tool for managing the Arango Managed Platform (AMP)\n"
                 continue
 
             if line.startswith("layout: "):
@@ -137,7 +137,7 @@ def rewrite_content(data, section, filename, weight):
 
             if line.startswith("title: "):
                 if filename.endswith("/options.md"):
-                    content = content + f"title: ArangoGraph Shell oasisctl\nmenuTitle: Options\nweight: {weight}\n"
+                    content = content + f"title: Arango Managed Platform (AMP) Shell oasisctl\nmenuTitle: Options\nweight: {weight}\n"
                     continue
 
                 menuTitle = ""

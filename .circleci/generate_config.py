@@ -18,7 +18,7 @@ if sys.version_info[0] != 3:
 
 ## Load versions
 versions = yaml.safe_load(open("versions.yaml", "r"))
-versions = sorted(versions, key=lambda d: d['name']) 
+versions = sorted(versions["/arangodb/"], key=lambda d: d['name']) 
 
 
 print(f"Loaded versions {versions}")
