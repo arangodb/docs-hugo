@@ -40,7 +40,7 @@ How to perform the steps is detailed in the subsequent sections.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Arango Data Platform" >}}
+{{< tab "AI Data Platform" >}}
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
