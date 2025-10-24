@@ -41,7 +41,7 @@ An implementation for loading properties from local files is provided by
 `ArangoConfigProperties.fromFile()` and its overloaded variants.
 
 To read config properties prefixed with `arangodb` from `arangodb.properties`
-file (as in version `6`):
+file:
 
 ```java
 // ## src/main/resources/arangodb.properties
@@ -65,32 +65,37 @@ ArangoConfigProperties props = ArangoConfigProperties.fromFile("arangodb-with-pr
 ```
 
 Here are examples to integrate configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Configuration
 
 `ArangoDB.Builder` has the following configuration methods:
 
-- `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
-- `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
-- `user(String)`:                username for authentication, (default: `root`)
-- `password(String)`:            password for authentication
+- `host(String, int)`:           Adds a host (hostname and port) to connect to, multiple hosts can be added
+- `protocol(Protocol)`:          Communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `timeout(Integer)`:            Connection and request timeout (ms), (default `0`, no timeout)
+- `user(String)`:                Username for authentication, (default: `root`)
+- `password(String)`:            Password for authentication
 - `jwt(String)`:                 JWT for authentication
-- `useSsl(Boolean)`:             use SSL connection, (default: `false`)
+- `useSsl(Boolean)`:             Use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
-- `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
+- `sslCertValue(String)`:        SSL certificate value as Base64-encoded String
+- `sslAlgorithm(String)`:        Name of the SSL Trust manager algorithm (default: `SunX509`)
+- `sslProtocol(String)`:         Name of the SSLContext protocol (default: `TLS`)
+- `verifyHost(Boolean)`:         Enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
-- `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
+- `maxConnections(Integer)`:     Max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
+- `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
-- `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
-- `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
-- `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
-- `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
-- `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
+- `acquireHostList(Boolean)`:    Acquire the list of available hosts, (default: `false`)
+- `acquireHostListInterval(Integer)`:             The interval for acquiring the host list (ms), (default: `3_600_000`, 1 hour)
+- `loadBalancingStrategy(LoadBalancingStrategy)`: Load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
+- `responseQueueTimeSamples(Integer)`:            Amount of samples kept for queue time metrics, (default: `10`)
+- `serde(ArangoSerde)`:            Serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: Serde provider to be used to instantiate the user-data serde
+- `protocolConfig(ProtocolConfig)`: Configuration specific for the used protocol provider implementation
+- `pipelining(Boolean):`:           Use HTTP pipelining, (`HTTP/1.1` only, default `false`)
 
 ### HTTP Protocol Provider Configuration
 
@@ -120,7 +125,7 @@ HttpProtocolConfig.builder()
 ### Config File Properties
 
 `ArangoConfigProperties.fromFile()` reads config properties prefixed with `arangodb`
-from `arangodb.properties` file (as in version `6`). Different prefix and
+from `arangodb.properties` file. Different prefix and
 file name can be specified using its overloaded variants.
 
 The properties read are:
@@ -131,6 +136,9 @@ The properties read are:
 - `password`
 - `jwt`
 - `useSsl`
+- `sslCertValue`: SSL certificate as Base64-encoded string
+- `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
+- `sslProtocol`: SSLContext protocol (default: `TLS`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -140,11 +148,14 @@ The properties read are:
 - `acquireHostListInterval`
 - `loadBalancingStrategy`: `NONE`, `ROUND_ROBIN` or `ONE_RANDOM`
 - `responseQueueTimeSamples`
+- `serdeProviderClass`: fully qualified name of the provider class
+- `pipelining`
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example/ssl/SslExampleTest.java)).
+To use SSL, you have to set the configuration `useSsl` to `true`.
+By default, the driver uses the default `SSLContext`.
+To change this, you can provide the `SSLContext` instance to use:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -153,12 +164,28 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
+Alternatively, the driver can create a new `SSLContext` using the provided
+configuration. In this case, it is required to set the configuration `sslCertValue`
+with the SSL certificate value as Base64-encoded String:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslCertValue("<certificate>") // SSL certificate as Base64-encoded String
+  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
+  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+See the [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)
+for more details on SSL configuration.
+
 ## Connection Pooling
 
 The driver keeps a pool of connections for each host, the max amount of
 connections is configurable.
 
-Connections are released after the configured connection time-to-live
+Inactive connections are released after the configured connection time-to-live
 (`ArangoDB.Builder.connectionTtl(Long)`) or when the driver is shut down:
 
 ```java
@@ -190,9 +217,9 @@ To use this feature just call the method `host(String, int)` multiple times.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .host("host1", 8529)
-  .host("host2", 8529)
-  .build();
+        .host("host1", 8529)
+        .host("host2", 8529)
+        .build();
 ```
 
 The driver is also able to acquire a list of known hosts in a cluster. For this the driver has
@@ -202,8 +229,8 @@ feature:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .acquireHostList(true)
-  .build();
+        .acquireHostList(true)
+        .build();
 ```
 
 ## Load Balancing
@@ -217,8 +244,8 @@ host than the request before.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ROUND_ROBIN)
+        .build();
 ```
 
 The second load balancing strategy picks a random host from host list
@@ -227,8 +254,8 @@ connection is open.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
-  .build();
+        .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
+        .build();
 ```
 
 ## Active Failover
@@ -247,22 +274,45 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 
 ## Connection time to live
 
-The driver supports setting a TTL (time to life) for connections:
+The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
-  .connectionTtl(5 * 60 * 1000) // ms
-  .build();
+        .connectionTtl(5 * 60 * 1000) // ms
+        .build();
 ```
 
-In this example all connections will be closed/reopened after 5 minutes.
+In this example, inactive connections are closed after 5 minutes.
 
-If not set or set to `null` (default), no automatic connection closure will be performed.
+The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+
+If set to `null`, no automatic connection closure is performed.
+
+## Proxy configuration
+
+The driver allows configuring the underlying Vert.x WebClient to work
+with HTTP proxies. The configuration is specific to the HTTP protocol
+and uses the `io.vertx.core.net.ProxyOptions` class of
+[Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
+
+```java
+ArangoDB arango = new ArangoDB.Builder()
+        // ...
+        .protocolConfig(HttpProtocolConfig.builder()
+                .proxyOptions(new ProxyOptions()
+                        .setType(ProxyType.HTTP)
+                        .setHost("172.28.0.1")
+                        .setPort(8888)
+                        .setUsername("user")
+                        .setPassword("password"))
+                .build())
+        .build();
+```
 
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
-for VST connections. If set, every VST connection will perform a no-op request
+for VST connections. If set, every VST connection performs a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).

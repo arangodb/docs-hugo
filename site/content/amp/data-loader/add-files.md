@@ -6,8 +6,8 @@ description: >-
   Provide your set of files in CSV format containing the data to be imported
 ---
 
-The Data Loader allows you to upload your data files in CSV format into
-ArangoGraph and then use these data sources to design a graph using the
+The Data Loader allows you to upload your data files in CSV format into the
+Arango Managed Platform (AMP) and then use these data sources to design a graph using the
 built-in graph designer.
 
 ## Upload your files

@@ -1,15 +1,15 @@
 ---
-title: Single Sign-On (SSO) in ArangoGraph
+title: Single Sign-On (SSO) in the Arango Managed Platform (AMP)
 menuTitle: Single Sign-On
 weight: 10
 description: >-
-  ArangoGraph supports **Single Sign-On** (SSO) authentication using
+  AMP supports **Single Sign-On** (SSO) authentication using
   **Security Assertion Markup language 2.0** (SAML 2.0)
 ---
 {{< info >}}
-To enable the Single Sign-On (SSO) feature, get in touch with the ArangoGraph
-team via **Request Help**, available in the left sidebar menu of the
-ArangoGraph Dashboard.
+To enable the Single Sign-On (SSO) feature, get in touch with the
+Arango Managed Platform (AMP) team via **Request Help**, available in the left
+sidebar menu of the AMP Dashboard.
 {{< /info >}}
 
 ## About SAML 2.0
@@ -27,18 +27,18 @@ signed XML documents.
 There are generally two methods for starting Single Sign-On:
 
 - **Identity Provider Initiated** (IdP-initiated):
-   You log into the Identity Provider and are then redirected to ArangoGraph.
+   You log into the Identity Provider and are then redirected to AMP.
 - **Service Provider Initiated** (SP-initiated):
-   You access the ArangoGraph site which then redirects you to the
+   You access the AMP site which then redirects you to the
    Identity Provider for authentication.
 
-**ArangoGraph only supports SP-initiated SSO** because IdP-Initiated SSO is
+**AMP only supports SP-initiated SSO** because IdP-Initiated SSO is
 vulnerable to Man-in-the-Middle attacks. In order to initiate the SSO login
-process, you must start at ArangoGraph.
+process, you must start at AMP.
 
 ## Configure SAML 2.0 using Okta
 
-You can enable SSO for your ArangoGraph organization using Okta as an Identity
+You can enable SSO for your AMP organization using Okta as an Identity
 Provider (IdP). For more information about Okta, please refer to the
 [Okta Documentation](https://help.okta.com/en-us/Content/index.htm?cshid=csh-index).
 
@@ -59,7 +59,7 @@ Provider (IdP). For more information about Okta, please refer to the
    ![ArangoGraph Okta SAML General Settings](../../../images/arangograph-okta-saml-general-settings.png)
 
 6. Replace **ORG_ID** with your organization identifier from the 
-   ArangoGraph Dashboard. To find your organization ID, go to the **User Toolbar**
+   AMP Dashboard. To find your organization ID, go to the **User Toolbar**
    in the top right corner, which is accessible from every view of the Dashboard,
    and click **My organizations**.
 
@@ -75,7 +75,7 @@ Provider (IdP). For more information about Okta, please refer to the
    - family_name: `user.lastName`
    - picture: `user.profileUrl`
 
-   This step consists of a mapping between the ArangoGraph attribute names and
+   This step consists of a mapping between the AMP attribute names and
    Okta attribute names. The values of these attributes are automatically filled
    in based on the users list that is defined in Okta.
 
@@ -98,7 +98,7 @@ the SSO configuration.
    - **Identity Provider Issuer**
    - **X.509 Certificate**
 4. Copy the IdP settings, download the certificate using the
-   **Download X.509 certificate** button, and share them with the ArangoGraph
-   team via an ArangoGraph Support Ticket in order to complete the SSO
+   **Download X.509 certificate** button, and share them with the AMP
+   team via an AMP Support Ticket in order to complete the SSO
    configuration.
 

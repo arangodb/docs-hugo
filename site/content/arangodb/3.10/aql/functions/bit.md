@@ -100,7 +100,7 @@ BIT_DECONSTRUCT(2147484675) // [0, 1, 10, 31]
 
 Converts a bitstring (consisting of digits `0` and `1`) into a number.
 
-To convert a number into a bitstring, see [BIT_TO_STRING()](#bit_to_string).
+To convert a number into a bitstring, see [`BIT_TO_STRING()`](#bit_to_string).
 
 - **bitstring** (string): string sequence consisting of `0` and `1` characters
 - returns **number** (number\|null): the parsed number
@@ -271,7 +271,7 @@ BIT_TEST(255, 8) // false
 
 Converts a numeric input value into a bitstring, consisting of `0` and `1`.
 
-To convert a bitstring into a number, see [BIT_FROM_STRING()](#bit_from_string).
+To convert a bitstring into a number, see [`BIT_FROM_STRING()`](#bit_from_string).
 
 - **number** (number): the number to stringify
 - returns **bitstring** (string\|null): bitstring generated from the input value

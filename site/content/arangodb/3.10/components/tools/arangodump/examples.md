@@ -97,7 +97,7 @@ arangodump --dump-data false --include-system-collections true --output-director
 ```
 
 To restrict the dump to just specific collections, use the `--collection` option.
-It can be specified multiple times if required:
+You can specify it multiple times if required:
 
 ```
 arangodump --collection myusers --collection myvalues --output-directory "dump"
@@ -288,7 +288,7 @@ _arangodump_ can use multiple threads for dumping database data in
 parallel. To speed up the dump of a database with multiple collections, it is
 often beneficial to increase the number of _arangodump_ threads.
 The number of threads can be controlled via the `--threads` option. The default
-value was changed from `2` to the maximum of `2` and the number of available CPU cores.
+value is the maximum of `2` and the number of available CPU cores.
 
 The `--threads` option works dynamically, its value depends on the number of
 available CPU cores. If the amount of available CPU cores is less than `3`, a

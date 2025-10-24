@@ -589,8 +589,8 @@ The following shortcodes also exist but are rarely used:
   - _DB-Server_, not ~~dbserver~~, ~~db-server~~, ~~DBserver~~ (unless it is a code value)
   - _Coordinator_ (uppercase C)
   - _Agent_, _Agency_ (uppercase A)
-  - _Arango Managed Platform (AMP)_ and _ArangoGraph_ for short, but not
-    ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
+    ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
@@ -696,18 +696,18 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, AI Services Data Platform,
+Features exclusive to the Data Platform, AI Data Platform,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
 
-In the AI Services Data Platform only:
+In the AI Data Platform only:
 
 ```markdown
-{{< tag "AI Services Data Platform" >}}
+{{< tag "AI Data Platform" >}}
 ```
 
-In the Arango Managed Platform only:
+In the Arango Managed Platform (AMP) only:
 
 ```markdown
 {{< tag "AMP" >}}
@@ -738,6 +738,15 @@ required using a tag. Use the following include in the general case:
 
 ```markdown
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
+```
+
+### Experimental remark
+
+Features that are available for testing but may still change or get removed and
+should thus not be used in production can be tagged as follows:
+
+```markdown
+{{< tag "Experimental" >}}
 ```
 
 ### Add lead paragraphs

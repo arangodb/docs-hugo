@@ -109,7 +109,7 @@ RETURN MERGE(
 
 Keep in mind that if the key expression evaluates to the same value multiple
 times, only one of the key/value pairs with the duplicate name will survive
-[MERGE()](../functions/document-object.md#merge). To avoid this, you can go without
+[`MERGE()`](../functions/document-object.md#merge). To avoid this, you can go without
 dynamic attribute names, use static names instead and return all document
 properties as attribute values:
 

@@ -19,7 +19,7 @@ Check out the hands-on
 to learn more.
 
 The processing system inside ArangoDB is based on:
-[Pregel: A System for Large-Scale Graph Processing](http://www.dcs.bbk.ac.uk/~dell/teaching/cc/paper/sigmod10/p135-malewicz.pdf)
+[Pregel: A System for Large-Scale Graph Processing](https://15799.courses.cs.cmu.edu/fall2013/static/papers/p135-malewicz.pdf)
 – Malewicz et al. (Google), 2010.
 This concept enables us to perform distributed graph processing, without the
 need for distributed global locking.

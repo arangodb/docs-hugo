@@ -377,7 +377,7 @@ underlying data.
      node properties more quickly without opening the full
      [properties dialog](#view-node-and-edge-properties).
 
-![A screenshot of the Legend panel and a node styling dialog](../../images/graph-visualizer-customization.png)
+![A screenshot of the Legend panel and a node styling dialog](../images/graph-visualizer-customization.png)
 
 ### Customize the appearance of edges
 

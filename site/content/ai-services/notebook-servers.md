@@ -33,7 +33,7 @@ The notebooks are primarily focused on the following solutions:
 
 The ArangoDB Notebooks include the following:
 - Automatically connect to ArangoDB databases and AI platform services
-- [Magic commands](../amp/notebooks.md#arangograph-magic-commands)
+- [Magic commands](../amp/notebooks.md#amp-magic-commands)
   that simplify database interactions
 - Example notebooks for learning
 

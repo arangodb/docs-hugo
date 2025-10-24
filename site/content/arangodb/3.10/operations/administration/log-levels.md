@@ -28,6 +28,8 @@ See an example of how to
 
 The meaning of each log level is described below.
 
+For a list of the available log topics, see [Set the server log levels](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels) in the HTTP API documentation.
+
 ## FATAL
 
 _Fatal_ errors are the most severe errors and only occur if a service or application

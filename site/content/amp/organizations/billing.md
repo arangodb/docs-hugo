@@ -1,9 +1,9 @@
 ---
-title: Billing in ArangoGraph
+title: Billing in the Arango Managed Platform (AMP)
 menuTitle: Billing
 weight: 10
 description: >-
-   How to manage billing details and payment methods in ArangoGraph
+   How to manage billing details and payment methods in AMP
 ---
 ## How to add billing details
 

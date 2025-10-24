@@ -1,20 +1,20 @@
 ---
-title: Get started with the ArangoGraph API and Oasisctl
-menuTitle: Get started with Oasisctl
+title: Get started with the Arango Managed Platform (AMP) API and oasisctl
+menuTitle: Get started with oasisctl
 weight: 10
 description: >-
-  A tutorial that guides you through the ArangoGraph API as well as the Oasisctl
+  A tutorial that guides you through the AMP API as well as the `oasisctl`
   command-line tool
 aliases:
   - ../arangograph-api/getting-started
 ---
 This tutorial shows you how to do the following:
 
-- Generate an API key and authenticate with Oasisctl
+- Generate an API key and authenticate with _oasisctl_
 - View information related to your organizations, projects, and deployments
 - Configure, create and delete a deployment
 
-With Oasisctl the general command structure is to execute commands such as:
+With oasisctl, the general command structure is to execute commands such as:
 
 ```
 oasisctl list deployments
@@ -26,16 +26,16 @@ will explore it in more detail later. Most commands also have associated
 interaction method for many command line utilities. If you aren’t already
 familiar with this, follow along as there are many examples in this guide that
 will familiarize you with this command structure and using flags, along with
-how to use OasisCtl to access the ArangoGraph API.
+how to use OasisCtl to access the Arango Managed Platform (AMP) API.
 
 Note: A good rule of thumb for all variables, resource names, and identifiers
-is to **assume they are all case sensitive**, when being used with Oasisctl.
+is to **assume they are all case sensitive**, when being used with oasisctl.
 
 ## API Authentication
 
 ### Generating an API Key
 
-The first step to using the ArangoGraph API is to generate an API key. To generate a
+The first step to using the AMP API is to generate an API key. To generate a
 key you will need to be signed into your account at
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 Once you are signed in, hover over the profile icon in the top right corner.
@@ -69,13 +69,13 @@ the API key secret after closing this pop-up window.
 
 Once you have securely stored your API key ID and secret, click close.
 
-That is all there is to setting up API access to your ArangoGraph organizations.
+That is all there is to setting up API access to your AMP organizations.
 
-### Authenticating with Oasisctl
+### Authenticating with oasisctl
 
-Now that you have API access it is time to login with Oasisctl.
+Now that you have API access it is time to login with oasisctl.
 
-Running the Oasisctl utility without any arguments is the equivalent of
+Running the oasisctl utility without any arguments is the equivalent of
 including the --help flag. This shows all of the top level commands available
 and you can continue exploring each command by typing the command name
 followed by the --help flag to see the options available for that command.
@@ -131,10 +131,10 @@ using other commands that require authentication.
 
 ### Format
 
-This section covers the basics of retrieving information from the ArangoGraph API.
-Depending on the data you are requesting from the ArangoGraph API, being able to read
+This section covers the basics of retrieving information from the AMP API.
+Depending on the data you are requesting from the AMP API, being able to read
 it in the command line can start to become difficult. To make text easier to
-read for humans and your applications, Oasisctl offers two options for
+read for humans and your applications, oasisctl offers two options for
 formatting the data received:
 
 - Table
@@ -150,7 +150,7 @@ oasisctl --format json
 ### Viewing Information with the List Command
 
 This section will cover the two main functions of retrieving data with the
-ArangoGraph API. These are:
+AMP API. These are:
 
 - `list` - List resources
 - `get` - Get information
@@ -169,7 +169,7 @@ This should output a screen similar to:
 ![List help output](../../images/oasisctl-list-help.png)
 
 As you can see you can get information on anything you would need about your
-ArangoGraph organizations, deployments, and access control. To start, let’s take a
+AMP organizations, deployments, and access control. To start, let’s take a
 look at a few examples of listing information and then getting more details on
 our results.
 
@@ -202,7 +202,7 @@ with the `--organization-id` flag.
 
 ```bash
 oasisctl list projects \
-  --organization-id "ArangoGraph Organization" \
+  --organization-id "AMP Organization" \
   --format json
 ```
 
@@ -219,8 +219,8 @@ you can list all of the associated deployments for that project.
 
 ```bash
 oasisctl list deployments \
-  --organization-id "ArangoGraph Organization" \
-  --project-id "Getting Started with ArangoGraph" \
+  --organization-id "AMP Organization" \
+  --project-id "Getting Started with AMP" \
   --format json
   ```
 
@@ -233,7 +233,7 @@ modifications to the deployment or to get more detailed information, with the
 
 ### Using the Get Command
 
-In Oasisctl, you use the get command to obtain more detailed information about
+In oasisctl, you use the get command to obtain more detailed information about
 any of your available resources. It follows the same command structure as the
 previous commands but typically requires a bit more information. For example,
 to get more information on a specific deployment means you need to know at
@@ -248,8 +248,8 @@ the following command:
 
 ```bash
 oasisctl get deployment \
-  --organization-id "ArangoGraph Organization" \
-  --project-id "Getting Started with ArangoGraph" \
+  --organization-id "AMP Organization" \
+  --project-id "Getting Started with AMP" \
   --deployment-id "abc123DeploymentID" \
   --format json
 ```
@@ -275,7 +275,7 @@ options in the US West region for the Google Cloud Platform:
 
 ```bash
 oasisctl list nodesizes \
-  --organization-id "ArangoGraph Organization" \
+  --organization-id "AMP Organization" \
   --provider-id "Google Cloud Platform" \
   --region-id gcp-us-west2
 ```
@@ -297,7 +297,7 @@ node size options before creating a new deployment.
 ### Challenge
 
 You can use this combination of listing and getting to obtain all of the
-information you want for your ArangoGraph organizations. We only explored a few of
+information you want for your AMP organizations. We only explored a few of
 the commands available but you can explore them all within the utility by
 utilizing the `--help` flag or you can see all of the available options
 in the [documentation](../oasisctl/options.md).
@@ -316,14 +316,14 @@ first deployment and you will need to supply:
 - Region ID (name)
 
 Try looking up that information to get more familiar with how to find
-information with Oasisctl. When in doubt use the `--help` flag with any
+information with oasisctl. When in doubt use the `--help` flag with any
 command.
 
 ## Creating Resources
 
 Now that you have seen how to obtain information about your available
 resources, it’s time to start using those skills to start creating your own
-deployment. To create resources with Oasisctl you use the create command.
+deployment. To create resources with oasisctl you use the create command.
 To see all the possible options you can start with the following command:
 
 ```bash
@@ -359,10 +359,10 @@ oasisctl create deployment \
   --node-disk-size 10 \
   --version 3.9.2 \
   --cacertificate-id OasisCert \
-  --organization-id "ArangoGraph Organization" \
-  --project-id "Getting Started with ArangoGraph" \
-  --name "First Oasisctl Deployment" \
-  --description "The first deployment created using the awesome Oasisctl utility!"
+  --organization-id "AMP Organization" \
+  --project-id "Getting Started with AMP" \
+  --name "First oasisctl Deployment" \
+  --description "The first deployment created using the awesome oasisctl utility!"
 ```
 
 If everything went according to play you should see similar output:
@@ -386,7 +386,7 @@ ready to use. You can get some new details by running the get command.
 
 ```bash
 oasisctl get deployment \
-  --organization-id "ArangoGraph Organization" \
+  --organization-id "AMP Organization" \
   --deployment-id hmkuedzw9oavvjmjdo0i
 ```
 
@@ -461,13 +461,13 @@ your deployments.
 
 ```bash
 oasisctl list deployments \
-  --organization-id "ArangoGraph Organization" \
+  --organization-id "AMP Organization" \
   --format json
 ```
 
 ## Next Steps
 
-As promised, this guide covered the basics of using Oasisctl with the ArangoDB
+As promised, this guide covered the basics of using oasisctl with the ArangoDB
 API. While we primarily focused on viewing and managing deployments there is
 also a lot more to explore, including:
 

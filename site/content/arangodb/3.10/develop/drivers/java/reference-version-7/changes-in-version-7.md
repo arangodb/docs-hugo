@@ -18,6 +18,8 @@ description: >-
 <dependencies>
 ```
 
+Substitute `7.x.x` with the latest available driver version.
+
 ## Gradle Setup
 
 ```groovy
@@ -32,7 +34,7 @@ dependencies {
 
 ## HTTP client
 
-The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java). 
+The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java/).
 
 `HTTP/2` is now supported. 
 `HTTP/2` supports multiplexing and uses `1` connection per host by default.
@@ -82,13 +84,13 @@ See the related reference documentation about
 for details.
 
 Examples showing how to provide configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Modules
 
 Support for different serdes and communication protocols is offered by separate modules. 
-Defaults modules are transitively included, but they could be excluded if not needed.
+Default modules are transitively included, but they could be excluded if not needed.
 
 The main driver artifact `com.arangodb:arangodb-java-driver` has transitive dependencies on default modules:
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
@@ -158,13 +160,15 @@ there are in your project other libraries depending on different versions of Jac
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
             <artifactId>jackson-bom</artifactId>
-            <version>...</version>
+            <version>x.y.z</version>
             <scope>import</scope>
             <type>pom</type>
         </dependency>
     </dependencies>
 </dependencyManagement>
 ```
+
+Substitute `x.y.z` with the latest stable version.
 
 The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client`,
 which in turn depends on packages from `io.netty`.
@@ -191,7 +195,7 @@ class `com.arangodb.util.RawJson` has been added:
 RawJson rawJsonIn = RawJson.of("""
         {"foo":"bar"}
         """);
-ArangoCursor<RawJson> res = adb.db().query("RETURN @v", Map.of("v", rawJsonIn), RawJson.class);
+ArangoCursor<RawJson> res = adb.db().query("RETURN @v", RawJson.class, Map.of("v", rawJsonIn));
 RawJson rawJsonOut = res.next();
 String json = rawJsonOut.get();  // {"foo":"bar"}
 ```
@@ -203,7 +207,6 @@ or a `VPACK` value. The format used should match the driver protocol configurati
 
 The following changes have been applied to `com.arangodb.entity.BaseDocument`
 and `com.arangodb.entity.BaseEdgeDocument`:
-- not serializable anymore (using Java serialization)
 - new method `removeAttribute(String)`
 - `getProperties()` returns an unmodifiable map
 
@@ -231,7 +234,7 @@ JsonNode jsonNodeIn = JsonNodeFactory.instance
         .objectNode()
         .put("foo", "bar");
 
-ArangoCursor<JsonNode> res = adb.db().query("RETURN @v", Map.of("v", jsonNodeIn), JsonNode.class);
+ArangoCursor<JsonNode> res = adb.db().query("RETURN @v", JsonNode.class, Map.of("v", jsonNodeIn));
 JsonNode jsonNodeOut = res.next();
 String foo = jsonNodeOut.get("foo").textValue();    // bar
 ```
@@ -433,7 +436,7 @@ The driver supports GraalVM Native Image compilation.
 To compile with `--link-at-build-time` when `http-protocol` module is present in
 the classpath, additional substitutions are be required for its transitive
 dependencies (`Netty` and `Vert.x`). See this
-[example](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/graal)
+[example](https://github.com/arangodb/arangodb-java-driver/tree/main/test-functional/src/test-default/java/graal)
 for reference. Such substitutions are not required when compiling the shaded driver.
 
 ### Framework compatibility

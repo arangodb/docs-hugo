@@ -29,7 +29,7 @@ or by using the ArangoDB Starter tool.
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
 technology runs on premises, on Kubernetes, and in the cloud on
-[ArangoGraph](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - ArangoDB's fully managed service.
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
 but it also provides resilience through replication and automatic failover.
@@ -50,7 +50,7 @@ ArangoDB product offering with a unified interface in a Kubernetes cluster.
 It is offered for self-hosting on-prem or in the cloud and as a managed service,
 superseding the Arango Managed Platform (AMP).
 
-See the [Arango Data Platform](../../../data-platform/_index.md) for details.
+See [The Arango Data Platform](../../../data-platform/_index.md) for details.
 
 ## How to deploy
 

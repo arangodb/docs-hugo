@@ -1,10 +1,10 @@
 ---
-title: Security and access control in ArangoGraph
+title: Security and access control in the Arango Managed Platform (AMP)
 menuTitle: Security and Access Control
 weight: 45
 description: >-
   This guide explains which access control concepts are available in
-  ArangoGraph and how to use them
+  AMP and how to use them
 ---
 The Arango Managed Platform (AMP) has a structured set of resources that are subject to security and
 access control:
@@ -19,7 +19,7 @@ inside a project.
 
 ## Locked resources
 
-In ArangoGraph, you can lock the resources to prevent accidental deletion. When
+In AMP, you can lock the resources to prevent accidental deletion. When
 a resource is locked, it cannot be deleted and must be unlocked first.
 
 The hierarchical structure of the resources (organization-project-deployment)
@@ -35,7 +35,7 @@ the corresponding parent resource without unlocking those properties first.
  
 ## Policy
 
-Various actions in ArangoGraph require different permissions, which can be
+Various actions in AMP require different permissions, which can be
 granted to users via **roles**.
 
 The association of a member with a role is called a **role binding**.
@@ -57,7 +57,7 @@ Permissions linked to predefined roles vary between organization owners and
 organization members. If you need to extend permissions for an organization
 member, you can create a new role binding. The complete list of roles and
 their respective permissions for both organization owners and members can be
-viewed on the **Policy** page of an organization within the ArangoGraph dashboard.
+viewed on the **Policy** page of an organization within the AMP dashboard.
 {{< /info >}}
 
 ### How to view, edit, or remove role bindings of a policy
@@ -93,10 +93,10 @@ Currently, you cannot edit a role binding, you can only delete it.
 
 ## Roles
 
-Operations on resources in ArangoGraph require zero (just an authentication) or
+Operations on resources in AMP require zero (just an authentication) or
 more permissions. Since the
 number of permissions is large and very detailed, it is not practical to assign
-permissions directly to users. Instead, ArangoGraph uses **roles**.
+permissions directly to users. Instead, AMP uses **roles**.
 
 A role is a set of permissions. Roles can be bound to groups (preferably)
 or individual users. You can create such bindings for the respective organization,
@@ -108,7 +108,7 @@ There are predefined roles, but you can also create custom ones.
 
 ### Predefined roles
 
-Predefined roles are created by ArangoGraph and group related permissions together.
+Predefined roles are created by AMP and group related permissions together.
 An example of a predefined role is `deployment-viewer`. This role
 contains all permissions needed to view deployments in a project.
 
@@ -503,7 +503,7 @@ Each operation done on a resource requires zero (just authentication) or more **
 A permission is a constant string such as `resourcemanager.project.create`,
 following this schema: `<api>.<kind>.<verb>`.
 
-Permissions are solely defined by the ArangoGraph API.
+Permissions are solely defined by the AMP API.
 
 {{% comment %}}
 Retrieved with the below command, with manual adjustments:
@@ -630,7 +630,7 @@ the organization. These users can still be members of the organization.
 {{< /info >}}
 
 Using the first option, you can limit which **authentication providers** are
-accepted for users trying to access an organization in ArangoGraph.
+accepted for users trying to access an organization in AMP.
 The following commands are available to configure this option:
 
 - `oasisctl get organization authentication providers` - allows you to see which
@@ -658,10 +658,10 @@ organization. The following commands are available to configure this option:
 ## Using an audit log
 
 {{< info >}} 
-To enable the audit log feature, get in touch with the ArangoGraph team via **Request Help**, available in the left sidebar menu of the ArangoGraph Dashboard. 
+To enable the audit log feature, get in touch with the AMP team via **Request Help**, available in the left sidebar menu of the AMP Dashboard. 
 {{< /info >}}
 
-To have a better overview of the events happening in your ArangoGraph organization,
+To have a better overview of the events happening in your AMP organization,
 you can set up an audit log, which will track and log auditing information for you.
 The audit log is created on the organization level, then you can use the log for
 projects belonging to that organization.

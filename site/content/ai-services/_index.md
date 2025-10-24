@@ -32,5 +32,5 @@ Alongside these components, you also get the following additional features:
   or to run machine learning experiments as part of the Arango Data Platform.
 - **Application Programming Interfaces**: Use the underlying APIs of the
   AI Services and build your own integrations. See the
-  [API reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html) documentation
+  [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.

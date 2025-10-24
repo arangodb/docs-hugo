@@ -9,15 +9,15 @@ aliases:
   - ../arangographml/getting-started
   - ../arangographml-getting-started-with-arangographml
 ---
-The Arango Data Platform provides an easy-to-use & scalable interface to run
+The Arango AI Data Platform provides an easy-to-use & scalable interface to run
 Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
-managed by ArangoDB, all that is typically required are JSON specifications outlining
+managed by the AI Data Platform, all that is typically required are JSON specifications outlining
 individual processes to solve a Machine Learning task.
 
 The `arangoml` Python package allows you to manage all the necessary
 GraphML components, including:
 - **Project Management**: Projects are a metadata-tracking entity that sit at
-  the top level of ArangoDB GraphML. All activities must link to a project.
+  the top level of Arango GraphML. All activities must link to a project.
 - **Featurization**: The step of converting human-understandable data to
   machine-understandable data (e.g. features), such that it can be used to
   train Graph Neural Networks (GNNs).

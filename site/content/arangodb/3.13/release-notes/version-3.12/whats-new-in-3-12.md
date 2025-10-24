@@ -2035,7 +2035,7 @@ The following metric has been added:
 
 Cluster deployments no longer wait for all in-progress transactions to get
 committed when a user requests a Hot Backup. The waiting could cause deadlocks
-and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+and thus Hot Backups to fail, in particular in the Arango Managed Platform (AMP). Now, Hot Backups are
 created immediately and commits have to wait until the backup process is done.
 
 ### In-memory edge cache startup options and metrics

@@ -1,11 +1,11 @@
 ---
-title: Organizations in ArangoGraph
+title: Organizations in the Arango Managed Platform (AMP)
 menuTitle: Organizations
 weight: 10
 description: >-
-   How to manage organizations and what type of packages ArangoGraph offers
+   How to manage organizations and what type of packages AMP offers
 ---
-An ArangoGraph organizations is a container for projects. An organization
+An Arango Managed Platform (AMP) organizations is a container for projects. An organization
 typically represents a (commercial) entity such as a company, a company division,
 an institution, or a non-profit organization.
 
@@ -27,30 +27,30 @@ member of one _Free-to-try_ tier organization at a time.
 
 ![ArangoGraph Organization Overview](../../images/arangograph-organization-overview.png)
 
-## ArangoGraph Packages
+## AMP Packages
 
 With the Arango Managed Platform (AMP), your organization can choose one of the
 following packages.
 
 ### Free Trial
 
-ArangoGraph comes with a free-to-try tier that lets you test ArangoGraph for
+AMP comes with a free-to-try tier that lets you test AMP for
 free for 14 days. You can get started quickly, without needing to enter a
 credit card.
 
 The free trial gives you access to:
 - One small deployment (4GB) in a region of your choice for 14 days
 - Local backups
-- One ArangoGraph Notebook for learning and data science
+- One AMP Notebook for learning and data science
 
 After the trial period, your deployment will be deleted automatically.
 
 ### On-Demand
 
-Add a payment method to gain access to ArangoGraph's full feature set.
+Add a payment method to gain access to AMP's full feature set.
 Pay monthly via a credit card for what you actually use.
 
-This package unlocks all ArangoGraph functionality, including:
+This package unlocks all AMP functionality, including:
 - Multiple and larger deployments
 - Backups to cloud storage, with multi-region support
 - Enhanced security features such as Private Endpoints
@@ -70,9 +70,9 @@ team. [Contact us](https://www.arangodb.com/contact/) for more details.
 
 ## How to unlock all features
 
-You can unlock all features in ArangoGraph at any time by adding your billing
+You can unlock all features in AMP at any time by adding your billing
 details and a payment method. As soon as you have added a payment method, all
-ArangoGraph functionalities are immediately unlocked. From that point on, your
+AMP functionalities are immediately unlocked. From that point on, your
 deployments will no longer expire and you can create more and larger deployments.
 
 See [Billing: How to add billing details / payment methods](billing.md)

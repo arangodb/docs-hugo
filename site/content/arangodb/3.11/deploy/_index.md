@@ -36,7 +36,7 @@ If the leader fails, then a follower takes over seamlessly.
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
 technology runs on premises, on Kubernetes, and in the cloud on
-[ArangoGraph](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - ArangoDB's fully managed service.
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
 but it also provides resilience through replication and automatic failover.

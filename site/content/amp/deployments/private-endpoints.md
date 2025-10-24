@@ -1,5 +1,5 @@
 ---
-title: Private endpoint deployments in ArangoGraph
+title: Private endpoint deployments in the Arango Managed Platform (AMP)
 menuTitle: Private endpoints
 weight: 5
 description: >-
@@ -28,16 +28,16 @@ that allows private consumption of services across VPC networks that belong to
 different groups, teams, projects, or organizations. You can publish and consume
 services using the defined IP addresses which are internal to your VPC network.
 
-In ArangoGraph, you can
+In the Arango Managed Platform (AMP), you can
 [create a regular deployment](_index.md#how-to-create-a-new-deployment)
 and change it to a private endpoint deployment afterwards.
 
 Such a deployment is not reachable from the internet anymore, other than via
-the ArangoGraph dashboard to administrate it. To revert to a public deployment,
+the AMP dashboard to administrate it. To revert to a public deployment,
 please contact support via **Request help** in the help menu.
 
 To configure a private endpoint for GCP, you need to provide your Google project
-names. ArangoGraph then configures a **Private Endpoint Service** that automatically
+names. AMP then configures a **Private Endpoint Service** that automatically
 connect to private endpoints that are created for those projects.
 
 After the creation of the **Private Endpoint Service**, you should receive a
@@ -67,12 +67,12 @@ service attachment that you need during the creation of your private endpoint(s)
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
    configuration.
-9. ArangoGraph configures a **Private Endpoint Service**. As soon as the
+9. AMP configures a **Private Endpoint Service**. As soon as the
    **Service Attachment** is ready, you can use it to configure the Private
    Service Connect in your VPC.
 
 {{< tip >}}
-When you create a private endpoint in ArangoGraph, both endpoints (the regular
+When you create a private endpoint in AMP, both endpoints (the regular
 one and the new private one) are available for two hours. During this time period,
 you can switch your application to the new private endpoint. After this period,
 the old endpoint is not available anymore.
@@ -90,12 +90,12 @@ virtual network that you have defined. It closely resembles a traditional
 network that you would normally operate, with the benefits of using the AWS
 scalable infrastructure. 
 
-In ArangoGraph, you can
+In the Arango Managed Platform (AMP), you can
 [create a regular deployment](_index.md#how-to-create-a-new-deployment) and change it
 to a private endpoint deployment afterwards.
 
 The ArangoDB private endpoint deployment is not exposed to public internet
-anymore, other than via the ArangoGraph dashboard to administrate it. To revert
+anymore, other than via the AMP dashboard to administrate it. To revert
 it to a public deployment, please contact the support team via **Request help**
 in the help menu.
 
@@ -118,7 +118,7 @@ that automatically connects to private endpoints that are created in those princ
    {{< /info >}}
    {{< warning >}}
    To verify your endpoint service in AWS, you must use the same principal as
-   configured in ArangoGraph. Otherwise, the service name cannot be verified.
+   configured in AMP. Otherwise, the service name cannot be verified.
    {{< /warning >}}
    ![ArangoGraph AWS Private Endpoint Configure Principals](../../images/arangograph-aws-endpoint-configure-principals.png)
 6. Configure custom DNS names. This step is optional and disabled by default,
@@ -147,10 +147,10 @@ that automatically connects to private endpoints that are created in those princ
    {{< /info >}}
    
    {{< tip >}}
-   To learn more or request help from the ArangoGraph support team, click **Help**
+   To learn more or request help from the AMP support team, click **Help**
    in the top right corner of the **Private Endpoint** section.
    {{< /tip >}}
-9. ArangoGraph configures a **Private Endpoint Service**. As soon as this is available,
+9. AMP configures a **Private Endpoint Service**. As soon as this is available,
    you can use it in the AWS portal to create an interface endpoint to connect
    to your endpoint service. For more details, see
    [How to connect to an endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service).
@@ -161,7 +161,7 @@ from the originating machine to the interface endpoint.
 {{< /tip >}}
 
 {{< tip >}}
-When you create a private endpoint in ArangoGraph, both endpoints (the regular
+When you create a private endpoint in AMP, both endpoints (the regular
 one and the new private one) are available for two hours. During this time period,
 you can switch your application to the new private endpoint. After this period,
 the old endpoint is not available anymore.

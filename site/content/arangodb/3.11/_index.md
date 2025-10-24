@@ -18,7 +18,7 @@ and get a server instance up and running.
 {{% /card %}}
 
 {{% card title="Arango Managed Platform (AMP)" link="amp/" %}}
-Try out ArangoDB's fully-managed cloud offering for a faster time to value.
+Try out Arango's fully-managed cloud offering for a faster time to value.
 {{% /card %}}
 
 {{% card title="AQL" link="aql/" %}}

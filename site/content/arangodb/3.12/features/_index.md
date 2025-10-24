@@ -43,7 +43,7 @@ variety of support plans to meet your needs.
 - Highly secure with encryption at transit and at rest
 - Includes elastic scalability for all deployment models (OneShard and Sharded clusters)
 
-To learn more, go to the [ArangoGraph documentation](../../../amp/_index.md). 
+To learn more, go to the [Arango Managed Platform (AMP) documentation](../../../amp/_index.md). 
 
 ### Self-managed in the cloud
 

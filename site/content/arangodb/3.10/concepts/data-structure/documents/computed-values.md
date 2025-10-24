@@ -144,6 +144,9 @@ of a collection.
 
 ## Examples
 
+The following examples show a few ways you can use computed values using
+_arangosh_.
+
 Add an attribute with the creation timestamp to new documents:
 
 ```js

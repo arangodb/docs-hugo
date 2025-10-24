@@ -60,7 +60,7 @@ How to perform the steps is detailed in the subsequent sections.
 {{< tab "Arango Managed Platform (AMP)" >}}
 {{< info >}}
 Before you can use Graph Analytics Engines, you need to request the feature
-via __Request help__ in the ArangoGraph dashboard for a deployment.
+via __Request help__ in the Arango Managed Platform (AMP) dashboard for a deployment.
 
 The deployment needs to use **AWS** as the cloud provider.
 
@@ -72,7 +72,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
    temporarily needed space for computations and results needs to fit in memory.
 2. Deploy an engine of the desired size and of type `gral`. It only takes a few
    seconds until the engine can be used. The engine runs adjacent to a particular
-   ArangoGraph deployment.
+   AMP deployment.
 3. Load graph data from ArangoDB into the engine. You can load named graphs or
    sets of node and edge collections. This loads the edge information and a
    configurable subset of the node attributes.
@@ -103,7 +103,7 @@ well as to authenticate requests to the [Engine API](#engine-api).
 
 {{< tab "Arango Managed Platform (AMP)" >}}
 The [Management API](#management-api) for deploying and deleting engines requires
-an ArangoGraph **API key**. See
+an AMP **API key**. See
 [Generating an API Key](../amp/api/get-started.md#generating-an-api-key)
 on how to create one.
 
@@ -113,8 +113,8 @@ on how to do so using `oasisctl login`.
 
 The [Engine API](#engine-api) uses one of two authentication methods, depending
 on the [__auto login to database UI__](../amp/deployments/_index.md#auto-login-to-database-ui)
-setting in ArangoGraph:
-- **Enabled**: You can use an ArangoGraph access token created with an API key
+setting in AMP:
+- **Enabled**: You can use an AMP access token created with an API key
   (see above), allowing you to use one token for both the Management API and
   the Engine API.
 - **Disabled**: You need use a JWT user token created from ArangoDB credentials.
@@ -129,7 +129,7 @@ setting in ArangoGraph:
 
 The interface for managing the engines depends on the environment you use:
 
-- **Arango AI Data Platform**: [AI service](#ai-service)
+- **AI Data Platform**: [AI service](#ai-service)
 - **Arango Managed Platform (AMP)**: [Management API](#management-api)
 
 ### AI service
@@ -189,7 +189,7 @@ GAEs are deployed and deleted with the Management API for graph analytics on the
 Arango Managed Platform (AMP). You can also list the available engine sizes and
 get information about deployed engines.
 
-To determine the base URL of the management API, use the ArangoGraph dashboard
+To determine the base URL of the management API, use the AMP dashboard
 and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph data
 you want to analyze. Replace the port with `8829` and append
 `/graph-analytics/api/graphanalytics/v1`, e.g.
@@ -207,7 +207,7 @@ To authenticate requests, you need to use the following HTTP header:
 Authorization: bearer <ARANGO_GRAPH_TOKEN>
 ```
 
-You can create an ArangoGraph access token with `oasisctl login`. Save it in a
+You can create an AMP access token with `oasisctl login`. Save it in a
 variable to ease scripting. Note that this should be the token string only and
 not include quote marks. The following examples assume Bash as the shell and
 that the `curl` and `jq` commands are available.
@@ -260,7 +260,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginetypes"
 
 `POST <BASE_URL>/engines`
 
-Set up a GAE adjacent to the ArangoGraph deployment, for example, using an
+Set up a GAE adjacent to the AMP deployment, for example, using an
 engine size of `e4`.
 
 The engine ID is returned in the `id` attribute.
@@ -273,7 +273,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X POST -d '{"type_id":"gral
 
 `GET <BASE_URL>/engines`
 
-List all deployed GAEs of a ArangoGraph deployment.
+List all deployed GAEs of a AMP deployment.
 
 The engine IDs are in the `id` attributes.
 
@@ -349,7 +349,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
 {{< /tab >}}
 
 {{< tab "Arango Managed Platform (AMP)" >}}
-To determine the base URL of the engine API, use the ArangoGraph dashboard
+To determine the base URL of the engine API, use the AMP dashboard
 and copy the __APPLICATION ENDPOINT__ of the deployment that holds the graph data
 you want to analyze. Replace the port with `8829` and append
 `/graph-analytics/engines/<ENGINE_ID>`, e.g.
@@ -367,7 +367,7 @@ To authenticate requests, you need to use a bearer token in HTTP header:
 Authorization: bearer <TOKEN>
 ```
 
-- If __Auto login to database UI__ is enabled for the ArangoGraph deployment,
+- If __Auto login to database UI__ is enabled for the AMP deployment,
   this can be the same access token as used for the management API.
 - If it is disabled, use an ArangoDB session token (JWT user token) instead.
 

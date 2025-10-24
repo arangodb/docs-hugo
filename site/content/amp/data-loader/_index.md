@@ -1,24 +1,24 @@
 ---
-title: Load your data into ArangoGraph
+title: Load your data into the Arango Managed Platform (AMP)
 menuTitle: Data Loader
 weight: 22
 description: >-
-   Load your data into ArangoGraph and transform it into richly-connected graph
+   Load your data into AMP and transform it into richly-connected graph
    structures, without needing to write any code or deploy any infrastructure
 ---
 
-ArangoGraph provides different ways of loading your data into the platform,
-based on your migration use case.
+The Arango Managed Platform (AMP) provides different ways of loading your data
+into the platform, based on your migration use case.
 
 ## Transform data into a graph
 
-The ArangoGraph Data Loader allows you to transform existing data from CSV file
-formats into data that can be analyzed by the ArangoGraph platform.
+The AMP Data Loader allows you to transform existing data from CSV file
+formats into data that can be analyzed in AMP.
 
 You provide your data in CSV format, a common format used for exports of data
 from various systems. Then, using a no-code editor, you can model the schema of
 this data and the relationships between them. This allows you to ingest your
-existing datasets into your ArangoGraph database, without the need for any
+existing datasets into your AMP database, without the need for any
 development effort.
 
 You can get started in a few easy steps.
@@ -46,7 +46,7 @@ To import data from various files into collections **without creating a graph**,
 get the ArangoDB client tools for your operating system from the
 [download page](https://arangodb.com/download-major/).
 
-- To import data to ArangoGraph from an existing ArangoDB instance, see
+- To import data to AMP from an existing ArangoDB instance, see
   [arangodump](../../arangodb/3.12/components/tools/arangodump/) and
   [arangorestore](../../arangodb/3.12/components/tools/arangorestore/).
 - To import pre-existing data in JSON, CSV, or TSV format, see

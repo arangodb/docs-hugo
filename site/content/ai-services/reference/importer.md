@@ -31,7 +31,7 @@ You can also use the GraphRAG Importer service via the [Data Platform web interf
 ## Creating a new project
 
 To create a new GraphRAG project, use the `CreateProject` method by sending a
-`POST` request to the `genai/v1/project` endpoint. You must provide a unique
+`POST` request to the `/ai/v1/project` endpoint. You must provide a unique
 `project_name` and a `project_type` in the request body. Optionally, you can
 provide a `project_description`.
 

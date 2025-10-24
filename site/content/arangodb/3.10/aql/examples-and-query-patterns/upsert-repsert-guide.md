@@ -325,4 +325,5 @@ The `INSERT` AQL operation with the `overwriteMode` set will outperform
 `UPSERT`, but it can only be used for some use cases.
 
 Using the dedicated REST API for document inserts will be even more efficient,
-and is thus the preferred option for bulk document inserts.
+and is thus the preferred option for bulk document inserts, but AQL `INSERT`
+queries can be almost as fast.

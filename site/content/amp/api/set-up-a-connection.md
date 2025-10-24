@@ -1,21 +1,21 @@
 ---
-title: Get started with the ArangoGraph API
+title: Get started with the Arango Managed Platform (AMP) API
 menuTitle: Get started with the API
 weight: 5
 description: >-
-   Quick start guide on how to set up a connection to the ArangoGraph API
+   Quick start guide on how to set up a connection to the AMP API
 aliases:
   - ../arangograph-api/getting-started-with-the-api
 ---
-The instructions below are a quick start guide on how to set up a connection to the ArangoGraph API.
+The instructions below are a quick start guide on how to set up a connection to the AMP API.
 
 All examples below will use the Go programming language.
-Since the ArangoGraph API is using gRPC with protocol buffers,
+Since the AMP API is using gRPC with protocol buffers,
 all examples can be easily translated to many different languages.
 
 ## Prerequisites
 
-Make sure that you have already [signed up for ArangoGraph](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Make sure that you have already [signed up for AMP](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 ## Creating an API key
 

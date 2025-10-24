@@ -21,7 +21,7 @@ It is recommended to use [Inverted indexes](../../index-and-search/indexing/work
 Return all documents from collection *coll*, for which the attribute *attribute*
 matches the fulltext search phrase *query*, optionally capped to *limit* results.
 
-**Note**: the *FULLTEXT()* function requires the collection *coll* to have a
+**Note**: the `FULLTEXT()` function requires the collection *coll* to have a
 fulltext index on *attribute*. If no fulltext index is available, this function
 will fail with an error at runtime. It doesn't fail when explaining the query however.
 
@@ -32,7 +32,7 @@ will fail with an error at runtime. It doesn't fail when explaining the query ho
   to at most this number of documents
 - returns **docArray** (array): an array of documents
 
-*FULLTEXT()* is not meant to be used as an argument to `FILTER`,
+`FULLTEXT()` is not meant to be used as an argument to `FILTER`,
 but rather to be used as the expression of a `FOR` statement:
 
 ```aql

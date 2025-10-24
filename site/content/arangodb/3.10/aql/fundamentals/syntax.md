@@ -153,35 +153,40 @@ without having to quote them. The query parser can identify them as keyword-like
 based on the context:
 
 - `KEEP` –
-  [COLLECT](../high-level-operations/collect.md) operation variant
-- `COUNT` (`WITH COUNT INTO`) –
-  [COLLECT](../high-level-operations/collect.md) operation variant
+  [COLLECT](../high-level-operations/collect.md#discarding-obsolete-variables)
+  operation variant
+- `COUNT` –
+  [COLLECT](../high-level-operations/collect.md#group-length-calculation)
+  operation variant (`WITH COUNT INTO`)
 - `OPTIONS` –
   [FOR](../high-level-operations/for.md#options) /
-  [Graph Traversal](../graphs/traversals.md) /
   [SEARCH](../high-level-operations/search.md#search-options) /
   [COLLECT](../high-level-operations/collect.md#collect-options) /
   [INSERT](../high-level-operations/insert.md#query-options) /
   [UPDATE](../high-level-operations/update.md#query-options) /
   [REPLACE](../high-level-operations/replace.md#query-options) /
   [UPSERT](../high-level-operations/upsert.md#query-options) /
-  [REMOVE](../high-level-operations/remove.md#query-options) operation
+  [REMOVE](../high-level-operations/remove.md#query-options) operation /
+  [Graph Traversal](../graphs/traversals.md) /
+  [Shortest Path](../graphs/shortest-path.md#path-search-options) /
+  [k Shortest Paths](../graphs/k-shortest-paths.md#path-search-options) /
 - `PRUNE` –
-  [Graph Traversal](../graphs/traversals.md#pruning), FOR operation variant
+  [Graph Traversal](../graphs/traversals.md#pruning) (`FOR` operation variant)
 - `SEARCH` –
   [SEARCH](../high-level-operations/search.md) operation
 - `TO` –
   [Shortest Path](../graphs/shortest-path.md) /
   [All Shortest Paths](../graphs/all-shortest-paths.md) /
   [k Shortest Paths](../graphs/k-shortest-paths.md) /
-  [k Paths](../graphs/k-paths.md) graph traversal
+  [k Paths](../graphs/k-paths.md)
 
 Last but not least, there are special variables which are available in certain
 contexts. Unlike keywords, they are **case-sensitive**:
  
 - `CURRENT` –
   available in
-  [array inline expressions](../operators.md#inline-expressions)
+  [array inline expressions](../operators.md#inline-expressions) and the
+  [question mark operator](../operators.md#question-mark-operator)
 - `NEW` –
   available after
   [INSERT](../high-level-operations/insert.md#returning-the-inserted-documents) /

@@ -17,7 +17,7 @@ of an AQL query string.
 
 ## String concatenation
 
-In AQL, strings must be concatenated using the [CONCAT()](functions/string.md#concat)
+In AQL, strings must be concatenated using the [`CONCAT()`](functions/string.md#concat)
 function. Joining them together with the `+` operator is not supported. Especially
 as JavaScript programmer it is easy to walk into this trap:
 
@@ -59,7 +59,7 @@ Assembling query strings with simple **string concatenation** looks trivial,
 but is potentially **unsafe**. You should use
 [bind parameters](fundamentals/bind-parameters.md) instead whenever possible,
 use query building functionality if provided by a driver (see
-[arangojs AQL Helpers](http://arangodb.github.io/arangojs/latest/modules/_aql_.aql.html)
+[arangojs AQL Helpers](https://arangodb.github.io/arangojs/latest/functions/aql.aql.html)
 for example) or at least sanitize user input with great care.
 
 ### Parameter injection examples

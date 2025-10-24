@@ -1,17 +1,17 @@
 ---
-title: Users and Groups in ArangoGraph
+title: Users and Groups in the Arango Managed Platform (AMP)
 menuTitle: Users & Groups
 weight: 5
 description: >-
-   How to manage individual members and user groups in ArangoGraph
+   How to manage individual members and user groups in AMP
 ---
 ## Users, groups & members
 
-When you use ArangoGraph, you are logged in as a user.
+When you use Arango Managed Platform (AMP), you are logged in as a user.
 A user has properties such as name & email address.
 Most important of the user is that it serves as an identity of a person.
 
-A user is member of one or more organizations in ArangoGraph.
+A user is member of one or more organizations in AMP.
 You can become a member of an organization in the following ways:
 
 - Create a new organization. You will become the first member and owner of that
@@ -20,7 +20,7 @@ You can become a member of an organization in the following ways:
   user becomes a member of the organization.
 
 If the number of members of an organization becomes large, it helps to group
-users. In ArangoGraph a group is part of an organization and a group contains
+users. In AMP, a group is part of an organization and a group contains
 a list of users. All users of the group must be member of the owning organization.
 
 In the **People** section of the dashboard you can manage users, groups and

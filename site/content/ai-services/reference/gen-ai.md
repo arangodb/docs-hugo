@@ -211,4 +211,4 @@ Bearer token, the request fails.
 ## API Reference
 
 For detailed API documentation, see the
-[GenAI-Service API Reference](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).
+[AI service Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).

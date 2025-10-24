@@ -1,9 +1,9 @@
 ---
-title: Upgrades and Versioning in ArangoGraph
+title: Upgrades and Versioning in the Arango Managed Platform (AMP)
 menuTitle: Upgrades and Versioning
 weight: 10
 description: >-
-  Select which version of ArangoDB you want to use within your ArangoGraph
+  Select which version of ArangoDB you want to use within your AMP
   deployment and choose when to roll out your upgrades
 ---
 {{< info >}}
@@ -12,7 +12,8 @@ Please note that this policy comes into effect in April 2023.
 
 ## Release Definitions
 
-The following definitions are used for release types of ArangoDB within ArangoGraph:
+The following definitions are used for release types of ArangoDB within the
+Arango Managed Platform (AMP):
 
 | Release  | Introduces  | Contains breaking changes  |
 |----------|-------------|----------------------------|
@@ -22,7 +23,7 @@ The following definitions are used for release types of ArangoDB within ArangoGr
 
 ## Release Channels
 
-When creating a deployment in ArangoGraph, you can select the minor version
+When creating a deployment in AMP, you can select the minor version
 of ArangoDB that your deployment is going to use. This minor version is in the
 format `Major.Minor` and indicates the major and minor version of ArangoDB that
 is used in this deployment, for example `3.10` or `3.9`.
@@ -53,12 +54,12 @@ is no longer available.
 #### Major Versions (`X.y.z`)
 
 The potential disruption of a major version upgrade requires additional testing
-of any applications connecting to your ArangoGraph deployment. As a result, when
-a new major version is released on the ArangoGraph platform, an email is sent out
+of any applications connecting to your AMP deployment. As a result, when
+a new major version is released in AMP, an email is sent out
 to inform you of this release.
 
-If the ArangoDB version that you are currently using is no longer available on the
-ArangoGraph platform, you are forced to upgrade to the next available version.
+If the ArangoDB version that you are currently using is no longer available
+in AMP, you are forced to upgrade to the next available version.
 Prior to the removal of the version, an email is sent out to inform you of this
 forced upgrade.
 
@@ -69,11 +70,11 @@ changes like major versions, they may still require additional planning and
 validation.
 
 This is why minor upgrades are treated in the same manner as major upgrades
-within ArangoGraph. When a new minor version is released on the ArangoGraph
+within AMP. When a new minor version is released on the AMP
 platform, an email is sent out to inform you of this release.
 
-If the ArangoDB version that you are currently using is no longer available on the
-ArangoGraph platform, you are forced to upgrade to the next available version.
+If the ArangoDB version that you are currently using is no longer available in
+AMP, you are forced to upgrade to the next available version.
 Prior to the removal of the version, an email is sent out to inform you of this
 forced upgrade.
 
@@ -82,11 +83,11 @@ forced upgrade.
 Upgrades between patch versions are transparent, with no significant disruption
 to your applications. As such, you can expect to be automatically upgraded to
 the latest patch version of your selected minor version shortly after it becomes
-available in ArangoGraph.
+available in AMP.
 
-ArangoGraph aims to give approximately one week’s notice prior to upgrading your
+AMP aims to give approximately one week’s notice prior to upgrading your
 deployments to the latest patch release. Although in exceptional circumstances
 (such as a critical security issue) the upgrade may be triggered with less than
 one week's notice.
 The upgrade is carried out automatically. However, if you need the upgrade to be
-deferred temporarily, contact the ArangoGraph Support team to request that.
+deferred temporarily, contact the AMP Support team to request that.

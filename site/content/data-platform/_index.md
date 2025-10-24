@@ -1,5 +1,5 @@
 ---
-title: Arango Data Platform
+title: The Arango Data Platform
 menuTitle: Arango Data Platform
 weight: 1
 description: >-

@@ -30,7 +30,7 @@ Invoke Args:
 ### Deploy a plain build to production
 
 To update the live documentation independently of an ArangoDB release, for
-example, because of changes to the ArangoGraph docs or to publish documentation
+example, because of changes to the Data Platform docs or to publish documentation
 improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.

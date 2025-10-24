@@ -81,7 +81,7 @@ GraphML can answer questions like:
 ![Graph ML](../images/graph-ml.png)
 
 For ArangoDB's enterprise-ready, graph-powered machine learning offering,
-see [ArangoGraphML](graphml/_index.md).
+see [Arango GraphML](graphml/_index.md).
 
 ### GraphRAG
 

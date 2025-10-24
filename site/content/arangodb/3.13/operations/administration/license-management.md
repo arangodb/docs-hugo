@@ -16,7 +16,7 @@ How to set a license key and to retrieve information about the current license
 via different interfaces is described below.
 
 {{< info >}}
-If you use the ArangoDB Kubernetes Operator (including the ArangoDB Platform),
+If you use the ArangoDB Kubernetes Operator (including the Data Platform),
 check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
 for more details on how to set a license key in a Kubernetes-managed deployment.
 {{< /info >}}

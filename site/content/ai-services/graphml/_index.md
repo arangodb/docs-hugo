@@ -1,5 +1,5 @@
 ---
-title: ArangoDB GraphML
+title: Arango GraphML
 menuTitle: GraphML
 weight: 10
 description: >-
@@ -200,6 +200,6 @@ jobs, allowing you to track the entire ML pipeline without having to leave Arang
 
 Each deployment that uses GraphML has an `arangopipe` database created,
 which houses all ML Metadata information. Since this data lives within the deployment,
-it benefits from the ArangoGraph security features and SOC 2 compliance.
-All GraphML services live alongside the ArangoGraph deployment and are only
+it benefits from the Arango Managed Platform (AMP) security features and SOC 2 compliance.
+All GraphML services live alongside the AMP deployment and are only
 accessible within that organization.

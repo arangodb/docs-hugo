@@ -70,6 +70,8 @@ this restriction.
 Attributes with numeric values always have the type `"number"`, even if they are
 whole numbers (and internally use an `integer` type). If you want to restrict an
 attribute to integer values, use `"type": "number"` together with `"multipleOf": 1`.
+Using `multipleOf` with decimal places is not recommended because it doesn't
+work reliably due to floating-point inaccuracy.
 
 {{< security >}}
 Remote schemas are not supported for security reasons.
@@ -112,8 +114,8 @@ validation than very simple schemas.
 
 The following AQL functions are available to work with schemas:
 
- - [SCHEMA_GET()](../../../aql/functions/miscellaneous.md#schema_get)
- - [SCHEMA_VALIDATE()](../../../aql/functions/miscellaneous.md#schema_validate)
+ - [`SCHEMA_GET()`](../../../aql/functions/miscellaneous.md#schema_get)
+ - [`SCHEMA_VALIDATE()`](../../../aql/functions/miscellaneous.md#schema_validate)
 
 ## Backup and restore
 

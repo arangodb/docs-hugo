@@ -49,7 +49,7 @@ because they need to send and receive data on several connections, build up
 results for collection accesses from the received parts followed by further
 processing.
 
-![OneShard vs. Sharded Cluster Setup](../../../../images/cluster-sharded-oneshard.png)
+![OneShard vs. Sharded Cluster Setup](../../../images/cluster-sharded-oneshard.png)
 
 If the database involved in a query is a OneShard database,
 then the OneShard optimization can be applied to run the query on the 

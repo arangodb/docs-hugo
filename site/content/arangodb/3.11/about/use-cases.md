@@ -161,4 +161,4 @@ ArangoDB integrates well into existing data infrastructures and provides
 connectors for popular machine learning frameworks and data processing
 ecosystems.
 
-![Machine Learning Architecture of ArangoDB](../../../../images/machine-learning-architecture.png)
+![Machine Learning Architecture of ArangoDB](../../../images/machine-learning-architecture.png)

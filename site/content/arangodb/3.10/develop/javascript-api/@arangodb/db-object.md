@@ -42,12 +42,12 @@ The `options` attribute can be used to set defaults for collections that will
 be created in the new database (_cluster only_):
 
 - `sharding`: The sharding method to use. Valid values are: `""` or `"single"`.
-  Setting this option to `"single"` will enable the OneShard feature in the
+  Setting this option to `"single"` enables the OneShard feature in the
   Enterprise Edition.
-- `replicationFactor`: Default replication factor. Special values include
-  `"satellite"`, which will replicate the collection to every DB-Server, and
-  `1`, which disables replication.
-- `writeConcern`: how many copies of each shard are required to be in sync on
+- `replicationFactor`: Default replication factor. Special values:
+  - `"satellite"`: Replicate the collection to every DB-Server (Enterprise Edition only)
+  - `1`: Disable replication
+- `writeConcern`: How many copies of each shard are required to be in sync on
   the different DB-Servers. If there are less then these many copies in the
   cluster a shard will refuse to write. The value of `writeConcern` cannot be
   greater than `replicationFactor`.
@@ -272,9 +272,11 @@ error is thrown. For information about the naming constraints for collections, s
     auto-generate keys in this case are not aware of all keys which are already used.
     {{< /warning >}}
   - `increment`: The increment value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
   - `offset`: The initial offset value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
+  - `lastValue`: the offset value for the `autoincrement` or `padded`
+    key generator. This is an internal property for restoring dumps properly.
 
 - `schema` (object\|null, _optional_, default: `null`): 
   An object that specifies the collection-level document schema for documents.
@@ -341,8 +343,8 @@ error is thrown. For information about the naming constraints for collections, s
   servers holding copies take over, usually without an error being
   reported.
 
-  When using the *Enterprise Edition* of ArangoDB the replicationFactor
-  may be set to "satellite" making the collection locally joinable
+  When using the *Enterprise Edition* of ArangoDB, the `replicationFactor`
+  may be set to `"satellite"` making the collection locally joinable
   on every DB-Server. This reduces the number of network hops
   dramatically when using joins in AQL at the costs of reduced write
   performance on these collections.
@@ -1181,6 +1183,10 @@ See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.
 
 See [`db._parse()`](../../../aql/how-to-invoke-aql/with-arangosh.md#query-validation-with-db_parse).
 
+### `db._profileQuery(queryString [, bindVars [, options])`
+
+See [`db._profileQuery()`](../../../aql/execution-and-performance/query-profiling.md).
+
 ## Indexes
 
 ### `db._index(index)`
@@ -1199,6 +1205,8 @@ See [`db._dropIndex()`](../../../index-and-search/indexing/working-with-indexes/
 
 ### `db._createTransaction()`
 
+{{< tag "arangosh" >}}
+
 Starts a Stream Transaction.
 
 See [`db._createTransaction()`](../../transactions/stream-transactions.md#create-transaction).
@@ -1211,7 +1219,7 @@ See [`db._executeTransaction()`](../../transactions/javascript-transactions.md#e
 
 ## Global
 
-### `db._compact(options)`
+### `db._compact([options])`
 
 Compacts the entire data, for all databases.
 
@@ -1262,12 +1270,16 @@ require("@arangodb").db._version();
 
 ### `db._getLicense()`
 
+{{< tag "arangosh" >}}
+
 Returns the current license.
 
 See [`db._getLicense()`](../../../operations/administration/license-management.md#managing-your-license).
 
-### `db._setLicense(data)`
+### `db._setLicense(licenseString)`
+
+{{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense(data)`](../../../operations/administration/license-management.md#initial-installation).
+See [`db._setLicense()`](../../../operations/administration/license-management.md#initial-installation).

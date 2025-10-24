@@ -49,19 +49,19 @@ Before getting started, make sure the following prerequisites are in place:
 - Go to the [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home)
   and sign in. If you don’t have an account yet, sign-up to create one.
 
-- Generate an ArangoGraph API key and API secret. See a detailed guide on
+- Generate an AMP API key and API secret. See a detailed guide on
   [how to create an API key](api/set-up-a-connection.md#creating-an-api-key).
 
 {{< info >}}
 The cloud migration tool is only available for clusters.
 {{< /info >}}
 
-### Setting up the target deployment in ArangoGraph
+### Setting up the target deployment in AMP
 
-Continue by [creating a new ArangoGraph deployment](deployments/_index.md#how-to-create-a-new-deployment)
+Continue by [creating a new AMP deployment](deployments/_index.md#how-to-create-a-new-deployment)
 or choose an existing one.
 
-The target deployment in ArangoGraph requires specific configuration rules to be
+The target deployment in AMP requires specific configuration rules to be
 set up before the migration can start:
 
 - **Configuration settings**: The target deployment must be compatible with the
@@ -70,7 +70,7 @@ set up before the migration can start:
 - **Deployment region and cloud provider**: Choose the closest region to your
   data cluster. This factor can speed up your migration to the cloud.
 
-After setting up your ArangoGraph deployment, wait for a few minutes for it to become
+After setting up your AMP deployment, wait for a few minutes for it to become
 fully operational.
 
 {{< info >}}
@@ -100,7 +100,7 @@ can be incorrect. Provide the `--source.ignore-metrics` option to overcome this.
 
 You also have the option of doing a `--check-only` without starting the actual
 migration. If specified, this checks if your local cluster and target deployment
-are compatible without sending any data to ArangoGraph.
+are compatible without sending any data to AMP.
 
 Once the migration starts, the local cluster enters into monitoring mode and the
 synchronization status is displayed in real-time. If you don't want to see the
@@ -113,7 +113,7 @@ start it again using the `start` command.
 
 {{< warning >}}
 Starting the migration creates a full copy of all data from the source cluster
-to the target deployment in ArangoGraph. All data that has previously existed in the
+to the target deployment in AMP. All data that has previously existed in the
 target deployment will be lost.
 {{< /warning >}}
 
@@ -121,9 +121,9 @@ target deployment will be lost.
 
 The following takes place during an active migration:
 - The source data cluster remains usable.
-- The target deployment in ArangoGraph is switched to read-only mode.
-- Your root user password is not copied to the target deployment in ArangoGraph.
-  To get your root password, select the target deployment from the ArangoGraph
+- The target deployment in AMP is switched to read-only mode.
+- Your root user password is not copied to the target deployment in AMP.
+  To get your root password, select the target deployment from the AMP
   Dashboard and go to the **Overview** tab. All other users are fully synchronized.
 
 {{< warning >}}
@@ -148,7 +148,7 @@ The total time required to complete the migration depends on how much data you
 have and how often write operations are executed during the process.
 
 You can also track the progress by checking the **Migration status** section of
-your target deployment in ArangoGraph dashboard.
+your target deployment in AMP dashboard.
 
 ![ArangoGraph Cloud Migration Progress](../images/arangograph-migration-agent.png)
 
@@ -245,7 +245,7 @@ In case you have any questions, please
 2. Wait until all shards are in sync. You can use the `status` or the `start`
    command with the same parameters to track that.
 3. Optionally, when all shards are in-sync, you can switch your applications
-   to use the endpoint of the ArangoGraph deployment, but note that it stays in
+   to use the endpoint of the AMP deployment, but note that it stays in
    read-only mode until the migration process is fully completed.
 4. Stop the migration using the `stop` subcommand. The following steps are executed:
     - The source data cluster is switched into read-only mode.

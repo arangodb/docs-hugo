@@ -1,12 +1,12 @@
 ---
-title: My Account in ArangoGraph
+title: My Account in the Arango Managed Platform (AMP)
 menuTitle: My Account
 weight: 35
 description: >-
-   How to manage your user account, your organizations, and your API keys in ArangoGraph
+   How to manage your user account, your organizations, and your API keys in AMP
 ---
 You can access information related to your account via the __User Toolbar__.
-The toolbar is in the top right corner in the ArangoGraph dashboard and
+The toolbar is in the top right corner in the AMP dashboard and
 accessible from every view. There are two elements:
 
 - __Question mark icon__: Help
@@ -88,7 +88,7 @@ See [Users and Groups: How to add a new member to the organization](organization
 #### I am not a member of an organization yet
 
 1. Once invited, you will receive an email asking to join your
-   ArangoGraph organization.
+   AMP organization.
    ![ArangoGraph Organization Invite Email](../images/arangograph-org-invite-email.png)
 2. Click the __View my organization invite__ link in the email. You will be
    asked to log in or to create a new account.
@@ -109,7 +109,7 @@ See [Users and Groups: How to add a new member to the organization](organization
 #### I am already a member of an organization
 
 1. Once invited, you will receive an email asking to join your
-   ArangoGraph organization, as well as a notification in the ArangoGraph dashboard.
+   AMP organization, as well as a notification in the AMP dashboard.
 2. Click the __View my organization invites__ link in the email, or hover over the
    user icon in the top right corner of the dashboard and click
    __My organization invites__.
