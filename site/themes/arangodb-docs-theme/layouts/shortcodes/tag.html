@@ -1,10 +1,12 @@
 {{ $tooltips := dict
-  "AMP"                 "This feature is available in the Arango Managed Platform (AMP)"
-  "Data Platform"       "This feature is available in the Arango Data Platform and AI Services Data Platform"
-  "AI Services Data Platform" "This feature is available in the Arango AI Services Data Platform but not the Data Platform"
-  "arangosh"            "This feature is available in the ArangoDB Shell"
+  "Experimental"      "This feature is available for testing but may still change or get removed"
+  "AMP"               "This feature is available in the Arango Managed Platform (AMP)"
+  "Data Platform"     "This feature is available in the Arango Data Platform and Arango AI Data Platform"
+  "AI Data Platform"  "This feature is available in the Arango AI Data Platform but not the Arango Data Platform without the AI Services"
+  "arangosh"          "This feature is available in the ArangoDB Shell"
   "ArangoDB Enterprise Edition" "This feature is available in the Enterprise Edition but not the Community Edition of ArangoDB"
 -}}
+
 <p class="labels">
 {{ range $.Params }}
   <span class="label"{{ with index $tooltips . }} title="{{ . }}"{{ end }}>{{ . }}</span>
