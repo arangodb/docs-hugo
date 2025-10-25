@@ -3,13 +3,15 @@ title: Use ArangoDB in the Cloud
 menuTitle: Set up a cloud instance
 weight: 35
 description: >-
-  This quick start guide covers the basics from creating an ArangoGraph account to
-  setting up and accessing your first ArangoGraph deployment
+  This quick start guide covers the basics from creating an
+  Arango Managed Platform (AMP) account to setting up and accessing your first
+  AMP deployment
 ---
 For general information about the Arango Managed Platform (AMP), see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
-For guides and reference documentation, see the [ArangoGraph](../../../amp/_index.md) documentation.
+For guides and reference documentation, see the
+[Arango Managed Platform (AMP) documentation](../../../amp/_index.md).
 
 ## Prerequisites
 
@@ -63,7 +65,7 @@ used for multiple accounts.
 
 ## Get a Deployment up and Running
 
-1. The first card in the ArangoGraph Dashboard has a dropdown menu to select a cloud
+1. The first card in the AMP Dashboard has a dropdown menu to select a cloud
    provider and region. Pick one and click __Create deployment__. You can also select
    your intended use-case.
 
@@ -90,9 +92,9 @@ used for multiple accounts.
 4. Click the __Open database UI__ button to open the ArangoDB web interface.
 
 5. You can install example datasets and follow the accompanying guides to get
-   started with ArangoDB and its query language. In the ArangoGraph dashboard, click
+   started with ArangoDB and its query language. In the AMP dashboard, click
    the __Examples__ tab of the deployment. Click __Install__ for one of the
-   examples to let ArangoGraph create a separate database and import the dataset.
+   examples to let AMP create a separate database and import the dataset.
    Click __Guide__ for instructions on how to access and run queries against
    this data.
 
@@ -115,7 +117,7 @@ Your projects hold your deployments.
     - [**Deployments**](../../../amp/deployments/_index.md)
       are the actual instances of ArangoDB clusters.
 
-When you sign up for ArangoGraph, an organization and a default project are
+When you sign up for AMP, an organization and a default project are
 automatically created for you. What is still missing is a deployment.
 
 ## Take the Tour
@@ -137,13 +139,13 @@ Alternatively, follow the steps of the linked guides:
 ## Free-to-Try vs. Paid
 
 The Arango Managed Platform (AMP) comes with a free-to-try tier that lets you test
-the ArangoDB Cloud for free for 14 days. It includes one project and one small
+the Arango cloud for free for 14 days. It includes one project and one small
 deployment of 4GB, local backups, and one notebook for learning and data science.
 After the trial period, your deployment is automatically deleted.
 
-You can unlock all features in ArangoGraph at any time by adding 
+You can unlock all features in AMP at any time by adding 
 your billing details and at least one payment method. See:
-- [ArangoGraph Packages](../../../amp/organizations/_index.md#arangograph-packages)
+- [AMP Packages](../../../amp/organizations/_index.md#amp-packages)
 - [How to add billing details to organizations](../../../amp/organizations/billing.md#how-to-add-billing-details)
 - [How to add a payment method to an organization](../../../amp/organizations/billing.md#how-to-add-a-payment-method)
 

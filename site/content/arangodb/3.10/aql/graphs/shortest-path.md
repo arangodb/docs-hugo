@@ -3,14 +3,17 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  With the shortest path algorithm, you can find one shortest path between
-  two vertices using AQL
+  Find one path of shortest length between two vertices
 ---
 ## General query idea
 
-This type of query is supposed to find the shortest path between two given documents
-(*startVertex* and *targetVertex*) in your graph. For all vertices on this shortest
-path you will get a result in form of a set with two items:
+This type of query finds the shortest path between two given documents
+(*startVertex* and *targetVertex*) in your graph. If there are multiple
+shortest paths, the path with the lowest weight or a random one (in case
+of a tie) is returned.
+
+The shortest path search emits the following two variables for every step of
+the path:
 
 1. The vertex on this path.
 2. The edge pointing to it.
@@ -57,26 +60,20 @@ FOR vertex[, edge]
   [OPTIONS options]
 ```
 
-- `FOR`: emits up to two variables:
-  - **vertex** (object): the current vertex on the shortest path
-  - **edge** (object, *optional*): the edge pointing to the vertex
-- `IN` `OUTBOUND|INBOUND|ANY`: defines in which direction edges are followed
+- `FOR`: Emits up to two variables:
+  - **vertex** (object): The current vertex on the shortest path
+  - **edge** (object, *optional*): The edge pointing to the vertex
+- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
-- **startVertex** `TO` **targetVertex** (both string\|object): the two vertices between
-  which the shortest path will be computed. This can be specified in the form of
+- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
+  which the shortest path is computed. This can be specified in the form of
   an ID string or in the form of a document with the attribute `_id`. All other
-  values will lead to a warning and an empty result. If one of the specified
+  values lead to a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): the name identifying the named graph. Its vertex and
-  edge collections will be looked up.
-- `OPTIONS` **options** (object, *optional*): used to modify the execution of the
-  traversal. Only the following attributes have an effect, all others are ignored:
-  - **weightAttribute** (string): a top-level edge attribute that should be used
-  to read the edge weight. If the attribute is not existent or not numeric, the
-  *defaultWeight* will be used instead. The attribute value must not be negative.
-  - **defaultWeight** (number): this value will be used as fallback if there is
-  no *weightAttribute* in the edge document, or if it is not a number.
-  The value must not be negative. The default is `1`.
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
+  edge collections are looked up for the path search.
+- `OPTIONS` **options** (object, *optional*):
+  See the [path search options](#path-search-options).
 
 {{< info >}}
 Shortest Path traversals do not support negative weights. If a document
@@ -99,6 +96,27 @@ Instead of `GRAPH graphName` you may specify a list of edge collections (anonymo
 graph). The involved vertex collections are determined by the edges of the given
 edge collections. The rest of the behavior is similar to the named version.
 
+### Path search options
+
+You can optionally specify the following options to modify the execution of a
+graph path search. If you specify unknown options, query warnings are raised.
+
+#### `weightAttribute`
+
+A top-level edge attribute that should be used to read the edge weight (string).
+
+If the attribute does not exist or is not numeric, the `defaultWeight` is used
+instead.
+
+The attribute value must not be negative.
+
+#### `defaultWeight`
+
+This value is used as fallback if there is no `weightAttribute` in the
+edge document, or if it's not a number (number).
+
+The value must not be negative. The default is `1`.
+
 ### Traversing in mixed directions
 
 For shortest path with a list of edge collections you can optionally specify the
@@ -114,7 +132,7 @@ FOR vertex IN OUTBOUND SHORTEST_PATH
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
 direction for each collection in your path search.
 
@@ -130,6 +148,7 @@ Please also consider using [`WITH`](../high-level-operations/with.md) to specify
 collections you expect to be involved.
 
 ## Examples
+
 Creating a simple symmetric traversal demonstration graph:
 
 ![traversal graph](../../../../images/traversal_graph.png)
@@ -166,7 +185,7 @@ db._query(`
 ```
 
 You can see that expectations are fulfilled. You find the vertices in the
-correct ordering and the first edge is *null*, because no edge is pointing
+correct ordering and the first edge is `null`, because no edge is pointing
 to the start vertex on this path.
 
 You can also compute shortest paths based on documents found in collections:

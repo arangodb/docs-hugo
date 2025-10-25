@@ -1,5 +1,5 @@
 ---
-title: Credits & Usage in ArangoGraph
+title: Credits & Usage in the Arango Managed Platform (AMP)
 menuTitle: Credits & Usage
 weight: 15
 description: >-
@@ -7,18 +7,18 @@ description: >-
   across multiple deployments as needed
 ---
 {{< info >}}
-Credits are only available if your organization has signed up for
-ArangoGraph's [Committed](../organizations/_index.md#committed) package.
+Credits are only available if your organization has signed up for the
+Arango Managed Platform (AMP)'s [Committed](../organizations/_index.md#committed) package.
 {{< /info >}}
 
-The ArangoGraph credit model is a versatile prepaid model that allows you to
+The AMP credit model is a versatile prepaid model that allows you to
 purchase credits and use them in a flexible way, based on what you have running
-in ArangoGraph.
+in AMP.
 
 Instead of purchasing a particular deployment for a year, you can purchase a
-number of ArangoGraph credits that expire a year after purchase. These credits
+number of AMP credits that expire a year after purchase. These credits
 are then consumed over that time period, based on the deployments you run
-in ArangoGraph.
+in AMP.
 
 For example, a OneShard (three nodes) A64 deployment consumes more credits per
 hour than a smaller deployment such as A8. If you are running multiple deployments,
@@ -31,7 +31,7 @@ To purchase credits for your organization, you need to get in touch with the
 ArangoDB team. [Contact us](https://www.arangodb.com/contact/) for more details.
 {{< /tip >}}
 
-There are a number of benefits that ArangoGraph credits provide:
+There are a number of benefits that AMP credits provide:
 - **Adaptability**: The pre-paid credit model allows you to adapt your usage to
   changing project requirements or fluctuating workloads. By enabling the use of
   credits for various instance types and sizes, you can easily adjust your
@@ -71,7 +71,7 @@ have enough credits remaining.
 ### What is the flexibility of moving up or down in configuration size of the infrastructure?
 
 You can move up sizes in configuration at any point by editing your deployment
-within ArangoGraph, once every 6 hours to allow for in-place disk expansion.
+within AMP, once every 6 hours to allow for in-place disk expansion.
 
 ### Is there a limit to how many deployments I can use my credits on?
 
@@ -89,17 +89,17 @@ all of these credits within the year.
 
 ### Can I make multiple purchases of credits within a year?
 
-As an organization’s usage of ArangoGraph grows, particularly in the initial
+As an organization’s usage of AMP grows, particularly in the initial
 phases of application development and early production release, it is common
 to purchase a smaller credit package that is later supplemented by a larger
 credit package part-way through the initial credit expiry term.
-In this case, all sets of credits will be available for ArangoGraph consumption
+In this case, all sets of credits will be available for AMP consumption
 as a single credit balance. The credits with the earlier expiry date are consumed
 first to avoid credit expiry where possible.
 
 ### Can I purchase a specific number of credits (i.e. 3361, 4185)?
 
-ArangoGraph offers a variety of predefined credit packages designed to
+AMP offers a variety of predefined credit packages designed to
 accommodate different needs and stages of the application lifecycle.
 For any credit purchasing needs, please [contact us](https://www.arangodb.com/contact/)
 and we are happy to help find an appropriate package for you.
@@ -117,7 +117,7 @@ any variable usage charges such as outbound network traffic and backup storage.
 
 All details about credits, including how many credits have been purchased,
 how many remain, and how they are being consumed are available in the
-**Credits & Usage** page within the ArangoGraph web interface.
+**Credits & Usage** page within the AMP web interface.
 
 ### I have a large sharded deployment, how do I know how many credits it will consume?
 
@@ -133,7 +133,7 @@ All users can see the credit price of each node size in the **Pricing** section.
 
 ### What happens if I run out of credits?
 
-If you run out of credits, your access to ArangoGraph's services and resources
+If you run out of credits, your access to AMP's services and resources
 will be temporarily suspended until you purchase additional credits.
 
 ### Can I buy credits for a short time period (e.g. 2 months)?

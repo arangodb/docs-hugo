@@ -30,14 +30,17 @@ like running a simple query that shows what is the path that goes from one node
 to another, or more complex tasks like node classification,
 link prediction, and graph classification.
 
-### Graph Query
+### Graph Queries
 
-When running a query with AQL on a graph, the query goes from a vertex to an edge,
-and then the edge indicates what the next connected vertex will be.
+When you run an AQL query on a graph, a traversal query can go from a vertex to
+multiple edges, and then the edges indicate what the next connected vertices are.
+Graph queries can also determine the shortest paths between vertices.
 
 Graph queries can answer questions like _**Who can introduce me to person X**_?
 
 ![Graph Query](../../../images/graph-query.png)
+
+See [Graphs in AQL](../aql/graphs/_index.md) for the supported graph queries.
 
 ### Graph Analytics
 
@@ -47,6 +50,11 @@ know aggregate information about your graph, while analyzing the entire graph.
 Graph analytics can answer questions like _**Who are the most connected persons**_?
 
 ![Graph Analytics](../../../images/graph-analytics.png)
+
+ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
+connected components, label propagation, and PageRank on your data. This feature
+is available for the Arango Managed Platform (AMP). See
+[Graph Analytics](../../../ai-suite/graph-analytics.md) for details.
 
 ### GraphML
 
@@ -60,35 +68,13 @@ GraphML can answer questions like:
 
 ![Graph ML](../../../images/graph-ml.png)
 
+For ArangoDB's enterprise-ready, graph-powered machine learning offering,
+see [ArangoGraphML](arangographml/_index.md).
+
 ## Use Cases
 
 This section contains an overview of different use cases where Graph Analytics
 and GraphML can be applied.
-
-### Graph Analytics
-
-Graph Analytics is applicable in various fields such as marketing, fraud detection, supply chain,
-product recommendations, drug development, law enforcement, and cybersecurity.
-
-Graph Analytics uses an unsupervised
-learning method based on algorithms that perform analytical processing
-directly on graphs stored in ArangoDB. The
-[Distributed Iterative Graph Processing (Pregel)](pregel/_index.md)
-is intended to help you gain analytical insights in
-your data, without having to use external processing systems.
-
-ArangoDB includes the following graph algorithms:
-- [Page Rank](pregel/algorithms.md#pagerank): used for ranking documents in a graph
-  search/traversal.
-- [Single-Source Shortest Path](pregel/algorithms.md#single-source-shortest-path): calculates
-  the shortest path length between the source and all other vertices.
-  For example, _How to get from a to b_?
-- [Hyperlink-Induced Topic Search (HITS)](pregel/algorithms.md#hyperlink-induced-topic-search-hits): 
-  a link analysis algorithm that rates web pages.
-- [Vertex Centrality](pregel/algorithms.md#vertex-centrality): identifies the most important
-  nodes in a graph. For example, _Who are the influencers in a social network?_
-- [Community Detection](pregel/algorithms.md#community-detection): identifies distinct subgroups
-  within a community structure.
 
 ### GraphML
 
@@ -118,12 +104,12 @@ This [interactive tutorial](https://colab.research.google.com/github/arangodb/in
 demonstrates how to integrate ArangoDB with PyTorch Geometric to
 build recommendation systems using Graph Neural Networks (GNNs).
 
-The full ArangoFlix demo website is accessible from the ArangoGraph Insights Platform,
+The full ArangoFlix demo website is accessible from the Arango Managed Platform (AMP),
 the managed cloud for ArangoDB. You can open the demo website that connects to
 your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
-You can try out the ArangoGraph Insights Platform free of charge for 14 days.
+You can try out the Arango Managed Platform (AMP) free of charge for 14 days.
 Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 {{< /tip >}}
 

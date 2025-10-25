@@ -156,7 +156,7 @@ You can use the following modules as an end-user:
     offers methods to track and kill AQL queries.
 
   - [**@arangodb/aql/cache**](../../aql/execution-and-performance/caching-query-results.md)
-    allows to control the AQL query caching feature.
+    allows to control the AQL query result caching feature.
 
   - [**@arangodb/aql/explainer**](../../aql/execution-and-performance/explaining-queries.md)
     provides methods to debug, explain and profile AQL queries.

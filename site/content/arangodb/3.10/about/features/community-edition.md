@@ -48,8 +48,8 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   or modified, using an AQL expression.
 
 - [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
-  in your own cloud, or on-premises.
+  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
@@ -64,7 +64,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 
 - [**Synchronous Replication**](../../deploy/cluster/_index.md#synchronous-replication):
   Data changes are propagated to other cluster nodes immediately as part of an
-  operation, and only considered successful when the configured number of writes
+  operation, and are only considered successful when the configured number of writes
   is reached. Synchronous replication works on a per-shard basis. For each
   collection, you can configure how many copies of each shard are kept in the cluster.
 
@@ -73,7 +73,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   single servers for automatic failover.
 
 - [**Automatic Failover Cluster**](../../deploy/cluster/_index.md#automatic-failover):
-  If a nodes goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
+  If a node goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
 
 {{% comment %}}
   TODO: - **Master/Master Conflict Resolution**: What does this refer to? How does it work? MVCC?
@@ -244,7 +244,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 - [**TLS Encryption**](../../components/arangodb-server/options.md#ssl):
   Internal and external communication over encrypted network connections with
   TLS (formerly SSL).
-  [TLS key and certificates rotation](../../release-notes/version-3.7/whats-new-in-3-7.md#tls-key-and-certificate-rotation)
+  [TLS key and certificate rotation](../../release-notes/version-3.7/whats-new-in-3-7.md#tls-key-and-certificate-rotation)
   is supported.
 
 ## Administration

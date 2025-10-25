@@ -32,7 +32,7 @@ The encryption feature is supported by all ArangoDB deployment modes.
 {{< info >}}
 The Arango Managed Platform (AMP) has encryption at rest as well as in transit
 set on by default and cannot be disabled. For more information, see the
-[ArangoGraph documentation](../../../../amp/_index.md).
+[Arango Managed Platform (AMP) documentation](../../../../amp/_index.md).
 {{< /info >}}
 
 ## Limitations

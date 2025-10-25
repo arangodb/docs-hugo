@@ -18,7 +18,7 @@ name: COMBINING_GRAPH_01_create_graph
 description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
-var g = examples.loadGraph("routeplanner");
+examples.loadGraph("routeplanner");
 ~examples.dropGraph("routeplanner");
 ```
 

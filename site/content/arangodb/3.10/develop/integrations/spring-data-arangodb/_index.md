@@ -2,10 +2,11 @@
 title: Spring Data ArangoDB
 menuTitle: Spring Data
 weight: 5
-description: ''
+description: >-
+  The Spring Data ArangoDB integration is a library for accessing data stored in
+  ArangoDB from Spring-based Java application
 ---
-This integration is a library for accessing data stored in ArangoDB in
-Spring-based Java application. Spring Data provides a consistent interface for
+Spring Data provides a consistent interface for
 accessing various types of data sources. Spring Data ArangoDB implements this
 for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 
@@ -26,13 +27,13 @@ Spring Data ArangoDB is compatible with:
 {{< tab "Version 4" >}}
 - all the still supported Spring Boot 3.x [versions](https://spring.io/projects/spring-boot#support)
   and related Spring Framework versions
-- all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
+- all the still supported ArangoDB [versions](https://arangodb.com/subscriptions/end-of-life-notice/)
 {{< /tab >}}
 
 {{< tab "Version 3" >}}
 - all the still supported Spring Boot 2.x [versions](https://spring.io/projects/spring-boot#support)
   and related Spring Framework versions
-- all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
+- all the still supported ArangoDB [versions](https://arangodb.com/subscriptions/end-of-life-notice/)
 {{< /tab >}}
 
 {{< /tabs >}}

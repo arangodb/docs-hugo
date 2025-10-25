@@ -1,5 +1,5 @@
 ---
-title: Backups in ArangoGraph
+title: Backups in the Arango Managed Platform (AMP)
 menuTitle: Backups
 weight: 50
 description: >-
@@ -8,7 +8,7 @@ description: >-
 ---
 ## How to create backups
 
-To backup data in ArangoGraph for an ArangoDB installation, navigate to the
+To backup data in AMP for an ArangoDB installation, navigate to the
 **Backups** section of your deployment created previously.
 
 ![Backup ArangoDB](../images/arangograph-backup-section.png)
@@ -136,7 +136,7 @@ During restore, the deployment is temporarily not available.
 
 Creating a deployment from a backup allows you to duplicate an existing
 deployment with all its data, for example, to create a test environment or to
-move to a different cloud provider or region within ArangoGraph.
+move to a different cloud provider or region within AMP.
 
 {{< info >}}
 This feature is only available if the backup you wish to clone has been

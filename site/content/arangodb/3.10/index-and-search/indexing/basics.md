@@ -24,8 +24,8 @@ are covered by an edge collection's edge index automatically.
 
 You cannot use the `_id` system attribute, nor sub-attributes with this name, in
 user-defined indexes (except the inverted index type). This applies to the
-`fields` the index is defined over, as well as additional attributes you can
-store in a persistent index using `storedValues`. However, indexing and storing
+`fields` the index is defined over but not the additional attributes you can
+store in a persistent index using `storedValues`. Indexing and storing
 the `_key`, `_rev`, `_from`, and `_to` system attributes is possible.
 
 You cannot index fields that contain `.` in their attribute names because dots
@@ -610,12 +610,12 @@ To create an index in the background in *arangosh* just specify `inBackground: t
 like in the following examples:
 
 ```js
-// create the persistent index in the background
+// create the persistent indexes in the background
 db.collection.ensureIndex({ type: "persistent", fields: [ "value" ], unique: false, inBackground: true });
 db.collection.ensureIndex({ type: "persistent", fields: [ "email" ], unique: true, inBackground: true });
 
 // also supported for geo and fulltext indexes
-db.collection.ensureIndex({ type: "geo", fields: [ "latitude", "longitude"], inBackground: true });
+db.collection.ensureIndex({ type: "geo", fields: [ "location"], inBackground: true });
 db.collection.ensureIndex({ type: "geo", fields: [ "latitude", "longitude"], inBackground: true });
 db.collection.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 4, inBackground: true })
 ```

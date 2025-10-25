@@ -376,7 +376,7 @@ The following Spark SQL data types (subtypes of `org.apache.spark.sql.types.Filt
 
 ## Connect to the Arango Managed Platform (AMP)
 
-To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (ArangoGraph):
+To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (AMP):
 
 ```scala
 val options = Map(

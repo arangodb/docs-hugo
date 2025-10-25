@@ -92,7 +92,7 @@ more reasonable `! LIKE(doc.attr, "…")`.
 The regular expression operators `=~` and `!~` expect their left-hand operands to
 be strings, and their right-hand operands to be strings containing valid regular
 expressions as specified in the documentation for the AQL function
-[REGEX_TEST()](functions/string.md#regex_test).
+[`REGEX_TEST()`](functions/string.md#regex_test).
 
 ## Array comparison operators
 
@@ -227,7 +227,7 @@ RETURN [-x, +y]
 // [5, 1]
 ```
 
-For exponentiation, there is a [numeric function](functions/numeric.md#pow) *POW()*.
+For exponentiation, there is a [numeric function](functions/numeric.md#pow) `POW()`.
 The syntax `base ** exp` is not supported.
 
 For string concatenation, you must use the [`CONCAT()` string function](functions/string.md#concat).
@@ -246,7 +246,7 @@ Also see [Common Errors](common-errors.md).
 
 The arithmetic operators accept operands of any type. Passing non-numeric values to an 
 arithmetic operator casts the operands to numbers using the type casting rules 
-applied by the [TO_NUMBER()](functions/type-check-and-cast.md#to_number) function:
+applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function:
 
 - `null` is converted to `0`
 - `false` is converted to `0`, `true` is converted to `1`
@@ -285,6 +285,7 @@ AQL also supports a ternary operator that can be used for conditional
 evaluation. The ternary operator expects a boolean condition as its first
 operand, and it returns the result of the second operand if the condition
 evaluates to true, and the third operand otherwise.
+You may use [subqueries](fundamentals/subqueries.md) as operands.
 
 In the following example, the expression returns `u.userId` if `u.age` is
 greater than 15 or if `u.active` is `true`. Otherwise it returns `null`:
@@ -345,11 +346,42 @@ There is also a [`RANGE()` function](functions/numeric.md#range).
 
 AQL provides different array operators:
 
+- `[n]` to [access the array element](#indexed-value-access) at index `n`
 - `[*]` for [expanding array variables](#array-expansion)
 - `[**]`, `[***]` etc. for [flattening arrays](#array-contraction)
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
+
+### Indexed value access
+
+You can access individual array elements by their position using the `[]` accessor.
+The position is called the *index* and starts at `0`.
+
+When specifying an index, use a numeric integer value. You can use negative
+index values to access array elements starting from the end of the array.
+This is convenient if the length of the array is unknown and you want to access
+elements at the end of the array.
+
+You can also use an expression and calculate the index of an element.
+
+{{< info >}}
+If you try to access an array element with an out-of-bounds index (after the last
+element or before the first element), the result is a `null` value without
+raising an error or warning.
+{{< /info >}}
+
+```aql
+LET friends = [ "tina", "helga", "alfred" ]
+
+friends[0] // access 1st array element (elements start at index 0)
+friends[2] // access 3rd array element
+
+friends[-1] // access last array element
+friends[-2] // access second to last array element
+
+friends[LENGTH(friends) / 2] // access array element in the middle (floored)
+```
 
 ### Array expansion
 
@@ -496,8 +528,8 @@ RETURN (
 ```
 
 Note that the elements are not de-duplicated. For a flat array with only unique
-elements, a combination of [UNIQUE()](functions/array.md#unique) and
-[FLATTEN()](functions/array.md#flatten) is advisable.
+elements, a combination of [`UNIQUE()`](functions/array.md#unique) and
+[`FLATTEN()`](functions/array.md#flatten) is advisable.
 
 ### Inline expressions
 
@@ -696,6 +728,60 @@ The question mark operator can be used for nested search (Enterprise Edition onl
 - [Nested search with ArangoSearch](../index-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
 
+## Object operators
+
+- `.` and `[expr]` for [accessing an object attribute](#attribute-access)
+
+### Attribute access
+
+You can access individual object attributes by their names using the
+dot accessor `.` and the square bracket accessor `[]`.
+
+The dot accessor lets you specify the attribute name as an unquoted string.
+This is only possible if the attribute name would be valid as a
+[variable name](fundamentals/syntax.md#variable-names). Otherwise, you need to
+quote the name with backticks or forward ticks, or use the square bracket accessor.
+
+You can also use the dot accessor together with a [bind parameter](fundamentals/bind-parameters.md)
+to select an attribute or sub-attribute.
+
+```aql
+LET ob = { name: "sandra", "with space": true }
+
+LET unquoted = ob.name
+
+LET quoted_1 = ob.`with space`
+LET quoted_2 = ob.´with space´
+
+LET bindvar  = ob.@attr
+```
+
+The square bracket accessor lets you specify an expression to select an attribute.
+This is usually a quoted string literal but you can also calculate the name
+dynamically using an arbitrary expression.
+
+You can also use the square bracket accessor together with a
+[bind parameter](fundamentals/bind-parameters.md) to select an attribute.
+
+```aql
+LET ob = { name: "sandra", "with 2 spaces": true }
+
+LET literal_1  = ob["name"]
+LET literal_2  = ob["with 2 spaces"]
+
+LET attribute  = "name"
+LET variable   = ob[attribute]
+
+LET expression = ob[CONCAT_SEPARATOR(" ", "with", 1+1, "spaces")]
+
+LET bindvar  = ob[@attr]
+```
+
+{{< info >}}
+If you try to access a non-existing attribute in one way or another, the result
+is a `null` value without raising an error or warning.
+{{< /info >}}
+
 ## Operator precedence
 
 The operator precedence in AQL is similar as in other familiar languages
@@ -705,8 +791,8 @@ The operator precedence in AQL is similar as in other familiar languages
 |:---------------------|:-----------
 | `::`                 | scope (user-defined AQL functions)
 | `[*]`                | array expansion
-| `[]`                 | indexed value access (of arrays)
-| `.`                  | member access (of objects)
+| `[]`                 | indexed value access (arrays), attribute access (objects)
+| `.`                  | attribute access (objects)
 | `()`                 | function call
 | `!`, `NOT`, `+`, `-` | unary not (logical negation), unary plus, unary minus
 | `*`, `/`, `%`        | multiplication, division, modulus
@@ -718,7 +804,7 @@ The operator precedence in AQL is similar as in other familiar languages
 | `AT LEAST`           | at least modifier (array comparison operator, question mark operator)
 | `OUTBOUND`, `INBOUND`, `ANY`, `ALL`, `NONE` | graph traversal directions, array comparison operators, question mark operator
 | `&&`, `AND`          | logical and
-| `||`, `OR`           | logical or
+| `\|\|`, `OR`         | logical or
 | `INTO`               | into operator (INSERT / UPDATE / REPLACE / REMOVE / COLLECT operations)
 | `WITH`               | with operator (WITH / UPDATE / REPLACE / COLLECT operations)
 | `=`                  | variable assignment (LET / COLLECT operations, AGGREGATE / PRUNE clauses)

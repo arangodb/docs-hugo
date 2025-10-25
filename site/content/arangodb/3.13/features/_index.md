@@ -22,8 +22,8 @@ aliases:
 See the full [Feature list of the ArangoDB database system](list.md).
 
 For a scalable architecture based on Kubernetes that supports the full offering
-of ArangoDB including graph-powered machine learning and GenAI features, see
-the [Feature list of the ArangoDB Platform](../../../data-platform/about/features.md).
+of ArangoDB including graph-powered machine learning and AI features, see
+the [Feature list of the Arango Data Platform](../../../data-platform/features.md).
 
 ## On-premises versus Cloud
 
@@ -43,7 +43,7 @@ variety of support plans to meet your needs.
 - Highly secure with encryption at transit and at rest
 - Includes elastic scalability for all deployment models (OneShard and Sharded clusters)
 
-To learn more, go to the [ArangoGraph documentation](../../../amp/_index.md). 
+To learn more, go to the [Arango Managed Platform (AMP) documentation](../../../amp/_index.md). 
 
 ### Self-managed in the cloud
 

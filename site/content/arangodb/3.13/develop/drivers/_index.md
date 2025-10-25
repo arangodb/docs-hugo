@@ -37,7 +37,7 @@ language.
 - [Tutorial](go.md#tutorial)
 - Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
 
-## Node.js driver
+## JavaScript driver
 
 The [**ArangoJS driver**](javascript.md) lets you work with ArangoDB in Node.js, using
 the JavaScript scripting language. You can also use it in web browsers.

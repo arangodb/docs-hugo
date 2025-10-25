@@ -7,7 +7,7 @@ description: >-
 aliases:
   - getting-started-with-arangographml
 ---
-ArangoGraphML provides an easy-to-use & scalable interface to run Graph Machine Learning on ArangoDB Data. Since all of the orchestration and ML logic is managed by ArangoGraph, all that is typically required are JSON specifications outlining individual processes to solve an ML Task. If you are using the self-managed solution, additional configurations may be required.
+ArangoGraphML provides an easy-to-use & scalable interface to run Graph Machine Learning on ArangoDB Data. Since all of the orchestration and ML logic is managed by the Arango Managed Platform (AMP), all that is typically required are JSON specifications outlining individual processes to solve an ML Task. If you are using the self-managed solution, additional configurations may be required.
 
 The `arangoml` is a Python Package allowing you to manage all of the necessary ArangoGraphML components, including:
 - **Project Management**: Projects are a metadata-tracking entity that sit at the top level of ArangoGraphML. All activities must link to a project.
@@ -17,9 +17,9 @@ The `arangoml` is a Python Package allowing you to manage all of the necessary 
 - **Predictions**: Generate predictions based on the selected model, and persit the results to the source graph (either in the source document, or in a new collection).
 
 {{< tip >}}
-To enable the ArangoGraphML services in the ArangoGraph platform,
+To enable the ArangoGraphML services in the Arango Managed Platform (AMP),
 [get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
+with the ArangoDB team. Regular notebooks in AMP don't include the
 `arangoml` package.
 {{< /tip >}}
 

@@ -1,9 +1,9 @@
 ---
-title: Monitoring & Metrics in ArangoGraph
+title: Monitoring & Metrics in the Arango Managed Platform (AMP)
 menuTitle: Monitoring & Metrics
 weight: 40
 description: >-
-   ArangoGraph provides various built-in tools and integrations to help you
+   AMP provides various built-in tools and integrations to help you
    monitor your deployment
 ---
 The Arango Managed Platform (AMP) provides integrated charts, metrics, and logs
@@ -132,6 +132,6 @@ which is required for connecting to Prometheus.
    - For **HTTP URL**, enter `http://localhost:9090`.
    - Click **Save & Test**.      
 4. To add a dashboard, open the menu and click **Create** and then **Import**.
-5. Download the [Grafana dashboard for ArangoGraph](https://github.com/arangodb-managed/grafana-dashboards).
+5. Download the [Grafana dashboard for AMP](https://github.com/arangodb-managed/grafana-dashboards).
 6. Copy the contents of the `main.json` file into the **Import via panel json** field in Grafana.
 7. Click **Load**.

@@ -1,19 +1,19 @@
 ---
-title: SCIM Provisioning
+title: SCIM Provisioning in the Arango Managed Platform (AMP)
 menuTitle: SCIM Provisioning
 weight: 5
 description: >-
-   How to enable SCIM provisioning with Okta for your ArangoGraph project
+   How to enable SCIM provisioning with Okta for your AMP project
 ---
-ArangoGraph provides support to control and manage members access in
-ArangoGraph organizations with the
+The Arango Managed Platform (AMP) provides support to control and manage members
+access in AMP organizations with the
 **System for Cross-domain Identity Management** (SCIM) provisioning. 
-This enables you to propagate to ArangoGraph any user access changes by using
+This enables you to propagate to AMP any user access changes by using
 the dedicated API.
 
 {{< info >}}
-To enable the SCIM feature, get in touch with the ArangoGraph team via
-**Request Help**, available in the left sidebar menu of the ArangoGraph Dashboard.
+To enable the SCIM feature, get in touch with the AMP team via
+**Request Help**, available in the left sidebar menu of the AMP Dashboard.
 {{< /info >}}
 
 ## About SCIM
@@ -29,16 +29,16 @@ can sync the information about user resources in real time:
 
 - `GET /Users` - List all users.
 - `GET /Users/:user_id` - Get details for a given user ID.
-- `POST /Users` - Invite a new user to ArangoGraph.
+- `POST /Users` - Invite a new user to AMP.
 - `PUT /Users/:user_id` - Update a given user ID.
 - `DELETE /Users/:user_id` - Delete a specified user ID.
 
-ArangoGraph organization administrators can generate an API key for a specific organization.
+AMP organization administrators can generate an API key for a specific organization.
 The API token consists of a key and a secret. Using this key and secret as the
 Basic Authentication Header (Basic Auth) in SCIM provisioning, you can access the APIs and
 manage the user resources.
 
-To learn how to generate a new API key in the ArangoGraph Dashboard, see the
+To learn how to generate a new API key in the AMP Dashboard, see the
 [API Keys](../../my-account.md#api-keys) section.
 
 {{< info >}}
@@ -64,8 +64,8 @@ supports the SCIM provisioning feature.
    - **Push Profile Updates** 
 6. From the **Authentication Mode** menu, select the **Basic Auth** option.
    To authenticate using this mode, you need to provide the username and password
-   for the account that handles the SCIM actions - in this case ArangoGraph.
-7. Go to the ArangoGraph Dashboard and create a new API key ID and Secret.
+   for the account that handles the SCIM actions - in this case AMP.
+7. Go to the AMP Dashboard and create a new API key ID and Secret.
 
    ![ArangoGraph Create new API key](../../../images/arangograph-okta-api-key.png)
 

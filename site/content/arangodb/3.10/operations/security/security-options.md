@@ -228,12 +228,8 @@ ensure that no other than the intended URLs are matched.
 
 Specifying `arangodb.org` will match:
 - `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
+- `http://arangodb.org/`
+- `http://arangodb.org/folder/file.html`
 - `https://arangodb.org`
 - `https://arangodb.org:12345`
 - `https://subdomain.arangodb.organic` **(!)**
@@ -243,12 +239,6 @@ Specifying `arangodb.org` will match:
 An unescaped `.` represents any character. For a literal dot use `\.`.
 
 Specifying `http://arangodb\.org` will match:
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
 - `http://arangodb.org`
 - `http://arangodb.org:12345`
 - `http://arangodb.organic` **(!)**

@@ -3,7 +3,7 @@ title: All Shortest Paths in AQL
 menuTitle: All Shortest Paths
 weight: 20
 description: >-
-  Find all paths of shortest length between a start and target vertex
+  Find all paths of shortest length between two vertices
 ---
 ## General query idea
 
@@ -32,7 +32,7 @@ expected two shortest paths are:
 2. Carlisle – York – London
 
 Another path that connects Carlisle and London is
-Carlisle – Glasgow – Edinburgh – York – London, but it is has two more stops and
+Carlisle – Glasgow – Edinburgh – York – London, but it has two more stops and
 is therefore not a path of the shortest length.
 
 ## Syntax
@@ -51,18 +51,18 @@ FOR path
   GRAPH graphName
 ```
 
-- `FOR`: emits the variable **path** which contains one shortest path as an
+- `FOR`: Emits the variable **path** which contains one shortest path as an
   object, with the `vertices` and `edges` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: defines in which direction
+- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
-- `ALL_SHORTEST_PATHS`: the keyword to compute All Shortest Paths
-- **startVertex** `TO` **targetVertex** (both string\|object): the two vertices between
-  which the paths will be computed. This can be specified in the form of
+- `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
+- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
+  which the paths are computed. This can be specified in the form of
   a ID string or in the form of a document with the attribute `_id`. All other
   values result in a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): the name identifying the named graph. Its vertex and
-  edge collections will be looked up.
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
+  edge collections are looked up for the path search.
 
 {{< info >}}
 All Shortest Paths traversals do not support edge weights.
@@ -96,7 +96,7 @@ FOR path IN OUTBOUND ALL_SHORTEST_PATHS
   edges1, ANY edges2, edges3
 ```
 
-All collections in the list that do not specify their own direction will use the
+All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows using a different
 direction for each collection in your path search.
 

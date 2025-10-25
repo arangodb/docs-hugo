@@ -1,12 +1,12 @@
 ---
-title: Deployments in ArangoGraph
+title: Deployments in the Arango Managed Platform (AMP)
 menuTitle: Deployments
 weight: 20
 description: >-
-   How to create and manage deployments in ArangoGraph
+   How to create and manage deployments in AMP
 ---
-An ArangoGraph deployment is an ArangoDB cluster or single server, configured
-as you choose.
+An Arango Managed Platform (AMP) deployment is an ArangoDB cluster or
+single server, configured as you choose.
 
 Each deployment belongs to a project, which belongs to an organization in turn.
 You can have any number of deployments under one project.
@@ -167,13 +167,13 @@ periodically to improve security.
 
 ### Auto login to database UI
 
-ArangoGraph provides the ability to automatically login to your database using
-your existing ArangoGraph credentials. This not only provides a seamless
+The Arango Managed Platform (AMP) provides the ability to automatically login to your
+database using your existing AMP credentials. This not only provides a seamless
 experience, preventing you from having to manage multiple sets of credentials
 but also improves the overall security of your database. As your credentials
-are shared between ArangoGraph and your database, you can benefit from
+are shared between AMP and your database, you can benefit from
 end-to-end audit traceability for a given user, as well as integration with
-ArangoGraph SSO.
+AMP SSO.
 
 You can enable this feature in the **Deployment details** section by turning
 the **USE AUTO LOGIN FOR DATABASE UI** toggle on. Please note
@@ -193,16 +193,16 @@ disabling this feature in the following situations:
   with differing permission sets, as you cannot switch database users when
   automatic login is enabled.
 - You need to give individuals access to a database's UI without giving them
-  any access to ArangoGraph. Note, however, that it's possible to only give an
-  ArangoGraph user database UI access, without other ArangoGraph permissions.
+  any access to AMP. Note, however, that it's possible to only give an
+  AMP user database UI access, without other AMP permissions.
 
 {{< warning >}}
 When the auto login feature is enabled, users cannot edit their permissions on
 the ArangoDB database web interface as all permissions are managed by the
-ArangoGraph platform.
+Arango Managed Platform (AMP).
 {{< /warning >}}
 
-Before getting started, make sure you are signed in to ArangoGraph as a user
+Before getting started, make sure you are signed in to AMP as a user
 with one of the following permissions in your project:
 - `data.deployment.full-access`
 - `data.deployment.read-only-access`
@@ -237,6 +237,11 @@ attached to your role. Read more about [roles and permissions](../security-and-a
    - Change the deployment name
    - Change the deployment description
 4. In the **Sizing** section, you can do the following:
+   
+   {{< tip >}}
+   Before changing deployment models, especially from **Single Server** to clustered configurations,
+   consider creating a backup of your data.
+   {{< /tip >}}
    - Change **OneShard** deployments into **Sharded** deployments. To do so,
      select **Sharded** in the **Model** dropdown list. You can select the
      number of nodes for your deployment. This can also be modified later on.
@@ -245,7 +250,12 @@ attached to your role. Read more about [roles and permissions](../security-and-a
      {{< /warning >}}
    - Change **Single Server** deployments into **OneShard** or **Sharded** deployments.
      {{< warning >}}
-     You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     **Important considerations for Single Server upgrades:**
+     - You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     - Changing **Single Server** deployments into **OneShard** or **Sharded** deployments
+       will cause downtime and may take a considerable amount of time to complete. Plan this switch
+       during a maintenance window when your application can tolerate service interruption.
+       Your data remains safe throughout the process.
      {{< /warning >}}
    - Scale up or down the node size.
      {{< warning >}}
@@ -263,7 +273,7 @@ attached to your role. Read more about [roles and permissions](../security-and-a
 
 ## How to connect a driver to your deployment
 
-[ArangoDB drivers](../../arangodb/3.12/develop/drivers/_index.md) allow you to use your ArangoGraph
+[ArangoDB drivers](../../arangodb/3.12/develop/drivers/_index.md) allow you to use your AMP
 deployment as a database system for your applications. Drivers act as interfaces
 between different programming languages and ArangoDB, which enable you to
 connect to and manipulate ArangoDB deployments from within compiled programs
@@ -281,6 +291,24 @@ application has to handle connection failures by retrying operations if needed.
 {{< /tip >}}
 
 ![ArangoGraph Connecting Drivers Example](../../images/arangograph-connecting-drivers-example.png)
+
+## How to pause a deployment
+
+1. In the __Deployments__ page, click the deployment you wish to pause.
+2. Click the __Delete/Lock__ entry in the navigation.
+3. Click the __Pause deployment...__ button.
+4. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
+   deployment being paused displays the __Hibernated__ status until it has been
+   successfully resumed.
+
+## How to pause a deployment
+
+1. In the __Deployments__ page, click the deployment you wish to pause.
+2. Click the __Delete/Lock__ entry in the navigation.
+3. Click the __Pause deployment...__ button.
+4. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
+   deployment being paused displays the __Hibernated__ status until it has been
+   successfully resumed.
 
 ## How to pause a deployment
 
@@ -310,5 +338,5 @@ This operation is **irreversible**. Please proceed with caution.
 
 {{< info >}}
 Locked deployments cannot be deleted. Learn more about
-[locked resources](../security-and-access-control/_index.md#locked-resources) in ArangoGraph.
+[locked resources](../security-and-access-control/_index.md#locked-resources) in AMP.
 {{< /info >}}

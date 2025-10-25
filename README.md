@@ -367,7 +367,7 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-GenAI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
+AI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
 of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
@@ -428,6 +428,25 @@ Available attributes:
 - `alt`: image description for accessibility
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
+
+#### Icons
+
+If a web interface uses icons, especially as buttons without labels, use
+the `icon` shortcode to inline an SVG file for a visual reference as
+demonstrated below:
+
+```markdown
+Select all nodes ({{< icon "select-all" >}}), then right-click.
+```
+
+Icons are supposed to supplement the text, i.e. not be embedded in sentences.
+They are hidden from screen readers.
+
+To add new icons to the toolchain, save them to `site/content/images/icons/`.
+They are referenced by file name (without extension) in the shortcode.
+
+SVG icon files should not define the attributes `width`, `height`, `aria-hidden`,
+and `focusable` on the `<svg>` tag.
 
 #### Keyboard shortcuts
 
@@ -570,8 +589,10 @@ The following shortcodes also exist but are rarely used:
   - _DB-Server_, not ~~dbserver~~, ~~db-server~~, ~~DBserver~~ (unless it is a code value)
   - _Coordinator_ (uppercase C)
   - _Agent_, _Agency_ (uppercase A)
-  - _Arango Managed Platform (AMP)_ and _ArangoGraph_ for short, but not
-    ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
+    ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
+  - _Arango Data Platform_, _Arango AI Data Platform_, and _AI Suite_, but not
+    ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~, ~~AI Services~~, or ~~GenAI Suite~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
@@ -677,18 +698,18 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, GenAI Data Platform,
+Features exclusive to the Data Platform, AI Data Platform,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
 
-In the GenAI Data Platform only:
+In the AI Data Platform only:
 
 ```markdown
-{{< tag "GenAI Data Platform" >}}
+{{< tag "AI Data Platform" >}}
 ```
 
-In the Arango Managed Platform only:
+In the Arango Managed Platform (AMP) only:
 
 ```markdown
 {{< tag "AMP" >}}
@@ -719,6 +740,15 @@ required using a tag. Use the following include in the general case:
 
 ```markdown
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
+```
+
+### Experimental remark
+
+Features that are available for testing but may still change or get removed and
+should thus not be used in production can be tagged as follows:
+
+```markdown
+{{< tag "Experimental" >}}
 ```
 
 ### Add lead paragraphs

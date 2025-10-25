@@ -53,12 +53,12 @@ more like a programming language. It suits the schema-less model more natural
 and makes the query language very powerful while remaining easy to read and write.
 
 To get started with AQL, sign up for [ArangoDB University](https://university.arangodb.com/)
-and get access to interactive courses powered by ArangoGraph. 
+and get access to interactive courses powered by the Arango Managed Platform (AMP). 
 
 ## In the Cloud or On-premises
 
 When you are ready for your own ArangoDB server, you can sign up for ArangoDB's
-cloud service called ArangoGraph, which takes care of the setup and maintenance, so
+cloud service called the Arango Managed Platform (AMP), which takes care of the setup and maintenance, so
 that you can focus on building amazing things on top of ArangoDB. See
 [Use ArangoDB in the Cloud](set-up-a-cloud-instance.md) to get started.
 

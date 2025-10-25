@@ -1,10 +1,10 @@
 ---
-title: X.509 Certificates in ArangoGraph
+title: X.509 Certificates in the Arango Managed Platform (AMP)
 menuTitle: X.509 Certificates
 weight: 5
 description: >-
-  X.509 certificates in ArangoGraph are utilized for encrypted remote administration.
-  The communication with and between the servers of an ArangoGraph deployment is
+  X.509 certificates in AMP are utilized for encrypted remote administration.
+  The communication with and between the servers of an AMP deployment is
   encrypted using the TLS protocol
 ---
 X.509 certificates are digital certificates that are used to verify the
@@ -20,10 +20,10 @@ key associated with the certificate, the certificate's issuer, and the
 certificate's expiration date. An X.509 certificate can be signed by a
 certificate authority (CA) or self-signed.
 
-ArangoGraph is using:
+AMP is using:
 - **well-known X.509 certificates** created by
 [Let's Encrypt](https://letsencrypt.org/)
-- **self-signed X.509 certificates** created by ArangoGraph platform
+- **self-signed X.509 certificates** created by AMP
 
 ## Certificate chains
 
@@ -41,13 +41,13 @@ trusts the chain of certificates that lead to the end-entity certificate.
 If any of the certificates in the chain are invalid, expired, or revoked, the
 browser does not trust the digital certificate.
 
-## X.509 certificates in ArangoGraph
+## X.509 certificates in AMP
 
-Each ArangoGraph deployment is accessible on different port numbers:
+Each AMP deployment is accessible on different port numbers:
 - default port `8529`, `443`
 - high port `18529`
 
-Each ArangoGraph Notebook is accessible on different port numbers:
+Each AMP Notebook is accessible on different port numbers:
 - default port `8840`, `443`
 - high port `18840`
 
@@ -83,8 +83,8 @@ self-signed certificate option.
 ### Self-signed X.509 certificates
 
 **Self-signed X.509 certificates** are used on the high ports, i.e. `18529`.
-This type of certificate has a lifetime of 1 year, and it is created by the
-ArangoGraph platform. It is also rotated automatically before the expiration
+This type of certificate has a lifetime of 1 year, and it is created by AMP.
+It is also rotated automatically before the expiration
 date.
 
 {{< info >}}
@@ -148,12 +148,12 @@ You can also extract the information from all certificates in the chain using th
   ```
 
 Note that `<123456abcdef>` is a placeholder that needs to be replaced with the
-unique ID that is part of your ArangoGraph deployment endpoint URL.
+unique ID that is part of your AMP deployment endpoint URL.
 
 ## How to connect to your application
 
 [ArangoDB drivers](../../arangodb/3.12/develop/drivers/_index.md), also called connectors, allow you to
-easily connect ArangoGraph deployments to your application. 
+easily connect AMP deployments to your application. 
 
 1. Navigate to **Deployments** and click the **View** button to show the
    deployment page.

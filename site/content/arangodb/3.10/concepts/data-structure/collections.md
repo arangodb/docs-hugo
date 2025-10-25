@@ -139,7 +139,7 @@ db["collection-name"]
 
 This property access returns the collection named `collection-name`.
 
-### Synchronous replication of collections
+## Synchronous replication of collections
 
 Distributed ArangoDB setups offer synchronous replication,
 which means that there is the option to replicate all data

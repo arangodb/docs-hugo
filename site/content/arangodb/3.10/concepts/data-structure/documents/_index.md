@@ -15,6 +15,8 @@ an identifier derived from the key that uniquely identifies it within a
 
 <!-- TODO: better explain what they are used for and how
 Documents can be stored, updated, and retrieved using various database management techniques, such as indexing, querying, and aggregation. They provide a flexible and scalable way to organize and manage data, particularly for applications that deal with unstructured or semi-structured data, such as content management systems, social media platforms, and e-commerce websites.
+
+Maybe also: You can store unstructured data in the form of text as attribute values.
 -->
 
 ## Data types
@@ -244,6 +246,10 @@ following naming constraints are not violated:
 - ArangoDB does not enforce a length limit for attribute names. However, long
   attribute names may use more memory in result sets etc. Therefore the use
   of long attribute names is discouraged.
+
+- Attributes with empty names (using an empty string `""`) are possible but
+  discouraged. For example, indexes cannot be created over such attributes and
+  drivers may not support empty names.
 
 - Attribute names are case-sensitive.
 

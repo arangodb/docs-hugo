@@ -16,7 +16,7 @@ read-only in rare cases.
 {{< warning >}}
 If you are a paying customer with a self-hosted deployment, contact the
 ArangoDB support for direct assistance.
-ArangoGraph customers do not need to take any action.
+Arango Managed Platform (AMP) customers do not need to take any action.
 {{< /warning >}}
 
 **Issues that has been discovered that requires action:**

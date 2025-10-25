@@ -1,32 +1,32 @@
 ---
-title: ArangoGraph Notebooks
+title: Notebooks in the Arango Managed Platform (AMP)
 menuTitle: Notebooks
 weight: 25
 description: >-
-  How to create and manage colocated Jupyter Notebooks within ArangoGraph
+  How to create and manage colocated Jupyter Notebooks within AMP
 ---
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is
 subject to change. The beta version is free for all.
 {{< /info >}}
 
-The ArangoGraph Notebook is a JupyterLab notebook embedded in the ArangoGraph
+The AMP Notebook is a JupyterLab notebook embedded in the AMP
 Insights Platform. The notebook integrates seamlessly with platform,
-automatically connecting to ArangoGraph services, including ArangoDB and the
+automatically connecting to AMP services, including ArangoDB and the
 ArangoML platform services. This makes it much easier to leverage these
 resources without having to download any data locally or to remember user IDs,
 passwords, and endpoint URLs.
 
 ![ArangoGraph Notebooks Architecture](../images/arangograph-notebooks-architecture.png)
 
-The ArangoGraph Notebook has built-in [ArangoGraph Magic Commands](#arangograph-magic-commands)
+The AMP Notebook has built-in [AMP Magic Commands](#amp-magic-commands)
 that answer questions like:
 - What ArangoDB database am I connected to at the moment?
 - What data does the ArangoDB instance contain?
 - How can I access certain documents?
 - How do I create a graph?
 
-The ArangoGraph Notebook also pre-installs [python-arango](https://docs.python-arango.com/en/main/)
+The AMP Notebook also pre-installs [python-arango](https://docs.python-arango.com/en/main/)
 and ArangoML connectors
 to [PyG](https://github.com/arangoml/pyg-adapter),
 [DGL](https://github.com/arangoml/dgl-adapter),
@@ -45,7 +45,7 @@ favorite GraphML libraries with GPUs.
 5. The notebook's phase is set to **Initializing**. Once the phase changes to
    **Running**, the notebook's endpoint is accessible.
 6. Click the **Open notebook** button to access your notebook. 
-7. To access your notebook, you need to be signed into ArangoGraph as a user with
+7. To access your notebook, you need to be signed into AMP as a user with
    the `notebook.notebook.execute` permission in your project. Organization
    owners have this permission enabled by default. The `notebook-executor` role
    which contains the permission can also be granted to other members of the
@@ -79,14 +79,14 @@ at anytime. The notebook's phase is updated accordingly.
 ## Getting Started notebook
 
 To get a better understanding of how to interact with your ArangoDB database
-cluster, use the ArangoGraph Getting Started template.
-The ArangoGraph Notebook automatically connects to the ArangoDB service
+cluster, use the AMP Getting Started template.
+The AMP Notebook automatically connects to the ArangoDB service
 endpoint, so you can immediately start interacting with it.
 
 1. Log in to the notebook you have created by using your deployment's root password.
 2. Select the `GettingStarted.ipynb` template from the file browser.
 
-## ArangoGraph Magic Commands
+## AMP Magic Commands
 
 A list of the available magic commands you can interact with.
 Single line commands have `%` prefix and multi-line commands have `%%` prefix.

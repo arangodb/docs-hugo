@@ -1,11 +1,11 @@
 ---
-title: Projects in ArangoGraph
+title: Projects in the Arango Managed Platform (AMP)
 menuTitle: Projects
 weight: 15
 description: >-
-  How to manage projects and IP allowlists in ArangoGraph
+  How to manage projects and IP allowlists in AMP
 ---
-ArangoGraph projects can represent organizational units such as teams,
+AMP projects can represent organizational units such as teams,
 product groups, environments (e.g. staging vs. production). You can have any
 number of projects under one organization.
 

@@ -53,8 +53,8 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
-is available for the ArangoGraph Insights Platform. See
-[Graph Analytics](graph-analytics.md) for details.
+is available for the Arango Managed Platform (AMP). See
+[Graph Analytics](../../../ai-suite/graph-analytics.md) for details.
 
 ### GraphML
 
@@ -104,12 +104,12 @@ This [interactive tutorial](https://colab.research.google.com/github/arangodb/in
 demonstrates how to integrate ArangoDB with PyTorch Geometric to
 build recommendation systems using Graph Neural Networks (GNNs).
 
-The full ArangoFlix demo website is accessible from the ArangoGraph Insights Platform,
+The full ArangoFlix demo website is accessible from the Arango Managed Platform (AMP),
 the managed cloud for ArangoDB. You can open the demo website that connects to
 your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
-You can try out the ArangoGraph Insights Platform free of charge for 14 days.
+You can try out the Arango Managed Platform (AMP) free of charge for 14 days.
 Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 {{< /tip >}}
 

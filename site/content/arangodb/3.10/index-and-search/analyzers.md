@@ -119,7 +119,7 @@ The following Analyzer types are available:
 - [`delimiter`](#delimiter): splits into tokens at user-defined character
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
-- [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
+- [`ngram`](#ngram): creates _n_-grams from the value with user-defined lengths
 - [`text`](#text): tokenizes text strings into words, optionally with stemming,
   normalization, stop-word filtering and edge _n_-gram generation
 - [`segmentation`](#segmentation): tokenizes text in a language-agnostic manner,

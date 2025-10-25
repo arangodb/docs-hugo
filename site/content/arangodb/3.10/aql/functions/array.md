@@ -34,7 +34,7 @@ Add all elements of an array to another array. All values are added at the end o
 array (right side).
 
 It can also be used to append a single element to an array. It is not necessary to wrap
-it in an array (unless it is an array itself). You may also use [PUSH()](#push) instead.
+it in an array (unless it is an array itself). You may also use [`PUSH()`](#push) instead.
 
 - **anyArray** (array): array with elements of arbitrary type
 - **values** (array\|any): array, whose elements shall be added to `anyArray`
@@ -64,11 +64,11 @@ RETURN APPEND([ 1, 2, 3 ], [ 3, 4, 5, 2, 9 ], true)
 
 ## CONTAINS_ARRAY()
 
-This is an alias for [POSITION()](#position).
+This is an alias for [`POSITION()`](#position).
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## COUNT_DISTINCT()
 
@@ -99,7 +99,7 @@ RETURN COUNT_DISTINCT([ "yes", "no", "yes", "sauron", "no", "yes" ])
 
 ## COUNT_UNIQUE()
 
-This is an alias for [COUNT_DISTINCT()](#count_distinct).
+This is an alias for [`COUNT_DISTINCT()`](#count_distinct).
 
 ## FIRST()
 
@@ -213,9 +213,8 @@ FOR v, e, p IN 1..3 OUTBOUND 'places/Toronto' GRAPH 'kShortestPathsGraph'
 Return the intersection of all arrays specified. The result is an array of values that
 occur in all arguments.
 
-Other set operations are [UNION()](#union),
-[MINUS()](#minus) and
-[OUTERSECTION()](#outersection).
+Other set operations are [`UNION()`](#union), [`MINUS()`](#minus) and
+[`OUTERSECTION()`](#outersection).
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple arguments
   (at least 2)
@@ -324,7 +323,7 @@ Determine the number of elements in an array.
 - **anyArray** (array): array with elements of arbitrary type
 - returns **length** (number): the number of array elements in *anyArray*.
 
-*LENGTH()* can also determine the [number of attribute keys](document-object.md#length)
+`LENGTH()` can also determine the [number of attribute keys](document-object.md#length)
 of an object / document, the [amount of documents](miscellaneous.md#length) in a
 collection and the [character length](string.md#length) of a string.
 
@@ -386,9 +385,8 @@ RETURN LENGTH( {a:1, b:2, c:3, d:4, e:{f:5,g:6}} )
 
 Return the difference of all arrays specified.
 
-Other set operations are [UNION()](#union),
-[INTERSECTION()](#intersection) and
-[OUTERSECTION()](#outersection).
+Other set operations are [`UNION()`](#union), [`INTERSECTION()`](#intersection)
+and [`OUTERSECTION()`](#outersection).
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)
@@ -451,9 +449,8 @@ RETURN NTH( [ "foo", "bar", "baz" ], -1 )
 
 Return the values that occur only once across all arrays specified.
 
-Other set operations are [UNION()](#union),
-[MINUS()](#minus) and
-[INTERSECTION()](#intersection).
+Other set operations are [`UNION()`](#union), [`MINUS()`](#minus) and
+[`INTERSECTION()`](#intersection).
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple arguments
   (at least 2)
@@ -476,9 +473,9 @@ RETURN OUTERSECTION( [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] )
 
 Remove the last element of *array*.
 
-To append an element (right side), see [PUSH()](#push).\
-To remove the first element, see [SHIFT()](#shift).\
-To remove an element at an arbitrary position, see [REMOVE_NTH()](#remove_nth).
+To append an element (right side), see [`PUSH()`](#push).\
+To remove the first element, see [`SHIFT()`](#shift).\
+To remove an element at an arbitrary position, see [`REMOVE_NTH()`](#remove_nth).
 
 - **anyArray** (array): an array with elements of arbitrary type
 - returns **newArray** (array): *anyArray* without the last element. If it's already
@@ -521,7 +518,7 @@ the [`IN` operator](../operators.md#comparison-operators), for example,
 `3 IN [1, 2, 3]` instead of `POSITION([1, 2, 3], 3)`.
 
 To determine if or at which position a string occurs in another string, see the
-[CONTAINS() string function](string.md#contains).
+[`CONTAINS()` string function](string.md#contains).
 
 **Examples**
 
@@ -570,9 +567,9 @@ existence, you may use the `IN` operator instead of calling `POSITION()`, like
 
 Append *value* to *anyArray* (right side).
 
-To remove the last element, see [POP()](#pop).\
-To prepend a value (left side), see [UNSHIFT()](#unshift).\
-To append multiple elements, see [APPEND()](#append).
+To remove the last element, see [`POP()`](#pop).\
+To prepend a value (left side), see [`UNSHIFT()`](#unshift).\
+To append multiple elements, see [`APPEND()`](#append).
 
 - **anyArray** (array): array with elements of arbitrary type
 - **value** (any): an element of arbitrary type
@@ -583,7 +580,7 @@ To append multiple elements, see [APPEND()](#append).
 
 Note: The *unique* flag only controls if *value* is added if it's already present
 in *anyArray*. Duplicate elements that already exist in *anyArray* will not be
-removed. To make an array unique, use the [UNIQUE()](#unique) function.
+removed. To make an array unique, use the [`UNIQUE()`](#unique) function.
 
 **Examples**
 
@@ -609,8 +606,8 @@ RETURN PUSH([ 1, 2, 2, 3 ], 2, true)
 
 Remove the element at *position* from the *anyArray*.
 
-To remove the first element, see [SHIFT()](#shift).\
-To remove the last element, see [POP()](#pop).
+To remove the first element, see [`SHIFT()`](#shift).\
+To remove the last element, see [`POP()`](#pop).
 
 - **anyArray** (array): array with elements of arbitrary type
 - **position** (number): the position of the element to remove. Positions start
@@ -791,9 +788,9 @@ RETURN REVERSE ( [2,4,6,8,10] )
 
 Remove the first element of *anyArray*.
 
-To prepend an element (left side), see [UNSHIFT()](#unshift).\
-To remove the last element, see [POP()](#pop).\
-To remove an element at an arbitrary position, see [REMOVE_NTH()](#remove_nth).
+To prepend an element (left side), see [`UNSHIFT()`](#unshift).\
+To remove the last element, see [`POP()`](#pop).\
+To remove an element at an arbitrary position, see [`REMOVE_NTH()`](#remove_nth).
 
 - **anyArray** (array): array with elements with arbitrary type
 - returns **newArray** (array): *anyArray* without the left-most element. If *anyArray*
@@ -929,9 +926,8 @@ RETURN SORTED_UNIQUE( [ 8,4,2,10,6,2,8,6,4 ] )
 
 Return the union of all arrays specified.
 
-Other set operations are [MINUS()](#minus),
-[INTERSECTION()](#intersection) and
-[OUTERSECTION()](#outersection).
+Other set operations are [`MINUS()`](#minus), [`INTERSECTION()`](#intersection)
+and [`OUTERSECTION()`](#outersection).
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)
@@ -952,9 +948,8 @@ RETURN UNION(
 ```
 
 Note: No duplicates will be removed. In order to remove duplicates, please use
-either [UNION_DISTINCT()](#union_distinct)
-or apply [UNIQUE()](#unique) on the
-result of *UNION()*:
+either [`UNION_DISTINCT()`](#union_distinct) or apply [`UNIQUE()`](#unique) on the
+result of `UNION()`:
 
 ```aql
 ---
@@ -1019,8 +1014,8 @@ RETURN UNIQUE( [ 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5 ] )
 
 Prepend *value* to *anyArray* (left side).
 
-To remove the first element, see [SHIFT()](#shift).\
-To append a value (right side), see [PUSH()](#push).
+To remove the first element, see [`SHIFT()`](#shift).\
+To append a value (right side), see [`PUSH()`](#push).
 
 - **anyArray** (array): array with elements of arbitrary type
 - **value** (any): an element of arbitrary type
@@ -1031,7 +1026,7 @@ To append a value (right side), see [PUSH()](#push).
 
 Note: The *unique* flag only controls if *value* is added if it's already present
 in *anyArray*. Duplicate elements that already exist in *anyArray* will not be
-removed. To make an array unique, use the [UNIQUE()](#unique) function.
+removed. To make an array unique, use the [`UNIQUE()`](#unique) function.
 
 **Examples**
 

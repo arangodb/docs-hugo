@@ -1,6 +1,6 @@
 ---
 title: Arango Managed Platform (AMP)
-menuTitle: Managed Platform
+menuTitle: Arango Managed Platform
 weight: 4
 description: >-
   The Arango Managed Platform (AMP) provides the entire functionality of
@@ -8,6 +8,8 @@ description: >-
 aliases:
   - arangograph/changelog
 ---
+{{< cloudbanner>}}
+
 The [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 formerly called Oasis, provides ArangoDB databases as a Service (DBaaS).
 It enables you to use the entire functionality of an ArangoDB cluster

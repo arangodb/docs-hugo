@@ -59,6 +59,8 @@ To import ArangoDB Datasource for Apache Spark in a Maven project:
   </dependencies>
 ```
 
+Substitute `x.y.z` with the latest available version that is compatible.
+
 To use in an external Spark cluster, submit your application with the following parameter:
 
 ```sh
@@ -82,12 +84,60 @@ To use in an external Spark cluster, submit your application with the following 
 - `ssl.algorithm`: trust manager algorithm, `SunX509` by default
 - `ssl.keystore.type`: keystore type, `jks` by default
 - `ssl.protocol`: SSLContext protocol, `TLS` by default
+- `ssl.trustStore.path`: trust store path
+- `ssl.trustStore.password`: trust store password
 
 ### SSL
 
-To use TLS secured connections to ArangoDB, set `ssl.enabled` to `true` and either:
-- provide a Base64 encoded certificate as the `ssl.cert.value` configuration entry and optionally set `ssl.*` or
-- start the Spark driver and workers with a properly configured [JVM default TrustStore](https://spark.apache.org/docs/latest/security.html#ssl-configuration)
+To use TLS-secured connections to ArangoDB, set `ssl.enabled` to `true` and
+configure the certificate to use. This can be achieved in one of the following ways:
+
+- Provide the Base64-encoded certificate as the `ssl.cert.value` configuration entry:
+
+  ```scala
+  val spark: SparkSession = SparkSession.builder()
+    // ...
+    .config("ssl.enabled", "true")
+    .config("ssl.cert.value", "<Base64-encoded certificate>")
+    .getOrCreate()
+  ```
+
+- Set the trust store to use in the `ssl.trustStore.path` configuration entry and
+  optionally set `ssl.trustStore.password`:
+
+  ```scala
+  val spark: SparkSession = SparkSession.builder()
+    // ...
+    .config("ssl.enabled", "true")
+    .config("ssl.trustStore.path", "<trustStore path>")
+    .config("ssl.trustStore.password", "<trustStore password>")
+    .getOrCreate()
+  ```
+
+- Start the Spark driver and workers with a properly configured trust store:
+
+  ```scala
+  val spark: SparkSession = SparkSession.builder()
+    // ...
+    .config("ssl.enabled", "true")
+    .getOrCreate()
+  ```
+
+  Set the following in the Spark configuration file:
+
+  ```properties
+  spark.executor.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password> 
+  spark.driver.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>
+  ```
+
+  Alternatively, you can set this in the command-line when submitting the Spark job:
+
+  ```sh
+  ./bin/spark-submit \
+    --conf "spark.driver.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>" \
+    --conf "spark.executor.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>" \
+    ...
+  ```
 
 ### Supported deployment topologies
 
@@ -326,7 +376,7 @@ The following Spark SQL data types (subtypes of `org.apache.spark.sql.types.Filt
 
 ## Connect to the Arango Managed Platform (AMP)
 
-To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (ArangoGraph):
+To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (AMP):
 
 ```scala
 val options = Map(
