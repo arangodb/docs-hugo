@@ -1,7 +1,7 @@
 ---
 title: Graph Visualizer
 menuTitle: Graph Visualizer
-weight: 10
+weight: 20
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
@@ -330,7 +330,7 @@ You can modify the document attributes of nodes and edges from the canvas as fol
 4. Change or delete ({{< icon "delete" >}}) existing properties.
 5. In the **Form** mode, you can add new properties by scrolling to the bottom
    and clicking **Add Property**.
-6. Click **Save** to store the changes, or **Cancel** to abort. <!-- TODO: Can't change system attributes, even though _from and _to are generally mutable -->
+6. Click **Save** to store the changes, or **Cancel** to abort.
 
 ### Delete nodes
 
