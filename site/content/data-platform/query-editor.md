@@ -40,8 +40,8 @@ The Query Editor of the Arango Data Platform offers the following features:
 
 - **Ask AI for AQL Queries (AQLizer)**:
   Describe what you want in natural language and generate AQL queries right
-  from the Query Editor. This feature is only available if you have the
-  AI Services Data Platform.
+  from the Query Editor. This feature is only available in the
+  Arango AI Data Platform.
 
 {{< info >}}
 The Query Editor of the Data Platform is not feature-complete. It currently
@@ -54,9 +54,11 @@ Data Platform web interface, and then **Queries** in the second-level navigation
 ## Work with queries
 
 You can enter your AQL query code into the default tab, or open more query tabs
-at any point by clicking the `+` button at the top of a panel.
-You can close tabs with the `x` button, but the viewport ensures that one tab
-always remains.<!-- TODO: use icon shortcode -->
+at any point by clicking the button at the top of a panel to the right of the
+tabs ({{< icon "add" >}}).
+
+You can close tabs with the button next to the tab name ({{< icon "close" >}}),
+but the viewport ensures that one tab always remains.<!-- TODO: Welcome page -->
 
 A floating panel in the top right corner lets you enter values for
 **Bind variables** if there are any such placeholders in the query. You can
@@ -74,7 +76,7 @@ The following buttons are available at the bottom of a query tab:
 
 ## Generate queries
 
-{{< tag "AI Services Data Platform" >}}
+{{< tag "AI Data Platform" >}}
 
 Click the **AQLizer** button to open the panel for generating AQL queries with
 AI. The interface is like a chat, where you enter a question in natural language
