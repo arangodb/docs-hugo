@@ -15,7 +15,7 @@ read-only in rare cases.
 
 {{< warning >}}
 If you are a paying customer with a self-hosted deployment, contact the
-ArangoDB support for direct assistance.
+Arango support for direct assistance.
 Arango Managed Platform (AMP) customers do not need to take any action.
 {{< /warning >}}
 
@@ -541,7 +541,7 @@ created with v3.11.11, v3.12.2, or any later version.
 ### If the deployment is affected
 
 {{< info >}}
-If you are a customer, please contact the ArangoDB support to assist you with
+If you are a customer, please contact the Arango support to assist you with
 the following steps.
 {{< /info >}}
 

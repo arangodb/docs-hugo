@@ -389,7 +389,7 @@ set -e\n\
 def workflow_release_launch_command(config):
     shell = "\
 export ENV=\"circleci\"\n \
-export HUGO_URL=https://docs.arangodb.com\n \
+export HUGO_URL=https://docs.arango.ai\n \
 export HUGO_ENV=release\n \
 export GENERATORS=''\n"
 

@@ -11,7 +11,7 @@
 {{- $isRemote := ne $url.Scheme "" }}
 
 {{- if $isRemote }}
-  {{- $isProduction := eq site.BaseURL "https://docs.arangodb.com" }}
+  {{- $isProduction := eq site.BaseURL "https://docs.arango.ai" }}
   {{- if and (not $isProduction) (eq .Destination "https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
     {{- $permalink = "https://dashboard.arangodb.cloud/home" }}
   {{- else }}

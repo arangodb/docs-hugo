@@ -98,7 +98,7 @@ thus cannot be intercepted by the crash handler.
 
 In case the crash handler receives one of the mentioned interceptable signals,
 it will write basic crash information to the logfile and a backtrace of the
-call site. The backtrace can be provided to the ArangoDB support for further
+call site. The backtrace can be provided to the Arango support for further
 inspection. Note that backtaces are only usable if debug symbols for ArangoDB
 have been installed as well.
 

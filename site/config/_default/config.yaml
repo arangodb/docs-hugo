@@ -1,4 +1,4 @@
-baseURL: "https://docs.arangodb.com"
+baseURL: "https://docs.arango.ai"
 languageCode: "en-us"
 title: "ArangoDB Documentation"
 theme: "arangodb-docs-theme"

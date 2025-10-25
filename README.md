@@ -1,7 +1,7 @@
 # ArangoDB Documentation
 
 This repository contains the source files of the ArangoDB documentation as
-published on [docs.arangodb.com](https://docs.arangodb.com/).
+published on [docs.arango.ai](https://docs.arango.ai/).
 
 The ArangoDB documentation is licensed under Apache-2.0.
 See [LICENSE](LICENSE) for details.
@@ -545,8 +545,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../drivers/js/_index.md` instead of `/3.12/drivers/js/_index.md` or
-  `https://docs.arangodb.com/3.12/drivers/js/`.
+  `../../data-platform/_index.md` instead of `/data-platform/_index.md` or
+  `https://docs.arango.ai/data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -786,8 +786,8 @@ Start off by finding a file name. It should be:
 
 Note that the file name is independent of what will show in the navigation or
 what will be used as headline for that page. The file name will be used as
-part of the final URL, however. For example, `3.12/aql/examples.md` will become
-`http://docs.arangodb.com/3.12/aql/examples/`.
+part of the final URL, however. For example, `arangodb/3.12/aql/examples.md`
+will become `http://docs.arango.ai/arangodb/3.12/aql/examples/`.
 
 Create a new file with the file name and a `.md` file extension. Open the file
 in a text editor (Visual Studio Code is recommended). Add the following
@@ -822,8 +822,9 @@ Otherwise, the following steps are necessary for moving content:
 
 The URL of a page is derived from the file name and the parent folders, with
 special handling for sections (folders with a `_index.md` file).
-For example, `3.12/aql/operators.md` becomes the URL path `/3.12/aql/operators/`,
-and `3.12/aql/functions/_index.md` becomes `/3.12/aql/functions/`.
+For example, `arangodb/3.12/aql/operators.md` becomes the URL path
+`/arangodb/3.12/aql/operators/`, and `arangodb/3.12/aql/functions/_index.md`
+becomes `/arangodb/3.12/aql/functions/`.
 
 If you rename a file, from `section/old-name.md` to `section/new-name.md` for
 instance, make sure to add a redirect for the old URL by adding the following to
@@ -1262,7 +1263,7 @@ db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_
 ```
 
 This will make the example generation continue despite the error. See
-[Error codes and meanings](https://docs.arangodb.com/stable/develop/error-codes-and-meanings/)
+[Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)
 for a list of all error codes and their names. If a unexpected error is raised,
 then the example generation will abort with an error.
 

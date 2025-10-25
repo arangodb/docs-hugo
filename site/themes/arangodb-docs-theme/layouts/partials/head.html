@@ -6,7 +6,7 @@
   <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
   {{ partialCached "javascript.html" . -}}
 
-  {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+  {{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
   {{ if $isProduction -}}
     {{- partialCached "tracking/gtag.html" . -}}
     {{- partialCached "tracking/twitter.html" . -}}

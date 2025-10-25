@@ -193,7 +193,7 @@ directly, focusing on the most important information.
 ## Gathering debug information about a query
 
 If an explain provides no suitable insight into why a query does not perform as
-expected, it may be reported to the ArangoDB support. In order to make this as easy
+expected, it may be reported to the Arango support. In order to make this as easy
 as possible, there is a built-in command in ArangoShell for packaging the query, its
 bind parameters, and all data required to execute the query elsewhere.
 
@@ -222,7 +222,7 @@ var query = "FOR doc IN mycollection FILTER doc.value > 42 RETURN doc";
 require("@arangodb/aql/explainer").debugDump("/tmp/query-debug-info", query);
 ```
 
-Entitled users can send the generated file to the ArangoDB support to facilitate 
+Entitled users can send the generated file to the Arango support to facilitate 
 reproduction and debugging.
 
 {{< tip >}}

@@ -182,7 +182,7 @@ func init() {
 				"tags":  tags,
 				"externalDocs": map[string]interface{}{
 					"description": "ArangoDB Documentation",
-					"url":         "https://docs.arangodb.com",
+					"url":         "https://docs.arango.ai",
 				},
 			}
 		}

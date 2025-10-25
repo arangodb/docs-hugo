@@ -28,7 +28,7 @@ and do not have any backup storage, then none of your credits will be consumed.
 
 {{< tip >}}
 To purchase credits for your organization, you need to get in touch with the
-ArangoDB team. [Contact us](https://www.arangodb.com/contact/) for more details.
+Arango team. [Contact us](https://arango.ai/contact-us/) for more details.
 {{< /tip >}}
 
 There are a number of benefits that AMP credits provide:

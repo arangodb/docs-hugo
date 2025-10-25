@@ -602,7 +602,7 @@ workflows:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
     jobs:
       - plain-build:
-          url: https://docs.arangodb.com
+          url: https://docs.arango.ai
       - deploy:
           deploy-args: "--prod"
           requires:

@@ -325,7 +325,7 @@ Graph configuration properties are prefixed with `gremlin.arangodb.conf.graph`:
 
 Driver configuration properties are prefixed with `gremlin.arangodb.conf.driver`. All properties from
 `com.arangodb.config.ArangoConfigProperties` are supported. See
-the [ArangoDB Java Driver documentation](https://docs.arangodb.com/stable/develop/drivers/java/reference-version-7/driver-setup/#config-file-properties)
+the [ArangoDB Java Driver documentation](../drivers/java/reference-version-7/driver-setup.md#config-file-properties)
 for details.
 
 ### YAML Configuration
@@ -393,7 +393,7 @@ To use TLS-secured connections to ArangoDB, follow these steps:
 
 1. Enable SSL by setting `gremlin.arangodb.conf.driver.useSsl` to `true` in your configuration.
 
-2. Configure SSL properties as needed (see [ArangoDB Java Driver documentation](https://docs.arangodb.com/stable/develop/drivers/java/reference-version-7/driver-setup/#config-file-properties) for all available options):
+2. Configure SSL properties as needed (see [ArangoDB Java Driver documentation](../drivers/java/reference-version-7/driver-setup.md#config-file-properties) for all available options):
 
    ```yaml
    gremlin:
