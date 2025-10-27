@@ -3,7 +3,7 @@
 
   {{ partial "meta.html" . -}}
   <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
-  <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
+  {{ partialCached "favicon.html" . -}}
   {{ partialCached "javascript.html" . -}}
 
   {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
