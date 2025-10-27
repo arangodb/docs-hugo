@@ -747,6 +747,8 @@ header .logo {
 
 .arangodb-logo-small {
     display: none;
+    height: 42px;
+    margin-left: 2px;
 }
 
 
@@ -756,8 +758,6 @@ header .logo {
     }
     .arangodb-logo-small {
         display: block;
-        height: 2rem;
-        margin-left: 10px;
     }
 }
 
