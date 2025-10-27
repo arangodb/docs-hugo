@@ -5,6 +5,8 @@ weight: 7
 description: >-
   The Spring Boot Starter for ArangoDB is a set of convenient dependency descriptors
   that you can include in your application based on the Spring framework
+aliases:
+  - /3.12/develop/integrations/spring-boot-arangodb
 ---
 - [Repository](https://github.com/arangodb/spring-boot-starter)
 - [Demo](https://github.com/arangodb/spring-boot-starter/tree/main/demo)
@@ -1056,10 +1058,10 @@ Character [id=2999, name=Cersei, surname=Lannister, alive=true, age=36]
 You can have repository methods with self-written AQL queries.
 
 When it comes to more complex use cases where a derived method would get way too
-long and become unreadable, queries using the [ArangoDB Query Language (AQL)](../../aql/_index.md)
+long and become unreadable, queries using the [ArangoDB Query Language (AQL)](../../../arangodb/3.12/aql/_index.md)
 can be supplied with the `@Query` annotation on methods in your repositories.
 
-AQL supports the usage of [bind parameters](../../aql/fundamentals/bind-parameters.md),
+AQL supports the usage of [bind parameters](../../../arangodb/3.12/aql/fundamentals/bind-parameters.md),
 thus allowing to separate the query text from literal values used in the query.
 There are three ways of passing bind parameters to the query in the `@Query`
 annotation that are described below.
@@ -1229,7 +1231,7 @@ Character [id=9014, name=Cersei, surname=Lannister, alive=true, age=36]
 
 ### Graph traversal
 
-To finish the query method topic, add a [graph traversal](../../aql/graphs/traversals.md)
+To finish the query method topic, add a [graph traversal](../../../arangodb/3.12/aql/graphs/traversals.md)
 written in AQL to this demo where the `ChildOf` edges are involved.
 
 The following query searches for every `Character` connected (through `ChildOf`)

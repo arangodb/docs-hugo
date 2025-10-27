@@ -4,12 +4,7 @@ menuTitle: Query methods
 weight: 10
 description: ''
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
-Queries using [ArangoDB Query Language (AQL)](../../../../../../aql/_index.md)
+Queries using [ArangoDB Query Language (AQL)](../../../../../../arangodb/3.12/aql/_index.md)
 can be supplied with the `@Query` annotation on methods.
 
 ## Passing collection name
@@ -63,7 +58,7 @@ public interface MyRepository extends ArangoRepository<Customer, String>{
 
 In addition you can use a method parameter of type `Map<String, Object>`
 annotated with `@BindVars` as your bind parameters. You can then fill the map
-with any parameter used in the query (also see [AQL Bind Parameters](../../../../../../aql/fundamentals/bind-parameters.md)).
+with any parameter used in the query (also see [AQL Bind Parameters](../../../../../../arangodb/3.12/aql/fundamentals/bind-parameters.md)).
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{

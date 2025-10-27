@@ -34,8 +34,8 @@ for examples including tagged template strings.
 If you want to run AQL queries from your application via the HTTP REST API,
 see the full API description at [HTTP interface for AQL queries](../develop/http-api/queries/aql-queries.md).
 
-See the respective [driver](../develop/drivers/_index.md) or
-[integration](../develop/integrations/_index.md) for its support of AQL queries.
+See the respective [driver](../../../ecosystem/drivers/_index.md) or
+[integration](../../../ecosystem/integrations/_index.md) for its support of AQL queries.
 
 ## Learn the query language
 

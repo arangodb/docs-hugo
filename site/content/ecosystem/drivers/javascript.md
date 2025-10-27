@@ -7,6 +7,7 @@ description: >-
   database system, primarily with Node.js
 aliases:
   - nodejs # 3.12 -> 3.12
+  - /3.12/develop/drivers/javascript
 ---
 The official ArangoDB low-level JavaScript client.
 
@@ -18,7 +19,7 @@ The official ArangoDB low-level JavaScript client.
 If you are looking for the ArangoDB JavaScript API in
 [Foxx](https://www.arangodb.com/community-server/foxx/) or the `arangosh`
 interactive shell, please refer to the documentation about the
-[`@arangodb` module](../javascript-api/@arangodb/_index.md) instead.
+[`@arangodb` module](../../arangodb/3.12/develop/javascript-api/@arangodb/_index.md) instead.
 
 The JavaScript driver is **only** meant to be used when accessing ArangoDB from
 **outside** the database.
@@ -197,7 +198,7 @@ injection attacks.
 
 If the server returns an ArangoDB error response, arangojs throws an `ArangoError`
 with an `errorNum` property indicating the
-[ArangoDB error code](../error-codes.md) and expose the response body
+[ArangoDB error code](../../arangodb/3.12/develop/error-codes.md) and expose the response body
 as the response property of the error object.
 
 For all other errors during the request/response cycle arangojs throws a

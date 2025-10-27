@@ -3,6 +3,8 @@ title: ArangoDB Java driver
 menuTitle: Java driver
 weight: 10
 description: ''
+aliases:
+  - /3.12/develop/drivers/java/
 ---
 The official ArangoDB Java Driver.
 
@@ -341,7 +343,7 @@ Removed document: 6
 
 ### Learn more
 
-- Have a look at the [AQL documentation](../../../aql/) to lear about the
+- Have a look at the [AQL documentation](../../../arangodb/3.12/aql/_index.md) to lear about the
   query language
 - See [Serialization](reference-version-7/serialization.md) for details about
   user-data serde
