@@ -181,7 +181,7 @@ func init() {
 				"paths": make(map[string]interface{}),
 				"tags":  tags,
 				"externalDocs": map[string]interface{}{
-					"description": "ArangoDB Documentation",
+					"description": "Arango Documentation",
 					"url":         "https://docs.arango.ai",
 				},
 			}

@@ -6,7 +6,7 @@
     deprecated: false
 
   - name: "3.12"
-    version: "3.12.5"
+    version: "3.12.6"
     alias: "stable"
     deprecated: false
 
