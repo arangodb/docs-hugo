@@ -313,7 +313,7 @@ Use the `overwriteMode` write configuration parameter to specify the document ov
 ### Write Resiliency
 
 The data of each partition is saved in batches using the ArangoDB API for
-[inserting multiple documents](../../../arangodb/3.12/develop/http-api/documents.md#multiple-document-operations).
+[inserting multiple documents](../../arangodb/3.12/develop/http-api/documents.md#multiple-document-operations).
 This operation is not atomic, therefore some documents could be successfully written to the database, while others could fail. To make the job more resilient to temporary errors (i.e. connectivity problems), in case of failure the request will be retried (with another Coordinator), if the provided configuration allows idempotent requests, namely: 
 - the schema of the dataframe has a **not nullable** `_key` field and
 - `overwriteMode` is set to one of the following values:

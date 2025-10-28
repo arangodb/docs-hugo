@@ -209,7 +209,7 @@ behavior in case a document with the same `_key` already exists:
 
 All the write modes supported are idempotent, with the exception that the
 document revision field (`_rev`) changes every time a document is written. See
-[Document revisions](../../../../arangodb/3.12/concepts/data-structure/documents/_index.md#document-revisions)
+[Document revisions](../../../arangodb/3.12/concepts/data-structure/documents/_index.md#document-revisions)
 for more details.
 
 If there are failures, the Kafka offset used for recovery may not be up-to-date

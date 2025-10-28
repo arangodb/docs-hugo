@@ -9,7 +9,7 @@ Spring Data ArangoDB provides annotations to allow mapping computed values to
 entity properties and to include computed values data definitions during
 collection creation.
 
-For reference, see the [computed values](../../../../../../arangodb/3.12/concepts/data-structure/documents/computed-values.md)
+For reference, see the [computed values](../../../../../arangodb/3.12/concepts/data-structure/documents/computed-values.md)
 documentation.
 
 ## Mapping

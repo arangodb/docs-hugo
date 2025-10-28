@@ -27,7 +27,7 @@ You can find the source code repository of the module on GitHub:
 Once you have installed the `arango-datasets` package, you can use it to
 download and import datasets into your deployment with `arango_datasets.Datasets`.
 
-The `Datasets` constructor requires a valid [python-arango](../../../../../ecosystem/drivers/python.md)
+The `Datasets` constructor requires a valid [python-arango](../../develop/drivers/python.md)
 database object as input. It defines the target deployment, database, and
 credentials to load a dataset.
 
