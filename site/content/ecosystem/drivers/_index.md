@@ -7,6 +7,7 @@ description: >-
   the database system via a language-specific interface
 aliases:
   - /3.12/develop/drivers/
+  - /3.13/develop/drivers/
 ---
 Database drivers, also called connectors, adapters, or client libraries, let you
 access and manage database systems. ArangoDB drivers are interfaces between

@@ -7,6 +7,7 @@ description: >-
   applications with the complete range of features exposed by the server API
 aliases:
   - /3.12/develop/drivers/python
+  - /3.13/develop/drivers/python
 ---
 The Python-Arango driver is the recommended driver for using ArangoDB as the
 database backend from Python. It is maintained by ArangoDB and the community.

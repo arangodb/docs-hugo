@@ -7,6 +7,7 @@ description: >-
   ArangoDB from Spring-based Java application
 aliases:
   - /3.12/develop/integrations/spring-data-arangodb/
+  - /3.13/develop/integrations/spring-data-arangodb/
 ---
 Spring Data provides a consistent interface for
 accessing various types of data sources. Spring Data ArangoDB implements this

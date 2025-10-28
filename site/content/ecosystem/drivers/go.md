@@ -5,6 +5,7 @@ weight: 15
 description: ''
 aliases:
   - /3.12/develop/drivers/go
+  - /3.13/develop/drivers/go
 ---
 The official Go driver in version 2 is the recommended client for interacting
 with ArangoDB using the Go programming language.

@@ -8,6 +8,7 @@ description: >-
 aliases:
   - nodejs # 3.12 -> 3.12
   - /3.12/develop/drivers/javascript
+  - /3.13/develop/drivers/javascript
 ---
 The official ArangoDB low-level JavaScript client.
 

@@ -6,6 +6,7 @@ description: >-
   Build graph applications using TinkerPop API with ArangoDB's high-performance backend, combining Gremlin traversals and native AQL queries
 aliases:
   - /3.12/develop/integrations/arangodb-tinkerpop-provider
+  - /3.13/develop/integrations/arangodb-tinkerpop-provider
 ---
 ArangoDB TinkerPop Provider is an implementation of the [Apache TinkerPop OLTP Provider](https://tinkerpop.apache.org/docs/3.7.4/dev/provider) API for
 ArangoDB.

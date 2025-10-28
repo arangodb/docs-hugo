@@ -7,6 +7,7 @@ description: >-
   that you can include in your application based on the Spring framework
 aliases:
   - /3.12/develop/integrations/spring-boot-arangodb
+  - /3.13/develop/integrations/spring-boot-arangodb
 ---
 - [Repository](https://github.com/arangodb/spring-boot-starter)
 - [Demo](https://github.com/arangodb/spring-boot-starter/tree/main/demo)
