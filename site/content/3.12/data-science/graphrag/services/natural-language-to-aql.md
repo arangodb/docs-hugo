@@ -24,7 +24,7 @@ Ideal for:
 - Learning AQL by seeing translations
 
 The Natural Language to AQL Translation Service also includes the following features:
-- Support for multiple LLM providers (via OpenAI API or a self-hosted Triton LLM host)
+- Support for multiple LLM providers (via OpenAI API or a self-hosted OpenAI-compatible models)
 - RESTful interfaces
 - Health monitoring endpoints
 - Flexible output formats (Natural Language, AQL, JSON) for database queries
@@ -33,7 +33,6 @@ The Natural Language to AQL Translation Service also includes the following feat
 
 - ArangoDB instance
 - OpenAI API key (if using OpenAI as provider)
-- Triton URL and model name (if using Triton as provider)
 - Optional: OpenRouter API key (if using OpenRouter via OpenAI compatible endpoint)
 
 {{< info >}}
@@ -50,17 +49,13 @@ ARANGODB_NAME=<your_database_name>
 ARANGODB_USER=<your_username>
 
 # LLM Provider Configuration (chat model only)
-CHAT_API_PROVIDER=<openai|triton>
+CHAT_API_PROVIDER=<openai>
 
 # If chat provider is OpenAI
 CHAT_API_KEY=<your_chat_api_key>
 CHAT_MODEL=<model_name>                # Optional, defaults to gpt-4o-mini (e.g., gpt-4o)
 CHAT_API_URL=<base_url>                # Optional, OpenAI‑compatible endpoint (e.g., https://openrouter.ai/api/v1)
 
-# If using Triton for chat
-CHAT_API_URL=<triton_server_url>
-CHAT_MODEL=<triton_chat_model>
-TRITON_TIMEOUT=<timeout_seconds>       # Optional
 ```
 
 ### Provider-Specific Parameters
@@ -69,7 +64,7 @@ TRITON_TIMEOUT=<timeout_seconds>       # Optional
 
 - `chat_api_key`: API key for OpenAI chat
 - `chat_model`: Chat model (optional; defaults to `gpt-4o-mini`, e.g., "gpt-4o")
-- `chat_api_url` (optional): Override base URL for OpenAI‑compatible endpoints. This enables using providers like OpenRouter by pointing to their endpoint.
+- `chat_api_url` (optional): Override base URL for OpenAI‑compatible endpoints. This enables using providers like OpenRouter or self-hosted OpenAI-compatible models.
 - `openai_temperature` (optional): Controls randomness (0.0 to 2.0).
 - `openai_max_retries` (optional): Maximum number of retry attempts.
 
@@ -88,15 +83,9 @@ CHAT_API_KEY=<your_openrouter_api_key>
 CHAT_API_URL=https://openrouter.ai/api/v1
 
 # Select any model ID available on OpenRouter
-# (see OpenRouter's model catalog for valid ids)
+# (see OpenRouter's model catalog for valid IDs)
 CHAT_MODEL=<openrouter_model_id>
 ```
-
-#### Triton Provider (chat)
-
-- `chat_api_url`: Triton URL for chat.
-- `chat_model`: Triton chat model.
-- `triton_timeout` (optional): Timeout in seconds for Triton requests.
 
 ### Start the service
 
@@ -141,7 +130,7 @@ Check that the service is properly deployed:
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>:8529/gen-ai/v1/service/arangodb-graph-rag-<serviceID> \
+  --url https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graph-rag-<serviceID> \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 
@@ -233,7 +222,7 @@ curl --request POST \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
-    "input_text": "What are the advantages of graph databases?"
+    "input_text": "What are the advantages of graph databases?",
     "mode": "aqlizer"
   }'
 ```
