@@ -25,7 +25,7 @@ Ideal for:
 
 The Natural Language to AQL Translation Service also includes the following features:
 - Support for multiple LLM providers (via OpenAI API or a self-hosted Triton LLM host)
-- RESTful and gRPC interfaces
+- RESTful interfaces
 - Health monitoring endpoints
 - Flexible output formats (Natural Language, AQL, JSON) for database queries
 
@@ -331,41 +331,6 @@ The `translate_query` endpoint supports multiple output formats that can be spec
 - If no output formats are specified, the service defaults to `NL` format only.
 - Multiple formats can be requested simultaneously.
 - Formats are processed efficiently, with results cached where possible.
-
-## gRPC endpoints
-
-The service also provides gRPC endpoints for more efficient communication.
-
-### Process Text (gRPC)
-
-```bash
-grpcurl -plaintext -d '{"input_text": "Hello world"}' \
-  localhost:9090 txt2aql.Txt2AqlService/ProcessText
-```
-
-### Process Text Stream (gRPC)
-
-```bash
-grpcurl -plaintext -d '{"input_text": "What are the advantages of graph databases?"}' \
-  localhost:9090 txt2aql.Txt2AqlService/ProcessTextStream
-```
-
-### Translate Query (gRPC)
-
-```bash
-grpcurl -plaintext -d '{
-  "input_text": "Find all characters from House Stark",
-  "options": {
-    "output_formats": ["NL","AQL","JSON"]
-  }
-}' localhost:9090 txt2aql.Txt2AqlService/TranslateQuery
-```
-
-### Health check (gRPC)
-
-```bash
-grpcurl -plaintext localhost:9090 txt2aql.Txt2AqlService/HealthCheck
-```
 
 ## Best Practices
 
