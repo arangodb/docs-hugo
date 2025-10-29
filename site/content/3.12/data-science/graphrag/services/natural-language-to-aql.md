@@ -34,91 +34,86 @@ The Natural Language to AQL Translation Service also includes the following feat
 - ArangoDB instance
 - OpenAI API key (if using OpenAI as provider)
 - Triton URL and model name (if using Triton as provider)
-
-## Installation and configuration
-
-When creating the service, you provide parameters in the API request that become environment variables used at runtime.
+- Optional: OpenRouter API key (if using OpenRouter via OpenAI compatible endpoint)
 
 {{< info >}}
 Replace `<ExternalEndpoint>` in all examples below with your Arango Data Platform deployment URL.
 {{< /info >}}
 
-{{< tabs >}}
+## Installation and configuration
 
-{{< tab "Required Parameters" >}}
-These parameters must be provided in all service creation requests:
-
-- `username`: Database username for authentication
-- `db_name`: Name of the ArangoDB database  
-- `api_provider`: LLM provider selection (`openai` or `triton`)
-- `genai_project_name`: Name of the project created in Step 1
-{{< /tab >}}
-
-{{< tab "OpenAI Provider" >}}
-Additional parameters required when using `api_provider: "openai"`:
-
-- `openai_api_key`: API key for OpenAI authentication
-- `openai_model`: Model name (defaults to `gpt-3.5-turbo` if not specified)
-
-Optional OpenAI parameters:
-- `openai_temperature`: Controls randomness (0.0 to 2.0)
-- `openai_max_retries`: Maximum number of retry attempts
-{{< /tab >}}
-
-{{< tab "Triton Provider" >}}
-Additional parameters required when using `api_provider: "triton"`:
-
-- `triton_url`: URL of the Triton inference server
-- `triton_model`: Model name to use with Triton
-
-Optional Triton parameters:
-- `triton_timeout`: Timeout in seconds for Triton requests
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Step 1: Create a GenAI GraphRAG project
-
-The first step is to create a new project:
+When creating the service, you provide parameters in the API request that become environment variables used at runtime.
 
 ```bash
-curl --request POST \
-  --url https://<ExternalEndpoint>:8529/ai-services/v1/project \
-  --header 'Authorization: Bearer <your-bearer-token>' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "project_name": "your-txt2aql-project",
-    "project_type": "graphrag",
-    "project_description": "Natural language to AQL translation project"
-  }'
+# Required Database Configuration
+ARANGODB_NAME=<your_database_name>
+ARANGODB_USER=<your_username>
+
+# LLM Provider Configuration (chat model only)
+CHAT_API_PROVIDER=<openai|triton>
+
+# If chat provider is OpenAI
+CHAT_API_KEY=<your_chat_api_key>
+CHAT_MODEL=<model_name>                # Optional, defaults to gpt-4o-mini (e.g., gpt-4o)
+CHAT_API_URL=<base_url>                # Optional, OpenAI‑compatible endpoint (e.g., https://openrouter.ai/api/v1)
+
+# If using Triton for chat
+CHAT_API_URL=<triton_server_url>
+CHAT_MODEL=<triton_chat_model>
+TRITON_TIMEOUT=<timeout_seconds>       # Optional
 ```
 
-**Expected Response:**
-```json
-{
-  "projectName": "your-txt2aql-project",
-  "projectType": "graphrag",
-  "projectDescription": "Natural language to AQL translation project"
-}
+### Provider-Specific Parameters
+
+#### OpenAI Provider (chat)
+
+- `chat_api_key`: API key for OpenAI chat
+- `chat_model`: Chat model (optional; defaults to `gpt-4o-mini`, e.g., "gpt-4o")
+- `chat_api_url` (optional): Override base URL for OpenAI‑compatible endpoints. This enables using providers like OpenRouter by pointing to their endpoint.
+- `openai_temperature` (optional): Controls randomness (0.0 to 2.0).
+- `openai_max_retries` (optional): Maximum number of retry attempts.
+
+#### OpenRouter (via OpenAI‑compatible endpoint)
+
+OpenRouter is supported by setting the OpenAI‑compatible base URL and using your OpenRouter API key. This allows access to many upstream LLM providers through a single API.
+
+```bash
+# Choose the OpenAI-compatible provider
+CHAT_API_PROVIDER=openai
+
+# Use your OpenRouter API key
+CHAT_API_KEY=<your_openrouter_api_key>
+
+# Point to OpenRouter's endpoint
+CHAT_API_URL=https://openrouter.ai/api/v1
+
+# Select any model ID available on OpenRouter
+# (see OpenRouter's model catalog for valid ids)
+CHAT_MODEL=<openrouter_model_id>
 ```
 
-### Step 2: Create the GraphRAG txt2aql service
+#### Triton Provider (chat)
+
+- `chat_api_url`: Triton URL for chat.
+- `chat_model`: Triton chat model.
+- `triton_timeout` (optional): Timeout in seconds for Triton requests.
+
+### Start the service
 
 Create the service instance with your configuration:
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>:8529/ai-services/v1/graphrag \
+  --url https://<ExternalEndpoint>:8529/ai/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
     "env": {
       "username": "<your-username>",
       "db_name": "<your_database_name>",
-      "api_provider": "<openai>",
-      "openai_api_key": "<your-openai-api-key>",
-      "openai_model": "<gpt-4o>",
-      "genai_project_name": "<your-txt2aql-project>"
+      "chat_api_provider": "<openai>",
+      "chat_api_key": "<your-openai-api-key>",
+      "chat_model": "<gpt-4o>",
     }
   }'
 ```
@@ -140,7 +135,7 @@ curl --request POST \
 Save the `serviceId` from the above response as you'll need it for subsequent API calls.
 {{< /info >}}
 
-### Step 3: Verify the service status
+### Verify the service status
 
 Check that the service is properly deployed:
 
@@ -163,7 +158,7 @@ curl --request GET \
 }
 ```
 
-### Step 4: Health check
+### Health check
 
 Verify that the service is running and healthy:
 
@@ -222,7 +217,7 @@ curl --request POST \
 }
 ```
 
-### Process Text Stream
+## Process Text Stream
 
 The **Process Text Stream** endpoint works like Process Text but streams the response in chunks as they are generated, providing real-time output. This is useful for long-form responses where you want to show progressive results.
 
@@ -239,6 +234,7 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '{
     "input_text": "What are the advantages of graph databases?"
+    "mode": "aqlizer"
   }'
 ```
 
