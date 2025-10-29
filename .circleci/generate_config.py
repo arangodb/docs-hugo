@@ -135,7 +135,7 @@ def workflow_generate(config):
                     }
                 })
 
-            if version in ["3.10", "3.11"]:
+            if version in ["3.10", "3.11", "oem"]:
                 if openssl.startswith("3.0"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
                 elif openssl.startswith("3.1"):
@@ -191,7 +191,7 @@ def workflow_generate_scheduled(config):
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
+                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11", "oem"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
                 "version": version
             }
         }
@@ -241,7 +241,7 @@ def workflow_release_arangodb(config):
         }
     }
 
-    if args.docs_version in ["3.10", "3.11"]:
+    if args.docs_version in ["3.10", "3.11", "oem"]:
         if openssl.startswith("3.0"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
         elif openssl.startswith("3.1"):
@@ -249,6 +249,7 @@ def workflow_release_arangodb(config):
         elif openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
         else:
+            # TODO: OEM might need a separate image
             compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9" # 3.11.13
     else: # build image for 3.12.4 and devel as of 2024-11-25
         compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9"
@@ -307,7 +308,7 @@ export GENERATORS='<< parameters.generators >>'\n"
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
+            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11", "oem"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
 
         if branch == "undefined":
             continue

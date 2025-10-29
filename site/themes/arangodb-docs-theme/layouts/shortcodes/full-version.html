@@ -1,6 +1,8 @@
 {{ $ver := (.Get 0) -}}
 {{- $versions := (where (index .Site.Data.versions "/arangodb/") "name" $ver) -}}
 {{ if $versions -}}
+  {{/* TODO: This is used to determine the release branch name, e.g. 3.12.6.
+             How will this work for OEM? 3.11.15-oem? */}}
   {{ (index $versions 0).version | htmlEscape -}}
 {{ else -}}
   {{ $path := "<non-file source>" -}}

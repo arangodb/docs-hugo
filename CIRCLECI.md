@@ -75,6 +75,7 @@ arguments are invoked:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate` |
+| string | `arangodb-oem` | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
@@ -93,6 +94,7 @@ arguments are invoked:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate` |
+| string | `arangodb-oem` | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
@@ -121,6 +123,7 @@ or for multiple versions.
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate` |
+| string | `arangodb-oem` | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
@@ -202,6 +205,7 @@ Invoke Args:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate-scheduled` |
+| string | `arangodb-oem` | `arangodb/enterprise-preview:oem-nightly` |
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
@@ -219,6 +223,7 @@ Invoke Args:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate-oasisctl` |
+| string | `arangodb-oem` | `arangodb/enterprise-preview:oem-nightly` |
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |

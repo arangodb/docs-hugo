@@ -116,7 +116,7 @@ jobs:
 
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-3_13 >> \
+              --arangodb-branches << pipeline.parameters.arangodb-oem >> << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-3_13 >> \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \

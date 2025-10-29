@@ -38,6 +38,11 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
+if [ "$ARANGODB_BRANCH_OEM" != "" ] ; then
+      export ARANGODB_BRANCH_OEM_IMAGE="$ARANGODB_BRANCH_OEM"
+      export ARANGODB_BRANCH_OEM_VERSION="oem"
+fi
+
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
       export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
       export ARANGODB_BRANCH_3_10_VERSION="3.10"

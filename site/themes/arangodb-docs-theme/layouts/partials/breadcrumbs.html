@@ -41,8 +41,9 @@
   {{ $coreVersion := .coreVersion -}}
   {{ $versions := index site.Data.versions "/arangodb/" -}}
   {{ range $i, $version := $versions -}}
-    {{ if eq $coreVersion $version.name -}}
+    {{ if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) -}}
       {{ $version.version -}}
+      {{ break -}}
     {{ end -}}
   {{ end -}}
 {{ end -}}

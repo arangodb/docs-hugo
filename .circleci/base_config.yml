@@ -28,7 +28,7 @@ commands:
 
             git clone --depth 1 --branch $branch_name --recurse-submodules --shallow-submodules --jobs 8 https://github.com/arangodb/arangodb.git /root/project
 
-            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
+            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" || [ "<< parameters.version >>" = "oem" ]; then
                 ENTERPRISE_BRANCH="<< parameters.version >>"
             else
                 ENTERPRISE_BRANCH="devel"
@@ -131,7 +131,7 @@ commands:
             set +e
             if [ "<< parameters.version >>" = "3.10" ]; then
                 cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
-            elif [ "<< parameters.version >>" = "3.11" ]; then
+            elif [ "<< parameters.version >>" = "3.11" ] || [ "<< parameters.version >>" = "oem" ]; then
                 # The OpenSSL dir that CMake discovers needs to be adjacent to where ldap.h is located, here: /opt
                 cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
             else
