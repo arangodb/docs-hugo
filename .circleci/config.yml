@@ -31,6 +31,10 @@ parameters:
     type: string
     default: "undefined"
 
+  arangodb-oem:
+    type: string
+    default: "undefined"
+
   arangodb-3_10:
     type: string
     default: "undefined"
