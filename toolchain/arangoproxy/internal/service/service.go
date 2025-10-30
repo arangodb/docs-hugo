@@ -161,7 +161,8 @@ func init() {
 				"name": "Business Source License 1.1",
 				"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
 			}
-			if version.Name == "3.10" || version.Name == "3.11" {
+			// TODO: What branch does the OEM version have? Might not match (e.g. capitalization) with what we want to print below
+			if version.Name == "3.10" || version.Name == "3.11" || version.Name == "oem" {
 				license["name"] = "Apache 2.0"
 				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
 			}

@@ -3,11 +3,10 @@
     <optgroup label="Version">
       {{ $versions := index site.Data.versions "/arangodb/" }}
       {{ range $i, $version := $versions }}
-        {{/* if eq $version.name "platform" }}{{ continue }}{{ end */}}
-        {{ if ne $version.name $version.alias }}
-          <option value="{{ $version.alias }}">{{ $version.alias }}</option>
-        {{ end }}
-        <option value="{{ $version.name }}"{{ if eq $version.name "3.12" }} selected{{ end }}>{{ $version.name }}</option>
+        <option value="{{ $version.name }}">
+          {{- $version.name | upper }}
+          {{- if ne $version.name $version.alias }} ({{ $version.alias }}){{ end -}}
+        </option>
       {{ end }}
     </optgroup>
   </select>

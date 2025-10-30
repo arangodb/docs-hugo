@@ -8,7 +8,7 @@
       {{- $page.Store.Set "versionShort" $version.name }}
       {{- $page.Store.Set "alias" $version.alias }}
       {{- $page.Store.Set "deprecated" $version.deprecated }}
-      {{- if ne $version.name "platform" }}
+      {{- if ne $version.name "oem" }}
         {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
       {{- end }}
       {{- break }}

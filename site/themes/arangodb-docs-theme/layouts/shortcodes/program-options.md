@@ -57,7 +57,7 @@
 {{- if $option.experimental }}
   {{- $badges = $badges | append "Experimental"}}
 {{- end }}
-{{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}{{/* Only one Edition v3.12.5+ */}}
+{{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") (eq $pageVersion "oem") }}{{/* Only one Edition v3.12.5+ */}}
   {{- if $option.enterpriseOnly }}
     {{- $badges = $badges | append "Enterprise Edition" }}
   {{- end }}
@@ -96,7 +96,7 @@ Default: `{{ string (index (slice | append .) 0) }}`
 {{ . }}
 {{ end }}
 
-{{ if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}{{/* No Windows/macOS in 3.12+, logic can be removed after 3.11 EOL */}}
+{{ if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") (eq $pageVersion "oem") }}{{/* No Windows/macOS in 3.12+, logic still needed for OEM LTS version */}}
   {{ with $option.os }}
     {{ $size := . | len }}
     {{ if lt $size 3 }}{{/* needs to be equal to the total number of possible OSes */}}
