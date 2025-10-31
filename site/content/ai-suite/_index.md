@@ -37,3 +37,9 @@ Alongside these components, you also get the following additional features:
   AI Suite and build your own integrations. See the
   [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.
+
+## Sample datasets
+
+If you want to try out ArangoDB's data science features, you may use the
+[`arango-datasets` Python package](../arangodb/3.12/components/tools/arango-datasets.md)
+to load sample datasets into a deployment.
