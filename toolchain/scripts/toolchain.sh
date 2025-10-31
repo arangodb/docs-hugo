@@ -114,6 +114,11 @@ function main() {
     process_server "$server"
   done
 
+  ## Independent of ArangoDB versions/servers
+  if [[ $GENERATORS == *"oasisctl"* ]]; then
+    generate_oasisctl
+  fi
+
   run_arangoproxy_and_site
 
   ## Start arangoproxy and site containers to build examples and site
@@ -434,10 +439,6 @@ function generators_from_source() {
   if [[ $GENERATORS == *"metrics"* ]]; then
     generate_metrics "$version"
   fi
-
-  if [[ $GENERATORS == *"oasisctl"* ]]; then
-    generate_oasisctl "$version"
-  fi
 }
 
 
@@ -575,8 +576,6 @@ function generate_metrics() {
 function generate_oasisctl() {
   echo "<li><strong>OasisCTL</strong>" >> /home/summary.md
 
-  version=$1
-
   log "[generate_oasisctl] Generate OasisCTL docs"
 
   if [ ! -f /tmp/oasisctl.zip ]; then
@@ -587,8 +586,8 @@ function generate_oasisctl() {
   mkdir -p /tmp/oasisctl
   mkdir -p /tmp/preserve
 
-  cp ../../site/content/$version/arangograph/oasisctl/_index.md /tmp/preserve/oasisctl.md > /dev/null
-  rm -r ../../site/content/$version/arangograph/oasisctl/* > /dev/null
+  cp ../../site/content/amp/oasisctl/_index.md /tmp/preserve/oasisctl.md > /dev/null
+  rm -r ../../site/content/amp/oasisctl/* > /dev/null
 
   log "[generate_oasisctl] oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)"
   res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
@@ -597,14 +596,14 @@ function generate_oasisctl() {
     echo "<error code=8><strong> ERROR: </strong>$res</error>" >> /home/summary.md
   fi
 
-  log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
-  res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
+  log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/amp/oasisctl/"
+  res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/amp/oasisctl/) 2>&1 )
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl.py: $res"
     echo "<error code=8><strong> ERROR: Error: </strong>$res</error></li>" >> /home/summary.md
   fi
 
-  cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
+  cp /tmp/preserve/oasisctl.md ../../site/content/amp/oasisctl/_index.md
 
   echo "&#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md

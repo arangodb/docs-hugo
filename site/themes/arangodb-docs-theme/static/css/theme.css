@@ -351,6 +351,19 @@ img {
     margin-bottom: 20px;
 }
 
+.inline-icon {
+    display: inline-block;
+    width: var(--TYPOGRAPHY-BODY-TEXT);
+    height: var(--TYPOGRAPHY-BODY-TEXT);
+    margin: 0 .1rem;
+    position: relative;
+    top: .2rem;
+}
+
+.inline-icon svg {
+    margin: 0;
+}
+
 /* end Images */
 
 /* Tables */
@@ -810,18 +823,20 @@ header .logo {
 .version-selector {
     border: none;
     margin-left: 1rem;
-    color: var(--gray-950);
-}
-
-@media screen and (max-width: 768px) {
-    .version-selector {
-        border: none;
-    }
 }
 
 .arangodb-version {
     border: none;
-    background: none;
+    padding: 0 .75rem;
+    color: var(--gray-50);
+    background: black;
+}
+
+/*
+@media screen and (max-width: 768px) {
+    .version-selector {
+        border: none;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -829,6 +844,8 @@ header .logo {
         width: 4rem;
     }
 }
+*/
+
 /* end Header */
 
 /* Menu */
@@ -964,7 +981,7 @@ header .logo {
 
 
 .sidebar ul.topics > li a {
-    font-size: 13px;
+    /*font-size: 13px;*/
     line-height: 1.3rem;
 }
 
