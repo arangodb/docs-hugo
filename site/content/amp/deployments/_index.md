@@ -273,7 +273,7 @@ attached to your role. Read more about [roles and permissions](../security-and-a
 
 ## How to connect a driver to your deployment
 
-[ArangoDB drivers](../../arangodb/3.12/develop/drivers/_index.md) allow you to use your AMP
+[ArangoDB drivers](../../ecosystem/drivers/) allow you to use your AMP
 deployment as a database system for your applications. Drivers act as interfaces
 between different programming languages and ArangoDB, which enable you to
 connect to and manipulate ArangoDB deployments from within compiled programs

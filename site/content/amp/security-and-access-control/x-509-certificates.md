@@ -152,7 +152,7 @@ unique ID that is part of your AMP deployment endpoint URL.
 
 ## How to connect to your application
 
-[ArangoDB drivers](../../arangodb/3.12/develop/drivers/_index.md), also called connectors, allow you to
+[ArangoDB drivers](../../ecosystem/drivers/_index.md), also called connectors, allow you to
 easily connect AMP deployments to your application. 
 
 1. Navigate to **Deployments** and click the **View** button to show the

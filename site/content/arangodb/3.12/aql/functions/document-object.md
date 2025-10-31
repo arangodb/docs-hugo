@@ -477,7 +477,7 @@ Only [`HAS()`](#has) can differentiate between an attribute being absent and hav
 a stored `null` value.
 
 An empty object `{}` will match all documents. Be careful not to ask for all
-documents accidentally. For example, the [arangojs](../../develop/drivers/javascript.md) driver
+documents accidentally. For example, the [arangojs](../../../../ecosystem/drivers/javascript.md) driver
 skips attributes with a value of `undefined`, turning `{attr: undefined}` into `{}`.
 
 {{< info >}}
