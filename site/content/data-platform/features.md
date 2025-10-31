@@ -1,10 +1,10 @@
 ---
-title: Feature list of the Arango Data Platform
-menuTitle: Features
+title: Architecture and Features of the Arango Data Platform
+menuTitle: Architecture and Features
 weight: 5
 description: >-
-  The Arango Data Platform is a scalable Kubernetes-native architecture that gets you all features
-  of ArangoDB as a single solution with a unified interface
+  Discover how the Arango Data Platform combines database, visualization, and enterprise
+  features into a unified, Kubernetes-native architecture
 ---
 ## Architecture
 
@@ -18,8 +18,15 @@ scaling, and management. Powered by the official
 enterprise-grade database management and high availability.
 {{< /tip >}}
 
-- **Core Database**: The ArangoDB database system forms the solid core
-  of the Arango Data Platform.
+### Kubernetes Integration
+
+At its core, the Arango Data Platform is purpose-built for Kubernetes environments, leveraging the 
+[official ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/) 
+(`kube-arangodb`) to deliver enterprise-grade automation, scalability, and operational excellence.
+
+For detailed information about the Kubernetes foundation, see [Kubernetes Integration](kubernetes/).
+
+### Technical Infrastructure
 
 - **Helm**: A package manager for Kubernetes that enables consistent, repeatable
   installations and version control.
@@ -27,48 +34,66 @@ enterprise-grade database management and high availability.
 - **Envoy**: A high-performance service proxy that acts as the gateway for the
   Arango Data Platform for centralizing authentication and routing.
 
-- **Web interface**: The Platform includes a unified, browser-based UI that lets
-  you access its features in an intuitive way. Optional products like the
-  AI Suite seamlessly integrate into the UI if installed.
+## Platform Components
 
-## Kubernetes Integration
+The Arango Data Platform consists of three integrated layers that work together
+to provide a complete, enterprise-ready solution:
 
-At its core, the Arango Data Platform is purpose-built for Kubernetes environments, leveraging the 
-[official ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/) 
-(`kube-arangodb`) to deliver enterprise-grade automation, scalability, and operational excellence.
+### Layer 1: ArangoDB Enterprise Edition (Foundation)
 
-## Features
+At the foundation is [**ArangoDB Enterprise Edition**](../../arangodb/3.12/), the 
+powerful multi-model database that provides:
 
-The Arango Data Platform provides these core capabilities out of the box:
+- **Graph**: Native graph database capabilities with efficient traversals and pattern matching
+- **Document**: Flexible JSON document storage with schema validation
+- **Key-Value**: High-performance key-value operations
+- **Vector**: Vector embeddings and similarity search for AI applications
+- **Search**: Full-text search and complex query capabilities
 
-- [**ArangoDB Core**](../arangodb/3.12/_index.md): The ArangoDB database system with support for
-  graphs, documents, key-value, full-text search, and vector search.
+### Layer 2: Graph Visualizer
 
-- [**Graph Visualizer**](graph-visualizer.md):
-  A web-based tool for exploring your graph data with an intuitive interface and
-  sophisticated querying capabilities.
+The [**Arango Visualizer**](graph-visualizer/) provides an intuitive web-based interface
+that brings your data to life with:
 
-## Extend the Arango Data Platform with AI capabilities
+- **Graph Exploration**: Interactive visualization of graph structures with
+  drag-and-drop navigation, zoom controls, and customizable node appearances
+  
+- **Smart Search**: Intelligent search capabilities to quickly find nodes, edges,
+  and patterns within your graphs using natural language queries
+  
+- **Visual Layouts**: Multiple automatic layout algorithms (force-directed, hierarchical,
+  circular) to best represent your data relationships
+  
+- **Team Workspaces**: Collaborative features that allow teams to share visualizations,
+  queries, and insights across the organization
 
-Take your Arango Data Platform to the next level with the [**AI Suite**](../ai-suite/_index.md) that offers advanced AI and machine learning capabilities that integrate seamlessly into the platform's unified web interface.
+The Graph Visualizer seamlessly integrates with the database layer and provides the
+primary interface for data exploration and analysis.
 
-What you get with the AI Suite:
+### Layer 3: Arango Platform Suite
 
-- [GraphRAG](../ai-suite/graphrag/): Generate knowledge graphs from documents and enable
-   conversational querying of your data.
-- [GraphML](../ai-suite/graphml/): Apply machine learning algorithms that leverage graph
-  structure for better predictions.
-- [Graph Analytics](../ai-suite/graph-analytics/): Run advanced algorithms like PageRank
-  to discover influential nodes and patterns.
-- [Jupyter notebooks](../ai-suite/notebook-servers.md): Run Jupyter Notebooks to build and
-  experiment with graph-powered data, AI, and machine learning workflows directly connected
-  to ArangoDB databases. 
-- Public and private LLM support: Use public LLMs such as OpenAI
-  or private LLMs with [Triton Inference Server](../ai-suite/reference/triton-inference-server.md).
-- [MLflow integration](../ai-suite/reference/mlflow.md): Use the popular MLflow as a model registry
-  for private LLMs or to run machine learning experiments as part of the Arango Data Platform.
+The **Arango Platform Suite** adds enterprise-grade capabilities on top of the
+database and visualization layers:
 
-{{< tip >}}
-The AI Suite integrate directly into the existing platform interface, no need for
-separate systems to manage or learn. A separate license is required.
-{{< /tip >}}
+- **High Availability and Monitoring**: Comprehensive health checks, metrics collection,
+  alerting, and automatic failover mechanisms ensure your data platform stays operational.
+  Real-time monitoring dashboards provide visibility into cluster performance,
+  resource utilization, and query patterns.
+
+- **SSO, RBAC/ABAC and OpenID Integration**: Enterprise authentication and authorization
+  featuring Single Sign-On (SSO) support, Role-Based Access Control (RBAC),
+  Attribute-Based Access Control (ABAC), and OpenID Connect integration for secure
+  user management across your organization.
+
+- **APIs, Drivers and Connectors**: Comprehensive programmatic access through
+  RESTful APIs, native drivers for popular programming languages (Java, Python,
+  JavaScript, Go, PHP, and more), and connectors for data integration tools
+  and BI platforms.
+
+- **Centralized Orchestration and Resource Management**: Unified control plane
+  for managing all platform resources, deployments, and configurations.
+  Kubernetes-powered orchestration handles scaling, updates, and resource
+  allocation automatically across all components.
+
+These enterprise features are orchestrated through Kubernetes and the ArangoDB
+Kubernetes Operator, providing automated management and enterprise-grade reliability.
