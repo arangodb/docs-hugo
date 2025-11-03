@@ -6,7 +6,6 @@ description: >-
   The Arango Data Platform is built exclusively for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
 ---
-
 The Arango Data Platform is **Kubernetes-native** by design, meaning it is built
 from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
 it to function. This is not an optional feature, Kubernetes is the foundation
@@ -46,7 +45,7 @@ with traditional deployment approaches:
 
 The Arango Data Platform is powered by the official
 [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
-(`kube-arangodb`), which provides:
+(`kube-arangodb`), which provides the following features:
 
 - **Custom Resource Definitions (CRDs)**: Extend Kubernetes with ArangoDB-specific
   resources like `ArangoDeployment`, `ArangoBackup`, and more.
@@ -70,7 +69,7 @@ For detailed information about the operator, see the
 
 All components of the Arango Data Platform, from the core database to the optional
 AI Suite, are deployed and managed as native Kubernetes resources. This
-means you can:
+means you can do the following:
 
 - Use standard Kubernetes tools (`kubectl`, Helm, etc.) to manage your deployment
 - Monitor platform health using Kubernetes-native observability tools

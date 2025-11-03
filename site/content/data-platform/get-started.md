@@ -21,8 +21,8 @@ of the platform features.
 
 ## Use the Arango Data Platform as a managed service
 
-The Arango Data Platform can be made available as a managed service for the
-[Arango Managed Platform (AMP)](../../amp/_index.md) upon request.
+You can request the Arango Data Platform as a managed service for the
+[Arango Managed Platform (AMP)](../../amp/_index.md).
 [Get in touch](https://arango.ai/contact-us/) with the Arango team to learn more.
 
 ## Self-host the Arango Data Platform
