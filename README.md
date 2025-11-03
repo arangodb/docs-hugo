@@ -27,7 +27,7 @@ In every pull request, the _arangodb-docs-automation_ bot comments with a deploy
 preview link. Whenever you push a change to the PR branch, a preview is built.
 If it succeeds, then you can view the preview hosted on Netlify by following
 the link.
-[s](url)
+
 Note that the automatic previews run [plain builds](#plain-build), which means
 that [generated content](#generated-content) is not updated. The Arango
 documentation team takes of regenerating this content if necessary.
