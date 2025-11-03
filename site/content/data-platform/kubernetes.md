@@ -1,9 +1,9 @@
 ---
-title: Kubernetes Integration
+title: Kubernetes-Native Architecture
 menuTitle: Kubernetes
 weight: 15
 description: >-
-  The Arango Data Platform is built exclusively for Kubernetes, leveraging
+  The Arango Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
 ---
 The Arango Data Platform is **Kubernetes-native** by design, meaning it is built

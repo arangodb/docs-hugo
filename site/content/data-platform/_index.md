@@ -30,11 +30,11 @@ components into a unified solution:
   graphs, documents, key-value, vector search, and full-text search capabilities.
 
 - **Graph Visualizer**: A sophisticated web-based interface for graph exploration,
-  smart search, visual layouts, and team collaboration workspaces.
+  smart search, and visual layouts.
 
 - **Arango Platform Suite**: Enterprise-grade features including high availability
-  and monitoring, the Graph Analytics Engine, SSO/RBAC/ABAC and OpenID integration,
-  comprehensive APIs and connectors, and centralized orchestration and resource management.
+  and monitoring, the Graph Analytics Engine, comprehensive APIs and connectors,
+  and centralized orchestration and resource management.
 
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.
@@ -43,7 +43,9 @@ For a detailed breakdown of each component, see [Features and Architecture](feat
 
 ## Extend the Arango Data Platform with AI capabilities
 
-Take your Arango Data Platform to the next level with the [**AI Suite**](../ai-suite/_index.md) that offers advanced AI and machine learning capabilities that integrate seamlessly into the platform's unified web interface.
+Extend the Arango Data Platform with the [**AI Suite**](../ai-suite/_index.md) 
+that offers advanced AI and machine learning capabilities that integrate seamlessly
+into the platform's unified web interface.
 
 What you get with the AI Suite:
 
@@ -62,8 +64,7 @@ What you get with the AI Suite:
   for private LLMs or to run machine learning experiments as part of the Arango Data Platform.
 
 {{< tip >}}
-The AI Suite integrate directly into the existing platform interface, no need for
-separate systems to manage or learn. A separate license is required.
+The AI Suite requires a separate license.
 {{< /tip >}}
 
 {{< cards >}}
@@ -77,8 +78,8 @@ Optionally add AI Suite to turn data into an AI-powered knowledge engine.
 Explore the Kubernetes-native architecture, unified interface, and enterprise-grade capabilities of the Arango Data Platform.
 {{% /card %}}
 
-{{% card title="Kubernetes Integration " link="kubernetes/" %}}
-Learn about the official Kubernetes integration that powers the Arango Data Platform.
+{{% card title="Kubernetes-Native Architecture" link="kubernetes/" %}}
+Learn about the Kubernetes-native foundation that the Arango Data Platform is purpose-built on.
 {{% /card %}}
 
 {{% card title="Graph Visualizer" link="graph-visualizer/" %}}

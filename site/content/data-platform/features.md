@@ -36,10 +36,10 @@ For detailed information about the Kubernetes foundation, see [Kubernetes Integr
 
 ## Platform Components
 
-The Arango Data Platform consists of three integrated layers that work together
-to provide a complete, enterprise-ready solution:
+The Arango Data Platform consists of multiple integrated components that work together
+to provide a complete, enterprise-ready solution.
 
-### Layer 1: ArangoDB Enterprise Edition (Foundation)
+### ArangoDB Enterprise Edition
 
 At the foundation is [**ArangoDB Enterprise Edition**](../../arangodb/3.12/), the 
 powerful multi-model database that provides:
@@ -50,40 +50,34 @@ powerful multi-model database that provides:
 - **Vector**: Vector embeddings and similarity search for AI applications
 - **Search**: Full-text search and complex query capabilities
 
-### Layer 2: Graph Visualizer
+### Graph Visualizer
 
-The [**Arango Visualizer**](graph-visualizer/) provides an intuitive web-based interface
+The [**Graph Visualizer**](graph-visualizer/) provides an intuitive web-based interface
 that brings your data to life with:
 
-- **Graph Exploration**: Interactive visualization of graph structures with
-  drag-and-drop navigation, zoom controls, and customizable node appearances
+- **Interactive Graph Exploration**: Visualize named graphs with node expansion,
+  shortest path discovery, and AQL-powered queries including Canvas Actions that
+  work with your selection to discover related data
   
-- **Smart Search**: Intelligent search capabilities to quickly find nodes, edges,
-  and patterns within your graphs using natural language queries
+- **Visual Customization and Layouts**: Customize node colors, icons, and labels
+  with saveable themes, and apply automatic layout algorithms (force-directed,
+  hierarchical, circular) with zoom controls and minimap navigation
   
-- **Visual Layouts**: Multiple automatic layout algorithms (force-directed, hierarchical,
-  circular) to best represent your data relationships
-  
-- **Team Workspaces**: Collaborative features that allow teams to share visualizations,
-  queries, and insights across the organization
+- **Direct Graph Editing**: Create, modify, and delete nodes and edges directly
+  from the canvas with an intuitive properties dialog supporting both form and
+  JSON editing modes
 
-The Graph Visualizer seamlessly integrates with the database layer and provides the
+The Graph Visualizer seamlessly integrates with the ArangoDB database and provides the
 primary interface for data exploration and analysis.
 
-### Layer 3: Arango Platform Suite
+### Arango Platform Suite
 
-The **Arango Platform Suite** adds enterprise-grade capabilities on top of the
-database and visualization layers:
+The **Arango Platform Suite** adds enterprise-grade capabilities such as:
 
 - **High Availability and Monitoring**: Comprehensive health checks, metrics collection,
   alerting, and automatic failover mechanisms ensure your data platform stays operational.
   Real-time monitoring dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
-
-- **SSO, RBAC/ABAC and OpenID Integration**: Enterprise authentication and authorization
-  featuring Single Sign-On (SSO) support, Role-Based Access Control (RBAC),
-  Attribute-Based Access Control (ABAC), and OpenID Connect integration for secure
-  user management across your organization.
 
 - **APIs, Drivers and Connectors**: Comprehensive programmatic access through
   RESTful APIs, native drivers for popular programming languages (Java, Python,
