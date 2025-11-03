@@ -1,38 +1,25 @@
 <nav class="breadcrumbs">
-  <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
-  <meta itemprop="itemListOrder" content="Descending" />
-  {{ range .Ancestors.Reverse -}}
+  <ol class="links" vocab="http://schema.org/" typeof="BreadcrumbList">
+  {{ $position := 0 -}}
+  {{ range .Ancestors.Reverse | append . -}}
     {{ if not .IsHome -}}
-    <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-      <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
-      <a itemprop="item" class="link" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">
-        {{ if eq .Path "/arangodb/" -}}
-          {{ $coreVersion := index (split .Path "/") 2 }}
-          {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
-        {{ else -}}
-          {{ .Params.menuTitle | markdownify -}}
-        {{ end -}}
-        </span>
-      </a>
-      <i class="fas fa-chevron-right fa-fw"></i>
-    </li>
+      {{ $position = add $position 1 -}}
+      <li typeof="ListItem" property="itemListElement">
+        <meta property="position" content="{{ $position }}" />
+        {{ if gt $position 1 }}<i class="fas fa-chevron-right fa-fw"></i>{{/* TODO <svg style="height: 12px; width: 12px" viewBox="0 0 7 7"><path fill="none" stroke="currentColor" stroke-width="1" d="m 2,6.5 3,-3 -3,-3"></path></svg> */}}{{ end -}}
+        <a property="item" class="link" href="{{ .RelPermalink }}">{{/* White-space control */ -}}
+          <span property="name" class="breadcrumb-entry">
+          {{- $splitPath := split .Path "/" -}}
+          {{ if and (hasPrefix .Path "/arangodb/") (eq ($splitPath | len) 3) -}}
+            {{ $coreVersion := index $splitPath 2 -}}
+            {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
+          {{ else -}}
+            {{ .Params.menuTitle | markdownify -}}
+          {{ end -}}
+          </span>
+        </a>
+      </li>
     {{ end -}}
-  {{ end -}}   
-  {{ if not .IsHome -}}
-  <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-    <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
-    <a itemprop="item" class="link" href="{{ .RelPermalink }}">
-      <span itemprop="name" class="breadcrumb-entry">
-      {{ if eq .Path "/arangodb/" -}}
-        {{ $coreVersion := index (split .Path "/") 2 }}
-        {{ template "getVersionLong" dict "coreVersion" $coreVersion -}}
-      {{ else -}}
-        {{ .Params.menuTitle | markdownify -}}
-      {{ end -}}
-      </span>
-    </a>
-  </li>
   {{ end -}}
   </ol>
 </nav>
@@ -41,8 +28,9 @@
   {{ $coreVersion := .coreVersion -}}
   {{ $versions := index site.Data.versions "/arangodb/" -}}
   {{ range $i, $version := $versions -}}
-    {{ if eq $coreVersion $version.name -}}
+    {{ if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) -}}
       {{ $version.version -}}
+      {{ break -}}
     {{ end -}}
   {{ end -}}
 {{ end -}}
