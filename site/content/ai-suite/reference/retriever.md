@@ -36,6 +36,15 @@ graph and get contextually relevant responses.
 You can also use the GraphRAG Retriever service via the [web interface](../graphrag/web-interface.md).
 {{< /tip >}}
 
+## Prerequisites
+
+Before using the Retriever service, you need to create a GraphRAG project and 
+import data using the Importer service.
+
+For detailed instructions on creating a project, see 
+[Creating a new project](importer.md#creating-a-new-project) in the Importer 
+documentation.
+
 ## Search methods
 
 The Retriever service enables intelligent search and retrieval of information

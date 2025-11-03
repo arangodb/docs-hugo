@@ -35,6 +35,10 @@ To create a new GraphRAG project, use the `CreateProject` method by sending a
 `project_name` and a `project_type` in the request body. Optionally, you can
 provide a `project_description`.
 
+The `project_name` must follow these validation rules:
+- Length: 1–63 characters
+- Allowed characters: letters, numbers, underscores (`_`), and hyphens (`-`)
+
 ```curl
 curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
 -H "Content-Type: application/json" \
@@ -44,12 +48,22 @@ curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
   "project_description": "A documentation project for GraphRAG."
 }'
 ```
+
 All the relevant ArangoDB collections (such as documents, chunks, entities,
 relationships, and communities) created during the import process will
 have the project name as a prefix. For example, the Documents collection will
 become `<project_name>_Documents`. The Knowledge Graph will also use the project
 name as a prefix. If no project name is specified, then all collections
 are prefixed with `default_project`, e.g., `default_project_Documents`.
+
+Once created, you can reference your project in other services (such as the 
+Importer or Retriever) using the `genai_project_name` field:
+
+```json
+{
+  "genai_project_name": "docs"
+}
+```
 
 ### Project metadata
 
