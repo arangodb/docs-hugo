@@ -26,7 +26,7 @@ Deployments of ArangoDB servers can be managed with the following tools:
 - **RESTful API**: _arangod_ has an [HTTP interface](../../develop/http-api/_index.md) through
   which it can be fully managed. The official client tools including _arangosh_ and
   the Web interface talk to this bare metal interface. It is also relevant for
-  [driver](../../../../ecosystem/drivers/_index.md) developers.
+  [driver](../../develop/drivers/_index.md) developers.
 
 - [**ArangoDB Starter**](../../components/tools/arangodb-starter/_index.md): This deployment tool
   helps to start _arangod_ instances, like for a Cluster or an Active Failover setup.

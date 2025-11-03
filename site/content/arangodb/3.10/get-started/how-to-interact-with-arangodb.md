@@ -34,7 +34,7 @@ interact with the server. You can also use it for automating tasks.
 ### Drivers and Integrations
 
 When you start using ArangoDB in your project, you will likely use an official
-or community-made [driver](../../../ecosystem/drivers/_index.md) written in the same language as your project.
+or community-made [driver](../develop/drivers/_index.md) written in the same language as your project.
 Drivers implement a programming interface that should feel natural for that
 programming language, and do all the talking to the server.
 
