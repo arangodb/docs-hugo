@@ -29,65 +29,33 @@ The Natural Language to AQL Translation Service also includes the following feat
 - Health monitoring endpoints
 - Flexible output formats (Natural Language, AQL, JSON) for database queries
 
-## Prerequisites
+## Installation and configuration
 
-- ArangoDB instance
-- OpenAI API key (if using OpenAI as provider)
-- Optional: OpenRouter API key (if using OpenRouter via OpenAI compatible endpoint)
+Deploy the Natural Language to AQL service with a single API call. You provide configuration parameters in the request, and the platform automatically configures them as environment variables for the service runtime.
+
+### Prerequisites
+
+Before deploying, have ready:
+- An ArangoDB instance with database name and username credentials
+- An API key from your chosen LLM provider (OpenAI, OpenRouter, or other OpenAI-compatible service)
+- A Bearer token for API authentication
+
+### Obtaining a Bearer Token
+
+Before you can deploy the service, you need to obtain a Bearer token for authentication. Generate this token using the ArangoDB authentication API:
+
+```bash
+curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
+  -d '{"username": "your-username", "password": "your-password"}'
+```
+
+This returns a JWT token that you can use as your Bearer token in all subsequent API calls. For more details, see the [ArangoDB Authentication](../../../develop/http-api/authentication/#jwt-user-tokens) documentation.
+
+### Start the service
 
 {{< info >}}
 Replace `<ExternalEndpoint>` in all examples below with your Arango Data Platform deployment URL.
 {{< /info >}}
-
-## Installation and configuration
-
-When creating the service, you provide parameters in the API request that become environment variables used at runtime.
-
-```bash
-# Required Database Configuration
-ARANGODB_NAME=<your_database_name>
-ARANGODB_USER=<your_username>
-
-# LLM Provider Configuration (chat model only)
-CHAT_API_PROVIDER=<openai>
-
-# If chat provider is OpenAI
-CHAT_API_KEY=<your_chat_api_key>
-CHAT_MODEL=<model_name>                # Optional, defaults to gpt-4o-mini (e.g., gpt-4o)
-CHAT_API_URL=<base_url>                # Optional, OpenAI‑compatible endpoint (e.g., https://openrouter.ai/api/v1)
-
-```
-
-### Provider-Specific Parameters
-
-#### OpenAI Provider (chat)
-
-- `chat_api_key`: API key for OpenAI chat
-- `chat_model`: Chat model (optional; defaults to `gpt-4o-mini`, e.g., "gpt-4o")
-- `chat_api_url` (optional): Override base URL for OpenAI‑compatible endpoints. This enables using providers like OpenRouter or self-hosted OpenAI-compatible models.
-- `openai_temperature` (optional): Controls randomness (0.0 to 2.0).
-- `openai_max_retries` (optional): Maximum number of retry attempts.
-
-#### OpenRouter (via OpenAI‑compatible endpoint)
-
-OpenRouter is supported by setting the OpenAI‑compatible base URL and using your OpenRouter API key. This allows access to many upstream LLM providers through a single API.
-
-```bash
-# Choose the OpenAI-compatible provider
-CHAT_API_PROVIDER=openai
-
-# Use your OpenRouter API key
-CHAT_API_KEY=<your_openrouter_api_key>
-
-# Point to OpenRouter's endpoint
-CHAT_API_URL=https://openrouter.ai/api/v1
-
-# Select any model ID available on OpenRouter
-# (see OpenRouter's model catalog for valid IDs)
-CHAT_MODEL=<openrouter_model_id>
-```
-
-### Start the service
 
 Create the service instance with your configuration:
 
@@ -98,7 +66,6 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '{
     "env": {
-      "username": "<your-username>",
       "db_name": "<your_database_name>",
       "chat_api_provider": "<openai>",
       "chat_api_key": "<your-openai-api-key>",
@@ -121,10 +88,45 @@ curl --request POST \
 ```
 
 {{< info >}}
-Save the `serviceId` from the above response as you'll need it for subsequent API calls.
+Save the `serviceId` from the above response as you will need it for all subsequent API calls.
 {{< /info >}}
 
-### Verify the service status
+### Configuration Parameters
+
+All parameters are provided in the `env` object of your deployment request.
+
+You can use OpenAI directly, or OpenAI-compatible services like OpenRouter or self-hosted models.
+
+**Required:**
+- `db_name`: Database name
+- `chat_api_provider`: Set to `openai` (supports OpenAI and OpenAI-compatible services)
+- `chat_api_key`: Your LLM provider API key
+
+**Optional:**
+- `chat_model`: Model name (default: `gpt-4o-mini`)
+- `chat_api_url`: Base URL for OpenAI-compatible endpoints (only needed for OpenRouter, self-hosted models, etc.)
+- `openai_max_retries`: Maximum retry attempts for failed requests
+
+#### Using OpenAI
+
+The [deployment example](#start-the-service) above uses OpenAI directly. Simply provide your OpenAI API key as `chat_api_key`.
+
+#### Using OpenRouter
+
+OpenRouter provides access to multiple LLM providers through an OpenAI-compatible API. To use it:
+- Set `chat_api_provider` to `openai` (same as above)
+- Set `chat_api_url` to `https://openrouter.ai/api/v1`
+- Use your OpenRouter API key as `chat_api_key`
+- Choose any model from [OpenRouter's catalog](https://openrouter.ai/models)
+
+#### Using Self-Hosted Models
+
+For self-hosted OpenAI-compatible models:
+- Set `chat_api_provider` to `openai`
+- Set `chat_api_url` to your model's endpoint
+- Configure `chat_api_key` according to your setup
+
+### Verify service status
 
 Check that the service is properly deployed:
 
@@ -208,11 +210,17 @@ curl --request POST \
 
 ## Process Text Stream
 
-The **Process Text Stream** endpoint works like Process Text but streams the response in chunks as they are generated, providing real-time output. This is useful for long-form responses where you want to show progressive results.
+The **Process Text Stream** endpoint returns responses in real-time as they are generated, rather than waiting for the complete response, which is useful for showing progressive output.
 
 ```bash
 POST /v1/process_text_stream
 ```
+
+The endpoint supports two modes described below.
+
+### Default Mode (General Text Processing)
+
+The default mode provides general LLM responses without querying your database.
 
 **Example**:
 
@@ -222,12 +230,44 @@ curl --request POST \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
-    "input_text": "What are the advantages of graph databases?",
+    "input_text": "What are the advantages of graph databases?"
+  }'
+```
+
+**Response:**
+```
+Graph databases offer several key advantages: 1) Efficient relationship handling...
+```
+
+{{< info >}}
+This mode does not access your database, it provides general knowledge responses.
+{{< /info >}}
+
+### AQLizer Mode
+
+The AQLizer mode converts natural language questions into AQL queries by streaming responses from an LLM that has knowledge of your database schema.
+
+**Example:**
+
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text_stream \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "Find all users who made purchases in the last month",
     "mode": "aqlizer"
   }'
 ```
 
-The streaming endpoint accepts the same request format as the standard Process Text endpoint but returns the response incrementally as chunks.
+**Response:**
+```aql
+FOR user IN users
+  FILTER user.purchases[*].date ANY >= DATE_SUBTRACT(DATE_NOW(), 1, 'month')
+  RETURN user
+```
+
+The generated AQL is based on your actual database schema, making it immediately usable.
 
 ## Translate Query
 
@@ -334,7 +374,7 @@ The `translate_query` endpoint supports multiple output formats that can be spec
 
 The service provides clear error messages for common issues:
 
-- Invalid or missing environment variables
+- Invalid or missing configuration parameters
 - Database connection failures
 - Authentication errors
 - Invalid query formats
@@ -347,7 +387,7 @@ Error responses include appropriate HTTP status codes and descriptive messages.
 Common issues and solutions:
 
 1. **Connection issues**:
-   - Verify that ARANGODB_ENDPOINT is accessible.
+   - Verify that the ArangoDB endpoint is accessible.
    - Check network/firewall settings.
    - Ensure proper authentication credentials.
 
