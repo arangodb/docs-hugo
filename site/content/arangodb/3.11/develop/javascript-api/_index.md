@@ -26,7 +26,7 @@ It communicates with the server via the HTTP API.
 
 {{< tip >}}
 The JavaScript API cannot be used in browsers, Node.js, or other JavaScript
-environments. You can use the [arangojs driver](../drivers/javascript.md) instead.
+environments. You can use the [arangojs driver](../../develop/drivers/javascript.md) instead.
 Note that it has a different interface.
 {{< /tip >}}
 
