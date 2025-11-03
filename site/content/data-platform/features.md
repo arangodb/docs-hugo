@@ -18,7 +18,7 @@ scaling, and management. Powered by the official
 enterprise-grade database management and high availability.
 {{< /tip >}}
 
-### Kubernetes Integration
+### Kubernetes-Native
 
 At its core, the Arango Data Platform is purpose-built for Kubernetes environments, leveraging the 
 [official ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/) 
