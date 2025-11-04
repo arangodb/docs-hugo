@@ -245,7 +245,7 @@ This mode does not access your database, it provides general knowledge responses
 
 ### AQLizer Mode
 
-The AQLizer mode converts natural language questions into AQL queries by streaming responses from an LLM that has knowledge of your database schema.
+The AQLizer mode generates schema-aware AQL queries from natural language by streaming responses from an LLM.
 
 **Example:**
 
