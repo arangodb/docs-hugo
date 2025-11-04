@@ -365,7 +365,8 @@ underlying data.
    if it's closed.
 2. Select the **Nodes (#)** tab and click one of the node collections.
    You can filter by name if there are many.
-3. You have the following theming options for nodes:
+3. To change the appearance of all nodes from the selected collection, use the
+   following theming options while on the **Settings** tab:
    - **Color**: Select a fill color for the circles that depict nodes.
      This lets you distinguish between different types of nodes at a glance.
    - **Icon**: Select a pictogram to be drawn inside the circles that resembles
@@ -376,6 +377,17 @@ underlying data.
      over a node (**Hover info**). These options let you view a part of the
      node properties more quickly without opening the full
      [properties dialog](#view-node-and-edge-properties).
+4. To change the appearance based on conditions, go to the **Attribute-based**
+   tab. It lets you define rules for styling nodes based on the values of the
+   document attributes. The theming options are the same as above.
+5. Click **New rule**, select a document attribute and a comparison operator
+   (like equals, not equals, in, not in, etc.), and enter a value to match.
+   For example, select `genre` as the attribute, `=` as the operator, and enter
+   `comedy` as the value to match.
+6. Enable the toggle for the theming option you want to use (e.g. **Apply color**)
+   and adjust the styling as desired. If there are any matching nodes on the
+   canvas, their appearance updates accordingly. Note that the first rule wins
+   if the conditions of multiple rules match the same nodes.
 
 ![A screenshot of the Legend panel and a node styling dialog](../images/graph-visualizer-customization.png)
 
@@ -385,7 +397,8 @@ underlying data.
    if it's closed.
 2. Select the **Edges (#)** tab and click one of the edge collections.
    You can filter by name if there are many.
-3. You have the following theming options for edges:
+3. To change the appearance of all edges from the selected collection, use the
+   following theming options while on the **Settings** tab:
    - **Color**: Select a stroke color for the lines that depict edges.
      This lets you distinguish between different types of edges at a glance.
    - **Line Style**: Adjust the stroke **Thickness** and the arrowheads of lines
@@ -396,6 +409,18 @@ underlying data.
      edge, and what information to show in the tooltip when hovering an edge
      (**Hover info**). These options let you view a part of the edge properties
      more quickly without opening the full [properties dialog](#view-node-and-edge-properties).
+4. To change the appearance based on conditions, go to the **Attribute-based**
+   tab. It lets you define rules for styling edges based on the values of the
+   document attributes. The theming options are the same as above.
+5. Click **New rule**, select a document attribute and a comparison operator
+   (like equals, not equals, in, not in, etc.), and enter a value to match.
+   For example, select `type` as the attribute, `in` as the operator, and enter
+   `Role,Roles` as the value to match (meaning the `type` must be either `Role`
+   or `Roles`).
+6. Enable the toggle for the theming option you want to use (e.g. **Apply thickness**)
+   and adjust the styling as desired. If there are any matching edges on the
+   canvas, their appearance updates accordingly. Note that the first rule wins
+   if the conditions of multiple rules match the same edges.
 
 ### Save and manage themes
 

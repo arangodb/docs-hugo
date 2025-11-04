@@ -3,7 +3,7 @@ title: GraphRAG
 menuTitle: GraphRAG
 weight: 5
 description: >-
-  ArangoDB's GraphRAG solution combines graph-based retrieval-augmented generation
+  Arango's GraphRAG solution combines graph-based retrieval-augmented generation
   with Large Language Models (LLMs) for turbocharged AI solutions
 aliases:
   llm-knowledge-graphs
@@ -14,9 +14,30 @@ exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}
 
+## What are knowledge graphs?
+
+A knowledge graph can be thought of as a dynamic and interconnected network of
+real-world entities and the intricate relationships that exist between them.
+
+Key aspects of knowledge graphs:
+- **Domain-specific knowledge**: You can tailor knowledge graphs to specific
+  domains and industries.
+- **Structured information**: Makes it easy to query, analyze, and extract
+  meaningful insights from your data.
+- **Accessibility**: You can build a Semantic Web knowledge graph or using
+  custom data.
+
+LLMs can help distill knowledge graphs from natural language by performing
+the following tasks:
+- Entity discovery
+- Relation extraction
+- Coreference resolution
+- End-to-end knowledge graph construction
+- (Text) Embeddings
+
 ## Transform unstructured documents into intelligent knowledge graphs
 
-ArangoDB's GraphRAG solution enables organizations to extract meaningful insights 
+Arango's GraphRAG solution enables organizations to extract meaningful insights 
 from their document collections by creating knowledge graphs that capture not just 
 individual facts, but the intricate relationships between concepts across documents. 
 This approach goes beyond traditional RAG systems by understanding document 
@@ -30,23 +51,22 @@ conceptual understanding.
 
 ## Key benefits for enterprise applications
 
-- **Cross-document relationship intelligence**:
-Unlike traditional RAG systems that treat documents in isolation, ArangoDB's GraphRAG 
-pipeline detects and leverages references between documents and chunks. This enables 
-more accurate responses by understanding how concepts relate across your entire knowledge base.
+- **Cross-document relationship intelligence**\
+  Unlike traditional RAG systems that treat documents in isolation, Arango's GraphRAG 
+  pipeline detects and leverages references between documents and chunks. This enables 
+  more accurate responses by understanding how concepts relate across your entire knowledge base.
 
-- **Multi-level understanding architecture**:
-The system provides both detailed technical responses and high-level strategic insights 
-from the same knowledge base, adapting response depth based on query complexity and user intent.
+- **Multi-level understanding architecture**\
+  The system provides both detailed technical responses and high-level strategic insights 
+  from the same knowledge base, adapting response depth based on query complexity and user intent.
 
-- **Reference-aware knowledge graph**:
-GraphRAG automatically detects and maps relationships between document chunks while 
-maintaining context of how information connects across different sources.
+- **Reference-aware knowledge graph**\
+  GraphRAG automatically detects and maps relationships between document chunks while 
+  maintaining context of how information connects across different sources.
 
-- **Dynamic knowledge evolution**:
-The system learns and improves understanding as more documents are added, with 
-relationships and connections becoming more sophisticated over time.
-
+- **Dynamic knowledge evolution**\
+  The system learns and improves understanding as more documents are added, with 
+  relationships and connections becoming more sophisticated over time.
 
 ## What's next
 

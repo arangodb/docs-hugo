@@ -478,24 +478,16 @@ a.section-link {
 }
 
 .card-head {
-    position: relative;
     z-index: 2;
-    display: flex;
     margin-bottom: 10px;
-    flex-flow: column;
     min-height: 40px;
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
-    -o-object-fit: contain;
+    width: 30px;
     object-fit: contain;
-    position: absolute;
-    top: 0;
-    left: 0;
+    float: right;
+    margin-left: 10px;
 }
 
 .card-title {
