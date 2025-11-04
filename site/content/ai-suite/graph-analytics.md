@@ -2,9 +2,10 @@
 title: Graph Analytics
 menuTitle: Graph Analytics
 weight: 15
-description: |
+description: >-
   Graph analytics analyzes information networks to extract insights from data
-  relationships using algorithms like PageRank for fraud detection, recommendations, and network analysis
+  relationships using algorithms like PageRank for fraud detection,
+  recommendations, and network analysis
 aliases:
   - ../graphs/graph-analytics  
 ---
