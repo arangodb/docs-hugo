@@ -7,7 +7,9 @@ description: >-
 aliases:
 - arangodb-spark-connector
 - arangodb-spark-connector/getting-started
+- /3.12/develop/integrations/arangodb-datasource-for-apache-spark
 - arangodb-spark-connector/reference
+- /3.13/develop/integrations/arangodb-datasource-for-apache-spark
 - arangodb-spark-connector/reference/java
 - arangodb-spark-connector/reference/scala
 ---
@@ -141,7 +143,7 @@ configure the certificate to use. This can be achieved in one of the following w
 
 ### Supported deployment topologies
 
-The connector can work with a single server, a cluster and active failover deployments of ArangoDB.
+The connector can work with a single server and cluster deployments of ArangoDB.
 
 ## Batch Read
 
@@ -311,7 +313,7 @@ Use the `overwriteMode` write configuration parameter to specify the document ov
 ### Write Resiliency
 
 The data of each partition is saved in batches using the ArangoDB API for
-[inserting multiple documents](../http-api/documents.md#multiple-document-operations).
+[inserting multiple documents](../../arangodb/3.12/develop/http-api/documents.md#multiple-document-operations).
 This operation is not atomic, therefore some documents could be successfully written to the database, while others could fail. To make the job more resilient to temporary errors (i.e. connectivity problems), in case of failure the request will be retried (with another Coordinator), if the provided configuration allows idempotent requests, namely: 
 - the schema of the dataframe has a **not nullable** `_key` field and
 - `overwriteMode` is set to one of the following values:
@@ -376,7 +378,7 @@ The following Spark SQL data types (subtypes of `org.apache.spark.sql.types.Filt
 
 ## Connect to the Arango Managed Platform (AMP)
 
-To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (AMP):
+To connect to SSL-secured deployments using X.509 Base64-encoded CA certificate (AMP):
 
 ```scala
 val options = Map(

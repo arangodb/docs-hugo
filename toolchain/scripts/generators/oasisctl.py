@@ -36,7 +36,8 @@ TITLE_CASE = {
     'tandc': 'Terms & Conditions',
     'arangodb': 'ArangoDB',
     'cpusizes': 'CPU Sizes',
-    'nodesizes': 'Node Sizes'
+    'nodesizes': 'Node Sizes',
+    'scheduled-root-password-rotation': 'Scheduled Root Password Rotation'
 }
 
 
@@ -115,7 +116,12 @@ def create_filename(filename):
 def rewrite_content(data, section, filename, weight):
     title = ""
     content = ""
-    flags = {"inFrontMatter": False, "endFrontMatter": False, "inHeader": False, "firstHeaderContent": False}
+    flags = {
+        "inFrontMatter": False,
+        "endFrontMatter": False,
+        "inHeader": False,
+        "firstHeaderContent": False,
+    }
 
     for i, line in enumerate(data):
 
@@ -128,8 +134,8 @@ def rewrite_content(data, section, filename, weight):
 
         if flags["inFrontMatter"] and not flags["endFrontMatter"]:
             if line.startswith("description: "):
-                if filename.endswith("/options.md"):
-                    content = content + "description: Command-line client tool for managing the Arango Managed Platform (AMP)\n"
+                #if filename.endswith("/options.md"):
+                #    content = content + "description: Command-line client tool for managing AMP\n"
                 continue
 
             if line.startswith("layout: "):
@@ -137,15 +143,15 @@ def rewrite_content(data, section, filename, weight):
 
             if line.startswith("title: "):
                 if filename.endswith("/options.md"):
-                    content = content + f"title: Arango Managed Platform (AMP) Shell oasisctl\nmenuTitle: Options\nweight: {weight}\n"
+                    content = content + f"title: The `oasisctl` command\nmenuTitle: Options\nweight: {weight}\n"
                     continue
 
                 menuTitle = ""
                 title = line.rstrip().replace("title: ", "")
-                for word in title.split(" "):
+                for word in title.split(" ")[1:]:
                     menuTitle = menuTitle + f" {TITLE_CASE.get(word.lower(), word)}"
 
-                content = content + f"title:{menuTitle}\nmenuTitle:{menuTitle.replace('Oasisctl ', '')}\nweight: {weight}\n"
+                content = content + f"title:{menuTitle} with `oasisctl`\nmenuTitle:{menuTitle}\nweight: {weight}\n"
                 continue
             
         if line.startswith("###### Auto generated"):
@@ -169,7 +175,8 @@ def rewrite_content(data, section, filename, weight):
                 continue
 
             if line.startswith("## "):
-                content = content + line
+                # The command as a headline, e.g. ## oasisctl add group 
+                #content = content + line
                 continue
 
         if line == "---\n":

@@ -8,27 +8,8 @@
       {{- $page.Store.Set "versionShort" $version.name }}
       {{- $page.Store.Set "alias" $version.alias }}
       {{- $page.Store.Set "deprecated" $version.deprecated }}
-      {{- if ne $version.name "platform" }}
-        {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
-      {{- end }}
+      {{- $page.Store.Set "inDevelopment" $version.inDevelopment }}
       {{- break }}
     {{- end }}
   {{- end }}
 {{- end }}
-
-{{- define "checkVersionIsInDevelopment" }}
-  {{- $page := .page }}
-  {{- $pageVersion := .pageVersion }}
-  {{- $versions := index (where .versions "alias" "stable") 0 }}
-  {{- $page.Store.Set "stableVersion" $versions.name }}
-  {{- $stableVersion := split $versions.name "." }}
-  {{- $currentVersion := split $pageVersion "." }}
-  {{- range $j, $elem := $stableVersion }}
-    {{- $intStable := int $elem }}
-    {{- $currentVersionElement := index $currentVersion $j }}
-    {{- $intCurrent := int $currentVersionElement }}
-    {{- if gt $intCurrent $intStable }}
-      {{- $page.Store.Set "underDevelopment" true }}
-    {{- end }}
-  {{- end }}
-{{- end -}}

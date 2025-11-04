@@ -1,10 +1,13 @@
 ---
 title: Official ArangoDB drivers
 menuTitle: Drivers
-weight: 285
+weight: 10
 description: >-
   ArangoDB drivers allow you to connect ArangoDB to your applications and manage
   the database system via a language-specific interface
+aliases:
+  - /3.12/develop/drivers/
+  - /3.13/develop/drivers/
 ---
 Database drivers, also called connectors, adapters, or client libraries, let you
 access and manage database systems. ArangoDB drivers are interfaces between
@@ -50,4 +53,4 @@ The [**Python-Arango**](python.md) driver lets you work with ArangoDB in the
 Python scripting language.
 
 - Online course: [Python Driver Tutorial](https://www.arangodb.com/tutorials/tutorial-python/)
-- Repository: [github.com/ArangoDB-Community/python-arango](https://github.com/ArangoDB-Community/python-arango)
+- Repository: [github.com/arangodb/python-arango](https://github.com/arangodb/python-arango)

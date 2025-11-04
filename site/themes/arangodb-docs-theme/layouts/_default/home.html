@@ -7,7 +7,7 @@
         <h1>{{ .Title | markdownify }}</h1>
         {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
       </hgroup>
-      {{ .Content | safeHTML }}
+      {{- .Content | safeHTML -}}
     </article>
   {{- end -}}
 {{ end -}}
