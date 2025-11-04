@@ -38,12 +38,14 @@ You can also use the GraphRAG Retriever service via the [web interface](../graph
 
 ## Prerequisites
 
-Before using the Retriever service, you need to create a GraphRAG project and 
-import data using the Importer service.
+Before using the Retriever service, you need to:
 
-For detailed instructions on creating a project, see 
-[Creating a new project](importer.md#creating-a-new-project) in the Importer 
-documentation.
+1. **Create a GraphRAG project** - For detailed instructions on creating and 
+   managing projects, see the [Projects](gen-ai.md#projects) section in the 
+   GenAI Orchestration Service documentation.
+
+2. **Import data** - Use the [Importer](importer.md) service to transform your 
+   text documents into a knowledge graph stored in ArangoDB.
 
 ## Search methods
 

@@ -28,54 +28,17 @@ different concepts in your document with the Retriever service.
 You can also use the GraphRAG Importer service via the [Data Platform web interface](../graphrag/web-interface.md).
 {{< /tip >}}
 
-## Creating a new project
+## Prerequisites
 
-To create a new GraphRAG project, use the `CreateProject` method by sending a
-`POST` request to the `/ai/v1/project` endpoint. You must provide a unique
-`project_name` and a `project_type` in the request body. Optionally, you can
-provide a `project_description`.
+Before importing data, you need to create a GraphRAG project. Projects help you 
+organize your work and keep your data separate from other projects.
 
-The `project_name` must follow these validation rules:
-- Length: 1–63 characters
-- Allowed characters: letters, numbers, underscores (`_`), and hyphens (`-`)
+For detailed instructions on creating and managing projects, see the 
+[Projects](gen-ai.md#projects) section in the GenAI Orchestration Service 
+documentation.
 
-```curl
-curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
--H "Content-Type: application/json" \
--d '{
-  "project_name": "docs",
-  "project_type": "graphrag",
-  "project_description": "A documentation project for GraphRAG."
-}'
-```
-
-All the relevant ArangoDB collections (such as documents, chunks, entities,
-relationships, and communities) created during the import process will
-have the project name as a prefix. For example, the Documents collection will
-become `<project_name>_Documents`. The Knowledge Graph will also use the project
-name as a prefix. If no project name is specified, then all collections
-are prefixed with `default_project`, e.g., `default_project_Documents`.
-
-Once created, you can reference your project in other services (such as the 
-Importer or Retriever) using the `genai_project_name` field:
-
-```json
-{
-  "genai_project_name": "docs"
-}
-```
-
-### Project metadata
-
-Additional project metadata is accessible via the following endpoint, replacing
-`<your_project>` with the actual name of your project:
-
-```
-GET /ai/v1/project_by_name/<your_project>
-```
-
-The endpoint provides comprehensive metadata about your project's components,
-including its importer and retriever services and their status.
+Once you have created a project, you can reference it when deploying the Importer 
+service using the `genai_project_name` field in the service configuration.
 
 ## Deployment options
 
