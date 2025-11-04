@@ -12,19 +12,18 @@ description: >-
 
 {{< cards >}}
 
+{{% card title="ArangoDB" link="arangodb/" %}}
+![](images/avo-core.svg) Graph multi-model database system that unifies graph, document,
+key-value, vector, and full-text search with one query language.
+{{% /card %}}
+
 {{% card title="Arango Data Platform" link="data-platform/" %}}
-The enterprise foundation built on ArangoDB, with platform services for
-scalability, reliability, governance, and a graph exploration tool.
+![](images/avo-middle.svg) Adds platform services for scalability, reliability, governance, and a graph exploration tool.
 {{% /card %}}
 
 {{% card title="AI Suite" link="ai-suite/" %}}
-Supercharge your Data Platform with Hybrid/GraphRAG, GraphML, advanced analytics,
-and queries generated from natural language for AI-powered data insights.
-{{% /card %}}
-
-{{% card title="ArangoDB" link="arangodb/" %}}
-A native graph multi-model database system that unifies graph, document,
-key-value, vector, and full-text search in one engine with one query language.
+![](images/avo-full.svg) Supercharge your Data Platform with GraphRAG, GraphML,
+and queries generated from natural language for AI-powered insights.
 {{% /card %}}
 
 {{% card title="Arango Managed Platform (AMP)" link="amp/" %}}
@@ -51,11 +50,6 @@ engineering space can make use of ArangoDB's set of tools and technologies that
 enable analytics and machine learning on graph data. 
 -->
 
-![The outlines of the Arango avocado logo but the seed has a fill color](images/avo-core.svg)
-
-![The Arango avocado logo with the seed and surrounding flesh with a fill color](images/avo-middle.svg)
-
-![The Arango avocado logo with the seed, flesh, and outer layer having a fill color](images/avo-full.svg)
 
 ## From graph to AI
 
@@ -75,8 +69,6 @@ Graph queries can also determine the shortest paths between nodes.
 
 Graph queries can answer questions like _**Who can introduce me to person X**_?
 
-![Graph Query](images/graph-query.png)
-
 See [Graphs in AQL](arangodb/3.12/aql/graphs/_index.md) for the supported graph queries.
 
 ### Graph Analytics
@@ -85,8 +77,6 @@ Graph analytics or graph algorithms is what you run on a graph if you want to
 know aggregate information about your graph, while analyzing the entire graph.
 
 Graph analytics can answer questions like _**Who are the most connected persons**_?
-
-![Graph Analytics](images/graph-analytics.png)
 
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
@@ -102,8 +92,6 @@ GraphML can answer questions like:
 - _**Is there a connection between person X and person Y?**_
 - _**Will a customer churn?**_ 
 - _**Is this particular transaction Anomalous?**_
-
-![Graph ML](images/graph-ml.png)
 
 For ArangoDB's enterprise-ready, graph-powered machine learning offering,
 see [Arango GraphML](ai-suite/graphml/_index.md).
