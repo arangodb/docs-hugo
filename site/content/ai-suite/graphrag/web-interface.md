@@ -113,7 +113,7 @@ plain text (`.txt`) format. Additional files can be added to update the Knowledg
 After your file is processed, you can view and explore the generated Knowledge Graph
 in the **Graph** section.
 
-![Explore Knowledge Graph in GraphRAG web interface](../../../images/graphrag-ui-explore-knowledge-graph.png)
+![Explore Knowledge Graph in GraphRAG web interface](../../images/graphrag-ui-explore-knowledge-graph.png)
 
 For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
 
