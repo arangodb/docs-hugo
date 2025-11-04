@@ -8,132 +8,109 @@ description: >-
 #aliases:
 #  - data-science/overview
 ---
-## Product documentation
+## User manuals by product
 
 {{< cards >}}
 
-{{% card title="ArangoDB" link="arangodb/" %}}
-![](images/avo-core.svg) Graph multi-model database system that unifies graph, document,
+{{% card title="ArangoDB" link="arangodb/" icon="avo-core.svg" %}}
+Native multi-model database system that unifies graph, document,
 key-value, vector, and full-text search with one query language.
 {{% /card %}}
 
-{{% card title="Arango Data Platform" link="data-platform/" %}}
-![](images/avo-middle.svg) Adds platform services for scalability, reliability, governance, and a graph exploration tool.
+{{% card title="Arango Data Platform" link="data-platform/" icon="avo-middle.svg" %}}
+Adds platform services for scalability, reliability, governance, and a graph exploration tool.
 {{% /card %}}
 
-{{% card title="AI Suite" link="ai-suite/" %}}
-![](images/avo-full.svg) Supercharge your Data Platform with GraphRAG, GraphML,
+{{% card title="AI Suite" link="ai-suite/" icon="avo-full.svg" %}}
+Supercharge your Data Platform with GraphRAG, GraphML,
 and queries generated from natural language for AI-powered insights.
 {{% /card %}}
 
 {{% card title="Arango Managed Platform (AMP)" link="amp/" %}}
-Arango's fully-managed cloud offering for a faster time to value.
+Arango's fully-managed cloud offering for a faster time to value,
+formerly known as ArangoGraph Insights Platform.
 {{% /card %}}
 
 {{< /cards >}}
 
-<!--
-ArangoDB provides a wide range of functionality that can be utilized for
-data science applications. The core database system includes multi-model storage
-of information with scalable graph and information retrieval capabilities that
-you can directly use for your research and product development.
-
-ArangoDB also offers dedicated AI Suite, using the database core
-as the foundation for higher-level features. Whether you want to turbocharge
-generative AI applications with a GraphRAG solution or apply analytics and
-machine learning to graph data at scale, ArangoDB covers these needs.
-
-
-ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
-in data science and data analytics. Multiple data science personas within the
-engineering space can make use of ArangoDB's set of tools and technologies that
-enable analytics and machine learning on graph data. 
--->
-
-
 ## From graph to AI
 
-This section classifies the complexity of the queries you can answer with
-ArangoDB and gives you an overview of the respective feature.
+### Data Persistence
 
-It starts with running a simple query that shows what is the path that goes from
-one node to another, continues with more complex tasks like graph classification,
-link prediction, and node classification, and ends with generative AI solutions
-powered by graph relationships and vector embeddings.
+ArangoDB is a scalable database system that you can use to store
+[JSON documents](arangodb/3.12/concepts/data-structure/documents/_index.md),
+which allows a flexible data structure for each record. ArangoDB natively supports
+[graphs](arangodb/3.12/graphs/_index.md), letting you connect documents with
+edges to express relationships between records and build complex
+information networks. 
+
+### Data Retrieval
+
+You can query your data in various ways using the core database system.
+The native support for multiple data models lets you access information in
+different ways with a single query language called [AQL](arangodb/3.12/aql/_index.md).
+It has built-in support for aggregation, vector and full-text search, geo-spatial
+queries, and more.
+
+### Data Exploration
+
+You can visually explore and interact with your ArangoDB graphs through an
+intuitive web interface called the [Graph Visualizer](data-platform/graph-visualizer.md).
+It is part of the [Arango Data Platform](data-platform/_index.md) that builds on
+ArangoDB, extending it to a Kubernetes-native environment that unifies
+data management, monitoring, and automation.
 
 ### Graph Queries
 
-When you run an AQL query on a graph, a traversal query can go from a node to
-multiple edges, and then the edges indicate what the next connected nodes are.
-Graph queries can also determine the shortest paths between nodes.
-
-Graph queries can answer questions like _**Who can introduce me to person X**_?
-
-See [Graphs in AQL](arangodb/3.12/aql/graphs/_index.md) for the supported graph queries.
+Utilizing connected data starts with running simple [graph queries](arangodb/3.12/aql/graphs/_index.md).
+Using ArangoDB and its query language, you can determine the shortest paths between nodes as well as execute graph traversals. A traversal starts at a
+given node of a graph and follows the directly connected edges. The edges indicate
+what the next connected nodes are, and this discovery of neighbors can repeat.
+ 
+Graph queries can answer questions like **Who can introduce me to person X?**
 
 ### Graph Analytics
 
-Graph analytics or graph algorithms is what you run on a graph if you want to 
-know aggregate information about your graph, while analyzing the entire graph.
+The next level of utilizing connected data in terms of complexity is to use
+graph analytics or graph algorithms to aggregate information about a graph.
+Unlike with graph queries, this involves the entire graph at once.
 
-Graph analytics can answer questions like _**Who are the most connected persons**_?
+Graph analytics can answer questions like **Who are the most connected persons?**
 
-ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
-connected components, label propagation, and PageRank on your data. This feature
-is available in the AI Data Platform and the Arango Managed Platform (AMP). See
-[Graph Analytics](ai-suite/graph-analytics.md) for details.
+Arango offers a [Graph Analytics](ai-suite/graph-analytics.md) solution as part
+of the [Arango AI Data Platform](data-platform/features.md) to run algorithms
+such as connected components, label propagation, and PageRank on your data.
 
 ### GraphML
 
-When applying machine learning on a graph, you can predict connections, get 
-better product recommendations, and also classify nodes, edges, and graphs.
+For higher-level insights, you can use advanced graph-based data science.
+Applying machine learning on graphs lets you predict connections, get better
+product recommendations, and also classify nodes, edges, and graphs.
 
 GraphML can answer questions like:
-- _**Is there a connection between person X and person Y?**_
-- _**Will a customer churn?**_ 
-- _**Is this particular transaction Anomalous?**_
+- **Is there a connection between person X and person Y?**
+- **Will a customer churn?**
+- **Is this particular transaction anomalous?**
 
-For ArangoDB's enterprise-ready, graph-powered machine learning offering,
-see [Arango GraphML](ai-suite/graphml/_index.md).
+Arango's enterprise-ready, graph-powered machine learning capabilities are
+included in the [AI Suite](ai-suite/_index.md) as part of the
+Arango AI Data Platform. See [Arango GraphML](ai-suite/graphml/_index.md).
 
 ### GraphRAG
 
-GraphRAG is ArangoDB's turn-key solution to transform your organization's data into
-a knowledge graph and let everyone utilize the knowledge by asking questions in
-natural language.
+Generative AI often struggle with hallucinations because the connectedness of
+data is not properly or cleanly represented. GraphRAG is a technique that
+turbocharges GenAI applications using the power of graph relationships and
+vector embeddings.
 
-The overall process of GraphRAG involves the following:
-- **Creating a Knowledge Graph** from raw text data.
-- **Identifying and extract entities and relationships** within the data.
-- **Storing the structured information** in ArangoDB.
-- **Clustering each closely connected set of entities into semantic contexts**
-  via topology-based algorithms and summarization.
-- **Using such semantically augmented structured representation** as the
-  foundation for efficient and accurate information retrieval via lexical and
-  semantic search.
-- **Integrating retrieval methods with LLMs (privately or publicly hosted)**
-  to augment responses using both structured and unstructured data, providing
-  accurate responses with the desired format and degree of detail for each query.
+Arango's [GraphRAG](ai-suite/graphrag/_index.md) included in the
+[AI Suite](ai-suite/_index.md) is a turn-key solution to transform your
+organization's data into a knowledge graph and let everyone utilize the
+knowledge by asking questions in natural language.
 
-To learn more, see the [GraphRAG](ai-suite/graphrag/_index.md) documentation.
-
-## Knowledge Graphs
-
-A knowledge graph can be thought of as a dynamic and interconnected network of
-real-world entities and the intricate relationships that exist between them.
-
-Key aspects of knowledge graphs:
-- **Domain-specific knowledge**: You can tailor knowledge graphs to specific
-  domains and industries.
-- **Structured information**: Makes it easy to query, analyze, and extract
-  meaningful insights from your data.
-- **Accessibility**: You can build a Semantic Web knowledge graph or using
-  custom data.
-
-LLMs can help distill knowledge graphs from natural language by performing
-the following tasks:
-- Entity discovery
-- Relation extraction
-- Coreference resolution
-- End-to-end knowledge graph construction
-- (Text) Embeddings
+It automatically creates a knowledge graph from raw text by identifying and
+extracting entities and relationships within the data, groups and summarizes
+semantically similar entities, and stores everything in ArangoDB. When you ask a
+question, the large language model (LLM) is supplied with additional context
+from the knowledge graph, using lexical and semantic search. This enables
+accurate, context-aware intelligence grounded in enterprise data.
