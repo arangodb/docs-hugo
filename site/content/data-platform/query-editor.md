@@ -5,8 +5,6 @@ weight: 30
 description: >-
   Write, run, and analyze AQL queries using an IDE-like interface
 ---
-{{< tag "Experimental" >}}
-
 ## Features
 
 The Query Editor of the Arango Data Platform offers the following features:
