@@ -107,7 +107,6 @@ information on how to use it.
 ```json
 {
   "env": {
-    "username": "your_username",
     "db_name": "your_database_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
@@ -122,7 +121,6 @@ information on how to use it.
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `chat_api_provider`: API provider for language model services
 - `chat_api_url`: API endpoint URL for the chat/language model service
@@ -152,7 +150,6 @@ OpenAI is used for the embedding model.
     {
       "env": {
         "db_name": "your_database_name",
-        "username": "your_username",
         "chat_api_provider": "openai",
         "embedding_api_provider": "openai",
         "chat_api_url": "https://openrouter.ai/api/v1",
@@ -166,7 +163,6 @@ OpenAI is used for the embedding model.
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to access collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
 - `chat_api_provider`: API provider for language model services
 - `embedding_api_provider`: API provider for embedding model services
@@ -195,7 +191,6 @@ service using the below configuration:
 ```json
 {
   "env": {
-    "username": "your_username",
     "db_name": "your_database_name",
     "chat_api_provider": "triton",
     "embedding_api_provider": "triton",
@@ -208,7 +203,6 @@ service using the below configuration:
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `chat_api_provider`: Specifies which LLM provider to use for language model services
 - `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
