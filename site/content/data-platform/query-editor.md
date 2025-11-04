@@ -38,6 +38,8 @@ The Query Editor of the Arango Data Platform offers the following features:
   from the Query Editor. This feature is only available in the
   Arango AI Data Platform.
 
+![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
+
 {{< info >}}
 The Query Editor of the Data Platform is not feature-complete. It currently
 lacks features like syntax highlighting and a way to set query options.
@@ -104,6 +106,11 @@ Once the AQLizer service is ready, you can generate queries.
    natural language, like "List all distinct surnames of characters older than 30".
 2. Click **Ask** to use GenAI for generating an AQL query.
 3. Verify and refine the query in the editor.
+
+{{< warning >}}
+Always verify AI-generated queries.
+AI can make mistakes or produce unexpected results.
+{{< /warning >}}
 
 ## Adjust the viewport
 
