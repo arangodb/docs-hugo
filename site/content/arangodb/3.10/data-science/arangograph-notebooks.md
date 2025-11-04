@@ -8,8 +8,8 @@ description: >-
 {{< tip >}}
 AMP Notebooks don't include the ArangoGraphML services.
 To enable the ArangoGraphML services, 
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
+[get in touch](https://arango.ai/contact/)
+with the Arango team.
 {{< /tip >}}
 
 The AMP Notebook is a JupyterLab notebook embedded in the

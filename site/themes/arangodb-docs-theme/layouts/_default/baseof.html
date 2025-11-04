@@ -1,12 +1,12 @@
 {{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+{{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
   {{ partial "head.html" . -}}
   <body>
     {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
-    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
+    <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
     <div class="page-wrapper page_content_splash" style="height: auto; opacity: 1;">
       <section class="page-main">
         <section class="page-container">

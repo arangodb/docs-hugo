@@ -36,8 +36,8 @@ GraphML functionalities in a scriptable manner. To get started, see the
 
 {{< tip >}}
 To get access to GraphML services and packages in Arango Managed Platform (AMP),
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
+[get in touch](https://arangodb.ai/contact-us/)
+with the Arango team.
 {{< /tip >}}
 
 - **Accessible at all levels**

@@ -17,11 +17,20 @@
 {{- with $versionShort }}
 <meta name="docsearch:version" content="{{ . }}">
 {{- end }}
-{{- if eq .Path "/arangodb/" }}
+{{- if (hasPrefix .Path "/arangodb/") }}
+  {{- if or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}<meta name="robots" content="noindex">{{ end }}
+  {{- if and (eq (.Page.Store.Get "alias") "stable") (not (hasPrefix .RelPermalink "/arangodb/stable/")) }}
+    {{- $splitLink := split .RelPermalink "/" }}
+    {{- $s := slice "/arangodb" "stable" }}
+    {{- range $i, $e := $splitLink }}
+      {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
+    {{- end }}
+    <link rel="canonical" href="{{ delimit $s "/" }}">
+  {{- end }}
   {{- $shortVersions := slice }}
   {{- $versions := index site.Data.versions "/arangodb/" }}
   {{- range $version := $versions }}
-    {{- $shortVersions = $shortVersions | append $version.name }}
+    {{- $shortVersions = $shortVersions | append (cond (eq $version.name $version.alias) $version.name $version.alias) }}
   {{- end }}
   <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}

@@ -18,8 +18,8 @@ The `arangoml` is a Python Package allowing you to manage all of the necessary 
 
 {{< tip >}}
 To enable the ArangoGraphML services in the Arango Managed Platform (AMP),
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team. Regular notebooks in AMP don't include the
+[get in touch](https://arango.ai/contact-us/)
+with the Arango team. Regular notebooks in AMP don't include the
 `arangoml` package.
 {{< /tip >}}
 

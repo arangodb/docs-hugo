@@ -9,8 +9,8 @@ aliases:
 ---
 {{< tip >}}
 The Arango Data Platform & AI Suite are available as a pre-release. To get
-exclusive early access, [get in touch](https://arangodb.com/contact/) with
-the ArangoDB team.
+exclusive early access, [get in touch](https://arango.ai/contact-us/) with
+the Arango team.
 {{< /tip >}}
 
 Traditional Machine Learning (ML) overlooks the connections and relationships

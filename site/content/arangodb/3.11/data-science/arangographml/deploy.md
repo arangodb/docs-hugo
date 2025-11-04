@@ -22,8 +22,8 @@ Cloud Service via Jupyter Notebooks that run on the
 
 {{< tip >}}
 To get access to ArangoGraphML services and packages,
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
+[get in touch](https://arango.ai/contact-us/)
+with the Arango team.
 {{< /tip >}}
 
 - **Accessible at all levels**

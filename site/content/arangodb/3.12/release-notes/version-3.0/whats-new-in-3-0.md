@@ -395,7 +395,7 @@ longer-running operations are ongoing. It also keeps more state about user's cho
 windows sizes, whether the tree or the code view was last used in the document editor).
 
 Cluster statistics are now integrated into the web interface as well. Additionally, a
-menu item "Help us" has been added to easily provide the ArangoDB team feedback about
+menu item "Help us" has been added to easily provide the Arango team feedback about
 the product.
 
 {{< comment >}} NOTE: This feature doesn't work properly anymore!

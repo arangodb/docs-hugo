@@ -712,7 +712,7 @@ In this message, the `cf3f4` is the message's unique ID value. ArangoDB users ca
 use this ID to build custom monitoring or alerting based on specific log ID values.
 Existing log ID values are supposed to stay constant in future releases of arangod.
 
-Additionally the unique log ID values can be used by the ArangoDB support to find
+Additionally the unique log ID values can be used by the Arango support to find
 out which component of the product exactly generated a log message. The IDs also
 make disambiguation of identical log messages easier.
 

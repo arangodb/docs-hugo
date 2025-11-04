@@ -225,7 +225,7 @@ var query = "FOR doc IN mycollection FILTER doc.value > 42 RETURN doc";
 require("@arangodb/aql/explainer").debugDump("/tmp/query-debug-info", query);
 ```
 
-Entitled users can send the generated file to the ArangoDB support to facilitate 
+Entitled users can send the generated file to the Arango support to facilitate 
 reproduction and debugging.
 
 {{< tip >}}

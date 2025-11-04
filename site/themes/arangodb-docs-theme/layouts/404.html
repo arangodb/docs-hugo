@@ -3,14 +3,14 @@
 <html lang="{{ .Page.Language | default "en" }}">
 
   <head>
-    {{- partial "stylesheet.html" . }}
+    {{- partialCached "stylesheet.html" . }}
     {{- partial "meta.html" . }}
-    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
-    {{- partial "javascript.html" . }}
+    {{- partialCached "favicon.html" . }}
+    {{- partialCached "javascript.html" . }}
   </head>
 
 <body>
-    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
+    <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
     <div class="page-wrapper page_content_splash" style="height: auto;opacity: 1;">
         <section class="page-main">
             <section class="page-container">

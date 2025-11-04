@@ -38,7 +38,7 @@ become read-only in rare cases.
 
 {{< warning >}}
 If you are a paying customer with a self-hosted deployment, contact the
-ArangoDB support for direct assistance.
+Arango support for direct assistance.
 Arango Managed Platform (AMP) customers do not need to take any action.
 {{< /warning >}}
 
@@ -604,7 +604,7 @@ created with v3.11.11, v3.12.2, or any later version.
 ### If the deployment is affected
 
 {{< info >}}
-If you are a customer, please contact the ArangoDB support to assist you with
+If you are a customer, please contact the Arango support to assist you with
 the following steps.
 {{< /info >}}
 
@@ -819,7 +819,7 @@ created with v3.12.4 or any later version.
 
 1. Create a Hot Backup if you haven't done so already.
 
-2. If the check result shows affected indexes, contact the ArangoDB support
+2. If the check result shows affected indexes, contact the Arango support
    immediately. Do not continue and refrain from upgrading.
 
 3. If no affected indexes are reported, restore the Hot Backup to a new
@@ -892,7 +892,7 @@ created with v3.12.4 or any later version.
 ### If the deployment is in read-only mode
 
 {{< info >}}
-If you are a customer, please contact the ArangoDB support to assist you with
+If you are a customer, please contact the Arango support to assist you with
 the following steps.
 {{< /info >}}
 
