@@ -9,15 +9,13 @@ aliases:
   - introduction
   - introduction/about-arangodb
 ---
-![ArangoDB Overview Diagram](../images/arangodb-overview-diagram.png)
-
 ArangoDB combines the analytical power of native graphs with an integrated
-search engine, JSON support, and a variety of data access patterns via a single,
-composable query language.
+search engine, JSON support, vector indexes, and a variety of data access
+patterns via a single, composable query language.
 
 ArangoDB is available in a community and a commercial [edition](3.12/features/_index.md).
-You can use it for on-premises deployments, as well as a fully managed
-cloud service, the [Arango Managed Platform (AMP)](../amp/_index.md).
+You can use it for on-premises deployments, self-managed cloud deployments,
+as well as a fully managed cloud service, the [Arango Managed Platform (AMP)](../amp/_index.md).
 
 ## What are Graphs?
 
