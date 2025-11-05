@@ -35,11 +35,6 @@
     --font-headlines: "Urbanist", sans-serif;
     --font-content: "Inter", sans-serif;
 
-    /*
-    Rounding?
-    Icon set?
-    */
-
     --green-50: #e3f2e0;
     --green-100: #dcebd9;
     --green-200: #98D78C;
@@ -105,7 +100,7 @@ html {
  }
 
 body {
-    font-family: var(--MAIN-FONT);
+    font-family: var(--font-content);
     padding: 0;
     margin: 0;
     line-height: 1.5rem;
@@ -197,7 +192,7 @@ button {
 }
 
 button.green {
-    background-color: var(--HEADERS-COLOR);
+    background-color: var(--color-avocado);
 }
 
 button.grey {
@@ -250,11 +245,11 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link {
     text-decoration: none;
-    border-bottom: 2px solid var(--green-400);
+    border-bottom: 2px solid var(--color-evergreen);
 }
 
 .link:hover{
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-leaf-green);
     color: var(--gray-950);
 }
 
@@ -264,12 +259,12 @@ ul ul, ul ol, ol ul, ol ol {
 }
 
 .link > p {
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-evergreen);
     color: var(--gray-950);
 }
 
 .link:has(code) {
-    border-bottom: 2px solid var(--green-600);
+    border-bottom: 2px solid var(--color-evergreen);
     font-size: 14px;
     overflow: auto;
     word-wrap: break-word;
@@ -483,24 +478,16 @@ a.section-link {
 }
 
 .card-head {
-    position: relative;
     z-index: 2;
-    display: flex;
     margin-bottom: 10px;
-    flex-flow: column;
     min-height: 40px;
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
-    -o-object-fit: contain;
+    width: 30px;
     object-fit: contain;
-    position: absolute;
-    top: 0;
-    left: 0;
+    float: right;
+    margin-left: 10px;
 }
 
 .card-title {
@@ -578,7 +565,7 @@ a.section-link {
     overflow: hidden;
     text-overflow: ellipsis;
     transition-duration: 0s;
-    color: var(--HEADERS-COLOR);
+    color: var(--color-avocado);
     padding: 12px 16px;
 }
 
@@ -592,7 +579,7 @@ a.section-link {
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--HEADERS-COLOR)
+    background-color: var(--color-avocado)
 }
 
 .tab-nav-button > span {
@@ -765,6 +752,8 @@ header .logo {
 
 .arangodb-logo-small {
     display: none;
+    height: 42px;
+    margin-left: 2px;
 }
 
 
@@ -774,8 +763,6 @@ header .logo {
     }
     .arangodb-logo-small {
         display: block;
-        height: 2rem;
-        margin-left: 10px;
     }
 }
 
@@ -1205,7 +1192,7 @@ header .logo {
 .edit-page > .edit-page-icon:after {
     content: "Contribute";
     margin-left: 10px;
-    font-family: var(--MAIN-FONT);
+    font-family: var(--font-content);
 }
 
 @media screen and (max-width: 480px) {
@@ -1385,7 +1372,7 @@ article.notfound {
 }
 
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
-    color: var(--HEADERS-COLOR);
+    color: var(--color-avocado);
     font-family: var(--font-headlines);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     overflow-wrap: break-word;
@@ -1515,7 +1502,7 @@ h6:hover .header-link {
 
 /* Codeblocks */
 pre {
-    border-radius: 0;
+    border-radius: 7px;
     background: var(--gray-100);
     box-shadow: none;
     position: relative;
@@ -1674,36 +1661,24 @@ div.box {
     border-radius: 7px;
     margin-bottom: 1rem;
     margin-top: 1rem;
+    border: 3px solid black;
 }
 
 div.box.info {
-    border:1px solid var(--INFO-BORDER-COLOR);
-    background: var(--INFO-BG-COLOR);
-    box-shadow: inset 0 0 0 2px var(--INFO-BORDER-COLOR), 0 0 0 0 transparent;
+    border-color: var(--state-info-dark);
 }
 
-div.box.warning {
-    border: 1px solid var(--WARNING-BORDER-COLOR);
-    background: var(--WARNING-BG-COLOR);
-    box-shadow: 0 0 0 2px var(--WARNING-BORDER-COLOR) inset,0 0 0 0 transparent
+div.box.warning,
+div.box.security {
+    border-color: var(--state-warning-dark);
 }
 
 div.box.danger {
-    border: 1px solid var(--DANGER-BORDER-COLOR);
-    background:var(--DANGER-BG-COLOR);
-    box-shadow: inset 0 0 0 2px var(--DANGER-BORDER-COLOR), 0 0 0 0 transparent;
+    border-color: var(--state-danger);
 }
 
 div.box.tip {
-    border: 1px solid var(--TIP-BORDER-COLOR);
-    background:  var(--TIP-BG-COLOR);
-    box-shadow: 0 0 0 2px  var(--TIP-BORDER-COLOR) inset,0 0 0 0 transparent;
-}
-
-div.box.security {
-    border: 1px solid var(--SECURITY-BORDER-COLOR);
-    background: var(--SECURITY-BG-COLOR);
-    box-shadow: 0 0 0 2px var(--SECURITY-BORDER-COLOR) inset,0 0 0 0 transparent
+    border-color: var(--state-success-dark);
 }
 
 div.box-content {
@@ -1712,27 +1687,23 @@ div.box-content {
 }
 
 div.box.info > .box-content-container > .box-content > i {
-    color: var(--INFO-ICON-COLOR);
+    color: var(--state-info-dark);
     font-size: 1.2em;
 }
 
-div.box.warning > .box-content-container > .box-content > i {
-    color: var(--WARNING-ICON-COLOR);
+div.box.warning > .box-content-container > .box-content > i,
+div.box.security > .box-content-container > .box-content > i {
+    color: var(--state-warning-dark);
     font-size: 1.2em;
 }
 
 div.box.danger > .box-content-container > .box-content > i {
-    color: var(--DANGER-ICON-COLOR);
+    color: var(--state-danger);
     font-size: 1.2em;
 }
 
 div.box.tip > .box-content-container > .box-content > i {
-    color: var(--TIP-ICON-COLOR);
-    font-size: 1.2em;
-}
-
-div.box.security > .box-content-container > .box-content > i {
-    color: var(--SECURITY-ICON-COLOR);
+    color: var(--state-success-dark);
     font-size: 1.2em;
 }
 
@@ -1748,7 +1719,7 @@ div > .box-content-container {
     display: inline-block;
     padding: 0.2rem 0.8rem;
     border-radius: 0.25rem;
-    background: var(--COLOR-LIGHT-GREEN);
+    background: var(--color-electric-lime);
     color: #0d0c0c;
     line-height: 21px;
     font-size: 1em;
@@ -2165,7 +2136,7 @@ nav.pagination .next {
     padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
-    background: url("/images/bottom-cta-background.jpg") no-repeat center center;
+    background: linear-gradient(40deg, var(--color-avocado) 50%, var(--color-evergreen));
     background-position: center;
     color: var(--gray-50)
 }

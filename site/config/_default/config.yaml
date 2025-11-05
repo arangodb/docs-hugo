@@ -1,6 +1,6 @@
 baseURL: "https://docs.arango.ai"
 languageCode: "en-us"
-title: "ArangoDB Documentation"
+title: "Arango Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
 
