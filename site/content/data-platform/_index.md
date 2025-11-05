@@ -33,8 +33,8 @@ components into a unified solution:
   smart search, and visual layouts.
 
 - **Arango Platform Suite**: Enterprise-grade features including high availability
-  and monitoring, the Graph Analytics Engine, comprehensive APIs and connectors,
-  and centralized orchestration and resource management.
+  and monitoring, comprehensive APIs and connectors, centralized orchestration and
+  resource management.
 
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.
@@ -55,6 +55,7 @@ What you get with the AI Suite:
   structure for better predictions.
 - [Graph Analytics](../ai-suite/graph-analytics/): Run advanced algorithms like PageRank
   to discover influential nodes and patterns.
+- [AQLizer](../ai-suite/aqlizer.): Generate AQL queries from natural language.
 - [Jupyter notebooks](../ai-suite/notebook-servers.md): Run Jupyter Notebooks to build and
   experiment with graph-powered data, AI, and machine learning workflows directly connected
   to ArangoDB databases. 
