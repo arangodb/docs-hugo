@@ -454,7 +454,7 @@ To document hotkeys and key combinations to press in a terminal or graphical
 user interface, use the `kbd` shortcode:
 
 ```markdown
-Hit {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
+Press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
 ```
 
 #### Cards
