@@ -75,7 +75,7 @@ instead.
 
 ## Indexes
 
-The fulltext index type is now deprecated in favor of [ArangoSearch](../../index-and-search/arangosearch/_index.md).
+The fulltext index type is now deprecated in favor of [ArangoSearch](../../indexes-and-search/arangosearch/_index.md).
 Fulltext indexes are still usable in this version of ArangoDB, although their usage is
 now discouraged.
 
@@ -107,7 +107,7 @@ interpretation of GeoJSON polygons in version 3.9 and older:
 
 This can mean that old polygon GeoJSON data in the database is
 suddenly interpreted in a different way. See
-[Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
+[Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
 Also see the definition of [Polygons](../../aql/functions/geo.md#polygon)
 and [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation).
 
@@ -125,7 +125,7 @@ Whether a clockwise boundary specifies the complement of the small region
 intentionally or not cannot be determined automatically. Please test the new
 behavior manually.
 
-See [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
+See [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
 
 ---
 
@@ -148,7 +148,7 @@ the new Analyzers.
 | A ring can at most enclose half the Earth's surface | A ring can enclose the entire surface of the Earth |
 
 Also see the definition of [Polygons](../../aql/functions/geo.md#polygon) and the
-[`geojson` Analyzer](../../index-and-search/analyzers.md#geojson) documentation.
+[`geojson` Analyzer](../../indexes-and-search/analyzers.md#geojson) documentation.
 
 ## Maximum Array / Object Nesting
 

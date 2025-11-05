@@ -26,8 +26,8 @@ The optional `SEARCH` operation provides the capabilities to:
 - sort the result set based on how closely each document matched the
   search conditions
 
-See [`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md) and
-[`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md) on how to set up Views.
+See [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) and
+[`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md) on how to set up Views.
 
 ## Syntax
 
@@ -121,7 +121,7 @@ FOR doc IN viewName
 The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
-[`collation` Analyzer](../../index-and-search/analyzers.md#collation)) nor the server language
+[`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
 Also see [Known Issues](../../release-notes/version-3.13/known-issues-in-3-13.md#arangosearch).
 {{< /warning >}}
@@ -163,7 +163,7 @@ different outside of `SEARCH`, where `IN` needs to be followed by an array.
 ### Question mark operator
 
 You can use the [Question mark operator](../operators.md#question-mark-operator)
-to perform [Nested searches with ArangoSearch](../../index-and-search/arangosearch/nested-search.md)
+to perform [Nested searches with ArangoSearch](../../indexes-and-search/arangosearch/nested-search.md)
 :
 
 ```aql
@@ -175,9 +175,9 @@ FOR doc IN myView
 It allows you to match nested objects in arrays that satisfy multiple conditions
 each, and optionally define how often these conditions should be fulfilled for
 the entire array. You need to configure the View specifically for this type of
-search using the `nested` property in [`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
-or in the definition of [Inverted Indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
-that you can add to [`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md).
+search using the `nested` property in [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+or in the definition of [Inverted Indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
+that you can add to [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md).
 
 ## Handling of non-indexed fields
 
@@ -233,7 +233,7 @@ FOR doc IN myView
 ```
 
 You can use the special `includeAllFields`
-[`arangosearch` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+[`arangosearch` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 to index all (sub-)attributes of the source documents if desired.
 
 ## `SEARCH` with `SORT`
@@ -249,7 +249,7 @@ FOR doc IN viewName
 ```
 
 If the (left-most) fields and their sorting directions match up with the
-[primary sort order](../../index-and-search/arangosearch/performance.md#primary-sort-order) definition
+[primary sort order](../../indexes-and-search/arangosearch/performance.md#primary-sort-order) definition
 of the View then the `SORT` operation is optimized away.
 
 Apart from simple sorting, it is possible to sort the matched View documents by
@@ -317,7 +317,7 @@ search criteria get optimized:
 - `"none"`: search the index without optimizing the conditions.
 <!-- Internal only: nodnf, noneg -->
 
-See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#condition-optimization-options)
+See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md#condition-optimization-options)
 for an example.
 
 ### `countApproximate`
@@ -333,7 +333,7 @@ You can set it to one of the following values:
   only (e.g. `SEARCH doc.field == "value"`), the usual eventual consistency
   of Views aside.
 
-See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#count-approximation)
+See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md#count-approximation)
 for an example.
 
 ### `parallelism`

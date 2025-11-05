@@ -68,7 +68,7 @@ paths:
                     }
                     ```
 
-                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    See [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 primarySort:
@@ -422,7 +422,7 @@ paths:
                     description: |
                       An object with the attribute keys being names of to be linked collections,
                       and the link properties as attribute values. See
-                      [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                      [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                       for details.
                     type: object
                   primarySort:
@@ -889,7 +889,7 @@ paths:
                     description: |
                       An object with the attribute keys being names of to be linked collections,
                       and the link properties as attribute values. See
-                      [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                      [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                       for details.
                     type: object
                   primarySort:
@@ -1301,7 +1301,7 @@ paths:
                     }
                     ```
 
-                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    See [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 cleanupIntervalStep:
@@ -1486,7 +1486,7 @@ paths:
                     description: |
                       An object with the attribute keys being names of to be linked collections,
                       and the link properties as attribute values. See
-                      [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                      [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                       for details.
                     type: object
                   primarySort:
@@ -1808,7 +1808,7 @@ paths:
                     }
                     ```
 
-                    See [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                    See [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                     for details.
                   type: object
                 cleanupIntervalStep:
@@ -1989,7 +1989,7 @@ paths:
                     description: |
                       An object with the attribute keys being names of to be linked collections,
                       and the link properties as attribute values. See
-                      [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                      [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                       for details.
                     type: object
                   primarySort:
@@ -2351,7 +2351,7 @@ paths:
                     description: |
                       An object with the attribute keys being names of to be linked collections,
                       and the link properties as attribute values. See
-                      [`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+                      [`arangosearch` View Link Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
                       for details.
                     type: object
                   primarySort:

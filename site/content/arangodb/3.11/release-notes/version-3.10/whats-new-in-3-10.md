@@ -147,7 +147,7 @@ function in queries.
 
 Like Views, this type of index is eventually consistent.
 
-See [Inverted index](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md) for details.
+See [Inverted index](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) for details.
 
 ### `search-alias` Views
 
@@ -175,7 +175,7 @@ need to specify an Analyzer context with the `ANALYZER()` function in queries
 because it is inferred from the inverted index definition, which only supports
 a single Analyzer per field.
 
-Also see [Getting started with ArangoSearch](../../index-and-search/arangosearch/_index.md#getting-started-with-arangosearch).
+Also see [Getting started with ArangoSearch](../../indexes-and-search/arangosearch/_index.md#getting-started-with-arangosearch).
 
 ### Search highlighting (Enterprise Edition)
 
@@ -248,7 +248,7 @@ db._query(`FOR doc IN food_view
 */
 ```
 
-See [Search highlighting with ArangoSearch](../../index-and-search/arangosearch/search-highlighting.md)
+See [Search highlighting with ArangoSearch](../../indexes-and-search/arangosearch/search-highlighting.md)
 for details.
 
 ### Nested search (Enterprise Edition)
@@ -296,8 +296,8 @@ FOR doc IN viewName
   RETURN doc
 ```
 
-See [Nested search with ArangoSearch](../../index-and-search/arangosearch/nested-search.md) using Views
-and the nested search example using [Inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
+See [Nested search with ArangoSearch](../../indexes-and-search/arangosearch/nested-search.md) using Views
+and the nested search example using [Inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
 for details.
 
 This feature is only available in the Enterprise Edition.
@@ -310,7 +310,7 @@ enumeration node, if using just scoring for a sort operation.
 
 ### ArangoSearch column cache (Enterprise Edition)
 
-[`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
+[`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -366,7 +366,7 @@ metric.
 
 ArangoSearch caching is only available in the Enterprise Edition.
 
-See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md)
+See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md)
 for examples.
 
 {{< info >}}
@@ -435,7 +435,7 @@ Additionally, the JavaScript and HTTP API for indexes has been extended with
 figures for `arangosearch` View links and inverted indexes.
 
 In arangosh, you can call `db.<collection>.indexes(true, true);` to get at this
-information. Also see [Listing all indexes of a collection](../../index-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
+information. Also see [Listing all indexes of a collection](../../indexes-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
 The information has the following structure:
 
 ```js
@@ -472,7 +472,7 @@ to perform.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../index-and-search/analyzers.md#minhash) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#minhash) for details.
 
 ### `classification` Analyzer (Enterprise Edition)
 
@@ -481,7 +481,7 @@ using a supervised fastText word embedding model that you provide.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../index-and-search/analyzers.md#classification) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#classification) for details.
 
 ### `nearest_neighbors` Analyzer (Enterprise Edition)
 
@@ -490,7 +490,7 @@ using a supervised fastText word embedding model that you provide.
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../index-and-search/analyzers.md#nearest_neighbors) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#nearest_neighbors) for details.
 
 ### `geo_s2` Analyzer (Enterprise Edition)
 
@@ -511,7 +511,7 @@ disk, the precision, and query performance:
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../index-and-search/analyzers.md#geo_s2) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#geo_s2) for details.
 
 ## Web Interface
 
@@ -568,7 +568,7 @@ This feature is only available in the Enterprise Edition.
 
 The 3.10 release of ArangoDB conforms to the standards specified in 
 [GeoJSON](https://datatracker.ietf.org/doc/html/rfc7946)
-and [GeoJSON Mode](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-mode).
+and [GeoJSON Mode](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-mode).
 This diverges from the previous implementation in two fundamental ways:
 
 1. The syntax of GeoJSON objects is interpreted so that lines on the
@@ -593,13 +593,13 @@ has been introduced to guarantee backwards compatibility.
 For existing users who wish to take advantage of the new standard behavior,
 geo indexes need to be dropped and recreated after an upgrade.
 
-See [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for
+See [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for
 details and for hints about upgrading to version 3.10 or later.
 
 If you use `geojson` Analyzers including in `arangosearch` Views and upgrade
 from a version below 3.10 to a version of 3.10 or higher, the interpretation of
 GeoJSON Polygons changes. See the `legacy` property of the
-[`geojson` Analyzer](../../index-and-search/analyzers.md#geojson) for details and how to restore the
+[`geojson` Analyzer](../../indexes-and-search/analyzers.md#geojson) for details and how to restore the
 old behavior.
 
 ### Traversal Projections (Enterprise Edition)
@@ -786,7 +786,7 @@ index hint for tweaking performance:
 FOR … IN … OPTIONS { lookahead: 32 }
 ```
 
-See [Lookahead Index Hint](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).
+See [Lookahead Index Hint](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).
 
 ### Question mark operator
 
@@ -832,7 +832,7 @@ AQL functions added to the 3.10 Enterprise Edition:
 
 - [`OFFSET_INFO()`](../../aql/functions/arangosearch.md#offset_info):
   An ArangoSearch function to get the start offsets and lengths of matches for
-  [search highlighting](../../index-and-search/arangosearch/search-highlighting.md).
+  [search highlighting](../../indexes-and-search/arangosearch/search-highlighting.md).
 
 - [`MINHASH()`](../../aql/functions/miscellaneous.md#minhash):
   A new function for locality-sensitive hashing to approximate the
@@ -993,7 +993,7 @@ db.<collection>.ensureIndex({
 });
 ```
 
-See [Persistent Indexes](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes).
+See [Persistent Indexes](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes).
 
 ### Enabling caching for index values
 
@@ -1015,7 +1015,7 @@ scanned index entries is large.
 As the cache is hash-based and unsorted, it cannot be used for full or partial range
 scans, for sorting, or for lookups that do not include all index attributes.
 
-See [Persistent Indexes](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
+See [Persistent Indexes](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
 
 ## Document keys
 

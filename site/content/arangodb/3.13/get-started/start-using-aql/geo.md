@@ -37,7 +37,7 @@ latitude with GeoJSON, whereas the dataset uses latitude, longitude.
  
 ## Geospatial index
 
-To query based on coordinates, a [geo index](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md)
+To query based on coordinates, a [geo index](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md)
 is required. It determines which fields contain the latitude and longitude
 values.
 

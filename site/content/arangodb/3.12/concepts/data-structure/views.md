@@ -15,15 +15,15 @@ more collections. The transformation depends on the View type and the View
 configuration.
 
 Views are powered by ArangoDB's built-in search engine.
-See [ArangoSearch](../../index-and-search/arangosearch/_index.md) for details.
+See [ArangoSearch](../../indexes-and-search/arangosearch/_index.md) for details.
 
 ## View types
 
 Available View types:
 
-- The traditional [`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md) to which
+- The traditional [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) to which
   you link collections to.
-- The modern [`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md)
+- The modern [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md)
   that can reference inverted indexes that are defined on the collection-level.
 
 You need to specify the type when you create the View.
@@ -126,8 +126,8 @@ The examples are limited to the basic usage of the View interfaces.
 See the following for more details about the different View types and their
 configuration:
 
-- [`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md)
-- [`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md)
+- [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md)
+- [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md)
 
 ### Create a View
 

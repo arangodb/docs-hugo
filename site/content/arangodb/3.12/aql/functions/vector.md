@@ -10,7 +10,7 @@ description: >-
 
 To use vector search, you need to have vector embeddings stored in documents
 and the attribute that stores them needs to be indexed by a
-[vector index](../../index-and-search/indexing/working-with-indexes/vector-indexes.md).
+[vector index](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
 
 You can calculate vector embeddings using [ArangoDB's GraphML](../../../../ai-suite/graphml/_index.md)
 capabilities (available in the Arango Managed Platform (AMP)) or using external tools.

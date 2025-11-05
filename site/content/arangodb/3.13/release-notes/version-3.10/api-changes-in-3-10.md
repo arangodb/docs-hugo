@@ -568,20 +568,20 @@ search highlighting capabilities for Views.
 The `/_api/analyzer` endpoint supports new Analyzer types in the
 Enterprise Edition:
 
-- [`minhash`](../../index-and-search/analyzers.md#minhash):
+- [`minhash`](../../indexes-and-search/analyzers.md#minhash):
   It has two properties, `analyzer` (object) and `numHashes` (number).
   The `analyzer` object is an Analyzer-like definition with a `type` (string) and
   a `properties` attribute (object). The properties depend on the Analyzer type.
 
-- [`classification`](../../index-and-search/analyzers.md#classification) (experimental):
+- [`classification`](../../indexes-and-search/analyzers.md#classification) (experimental):
   It has three properties, `model_location` (string), `top_k` (number, optional,
   default: `1`), and `threshold` (number, optional, default: `0.99`).
 
-- [`nearest_neighbors`](../../index-and-search/analyzers.md#nearest_neighbors) (experimental):
+- [`nearest_neighbors`](../../indexes-and-search/analyzers.md#nearest_neighbors) (experimental):
   It has two properties, `model_location` (string) and `top_k` (number, optional,
   default: `1`).
 
-- [`geo_s2`](../../index-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
+- [`geo_s2`](../../indexes-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
   Like the existing `geojson` Analyzer, but with an additional `format` property
   that can be set to `"latLngDouble"` (default), `"latLngInt"`, or `"s2Point"`.
 
@@ -592,7 +592,7 @@ Enterprise Edition:
 Analyzers of the `geojson` type have a new `legacy` property. The default is `false`.
 
 This option controls how GeoJSON Polygons are interpreted.
-See the [`geojson` Analyzer](../../index-and-search/analyzers.md#geojson).
+See the [`geojson` Analyzer](../../indexes-and-search/analyzers.md#geojson).
 
 #### Views API
 
@@ -622,7 +622,7 @@ You may use a shorthand notations on `arangosearch` View creation or the
 `storedValues` option, like `["attr1", "attr2"]`, instead of using an array of
 objects.
 
-See the [`arangosearch` Views Reference](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Geo-spatial indexes
@@ -630,7 +630,7 @@ for details.
 Indexes of the `geo` type have a new `legacyPolygons` option.
 
 If `geoJson` is set to `true`, then this option controls how GeoJSON Polygons
-are interpreted. Also see [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
+are interpreted. Also see [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
 
 The default is `true` for geo indexes that were created in versions
 before 3.10, and `false` for geo indexes created in 3.10 or later.

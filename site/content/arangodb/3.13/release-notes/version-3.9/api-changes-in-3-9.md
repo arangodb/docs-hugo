@@ -325,7 +325,7 @@ options, and you can change the `cache` View link/field property with the
 `PUT /_api/view/<view-name>/properties` and `PATCH /_api/view/<view-name>/properties`
 endpoints.
 
-See the [`arangosearch` Views Reference](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Document API

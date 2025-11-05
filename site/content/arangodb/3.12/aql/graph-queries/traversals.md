@@ -218,7 +218,7 @@ versus the whole document.
 <small>Introduced in v3.12.1</small>
 
 You can provide index hints for traversals to let the optimizer prefer
-the [vertex-centric indexes](../../index-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
+the [vertex-centric indexes](../../indexes-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
 you specify over the regular edge index.
 
 This is useful for cases where the selectively estimate of the edge index

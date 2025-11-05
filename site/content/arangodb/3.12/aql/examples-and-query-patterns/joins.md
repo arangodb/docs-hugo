@@ -880,7 +880,7 @@ FOR o IN orders
 The `_key` attribute is covered by the primary index of the `users` collection.
 If the `orders` collection has a persistent index defined over the `user`
 attribute and additionally includes the `total` attribute in
-[`storedValues`](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
+[`storedValues`](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
 then the query is eligible for a merge join. You can check the query explain
 output for `JoinNode` entries:
 

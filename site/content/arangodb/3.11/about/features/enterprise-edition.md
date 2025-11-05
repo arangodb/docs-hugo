@@ -54,11 +54,11 @@ features outlined below. For additional information, see
 - [**Parallel index creation**](../../release-notes/version-3.10/whats-new-in-3-10.md#parallel-index-creation-enterprise-edition):
   Non-unique indexes can be created with multiple threads in parallel.
 
-- [**`minhash` Analyzer**](../../index-and-search/analyzers.md#minhash):
+- [**`minhash` Analyzer**](../../indexes-and-search/analyzers.md#minhash):
   Jaccard similarity approximation for entity resolution, such as for finding
   duplicate records, based on how many elements they have in common
 
-- [**`geo_s2` Analyzer**](../../index-and-search/analyzers.md#geo_s2):
+- [**`geo_s2` Analyzer**](../../indexes-and-search/analyzers.md#geo_s2):
   Efficiently index geo-spatial data using different binary formats, tuning the
   size on disk, the precision, and query performance.
 
@@ -76,15 +76,15 @@ features outlined below. For additional information, see
 - [**Pregel in Cluster**](../../data-science/pregel/_index.md#prerequisites):
   Distributed iterative graph analytics for cluster deployments.
 
-- [**Search highlighting**](../../index-and-search/arangosearch/search-highlighting.md):
+- [**Search highlighting**](../../indexes-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.
 
-- [**Nested search**](../../index-and-search/arangosearch/nested-search.md):
+- [**Nested search**](../../indexes-and-search/arangosearch/nested-search.md):
   Match arrays of objects with all the conditions met by a single sub-object,
   and define for how many of the elements this must be true.
 
 {{% comment %}} Experimental feature
-- **[`classification`](../../index-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../index-and-search/analyzers.md#nearest_neighbors)**:
+- **[`classification`](../../indexes-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../indexes-and-search/analyzers.md#nearest_neighbors)**:
   Classification of text tokens and finding similar tokens using supervised
   fastText word embedding models.
 {{% /comment %}}

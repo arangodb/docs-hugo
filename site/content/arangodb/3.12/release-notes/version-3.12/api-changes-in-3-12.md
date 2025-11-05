@@ -344,7 +344,7 @@ Views of type `arangosearch` accept a new `optimizeTopK` View property for the
 ArangoSearch WAND optimization. It is an immutable array of strings, optional,
 and defaults to `[]`.
 
-See the [`optimizeTopK` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+See the [`optimizeTopK` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
 
 #### Document API
@@ -445,7 +445,7 @@ Both multi-dimensional index variants now support a `sparse` setting (boolean)
 and `storedValues` setting (array of strings) that were not supported by the
 `zkd` index type in previous versions.
 
-See [Working with multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+See [Working with multi-dimensional indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
 ##### Progress indication on the index generation

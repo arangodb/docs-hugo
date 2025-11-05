@@ -12,7 +12,7 @@ You can model geo-spatial information in different ways using the data types
 available in ArangoDB. The recommended way is to use objects with **GeoJSON**
 geometry but you can also use **longitude and latitude coordinate pairs**
 for points. Both models are supported by
-[Geo-Spatial Indexes](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
+[Geo-Spatial Indexes](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
 
 ### Coordinate pairs
 
@@ -344,7 +344,7 @@ lies South of the parallel of latitude at 54 degrees.
 {{< info >}}
 ArangoDB version before 3.10 did an inconsistent special detection of "rectangle"
 polygons that later versions from 3.10 onward no longer do, see
-[Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
+[Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
 {{< /info >}}
 
 Furthermore, there is an issue with the interpretation of linear rings
@@ -393,7 +393,7 @@ ArangoDB versions before 3.10 did not follow this rule and always took the
 "smaller" connected component of the surface as the "interior" of the polygon.
 This made it impossible to specify polygons which covered more than half of the
 sphere. From version 3.10 onward, ArangoDB recognizes this correctly.
-See [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons)
+See [Legacy Polygons](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons)
 for how to deal with this issue.
 
 ## Geo utility functions
@@ -401,7 +401,7 @@ for how to deal with this issue.
 The following helper functions **can** use geo indexes, but do not have to in
 all cases. You can use all of these functions in combination with each other,
 and if you have configured a geo index it may be utilized,
-see [Geo Indexing](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
+see [Geo Indexing](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
 
 ### DISTANCE()
 
@@ -456,7 +456,7 @@ boundary edges!
 {{< /info >}}
 
 You can optimize queries that contain a `FILTER` expression of the following
-form with an S2-based [geospatial index](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
+form with an S2-based [geospatial index](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
 
 ```aql
 FOR doc IN coll
@@ -500,7 +500,7 @@ FOR doc IN collectionName
 ```
 
 You can optimize queries that contain a `FILTER` expression of the following
-form with an S2-based [geospatial index](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
+form with an S2-based [geospatial index](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
 
 ```aql
 FOR doc IN coll
@@ -590,7 +590,7 @@ intersects with `geoJsonB` (i.e. at least one point in B is also in A or vice-ve
 - returns **bool** (bool): `true` if B intersects A, `false` otherwise.
 
 You can optimize queries that contain a `FILTER` expression of the following
-form with an S2-based [geospatial index](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
+form with an S2-based [geospatial index](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md):
 
 ```aql
 FOR doc IN coll
@@ -862,7 +862,7 @@ Please use the [Geo utility functions](#geo-utility-functions) instead.
 {{< /warning >}}
 
 AQL offers the following functions to filter data based on
-[geo indexes](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md). These functions require the collection
+[geo indexes](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md). These functions require the collection
 to have at least one geo index. If no geo index can be found, calling this
 function will fail with an error at runtime. There is no error when explaining
 the query however.

@@ -38,17 +38,17 @@ The following features are now available in the Community Edition:
   [Parallelization](../../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition)
 - [Traversal Projections](../../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition)
 - [Parallel index creation](../../release-notes/version-3.10/whats-new-in-3-10.md#parallel-index-creation-enterprise-edition)
-- [`minhash` Analyzer](../../index-and-search/analyzers.md#minhash)
-- [`geo_s2` Analyzer](../../index-and-search/analyzers.md#geo_s2)
+- [`minhash` Analyzer](../../indexes-and-search/analyzers.md#minhash)
+- [`geo_s2` Analyzer](../../indexes-and-search/analyzers.md#geo_s2)
 - [ArangoSearch column cache](../../release-notes/version-3.10/whats-new-in-3-10.md#arangosearch-column-cache-enterprise-edition)
-- [ArangoSearch WAND optimization](../../index-and-search/arangosearch/performance.md#wand-optimization)
+- [ArangoSearch WAND optimization](../../indexes-and-search/arangosearch/performance.md#wand-optimization)
 - [Read from followers in clusters](../../develop/http-api/documents.md#read-from-followers)
 
 **Querying**
 
-- [Search highlighting](../../index-and-search/arangosearch/search-highlighting.md)
-- [Nested search](../../index-and-search/arangosearch/nested-search.md)
-- [`classification`](../../index-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../index-and-search/analyzers.md#nearest_neighbors) (experimental)
+- [Search highlighting](../../indexes-and-search/arangosearch/search-highlighting.md)
+- [Nested search](../../indexes-and-search/arangosearch/nested-search.md)
+- [`classification`](../../indexes-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../../indexes-and-search/analyzers.md#nearest_neighbors) (experimental)
 - [Skip inaccessible collections](../../aql/how-to-invoke-aql/with-arangosh.md#skipinaccessiblecollections)
 
 **Security**
@@ -77,7 +77,7 @@ If you query a View with the `SEARCH` operation in combination with a
 Only sorting by highest rank is supported, that is, sorting by the result
 of a scoring function in descending order (`DESC`).
 
-See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#wand-optimization)
+See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md#wand-optimization)
 for examples.
 
 This feature is only available in the Enterprise Edition up to v3.12.4 and
@@ -114,7 +114,7 @@ partial matches in long strings.
 The Analyzer can apply another Analyzer of your choice before creating _n_-grams
 that are then used in `LIKE` searches with `_` and `%` wildcards.
 
-See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+See [Transforming data with Analyzers](../../indexes-and-search/analyzers.md#wildcard)
 for details.
 
 ### `multi_delimiter` Analyzer
@@ -139,7 +139,7 @@ db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_mu
 // [ ["differently", "delimited", "words", "one|token"] ]
 ```
 
-See [Analyzers](../../index-and-search/analyzers.md#multi_delimiter) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#multi_delimiter) for details.
 
 ## Improved memory accounting and usage
 
@@ -356,7 +356,7 @@ FOR o IN orders
 The `_key` attribute is covered by the primary index of the `users` collection.
 If the `orders` collection has a persistent index defined over the `user`
 attribute and additionally includes the `total` attribute in
-[`storedValues`](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
+[`storedValues`](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
 then the query is eligible for a merge join.
 
 ```aql
@@ -1393,7 +1393,7 @@ equality checks. It can be used as a vertex-centric index for graph traversals
 if created on an edge collection with the first attribute in `prefixFields` set
 to `_from` or `_to`.
 
-See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+See [Multi-dimensional indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
 #### Native strict ranges
@@ -1497,7 +1497,7 @@ To use this feature, start an ArangoDB server (`arangod`) with the `--vector-ind
 startup option (or `--experimental-vector-index` in v3.12.4 and v3.12.5).
 You need to generate vector embeddings before creating a vector index. For more
 information about the vector index type including the available settings, see the
-[Vector indexes](../../index-and-search/indexing/working-with-indexes/vector-indexes.md)
+[Vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md)
 documentation.
 
 You can also follow the guide in this blog post:

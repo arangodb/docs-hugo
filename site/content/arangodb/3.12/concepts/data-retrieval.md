@@ -17,8 +17,8 @@ collections. Queries are written in the [ArangoDB Query Language](../aql/_index.
 easily processable batches instead of one big hunk.
 
 **Indexes** are used to speed up queries. There are multiple types of indexes,
-such as [persistent indexes](../index-and-search/indexing/working-with-indexes/persistent-indexes.md) and
-[geo-spatial indexes](../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
+such as [persistent indexes](../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md) and
+[geo-spatial indexes](../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md).
 
 **Views** are another type of index, primarily for full-text search. See
-[ArangoSearch](../index-and-search/arangosearch/_index.md).
+[ArangoSearch](../indexes-and-search/arangosearch/_index.md).

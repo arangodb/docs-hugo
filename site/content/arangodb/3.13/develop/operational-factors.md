@@ -142,7 +142,7 @@ Should you decide to create an index you should consider a few things:
 
 - Indexes are a trade-off between storage space, maintenance cost and query speed.
 - Each new index increases the amount of RAM and the amount of disk space needed.
-- Indexes with [indexed array values](../index-and-search/indexing/basics.md#indexing-array-values)
+- Indexes with [indexed array values](../indexes-and-search/indexing/basics.md#indexing-array-values)
   need an extra index entry per array entry
 - Adding indexes increases the write-amplification i.e. it negatively affects
   the write performance (how much depends on the storage engine)
@@ -163,7 +163,7 @@ to understand the bottlenecks in your queries.
 
 Always consider the additional space requirements of extra indexes when
 planning server capacities. For more information on indexes see
-[Index Basics](../index-and-search/indexing/basics.md).
+[Index Basics](../indexes-and-search/indexing/basics.md).
 
 ## Number of Databases and Collections
 

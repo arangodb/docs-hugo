@@ -257,7 +257,7 @@ for the first time, typically when creating a new deployment. You can specify
 a locale for the initialization with the `--icu-language` startup option (or with
 the deprecated `--default-language` startup option). The server language that
 you set this way affects the sorting and comparison behavior for text globally,
-with a few exceptions like the [`collation` Analyzer](../../index-and-search/analyzers.md#collation).
+with a few exceptions like the [`collation` Analyzer](../../indexes-and-search/analyzers.md#collation).
 
 If you don't specify a language using a startup option, the `LANG` environment
 variable is checked. If it's not set or has an invalid value, the effective

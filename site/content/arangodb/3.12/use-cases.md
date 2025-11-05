@@ -148,7 +148,7 @@ It also features natural language processing (NLP) capabilities.
 and can classify or find similar terms using word embedding models.
 {{% /comment %}}
 
-For more information about the search engine, see [ArangoSearch](index-and-search/arangosearch/_index.md).
+For more information about the search engine, see [ArangoSearch](indexes-and-search/arangosearch/_index.md).
 
 ## ArangoDB for Machine Learning
 

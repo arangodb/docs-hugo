@@ -247,7 +247,7 @@ cache cannot be used (i.e. because the query's filter condition does not contain
 equality lookups for all index attributes). It cannot be used for `FOR`
 operations that iterate over Views or perform graph traversals.
 
-Also see [Caching of index values](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
+Also see [Caching of index values](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values).
 
 ### `lookahead`
 
@@ -258,4 +258,4 @@ index hint for tweaking performance:
 FOR … IN … OPTIONS { lookahead: 32 }
 ```
 
-See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).
+See [Multi-dimensional indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md#lookahead-index-hint).

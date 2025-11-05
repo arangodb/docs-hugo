@@ -99,7 +99,7 @@ Optimization rules applied:
   3   handle-arangosearch-views
 ```
 
-See [ArangoSearch Views](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
+See [ArangoSearch Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
 
 ### Stemming support for more languages
 
@@ -140,7 +140,7 @@ db._query(`RETURN TOKENS("αυτοκινητουσ πρωταγωνιστούσ�
 // [ [ "αυτοκινητ", "πρωταγωνιστ" ] ]
 ```
 
-Also see [Analyzers: Supported Languages](../../index-and-search/analyzers.md#supported-languages)
+Also see [Analyzers: Supported Languages](../../indexes-and-search/analyzers.md#supported-languages)
 
 ### Condition Optimization Option
 
@@ -183,7 +183,7 @@ creation to enable or disable the compression of the primary sort data:
 It defaults to LZ4 compression (`"lz4"`), which was already used in ArangoDB
 v3.5 and v3.6. Set it to `"none"` on View creation to trade space for speed.
 
-See [ArangoSearch Views](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
+See [ArangoSearch Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties).
 
 ## SatelliteGraphs
 

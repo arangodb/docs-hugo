@@ -1745,7 +1745,7 @@ of in number of characters.
 
 This function is intended to be used together with the
 [`OFFSET_INFO()` function](arangosearch.md#offset_info) for
-[search highlighting](../../index-and-search/arangosearch/search-highlighting.md).
+[search highlighting](../../indexes-and-search/arangosearch/search-highlighting.md).
 
 - **value** (string): a string
 - **offset** (number): start at this byte of the UTF-8 encoded string.
@@ -1840,7 +1840,7 @@ A wrapping `ANALYZER()` call in a search expression does not affect the
 
 - **input** (string\|array): text to tokenize. Accepts recursive arrays of
   strings.
-- **analyzer** (string): name of an [Analyzer](../../index-and-search/analyzers.md).
+- **analyzer** (string): name of an [Analyzer](../../indexes-and-search/analyzers.md).
 - returns **tokenArray** (array): array of strings with zero or more elements,
   each element being a token.
 

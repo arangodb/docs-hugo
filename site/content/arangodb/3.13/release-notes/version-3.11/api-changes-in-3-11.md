@@ -482,7 +482,7 @@ and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.
 The `/_api/analyzer` endpoint supports a new Analyzer type in the
 Enterprise Edition:
 
-- [`geo_s2`](../../index-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
+- [`geo_s2`](../../indexes-and-search/analyzers.md#geo_s2) (introduced in v3.10.5):
   Like the existing `geojson` Analyzer, but with an additional `format` property
   that can be set to `"latLngDouble"` (default), `"latLngInt"`, or `"s2Point"`.
 
@@ -579,7 +579,7 @@ You may use a shorthand notations on `arangosearch` View creation or the
 `storedValues` option, like `["attr1", "attr2"]`, instead of using an array of
 objects.
 
-See the [`arangosearch` Views Reference](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
+See the [`arangosearch` Views Reference](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
 
 #### Pregel API
