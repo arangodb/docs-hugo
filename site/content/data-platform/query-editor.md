@@ -104,13 +104,16 @@ Once the AQLizer service is ready, you can generate queries.
 
 1. In the AQLizer tab, enter a self-contained question or instructions in
    natural language, like "List all distinct surnames of characters older than 30".
-2. Click **Ask** to use GenAI for generating an AQL query.
-3. Verify and refine the query in the editor.
+2. Click **Ask** or press {{< kbd "Return" >}} to use GenAI for generating an AQL query.
+3. Click **Open in Editor** for a new query tab, where you can verify, refine,
+   and run the query.
 
 {{< warning >}}
 Always verify AI-generated queries.
 AI can make mistakes or produce unexpected results.
 {{< /warning >}}
+
+![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
 
 ## Adjust the viewport
 

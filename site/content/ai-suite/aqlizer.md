@@ -20,11 +20,17 @@ For example, you can ask questions or use instructions like the following:
 
 ## Interfaces
 
+### Web interface
+
 The AQLizer feature is integrated into the AI Data Platform web interface.
 You can access it directly from the **Query Editor**. You can generate, verify,
 and refine queries in one place. To learn more about how to set up and generate
 queries, see the [Query Editor](../data-platform/query-editor.md#generate-queries-aqlizer)
 documentation of the Data Platform.
+
+![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
+
+### API
 
 You can also utilize the AQLizer feature programmatically using an API.
 See the [Natural Language to AQL Translation Service](reference/natural-language-to-aql.md)
