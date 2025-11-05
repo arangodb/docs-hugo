@@ -1564,7 +1564,7 @@ li > code {
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';
-    font-family: var(--font-content)
+    font-family: var(--font-content);
     padding: 0 5px;
     font-weight: bold;
     color: var(--green-700);
@@ -2218,8 +2218,15 @@ nav.pagination .next {
     display: none;
 }
 
-.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .version-selector,
-.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol {
+.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .version-selector {
+    display: block;
+}
+
+.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol:not([data-version]) {
+    display: block;
+}
+
+.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol.selected-version {
     display: block;
 }
 

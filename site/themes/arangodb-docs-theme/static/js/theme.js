@@ -138,9 +138,9 @@ async function loadNav() {
     
     versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
       if (navList.dataset.version == selectedVersion) {
-        navList.style.display = "block";
+        navList.classList.add("selected-version");
       } else {  
-        navList.removeAttribute("style");
+        navList.classList.remove("selected-version");
       }
     });
   } else {
@@ -505,12 +505,12 @@ function handleDocumentChange(event) {
     //const versionedPath = target.dataset.path;
     
     localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
-    target.closest(".nav-section").querySelectorAll(":scope >.nav-ol").forEach(
+    target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
       el => {
         if (el.dataset.version == selectedVersion) {
-          el.style.display = "block";
+          el.classList.add("selected-version");
         } else {
-          el.removeAttribute("style");
+          el.classList.remove("selected-version");
         }
       }
     );
