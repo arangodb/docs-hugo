@@ -129,5 +129,5 @@ an AQL query, a custom graph visualization for each movie, and more.
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango_datasets` Python package](../components/tools/arango-datasets.md)
+[`arango_datasets` Python package](../../../ecosystem/arango-datasets.md)
 to load sample datasets into a deployment.

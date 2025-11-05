@@ -1,7 +1,7 @@
 ---
 title: ArangoDB Datasets
 menuTitle: ArangoDB Datasets
-weight: 60
+weight: 40
 description: >-
   `arango-datasets` is a Python package for loading sample datasets into ArangoDB
 ---

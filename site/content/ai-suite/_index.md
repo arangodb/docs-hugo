@@ -43,5 +43,5 @@ Alongside these components, you also get the following additional features:
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango-datasets` Python package](../arangodb/3.12/components/tools/arango-datasets.md)
+[`arango-datasets` Python package](../ecosystem/arango-datasets.md)
 to load sample datasets into a deployment.
