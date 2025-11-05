@@ -55,7 +55,7 @@ What you get with the AI Suite:
   structure for better predictions.
 - [Graph Analytics](../ai-suite/graph-analytics/): Run advanced algorithms like PageRank
   to discover influential nodes and patterns.
-- [AQLizer](../ai-suite/aqlizer.): Generate AQL queries from natural language.
+- [AQLizer](../ai-suite/aqlizer.md): Generate AQL queries from natural language.
 - [Jupyter notebooks](../ai-suite/notebook-servers.md): Run Jupyter Notebooks to build and
   experiment with graph-powered data, AI, and machine learning workflows directly connected
   to ArangoDB databases. 
