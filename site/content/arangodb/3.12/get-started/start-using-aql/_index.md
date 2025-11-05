@@ -32,7 +32,7 @@ ArangoDB's web interface has a **Queries** section for
 4. Specify any needed bind parameters in the panel on the right-hand side on the
    **Bind Variables** tab, e.g. set `name` to a value of `AQL`.
 5. Optionally set query options on the **Options** tab.
-6. Click the **Execute** button or hit {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}}.
+6. Click the **Execute** button or press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}}.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
