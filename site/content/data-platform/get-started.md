@@ -1,5 +1,5 @@
 ---
-title: Get Started with the Arango Data Platform
+title: Get Started with the Arango Data Platform (version 3)
 menuTitle: Get Started
 weight: 10
 description: >-

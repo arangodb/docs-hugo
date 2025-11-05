@@ -11,7 +11,7 @@ exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}
 
-## Arango Data Platform
+## Arango Data Platform (version 3)
 
 <small>Introduced in: v3.12.5</small>
 
