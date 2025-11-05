@@ -35,6 +35,14 @@
     --font-headlines: "Urbanist", sans-serif;
     --font-content: "Inter", sans-serif;
 
+    --padding-1: 8px;
+    --padding-2: 16px;
+    --padding-4: 32px;
+    --padding-8: 64px;
+    
+    --topbar-height: 64px;
+    --nav-width: 300px;
+
     --green-50: #e3f2e0;
     --green-100: #dcebd9;
     --green-200: #98D78C;
@@ -478,24 +486,16 @@ a.section-link {
 }
 
 .card-head {
-    position: relative;
     z-index: 2;
-    display: flex;
     margin-bottom: 10px;
-    flex-flow: column;
     min-height: 40px;
-    justify-content: center;
-    align-items: flex-start;
 }
 
 .card-icon {
-    width: 40px;
-    height: 40px;
-    -o-object-fit: contain;
+    width: 30px;
     object-fit: contain;
-    position: absolute;
-    top: 0;
-    left: 0;
+    float: right;
+    margin-left: 10px;
 }
 
 .card-title {
@@ -818,19 +818,6 @@ header .logo {
 }
 
 /* */
-
-/* Header version select */
-.version-selector {
-    border: none;
-    margin-left: 1rem;
-}
-
-.arangodb-version {
-    border: none;
-    padding: 0 .75rem;
-    color: var(--gray-50);
-    background: black;
-}
 
 /*
 @media screen and (max-width: 768px) {
@@ -2171,4 +2158,106 @@ nav.pagination .next {
 .ag-banner .logo {
     height: 36px !important;
     width: 200px !important;
+}
+
+.block {
+    display: block;
+}
+
+.main-nav {
+    background-color: var(--gray-950);
+    position: fixed;
+    top: var(--padding-8);
+    left: 0;
+    bottom: 0;
+    width: var(--nav-width);
+    padding: var(--padding-1);
+    padding-left: 0;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-300) var(--gray-100);
+    user-select: none;
+}
+
+.main-nav-ol,
+.nav-ol {
+    list-style: none;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.nav-section-header {
+    display: flex;
+}
+
+.nav-section > .nav-ol,
+.nav-section > .version-selector {
+    display: none;
+}
+
+.expand-nav {
+    display: block;
+    width: 48px;
+    border-radius:  0 .5rem .5rem 0;
+    margin: 0;
+}
+
+.expand-nav::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f107";
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 600;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-left: 14px;
+    color: var(--gray-500);
+}
+
+.expand-nav > input {
+    display: none;
+}
+
+.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .version-selector,
+.nav-section:has(> .nav-section-header > .expand-nav > input:checked) > .nav-ol {
+    display: block;
+}
+
+.link-nav:hover, .expand-nav:hover {
+    color: var(--gray-100);
+    background-color: var(--gray-900);
+}
+
+.link-nav {
+    display: block;
+    width: 100%;
+    padding: .4rem 1rem;
+    color: var(--gray-100);
+    border-radius: .5rem;
+    text-shadow: none !important; /* Bootstrap ?! */
+    font-weight: 400;
+}
+
+.link-nav-active {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.link-nav-active, .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav, .link-nav:focus {
+    color: var(--color-electric-lime);
+}
+
+.nav-section-header > .link-nav {
+    border-radius: 0.5rem 0 0 .5rem;
+}
+
+.nav-section-header > .expand-nav {
+    border-radius: 0 .5rem .5rem 0;
+}
+
+.version-selector {
+    color: var(--gray-50);
+    background: black;
+    border: none;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
 }

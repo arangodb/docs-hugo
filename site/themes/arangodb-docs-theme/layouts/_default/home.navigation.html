@@ -1,49 +1,35 @@
-<div class="sidebar default-animation active">
-  <div class="sidenav-container-flex">
-    <div class="sidenav-navigation">
-      <div class="content-wrapper highlightable">
-        <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
-          {{- template "section-tree-nav" dict "Pages" .Site.Sections }}
-        </ul>
-        <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
-      </div>
-    </div>
-  </div>
-  <button class="sidebar-toggle-navigation desktop-menu-toggle" onclick="showSidebarHandler();"></button>
-</div>
+<ol class="main-nav-ol">
+  {{- template "main-nav-tree" dict "Pages" .Site.Sections }}
+</ol>
 
-{{- define "section-tree-nav" }}
+{{- define "main-nav-tree" }}
   {{- $pages := .Pages }}
   {{- range $page := $pages.ByWeight }}
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
-      <li class="dd-item sect">
-        <label class="closed"></label>{{- /*whitespace control */ -}}
-        <a href="{{ .RelPermalink }}" class="toggle sect menu-link">
-          <div class="menu-title">{{ .Params.menuTitle | markdownify }}</div>
-        </a>
-        {{ $isVersioned := eq $page.Path "/arangodb" }}
+      <li class="nav-section">
+        <div class="nav-section-header">
+          <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
+          <label class="expand-nav"><input type="checkbox"></label>
+        </div>
+        {{- $isVersioned := eq $page.RelPermalink "/arangodb/" }}
         {{ if $isVersioned }}
-          {{ partial "version-selector.html" . }}
-          {{ range $versionPage := $page.Pages }}
-            <div class="version-menu version-{{ replace (index (split $versionPage.Path "/") 2) "." "_" }}">
-              <ul class="submenu">
-                {{- template "section-tree-nav" $versionPage }}
-              </ul>
-            </div>
-          {{ end }}
-        {{ else }}
-        <ul class="submenu">
-          {{- template "section-tree-nav" $page }}
-        </ul>
-        {{ end }}
+          {{- partial "version-selector.html" . }}
+          {{- range $versionSection := $page.Pages }}
+            <ol class="nav-ol" data-version="{{ index (split $versionSection.Path "/") 2 }}">
+              {{- template "main-nav-tree" $versionSection -}}
+            </ol>
+          {{- end }}
+        {{- else }}
+          <ol class="nav-ol">
+            {{- template "main-nav-tree" $page -}}
+          </ol>
+        {{- end }}
       </li>
     {{- else }}
       {{- /* page (or section without children) */}}
-      <li class="dd-item leaf">
-        <a href="{{ .RelPermalink }}" class="menu-link">
-          <div class="menu-title">{{ .Params.menuTitle | markdownify }}</div>
-        </a>
+      <li class="nav-leaf">
+        <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
       </li>
     {{- end }}
   {{- end }}
