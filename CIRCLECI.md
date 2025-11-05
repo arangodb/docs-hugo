@@ -219,9 +219,6 @@ Invoke Args:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate-oasisctl` |
-| string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
-| string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
-| string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
 | string | `generators` | `oasisctl` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |
