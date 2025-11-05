@@ -96,7 +96,7 @@ Breakdown of the query:
 Now that edges link character documents (nodes), it is a graph you can
 query to find out who the parents are of another character – or in
 graph terms, you want to start at a node and follow the edges to other
-nodes in an [AQL graph traversal](../../aql/graphs/traversals.md):
+nodes in an [AQL graph traversal](../../aql/graph-queries/traversals.md):
 
 ```aql
 // Declare collection of start node (cluster only)
@@ -110,7 +110,7 @@ This `FOR` loop doesn't iterate over a collection or an array, it walks the
 graph and iterates over the connected nodes it finds, with the node
 document assigned to a variable (here: `v`). It can also emit the edges it
 walked as well as the full path from start to end to
-[another two variables](../../aql/graphs/traversals.md#syntax).
+[another two variables](../../aql/graph-queries/traversals.md#syntax).
 
 In above query, the traversal is restricted to a minimum and maximum traversal
 depth of 1 (how many steps to take from the start node), and to only follow
@@ -261,7 +261,7 @@ Tywin <- Cersei <- Joffrey
 
 As a quick fix, change the last line of the query to `RETURN DISTINCT v.name`
 to return each value only once. However, there are
-[traversal options](../../aql/graphs/traversals.md#syntax) including one to
+[traversal options](../../aql/graph-queries/traversals.md#syntax) including one to
 suppress duplicate nodes early on for the entire traversal (which requires
 breadth-first search):
 

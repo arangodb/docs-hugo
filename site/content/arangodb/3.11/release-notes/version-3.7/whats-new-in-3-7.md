@@ -340,7 +340,7 @@ FOR v, e, p IN 1..3 OUTBOUND 'products/123' GRAPH 'components'
   RETURN v
 ```
 
-Also see [AQL Traversal Options](../../aql/graphs/traversals.md#working-with-named-graphs)
+Also see [AQL Traversal Options](../../aql/graph-queries/traversals.md#working-with-named-graphs)
 
 ### Traversal parallelization (Enterprise Edition)
 
@@ -375,7 +375,7 @@ deployments and to cluster traversals that are running in a OneShard setup.
 Cluster traversals that run on a coordinator node and SmartGraph traversals are
 currently not parallelized.
 
-See [Graph traversal options](../../aql/graphs/traversals.md#working-with-named-graphs)
+See [Graph traversal options](../../aql/graph-queries/traversals.md#working-with-named-graphs)
 
 ### AQL functions added
 

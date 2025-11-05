@@ -62,7 +62,7 @@ data management, monitoring, and automation.
 
 ### Graph Queries
 
-Utilizing connected data starts with running simple [graph queries](arangodb/3.12/aql/graphs/_index.md).
+Utilizing connected data starts with running simple [graph queries](arangodb/3.12/aql/graph-queries/_index.md).
 Using ArangoDB and its query language, you can determine the shortest paths between nodes as well as execute graph traversals. A traversal starts at a
 given node of a graph and follows the directly connected edges. The edges indicate
 what the next connected nodes are, and this discovery of neighbors can repeat.

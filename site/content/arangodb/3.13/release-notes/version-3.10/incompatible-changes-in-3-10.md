@@ -12,7 +12,7 @@ In cluster deployments, you need to declare collections that an AQL query
 implicitly reads from using the [`WITH` operation](../../aql/high-level-operations/with.md).
 
 From version 3.10.0 onward, it is necessary to also declare the collections of
-start vertices that are used for [graph traversals](../../aql/graphs/traversals.md)
+start vertices that are used for [graph traversals](../../aql/graph-queries/traversals.md)
 if you specify start vertices using strings.
 
 In previous versions, the following query would work:

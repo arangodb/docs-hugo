@@ -95,7 +95,7 @@ with the travel time for both directions as edge weight.
 
 ![Train Connection Map](../../../images/train_map.png)
 
-See the [k Shortest Paths page](../aql/graphs/k-shortest-paths.md) for query examples.
+See the [k Shortest Paths page](../aql/graph-queries/k-shortest-paths.md) for query examples.
 
 ```js
 ---
@@ -120,9 +120,9 @@ in the `mps_edges` collection. It is a simple traversal graph with start node
 
 ![Mps Graph](../../../images/mps_graph.png)
 
-With the [Shortest Path](../aql/graphs/shortest-path.md) algorithm, you either
+With the [Shortest Path](../aql/graph-queries/shortest-path.md) algorithm, you either
 get the shortest path *A* - *B* - *C* or *A* - *D* - *C*. With the
-[All Shortest Paths](../aql/graphs/all-shortest-paths.md) algorithm, both
+[All Shortest Paths](../aql/graph-queries/all-shortest-paths.md) algorithm, both
 shortest paths are returned.
 
 Example of how to create the graph, inspect its nodes and edges, and delete

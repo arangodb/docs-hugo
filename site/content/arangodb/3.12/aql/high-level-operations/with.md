@@ -52,7 +52,7 @@ involved collections. Using named graphs in traversals (`GRAPH "graph-name"`)
 does not require it either, assuming that all nodes are in collections that
 are part of the graph, as enforced by the [Graph API](../../develop/http-api/graphs/named-graphs.md).
 That means, it is only necessary for traversals using anonymous graphs /
-[collection sets](../graphs/traversals.md#working-with-collection-sets).
+[collection sets](../graph-queries/traversals.md#working-with-collection-sets).
 
 The following example query specifies an edge collection `usersHaveManagers`
 to perform a graph traversal. It is the only explicitly specified collection in

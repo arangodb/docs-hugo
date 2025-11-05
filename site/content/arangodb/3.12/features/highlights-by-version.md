@@ -110,7 +110,7 @@ Also see [What's New in 3.11](../release-notes/version-3.11/whats-new-in-3-11.md
   to let persistent indexes cover additional attributes of projections.
 
 - **AQL Graph Traversals**:
-  [All Shortest Paths](../aql/graphs/all-shortest-paths.md) allows you to query
+  [All Shortest Paths](../aql/graph-queries/all-shortest-paths.md) allows you to query
   for all paths of shortest length between two documents.
 
 **Enterprise Edition**
@@ -297,9 +297,9 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   [AQL integration](../release-notes/version-3.5/whats-new-in-3-5.md#arangosearch).
 
 - **AQL Graph Traversals**:
-  [k Shortest Paths](../aql/graphs/k-shortest-paths.md) allows you to query not
+  [k Shortest Paths](../aql/graph-queries/k-shortest-paths.md) allows you to query not
   just for one shortest path between two documents but multiple, sorted by
-  length or weight. With [PRUNE](../aql/graphs/traversals.md#pruning) you can
+  length or weight. With [PRUNE](../aql/graph-queries/traversals.md#pruning) you can
   stop walking down certain paths early in a graph traversal to improve its
   efficiency.
 
@@ -479,7 +479,7 @@ Also see [What's New in 3.1](../release-notes/version-3.1/whats-new-in-3-1.md).
   synchronous replication, master/master setup, shared nothing
   architecture, cluster management Agency.
 
-- Deeply integrated, native [**AQL graph traversal**](../aql/graphs/_index.md)
+- Deeply integrated, native [**AQL graph traversal**](../aql/graph-queries/_index.md)
 
 - [**VelocyPack**](https://github.com/arangodb/velocypack) as new internal
   binary storage format as well as for intermediate AQL values.

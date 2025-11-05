@@ -265,7 +265,7 @@ detailed information about breaking changes before upgrading.
 - **HTTP and JavaScript traversal APIs**: The HTTP traversal API as well as the
   `@arangodb/graph/traversal` JavaScript traversal module were deprecated since
   version 3.4.0 and have been removed in version 3.12.0. You can
-  [traverse graphs with AQL](../aql/graphs/traversals.md) instead.
+  [traverse graphs with AQL](../aql/graph-queries/traversals.md) instead.
 
 - **Specialized index creation methods in JavaScript API**:
   The following JavaScript methods for creating indexes from the ArangoShell

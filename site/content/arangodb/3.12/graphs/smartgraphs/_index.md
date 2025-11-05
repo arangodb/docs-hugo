@@ -30,7 +30,7 @@ Examples for such graphs are:
   category are often bought together.
 
 In terms of querying there is no difference between SmartGraphs and General Graphs.
-For graph querying please refer to [AQL Graph Operations](../../aql/graphs/_index.md)
+For graph querying please refer to [AQL Graph Operations](../../aql/graph-queries/_index.md)
 and [General Graph Functions](../general-graphs/functions.md) sections.
 The optimizer is clever enough to identify
 whether it is a SmartGraph or not.

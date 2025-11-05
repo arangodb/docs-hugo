@@ -14,7 +14,7 @@ It will give a vast performance benefit for all graphs sharded
 in an ArangoDB Cluster, reducing network hops substantially.
 
 In terms of querying there is no difference between SmartGraphs and EnterpriseGraphs.
-For graph querying please refer to [AQL Graph Operations](../../aql/graphs/_index.md)
+For graph querying please refer to [AQL Graph Operations](../../aql/graph-queries/_index.md)
 and [General Graph Functions](../general-graphs/functions.md) sections.
 
 Creating and modifying the underlying collections of an EnterpriseGraph are

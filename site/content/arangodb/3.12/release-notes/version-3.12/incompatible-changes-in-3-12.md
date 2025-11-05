@@ -992,7 +992,7 @@ v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
 larger amounts of data and was thus very limited.
 
 Users of the `/_api/traversal` REST API should use
-[AQL traversal queries](../../aql/graphs/traversals.md) instead.
+[AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 ### HTTP server behavior
 
@@ -1058,7 +1058,7 @@ AQL traversals in v2.8.0. Additionally, the JavaScript-based traversals could
 not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
-[AQL traversal queries](../../aql/graphs/traversals.md) instead.
+[AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 ### Graph compatibility functions removed
 

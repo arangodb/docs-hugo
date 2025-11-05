@@ -347,7 +347,7 @@ FOR v, e, p IN 10 OUTBOUND @start GRAPH "myGraph"
 The `v.isRelevant == true` condition is stored in the `pruneCondition` variable
 and used as a condition for `FILTER` later.
 
-See [Pruning](../../aql/graphs/traversals.md#pruning).
+See [Pruning](../../aql/graph-queries/traversals.md#pruning).
 
 ### Warnings on invalid OPTIONS
 

@@ -94,7 +94,7 @@ direction and follow them in both directions (**any**) as if it were an
 undirected graph.
 
 You can query graphs with ArangoDB's query language, see
-[Graphs in AQL](../aql/graphs/_index.md).
+[Graphs in AQL](../aql/graph-queries/_index.md).
 
 ## Comparison to relational database systems
 
@@ -119,15 +119,15 @@ In queries, you can define in which directions the edge relations may be followe
 
 ## Supported graph algorithms
 
-- [Traversal](../aql/graphs/traversals.md)
+- [Traversal](../aql/graph-queries/traversals.md)
   - following edges in outbound, inbound, or any direction
   - variable traversal depth between a defined minimum and maximum 
   - breadth-first, depth-first, and weighted traversals
   - optionally with prune conditions
-- [Shortest Path](../aql/graphs/shortest-path.md)
-- [All Shortest Paths](../aql/graphs/all-shortest-paths.md)
-- [k Shortest Paths](../aql/graphs/k-shortest-paths.md)
-- [k Paths](../aql/graphs/k-paths.md)
+- [Shortest Path](../aql/graph-queries/shortest-path.md)
+- [All Shortest Paths](../aql/graph-queries/all-shortest-paths.md)
+- [k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)
+- [k Paths](../aql/graph-queries/k-paths.md)
 - [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
   - Page Rank
   - Seeded Page Rank

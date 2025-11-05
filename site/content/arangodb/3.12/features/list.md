@@ -118,17 +118,17 @@ available from v3.12.5 onward.
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../aql/graphs/traversals-explained.md) with AQL
+  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL
   in outbound, inbound, or both directions to retrieve direct and indirect
   neighbor nodes using a fixed or variable depth.
-  The [traversal order](../aql/graphs/traversals.md) can be
+  The [traversal order](../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
   ("Weighted Traversals"). Stop conditions for pruning paths are supported.
-  Traversal algorithms to get a [shortest path](../aql/graphs/shortest-path.md),
-  [all shortest paths](../aql/graphs/all-shortest-paths.md), paths in order of
-  increasing length ("[k Shortest Paths](../aql/graphs/k-shortest-paths.md)"),
+  Traversal algorithms to get a [shortest path](../aql/graph-queries/shortest-path.md),
+  [all shortest paths](../aql/graph-queries/all-shortest-paths.md), paths in order of
+  increasing length ("[k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)"),
   and to enumerate all paths between two nodes
-  ("[k Paths](../aql/graphs/k-paths.md)") are available, too.
+  ("[k Paths](../aql/graph-queries/k-paths.md)") are available, too.
 
 - [**ArangoSearch for Text Search and Ranking**](../index-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.

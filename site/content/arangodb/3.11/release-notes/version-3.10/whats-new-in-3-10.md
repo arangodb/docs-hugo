@@ -533,7 +533,7 @@ FOR p IN OUTBOUND ALL_SHORTEST_PATHS 'places/Carlisle' TO 'places/London'
     RETURN { places: p.vertices[*].label }
 ```
 
-See [All Shortest Paths in AQL](../../aql/graphs/all-shortest-paths.md) for details.
+See [All Shortest Paths in AQL](../../aql/graph-queries/all-shortest-paths.md) for details.
 
 ### Parallelism for Sharded Graphs (Enterprise Edition)
 
@@ -611,7 +611,7 @@ but only access small parts of the documents.
 
 By default, up to 5 attributes are extracted instead of loading the full document.
 You can control this number with the `maxProjections` option, which is now
-supported for [graph traversals](../../aql/graphs/traversals.md#working-with-named-graphs).
+supported for [graph traversals](../../aql/graph-queries/traversals.md#working-with-named-graphs).
 See also [how to use `maxProjections` with FOR loops](../../aql/high-level-operations/for.md#maxprojections).
 
 In the following query, the accessed attributes are the `name` attribute of the

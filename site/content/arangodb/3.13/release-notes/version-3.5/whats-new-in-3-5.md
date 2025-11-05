@@ -155,7 +155,7 @@ cases. Using `PRUNE`, the traverser will not follow any more edges on the
 current path if the pruning condition is met, but will emit the traversal
 variables for whatever stopped it.
 
-See: [Graph Traversal Pruning](../../aql/graphs/traversals.md#pruning)
+See: [Graph Traversal Pruning](../../aql/graph-queries/traversals.md#pruning)
 
 ### SORT-LIMIT optimization
 
@@ -231,7 +231,7 @@ Also see: [AQL Numeric Literals](../../aql/fundamentals/data-types.md#numeric-li
 AQL now allows to perform k Shortest Paths queries, that is, query a number of
 paths of increasing length from a start vertex to a target vertex.
 
-See: [AQL k Shortest Paths](../../aql/graphs/k-shortest-paths.md)
+See: [AQL k Shortest Paths](../../aql/graph-queries/k-shortest-paths.md)
 
 ## SmartJoins
 

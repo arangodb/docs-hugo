@@ -81,7 +81,7 @@ The preferred way to start a breadth-first search from now on is with
 `order: "bfs"`. The default remains depth-first search if no `order` is
 specified, but can also be explicitly requested with `order: "dfs"`.
 
-Also see [AQL graph traversals](../../aql/graphs/traversals.md)
+Also see [AQL graph traversals](../../aql/graph-queries/traversals.md)
 
 ### k Paths
 
@@ -107,7 +107,7 @@ FOR path IN 2..4 OUTBOUND K_PATHS "v/source" TO "v/target" GRAPH "g"
 … that have length of exactly 2 or 3 or 4, start at `v/source` and end at
 `v/target`. No order is guaranteed for those paths in the result set.
 
-For more details see [AQL k Paths](../../aql/graphs/k-paths.md)
+For more details see [AQL k Paths](../../aql/graph-queries/k-paths.md)
 
 ### AQL bit functions
 

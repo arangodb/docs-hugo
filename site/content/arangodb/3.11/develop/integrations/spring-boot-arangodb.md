@@ -1229,7 +1229,7 @@ Character [id=9014, name=Cersei, surname=Lannister, alive=true, age=36]
 
 ### Graph traversal
 
-To finish the query method topic, add a [graph traversal](../../aql/graphs/traversals.md)
+To finish the query method topic, add a [graph traversal](../../aql/graph-queries/traversals.md)
 written in AQL to this demo where the `ChildOf` edges are involved.
 
 The following query searches for every `Character` connected (through `ChildOf`)

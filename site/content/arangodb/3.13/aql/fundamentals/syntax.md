@@ -167,20 +167,20 @@ based on the context:
   [REPLACE](../high-level-operations/replace.md#query-options) /
   [UPSERT](../high-level-operations/upsert.md#query-options) /
   [REMOVE](../high-level-operations/remove.md#query-options) operation /
-  [Graph Traversal](../graphs/traversals.md) /
-  [Shortest Path](../graphs/shortest-path.md#path-search-options) /
-  [All Shortest Paths](../graphs/all-shortest-paths.md#path-search-options) /
-  [k Shortest Paths](../graphs/k-shortest-paths.md#path-search-options) /
-  [k Paths](../graphs/k-paths.md#path-search-options)
+  [Graph Traversal](../graph-queries/traversals.md) /
+  [Shortest Path](../graph-queries/shortest-path.md#path-search-options) /
+  [All Shortest Paths](../graph-queries/all-shortest-paths.md#path-search-options) /
+  [k Shortest Paths](../graph-queries/k-shortest-paths.md#path-search-options) /
+  [k Paths](../graph-queries/k-paths.md#path-search-options)
 - `PRUNE` –
-  [Graph Traversal](../graphs/traversals.md#pruning) (`FOR` operation variant)
+  [Graph Traversal](../graph-queries/traversals.md#pruning) (`FOR` operation variant)
 - `SEARCH` –
   [SEARCH](../high-level-operations/search.md) operation
 - `TO` –
-  [Shortest Path](../graphs/shortest-path.md) /
-  [All Shortest Paths](../graphs/all-shortest-paths.md) /
-  [k Shortest Paths](../graphs/k-shortest-paths.md) /
-  [k Paths](../graphs/k-paths.md)
+  [Shortest Path](../graph-queries/shortest-path.md) /
+  [All Shortest Paths](../graph-queries/all-shortest-paths.md) /
+  [k Shortest Paths](../graph-queries/k-shortest-paths.md) /
+  [k Paths](../graph-queries/k-paths.md)
 
 Last but not least, there are special variables which are available in certain
 contexts. Unlike keywords, they are **case-sensitive**:

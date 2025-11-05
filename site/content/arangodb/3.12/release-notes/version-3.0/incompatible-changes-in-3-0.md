@@ -126,7 +126,7 @@ are missing from the replacement document, an `REPLACE` operation will fail.
 #### Graph functions
 
 In version 3.0 all former graph related functions have been removed from AQL to
-be replaced by [native AQL constructs](../../aql/graphs/_index.md).
+be replaced by [native AQL constructs](../../aql/graph-queries/_index.md).
 These constructs allow for more fine-grained filtering on several graph levels.
 Also this allows the AQL optimizer to automatically improve these queries by
 enhancing them with appropriate indexes.

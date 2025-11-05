@@ -56,7 +56,7 @@ The following design limitations are known for AQL queries:
   it was used for a write operation in the same AQL query.
 
 - In the cluster, all collections that are accessed **dynamically** by
-  [traversals working with collection sets](../graphs/traversals.md#working-with-collection-sets)
+  [traversals working with collection sets](../graph-queries/traversals.md#working-with-collection-sets)
   (instead of named graphs) must be stated in the query's initial
   [`WITH` statement](../high-level-operations/with.md). To make the `WITH` statement
   required in single server as well (e.g. for testing a migration to cluster),

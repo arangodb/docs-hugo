@@ -795,7 +795,7 @@ FILTER p.edges[1].foo == "bar" AND
        p.edges[2].baz == "qux"
 ```
 
-See the [Traversal options](../../aql/graphs/traversals.md#traversal-options)
+See the [Traversal options](../../aql/graph-queries/traversals.md#traversal-options)
 for details.
 
 

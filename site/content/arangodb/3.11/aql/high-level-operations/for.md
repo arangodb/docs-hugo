@@ -12,7 +12,7 @@ The general syntax for iterating over collections and arrays is:
 
 <pre><code>FOR <em>variableName</em> IN <em>expression</em></code></pre>
 
-There is also a special variant for [graph traversals](../graphs/traversals.md):
+There is also a special variant for [graph traversals](../graph-queries/traversals.md):
 
 <pre><code>FOR <em>vertexVariableName</em> [, <em>edgeVariableName</em> [, <em>pathVariableName</em> ] ] IN <em>traversalExpression</em></code></pre>
 
@@ -208,7 +208,7 @@ there are a few corner cases where it can make sense:
 
 {{< info >}}
 Starting with version 3.10, `maxProjections` can be used in 
-[Graph Traversals](../graphs/traversals.md#working-with-named-graphs) (Enterprise Edition only).
+[Graph Traversals](../graph-queries/traversals.md#working-with-named-graphs) (Enterprise Edition only).
 {{< /info >}}
 
 ### `useCache`
