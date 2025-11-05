@@ -122,6 +122,22 @@ function getSelectedVersion() {
   return localStorage.getItem("docs-version") ?? "stable";
 }
 
+function updateActiveNavItem(pathname) {
+  // Remove all existing active states
+  document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
+  
+  // Collapse all sections first
+  document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
+  
+  // Find and activate the new item
+  const activeItem = document.querySelector(`.link-nav[href="${pathname}"]`);
+  if (activeItem) {
+    activeItem.classList.add("link-nav-active");
+    // Expand all parent sections
+    document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+  }
+}
+
 async function loadNav() {
   const res = await fetch("/nav.html");
   if (!res.ok) {
@@ -147,15 +163,11 @@ async function loadNav() {
     throw new Error("Stored version not available in version selector");
   }
 
-  const activeItem = mainNavContent.querySelector(`.link-nav[href="${window.location.pathname}"]`);
-  if (activeItem) {
-    activeItem.classList.add("link-nav-active");
-    mainNavContent.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
-  }
-  //versionSelector.addEventListener("change", handleDocumentChange);
-
   const mainNavPlaceholder = document.querySelector(".main-nav");
   mainNavPlaceholder.appendChild(mainNavContent);
+  
+  // Set initial active state
+  updateActiveNavItem(window.location.pathname);
 }
 
 function trackPageView(title, urlPath) {
@@ -179,6 +191,7 @@ function initArticle(url) {
   goToTop();
   styleImages();
   linkToVersionedContent();
+  updateActiveNavItem(window.location.pathname);
 }
 
 
