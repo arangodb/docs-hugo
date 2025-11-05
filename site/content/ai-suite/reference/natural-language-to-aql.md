@@ -155,7 +155,7 @@ Verify that the service is running and healthy:
 
 ```bash
 curl --request GET \
-  --url <ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/health \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/health \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 
