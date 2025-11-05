@@ -1,5 +1,5 @@
 ---
-title: The Arango Data Platform (version 3)
+title: The Arango Data Platform (v3.0)
 menuTitle: Arango Data Platform
 weight: 1
 description: >-

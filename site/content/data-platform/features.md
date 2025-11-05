@@ -1,5 +1,5 @@
 ---
-title: Feature list of the Arango Data Platform (version 3)
+title: Feature list of the Arango Data Platform (v3.0)
 menuTitle: Features
 weight: 5
 description: >-
