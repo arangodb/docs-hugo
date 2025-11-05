@@ -20,8 +20,7 @@ The Retriever service offers two distinct search methods:
 - **Deep search**: Analyzes the knowledge graph structure to identify themes and patterns,
   perfect for comprehensive insights and detailed summaries.
 
-The service supports both private (Triton Inference Server) and public (OpenAI)
-LLM deployments, making it flexible for various security and infrastructure
+The service supports both private (Triton Inference Server) and public (any OpenAI-compatible API) LLM deployments, making it flexible for various security and infrastructure
 requirements. With simple HTTP endpoints, you can easily query your knowledge
 graph and get contextually relevant responses.
 
@@ -97,14 +96,25 @@ streamed natural-language response with clickable references to the relevant doc
 ## Installation
 
 The Retriever service can be configured to use either the Triton Inference Server
-(for private LLM deployments) or OpenAI/OpenRouter (for public LLM deployments).
+(for private LLM deployments) or any OpenAI-compatible API (for public LLM deployments), 
+including OpenAI, OpenRouter, Gemini, Anthropic, and more.
 
 To start the service, use the AI service endpoint `/v1/graphragretriever`. 
 Please refer to the documentation of [AI service](gen-ai.md) for more
 information on how to use it.
 
-### Using OpenAI for chat and embedding
+### Using OpenAI-compatible APIs
 
+The `openai` provider works with any OpenAI-compatible API, including:
+- OpenAI (official API)
+- OpenRouter
+- Google Gemini
+- Anthropic Claude
+- Corporate or self-hosted LLMs with OpenAI-compatible endpoints
+
+Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+
+**Example using OpenAI:**
 
 ```json
 {
@@ -124,9 +134,9 @@ information on how to use it.
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `chat_api_provider`: API provider for language model services
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
 - `chat_api_url`: API endpoint URL for the chat/language model service
-- `embedding_api_provider`: API provider for embedding model services
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
 - `embedding_api_url`: API endpoint URL for the embedding model service
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
@@ -134,19 +144,20 @@ Where:
 - `embedding_api_key`: API key for authenticating with the embedding model service
 
 {{< info >}}
-By default, for OpenAI API, the service is using
-`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
-embedding model respectively.
+When using the official OpenAI API, the service defaults to `gpt-4o-mini` and 
+`text-embedding-3-small` models.
 {{< /info >}}
 
-### Using OpenRouter for chat and OpenAI for embedding
+### Using different providers for chat and embedding
 
-OpenRouter makes it possible to connect to a huge array of LLM API providers,
-including non-OpenAI LLMs like Gemini Flash, Anthropic Claude and publicly hosted
-open-source models.
+You can mix and match any OpenAI-compatible APIs for chat and embedding. For example, 
+you might use one provider for text generation and another for embeddings, depending 
+on your needs for performance, cost, or model availability.
 
-When using the OpenRouter option, the LLM responses are served via OpenRouter while
-OpenAI is used for the embedding model.
+Since both providers use `"openai"` as the provider value, you differentiate them by 
+setting different URLs in `chat_api_url` and `embedding_api_url`.
+
+**Example using OpenRouter for chat and OpenAI for embedding:**
 
 ```json
     {
@@ -166,17 +177,19 @@ OpenAI is used for the embedding model.
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `chat_api_provider`: API provider for language model services
-- `embedding_api_provider`: API provider for embedding model services
-- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service (in this example, OpenRouter)
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service (in this example, OpenAI)
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
 
 {{< info >}}
-When using OpenRouter, the service defaults to `mistral-nemo` for generation
-(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
+You can use any combination of OpenAI-compatible providers. This example shows
+OpenRouter (for chat) and OpenAI (for embeddings), but you could use Gemini,
+Anthropic, or any other compatible service.
 {{< /info >}}
 
 ### Using Triton Inference Server for chat and embedding
@@ -259,7 +272,7 @@ The request parameters are the following:
   - `UNIFIED`: Instant search.
   - `LOCAL`: Deep search.
 - `provider`: The LLM provider to use:
-  - `0`: OpenAI (or OpenRouter)
+  - `0`: Any OpenAI-compatible API (OpenAI, OpenRouter, Gemini, Anthropic, etc.)
   - `1`: Triton
 - `include_metadata`: Whether to include metadata in the response. If not specified, defaults to `true`.
 - `use_llm_planner`: Whether to use the LLM planner for intelligent query processing. If not specified, defaults to `true`.

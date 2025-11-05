@@ -70,6 +70,10 @@ keeping your data separate. When the Importer service creates ArangoDB collectio
 your project name as a prefix. For example, a project named `docs` will have 
 collections like `docs_Documents`, `docs_Chunks`, and so on.
 
+Projects are required for the following services:
+- Importer
+- Retriever
+
 ### Creating a project
 
 To create a new GraphRAG project, send a POST request to the project endpoint:
