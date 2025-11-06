@@ -1461,7 +1461,7 @@ Execution plan:
   5   ReturnNode                       100       - RETURN d
 ```
 
-From v3.13.3 onward, such a query gets optimized to utilize the sparse
+From v3.12.3 onward, such a query gets optimized to utilize the sparse
 multi-dimensional index and the condition for excluding `null` is removed from
 the query plan because it is unnecessary – a sparse index contains values other
 than `null` only:

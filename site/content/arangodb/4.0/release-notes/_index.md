@@ -10,8 +10,10 @@ description: >-
 
 For a high level list of changes, please refer to one of the following sections:
 
+- What's New in 4.x:
+  [4.0](version-4.0/whats-new-in-4-0.md)
+
 - What's New in 3.x:
-  [3.13](version-3.13/whats-new-in-3-13.md),
   [3.12](version-3.12/whats-new-in-3-12.md),
   [3.11](version-3.11/whats-new-in-3-11.md),
   [3.10](version-3.10/whats-new-in-3-10.md),
@@ -31,8 +33,10 @@ For a high level list of changes, please refer to one of the following sections:
 For a detailed list of changes to the ArangoDB core programs and tools,
 please refer to the version specific changelogs:
 
+- Changelogs 4.x:
+  [4.0](https://raw.githubusercontent.com/arangodb/arangodb/devel/CHANGELOG)
+
 - Changelogs 3.x:
-  [3.13](https://raw.githubusercontent.com/arangodb/arangodb/devel/CHANGELOG),
   [3.12](https://raw.githubusercontent.com/arangodb/arangodb/{{< full-version "3.12" >}}/CHANGELOG),
   [3.11](https://raw.githubusercontent.com/arangodb/arangodb/3.11/CHANGELOG),
   [3.10](https://raw.githubusercontent.com/arangodb/arangodb/3.10/CHANGELOG),
@@ -57,8 +61,10 @@ Additional changelogs for tools not included in the main repository:
 
 For a list of incompatible changes, please refer to one of the following sections.
 
+- Incompatible changes in 4.x:
+  [4.0](version-4.0/incompatible-changes-in-4-0.md)
+
 - Incompatible changes in 3.x:
-  [3.13](version-3.13/incompatible-changes-in-3-13.md),
   [3.12](version-3.12/incompatible-changes-in-3-12.md),
   [3.11](version-3.11/incompatible-changes-in-3-11.md),
   [3.10](version-3.10/incompatible-changes-in-3-10.md),
@@ -78,8 +84,10 @@ For a list of incompatible changes, please refer to one of the following section
 For an overview of changes to ArangoDB's interfaces, have a look at below
 sections. The HTTP API part is especially relevant for driver maintainers.
 
+- API Changes in 4.x:
+  [4.0](version-4.0/api-changes-in-4-0.md)
+
 - API Changes in 3.x:
-  [3.13](version-3.13/api-changes-in-3-13.md),
   [3.12](version-3.12/api-changes-in-3-12.md),
   [3.11](version-3.11/api-changes-in-3-11.md),
   [3.10](version-3.10/api-changes-in-3-10.md),
@@ -91,8 +99,10 @@ sections. The HTTP API part is especially relevant for driver maintainers.
 
 For a list of known issues, please refer to one of the following sections:
 
+- Known Issues in 4.x:
+  [4.0](version-4.0/known-issues-in-4-0.md)
+
 - Known Issues in 3.x:
-  [3.13](version-3.13/known-issues-in-3-13.md),
   [3.12](version-3.12/known-issues-in-3-12.md),
   [3.11](version-3.11/known-issues-in-3-11.md),
   [3.10](version-3.10/known-issues-in-3-10.md),

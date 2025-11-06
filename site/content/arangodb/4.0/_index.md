@@ -1,6 +1,6 @@
 ---
 title: Recommended Resources
-menuTitle: '3.13'
+menuTitle: '4.0'
 weight: 96
 layout: default
 ---

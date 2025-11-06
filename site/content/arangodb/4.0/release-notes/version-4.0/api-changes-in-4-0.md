@@ -1,6 +1,6 @@
 ---
-title: API Changes in ArangoDB 3.13
-menuTitle: API changes in 3.13
+title: API Changes in ArangoDB 4.0
+menuTitle: API changes in 4.0
 weight: 20
 description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant

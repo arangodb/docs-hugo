@@ -5,7 +5,7 @@ weight: 20
 description: >-
   How to apply a license and check the licensing status of an ArangoDB deployment
 aliases:
-  - ../upgrading/community-to-enterprise-upgrade # 3.12 -> 3.13
+  - ../upgrading/community-to-enterprise-upgrade # 3.12 -> 4.0
 ---
 The Enterprise Edition of ArangoDB requires a license so that you can use
 ArangoDB for commercial purposes and have a dataset size over 100 GiB. See
