@@ -470,8 +470,7 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = "/"; // + getVersionFromURL() + "/";
-    updateHistory(homepage);
+    updateHistory("/");
 }
 
 function copyURI(evt) {
