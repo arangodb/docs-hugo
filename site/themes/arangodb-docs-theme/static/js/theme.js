@@ -516,7 +516,7 @@ function handleDocumentChange(event) {
     const currentPath = window.location.pathname;
     //const versionedPath = target.dataset.path;
     
-    window.setupDocSearch(selectedVersion);
+    window.setupDocSearch(selectedVersion); // TODO: Only if on versioned page?
 
     localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
     target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
@@ -528,21 +528,14 @@ function handleDocumentChange(event) {
         }
       }
     );
-    
-    //if (currentPath.startsWith(versionedPath)) {
-    //  currentPath.indexOf("/", versionedPath.length)
-    //}
 
     const corePath = "/arangodb/";
-    if (currentPath.startsWith(corePath)) {
+    if (currentPath.startsWith(corePath) && currentPath !== corePath) {
       const idx = currentPath.indexOf("/", corePath.length);
       const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
       console.log("handleDocumentChange: " + newPath);
       updateHistory(newPath);
       loadPage(newPath);
-    } else {
-      alert("Not viewing versioned content, what to do?");
-      // Should update localStorage!
     }
   }
 }

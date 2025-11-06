@@ -90,7 +90,7 @@ Explore your graph data with an intuitive web interface and sophisticated queryi
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 
-{{% card title="ArangoDB Core Database" link="../../arangodb/3.12/" %}}
+{{% card title="ArangoDB Core Database" link="../../arangodb/" %}}
 Discover the multi-model database at the heart of the platform supporting graphs, documents, key-value, and vector search.
 {{% /card %}}
 
