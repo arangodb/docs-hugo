@@ -41,7 +41,7 @@
       {{- end }}
       {{- $permalink = printf "%s%s" $page.RelPermalink $fragment }}
     {{- else }}
-      {{- if and (ne $currentPage "/") (not (or (strings.HasPrefix $currentPage "/stable/") (strings.HasPrefix $currentPage "/devel/"))) }}
+      {{- if and (ne $currentPage "/") (not (or (strings.HasPrefix $currentPage "/arangodb/stable/") (strings.HasPrefix $currentPage "/arangodb/devel/"))) }}
         {{- if site.Params.failOnBrokenLinks }}
           {{- errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile }}
         {{- else }}

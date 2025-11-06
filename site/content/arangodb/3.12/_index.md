@@ -8,8 +8,8 @@ layout: default
 
 {{< cards >}}
 
-{{% card title="What is ArangoDB?" link="about/" %}}
-Get to know graphs, ArangoDB's use cases and features.
+{{% card title="Features" link="features/" %}}
+Get an overview of ArangoDB's features and deployment options.
 {{% /card %}}
 
 {{% card title="Get started" link="get-started/" %}}
@@ -18,8 +18,12 @@ and get a server instance up and running.
 {{% /card %}}
 
 {{% card title="AQL" link="aql/" %}}
-ArangoDB's Query Language AQL lets you use graphs, JSON documents, and search
-via a single, composable query language.
+ArangoDB's Query Language AQL lets you use graphs, JSON documents, search,
+vector, and geo-spatial data via a single, composable query language.
+{{% /card %}}
+
+{{% card title="Graphs" link="graphs/" %}}
+What are graphs and how do the different types of graphs work in ArangoDB?
 {{% /card %}}
 
 {{% card title="Deploy" link="deploy/" %}}

@@ -1,152 +1,320 @@
 ---
-title: Natural Language to AQL Translation Service (txt2aql)
-menuTitle: txt2aql
+title: Natural Language to AQL Translation Service
+menuTitle: Natural Language to AQL
 description: >-
-  The Natural Language to AQL Translation Service is a powerful tool that allows
-  you to interact with your ArangoDB database using natural language queries
+  Query your ArangoDB database using natural language or get LLM-powered answers
+  to general questions
 weight: 20
 ---
 ## Overview
 
-This service translates your questions and commands into AQL (ArangoDB Query Language),
-executes the queries, and provides responses in natural language.
+The Natural Language to AQL Translation Service provides two distinct capabilities:
 
-## Features
+**1. [Process Text](#process-text)**: Ask general questions and get natural language responses without querying your database. Supports both standard and [streaming](#process-text-stream) responses.
+Ideal for:
+- General knowledge questions  
+- Text analysis and processing
+- Real-time response generation with streaming
 
-- Natural language to AQL query translation
-- Support for multiple LLM providers (via OpenAI API or a self-hosted Triton Inference Server)
-- RESTful and gRPC interfaces
+**2. [Translate Query](#translate-query)**: Convert natural language questions into AQL queries and execute them against your ArangoDB database.
+Ideal for:
+- Querying your database using natural language
+- Converting business questions into database operations
+- Exploring data through intuitive interfaces
+- Learning AQL by seeing translations
+
+The Natural Language to AQL Translation Service also includes the following features:
+- Support for multiple LLM providers (via OpenAI API or a self-hosted OpenAI-compatible models)
+- RESTful interfaces
 - Health monitoring endpoints
-- Flexible output formats (Natural Language, AQL, JSON)
+- Flexible output formats (Natural Language, AQL, JSON) for database queries
 
-## Getting Started
+## Installation and configuration
+
+Deploy the Natural Language to AQL service with a single API call. You provide configuration parameters in the request, and the platform automatically configures them as environment variables for the service runtime.
 
 ### Prerequisites
 
-- ArangoDB instance
-- OpenAI API key (if using OpenAI as provider)
-- Triton URL and model name (if using Triton as provider)
+Before deploying, have ready:
+- An ArangoDB instance with database name and username credentials
+- An API key from your chosen LLM provider (OpenAI, OpenRouter, or other OpenAI-compatible service)
+- A Bearer token for API authentication
 
+### Obtaining a Bearer Token
 
-### Configuration
-
-The following environment variables are set at installation time and used at runtime:
+Before you can deploy the service, you need to obtain a Bearer token for authentication. Generate this token using the ArangoDB authentication API:
 
 ```bash
-# Required Database Configuration
-ARANGODB_NAME=<your_database_name>
-ARANGODB_USER=<your_username>
-
-# LLM Provider Configuration
-API_PROVIDER=<provider>                # "openai" or "triton"
-
-# If using OpenAI
-OPENAI_API_KEY=<your_api_key>
-OPENAI_MODEL=<model_name>              # Optional, defaults to GPT-4
-OPENAI_TEMPERATURE=<temperature>       # Optional
-OPENAI_MAX_RETRIES=<retries>           # Optional
-
-# If using Triton
-TRITON_URL=<triton_server_url>
-TRITON_MODEL=<model_name>
-TRITON_TIMEOUT=<timeout_seconds>       # Optional
+curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
+  -d '{"username": "your-username", "password": "your-password"}'
 ```
 
-### Starting the Service
+This returns a JWT token that you can use as your Bearer token in all subsequent API calls. For more details, see the [ArangoDB Authentication](../../arangodb/3.12/develop/http-api/authentication.md/#jwt-user-tokens) documentation.
 
-To start the service, use AI service endpoint `CreateGraphRag`. Please refer to the documentation of AI service for more information on how to use it.
+### Start the service
 
-### Required Parameters
+{{< info >}}
+Replace `<ExternalEndpoint>` in all examples below with your Arango Data Platform deployment URL.
+{{< /info >}}
 
-These parameters must be provided in the install request sent to AI service.
+Create the service instance with your configuration:
 
-- `username`: Database username for authentication
-- `db_name`: Name of the ArangoDB database
-- `api_provider`: LLM provider selection (`openai`, `triton`)
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/ai/v1/graphrag \
+  --header 'Authorization: Bearer <your-bearer-token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "env": {
+      "db_name": "<your_database_name>",
+      "chat_api_provider": "<openai>",
+      "chat_api_key": "<your-openai-api-key>",
+      "chat_model": "<gpt-4o>",
+    }
+  }'
+```
 
-### Provider-Specific Required Parameters
+**Expected Response:**
+```json
+{
+  "serviceInfo": {
+    "serviceId": "arangodb-graph-rag-xxxxx",
+    "description": "Install complete",
+    "status": "DEPLOYED",
+    "namespace": "<arangodb>",
+    "values": "<eyJhcGlfcHJvdmlkZXIi>..."
+  }
+}
+```
 
-#### OpenAI Provider
+{{< info >}}
+Save the `serviceId` from the above response as you will need it for all subsequent API calls.
+{{< /info >}}
 
-- `openai_api_key`: API key for OpenAI authentication
-- `openai_model`: Model name (defaults to "gpt-3.5-turbo" if not specified)
+### Configuration Parameters
 
-#### Triton Provider
+All parameters are provided in the `env` object of your deployment request.
 
-- `triton_url`: URL of the Triton inference server
-- `triton_model`: Model name to use with Triton
+You can use OpenAI directly, or OpenAI-compatible services like OpenRouter or self-hosted models.
 
-## API Reference
+**Required:**
+- `db_name`: Database name
+- `chat_api_provider`: Set to `openai` (supports OpenAI and OpenAI-compatible services)
+- `chat_api_key`: Your LLM provider API key
 
-### REST Endpoints
+**Optional:**
+- `chat_model`: Model name (default: `gpt-4o-mini`)
+- `chat_api_url`: Base URL for OpenAI-compatible endpoints (only needed for OpenRouter, self-hosted models, etc.)
+- `openai_max_retries`: Maximum retry attempts for failed requests
 
-1. **Process Text** - Ask general questions to the LLM and get a natural language response. This endpoint does not query the database.
-   ```bash
-   POST /v1/process_text
-   Content-Type: application/json
- 
-   {
-     "input_text": "What are the advantages of graph databases?"
-   }
-   ```
+#### Using OpenAI
 
-2. **Translate Query** - Convert natural language to AQL and query the database
-   ```bash
-   POST /v1/translate_query
-   Content-Type: application/json
-   
-   {
-     "input_text": "Find all users who are friends with John",
-     "options": {
-       "output_formats": ["NL", "AQL", "JSON"]
-     }
-   }
-   ```
+The [deployment example](#start-the-service) above uses OpenAI directly. Simply provide your OpenAI API key as `chat_api_key`.
 
-3. **Health Check** - Monitor service health
-   ```bash
-   GET /v1/health
-   ```
+#### Using OpenRouter
 
-### gRPC Endpoints
+OpenRouter provides access to multiple LLM providers through an OpenAI-compatible API. To use it:
+- Set `chat_api_provider` to `openai` (same as above)
+- Set `chat_api_url` to `https://openrouter.ai/api/v1`
+- Use your OpenRouter API key as `chat_api_key`
+- Choose any model from [OpenRouter's catalog](https://openrouter.ai/models)
 
-The service also provides gRPC endpoints for more efficient communication:
+#### Using Self-Hosted Models
 
-1. **Process Text**
-   ```bash
-   grpcurl -plaintext -d '{"input_text": "Hello world"}' \
-     localhost:9090 txt2aql.Txt2AqlService/ProcessText
-   ```
+For self-hosted OpenAI-compatible models:
+- Set `chat_api_provider` to `openai`
+- Set `chat_api_url` to your model's endpoint
+- Configure `chat_api_key` according to your setup
 
-2. **Translate Query**
-   ```bash
-   grpcurl -plaintext -d '{
-     "input_text": "Find all characters from House Stark",
-     "options": {
-       "output_formats": ["NL","AQL","JSON"]
-     }
-   }' localhost:9090 txt2aql.Txt2AqlService/TranslateQuery
-   ```
+### Verify service status
 
-3. **Health Check**
-   ```bash
-   grpcurl -plaintext localhost:9090 txt2aql.Txt2AqlService/HealthCheck
-   ```
+Check that the service is properly deployed:
 
-## Output Formats
+```bash
+curl --request GET \
+  --url https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graph-rag-<serviceID> \
+  --header 'Authorization: Bearer <your-bearer-token>'
+```
 
-The `translate_query` endpoint of the txt2aql service supports multiple output formats that can be specified in the `output_formats` field of your request. Each format serves a different purpose and can be used individually or in combination:
+**Expected Response:**
+```json
+{
+  "serviceInfo": {
+    "serviceId": "arangodb-graph-rag-<serviceID>",
+    "description": "Install complete",
+    "status": "DEPLOYED",
+    "namespace": "<arangodb>",
+    "values": "<eyJhcGlfcHJvdmlkZXIi>..."
+  }
+}
+```
 
-### Natural Language (NL)
+### Health check
+
+Verify that the service is running and healthy:
+
+```bash
+curl --request GET \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/health \
+  --header 'Authorization: Bearer <your-bearer-token>'
+```
+
+**Expected Response:**
+```json
+{
+  "status": "SERVING"
+}
+```
+
+{{< info >}}
+The `serviceID` in the URL is typically the last part of the full service ID (e.g., `xxxxx` from `arangodb-graph-rag-xxxxx`).
+{{< /info >}}
+
+## Process Text
+
+The **Process Text** endpoint allows you to ask general questions to the LLM and receive natural language responses. 
+
+```bash
+POST /v1/process_text
+```
+
+{{< info >}}
+**This endpoint does not query your database**, it is designed for general knowledge questions and text processing.
+{{< /info >}}
+
+**Example**:
+
+```json
+{
+  "input_text": "What are the advantages of graph databases?"
+}
+```
+
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "What are the advantages of graph databases?"
+  }'
+```
+
+**Expected output:**
+
+```json
+{
+  "responseText": "Graph databases offer several key advantages: 1) Efficient relationship handling - they store relationships as first-class citizens, making traversals much faster than traditional SQL JOINs. 2) Flexible data modeling - schema-less design accommodates evolving datasets naturally. 3) High performance for connected data - query performance remains consistent even with large datasets. 4) Intuitive visualization - relationships can be easily visualized and understood. 5) Real-time capabilities - excellent for recommendation systems, fraud detection, and network analysis."
+}
+```
+
+## Process Text Stream
+
+The **Process Text Stream** endpoint returns responses in real-time as they are generated, rather than waiting for the complete response, which is useful for showing progressive output.
+
+```bash
+POST /v1/process_text_stream
+```
+
+The endpoint supports two modes described below.
+
+### Default Mode (General Text Processing)
+
+The default mode provides general LLM responses without querying your database.
+
+**Example**:
+
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text_stream \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "What are the advantages of graph databases?"
+  }'
+```
+
+**Response:**
+```
+Graph databases offer several key advantages: 1) Efficient relationship handling...
+```
+
+{{< info >}}
+This mode does not access your database, it provides general knowledge responses.
+{{< /info >}}
+
+### AQLizer Mode
+
+The AQLizer mode generates schema-aware AQL queries from natural language by streaming responses from an LLM.
+
+**Example:**
+
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/process_text_stream \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "Find all users who made purchases in the last month",
+    "mode": "aqlizer"
+  }'
+```
+
+**Response:**
+```aql
+FOR user IN users
+  FILTER user.purchases[*].date ANY >= DATE_SUBTRACT(DATE_NOW(), 1, 'month')
+  RETURN user
+```
+
+The generated AQL is based on your actual database schema, making it immediately usable.
+
+## Translate Query
+
+The **Translate Query** endpoint converts natural language questions into AQL queries and executes them against your ArangoDB database. **This endpoint queries your actual data** and returns results in multiple formats.
+
+```bash
+POST /v1/translate_query
+```
+
+**Example**:
+
+```json
+{
+  "input_text": "Find all users who are friends with John",
+  "options": {
+    "output_formats": ["NL", "AQL", "JSON"]
+  }
+}
+```
+
+```bash
+curl --request POST \
+  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/translate_query \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "input_text": "Find all users who are friends with John",
+    "options": {
+      "output_formats": ["NL", "AQL", "JSON"]
+    }
+  }'
+```
+
+### Output formats
+
+The `translate_query` endpoint supports multiple output formats that can be specified in the `output_formats` field of your request. Each format serves a different purpose and can be used individually or in combination.
+
+#### Natural Language (NL)
 
 - **Format identifier**: `"NL"`
 - **Returns**: A human-readable explanation of the query results
-- **Helpful for**: Understanding what the query found in plain English
+- **Helpful for**: Understanding what the query found in plain English.
 - **Example**:
   - **Input**: `Find all users who are friends with John`
   - **Output**: `I found 3 users who are friends with John, including Alice, Bob, and Carol`
 
-### AQL Query (AQL)
+#### AQL Query (AQL)
 
 - **Format identifier**: `"AQL"`
 - **Returns**: The generated ArangoDB Query Language (AQL) query
@@ -154,16 +322,16 @@ The `translate_query` endpoint of the txt2aql service supports multiple output f
   - Debugging query translation
   - Learning AQL syntax
   - Modifying queries for reuse
-- **Shows**: Exactly how your natural language was translated into database operations
+- **Shows**: Exactly how your natural language was translated into database operations.
 - **Example**:
   - **Input**: `Find all users who are friends with John`
   - **Output**: `FOR u IN users FILTER u.friends ANY == 'John' RETURN u`
 
-### JSON Results (JSON)
+#### JSON Results (JSON)
 
 - **Format identifier**: `"JSON"`
 - **Returns**: The raw query results in JSON format
-- **Provides**: Direct access to the complete dataset
+- **Provides**: Direct access to the complete dataset.
 - **Ideal for**:
   - Programmatic processing
   - Data integration
@@ -172,7 +340,7 @@ The `translate_query` endpoint of the txt2aql service supports multiple output f
   - **Input**: `Find all users who are friends with John`
   - **Output**: `[{"name":"Alice","age":30},{"name":"Bob","age":25},{"name":"Carol","age":35}]`
 
-### Example Response
+#### Examples
 
 ```json
 {
@@ -183,24 +351,30 @@ The `translate_query` endpoint of the txt2aql service supports multiple output f
 }
 ```
 
-### Usage Tips
+#### Usage and default behavior
 
-1. Request only the formats you need to minimize response size and processing time
-2. Use `NL` for user interfaces, human consumption or when wrapped as an LLM-callable function (e.g. in LLM agent frameworks)
-3. Use `AQL` for debugging and learning purposes
-4. Use `JSON` for programmatic data processing such as API calls.
+- Request only the formats you need to minimize response size and processing time.
+- Use `NL` for user interfaces, human consumption, or when wrapped as an LLM-callable function (e.g., in LLM agent frameworks).
+- Use `AQL` for debugging and learning purposes.
+- Use `JSON` for programmatic data processing such as API calls.
+- If no output formats are specified, the service defaults to `NL` format only.
+- Multiple formats can be requested simultaneously.
+- Formats are processed efficiently, with results cached where possible.
 
-### Default Behavior
+## Best Practices
 
-- If no output formats are specified, the service defaults to `NL` format only
-- Multiple formats can be requested simultaneously
-- Formats are processed efficiently, with results cached where possible
+1. Be specific in your queries to get more accurate translations.
+2. Use appropriate output formats based on your needs.
+3. Monitor the health endpoint for service status.
+4. Implement proper error handling in your client applications.
+5. Use connection pooling for better performance.
+6. Consider rate limiting for production deployments.
 
 ## Error Handling
 
 The service provides clear error messages for common issues:
 
-- Invalid or missing environment variables
+- Invalid or missing configuration parameters
 - Database connection failures
 - Authentication errors
 - Invalid query formats
@@ -208,31 +382,21 @@ The service provides clear error messages for common issues:
 
 Error responses include appropriate HTTP status codes and descriptive messages.
 
-## Best Practices
-
-1. Be specific in your queries to get more accurate translations
-2. Use appropriate output formats based on your needs
-3. Monitor the health endpoint for service status
-4. Implement proper error handling in your client applications
-5. Use connection pooling for better performance
-6. Consider rate limiting for production deployments
-
 ## Troubleshooting
 
 Common issues and solutions:
 
-1. **Connection Issues**
-   - Verify ARANGODB_ENDPOINT is accessible
-   - Check network/firewall settings
-   - Ensure proper authentication credentials
+1. **Connection issues**:
+   - Verify that the ArangoDB endpoint is accessible.
+   - Check network/firewall settings.
+   - Ensure proper authentication credentials.
 
-2. **Query Translation Issues**
-   - Make queries more specific
-   - Check LLM provider configuration
-   - Verify database schema matches query context
+2. **Query Translation issues**:
+   - Make queries more specific.
+   - Check LLM provider configuration.
+   - Verify that the database schema matches the query context.
    - The quality of the generated AQL may vary depending on the LLM model used.
-     Therefore we recommend using an AQL-capable coding model (e.g. a frontier AQL-capable
-     LLM or a fine-tuned AQL-capable coding model) for better results.
+     Therefore, it is recommended to use an AQL-capable coding model (e.g., a frontier AQL-capable LLM or a fine-tuned AQL-capable coding model) for better results.
 
 ## API Reference
 
