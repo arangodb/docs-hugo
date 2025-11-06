@@ -85,7 +85,7 @@ The Retriever service can be configured to use either the Triton Inference Serve
 (for private LLM deployments) or OpenAI/OpenRouter (for public LLM deployments).
 
 To start the service, use the AI service endpoint `/v1/graphragretriever`. 
-Please refer to the documentation of [AI service](gen-ai.md) for more
+Please refer to the documentation of the [AI orchestration service](ai-orchestrator.md) for more
 information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)

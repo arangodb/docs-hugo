@@ -1966,6 +1966,14 @@ nav.pagination .next {
     margin-left: 10px;
 }
 
+.main-nav-ol {
+    margin-left: 5px;
+}
+
+.main-nav-ol > .nav-section {
+    margin-bottom: .5rem;
+}
+
 .nav-section-header {
     display: flex;
 }
@@ -2027,6 +2035,10 @@ nav.pagination .next {
     border-radius: .5rem;
     text-shadow: none !important; /* Bootstrap ?! */
     font-weight: 400;
+}
+
+.main-nav-ol > .nav-section > .nav-section-header > .link-nav {
+    font-weight: 500;
 }
 
 .link-nav-active, .link-nav-active + .expand-nav {

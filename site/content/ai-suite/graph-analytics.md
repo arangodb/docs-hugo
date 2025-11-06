@@ -137,7 +137,7 @@ The interface for managing the engines depends on the environment you use:
 
 {{< tag "AI Data Platform" >}}
 
-GAEs are deployed and deleted via the [AI service](reference/gen-ai.md)
+GAEs are deployed and deleted via the [AI orchestration service](reference/ai-orchestrator.md)
 in the AI Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests

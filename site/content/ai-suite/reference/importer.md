@@ -95,7 +95,7 @@ The Importer service can be configured to use either:
 - OpenRouter (for public LLM deployments)
 
 To start the service, use the AI service endpoint `/v1/graphragimporter`. 
-Please refer to the documentation of [AI service](gen-ai.md) for more
+Please refer to the documentation of the [AI orchestration service](ai-orchestrator.md) for more
 information on how to use it.
 
 ### Using Triton Inference Server (Private LLM)
