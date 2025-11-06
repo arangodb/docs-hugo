@@ -12,17 +12,19 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 
 ## October 2024 (pre-release)
 
-<small>ArangoDB EE: v3.12.6</small>
+<small>ArangoDB Enterprise Edition: v3.12.6</small>
 
 This release includes new features and enhancements for the Data Platform web
-interface, running with ArangoDB Enterprise Edition v3.12.6. For AI Suite updates in this release,
-see [AI Suite Release Notes](../ai-suite/release-notes.md).
+interface, running with ArangoDB Enterprise Edition v3.12.6. For AI Suite updates
+in this release, see [AI Suite Release Notes](../ai-suite/release-notes.md).
 
 ### Query Editor
 
-A new [Query Editor](query-editor.md) has been integrated into the Arango Data Platform web interface for writing, executing, and managing AQL queries.
+A new [Query Editor](query-editor.md) has been integrated into the
+Arango Data Platform web interface for writing, executing, and managing AQL queries.
 
 Key features:
+
 - **Tabbed interface**: Work on multiple queries concurrently with side-by-side
   query and results views.
 - **Query operations**: Run, explain, and profile queries with dedicated buttons
@@ -36,11 +38,12 @@ Key features:
 
 ### Graph Visualizer enhancements
 
-The [Graph Visualizer](graph-visualizer.md) has been significantly enhanced with new visual customization
-capabilities, improved navigation features, and better performance for exploring
-large-scale graphs.
+The [Graph Visualizer](graph-visualizer.md) has been significantly enhanced with
+new visual customization capabilities, improved navigation features, and better
+performance for exploring large-scale graphs.
 
 Key improvements:
+
 - **Icon assignment**: Assign pictograms to node collections for quick visual
   identification of entity types on the canvas.
 - **Theme support**: Create and manage multiple themes to highlight different
@@ -62,7 +65,7 @@ Key improvements:
 
 ## July 2024 (pre-release)
 
-<small>ArangoDB EE: v3.12.5</small>
+<small>ArangoDB Enterprise Edition: v3.12.5</small>
 
 This release marks the initial internal launch of the Arango Data Platform, running with
 ArangoDB Enterprise Edition v3.12.5. For AI Suite features in this release, see
@@ -71,9 +74,11 @@ ArangoDB Enterprise Edition v3.12.5. For AI Suite features in this release, see
 ### Arango Data Platform
 
 The Arango Data Platform is a Kubernetes-native technical infrastructure that
-brings together the entire ArangoDB offering into a unified solution. See [Get Started with the Arango Data Platform](get-started.md).
+brings together the entire ArangoDB offering into a unified solution.
+See [Get Started with the Arango Data Platform](get-started.md).
 
 What's included:
+
 - **ArangoDB Enterprise Edition**: Multi-model database foundation supporting
   graphs, documents, key-value, vector search, and full-text search capabilities.
 - **Graph Visualizer**: Sophisticated web-based interface for interactive graph

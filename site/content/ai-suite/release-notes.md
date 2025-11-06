@@ -19,7 +19,7 @@ See also the [Arango Data Platform Release Notes](../data-platform/release-notes
 
 - **Instant and Deep Search**: New [Retriever](reference/retriever.md#search-methods) search methods
   optimized for different use cases. Instant Search provides fast responses with
-  streaming support. Deep Search offers detailed, accurate responses complex queries
+  streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
   [GraphRAG web interface](graphrag/web-interface.md#chat-with-your-knowledge-graph).
 
@@ -35,7 +35,8 @@ See also the [Arango Data Platform Release Notes](../data-platform/release-notes
 ### AQLizer
 
 The [Natural Language to AQL Translation Service](reference/natural-language-to-aql.md)
-enables you to query your ArangoDB database using natural language or get LLM-powered answers to general questions. 
+enables you to query your ArangoDB database using natural language or get
+LLM-powered answers to general questions. 
 
 You can generate AQL queries from natural language directly in the Query Editor using the
 [AQLizer](aqlizer.md) mode. More advanced features are available via the API.
@@ -66,4 +67,3 @@ components. For Data Platform features in this release, see
 - **[Triton Inference Server](reference/triton-inference-server.md)**: Host
   private Large Language Models using NVIDIA Triton Inference Server for secure,
   on-premises AI capabilities.
-
