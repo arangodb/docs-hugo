@@ -5,7 +5,7 @@ weight: 10
 description: >-
   A Model Context Protocol server for generating and executing AQL queries using AI assistants like Claude and Cursor IDE
 ---
-The ArangoDB MCP Server is a focused [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) implementation that enables AI assistants to generate and execute AQL queries based on natural language questions. It includes lightweight schema discovery and manuals to ground queries in actual database structure.
+The ArangoDB MCP Server is a focused [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) implementation that enables AI assistants to generate and execute AQL queries based on natural language questions. It includes lightweight schema discovery and manuals to ground queries in actual database structure.
 
 ## Features
 
@@ -33,167 +33,11 @@ The following are not included:
 - Graph/view/index/analyzer management tools
 - Destructive admin operations (create/delete databases or collections)
 
-## Getting Started
+## Installation
 
-Choose the setup that works best for you. Docker is recommended for quick start with everything bundled together.
+The ArangoDB MCP Server is available as a Docker image on Docker Hub: [arangodb/mcp-arangodb](https://hub.docker.com/r/arangodb/mcp-arangodb)
 
-### Option 1: Docker Setup (Recommended)
-
-This approach bundles the MCP server and ArangoDB together, perfect for testing and development.
-
-**Prerequisites:**
-- Docker installed
-- Cursor IDE or Claude Desktop
-
-1. Build the MCP server image:
-
-```bash
-cd mcp-arango-aql
-docker build -t arangodb-mcp-server:dev -f Dockerfile.dev .
-```
-
-2. Start ArangoDB (if you don't have an instance):
-
-```bash
-docker run -d --name arangodb -p 8529:8529 -e ARANGO_ROOT_PASSWORD=test arangodb/arangodb:latest
-```
-
-3. Configure your AI client:
-
-{{< tabs "docker-setup" >}}
-
-{{< tab "Cursor IDE" >}}
-Go to Settings > Features > Tools > New MCP Server and add the following configuration.
-
-```json
-{
-  "mcpServers": {
-    "arangodb-mcp": {
-      "command": "docker",
-      "args": [
-        "run", "-i", "--rm", "--network", "host",
-        "-e", "ARANGO_HOSTS=http://localhost:8529",
-        "-e", "ARANGO_ROOT_USERNAME=root",
-        "-e", "ARANGO_ROOT_PASSWORD=test",
-        "-e", "ARANGO_DEFAULT_DB_NAME=_system",
-        "arangodb-mcp-server:dev"
-      ]
-    }
-  }
-}
-```
-{{< /tab >}}
-
-{{< tab "Claude Desktop" >}}
-Add the following configuration to `claude_desktop_config.json`.
-
-```json
-{
-  "mcpServers": {
-    "arangodb-mcp": {
-      "command": "docker",
-      "args": [
-        "run", "-i", "--rm", "--network", "host",
-        "-e", "ARANGO_HOSTS=http://localhost:8529",
-        "-e", "ARANGO_ROOT_USERNAME=root",
-        "-e", "ARANGO_ROOT_PASSWORD=test",
-        "-e", "ARANGO_DEFAULT_DB_NAME=_system",
-        "arangodb-mcp-server:dev"
-      ]
-    }
-  }
-}
-```
-{{< /tab >}}
-
-{{< /tabs >}}
-
-4. Restart your AI client to load the new server.
-
-5. Test the connection by asking your AI assistant:
-   - "Show me all collections in the database"
-   - "Fetch the database schemas"
-
-### Option 2: Poetry Setup (Local Development)
-
-Use this approach if you want to run the server locally or contribute to development.
-
-**Prerequisites:**
-- Python 3.10 or higher
-- [Poetry](https://python-poetry.org/docs/#installation) installed
-- ArangoDB instance (local or remote)
-
-1. Install dependencies:
-
-```bash
-cd arango-mcp-server
-poetry install
-```
-
-2. Configure your AI client:
-
-{{< tabs "poetry-setup" >}}
-
-{{< tab "Cursor IDE" >}}
-Add to MCP settings:
-
-```json
-{
-  "mcpServers": {
-    "arangodb-mcp": {
-      "command": "poetry",
-      "args": ["-C", "/path/to/arango-mcp-server", "run", "python", "-m", "main"],
-      "env": {
-        "ARANGO_HOSTS": "http://localhost:8529",
-        "ARANGO_ROOT_USERNAME": "root",
-        "ARANGO_ROOT_PASSWORD": "your_password_here",
-        "ARANGO_DEFAULT_DB_NAME": "your_db_name"
-      }
-    }
-  }
-}
-```
-
-{{< warning >}}
-Replace `/path/to/arango-mcp-server` with the actual path to your project directory. The `-C` flag specifies the working directory for Poetry.
-{{< /warning >}}
-{{< /tab >}}
-
-{{< tab "Claude Desktop" >}}
-Add to `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "arangodb-mcp": {
-      "command": "poetry",
-      "args": ["-C", "/path/to/arango-mcp-server", "run", "python", "-m", "main"],
-      "env": {
-        "ARANGO_HOSTS": "http://localhost:8529",
-        "ARANGO_ROOT_USERNAME": "root",
-        "ARANGO_ROOT_PASSWORD": "your_password_here",
-        "ARANGO_DEFAULT_DB_NAME": "your_db_name"
-      }
-    }
-  }
-}
-```
-
-{{< warning >}}
-Replace `/path/to/arango-mcp-server` with the actual path to your project directory. The `-C` flag specifies the working directory for Poetry.
-{{< /warning >}}
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Environment Variables Reference
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `ARANGO_HOSTS` | Yes | ArangoDB server URL (e.g., `http://localhost:8529`) |
-| `ARANGO_ROOT_USERNAME` | Yes | Database username |
-| `ARANGO_ROOT_PASSWORD` | Yes | Database password |
-| `ARANGO_DEFAULT_DB_NAME` | Yes | Default database name to use |
+See the Docker Hub page for installation and usage instructions.
 
 ## Available Tools
 
@@ -296,27 +140,4 @@ COLLECT country = user.address.country
 AGGREGATE avgAge = AVG(user.age)
 RETURN { country, avgAge }
 ```
-
-## Troubleshooting
-
-**Server not appearing in AI client:**
-- Restart your AI client after configuration changes
-- Verify JSON syntax in your configuration file
-- Check that all required environment variables are set
-
-**Cannot connect to ArangoDB:**
-- Verify ArangoDB is running: `curl http://localhost:8529/_api/version`
-- Check credentials in environment variables are correct
-- Ensure the specified database exists
-- For Docker setups, verify containers can communicate on the network
-
-**Docker container fails to start:**
-- Check container logs: `docker logs <container-name>`
-- Verify ArangoDB is running: `docker ps | grep arangodb`
-- Ensure port 8529 is not in use: `lsof -i :8529`
-
-**Queries return empty results:**
-- Verify you're querying the correct database and collection
-- Check the collection contains documents
-- Use `read-documents-with-filter()` with minimal filters to see sample data
 
