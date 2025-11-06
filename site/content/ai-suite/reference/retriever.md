@@ -14,25 +14,23 @@ the Arango team.
 
 ## Overview
 
-The Retriever service offers two distinct search methods:
-- **Instant search**: Focuses on specific entities and their relationships, ideal
-  for fast queries about particular concepts.
-- **Deep search**: Analyzes the knowledge graph structure to identify themes and patterns,
-  perfect for comprehensive insights and detailed summaries.
-
-The service supports both private (Triton Inference Server) and public (any OpenAI-compatible API) LLM deployments, making it flexible for various security and infrastructure
-requirements. With simple HTTP endpoints, you can easily query your knowledge
-graph and get contextually relevant responses.
+The Retriever service provides intelligent search and retrieval from knowledge graphs,
+with multiple search methods optimized for different query types. The service supports 
+both private (Triton Inference Server) and public (any OpenAI-compatible API) LLM 
+deployments, making it flexible for various security and infrastructure requirements.
 
 **Key features:**
-- Dual search methods for different query types
+- Multiple search methods optimized for different use cases
+- Streaming support for real-time responses for `UNIFIED` queries
+- Optional LLM orchestration for `LOCAL` queries
+- Configurable community hierarchy levels for `GLOBAL` queries
 - Support for both private and public LLM deployments
 - Simple REST API interface
 - Integration with ArangoDB knowledge graphs
-- Configurable community hierarchy levels
 
 {{< tip >}}
-You can also use the GraphRAG Retriever service via the [web interface](../graphrag/web-interface.md).
+You can use the Retriever service via the [web interface](../graphrag/web-interface.md)
+for Instant and Deep Search, or through the API for full control over all query types.
 {{< /tip >}}
 
 ## Prerequisites
@@ -46,12 +44,29 @@ Before using the Retriever service, you need to:
 2. **Import data** - Use the [Importer](importer.md) service to transform your 
    text documents into a knowledge graph stored in ArangoDB.
 
-## Search methods
+## Search Methods
 
 The Retriever service enables intelligent search and retrieval of information
-from your knowledge graph. It provides two powerful search methods, instant search
-and deep search, that leverage the structured knowledge graph created by the Importer
-to deliver accurate and contextually relevant responses to your natural language queries.
+from your knowledge graph. It provides multiple search methods that leverage 
+the structured knowledge graph created by the Importer to deliver accurate and 
+contextually relevant responses to your natural language queries.
+
+### Instant Search
+
+Instant Search is designed for responses with very short latency. It triggers
+fast unified retrieval over relevant parts of the knowledge graph via hybrid
+(semantic and lexical) search and graph expansion algorithms, producing a fast,
+streamed natural-language response with clickable references to the relevant documents.
+
+{{< info >}}
+The Instant Search method is also available via the [Web interface](../graphrag/web-interface.md).
+{{< /info >}}
+
+```json
+{
+  "query_type": "UNIFIED"
+}
+```
 
 ### Deep Search
 
@@ -62,36 +77,50 @@ detail and accuracy are required (e.g. aggregation of highly technical details) 
 very short latency is not (i.e. caching responses for frequently asked questions,
 or use case with agents or research use cases).
 
-- **Community-Based Analysis**: Uses pre-generated community reports from your
-  knowledge graph to understand the overall structure and themes of your data.
+{{< info >}}
+The Deep Search method is also available via the [Web interface](../graphrag/web-interface.md).
+{{< /info >}}
+
+```json
+{
+  "query_type": "LOCAL",
+  "use_llm_planner": true
+}
+```
+
+### Global Search
+
+Global search is designed for queries that require understanding and aggregation of information across your entire document. It’s particularly effective for questions about overall themes, patterns, or high-level insights in your data.
+
+- **Community-Based Analysis**: Uses pre-generated community reports from your knowledge graph to understand the overall structure and themes of your data.
 - **Map-Reduce Processing**:
-   - **Map Stage**: Processes community reports in parallel, generating intermediate responses with rated points.
-   - **Reduce Stage**: Aggregates the most important points to create a comprehensive final response.
+  - **Map Stage**: Processes community reports in parallel, generating intermediate responses with rated points.
+  - **Reduce Stage**: Aggregates the most important points to create a comprehensive final response.
 
-**Best use cases**:
-- "What are the main themes in the dataset?"
-- "Summarize the key findings across all documents"
-- "What are the most important concepts discussed?"
+```json
+{
+  "query_type": "GLOBAL"
+}
+```
 
-### Instant Search
+### Local Search
 
-Instant Search is designed for responses with very short latency. It triggers
-fast unified retrieval over relevant parts of the knowledge graph via hybrid
-(semantic and lexical) search and graph expansion algorithms, producing a fast,
-streamed natural-language response with clickable references to the relevant documents.
+Local search focuses on specific entities and their relationships within your knowledge graph. It is ideal for detailed queries about particular concepts, entities, or relationships.
 
 - **Entity Identification**: Identifies relevant entities from the knowledge graph based on the query.
 - **Context Gathering**: Collects:
-   - Related text chunks from original documents.
-   - Connected entities and their strongest relationships.
-   - Entity descriptions and attributes.
-   - Context from the community each entity belongs to.
+  - Related text chunks from original documents.
+  - Connected entities and their strongest relationships.
+  - Entity descriptions and attributes.
+  - Context from the community each entity belongs to.
 - **Prioritized Response**: Generates a response using the most relevant gathered information.
 
-**Best use cases**:
-- "What are the properties of [specific entity]?"
-- "How is [entity A] related to [entity B]?"
-- "What are the key details about [specific concept]?"
+```json
+{
+  "query_type": "LOCAL",
+  "use_llm_planner": false
+}
+```
 
 ## Installation
 
@@ -195,12 +224,12 @@ Anthropic, or any other compatible service.
 ### Using Triton Inference Server for chat and embedding
 
 The first step is to install the LLM Host service with the LLM and
-embedding models of your choice. The setup will the use the 
+embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
 For more details, please refer to the [Triton Inference Server](triton-inference-server.md)
 and [Mlflow](mlflow.md) documentation.
 
-Once the `llmhost` service is up-and-running, then you can start the Importer
+Once the `llmhost` service is up-and-running, then you can start the Retriever
 service using the below configuration:
 
 ```json
@@ -229,53 +258,103 @@ Where:
 ## Executing queries
 
 After the Retriever service is installed successfully, you can interact with 
-it using the following HTTP endpoints, based on the selected search method.
+it using the following HTTP endpoints.
 
 {{< tabs "executing-queries" >}}
 
-{{< tab "Instant search" >}}
+{{< tab "Instant Search" >}}
+
 ```bash
 curl -X POST /v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "What is the AR3 Drone?",
+    "query": "How are X and Y related?",
     "query_type": "UNIFIED",
     "provider": 0,
-    "include_metadata": true,
-    "use_llm_planner": false
+    "include_metadata": true
   }'
 ```
+
 {{< /tab >}}
 
-{{< tab "Deep search" >}}
+{{< tab "Deep Search" >}}
 
 ```bash
 curl -X POST /v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "What are the main themes and topics discussed in the documents?",
-    "level": 1,
+    "query": "What are the properties of a specific entity?",
     "query_type": "LOCAL",
+    "use_llm_planner": true,
     "provider": 0,
-    "include_metadata": true,
-    "use_llm_planner": true
+    "include_metadata": true
   }'
 ```
+
+{{< /tab >}}
+
+{{< tab "Global Search" >}}
+
+```bash
+curl -X POST /v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What are the main themes discussed in the document?",
+    "query_type": "GLOBAL",
+    "level": 1,
+    "provider": 0,
+    "include_metadata": true
+  }'
+```
+
+{{< /tab >}}
+
+{{< tab "Local Search" >}}
+
+```bash
+curl -X POST /v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is the AR3 Drone?",
+    "query_type": "LOCAL",
+    "use_llm_planner": false,
+    "provider": 0,
+    "include_metadata": true
+  }'
+```
+
 {{< /tab >}}
 
 {{< /tabs >}}
 
-The request parameters are the following:
-- `query`: Your search query text.
-- `level`: The community hierarchy level to use for the search (`1` for top-level communities). Defaults to `2` if not provided.
+### Request Parameters
+
+- `query`: Your search query text (required).
+
 - `query_type`: The type of search to perform.
-  - `UNIFIED`: Instant search.
-  - `LOCAL`: Deep search.
-- `provider`: The LLM provider to use:
+  - `GLOBAL` or `1`: Global Search (default if not specified).
+  - `LOCAL` or `2`: Deep Search when used with LLM planner, or standard Local Search without the planner.
+  - `UNIFIED` or `3`: Instant Search.
+
+- `use_llm_planner`: Whether to use LLM planner for intelligent query orchestration (optional)
+  - When enabled, orchestrates retrieval using both local and global strategies (powers Deep Search)
+  - Set to `false` for standard Local Search without orchestration
+
+- `level`: Community hierarchy level for analysis (only applicable for `GLOBAL` queries)
+  - `1` for top-level communities (broader themes)
+  - `2` for more granular communities (default)
+
+- `provider`: The LLM provider to use
   - `0`: Any OpenAI-compatible API (OpenAI, OpenRouter, Gemini, Anthropic, etc.)
-  - `1`: Triton
-- `include_metadata`: Whether to include metadata in the response. If not specified, defaults to `true`.
-- `use_llm_planner`: Whether to use the LLM planner for intelligent query processing. If not specified, defaults to `true`.
+  - `1`: Triton Inference Server
+
+- `include_metadata`: Whether to include metadata in the response (optional, defaults to `false`)
+
+- `response_instruction`: Custom instructions for response generation style (optional)
+
+- `use_cache`: Whether to use caching for this query (optional, defaults to `false`)
+
+- `show_citations`: Whether to show inline citations in the response (optional, defaults to `false`)
 
 ## Health check
 

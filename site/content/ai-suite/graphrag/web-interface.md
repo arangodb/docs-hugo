@@ -184,8 +184,6 @@ The Retriever service provides two search methods:
 - [Deep search](../reference/retriever.md#deep-search): This option will take
   longer to return a response.
 
-![Chat with your Knowledge Graph](../../images/graphrag-ui-chat.png)
-
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
 - Switch the search method from **Instant search** to **Deep search** and vice-versa
   directly in the chat
