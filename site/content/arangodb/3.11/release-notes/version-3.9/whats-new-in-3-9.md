@@ -57,8 +57,8 @@ tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
 
 See:
-- [`segmentation` Analyzer](../../index-and-search/analyzers.md#segmentation)
-- [`collation` Analyzer](../../index-and-search/analyzers.md#collation)
+- [`segmentation` Analyzer](../../indexes-and-search/analyzers.md#segmentation)
+- [`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)
 
 ### Analyzer locale normalization
 
@@ -110,10 +110,10 @@ The cache size can be controlled with the new `--arangosearch.columns-cache-limi
 startup option and monitored via the new `arangodb_search_columns_cache_size`
 metric.
 
-[ArangoSearch caching](../../index-and-search/arangosearch/arangosearch-views-reference.md) is only available in the
+[ArangoSearch caching](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) is only available in the
 Enterprise Edition.
 
-See [Optimizing View query performance](../../index-and-search/arangosearch/performance.md)
+See [Optimizing View query performance](../../indexes-and-search/arangosearch/performance.md)
 for examples.
 
 ## UI
@@ -347,7 +347,7 @@ FOR v, e, p IN 10 OUTBOUND @start GRAPH "myGraph"
 The `v.isRelevant == true` condition is stored in the `pruneCondition` variable
 and used as a condition for `FILTER` later.
 
-See [Pruning](../../aql/graphs/traversals.md#pruning).
+See [Pruning](../../aql/graph-queries/traversals.md#pruning).
 
 ### Warnings on invalid OPTIONS
 
@@ -618,7 +618,7 @@ the emerging performance is much more dependent on the distribution of the
 dataset, making it less predictable. A third limitation is that `zkd` indexes
 can only be created for index values which are IEEE 754 doubles.
 
-[Multi-dimensional Indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md) are an experimental feature.
+[Multi-dimensional Indexes](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md) are an experimental feature.
 
 ## Server options
 

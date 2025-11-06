@@ -86,8 +86,8 @@ determines how the `new-properties` object is merged with current View propertie
 properties if `false`).
 
 For the available properties of the supported View types, see:
-- [`arangosearch` View Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
-- [`search-alias` View Modification](../../../index-and-search/arangosearch/search-alias-views-reference.md#view-modification)
+- [`arangosearch` View Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+- [`search-alias` View Modification](../../../indexes-and-search/arangosearch/search-alias-views-reference.md#view-modification)
 
 **Examples**
 

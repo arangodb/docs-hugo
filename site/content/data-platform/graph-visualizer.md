@@ -1,12 +1,12 @@
 ---
-title: Graph Visualizer
+title: The Graph Visualizer of the Arango Data Platform
 menuTitle: Graph Visualizer
 weight: 20
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
 {{< tip >}}
-The Arango Data Platform & AI Suite are available as a pre-release. To get
+The Arango Data Platform is available as a pre-release. To get
 exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}

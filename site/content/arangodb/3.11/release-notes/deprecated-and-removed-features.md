@@ -62,7 +62,7 @@ detailed information about breaking changes before upgrading.
 - **Skiplist and hash indexes**:
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
   future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../index-and-search/indexing/basics.md#persistent-index).
+  [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
 
 - **Bundled NPM modules**:
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
@@ -88,7 +88,7 @@ detailed information about breaking changes before upgrading.
 
 - **Fulltext indexes**:
   The fulltext index type is deprecated from version 3.10 onwards.
-  It is recommended to use [ArangoSearch](../index-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+  It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**: Idiomatic interface in arangosh to perform trivial queries.
   They are superseded by [AQL queries](../aql/_index.md), which can also
@@ -280,4 +280,4 @@ detailed information about breaking changes before upgrading.
   Instead of using these methods, you should use the generic
   `collection.ensureIndex(...)` method, which provides a superset of all the
   deprecated methods. Also see
-  [Creating an index](../index-and-search/indexing/working-with-indexes/_index.md#creating-an-index).
+  [Creating an index](../indexes-and-search/indexing/working-with-indexes/_index.md#creating-an-index).

@@ -1,5 +1,5 @@
 ---
-title: Get Started with the Arango Data Platform
+title: Get Started with the Arango Data Platform (v3.0)
 menuTitle: Get Started
 weight: 10
 description: >-
@@ -7,7 +7,7 @@ description: >-
   solution that you can deploy on-prem or use as a managed service
 ---
 {{< tip >}}
-The Arango Data Platform & AI Suite are available as a pre-release. To get
+The Arango Data Platform is available as a pre-release. To get
 exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}

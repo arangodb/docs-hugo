@@ -100,7 +100,7 @@ description: >-
 - `IRESEARCH_TEXT_STOPWORD_PATH`
 
   Path to a directory with stop word files for
-  [ArangoSearch Text Analyzers](../../index-and-search/analyzers.md#text).
+  [ArangoSearch Text Analyzers](../../indexes-and-search/analyzers.md#text).
 
 <!-- ARANGODB_CONFIG_PATH, ICU_DATA, ... (TRI_GETENV, iresearch::getenv) -->
 

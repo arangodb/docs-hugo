@@ -20,7 +20,7 @@ to be requested from the RocksDB storage engine.
 
 ### ArangoSearch column cache (Enterprise Edition)
 
-[`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
+[`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-views-reference.md) support new caching options.
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
@@ -76,7 +76,7 @@ metric.
 
 ArangoSearch caching is only available in the Enterprise Edition.
 
-See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md)
+See [Optimizing View and inverted index query performance](../../indexes-and-search/arangosearch/performance.md)
 for examples.
 
 {{< info >}}
@@ -107,7 +107,7 @@ disk, the precision, and query performance:
 
 This feature is only available in the Enterprise Edition.
 
-See [Analyzers](../../index-and-search/analyzers.md#geo_s2) for details.
+See [Analyzers](../../indexes-and-search/analyzers.md#geo_s2) for details.
 
 ## Web interface
 
@@ -137,7 +137,7 @@ details.
 ### `search-alias` Views
 
 The 3.11 release of ArangoDB introduces a new web interface for Views that lets
-you to create and manage [`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md).
+you to create and manage [`search-alias` Views](../../indexes-and-search/arangosearch/search-alias-views-reference.md).
 
 Through this dialog, you can easily create a new View and add to it one or more
 inverted indexes from your collections that you could otherwise do via the HTTP
@@ -149,7 +149,7 @@ the same settings to multiple Views. In addition, the JSON editor offers the
 option to directly write the definition of your View in JSON format.
 
 For more information, see the
-[detailed guide](../../index-and-search/arangosearch/search-alias-views-reference.md#create-search-alias-views-using-the-web-interface).
+[detailed guide](../../indexes-and-search/arangosearch/search-alias-views-reference.md#create-search-alias-views-using-the-web-interface).
 
 ### `arangosearch` Views
 
@@ -159,12 +159,12 @@ or modify the definition of your View. The settings, links, and JSON editor have
 been merged into a single page, allowing for a much quicker workflow.
 
 For more information, see the
-[detailed guide](../../index-and-search/arangosearch/arangosearch-views-reference.md#create-arangosearch-views-using-the-web-interface).
+[detailed guide](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#create-arangosearch-views-using-the-web-interface).
 
 ### Inverted indexes
 
 The web interface now includes the option for creating
-[inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md) on collections. You can set all the
+[inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) on collections. You can set all the
 properties directly in the web interface, which previously required the JavaScript
 or HTTP API. It also offers an editor where you can write the definition of
 your inverted index in JSON format.

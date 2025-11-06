@@ -1,5 +1,5 @@
 ---
-title: The AI Suite of the Arango AI Data Platform
+title: The AI Suite of the Arango AI Data Platform (v3.0)
 menuTitle: AI Suite
 weight: 2
 description: >-
@@ -9,6 +9,12 @@ description: >-
   natural language querying, and AI-powered insights, all through an intuitive
   web interface
 ---
+{{< tip >}}
+The Arango AI Data Platform is available as a pre-release. To get
+exclusive early access, [get in touch](https://arango.ai/contact-us/) with
+the Arango team.
+{{< /tip >}}
+
 ## What's included
 
 The AI Suite is composed of three major components:
@@ -43,5 +49,5 @@ Alongside these components, you also get the following additional features:
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango-datasets` Python package](../arangodb/3.12/components/tools/arango-datasets.md)
+[`arango-datasets` Python package](../ecosystem/arango-datasets.md)
 to load sample datasets into a deployment.
