@@ -41,7 +41,7 @@ to provide a complete, enterprise-ready solution.
 
 ### ArangoDB Enterprise Edition
 
-At the foundation is [**ArangoDB Enterprise Edition**](../../arangodb/3.12/), the 
+At the foundation is [**ArangoDB Enterprise Edition**](../arangodb/_index.md), the 
 powerful multi-model database that provides:
 
 - **Graph**: Native graph database capabilities with efficient traversals and pattern matching
