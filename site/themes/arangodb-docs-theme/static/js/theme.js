@@ -5,7 +5,7 @@ function closeAllEntries() {
 }
 
 function showSidebarHandler() {
-    document.querySelectorAll(".sidebar").forEach(el => el.classList.toggle("active"));
+    document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
 }
 
 
@@ -355,60 +355,6 @@ function getVersionFromURL() {
   if (splitUrl[1] == "arangodb") return splitUrl[2];
 }
 
-
-function setVersionSelector(version) {
-  for(let option of document.querySelector(".arangodb-version").options) {
-    if (option.value == version) {
-      option.selected = true;
-    }
-  }
-}
-
-function getCurrentVersion(href) {
-  if (!stableVersion) return; // Only defined for /arangodb
-  var newVersion = stableVersion.name
-
-  if (window.location.pathname.split("/").length > 0) {
-    newVersion = getVersionFromURL();
-    if (newVersion !== "arangodb") {
-      return;
-    }
-    if ((href === "" || href === "/") && getVersionInfo(newVersion) == undefined) {
-      loadNotFoundPage();
-      return;
-    }
-  }
-
-  localStorage.setItem('docs-version', newVersion);
-  setVersionSelector(newVersion);
-}
-
-
-function changeVersion() {
-    var versionSelector = document.querySelector(".arangodb-version");
-    var newVersion = versionSelector.options[versionSelector.selectedIndex].value;
-
-    try {
-      localStorage.setItem('docs-version', newVersion);
-      //renderVersion();
-      window.setupDocSearch(newVersion);
-    } catch(exception) {
-      console.log({exception})
-      changeVersion();
-    }
-
-    var currentVersion = getVersionFromURL();
-    //var newVersionAlias = getVersionInfo(newVersion).alias;
-    if (!currentVersion) {
-      //var newUrl = window.location.pathname = "/" + newVersion + "/";
-      var newUrl = "/arangodb/" + newVersion + "/";
-    } else {
-      var newUrl = window.location.pathname.replace(currentVersion, newVersion) + window.location.hash;
-    }
-    updateHistory(newUrl);
-}
-
-
 /*
     Openapi
 
@@ -667,8 +613,8 @@ function handleDocumentClick(event) {
         return;
     }
  
-    // Sidebar toggle
-    if (closest('.sidebar-toggle')) {
+    // Mobile menu toggle
+    if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();
         return;
     }
@@ -698,8 +644,7 @@ window.onload = () => {
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        document.querySelectorAll('.sidebar').forEach(el => el.classList.add("mobile"));
-        document.querySelectorAll('.sidebar.mobile').forEach(el => el.classList.remove("active"));
+        document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile", "active"));
     }
 
     //const pageWrapper = document.querySelector('.page-wrapper');
