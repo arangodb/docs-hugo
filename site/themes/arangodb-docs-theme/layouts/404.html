@@ -1,29 +1,26 @@
+{{/* Should match baseof.html but have breadcrumbs, toc, and main block removed */ -}}
+{{ partial "shortcodes/version.html" (dict "page" .Page) -}}
+{{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
-
-  <head>
-    {{- partialCached "stylesheet.html" . }}
-    {{- partial "meta.html" . }}
-    {{- partialCached "favicon.html" . }}
-    {{- partialCached "javascript.html" . }}
-  </head>
-
-<body>
+  {{ partial "head.html" . -}}
+  <body>
+    {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
     <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
-    <div class="page-wrapper page_content_splash" style="height: auto;opacity: 1;">
-        <section class="page-main">
-            <section class="page-container">
-                {{ partialCached "header.html" . }}
-                <iframe src="/nav.html" title="description" class="menu-iframe active" style="opacity: 0;"></iframe>
-
-            
-                <div class="container-main">
-                  <div class="row-main">
-                  </div>
-                </main><!-- #body-inner -->
-              </div><!-- #body -->
-          {{- partialCached "back-to-top.html" . }}
-          {{ partialCached "search.html" . }}
-            </body>
+    <div class="page-wrapper page_content_splash" style="height: auto; opacity: 1;">
+      <section class="page-main">
+        <section class="page-container">
+          {{ partialCached "header.html" . -}}
+          <nav class="main-nav" aria-label="Main"></nav>
+          <div class="container-main">
+            <div class="row-main"></div>
+          </div>
+        </section>
+      </section>
+    </div>
+    {{ partialCached "back-to-top.html" . -}}
+    {{ partialCached "search.html" . -}}
+    {{ if $isProduction }}{{ partialCached "tracking/body-end.html" . }}{{ end -}}
+  </body>
 </html>

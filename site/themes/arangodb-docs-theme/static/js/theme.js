@@ -92,6 +92,10 @@ function loadPage(target) {
   
   fetch(href)
     .then(response => {
+      if (!response.ok) {
+        // Handle 404 and other HTTP errors
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       if (response.url && href.replace(/#.*/, "") !== response.url) {
         updateHistory(response.url.replace(version, getVersionFromURL()));
         return;
@@ -112,7 +116,8 @@ function loadPage(target) {
       return true;
     })
     .catch(error => {
-      loadNotFoundPage(href)
+      console.error('Error loading page:', error);
+      loadNotFoundPage(href);
     });
 }
 
@@ -120,6 +125,17 @@ function getSelectedVersion() {
   const version = getVersionFromURL();
   if (version) return version;
   return localStorage.getItem("docs-version") ?? "stable";
+
+  /*
+  const storedVersion = localStorage.getItem("docs-version");
+  let alias = "stable";
+  if (version) {
+    alias = getVersionInfo(version).alias;
+  } else if (storedVersion) {
+    alias = getVersionInfo(storedVersion).alias;
+  }
+  return alias;
+  */
 }
 
 function updateActiveNavItem(pathname) {
@@ -139,35 +155,58 @@ function updateActiveNavItem(pathname) {
 }
 
 async function loadNav() {
-  const res = await fetch("/nav.html");
-  if (!res.ok) {
-    throw new Error("Failed to fetch navigation");
-  }
-  const text = await res.text();
-  const doc = new DOMParser().parseFromString(text, "text/html");
-  const mainNavContent = doc.querySelector(".main-nav-ol");
-  // TODO: Support multiple versions
-  const selectedVersion = getSelectedVersion();
-  const versionSelector = mainNavContent.querySelector(".version-selector");
-  if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersion}"]`)) {
-    versionSelector.value = selectedVersion;
-    
-    versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-      if (navList.dataset.version == selectedVersion) {
-        navList.classList.add("selected-version");
-      } else {  
-        navList.classList.remove("selected-version");
-      }
-    });
-  } else {
-    throw new Error("Stored version not available in version selector");
+  const mainNavPlaceholder = document.querySelector(".main-nav");
+  if (!mainNavPlaceholder) {
+    console.error("Main navigation placeholder not found");
+    return;
   }
 
-  const mainNavPlaceholder = document.querySelector(".main-nav");
-  mainNavPlaceholder.appendChild(mainNavContent);
-  
-  // Set initial active state
-  updateActiveNavItem(window.location.pathname);
+  try {
+    const res = await fetch(window.location.origin + "/nav.html");
+    if (!res.ok) {
+      mainNavPlaceholder.textContent = "Failed to fetch navigation";
+      return;
+    }
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, "text/html");
+
+    const mainNavContent = doc.querySelector(".main-nav-ol");
+    if (!mainNavContent) {
+      mainNavPlaceholder.textContent = "Failed to find navigation content";
+      return;
+    }
+
+    // TODO: Support multiple versions
+    const selectedVersion = getSelectedVersion();
+    const versionInfo = getVersionInfo(selectedVersion);
+    if (!versionInfo) {
+      console.log("Selected version not found in version info");
+    }
+    const selectedVersionAlias = versionInfo.alias;
+    const versionSelector = mainNavContent.querySelector(".version-selector");
+    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+      versionSelector.value = selectedVersionAlias;
+      
+      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+        if (navList.dataset.version == selectedVersion) {
+          navList.classList.add("selected-version");
+        } else {  
+          navList.classList.remove("selected-version");
+        }
+      });
+    } else {
+      console.log("Selected/stored version not available in version selector");
+    }
+
+    mainNavPlaceholder.appendChild(mainNavContent);
+    
+    // Set initial active state
+    updateActiveNavItem(window.location.pathname);
+  } catch (error) {
+    console.error("Error loading navigation:", error);
+    mainNavPlaceholder.textContent = "Failed to load navigation";
+  }
+  return true;
 }
 
 function trackPageView(title, urlPath) {
@@ -461,12 +500,12 @@ function linkToVersionedContent() {
       const originalUrl = el.getAttribute("href");
       const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
-    if (matches && matches.length > 2 && previousVersion) {
+      if (matches && matches.length > 2 && previousVersion) {
         const newUrl = "/arangodb/" + previousVersion + matches[2];
         console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
         el.setAttribute("href", newUrl);
-    }
-  });
+      }
+    });
   }
 }
 
@@ -477,6 +516,8 @@ function handleDocumentChange(event) {
     const currentPath = window.location.pathname;
     //const versionedPath = target.dataset.path;
     
+    window.setupDocSearch(selectedVersion);
+
     localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
     target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
       el => {
@@ -622,12 +663,15 @@ function handleDocumentClick(event) {
 
 window.onload = () => {
 
-    loadNav();
+    loadNav().catch(err => console.error("Failed to initialize navigation:", err));
 
     window.history.pushState("popstate", "Arango Documentation", window.location.href);
     trackPageView(document.title, window.location.pathname);
 
-    getCurrentVersion(window.location.href);
+    const currentVersion = getVersionFromURL();
+    if (currentVersion) {
+      localStorage.setItem('docs-version', currentVersion);
+    }
 
     loadPage(window.location.href)
 
