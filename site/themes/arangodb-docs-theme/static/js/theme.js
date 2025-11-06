@@ -557,6 +557,7 @@ function handleDocumentClick(event) {
     // Menu link clicks
     if (target.classList.contains("link-nav")) {
         event.preventDefault();
+        target.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
         target.classList.add("link-nav-active");
         closeAllEntries();
