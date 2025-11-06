@@ -500,14 +500,29 @@ function toggleExpandShortcode(event) {
 
 function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
-  if (!currentVersion) return;
-  document.querySelectorAll("a.link:not([target])").forEach(el => {
-    const matches = el.getAttribute("href").match(/^\/(\d\.\d{1,2})(\/.*)/);
-    const previousVersion = localStorage.getItem('docs-version') || "stable";
+  if (currentVersion) {
+    if (currentVersion !== "stable" && currentVersion !== "devel") return;
+    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      if (matches && matches.length > 2) {
+        const newUrl = "/arangodb/" + currentVersion + matches[2];
+        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
+      }
+    });
+  } else {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const previousVersion = localStorage.getItem('docs-version') ?? "stable";
     if (matches && matches.length > 2 && previousVersion) {
-      el.setAttribute("href", "/" + previousVersion + matches[2]);
+        const newUrl = "/arangodb/" + previousVersion + matches[2];
+        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
     }
   });
+  }
 }
 
 function handleDocumentChange(event) {
