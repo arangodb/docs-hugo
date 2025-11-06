@@ -689,7 +689,7 @@ window.onload = () => {
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile", "active"));
+        document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
     //const pageWrapper = document.querySelector('.page-wrapper');
