@@ -1406,6 +1406,29 @@
     "section" : "server",
     "type" : "string..."
   },
+  "server.jwt-renewal-threshold" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 300,
+    "deprecatedIn" : null,
+    "description" : "The time (in seconds) before JWT token expiry to trigger automatic renewal. Default is 300 seconds (5 minutes).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 2.2250738585072014e-308,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "double"
+  },
   "server.jwt-secret-keyfile" : {
     "category" : "option",
     "default" : "",
@@ -1428,7 +1451,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "If enabled, the JWT token is used directly for authentication. You can either specify the token directly or use the - sign to be prompted for it to not leak the token to the process list. This option is not compatible with --server.ask-jwt-secret, --server.jwt-secret-keyfile, --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created.",
+    "description" : "If enabled, the JWT token is used directly for authentication. You can either specify the token directly or set the value to \"-\" to get prompted for the token to not leak the token to the process list. This option is not compatible with --server.ask-jwt-secret, --server.jwt-secret-keyfile, --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
