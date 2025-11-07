@@ -194,11 +194,27 @@ curl -X POST https://<ExternalEndpoint>:8529/ai/v1/graphragimporter \
     "env": {
       "db_name": "<your-database-name>",
       "chat_api_provider": "<your-api-provider>",
-      "chat_api_key": "<your-llm-provider-api-key>",
-      "chat_model": "<model-name>"
+      "chat_api_url": "https://api.openai.com/v1",
+      "embedding_api_provider": "openai",
+      "embedding_api_url": "https://api.openai.com/v1",
+      "chat_model": "gpt-4o",
+      "embedding_model": "text-embedding-3-small",
+      "chat_api_key": "your_openai_api_key",
+      "embedding_api_key": "your_openai_api_key"
     }
   }'
 ```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
 
 **Response:**
 

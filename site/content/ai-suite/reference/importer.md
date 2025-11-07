@@ -44,31 +44,33 @@ service using the `genai_project_name` field in the service configuration.
 
 You can choose between two deployment options based on your needs.
 
-### Private LLM
+### Triton Inference Server
 
 If you're working in an air-gapped environment or need to keep your data
-private, you can use the private LLM mode with Triton Inference Server.
+private, you can use Triton Inference Server.
 This option allows you to run the service completely within your own
 infrastructure. The Triton Inference Server is a crucial component when
-running in private LLM mode. It serves as the backbone for running your
+running with self-hosted models. It serves as the backbone for running your
 language (LLM) and embedding models on your own machines, ensuring your
 data never leaves your infrastructure. The server handles all the complex
 model operations, from processing text to generating embeddings, and provides
 both HTTP and gRPC interfaces for communication.
 
-### Public LLM
+### OpenAI-compatible APIs
 
 Alternatively, if you prefer a simpler setup and don't have specific privacy
-requirements, you can use the public LLM mode. This option connects to cloud-based
+requirements, you can use OpenAI-compatible APIs. This option connects to cloud-based
 services like OpenAI's models via the OpenAI API or a large array of models
 (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
+It also works with private corporate LLMs that expose an OpenAI-compatible endpoint.
 
 
 ## Installation and configuration
 
-The Importer service can be configured to use either:
-- Triton Inference Server (for private LLM deployments)
-- Any OpenAI-compatible API (for public LLM deployments), including OpenAI, OpenRouter, Gemini, Anthropic, and more
+The Importer service can be configured to use either Triton Inference Server or any
+OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI,
+OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
+OpenAI-compatible endpoint.
 
 To start the service, use the AI service endpoint `/v1/graphragimporter`. 
 Please refer to the documentation of [AI service](gen-ai.md) for more
@@ -115,18 +117,23 @@ Where:
 - `embedding_api_key`: API key for authenticating with the embedding model service
 
 {{< info >}}
-When using the official OpenAI API, the service defaults to `gpt-4o-mini` and 
+When using the official OpenAI API, the service defaults to `gpt-4o` and 
 `text-embedding-3-small` models.
 {{< /info >}}
 
-### Using different providers for chat and embedding
+### Using different OpenAI-compatible services for chat and embedding
 
-You can mix and match any OpenAI-compatible APIs for chat and embedding. For example, 
-you might use one provider for text generation and another for embeddings, depending 
+You can use different OpenAI-compatible services for chat and embedding. For example, 
+you might use OpenRouter for chat and OpenAI for embeddings, depending 
 on your needs for performance, cost, or model availability.
 
-Since both providers use `"openai"` as the provider value, you differentiate them by 
-setting different URLs in `chat_api_url` and `embedding_api_url`.
+{{< info >}}
+Both `chat_api_provider` and `embedding_api_provider` must be set to the same value 
+(either both `"openai"` or both `"triton"`). You cannot mix Triton and OpenAI-compatible 
+APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
+Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
+different URLs in `chat_api_url` and `embedding_api_url`.
+{{< /info >}}
 
 **Example using OpenRouter for chat and OpenAI for embedding:**
 
@@ -156,12 +163,6 @@ Where:
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
-
-{{< info >}}
-You can use any combination of OpenAI-compatible providers. This example shows
-OpenRouter (for chat) and OpenAI (for embeddings), but you could use Gemini,
-Anthropic, or any other compatible service.
-{{< /info >}}
 
 ### Using Triton Inference Server for chat and embedding
 
