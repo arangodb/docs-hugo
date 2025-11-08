@@ -10,6 +10,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
