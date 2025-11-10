@@ -29,15 +29,18 @@ If it succeeds, then you can view the preview hosted on Netlify by following
 the link.
 
 Note that the automatic previews run [plain builds](#plain-build), which means
-that [generated content](#generated-content) is not updated. The ArangoDB
+that [generated content](#generated-content) is not updated. The Arango
 documentation team takes of regenerating this content if necessary.
 
 ### Contributor License Agreement
 
 To accept external contributions, we need you to fill out and sign our
-Contributor License Agreement (CLA). We use an Apache 2 CLA for ArangoDB,
-which can be found here: <https://www.arangodb.com/documents/cla.pdf>
-You can scan and email the CLA PDF file to <cla@arangodb.com> or send it via
+Contributor License Agreement (CLA):
+
+- [Individual Contributor License Agreement](https://arango.ai/contributor-license) 
+- [Corporate Contributor License Agreement](https://arango.ai/corporate-cla)
+
+You can scan and email the CLA PDF file to <cla@arango.ai> or send it via
 fax to +49-221-2722999-88.
 
 ## Build the documentation
