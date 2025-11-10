@@ -178,9 +178,11 @@ See also the [Retriever](../reference/retriever.md) documentation.
 
 ## Chat with your Knowledge Graph
 
-The chat interface provides two search methods:
-- **Instant search**: Instant queries provide fast responses.
-- **Deep search**: This option will take longer to return a response.
+The Retriever service provides two search methods:
+- [Instant search](../reference/retriever.md#instant-search): Instant
+  queries provide fast responses.
+- [Deep search](../reference/retriever.md#deep-search): This option will take
+  longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
 - Switch the search method from **Instant search** to **Deep search** and vice-versa

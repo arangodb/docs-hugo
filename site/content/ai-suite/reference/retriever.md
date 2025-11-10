@@ -14,214 +14,347 @@ the Arango team.
 
 ## Overview
 
-The Retriever service offers two distinct search methods:
-- **Global search**: Analyzes entire document to identify themes and patterns,
-  perfect for high-level insights and comprehensive summaries.
-- **Local search**: Focuses on specific entities and their relationships, ideal
-  for detailed queries about particular concepts.
-
-The service supports both private (Triton Inference Server) and public (OpenAI)
-LLM deployments, making it flexible for various security and infrastructure
-requirements. With simple HTTP endpoints, you can easily query your knowledge
-graph and get contextually relevant responses.
+The Retriever service provides intelligent search and retrieval from knowledge graphs,
+with multiple search methods optimized for different query types. The service supports 
+LLMs through Triton Inference Server or any OpenAI-compatible API (including private 
+corporate LLMs), making it flexible for various deployment and infrastructure requirements.
 
 **Key features:**
-- Dual search methods for different query types
-- Support for both private and public LLM deployments
+- Multiple search methods optimized for different use cases
+- Streaming support for real-time responses for `UNIFIED` queries
+- Optional LLM orchestration for `LOCAL` queries
+- Configurable community hierarchy levels for `GLOBAL` queries
+- Support for Triton Inference Server and OpenAI-compatible APIs
 - Simple REST API interface
 - Integration with ArangoDB knowledge graphs
-- Configurable community hierarchy levels
 
 {{< tip >}}
-You can also use the GraphRAG Retriever service via the ArangoDB [web interface](../graphrag/web-interface.md).
+You can use the Retriever service via the [web interface](../graphrag/web-interface.md)
+for Instant and Deep Search, or through the API for full control over all query types.
 {{< /tip >}}
 
-## Search methods
+## Prerequisites
+
+Before using the Retriever service, you need to:
+
+1. **Create a GraphRAG project** - For detailed instructions on creating and 
+   managing projects, see the [Projects](ai-orchestrator.md#projects) section in the 
+   GenAI Orchestration Service documentation.
+
+2. **Import data** - Use the [Importer](importer.md) service to transform your 
+   text documents into a knowledge graph stored in ArangoDB.
+
+## Search Methods
 
 The Retriever service enables intelligent search and retrieval of information
-from your knowledge graph. It provides two powerful search methods, global Search
-and local Search, that leverage the structured knowledge graph created by the Importer
-to deliver accurate and contextually relevant responses to your natural language queries.
+from your knowledge graph. It provides multiple search methods that leverage 
+the structured knowledge graph created by the Importer to deliver accurate and 
+contextually relevant responses to your natural language queries.
 
-### Global search
+### Instant Search
 
-Global search is designed for queries that require understanding and aggregation
-of information across your entire document. It's particularly effective for questions
-about overall themes, patterns, or high-level insights in your data.
+Instant Search is designed for responses with very short latency. It triggers
+fast unified retrieval over relevant parts of the knowledge graph via hybrid
+(semantic and lexical) search and graph expansion algorithms, producing a fast,
+streamed natural-language response with clickable references to the relevant documents.
 
-- **Community-Based Analysis**: Uses pre-generated community reports from your
-  knowledge graph to understand the overall structure and themes of your data,
+{{< info >}}
+The Instant Search method is also available via the [Web interface](../graphrag/web-interface.md).
+{{< /info >}}
+
+```json
+{
+  "query_type": "UNIFIED"
+}
+```
+
+### Deep Search
+
+Deep Search is designed for highly detailed, accurate responses that require understanding
+what kind of information is available in different parts of the knowledge graph and
+sequentially retrieving information in an LLM-guided research process. Use whenever
+detail and accuracy are required (e.g. aggregation of highly technical details) and
+very short latency is not (i.e. caching responses for frequently asked questions,
+or use case with agents or research use cases).
+
+{{< info >}}
+The Deep Search method is also available via the [Web interface](../graphrag/web-interface.md).
+{{< /info >}}
+
+```json
+{
+  "query_type": "LOCAL",
+  "use_llm_planner": true
+}
+```
+
+### Global Search
+
+Global search is designed for queries that require understanding and aggregation of information across your entire document. It’s particularly effective for questions about overall themes, patterns, or high-level insights in your data.
+
+- **Community-Based Analysis**: Uses pre-generated community reports from your knowledge graph to understand the overall structure and themes of your data.
 - **Map-Reduce Processing**:
-   - **Map Stage**: Processes community reports in parallel, generating intermediate responses with rated points.
-   - **Reduce Stage**: Aggregates the most important points to create a comprehensive final response.
+  - **Map Stage**: Processes community reports in parallel, generating intermediate responses with rated points.
+  - **Reduce Stage**: Aggregates the most important points to create a comprehensive final response.
 
-**Best use cases**:
-- "What are the main themes in the dataset?"
-- "Summarize the key findings across all documents"
-- "What are the most important concepts discussed?"
+```json
+{
+  "query_type": "GLOBAL"
+}
+```
 
-### Local search
+### Local Search
 
-Local search focuses on specific entities and their relationships within your
-knowledge graph. It is ideal for detailed queries about particular concepts,
-entities, or relationships.
+Local search focuses on specific entities and their relationships within your knowledge graph. It is ideal for detailed queries about particular concepts, entities, or relationships.
 
 - **Entity Identification**: Identifies relevant entities from the knowledge graph based on the query.
 - **Context Gathering**: Collects:
-   - Related text chunks from original documents.
-   - Connected entities and their strongest relationships.
-   - Entity descriptions and attributes.
-   - Context from the community each entity belongs to.
+  - Related text chunks from original documents.
+  - Connected entities and their strongest relationships.
+  - Entity descriptions and attributes.
+  - Context from the community each entity belongs to.
 - **Prioritized Response**: Generates a response using the most relevant gathered information.
 
-**Best use cases**:
-- "What are the properties of [specific entity]?"
-- "How is [entity A] related to [entity B]?"
-- "What are the key details about [specific concept]?"
+```json
+{
+  "query_type": "LOCAL",
+  "use_llm_planner": false
+}
+```
 
 ## Installation
 
-The Retriever service can be configured to use either the Triton Inference Server
-(for private LLM deployments) or OpenAI/OpenRouter (for public LLM deployments).
+The Retriever service can be configured to use either Triton Inference Server or any 
+OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI, 
+OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an 
+OpenAI-compatible endpoint.
 
 To start the service, use the AI service endpoint `/v1/graphragretriever`. 
 Please refer to the documentation of the [AI orchestration service](ai-orchestrator.md) for more
 information on how to use it.
 
-### Using Triton Inference Server (Private LLM)
+### Using OpenAI-compatible APIs
 
-The first step is to install the LLM Host service with the LLM and
-embedding models of your choice. The setup will the use the 
-Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](triton-inference-server.md)
-and [Mlflow](mlflow.md) documentation.
+The `openai` provider works with any OpenAI-compatible API, including:
+- OpenAI (official API)
+- OpenRouter
+- Google Gemini
+- Anthropic Claude
+- Corporate or self-hosted LLMs with OpenAI-compatible endpoints
 
-Once the `llmhost` service is up-and-running, then you can start the Importer
-service using the below configuration:
+Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+
+**Example using OpenAI:**
 
 ```json
 {
   "env": {
-    "username": "your_username",
     "db_name": "your_database_name",
-    "api_provider": "triton",
-    "triton_url": "your-arangodb-llm-host-url",
-    "triton_model": "mistral-nemo-instruct"
+    "chat_api_provider": "openai",
+    "chat_api_url": "https://api.openai.com/v1",
+    "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "gpt-4o",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openai_api_key",
+    "embedding_api_key": "your_openai_api_key"
   },
 }
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `llmhost` service is running.
-- `triton_model`: Name of the LLM model to use for text processing.
-
-### Using OpenAI (Public LLM)
-
-```json
-{
-  "env": {
-    "openai_api_key": "your_openai_api_key",
-    "username": "your_username",
-    "db_name": "your_database_name",
-    "api_provider": "openai"
-  },
-}
-```
-
-Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `openai_api_key`: Your OpenAI API key.
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
 
 {{< info >}}
-By default, for OpenAI API, the service is using
-`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
-embedding model respectively.
+When using the official OpenAI API, the service defaults to `gpt-4o` and 
+`text-embedding-3-small` models.
 {{< /info >}}
 
-### Using OpenRouter (Gemini, Anthropic, etc.)
+### Using different OpenAI-compatible services for chat and embedding
 
-OpenRouter makes it possible to connect to a huge array of LLM API providers,
-including non-OpenAI LLMs like Gemini Flash, Anthropic Claude and publicly hosted
-open-source models.
+You can use different OpenAI-compatible services for chat and embedding. For example, 
+you might use OpenRouter for chat and OpenAI for embeddings, depending 
+on your needs for performance, cost, or model availability.
 
-When using the OpenRouter option, the LLM responses are served via OpenRouter while
-OpenAI is used for the embedding model.
+{{< info >}}
+Both `chat_api_provider` and `embedding_api_provider` must be set to the same value 
+(either both `"openai"` or both `"triton"`). You cannot mix Triton and OpenAI-compatible 
+APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
+Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
+different URLs in `chat_api_url` and `embedding_api_url`.
+{{< /info >}}
+
+**Example using OpenRouter for chat and OpenAI for embedding:**
 
 ```json
     {
       "env": {
         "db_name": "your_database_name",
-        "username": "your_username",
-        "api_provider": "openrouter",
-        "openai_api_key": "your_openai_api_key",
-        "openrouter_api_key": "your_openrouter_api_key",
-        "openrouter_model": "mistralai/mistral-nemo"  // Specify a model here
+        "chat_api_provider": "openai",
+        "embedding_api_provider": "openai",
+        "chat_api_url": "https://openrouter.ai/api/v1",
+        "embedding_api_url": "https://api.openai.com/v1",
+        "chat_model": "mistral-nemo",
+        "embedding_model": "text-embedding-3-small",
+        "chat_api_key": "your_openrouter_api_key",
+        "embedding_api_key": "your_openai_api_key"
       },
     }
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to access collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `openai_api_key`: Your OpenAI API key (for the embedding model).
-- `openrouter_api_key`: Your OpenRouter API key (for the LLM).
-- `openrouter_model`: Desired LLM (optional; default is `mistral-nemo`).
+- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service (in this example, OpenRouter)
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service (in this example, OpenAI)
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
 
-{{< info >}}
-When using OpenRouter, the service defaults to `mistral-nemo` for generation
-(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
-{{< /info >}}
+### Using Triton Inference Server for chat and embedding
+
+The first step is to install the LLM Host service with the LLM and
+embedding models of your choice. The setup will use the 
+Triton Inference Server and MLflow at the backend. 
+For more details, please refer to the [Triton Inference Server](triton-inference-server.md)
+and [Mlflow](mlflow.md) documentation.
+
+Once the `llmhost` service is up-and-running, then you can start the Retriever
+service using the below configuration:
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "chat_api_provider": "triton",
+    "embedding_api_provider": "triton",
+    "chat_api_url": "your-arangodb-llm-host-url",
+    "embedding_api_url": "your-arangodb-llm-host-url",
+    "chat_model": "mistral-nemo-instruct",
+    "embedding_model": "nomic-embed-text-v1"
+  },
+}
+```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Specifies which LLM provider to use for language model services
+- `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
 
 ## Executing queries
 
 After the Retriever service is installed successfully, you can interact with 
-it using the following HTTP endpoints, based on the selected search method.
+it using the following HTTP endpoints.
 
 {{< tabs "executing-queries" >}}
 
-{{< tab "Local search" >}}
+{{< tab "Instant Search" >}}
+
 ```bash
-curl -X POST /v1/graphrag-query \
+curl -X POST /v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -d '{
-    "query": "What is the AR3 Drone?",
-    "query_type": 2,
-    "provider": 0
+    "query": "How are X and Y related?",
+    "query_type": "UNIFIED",
+    "provider": 0,
+    "include_metadata": true
   }'
 ```
+
 {{< /tab >}}
 
-{{< tab "Global search" >}}
+{{< tab "Deep Search" >}}
+
+```bash
+curl -X POST /v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What are the properties of a specific entity?",
+    "query_type": "LOCAL",
+    "use_llm_planner": true,
+    "provider": 0,
+    "include_metadata": true
+  }'
+```
+
+{{< /tab >}}
+
+{{< tab "Global Search" >}}
+
+```bash
+curl -X POST /v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What are the main themes discussed in the document?",
+    "query_type": "GLOBAL",
+    "level": 1,
+    "provider": 0,
+    "include_metadata": true
+  }'
+```
+
+{{< /tab >}}
+
+{{< tab "Local Search" >}}
 
 ```bash
 curl -X POST /v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is the AR3 Drone?",
-    "level": 1,
-    "query_type": 1,
-    "provider": 0
+    "query_type": "LOCAL",
+    "use_llm_planner": false,
+    "provider": 0,
+    "include_metadata": true
   }'
 ```
+
 {{< /tab >}}
 
 {{< /tabs >}}
 
-The request parameters are the following:
-- `query`: Your search query text.
-- `level`: The community hierarchy level to use for the search (`1` for top-level communities).
+### Request Parameters
+
+- `query`: Your search query text (required).
+
 - `query_type`: The type of search to perform.
-  - `1`: Global search.
-  - `2`: Local search.
+  - `GLOBAL` or `1`: Global Search (default if not specified).
+  - `LOCAL` or `2`: Deep Search when used with LLM planner (default), or standard Local Search when `llm_planner` is explicitly set to `false`.
+  - `UNIFIED` or `3`: Instant Search.
+
+- `use_llm_planner`: Whether to use LLM planner for intelligent query orchestration (optional)
+  - When enabled (default), orchestrates retrieval using both local and global strategies (powers Deep Search)
+  - Set to `false` for standard Local Search without orchestration
+
+- `level`: Community hierarchy level for analysis (only applicable for `GLOBAL` queries)
+  - `1` for top-level communities (broader themes)
+  - `2` for more granular communities (default)
+
 - `provider`: The LLM provider to use
-  - `0`: OpenAI (or OpenRouter)
-  - `1`: Triton
+  - `0`: Any OpenAI-compatible API (OpenAI, OpenRouter, Gemini, Anthropic, etc.)
+  - `1`: Triton Inference Server
+
+- `include_metadata`: Whether to include metadata in the response (optional, defaults to `false`)
+
+- `response_instruction`: Custom instructions for response generation style (optional)
+
+- `use_cache`: Whether to use caching for this query (optional, defaults to `false`)
+
+- `show_citations`: Whether to show inline citations in the response (optional, defaults to `false`)
 
 ## Health check
 
@@ -248,17 +381,6 @@ properties:
     "progress": 100,
 }
 ```
-
-## Best Practices
-
-- **Choose the right search method**:
-   - Use global search for broad, thematic queries.
-   - Use local search for specific entity or relationship queries.
-
-
-- **Performance considerations**:
-   - Global search may take longer due to its map-reduce process.
-   - Local search is typically faster for concrete queries.
 
 ## API Reference
 

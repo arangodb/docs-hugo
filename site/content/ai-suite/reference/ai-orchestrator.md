@@ -33,22 +33,15 @@ in the platform. All services support the `profiles` field, which you can use
 to define the profile to use for the service. For example, you can define a
 GPU profile that enables the service to run an LLM on GPU resources.
 
-## LLM Host Service Creation Request Body
+## Service Creation Request Body
+
+The following example shows a complete request body with all available options:
 
 ```json
 {
     "env": {
-        "model_name": "<registered_model_name>"
-    }
-}
-```
-
-## Using Labels in Creation Request Body
-
-```json
-{
-    "env": {
-        "model_name": "<registered_model_name>"
+        "model_name": "<registered_model_name>",
+        "profiles": "gpu,internal"
     },
     "labels": {
         "key1": "value1",
@@ -57,32 +50,120 @@ GPU profile that enables the service to run an LLM on GPU resources.
 }
 ```
 
-{{< info >}}
-Labels are optional. Labels can be used to filter and identify services in
-the Platform. If you want to use labels, define them as a key-value pair in `labels`
-within the `env` field.
-{{< /info >}}
+**Optional fields:**
 
-## Using Profiles in Creation Request Body
+- **labels**: Key-value pairs used to filter and identify services in the platform.
+- **profiles**: A comma-separated string defining which profiles to use for the 
+  service (e.g., `"gpu,internal"`). If not set, the service is created with the 
+  default profile. Profiles must be present and created in the platform before 
+  they can be used.
+
+The parameters required for the deployment of each service are defined in the
+corresponding service documentation. See [Importer](importer.md)
+and [Retriever](retriever.md).
+
+## Projects
+
+Projects help you organize your GraphRAG work by grouping related services and 
+keeping your data separate. When the Importer service creates ArangoDB collections 
+(such as documents, chunks, entities, relationships, and communities), it uses 
+your project name as a prefix. For example, a project named `docs` will have 
+collections like `docs_Documents`, `docs_Chunks`, and so on.
+
+Projects are required for the following services:
+- Importer
+- Retriever
+
+### Creating a project
+
+To create a new GraphRAG project, send a POST request to the project endpoint:
+
+```bash
+curl -X POST "https://<ExternalEndpoint>:8529/gen-ai/v1/project" \
+  -H "Authorization: Bearer <your-bearer-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "project_name": "docs",
+    "project_type": "graphrag",
+    "project_db_name": "documentation",
+    "project_description": "A documentation project for GraphRAG."
+  }'
+```
+
+Where:
+- **project_name** (required): Unique identifier for your project. Must be 1-63 
+  characters and contain only letters, numbers, underscores (`_`), and hyphens (`-`).
+- **project_type** (required): Type of project (e.g., `"graphrag"`).
+- **project_db_name** (required): The ArangoDB database name where the project 
+  will be created.
+- **project_description** (optional): A description of your project.
+
+Once created, you can reference your project in service deployments using the 
+`genai_project_name` field:
 
 ```json
 {
-    "env": {
-        "model_name": "<registered_model_name>",
-        "profiles": "gpu,internal"
-    }
+  "env": {
+    "genai_project_name": "docs"
+  }
 }
 ```
 
-{{< info >}}
-The `profiles` field is optional. If it is not set, the service is created with
-the default profile. Profiles must be present and created in the Platform before
-they can be used. If you want to use profiles, define them as a comma-separated
-string in `profiles` within the `env` field.
-{{< /info >}}
+### Listing projects
 
-The parameters required for the deployment of each service are defined in the
-corresponding service documentation.
+**List all project names in a database:**
+
+```bash
+curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/all_project_names/<database_name>" \
+  -H "Authorization: Bearer <your-bearer-token>"
+```
+
+This returns only the project names for quick reference.
+
+**List all projects with full metadata in a database:**
+
+```bash
+curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/all_projects/<database_name>" \
+  -H "Authorization: Bearer <your-bearer-token>"
+```
+
+This returns complete project objects including metadata, associated services, 
+and knowledge graph information.
+
+### Getting project details
+
+Retrieve comprehensive metadata for a specific project:
+
+```bash
+curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/project_by_name/<database_name>/<project_name>" \
+  -H "Authorization: Bearer <your-bearer-token>"
+```
+
+The response includes:
+- Project configuration
+- Associated Importer and Retriever services
+- Knowledge graph metadata
+- Service status information
+- Last modification timestamp
+
+### Deleting a project
+
+Remove a project's metadata from the GenAI service:
+
+```bash
+curl -X DELETE "https://<ExternalEndpoint>:8529/gen-ai/v1/project/<database_name>/<project_name>" \
+  -H "Authorization: Bearer <your-bearer-token>"
+```
+
+{{< warning >}}
+Deleting a project only removes the project metadata from the GenAI service. 
+It does **not** delete:
+- Services associated with the project (must be deleted separately)
+- ArangoDB collections and data
+- Knowledge graphs
+
+You must manually delete services and collections if needed.
+{{< /warning >}}
 
 ## Obtaining a Bearer Token
 
@@ -101,7 +182,7 @@ documentation.
 
 ## Complete Service lifecycle example
 
-The example below shows how to install, monitor, and uninstall the Importer service.
+The example below shows how to install, monitor, and uninstall the [Importer](importer.md) service.
 
 ### Step 1: Installing the service
 
@@ -111,14 +192,29 @@ curl -X POST https://<ExternalEndpoint>:8529/ai/v1/graphragimporter \
   -H "Content-Type: application/json" \
   -d '{
     "env": {
-      "username": "<your-username>",
       "db_name": "<your-database-name>",
-      "api_provider": "<your-api-provider>",
-      "triton_url": "<your-arangodb-llm-host-url>",
-      "triton_model": "<your-triton-model>"
+      "chat_api_provider": "<your-api-provider>",
+      "chat_api_url": "https://api.openai.com/v1",
+      "embedding_api_provider": "openai",
+      "embedding_api_url": "https://api.openai.com/v1",
+      "chat_model": "gpt-4o",
+      "embedding_model": "text-embedding-3-small",
+      "chat_api_key": "your_openai_api_key",
+      "embedding_api_key": "your_openai_api_key"
     }
   }'
 ```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
 
 **Response:**
 
@@ -175,16 +271,6 @@ curl -X DELETE https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-i
 - **Service ID**: The `serviceId` from Step 1's response (`arangodb-graphrag-importer-of1ml`) is used in Steps 2 and 3
 - **Authentication**: All requests use the same Bearer token in the `Authorization` header
 {{< /info >}}
-
-### Customizing the example
-
-Replace the following values with your actual configuration:
-- `<your-username>` - Your database username.
-- `<your-database-name>` - Target database name.
-- `<your-api-provider>` - Your API provider (e.g., `triton`)
-- `<your-arangodb-llm-host-url>` - Your LLM host service URL.
-- `<your-triton-model>` - Your Triton model name (e.g., `mistral-nemo-instruct`).
-- `<your-bearer-token>` - Your authentication token.
 
 ## Service configuration
 

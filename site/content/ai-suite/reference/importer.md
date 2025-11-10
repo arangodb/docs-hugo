@@ -28,77 +28,143 @@ different concepts in your document with the Retriever service.
 You can also use the GraphRAG Importer service via the [Data Platform web interface](../graphrag/web-interface.md).
 {{< /tip >}}
 
-## Creating a new project
+## Prerequisites
 
-To create a new GraphRAG project, use the `CreateProject` method by sending a
-`POST` request to the `/ai/v1/project` endpoint. You must provide a unique
-`project_name` and a `project_type` in the request body. Optionally, you can
-provide a `project_description`.
+Before importing data, you need to create a GraphRAG project. Projects help you 
+organize your work and keep your data separate from other projects.
 
-```curl
-curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
--H "Content-Type: application/json" \
--d '{
-  "project_name": "docs",
-  "project_type": "graphrag",
-  "project_description": "A documentation project for GraphRAG."
-}'
-```
-All the relevant ArangoDB collections (such as documents, chunks, entities,
-relationships, and communities) created during the import process will
-have the project name as a prefix. For example, the Documents collection will
-become `<project_name>_Documents`. The Knowledge Graph will also use the project
-name as a prefix. If no project name is specified, then all collections
-are prefixed with `default_project`, e.g., `default_project_Documents`.
+For detailed instructions on creating and managing projects, see the 
+[Projects](ai-orchestrator.md#projects) section in the GenAI Orchestration Service 
+documentation.
 
-### Project metadata
-
-Additional project metadata is accessible via the following endpoint, replacing
-`<your_project>` with the actual name of your project:
-
-```
-GET /ai/v1/project_by_name/<your_project>
-```
-
-The endpoint provides comprehensive metadata about your project's components,
-including its importer and retriever services and their status.
+Once you have created a project, you can reference it when deploying the Importer 
+service using the `genai_project_name` field in the service configuration.
 
 ## Deployment options
 
 You can choose between two deployment options based on your needs.
 
-### Private LLM
+### Triton Inference Server
 
 If you're working in an air-gapped environment or need to keep your data
-private, you can use the private LLM mode with Triton Inference Server.
+private, you can use Triton Inference Server.
 This option allows you to run the service completely within your own
 infrastructure. The Triton Inference Server is a crucial component when
-running in private LLM mode. It serves as the backbone for running your
+running with self-hosted models. It serves as the backbone for running your
 language (LLM) and embedding models on your own machines, ensuring your
 data never leaves your infrastructure. The server handles all the complex
 model operations, from processing text to generating embeddings, and provides
 both HTTP and gRPC interfaces for communication.
 
-### Public LLM
+### OpenAI-compatible APIs
 
 Alternatively, if you prefer a simpler setup and don't have specific privacy
-requirements, you can use the public LLM mode. This option connects to cloud-based
+requirements, you can use OpenAI-compatible APIs. This option connects to cloud-based
 services like OpenAI's models via the OpenAI API or a large array of models
 (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
+It also works with private corporate LLMs that expose an OpenAI-compatible endpoint.
 
 
 ## Installation and configuration
 
-The Importer service can be configured to use either:
-- Triton Inference Server (for private LLM deployments)
-- OpenAI (for public LLM deployments)
-- OpenRouter (for public LLM deployments)
+The Importer service can be configured to use either Triton Inference Server or any
+OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI,
+OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
+OpenAI-compatible endpoint.
 
 To start the service, use the AI service endpoint `/v1/graphragimporter`. 
 Please refer to the documentation of the [AI orchestration service](ai-orchestrator.md) for more
 information on how to use it.
 
-### Using Triton Inference Server (Private LLM)
+### Using OpenAI-compatible APIs
+
+The `openai` provider works with any OpenAI-compatible API, including:
+- OpenAI (official API)
+- OpenRouter
+- Google Gemini
+- Anthropic Claude
+- Corporate or self-hosted LLMs with OpenAI-compatible endpoints
+
+set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+
+**Example using OpenAI:**
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "chat_api_provider": "openai",
+    "chat_api_url": "https://api.openai.com/v1",
+    "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "gpt-4o",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openai_api_key",
+    "embedding_api_key": "your_openai_api_key"
+  },
+}
+```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
+
+{{< info >}}
+When using the official OpenAI API, the service defaults to `gpt-4o` and 
+`text-embedding-3-small` models.
+{{< /info >}}
+
+### Using different OpenAI-compatible services for chat and embedding
+
+You can use different OpenAI-compatible services for chat and embedding. For example, 
+you might use OpenRouter for chat and OpenAI for embeddings, depending 
+on your needs for performance, cost, or model availability.
+
+{{< info >}}
+Both `chat_api_provider` and `embedding_api_provider` must be set to the same value 
+(either both `"openai"` or both `"triton"`). You cannot mix Triton and OpenAI-compatible 
+APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
+Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
+different URLs in `chat_api_url` and `embedding_api_url`.
+{{< /info >}}
+
+**Example using OpenRouter for chat and OpenAI for embedding:**
+
+```json
+    {
+      "env": {
+        "db_name": "your_database_name",
+        "chat_api_provider": "openai",
+        "embedding_api_provider": "openai",
+        "chat_api_url": "https://openrouter.ai/api/v1",
+        "embedding_api_url": "https://api.openai.com/v1",
+        "chat_model": "mistral-nemo",
+        "embedding_model": "text-embedding-3-small",
+        "chat_api_key": "your_openrouter_api_key",
+        "embedding_api_key": "your_openai_api_key"
+      },
+    }
+```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
+- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service (in this example, OpenRouter)
+- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service (in this example, OpenAI)
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
+
+### Using Triton Inference Server for chat and embedding
 
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will the use the 
@@ -112,81 +178,25 @@ service using the below configuration:
 ```json
 {
   "env": {
-    "username": "your_username",
     "db_name": "your_database_name",
-    "api_provider": "triton",
-    "triton_url": "your-arangodb-llm-host-url",
-    "triton_model": "mistral-nemo-instruct"
+    "chat_api_provider": "triton",
+    "embedding_api_provider": "triton",
+    "chat_api_url": "your-arangodb-llm-host-url",
+    "embedding_api_url": "your-arangodb-llm-host-url",
+    "chat_model": "mistral-nemo-instruct",
+    "embedding_model": "nomic-embed-text-v1"
   },
 }
 ```
 
 Where:
-- `username`: ArangoDB database user with permissions to create and modify collections.
-- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored.
-- `api_provider`: Specifies which LLM provider to use.
-- `triton_url`: URL of your Triton Inference Server instance. This should be the URL where your `llmhost` service is running.
-- `triton_model`: Name of the LLM model to use for text processing.
-
-### Using OpenAI (Public LLM)
-
-```json
-{
-  "env": {
-    "openai_api_key": "your_openai_api_key",
-    "username": "your_username",
-    "db_name": "your_database_name",
-    "api_provider": "openai"
-  },
-}
-```
-
-Where:
-- `username`: ArangoDB database user with permissions to create and modify collections
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `api_provider`: Specifies which LLM provider to use
-- `openai_api_key`: Your OpenAI API key
-
-{{< info >}}
-By default, for OpenAI API, the service is using
-`gpt-4o-mini` and `text-embedding-3-small` models as LLM and
-embedding model respectively.
-{{< /info >}}
-
-### Using OpenRouter (Gemini, Anthropic, etc.)
-
-OpenRouter makes it possible to connect to a huge array of LLM API
-providers, including non-OpenAI LLMs like Gemini Flash, Anthropic Claude
-and publicly hosted open-source models.
-
-When using the OpenRouter option, the LLM responses are served via OpenRouter
-while OpenAI is used for the embedding model.
-
-```json
-    {
-      "env": {
-        "db_name": "your_database_name",
-        "username": "your_username",
-        "api_provider": "openrouter",
-        "openai_api_key": "your_openai_api_key",
-        "openrouter_api_key": "your_openrouter_api_key",
-        "openrouter_model": "mistralai/mistral-nemo"  // Specify a model here
-      },
-    }
-```
-
-Where:
-- `username`: ArangoDB database user with permissions to access collections  
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored  
-- `api_provider`: Specifies which LLM provider to use  
-- `openai_api_key`: Your OpenAI API key (for the embedding model)  
-- `openrouter_api_key`: Your OpenRouter API key (for the LLM)  
-- `openrouter_model`: Desired LLM (optional; default is `mistral-nemo`)
-
-{{< info >}}
-When using OpenRouter, the service defaults to `mistral-nemo` for generation
-(via OpenRouter) and `text-embedding-3-small` for embeddings (via OpenAI).
-{{< /info >}}
+- `chat_api_provider`: Specifies which LLM provider to use for language model services
+- `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
+- `chat_api_url`: API endpoint URL for the chat/language model service
+- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
 
 ## Building Knowledge Graphs
 
