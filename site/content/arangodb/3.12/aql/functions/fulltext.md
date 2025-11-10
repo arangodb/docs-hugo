@@ -5,13 +5,13 @@ weight: 30
 description: >-
   AQL offers functions to filter data using fulltext indexes
 ---
-See [fulltext indexes](../../index-and-search/indexing/working-with-indexes/fulltext-indexes.md)
+See [fulltext indexes](../../indexes-and-search/indexing/working-with-indexes/fulltext-indexes.md)
 for details.
 
 {{< warning >}}
 The fulltext index type is deprecated from version 3.10 onwards.
-It is recommended to use [Inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md) or
-[ArangoSearch](../../index-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+It is recommended to use [Inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) or
+[ArangoSearch](../../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 {{< /warning >}}
 
 ## FULLTEXT()

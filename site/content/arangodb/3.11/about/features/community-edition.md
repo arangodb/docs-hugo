@@ -117,23 +117,23 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../../aql/graphs/traversals-explained.md) with AQL to
+  Graphs can be [traversed](../../aql/graph-queries/traversals-explained.md) with AQL to
   retrieve direct and indirect neighbor nodes using a fixed or variable depth.
-  The [traversal order](../../aql/graphs/traversals.md) can be
+  The [traversal order](../../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
   ("Weighted Traversals"). Stop conditions for pruning paths are supported.
-  Traversal algorithms to get a [shortest path](../../aql/graphs/shortest-path.md),
-  [all shortest paths](../../aql/graphs/all-shortest-paths.md), paths in order of
-  increasing length ("[k Shortest Paths](../../aql/graphs/k-shortest-paths.md)"),
+  Traversal algorithms to get a [shortest path](../../aql/graph-queries/shortest-path.md),
+  [all shortest paths](../../aql/graph-queries/all-shortest-paths.md), paths in order of
+  increasing length ("[k Shortest Paths](../../aql/graph-queries/k-shortest-paths.md)"),
   and to enumerate all paths between two vertices
-  ("[k Paths](../../aql/graphs/k-paths.md)") are available, too.
+  ("[k Paths](../../aql/graph-queries/k-paths.md)") are available, too.
 
 - [**Pregel**](../../data-science/pregel/_index.md):
   Iterative graph processing for single servers with pre-built algorithms like
   PageRank, Connected Components, and Label Propagation. Cluster support
   requires the Enterprise Edition.
 
-- [**ArangoSearch for Text Search and Ranking**](../../index-and-search/arangosearch/_index.md):
+- [**ArangoSearch for Text Search and Ranking**](../../indexes-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.
   Exact value matching, range queries, prefix matching, case-insensitive and
   accent-insensitive search. Token, phrase, wildcard, and fuzzy search support
@@ -185,34 +185,34 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 
 ## Performance
 
-- [**Persistent Indexes**](../../index-and-search/indexing/basics.md#persistent-index):
+- [**Persistent Indexes**](../../indexes-and-search/indexing/basics.md#persistent-index):
   Indexes are stored on disk to enable fast server restarts. You can create
   secondary indexes over one or multiple fields, optionally with a uniqueness
   constraint. A "sparse" option to only index non-null values is also available.
   The elements of an array can be indexed individually.
 
-- [**Inverted indexes**](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md):
+- [**Inverted indexes**](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md):
   An eventually consistent index type that can accelerate a broad range of
   queries from simple to complex, including full-text search.
 
-- [**Vertex-centric Indexes**](../../index-and-search/indexing/basics.md#vertex-centric-indexes):
+- [**Vertex-centric Indexes**](../../indexes-and-search/indexing/basics.md#vertex-centric-indexes):
   Secondary indexes for more efficient graph traversals with filter conditions.
 
-- [**Time-to-Live (TTL) Indexes**](../../index-and-search/indexing/basics.md#ttl-time-to-live-index):
+- [**Time-to-Live (TTL) Indexes**](../../indexes-and-search/indexing/basics.md#ttl-time-to-live-index):
   Time-based removal of expired documents.
 
-- [**Geo-spatial Indexes**](../../index-and-search/indexing/basics.md#geo-index):
+- [**Geo-spatial Indexes**](../../indexes-and-search/indexing/basics.md#geo-index):
   Accelerated geo-spatial queries for locations and GeoJSON objects, based on
   the S2 library. <!-- TODO: list supported queries? Centroid-limitations? -->
   Support for composable, distance-based geo-queries ("geo cursors").
 
 {{% comment %}} Experimental feature
-- [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
+- [**Multi-dimensional indexes**](../../indexes-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
   An index type to efficiently intersect multiple range queries, like finding
   all appointments that intersect a time range.
 {{% /comment %}}
 
-- [**Background Indexing**](../../index-and-search/indexing/basics.md#creating-indexes-in-background):
+- [**Background Indexing**](../../indexes-and-search/indexing/basics.md#creating-indexes-in-background):
   Indexes can be created in the background to not block queries in the meantime.
 
 - [**Index cache refilling**](../../release-notes/version-3.11/whats-new-in-3-11.md#index-cache-refilling):

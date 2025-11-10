@@ -10,7 +10,7 @@ developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 Indexes can be ensured using the following annotations. For reference see the
-[indexing](../../../../../../arangodb/3.12/index-and-search/indexing/_index.md) documentation
+[indexing](../../../../../../arangodb/3.12/indexes-and-search/indexing/_index.md) documentation
 and specific aspects that apply to
 [indexes on shards](../../../../../../arangodb/3.12/deploy/architecture/data-sharding.md#indexes-on-shards).
 

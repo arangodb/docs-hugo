@@ -7,7 +7,7 @@ description: >-
 weight: 15
 ---
 {{< tip >}}
-The Arango Data Platform & AI Suite are available as a pre-release. To get
+The Arango AI Data Platform is available as a pre-release. To get
 exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}
@@ -130,7 +130,7 @@ OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
 OpenAI-compatible endpoint.
 
 To start the service, use the AI service endpoint `/v1/graphragretriever`. 
-Please refer to the documentation of [AI service](gen-ai.md) for more
+Please refer to the documentation of the [AI orchestration service](ai-orchestrator.md) for more
 information on how to use it.
 
 ### Using OpenAI-compatible APIs

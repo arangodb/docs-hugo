@@ -26,13 +26,6 @@
         {
           matchingRule: {
             ruleType: "Substring",
-            string: "Arangograph",
-          },
-          replaceWith: "ArangoGraph",
-        },
-        {
-          matchingRule: {
-            ruleType: "Substring",
             string: "Aql",
           },
           replaceWith: "AQL",
@@ -43,6 +36,13 @@
             string: "Arangodb",
           },
           replaceWith: "ArangoDB",
+        },
+        {
+          matchingRule: {
+            ruleType: "Substring",
+            string: "Amp",
+          },
+          replaceWith: "AMP",
         },
       ],
       customCardSettings: [
@@ -59,19 +59,10 @@
           filters: {
             UrlMatch: {
               ruleType: "PartialUrl",
-              partialUrl: "developer.arangodb.com",
+              partialUrl: "arango.ai",
             },
           },
-          searchTabLabel: "Developer Hub",
-        },
-        {
-          filters: {
-            UrlMatch: {
-              ruleType: "PartialUrl",
-              partialUrl: "arangodb.com",
-            },
-          },
-          searchTabLabel: "Home",
+          searchTabLabel: "Website",
         },
       ],
     });
@@ -102,7 +93,7 @@
           },
         },
         aiChatSettings: {
-          botAvatarSrcUrl: "/images/ArangoDB_Logo_White_small.png",
+          botAvatarSrcUrl: "/images/favicon.svg",
           quickQuestions: [
             "What can you do with AQL that is not feasible with SQL?",
             "How do I search for objects within arrays?",
@@ -119,7 +110,7 @@
         searchSettings: {
           tabSettings: {
             isAllTabEnabled: false,
-            alwaysDisplayedTabs: ["Official Docs", "Developer Hub", "Home"],
+            alwaysDisplayedTabs: ["Official Docs", "Website"],
           },
         },
       },

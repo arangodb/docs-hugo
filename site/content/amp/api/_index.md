@@ -1,6 +1,6 @@
 ---
-title: The Arango Managed Platform (AMP) API
-menuTitle: AMP API
+title: The API of the Arango Managed Platform (AMP)
+menuTitle: API
 weight: 60
 description: >-
   The interface to control all resources inside the Arango Managed Platform in

@@ -28,7 +28,7 @@ aliases:
   stored values, primary sort columns, and primary key columns in memory to
   improve the performance of Views and inverted indexes.
 
-- [**`geo_s2` Analyzer**](../../index-and-search/analyzers.md#geo_s2):
+- [**`geo_s2` Analyzer**](../../indexes-and-search/analyzers.md#geo_s2):
   Efficiently index geo-spatial data using different binary formats, tuning the
   size on disk, the precision, and query performance.
 
@@ -46,7 +46,7 @@ Also see [What's New in 3.11](../../release-notes/version-3.11/whats-new-in-3-11
   Persistent document attributes that are generated when documents are created
   or modified, using an AQL expression.
 
-- [**Inverted indexes**](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md):
+- [**Inverted indexes**](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md):
   A new, eventually consistent index type that can accelerate a broad range of
   queries, providing similar search capabilities as `arangosearch` Views, but
   defined per collection and simpler to use.
@@ -57,12 +57,12 @@ Also see [What's New in 3.11](../../release-notes/version-3.11/whats-new-in-3-11
   alternative to `arangosearch` Views.
 
 - **Persistent indexes**:
-  An optional [**In-memory Cache**](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values)
-  for faster lookups and [**Stored Values**](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes)
+  An optional [**In-memory Cache**](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#caching-of-index-values)
+  for faster lookups and [**Stored Values**](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes)
   to let persistent indexes cover additional attributes of projections.
 
 - **AQL Graph Traversals**:
-  [All Shortest Paths](../../aql/graphs/all-shortest-paths.md) allows you to query
+  [All Shortest Paths](../../aql/graph-queries/all-shortest-paths.md) allows you to query
   for all paths of shortest length between two documents.
 
 **Enterprise Edition**
@@ -70,15 +70,15 @@ Also see [What's New in 3.11](../../release-notes/version-3.11/whats-new-in-3-11
 - [**EnterpriseGraphs**](../../graphs/enterprisegraphs/_index.md): A new specialized version of
   SmartGraphs, with an automatic sharding key selection.
 
-- [**Search highlighting**](../../index-and-search/arangosearch/search-highlighting.md):
+- [**Search highlighting**](../../indexes-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.
 
-- [**Nested search**](../../index-and-search/arangosearch/nested-search.md):
+- [**Nested search**](../../indexes-and-search/arangosearch/nested-search.md):
   Match arrays of objects with all the conditions met by a single sub-object,
   and define for how many of the elements this must be true.
 
 - **ArangoSearch**:
-  New [`minhash` Analyzer](../../index-and-search/analyzers.md#minhash) for locality-sensitive hashing
+  New [`minhash` Analyzer](../../indexes-and-search/analyzers.md#minhash) for locality-sensitive hashing
   to approximate the Jaccard similarity, with inverted index and
   `arangosearch` View support that allows you to implement entity resolution.
 
@@ -101,9 +101,9 @@ Also see [What's New in 3.10](../../release-notes/version-3.10/whats-new-in-3-10
 **All Editions**
 
 - **ArangoSearch**:
-  New [**Segmentation Analyzer**](../../index-and-search/analyzers.md#segmentation)
+  New [**Segmentation Analyzer**](../../indexes-and-search/analyzers.md#segmentation)
   for language-agnostic tokenization of text.
-  A [**Collation Analyzer**](../../index-and-search/analyzers.md#collation)
+  A [**Collation Analyzer**](../../indexes-and-search/analyzers.md#collation)
   to honor the alphabetical order of the specified language in range queries.
 
 **Enterprise Edition**
@@ -125,16 +125,16 @@ Also see [What's New in 3.9](../../release-notes/version-3.9/whats-new-in-3-9.md
   match a given length.
 
 - **ArangoSearch**:
-  New [**Pipeline Analyzer**](../../index-and-search/analyzers.md#pipeline)
+  New [**Pipeline Analyzer**](../../indexes-and-search/analyzers.md#pipeline)
   that allows you to combine multiple Analyzers, enabling case-insensitive
   _n_-gram-based fuzzy search and more. New
-  [**AQL Analyzer**](../../index-and-search/analyzers.md#aql)
+  [**AQL Analyzer**](../../indexes-and-search/analyzers.md#aql)
   so that you can use an AQL query to pre-process and filter your data for
   indexing. Support for **geo-spatial queries** through new
-  [Geo](../../index-and-search/analyzers.md#geojson)
-  [Analyzers](../../index-and-search/analyzers.md#geopoint) and
+  [Geo](../../indexes-and-search/analyzers.md#geojson)
+  [Analyzers](../../indexes-and-search/analyzers.md#geopoint) and
   [ArangoSearch Geo functions](../../aql/functions/arangosearch.md#geo-functions).
-  A new [**Stop words Analyzer**](../../index-and-search/analyzers.md#stopwords) that
+  A new [**Stop words Analyzer**](../../indexes-and-search/analyzers.md#stopwords) that
   can be used standalone or in an Analyzer pipeline.
 
 - A [**`WINDOW` operation**](../../aql/high-level-operations/window.md) for aggregations over
@@ -243,15 +243,15 @@ Also see [What's New in 3.6](../../release-notes/version-3.6/whats-new-in-3-6.md
 
 - **ArangoSearch**:
   The search and ranking engine received an upgrade and now features
-  [Configurable Analyzers](../../index-and-search/analyzers.md),
-  [Sorted Views](../../index-and-search/arangosearch/performance.md#primary-sort-order)
+  [Configurable Analyzers](../../indexes-and-search/analyzers.md),
+  [Sorted Views](../../indexes-and-search/arangosearch/performance.md#primary-sort-order)
   and several improvements to the
   [AQL integration](../../release-notes/version-3.5/whats-new-in-3-5.md#arangosearch).
 
 - **AQL Graph Traversals**:
-  [k Shortest Paths](../../aql/graphs/k-shortest-paths.md) allows you to query not
+  [k Shortest Paths](../../aql/graph-queries/k-shortest-paths.md) allows you to query not
   just for one shortest path between two documents but multiple, sorted by
-  length or weight. With [PRUNE](../../aql/graphs/traversals.md#pruning) you can
+  length or weight. With [PRUNE](../../aql/graph-queries/traversals.md#pruning) you can
   stop walking down certain paths early in a graph traversal to improve its
   efficiency.
 
@@ -259,8 +259,8 @@ Also see [What's New in 3.6](../../release-notes/version-3.6/whats-new-in-3-6.md
   Perform multi-document transactions with individual begin and commit / abort
   commands using the new HTTP endpoints or via a supported driver.
 
-- [**Time-to-Live**](../../index-and-search/indexing/basics.md#ttl-time-to-live-index)
-  [**Indexes**](../../index-and-search/indexing/working-with-indexes/ttl-indexes.md):
+- [**Time-to-Live**](../../indexes-and-search/indexing/basics.md#ttl-time-to-live-index)
+  [**Indexes**](../../indexes-and-search/indexing/working-with-indexes/ttl-indexes.md):
   TTL indexes can be used to automatically remove documents in collections for
   use cases like expiring sessions or automatic purging of statistics or logs.
 
@@ -298,7 +298,7 @@ Also see [What's New in 3.5](../../release-notes/version-3.5/whats-new-in-3-5.md
 
 **All Editions**
 
-- [**ArangoSearch**](../../index-and-search/arangosearch/_index.md):
+- [**ArangoSearch**](../../indexes-and-search/arangosearch/_index.md):
   Search and similarity ranking engine integrated natively into ArangoDB and
   AQL. ArangoSearch combines Boolean retrieval capabilities with generalized
   ranking algorithms (BM25, TFDIF). Support of e.g. relevance-based searching,
@@ -308,7 +308,7 @@ Also see [What's New in 3.5](../../release-notes/version-3.5/whats-new-in-3-5.md
   English, German, French, Chinese, Spanish and many other language.
 
 - [**GeoJSON Support**](../../aql/functions/geo.md) and
-  [**S2 Geo Index**](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md): ArangoDB now supports all geo primitives.
+  [**S2 Geo Index**](../../indexes-and-search/indexing/working-with-indexes/geo-spatial-indexes.md): ArangoDB now supports all geo primitives.
   (Multi-)Point, (Multi-)LineStrings, (Multi-)Polygons or intersections can be
   defined and queried for. The Google S2 geo index is optimized for RocksDB and
   enables efficient querying. Geo query results are automatically visualized
@@ -403,7 +403,7 @@ Also see [What's New in 3.2](../../release-notes/version-3.2/whats-new-in-3-2.md
 
 **All Editions**
 
-- [**Vertex-centric indexes**](../../index-and-search/indexing/working-with-indexes/vertex-centric-indexes.md):
+- [**Vertex-centric indexes**](../../indexes-and-search/indexing/working-with-indexes/vertex-centric-indexes.md):
   AQL traversal queries can utilize secondary edge collection
   indexes for better performance against graphs with supernodes.
 
@@ -432,12 +432,12 @@ Also see [What's New in 3.1](../../release-notes/version-3.1/whats-new-in-3-1.md
   synchronous replication, master/master setup, shared nothing
   architecture, cluster management Agency.
 
-- Deeply integrated, native [**AQL graph traversal**](../../aql/graphs/_index.md)
+- Deeply integrated, native [**AQL graph traversal**](../../aql/graph-queries/_index.md)
 
 - [**VelocyPack**](https://github.com/arangodb/velocypack) as new internal
   binary storage format as well as for intermediate AQL values.
 
-- [**Persistent indexes**](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md) via RocksDB suitable
+- [**Persistent indexes**](../../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md) via RocksDB suitable
   for sorting and range queries.
 
 - [**Foxx 3.0**](../../develop/foxx-microservices/_index.md): overhauled JS framework for data-centric

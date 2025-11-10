@@ -1,14 +1,11 @@
-<div class="version-selector">
-  <select class="arangodb-version" onchange="changeVersion();">
-    <optgroup label="Version">
-      {{ $versions := index site.Data.versions "/arangodb/" }}
-      {{ range $i, $version := $versions }}
-        {{/* if eq $version.name "platform" }}{{ continue }}{{ end */}}
-        {{ if ne $version.name $version.alias }}
-          <option value="{{ $version.alias }}">{{ $version.alias }}</option>
-        {{ end }}
-        <option value="{{ $version.name }}"{{ if eq $version.name "3.12" }} selected{{ end }}>{{ $version.name }}</option>
-      {{ end }}
-    </optgroup>
-  </select>
-</div>
+<select class="version-selector" name="Version selector">
+  <optgroup label="Version">
+    {{ $versions := index site.Data.versions "/arangodb/" -}}
+    {{ range $i, $version := $versions -}}
+      <option value="{{ $version.alias }}"{{/* if eq $version.alias "stable" }} selected{{ end */}}>
+        {{- $version.name }}
+        {{- if ne $version.name $version.alias }} ({{ $version.alias }}){{ end -}}
+      </option>
+    {{ end -}}
+  </optgroup>
+</select>

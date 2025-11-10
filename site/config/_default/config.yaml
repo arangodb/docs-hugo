@@ -26,12 +26,12 @@ module:
       excludeFiles:
 #       - arangodb/3.10/*
 #       - arangodb/3.11/*
-#       - arangodb/3.13/*
+#       - arangodb/4.0/*
 
     - source: content/arangodb/3.12
       target: content/arangodb/stable
 
-    - source: content/arangodb/3.13
+    - source: content/arangodb/4.0
       target: content/arangodb/devel
 
 markup:

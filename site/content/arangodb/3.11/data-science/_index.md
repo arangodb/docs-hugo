@@ -40,7 +40,7 @@ Graph queries can answer questions like _**Who can introduce me to person X**_?
 
 ![Graph Query](../../../images/graph-query.png)
 
-See [Graphs in AQL](../aql/graphs/_index.md) for the supported graph queries.
+See [Graphs in AQL](../aql/graph-queries/_index.md) for the supported graph queries.
 
 ### Graph Analytics
 
@@ -129,5 +129,5 @@ an AQL query, a custom graph visualization for each movie, and more.
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango_datasets` Python package](../components/tools/arango-datasets.md)
+[`arango_datasets` Python package](../../../ecosystem/arango-datasets.md)
 to load sample datasets into a deployment.

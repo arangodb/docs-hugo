@@ -1,145 +1,11 @@
 var theme = true;
 
-/*
-    Menu
-*/
-
-function toggleMenuItem(event) {
-    const listItem = event.target.parentNode;
-    if (listItem.classList.contains("leaf")) return;
-
-    listItem.querySelector("label").classList.toggle("open");
-    slideToggle(listItem.querySelector(".submenu"));
-
-    const versionSelector = listItem.querySelector(".version-selector")
-    if (versionSelector) {
-      versionSelector.style.display = listItem.classList.contains("open") ? "block" : "none";
-    }
-}
-
-// Vanilla JS slideToggle implementation
-function slideToggle(element) {
-    if (element.style.display === "none" || element.style.display === "") {
-        element.style.display = "block";
-    } else {
-        element.style.display = "none";
-    }
-}
-
-function menuToggleClick(event) {
-    if (event.target.tagName !== "LABEL") return;
-    event.preventDefault();
-    toggleMenuItem(event);
-}
-
-function renderVersion() {
-    var urlVersion = getVersionFromURL();
-
-    /*
-    var versionSelector = document.querySelector(".arangodb-version");
-    if (!version || version === "platform") {
-      versionSelector.style.display = "none";
-    } else {
-      versionSelector.style.display = "block";
-    }
-    */
-
-    if (urlVersion) {
-      var versionSelector = document.querySelector(".version-selector");
-      if (versionSelector) {
-        versionSelector.style.display = "block";
-      }
-      var version = "version-" + urlVersion.replace('.', '_');
-      var menuEntry = document.querySelectorAll('.version-menu .submenu');
-      for ( let entry of menuEntry ) {
-          if (entry.classList.contains(version)) {
-              entry.style.display = 'block';
-          } else {
-              entry.style.display = 'none';
-          }
-      }
-    }
-}
-
 function closeAllEntries() {
-    document.querySelectorAll(".dd-item.active").forEach(el => el.classList.remove("active"));
-    document.querySelectorAll(".dd-item > label.open").forEach(el => el.classList.remove("open"));
-    document.querySelectorAll(".submenu").forEach(el => el.style.display = "none");
-    document.querySelectorAll(".version-selector").forEach(el => el.style.display = "none");
-    document.querySelectorAll(".dd-item.parent").forEach(el => el.classList.remove("parent"));
-}
-
-function loadMenu(url) {
-    closeAllEntries();
-    var version = getVersionFromURL()
-    if (version) {
-
-      document.querySelector(".version-selector").style.display = "block";
-
-      /*
-      document.querySelectorAll('.version-menu.version-' + version.replace('.', '_') + ' a').forEach(function(link) {
-          const oldHref = link.getAttribute('href');
-          const newHref = oldHref.replace(oldHref.split("/")[1], version);
-          link.setAttribute('href', newHref);
-      });
-      */
-    }
-
-    // Try to find the menu item - first try exact match, then try without hash
-    console.log('loadMenu: Looking for URL:', url);
-    var current = document.querySelector('.dd-item > a[href="' + url + '"]');
-    console.log('loadMenu: Exact match found:', current);
-    
-    if (!current && url.includes('#')) {
-        // Try without the hash fragment
-        const urlWithoutHash = url.split('#')[0];
-        console.log('loadMenu: Trying without hash:', urlWithoutHash);
-        current = document.querySelector('.dd-item > a[href="' + urlWithoutHash + '"]');
-        console.log('loadMenu: Without hash found:', current);
-    }
-    if (!current) {
-        // Try to find by pathname only (in case of different origins or protocols)
-        const pathname = new URL(url, window.location.origin).pathname;
-        console.log('loadMenu: Trying pathname only:', pathname);
-        current = document.querySelector('.dd-item > a[href="' + pathname + '"]');
-        console.log('loadMenu: Pathname match found:', current);
-    }
-    
-    if (current) {
-        console.log('loadMenu: Found menu item, expanding parents');
-        current = current.parentNode;
-        current.classList.add("active");
-        let expandedCount = 0;
-        while (current && !current.classList.contains("topics") && !current.classList.contains("collapsible-menu")) {
-            if (current.tagName === "LI") {
-                console.log('loadMenu: Expanding parent LI:', current);
-                current.classList.add("parent");
-                const label = current.querySelector("label");
-                if (label) {
-                    label.classList.add("open");
-                    console.log('loadMenu: Added open class to label');
-                }
-                const versionSelector = current.querySelector(".version-selector");
-                if (versionSelector) {
-                  versionSelector.style.display = "block";
-                }
-                const submenu = current.querySelector(".submenu");
-                if (submenu) {
-                    submenu.style.display = "block";
-                    expandedCount++;
-                    console.log('loadMenu: Set submenu display to block, count:', expandedCount);
-                }
-            }
-            current = current.parentNode;
-        }
-        console.log('loadMenu: Total submenus expanded:', expandedCount);
-    } else {
-        console.log('loadMenu: No menu item found for URL:', url);
-    }
+    document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
 }
 
 function showSidebarHandler() {
-    document.querySelectorAll(".sidebar").forEach(el => el.classList.toggle("active"));
+    document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
 }
 
 
@@ -183,11 +49,12 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(urlPath) {
+  console.log("updateHistory: " + urlPath);
   if (!urlPath || urlPath == window.location.pathname + window.location.hash) {
     return
   } 
   
-  window.history.pushState("navchange", "ArangoDB Documentation", urlPath);
+  window.history.pushState("navchange", "Arango Documentation", urlPath);
   if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
@@ -220,24 +87,15 @@ function loadNotFoundPage() {
 function loadPage(target) {
   var href = target;
 
-  /*
-  var versionUrl = getVersionFromURL();
-  if (versionUrl !== "platform" && getVersionInfo(versionUrl) == undefined) {
-    loadNotFoundPage();
-    return;
-  }
-  */
-  /*
-  getCurrentVersion(href);
-  renderVersion();
-  loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionFromURL()).name;
-  href = href.replace(getVersionFromURL(), version);*/
   var menuPathName = new URL(href).pathname;
   console.log(menuPathName);
-  loadMenu(menuPathName);
+  
   fetch(href)
     .then(response => {
+      if (!response.ok) {
+        // Handle 404 and other HTTP errors
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       if (response.url && href.replace(/#.*/, "") !== response.url) {
         updateHistory(response.url.replace(version, getVersionFromURL()));
         return;
@@ -258,8 +116,97 @@ function loadPage(target) {
       return true;
     })
     .catch(error => {
-      loadNotFoundPage(href)
+      console.error('Error loading page:', error);
+      loadNotFoundPage(href);
     });
+}
+
+function getSelectedVersion() {
+  const version = getVersionFromURL();
+  if (version) return version;
+  return localStorage.getItem("docs-version") ?? "stable";
+
+  /*
+  const storedVersion = localStorage.getItem("docs-version");
+  let alias = "stable";
+  if (version) {
+    alias = getVersionInfo(version).alias;
+  } else if (storedVersion) {
+    alias = getVersionInfo(storedVersion).alias;
+  }
+  return alias;
+  */
+}
+
+function updateActiveNavItem(pathname) {
+  // Remove all existing active states
+  document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
+  
+  // Collapse all sections first
+  document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
+  
+  // Find and activate the new item
+  const activeItem = document.querySelector(`.link-nav[href="${pathname}"]`);
+  if (activeItem) {
+    activeItem.classList.add("link-nav-active");
+    // Expand all parent sections
+    document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+  }
+}
+
+async function loadNav() {
+  const mainNavPlaceholder = document.querySelector(".main-nav");
+  if (!mainNavPlaceholder) {
+    console.error("Main navigation placeholder not found");
+    return;
+  }
+
+  try {
+    const res = await fetch(window.location.origin + "/nav.html");
+    if (!res.ok) {
+      mainNavPlaceholder.textContent = "Failed to fetch navigation";
+      return;
+    }
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, "text/html");
+
+    const mainNavContent = doc.querySelector(".main-nav-ol");
+    if (!mainNavContent) {
+      mainNavPlaceholder.textContent = "Failed to find navigation content";
+      return;
+    }
+
+    // TODO: Support multiple versions
+    const selectedVersion = getSelectedVersion();
+    const versionInfo = getVersionInfo(selectedVersion);
+    if (!versionInfo) {
+      console.log("Selected version not found in version info");
+    }
+    const selectedVersionAlias = versionInfo.alias;
+    const versionSelector = mainNavContent.querySelector(".version-selector");
+    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+      versionSelector.value = selectedVersionAlias;
+      
+      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+        if (navList.dataset.version == selectedVersion) {
+          navList.classList.add("selected-version");
+        } else {  
+          navList.classList.remove("selected-version");
+        }
+      });
+    } else {
+      console.log("Selected/stored version not available in version selector");
+    }
+
+    mainNavPlaceholder.appendChild(mainNavContent);
+    
+    // Set initial active state
+    updateActiveNavItem(window.location.pathname);
+  } catch (error) {
+    console.error("Error loading navigation:", error);
+    mainNavPlaceholder.textContent = "Failed to load navigation";
+  }
+  return true;
 }
 
 function trackPageView(title, urlPath) {
@@ -282,9 +229,8 @@ function initArticle(url) {
   hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
-  //aliazeLinks('article', 'a.link:not([target]), a.card-link, a.header-link');
-  //aliazeLinks('.breadcrumbs', 'a')
   linkToVersionedContent();
+  updateActiveNavItem(window.location.pathname);
 }
 
 
@@ -297,7 +243,7 @@ window.addEventListener('popstate', function (e) {
 });
 
 window.addEventListener('hashchange', function (e) {
-  window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+  window.history.pushState("popstate", "Arango Documentation", window.location.href);
   scrollToFragment()
 });
 
@@ -448,84 +394,6 @@ function getVersionFromURL() {
   if (splitUrl[1] == "arangodb") return splitUrl[2];
 }
 
-function isUsingAlias() {
-  let urlVersion = getVersionFromURL();
-  for (let v of versions) {
-    if (urlVersion == v.alias) return true;
-  }
-  return false;
-}
-
-function aliazeLinks(parentSelector, linkSelector) {
-  if (!isUsingAlias()) return;
-  let nameAliasMapping = {};
-  for (let v of versions) {
-    nameAliasMapping[v.name] = v.alias;
-  }
-
-  document.querySelectorAll(parentSelector + ' ' + linkSelector).forEach(function(link) {
-    const old = link.getAttribute("href");
-    if (old == undefined || old.startsWith("#")) return;
-    let splitLink = old.split("/");
-    let linkVersion = splitLink[1];
-    let alias = nameAliasMapping[linkVersion] || linkVersion;
-    splitLink.splice(1, 1, alias);
-    link.setAttribute("href", splitLink.join("/"));
-  });
-}
-
-function setVersionSelector(version) {
-  for(let option of document.querySelector(".arangodb-version").options) {
-    if (option.value == version) {
-      option.selected = true;
-    }
-  }
-}
-
-function getCurrentVersion(href) {
-  if (!stableVersion) return; // Only defined for /arangodb
-  var newVersion = stableVersion.name
-
-  if (window.location.pathname.split("/").length > 0) {
-    newVersion = getVersionFromURL();
-    if (newVersion !== "arangodb") {
-      return;
-    }
-    if ((href === "" || href === "/") && getVersionInfo(newVersion) == undefined) {
-      loadNotFoundPage();
-      return;
-    }
-  }
-
-  localStorage.setItem('docs-version', newVersion);
-  setVersionSelector(newVersion);
-}
-
-
-function changeVersion() {
-    var versionSelector = document.querySelector(".arangodb-version");
-    var newVersion = versionSelector.options[versionSelector.selectedIndex].value;
-
-    try {
-      localStorage.setItem('docs-version', newVersion);
-      renderVersion();
-      window.setupDocSearch(newVersion);
-    } catch(exception) {
-      console.log({exception})
-      changeVersion();
-    }
-
-    var currentVersion = getVersionFromURL();
-    //var newVersionAlias = getVersionInfo(newVersion).alias;
-    if (!currentVersion) {
-      var newUrl = window.location.pathname = "/" + newVersion + "/";
-    } else {
-      var newUrl = window.location.pathname.replace(currentVersion, newVersion) + window.location.hash;
-    }
-    updateHistory(newUrl);
-}
-
-
 /*
     Openapi
 
@@ -587,8 +455,7 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = "/"; // + getVersionFromURL() + "/";
-    updateHistory(homepage);
+    updateHistory("/");
 }
 
 function copyURI(evt) {
@@ -617,30 +484,86 @@ function toggleExpandShortcode(event) {
 
 function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
-  if (!currentVersion) return;
-  document.querySelectorAll("a.link:not([target])").forEach(el => {
-    const matches = el.getAttribute("href").match(/^\/(\d\.\d{1,2})(\/.*)/);
-    const previousVersion = localStorage.getItem('docs-version') || "stable";
-    if (matches && matches.length > 2 && previousVersion) {
-      el.setAttribute("href", "/" + previousVersion + matches[2]);
+  if (currentVersion) {
+    if (currentVersion !== "stable" && currentVersion !== "devel") return;
+    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      if (matches && matches.length > 2) {
+        const newUrl = "/arangodb/" + currentVersion + matches[2];
+        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
+      }
+    });
+  } else {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const previousVersion = localStorage.getItem('docs-version') ?? "stable";
+      if (matches && matches.length > 2 && previousVersion) {
+        const newUrl = "/arangodb/" + previousVersion + matches[2];
+        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
+      }
+    });
+  }
+}
+
+function handleDocumentChange(event) {
+  const target = event.target;
+  if (target.classList.contains("version-selector")) {
+    const selectedVersion = target.value;
+    const currentPath = window.location.pathname;
+    //const versionedPath = target.dataset.path;
+    
+    window.setupDocSearch(selectedVersion); // TODO: Only if on versioned page?
+
+    localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
+    target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
+      el => {
+        if (el.dataset.version == selectedVersion) {
+          el.classList.add("selected-version");
+        } else {
+          el.classList.remove("selected-version");
+        }
+      }
+    );
+
+    const corePath = "/arangodb/";
+    if (currentPath.startsWith(corePath) && currentPath !== corePath) {
+      const idx = currentPath.indexOf("/", corePath.length);
+      const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
+      console.log("handleDocumentChange: " + newPath);
+      updateHistory(newPath);
+      loadPage(newPath);
     }
-  });
+  }
 }
 
 // Central click handler using event delegation
 function handleDocumentClick(event) {
     const target = event.target;
     const closest = (selector) => target.closest(selector);
-    
+
+    if (target.classList.contains("expand-nav")) return;
+  
     // Menu link clicks
-    if (closest('.menu-link')) {
+    if (target.classList.contains("link-nav")) {
         event.preventDefault();
-        const menuLink = closest('.menu-link');
-        const href = menuLink.getAttribute('href');
+        target.closest(".main-nav").classList.remove("active");
+        document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
+        target.classList.add("link-nav-active");
+        closeAllEntries();
+        document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+        if (target.parentElement.classList.contains("nav-section-header")) {
+          target.parentElement.querySelector(".expand-nav > input").checked = true;
+        }
+        const href = target.getAttribute('href');
         if (href) {
             updateHistory(href);
+        } else {
+          throw new Error("Nav link has no href");
         }
-        document.querySelectorAll('.sidebar.mobile').forEach(el => el.classList.remove("active"));
         return;
     }
     
@@ -692,13 +615,6 @@ function handleDocumentClick(event) {
         return;
     }
     
-    // Menu toggle clicks (labels)
-    if (target.tagName === "LABEL" && closest('.sidebar')) {
-        event.preventDefault();
-        toggleMenuItem(event);
-        return;
-    }
-    
     // Tab clicks
     if (target.hasAttribute('data-tab-group') && target.hasAttribute('data-tab-item')) {
         event.preventDefault();
@@ -732,25 +648,25 @@ function handleDocumentClick(event) {
         return;
     }
  
-    // Sidebar toggle
-    if (closest('.sidebar-toggle')) {
+    // Mobile menu toggle
+    if (closest('.sidebar-toggle-navigation')) {
         showSidebarHandler();
         return;
     }
 }
 
 window.onload = () => {
-    window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+
+    loadNav().catch(err => console.error("Failed to initialize navigation:", err));
+
+    window.history.pushState("popstate", "Arango Documentation", window.location.href);
     trackPageView(document.title, window.location.pathname);
 
-    var iframe =  document.querySelector('.menu-iframe');
-    var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
-    content = iFrameBody.querySelector('.sidebar');
+    const currentVersion = getVersionFromURL();
+    if (currentVersion) {
+      localStorage.setItem('docs-version', currentVersion);
+    }
 
-    iframe.replaceWith(content);
-
-    getCurrentVersion(window.location.href);
-    renderVersion();
     loadPage(window.location.href)
 
     if (getVersionInfo(getVersionFromURL()) != undefined) {
@@ -762,10 +678,11 @@ window.onload = () => {
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
 
+    document.addEventListener("change", handleDocumentChange);
+
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        document.querySelectorAll('.sidebar').forEach(el => el.classList.add("mobile"));
-        document.querySelectorAll('.sidebar.mobile').forEach(el => el.classList.remove("active"));
+        document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
     //const pageWrapper = document.querySelector('.page-wrapper');

@@ -11,7 +11,7 @@
       <section class="page-main">
         <section class="page-container">
           {{ partialCached "header.html" . -}}
-          <iframe src="/nav.html" title="description" class="menu-iframe active" style="opacity: 0;"></iframe>
+          <nav class="main-nav" aria-label="Main"></nav>
           <div class="container-main">
             <div class="row-main">
               {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end -}}

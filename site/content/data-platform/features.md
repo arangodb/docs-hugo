@@ -1,5 +1,5 @@
 ---
-title: Architecture and Features of the Arango Data Platform
+title: Architecture and Features of the Arango Data Platform (v3.0)
 menuTitle: Architecture and Features
 weight: 5
 description: >-
@@ -41,7 +41,7 @@ to provide a complete, enterprise-ready solution.
 
 ### ArangoDB Enterprise Edition
 
-At the foundation is [**ArangoDB Enterprise Edition**](../../arangodb/3.12/), the 
+At the foundation is [**ArangoDB Enterprise Edition**](../arangodb/_index.md), the 
 powerful multi-model database that provides:
 
 - **Graph**: Native graph database capabilities with efficient traversals and pattern matching

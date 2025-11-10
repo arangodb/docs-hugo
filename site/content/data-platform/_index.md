@@ -1,14 +1,13 @@
 ---
-title: The Arango Data Platform
+title: The Arango Data Platform (v3.0)
 menuTitle: Arango Data Platform
 weight: 1
 description: >-
   The Arango Data Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
 ---
-
 {{< tip >}}
-The Arango Data Platform & AI Suite are available as a pre-release. To get
+The Arango Data Platform is available as a pre-release. To get
 exclusive early access, [get in touch](https://arango.ai/contact-us/) with
 the Arango team.
 {{< /tip >}}
@@ -91,7 +90,7 @@ Explore your graph data with an intuitive web interface and sophisticated queryi
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 
-{{% card title="ArangoDB Core Database" link="../../arangodb/3.12/" %}}
+{{% card title="ArangoDB Core Database" link="../../arangodb/" %}}
 Discover the multi-model database at the heart of the platform supporting graphs, documents, key-value, and vector search.
 {{% /card %}}
 

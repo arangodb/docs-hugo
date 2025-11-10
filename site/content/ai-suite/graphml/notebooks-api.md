@@ -79,7 +79,7 @@ news sources, and locations are interconnected into a large graph.
 
 ![Example Event](../../images/ArangoML_open_intelligence_visualization.png)
 
-The [`arango-datasets`](../../arangodb/3.12/components/tools/arango-datasets.md) Python package
+The [`arango-datasets`](../../ecosystem/arango-datasets.md) Python package
 allows you to load pre-defined datasets into Arango Data Platform. It comes pre-installed in the
 GraphML notebook environment.
 
