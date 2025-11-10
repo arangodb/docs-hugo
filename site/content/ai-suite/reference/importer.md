@@ -34,7 +34,7 @@ Before importing data, you need to create a GraphRAG project. Projects help you
 organize your work and keep your data separate from other projects.
 
 For detailed instructions on creating and managing projects, see the 
-[Projects](gen-ai.md#projects) section in the GenAI Orchestration Service 
+[Projects](ai-orchestrator.md#projects) section in the GenAI Orchestration Service 
 documentation.
 
 Once you have created a project, you can reference it when deploying the Importer 
