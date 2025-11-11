@@ -47,11 +47,11 @@ service attachment that you need during the creation of your private endpoint(s)
 2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
    icon. 
 3. Click **Change to private endpoint** in the menu.
-   ![ArangoGraph Deployment Private Endpoint Menu](../../images/arangograph-gcp-change.png)
+   ![Arango Managed Platform GCP Deployment Private Endpoint Menu](../../images/amp-gcp-change-to-private-endpoint.png)
 4. In the configuration wizard, click **Next** to enter your configuration details.
 5. Enter one or more Google project names. You can also add them later in the summary view.
    Click **Next**.
-   ![ArangoGraph Deployment Private Endpoint Setup 2](../../images/arangograph-gcp-private-endpoint.png)
+   ![Arango Managed Platform GCP Deployment Private Endpoint Setup 2](../../images/amp-gcp-private-endpoint-configure.png)
 6. Configure custom DNS names. This step is optional and disabled by default.
    Note that, once enabled, this setting is immutable and cannot be reverted.
    Click **Next** to continue.
@@ -62,7 +62,7 @@ service attachment that you need during the creation of your private endpoint(s)
    If the custom DNS is enabled, you will be responsible for the DNS of your
    private endpoints.
    {{< /info >}}
-   ![ArangoGraph Private Endpoint Custom DNS](../../images/arangograph-gcp-custom-dns.png)
+   ![ArangoGraph Private Endpoint Custom DNS](../../images/amp-gcp-private-endpoint-custom-dns.png)
 7. Click **Confirm Settings** to change the deployment.
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
@@ -107,7 +107,7 @@ that automatically connects to private endpoints that are created in those princ
 2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
    icon.
 3. Click **Change to private endpoint** in the menu.
-   ![ArangoGraph Deployment AWS Change to Private Endpoint](../../images/arangograph-aws-change-to-private-endpoint.png)
+   ![Arango Managed Platform Deployment AWS Change to Private Endpoint](../../images/amp-aws-change-to-private-endpoint.png)
 4. In the configuration wizard, click **Next** to enter your configuration details.
 5. Click **Add Principal** to start configuring the AWS principal(s). 
    You need to enter a valid account, which is your 12 digit AWS account ID.
@@ -120,7 +120,7 @@ that automatically connects to private endpoints that are created in those princ
    To verify your endpoint service in AWS, you must use the same principal as
    configured in AMP. Otherwise, the service name cannot be verified.
    {{< /warning >}}
-   ![ArangoGraph AWS Private Endpoint Configure Principals](../../images/arangograph-aws-endpoint-configure-principals.png)
+   ![Arango Managed Platform AWS Private Endpoint Configure Principals](../../images/amp-aws-endpoint-configure-principals.png)
 6. Configure custom DNS names. This step is optional and disabled by default,
    you can also add or change them later from the summary view.
    Click **Next** to continue.
@@ -130,13 +130,13 @@ that automatically connects to private endpoints that are created in those princ
    If the custom DNS is enabled, you will be responsible for the DNS of your
    private endpoints. 
    {{< /info >}}
-   ![ArangoGraph AWS Private Endpoint Alternate DNS](../../images/arangograph-aws-private-endpoint-dns.png)
+   ![Arango Managed Platform AWS Private Endpoint Alternate DNS](../../images/amp-aws-private-endpoint-dns.png)
 7. Confirm that you want to use a private endpoint for your deployment by
    clicking **Confirm Settings**.
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and change the
    configuration, if needed.
-   ![ArangoGraph AWS Private Endpoint Overview](../../images/arangograph-aws-private-endpoint-overview.png)
+   ![Arango Managed Platform AWS Private Endpoint Overview](../../images/amp-aws-private-endpoint-overview.png)
    {{< info >}}
    Note that
    [Availability Zones](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#concepts-availability-zones)

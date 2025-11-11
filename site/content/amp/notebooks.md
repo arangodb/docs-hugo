@@ -22,8 +22,6 @@ ArangoML platform services. This makes it much easier to leverage these
 resources without having to download any data locally or to remember user IDs,
 passwords, and endpoint URLs.
 
-![ArangoGraph Notebooks Architecture](../images/arangograph-notebooks-architecture.png)
-
 The AMP Notebook has built-in [AMP Magic Commands](#amp-magic-commands)
 that answer questions like:
 - What ArangoDB database am I connected to at the moment?
@@ -63,7 +61,7 @@ Depending on the tier your organization belongs to, different limitations apply:
 - Free-to-try: you can only create one notebook per deployment.
 {{< /info >}}
 
-![Notebooks](../images/arangograph-notebooks.png)
+![Arango Managed Platform Notebooks](../images/amp-notebooks.png)
 
 {{< info >}}
 Notebooks in beta version have a fixed configuration of 10&nbsp;GB of disk size.

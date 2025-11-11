@@ -57,7 +57,7 @@ There are a number of benefits that AMP credits provide:
      - The number of credits remaining.
      - The number of credits consumed for each deployment.
 
-![ArangoGraph Credits and Usage](../../images/arangograph-credits-and-usage.png)
+![Arango Managed Platform Credits and Usage](../../images/amp-credits-and-usage.png)
 
 ## FAQs
 

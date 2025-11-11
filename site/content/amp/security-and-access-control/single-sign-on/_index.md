@@ -48,15 +48,15 @@ Provider (IdP). For more information about Okta, please refer to the
 2. Click **Create App Integration**.
 3. In the **Create a new app integration** dialog, select **SAML 2.0**.
 
-   ![ArangoGraph Create Okta App Integration](../../../images/arangograph-okta-create-integration.png)
+   ![Create Okta App Integration](../../../images/amp-okta-create-integration.png)
 4. In the **General Settings**, specify a name for your integration and click **Next**.
 
-   ![ArangoGraph Okta Integration Name](../../../images/arangograph-okta-integration-name.png)
+   ![Okta Integration Name](../../../images/amp-okta-integration-name.png)
 5. Configure the SAML settings:
    - For **Single sign-on URL**, use `https://auth.arangodb.com/login/callback?connection=ORG_ID`
    - For **Audience URI (SP Entity ID)**, use `urn:auth0:arangodb:ORG_ID`
 
-   ![ArangoGraph Okta SAML General Settings](../../../images/arangograph-okta-saml-general-settings.png)
+   ![Okta SAML General Settings](../../../images/amp-okta-saml-general-settings.png)
 
 6. Replace **ORG_ID** with your organization identifier from the 
    AMP Dashboard. To find your organization ID, go to the **User Toolbar**
@@ -68,7 +68,6 @@ Provider (IdP). For more information about Okta, please refer to the
    - `https://auth.arangodb.com/login/callback?connection=14587062`
    - `urn:auth0:arangodb:14587062`
    
-   ![ArangoGraph Organization ID](../../../images/arangograph-organization-id.png)
 7. In the **Attribute Statements** section, add custom attributes as seen in the image below:
    - email: `user.email`
    - given_name: `user.firstName`
@@ -79,7 +78,7 @@ Provider (IdP). For more information about Okta, please refer to the
    Okta attribute names. The values of these attributes are automatically filled
    in based on the users list that is defined in Okta.
 
-   ![ArangoGraph Okta SAML Attributes](../../../images/arangograph-okta-saml-attributes.png)
+   ![Okta SAML Attributes](../../../images/amp-okta-saml-attributes.png)
 8. Click **Next**.
 9. In the **Configure feedback** section, select **I'm an Okta customer adding an internal app**.
 10. Click **Finish**. The SAML app integration is now created.
@@ -92,7 +91,7 @@ the SSO configuration.
 1. Go to the **SAML Signing Certificates** section, displayed under the **Sign On** tab.
 2. Click **View SAML setup instructions**.
 
-   ![ArangoGraph Okta SAML Setup](../../../images/arangograph-okta-saml-setup.png)
+   ![Okta SAML Setup](../../../images/amp-okta-saml-setup.png)
 3. The setup instructions include the following items:
    - **Identity Provider Single Sign-On URL**
    - **Identity Provider Issuer**

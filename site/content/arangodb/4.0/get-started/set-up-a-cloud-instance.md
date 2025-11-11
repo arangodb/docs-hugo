@@ -35,7 +35,7 @@ used for multiple accounts.
 2. Click the __Start Free__ button or click the __Sign Up__ link in the top
    right corner.
 
-   ![ArangoGraph Homepage](../../../images/arangograph-homepage.png)
+   ![Arango Managed Platform Homepage](../../../images/amp-homepage.png)
 
 3. Review the terms & conditions and privacy policy and click __I accept__.
 4. Select the type of sign up you would like to use (GitHub, Google, or
@@ -43,8 +43,6 @@ used for multiple accounts.
    - For GitHub, Google, and Microsoft please follow the on-screen instructions.
    - For the email address option, type your desired email address in the
      email field and type a strong password in the password field.
-
-   {{< image src="../../../images/arangograph-create-account.png" alt="ArangoGraph Sign up" style="max-height: 50vh">}}
 
    Click the __Sign up__ button. You will receive a verification email. In that
    mail, click the __Verify my email address__ link or button.
@@ -61,7 +59,7 @@ used for multiple accounts.
    name, and then press the __Save__ button.
 9. An organization with a default project is now prepared for you.
    Once that is completed, you are redirected to the
-   [ArangoGraph dashboard](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+   [AMP dashboard](https://dashboard.arangodb.cloud).
 
 ## Get a Deployment up and Running
 
@@ -69,25 +67,17 @@ used for multiple accounts.
    provider and region. Pick one and click __Create deployment__. You can also select
    your intended use-case.
 
-   ![ArangoGraph Dashboard](../../../images/arangograph-dashboard-free-tier.png)
-
    You can also [create a deployment](../../../amp/deployments/_index.md#how-to-create-a-new-deployment)
    manually, if you want fine-grained configuration options.
 2. The new deployment is displayed in the list of deployments for the 
    respective project (here: _Avocado_).
 
-   ![ArangoGraph Deployments Bootstrapping](../../../images/arangograph-deployments-bootstrapping.png)
-
    It takes a couple of minutes before the deployment can be used. The status
    is changed from __Bootstrapping__ to __OK__ eventually and you also
    receive an email when it is ready.
 
-   {{< image src="../../../images/arangograph-deployment-ready-email.png" alt="ArangoGraph Deployment Ready Email" style="max-height: 50vh">}}
-
 3. Click the name of the deployment (or the __Open deployment details__ link in
    the email) to view the deployment details.
-
-   ![ArangoGraph Deployment Ready](../../../images/arangograph-deployment-ready.png)
 
 4. Click the __Open database UI__ button to open the ArangoDB web interface.
 
@@ -97,10 +87,6 @@ used for multiple accounts.
    examples to let AMP create a separate database and import the dataset.
    Click __Guide__ for instructions on how to access and run queries against
    this data.
-
-   ![ArangoGraph Deployment Examples](../../../images/arangograph-deployment-examples.png)
-
-   ![ArangoGraph Deployment Examples IMDB Guide](../../../images/arangograph-deployment-examples-imdb-guide.png)
 
 ## General Hierarchy
 
@@ -126,8 +112,6 @@ In the top right corner you find the __User toolbar__. Click the icon with the
 question mark to bring up the help menu and choose __Start tour__. This guided
 tour walks you through the creation of a deployment and shows you how to load
 example datasets and manage projects and deployments.
-
-![Start tour in menu](../../../images/arangograph-tour-start.png)
 
 Alternatively, follow the steps of the linked guides:
 - [Create a new project](../../../amp/projects.md#how-to-create-a-new-project) (optional)

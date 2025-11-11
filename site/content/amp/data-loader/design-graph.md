@@ -26,7 +26,7 @@ objects.
    reference the nodes when you define relations with edges.
    - For **File Headers**, select one or more attributes from the list.
 
-![ArangoGraph Data Loader Add Node](../../images/arangograph-data-loader-add-node.png)
+![Data Loader Add Node](../../images/amp-data-loader-add-node.png)
 
 ## How to connect nodes
 
@@ -60,7 +60,7 @@ See below the steps to add details to an edge.
    destination file (`_to`).
    - For **File Headers**, select one or more attributes from the list.
 
-![ArangoGraph Data Loader Edit Edge](../../images/arangograph-data-loader-edit-edge.png)
+![Data Loader Edit Edge](../../images/amp-data-loader-edit-edge.png)
 
 ## How to delete elements
 
