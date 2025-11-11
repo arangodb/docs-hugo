@@ -24,7 +24,6 @@
     </div>
     {{ partialCached "back-to-top.html" . -}}
     {{ partialCached "search.html" . -}}
-    {{ if $isProduction }}{{ partialCached "tracking/body-end.html" . }}{{ end -}}
   </body>
 </html>
 {{- /* Trigger validation at the end of the build once */ -}}

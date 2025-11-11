@@ -55,7 +55,7 @@ function updateHistory(urlPath) {
   } 
   
   window.history.pushState("navchange", "Arango Documentation", urlPath);
-  if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
+  //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
@@ -211,15 +211,11 @@ async function loadNav() {
 
 function trackPageView(title, urlPath) {
   if (window.gtag) {
-    gtag('config', 'G-6PSX8LKTTJ', {
+    gtag('config', 'GTM-5QZJWM4J', {
       'page_title': title,
       'page_path': urlPath
     });
   }
-
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', urlPath]);
-  _hsq.push(['trackPageView']);
 }
 
 function initArticle(url) {
@@ -660,7 +656,7 @@ window.onload = () => {
     loadNav().catch(err => console.error("Failed to initialize navigation:", err));
 
     window.history.pushState("popstate", "Arango Documentation", window.location.href);
-    trackPageView(document.title, window.location.pathname);
+    //trackPageView(document.title, window.location.pathname);
 
     const currentVersion = getVersionFromURL();
     if (currentVersion) {

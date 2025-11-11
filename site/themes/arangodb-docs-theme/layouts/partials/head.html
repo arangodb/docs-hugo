@@ -1,15 +1,13 @@
 <head>
-  {{ partialCached "stylesheet.html" . -}}
+  {{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
+  {{ if $isProduction -}}
+    {{ partialCached "tracking/head-start.html" . -}}
+  {{ end -}}
 
+  {{ partialCached "stylesheet.html" . -}}
   {{ partial "meta.html" . -}}
+
   <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
   {{ partialCached "favicon.html" . -}}
   {{ partialCached "javascript.html" . -}}
-
-  {{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
-  {{ if $isProduction -}}
-    {{- partialCached "tracking/gtag.html" . -}}
-    {{- partialCached "tracking/twitter.html" . -}}
-    {{- partialCached "tracking/linkedin.html" . -}}
-  {{ end -}}
 </head>
