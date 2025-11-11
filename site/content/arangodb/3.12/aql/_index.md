@@ -6,8 +6,6 @@ description: >-
   The ArangoDB Query Language (AQL) lets you store, retrieve, and modify data
   in various ways in ArangoDB
 ---
-- [Link to Platform](../../../data-platform/_index.md)
-
 AQL is mainly a declarative language, meaning that a query expresses what result
 should be achieved but not how it should be achieved. AQL aims to be
 human-readable and therefore uses keywords from the English language. Another
