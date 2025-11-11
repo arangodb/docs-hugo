@@ -5,8 +5,6 @@ weight: 5
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`
   processes and optionally using the supervision maintenance mode
-aliases:
-  - ../upgrading-manual-deployments/upgrading-an-active-failover-deployment
 ---
 To manually upgrade an [_Active Failover_](../../../deploy/active-failover/_index.md)
 setup, the different nodes can be upgraded one at a time without incurring a

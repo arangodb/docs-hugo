@@ -5,9 +5,6 @@ weight: 20
 description: >-
   Integrations for third-party tools and frameworks let you use ArangoDB as the
   database backend for these products
-aliases:
-  - /3.12/develop/integrations/
-  - /3.13/develop/integrations/
 ---
 Database integrations allow applications to work with different database systems
 using a common interface. They are higher-level than database drivers because

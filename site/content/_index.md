@@ -5,8 +5,6 @@ weight: 1
 description: >-
   Arango provides the trusted data foundation for the next wave of AI grounded
   in business context
-#aliases:
-#  - data-science/overview
 ---
 ## User manuals by product
 

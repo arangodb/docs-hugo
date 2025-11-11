@@ -4,8 +4,6 @@ menuTitle: Data Science
 weight: 115
 description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
-aliases:
-  - data-science/overview
 ---
 ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
 in data science and data analytics. Multiple data science personas within the

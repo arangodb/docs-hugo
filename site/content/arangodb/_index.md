@@ -5,9 +5,6 @@ weight: 5
 description: >-
   ArangoDB is a scalable graph database system to drive value from connected
   data, faster
-aliases:
-  - introduction
-  - introduction/about-arangodb
 ---
 ArangoDB combines the analytical power of native graphs with an integrated
 search engine, JSON support, vector indexes, and a variety of data access

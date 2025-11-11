@@ -5,8 +5,6 @@ weight: 10
 description: >-
   You can replace a failed machine and recover a cluster that has been created
   with ArangoDB Starter using a new machine with the old or a new IP address
-aliases:
-  - ../arangodb-starter-administration/recovery-procedure
 ---
 This procedure is intended to recover a cluster that was started with the
 [ArangoDB Starter](../../../components/tools/arangodb-starter/_index.md) when a

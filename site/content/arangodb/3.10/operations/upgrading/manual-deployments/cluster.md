@@ -5,8 +5,6 @@ weight: 10
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`
   processes and using the supervision maintenance mode
-aliases:
-  - ../upgrading-manual-deployments/upgrading-a-cluster
 ---
 To manually upgrade a [_cluster_](../../../deploy/cluster/_index.md)
 setup, the different nodes of a _cluster_ can be upgraded one at a time without

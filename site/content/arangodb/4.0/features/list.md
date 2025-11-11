@@ -5,11 +5,6 @@ weight: 5
 description: >-
   All features of the ArangoDB database system, available in both the
   Community Edition and Enterprise Edition
-aliases:
-  - ../introduction/features/community-edition
-  - ../introduction/features/enterprise-edition
-  - community-edition
-  - enterprise-edition
 ---
 ## General
 

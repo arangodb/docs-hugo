@@ -4,8 +4,6 @@ menuTitle: Notebook Servers
 weight: 20
 description: >-
   Colocated Jupyter Notebooks within the Arango Data Platform
-aliases:
-  - arangograph-notebooks
 ---
 {{< tip >}}
 The Arango AI Data Platform is available as a pre-release. To get

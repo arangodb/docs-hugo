@@ -5,8 +5,6 @@ weight: 20
 description: >-
   The storage engine is responsible for persisting data on disk, holding copies
   in memory, providing indexes and caches to speed up queries
-aliases:
-  - ../../deploy/architecture/storage-engine
 ---
 ArangoDB's storage engine is based on Facebook's **RocksDB** and the only
 storage engine available in ArangoDB 3.7 and above. It is the bottom layer of

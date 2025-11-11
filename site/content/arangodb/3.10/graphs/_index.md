@@ -7,8 +7,6 @@ description: >-
   vertices and edges, to naturally model knowledge, social networks, cash flows,
   supply chains, and other information webs, and to extract valuable insights by
   analyzing this connected data
-aliases:
-  - graphs/first-steps
 ---
 Graphs are information networks comprised of **nodes** and **relations**. Nodes
 can represent objects, entities, abstract concepts, or ideas. Relations between

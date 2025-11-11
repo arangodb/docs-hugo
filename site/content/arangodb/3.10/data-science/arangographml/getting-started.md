@@ -4,8 +4,6 @@ menuTitle: Getting Started
 weight: 10
 description: >-
   How to control all resources inside ArangoGraphML in a scriptable manner
-aliases:
-  - getting-started-with-arangographml
 ---
 ArangoGraphML provides an easy-to-use & scalable interface to run Graph Machine Learning on ArangoDB Data. Since all of the orchestration and ML logic is managed by the Arango Managed Platform (AMP), all that is typically required are JSON specifications outlining individual processes to solve an ML Task. If you are using the self-managed solution, additional configurations may be required.
 

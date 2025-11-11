@@ -5,8 +5,6 @@ weight: 10
 description: >-
   A tutorial that guides you through the AMP API as well as the `oasisctl`
   command-line tool
-aliases:
-  - ../arangograph-api/getting-started
 ---
 This tutorial shows you how to do the following:
 

@@ -6,8 +6,6 @@ description: >-
   The open-source version of ArangoDB is available under the permissive
   Apache 2.0 license and offers an extensive feature set including cluster
   support for free
-aliases:
-  - ../../introduction/features/community-edition
 ---
 The Community Edition features are outlined below. For additional information,
 see [arangodb.com/community-server/](https://www.arangodb.com/community-server/).

@@ -5,8 +5,6 @@ weight: 5
 description: >-
   You can use GraphML straight within the Arango Data Platform, via the web interface
   or via Notebooks
-aliases:
-  - ../arangographml/deploy  
 ---
 ## Web interface versus Jupyter Notebooks
 

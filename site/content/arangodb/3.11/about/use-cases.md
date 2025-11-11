@@ -7,8 +7,6 @@ description: >-
   graphs, documents, key-value, search engine, and machine learning all in one
 pageToc:
   maxHeadlineLevel: 2
-aliases:
-  - ../introduction/use-cases
 ---
 ## ArangoDB as a Graph Database
 

@@ -4,8 +4,6 @@ menuTitle: Deprecated and removed features
 weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
-aliases:
-  - ../arangograph/migrate-to-the-cloud
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already

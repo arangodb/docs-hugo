@@ -4,8 +4,6 @@ menuTitle: Get started with the API
 weight: 5
 description: >-
    Quick start guide on how to set up a connection to the AMP API
-aliases:
-  - ../arangograph-api/getting-started-with-the-api
 ---
 The instructions below are a quick start guide on how to set up a connection to the AMP API.
 

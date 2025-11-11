@@ -4,8 +4,6 @@ menuTitle: macOS
 weight: 10
 description: >-
   How to upgrade an ArangoDB single server installation installed via a DMG package
-aliases:
-  - upgrading-on-macos
 ---
 If you installed ArangoDB on macOS using a _DMG_ package for a single server
 installation, follow the instructions below to upgrade the deployment.

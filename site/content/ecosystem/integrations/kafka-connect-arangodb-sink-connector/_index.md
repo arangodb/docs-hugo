@@ -5,9 +5,6 @@ weight: 20
 description: >-
   The Kafka connector allows you to export data from Apache Kafka to ArangoDB
   by writing data from one or more topics in Kafka to a collection in ArangoDB
-aliases:
-  - /3.12/develop/integrations/kafka-connect-arangodb-sink-connector/
-  - /3.13/develop/integrations/kafka-connect-arangodb-sink-connector/
 ---
 {{< info >}}
 Check out the [connector demo](https://github.com/arangodb/kafka-connect-arangodb/tree/main/demo)

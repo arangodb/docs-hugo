@@ -4,8 +4,6 @@ menuTitle: Windows
 weight: 15
 description: >-
   How to upgrade a single server installation using an installer or zip archive
-aliases:
-  - upgrading-on-windows
 ---
 As there are different ways to install ArangoDB on Windows, the upgrade
 method depends on the installation method that was used.

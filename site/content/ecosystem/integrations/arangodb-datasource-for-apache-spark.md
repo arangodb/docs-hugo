@@ -4,14 +4,6 @@ menuTitle: Datasource for Apache Spark
 weight: 10
 description: >-
   ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data
-aliases:
-- arangodb-spark-connector
-- arangodb-spark-connector/getting-started
-- /3.12/develop/integrations/arangodb-datasource-for-apache-spark
-- arangodb-spark-connector/reference
-- /3.13/develop/integrations/arangodb-datasource-for-apache-spark
-- arangodb-spark-connector/reference/java
-- arangodb-spark-connector/reference/scala
 ---
 ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data from and to ArangoDB, by implementing the Spark Data Source V2 API.
 

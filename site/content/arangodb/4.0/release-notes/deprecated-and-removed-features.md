@@ -4,35 +4,6 @@ menuTitle: Deprecated and removed features
 weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
-aliases:
-  - ../operations/upgrading-manual-deployments/upgrading-an-active-failover-deployment
-  - ../operations/upgrading/manual-deployments/active-failover
-  - ../deploy/active-failover/using-the-arangodb-starter
-  - ../deploy/active-failover/manual-start
-  - ../deploy/active-failover/administration
-  - ../deploy/active-failover
-  - ../deploy/arangosync
-  - ../deploy/arangosync/deployment
-  - ../deploy/arangosync/deployment/arangodb-cluster
-  - ../deploy/arangosync/deployment/arangosync-master
-  - ../deploy/arangosync/deployment/arangosync-workers
-  - ../deploy/arangosync/deployment/prometheus-and-grafana
-  - ../deploy/arangosync/administration
-  - ../deploy/arangosync/operations-and-maintenance
-  - ../deploy/arangosync/security
-  - ../deploy/arangosync/monitoring
-  - ../deploy/arangosync/troubleshooting
-  - ../components/arangodb-server/ldap
-  - ../arangograph/migrate-to-the-cloud
-  - ../data-science/pregel
-  - ../data-science/pregel/algorithms
-  - ../develop/http-api/pregel
-  - ../operations/installation/macos
-  - ../operations/installation/windows
-  - ../operations/installation/compiling/compile-on-windows
-  - ../operations/upgrading/os-specific-information/macos
-  - ../operations/upgrading/os-specific-information/windows
-  - ../develop/http-api/batch-requests
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already

@@ -7,8 +7,6 @@ description: >-
   and you can look up additional information for a specific kind of error here
 pageToc:
   maxHeadlineLevel: 3
-aliases:
-  - error-codes-and-meanings
 ---
 ## Numbers, names, and descriptions of errors
 

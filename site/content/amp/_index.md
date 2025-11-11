@@ -5,8 +5,6 @@ weight: 4
 description: >-
   The Arango Managed Platform (AMP) provides the entire functionality of
   ArangoDB as a service, without the need to run or manage databases yourself
-aliases:
-  - arangograph/changelog
 ---
 {{< cloudbanner>}}
 

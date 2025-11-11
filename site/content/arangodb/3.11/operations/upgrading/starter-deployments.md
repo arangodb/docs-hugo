@@ -4,8 +4,6 @@ menuTitle: Starter Deployments
 weight: 15
 description: >-
   Procedure to perform a rolling upgrade with the `arangodb` executable
-aliases:
-  - upgrading-starter-deployments
 ---
 The ArangoDB [_Starter_](../../components/tools/arangodb-starter/_index.md) supports an automated procedure
 to perform upgrades, including rolling upgrades

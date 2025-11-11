@@ -5,8 +5,6 @@ weight: 60
 description: >-
   The interface to control all resources inside the Arango Managed Platform in
   a scriptable manner
-aliases:
-  - arangograph-api
 ---
 The [Arango Managed Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 comes with its own API. This API enables you to control all

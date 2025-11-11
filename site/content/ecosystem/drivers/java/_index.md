@@ -3,9 +3,6 @@ title: ArangoDB Java driver
 menuTitle: Java driver
 weight: 10
 description: ''
-aliases:
-  - /3.12/develop/drivers/java/
-  - /3.13/develop/drivers/java/
 ---
 The official ArangoDB Java Driver.
 

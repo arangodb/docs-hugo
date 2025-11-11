@@ -5,8 +5,6 @@ weight: 25
 description: >-
   Learn about ArangoDB's core concepts such as the high-level data
   organization and its data model
-aliases:
-  - get-started/overview
 ---
 This chapter introduces ArangoDB's core concepts and covers the following:
 
