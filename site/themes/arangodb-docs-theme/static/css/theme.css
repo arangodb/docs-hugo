@@ -1934,9 +1934,9 @@ nav.pagination .next {
     width: var(--nav-width);
     padding: var(--padding-1);
     padding-left: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--gray-300) var(--gray-100);
+    scrollbar-color: var(--gray-800) var(--gray-950);
     user-select: none;
     z-index: 9999;
 }
@@ -2055,6 +2055,7 @@ nav.pagination .next {
 .version-selector {
     color: var(--gray-50);
     background: black;
+    box-shadow: black 5px 0 0;
     border: none;
     width: calc(100% - 2rem);
     margin-left: 1rem;
