@@ -49,7 +49,7 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(urlPath) {
-  console.log("updateHistory: " + urlPath);
+  //console.log("updateHistory: " + urlPath);
   if (!urlPath || urlPath == window.location.pathname + window.location.hash) {
     return
   } 
@@ -88,7 +88,7 @@ function loadPage(target) {
   var href = target;
 
   var menuPathName = new URL(href).pathname;
-  console.log(menuPathName);
+  //console.log(menuPathName);
   
   fetch(href)
     .then(response => {
@@ -97,7 +97,7 @@ function loadPage(target) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       if (response.url && href.replace(/#.*/, "") !== response.url) {
-        updateHistory(response.url.replace(version, getVersionFromURL()));
+        updateHistory(response.url);
         return;
       }
       return response.text();
@@ -107,7 +107,7 @@ function loadPage(target) {
       if (!newDoc.includes("<body>")) {
         // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
         var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
-        updateHistory(match.replace(version, getVersionFromURL()))
+        updateHistory(match);
         return;
       }
       replaceArticle(href, newDoc)
@@ -487,7 +487,7 @@ function linkToVersionedContent() {
       const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
         const newUrl = "/arangodb/" + currentVersion + matches[2];
-        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
         el.setAttribute("href", newUrl);
       }
     });
@@ -498,7 +498,7 @@ function linkToVersionedContent() {
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
       if (matches && matches.length > 2 && previousVersion) {
         const newUrl = "/arangodb/" + previousVersion + matches[2];
-        console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
         el.setAttribute("href", newUrl);
       }
     });
@@ -529,7 +529,7 @@ function handleDocumentChange(event) {
     if (currentPath.startsWith(corePath) && currentPath !== corePath) {
       const idx = currentPath.indexOf("/", corePath.length);
       const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
-      console.log("handleDocumentChange: " + newPath);
+      //console.log("handleDocumentChange: " + newPath);
       updateHistory(newPath);
       loadPage(newPath);
     }
