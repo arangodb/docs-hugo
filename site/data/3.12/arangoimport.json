@@ -22,7 +22,7 @@
     "category" : "option",
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Use backslash as the escape character for quotes. Used for CSV and TSV imports.",
+    "description" : "Use backslash as the escape character for quotes. Used for CSV imports only.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1203,7 +1203,7 @@
     "category" : "option",
     "default" : "\"",
     "deprecatedIn" : null,
-    "description" : "Quote character(s). Used for CSV and TSV.",
+    "description" : "The character that encloses field values. Used for CSV imports only.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1281,7 +1281,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1342,7 +1342,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
