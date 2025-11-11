@@ -58,5 +58,3 @@ get the ArangoDB client tools for your operating system from the
 2. Open the deployment you want to load data into.
 3. In the **Load Data** section, click the **Load your data** button.
 4. Select your migration use case.
-
-![ArangoGraph Data Loader Migration Use Cases](../../images/arangograph-data-loader-migration-use-cases.png)

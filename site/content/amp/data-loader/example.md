@@ -36,14 +36,12 @@ The whole process can be broken down into these steps:
 
 Start by creating a new database and adding a name for your graph.
 
-![Data Loader Example Step 1](../../images/arangograph-data-loader-example-choose-names.png)
-
 ## Step 2: Add files
 
 Upload your CSV files to the Data Loader web interface. You can drag and drop
 them or upload them via a file browser window.
 
-![Data Loader Example Step 2](../../images/arangograph-data-loader-example-add-files.png)
+![Data Loader Example Step 2](../../images/amp-data-loader-example-add-files.png)
 
 See also [Add files into Data Loader](../data-loader/add-files.md).
 
@@ -69,7 +67,7 @@ In this example, two node collections have been created (`origin_airport` and
 attribute for documents in both node collections. The header preview makes it
 easy to select the headers you want to use.
 
-![Data Loader Example Step 3 Nodes](../../images/arangograph-data-loader-example-map-nodes.png)
+![Data Loader Example Step 3 Nodes](../../images/amp-data-loader-example-map-nodes.png)
 
 For edges, the **Edge label** is going to be an edge collection name. Then, you
 need to specify how edges will connect nodes. You can do this by selecting the
@@ -77,7 +75,7 @@ need to specify how edges will connect nodes. You can do this by selecting the
 In this example, the `source airport` header has been selected as a source and
 the `destination airport` header as a target for the edge.
 
-![Data Loader Example Step 3 Edges](../../images/arangograph-data-loader-example-map-edges.png)
+![Data Loader Example Step 3 Edges](../../images/amp-data-loader-example-map-edges.png)
 
 Note that the values of the source and target for the edge correspond to the
 **Primary identifier** (`_key` attribute) of the nodes. In this case, it is the
@@ -93,11 +91,11 @@ After all the mapping is done, all you need to do is click
 processed and the documents created, as well as a link to your new graph.
 See also [Start import](../data-loader/import.md).
 
-![Data Loader Example Step 4 See your new graph](../../images/arangograph-data-loader-example-data-import.png)
+![Data Loader Example Step 4 See your new graph](../../images/amp-data-loader-example-data-import.png)
 
 Finally, click **See your new graph** to open the ArangoDB web interface and
 explore your new collections and graph.
 
-![Data Loader Example Step 4 Resulting graph](../../images/arangograph-data-loader-example-resulting-graph.png)
+![Data Loader Example Step 4 Resulting graph](../../images/amp-data-loader-example-resulting-graph.png)
 
 Happy graphing!

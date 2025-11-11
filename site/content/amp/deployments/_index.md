@@ -13,8 +13,6 @@ You can have any number of deployments under one project.
 
 **Organizations → Projects → <u>Deployments</u>**
 
-![ArangoGraph Deployments](../../images/arangograph-deployments-page.png)
-
 ## How to create a new deployment
 
 1. If you do not have a project yet,
@@ -23,6 +21,8 @@ You can have any number of deployments under one project.
 3. Click the __New deployment__ button.
 4. Select the project you want to create the deployment for.
 5. Set up your deployment. The configuration options are described below.
+
+![Arango Managed Platform New Deployment Overview](../../images/amp-new-deployment.png)
 
 {{< info >}}
 Deployments contain exactly **one policy**. Within that policy, you can define
@@ -38,7 +38,7 @@ role bindings to regulate access control on a deployment level.
   provider and region anymore.
   {{< /warning >}}
 
-![ArangoGraph New Deployment General](../../images/arangograph-new-deployment-general.png)
+![Arango Managed Platform New Deployment general](../../images/amp-new-deployment-general.png)
 
 ### In the **Sizing** section
 
@@ -60,7 +60,7 @@ role bindings to regulate access control on a deployment level.
 - Select a __NODE SIZE__ from the list of available options. Each option is a
   combination of vCPUs, memory, and disk space per node.
 
-![ArangoGraph New Deployment Sizing](../../images/arangograph-new-deployment-sizing.png)
+![Arango Managed Platform New Deployment Sizing](../../images/amp-new-deployment-sizing.png)
 
 ### In the **Advanced** section
 
@@ -84,7 +84,7 @@ role bindings to regulate access control on a deployment level.
   {{< /security >}}
 - Select a __Deployment Profile__. Profile options are only available on request.
 
-![ArangoGraph New Deployment Advanced](../../images/arangograph-new-deployment-advanced.png)
+![Arango Managed Platform New Deployment Advanced](../../images/amp-new-deployment-advanced.png)
 
 ### In the **Summary** panel
 
@@ -161,7 +161,7 @@ periodically to improve security.
 3. In the __Password Settings__ dialog, turn the automatic password rotation on
    and click the __Save__ button.
 
-   ![ArangoGraph Deployment Password Rotation](../../images/arangograph-deployment-password-rotation.png)
+   ![Arango Managed Platform Deployment Password Rotation](../../images/amp-deployment-password-rotation.png)
 4. You can expand the __Root password__ panel to see when the password was
    rotated last. The rotation takes place every three months.
 
@@ -291,24 +291,6 @@ application has to handle connection failures by retrying operations if needed.
 {{< /tip >}}
 
 ![ArangoGraph Connecting Drivers Example](../../images/arangograph-connecting-drivers-example.png)
-
-## How to pause a deployment
-
-1. In the __Deployments__ page, click the deployment you wish to pause.
-2. Click the __Delete/Lock__ entry in the navigation.
-3. Click the __Pause deployment...__ button.
-4. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
-   deployment being paused displays the __Hibernated__ status until it has been
-   successfully resumed.
-
-## How to pause a deployment
-
-1. In the __Deployments__ page, click the deployment you wish to pause.
-2. Click the __Delete/Lock__ entry in the navigation.
-3. Click the __Pause deployment...__ button.
-4. To resume the deployment, go to the __Overview__ tab and click __Resume deployment__. The
-   deployment being paused displays the __Hibernated__ status until it has been
-   successfully resumed.
 
 ## How to pause a deployment
 

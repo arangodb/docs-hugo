@@ -15,8 +15,6 @@ Projects are a container for related deployments, certificates & IP allowlists.
 Projects also come with their own policy for access control. You can have any
 number of deployment under one project.
 
-![ArangoGraph Projects Overview](../images/arangograph-projects-overview.png)
-
 ## How to create a new project
 
 1. In the main navigation, click the __Dashboard__ icon.
@@ -27,9 +25,7 @@ number of deployment under one project.
 6. You will be taken to the project page.
 7. To change the name or description, click either at the top of the page.
 
-![ArangoGraph New Project](../images/arangograph-new-project.png)
-
-![ArangoGraph Project Summary](../images/arangograph-project.png)
+![Arango Managed Platform New Project](../images/amp-new-project.png)
 
 {{< info >}}
 Projects contain exactly **one policy**. Within that policy, you can define

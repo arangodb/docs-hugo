@@ -17,7 +17,7 @@ You can upload your CSV files in the following ways:
 - Drag and drop your files in the designated area.
 - Click the **Browse files** button and select the files you want to add.
 
-![ArangoGraph Data Loader Upload Files](../../images/arangograph-data-loader-upload-files.png)
+![Data Loader Upload Files](../../images/amp-data-loader-upload-files.png)
 
 You have the option to either upload several files collectively as a batch or
 add them individually. Furthermore, you can supplement additional files later on.

@@ -116,7 +116,7 @@ the self-signed certificate as Subject Alternative Name (SAN).
    - The **tag** icon to make the certificate the new default.
    - The **recycle bin** icon to delete a certificate.
 
-![ArangoGraph Create New Certificate](../../images/arangograph-new-certificate.png)
+![Arango Managed Platform Create New Certificate](../../images/amp-new-certificate.png)
 
 ## How to install a certificate
 
@@ -130,9 +130,9 @@ well. This operation varies between operating systems. To install a self-signed
 certificate on your local machine, open the certificate and follow the
 installation instructions.
 
-![ArangoGraph Certificates](../../images/arangograph-cert-page-with-cert-present.png)
+![Arango Managed Platform Certificates](../../images/amp-certificate-page.png)
 
-![ArangoGraph Certificate Install Instructions](../../images/arangograph-cert-install-instructions.png)
+![Arango Managed Platform Certificate Install Instructions](../../images/amp-certificate-installation.png)
 
 You can also extract the information from all certificates in the chain using the
 `openssl` tool.

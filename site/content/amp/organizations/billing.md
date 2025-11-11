@@ -15,7 +15,7 @@ description: >-
    to automatically.
 6. Click **Save**.
 
-![ArangoGraph Billing Details](../../images/arangograph-billing-details.png)
+![Arango Managed Platform Billing Details](../../images/amp-billing-details.png)
 
 ## How to add a payment method
 
@@ -25,7 +25,7 @@ description: >-
 4. Fill out the form with your credit card details. Currently, a credit card is the only available payment method.
 5. Click **Save**.
 
-![ArangoGraph Payment Method](../../images/arangograph-add-payment-method-credit-card.png)
+![Arango Managed Platform Payment Method](../../images/amp-add-payment-method-credit-card.png)
 
 {{% comment %}}
 TODO: Need screenshot with invoice

@@ -12,8 +12,6 @@ accessible from every view. There are two elements:
 - __Question mark icon__: Help
 - __User icon__: My Account
 
-![ArangoGraph My Account](../images/arangograph-my-account.png)
-
 ## Overview
 
 ### How to view my account
@@ -29,8 +27,6 @@ accessible from every view. There are two elements:
 2. Click __Overview__ in the __My account__ section.
 3. Click the __Edit__ button.
 4. Change your personal information and __Save__.
-
-![ArangoGraph My Account Info](../images/arangograph-my-account-info.png)
 
 ## Organizations
 
@@ -72,8 +68,6 @@ If you are no longer a member of any organization, then a new organization is
 created for you when you log in again.
 {{< /info >}}
 
-![ArangoGraph New Organization](../images/arangograph-new-org.png)
-
 ## Invites
 
 Invitations are requests to join organizations. You can accept or reject
@@ -89,19 +83,15 @@ See [Users and Groups: How to add a new member to the organization](organization
 
 1. Once invited, you will receive an email asking to join your
    AMP organization.
-   ![ArangoGraph Organization Invite Email](../images/arangograph-org-invite-email.png)
 2. Click the __View my organization invite__ link in the email. You will be
    asked to log in or to create a new account.
 3. To sign up for a new account, click the __Start Free__ button or the
    __Sign up__ link in the header navigation.
-   ![ArangoGraph Homepage](../images/arangograph-homepage.png)
 4. After successfully signing up, you will receive a verification email.
 5. Click the __Verify my email address__ link in the email. It takes you back
    to the Arango Managed Platform (AMP) site.
-   ![ArangoGraph Organization Invite Email Verify](../images/arangograph-org-invite-email-verify.png)
 6. After successfully logging in, you can accept or reject the invite to
    join your organization.
-   ![ArangoGraph Organization Invite](../images/arangograph-org-invite.png)
 7. After accepting the invite, you become a member of your organization and
    will be granted access to the organization and its related projects and
    deployments.
@@ -113,11 +103,9 @@ See [Users and Groups: How to add a new member to the organization](organization
 2. Click the __View my organization invites__ link in the email, or hover over the
    user icon in the top right corner of the dashboard and click
    __My organization invites__.
-   ![ArangoGraph Organization Invite Notification](../images/arangograph-org-invite-notification.png)
 3. On the __Invites__ tab of the __My account__ view, you can accept or reject
    pending invitations, as well as see past invitations that you accepted or
    rejected. Click the button with a checkmark icon to join the organization.
-   ![ArangoGraph Organization Invites Accept](../images/arangograph-org-invites-accept.png)
 
 ## API Keys
 
@@ -133,7 +121,7 @@ authentication.
 2. Click __My API keys__ in the __My account__ section.
 3. Information about the API keys are listed in the __My API keys__ section.
 
-![ArangoGraph My API keys](../images/arangograph-my-api-keys.png)
+![Arango Managed Platform My API keys](../images/amp-api-keys.png)
 
 ### How to create a new API key
 
@@ -152,9 +140,7 @@ The secret is only shown once at creation time.
 You have to store it in a safe place.
 {{< /security >}}
 
-![ArangoGraph New API key](../images/arangograph-new-api-key.png)
-
-![ArangoGraph API key Secret](../images/arangograph-api-key-secret.png)
+![Arango Managed Platform New API key](../images/amp-create-new-api-key.png)
 
 ### How to revoke or delete an API key
 
