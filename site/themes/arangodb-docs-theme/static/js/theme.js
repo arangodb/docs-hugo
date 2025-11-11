@@ -681,6 +681,4 @@ window.onload = () => {
         document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
-    //const pageWrapper = document.querySelector('.page-wrapper');
-    //if (pageWrapper) pageWrapper.style.opacity = "1";
 }

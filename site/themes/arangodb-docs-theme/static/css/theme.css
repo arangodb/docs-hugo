@@ -598,11 +598,6 @@ a.section-link {
 
 /* Body */
 
-.page-wrapper {
-    position: relative;
-    width: 100%;
-}
-
 body .page-main {
     position: relative;
 }
