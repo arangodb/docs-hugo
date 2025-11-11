@@ -13,7 +13,7 @@ You can use ArangoDB on Windows (64-bit) in different ways:
   - [unattended](#unattended-installation-using-the-installer) (command line)
 - Manually, using a [ZIP archive](#installing-using-the-zip-archive)
 
-Visit the official [Download](https://www.arangodb.com/download)
+Visit the official [Download](https://arango.ai/downloads/)
 page of the ArangoDB web site.
 
 You may verify the download by comparing the SHA256 hash listed on the website

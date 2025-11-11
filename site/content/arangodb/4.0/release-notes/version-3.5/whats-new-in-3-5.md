@@ -169,11 +169,8 @@ reduce memory usage and, for some queries, also execution time for the sorting.
 If the optimization is applied, it will show as "sort-limit" rule in the query execution
 plan.
 
-Also see:
-- [AQL Optimizer Rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules)
-  (`sort-limit` rule)
-- [Sort-Limit Optimization in AQL](https://www.arangodb.com/2019/03/sort-limit-optimization-aql/)
-  (blog post)
+Also see [AQL Optimizer Rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules)
+  (`sort-limit` rule).
 
 ### Index hints in AQL
 
@@ -182,10 +179,7 @@ the internal optimizer decision regarding which index to use to serve content
 from a given collection. The index hint works with the [named indexes](#named-indexes)
 feature, making it easy to specify which index to use.
 
-See:
-- [AQL Index Hints](../../aql/high-level-operations/for.md#indexhint)
-- [An introduction to index hints and named indices](https://www.arangodb.com/learn/development/index-hints-named-indices/)
-  (tutorial)
+See [AQL Index Hints](../../aql/high-level-operations/for.md#indexhint).
 
 ### Sorted primary index (RocksDB engine)
 
@@ -312,9 +306,7 @@ of data around for performing the join, but that will filter out most of the dat
 after the join. In this case SmartJoins should greatly outperform the general join,
 as they will eliminate most of the inter-node data shipping overhead.
 
-Also see:
-- [SmartJoins documentation](../../develop/smartjoins.md)
-- [SmartJoins tutorial](https://www.arangodb.com/enterprise-server/smartjoins/)
+Also see the [SmartJoins documentation](../../develop/smartjoins.md).
 
 ## Background Index Creation
 
@@ -691,7 +683,7 @@ web interface, but it will automatically be created lazily if needed.
 
 ### Named indexes
 
-indexes now have an additional `name` field, which allows for more useful
+Indexes now have an additional `name` field, which allows for more useful
 identifiers. System indexes, like the primary and edge indexes, have default 
 names (`primary` and `edge`, respectively). If no `name` value is specified
 on index creation, one will be auto-generated (e.g. `idx_13820395`). The index

@@ -191,7 +191,7 @@ The Starter hands the license key to the Docker containers it launches for Arang
 
 You can get a free evaluation license key by visiting:
 
-[www.arangodb.com/download-arangodb-enterprise/](https://www.arangodb.com/download-arangodb-enterprise/)
+[arangodb.ai/downloads/](https://arango.ai/downloads/)
 
 **TLS verified Docker services**
 

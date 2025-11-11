@@ -9,10 +9,6 @@ This section includes information related to the administration of an ArangoDB C
 For a general introduction to the ArangoDB Cluster, please refer to the
 [Cluster](_index.md) chapter.
 
-There is also a detailed
-[Cluster Administration Course](https://www.arangodb.com/learn/operations/cluster-course/)
-for download.
-
 ## Enabling synchronous replication
 
 For an introduction about _Synchronous Replication_ in Cluster, please refer

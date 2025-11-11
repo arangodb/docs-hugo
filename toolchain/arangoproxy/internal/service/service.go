@@ -176,7 +176,7 @@ func init() {
 					"license": license,
 					"contact": map[string]interface{}{
 						"name": "ArangoDB Inc.",
-						"url":  "https://arangodb.com",
+						"url":  "https://arango.ai",
 					},
 				},
 				"paths": make(map[string]interface{}),

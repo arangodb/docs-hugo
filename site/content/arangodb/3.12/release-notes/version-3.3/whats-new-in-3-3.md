@@ -176,9 +176,6 @@ The arangojs driver for JavaScript, the Go driver and the Java driver for
 ArangoDB support automatic failover in case the currently accessed server endpoint 
 responds with HTTP 503.
 
-Blog article:
-[Introducing the new ArangoDB Java driver with load balancing and advanced fallback](https://www.arangodb.com/2017/12/introducing-the-new-arangodb-java-driver-load-balancing/)
-
 ## RocksDB throttling
 
 ArangoDB 3.3 allows write operations to the RocksDB engine be throttled, in
@@ -187,9 +184,6 @@ automatically adapts to the actual write rate. This results in much more stable
 response times, which is better for client applications and cluster health
 tests, because timeouts caused by write stalls are less likely to occur and
 the server thus not mistakenly assumed to be down.
-
-Blog article:
-[RocksDB smoothing for ArangoDB customers](https://www.arangodb.com/2017/11/rocksdb-smoothing-arangodb-customers/)
 
 ## Faster shard creation in cluster
 

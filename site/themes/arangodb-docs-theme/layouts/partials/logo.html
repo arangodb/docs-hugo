@@ -1,4 +1,0 @@
-{{ $image := resources.GetMatch "images/arangodb_logo_2016.png" }}
-<div class="arangodb-logo">
-  <a href="https://arangodb.com/"><img {{ with $image }}src="{{ $image.RelPermalink }}"{{ end }} alt="ArangoDB Logo" /></a>
-</div>

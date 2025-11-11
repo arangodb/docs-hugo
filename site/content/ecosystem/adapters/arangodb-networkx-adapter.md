@@ -8,7 +8,7 @@ description: >-
 {{< tip >}}
 ArangoDB now has a closer integration with NetworkX allowing
 NetworkX users to persist their graphs in ArangoDB & leverage
-GPU-accelerated graph analytics via cuGraph. [Learn more here](https://arangodb.com/introducing-the-arangodb-networkx-persistence-layer/).
+GPU-accelerated graph analytics via cuGraph. [Learn more here](https://www.youtube.com/watch?v=gBj6cRNHeq4).
 {{< /tip >}}
 
 [NetworkX](https://networkx.org/) is a commonly used tool for
@@ -25,7 +25,7 @@ representation of the subgraph for one of the following reasons:
 ## Resources
 
 Watch this
-[lunch & learn session](https://www.arangodb.com/resources/lunch-sessions/graph-beyond-lunch-break-2-9-introducing-the-arangodb-networkx-adapter/)
+[lunch & learn session](https://www.youtube.com/watch?v=4jLhjbpjOxI)
 to see how using this adapter gives you the best of both
 graph worlds - the speed and flexibility of ArangoDB combined with the
 ubiquity of NetworkX.

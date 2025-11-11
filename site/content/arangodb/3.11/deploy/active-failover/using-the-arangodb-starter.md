@@ -104,7 +104,7 @@ in an environment variable by adding this option to the above `docker` command:
 
 You can get a free evaluation license key by visiting:
 
-[www.arangodb.com/download-arangodb-enterprise/](https://www.arangodb.com/download-arangodb-enterprise/)
+[arangodb.ai/downloads/](https://arango.ai/downloads/)
 
 Then replace `<the-key>` above with the actual license key. The start
 will then hand on the license key to the Docker containers it launches

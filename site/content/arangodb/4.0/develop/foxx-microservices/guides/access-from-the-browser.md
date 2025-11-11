@@ -21,7 +21,7 @@ this also adds the most development overhead and may result in unnecessary
 duplication of access logic.
 
 This approach works best if you're using Foxx in an existing application stack
-or want to use an [ArangoDB driver](https://www.arangodb.com/arangodb-drivers/)
+or want to use an [ArangoDB driver](../../../../../ecosystem/drivers/_index.md)
 to access the database API directly alongside your Foxx service.
 
 As Foxx services provide ordinary HTTP endpoints, you can access them from your

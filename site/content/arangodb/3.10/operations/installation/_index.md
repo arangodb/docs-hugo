@@ -7,7 +7,7 @@ description: >-
   as well as run ArangoDB using Docker images
 ---
 To install ArangoDB, as first step, please download a package for your operating
-system from the official [Download](https://www.arangodb.com/download)
+system from the official [Download](https://arango.ai/downloads/)
 page of the ArangoDB web site.
 
 You can find packages for various operating systems, including _RPM_ and _Debian_

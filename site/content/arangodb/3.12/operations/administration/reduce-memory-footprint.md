@@ -42,7 +42,7 @@ limited resources, but they may also be interesting for your
 development machine if you want to make it less taxing for
 the hardware and do not work with much data. For production
 environments, it is recommended to use less restrictive settings, to
-[benchmark](https://www.arangodb.com/performance/) your setup and
+benchmark your setup and
 fine-tune the settings for maximal performance.
 
 ## Limiting the overall RAM usage

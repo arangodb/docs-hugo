@@ -71,7 +71,7 @@ data = FakeHeteroDataset(
 
 ### PyG to ArangoDB
 
-Note: If the PyG graph contains `_key`, `_v_key`, or `_e_key` properties for any node / edge types, the adapter will assume to persist those values as [ArangoDB document keys](https://www.arangodb.com/docs/stable/data-modeling-naming-conventions-document-keys.html). See the `Full Cycle (ArangoDB -> PyG -> ArangoDB)` section below for an example.
+Note: If the PyG graph contains `_key`, `_v_key`, or `_e_key` properties for any node / edge types, the adapter will assume to persist those values as [ArangoDB document keys](../../arangodb/3.12/concepts/data-structure/documents/_index.md#document-keys). See the `Full Cycle (ArangoDB -> PyG -> ArangoDB)` section below for an example.
 
 ```py
 #############################

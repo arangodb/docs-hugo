@@ -16,7 +16,7 @@ aliases:
 ## Supported versions
 
 Spring Boot Starter ArangoDB is compatible with all supported versions of ArangoDB.
-For more information, see the [End-of-life announcements](https://www.arangodb.com/subscriptions/end-of-life-notice/).
+For more information, see the [End-of-life announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 This integration has multiple versions released, and each one is compatible with
 the corresponding versions of Spring Boot, Spring Framework, Spring Data ArangoDB,

@@ -24,7 +24,7 @@ provided anymore.
 ## Docker
 
 The recommended way of using ArangoDB on macOS is to use the
-[ArangoDB Docker images](https://www.arangodb.com/download-major/docker/)
+[ArangoDB Docker images](https://arango.ai/downloads/?tab=docker)
 with, for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 See the documentation on [Docker Hub](https://hub.docker.com/_/arangodb),
@@ -33,7 +33,7 @@ different deployment modes and methods including Docker containers.
 
 ## Installing the client tools using the archive
 
-1. Visit the official [Download](https://www.arangodb.com/download)
+1. Visit the official [Download](https://arango.ai/downloads/)
    page of the ArangoDB website and download the client tools _tar.gz_ archive for macOS.
 
 2. You may verify the download by comparing the SHA256 hash listed on the website

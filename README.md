@@ -899,7 +899,7 @@ in the ToC, whereas `<h4>`, `<h5>`, and `<h6>` will be ignored.
 
 ### Deprecate a version
 
-When an ArangoDB version reaches [End-of-Life](https://www.arangodb.com/subscriptions/end-of-life-notice/),
+When an ArangoDB version reaches [End-of-Life](https://arango.ai/arangodb-product-support-end-of-life-announcements/),
 its documentation needs to be marked as such. For the respective version, set
 the `deprecated` attribute to `true` in the `site/data/versions.yaml` file:
 

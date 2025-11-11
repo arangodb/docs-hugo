@@ -855,4 +855,4 @@ print(json.dumps(docs, indent=2))
 
 ## What's next
 
-With the generated Feature (and optionally Node) Embeddings, you can now use them for downstream tasks like clustering, anomaly detection, and link prediction. Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/) capabilities to find similar nodes based on their embeddings.
+With the generated Feature (and optionally Node) Embeddings, you can now use them for downstream tasks like clustering, anomaly detection, and link prediction. Consider using [ArangoDB's Vector Search](https://arango.ai/blog/vector-search-in-arangodb-practical-insights-and-hands-on-examples/) capabilities to find similar nodes based on their embeddings.

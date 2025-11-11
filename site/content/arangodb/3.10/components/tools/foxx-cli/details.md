@@ -54,7 +54,7 @@ foxx server list --help # Subcommands are supported, too
 ```
 
 If you have no prior knowledge of Foxx, you can get started by
-[installing ArangoDB locally](https://www.arangodb.com/download)
+[installing ArangoDB locally](https://arango.ai/downloads/)
 and then creating a new Foxx service in the current directory using the `init` command:
 
 ```sh

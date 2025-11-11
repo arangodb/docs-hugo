@@ -46,7 +46,7 @@ resources within the organization's environment, rather than using external
 services.
 
 You can install ArangoDB locally by downloading and running the
-[official packages](https://arangodb.com/download/) or run it using
+[official packages](https://arango.ai/downloads/) or run it using
 [Docker images](../operations/installation/docker.md).
 
 You can deploy it on-premises as a

@@ -1501,7 +1501,7 @@ information about the vector index type including the available settings, see th
 documentation.
 
 You can also follow the guide in this blog post:
-[Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
+[Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arango.ai/blog/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 
 If the vector index type is enabled, the following new AQL functions are
 available to retrieve similar documents:

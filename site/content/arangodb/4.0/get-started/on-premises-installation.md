@@ -8,7 +8,7 @@ description: >-
 ---
 ## Installation
 
-Head to [arangodb.com/download](https://www.arangodb.com/download/),
+Head to [arangodb.ai/downloads/](https://arango.ai/downloads/),
 select your operating system, and download ArangoDB. You may also follow
 the instructions on how to install with a package manager, if available.
 

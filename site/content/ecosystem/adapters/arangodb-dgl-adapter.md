@@ -15,7 +15,7 @@ Apache MXNet or TensorFlow.
 ## Resources
 
 Watch this
-[lunch & learn session](https://www.arangodb.com/resources/lunch-sessions/graph-beyond-lunch-break-2-8-dgl-adapter/)
+[lunch & learn session](https://www.youtube.com/watch?v=FSJ37bUh4PQ)
 to get an introduction and see how to use the DGL adapter.
 
 The [DGL Adapter repository](https://github.com/arangoml/dgl-adapter)

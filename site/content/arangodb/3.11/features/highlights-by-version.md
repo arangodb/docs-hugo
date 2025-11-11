@@ -263,7 +263,7 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   use cases like expiring sessions or automatic purging of statistics or logs.
 
 - [**Index Hints**](../aql/high-level-operations/for.md#indexhint) &
-  [**Named Indexes**](https://www.arangodb.com/learn/development/index-hints-named-indices/):
+  [**Named Indexes**](../release-notes/version-3.5/whats-new-in-3-5.md#named-indexes):
   Indexes can be given names and an optional AQL inline query option
   `indexHint` was added to override the internal optimizer decision on which
   index to utilize.
@@ -405,7 +405,7 @@ Also see [What's New in 3.2](../release-notes/version-3.2/whats-new-in-3-2.md).
   AQL traversal queries can utilize secondary edge collection
   indexes for better performance against graphs with supernodes.
 
-- [**VelocyPack over HTTP**](https://www.arangodb.com/2016/10/updated-java-drivers-with-arangodb-3-1/):
+- **VelocyPack over HTTP**:
   In addition to JSON, the binary storage format VelocyPack can now also be
   used in transport over the HTTP protocol, as well as streamed using the new
   bi-directional asynchronous binary protocol **VelocyStream**.

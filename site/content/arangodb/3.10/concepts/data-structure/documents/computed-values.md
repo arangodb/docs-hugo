@@ -189,9 +189,9 @@ var coll = db._create("users", {
   ]
 });
 var doc = db.users.save({ _key: "123", name: "Paula Plant" });
-doc = db.users.update("123", { email: "gardener@arangodb.com" });
+doc = db.users.update("123", { email: "gardener@arango.ai" });
 db.users.toArray();
-doc = db.users.update("123", { email: "greenhouse@arangodb.com", modifiedAt: { date: "2019-01-01", time: "20:30:00.000Z" } });
+doc = db.users.update("123", { email: "greenhouse@arango.ai", modifiedAt: { date: "2019-01-01", time: "20:30:00.000Z" } });
 db.users.toArray();
 ~db._drop("users");
 ```

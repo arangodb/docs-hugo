@@ -160,4 +160,4 @@ available to you, but there are a few key differences:
   security reasons, but can be enabled on request.
   Incoming calls to Foxx services are fully supported.
 
-For more information, see the [comparison between on-premises editions and the managed cloud service](https://www.arangodb.com/subscriptions/).
+For more information, see the [comparison between on-premises editions and the managed cloud service](https://arango.ai/pricing/).

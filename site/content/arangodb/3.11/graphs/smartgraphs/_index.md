@@ -38,10 +38,6 @@ and [General Graph Functions](../general-graphs/functions.md) sections.
 The optimizer is clever enough to identify
 whether it is a SmartGraph or not.
 
-Do the hands-on
-[ArangoDB SmartGraphs Tutorial](https://www.arangodb.com/using-smartgraphs-arangodb/)
-to learn more.
-
 ## How SmartGraphs work
 
 Typically, when you shard your data with ArangoDB the goal is to have an even

@@ -17,7 +17,7 @@ The official ArangoDB Java Driver.
 Version 7 is the latest supported and actively developed release.
 
 The driver is compatible with all supported stable versions of ArangoDB server, see
-[Product Support End-of-life Announcements](https://arangodb.com/subscriptions/end-of-life-notice/).
+[Product Support End-of-life Announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 The driver is compatible with JDK 8 and higher versions.
 

@@ -54,5 +54,5 @@ the JavaScript scripting language. You can also use it in web browsers.
 The [**Python-Arango**](python.md) driver lets you work with ArangoDB in the
 Python scripting language.
 
-- Online course: [Python Driver Tutorial](https://www.arangodb.com/tutorials/tutorial-python/)
+- Online course: [Python Driver Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
 - Repository: [github.com/arangodb/python-arango](https://github.com/arangodb/python-arango)

@@ -27,6 +27,3 @@ description: >-
     nodes.
   - Make sure that the nodes in question share the same `JWT_SECRET`
     and SSL operation mode with the functioning nodes.
-
-Dig deeper into cluster troubleshooting by going through the
-[ArangoDB Cluster Administration Course](https://www.arangodb.com/learn/operations/cluster-course/).

@@ -63,7 +63,7 @@ resources within the organization's environment, rather than using external
 services.
 
 You can install ArangoDB locally by downloading and running the
-[official packages](https://arangodb.com/download/) or run it using
+[official packages](https://arango.ai/downloads/) or run it using
 [Docker images](../operations/installation/docker.md).
 
 You can deploy it on-premises as a
@@ -84,7 +84,7 @@ be exclusive to the Enterprise Edition.
 
 From version 3.12.5 onward, the **Community Edition** includes all
 Enterprise Edition features without time restrictions. It is governed by the
-[ArangoDB Community License](https://arangodb.com/community-license).
+[ArangoDB Community License](https://arangodb.com/community-license/).
 You can download the extensively tested prepackaged binaries and official
 Docker images for free. The use for commercial purposes is prohibited for
 production. The Community Edition does not include the right to distribute, embed

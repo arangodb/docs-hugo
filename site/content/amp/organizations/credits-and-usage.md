@@ -101,7 +101,7 @@ first to avoid credit expiry where possible.
 
 AMP offers a variety of predefined credit packages designed to
 accommodate different needs and stages of the application lifecycle.
-For any credit purchasing needs, please [contact us](https://www.arangodb.com/contact/)
+For any credit purchasing needs, please [contact us](https://arango.ai/contact-us/)
 and we are happy to help find an appropriate package for you.
 
 ### How quickly will the credits I purchase be consumed?

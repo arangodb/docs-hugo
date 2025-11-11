@@ -190,7 +190,7 @@ migration-related processes as soon as possible.
 ### Switching the local cluster to read-only mode
 
 The `arangosync-migration set-server-mode` command allows switching
-[read-only mode](../develop/http-api/administration.md#set-the-server-mode-to-read-only-or-default)
+[read-only mode](../arangodb/3.12/develop/http-api/administration.md#set-the-server-mode-to-read-only-or-default)
 for your local cluster on and off.
 
 In a read-only mode, all write operations are going to fail with an error code
@@ -236,7 +236,7 @@ The `arangosync-migration` tool supports migrating large datasets of up to
 5 TB of data and 3800 leader shards, as well as collections as big as 250 GB.
 
 In case you have any questions, please
-[reach out to us](https://www.arangodb.com/contact).
+[reach out to us](https://arango.ai/contact-us/).
 
 ## Cloud migration workflow for minimal downtime
 

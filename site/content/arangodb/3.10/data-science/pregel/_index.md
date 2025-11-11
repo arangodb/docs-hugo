@@ -14,10 +14,6 @@ Vertex Closeness, Connected Components, Community Detection.
 For more details, see all [available algorithms](algorithms.md)
 in ArangoDB.
 
-Check out the hands-on
-[ArangoDB Pregel Tutorial](https://www.arangodb.com/pregel-community-detection/)
-to learn more.
-
 The processing system inside ArangoDB is based on:
 [Pregel: A System for Large-Scale Graph Processing](https://15799.courses.cs.cmu.edu/fall2013/static/papers/p135-malewicz.pdf)
 – Malewicz et al. (Google), 2010.

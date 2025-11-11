@@ -98,7 +98,7 @@ within the graph. Unlike simple feature aggregation, node embeddings
 **capture the influence of neighboring nodes and graph topology**, making
 them powerful for downstream tasks like clustering, anomaly detection,
 and link prediction. These combinations can provide valuable insights.
-Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
+Consider using [ArangoDB's Vector Search](https://arango.ai/blog/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 capabilities to find similar nodes based on their embeddings.
 
 **Feature Embeddings versus Node Embeddings**

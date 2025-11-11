@@ -8,7 +8,7 @@ description: >-
 {{< tip >}}
 ArangoDB now has a closer integration with NetworkX allowing
 NetworkX users to persist their graphs in ArangoDB & leverage
-GPU-accelerated graph analytics via cuGraph. [Learn more here](https://arangodb.com/introducing-the-arangodb-networkx-persistence-layer/).
+GPU-accelerated graph analytics via cuGraph. [Learn more here](https://www.youtube.com/watch?v=gBj6cRNHeq4).
 {{< /tip >}}
 
 While offering a similar API and set of graph algorithms to NetworkX,

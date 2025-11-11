@@ -66,7 +66,7 @@ In addition, you gain access to:
 - Ability to transact via the AWS and GCP marketplaces
 
 To take advantage of this, you need to get in touch with the ArangoDB
-team. [Contact us](https://www.arangodb.com/contact/) for more details.
+team. [Contact us](https://arango.ai/contact-us/) for more details.
 
 ## How to unlock all features
 

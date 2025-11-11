@@ -13,7 +13,7 @@ Filter predicates and column selections are pushed down to the DB by dynamically
 
 The connector is usable from all the Spark supported client languages: Scala, Python, Java, and R.
 
-This library works with all the non-EOLed [ArangoDB versions](https://www.arangodb.com/subscriptions/end-of-life-notice/).
+This library works with all the non-EOLed [ArangoDB versions](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 ## Supported versions
 

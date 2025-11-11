@@ -15,7 +15,7 @@ using [_arangodump_](../../../components/tools/arangodump/_index.md).
 
 ## Upgrading via Package
 
-[Download](https://www.arangodb.com/download/) the latest
+[Download](https://arango.ai/downloads/) the latest
 ArangoDB macOS package and install it as usual by mounting the `.dmg` file.
 Drag and drop the `ArangoDB3-CLI` (Community Edition) or the `ArangoDB3e-CLI`
 (Enterprise Edition) file onto the shown `Applications` folder.

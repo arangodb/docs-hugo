@@ -36,7 +36,7 @@ sudo apt-get update
 sudo apt-get install arangodb3=3.3.10
 ```
 
-**Note**: The latest available version can be found in the [download section](https://www.arangodb.com/download-major/ubuntu/).
+**Note**: The latest available version can be found in the [download section](https://arango.ai/downloads/?tab=linux&distro=ubuntu).
 
 ## Upgrading via DPKG (Ubuntu)
 
@@ -58,7 +58,7 @@ curl -OL https://download.arangodb.com/arangodb33/CentOS_7/arangodb.repo
 yum -y install arangodb3-3.3.10
 ```
 
-**Note**: The latest available version can be found in the [download section](https://www.arangodb.com/download-major/centos/).
+**Note**: The latest available version can be found in the [download section](https://arango.ai/downloads/?tab=linux&distro=redhat).
 
 ## Upgrading via RPM (CentOS)
 

@@ -7,7 +7,7 @@ description: >-
   packages, as well as run ArangoDB in containers on multiple operating systems
 ---
 To install ArangoDB on Linux, as a first step, please download a package from
-the official [Download](https://www.arangodb.com/download) page of the ArangoDB
+the official [Download](https://arango.ai/downloads/) page of the ArangoDB
 website.
 
 There are different packages available, such as _RPM_ and _Debian_ packages for

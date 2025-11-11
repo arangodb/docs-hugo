@@ -31,7 +31,7 @@ complex fraudulent behavior such as fraud rings.
 
 Suggest products, services, and information to users based on data relationships.
 For example, you can use ArangoDB together with PyTorch Geometric to build a
-[movie recommendation system](https://www.arangodb.com/2022/04/integrate-arangodb-with-pytorch-geometric-to-build-recommendation-systems/),
+movie recommendation system,
 by analyzing the movies users watched and then predicting links between the two
 with a graph neural network (GNN).
 

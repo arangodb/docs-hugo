@@ -44,7 +44,7 @@ to transform existing data into a graph.
 
 To import data from various files into collections **without creating a graph**,
 get the ArangoDB client tools for your operating system from the
-[download page](https://arangodb.com/download-major/).
+[download page](https://arango.ai/downloads/).
 
 - To import data to AMP from an existing ArangoDB instance, see
   [arangodump](../../arangodb/3.12/components/tools/arangodump/) and

@@ -33,7 +33,7 @@ The arangojs driver is compatible with the latest stable version of ArangoDB
 available at the time of the driver release and remains compatible with the two
 most recent Node.js LTS versions in accordance with the official
 [Node.js long-term support schedule](https://github.com/nodejs/LTS).
-Versions of ArangoDB that have reached their [end of life](https://arangodb.com/subscriptions/end-of-life-notice/)
+Versions of ArangoDB that have reached their [end of life](https://arango.ai/arangodb-product-support-end-of-life-announcements/)
 by the time of a driver release are explicitly not supported.
 
 The [_arangoVersion_ option](https://arangodb.github.io/arangojs/latest/types/configuration.ConfigOptions.html)

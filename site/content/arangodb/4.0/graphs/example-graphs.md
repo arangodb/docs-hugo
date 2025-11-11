@@ -251,8 +251,7 @@ You can find a collection of datasets with import scripts on
 [GitHub](https://github.com/arangodb/example-datasets).
 
 Another huge graph is the [Pokec social network](https://snap.stanford.edu/data/soc-pokec.html)
-from Slovakia. See this [blogpost](https://www.arangodb.com/2015/06/multi-model-benchmark/)
-for details and an import script.
+from Slovakia.
 
 ## More examples
 

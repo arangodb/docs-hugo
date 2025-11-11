@@ -64,7 +64,7 @@ dpkg -i arangodb3-3.9.2-1_amd64.deb
 ```
 
 after you have downloaded the corresponding file from
-[www.arangodb.com/download/](https://www.arangodb.com/download/)
+[arangodb.ai/downloads/](https://arango.ai/downloads/)
 or have downloaded the new Enterprise Edition executable.
 
 If you are using the `.tar.gz` distribution,
