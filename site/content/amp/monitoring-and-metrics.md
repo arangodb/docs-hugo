@@ -21,7 +21,7 @@ The key features include:
 To get started, select an existing deployment from within a project and
 click **Monitoring** in the navigation. 
 
-![ArangoGraph Monitoring tab](../images/arangograph-monitoring-tab.png)
+![Arango Managed Platform Monitoring tab](../images/amp-monitoring.png)
 
 ## Built-in monitoring and metrics
 
@@ -42,7 +42,7 @@ you to apply filters to obtain logs from all server types or select specific one
 (i.e. only Coordinators or only DB-Servers) within a timeframe. To download the
 logs, click the **Save** button.
 
-![ArangoGraph Monitoring Servers](../images/arangograph-monitoring-servers.png)
+![Arango Managed Platform Monitoring Servers](../images/amp-monitoring-servers.png)
 
 ### In the **Metrics** section
 
@@ -57,8 +57,6 @@ or when needing to quickly find a particular one among many.
 Similarly, you can repeat the process for Coordinators to see the **CPU** and
 **Memory** usage.
 
-![Arangograph Monitoring Metrics Chart](../images/arangograph-monitoring-metrics-chart.png)
-
 ## Connect with Prometheus and Grafana
 
 The Arango Managed Platform (AMP) provides metrics for each deployment in a 
@@ -67,8 +65,6 @@ You can use these metrics to gather detailed insights into the current
 and previous states of your deployment.
 Once metrics are collected by Prometheus, you can inspect them using tools
 such as [Grafana](https://grafana.com/oss/grafana/).
-
-![ArangoGraph Connect Metrics Section](../images/arangograph-connect-metrics-section.png)
 
 ### Metrics tokens
 
@@ -80,8 +76,6 @@ which is required for connecting to Prometheus.
 3. Optionally, you can also enter a **Short description**.
 4. Select the **Lifetime** of the metrics token. 
 5. Click **Create**.
-
-![ArangoGraph Metrics Tokens](../images/arangograph-metrics-token.png)
 
 ### How to connect Prometheus
 

@@ -53,7 +53,6 @@ with the Arango team.
   - Metadata capture
   - Model management
 
-![ArangoGraphML Pipeline](../../images/ArangoGraphML_Pipeline.png)
 {{< /tab >}}
 
 {{< /tabs >}}

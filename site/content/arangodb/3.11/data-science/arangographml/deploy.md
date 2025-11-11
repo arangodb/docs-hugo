@@ -37,8 +37,6 @@ with the Arango team.
   - Metadata capture
   - Model management
 
-![ArangoGraphML Pipeline](../../../../images/ArangoGraphML_Pipeline.png)
-
 #### Setup
 
 The ArangoGraphML managed-service runs on

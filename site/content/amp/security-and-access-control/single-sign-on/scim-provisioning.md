@@ -67,7 +67,7 @@ supports the SCIM provisioning feature.
    for the account that handles the SCIM actions - in this case AMP.
 7. Go to the AMP Dashboard and create a new API key ID and Secret.
 
-   ![ArangoGraph Create new API key](../../../images/arangograph-okta-api-key.png)
+   ![Arango Managed Platform Create new API key](../../../images/amp-api-keys.png)
 
    Make sure to select one organization from the list and do not set any
    value in the **Time to live** field. For more information,

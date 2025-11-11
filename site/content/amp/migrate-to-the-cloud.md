@@ -150,8 +150,6 @@ have and how often write operations are executed during the process.
 You can also track the progress by checking the **Migration status** section of
 your target deployment in AMP dashboard.
 
-![ArangoGraph Cloud Migration Progress](../images/arangograph-migration-agent.png)
-
 ### Getting the current status
 
 To print the current status of the migration, run the following command:

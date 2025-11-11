@@ -38,8 +38,6 @@ key you will need to be signed into your account at
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 Once you are signed in, hover over the profile icon in the top right corner.
 
-![Profile Icon](../../images/arangograph-my-account-hover.png)
-
 Click _My API keys_.
 
 This will bring you to your API key management screen. From this screen you can
@@ -47,7 +45,7 @@ create, reject, and delete API keys.
 
 Click the _New API key_ button.
 
-![Blank API Screen](../../images/arangograph-my-api-keys.png)
+![Blank API Screen](../../images/amp-api-keys.png)
 
 The pop-up box that follows has a few options for customizing the access level
 of this API key.
@@ -62,8 +60,6 @@ Once you have configured the API key access options, you will be presented with
 your API key ID and API key secret. It is very important that you capture the
 API key secret before clicking the close button. There is no way to retrieve
 the API key secret after closing this pop-up window.
-
-![API Secret Key](../../images/arangograph-api-key-secret.png)
 
 Once you have securely stored your API key ID and secret, click close.
 
