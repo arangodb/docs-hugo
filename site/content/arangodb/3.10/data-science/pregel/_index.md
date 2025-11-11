@@ -26,7 +26,7 @@ need for distributed global locking.
 
 This system is not useful for typical online queries, where you just work on
 a small set of vertices. These kind of tasks are better suited for
-[AQL traversals](../../aql/graphs/_index.md).
+[AQL traversals](../../aql/graph-queries/_index.md).
 
 ## Prerequisites
 

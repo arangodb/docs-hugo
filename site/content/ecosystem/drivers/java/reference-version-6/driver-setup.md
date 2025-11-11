@@ -4,6 +4,11 @@ menuTitle: Driver Setup
 weight: 5
 description: >-
   Driver setup (version 6)
+aliases:
+  - ../../../../arangodb/3.12/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/stable/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/devel/develop/drivers/java/reference-version-6/driver-setup
 ---
 {{< warning >}}
 Version 6 reached End of Life (EOL) and is not actively developed anymore.

@@ -3,6 +3,11 @@ title: Events
 menuTitle: Events
 weight: 35
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/events
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/events
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/events
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/events
 ---
 Spring Data ArangoDB includes several `ApplicationEvent` events that your
 application can respond to by registering subclasses of

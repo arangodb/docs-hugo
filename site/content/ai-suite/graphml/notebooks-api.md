@@ -5,9 +5,10 @@ weight: 15
 description: >-
   Control all resources inside GraphML via Jupyter Notebooks or Python API
 aliases:
-  - getting-started-with-arangographml
-  - ../arangographml/getting-started
-  - ../arangographml-getting-started-with-arangographml
+  - ../../arangodb/3.12/data-science/arangographml/getting-started # 3.10, 3.11
+  - ../../arangodb/stable/data-science/arangographml/getting-started # 3.10, 3.11
+  - ../../arangodb/4.0/data-science/arangographml/getting-started # 3.10, 3.11
+  - ../../arangodb/devel/data-science/arangographml/getting-started # 3.10, 3.11
 ---
 The Arango AI Data Platform provides an easy-to-use & scalable interface to run
 Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is

@@ -1,6 +1,6 @@
 ---
-title: Graphs in AQL
-menuTitle: Graphs
+title: Graph queries in AQL
+menuTitle: Graph queries
 weight: 35
 description: >-
   You can perform graph traversals and path searches on named graphs as well as

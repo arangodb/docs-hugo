@@ -4,6 +4,8 @@ menuTitle: ArangoGraphML
 weight: 125
 description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
+aliases:
+  - ../../../ai-suite/graphml # 3.12, 4.0
 ---
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,

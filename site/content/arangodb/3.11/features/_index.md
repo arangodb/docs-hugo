@@ -1,7 +1,7 @@
 ---
 title: Features and Capabilities
 menuTitle: Features
-weight: 20
+weight: 10
 description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
@@ -24,7 +24,7 @@ variety of support plans to meet your needs.
 - Highly secure with encryption at transit and at rest
 - Includes elastic scalability for all deployment models (OneShard and Sharded clusters)
 
-To learn more, go to the [AMP documentation](../../../../amp/_index.md). 
+To learn more, go to the [AMP documentation](../../../amp/_index.md). 
 
 ### Self-managed in the cloud
 
@@ -32,10 +32,10 @@ ArangoDB can be self-deployed on AWS or other cloud platforms, too. However, whe
 using a self-managed deployment, you take full control of managing the resources
 needed to run it in the cloud. This involves tasks such as configuring,
 provisioning, and monitoring the system. For more details, see
-[self-deploying ArangoDB in the cloud](../../deploy/in-the-cloud.md).
+[self-deploying ArangoDB in the cloud](../deploy/in-the-cloud.md).
 
 ArangoDB supports Kubernetes through its official
-[Kubernetes Operator](../../deploy/kubernetes.md) that allows you to easily
+[Kubernetes Operator](../deploy/kubernetes.md) that allows you to easily
 deploy and manage clusters within a Kubernetes environment.
 
 ### On-premises
@@ -47,18 +47,18 @@ services.
 
 You can install ArangoDB locally by downloading and running the
 [official packages](https://arangodb.com/download/) or run it using
-[Docker images](../../operations/installation/docker.md).
+[Docker images](../operations/installation/docker.md).
 
 You can deploy it on-premises as a
-[single server](../../deploy/single-instance/_index.md)
-or as a [cluster](../../deploy/cluster/_index.md)
+[single server](../deploy/single-instance/_index.md)
+or as a [cluster](../deploy/cluster/_index.md)
 comprised of multiple nodes with synchronous replication and automatic failover
 for high availability and resilience. For the highest level of data safety,
 you can additionally set up off-site replication for your entire cluster
-([Datacenter-to-Datacenter Replication](../../deploy/arangosync/_index.md)).
+([Datacenter-to-Datacenter Replication](../deploy/arangosync/_index.md)).
 
 ArangoDB also integrates with Kubernetes, offering a
-[Kubernetes Operator](../../deploy/kubernetes.md) that lets you deploy in your
+[Kubernetes Operator](../deploy/kubernetes.md) that lets you deploy in your
 Kubernetes cluster.
 
 ## ArangoDB Editions

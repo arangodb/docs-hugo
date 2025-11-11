@@ -5,6 +5,11 @@ weight: 15
 description: >-
   Various detailed have changed, like the setup, transport, configuration,
   serialization, and some of the APIs
+aliases:
+  - ../../../../arangodb/3.12/develop/drivers/java/reference-version-7/changes-in-version-7
+  - ../../../../arangodb/stable/develop/drivers/java/reference-version-7/changes-in-version-7
+  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-7/changes-in-version-7
+  - ../../../../arangodb/devel/develop/drivers/java/reference-version-7/changes-in-version-7
 ---
 ## Maven Setup
 

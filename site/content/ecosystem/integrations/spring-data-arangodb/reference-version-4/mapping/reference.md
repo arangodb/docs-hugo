@@ -3,6 +3,11 @@ title: Reference
 menuTitle: Reference
 weight: 15
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
 ---
 With the annotation `@Ref` applied on a field the nested object isn't stored as
 a nested object in the document. The `_id` field of the nested object is stored

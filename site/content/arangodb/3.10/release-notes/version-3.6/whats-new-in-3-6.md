@@ -452,7 +452,7 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
 ### Analyzers
 
 - Added UTF-8 support and ability to mark beginning/end of the sequence to
-  the [`ngram` Analyzer type](../../index-and-search/analyzers.md#ngram).
+  the [`ngram` Analyzer type](../../indexes-and-search/analyzers.md#ngram).
 
   The following optional properties can be provided for an `ngram` Analyzer
   definition:
@@ -466,7 +466,7 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
   - `streamType` : `"binary"|"utf8"`, default: "binary"\
     type of the input stream (support for UTF-8 is new)
 
-- Added _edge n-gram_ support to the [`text` Analyzer type](../../index-and-search/analyzers.md#text).
+- Added _edge n-gram_ support to the [`text` Analyzer type](../../indexes-and-search/analyzers.md#text).
   The input gets tokenized as usual, but then _n_-grams are generated from each
   token. UTF-8 encoding is assumed (whereas the `ngram` Analyzer has a
   configurable stream type and defaults to binary).

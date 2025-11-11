@@ -14,7 +14,7 @@ The official ArangoDB low-level JavaScript client.
 
 {{< info >}}
 If you are looking for the ArangoDB JavaScript API in
-[Foxx](https://www.arangodb.com/community-server/foxx/) or the `arangosh`
+Foxx or the `arangosh`
 interactive shell, please refer to the documentation about the
 [`@arangodb` module](../javascript-api/@arangodb/_index.md) instead.
 

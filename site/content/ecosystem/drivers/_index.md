@@ -5,6 +5,11 @@ weight: 10
 description: >-
   ArangoDB drivers allow you to connect ArangoDB to your applications and manage
   the database system via a language-specific interface
+aliases:
+  - ../arangodb/3.12/develop/drivers
+  - ../arangodb/stable/develop/drivers
+  - ../arangodb/4.0/develop/drivers
+  - ../arangodb/devel/develop/drivers
 ---
 Database drivers, also called connectors, adapters, or client libraries, let you
 access and manage database systems. ArangoDB drivers are interfaces between

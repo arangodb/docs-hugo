@@ -4,6 +4,32 @@ menuTitle: Deprecated and removed features
 weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
+aliases:
+  - ../components/aranodb-server/ldap # 3.11 -> 3.12
+  - ../data-science/pregel # 3.11 -> 3.12
+  - ../data-science/pregel/algorithms # 3.11 -> 3.12
+  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../develop/http-api/batch-requests # 3.12 -> 4.0
+  - ../deploy/active-failover # 3.11 -> 3.12
+  - ../deploy/active-failover/administration # 3.11 -> 3.12
+  - ../deploy/active-failover/manual-start # 3.11 -> 3.12
+  - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.12
+  - ../deploy/arangosync # 3.11 -> 3.12
+  - ../deploy/arangosync/administration # 3.11 -> 3.12
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
+  - ../deploy/arangosync/security # 3.11 -> 3.12
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../operations/installation/macos # 3.11 -> 3.12
+  - ../operations/installation/windows # 3.11 -> 3.12
+  - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
+  - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
+  - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already

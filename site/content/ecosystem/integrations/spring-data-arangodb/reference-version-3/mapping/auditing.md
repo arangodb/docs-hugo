@@ -3,6 +3,11 @@ title: Auditing
 menuTitle: Auditing
 weight: 40
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

@@ -3,6 +3,11 @@ title: ArangoDB Go driver
 menuTitle: Go driver
 weight: 15
 description: ''
+aliases:
+  - ../../arangodb/3.12/develop/drivers/go
+  - ../../arangodb/stable/develop/drivers/go
+  - ../../arangodb/4.0/develop/drivers/go
+  - ../../arangodb/devel/develop/drivers/go
 ---
 The official Go driver in version 2 is the recommended client for interacting
 with ArangoDB using the Go programming language.

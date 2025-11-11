@@ -5,6 +5,11 @@ weight: 5
 description: >-
   Arango's GraphRAG solution combines graph-based retrieval-augmented generation
   with Large Language Models (LLMs) for turbocharged AI solutions
+aliases:
+  - ../arangodb/3.12/data-science/llm-knowledge-graphs # 3.10, 3.11
+  - ../arangodb/stable/data-science/llm-knowledge-graphs # 3.10, 3.11
+  - ../arangodb/4.0/data-science/llm-knowledge-graphs # 3.10, 3.11
+  - ../arangodb/devel/data-science/llm-knowledge-graphs # 3.10, 3.11
 ---
 {{< tip >}}
 The Arango AI Data Platform is available as a pre-release. To get

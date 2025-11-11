@@ -28,7 +28,7 @@ or by using the ArangoDB Starter tool.
 [Cluster deployments](cluster/_index.md) are designed for large scale
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
-technology runs on premises, on Kubernetes, and in the cloud on
+technology runs on premises, on Kubernetes, and in the cloud on the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - Arango's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,

@@ -5,6 +5,11 @@ weight: 10
 description: >-
   With `ArangoTemplate`, Spring Data ArangoDB offers a central support for
   interactions with the database over a rich feature set
+aliases:
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/template
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/template
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/template
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/template
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

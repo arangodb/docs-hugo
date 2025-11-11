@@ -5,7 +5,10 @@ weight: 10
 description: >-
   Boost your machine learning models with graph data using ArangoDB's advanced GraphML capabilities
 aliases:
-  - arangographml
+  - ../arangodb/3.12/data-science/arangographml # 3.10, 3.11
+  - ../arangodb/stable/data-science/arangographml # 3.10, 3.11
+  - ../arangodb/4.0/data-science/arangographml # 3.10, 3.11
+  - ../arangodb/devel/data-science/arangographml # 3.10, 3.11
 ---
 {{< tip >}}
 The Arango AI Data Platform is available as a pre-release. To get

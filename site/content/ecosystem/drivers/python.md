@@ -5,6 +5,11 @@ weight: 30
 description: >-
   Python-Arango is the official ArangoDB driver that provides Python
   applications with the complete range of features exposed by the server API
+aliases:
+  - ../../arangodb/3.12/develop/drivers/python
+  - ../../arangodb/stable/develop/drivers/python
+  - ../../arangodb/4.0/develop/drivers/python
+  - ../../arangodb/devel/develop/drivers/python
 ---
 The Python-Arango driver is the recommended driver for using ArangoDB as the
 database backend from Python. It is maintained by ArangoDB and the community.

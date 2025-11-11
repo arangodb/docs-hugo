@@ -28,7 +28,7 @@ word stemming, remove user-defined stop-words, split by a delimiting
 character only, perform case conversion and/or removal of diacritic
 characters against the full input without tokenization and more.
 
-See [Analyzers](../../index-and-search/analyzers.md) for all available options.
+See [Analyzers](../../indexes-and-search/analyzers.md) for all available options.
 
 ### Sorted Index
 
@@ -99,7 +99,7 @@ Note that the `primarySort` option is immutable: it cannot be changed after
 View creation. It is therefore not possible to configure it through the Web UI.
 The View needs to be created via the HTTP or JavaScript API (arangosh) to set it.
 
-See [Primary Sort Order](../../index-and-search/arangosearch/performance.md#primary-sort-order)
+See [Primary Sort Order](../../indexes-and-search/arangosearch/performance.md#primary-sort-order)
 of ArangoSearch Views.
 
 ### AQL Integration
@@ -155,7 +155,7 @@ cases. Using `PRUNE`, the traverser will not follow any more edges on the
 current path if the pruning condition is met, but will emit the traversal
 variables for whatever stopped it.
 
-See: [Graph Traversal Pruning](../../aql/graphs/traversals.md#pruning)
+See: [Graph Traversal Pruning](../../aql/graph-queries/traversals.md#pruning)
 
 ### SORT-LIMIT optimization
 
@@ -231,7 +231,7 @@ Also see: [AQL Numeric Literals](../../aql/fundamentals/data-types.md#numeric-li
 AQL now allows to perform k Shortest Paths queries, that is, query a number of
 paths of increasing length from a start vertex to a target vertex.
 
-See: [AQL k Shortest Paths](../../aql/graphs/k-shortest-paths.md)
+See: [AQL k Shortest Paths](../../aql/graph-queries/k-shortest-paths.md)
 
 ## SmartJoins
 
@@ -363,7 +363,7 @@ Please note that background index creation is useful only in combination with th
 storage engine. With the MMFiles storage engine, creating an index will always block any
 other operations on the collection.
 
-Also see: [Creating Indexes in Background](../../index-and-search/indexing/basics.md#creating-indexes-in-background)
+Also see: [Creating Indexes in Background](../../indexes-and-search/indexing/basics.md#creating-indexes-in-background)
 
 ## TTL (time-to-live) Indexes
 
@@ -385,7 +385,7 @@ always numerical version of the index attribute value even if it was originally 
 as a datestring. As a result TTL indexes will likely not be used for filtering and sort 
 operations in user-land AQL queries.
 
-Also see: [TTL Indexes](../../index-and-search/indexing/working-with-indexes/ttl-indexes.md)
+Also see: [TTL Indexes](../../indexes-and-search/indexing/working-with-indexes/ttl-indexes.md)
 
 ## Collections
 

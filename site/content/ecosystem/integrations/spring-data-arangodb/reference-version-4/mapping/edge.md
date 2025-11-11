@@ -3,6 +3,11 @@ title: Edge
 menuTitle: Edge
 weight: 10
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/edge
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/edge
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/edge
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/edge
 ---
 ## Annotation @Edge
 

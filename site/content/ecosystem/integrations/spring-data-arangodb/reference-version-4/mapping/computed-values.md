@@ -4,6 +4,11 @@ menuTitle: Computed Values
 weight: 27
 description: ''
 archetype: default
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/computed-values
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/computed-values
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/computed-values
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/computed-values
 ---
 Spring Data ArangoDB provides annotations to allow mapping computed values to
 entity properties and to include computed values data definitions during

@@ -1048,8 +1048,8 @@ supported View type.
 
 `properties` is an optional object containing View configuration specific
 to each View-type.
-- [`arangosearch` View definition](../../../index-and-search/arangosearch/arangosearch-views-reference.md#view-definitionmodification)
-- [`search-alias` View definition](../../../index-and-search/arangosearch/search-alias-views-reference.md#view-definition)
+- [`arangosearch` View definition](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-definitionmodification)
+- [`search-alias` View definition](../../../indexes-and-search/arangosearch/search-alias-views-reference.md#view-definition)
 
 **Examples**
 
@@ -1193,13 +1193,13 @@ See [`db._profileQuery()`](../../../aql/execution-and-performance/query-profilin
 
 Fetches an index by identifier.
 
-See [`db._index()`](../../../index-and-search/indexing/working-with-indexes/_index.md#fetching-an-index-by-identifier).
+See [`db._index()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#fetching-an-index-by-identifier).
 
 ### `db._dropIndex(index)`
 
 Drops an index by identifier.
 
-See [`db._dropIndex()`](../../../index-and-search/indexing/working-with-indexes/_index.md#dropping-an-index-via-a-database-object).
+See [`db._dropIndex()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#dropping-an-index-via-a-database-object).
 
 ## Transactions
 

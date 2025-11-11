@@ -5,6 +5,11 @@ weight: 20
 description: >-
   The features and conventions for mapping Java objects to documents and how to
   override those conventions with annotation based mapping metadata
+aliases:
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

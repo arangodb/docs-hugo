@@ -14,8 +14,8 @@ The server process serves the various client connections to the server via the
 TCP/HTTP protocol. It also provides a [web interface](../web-interface/_index.md).
 
 _arangod_ can run in different modes for a variety of setups like single server
-and clusters. It differs between the [Community Edition](../../about/features/community-edition.md)
-and [Enterprise Edition](../../about/features/enterprise-edition.md).
+and clusters. It differs between the [Community Edition](../../features/community-edition.md)
+and [Enterprise Edition](../../features/enterprise-edition.md).
 
 See [Administration](../../operations/administration/_index.md) for server configuration
 and [Deploy](../../deploy/_index.md) for operation mode details.

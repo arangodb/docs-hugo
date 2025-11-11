@@ -3,6 +3,11 @@ title: Named queries
 menuTitle: Named queries
 weight: 15
 description: ''
+aliases:
+  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/named-queries
+  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/named-queries
+  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/named-queries
+  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/named-queries
 ---
 An alternative to using the `@Query` annotation on methods is specifying them in
 a separate `.properties` file. The default path for the file is

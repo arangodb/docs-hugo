@@ -3,6 +3,11 @@ title: Query methods
 menuTitle: Query methods
 weight: 10
 description: ''
+aliases:
+  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
+  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
+  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
+  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods
 ---
 Queries using [ArangoDB Query Language (AQL)](../../../../../../arangodb/3.12/aql/_index.md)
 can be supplied with the `@Query` annotation on methods.

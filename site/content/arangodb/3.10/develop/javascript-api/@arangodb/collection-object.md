@@ -467,13 +467,13 @@ any need to unload a collection with the RocksDB storage engine.
 
 Creates an index if it doesn't exist already.
 
-See [`collection.ensureIndex()`](../../../index-and-search/indexing/working-with-indexes/_index.md#creating-an-index).
+See [`collection.ensureIndex()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#creating-an-index).
 
 ### `collection.indexes([withStats [, withHidden]])`
 
 Lists all indexes of the collection.
 
-See [`collection.indexes()`](../../../index-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
+See [`collection.indexes()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
 
 ### `collection.getIndexes([withStats [, withHidden]])`
 
@@ -483,13 +483,13 @@ Same as [`collection.indexes([withStats [, withHidden]])`](#collectionindexeswit
 
 Gets an index by identifier.
 
-See [`collection.index()`](../../../index-and-search/indexing/working-with-indexes/_index.md#index-identifiers).
+See [`collection.index()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#index-identifiers).
 
 ### `collection.dropIndex(index)`
 
 Drops an index by identifier.
 
-See [`collection.dropIndex()`](../../../index-and-search/indexing/working-with-indexes/_index.md#dropping-an-index-via-a-collection-object).
+See [`collection.dropIndex()`](../../../indexes-and-search/indexing/working-with-indexes/_index.md#dropping-an-index-via-a-collection-object).
 
 ## Documents
 

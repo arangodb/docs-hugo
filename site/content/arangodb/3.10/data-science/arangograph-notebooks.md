@@ -8,7 +8,7 @@ description: >-
 {{< tip >}}
 AMP Notebooks don't include the ArangoGraphML services.
 To enable the ArangoGraphML services, 
-[get in touch](https://arango.ai/contact/)
+[get in touch](https://arango.ai/contact-us/)
 with the Arango team.
 {{< /tip >}}
 

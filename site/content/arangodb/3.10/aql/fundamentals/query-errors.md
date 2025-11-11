@@ -41,5 +41,5 @@ Some examples of runtime errors:
   array, but if the attribute doesn't exist, then it has a value of `null` which
   cannot be looped over.
 
-See the [Error codes and meanings](../../develop/error-codes-and-meanings.md)
+See the [Error codes and meanings](../../develop/error-codes.md)
 for a complete list of ArangoDB errors.

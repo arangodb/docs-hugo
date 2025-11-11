@@ -725,8 +725,8 @@ surrounding length check. The following table compares both variants:
 {.fixed}
 
 The question mark operator can be used for nested search (Enterprise Edition only):
-- [Nested search with ArangoSearch](../index-and-search/arangosearch/nested-search.md) using Views
-- Nested search using [Inverted indexes](../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
+- [Nested search with ArangoSearch](../indexes-and-search/arangosearch/nested-search.md) using Views
+- Nested search using [Inverted indexes](../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
 
 ## Object operators
 

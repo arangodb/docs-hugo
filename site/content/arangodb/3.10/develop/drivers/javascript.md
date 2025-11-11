@@ -1,15 +1,15 @@
 ---
-title: ArangoDB Node.js driver
-menuTitle: Node.js driver
+title: ArangoDB JavaScript driver
+menuTitle: JavaScript driver
 weight: 25
 description: >-
-  ArangoJS is the JavaScript driver to access ArangoDB from outside the
+  arangojs is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
 ---
 The official ArangoDB low-level JavaScript client.
 
 **Note:** if you are looking for the ArangoDB JavaScript API in
-[Foxx](https://www.arangodb.com/community-server/foxx/) (or the `arangosh` interactive shell) please
+Foxx (or the `arangosh` interactive shell) please
 refer to the documentation about the
 [`@arangodb` module](../foxx-microservices/reference/related-modules/_index.md#the-arangodb-module)
 instead; specifically the `db` object exported by the `@arangodb` module. The
@@ -210,7 +210,7 @@ injection attacks.
 ## Error responses
 
 If arangojs encounters an API error, it will throw an _ArangoError_ with an
-[_errorNum_ error code](../error-codes-and-meanings.md)
+[_errorNum_ error code](../error-codes.md)
 as well as a _code_ and _statusCode_ property indicating the intended and
 actual HTTP status code of the response.
 

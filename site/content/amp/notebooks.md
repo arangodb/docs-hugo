@@ -4,6 +4,11 @@ menuTitle: Notebooks
 weight: 25
 description: >-
   How to create and manage colocated Jupyter Notebooks within AMP
+aliases:
+  - ../arangodb/3.12/data-science/arangograph-notebooks # 3.10, 3.11
+  - ../arangodb/stable/data-science/arangograph-notebooks # 3.10, 3.11
+  - ../arangodb/4.0/data-science/arangograph-notebooks # 3.10, 3.11
+  - ../arangodb/devel/data-science/arangograph-notebooks # 3.10, 3.11
 ---
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is

@@ -9,7 +9,7 @@ description: >-
 The RESTful API for managing ArangoSearch Analyzers is accessible via the
 `/_api/analyzer` endpoint.
 
-See the description of [Analyzers](../../index-and-search/analyzers.md) for an
+See the description of [Analyzers](../../indexes-and-search/analyzers.md) for an
 introduction and the available types, properties and features.
 
 ## Create an Analyzer

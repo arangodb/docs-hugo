@@ -4,6 +4,11 @@ menuTitle: Reference version 6
 weight: 10
 description: >-
   The official ArangoDB Java Driver version 6
+aliases:
+  - ../../../arangodb/3.12/develop/drivers/java/reference-version-6
+  - ../../../arangodb/stable/develop/drivers/java/reference-version-6
+  - ../../../arangodb/4.0/develop/drivers/java/reference-version-6
+  - ../../../arangodb/devel/develop/drivers/java/reference-version-6
 ---
 {{< warning >}}
 Version 6 reached End of Life (EOL) and is not actively developed anymore.

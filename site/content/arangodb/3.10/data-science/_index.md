@@ -38,7 +38,7 @@ Graph queries can answer questions like _**Who can introduce me to person X**_?
 
 ![Graph Query](../../../images/graph-query.png)
 
-See [Graphs in AQL](../aql/graphs/_index.md) for the supported graph queries.
+See [Graphs in AQL](../aql/graph-queries/_index.md) for the supported graph queries.
 
 ### Graph Analytics
 
@@ -123,3 +123,19 @@ The ArangoFlix demo uses five different recommendation methods:
 The ArangoFlix website not only offers an example of how the user recommendations might
 look like in real life, but it also provides information on a recommendation method,
 an AQL query, a custom graph visualization for each movie, and more.
+
+## Sample datasets
+
+If you want to try out ArangoDB's data science features, you may use the
+[`arango_datasets` Python package](../../../ecosystem/arango-datasets.md)
+to load sample datasets into a deployment.
+
+## Adapters
+
+ArangoDB adapters provide a convenient way to integrate ArangoDB with popular
+data science tools. By enabling you to use your preferred programming
+languages and libraries, these adapters simplify the data analysis
+process and make it easier to leverage the power of ArangoDB in data science.
+
+To learn more about data science ecosystem, see the available
+[Adapters](../../../ecosystem/adapters/_index.md).

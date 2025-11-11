@@ -3,6 +3,11 @@ title: Edge
 menuTitle: Edge
 weight: 10
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

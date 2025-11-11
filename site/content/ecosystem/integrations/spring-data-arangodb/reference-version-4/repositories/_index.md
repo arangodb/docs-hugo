@@ -5,6 +5,11 @@ weight: 15
 description: >-
   Interact with ArangoDB using the high-level and consistent abstraction
   provided by Spring Data repositories
+aliases:
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
 ---
 Spring Data Commons provides a composable repository infrastructure which
 Spring Data ArangoDB is built on. These allow for interface-based composition of

@@ -16,7 +16,7 @@ such as `PHRASE(doc.text, "foo bar", "text_en")`, for querying Views. You can
 combine ArangoSearch filter and context functions as well as operators like
 `AND` and `OR` to form complex search conditions. Similarly, the
 [`FILTER` operation](../high-level-operations/filter.md) accepts such search expressions
-when using [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md).
+when using [inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md).
 
 Scoring functions allow you to rank matches and to sort results by relevance.
 They are limited to Views.
@@ -27,7 +27,7 @@ They are limited to Views.
 You can use most functions also without an inverted index or a View and the
 `SEARCH` keyword, but then they are not accelerated by an index.
 
-See [Information Retrieval with ArangoSearch](../../index-and-search/arangosearch/_index.md) for an
+See [Information Retrieval with ArangoSearch](../../indexes-and-search/arangosearch/_index.md) for an
 introduction.
 
 ## Context Functions
@@ -59,7 +59,7 @@ not an ArangoSearch function but a regular string function which can be used
 outside of `SEARCH` operations.
 
 - **expr** (expression): any valid search expression
-- **analyzer** (string): name of an [Analyzer](../../index-and-search/analyzers.md).
+- **analyzer** (string): name of an [Analyzer](../../indexes-and-search/analyzers.md).
 - returns **retVal** (any): the expression result that it wraps
 
 #### Example: Using a custom Analyzer
@@ -266,7 +266,7 @@ by the specified `analyzer`.
 
 - **path** (attribute path expression): the attribute to test in the document
 - **type** (string): string literal `"analyzer"`
-- **analyzer** (string, _optional_): name of an [Analyzer](../../index-and-search/analyzers.md).
+- **analyzer** (string, _optional_): name of an [Analyzer](../../indexes-and-search/analyzers.md).
   Uses the Analyzer of a wrapping `ANALYZER()` call if not specified or
   defaults to `"identity"`
 - returns nothing: the function evaluates to a boolean, but this value cannot be
@@ -285,8 +285,8 @@ FOR doc IN viewName
 `EXISTS(path, "nested")`
 
 Match documents where the attribute at `path` is present _and_ is indexed
-as a nested field for [nested search with Views](../../index-and-search/arangosearch/nested-search.md)
-or [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition).
+as a nested field for [nested search with Views](../../indexes-and-search/arangosearch/nested-search.md)
+or [inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition).
 
 - **path** (attribute path expression): the attribute to test in the document
 - **type** (string): string literal `"nested"`
@@ -355,7 +355,7 @@ and `false`), but the data type must be the same for both.
 The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
-[`collation` Analyzer](../../index-and-search/analyzers.md#collation)) nor the server language
+[`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
 Also see [Known Issues](../../release-notes/version-3.10/known-issues-in-3-10.md#arangosearch).
 {{< /warning >}}
@@ -461,7 +461,7 @@ To only compute the MinHash signatures, see the
 - **target** (string): the string to hash with the specified Analyzer and to
   compare against the stored attribute
 - **threshold** (number, _optional_): a value between `0.0` and `1.0`.
-- **analyzer** (string): the name of a [`minhash` Analyzer](../../index-and-search/analyzers.md#minhash).
+- **analyzer** (string): the name of a [`minhash` Analyzer](../../indexes-and-search/analyzers.md#minhash).
 - returns **fulfilled** (bool): `true` if the approximate Jaccard similarity
   is greater than or equal to the specified threshold, `false` otherwise
 
@@ -511,7 +511,7 @@ for calculating _n_-gram similarity that cannot be accelerated by a View index.
 - **target** (string): the string to compare against the stored attribute
 - **threshold** (number, _optional_): a value between `0.0` and `1.0`. Defaults
   to `0.7` if none is specified.
-- **analyzer** (string): the name of an [Analyzer](../../index-and-search/analyzers.md).
+- **analyzer** (string): the name of an [Analyzer](../../indexes-and-search/analyzers.md).
 - returns **fulfilled** (bool): `true` if the evaluated _n_-gram similarity value
   is greater than or equal to the specified threshold, `false` otherwise
 
@@ -592,7 +592,7 @@ array as second argument.
   to string and array tokens, but not for object tokens.
 - **skipTokens** (number, _optional_): amount of tokens to treat
   as wildcards
-- **analyzer** (string, _optional_): name of an [Analyzer](../../index-and-search/analyzers.md).
+- **analyzer** (string, _optional_): name of an [Analyzer](../../indexes-and-search/analyzers.md).
   Uses the Analyzer of a wrapping `ANALYZER()` call if not specified or
   defaults to `"identity"`
 - returns nothing: the function evaluates to a boolean, but this value cannot be
@@ -783,7 +783,7 @@ to match the document.
 The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
-[`collation` Analyzer](../../index-and-search/analyzers.md#collation)) nor the server language
+[`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
 Also see [Known Issues](../../release-notes/version-3.10/known-issues-in-3-10.md#arangosearch).
 {{< /warning >}}
@@ -1368,4 +1368,4 @@ db._query(`
 ~analyzers.remove(analyzer.name);
 ```
 
-For full examples, see [Search Highlighting](../../index-and-search/arangosearch/search-highlighting.md).
+For full examples, see [Search Highlighting](../../indexes-and-search/arangosearch/search-highlighting.md).

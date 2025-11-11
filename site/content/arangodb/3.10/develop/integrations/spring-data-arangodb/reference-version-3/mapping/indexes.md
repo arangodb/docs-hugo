@@ -5,7 +5,7 @@ weight: 25
 description: ''
 ---
 Indexes can be ensured using the following annotations. For reference see the
-[indexing](../../../../../index-and-search/indexing/_index.md) documentation
+[indexing](../../../../../indexes-and-search/indexing/_index.md) documentation
 and specific aspects that apply to
 [indexes on shards](../../../../../deploy/architecture/data-sharding.md#indexes-on-shards).
 

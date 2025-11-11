@@ -8,6 +8,11 @@ description: >-
   with GraphML, and provides enterprise-grade tools for analytics,
   natural language querying, and AI-powered insights, all through an intuitive
   web interface
+aliases:
+  - arangodb/3.12/data-science # 3.10, 3.11
+  - arangodb/stable/data-science # 3.10, 3.11
+  - arangodb/4.0/data-science # 3.10, 3.11
+  - arangodb/devel/data-science # 3.10, 3.11
 ---
 {{< tip >}}
 The Arango AI Data Platform is available as a pre-release. To get

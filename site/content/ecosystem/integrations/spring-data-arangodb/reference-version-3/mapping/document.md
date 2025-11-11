@@ -3,6 +3,11 @@ title: Document
 menuTitle: Document
 weight: 5
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

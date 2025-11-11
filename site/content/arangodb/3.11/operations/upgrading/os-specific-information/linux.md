@@ -4,6 +4,8 @@ menuTitle: Linux
 weight: 5
 description: >-
   How to upgrade a single server installation installed using package managers
+aliases:
+  - ../manual-deployments/linux # 3.11 -> 3.12
 ---
 By installing the new ArangoDB package the standalone instance is automatically
 upgraded. In addition to the ArangoDB daemon (_arangod_), also the ArangoDB

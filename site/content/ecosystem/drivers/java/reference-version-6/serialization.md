@@ -4,6 +4,11 @@ menuTitle: Serialization
 weight: 10
 description: >-
   Serialization (version 6)
+aliases:
+  - ../../../../arangodb/3.12/develop/drivers/java/reference-version-6/serialization
+  - ../../../../arangodb/stable/develop/drivers/java/reference-version-6/serialization
+  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-6/serialization
+  - ../../../../arangodb/devel/develop/drivers/java/reference-version-6/serialization
 ---
 {{< warning >}}
 Version 6 reached End of Life (EOL) and is not actively developed anymore.

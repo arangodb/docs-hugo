@@ -4,6 +4,8 @@ menuTitle: Large Language Models and Knowledge Graphs
 weight: 133
 description: >-
   Integrate large language models (LLMs) with knowledge graphs using ArangoDB
+aliases:
+  - ../../../ai-suite/graphrag
 ---
 Large language models (LLMs) and knowledge graphs are two prominent and
 contrasting concepts, each possessing unique characteristics and functionalities

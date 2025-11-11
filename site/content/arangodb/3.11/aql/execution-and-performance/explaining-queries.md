@@ -196,7 +196,7 @@ directly, focusing on the most important information.
 ## Gathering debug information about a query
 
 If an explain provides no suitable insight into why a query does not perform as
-expected, it may be reported to the ArangoDB support. In order to make this as easy
+expected, it may be reported to the Arango support. In order to make this as easy
 as possible, there is a built-in command in ArangoShell for packaging the query, its
 bind parameters, and all data required to execute the query elsewhere.
 

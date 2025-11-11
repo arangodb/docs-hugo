@@ -3,6 +3,11 @@ title: Spring Data ArangoDB - Reference (version 3)
 menuTitle: Reference version 3
 weight: 6
 description: ''
+aliases:
+  - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

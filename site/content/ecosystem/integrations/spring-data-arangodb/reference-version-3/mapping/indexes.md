@@ -3,6 +3,11 @@ title: Indexes
 menuTitle: Indexes
 weight: 25
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

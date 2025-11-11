@@ -3,6 +3,11 @@ title: Spring Data ArangoDB - Migration
 menuTitle: Migration
 weight: 10
 description: ''
+aliases:
+  - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/migration
+  - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/migration
+  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/migration
+  - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/migration
 ---
 ## Migrate from Spring Data ArangoDB 3.x to 4.0
 

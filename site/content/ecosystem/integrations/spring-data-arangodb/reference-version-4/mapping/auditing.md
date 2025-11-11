@@ -3,6 +3,11 @@ title: Auditing
 menuTitle: Auditing
 weight: 40
 description: ''
+aliases:
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
 ---
 Spring Data ArangoDB provides basic auditing functionality
 where you can track who made changes on your data and when.
