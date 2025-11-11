@@ -162,7 +162,7 @@ easily connect AMP deployments to your application.
 4. Follow the examples to connect a driver to your deployment. They include
    code examples on how to use certificates in your application.
 
-![ArangoGraph Connecting Drivers](../../images/arangograph-connecting-drivers.png)
+![Arango Managed Platform Connecting Drivers](../../images/amp-connecting-drivers.png)
 
 ## Certificate Rotation
 

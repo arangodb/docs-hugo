@@ -485,8 +485,6 @@ The roles below are described following this pattern:
 4. Select the required permissions.
 5. Click **Create**.
 
-![ArangoGraph New Role](../../images/arangograph-create-role.png)
-
 ### How to view, edit or remove a custom role
 
 1. In the main navigation menu, click **Access Control**.

@@ -290,7 +290,7 @@ configuration. To achieve the best possible availability, your client
 application has to handle connection failures by retrying operations if needed.
 {{< /tip >}}
 
-![ArangoGraph Connecting Drivers Example](../../images/arangograph-connecting-drivers-example.png)
+![Arango Managed Platform Connecting Drivers Example](../../images/amp-connecting-drivers-example.png)
 
 ## How to pause a deployment
 

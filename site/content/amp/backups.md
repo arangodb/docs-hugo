@@ -147,16 +147,10 @@ The *root password* for this deployment will be different.
 
 1. Highlight the backup you wish to clone from and hit **Clone backup to new deployment**.
 
-   ![ArangoGraph Clone Deployment From Backup](../images/arangograph-clone-deployment-from-backup.png)
-
 2. Choose whether the clone should be created using the current provider and in
    the same region as the backup or using a different provider, a different region,
    or both.
 
-   ![ArangoGraph Clone Deployment Select Region](../images/arangograph-clone-deployment-select.png) 
-
 3. The view should navigate to the new deployment being bootstrapped.
-
-   ![ArangoGraph Cloned Deployment](../images/arangograph-cloned-deployment.png)
 
 This feature is also available through [oasisctl](oasisctl/_index.md).

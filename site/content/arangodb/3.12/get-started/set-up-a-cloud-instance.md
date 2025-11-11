@@ -10,8 +10,7 @@ description: >-
 For general information about the Arango Managed Platform (AMP), see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
-For guides and reference documentation, see the
-[Arango Managed Platform (AMP) documentation](../../../amp/_index.md).
+For guides and reference documentation, see the [AMP documentation](../../../amp/_index.md).
 
 ## Prerequisites
 
@@ -59,7 +58,7 @@ used for multiple accounts.
    name, and then press the __Save__ button.
 9. An organization with a default project is now prepared for you.
    Once that is completed, you are redirected to the
-   [ArangoGraph dashboard](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+   [AMP dashboard](https://dashboard.arangodb.cloud).
 
 ## Get a Deployment up and Running
 
@@ -75,8 +74,6 @@ used for multiple accounts.
    It takes a couple of minutes before the deployment can be used. The status
    is changed from __Bootstrapping__ to __OK__ eventually and you also
    receive an email when it is ready.
-
-   {{< image src="../../../images/arangograph-deployment-ready-email.png" alt="ArangoGraph Deployment Ready Email" style="max-height: 50vh">}}
 
 3. Click the name of the deployment (or the __Open deployment details__ link in
    the email) to view the deployment details.
