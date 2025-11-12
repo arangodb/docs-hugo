@@ -1,9 +1,9 @@
-# ArangoDB Documentation
+# Arango Documentation
 
-This repository contains the source files of the ArangoDB documentation as
-published on [docs.arangodb.com](https://docs.arangodb.com/).
+This repository contains the source files of the Arango documentation as
+published on [docs.arango.ai](https://docs.arango.ai/).
 
-The ArangoDB documentation is licensed under Apache-2.0.
+The Arango documentation is licensed under Apache-2.0.
 See [LICENSE](LICENSE) for details.
 
 ## Contribute
@@ -370,8 +370,8 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-ArangoDB Platform, the ArangoGraph Insights Platform, or both.
-See [Environment remarks](#environment-remarks) for details.
+AI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
+of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
 version 3.12.5.
@@ -432,13 +432,32 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+#### Icons
+
+If a web interface uses icons, especially as buttons without labels, use
+the `icon` shortcode to inline an SVG file for a visual reference as
+demonstrated below:
+
+```markdown
+Select all nodes ({{< icon "select-all" >}}), then right-click.
+```
+
+Icons are supposed to supplement the text, i.e. not be embedded in sentences.
+They are hidden from screen readers.
+
+To add new icons to the toolchain, save them to `site/content/images/icons/`.
+They are referenced by file name (without extension) in the shortcode.
+
+SVG icon files should not define the attributes `width`, `height`, `aria-hidden`,
+and `focusable` on the `<svg>` tag.
+
 #### Keyboard shortcuts
 
 To document hotkeys and key combinations to press in a terminal or graphical
 user interface, use the `kbd` shortcode:
 
 ```markdown
-Hit {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
+Press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}} to run the query.
 ```
 
 #### Cards
@@ -529,8 +548,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../drivers/js/_index.md` instead of `/3.12/drivers/js/_index.md` or
-  `https://docs.arangodb.com/3.12/drivers/js/`.
+  `../../data-platform/_index.md` instead of `/data-platform/_index.md` or
+  `https://docs.arango.ai/data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -573,8 +592,10 @@ The following shortcodes also exist but are rarely used:
   - _DB-Server_, not ~~dbserver~~, ~~db-server~~, ~~DBserver~~ (unless it is a code value)
   - _Coordinator_ (uppercase C)
   - _Agent_, _Agency_ (uppercase A)
-  - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
-    ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
+    ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
+  - _Arango Data Platform_, _Arango AI Data Platform_, and _AI Suite_, but not
+    ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~, ~~AI Services~~, or ~~GenAI Suite~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
@@ -589,7 +610,7 @@ For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
 
 ```markdown
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud)
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud)
 ```
 
 For internal links, use relative paths to the Markdown files. Always link to
@@ -677,25 +698,24 @@ deprecated features in the same manner with `Deprecated in: ...`.
 ### Environment remarks
 
 Pages and sections about features that are only available in certain environments
-such as the ArangoDB Platform, the ArangoGraph Insight Platform, or the
-ArangoDB Shell should indicate where they are available using the `tag` shortcode.
+such as in ArangoDB Shell should indicate where they are available using the
+`tag` shortcode.
 
-In the unified Platform and ArangoGraph but not in the Core:
+Features exclusive to the Data Platform, AI Data Platform,
+Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
+because they are in dedicated parts of the documentation. However, if there are
+subsections with different procedures, each can be tagged accordingly.
+
+In the AI Data Platform only:
 
 ```markdown
-{{< tag "ArangoDB Platform" "ArangoGraph" >}}
+{{< tag "AI Data Platform" >}}
 ```
 
-In the unified Platform only:
+In the Arango Managed Platform (AMP) only:
 
 ```markdown
-{{< tag "ArangoDB Platform" >}}
-```
-
-In ArangoGraph only:
-
-```markdown
-{{< tag "ArangoGraph" >}}
+{{< tag "AMP" >}}
 ```
 
 In the ArangoDB Shell but not the server-side JavaScript API:
@@ -722,7 +742,16 @@ Enterprise Edition features should indicate that the Enterprise Edition is
 required using a tag. Use the following include in the general case:
 
 ```markdown
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "AMP" >}}
+```
+
+### Experimental remark
+
+Features that are available for testing but may still change or get removed and
+should thus not be used in production can be tagged as follows:
+
+```markdown
+{{< tag "Experimental" >}}
 ```
 
 ### Add lead paragraphs
@@ -760,8 +789,8 @@ Start off by finding a file name. It should be:
 
 Note that the file name is independent of what will show in the navigation or
 what will be used as headline for that page. The file name will be used as
-part of the final URL, however. For example, `3.12/aql/examples.md` will become
-`http://docs.arangodb.com/3.12/aql/examples/`.
+part of the final URL, however. For example, `arangodb/3.12/aql/examples.md`
+will become `http://docs.arango.ai/arangodb/3.12/aql/examples/`.
 
 Create a new file with the file name and a `.md` file extension. Open the file
 in a text editor (Visual Studio Code is recommended). Add the following
@@ -796,8 +825,9 @@ Otherwise, the following steps are necessary for moving content:
 
 The URL of a page is derived from the file name and the parent folders, with
 special handling for sections (folders with a `_index.md` file).
-For example, `3.12/aql/operators.md` becomes the URL path `/3.12/aql/operators/`,
-and `3.12/aql/functions/_index.md` becomes `/3.12/aql/functions/`.
+For example, `arangodb/3.12/aql/operators.md` becomes the URL path
+`/arangodb/3.12/aql/operators/`, and `arangodb/3.12/aql/functions/_index.md`
+becomes `/arangodb/3.12/aql/functions/`.
 
 If you rename a file, from `section/old-name.md` to `section/new-name.md` for
 instance, make sure to add a redirect for the old URL by adding the following to
@@ -869,7 +899,7 @@ in the ToC, whereas `<h4>`, `<h5>`, and `<h6>` will be ignored.
 
 ### Deprecate a version
 
-When an ArangoDB version reaches [End-of-Life](https://www.arangodb.com/subscriptions/end-of-life-notice/),
+When an ArangoDB version reaches [End-of-Life](https://arango.ai/arangodb-product-support-end-of-life-announcements/),
 its documentation needs to be marked as such. For the respective version, set
 the `deprecated` attribute to `true` in the `site/data/versions.yaml` file:
 
@@ -1236,7 +1266,7 @@ db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_
 ```
 
 This will make the example generation continue despite the error. See
-[Error codes and meanings](https://docs.arangodb.com/stable/develop/error-codes-and-meanings/)
+[Error codes and meanings](https://docs.arango.ai/arangodb/stable/develop/error-codes/)
 for a list of all error codes and their names. If a unexpected error is raised,
 then the example generation will abort with an error.
 

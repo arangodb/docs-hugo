@@ -3,18 +3,18 @@
     <!--LOGO-->
     <div class="header-block-left">
     <div class="mobile-menu-toggle">
-      <button class="sidebar-toggle-navigation" onclick="showSidebarHandler()">
+      <button class="sidebar-toggle-navigation">
         <svg width="1.33em" height="1.33em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
     </div>
     <div class="version-logo-container">
       <div class="logo-container hasinfocard_img arangodb-logo-large">
-        <div class="logo "><a href="https://www.arangodb.com/"><img src="/images/logo_main.png" alt="ArangoDB" title=""></a></div>
+        <div class="logo "><a href="https://arango.ai/"><img src="/images/logo_main.png" alt="ArangoDB" title=""></a></div>
       </div>
       <!-- END LOGO-->
       <div class="arangodb-logo-small">
-        <a href="https://arangodb.com/">
-          <img alt="ArangoDB Logo" src="/images/apple-touch-icon.png">
+        <a href="https://arango.ai/">
+          <img alt="Arango Logo" src="/images/apple-touch-icon.png">
         </a>
       </div>   
       
@@ -27,7 +27,7 @@
       <div class="docsearch">
       </div>
       {{ partialCached "inkeep-widget.html" . -}}
-      {{ partialCached "version-selector.html" . }}
+      {{/* partialCached "version-selector.html" . */}}
     </div>
 
   </header>

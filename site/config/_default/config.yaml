@@ -1,6 +1,6 @@
-baseURL: "https://docs.arangodb.com"
+baseURL: "https://docs.arango.ai"
 languageCode: "en-us"
-title: "ArangoDB Documentation"
+title: "Arango Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
 
@@ -21,12 +21,18 @@ module:
 
 # Version folders can be ignored temporarily for faster local builds
 # of a single version (here: 3.12)
-#   - excludeFiles:
-#       - 3.10/*
-#       - 3.11/*
-#       - 3.13/*
-#     source: content
-#     target: content
+    - source: content
+      target: content
+      excludeFiles:
+#       - arangodb/3.10/*
+#       - arangodb/3.11/*
+#       - arangodb/4.0/*
+
+    - source: content/arangodb/3.12
+      target: content/arangodb/stable
+
+    - source: content/arangodb/4.0
+      target: content/arangodb/devel
 
 markup:
   highlight:

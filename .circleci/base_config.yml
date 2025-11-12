@@ -309,7 +309,7 @@ commands:
               fi
 
               cd /home/circleci/project/docs-hugo/site
-              git config user.email "simran@arangodb.com"
+              git config user.email "simran@arango.ai"
               git config user.name "CircleCI Job"
               git add data/ content/
               git commit --allow-empty -m "[skip ci] Automatic commit of generated files from CircleCI"
@@ -602,7 +602,7 @@ workflows:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
     jobs:
       - plain-build:
-          url: https://docs.arangodb.com
+          url: https://docs.arango.ai
       - deploy:
           deploy-args: "--prod"
           requires:
