@@ -3,10 +3,12 @@
 
 {{- if $deprecated }}
   {{- $href := "/arangodb/stable/" }}
-  {{- $nonDeprecatedPath := .Page.File.Path | replaceRE (printf "^arangodb/%s/" $shortVersion) "/arangodb/stable/" }}
-  {{- $stablePage := .Page.GetPage $nonDeprecatedPath }}
-  {{- if $stablePage }}
-    {{- $href = $stablePage.RelPermalink }}
+  {{- $nonDeprecatedPath := .Page.Path | replaceRE (printf "^/arangodb/%s" $shortVersion) "/arangodb/stable" }}
+  {{- $pathMap := partialCached "page-alias-map.html" . }}
+  {{- with index $pathMap $nonDeprecatedPath }}
+    {{- $href = . }}
+  {{- else }}
+    {{- warnf "No corresponding stable version found for deprecated page: %s" $nonDeprecatedPath }}
   {{- end }}
   <div class="box notices cstyle warning">
     <div class="box-content-container">
