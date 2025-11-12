@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Create IP Allowlist
+title: Create IP Allowlist with `oasisctl`
 menuTitle: Create IP Allowlist
 weight: 10
 ---
-## oasisctl create ipallowlist
 
 Create a new IP allowlist
 
@@ -19,14 +18,14 @@ oasisctl create ipallowlist [flags]
       --name string                 Name of the IP allowlist
   -o, --organization-id string      Identifier of the organization to create the IP allowlist in
   -p, --project-id string           Identifier of the project to create the IP allowlist in
-      --remote-inspection-allowed   If set, remote connectivity checks by the Oasis platform are allowed
+      --remote-inspection-allowed   If set, remote connectivity checks by the Arango Managed Platform are allowed
 ```
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

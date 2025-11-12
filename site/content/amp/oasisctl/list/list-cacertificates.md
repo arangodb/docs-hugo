@@ -1,9 +1,8 @@
 ---
-title: Oasisctl List CA Certificates
+title: List CA Certificates with `oasisctl`
 menuTitle: List CA Certificates
 weight: 11
 ---
-## oasisctl list cacertificates
 
 List all CA certificates of the given project
 
@@ -20,9 +19,9 @@ oasisctl list cacertificates [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

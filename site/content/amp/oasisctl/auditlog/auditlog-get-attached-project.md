@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Audit Log Get Attached Project
+title: Audit Log Get Attached Project with `oasisctl`
 menuTitle: Audit Log Get Attached Project
 weight: 5
 ---
-## oasisctl auditlog get attached project
 
 Get an attached log to a project
 
@@ -20,9 +19,9 @@ oasisctl auditlog get attached project [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

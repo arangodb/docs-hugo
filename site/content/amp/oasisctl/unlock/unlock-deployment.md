@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Unlock Deployment
+title: Unlock Deployment with `oasisctl`
 menuTitle: Unlock Deployment
 weight: 2
 ---
-## oasisctl unlock deployment
 
 Unlock a deployment, so it can be deleted
 
@@ -21,9 +20,9 @@ oasisctl unlock deployment [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

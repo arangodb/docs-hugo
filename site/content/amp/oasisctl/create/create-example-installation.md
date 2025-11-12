@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Create Example Installation
+title: Create Example Installation with `oasisctl`
 menuTitle: Create Example Installation
 weight: 8
 ---
-## oasisctl create example installation
 
 Create a new example dataset installation
 
@@ -22,9 +21,9 @@ oasisctl create example installation [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

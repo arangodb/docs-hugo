@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Audit Log
+title: Audit Log with `oasisctl`
 menuTitle: Audit Log
 weight: 4
 ---
-## oasisctl auditlog
 
 AuditLog resources
 
@@ -18,13 +17,13 @@ oasisctl auditlog [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
-* [oasisctl](../options.md)	 - ArangoGraph Insights Platform
+* [oasisctl](../options.md)	 - Arango Managed Platform (AMP)
 * [oasisctl auditlog attach](auditlog-attach.md)	 - Attach a project to an audit log
 * [oasisctl auditlog detach](auditlog-detach.md)	 - Detach a project from an auditlog
 * [oasisctl auditlog get](auditlog-get.md)	 - Audit log get resources

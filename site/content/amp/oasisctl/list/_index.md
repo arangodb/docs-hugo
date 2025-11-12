@@ -1,9 +1,8 @@
 ---
-title: Oasisctl List
+title: List with `oasisctl`
 menuTitle: List
 weight: 15
 ---
-## oasisctl list
 
 List resources
 
@@ -18,13 +17,13 @@ oasisctl list [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
-* [oasisctl](../options.md)	 - ArangoGraph Insights Platform
+* [oasisctl](../options.md)	 - Arango Managed Platform (AMP)
 * [oasisctl list apikeys](list-apikeys.md)	 - List all API keys created for the current user
 * [oasisctl list arangodb](list-arangodb.md)	 - List ArangoDB information
 * [oasisctl list auditlog](list-auditlog.md)	 - List resources for auditlogs

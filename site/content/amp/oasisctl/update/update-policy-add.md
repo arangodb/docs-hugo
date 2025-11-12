@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Update Policy Add
+title: Update Policy Add with `oasisctl`
 menuTitle: Update Policy Add
 weight: 18
 ---
-## oasisctl update policy add
 
 Add to a policy
 
@@ -18,9 +17,9 @@ oasisctl update policy add [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

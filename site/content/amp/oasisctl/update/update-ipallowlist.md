@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Update IP Allowlist
+title: Update IP Allowlist with `oasisctl`
 menuTitle: Update IP Allowlist
 weight: 7
 ---
-## oasisctl update ipallowlist
 
 Update an IP allowlist the authenticated user has access to
 
@@ -20,15 +19,15 @@ oasisctl update ipallowlist [flags]
       --name string                 Name of the CA certificate
   -o, --organization-id string      Identifier of the organization
   -p, --project-id string           Identifier of the project
-      --remote-inspection-allowed   If set, remote connectivity checks by the Oasis platform are allowed
+      --remote-inspection-allowed   If set, remote connectivity checks by the Arango Managed Platform are allowed
       --remove-cidr-range strings   List of CIDR ranges to remove from the IP allowlist
 ```
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

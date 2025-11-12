@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Get Server Status
+title: Get Server Status with `oasisctl`
 menuTitle: Get Server Status
 weight: 32
 ---
-## oasisctl get server status
 
 Get the status of servers for a deployment
 
@@ -21,9 +20,9 @@ oasisctl get server status [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
