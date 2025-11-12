@@ -1,8 +1,13 @@
+{{/* Allow DocSearch to access everything */ -}}
+User-agent: Algolia Crawler
+Disallow:
+
+{{ $isProduction := eq .Site.BaseURL "https://docs.arango.ai" -}}
+{{ if $isProduction -}}
 User-agent: *
-{{- if (findRE `^https://docs(-dev)?\.arangodb\.com(?:/|:\d{1,5}/?)?$` .Site.BaseURL 1) }}
 Disallow: /nav.html
-Disallow: /hooks
-{{- else }}
-{{- /* Don't let search engines index deploy previews on Netlify */}}
+{{ else -}}
+{{/* Don't let search engines index deploy previews on Netlify */ -}}
+User-agent: *
 Disallow: /
-{{- end }}
+{{ end -}}
