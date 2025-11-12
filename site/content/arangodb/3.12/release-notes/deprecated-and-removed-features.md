@@ -5,10 +5,12 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 aliases:
+  - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
+  - ../components/arangodb-server/ldap # 3.11 -> 3.12
   - ../data-science/pregel # 3.11 -> 3.12
   - ../data-science/pregel/algorithms # 3.11 -> 3.12
   - ../develop/http-api/pregel # 3.11 -> 3.12
-  - ../develop/http-api/batch-requests # 3.12 -> 4.0
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12
@@ -26,6 +28,11 @@ aliases:
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.12
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
@@ -44,39 +51,38 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
-- **Native Windows and macOS support**:
+- **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
   are not provided anymore. You can use the official
   [Docker images](https://hub.docker.com/_/arangodb/) instead, to run ArangoDB
   in Linux containers.
 
-- **Active Failover deployment mode**:
+- **Active Failover deployment mode**:\
   Running a single server with asynchronous replication to one or more passive
   single servers for automatic failover is no longer supported from v3.12.0 onward.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
 
-- **Datacenter-to-Datacenter Replication (DC2DC)**:
+- **Datacenter-to-Datacenter Replication (DC2DC)**:\
   The Datacenter-to-Datacenter Replication for cluster deployments including the
   _arangosync_ tool is no longer supported from v3.12 onward.
 
-- **LDAP authentication**:
+- **LDAP authentication**:\
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
   no longer available starting with v3.12.0.
 
-- **VelocyStream protocol**:
+- **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
   longer supported. VelocyPack remains as ArangoDB's binary storage format and
   you can continue to use it in transport over the HTTP protocol, as well as use
   JSON over the HTTP protocol.
 
-- **Standalone Agency and Agency HTTP API**:
+- **Standalone Agency and Agency HTTP API**:\
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
   are no longer available starting with v3.12.0. 
 
-- **Little-endian on-disk key format for the RocksDB storage engine**:
-
+- **Little-endian on-disk key format for the RocksDB storage engine**:\
   The little-endian on-disk key format for the RocksDB storage engine is
   deprecated and support is removed in v3.12.0.
 
@@ -86,28 +92,48 @@ detailed information about breaking changes before upgrading.
   See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine-unsupported)
   for details.
 
-- **Pregel**:
-
+- **Pregel**:\
   The distributed iterative graph processing (Pregel) system is no longer supported
   from v3.12 onward. All Pregel graph algorithms, the Pregel JavaScript API and
   HTTP API, and everything else related to Pregel has been removed.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
 
-- **Cloud Migration Tool**:
+- **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.
 
-- **Leader/Follower Deployment Mode**:
+- **Self-compiling**:\
+  The features formerly exclusive to the Enterprise Edition are included in the
+  Community Edition from v3.12.5 onward, but only in the prebuilt packages and
+  official container images. The source code of these features is not public.
+  For instructions to compile the public code, see
+  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md#building)
+  in the `arangodb/arangodb` repository.
+
+- **Fast cluster restore procedure**:\
+  The procedure for speeding up _arangorestore_ in a cluster environment has been
+  removed from the documentation because the tool supports threading more
+  multiple collections (from version 3.3 onward) as well as single collections
+  (from version 3.8 onward using the non-enveloped format). For even faster
+  restoration with zero downtime, you can use _arangobackup_ for
+  [Hot Backups](../operations/backup-and-restore.md/#hot-backups).
+
+- **C# / .NET driver**:\
+  The [arangodb-net-standard](https://github.com/ArangoDB-Community/arangodb-net-standard)
+  driver is not an official ArangoDB driver anymore but may still be maintained
+  by the community.
+
+- **Leader/Follower Deployment Mode**:\
   The Leader/Follower deployment mode is deprecated and already removed from
   documentation. OneShard databases in clusters are a better alternative.
 
-- **Skiplist and hash indexes**:
+- **Skiplist and hash indexes**:\
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
   future version of ArangoDB. Currently, they are an alias for a
   [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
 
-- **Bundled NPM modules**:
+- **Bundled NPM modules**:\
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
   `graphql-sync`, `highlight.js`, `i` (inflect), `iconv-lite`, `joi`,
   `js-yaml`, `lodash`, `minimatch`, `qs`, `semver`, `sinon`, and `timezone`
@@ -115,13 +141,13 @@ detailed information about breaking changes before upgrading.
   If you want to use NPM modules in your Foxx service, please refer to the
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
-- **Batch Requests API**:
+- **Batch Requests API**:\
   The [batch request REST API](../develop/http-api/batch-requests.md) was deprecated
   in v3.8.0 and has been removed in v3.12.3. Instead of using this API, please use the
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
-- **PUT method in Cursor API**:
+- **PUT method in Cursor API**:\
   The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
   [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
@@ -129,11 +155,12 @@ detailed information about breaking changes before upgrading.
   equivalent to the PUT endpoint, but does not violate idempotency requirements
   prescribed by the [HTTP specification](https://tools.ietf.org/html/rfc7231#section-4.2).
 
-- **Fulltext indexes**:
+- **Fulltext indexes**:\
   The fulltext index type is deprecated from version 3.10 onwards.
   It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
-- **Simple Queries**: Idiomatic interface in arangosh to perform trivial queries.
+- **Simple Queries**:\
+  Idiomatic interface in arangosh to perform trivial queries.
   They are superseded by [AQL queries](../aql/_index.md), which can also
   be run in arangosh. AQL is a language on its own and way more powerful than
   *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
@@ -141,34 +168,34 @@ detailed information about breaking changes before upgrading.
   against the database in recent versions, because of better performance and
   reduced maintenance complexity.
 
-- **Accessing collections by ID instead of by name**:
+- **Accessing collections by ID instead of by name**:\
   Accessing collections by their internal ID instead of accessing them by name
   is deprecated and highly discouraged. This functionality may be removed in
   future versions of ArangoDB.
 
-- **Old metrics REST API**:
+- **Old metrics REST API**:\
   The old metrics API under `/_admin/metrics` is deprecated and replaced by
   a new one under `/_admin/metrics/v2` from version 3.8.0 on. This step was
   necessary because the old API did not follow quite a few Prometheus
   guidelines for metrics.
 
-- **Statistics REST API**:
+- **Statistics REST API**:\
   The endpoints `/_admin/statistics` and `/_admin/statistics-description`
   are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
   The metrics API provides a lot more information than the statistics API, so
   it is much more useful.
 
-- **Database target version REST API**:
+- **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
   more general version API with the endpoint `GET /_api/version`. The endpoint may be
   removed in a future version of ArangoDB.
 
-- **Replication logger-follow REST API**:
+- **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
   may be removed in a future version. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
 
-- **Loading and unloading of collections**:
+- **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
@@ -177,7 +204,8 @@ detailed information about breaking changes before upgrading.
   RocksDB storage engine. The load/unload functionality was useful only with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
-- **Actions**: Snippets of JavaScript code on the server-side for minimal
+- **Actions**:\
+  Snippets of JavaScript code on the server-side for minimal
   custom endpoints. Since the Foxx revamp in 3.0, it became really easy to
   write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
@@ -187,7 +215,8 @@ detailed information about breaking changes before upgrading.
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
 
-- **Outdated AQL functions**: The following AQL functions are deprecated and
+- **Outdated AQL functions**:\
+  The following AQL functions are deprecated and
   their usage is discouraged:
   - `IS_IN_POLYGON`
   - `NEAR`
@@ -196,16 +225,19 @@ detailed information about breaking changes before upgrading.
 
   See [Geo functions](../aql/functions/geo.md) for substitutes.
 
-- **`bfs` option** in AQL graph traversal: Using the *bfs* attribute inside
+- **`bfs` option** in AQL graph traversal:\
+  Using the *bfs* attribute inside
   traversal options is deprecated since v3.8.0. The preferred way to start a
   breadth-first traversal is by using the new `order` attribute, and setting it
   to a value of `bfs`.
 
-- **`overwrite` option**: The `overwrite` option for insert operations (either
+- **`overwrite` option**:\
+  The `overwrite` option for insert operations (either
   single document operations or AQL `INSERT` operations) is deprecated in favor
   of the `overwriteMode` option, which provides more flexibility.
 
-- **`minReplicationFactor` collection option**: The `minReplicationFactor`
+- **`minReplicationFactor` collection option**:\
+  The `minReplicationFactor`
   option for collections has been renamed to `writeConcern`. If
   `minReplicationFactor` is specified and no `writeConcern` is set, the
   `minReplicationFactor` value will still be picked up and used as
@@ -213,8 +245,7 @@ detailed information about breaking changes before upgrading.
   eventually, so changing applications from using `minReplicationFactor` to
   `writeConcern` is advised.
 
-- **Outdated startup options**
-
+- **Outdated startup options**:\
   The following _arangod_ startup options are deprecated and will be removed
   in a future version:
   - `--database.old-system-collections` (no need to use it anymore)
@@ -244,12 +275,14 @@ detailed information about breaking changes before upgrading.
   - `--log.use-microtime` (use `--log.time-format` instead)
   - `--log.performance` (use `--log.level` instead)
 
-- **Obsoleted startup options**: Any startup options marked as obsolete can be
+- **Obsoleted startup options**:\
+  Any startup options marked as obsolete can be
   removed in any future version of ArangoDB, so their usage is highly
   discouraged. Their functionality is already removed, but they still exist to
   prevent unknown startup option errors.
 
-- **arangoimp** executable: ArangoDB release packages install an executable named
+- **arangoimp** executable:\
+  ArangoDB release packages install an executable named
   _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
   provide compatibility with older releases, in which _arangoimport_ did not
   yet exist and was named _arangoimp_. The renaming was actually carried out in
@@ -258,12 +291,13 @@ detailed information about breaking changes before upgrading.
   While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
   removed in a future version of ArangoDB.
 
-- **HTTP and JavaScript traversal APIs**: The HTTP traversal API as well as the
+- **HTTP and JavaScript traversal APIs**:\
+  The HTTP traversal API as well as the
   `@arangodb/graph/traversal` JavaScript traversal module were deprecated since
   version 3.4.0 and have been removed in version 3.12.0. You can
   [traverse graphs with AQL](../aql/graph-queries/traversals.md) instead.
 
-- **Specialized index creation methods in JavaScript API**:
+- **Specialized index creation methods in JavaScript API**:\
   The following JavaScript methods for creating indexes from the ArangoShell
   (_arangosh_) or from within Foxx are deprecated:
   - `collection.ensureHashIndex(...)`

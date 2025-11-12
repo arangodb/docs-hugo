@@ -10,8 +10,7 @@ description: >-
 For general information about the Arango Managed Platform (AMP), see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
-For guides and reference documentation, see the
-[Arango Managed Platform (AMP) documentation](../../../amp/_index.md).
+For guides and reference documentation, see the [AMP documentation](../../../amp/_index.md).
 
 ## Prerequisites
 
