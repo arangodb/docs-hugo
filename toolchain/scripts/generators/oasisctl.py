@@ -6,18 +6,14 @@ import re
 
 
 parser = argparse.ArgumentParser(description='Post-process files produced by oasisctl generate-docs')
-parser.add_argument('--src', type=str,
+parser.add_argument('--src', type=str, required=True,
                     help='docs/ source folder')
-parser.add_argument('--dst', type=str,
+parser.add_argument('--dst', type=str, required=True,
                     help='oasisctl/ destination folder')
 args = parser.parse_args()
 
-if args.src is None or args.dst is None:
-    print("Args are required")
-    exit(1)
-
 src = args.src
-dst = args.dst
+dst = os.path.join(args.dst, "") # Ensure trailing slash
 
 params = {"currentSection": "topLevel", "topLevel": {"weight": 0}}
 
@@ -201,7 +197,7 @@ def rewrite_content(data, section, filename, weight):
 
 
 def adjustLink(line, filename):
-    link = re.search(r"(?<=\().*(?=\))", line).group(0)
+    link = re.search(r"(?<=\().*?(?=\))", line).group(0)
     newLink = link.replace("oasisctl-", "")
 
     if newLink.replace(".html", "") == params["currentSection"]:
