@@ -1,9 +1,8 @@
 ---
-title: Oasisctl List Projects
+title: List Projects with `oasisctl`
 menuTitle: List Projects
 weight: 34
 ---
-## oasisctl list projects
 
 List all projects of the given organization
 
@@ -19,9 +18,9 @@ oasisctl list projects [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

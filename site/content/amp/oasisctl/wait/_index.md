@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Wait
+title: Wait with `oasisctl`
 menuTitle: Wait
 weight: 31
 ---
-## oasisctl wait
 
 Wait for a status change
 
@@ -18,12 +17,12 @@ oasisctl wait [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
-* [oasisctl](../options.md)	 - ArangoGraph Insights Platform
+* [oasisctl](../options.md)	 - Arango Managed Platform (AMP)
 * [oasisctl wait deployment](wait-deployment.md)	 - Wait for a deployment to reach the ready status
 

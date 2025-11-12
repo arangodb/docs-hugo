@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Delete Group Members
+title: Delete Group Members with `oasisctl`
 menuTitle: Delete Group Members
 weight: 13
 ---
-## oasisctl delete group members
 
 Delete members from group
 
@@ -21,9 +20,9 @@ oasisctl delete group members [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

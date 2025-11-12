@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Update Private Endpoint Service
+title: Update Private Endpoint Service with `oasisctl`
 menuTitle: Update Private Endpoint Service
 weight: 24
 ---
-## oasisctl update private endpoint service
 
 Update a Private Endpoint Service attached to an existing deployment
 
@@ -28,9 +27,9 @@ oasisctl update private endpoint service [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

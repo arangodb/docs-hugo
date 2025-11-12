@@ -1,15 +1,13 @@
 ---
-description: Command-line client tool for managing ArangoGraph
-title: ArangoGraph Shell oasisctl
+title: The `oasisctl` command
 menuTitle: Options
 weight: 1
 ---
-## oasisctl
 
-ArangoGraph Insights Platform
+Arango Managed Platform (AMP)
 
 ## Synopsis
-ArangoGraph Insights Platform (formerly called Oasis): The Managed Cloud for ArangoDB
+Arango Managed Platform (AMP), formerly called Oasis and ArangoGraph Insights Platform
 
 ```
 oasisctl [flags]
@@ -17,10 +15,10 @@ oasisctl [flags]
 
 ## Options
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
   -h, --help              help for oasisctl
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
@@ -36,10 +34,10 @@ oasisctl [flags]
 * [oasisctl enable](enable/_index.md)	 - Enable some settings related to deployment
 * [oasisctl generate-docs](generate-docs.md)	 - Generate output
 * [oasisctl get](get/_index.md)	 - Get information
-* [oasisctl import](import.md)	 - Import data from a local database or from another remote database into an Oasis deployment.
+* [oasisctl import](import.md)	 - Import data from a local database or from another remote database into an Arango Managed Platform deployment.
 * [oasisctl list](list/_index.md)	 - List resources
 * [oasisctl lock](lock/_index.md)	 - Lock resources
-* [oasisctl login](login.md)	 - Login to ArangoDB Oasis using an API key
+* [oasisctl login](login.md)	 - Log in to the Arango Managed Platform (AMP) using an API key
 * [oasisctl logs](logs.md)	 - Get logs of the servers of a deployment the authenticated user has access to
 * [oasisctl pause](pause/_index.md)	 - Pause resources
 * [oasisctl rebalance](rebalance/_index.md)	 - Rebalance resources

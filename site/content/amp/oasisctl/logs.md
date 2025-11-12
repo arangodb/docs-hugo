@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Logs
+title: Logs with `oasisctl`
 menuTitle: Logs
 weight: 18
 ---
-## oasisctl logs
 
 Get logs of the servers of a deployment the authenticated user has access to
 
@@ -26,10 +25,10 @@ oasisctl logs [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
-* [oasisctl](options.md)	 - ArangoGraph Insights Platform
+* [oasisctl](options.md)	 - Arango Managed Platform (AMP)
 

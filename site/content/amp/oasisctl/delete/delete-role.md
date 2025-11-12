@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Delete Role
+title: Delete Role with `oasisctl`
 menuTitle: Delete Role
 weight: 22
 ---
-## oasisctl delete role
 
 Delete a role the authenticated user has access to
 
@@ -20,9 +19,9 @@ oasisctl delete role [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

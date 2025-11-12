@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Update Metrics Token
+title: Update Metrics Token with `oasisctl`
 menuTitle: Update Metrics Token
 weight: 9
 ---
-## oasisctl update metrics token
 
 Update a metrics token
 
@@ -24,9 +23,9 @@ oasisctl update metrics token [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

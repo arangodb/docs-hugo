@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Create Example
+title: Create Example with `oasisctl`
 menuTitle: Create Example
 weight: 7
 ---
-## oasisctl create example
 
 Create example ...
 
@@ -18,9 +17,9 @@ oasisctl create example [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

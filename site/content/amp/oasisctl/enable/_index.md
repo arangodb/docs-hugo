@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Enable
+title: Enable with `oasisctl`
 menuTitle: Enable
 weight: 11
 ---
-## oasisctl enable
 
 Enable some settings related to deployment
 
@@ -18,12 +17,12 @@ oasisctl enable [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
-* [oasisctl](../options.md)	 - ArangoGraph Insights Platform
+* [oasisctl](../options.md)	 - Arango Managed Platform (AMP)
 * [oasisctl enable scheduled-root-password-rotation](enable-scheduled-root-password-rotation.md)	 - Enable scheduled root password rotation
 

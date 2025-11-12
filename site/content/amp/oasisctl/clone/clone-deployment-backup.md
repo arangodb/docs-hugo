@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Clone Deployment Backup
+title: Clone Deployment Backup with `oasisctl`
 menuTitle: Clone Deployment Backup
 weight: 2
 ---
-## oasisctl clone deployment backup
 
 Clone a deployment from a backup.
 
@@ -23,9 +22,9 @@ oasisctl clone deployment backup [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also

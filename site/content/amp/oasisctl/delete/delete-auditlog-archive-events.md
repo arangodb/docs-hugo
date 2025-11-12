@@ -1,9 +1,8 @@
 ---
-title: Oasisctl Delete Audit Log Archive Events
+title: Delete Audit Log Archive Events with `oasisctl`
 menuTitle: Delete Audit Log Archive Events
 weight: 4
 ---
-## oasisctl delete auditlog archive events
 
 Delete auditlog archive events
 
@@ -20,9 +19,9 @@ oasisctl delete auditlog archive events [flags]
 
 ## Options Inherited From Parent Commands
 ```
-      --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
-      --token string      Token used to authenticate at ArangoDB Oasis
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
 ```
 
 ## See also
