@@ -154,6 +154,34 @@ function updateActiveNavItem(pathname) {
   }
 }
 
+function updateVersionSelector() {
+  const currentVersion = getVersionFromURL();
+  if (!currentVersion) return;
+  
+  const versionInfo = getVersionInfo(currentVersion);
+  if (!versionInfo) return;
+  
+  const versionSelector = document.querySelector(".version-selector");
+  if (!versionSelector) return;
+  
+  // Update the selector value
+  if (versionSelector.querySelector(`option[value="${versionInfo.alias}"]`)) {
+    versionSelector.value = versionInfo.alias;
+  }
+  
+  // Update which version's navigation list is visible
+  versionSelector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
+    if (navList.dataset.version == currentVersion) {
+      navList.classList.add("selected-version");
+    } else {
+      navList.classList.remove("selected-version");
+    }
+  });
+  
+  // Update localStorage
+  localStorage.setItem('docs-version', currentVersion);
+}
+
 async function loadNav() {
   const mainNavPlaceholder = document.querySelector(".main-nav");
   if (!mainNavPlaceholder) {
@@ -227,6 +255,7 @@ function initArticle(url) {
   styleImages();
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname);
+  updateVersionSelector();
 }
 
 

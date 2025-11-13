@@ -6,10 +6,10 @@ description: >-
   Interact with ArangoDB using the high-level and consistent abstraction
   provided by Spring Data repositories
 aliases:
-  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
-  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
-  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories
 ---
 {{< warning >}}
 Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively

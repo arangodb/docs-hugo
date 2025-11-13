@@ -1,5 +1,5 @@
 ---
-title: Version 0.3
+title: Fast cluster restore procedure (version 0.3)
 menuTitle: Fast Cluster Restore
 weight: 10
 description: >-

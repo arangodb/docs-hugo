@@ -6,6 +6,7 @@ description: >-
   ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data
 aliases:
   - ../../arangodb/3.12/develop/integrations/arangodb-datasource-for-apache-spark
+  - ../../arangodb/stable/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/4.0/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/devel/develop/integrations/arangodb-datasource-for-apache-spark
 ---
