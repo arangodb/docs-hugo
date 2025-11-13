@@ -1,3 +1,4 @@
+# Algolia-Crawler-Verif: F9CC116E29728BF6
 {{/* Allow DocSearch to access everything */ -}}
 User-agent: Algolia Crawler
 Disallow:
