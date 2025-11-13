@@ -138,7 +138,7 @@ function getSelectedVersion() {
   */
 }
 
-function updateActiveNavItem(pathname) {
+function updateActiveNavItem(pathname, scrollIntoView) {
   // Remove all existing active states
   document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
   
@@ -151,6 +151,10 @@ function updateActiveNavItem(pathname) {
     activeItem.classList.add("link-nav-active");
     // Expand all parent sections
     document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+
+    if (scrollIntoView) {
+      activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+    }
   }
 }
 
@@ -201,7 +205,7 @@ async function loadNav() {
     mainNavPlaceholder.appendChild(mainNavContent);
     
     // Set initial active state
-    updateActiveNavItem(window.location.pathname);
+    updateActiveNavItem(window.location.pathname, true);
   } catch (error) {
     console.error("Error loading navigation:", error);
     mainNavPlaceholder.textContent = "Failed to load navigation";
@@ -226,7 +230,7 @@ function initArticle(url) {
   goToTop();
   styleImages();
   linkToVersionedContent();
-  updateActiveNavItem(window.location.pathname);
+  updateActiveNavItem(window.location.pathname, false);
 }
 
 
