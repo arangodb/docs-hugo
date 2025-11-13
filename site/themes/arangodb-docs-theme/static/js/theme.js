@@ -451,19 +451,12 @@ const goToTop = (event) => {
         window.scrollTo({top: 0});
 };
 
-
-
-function goToHomepage(event){
-    event.preventDefault();
-    updateHistory("/");
-}
-
 function copyURI(evt) {
-    navigator.clipboard.writeText(
-      window.location.origin + evt.target.closest("a").getAttribute('href')
-    ).then(() => {}, () => {
+    const url = window.location.origin + evt.target.closest("a").getAttribute('href')
+    navigator.clipboard.writeText(url).then(() => {}, () => {
       console.log("clipboard copy failed");
     });
+    updateHistory(url);
 }
 
 function toggleExpandShortcode(event) {
@@ -515,7 +508,7 @@ function handleDocumentChange(event) {
     const selectedVersion = target.value;
     const currentPath = window.location.pathname;
     //const versionedPath = target.dataset.path;
-    
+
     window.setupDocSearch(selectedVersion); // TODO: Only if on versioned page?
 
     localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
@@ -566,29 +559,27 @@ function handleDocumentClick(event) {
         }
         return;
     }
-    
+  
     // Internal link clicks (.link)
-    const linkElement = closest('.link');
-    if (linkElement && !linkElement.getAttribute("target")) {
+    if (target.classList.contains('link') && !target.getAttribute("target")) {
         event.preventDefault();
-        let href = linkElement.getAttribute('href');
+        let href = target.getAttribute('href');
         if (href) {
             updateHistory(href);
         }
         return;
     }
-    
+  
     // Card link clicks
-    if (closest('.card-link')) {
+    if (target.classList.contains('card-link')) {
         event.preventDefault();
-        const cardLink = closest('.card-link');
-        const href = cardLink.getAttribute('href');
+        const href = target.getAttribute('href');
         if (href) {
             updateHistory(href);
         }
         return;
     }
-    
+  
     // Code show more button clicks
     if (closest('.code-show-more')) {
         target.classList.toggle("expanded");
@@ -596,7 +587,7 @@ function handleDocumentClick(event) {
         if (prevElement) prevElement.classList.toggle("expanded");
         return;
     }
-    
+  
     // OpenAPI property clicks
     if (closest('.openapi-prop') && target === closest('.openapi-prop')) {
         target.classList.toggle("collapsed");
@@ -604,7 +595,7 @@ function handleDocumentClick(event) {
         if (content) content.classList.toggle("hidden");
         return;
     }
-    
+  
     // OpenAPI table show children clicks
     if (closest('.openapi-table.show-children')) {
         target.classList.toggle("collapsed");
@@ -614,37 +605,32 @@ function handleDocumentClick(event) {
         }
         return;
     }
-    
+  
     // Tab clicks
     if (target.hasAttribute('data-tab-group') && target.hasAttribute('data-tab-item')) {
         event.preventDefault();
         switchTab(target.getAttribute('data-tab-group'), target.getAttribute('data-tab-item'), event);
         return;
     }
-    
+  
     // Back to top button
     if (closest('.back-to-top')) {
         event.preventDefault();
         goToTop(event);
         return;
     }
-    
+  
     // Copy URI clicks
     if (closest('.header-link')) {
+        event.preventDefault();
         copyURI(event);
         return;
     }
-    
-    // Expand shortcode clicks
-    if (closest('.expand-label')) {
-        event.preventDefault();
-        toggleExpandShortcode(event);
-        return;
-    }
-    
+  
     // Homepage clicks
-    if (closest('.home-link')) {
-        goToHomepage(event);
+    if (target.classList.contains('home-link')) {
+        event.preventDefault();
+        updateHistory("/");
         return;
     }
  
