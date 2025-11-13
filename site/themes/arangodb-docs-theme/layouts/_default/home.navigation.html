@@ -8,12 +8,12 @@
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
       <li class="nav-section">
-        <div class="nav-section-header">
+        {{- $isVersioned := eq $page.RelPermalink "/arangodb/" }}
+        <div class="nav-section-header{{ if $isVersioned }} nav-section-header-versioned{{ end }}">
           <a class="link-nav" href="{{ .RelPermalink }}">{{ .Params.menuTitle | markdownify }}</a>
           <label class="expand-nav"><input type="checkbox"></label>
         </div>
-        {{- $isVersioned := eq $page.RelPermalink "/arangodb/" }}
-        {{ if $isVersioned }}
+        {{- if $isVersioned }}
           {{- partial "version-selector.html" . }}
           {{- range $versionSection := $page.Pages }}
             <ol class="nav-ol" data-version="{{ index (split $versionSection.Path "/") 2 }}">

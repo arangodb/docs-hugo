@@ -1973,6 +1973,12 @@ nav.pagination .next {
     display: flex;
 }
 
+.nav-section-header-versioned {
+    position: sticky;
+    top: -0.5rem;
+    background-color: var(--gray-950);
+}
+
 .nav-section > .nav-ol,
 .nav-section > .version-selector {
     display: none;
@@ -2059,4 +2065,6 @@ nav.pagination .next {
     border: none;
     width: calc(100% - 2rem);
     margin-left: 1rem;
+    position: sticky;
+    top: 2rem;
 }
