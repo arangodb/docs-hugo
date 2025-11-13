@@ -1710,15 +1710,6 @@ details[open] > summary::before {
     font-size: 13px;
 }
 
-.openapi-table-row > .expand {
-    margin-bottom: 1rem;
-}
-
-.openapi-table-row > .expand > .expand-label {
-    font-size: 1em;
-    margin-bottom: 1em;
-}
-
 .response-codes {
     align-items: center;
     flex-direction: row;
