@@ -655,11 +655,7 @@ window.onload = () => {
 
     loadPage(window.location.href)
 
-    if (getVersionInfo(getVersionFromURL()) != undefined) {
-      window.setupDocSearch(getVersionInfo(getVersionFromURL()).name);
-    } else {
-      window.setupDocSearch(stableVersion);
-    }
+    window.setupDocSearch(currentVersion ?? stableVersion);
 
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);

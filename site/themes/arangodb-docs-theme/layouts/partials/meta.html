@@ -27,10 +27,12 @@
     {{- end }}
     <link rel="canonical" href="{{ delimit $s "/" }}">
   {{- end }}
+  {{- /* TODO: Set all available versions on non-versioned pages?
   {{- $shortVersions := slice }}
   {{- $versions := index site.Data.versions "/arangodb/" }}
   {{- range $version := $versions }}
     {{- $shortVersions = $shortVersions | append (cond (eq $version.name $version.alias) $version.name $version.alias) }}
   {{- end }}
   <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
+  */}}
 {{- end }}
