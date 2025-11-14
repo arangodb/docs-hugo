@@ -391,7 +391,7 @@ jobs:
         default: $CIRCLE_BRANCH
       url:
         type: string
-        default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
+        default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app/"
     machine:
       image: default
     resource_class: large
@@ -602,7 +602,7 @@ workflows:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
     jobs:
       - plain-build:
-          url: https://docs.arango.ai
+          url: https://docs.arango.ai/
       - deploy:
           deploy-args: "--prod"
           requires:

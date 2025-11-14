@@ -3,7 +3,7 @@
 User-agent: Algolia Crawler
 Disallow:
 
-{{ $isProduction := eq .Site.BaseURL "https://docs.arango.ai" -}}
+{{ $isProduction := eq .Site.BaseURL "https://docs.arango.ai/" -}}
 {{ if $isProduction -}}
 User-agent: *
 Disallow: /nav.html
