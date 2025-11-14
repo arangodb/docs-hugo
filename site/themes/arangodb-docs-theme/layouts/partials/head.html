@@ -1,5 +1,5 @@
 <head>
-  {{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
+  {{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
   {{ if $isProduction -}}
     {{ partialCached "tracking/head-start.html" . -}}
   {{ end -}}
