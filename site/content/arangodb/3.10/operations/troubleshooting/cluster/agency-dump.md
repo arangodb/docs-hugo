@@ -35,6 +35,6 @@ curl -k --username root https://<any-coordinator>:<port>/_api/cluster/agency-dum
 ```
 
 Should the _Agency_ be down, an _Agency_ dump can still be created
-starting from the database directory of (one of) the _Agents_. Contact
-ArangoDB Support, in this case, to obtain more detailed guidelines on
+starting from the database directory of (one of) the _Agents_. Contact the
+Arango support in this case, to obtain more detailed guidelines on
 how to produce the dump.
