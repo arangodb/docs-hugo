@@ -1,6 +1,6 @@
 {{/* Should match baseof.html but have breadcrumbs, toc, and main block removed */ -}}
 {{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arango.ai" -}}
+{{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
