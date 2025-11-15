@@ -879,29 +879,12 @@ header .logo {
 /* Breadcrumbs row */
 .breadcrumbs {
     grid-area: breadcrumbs;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    float: left;
-    height: auto;
-    margin-bottom: 1rem;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    height: 2.9rem;
-}
-
-@media screen and (max-width: 768px) {
-    .breadcrumbs {
-        z-index: 1;
-        white-space: break-spaces;
-        margin-top: 1rem;
-    }
+    margin-top: 1rem;
 }
 
 .breadcrumbs > ol {
-    margin: 5px 0 0 80px;
-    white-space: normal;
+    margin-left: 80px;
+    margin-bottom: 0;
 }
 
 @media screen and (max-width: 768px)
@@ -2061,4 +2044,8 @@ nav.pagination .next {
     margin-left: 1rem;
     position: sticky;
     top: 2rem;
+}
+
+.none {
+    display: none;
 }
