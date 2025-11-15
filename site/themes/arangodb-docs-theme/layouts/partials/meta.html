@@ -13,10 +13,10 @@
 {{- with .Site.Params.author }}
 <meta name="author" content="{{ . }}">
 {{- end }}
-{{- $versionShort := .Page.Store.Get "versionShort" }}
-{{- $versionAlias := .Page.Store.Get "alias" }}
-{{- if $versionShort -}}
-  <meta name="docsearch:version" content="{{ $versionShort }}{{ if ne $versionShort $versionAlias }},{{ $versionAlias }}{{ end }}">
+{{- $splitPath := split .Path "/" }}
+{{- if and (hasPrefix .Path "/arangodb/") (ge ($splitPath | len) 3) }}
+  {{- $coreVersion := index $splitPath 2 }}
+  <meta name="docsearch:version" content="{{ $coreVersion }}">
 {{- else }}
   {{- $shortVersions := slice }}
   {{- $versions := index site.Data.versions "/arangodb/" }}
