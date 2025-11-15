@@ -10,7 +10,13 @@
     <section class="page-main">
       <section class="page-container">
         {{ partialCached "header.html" . -}}
-        <nav class="main-nav" aria-label="Main"></nav>
+        <nav class="main-nav" aria-label="Main">
+          <ol class="main-nav-ol shimmer">
+            {{ range .Site.Sections -}}
+              <li class="nav-section"><a class="link-nav">&nbsp;</a></li>
+            {{ end -}}
+          </ol>
+        </nav>
         <div class="container-main">
           <div class="row-main">
             {{ partial "breadcrumbs.html" . }}

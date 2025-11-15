@@ -230,7 +230,7 @@ async function loadNav() {
       console.log("Selected/stored version not available in version selector");
     }
 
-    mainNavPlaceholder.appendChild(mainNavContent);
+    mainNavPlaceholder.replaceChildren(mainNavContent);
     
     // Set initial active state
     updateActiveNavItem(window.location.pathname, true);
@@ -584,7 +584,7 @@ function handleDocumentClick(event) {
         if (href) {
             updateHistory(href);
         } else {
-          throw new Error("Nav link has no href");
+          console.log("Nav link has no href");
         }
         return;
     }
