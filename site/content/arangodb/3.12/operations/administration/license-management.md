@@ -241,18 +241,18 @@ can have the following values:
 
 - `good`: Your license is valid for more than another 1 week.
 - `expiring`: Your license is about to expire shortly. Please contact
-  your ArangoDB sales representative to acquire a new license or
+  your Arango sales representative to acquire a new license or
   extend your old license.
 - `read-only`: Your license has expired at which
   point the deployment will be in read-only mode. All read operations to the
   instance will keep functioning. However, no data or data definition changes
-  can be made. Please contact your ArangoDB sales representative immediately.
+  can be made. Please contact your Arango sales representative immediately.
 
 The attribute `expires` in `features` denotes the expiry date as Unix timestamp
 (in seconds since January 1st, 1970 UTC).
 
 The `license` field holds an encrypted and base64-encoded version of the
-applied license for reference and support from ArangoDB.
+applied license for reference and support from Arango.
 {{< /tab >}}
 
 {{< /tabs >}}

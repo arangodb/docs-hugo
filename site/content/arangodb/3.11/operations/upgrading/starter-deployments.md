@@ -203,7 +203,7 @@ If you have connected clusters across multiple datacenter
 (DC2DC deployment), then you need to update each of the clusters.
 
 If the upgrade command fails, please try again. If the upgrade command continues
-to fail, please contact the ArangoDB support.
+to fail, please contact the Arango support.
 
 #### Deployment mode `single`
 
@@ -282,7 +282,7 @@ upgraded.
 ## Going back to the previous version in case of failure
 
 In case the upgrade cannot be carried out (i.e. the upgrade command continues 
-to fail with an error message) please contact the ArangoDB support.
+to fail with an error message) please contact the Arango support.
 
 Until then, the not yet upgraded instances will still be running the previous
 version of ArangoDB. When instances are restarted, they will be starting

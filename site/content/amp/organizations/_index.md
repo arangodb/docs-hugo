@@ -63,7 +63,7 @@ In addition, you gain access to:
 - ArangoDB Professional Services Engagements
 - Ability to transact via the AWS and GCP marketplaces
 
-To take advantage of this, you need to get in touch with the ArangoDB
+To take advantage of this, you need to get in touch with the Arango
 team. [Contact us](https://arango.ai/contact-us/) for more details.
 
 ## How to unlock all features

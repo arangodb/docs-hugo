@@ -870,7 +870,7 @@ created with v3.12.4 or any later version.
    **production deployment** to 3.12.4 (or later) and then recreate the indexes
    you dropped once the deployment is on the new version.
 
-   If there are still affected indexes, contact the ArangoDB support.
+   If there are still affected indexes, contact the Arango support.
 
 ### Upgrade a Community Edition deployment
 
