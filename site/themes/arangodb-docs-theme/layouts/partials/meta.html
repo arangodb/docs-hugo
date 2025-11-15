@@ -15,8 +15,18 @@
 {{- end }}
 {{- $versionShort := .Page.Store.Get "versionShort" }}
 {{- $versionAlias := .Page.Store.Get "alias" }}
-{{- if $versionShort }}
-<meta name="docsearch:version" content="{{ $versionShort }}{{ if ne $versionShort $versionAlias }},{{ $versionAlias }}{{ end }}">
+{{- if $versionShort -}}
+  <meta name="docsearch:version" content="{{ $versionShort }}{{ if ne $versionShort $versionAlias }},{{ $versionAlias }}{{ end }}">
+{{- else }}
+  {{- $shortVersions := slice }}
+  {{- $versions := index site.Data.versions "/arangodb/" }}
+  {{- range $version := $versions }}
+    {{- $shortVersions = $shortVersions | append $version.name }}
+    {{- if ne $version.name $version.alias }}
+      {{- $shortVersions = $shortVersions | append $version.alias }}
+    {{- end }}
+  {{- end -}}
+  <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}
 {{- if (hasPrefix .Path "/arangodb/") }}
   {{- if or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}<meta name="robots" content="noindex">{{ end }}
