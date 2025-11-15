@@ -2066,9 +2066,9 @@ nav.pagination .next {
 }
 
 .version-selector {
-    color: var(--gray-50);
-    background: black;
-    box-shadow: black 5px 0 0;
+    color: var(--gray-950);
+    background: var(--gray-100);
+    box-shadow: var(--gray-100) 5px 0 0;
     border: none;
     width: calc(100% - 2rem);
     margin-left: 1rem;
