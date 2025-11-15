@@ -110,9 +110,12 @@ function loadPage(target) {
         updateHistory(match);
         return;
       }
-      replaceArticle(href, newDoc)
+      replaceArticle(href, newDoc);
       scrollToFragment();
       initArticle(href);
+      if (window.setupDocSearch) {
+        window.setupDocSearch(getSelectedVersion());
+      }
       return true;
     })
     .catch(error => {
@@ -538,9 +541,10 @@ function handleDocumentChange(event) {
     const currentPath = window.location.pathname;
     //const versionedPath = target.dataset.path;
 
-    window.setupDocSearch(selectedVersion); // TODO: Only if on versioned page?
-
     localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
+    if (window.setupDocSearch) {
+      window.setupDocSearch(selectedVersion);
+    }
     target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
       el => {
         if (el.dataset.version == selectedVersion) {
@@ -684,11 +688,8 @@ window.onload = () => {
 
     loadPage(window.location.href)
 
-    window.setupDocSearch(currentVersion ?? stableVersion);
-
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
-
     document.addEventListener("change", handleDocumentChange);
 
     var isMobile = window.innerWidth <= 768;
