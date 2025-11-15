@@ -65,7 +65,8 @@ Using ArangoDB and its query language, you can determine the shortest paths betw
 given node of a graph and follows the directly connected edges. The edges indicate
 what the next connected nodes are, and this discovery of neighbors can repeat.
  
-Graph queries can answer questions like **Who can introduce me to person X?**
+Graph queries can answer questions like\
+**Who can introduce me to person X?**
 
 ### Graph Analytics
 
@@ -73,7 +74,8 @@ The next level of utilizing connected data in terms of complexity is to use
 graph analytics or graph algorithms to aggregate information about a graph.
 Unlike with graph queries, this involves the entire graph at once.
 
-Graph analytics can answer questions like **Who are the most connected persons?**
+Graph analytics can answer questions like\
+**Who are the most connected persons?**
 
 Arango offers a [Graph Analytics](ai-suite/graph-analytics.md) solution as part
 of the [Arango AI Data Platform](data-platform/features.md) to run algorithms
