@@ -879,29 +879,12 @@ header .logo {
 /* Breadcrumbs row */
 .breadcrumbs {
     grid-area: breadcrumbs;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    float: left;
-    height: auto;
-    margin-bottom: 1rem;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    height: 2.9rem;
-}
-
-@media screen and (max-width: 768px) {
-    .breadcrumbs {
-        z-index: 1;
-        white-space: break-spaces;
-        margin-top: 1rem;
-    }
+    margin-top: 1rem;
 }
 
 .breadcrumbs > ol {
-    margin: 5px 0 0 80px;
-    white-space: normal;
+    margin-left: 80px;
+    margin-bottom: 0;
 }
 
 @media screen and (max-width: 768px)
@@ -1963,6 +1946,36 @@ nav.pagination .next {
     margin-bottom: .5rem;
 }
 
+.main-nav-ol.shimmer > .nav-section > .link-nav {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--gray-950);
+}
+
+.main-nav-ol.shimmer > .nav-section > .link-nav::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0.05) 40%,
+        rgba(255, 255, 255, 0.05) 60%,
+        rgba(255, 255, 255, 0) 80%
+    );
+    animation: 2s ease 1s infinite shimmer;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 .nav-section-header {
     display: flex;
 }
@@ -2053,12 +2066,16 @@ nav.pagination .next {
 }
 
 .version-selector {
-    color: var(--gray-50);
-    background: black;
-    box-shadow: black 5px 0 0;
+    color: var(--gray-950);
+    background: var(--gray-100);
+    box-shadow: var(--gray-100) 5px 0 0;
     border: none;
     width: calc(100% - 2rem);
     margin-left: 1rem;
     position: sticky;
     top: 2rem;
+}
+
+.none {
+    display: none;
 }

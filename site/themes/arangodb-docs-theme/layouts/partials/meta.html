@@ -15,8 +15,18 @@
 {{- end }}
 {{- $versionShort := .Page.Store.Get "versionShort" }}
 {{- $versionAlias := .Page.Store.Get "alias" }}
-{{- if $versionShort }}
-<meta name="docsearch:version" content="{{ $versionShort }}{{ if ne $versionShort $versionAlias }},{{ $versionAlias }}{{ end }}">
+{{- if $versionShort -}}
+  <meta name="docsearch:version" content="{{ $versionShort }}{{ if ne $versionShort $versionAlias }},{{ $versionAlias }}{{ end }}">
+{{- else }}
+  {{- $shortVersions := slice }}
+  {{- $versions := index site.Data.versions "/arangodb/" }}
+  {{- range $version := $versions }}
+    {{- $shortVersions = $shortVersions | append $version.name }}
+    {{- if ne $version.name $version.alias }}
+      {{- $shortVersions = $shortVersions | append $version.alias }}
+    {{- end }}
+  {{- end -}}
+  <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}
 {{- if (hasPrefix .Path "/arangodb/") }}
   {{- if or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}<meta name="robots" content="noindex">{{ end }}
@@ -27,13 +37,12 @@
       {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
     {{- end }}
     <link rel="canonical" href="{{ delimit $s "/" }}">
+  {{- else if and (eq (.Page.Store.Get "alias") "devel") (not (hasPrefix .RelPermalink "/arangodb/devel/")) }}
+    {{- $splitLink := split .RelPermalink "/" }}
+    {{- $s := slice "/arangodb" "devel" }}
+    {{- range $i, $e := $splitLink }}
+      {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
+    {{- end }}
+    <link rel="canonical" href="{{ delimit $s "/" }}">
   {{- end }}
-  {{- /* TODO: Set all available versions on non-versioned pages?
-  {{- $shortVersions := slice }}
-  {{- $versions := index site.Data.versions "/arangodb/" }}
-  {{- range $version := $versions }}
-    {{- $shortVersions = $shortVersions | append (cond (eq $version.name $version.alias) $version.name $version.alias) }}
-  {{- end }}
-  <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
-  */}}
 {{- end }}

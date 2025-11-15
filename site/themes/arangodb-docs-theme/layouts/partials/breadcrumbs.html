@@ -1,4 +1,6 @@
-<nav class="breadcrumbs">
+{{ $navLevel := len .Page.Ancestors -}}
+{{ if ge $navLevel 1 -}}
+<nav class="breadcrumbs{{ if eq $navLevel 1 }} none{{ end }}">
   <ol class="links" vocab="http://schema.org/" typeof="BreadcrumbList">
   {{ $position := 0 -}}
   {{ range .Ancestors.Reverse | append . -}}
@@ -23,6 +25,7 @@
   {{ end -}}
   </ol>
 </nav>
+{{ end -}}
 
 {{ define "getVersionLong" -}}
   {{ $coreVersion := .coreVersion -}}
