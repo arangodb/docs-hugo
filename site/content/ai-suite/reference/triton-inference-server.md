@@ -7,7 +7,7 @@ weight: 30
 ---
 {{< tip >}}
 The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/contact-us/) with
+exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
 the Arango team.
 {{< /tip >}}
 

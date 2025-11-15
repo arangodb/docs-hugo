@@ -7,7 +7,7 @@ description: >-
 ---
 {{< tip >}}
 The AI Suite is available as a pre-release. To get exclusive early access,
-[get in touch](https://arango.ai/contact-us/) with the Arango team.
+[get in touch](https://arango.ai/ai-preview/) with the Arango team.
 {{< /tip >}}
 
 ## October 2024 (pre-release)
