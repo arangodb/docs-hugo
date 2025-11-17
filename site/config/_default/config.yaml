@@ -56,6 +56,7 @@ outputFormats:
     baseName: nav
     isHTML: true
     mediaType: text/html
+    weight: 99 # Higher than default 10 for HTML, to trigger OpenAPI validation at the end
   notfound:
     baseName: notfound
     isHTML: true

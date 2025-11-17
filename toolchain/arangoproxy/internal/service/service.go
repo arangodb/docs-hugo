@@ -10,7 +10,6 @@ import (
 	"reflect"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -137,17 +136,24 @@ type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
 var OpenapiGlobalMap map[string]interface{}
+var OpenapiGlobalMapMutex sync.RWMutex
+var OpenapiPendingSpecs sync.WaitGroup
+var OpenapiSpecCounter int
+var OpenapiSpecCounterMutex sync.Mutex
 var Versions map[string][]models.Version
 
 func init() {
 	OpenapiGlobalMap = make(map[string]interface{})
 	Versions = models.LoadVersions()
 
+	models.Logger.Printf("[OpenapiService.init] Initializing OpenAPI maps for versions...")
+
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
 			continue
 		}
 		for _, version := range versionList {
+			models.Logger.Printf("[OpenapiService.init] Creating OpenAPI map for version: %s", version.Name)
 			tags := []map[string]string{}
 			yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
 			if err != nil {
@@ -196,38 +202,87 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 
 	spec["version"] = version
 
-	specDebug, _ := json.Marshal(spec)
-	models.Logger.Debug("[ProcessOpenapiSpec] Processing Spec %s", specDebug)
-
 	path := reflect.ValueOf(spec["paths"].(map[string]interface{})).MapKeys()[0].String()
 	method := reflect.ValueOf(spec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
+
+	OpenapiSpecCounterMutex.Lock()
+	OpenapiSpecCounter++
+	specNum := OpenapiSpecCounter
+	OpenapiSpecCounterMutex.Unlock()
+
+	models.Logger.Printf("[ProcessOpenapiSpec #%d] Received spec for version '%s': %s %s", specNum, version, method, path)
+
 	spec["paths"].(map[string]interface{})[path].(map[string]interface{})[method].(map[string]interface{})["summary"] = summary
 
+	OpenapiPendingSpecs.Add(1)
 	globalOpenapiChannel <- spec
 }
 
 func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface{}) error {
-	for {
-		select {
-		case openapiSpec := <-chnl:
-			version := openapiSpec["version"]
-			path := reflect.ValueOf(openapiSpec["paths"].(map[string]interface{})).MapKeys()[0].String()
-			method := reflect.ValueOf(openapiSpec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
+	for openapiSpec := range chnl {
+		versionStr := openapiSpec["version"].(string)
+		specPaths := openapiSpec["paths"].(map[string]interface{})
+		path := reflect.ValueOf(specPaths).MapKeys()[0].String()
+		method := reflect.ValueOf(specPaths[path].(map[string]interface{})).MapKeys()[0].String()
 
-			if _, ok := OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path]; ok {
-				OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path].(map[string]interface{})[method] = openapiSpec["paths"].(map[string]interface{})[path].(map[string]interface{})[method]
-			} else {
-				OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path] = openapiSpec["paths"].(map[string]interface{})[path]
-			}
+		models.Logger.Printf("[AddSpecToGlobalSpec] Processing path %s %s for version '%s'", method, path, versionStr)
 
+		OpenapiGlobalMapMutex.Lock()
+
+		// Check if version exists in global map
+		versionMap, versionExists := OpenapiGlobalMap[versionStr]
+		if !versionExists {
+			models.Logger.Printf("[ERROR] Version %s not found in OpenapiGlobalMap. Available versions: %v",
+				versionStr, reflect.ValueOf(OpenapiGlobalMap).MapKeys())
+			OpenapiGlobalMapMutex.Unlock()
+			OpenapiPendingSpecs.Done()
+			continue
 		}
+
+		// Get paths map for this version
+		versionMapTyped := versionMap.(map[string]interface{})
+		pathsMap := versionMapTyped["paths"].(map[string]interface{})
+
+		// Check if path already exists
+		if existingPath, pathExists := pathsMap[path]; pathExists {
+			// Path exists, add/update method
+			existingPathMap := existingPath.(map[string]interface{})
+			existingPathMap[method] = specPaths[path].(map[string]interface{})[method]
+		} else {
+			// Path doesn't exist, add entire path
+			pathsMap[path] = specPaths[path]
+		}
+
+		OpenapiGlobalMapMutex.Unlock()
+
+		OpenapiPendingSpecs.Done()
 	}
+	return nil
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() {
-	time.Sleep(time.Second * 4) // TODO: Investigate timing issue
+	// Wait for all pending specs to be processed
+	OpenapiSpecCounterMutex.Lock()
+	totalSpecs := OpenapiSpecCounter
+	OpenapiSpecCounterMutex.Unlock()
+
+	models.Logger.Printf("[ValidateOpenapiGlobalSpec] Waiting for %d pending specs to be processed...", totalSpecs)
+	OpenapiPendingSpecs.Wait()
+	models.Logger.Printf("[ValidateOpenapiGlobalSpec] All %d specs processed. Starting validation...", totalSpecs)
+
 	var wg sync.WaitGroup
 	models.Logger.Summary("<h2>OPENAPI</h2>")
+
+	// Log path counts before validation
+	OpenapiGlobalMapMutex.RLock()
+	totalPaths := 0
+	for versionKey := range OpenapiGlobalMap {
+		pathCount := reflect.ValueOf(OpenapiGlobalMap[versionKey].(map[string]interface{})["paths"].(map[string]interface{})).Len()
+		totalPaths += pathCount
+		models.Logger.Printf("[ValidateOpenapiGlobalSpec] Version %s has %d paths before validation", versionKey, pathCount)
+	}
+	models.Logger.Printf("[ValidateOpenapiGlobalSpec] Total paths across all versions: %d (expected: %d)", totalPaths, totalSpecs)
+	OpenapiGlobalMapMutex.RUnlock()
 
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
@@ -245,7 +300,13 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() {
 func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) error {
 	defer wg.Done()
 
+	OpenapiGlobalMapMutex.RLock()
+	models.Logger.Printf("Number of paths v%s: %d", version,
+		reflect.ValueOf(OpenapiGlobalMap[version].(map[string]interface{})["paths"].(map[string]interface{})).Len())
+
 	file, _ := json.MarshalIndent(OpenapiGlobalMap[version], "", " ")
+	OpenapiGlobalMapMutex.RUnlock()
+
 	os.WriteFile("/home/site/data/"+version+"/api-docs.json", file, 0644)
 
 	cmd := exec.Command("swagger-cli", "validate", "/home/site/data/"+version+"/api-docs.json")

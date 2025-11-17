@@ -1,6 +1,10 @@
 <ol class="main-nav-ol">
   {{- template "main-nav-tree" dict "Pages" .Site.Sections }}
 </ol>
+{{- /* Trigger validation at the end of the build once (output format weight & kind home) */}}
+{{- with templates.Defer }}
+  {{- partial "openapi-validate.html" (dict "key" "global") }}
+{{- end }}
 
 {{- define "main-nav-tree" }}
   {{- $pages := .Pages }}
