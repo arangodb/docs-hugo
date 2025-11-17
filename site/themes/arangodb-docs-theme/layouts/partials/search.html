@@ -1,10 +1,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 <script type="text/javascript">
   window.setupDocSearch = function (facetVersion) {
-    if (!window.docsearch) return;
+    if (!window.docsearch) {
+      return;
+    }
+    if (window.setupDocSearch.previousVersion && window.setupDocSearch.previousVersion == facetVersion) {
+      return;
+    }
+    window.setupDocSearch.previousVersion = facetVersion;
     docsearch({
       appId: "OK3ZBQ5982",
       apiKey: "500c85ccecb335d507fe4449aed12e1d",

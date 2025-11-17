@@ -1,0 +1,29 @@
+---
+title: List CA Certificates with `oasisctl`
+menuTitle: List CA Certificates
+weight: 11
+---
+
+List all CA certificates of the given project
+
+```
+oasisctl list cacertificates [flags]
+```
+
+## Options
+```
+  -h, --help                     help for cacertificates
+  -o, --organization-id string   Identifier of the organization
+  -p, --project-id string        Identifier of the project
+```
+
+## Options Inherited From Parent Commands
+```
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
+      --format string     Output format (table|json) (default "table")
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
+```
+
+## See also
+* [oasisctl list](_index.md)	 - List resources
+

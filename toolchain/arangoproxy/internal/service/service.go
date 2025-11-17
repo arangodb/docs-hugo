@@ -10,6 +10,7 @@ import (
 	"reflect"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -45,7 +46,7 @@ type JSService struct{}
 
 func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
-	models.Logger.Debug("[%s] Choosen Repository: %s", request.Options.Name, repository.Version)
+	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
@@ -70,7 +71,7 @@ func (service CurlService) Execute(request models.Example, cacheChannel chan map
 	commands := curlFormatter.FormatCommand(request.Code)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
-	models.Logger.Debug("[%s] Choosen Repository: %s", request.Options.Name, repository.Version)
+	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
@@ -101,7 +102,7 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
-	models.Logger.Debug("[%s] Choosen Repository: %s", request.Options.Name, repository.Version)
+	models.Logger.Debug("[%s] Chosen repository: %s", request.Options.Name, repository.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res.ExampleResponse.Input, res.ExampleResponse.Options, res.ExampleResponse.Output = request.Code, request.Options, responseMsg
@@ -136,50 +137,55 @@ type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
 var OpenapiGlobalMap map[string]interface{}
-var Versions []models.Version
+var Versions map[string][]models.Version
 
 func init() {
 	OpenapiGlobalMap = make(map[string]interface{})
 	Versions = models.LoadVersions()
 
-	for _, version := range Versions {
-		tags := []map[string]string{}
-		yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
-		if err != nil {
-			models.Logger.Printf("[ERROR] Opening openapi_tags file: %s", err.Error())
-			os.Exit(1)
+	for key, versionList := range Versions {
+		if key != "/arangodb/" {
+			continue
 		}
+		for _, version := range versionList {
+			tags := []map[string]string{}
+			yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
+			if err != nil {
+				models.Logger.Printf("[ERROR] Opening openapi_tags file: %s", err.Error())
+				os.Exit(1)
+			}
 
-		yaml.Unmarshal(yamlFile, &tags)
+			yaml.Unmarshal(yamlFile, &tags)
 
-		// License of the exposed API (but we assume it is the same as the source code)
-		license := map[string]interface{}{
-			"name": "Business Source License 1.1",
-			"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
-		}
-		if version.Name == "3.10" || version.Name == "3.11" {
-			license["name"] = "Apache 2.0"
-			license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
-		}
+			// License of the exposed API (but we assume it is the same as the source code)
+			license := map[string]interface{}{
+				"name": "Business Source License 1.1",
+				"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
+			}
+			if version.Name == "3.10" || version.Name == "3.11" {
+				license["name"] = "Apache 2.0"
+				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
+			}
 
-		OpenapiGlobalMap[version.Name] = map[string]interface{}{
-			"openapi": "3.1.0",
-			"info": map[string]interface{}{
-				"title":   "ArangoDB Core API",
-				"summary": "The RESTful HTTP API of the ArangoDB Core Database System",
-				"version": version.Version,
-				"license": license,
-				"contact": map[string]interface{}{
-					"name": "ArangoDB Inc.",
-					"url":  "https://arangodb.com",
+			OpenapiGlobalMap[version.Name] = map[string]interface{}{
+				"openapi": "3.1.0",
+				"info": map[string]interface{}{
+					"title":   "ArangoDB Core API",
+					"summary": "The RESTful HTTP API of the ArangoDB Core Database System",
+					"version": version.Version,
+					"license": license,
+					"contact": map[string]interface{}{
+						"name": "ArangoDB Inc.",
+						"url":  "https://arango.ai",
+					},
 				},
-			},
-			"paths": make(map[string]interface{}),
-			"tags":  tags,
-			"externalDocs": map[string]interface{}{
-				"description": "ArangoDB Documentation",
-				"url":         "https://docs.arangodb.com",
-			},
+				"paths": make(map[string]interface{}),
+				"tags":  tags,
+				"externalDocs": map[string]interface{}{
+					"description": "Arango Documentation",
+					"url":         "https://docs.arango.ai",
+				},
+			}
 		}
 	}
 }
@@ -219,16 +225,21 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() {
-	//time.Sleep(time.Second * 4)
+	time.Sleep(time.Second * 4) // TODO: Investigate timing issue
 	var wg sync.WaitGroup
 	models.Logger.Summary("<h2>OPENAPI</h2>")
 
-	for _, version := range Versions {
-		wg.Add(1)
-		go service.ValidateFile(version.Name, &wg)
-	}
+	for key, versionList := range Versions {
+		if key != "/arangodb/" {
+			continue
+		}
+		for _, version := range versionList {
+			wg.Add(1)
+			go service.ValidateFile(version.Name, &wg)
+		}
 
-	wg.Wait()
+		wg.Wait()
+	}
 }
 
 func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) error {
