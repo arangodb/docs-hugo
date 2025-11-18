@@ -138,22 +138,25 @@ var OpenapiFormatter = format.OpenapiFormatter{}
 var OpenapiGlobalMap map[string]interface{}
 var OpenapiGlobalMapMutex sync.RWMutex
 var OpenapiPendingSpecs sync.WaitGroup
-var OpenapiSpecCounter int
+var OpenapiSpecCounter map[string]int
 var OpenapiSpecCounterMutex sync.Mutex
+var OpenapiRejectedSpecs int
+var OpenapiRejectedSpecsMutex sync.Mutex
 var Versions map[string][]models.Version
 
 func init() {
 	OpenapiGlobalMap = make(map[string]interface{})
+	OpenapiSpecCounter = make(map[string]int)
 	Versions = models.LoadVersions()
 
-	models.Logger.Printf("[OpenapiService.init] Initializing OpenAPI maps for versions...")
+	models.Logger.Debug("[OpenapiService.init] Initializing OpenAPI maps for versions...")
 
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
 			continue
 		}
 		for _, version := range versionList {
-			models.Logger.Printf("[OpenapiService.init] Creating OpenAPI map for version: %s", version.Name)
+			models.Logger.Debug("[OpenapiService.init] Creating OpenAPI map for version: %s", version.Name)
 			tags := []map[string]string{}
 			yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
 			if err != nil {
@@ -206,11 +209,14 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	method := reflect.ValueOf(spec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
 
 	OpenapiSpecCounterMutex.Lock()
-	OpenapiSpecCounter++
-	specNum := OpenapiSpecCounter
+	if _, exists := OpenapiSpecCounter[version]; !exists {
+		OpenapiSpecCounter[version] = 0
+	}
+	OpenapiSpecCounter[version]++
+	specNum := OpenapiSpecCounter[version]
 	OpenapiSpecCounterMutex.Unlock()
 
-	models.Logger.Printf("[ProcessOpenapiSpec #%d] Received spec for version '%s': %s %s", specNum, version, method, path)
+	models.Logger.Debug("[ProcessOpenapiSpec #%d] Received spec for version '%s': %s %s", specNum, version, method, path)
 
 	spec["paths"].(map[string]interface{})[path].(map[string]interface{})[method].(map[string]interface{})["summary"] = summary
 
@@ -219,21 +225,27 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 }
 
 func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface{}) error {
+	operationIdMap := make(map[string]bool)
+	errorEncountered := false
 	for openapiSpec := range chnl {
 		versionStr := openapiSpec["version"].(string)
 		specPaths := openapiSpec["paths"].(map[string]interface{})
 		path := reflect.ValueOf(specPaths).MapKeys()[0].String()
 		method := reflect.ValueOf(specPaths[path].(map[string]interface{})).MapKeys()[0].String()
 
-		models.Logger.Printf("[AddSpecToGlobalSpec] Processing path %s %s for version '%s'", method, path, versionStr)
+		models.Logger.Debug("[AddSpecToGlobalSpec] Processing path %s %s for version '%s'", method, path, versionStr)
 
 		OpenapiGlobalMapMutex.Lock()
 
 		// Check if version exists in global map
 		versionMap, versionExists := OpenapiGlobalMap[versionStr]
 		if !versionExists {
+			errorEncountered = true
 			models.Logger.Printf("[ERROR] Version %s not found in OpenapiGlobalMap. Available versions: %v",
 				versionStr, reflect.ValueOf(OpenapiGlobalMap).MapKeys())
+			OpenapiRejectedSpecsMutex.Lock()
+			OpenapiRejectedSpecs++
+			OpenapiRejectedSpecsMutex.Unlock()
 			OpenapiGlobalMapMutex.Unlock()
 			OpenapiPendingSpecs.Done()
 			continue
@@ -242,12 +254,40 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		// Get paths map for this version
 		versionMapTyped := versionMap.(map[string]interface{})
 		pathsMap := versionMapTyped["paths"].(map[string]interface{})
+		newMethodEntry := specPaths[path].(map[string]interface{})[method]
+
+		// Check for duplicate operationId values across all endpoints
+		// (excluding identical endpoint descriptions that due to Hugo caching)
+		operationId := newMethodEntry.(map[string]interface{})["operationId"].(string)
+		opAndVersion := fmt.Sprintf("%s (%s)", operationId, versionStr)
+		if _, operationIdExists := operationIdMap[opAndVersion]; operationIdExists {
+			errorEncountered = true
+			models.Logger.Printf("[ERROR] Duplicate operationId %s", opAndVersion)
+		} else {
+			operationIdMap[opAndVersion] = true
+		}
 
 		// Check if path already exists
 		if existingPath, pathExists := pathsMap[path]; pathExists {
 			// Path exists, add/update method
 			existingPathMap := existingPath.(map[string]interface{})
-			existingPathMap[method] = specPaths[path].(map[string]interface{})[method]
+
+			if methodEntry, methodExists := existingPathMap[method]; !methodExists {
+				existingPathMap[method] = newMethodEntry
+			} else {
+				errorEncountered = true
+				models.Logger.Printf("[ERROR] Method %s already exists for path '%s' in version %s (and the endpoint description is not identical)", strings.ToUpper(method), path, versionStr)
+				// Hugo caches resources.GetRemote, which means for identical endpoint descriptions,
+				// arangoproxy is only called once (per version) and we can't count the duplicates here.
+
+				methodJson, _ := json.MarshalIndent(methodEntry, "", "  ")
+				newMethodJson, _ := json.MarshalIndent(newMethodEntry, "", "  ")
+
+				models.Logger.Printf("--- Existing endpoint %s\n%s\n--- Conflicting endpoint %s\n%s\n%s",
+					strings.Repeat("-", 58), string(methodJson),
+					strings.Repeat("-", 55), string(newMethodJson),
+					strings.Repeat("-", 80))
+			}
 		} else {
 			// Path doesn't exist, add entire path
 			pathsMap[path] = specPaths[path]
@@ -257,31 +297,43 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 
 		OpenapiPendingSpecs.Done()
 	}
+	if errorEncountered {
+		models.Logger.Summary("<error code=2>%s</error>", "Conflict(s) in OpenAPI specifications")
+	}
 	return nil
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() {
-	// Wait for all pending specs to be processed
 	OpenapiSpecCounterMutex.Lock()
-	totalSpecs := OpenapiSpecCounter
+	totalSpecs := 0
+	for _, count := range OpenapiSpecCounter {
+		totalSpecs += count
+	}
 	OpenapiSpecCounterMutex.Unlock()
 
-	models.Logger.Printf("[ValidateOpenapiGlobalSpec] Waiting for %d pending specs to be processed...", totalSpecs)
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] Waiting for %d pending specs to be processed...", totalSpecs)
 	OpenapiPendingSpecs.Wait()
-	models.Logger.Printf("[ValidateOpenapiGlobalSpec] All %d specs processed. Starting validation...", totalSpecs)
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] All specs processed. Starting validation...")
 
 	var wg sync.WaitGroup
 	models.Logger.Summary("<h2>OPENAPI</h2>")
 
-	// Log path counts before validation
 	OpenapiGlobalMapMutex.RLock()
-	totalPaths := 0
+	totalEndpoints := 0
 	for versionKey := range OpenapiGlobalMap {
-		pathCount := reflect.ValueOf(OpenapiGlobalMap[versionKey].(map[string]interface{})["paths"].(map[string]interface{})).Len()
-		totalPaths += pathCount
-		models.Logger.Printf("[ValidateOpenapiGlobalSpec] Version %s has %d paths before validation", versionKey, pathCount)
+		versionEndpoints := 0
+		pathsMap := OpenapiGlobalMap[versionKey].(map[string]interface{})["paths"].(map[string]interface{})
+		for _, pathValue := range pathsMap {
+			pathMethods := pathValue.(map[string]interface{})
+			versionEndpoints += len(pathMethods)
+		}
+		OpenapiSpecCounterMutex.Lock()
+		receivedForVersion := OpenapiSpecCounter[versionKey]
+		OpenapiSpecCounterMutex.Unlock()
+		models.Logger.Debug("[ValidateOpenapiGlobalSpec] Version %s: received %d specs, added %d endpoints", versionKey, receivedForVersion, versionEndpoints)
+		totalEndpoints += versionEndpoints
 	}
-	models.Logger.Printf("[ValidateOpenapiGlobalSpec] Total paths across all versions: %d (expected: %d)", totalPaths, totalSpecs)
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] Total endpoints across all versions: %d (expected: %d, rejected: %d)", totalEndpoints, totalSpecs, OpenapiRejectedSpecs)
 	OpenapiGlobalMapMutex.RUnlock()
 
 	for key, versionList := range Versions {
@@ -301,9 +353,6 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 	defer wg.Done()
 
 	OpenapiGlobalMapMutex.RLock()
-	models.Logger.Printf("Number of paths v%s: %d", version,
-		reflect.ValueOf(OpenapiGlobalMap[version].(map[string]interface{})["paths"].(map[string]interface{})).Len())
-
 	file, _ := json.MarshalIndent(OpenapiGlobalMap[version], "", " ")
 	OpenapiGlobalMapMutex.RUnlock()
 
