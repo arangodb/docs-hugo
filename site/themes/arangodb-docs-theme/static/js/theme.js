@@ -674,7 +674,7 @@ function handleDocumentClick(event) {
     }
 }
 
-window.onload = () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     loadNav().catch(err => console.error("Failed to initialize navigation:", err));
 
@@ -697,4 +697,4 @@ window.onload = () => {
         document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
-}
+});
