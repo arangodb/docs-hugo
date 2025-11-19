@@ -112,7 +112,7 @@ There are two approaches for programmatic access to your ArangoDB MLflow service
 
 ### Configuration in Python
 
-```python
+```py
 import mlflow
 import os
 
@@ -136,7 +136,7 @@ export MLFLOW_TRACKING_TOKEN="your-bearer-token-here"
 
 Then use MLflow normally in your Python code:
 
-```python
+```py
 import mlflow
 
 # MLflow automatically uses the environment variables

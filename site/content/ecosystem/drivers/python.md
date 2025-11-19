@@ -43,7 +43,7 @@ pip install python-arango --upgrade
 
 You can then import the library in your project as follows:
 
-```python
+```py
 from arango import ArangoClient
 ```
 {{< /tab >}}
@@ -60,7 +60,7 @@ pip install python-arango-async --upgrade
 
 You can then import the library in your project as follows:
 
-```python
+```py
 from arangoasync import ArangoClient
 ```
 {{< /tab >}}
@@ -78,7 +78,7 @@ data using queries:
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 from arango import ArangoClient
 
 # Initialize the client for ArangoDB.
@@ -111,7 +111,7 @@ student_names = [document["name"] for document in cursor]
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
 from arangoasync import ArangoClient
 from arangoasync.auth import Auth
 
@@ -150,7 +150,7 @@ async with ArangoClient(hosts="http://localhost:8529") as client:
 You may also use the client without a context manager, but you must ensure to
 close the client when done.
 
-```python
+```py
 from arangoasync import ArangoClient
 from arangoasync.auth import Auth
 
@@ -180,7 +180,7 @@ populate it with nodes and edges, and query it with a graph traversal:
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 from arango import ArangoClient
 
 # Initialize the client for ArangoDB.
@@ -237,7 +237,7 @@ cursor = db.aql.execute(query)
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
 from arangoasync import ArangoClient
 from arangoasync.auth import Auth
 
@@ -309,7 +309,7 @@ database name, user name, and password as parameters.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 from arango import ArangoClient
 
 # Initialize a client
@@ -321,7 +321,7 @@ sys_db = client.db("_system", username="root", password="passwd")
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
 from arangoasync import ArangoClient
 from arangoasync.auth import Auth
 
@@ -344,14 +344,14 @@ To retrieve a list of all databases on an ArangoDB server, connect to the
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Retrieve the names of all databases on the server as list of strings
 db_list = sys_db.databases()
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Retrieve the names of all databases on the server as list of strings
     db_list = await sys_db.databases()
 ```
@@ -368,7 +368,7 @@ To create a new database, connect to the `_system` database and call
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Create a new database named "test".
 ok = sys_db.create_database("test")
 
@@ -378,7 +378,7 @@ test_db = client.db("test", username="root", password="passwd")
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Create a new database named "test".
     ok = await sys_db.create_database("test")
 
@@ -399,14 +399,14 @@ the correct database name when you are deleting databases.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Delete the 'test' database
 sys_db.delete_database("test")
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Delete the 'test' database
     ok = await sys_db.delete_database("test")
 ```
@@ -424,7 +424,7 @@ call `collections()`.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Connect to the database
 db = client.db(db_name, username=user_name, password=pass_word)
 
@@ -434,7 +434,7 @@ collection_list = db.collections()
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Connect to the database
     db = await client.db(db_name, auth=Auth(username=user_name, password=pass_word))
 
@@ -452,7 +452,7 @@ To create a new collection, connect to the database and call `create_collection(
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Create a new collection for doctors
 doctors_col = db.create_collection(name="doctors")
 
@@ -462,7 +462,7 @@ patients_col = db.create_collection(name="patients")
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Create a new collection for doctors
     doctors_col = await db.create_collection(name="doctors")
 
@@ -482,14 +482,14 @@ specify the correct collection name when you delete collections.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Delete the 'doctors' collection
 db.delete_collection(name="doctors")
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Delete the 'doctors' collection
     ok = await db.delete_collection(name="doctors")
 ```
@@ -508,7 +508,7 @@ a parameter.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Get a reference to the 'patients' collection
 patients_col = db.collection(name="patients")
 
@@ -519,7 +519,7 @@ meta2 = patients_col.insert({"name": "John", "age": 18})
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Get a reference to the 'patients' collection
     patients_col = db.collection(name="patients")
 
@@ -552,14 +552,14 @@ a property named `_key` holding the unique key assigned to the document.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Patch John's patient record by adding a city property to the document
 meta = patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Patch John's patient record by adding a city property to the document
     meta = await patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
@@ -593,14 +593,14 @@ the unique key assigned to the document.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Replace John's document
 meta = patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Replace John's document
     meta = await patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
@@ -632,14 +632,14 @@ document containing at least the `_key` attribute as a parameter.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Delete John's document
 patients_col.delete({ "_key": "741603" })
 ```
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Delete John's document
     meta = await patients_col.delete({ "_key": "741603" })
 ```
@@ -658,7 +658,7 @@ iterate over the cursor to automatically fetch the data.
 {{< tabs "python-driver" >}}
 
 {{< tab "python-arango" >}}
-```python
+```py
 # Run a query
 cursor = db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 
@@ -669,7 +669,7 @@ for doc in cursor:
 {{< /tab >}}
 
 {{< tab "python-arango-async" >}}
-```python
+```py
     # Run a query
     cursor = await db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 
