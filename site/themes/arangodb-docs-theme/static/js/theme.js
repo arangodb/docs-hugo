@@ -1,81 +1,12 @@
 var theme = true;
 
-/*
-    Menu
-*/
-
-function toggleMenuItem(event) {
-    const listItem = event.target.parentNode;
-    if (listItem.classList.contains("leaf")) return;
-
-    listItem.querySelector("label").classList.toggle("open");
-    $(listItem.querySelector(".submenu")).slideToggle();
-}
-
-function menuToggleClick(event) {
-    if (event.target.tagName !== "LABEL") return;
-    event.preventDefault();
-    toggleMenuItem(event);
-}
-
-function menuEntryClickListener() {
-    $('.menu-link').on("click", function(event) {
-        event.preventDefault();
-        if (event.target.pathname == window.location.pathname) {
-            toggleMenuItem(event)
-            return
-        }
-        updateHistory(event.target.getAttribute('href'))
-        $('.sidebar.mobile').removeClass("active")
-
-    });
-}
-
-function renderVersion() {
-    var version = localStorage.getItem('docs-version');
-    var menuEntry = document.getElementsByClassName('version-menu');
-    for ( let entry of menuEntry ) {
-        if (entry.classList.contains(version)) {
-            entry.style.display = 'block';
-        } else {
-            entry.style.display = 'none';
-        }
-    }
-}
-
 function closeAllEntries() {
-    $(".dd-item.active").removeClass("active");
-    $(".dd-item > label.open").removeClass("open");
-    $(".submenu").hide();
-    $(".dd-item.parent").removeClass("parent");
-}
-
-function loadMenu(url) {
-    closeAllEntries();
-    var version = getVersionFromURL()
-
-    $('.version-menu.'+version).find('a').each(function() {
-      $(this).attr("href", function(index, old) {
-          return old.replace(old.split("/")[1], version)
-      });
-    });
-
-    var current = $('.dd-item > a[href="' + url + '"]').parent();
-    current.addClass("active");
-    while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
-        if (current.prop("tagName") == "LI") {
-            current.addClass("parent");
-            current.children("label:first").addClass("open");
-            current.children(".submenu:first").show();
-        }
-        
-        current = current.parent();
-    }
+    document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
 }
 
 function showSidebarHandler() {
-    $(".sidebar").toggleClass("active");
-  }
+    document.querySelectorAll(".main-nav").forEach(el => el.classList.toggle("active"));
+}
 
 
 /*
@@ -96,6 +27,16 @@ function replaceArticle(href, newDoc) {
   var re = /<title>(.*?)<\/title>/;
   var match = re.exec(newDoc);
 
+  /* TODO: Replace with DOMParser?
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = newDoc;
+  const newContainer = tempDiv.querySelector(".container-main");
+  const currentContainer = document.querySelector(".container-main");
+  
+  if (newContainer && currentContainer) {
+    currentContainer.parentNode.replaceChild(newContainer, currentContainer);
+  }
+  */
   $(".container-main").replaceWith($(".container-main", newDoc));
   if (match) {
     document.title = decodeHtmlEntities(match[1]);
@@ -108,12 +49,13 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(urlPath) {
-  if (urlPath == window.location.pathname + window.location.hash) {
+  //console.log("updateHistory: " + urlPath);
+  if (!urlPath || urlPath == window.location.pathname + window.location.hash) {
     return
   } 
   
-  window.history.pushState("navchange", "ArangoDB Documentation", urlPath);
-  if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
+  window.history.pushState("navchange", "Arango Documentation", urlPath);
+  //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
@@ -131,117 +73,209 @@ function styleImages() {
 }
 
 function loadNotFoundPage() {
-  $.get({
-    url: window.location.origin + "/notfound.html",
-    success: function(newDoc) {
+  fetch(window.location.origin + "/notfound.html")
+    .then(response => response.text())
+    .then(newDoc => {
       replaceArticle("", newDoc)
       initArticle("");
       return true;
-    },
-  });
+    })
+    .catch(error => console.error('Error loading not found page:', error));
 }
 
 
 function loadPage(target) {
   var href = target;
 
-  if (getVersionInfo(getVersionFromURL()) == undefined) {
-    loadNotFoundPage();
-    return;
-  }
-
-  getCurrentVersion(href);
-  renderVersion();
-  loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionFromURL()).name;
-  href = href.replace(getVersionFromURL(), version);
-  var xhr = new XMLHttpRequest();
-  $.get({
-    xhr: function() { return xhr; },
-    url: href,
-    success: function(newDoc) {
-      if (xhr.responseURL && href.replace(/#.*/, "") !== xhr.responseURL) {
-        updateHistory(xhr.responseURL.replace(version, getVersionFromURL()));
+  var menuPathName = new URL(href).pathname;
+  //console.log(menuPathName);
+  
+  fetch(href)
+    .then(response => {
+      if (!response.ok) {
+        // Handle 404 and other HTTP errors
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      if (response.url && href.replace(/#.*/, "") !== response.url) {
+        updateHistory(response.url);
         return;
       }
+      return response.text();
+    })
+    .then(newDoc => {
+      if (!newDoc) return;
       if (!newDoc.includes("<body>")) {
         // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
         var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
-        updateHistory(match.replace(version, getVersionFromURL()))
+        updateHistory(match);
         return;
       }
-      replaceArticle(href, newDoc)
+      replaceArticle(href, newDoc);
       scrollToFragment();
       initArticle(href);
+      if (window.setupDocSearch) {
+        window.setupDocSearch(getSelectedVersion());
+      }
       return true;
-    },
-    error: function(newDoc) {
-      loadNotFoundPage(href)
-    },
-  });
+    })
+    .catch(error => {
+      console.error('Error loading page:', error);
+      loadNotFoundPage(href);
+    });
 }
 
-function internalLinkListener() {
-  $('.link').on("click", function(event) {
-    if (event.target.getAttribute("target")) {
-      // external link
+function getSelectedVersion() {
+  const version = getVersionFromURL();
+  if (version) return version;
+  return localStorage.getItem("docs-version") ?? "stable";
+
+  /*
+  const storedVersion = localStorage.getItem("docs-version");
+  let alias = "stable";
+  if (version) {
+    alias = getVersionInfo(version).alias;
+  } else if (storedVersion) {
+    alias = getVersionInfo(storedVersion).alias;
+  }
+  return alias;
+  */
+}
+
+function updateActiveNavItem(pathname, scrollIntoView) {
+  // Remove all existing active states
+  document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
+  
+  // Collapse all sections first
+  document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
+  
+  // Find and activate the new item
+  const activeItem = document.querySelector(`.link-nav[href="${pathname}"]`);
+  if (activeItem) {
+    activeItem.classList.add("link-nav-active");
+    // Expand all parent sections
+    document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+
+    if (scrollIntoView) {
+      activeItem.scrollIntoView({ behavior: "auto", block: "center" });
+    }
+  }
+}
+
+function updateVersionSelector() {
+  const currentVersion = getVersionFromURL();
+  if (!currentVersion) return;
+  
+  const versionInfo = getVersionInfo(currentVersion);
+  if (!versionInfo) return;
+  
+  const versionSelector = document.querySelector(".version-selector");
+  if (!versionSelector) return;
+  
+  // Update the selector value
+  if (versionSelector.querySelector(`option[value="${versionInfo.alias}"]`)) {
+    versionSelector.value = versionInfo.alias;
+  }
+  
+  // Update which version's navigation list is visible
+  versionSelector.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(navList => {
+    if (navList.dataset.version == currentVersion) {
+      navList.classList.add("selected-version");
+    } else {
+      navList.classList.remove("selected-version");
+    }
+  });
+  
+  // Update localStorage
+  localStorage.setItem('docs-version', currentVersion);
+}
+
+async function loadNav() {
+  const mainNavPlaceholder = document.querySelector(".main-nav");
+  if (!mainNavPlaceholder) {
+    console.error("Main navigation placeholder not found");
+    return;
+  }
+
+  try {
+    const res = await fetch(window.location.origin + "/nav.html");
+    if (!res.ok) {
+      mainNavPlaceholder.textContent = "Failed to fetch navigation";
       return;
     }
-    event.preventDefault();
-    updateHistory(event.target.getAttribute('href'))
-  });
+    const text = await res.text();
+    const doc = new DOMParser().parseFromString(text, "text/html");
 
-  $('.card-link').on('click', function(event) {
-    event.preventDefault();
-    updateHistory(this.getAttribute('href'))
-  });
-}
+    const mainNavContent = doc.querySelector(".main-nav-ol");
+    if (!mainNavContent) {
+      mainNavPlaceholder.textContent = "Failed to find navigation content";
+      return;
+    }
 
-function codeShowMoreListener() {
-  $('article').on('click', '.code-show-more', function(event) {
-    var t = $(event.target)
-    t.toggleClass("expanded")
-    t.prev().toggleClass("expanded")
-  });
+    // TODO: Support multiple versions
+    const selectedVersion = getSelectedVersion();
+    const versionInfo = getVersionInfo(selectedVersion);
+    if (!versionInfo) {
+      console.log("Selected version not found in version info");
+    }
+    const selectedVersionAlias = versionInfo.alias;
+    const versionSelector = mainNavContent.querySelector(".version-selector");
+    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+      versionSelector.value = selectedVersionAlias;
+      
+      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+        if (navList.dataset.version == selectedVersion) {
+          navList.classList.add("selected-version");
+        } else {  
+          navList.classList.remove("selected-version");
+        }
+      });
+    } else {
+      console.log("Selected/stored version not available in version selector");
+    }
+
+    mainNavPlaceholder.replaceChildren(mainNavContent);
+    
+    // Set initial active state
+    updateActiveNavItem(window.location.pathname, true);
+  } catch (error) {
+    console.error("Error loading navigation:", error);
+    mainNavPlaceholder.textContent = "Failed to load navigation";
+  }
+  return true;
 }
 
 function trackPageView(title, urlPath) {
   if (window.gtag) {
-    gtag('config', 'G-6PSX8LKTTJ', {
+    gtag('config', 'GTM-5QZJWM4J', {
       'page_title': title,
       'page_path': urlPath
     });
   }
-
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', urlPath]);
-  _hsq.push(['trackPageView']);
 }
 
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
   addShowMoreButton('article');
-  initClickHandlers();
+  hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
-  internalLinkListener();
-  codeShowMoreListener();
-  aliazeLinks('article', 'a.link:not([target]), a.card-link, a.header-link');
-  aliazeLinks('.breadcrumbs', 'a')
+  linkToVersionedContent();
+  updateActiveNavItem(window.location.pathname, false);
+  updateVersionSelector();
 }
 
 
 
-$(window).on('popstate', function (e) {
-  var state = e.originalEvent.state;
+window.addEventListener('popstate', function (e) {
+  var state = e.state;
   if (state !== null) {
     loadPage(window.location.href);
   }
 });
 
-$(window).on('hashchange', function (e) {
-  window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+window.addEventListener('hashchange', function (e) {
+  window.history.pushState("popstate", "Arango Documentation", window.location.href);
   scrollToFragment()
 });
 
@@ -273,7 +307,7 @@ function tocHiglighter() {
   if (window.innerWidth <= 768) return;
   var anchors = getAllAnchors();
 
-  var scrollTop = $(document).scrollTop();
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
   anchors.forEach(anchor => {
     const rect = anchor.getBoundingClientRect();
@@ -303,7 +337,7 @@ function throttle(callback, limit) {
   }
 }
 
-$(window).scroll(throttle(function() {
+window.addEventListener('scroll', throttle(function() {
   tocHiglighter();
   backToTopButton();
 }, 250));
@@ -314,17 +348,28 @@ $(window).scroll(throttle(function() {
 */
 
 function switchTab(tabGroup, tabId, event) {
-  var tabs = jQuery(".tab-panel").has("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-  var allTabItems = tabs.find("[data-tab-group='"+tabGroup+"']");
-  var targetTabItems = tabs.find("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
+  var tabs = document.querySelectorAll(".tab-panel");
+  var allTabItems = [];
+  var targetTabItems = [];
+  
+  tabs.forEach(tab => {
+    const groupItems = tab.querySelectorAll("[data-tab-group='" + tabGroup + "']");
+    const targetItems = tab.querySelectorAll("[data-tab-group='" + tabGroup + "'][data-tab-item='" + tabId + "']");
+    if (targetItems.length > 0) {
+      allTabItems.push(...groupItems);
+      targetTabItems.push(...targetItems);
+    }
+  });
+  
   if (event) {
       var clickedTab = event.target;
       var topBefore = clickedTab.getBoundingClientRect().top;
   }
 
-  allTabItems.removeClass("selected");
-  targetTabItems.addClass("selected");
-  addShowMoreButton(targetTabItems);
+  allTabItems.forEach(item => item.classList.remove("selected"));
+  targetTabItems.forEach(item => item.classList.add("selected"));
+  targetTabItems.forEach(item => addShowMoreButton(item));
+  
   if (event) {
       // Keep relative offset of tab in viewport to avoid jumping content
       var topAfter = clickedTab.getBoundingClientRect().top;
@@ -376,82 +421,10 @@ function getVersionInfo(version) {
 }
 
 function getVersionFromURL() {
-  return window.location.pathname.split("/")[1]
+  // TODO: Make this data-driven
+  var splitUrl = window.location.pathname.split("/");
+  if (splitUrl[1] == "arangodb") return splitUrl[2];
 }
-
-function isUsingAlias() {
-  let urlVersion = getVersionFromURL();
-  for (let v of versions) {
-    if (urlVersion == v.alias) return true;
-  }
-  return false;
-}
-
-function aliazeLinks(parentSelector, linkSelector) {
-  if (!isUsingAlias()) return;
-  let nameAliasMapping = {};
-  for (let v of versions) {
-    nameAliasMapping[v.name] = v.alias;
-  }
-
-  $(parentSelector).find(linkSelector).each(function() {
-    $(this).attr("href", function(index, old) {
-          if (old == undefined || old.startsWith("#")) return old;
-          let splitLink = old.split("/");
-          let linkVersion = splitLink[1];
-          let alias = nameAliasMapping[linkVersion] || linkVersion;
-          splitLink.splice(1, 1, alias);
-          return splitLink.join("/");
-    });
-  });
-}
-
-function setVersionSelector(version) {
-  for(let option of document.querySelector(".arangodb-version").options) {
-    if (option.value == version) {
-      option.selected = true;
-    }
-  }
-}
-
-function getCurrentVersion() {
-  var urlVersion = stableVersion.name
-
-  if (window.location.pathname.split("/").length > 0) {
-    newVersion = getVersionFromURL()
-
-    if (getVersionInfo(newVersion) == undefined) {
-      loadNotFoundPage();
-      return;
-    }
-
-    urlVersion = getVersionInfo(newVersion).name
-  }
-
-  localStorage.setItem('docs-version', urlVersion);
-  setVersionSelector(urlVersion);
-}
-
-
-function changeVersion() {
-    var oldVersion = localStorage.getItem('docs-version');
-    var versionSelector = document.querySelector(".arangodb-version");
-    var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
-
-    try {
-        localStorage.setItem('docs-version', newVersion);
-        renderVersion();
-        window.setupDocSearch(newVersion);
-    } catch(exception) {
-      console.log({exception})
-        changeVersion();
-    }
-
-    
-    var newUrl = window.location.pathname.replace(getVersionFromURL(), getVersionInfo(newVersion).alias) + window.location.hash;
-    updateHistory(newUrl);
-}
-
 
 /*
     Openapi
@@ -461,8 +434,9 @@ function changeVersion() {
 function hideEmptyOpenapiDiv() {
     var lists = document.getElementsByClassName("openapi-parameters")
     for (let list of lists) {
-        if ($(list).find(".openapi-table").text().trim() == "") {
-            $(list).addClass("hidden");
+        const table = list.querySelector(".openapi-table");
+        if (table && table.textContent.trim() == "") {
+            list.classList.add("hidden");
         }
     }
  }
@@ -487,18 +461,6 @@ function hideEmptyOpenapiDiv() {
   }
  }
 
-function initClickHandlers() {
-    hideEmptyOpenapiDiv();
-
-    $(".openapi-prop").on("click", function(event) {
-        if (this === event.target) {
-            $(event.target).toggleClass("collapsed");
-            $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
-        }
-    });
-    
-}
-
 
 /*
     Common custom functions
@@ -521,53 +483,218 @@ const goToTop = (event) => {
         window.scrollTo({top: 0});
 };
 
-
-
-function goToHomepage(event){
-    event.preventDefault();
-    var homepage = "/" + getVersionFromURL() + "/";
-    updateHistory(homepage);
-}
-
 function copyURI(evt) {
-    navigator.clipboard.writeText(
-      window.location.origin + evt.target.closest("a").getAttribute('href')
-    ).then(() => {}, () => {
+    const url = window.location.origin + evt.target.closest("a").getAttribute('href')
+    navigator.clipboard.writeText(url).then(() => {}, () => {
       console.log("clipboard copy failed");
     });
+    updateHistory(url);
 }
 
+function toggleExpandShortcode(event) {
+    var t = event.target.closest("a");
+    var parent = t.parentNode;
+    if (parent.classList.contains('expand-expanded') && parent.classList.contains('expand-marked')) {
+        t.nextElementSibling.style.display = 'none';
+    } else if (parent.classList.contains('expand-marked')) {
+        t.nextElementSibling.style.display = 'block';
+    } else {
+        const nextElement = t.querySelector('.expand-content') || t.nextElementSibling;
+        if (nextElement) {
+            slideToggle(nextElement);
+        }
+    }
+    parent.classList.toggle('expand-expanded');
+}
+
+function linkToVersionedContent() {
+  const currentVersion = getVersionFromURL();
+  if (currentVersion) {
+    if (currentVersion !== "stable" && currentVersion !== "devel") return;
+    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      if (matches && matches.length > 2) {
+        const newUrl = "/arangodb/" + currentVersion + matches[2];
+        //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
+      }
+    });
+  } else {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+      const originalUrl = el.getAttribute("href");
+      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const previousVersion = localStorage.getItem('docs-version') ?? "stable";
+      if (matches && matches.length > 2 && previousVersion) {
+        const newUrl = "/arangodb/" + previousVersion + matches[2];
+        //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
+        el.setAttribute("href", newUrl);
+      }
+    });
+  }
+}
+
+function handleDocumentChange(event) {
+  const target = event.target;
+  if (target.classList.contains("version-selector")) {
+    const selectedVersion = target.value;
+    const currentPath = window.location.pathname;
+    //const versionedPath = target.dataset.path;
+
+    localStorage.setItem('docs-version', selectedVersion); // TODO: handle multiple
+    if (window.setupDocSearch) {
+      window.setupDocSearch(selectedVersion);
+    }
+    target.closest(".nav-section").querySelectorAll(":scope > .nav-ol").forEach(
+      el => {
+        if (el.dataset.version == selectedVersion) {
+          el.classList.add("selected-version");
+        } else {
+          el.classList.remove("selected-version");
+        }
+      }
+    );
+
+    const corePath = "/arangodb/";
+    if (currentPath.startsWith(corePath) && currentPath !== corePath) {
+      const idx = currentPath.indexOf("/", corePath.length);
+      const newPath = window.location.origin + corePath + selectedVersion + currentPath.slice(idx) + window.location.hash;
+      //console.log("handleDocumentChange: " + newPath);
+      updateHistory(newPath);
+      loadPage(newPath);
+    }
+  }
+}
+
+// Central click handler using event delegation
+function handleDocumentClick(event) {
+    const target = event.target;
+    const closest = (selector) => target.closest(selector);
+
+    if (target.classList.contains("expand-nav")) return;
+  
+    // Menu link clicks
+    if (target.classList.contains("link-nav")) {
+        event.preventDefault();
+        target.closest(".main-nav").classList.remove("active");
+        document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
+        target.classList.add("link-nav-active");
+        closeAllEntries();
+        document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
+        if (target.parentElement.classList.contains("nav-section-header")) {
+          target.parentElement.querySelector(".expand-nav > input").checked = true;
+        }
+        const href = target.getAttribute('href');
+        if (href) {
+            updateHistory(href);
+        } else {
+          console.log("Nav link has no href");
+        }
+        return;
+    }
+  
+    // Internal link clicks (.link)
+    if (target.classList.contains('link') && !target.getAttribute("target")) {
+        event.preventDefault();
+        let href = target.getAttribute('href');
+        if (href) {
+            updateHistory(href);
+        }
+        return;
+    }
+  
+    // Card link clicks
+    if (target.classList.contains('card-link')) {
+        event.preventDefault();
+        const href = target.getAttribute('href');
+        if (href) {
+            updateHistory(href);
+        }
+        return;
+    }
+  
+    // Code show more button clicks
+    if (closest('.code-show-more')) {
+        target.classList.toggle("expanded");
+        const prevElement = target.previousElementSibling;
+        if (prevElement) prevElement.classList.toggle("expanded");
+        return;
+    }
+  
+    // OpenAPI property clicks
+    if (closest('.openapi-prop') && target === closest('.openapi-prop')) {
+        target.classList.toggle("collapsed");
+        const content = target.querySelector('.openapi-prop-content');
+        if (content) content.classList.toggle("hidden");
+        return;
+    }
+  
+    // OpenAPI table show children clicks
+    if (closest('.openapi-table.show-children')) {
+        target.classList.toggle("collapsed");
+        const nextTable = target.nextElementSibling;
+        if (nextTable && nextTable.classList.contains('openapi-table')) {
+            nextTable.classList.toggle("hidden");
+        }
+        return;
+    }
+  
+    // Tab clicks
+    if (target.hasAttribute('data-tab-group') && target.hasAttribute('data-tab-item')) {
+        event.preventDefault();
+        switchTab(target.getAttribute('data-tab-group'), target.getAttribute('data-tab-item'), event);
+        return;
+    }
+  
+    // Back to top button
+    if (closest('.back-to-top')) {
+        event.preventDefault();
+        goToTop(event);
+        return;
+    }
+  
+    // Copy URI clicks
+    if (closest('.header-link')) {
+        event.preventDefault();
+        copyURI(event);
+        return;
+    }
+  
+    // Homepage clicks
+    if (target.classList.contains('home-link')) {
+        event.preventDefault();
+        updateHistory("/");
+        return;
+    }
+ 
+    // Mobile menu toggle
+    if (closest('.sidebar-toggle-navigation')) {
+        showSidebarHandler();
+        return;
+    }
+}
 
 window.onload = () => {
-    window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-    trackPageView(document.title, window.location.pathname);
 
-    var iframe =  document.querySelector('.menu-iframe');
-    var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
-    content = iFrameBody.querySelector('.sidebar');
+    loadNav().catch(err => console.error("Failed to initialize navigation:", err));
 
-    iframe.replaceWith(content);
+    window.history.pushState("popstate", "Arango Documentation", window.location.href);
+    //trackPageView(document.title, window.location.pathname);
 
-    getCurrentVersion(window.location.href);
-    menuEntryClickListener();
-    renderVersion();
-    loadPage(window.location.href)
-
-    if (getVersionInfo(getVersionFromURL()) != undefined) {
-      window.setupDocSearch(getVersionInfo(getVersionFromURL()).name);
-    } else {
-      window.setupDocSearch(stableVersion);
-
+    const currentVersion = getVersionFromURL();
+    if (currentVersion) {
+      localStorage.setItem('docs-version', currentVersion);
     }
 
-    content.addEventListener("click", menuToggleClick);
+    loadPage(window.location.href)
 
+    // Add central click handler to document
+    document.addEventListener("click", handleDocumentClick);
+    document.addEventListener("change", handleDocumentChange);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        $('.sidebar').addClass("mobile");
-        $('.sidebar.mobile').removeClass("active");
+        document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
-    $('.page-wrapper').css("opacity", "1")
 }

@@ -4,5 +4,5 @@
   {{- errorf "Found illegal level 1 Header in '%v' -> '%v'" .Page.RelPermalink .Text }}
   {{- $level := 2 }}
 {{- end }}
-<h{{ $level }} id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }} <a href="{{ $ref | safeURL }}" class="header-link" onclick="copyURI(event)"><span></span><i class="fa fa-link"></i></a></h{{ $level }}>
+<h{{ $level }} id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }} <a href="{{ $ref | safeURL }}" class="header-link"><span></span><i class="fa fa-link"></i></a></h{{ $level }}>
 {{- .Page.Scratch.Set "currentHeadline" .Text }}

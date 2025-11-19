@@ -11,7 +11,7 @@
 {{- $isRemote := ne $url.Scheme "" }}
 
 {{- if $isRemote }}
-  {{- $isProduction := eq site.BaseURL "https://docs.arangodb.com" }}
+  {{- $isProduction := eq site.BaseURL "https://docs.arango.ai/" }}
   {{- if and (not $isProduction) (eq .Destination "https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
     {{- $permalink = "https://dashboard.arangodb.cloud/home" }}
   {{- else }}
@@ -41,7 +41,7 @@
       {{- end }}
       {{- $permalink = printf "%s%s" $page.RelPermalink $fragment }}
     {{- else }}
-      {{- if ne $currentPage "/" }}
+      {{- if and (ne $currentPage "/") (not (or (strings.HasPrefix $currentPage "/arangodb/stable/") (strings.HasPrefix $currentPage "/arangodb/devel/"))) }}
         {{- if site.Params.failOnBrokenLinks }}
           {{- errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile }}
         {{- else }}

@@ -8,7 +8,7 @@
   {{- $url := index $match 2 }}
   {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
   {{- if not $isRemote }}
-    {{- $absUrl := printf "https://docs.arangodb.com%s" (urls.RelRef $page $url) }}
+    {{- $absUrl := printf "https://docs.arango.ai%s" (urls.RelRef $page $url) }}
     {{- $newLink := printf "[%s](%s)" (index $match 1) $absUrl }}
     {{- $linkMap = merge $linkMap (dict (index $match 0) $newLink) }}
   {{- end }}
@@ -169,7 +169,7 @@
             {{- $statusDescription := index $statusMap $status }}
             {{- if not $statusDescription }}{{ errorf "OpenAPI: %v missing in HTTP status code mapping" $status }}{{ end }}
             <span class="openapi-property-type bold-text">{{ $statusDescription }}</span>
-            <a href="{{ printf "#%s" $statusId }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+            <a class="openapi-property-link" href="{{ printf "#%s" $statusId }}"><i class="fa fa-link"></i></a>
           </summary>
             {{- $description := $content.description | $page.RenderString }}
             <div class="openapi-prop-content">
@@ -226,7 +226,7 @@
             <span class="bold-text">{{ $value.schema.type }}</span>
             {{- if isset $value.schema "default" }} (default: <code>{{ $value.schema.default | jsonify }}</code>){{ end }}
           </span>
-          <a href="{{ printf "#%s" $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+          <a class="openapi-property-link" href="{{ printf "#%s" $anchor }}"><i class="fa fa-link"></i></a>
         </summary>
         {{- $description := $value.description | $page.RenderString }}
         <div class="openapi-prop-content">
@@ -266,7 +266,7 @@
           <span class="bold-text">{{ $type }}</span>
           {{- if isset $value "default" }} (default: <code>{{ $value.default | jsonify }}</code>){{ end }}
         </span>
-        <a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+        <a class="openapi-property-link" href="#{{ $anchor }}"><i class="fa fa-link"></i></a>
       </summary>
       {{- $description := $value.description | $page.RenderString }}
       <div class="openapi-prop-content">

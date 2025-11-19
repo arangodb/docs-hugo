@@ -5,6 +5,7 @@
 node_modules/
 *.pyc
 /.vs
+*.log
 
 /site/data/*/api-docs.json
 /site/public/
