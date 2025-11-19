@@ -1,20 +1,21 @@
 {{- $deprecated := .Page.Store.Get "deprecated" }}
 {{- $shortVersion := .Page.Store.Get "versionShort" }}
-{{- $stableVersion := .Page.Store.Get "stableVersion" }}
 
 {{- if $deprecated }}
-  {{- $href := printf "/%s/" $stableVersion }}
-  {{- $nonDeprecatedPath := replace .Page.File.Path $shortVersion $stableVersion }}
-  {{- $stablePage := .Page.GetPage $nonDeprecatedPath }}
-  {{- if $stablePage }}
-    {{- $href = $stablePage.RelPermalink }}
+  {{- $href := "/arangodb/stable/" }}
+  {{- $nonDeprecatedPath := .Page.Path | replaceRE (printf "^/arangodb/%s" $shortVersion) "/arangodb/stable" }}
+  {{- $pathMap := partialCached "page-alias-map.html" . }}
+  {{- with index $pathMap $nonDeprecatedPath }}
+    {{- $href = . }}
+  {{- else }}
+    {{- warnf "No corresponding stable version found for deprecated page: %s" $nonDeprecatedPath }}
   {{- end }}
   <div class="box notices cstyle warning">
     <div class="box-content-container">
       <div class="box-content">
         <i class="fas fa-exclamation-triangle"></i>
         <div class="box-text">
-          <p>ArangoDB v{{ $shortVersion }} reached End of Life (EOL) and is no longer supported.</p>
+          <p>ArangoDB {{ $shortVersion }} reached End of Life (EOL) and is no longer supported.</p>
           <p>This documentation is outdated. Please see the most recent <a href="{{ $href }}" class="link">stable version</a>.</p>
         </div>
       </div>

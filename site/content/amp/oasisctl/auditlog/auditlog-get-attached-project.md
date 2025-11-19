@@ -1,0 +1,29 @@
+---
+title: Audit Log Get Attached Project with `oasisctl`
+menuTitle: Audit Log Get Attached Project
+weight: 5
+---
+
+Get an attached log to a project
+
+```
+oasisctl auditlog get attached project [flags]
+```
+
+## Options
+```
+  -h, --help                     help for project
+  -o, --organization-id string   Identifier of the organization
+  -p, --project-id string        Identifier of the project
+```
+
+## Options Inherited From Parent Commands
+```
+      --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
+      --format string     Output format (table|json) (default "table")
+      --token string      Token used to authenticate at the Arango Managed Platform (AMP)
+```
+
+## See also
+* [oasisctl auditlog get attached](auditlog-get-attached.md)	 - Audit get attached resources
+
