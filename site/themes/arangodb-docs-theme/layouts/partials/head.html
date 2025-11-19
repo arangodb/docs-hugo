@@ -1,4 +1,10 @@
 <head>
+  <title>
+    {{- if and .Title (not (eq .Title .Site.Title)) -}}
+      {{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{/* whitespace-control*/ -}}
+    {{ end -}}
+    {{ .Site.Title -}}
+  </title>
   {{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
   {{ if $isProduction -}}
     {{ partialCached "tracking/head-start.html" . -}}
@@ -7,7 +13,6 @@
   {{ partialCached "stylesheet.html" . -}}
   {{ partial "meta.html" . -}}
 
-  <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
   {{ partialCached "favicon.html" . -}}
   {{ partialCached "javascript.html" . -}}
 </head>
