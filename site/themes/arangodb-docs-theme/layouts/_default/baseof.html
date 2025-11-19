@@ -1,30 +1,33 @@
 {{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+{{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
   {{ partial "head.html" . -}}
   <body>
     {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
-    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
-    <div class="page-wrapper page_content_splash" style="height: auto; opacity: 0;">
-      <section class="page-main">
-        <section class="page-container">
-          {{ partialCached "header.html" . -}}
-          <iframe src="/nav.html" title="description" class="menu-iframe active" style="opacity: 0;"></iframe>
-          <div class="container-main">
-            <div class="row-main">
-              {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end -}}
-              {{ block "main" . }}{{ end -}}
-              {{ partial "toc.html" . -}}
-            </div>
+    <noscript>You need to enable JavaScript to use the Arango documentation.</noscript>
+    <section class="page-main">
+      <section class="page-container">
+        {{ partialCached "header.html" . -}}
+        <nav class="main-nav" aria-label="Main">
+          <ol class="main-nav-ol shimmer">
+            {{ range .Site.Sections -}}
+              <li class="nav-section"><a class="link-nav">&nbsp;</a></li>
+            {{ end -}}
+          </ol>
+        </nav>
+        <div class="container-main">
+          <div class="row-main">
+            {{ partial "breadcrumbs.html" . }}
+            {{ block "main" . }}{{ end -}}
+            {{ partial "toc.html" . -}}
           </div>
-        </section>
+        </div>
       </section>
-    </div>
+    </section>
     {{ partialCached "back-to-top.html" . -}}
     {{ partialCached "search.html" . -}}
-    {{ if $isProduction }}{{ partialCached "tracking/body-end.html" . }}{{ end -}}
   </body>
 </html>
 {{- /* Trigger validation at the end of the build once */ -}}
