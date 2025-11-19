@@ -13,21 +13,36 @@
 {{- with .Site.Params.author }}
 <meta name="author" content="{{ . }}">
 {{- end }}
-{{- $versionShort := .Page.Store.Get "versionShort" }}
-{{- with $versionShort }}
-<meta name="docsearch:version" content="{{ . }}">
-{{- end }}
-{{- if .Page.IsHome }}
+{{- $splitPath := split .Path "/" }}
+{{- if and (hasPrefix .Path "/arangodb/") (ge ($splitPath | len) 3) }}
+  {{- $coreVersion := index $splitPath 2 }}
+  <meta name="docsearch:version" content="{{ $coreVersion }}">
+{{- else }}
   {{- $shortVersions := slice }}
-  {{- $versions := site.Data.versions }}
+  {{- $versions := index site.Data.versions "/arangodb/" }}
   {{- range $version := $versions }}
     {{- $shortVersions = $shortVersions | append $version.name }}
-  {{- end }}
+    {{- if ne $version.name $version.alias }}
+      {{- $shortVersions = $shortVersions | append $version.alias }}
+    {{- end }}
+  {{- end -}}
   <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}
-{{- if or (eq .Type "hooks") (.IsHome) }}
-  {{- $redirectPath := printf "/%s" (index (where site.Data.versions "alias" "stable") 0).alias }}
-  <script>
-    window.location.href = "{{ $redirectPath }}/";
-  </script>
+{{- if (hasPrefix .Path "/arangodb/") }}
+  {{- if or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}<meta name="robots" content="noindex">{{ end }}
+  {{- if and (eq (.Page.Store.Get "alias") "stable") (not (hasPrefix .RelPermalink "/arangodb/stable/")) }}
+    {{- $splitLink := split .RelPermalink "/" }}
+    {{- $s := slice "/arangodb" "stable" }}
+    {{- range $i, $e := $splitLink }}
+      {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
+    {{- end }}
+    <link rel="canonical" href="{{ delimit $s "/" }}">
+  {{- else if and (eq (.Page.Store.Get "alias") "devel") (not (hasPrefix .RelPermalink "/arangodb/devel/")) }}
+    {{- $splitLink := split .RelPermalink "/" }}
+    {{- $s := slice "/arangodb" "devel" }}
+    {{- range $i, $e := $splitLink }}
+      {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
+    {{- end }}
+    <link rel="canonical" href="{{ delimit $s "/" }}">
+  {{- end }}
 {{- end }}

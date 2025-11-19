@@ -30,7 +30,7 @@ Invoke Args:
 ### Deploy a plain build to production
 
 To update the live documentation independently of an ArangoDB release, for
-example, because of changes to the ArangoGraph docs or to publish documentation
+example, because of changes to the Data Platform docs or to publish documentation
 improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -48,7 +48,7 @@ improvements before the next ArangoDB release, follow the steps below.
 (The `release-type` is `docs` by default)
 
 The docs-only release workflow runs a **plain build** of the documentation and
-deploys to production at <https://docs.arangodb.com> without approval step.
+deploys to production at <https://docs.arango.ai> without approval step.
 
 ## Example generation
 
@@ -181,7 +181,7 @@ The ArangoDB release workflow includes the following jobs:
 - a release branch and pull request is created with the generated content, which
   needs to be reviewed and merged on GitHub
 - once merged, the workflow in CircleCI needs to be approved to start
-  deploying to production at <https://docs.arangodb.com>
+  deploying to production at <https://docs.arango.ai>
 
 If any of the examples or generated content fails, the workflow fails as well.
 The build report can be found in the `generate-summary` check on GitHub.
@@ -205,7 +205,7 @@ Invoke Args:
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| string | `generators` | `metrics error-codes optimizer options` |
+| string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |
 | string | `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |
@@ -219,9 +219,6 @@ Invoke Args:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate-oasisctl` |
-| string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
-| string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
-| string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
 | string | `generators` | `oasisctl` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |

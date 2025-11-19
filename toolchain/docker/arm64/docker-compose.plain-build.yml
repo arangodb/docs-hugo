@@ -10,10 +10,9 @@ services:
     volumes:
       - ../../../:/home/
     environment:
-      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_URL: ${HUGO_URL:-http://localhost/}
       HUGO_ENV: ${HUGO_ENV:-frontend}
       ENV: ${ENV:-local}
-
 
   arangoproxy-frontend:
     container_name: docs_arangoproxy-frontend
@@ -24,17 +23,16 @@ services:
     volumes:
       - ../../../:/home/
     environment:
-      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_URL: ${HUGO_URL:-http://localhost/}
       HUGO_ENV: ${HUGO_ENV:-frontend}
       ENV: ${ENV:-local}
-
 
 networks:
   docs_plain_net:
     driver: bridge
     name: docs_plain_net
     ipam:
-          driver: default
-          config:
-              - subnet: "192.168.130.0/24"
-                gateway: "192.168.130.1"
+      driver: default
+      config:
+        - subnet: "192.168.130.0/24"
+          gateway: "192.168.130.1"

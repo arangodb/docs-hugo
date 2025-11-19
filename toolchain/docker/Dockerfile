@@ -47,6 +47,6 @@ RUN  apk add --update --no-cache unzip curl jq docker-cli bash python3 py3-pip
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
 
-RUN pip3 install pyyaml
+RUN pip3 install --break-system-packages pyyaml
 
 ENTRYPOINT ["/home/toolchain/scripts/toolchain.sh"]

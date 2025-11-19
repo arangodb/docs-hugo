@@ -34,7 +34,7 @@ echo "[INIT] Environment variables:"
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer"
+  GENERATORS="examples metrics error-codes exit-codes options optimizer"
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
@@ -53,9 +53,9 @@ if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
       export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
 
-if [ "$ARANGODB_BRANCH_3_13" != "" ] ; then
-      export ARANGODB_BRANCH_3_13_IMAGE="$ARANGODB_BRANCH_3_13"
-      export ARANGODB_BRANCH_3_13_VERSION="3.13"
+if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
+      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
+      export ARANGODB_BRANCH_4_0_VERSION="4.0"
 fi
 
 start_servers=false
@@ -67,7 +67,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes exit-codes options optimizer oasisctl"
 fi
 
 
@@ -113,6 +113,11 @@ function main() {
 
     process_server "$server"
   done
+
+  ## Independent of ArangoDB versions/servers
+  if [[ $GENERATORS == *"oasisctl"* ]]; then
+    generate_oasisctl
+  fi
 
   run_arangoproxy_and_site
 
@@ -186,7 +191,7 @@ function get_docker_imageid() {
   ## Get the docker image id to run of the server
   image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
   if [ "$image_id" == "" ]; then
-    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/arangodb:tag
+    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/enterprise:tag
   fi
   echo "$image_id"
 }
@@ -427,12 +432,12 @@ function generators_from_source() {
     generate_error_codes "$version"
   fi
 
-  if [[ $GENERATORS == *"metrics"* ]]; then
-    generate_metrics "$version"
+  if [[ $GENERATORS == *"exit-codes"* ]]; then
+    generate_exit_codes "$version"
   fi
 
-  if [[ $GENERATORS == *"oasisctl"* ]]; then
-    generate_oasisctl "$version"
+  if [[ $GENERATORS == *"metrics"* ]]; then
+    generate_metrics "$version"
   fi
 }
 
@@ -516,6 +521,32 @@ function generate_error_codes() {
   log "[generate_error_codes] Done"
 }
 
+function generate_exit_codes() {
+  echo "<li><strong>Exit Codes</strong>:" >> /home/summary.md
+
+  version=$1
+
+  if [ $version == "" ]; then
+    log "[generate_exit_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
+  touch ../../site/data/$version/exitcodes.yaml
+
+  log "[generate_exit_codes] Launching generate exit-codes script"
+  log "[generate_exit_codes] $PYTHON_EXECUTABLE generators/generateExitCodes.py --src /tmp/"$1"/lib/Basics/exitcodes.dat --dst ../../site/data/$version/exitcodes.yaml"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateExitCodes.py --src /tmp/"$1"/lib/Basics/exitcodes.dat --dst ../../site/data/$version/exitcodes.yaml) 2>&1)
+
+  if [ $? -ne 0 ]; then
+    log "[generate_exit_codes] [ERROR] $res"
+    echo "<error code=9><strong> ERROR: $res</strong></error>" >> /home/summary.md
+  fi
+
+  echo " &#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
+  log "[generate_exit_codes] Done"
+}
+
 function generate_metrics() {
   echo "<li><strong>Metrics</strong>" >> /home/summary.md
 
@@ -545,8 +576,6 @@ function generate_metrics() {
 function generate_oasisctl() {
   echo "<li><strong>OasisCTL</strong>" >> /home/summary.md
 
-  version=$1
-
   log "[generate_oasisctl] Generate OasisCTL docs"
 
   if [ ! -f /tmp/oasisctl.zip ]; then
@@ -557,8 +586,8 @@ function generate_oasisctl() {
   mkdir -p /tmp/oasisctl
   mkdir -p /tmp/preserve
 
-  cp ../../site/content/$version/arangograph/oasisctl/_index.md /tmp/preserve/oasisctl.md > /dev/null
-  rm -r ../../site/content/$version/arangograph/oasisctl/* > /dev/null
+  cp ../../site/content/amp/oasisctl/_index.md /tmp/preserve/oasisctl.md > /dev/null
+  rm -r ../../site/content/amp/oasisctl/* > /dev/null
 
   log "[generate_oasisctl] oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)"
   res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
@@ -567,14 +596,14 @@ function generate_oasisctl() {
     echo "<error code=8><strong> ERROR: </strong>$res</error>" >> /home/summary.md
   fi
 
-  log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
-  res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
+  log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/amp/oasisctl/"
+  res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/amp/oasisctl/) 2>&1 )
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl.py: $res"
     echo "<error code=8><strong> ERROR: Error: </strong>$res</error></li>" >> /home/summary.md
   fi
 
-  cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
+  cp /tmp/preserve/oasisctl.md ../../site/content/amp/oasisctl/_index.md
 
   echo "&#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md

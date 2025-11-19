@@ -1,0 +1,30 @@
+{{ $pathMap := dict -}}
+{{ range $page := .Site.AllPages -}}
+  {{ $pagePath := $page.Path -}}
+  {{ if $pagePath -}}
+    {{ $pagePathNoExt := $pagePath -}}
+    {{ $pathMap = merge $pathMap (dict $pagePathNoExt $page.RelPermalink) -}}
+  {{ end -}}
+
+  {{ with $page.Params.aliases -}}
+    {{ range . -}}
+      {{ $alias := . -}}
+      {{ $fullAliasPath := $alias -}}
+  
+      {{ if not (hasPrefix $alias "/") -}}
+        {{ $baseDir := path.Dir $pagePath -}}
+        {{ if eq (path.Base $pagePath) "_index.md" -}}
+          {{ $baseDir = path.Dir $baseDir -}}
+        {{ end -}}
+        {{ $fullAliasPath = path.Join $baseDir $alias -}}
+      {{ end -}}
+  
+      {{ $fullAliasPath = path.Clean $fullAliasPath -}}
+      {{/* warnf "Alias: %s | Page: %s | Resolved: %s" $alias $pagePath $fullAliasPath */ -}}
+
+      {{ $pathMap = merge $pathMap (dict $fullAliasPath $page.RelPermalink) -}}
+    {{ end -}}
+  {{ end -}}
+{{ end -}}
+
+{{ return $pathMap -}}

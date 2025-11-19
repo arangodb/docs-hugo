@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -49,7 +48,7 @@ type ExampleOptions struct {
 
 // Get an example code block, parse the yaml options and the code itself
 func ParseExample(request io.Reader, headers http.Header) (Example, error) {
-	req, err := ioutil.ReadAll(request)
+	req, err := io.ReadAll(request)
 	if err != nil {
 		Logger.Printf("Error reading Example body: %s\n", err.Error())
 		return Example{}, err

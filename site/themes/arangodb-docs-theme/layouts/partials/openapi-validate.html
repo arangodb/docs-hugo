@@ -1,0 +1,6 @@
+{{ $endpoint := printf "%s/openapi-validate" site.Params.arangoproxyUrl -}}
+{{ $remote := resources.GetRemote $endpoint (dict
+    "method" "post"
+    "body" ""
+  )
+-}}

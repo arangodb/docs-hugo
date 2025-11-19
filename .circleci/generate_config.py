@@ -18,7 +18,7 @@ if sys.version_info[0] != 3:
 
 ## Load versions
 versions = yaml.safe_load(open("versions.yaml", "r"))
-versions = sorted(versions, key=lambda d: d['name']) 
+versions = sorted(versions["/arangodb/"], key=lambda d: d['name']) 
 
 
 print(f"Loaded versions {versions}")
@@ -202,7 +202,7 @@ def workflow_generate_scheduled(config):
     generators = ""
 
     if args.workflow == "generate-scheduled":
-        generators = "metrics error-codes options optimizer"
+        generators = "metrics error-codes exit-codes options optimizer"
     elif args.workflow == "generate-oasisctl":
         generators = "oasisctl"
 
@@ -295,7 +295,7 @@ def workflow_release_arangodb(config):
 def workflow_generate_launch_command(config):
     shell = "\
 export ENV=\"circleci\"\n \
-export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
+export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app/\n \
 export HUGO_ENV=examples\n \
 export OVERRIDE=<< pipeline.parameters.override >>\n \
 export GENERATORS='<< parameters.generators >>'\n"
@@ -389,7 +389,7 @@ set -e\n\
 def workflow_release_launch_command(config):
     shell = "\
 export ENV=\"circleci\"\n \
-export HUGO_URL=https://docs.arangodb.com\n \
+export HUGO_URL=https://docs.arango.ai/\n \
 export HUGO_ENV=release\n \
 export GENERATORS=''\n"
 
