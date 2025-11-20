@@ -41,9 +41,16 @@ echo "<strong>BaseURL</strong>: $HUGO_URL<br>" >> /home/summary.md
 echo "<strong>Environment</strong>: $HUGO_ENV<br>" >> /home/summary.md
 echo "<strong>Options</strong>: $hugoOptions<br>" >> /home/summary.md
 
-res=$(curl -s -I $arangoproxyUrl/openapi-validate | grep HTTP/ | awk {'print $2'})
-if [ "$res" != "200" ]; then
-  echo "<error code=2>Triggering OpenAPI validation failed</error><br>" >> /home/summary.md
+if [ $exit -eq 0 ]; then
+  res=$(curl -s -I $arangoproxyUrl/openapi-validate | grep HTTP/ | awk {'print $2'})
+  curl_exit=$?
+  if [ $curl_exit -ne 0 ]; then
+    echo "<error code=2>Failed to trigger OpenAPI validation (curl error)</error><br>" >> /home/summary.md
+    exit=1
+  elif [ "$res" != "200" ]; then
+    echo "<error code=2>OpenAPI validation failed with HTTP status $res</error><br>" >> /home/summary.md
+    exit=1
+  fi
 fi
 
 sed 's/$/<br>/g' /tmp/hugo-summary.md >> /home/summary.md

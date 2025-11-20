@@ -127,8 +127,14 @@ func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
 func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
 	models.Logger.Printf("Validate openapi specs")
 
-	OPENAPIService.ValidateOpenapiGlobalSpec()
+	err := OPENAPIService.ValidateOpenapiGlobalSpec()
 	w.Header().Set("Content-Type", "text/plain") // Any allow-listed media type
+	if err != nil {
+		models.Logger.Printf("[ValidateOpenapiHandler] Validation failed: %s", err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("OpenAPI validation failed: %s", err.Error())))
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 

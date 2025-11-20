@@ -142,6 +142,8 @@ var OpenapiSpecCounter map[string]int
 var OpenapiSpecCounterMutex sync.Mutex
 var OpenapiRejectedSpecs int
 var OpenapiRejectedSpecsMutex sync.Mutex
+var OpenapiValidationError error
+var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
 
 func init() {
@@ -299,11 +301,12 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 	}
 	if errorEncountered {
 		models.Logger.Summary("<error code=2>%s</error>", "Conflict(s) in OpenAPI specifications")
+		return fmt.Errorf("OpenAPI specification conflicts detected")
 	}
 	return nil
 }
 
-func (service OpenapiService) ValidateOpenapiGlobalSpec() {
+func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	OpenapiSpecCounterMutex.Lock()
 	totalSpecs := 0
 	for _, count := range OpenapiSpecCounter {
@@ -347,6 +350,10 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() {
 
 		wg.Wait()
 	}
+
+	OpenapiValidationErrorMutex.Lock()
+	defer OpenapiValidationErrorMutex.Unlock()
+	return OpenapiValidationError
 }
 
 func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) error {
@@ -371,9 +378,14 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 		if exitError, ok := err.(*exec.ExitError); ok {
 			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
 			models.Logger.Summary("%s</error>", er.String())
+			OpenapiValidationErrorMutex.Lock()
+			if OpenapiValidationError == nil {
+				OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for version %s", version)
+			}
+			OpenapiValidationErrorMutex.Unlock()
 		}
 	} else {
 		models.Logger.Summary("%s &#x2713;", version)
 	}
-	return nil
+	return err
 }
