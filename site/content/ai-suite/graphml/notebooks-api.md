@@ -165,6 +165,7 @@ but you can substitute them as follows for a schema description in terms of JSON
 
 - `jobConfiguration` (dict, _optional): A set of configurations that are applied to the job.
   - `batchSize` (int): The number of documents to process in a single batch. Default is `32`.
+  - `profiles` (list): One or more profiles to specify pod configurations for the project (e.g., `["gpu-g4dn-xlarge"]`). Default is `None`.
   - `runAnalysisChecks` (bool): Whether to run analysis checks, used  to perform a high-level analysis of the data quality before proceeding. Default is `true`.
   - `skipLabels` (bool): Skips the featurization process for attributes marked as `label`. Default is `false`.
   - `useFeatureStore` (bool): Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
@@ -417,11 +418,17 @@ The Training Service depends on a **Training Specification**:
     - `inputFeatures` (str): The name of the feature to be used as input.
     - `labelField` (str): The name of the attribute to be predicted.
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
+    - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `50000`.
+    - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.
+    - `enableGpu` (bool): Enables GPU-accelerated training using GPU-capable profiles configured for the project. Default is `false`.
   - `graphEmbeddings` (dict): Dictionary to describe the Graph Embedding Task Specification.
     - `targetCollection` (str): The ArangoDB collection used to generate the embeddings. 
     - `embeddingSize` (int): The size of the embedding vector. Default is `128`.
     - `batchSize` (int): The number of documents to process in a single training batch. Default is `64`.
     - `generateEmbeddings` (bool): Whether to generate embeddings on the training dataset. Default is `false`.
+    - `dataLoadBatchSize` (int): The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. Default is `50000`.
+    - `dataLoadParallelism` (int): The number of parallel processes used when loading data from ArangoDB into memory for training. Default is `10`.
+    - `enableGpu` (bool): Enables GPU-accelerated training using GPU-capable profiles configured for the project. Default is `false`.
 
 - `metagraph` (dict): Metadata to represent the node & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph` (str): The ArangoDB graph name.
@@ -736,6 +743,9 @@ The Prediction Service depends on a **Prediction Specification**:
 - `modelID` (str): The model ID to use for generating predictions.
 - `featurizeNewDocuments` (bool): Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments` (bool): Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
+- `dataLoadBatchSize` (int): The number of documents to load in a single batch. Default is `500000`.
+- `dataLoadParallelism` (int): The number of parallel threads used to process the prediction workload. Default is `10`.
+- `enableGpu` (bool): Enables GPU-accelerated prediction using GPU-capable profiles configured for the project. Default is `false`.
 - `schedule` (str): A cron expression to schedule the prediction job. The cron syntax is a set of
   five fields in a line, indicating when the job should be executed. The format must follow
   the following order: `minute` `hour` `day-of-month` `month` `day-of-week`

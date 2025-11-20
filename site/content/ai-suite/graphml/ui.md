@@ -54,6 +54,8 @@ format on the right side of the screen for transparency.
 In the **Configuration** tab, you can control the overall featurization job and
 how features are stored.
 - **Batch size**: The number of documents to process in a single batch.
+- **Profiles**: Add one or more profiles to specify pod configurations for the
+  project (e.g., `gpu-g4dn-xlarge`).
 - **Run analysis checks**: Whether to run analysis checks to perform a high-level
   analysis of the data quality before proceeding. The default value is `true`.
 - **Skip labels**: Skip the featurization process for attributes marked as labels.
@@ -112,6 +114,8 @@ features and structural connections within the graph.
 - **Batch Size**: The number of documents processed in a single training iteration. (e.g. `256`)
 - **Data Load Batch Size**: The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`).
 - **Data Load Parallelism**: The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`).
+- **Enable GPU**: Enables GPU-accelerated training using GPU-capable profiles
+  configured for the project (e.g., `gpu-g4dn-xlarge`).
 
 After setting these values, click the **Begin training** button to start the job.
 
@@ -186,6 +190,8 @@ predictions relevant without repeating the entire ML workflow.
 - **Data load parallelism**: The number of parallel threads used to process
   the prediction workload (e.g. `10`).
 - **Prediction field**: The field in the documents where the predicted values are stored.
+- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
+  configured for the project (e.g., `gpu-g4dn-xlarge`).
 
 ![GraphML prediction phase](../../images/graph-prediction.png)
 
