@@ -142,6 +142,8 @@ var OpenapiSpecCounter map[string]int
 var OpenapiSpecCounterMutex sync.Mutex
 var OpenapiRejectedSpecs int
 var OpenapiRejectedSpecsMutex sync.Mutex
+var OpenapiSpecError error
+var OpenapiSpecErrorMutex sync.Mutex
 var OpenapiValidationError error
 var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
@@ -248,6 +250,11 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 			OpenapiRejectedSpecsMutex.Lock()
 			OpenapiRejectedSpecs++
 			OpenapiRejectedSpecsMutex.Unlock()
+			OpenapiSpecErrorMutex.Lock()
+			if OpenapiSpecError == nil {
+				OpenapiSpecError = fmt.Errorf("version %s not found in OpenapiGlobalMap", versionStr)
+			}
+			OpenapiSpecErrorMutex.Unlock()
 			OpenapiGlobalMapMutex.Unlock()
 			OpenapiPendingSpecs.Done()
 			continue
@@ -265,6 +272,11 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		if _, operationIdExists := operationIdMap[opAndVersion]; operationIdExists {
 			errorEncountered = true
 			models.Logger.Printf("[ERROR] Duplicate operationId %s", opAndVersion)
+			OpenapiSpecErrorMutex.Lock()
+			if OpenapiSpecError == nil {
+				OpenapiSpecError = fmt.Errorf("duplicate operationId: %s", opAndVersion)
+			}
+			OpenapiSpecErrorMutex.Unlock()
 		} else {
 			operationIdMap[opAndVersion] = true
 		}
@@ -278,7 +290,8 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 				existingPathMap[method] = newMethodEntry
 			} else {
 				errorEncountered = true
-				models.Logger.Printf("[ERROR] Method %s already exists for path '%s' in version %s (and the endpoint description is not identical)", strings.ToUpper(method), path, versionStr)
+				errorMsg := fmt.Sprintf("Method %s already exists for path '%s' in version %s (and the endpoint description is not identical)", strings.ToUpper(method), path, versionStr)
+				models.Logger.Printf("[ERROR] %s", errorMsg)
 				// Hugo caches resources.GetRemote, which means for identical endpoint descriptions,
 				// arangoproxy is only called once (per version) and we can't count the duplicates here.
 
@@ -289,6 +302,12 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 					strings.Repeat("-", 58), string(methodJson),
 					strings.Repeat("-", 55), string(newMethodJson),
 					strings.Repeat("-", 80))
+
+				OpenapiSpecErrorMutex.Lock()
+				if OpenapiSpecError == nil {
+					OpenapiSpecError = fmt.Errorf("%s", errorMsg)
+				}
+				OpenapiSpecErrorMutex.Unlock()
 			}
 		} else {
 			// Path doesn't exist, add entire path
@@ -351,9 +370,21 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 		wg.Wait()
 	}
 
+	// Check for errors from spec processing
+	OpenapiSpecErrorMutex.Lock()
+	specError := OpenapiSpecError
+	OpenapiSpecErrorMutex.Unlock()
+
+	// Check for errors from swagger-cli validation
 	OpenapiValidationErrorMutex.Lock()
-	defer OpenapiValidationErrorMutex.Unlock()
-	return OpenapiValidationError
+	validationError := OpenapiValidationError
+	OpenapiValidationErrorMutex.Unlock()
+
+	// Return first error encountered
+	if specError != nil {
+		return specError
+	}
+	return validationError
 }
 
 func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) error {
