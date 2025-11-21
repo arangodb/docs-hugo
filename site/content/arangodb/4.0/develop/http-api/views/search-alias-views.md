@@ -211,9 +211,9 @@ db._drop(coll.name());
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/view/{view-name}:
+  /_db/{database-name}/_api/view/{view-name}#searchalias:
     get:
-      operationId: getViewSearchAlias
+      operationId: getView
       description: |
         Returns the basic information about a specific View.
       parameters:
