@@ -219,6 +219,7 @@ paths:
       parameters:
         - name: database-name
           in: path
+          required: true
           example: _system
           description: |
             The name of the database.
