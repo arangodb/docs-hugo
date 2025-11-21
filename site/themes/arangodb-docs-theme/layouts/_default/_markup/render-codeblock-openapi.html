@@ -8,7 +8,9 @@
   {{- $url := index $match 2 }}
   {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
   {{- if not $isRemote }}
-    {{- $absUrl := printf "https://docs.arango.ai%s" (urls.RelRef $page $url) }}
+    {{- $absPath := urls.RelRef $page $url }}
+    {{- $absPathUnaliased := replaceRE "^/arangodb/(?:stable|devel)/" (printf "/arangodb/%s/" $pageVersion) $absPath 1 }}
+    {{- $absUrl := printf "https://docs.arango.ai%s" $absPathUnaliased }}
     {{- $newLink := printf "[%s](%s)" (index $match 1) $absUrl }}
     {{- $linkMap = merge $linkMap (dict (index $match 0) $newLink) }}
   {{- end }}
