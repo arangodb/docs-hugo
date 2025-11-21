@@ -213,13 +213,12 @@ db._drop(coll.name());
 paths:
   /_db/{database-name}/_api/view/{view-name}#searchalias:
     get:
-      operationId: getView
+      operationId: getViewSearchAlias
       description: |
         Returns the basic information about a specific View.
       parameters:
         - name: database-name
           in: path
-          required: true
           example: _system
           description: |
             The name of the database.
