@@ -326,6 +326,15 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
+	// Reset error state from previous validation runs
+	OpenapiSpecErrorMutex.Lock()
+	OpenapiSpecError = nil
+	OpenapiSpecErrorMutex.Unlock()
+
+	OpenapiValidationErrorMutex.Lock()
+	OpenapiValidationError = nil
+	OpenapiValidationErrorMutex.Unlock()
+
 	OpenapiSpecCounterMutex.Lock()
 	totalSpecs := 0
 	for _, count := range OpenapiSpecCounter {
