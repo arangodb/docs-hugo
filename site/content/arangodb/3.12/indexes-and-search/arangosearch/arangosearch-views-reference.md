@@ -398,7 +398,7 @@ of removing unused segments after release of internal resources.
   > subsequent ArangoDB transactions. In-progress ArangoDB transactions
   > still continue to return a repeatable-read state.
 
-- **consolidationIntervalMsec** (_optional_; type: `integer`; default: `1000`;
+- **consolidationIntervalMsec** (_optional_; type: `integer`; default: `5000`;
   to disable use: `0`)
 
   Wait at least this many milliseconds between applying `consolidationPolicy` to
@@ -483,19 +483,19 @@ is used by these writers (in terms of "writers pool") one can use
 
   `consolidationPolicy` properties for `"tier"` type:
 
-  - **segmentsMin** (_optional_; type: `integer`; default: `1`)
+  - **segmentsMin** (_optional_; type: `integer`; default: `50`)
 
     The minimum number of segments that are evaluated as candidates for consolidation.
 
-  - **segmentsMax** (_optional_; type: `integer`; default: `10`)
+  - **segmentsMax** (_optional_; type: `integer`; default: `200`)
 
     The maximum number of segments that are evaluated as candidates for consolidation.
 
-  - **segmentsBytesMax** (_optional_; type: `integer`; default: `5368709120`)
+  - **segmentsBytesMax** (_optional_; type: `integer`; default: `8589934592`)
 
     Maximum allowed size of all consolidated segments in bytes.
 
-  - **segmentsBytesFloor** (_optional_; type: `integer`; default: `2097152`)
+  - **segmentsBytesFloor** (_optional_; type: `integer`; default: `25165824`)
 
     Defines the value (in bytes) to treat all smaller segments as equal for consolidation
     selection.
