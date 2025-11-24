@@ -32,14 +32,42 @@ ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
-The GraphRAG component of AI Suite brings all the capabilities
+The GraphRAG component of the AI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
+
+## Why GraphRAG
 
 GraphRAG is particularly valuable for use cases like the following:
 - Applications requiring in-depth knowledge retrieval
 - Contextual question answering
 - Reasoning over interconnected information
+- Discovery of relationships between concepts across documents
+
+For detailed business scenarios, see [GraphRAG Use Cases](use-cases.md).
+
+## Ways to use GraphRAG
+
+You can interact with GraphRAG in two ways, depending on your needs:
+
+### Web Interface
+
+The [Web Interface](web-interface.md) provides a user-friendly, no-code way to work 
+with GraphRAG.
+
+The web interface guides you through:
+1. Creating projects
+2. Configuring Importer and Retriever services
+3. Uploading documents to build knowledge graphs
+4. Querying your knowledge graph with natural language
+5. Exploring the graph structure visually
+
+### API and Services
+
+The [AI Orchestrator](../reference/ai-orchestrator.md), 
+[Importer](../reference/importer.md), and [Retriever](../reference/retriever.md) 
+services provide programmatic access to create and manage GraphRAG pipelines, 
+and give you access to advanced search methods.
 
 ## How GraphRAG works
 
@@ -76,78 +104,53 @@ information in a structured graph format, allowing efficient querying and retrie
 For detailed information about the service, see the
 [Importer](../reference/importer.md) service documentation.
 
-### Extract information from the Knowledge Graph
+### Query your Knowledge Graph
 
-The Retriever service enables intelligent search and retrieval of information
-from your previously created Knowledge Graph.
-You can extract information from Knowledge Graphs using two distinct methods:
-- Global retrieval
-- Local retrieval
+The Retriever service enables intelligent search and retrieval using multiple 
+search methods optimized for different query types. For detailed information 
+about the service, see the [Retriever](../reference/retriever.md) service documentation.
 
-For detailed information about the service, see the
-[Retriever](../reference/retriever.md) service documentation.
+The Retriever provides different search methods, each optimized for specific query patterns:
 
-#### Global retrieval
+1. **Instant Search**: Fast streaming responses for quick answers
+2. **Deep Search**: LLM-orchestrated multi-step research for comprehensive accuracy
+3. **Global Search**: Community-based analysis for themes and overviews
+4. **Local Search**: Entity-focused retrieval for specific relationships
 
-Global retrieval focuses on:
-- Extracting information from the entire Knowledge Graph, regardless of specific
-  contexts or constraints.
-- Provides a comprehensive overview and answers queries that span across multiple
-  entities and relationships in the graph.
+{{< info >}}
+The Web Interface exposes **Instant Search** and **Deep Search** as the primary 
+methods for ease of use. For access to all search methods with advanced 
+parameters, use the API directly. See [Retriever - Search Methods](../reference/retriever.md#search-methods) 
+for complete details.
+{{< /info >}}
 
-**Use cases:**
-- Answering broad questions that require a holistic understanding of the Knowledge Graph.
-- Aggregating information from diverse parts of the Knowledge Graph for high-level insights.
+## Deployment Options
 
-**Example query:**
+GraphRAG services can be deployed using two approaches, depending on your 
+infrastructure requirements and data governance needs.
 
-Global retrieval can answer questions like _**What are the main themes or topics covered in the document**_?
+### Self-hosted models via Triton Inference Server
 
-During import, the entire Knowledge Graph is analyzed to identify and summarize
-the dominant entities, their relationships, and associated themes. Global
-retrieval uses these community summaries to answer questions from different
-perspectives, then the information gets aggregated into the final response.
+For air-gapped environments or strict data privacy requirements, you can run 
+all models on your own infrastructure.
+The Triton Inference Server serves as the backbone for running your LLM
+and embedding models on your own machines. It handles all model operations, from 
+processing text to generating embeddings, and provides both HTTP and gRPC interfaces 
+for communication.
 
-#### Local retrieval
+For setup instructions, see [Triton Inference Server](../reference/triton-inference-server.md) 
+and [MLflow](../reference/mlflow.md) documentation.
 
-Local retrieval is a more focused approach for:
-- Queries that are constrained to specific subgraphs or contextual clusters
-  within the Knowledge Graph.
-- Targeted and precise information extraction, often using localized sections
-  of the Knowledge Graph.
+### Using OpenAI-compatible endpoints
 
-**Use cases:**
-- Answering detailed questions about a specific entity or a related group of entities.
-- Retrieving information relevant to a particular topic or section in the Knowledge Graph.
+For a simpler setup, you can use any service that exposes an OpenAI-compatible API 
+endpoint. This includes both cloud providers and private corporate LLMs such as
+OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-hosted
+LLM with OpenAI-compatible endpoints.
 
-**Example query:**
-
-Local retrieval can answer questions like _**What is the relationship between entity X and entity Y**_?
-
-Local queries use hybrid search (semantic and lexical) over the Entities
-collection, and then it expands that subgraph over related entities, relations
-(and its LLM-generated verbal descriptions), text chunks, and communities.
-
-### Private LLMs
-
-If you're working in an air-gapped environment or need to keep your data
-private, you can use the private LLM mode with 
-[Triton Inference Server](../reference/triton-inference-server.md).
-
-This option allows you to run the service completely within your own
-infrastructure. The Triton Inference Server is a crucial component when
-running in private LLM mode. It serves as the backbone for running your
-language (LLM) and embedding models on your own machines, ensuring your
-data never leaves your infrastructure. The server handles all the complex
-model operations, from processing text to generating embeddings, and provides
-both HTTP and gRPC interfaces for communication.
-
-### Public LLMs
-
-Alternatively, if you prefer a simpler setup and don't have specific privacy
-requirements, you can use the public LLM mode. This option connects to cloud-based
-services like OpenAI's models via the OpenAI API or a large array of models
-(Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
+For detailed configuration examples, see:
+- [Importer - Deployment Options](../reference/importer.md#deployment-options)
+- [Retriever - Installation](../reference/retriever.md#installation)
 
 ## Limitations
 
