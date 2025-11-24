@@ -979,6 +979,21 @@ header or an invalid URL, it now sends a response with an error object instead
 of closing the connection, e.g. that the URL is corrupt with an HTTP status code
 of 400.
 
+## Changed consolidation defaults for inverted indexes and `arangosearch` Views
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating inverted indexes as well as
+`arangosearch` Views have been changed. By consolidating less often and with
+more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
