@@ -28,7 +28,7 @@ On the other hand, knowledge graphs contain carefully structured data and are
 designed to capture intricate relationships among discrete and seemingly
 unrelated information.
 
-ArangoDB's unique capabilities and flexible integration of knowledge graphs and
+Arango's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
@@ -39,6 +39,7 @@ to your organization.
 ## Why GraphRAG
 
 GraphRAG is particularly valuable for use cases like the following:
+
 - Applications requiring in-depth knowledge retrieval
 - Contextual question answering
 - Reasoning over interconnected information
@@ -48,19 +49,21 @@ For detailed business scenarios, see [GraphRAG Use Cases](use-cases.md).
 
 ## Ways to use GraphRAG
 
-You can interact with GraphRAG in two ways, depending on your needs:
+You can interact with Arango's GraphRAG solution via a web interface or an API,
+depending on your needs.
 
 ### Web Interface
 
 The [Web Interface](web-interface.md) provides a user-friendly, no-code way to work 
 with GraphRAG.
 
-The web interface guides you through:
-1. Creating projects
-2. Configuring Importer and Retriever services
-3. Uploading documents to build knowledge graphs
-4. Querying your knowledge graph with natural language
-5. Exploring the graph structure visually
+The web interface guides you through the process of the following:
+
+1. Creating projects.
+2. Configuring Importer and Retriever services.
+3. Uploading documents to build knowledge graphs.
+4. Querying your knowledge graph with natural language.
+5. Exploring the graph structure visually.
 
 ### API and Services
 
@@ -71,11 +74,12 @@ and give you access to advanced search methods.
 
 ## How GraphRAG works
 
-ArangoDB's GraphRAG solution democratizes the creation and usage of knowledge
+Arango's GraphRAG solution democratizes the creation and usage of knowledge
 graphs with a unique combination of vector search, graphs, and LLMs (privately or publicly hosted)
 in a single product.
 
 The overall workflow involves the following steps:
+
 1. **Chunking**:
    - Breaking down raw documents into text chunks
 2. **Entity and relation extraction for Knowledge Graph construction**:
@@ -112,10 +116,10 @@ about the service, see the [Retriever](../reference/retriever.md) service docume
 
 The Retriever provides different search methods, each optimized for specific query patterns:
 
-1. **Instant Search**: Fast streaming responses for quick answers
-2. **Deep Search**: LLM-orchestrated multi-step research for comprehensive accuracy
-3. **Global Search**: Community-based analysis for themes and overviews
-4. **Local Search**: Entity-focused retrieval for specific relationships
+- **Instant Search**: Fast streaming responses for quick answers.
+- **Deep Search**: LLM-orchestrated multi-step research for comprehensive accuracy.
+- **Global Search**: Community-based analysis for themes and overviews.
+- **Local Search**: Entity-focused retrieval for specific relationships.
 
 {{< info >}}
 The Web Interface exposes **Instant Search** and **Deep Search** as the primary 
@@ -124,9 +128,9 @@ parameters, use the API directly. See [Retriever - Search Methods](../reference/
 for complete details.
 {{< /info >}}
 
-## Deployment Options
+## LLM Options
 
-GraphRAG services can be deployed using two approaches, depending on your 
+The GraphRAG services can utilize public and private LLMs, depending on your 
 infrastructure requirements and data governance needs.
 
 ### Self-hosted models via Triton Inference Server
@@ -154,7 +158,7 @@ For detailed configuration examples, see:
 
 ## Limitations
 
-The pre-release version of ArangoDB GraphRAG has the following limitations:
+The pre-release version of Arango GraphRAG has the following limitations:
 
 - You can only import a single file.
 - The knowledge graph generated from the file is imported into a named graph
