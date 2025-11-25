@@ -43,7 +43,7 @@ You can open the **Project Settings** dialog in two ways:
   the **Open project settings** button.
 - In the **Graph** section, click on the gear icon.
 
-GraphRAG services can be deployed using two approaches:
+The GraphRAG services can use public and private LLMs:
 - **OpenAI-compatible endpoints**: Cloud providers (OpenAI, OpenRouter, Google Gemini, Anthropic Claude) or private corporate LLMs with OpenAI-compatible endpoints.
 - **Self-hosted models via Triton Inference Server**.
 
