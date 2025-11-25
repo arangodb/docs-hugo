@@ -537,7 +537,7 @@ paths:
                       compaction operations are governed by `consolidationIntervalMsec` and the
                       candidates for compaction are selected via `consolidationPolicy`.
                   type: integer
-                  default: 1000
+                  default: 5000
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
@@ -570,24 +570,24 @@ paths:
                         Defines the value (in bytes) to treat all smaller segments as equal for
                         consolidation selection.
                       type: integer
-                      default: 2097152
+                      default: 25165824
                     segmentsBytesMax:
                       description: |
                         The maximum allowed size of all consolidated segments in bytes.
                       type: integer
-                      default: 5368709120
+                      default: 8589934592
                     segmentsMax:
                       description: |
                         The maximum number of segments that are evaluated as candidates for
                         consolidation.
                       type: integer
-                      default: 10
+                      default: 200
                     segmentsMin:
                       description: |
                         The minimum number of segments that are evaluated as candidates for
                         consolidation.
                       type: integer
-                      default: 1
+                      default: 50
                     minScore:
                       description: |
                         Filter out consolidation candidates with a score less than this.
