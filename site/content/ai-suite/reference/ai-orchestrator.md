@@ -79,7 +79,7 @@ Projects are required for the following services:
 To create a new GraphRAG project, send a POST request to the project endpoint:
 
 ```bash
-curl -X POST "https://<ExternalEndpoint>:8529/gen-ai/v1/project" \
+curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
   -H "Authorization: Bearer <your-bearer-token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -99,12 +99,12 @@ Where:
 - **project_description** (optional): A description of your project.
 
 Once created, you can reference your project in service deployments using the 
-`genai_project_name` field:
+`project_name` field:
 
 ```json
 {
   "env": {
-    "genai_project_name": "docs"
+    "project_name": "docs"
   }
 }
 ```
@@ -114,7 +114,7 @@ Once created, you can reference your project in service deployments using the
 **List all project names in a database:**
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/all_project_names/<database_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/all_project_names/<database_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -123,7 +123,7 @@ This returns only the project names for quick reference.
 **List all projects with full metadata in a database:**
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/all_projects/<database_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/all_projects/<database_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -135,7 +135,7 @@ and knowledge graph information.
 Retrieve comprehensive metadata for a specific project:
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/gen-ai/v1/project_by_name/<database_name>/<project_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/project_by_name/<database_name>/<project_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -148,15 +148,15 @@ The response includes:
 
 ### Deleting a project
 
-Remove a project's metadata from the GenAI service:
+Remove a project's metadata from the AI service:
 
 ```bash
-curl -X DELETE "https://<ExternalEndpoint>:8529/gen-ai/v1/project/<database_name>/<project_name>" \
+curl -X DELETE "https://<ExternalEndpoint>:8529/ai/v1/project/<database_name>/<project_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
 {{< warning >}}
-Deleting a project only removes the project metadata from the GenAI service. 
+Deleting a project only removes the project metadata from the AI service. 
 It does **not** delete:
 - Services associated with the project (must be deleted separately)
 - ArangoDB collections and data
