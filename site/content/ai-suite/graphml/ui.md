@@ -23,7 +23,7 @@ To create a new GraphML project using the Arango Data Platform web interface, fo
 
 1. From the left-hand sidebar, select the database where you want to create the project.
 2. In the left-hand sidebar, click **AI Suite** to open the GraphML project management interface, then click **Run GraphML**.
-   ![Create GraphML Project](../../images/create-graphml-project-ui.png)  
+   ![Create GraphML Project](../../images/graphml-ui-create-project.png)  
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
@@ -75,20 +75,20 @@ Real-world datasets often contain missing values or mismatched data types. Use
 the strategies below to control how each feature type (**Text**, **Numeric**,
 **Category**, **Label**) handles these issues during featurization.
 
-| **Strategy type** | **Option**            | **Description**                                                                                     | **When to use**                                               |
-|-------------------|-----------------------|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------|
-| Missing           | **Raise**             | Stops the job and reports an error when a value is missing.                                         | When missing data indicates a critical issue.                 |
-|                   | **Replace**           | Substitutes missing values with a default you provide (e.g., `0` for numbers, `"unknown"` for text).                                  | When missing values are expected.         |
-| Mismatch          | **Raise**             | The strictest option. Stops the job on any data type mismatch.                                                            | When any data type mismatch indicates a critical error.                            |
-|                   | **Replace**           | Replaces mismatched values with a default you provide, without trying to convert it first.                              | When mismatched values are unreliable, and you prefer to substitute it directly.       |
-|                   | **Coerce and Raise**  | Attempts to convert (coerce) the value to the correct type (e.g. string "123" to number `123`). If the conversion is successful, it uses the new value. If it fails, the job stops.              | A balanced approach, often the best default strategy. |
-|                   | **Coerce and Replace**| The most forgiving option. The system first tries to convert the value. If it fails, it replaces the value with the specified default and continues the job.                                | For very dirty datasets where completing the job is the highest priority.          | 
+| **Strategy type** | **Option**             | **Description**                                                                                      | **When to use**                                                                  |
+|-------------------|------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| Missing           | **Raise**              | Stops the job and reports an error when a value is missing.                                          | When missing data indicates a critical issue.                                    |
+|                   | **Replace**            | Substitutes missing values with a default you provide (e.g., `0` for numbers, `"unknown"` for text). | When missing values are expected.                                                |
+| Mismatch          | **Raise**              | The strictest option. Stops the job on any data type mismatch.                                       | When any data type mismatch indicates a critical error.                          |
+|                   | **Replace**            | Replaces mismatched values with a default you provide, without trying to convert it first.           | When mismatched values are unreliable, and you prefer to substitute it directly. |
+|                   | **Coerce and Raise**   | Attempts to convert (coerce) the value to the correct type (e.g. string "123" to number `123`). If the conversion is successful, it uses the new value. If it fails, the job stops. | A balanced approach, often the best default strategy.                     |
+|                   | **Coerce and Replace** | The most forgiving option. The system first tries to convert the value. If it fails, it replaces the value with the specified default and continues the job.                        | For very dirty datasets where completing the job is the highest priority. |
 
 Once you’ve set your strategies, click **Begin featurization** to start the node
 embedding-compatible featurization job. When the job status updates to
 **Ready for training**, proceed to the **Training** step.
 
-![Navigate to Featurization](../../images/graph-ml-ui-featurization.png) 
+![Navigate to Featurization](../../images/graphml-ui-featurization.png) 
 
 ## Training phase
 
@@ -119,7 +119,7 @@ features and structural connections within the graph.
 
 After setting these values, click the **Begin training** button to start the job.
 
-![Node Classification](../../images/ml-nodeclassification.png)
+![Node Classification](../../images/graphml-ui-node-classification.png)
 
 ####  Node embeddings
 
@@ -139,7 +139,7 @@ The target collection is where the model's predictions are stored when running a
 
 Once the configuration is complete, click **Begin training** to start the embedding job.
 
-![Node Embeddings](../../images/ml-node-embedding.png)
+![Node Embeddings](../../images/graphml-ui-node-embedding.png)
 
 ## Model selection phase
 
@@ -151,7 +151,7 @@ A list of trained models is displayed, along with performance metrics
 (**Accuracy**, **Precision**, **Recall**, **F1 score**, **Loss**). Review the results of different
 model runs and configurations.
 
-![GraphML Model Selection](../../images/graph-ml-model.png)
+![GraphML Model Selection](../../images/graphml-ui-model.png)
 
 Select the best performing model suitable for your prediction task. You can also
 open the **Confusion Matrix** to compare predicted values versus actual values.
@@ -193,7 +193,7 @@ predictions relevant without repeating the entire ML workflow.
 - **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
   configured for the project (e.g., `gpu-g4dn-xlarge`).
 
-![GraphML prediction phase](../../images/graph-prediction.png)
+![GraphML prediction phase](../../images/graphml-ui-prediction.png)
 
 ### Configuration options
 
