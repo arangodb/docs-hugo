@@ -15,4 +15,8 @@
 
   {{ partialCached "favicon.html" . -}}
   {{ partialCached "javascript.html" . -}}
+
+  {{ if .IsHome -}}
+  <meta name="google-site-verification" content="wS4rL5CulxktbhwaXO9X4Shd7dFZ97k53jvAA6HrDgU" />
+  {{ end -}}
 </head>
