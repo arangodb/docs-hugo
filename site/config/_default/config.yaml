@@ -24,9 +24,9 @@ module:
       # Version folders can be ignored temporarily for faster local builds
       # of a single version (here: 3.12)
       #excludeFiles:
-      #- arangodb/3.10/*
-      #- arangodb/3.11/*
-      #- arangodb/4.0/*
+      #  - arangodb/3.10/*
+      #  - arangodb/3.11/*
+      #  - arangodb/4.0/*
 
     - source: content/arangodb/3.12
       target: content/arangodb/stable
