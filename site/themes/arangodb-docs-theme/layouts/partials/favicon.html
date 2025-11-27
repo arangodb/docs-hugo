@@ -17,3 +17,7 @@
 {{- if (fileExists "apple-touch-icon.png") }}
 <link href="{{ "apple-touch-icon.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="apple-touch-icon" sizes="180x180">
 {{- end }}
+
+{{- if (fileExists "site.webmanifest") }}
+<link rel="manifest" href="{{ site.webmanifest | relURL }}">
+{{- end }}
