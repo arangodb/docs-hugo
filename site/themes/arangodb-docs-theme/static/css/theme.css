@@ -789,7 +789,7 @@ header .logo {
 }
 
 .home-link {
-    background: url(/images/home.svg) no-repeat 50% 45%;
+    background: url(/home.svg) no-repeat 50% 45%;
     background-size: 80%;
     display: block;
     height: auto;
