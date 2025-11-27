@@ -12,3 +12,4 @@ Disallow: /nav.html
 User-agent: *
 Disallow: /
 {{ end -}}
+Sitemap: /sitemap.xml
