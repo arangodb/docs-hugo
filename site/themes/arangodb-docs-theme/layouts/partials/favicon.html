@@ -19,5 +19,5 @@
 {{- end }}
 
 {{- if (fileExists "site.webmanifest") }}
-<link rel="manifest" href="{{ site.webmanifest | relURL }}">
+<link rel="manifest" href="{{ "site.webmanifest" | relURL }}">
 {{- end }}
