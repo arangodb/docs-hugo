@@ -1,18 +1,19 @@
 {{- $assetBusting := not .Site.Params.disableAssetsBusting }}
-{{- if (fileExists "favicon.ico") }}
-<link href="{{ "favicon.ico" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/x-icon" sizes="any">
+
+{{- if (fileExists "favicon-96x96.png") }}
+<link href="{{ "favicon-96x96.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/png" sizes="96x96">
 {{- end }}
+
 {{- if (fileExists "favicon.svg") }}
 <link href="{{ "favicon.svg" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/svg+xml">
 {{- else if (fileExists "favicon.png") }}
 <link href="{{ "favicon.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/png">
 {{- end }}
-{{- if (fileExists "favicon-48x48.png") }}
-<link href="{{ "favicon-48x48.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/png" sizes="48x48">
+
+{{- if (fileExists "favicon.ico") }}
+<link href="{{ "favicon.ico" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="shortcut icon">
 {{- end }}
-{{- if (fileExists "favicon-192x192.png") }}
-<link href="{{ "favicon-192x192.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="icon" type="image/png" sizes="192x192">
-{{- end }}
+
 {{- if (fileExists "apple-touch-icon.png") }}
 <link href="{{ "apple-touch-icon.png" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="apple-touch-icon" sizes="180x180">
 {{- end }}
