@@ -340,12 +340,28 @@ for related API changes.
 
 #### View API
 
+##### `optimizeTopK` property for `arangosearch` Views
+
 Views of type `arangosearch` accept a new `optimizeTopK` View property for the
 ArangoSearch WAND optimization. It is an immutable array of strings, optional,
 and defaults to `[]`.
 
 See the [`optimizeTopK` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
+
+##### Changed consolidation defaults for `arangosearch` Views
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating `arangosearch` Views have been changed.
+By consolidating less often and with more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
 #### Document API
 
@@ -463,13 +479,27 @@ add the `withHidden=true` query parameter to the call of the endpoint.
 curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
-#### Vector indexes
+##### Vector indexes
 
 <small>Introduced in: v3.12.4</small>
 
 A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
+
+##### Changed consolidation defaults for inverted indexes
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating inverted indexes have been changed.
+By consolidating less often and with more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
 #### Optimizer rule descriptions
 

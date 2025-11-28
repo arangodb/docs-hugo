@@ -529,17 +529,6 @@ a.section-link {
 }
 /* end Cards */
 
-
-.loader{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background: url(/images/loading.gif) 50% 50% no-repeat;
-}
-
 /* Tabs */
 
 .tab-panel .tab-item {
@@ -800,7 +789,7 @@ header .logo {
 }
 
 .home-link {
-    background: url(/images/home.svg) no-repeat 50% 45%;
+    background: url(/home.svg) no-repeat 50% 45%;
     background-size: 80%;
     display: block;
     height: auto;

@@ -39,7 +39,7 @@ Before using the Retriever service, you need to:
 
 1. **Create a GraphRAG project** - For detailed instructions on creating and 
    managing projects, see the [Projects](ai-orchestrator.md#projects) section in the 
-   GenAI Orchestration Service documentation.
+   AI Orchestration Service documentation.
 
 2. **Import data** - Use the [Importer](importer.md) service to transform your 
    text documents into a knowledge graph stored in ArangoDB.
