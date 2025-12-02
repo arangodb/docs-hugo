@@ -3,25 +3,134 @@ title: Enterprise Edition License Management
 menuTitle: License Management
 weight: 20
 description: >-
-  How to apply a license and check the licensing status of an ArangoDB deployment
+  How to activate a deployment, obtain and apply a license key, and check the
+  licensing status of an ArangoDB deployment
 ---
 The Enterprise Edition of ArangoDB requires a license so that you can use
 ArangoDB for commercial purposes and have a dataset size over 100 GiB. See
 [ArangoDB Editions](../../features/_index.md#arangodb-editions)
 for details.
 
-How to set a license key and to retrieve information about the current license
-via different interfaces is described below.
+There are different license management flows:
 
-{{< info >}}
-If you use the ArangoDB Kubernetes Operator (including the Data Platform),
-check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
-for more details on how to set a license key in a Kubernetes-managed deployment.
-{{< /info >}}
+- **Activate a deployment** (from v3.12.6 onward):\
+  Customers receive license credentials composed of a client ID and a client secret.
+  You can use a command-line tool to activate deployments with these credentials,
+  either one-off or continuously.
 
-## Apply a license
+  An activation is generally valid for two weeks and it is recommended to
+  renew the activation weekly.
 
-To use the Enterprise Edition, set the license key like so:
+  {{< info >}}
+  If you use the ArangoDB Kubernetes Operator (including the Data Platform),
+  check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
+  for more details on how to set a license key in a Kubernetes-managed deployment.
+  {{< /info >}}
+
+- **Apply a license key**:\
+  Up to v3.12.5, customers received a license key directly and it was typically
+  valid for one year. From v3.12.6 onward, customers receive license credentials
+  instead. You can use a command-line tool to generate a license key using these
+  credentials, and the license key generally expires every two weeks.
+
+  You can also activate a deployment instead of generating a license key, but
+  this requires an internet connection. For air-gapped environments for example,
+  the license key flow is required and the license key has a longer validity.
+
+How to activate a deployment or apply a license key to it, as well as how to
+retrieve information about the current license via different interfaces is
+described below.
+
+## Activate a deployment
+
+1. Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
+   <https://github.com/arangodb/kube-arangodb/releases>.
+   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
+   architecture (e.g. `arangodb_operator_platform_linux_amd64`).
+
+   It is recommended to rename the downloaded executable to
+   `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
+   the `PATH` environment variable to make it available as a command in the system.
+
+2. Activate a deployment once using the Platform CLI tool. Point it to a running
+   ArangoDB deployment (running on `http://localhost:8529` in this example) and
+   supply the license credentials:
+
+   ```sh
+   arangodb_operator_platform license activate --arango.endpoint http://localhost:8529 --license.client.id "your-corp" --license.client.secret "..."
+   ```
+
+   Unless authentication is disabled for the deployment, you need to additionally
+   supply either ArangoDB user credentials or a JWT session token and specify the
+   authentication method (case-sensitive):
+
+   ```sh
+   # User credentials
+   arangodb_operator_platform license activate --arango.authentication Basic --arango.basic.username "root" --arango.basic.password "" ...
+
+   # JWT session token
+   arangodb_operator_platform license activate --arango.authentication Token --arango.token "eyJh..." ...
+   ```
+
+3. You can specify an activation interval to keep the Platform CLI tool running
+   and have it re-activate the deployment automatically, e.g. once a week:
+
+   ```sh
+   arangodb_operator_platform license activate --license.interval 168h ...
+   ```
+
+## Generate a license key
+
+1. Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
+   <https://github.com/arangodb/kube-arangodb/releases>.
+   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
+   architecture (e.g. `arangodb_operator_platform_linux_amd64`).
+
+   It is recommended to rename the downloaded executable to
+   `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
+   the `PATH` environment variable to make it available as a command in the system.
+
+2. Create an inventory file using the Platform CLI tool. Point it to a running
+   ArangoDB deployment (running on `http://localhost:8529` in this example):
+
+   ```sh
+   arangodb_operator_platform license inventory --arango.endpoint="http://localhost:8529" inventory.json
+   ```
+
+   Unless authentication is disabled for the deployment, you need to additionally
+   supply either ArangoDB user credentials or a JWT session token and specify the
+   authentication method (case-sensitive):
+
+   ```sh
+   # User credentials
+   arangodb_operator_platform license inventory --arango.authentication Basic --arango.basic.username "root" --arango.basic.password "" ...
+
+   # JWT session token
+   arangodb_operator_platform license inventory --arango.authentication Token --arango.token "eyJh..." ...
+   ```
+
+3. Determine the ID of the ArangoDB deployment. You can find it in the inventory file
+   or call the [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id):
+
+   ```sh
+   # User credentials
+   curl -uroot: http://localhost:8529/_admin/deployment/id
+
+   # JWT session token
+   curl -H "Authorization: Bearer eyJh..." http://localhost:8529/_admin/deployment/id
+
+   # Example result:
+   # {"id":"6172616e-676f-4000-0000-05c958168340"}
+   ```
+
+4. Generate the license key using the deployment ID, the inventory file, and the
+   license credentials, and write it to a file:
+
+   ```sh
+   arangodb_operator_platform license generate --deployment.id "6172616e-676f-4000-0000-05c958168340" --inventory inventory.json --license.client.id "your-corp" --license.client.secret "..." 2> license_key.txt
+   ```
+
+## Apply a license key
 
 {{< tabs "interfaces" >}}
 
@@ -32,6 +141,7 @@ To use the Enterprise Edition, set the license key like so:
 4. Expand the **PUT /_admin/license** sub-panel.
 5. Click the **Try it out** button.
 6. Paste the license key into the text area below the **Request body** label.
+   Make sure the key is wrapped in double quotes.
 7. Make sure the license key is surrounded by double quote marks.
 8. Click the **Execute** button.
 9. Scroll down to **Server response** to check the result.
