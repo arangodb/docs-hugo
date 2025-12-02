@@ -2452,6 +2452,27 @@ environment variable `NAME`. If there is an environment variable called `PID` or
 `TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
 value of the respective environment variable.
 
+### License management changes
+
+<small>Introduced: v3.12.6</small>
+
+The Enterprise Edition requires a license and customers used to receive a
+license key directly. Going forward, customers receive license credentials
+instead. You can use a command-line tool to either activate deployments or
+generate license keys using these credentials.
+
+The activation and license keys are now typically short-lived and need to be
+renewed every two weeks. Old license keys remain valid until their regular
+expiration.
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints

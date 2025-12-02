@@ -75,25 +75,27 @@ to provide automated deployment, scaling, and management capabilities.
 
 1. Obtain a zip package of the Arango Data Platform for the offline installation.
    It includes helm charts, manifests, and blobs of the container image layers.
-   You also receive a package configuration file from the Arango team.
+   You also receive a package configuration file and license credentials from the
+   Arango team.
 
 2. Create a Kubernetes namespace for ArangoDB and a secret with your
-   Enterprise Edition license key. Substitute `<license-string>` with the actual
-   license string:
+   license credentials. Substitute `<license-client-id>` and `<license-client-secret>`
+   with the actual license credentials:
 
    ```sh
    kubectl create namespace arangodb
 
    kubectl create secret generic arango-license-key \
      --namespace arangodb \
-     --from-literal=token-v2="<license-string>"
+     --from-literal=license-client-id="<license-client-id>" \
+     --from-literal=license-client-secret="<license-client-secret>"
    ```
 
 3. Install the certificate manager. You can check <https://github.com/cert-manager/cert-manager>
    for the available releases.
 
    ```sh
-   VERSION_CERT='1.18.2' # Use a newer version if available
+   VERSION_CERT='1.19.1' # Use a newer version if available
    helm repo add jetstack https://charts.jetstack.io
    helm repo update
 
@@ -108,7 +110,7 @@ to provide automated deployment, scaling, and management capabilities.
    with options to enable webhooks, certificates, and the gateway feature.
 
    ```sh
-   VERSION_OPERATOR='1.3.0' # Use a newer version if available
+   VERSION_OPERATOR='1.3.2' # Use a newer version if available
 
    helm upgrade --install operator \
      --namespace arangodb \
@@ -121,14 +123,14 @@ to provide automated deployment, scaling, and management capabilities.
      --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
    ```
 
-5. Create an `ArangoDeployment` specification for the ArangoDB Core. See the
+5. Create an `ArangoDeployment` specification for ArangoDB. See the
    [ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
    and the linked reference.
 
    You need to enable the gateway feature by setting `spec.gateway.enabled` and
    `spec.gateway.dynamic` to `true` in the specification. You also need to set
    `spec.license` to the secret created earlier. Example for an ArangoDB cluster
-   deployment using version 3.12.5 with three DB-Servers and two Coordinators:
+   deployment using version 3.12.6 with three DB-Servers and two Coordinators:
 
     ```yaml
     apiVersion: "database.arangodb.com/v1"
@@ -137,7 +139,7 @@ to provide automated deployment, scaling, and management capabilities.
       name: "platform-example"
     spec:
       mode: Cluster
-      image: "arangodb/enterprise:3.12.5"
+      image: "arangodb/enterprise:3.12.6"
       gateway:
         enabled: true
         dynamic: true
@@ -154,12 +156,12 @@ to provide automated deployment, scaling, and management capabilities.
 
 6. Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
    <https://github.com/arangodb/kube-arangodb/releases>.
-   It is available for Linux and macOS, for the x86-64 as well as 64-bit ARM
+   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
    It is recommended to rename the downloaded executable to
-   `arangodb_operator_platform` and add it to the `PATH` environment variable
-   to make it available as a command in the system.
+   `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
+   the `PATH` environment variable to make it available as a command in the system.
 
    The Platform CLI tool simplifies the further setup and later management of
    the Platform's Kubernetes services.
