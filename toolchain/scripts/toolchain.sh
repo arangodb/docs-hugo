@@ -48,6 +48,11 @@ if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
       export ARANGODB_BRANCH_3_11_VERSION="3.11"
 fi
 
+if [ "$ARANGODB_BRANCH_OEM" != "" ] ; then
+      export ARANGODB_BRANCH_OEM_IMAGE="$ARANGODB_BRANCH_OEM"
+      export ARANGODB_BRANCH_OEM_VERSION="oem"
+fi
+
 if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
       export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
       export ARANGODB_BRANCH_3_12_VERSION="3.12"

@@ -77,6 +77,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -95,6 +96,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -123,6 +125,7 @@ or for multiple versions.
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | boolean | `commit-generated` | `true` |
@@ -204,6 +207,7 @@ Invoke Args:
 | string | `workflow` | `generate-scheduled` |
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| string | `arangodb-oem`  | `arangodb/enterprise-preview:oem-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
 | string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
