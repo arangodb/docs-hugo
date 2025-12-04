@@ -7,6 +7,17 @@ description: >-
 aliases:
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../deploy/arangosync # 3.11 -> 3.12
+  - ../deploy/arangosync/administration # 3.11 -> 3.12
+  - ../deploy/arangosync/monitoring # 3.11 -> 3.12
+  - ../deploy/arangosync/operations-and-maintenance # 3.11 -> 3.12
+  - ../deploy/arangosync/security # 3.11 -> 3.12
+  - ../deploy/arangosync/troubleshooting # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangodb-cluster # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
+  - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -21,6 +32,10 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Datacenter-to-Datacenter Replication (DC2DC)**:\
+  The Datacenter-to-Datacenter Replication for cluster deployments including the
+  _arangosync_ tool is no longer supported from v3.12 onward.
 
 - **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)

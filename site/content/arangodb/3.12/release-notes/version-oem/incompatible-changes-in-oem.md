@@ -53,6 +53,11 @@ deployment offline to perform the upgrade procedure in the safest possible manne
 | 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../operations/upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
 | 3.11.11 (or newer 3.11.x) | 3.12.4 (or newer) | **Do not upgrade to version 3.12.0, 3.12.1, 3.12.2, or 3.12.3**. Create a backup, check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them (if you haven't done so already or created the deployment with 3.11.11 or a later 3.11.x version), then upgrade to the latest 3.11.x version first, and finally upgrade to version 3.12.4 or later. |
 
+## Datacenter-to-Datacenter Replication (DC2DC) removed
+
+The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
+_arangosync_ tool is no longer supported from v3.12 onward.
+
 ## Incompatibilities due to switch to glibc
 
 From version 3.11.10 onward, ArangoDB uses the glibc C standard library

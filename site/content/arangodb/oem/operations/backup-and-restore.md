@@ -29,8 +29,8 @@ and get up and running again in case of serious problems.
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
 {{< warning >}}
-Making use of a high availability deployment mode of ArangoDB, like Active Failover,
-Cluster or Datacenter-to-Datacenter Replication, does not remove the need of
+Making use of a high availability deployment modes of ArangoDB
+does not remove the need of
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 
@@ -325,20 +325,11 @@ not be suited for.
   Such an encrypted backup can only be restored to an instance using the
   same encryption key.
 
-- **Replication and Hot Backup**
+- **Hot Backup**
 
-  Hot backups are not automatically replicated between instances. This is
-  true for both the Active Failover setup with 2 (or more) single servers
-  and for the Datacenter-to-Datacenter Replication between clusters.
+  Hot backups are not automatically replicated between instances of an
+  Active Failover setup with 2 (or more) single servers.
   Simply take hot backups on all instances.
-
-  {{< info >}}
-  The DC2DC replication needs to be stopped before restoring a Hot Backup.
-  
-  1. Stop the DC2DC synchronization with `arangosync stop sync ...`.
-  2. Restore the Hot Backup.
-  3. Restart the DC2DC synchronization with `arangosync configure sync ...`.
-  {{< /info >}}
 
 - **Known Issues**
 
