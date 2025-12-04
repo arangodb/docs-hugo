@@ -186,12 +186,19 @@ def workflow_generate_scheduled(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+
+        if version in ["3.10", "3.11"]:
+            imageVersion = f"{version}-nightly"
+        elif version == "oem":
+            imageVersion = findOemVersion()
+        else:
+            imageVersion = "devel-nightly"
         
         compileJob = {
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{"3.11-nightly" if version == "oem" else version}-nightly" if version in ["3.10", "3.11", "oem"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
+                "arangodb-branch": f"arangodb/enterprise-preview:{imageVersion}", # TODO: Any other 3.12.x image we could use?
                 "version": version
             }
         }
@@ -307,7 +314,13 @@ export GENERATORS='<< parameters.generators >>'\n"
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{"3.11-nightly" if version == "oem" else version}-nightly" if version in ["3.10", "3.11", "oem"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
+            if version in ["3.10", "3.11"]:
+                imageVersion = f"{version}-nightly"
+            elif version == "oem":
+                imageVersion = findOemVersion()
+            else:
+                imageVersion = "devel-nightly"
+            branch = f"arangodb/enterprise-preview:{imageVersion}" # TODO: Any other 3.12.x image we could use?
 
         if branch == "undefined":
             continue
@@ -436,6 +449,13 @@ def findOpensslVersion(branch):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
             return version
+
+def findOemVersion():
+    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/3.11.14/ARANGO-VERSION')
+    print(f"Find latest (hotfix) version of OEM LTS")
+    print(f"Github response: {r.text}")
+    version = r.text.strip()
+    return version
 
 
 ## MAIN
