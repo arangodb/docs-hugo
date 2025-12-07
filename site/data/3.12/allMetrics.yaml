@@ -2689,6 +2689,105 @@
     This metric tracks the runtime of phase2 of an Agency sync. Phase2 calculates
     what actions to execute given the difference of the local and target state.
 
+- name: arangodb_metadata_number_of_collections
+  introducedIn: "3.12.7"
+  help: |
+    Global number of collections.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of collections in the deployment (cluster or single server).
+    This includes system collections.
+  troubleshoot: |
+    **Configuration:**
+    - No global limit on collection count
+    - Query limit: `--query.max-collections-per-query` (default: 2048)
+    - Queries exceeding this fail with "too many collections/shards" error
+  
+    **Impact:**
+    - High counts affect startup/shutdown times, memory, and file descriptors
+    - Each collection consumes memory for indexes and metadata
+    - Impacts backup and restore operations
+  
+    **Recommendations:**
+    - Remove unused or temporary collections regularly
+    - Consider consolidating related collections
+    - Review schema design to reduce collection proliferation
+  
+    **See also:**
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_of_databases
+  introducedIn: "3.12.7"
+  help: |
+    Global number of databases.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of databases in the deployment (cluster or single server).
+  troubleshoot: |
+    **Configuration:**
+    - Maximum controlled by `--database.max-databases` (default: unlimited)
+    - Exceeding limit returns `TRI_ERROR_RESOURCE_LIMIT`
+  
+    **Impact:**
+    - High counts affect startup time, memory usage, and file descriptors
+    - Each database adds operational overhead
+  
+    **Recommendations:**
+    - Remove unused databases
+  
+    **See also:**
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_of_shards
+  introducedIn: "3.12.7"
+  help: |
+    Global number of shards.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Total number of shards in the deployment. In a cluster,
+    this is the number of shards across all collections.
+  troubleshoot: |
+    **Configuration:**
+    - Max per collection: `--cluster.max-number-of-shards` (default: 1000)
+    - Exceeding limit returns `TRI_ERROR_CLUSTER_TOO_MANY_SHARDS`
+    - Query limit: `--query.max-collections-per-query` affects total shards in queries
+    - Queries exceeding this fail with "too many collections/shards" error
+    - Practical cluster limit: ~50,000 total shards across all collections
+  
+    **Impact:**
+    - High shard counts increase cluster coordination overhead
+    - Affects query performance, memory usage, leader election, and rebalancing
+  
+    **Recommendations:**
+    - Choose shard count based on data volume, query patterns, and DB-Server count
+    - Use rebalancing to ensure even distribution
+  
+    **Note:**
+    - Approaching 50k shards may cause performance degradation
+  
+    **See also:**
+    - Cluster limitations: https://docs.arango.ai/arangodb/stable/deploy/cluster/limitations/
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
 - name: arangodb_network_connectivity_failures_coordinators_total
   introducedIn: "3.11.4"
   help: |
@@ -5500,6 +5599,30 @@
     Amount of memory in bytes that is used for writing to an inverted index of
     a collection or index of a View (`arangosearch` View link).
 
+- name: arangodb_server_statistics_cpu_cgroup_version
+  introducedIn: "3.13.0"
+  help: |
+    CGroup version detected on the system (0=none, 1=v1, 2=v2).
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Indicates which cgroup version was detected on the system at startup:
+    - 0: No cgroup support detected
+    - 1: cgroup v1 (legacy) detected
+    - 2: cgroup v2 (unified hierarchy) detected
+    
+    This metric is useful for understanding whether container resource limits
+    (CPU quotas) can be detected by ArangoDB. Systems with cgroup support
+    typically report more accurate CPU core counts when running in containers.
+  
+
 - name: arangodb_server_statistics_cpu_cores
   introducedIn: "3.8.0"
   help: |
@@ -5517,6 +5640,74 @@
     Number of CPU cores visible to the arangod process, unless the
     environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES`
     is set. In that case, the environment variable's value is reported.
+
+- name: arangodb_server_statistics_effective_cpu_cores
+  introducedIn: "3.12.7"
+  help: |
+    Number of effective CPU cores available to the arangod process.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Number of effective CPU cores available to the arangod process, taking into
+    account container CPU limits when running in containerized environments.
+  
+    This value is determined by:
+    - **cgroup v1**: Reading `/sys/fs/cgroup/cpu/cpu.cfs_quota_us` and
+      `/sys/fs/cgroup/cpu/cpu.cfs_period_us` to calculate CPU quota
+    - **cgroup v2**: Reading `/sys/fs/cgroup/cpu.max` to get CPU quota
+    - **No cgroups**: Falls back to total CPU cores from the system
+  
+    When running in Docker or Kubernetes with CPU limits set (e.g., `--cpus=2`),
+    this metric will report the container's CPU limit rather than the host's
+    total CPU cores, providing a more accurate view of available CPU resources
+    for capacity planning and auto-scaling decisions.
+  
+    If the environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES`
+    is set, it takes precedence over both cgroup limits and detected CPU cores.
+  
+    This metric includes a `machine_id` label to help identify the physical host
+    in containerized environments.
+  
+
+- name: arangodb_server_statistics_effective_physical_memory
+  introducedIn: "3.12.7"
+  help: |
+    Effective physical memory available to the arangod process in bytes.
+  unit: bytes
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Effective physical memory available to the arangod process in bytes, 
+    taking into account container memory limits when running in containerized
+    environments.
+    
+    This value is determined by:
+    - **cgroup v1**: Reading `/sys/fs/cgroup/memory/memory.limit_in_bytes`
+    - **cgroup v2**: Reading `/sys/fs/cgroup/memory.max`
+    - **No cgroups**: Falls back to total physical memory
+    
+    When running in Docker or Kubernetes with memory limits set, this metric
+    will report the container's memory limit rather than the host's total
+    physical memory, providing a more accurate view of available memory for
+    capacity planning and monitoring.
+    
+    If the environment variable `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
+    is set, it takes precedence over both cgroup limits and detected physical
+    memory.
+  
 
 - name: arangodb_server_statistics_idle_percent
   introducedIn: "3.8.0"
@@ -5638,9 +5829,7 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of leader shards on this machine. Every shard has a leader and
     potentially multiple followers.
@@ -5668,13 +5857,11 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of shards not replicated at all. This is counted for all shards
     for which this server is currently the leader. The number is increased
-    by one for every shards for which no follower is in sync.
+    by one for every shard for which no follower is in sync.
   troubleshoot: |
     Needless to say, such a situation is very bad for resilience, since it
     indicates a single point of failure. So, if this number is greater than 0,
@@ -5722,9 +5909,9 @@
   exposedBy:
     - dbserver
   description: |
-    Number of leader shards not fully replicated. This is counted for all
+    Number of shards that are not fully replicated. This is counted for all
     shards for which this server is currently the leader. The number is
-    increased by one for every shards for which not all followers are in sync.
+    increased by one for every shard for which not all followers are in sync.
   troubleshoot: |
     Needless to say, such a situation is not good resilience, since we
     do not have as many copies of the data as the `replicationFactor`
