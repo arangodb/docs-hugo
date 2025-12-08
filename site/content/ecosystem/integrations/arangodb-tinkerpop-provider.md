@@ -20,17 +20,16 @@ AQL (ArangoDB Query Language) for complex queries.
 
 ## Compatibility
 
-ArangoDB TinkerPop Provider is compatible with all supported versions of ArangoDB.
+The ArangoDB TinkerPop Provider is compatible with all supported versions of ArangoDB.
 For more information, see the [End-of-life announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 This integration has multiple versions released, and each one is compatible with
 the corresponding version of Apache TinkerPop:
 
-| ArangoDB TinkerPop Provider | Apache TinkerPop | Java     |
-|-----------------------------|------------------|----------|
-| 3.*.*                       | 3.7.*            | 8 to 21  |
-| 4.*.*                       | 3.8.*            | 11 to 21 |
-
+| ArangoDB TinkerPop Provider | Apache TinkerPop | Java          |
+|-----------------------------|------------------|---------------|
+| 3.*.*                       | 3.7.*            |  8 through 21 |
+| 4.*.*                       | 3.8.*            | 11 through 21 |
 
 ## Installation
 
