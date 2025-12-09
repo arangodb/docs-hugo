@@ -74,7 +74,7 @@ centroids and the quality of vector search thus degrades.
   Set this option to `true` to keep the collection/shards available for
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
-- **storedValues** (array of strings):
+- **storedValues** (array of strings, introduced in v3.12.7):
   Store additional attributes in the index. Unlike with other index types, this
   is not for covering projections with the index but for adding attributes that
   you filter on. This lets you make the lookup in the vector index more efficient

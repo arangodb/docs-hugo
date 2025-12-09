@@ -67,11 +67,12 @@ paths:
                     type: string
                 storedValues:
                   description: |
-                    Store additional attributes in the index. Unlike with other index types, this
-                    is not for covering projections with the index but for adding attributes that
-                    you filter on. This lets you make the lookup in the vector index more efficient
-                    because it avoids materializing documents twice, once for the filtering and
-                    once for the matches.
+                    Store additional attributes in the index (introduced in v3.12.7).
+                    Unlike with other index types, this is not for covering projections
+                    with the index but for adding attributes that you filter on.
+                    This lets you make the lookup in the vector index more efficient
+                    because it avoids materializing documents twice, once for the
+                    filtering and once for the matches.
 
                     The maximum number of attributes that you can use in `storedValues` is 32.
                   type: array
