@@ -2452,6 +2452,38 @@ environment variable `NAME`. If there is an environment variable called `PID` or
 `TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
 value of the respective environment variable.
 
+### New consolidation algorithm for inverted indexes and `arangosearch` Views
+
+<small>Introduced in: v3.12.7</small>
+
+The `tier` consolidation policy now uses a different algorithm for merging
+and cleaning up segments. Overall, it avoids consolidating segments where the
+cost of writing the new segment is high and the gain in read performance is low
+(e.g. combining a big segment file with a very small one).
+
+The following options have been removed for inverted indexes as well as
+`arangosearch` Views because the new consolidation algorithm doesn't use them:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The following new options have been added:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `maxSkewThreshold` (number in range `[0.0, 1.0]`, default: `0.4`)
+  - `minDeletionRatio` (number in range `[0.0, 1.0]`, default: `0.5`)
+
+If you previously used customized settings for the removed options, check if the
+default values of the new options are acceptable or if you need to tune them
+according to your workload.
+
+For details, see:
+- [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
+- [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+
 ## Client tools
 
 ### Protocol aliases for endpoints

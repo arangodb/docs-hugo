@@ -565,34 +565,58 @@ paths:
                           document count as dictated by the customization attributes.
                       type: string
                       default: tier
-                    segmentsBytesFloor:
-                      description: |
-                        Defines the value (in bytes) to treat all smaller segments as equal for
-                        consolidation selection.
-                      type: integer
-                      default: 25165824
                     segmentsBytesMax:
                       description: |
                         The maximum allowed size of all consolidated segments in bytes.
                       type: integer
                       default: 8589934592
-                    segmentsMax:
+                    maxSkewThreshold:
                       description: |
-                        The maximum number of segments that are evaluated as candidates for
-                        consolidation.
-                      type: integer
-                      default: 200
-                    segmentsMin:
+                        This option is available from v3.12.7 onward:
+
+                        Merge a subset of segments where the ratio of the largest segment size
+                        to the combined segment size is within this threshold. Increasing the
+                        threshold leads to fewer segment files and thus a potentially higher
+                        read performance and less file descriptors but at the expense of more
+                        frequent consolidations and thus higher write load.
+
+                        The skew describes how much segment files vary in size. It is a number
+                        between `0.0` and `1.0` and calculated by dividing the largest file size
+                        of a set of segment files by the total size.
+
+                        Multiple combinations of candidate segments are checked and the one with
+                        the lowest skew value is selected for consolidation. This rather selects
+                        many than few segments, but the new merged segment will be below the
+                        configured `segmentsBytesMax`. The skew threshold prevents unnecessary
+                        consolidation of e.g. a big segment file with a very small one, where the
+                        cost of writing a merged segment is higher than the gain in read performance.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.4
+                    minDeletionRatio:
                       description: |
-                        The minimum number of segments that are evaluated as candidates for
-                        consolidation.
+                        This option is available from v3.12.7 onward:
+
+                        Clean up segments where the ratio of deleted documents is at least
+                        this high. Decreasing the minimum ratio leads to earlier consolidation
+                        of segments with many deleted documents and thus reclamation of
+                        disk space but causes a higher write load.
+
+                        The deletion ratio is the percentage of deleted documents across one
+                        or more segment files. It is a number between `0.0` and `1.0` and
+                        calculated by dividing the number of deleted documents by the total
+                        number of documents.
+                        
+                        The segment files with the highest individual deletion ratio are
+                        the candidates. As many as possible candidates are selected for
+                        consolidation (in order of decreasing ratio), but the overall ratio
+                        has to be at least `minDeletionRatio` and the new segment with the
+                        active documents needs to be below the configured `segmentsBytesMax`.
                       type: integer
-                      default: 50
-                    minScore:
-                      description: |
-                        Filter out consolidation candidates with a score less than this.
-                      type: integer
-                      default: 0
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.5
                 writebufferIdle:
                   description: |
                     Maximum number of writers (segments) cached in the pool
