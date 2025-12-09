@@ -1541,6 +1541,8 @@ FOR doc IN coll
   RETURN doc
 ```
 
+The filtering is handled by the `use-vector-index` optimizer rule in v3.12.6.
+
 Vector indexes can now be sparse to exclude documents with the embedding attribute
 for indexing missing or set to `null`.
 
@@ -1592,9 +1594,8 @@ Indexes used:
  11   foo    vector   coll         false    false    false           n/a   [ `vector` ]   [ `val` ]       #4
 ```
 
----
-
-<small>Introduced in: v3.12.7</small>
+The new `push-filter-into-enumerate-near` optimizer rule now handles everything
+related to vector index filtering (with and without `storedValues`).
 
 The `FOR` operation now supports `indexHint` and `forceIndexHint` for vector
 indexes to make the AQL optimizer prefer respectively require specific

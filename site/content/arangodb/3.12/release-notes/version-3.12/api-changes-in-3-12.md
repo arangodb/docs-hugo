@@ -101,6 +101,8 @@ A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
 
 A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12.4.
 
+A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
