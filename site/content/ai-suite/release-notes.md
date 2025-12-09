@@ -10,7 +10,7 @@ The AI Suite is available as a pre-release. To get exclusive early access,
 [get in touch](https://arango.ai/ai-preview/) with the Arango team.
 {{< /tip >}}
 
-## October 2024 (pre-release)
+## October 2025 (pre-release)
 
 This release introduces new features and enhancements to the AI Suite components.
 See also the [Arango Data Platform Release Notes](../data-platform/release-notes.md).
@@ -41,7 +41,7 @@ LLM-powered answers to general questions.
 You can generate AQL queries from natural language directly in the Query Editor using the
 [AQLizer](aqlizer.md) mode. More advanced features are available via the API.
 
-## July 2024 (pre-release)
+## July 2025 (pre-release)
 
 This release marks the initial internal launch of the AI Suite with the following
 components. For Data Platform features in this release, see
