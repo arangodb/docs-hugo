@@ -1541,6 +1541,8 @@ FOR doc IN coll
   RETURN doc
 ```
 
+The filtering is handled by the `use-vector-index` optimizer rule in v3.12.6.
+
 Vector indexes can now be sparse to exclude documents with the embedding attribute
 for indexing missing or set to `null`.
 
@@ -1550,6 +1552,61 @@ Therefore, it compares not only the angle but also the magnitudes.
 The accompanying AQL function is the following:
 
 - `APPROX_NEAR_INNER_PRODUCT()`
+
+---
+
+<small>Introduced in: v3.12.7</small>
+
+Vector indexes now support `storedValues` to store additional attributes in the
+index. Unlike with other index types, this is not for covering projections with
+the index but for adding attributes that you filter on. This lets you make the
+lookup in the vector index more efficient because it avoids materializing
+documents twice, once for the filtering and once for the matches.
+
+For example, if you set `storedValues` to `["val"]` in a vector index over
+`["vector"]`, then the following query can utilize this index for the
+filtering by `val` and the lookup using `vector`, but not for the projection of
+`attr` even if you added it to `storedValues` as well:
+
+```aql
+ FOR doc IN coll
+   FILTER doc.val > 3
+   SORT APPROX_NEAR_INNER_PRODUCT(doc.vector, @q) DESC
+   LIMIT 3
+   RETURN doc.attr
+```
+
+The query execution plan, the utilization of `storedValues` for filtering is
+indicated by `/* covered by storedValues */`:
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+ 10   CalculationNode                    1     - LET #4 = [ ... ]   /* json expression */   /* const assignment */
+ 11   EnumerateNearVectorNode            3     - FOR doc OF coll IN TOP 3 NEAR #4 DISTANCE INTO #2 FILTER (doc.`val` > 3)   /* early pruning */ /* covered by storedValues */
+  7   LimitNode                          3     - LIMIT 0, 3
+ 12   MaterializeNode                    3     - MATERIALIZE doc INTO #5 /* (projections: `attr`) */   LET #6 = #5.`attr`
+  9   ReturnNode                         3     - RETURN #6
+
+Indexes used:
+ By   Name   Type     Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 11   foo    vector   coll         false    false    false           n/a   [ `vector` ]   [ `val` ]       #4
+```
+
+The new `push-filter-into-enumerate-near` optimizer rule now handles everything
+related to vector index filtering (with and without `storedValues`).
+
+The `FOR` operation now supports `indexHint` and `forceIndexHint` for vector
+indexes to make the AQL optimizer prefer respectively require specific
+vector indexes:
+
+```aql
+FOR doc IN c OPTIONS { indexHint: ["vec_idx_1", "vec_idx_2"], forceIndexHint: true }
+   SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
+   LIMIT 3
+   RETURN doc
+```
 
 ## Server options
 

@@ -74,6 +74,14 @@ centroids and the quality of vector search thus degrades.
   Set this option to `true` to keep the collection/shards available for
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
+- **storedValues** (array of strings, introduced in v3.12.7):
+  Store additional attributes in the index. Unlike with other index types, this
+  is not for covering projections with the index but for adding attributes that
+  you filter on. This lets you make the lookup in the vector index more efficient
+  because it avoids materializing documents twice, once for the filtering and
+  once for the matches.
+
+  The maximum number of attributes that you can use in `storedValues` is 32.
 - **params**: The parameters as used by the Faiss library.
   - **metric** (string): The measure for calculating the vector similarity:
     - `"cosine"`: Angular similarity. Vectors are automatically
