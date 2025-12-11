@@ -2452,11 +2452,12 @@ environment variable `NAME`. If there is an environment variable called `PID` or
 `TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
 value of the respective environment variable.
 
-### Track deployment metadata
+### Deployment metadata metrics
 
 <small>Introduced in: v3.12.7</small>
 
-The following new metrics have been introduced to track deployment metadata:
+The following new metrics have been added to track the global number of databases,
+collections, and shards:
 
 | Label | Description |
 |:------|:------------|
@@ -2464,7 +2465,7 @@ The following new metrics have been introduced to track deployment metadata:
 | `arangodb_metadata_number_of_collections` | Total number of collections. |
 | `arangodb_metadata_number_of_shards` | Total number of shards (cluster only). |
 
-These metrics are exposed on coordinators (in cluster mode) and single
+These metrics are exposed on Coordinators (in cluster mode) and single
 servers, providing visibility into the overall size and scale of the
 deployment.
 
