@@ -627,6 +627,43 @@ DB-Servers in a cluster has been added:
 
 - `arangodb_vocbase_transactions_lost_subordinates_total`
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+A metric has been added for the time spent on API call recording:
+
+- `arangodb_api_recording_call_time`
+
+---
+
+<small>Introduced in: v3.12.6</small>
+
+A metric has been added for the time spent on AQL query recording, along with
+multiple RocksDB metrics:
+
+- `arangodb_aql_recording_call_time`
+- `rocksdb_block_cache_charge_per_entry`
+- `rocksdb_block_cache_entries`
+- `rocksdb_live_blob_file_garbage_size`
+- `rocksdb_live_blob_file_size`
+- `rocksdb_num_blob_files`
+
+---
+
+<small>Introduced in: v3.12.7</small>
+
+The following new metrics have been added to track the global number of databases,
+collections, and shards, as well as the CGroup version and effective CPU cores
+and physical memory:
+
+- `arangodb_metadata_number_of_databases`
+- `arangodb_metadata_number_of_collections`
+- `arangodb_metadata_number_of_shards`
+- `arangodb_server_statistics_cpu_cgroup_version`
+- `arangodb_server_statistics_effective_cpu_cores`
+- `arangodb_server_statistics_effective_physical_memory`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>

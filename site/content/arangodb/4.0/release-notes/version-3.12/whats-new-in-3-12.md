@@ -2376,39 +2376,19 @@ DB-Servers in a cluster has been added:
 |:------|:------------|
 | `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
-### RocksDB upgrade
+### Access tokens
 
-<small>Introduced in: v3.12.6</small>
+<small>Introduced in: v3.12.5</small>
 
-The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
+A new authentication feature has been added that lets you use access tokens
+for either creating JWT session tokens or directly authenticate with an
+access token instead of a password.
 
-As a result, you may see performance improvements while using slightly less
-resources especially for mixed workloads.
+You can create multiple access tokens for a single user account, set expiration
+dates, and individually revoke tokens.
 
-The following new RocksDB functionality is exposed in ArangoDB:
-
-- Different types of block caches, LRU and HyperClockCache (HCC), selectable via
-  the new `--rocksdb.block-cache-type` startup option
-- A `--rocksdb.block-cache-estimated-entry-charge` startup option to configure the HCC.
-- RocksDB table format version 6 (not downwards-compatible to older versions of RocksDB).
-- RocksDB blob caching (if blobs are enabled for the documents column family),
-  which you can enable via `--rocksdb.enable-blob-cache`.
-- Using blob files only from a certain level onwards (if blobs are enabled for
-  the documents column family), which you can enable via
-  `--rocksdb.blob-file-starting-level`.
-- Blob cache prepopulation, which you can enable via `--rocksdb.prepopulate-blob-cache`.
-- An option to generate Bloom/Ribbon filters that minimize memory internal
-  fragmentation, which you can enable with `--rocksdb.optimize-filters-for-memory`.
-
-The following RocksDB metrics have been added:
-
-| Label | Description |
-|:------|:------------|
-| `rocksdb_block_cache_charge_per_entry` | Average size of entries in RocksDB block cache.
-| `rocksdb_block_cache_entries` | Number of entries in the RocksDB block cache.
-| `rocksdb_live_blob_file_garbage_size` | Size of garbage in live RocksDB .blob files.
-| `rocksdb_live_blob_file_size` | Size of live RocksDB .blob files.
-| `rocksdb_num_blob_files` | Number of live RocksDB .blob files.
+See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
+documentation.
 
 ### API call recording
 
@@ -2477,19 +2457,39 @@ impact of this feature:
 See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-aql-queries)
 for details.
 
-### Access tokens
+### RocksDB upgrade
 
-<small>Introduced in: v3.12.5</small>
+<small>Introduced in: v3.12.6</small>
 
-A new authentication feature has been added that lets you use access tokens
-for either creating JWT session tokens or directly authenticate with an
-access token instead of a password.
+The RocksDB library has been upgraded from version 7.2.0 to 9.5.0.
 
-You can create multiple access tokens for a single user account, set expiration
-dates, and individually revoke tokens.
+As a result, you may see performance improvements while using slightly less
+resources especially for mixed workloads.
 
-See the [HTTP API](../../develop/http-api/authentication.md#access-tokens)
-documentation.
+The following new RocksDB functionality is exposed in ArangoDB:
+
+- Different types of block caches, LRU and HyperClockCache (HCC), selectable via
+  the new `--rocksdb.block-cache-type` startup option
+- A `--rocksdb.block-cache-estimated-entry-charge` startup option to configure the HCC.
+- RocksDB table format version 6 (not downwards-compatible to older versions of RocksDB).
+- RocksDB blob caching (if blobs are enabled for the documents column family),
+  which you can enable via `--rocksdb.enable-blob-cache`.
+- Using blob files only from a certain level onwards (if blobs are enabled for
+  the documents column family), which you can enable via
+  `--rocksdb.blob-file-starting-level`.
+- Blob cache prepopulation, which you can enable via `--rocksdb.prepopulate-blob-cache`.
+- An option to generate Bloom/Ribbon filters that minimize memory internal
+  fragmentation, which you can enable with `--rocksdb.optimize-filters-for-memory`.
+
+The following RocksDB metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `rocksdb_block_cache_charge_per_entry` | Average size of entries in RocksDB block cache.
+| `rocksdb_block_cache_entries` | Number of entries in the RocksDB block cache.
+| `rocksdb_live_blob_file_garbage_size` | Size of garbage in live RocksDB .blob files.
+| `rocksdb_live_blob_file_size` | Size of live RocksDB .blob files.
+| `rocksdb_num_blob_files` | Number of live RocksDB .blob files.
 
 ### `@PID@` and `@TEMP_BASE_DIR@` placeholders for startup options
 
@@ -2525,6 +2525,23 @@ collections, and shards:
 These metrics are exposed on Coordinators (in cluster mode) and single
 servers, providing visibility into the overall size and scale of the
 deployment.
+
+### Resource metrics
+
+<small>Introduced in: v3.12.7</small>
+
+The following new metrics have been added for the CGroup version and the
+effective CPU cores and physical memory, taking limitations set on the
+_arangod_ process into account:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_server_statistics_cpu_cgroup_version` | CGroup version detected on the system (0=none, 1=v1, 2=v2). |
+| `arangodb_server_statistics_effective_cpu_cores` | Number of effective CPU cores available to the arangod process. |
+| `arangodb_server_statistics_effective_physical_memory` | Effective physical memory available to the arangod process in bytes. |
+
+The size of the currently mounted disk is already exposed by the
+`rocksdb_total_disk_space` metric.
 
 ## Client tools
 
