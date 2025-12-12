@@ -348,6 +348,18 @@
     }
   },
   {
+    "name": "push-filter-into-enumerate-near",
+    "description": "Push Filter into EnumerateNearVector node. Can also optimize\n    filtering by using storedValues. This rule is enabled only by use-vector-index rule",
+    "flags": {
+      "hidden": true,
+      "clusterOnly": false,
+      "canBeDisabled": false,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": true,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "use-index-for-sort",
     "description": "Use indexes to avoid `SORT` operations, removing `SortNode`\nfrom the query plan.",
     "flags": {
