@@ -561,7 +561,7 @@ paths:
                         upon several possible configurable formulas as defined by their types.
                         The supported types are:
 
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes.
                       type: string
                       default: tier

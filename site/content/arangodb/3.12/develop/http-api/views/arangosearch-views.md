@@ -307,7 +307,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -330,7 +331,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -611,7 +612,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -620,7 +622,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1148,7 +1150,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1157,7 +1160,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1600,7 +1603,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -1623,7 +1627,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1882,7 +1886,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1891,7 +1896,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -2241,7 +2246,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -2264,7 +2270,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -2522,7 +2528,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2531,7 +2538,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -2954,7 +2961,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2963,7 +2971,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
