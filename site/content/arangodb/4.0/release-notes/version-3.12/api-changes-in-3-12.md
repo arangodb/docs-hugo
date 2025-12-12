@@ -365,6 +365,25 @@ By consolidating less often and with more data, less file descriptors are used.
   - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
   - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
+##### Added and removed consolidation options for `arangosearch` Views
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating `arangosearch` Views have been removed
+and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The following new options have been added:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `maxSkewThreshold` (number in range `[0.0, 1.0]`, default: `0.4`)
+  - `minDeletionRatio` (number in range `[0.0, 1.0]`, default: `0.5`)
+
 #### Document API
 
 The following endpoints accept a new `versionAttribute` query parameter that adds
@@ -502,6 +521,25 @@ By consolidating less often and with more data, less file descriptors are used.
   - `segmentsMax` increased from `10` to `200`
   - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
   - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
+
+##### Added and removed consolidation options for inverted indexes
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating inverted indexes have been removed
+and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The following new options have been added:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `maxSkewThreshold` (number in range `[0.0, 1.0]`, default: `0.4`)
+  - `minDeletionRatio` (number in range `[0.0, 1.0]`, default: `0.5`)
 
 #### Optimizer rule descriptions
 
