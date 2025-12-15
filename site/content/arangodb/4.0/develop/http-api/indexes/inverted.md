@@ -625,7 +625,7 @@ paths:
                         order of their individual deletion ratios. Then the largest subset of
                         segments whose collective deletion ratio is greater than or equal to
                         `minDeletionRatio` is picked.
-                      type: integer
+                      type: number
                       minimum: 0.0
                       maximum: 1.0
                       default: 0.5
