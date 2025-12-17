@@ -214,23 +214,24 @@ async function loadNav() {
     // TODO: Support multiple versions
     const selectedVersion = getSelectedVersion();
     const versionInfo = getVersionInfo(selectedVersion);
-    if (!versionInfo) {
-      console.log("Selected version not found in version info");
-    }
-    const selectedVersionAlias = versionInfo.alias;
-    const versionSelector = mainNavContent.querySelector(".version-selector");
-    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
-      versionSelector.value = selectedVersionAlias;
-      
-      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-        if (navList.dataset.version == selectedVersion) {
-          navList.classList.add("selected-version");
-        } else {  
-          navList.classList.remove("selected-version");
-        }
-      });
+    if (versionInfo) {
+      const selectedVersionAlias = versionInfo.alias;
+      const versionSelector = mainNavContent.querySelector(".version-selector");
+      if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+        versionSelector.value = selectedVersionAlias;
+        
+        versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+          if (navList.dataset.version == selectedVersion) {
+            navList.classList.add("selected-version");
+          } else {  
+            navList.classList.remove("selected-version");
+          }
+        });
+      } else {
+        console.log("Selected/stored version not available in version selector");
+      }
     } else {
-      console.log("Selected/stored version not available in version selector");
+      console.log("Selected version not found in version info");
     }
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
