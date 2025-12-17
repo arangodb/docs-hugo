@@ -307,7 +307,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -330,7 +331,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -348,6 +349,8 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
                       type: integer
@@ -359,21 +362,86 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
                       type: integer
                       default: 200
                     segmentsMin:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
                       type: integer
                       default: 50
                     minScore:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
+                    maxSkewThreshold:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The skew describes how much segment files vary in file size. It is a number
+                        between `0.0` and `1.0` and is calculated by dividing the largest file size
+                        of a set of segment files by the total size. For example, the skew of a
+                        200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                        A large `maxSkewThreshold` value allows merging large segment files with
+                        smaller ones, consolidation occurs more frequently, and there are fewer
+                        segment files on disk at all times. While this may potentially improve the
+                        read performance and use fewer file descriptors, frequent consolidations
+                        cause a higher write load and thus a higher write amplification.
+                        
+                        On the other hand, a small threshold value triggers the consolidation only
+                        when there are a large number of segment files that don't vary in size a lot.
+                        Consolidation occurs less frequently, reducing the write amplification, but
+                        it can result in a greater number of segment files on disk.
+
+                        Multiple combinations of candidate segments are checked and the one with
+                        the lowest skew value is selected for consolidation. The selection process
+                        picks the greatest number of segments that together have the lowest skew value
+                        while ensuring that the size of the new consolidated segment remains under
+                        the configured `segmentsBytesMax`.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.4
+                    minDeletionRatio:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The `minDeletionRatio` represents the minimum required deletion ratio
+                        in one or more segments to perform a cleanup of those segments.
+                        It is a number between `0.0` and `1.0`.
+
+                        The deletion ratio is the percentage of deleted documents across one or
+                        more segment files and is calculated by dividing the number of deleted
+                        documents by the total number of documents in a segment or a group of
+                        segments. For example, if there is a segment with 1000 documents of which
+                        300 are deleted and another segment with 1000 documents of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                        The `minDeletionRatio` threshold must be carefully selected. A smaller
+                        value leads to earlier cleanup of deleted documents from segments and
+                        thus reclamation of disk space but it generates a higher write load.
+                        A very large value lowers the write amplification but at the same time
+                        the system can be left with a large number of segment files with a high
+                        percentage of deleted documents that occupy disk space unnecessarily.
+
+                        During cleanup, the segment files are first arranged in decreasing
+                        order of their individual deletion ratios. Then the largest subset of
+                        segments whose collective deletion ratio is greater than or equal to
+                        `minDeletionRatio` is picked.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.5
                 writebufferIdle:
                   description: |
                     Maximum number of writers (segments) cached in the pool
@@ -544,7 +612,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -553,7 +622,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -569,6 +638,8 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
                         type: integer
@@ -578,18 +649,81 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Filter out consolidation candidates with a score less than this.
                         type: integer
+                      maxSkewThreshold:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The skew describes how much segment files vary in file size. It is a number
+                          between `0.0` and `1.0` and is calculated by dividing the largest file size
+                          of a set of segment files by the total size. For example, the skew of a
+                          200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                          A large `maxSkewThreshold` value allows merging large segment files with
+                          smaller ones, consolidation occurs more frequently, and there are fewer
+                          segment files on disk at all times. While this may potentially improve the
+                          read performance and use fewer file descriptors, frequent consolidations
+                          cause a higher write load and thus a higher write amplification.
+                          
+                          On the other hand, a small threshold value triggers the consolidation only
+                          when there are a large number of segment files that don't vary in size a lot.
+                          Consolidation occurs less frequently, reducing the write amplification, but
+                          it can result in a greater number of segment files on disk.
+
+                          Multiple combinations of candidate segments are checked and the one with
+                          the lowest skew value is selected for consolidation. The selection process
+                          picks the greatest number of segments that together have the lowest skew value
+                          while ensuring that the size of the new consolidated segment remains under
+                          the configured `segmentsBytesMax`.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
+                      minDeletionRatio:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The `minDeletionRatio` represents the minimum required deletion ratio
+                          in one or more segments to perform a cleanup of those segments.
+                          It is a number between `0.0` and `1.0`.
+
+                          The deletion ratio is the percentage of deleted documents across one or
+                          more segment files and is calculated by dividing the number of deleted
+                          documents by the total number of documents in a segment or a group of
+                          segments. For example, if there is a segment with 1000 documents of which
+                          300 are deleted and another segment with 1000 documents of which 700 are
+                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                          The `minDeletionRatio` threshold must be carefully selected. A smaller
+                          value leads to earlier cleanup of deleted documents from segments and
+                          thus reclamation of disk space but it generates a higher write load.
+                          A very large value lowers the write amplification but at the same time
+                          the system can be left with a large number of segment files with a high
+                          percentage of deleted documents that occupy disk space unnecessarily.
+
+                          During cleanup, the segment files are first arranged in decreasing
+                          order of their individual deletion ratios. Then the largest subset of
+                          segments whose collective deletion ratio is greater than or equal to
+                          `minDeletionRatio` is picked.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
                   writebufferIdle:
                     description: |
                       Maximum number of writers (segments) cached in the pool (`0` = disabled).
@@ -1016,7 +1150,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1025,7 +1160,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1041,6 +1176,8 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
                         type: integer
@@ -1050,18 +1187,81 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Filter out consolidation candidates with a score less than this.
                         type: integer
+                      maxSkewThreshold:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The skew describes how much segment files vary in file size. It is a number
+                          between `0.0` and `1.0` and is calculated by dividing the largest file size
+                          of a set of segment files by the total size. For example, the skew of a
+                          200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                          A large `maxSkewThreshold` value allows merging large segment files with
+                          smaller ones, consolidation occurs more frequently, and there are fewer
+                          segment files on disk at all times. While this may potentially improve the
+                          read performance and use fewer file descriptors, frequent consolidations
+                          cause a higher write load and thus a higher write amplification.
+                          
+                          On the other hand, a small threshold value triggers the consolidation only
+                          when there are a large number of segment files that don't vary in size a lot.
+                          Consolidation occurs less frequently, reducing the write amplification, but
+                          it can result in a greater number of segment files on disk.
+
+                          Multiple combinations of candidate segments are checked and the one with
+                          the lowest skew value is selected for consolidation. The selection process
+                          picks the greatest number of segments that together have the lowest skew value
+                          while ensuring that the size of the new consolidated segment remains under
+                          the configured `segmentsBytesMax`.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
+                      minDeletionRatio:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The `minDeletionRatio` represents the minimum required deletion ratio
+                          in one or more segments to perform a cleanup of those segments.
+                          It is a number between `0.0` and `1.0`.
+
+                          The deletion ratio is the percentage of deleted documents across one or
+                          more segment files and is calculated by dividing the number of deleted
+                          documents by the total number of documents in a segment or a group of
+                          segments. For example, if there is a segment with 1000 documents of which
+                          300 are deleted and another segment with 1000 documents of which 700 are
+                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                          The `minDeletionRatio` threshold must be carefully selected. A smaller
+                          value leads to earlier cleanup of deleted documents from segments and
+                          thus reclamation of disk space but it generates a higher write load.
+                          A very large value lowers the write amplification but at the same time
+                          the system can be left with a large number of segment files with a high
+                          percentage of deleted documents that occupy disk space unnecessarily.
+
+                          During cleanup, the segment files are first arranged in decreasing
+                          order of their individual deletion ratios. Then the largest subset of
+                          segments whose collective deletion ratio is greater than or equal to
+                          `minDeletionRatio` is picked.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
                   writebufferIdle:
                     description: |
                       Maximum number of writers (segments) cached in the pool (`0` = disabled).
@@ -1403,7 +1603,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -1426,7 +1627,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1444,6 +1645,8 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
                       type: integer
@@ -1455,21 +1658,86 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
                       type: integer
                       default: 200
                     segmentsMin:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
                       type: integer
                       default: 50
                     minScore:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
+                    maxSkewThreshold:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The skew describes how much segment files vary in file size. It is a number
+                        between `0.0` and `1.0` and is calculated by dividing the largest file size
+                        of a set of segment files by the total size. For example, the skew of a
+                        200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                        A large `maxSkewThreshold` value allows merging large segment files with
+                        smaller ones, consolidation occurs more frequently, and there are fewer
+                        segment files on disk at all times. While this may potentially improve the
+                        read performance and use fewer file descriptors, frequent consolidations
+                        cause a higher write load and thus a higher write amplification.
+                        
+                        On the other hand, a small threshold value triggers the consolidation only
+                        when there are a large number of segment files that don't vary in size a lot.
+                        Consolidation occurs less frequently, reducing the write amplification, but
+                        it can result in a greater number of segment files on disk.
+
+                        Multiple combinations of candidate segments are checked and the one with
+                        the lowest skew value is selected for consolidation. The selection process
+                        picks the greatest number of segments that together have the lowest skew value
+                        while ensuring that the size of the new consolidated segment remains under
+                        the configured `segmentsBytesMax`.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.4
+                    minDeletionRatio:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The `minDeletionRatio` represents the minimum required deletion ratio
+                        in one or more segments to perform a cleanup of those segments.
+                        It is a number between `0.0` and `1.0`.
+
+                        The deletion ratio is the percentage of deleted documents across one or
+                        more segment files and is calculated by dividing the number of deleted
+                        documents by the total number of documents in a segment or a group of
+                        segments. For example, if there is a segment with 1000 documents of which
+                        300 are deleted and another segment with 1000 documents of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                        The `minDeletionRatio` threshold must be carefully selected. A smaller
+                        value leads to earlier cleanup of deleted documents from segments and
+                        thus reclamation of disk space but it generates a higher write load.
+                        A very large value lowers the write amplification but at the same time
+                        the system can be left with a large number of segment files with a high
+                        percentage of deleted documents that occupy disk space unnecessarily.
+
+                        During cleanup, the segment files are first arranged in decreasing
+                        order of their individual deletion ratios. Then the largest subset of
+                        segments whose collective deletion ratio is greater than or equal to
+                        `minDeletionRatio` is picked.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.5
       responses:
         '200':
           description: |
@@ -1618,7 +1886,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1627,7 +1896,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1643,6 +1912,8 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
                         type: integer
@@ -1652,18 +1923,81 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Filter out consolidation candidates with a score less than this.
                         type: integer
+                      maxSkewThreshold:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The skew describes how much segment files vary in file size. It is a number
+                          between `0.0` and `1.0` and is calculated by dividing the largest file size
+                          of a set of segment files by the total size. For example, the skew of a
+                          200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                          A large `maxSkewThreshold` value allows merging large segment files with
+                          smaller ones, consolidation occurs more frequently, and there are fewer
+                          segment files on disk at all times. While this may potentially improve the
+                          read performance and use fewer file descriptors, frequent consolidations
+                          cause a higher write load and thus a higher write amplification.
+                          
+                          On the other hand, a small threshold value triggers the consolidation only
+                          when there are a large number of segment files that don't vary in size a lot.
+                          Consolidation occurs less frequently, reducing the write amplification, but
+                          it can result in a greater number of segment files on disk.
+
+                          Multiple combinations of candidate segments are checked and the one with
+                          the lowest skew value is selected for consolidation. The selection process
+                          picks the greatest number of segments that together have the lowest skew value
+                          while ensuring that the size of the new consolidated segment remains under
+                          the configured `segmentsBytesMax`.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
+                      minDeletionRatio:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The `minDeletionRatio` represents the minimum required deletion ratio
+                          in one or more segments to perform a cleanup of those segments.
+                          It is a number between `0.0` and `1.0`.
+
+                          The deletion ratio is the percentage of deleted documents across one or
+                          more segment files and is calculated by dividing the number of deleted
+                          documents by the total number of documents in a segment or a group of
+                          segments. For example, if there is a segment with 1000 documents of which
+                          300 are deleted and another segment with 1000 documents of which 700 are
+                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                          The `minDeletionRatio` threshold must be carefully selected. A smaller
+                          value leads to earlier cleanup of deleted documents from segments and
+                          thus reclamation of disk space but it generates a higher write load.
+                          A very large value lowers the write amplification but at the same time
+                          the system can be left with a large number of segment files with a high
+                          percentage of deleted documents that occupy disk space unnecessarily.
+
+                          During cleanup, the segment files are first arranged in decreasing
+                          order of their individual deletion ratios. Then the largest subset of
+                          segments whose collective deletion ratio is greater than or equal to
+                          `minDeletionRatio` is picked.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
                   writebufferIdle:
                     description: |
                       Maximum number of writers (segments) cached in the pool (`0` = disabled).
@@ -1912,7 +2246,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold`,
+                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -1935,7 +2270,7 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
                         - `"bytes_accum"`: consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -1952,6 +2287,8 @@ paths:
                       maximum: 1.0
                     segmentsBytesFloor:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Defines the value (in bytes) to treat all smaller segments
                         as equal for consolidation selection.
                       type: integer
@@ -1963,21 +2300,86 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The maximum number of segments that are evaluated as
                         candidates for consolidation.
                       type: integer
                       default: 200
                     segmentsMin:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         The minimum number of segments that are
                         evaluated as candidates for consolidation
                       type: integer
                       default: 50
                     minScore:
                       description: |
+                        This option is only available up to v3.12.6:
+
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
+                    maxSkewThreshold:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The skew describes how much segment files vary in file size. It is a number
+                        between `0.0` and `1.0` and is calculated by dividing the largest file size
+                        of a set of segment files by the total size. For example, the skew of a
+                        200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                        A large `maxSkewThreshold` value allows merging large segment files with
+                        smaller ones, consolidation occurs more frequently, and there are fewer
+                        segment files on disk at all times. While this may potentially improve the
+                        read performance and use fewer file descriptors, frequent consolidations
+                        cause a higher write load and thus a higher write amplification.
+                        
+                        On the other hand, a small threshold value triggers the consolidation only
+                        when there are a large number of segment files that don't vary in size a lot.
+                        Consolidation occurs less frequently, reducing the write amplification, but
+                        it can result in a greater number of segment files on disk.
+
+                        Multiple combinations of candidate segments are checked and the one with
+                        the lowest skew value is selected for consolidation. The selection process
+                        picks the greatest number of segments that together have the lowest skew value
+                        while ensuring that the size of the new consolidated segment remains under
+                        the configured `segmentsBytesMax`.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.4
+                    minDeletionRatio:
+                      description: |
+                        This option is available from v3.12.7 onward:
+
+                        The `minDeletionRatio` represents the minimum required deletion ratio
+                        in one or more segments to perform a cleanup of those segments.
+                        It is a number between `0.0` and `1.0`.
+
+                        The deletion ratio is the percentage of deleted documents across one or
+                        more segment files and is calculated by dividing the number of deleted
+                        documents by the total number of documents in a segment or a group of
+                        segments. For example, if there is a segment with 1000 documents of which
+                        300 are deleted and another segment with 1000 documents of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                        The `minDeletionRatio` threshold must be carefully selected. A smaller
+                        value leads to earlier cleanup of deleted documents from segments and
+                        thus reclamation of disk space but it generates a higher write load.
+                        A very large value lowers the write amplification but at the same time
+                        the system can be left with a large number of segment files with a high
+                        percentage of deleted documents that occupy disk space unnecessarily.
+
+                        During cleanup, the segment files are first arranged in decreasing
+                        order of their individual deletion ratios. Then the largest subset of
+                        segments whose collective deletion ratio is greater than or equal to
+                        `minDeletionRatio` is picked.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.5
       responses:
         '200':
           description: |
@@ -2126,7 +2528,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2135,7 +2538,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -2151,6 +2554,8 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
                         type: integer
@@ -2160,18 +2565,81 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Filter out consolidation candidates with a score less than this.
                         type: integer
+                      maxSkewThreshold:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The skew describes how much segment files vary in file size. It is a number
+                          between `0.0` and `1.0` and is calculated by dividing the largest file size
+                          of a set of segment files by the total size. For example, the skew of a
+                          200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                          A large `maxSkewThreshold` value allows merging large segment files with
+                          smaller ones, consolidation occurs more frequently, and there are fewer
+                          segment files on disk at all times. While this may potentially improve the
+                          read performance and use fewer file descriptors, frequent consolidations
+                          cause a higher write load and thus a higher write amplification.
+                          
+                          On the other hand, a small threshold value triggers the consolidation only
+                          when there are a large number of segment files that don't vary in size a lot.
+                          Consolidation occurs less frequently, reducing the write amplification, but
+                          it can result in a greater number of segment files on disk.
+
+                          Multiple combinations of candidate segments are checked and the one with
+                          the lowest skew value is selected for consolidation. The selection process
+                          picks the greatest number of segments that together have the lowest skew value
+                          while ensuring that the size of the new consolidated segment remains under
+                          the configured `segmentsBytesMax`.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
+                      minDeletionRatio:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The `minDeletionRatio` represents the minimum required deletion ratio
+                          in one or more segments to perform a cleanup of those segments.
+                          It is a number between `0.0` and `1.0`.
+
+                          The deletion ratio is the percentage of deleted documents across one or
+                          more segment files and is calculated by dividing the number of deleted
+                          documents by the total number of documents in a segment or a group of
+                          segments. For example, if there is a segment with 1000 documents of which
+                          300 are deleted and another segment with 1000 documents of which 700 are
+                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                          The `minDeletionRatio` threshold must be carefully selected. A smaller
+                          value leads to earlier cleanup of deleted documents from segments and
+                          thus reclamation of disk space but it generates a higher write load.
+                          A very large value lowers the write amplification but at the same time
+                          the system can be left with a large number of segment files with a high
+                          percentage of deleted documents that occupy disk space unnecessarily.
+
+                          During cleanup, the segment files are first arranged in decreasing
+                          order of their individual deletion ratios. Then the largest subset of
+                          segments whose collective deletion ratio is greater than or equal to
+                          `minDeletionRatio` is picked.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
                   writebufferIdle:
                     description: |
                       Maximum number of writers (segments) cached in the pool (`0` = disabled).
@@ -2493,7 +2961,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold`,
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2502,7 +2971,7 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size and live
+                          - `"tier"`: consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
                           - `"bytes_accum"`: consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
@@ -2518,6 +2987,8 @@ paths:
                         maximum: 1.0
                       segmentsBytesFloor:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Defines the value (in bytes) to treat all smaller segments
                           as equal for consolidation selection.
                         type: integer
@@ -2527,18 +2998,81 @@ paths:
                         type: integer
                       segmentsMax:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The maximum number of segments that are evaluated as
                           candidates for consolidation.
                         type: integer
                       segmentsMin:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
                       minScore:
                         description: |
+                          This option is only available up to v3.12.6:
+
                           Filter out consolidation candidates with a score less than this.
                         type: integer
+                      maxSkewThreshold:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The skew describes how much segment files vary in file size. It is a number
+                          between `0.0` and `1.0` and is calculated by dividing the largest file size
+                          of a set of segment files by the total size. For example, the skew of a
+                          200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                          A large `maxSkewThreshold` value allows merging large segment files with
+                          smaller ones, consolidation occurs more frequently, and there are fewer
+                          segment files on disk at all times. While this may potentially improve the
+                          read performance and use fewer file descriptors, frequent consolidations
+                          cause a higher write load and thus a higher write amplification.
+                          
+                          On the other hand, a small threshold value triggers the consolidation only
+                          when there are a large number of segment files that don't vary in size a lot.
+                          Consolidation occurs less frequently, reducing the write amplification, but
+                          it can result in a greater number of segment files on disk.
+
+                          Multiple combinations of candidate segments are checked and the one with
+                          the lowest skew value is selected for consolidation. The selection process
+                          picks the greatest number of segments that together have the lowest skew value
+                          while ensuring that the size of the new consolidated segment remains under
+                          the configured `segmentsBytesMax`.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
+                      minDeletionRatio:
+                        description: |
+                          This option is available from v3.12.7 onward:
+
+                          The `minDeletionRatio` represents the minimum required deletion ratio
+                          in one or more segments to perform a cleanup of those segments.
+                          It is a number between `0.0` and `1.0`.
+
+                          The deletion ratio is the percentage of deleted documents across one or
+                          more segment files and is calculated by dividing the number of deleted
+                          documents by the total number of documents in a segment or a group of
+                          segments. For example, if there is a segment with 1000 documents of which
+                          300 are deleted and another segment with 1000 documents of which 700 are
+                          deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                          The `minDeletionRatio` threshold must be carefully selected. A smaller
+                          value leads to earlier cleanup of deleted documents from segments and
+                          thus reclamation of disk space but it generates a higher write load.
+                          A very large value lowers the write amplification but at the same time
+                          the system can be left with a large number of segment files with a high
+                          percentage of deleted documents that occupy disk space unnecessarily.
+
+                          During cleanup, the segment files are first arranged in decreasing
+                          order of their individual deletion ratios. Then the largest subset of
+                          segments whose collective deletion ratio is greater than or equal to
+                          `minDeletionRatio` is picked.
+                        type: number
+                        minimum: 0.0
+                        maximum: 1.0
                   writebufferIdle:
                     description: |
                       Maximum number of writers (segments) cached in the pool (`0` = disabled).

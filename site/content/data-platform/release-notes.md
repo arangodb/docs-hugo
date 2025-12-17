@@ -10,7 +10,7 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 [get in touch](https://arango.ai/contact-us/) with the Arango team.
 {{< /tip >}}
 
-## October 2024 (pre-release)
+## October 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.6</small>
 
@@ -63,7 +63,7 @@ Key improvements:
 - **Performance improvements**: Optimized rendering for large graphs with
   millions of nodes and edges.
 
-## July 2024 (pre-release)
+## July 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.5</small>
 
