@@ -18,7 +18,7 @@ if sys.version_info[0] != 3:
 
 ## Load versions
 versions = yaml.safe_load(open("versions.yaml", "r"))
-versions = sorted(versions["/arangodb/"], key=lambda d: d['name']) 
+versions = sorted(versions["/arangodb/"], key=lambda d: d['name'])
 
 
 print(f"Loaded versions {versions}")
@@ -33,7 +33,7 @@ parser.add_argument(
     "--workflow", help="The workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow"
+    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow (sorted by name)"
 )
 parser.add_argument(
     "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
