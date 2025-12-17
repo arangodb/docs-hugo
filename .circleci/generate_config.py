@@ -144,7 +144,7 @@ def workflow_generate(config):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
                 else:
                     compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:6" # clang-16
-            else: # build image for 3.12.6 and devel as of 2025-12-03
+            else: # build image for 3.12.7 and devel as of 2025-12-11
                 compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:18" # clang-19
 
         print(f"compileJob = {compileJob}")
@@ -257,7 +257,7 @@ def workflow_release_arangodb(config):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
         else:
             compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:6" # clang-16
-    else: # build image for 3.12.6 and devel as of 2025-12-03
+    else: # build image for 3.12.7 and devel as of 2024-12-11
         compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:18" # clang-19
 
     config["jobs"]["compile-linux"]["steps"].append({
