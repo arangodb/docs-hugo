@@ -1007,6 +1007,29 @@ more data, less file descriptors are used.
   - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
   - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
+## Added and removed consolidation options for inverted indexs and `arangosearch` Views
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating inverted indexes as well as
+`arangosearch` Views have been removed and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The consolidation works differently now and uses the new `maxSkewThreshold` and
+`minDeletionRatio` options together with the existing `segmentsBytesMax`. If you
+previously used customized settings for the removed options, check if the default
+values of the new options are acceptable or if you need to tune them according to
+your workload.
+
+For details, see:
+- [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
+- [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
