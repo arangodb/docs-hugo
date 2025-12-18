@@ -920,8 +920,21 @@ RocksDB-related startup options have been changed:
 
 - `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128 KiB to 1 GiB.
 - `--rocksdb.pending-compactions-stop-trigger` has been changed from 16 GiB to 32 GiB.
-- `--rocksdb.partition-files-for-documents` has been changed from false to true.
 - `--rocksdb.throttle-slow-down-writes-trigger` has been obsoleted.
+- `--rocksdb.partition-files-for-documents` has been changed from false to true.
+
+{{< warning >}}
+If the `--rocksdb.partition-files-for-documents` startup option is enabled, it
+causes RocksDB to use separate `.sst` files for every collection/shard to store
+document data. This can create a very large number of files and use the same
+amount of file descriptors for deployments with many collections/shards and a
+high write load.
+
+It is recommended to disable the feature explicitly with
+`--rocksdb.partition-files-for-documents false` in versions from 3.12.6 through
+3.12.7 where it is enabled by default. From 3.12.7-1 and 3.12.8 onward, it is
+again disabled by default.
+{{< /warning >}}
 
 ## Optional elevation for GeoJSON Points
 
