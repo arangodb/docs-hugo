@@ -620,6 +620,22 @@ support the VelocyPack format. The cluster replication has been changed to use
 VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
 risk of deviations due to the serialization.
 
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2</small>

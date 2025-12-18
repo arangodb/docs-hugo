@@ -936,6 +936,22 @@ It is recommended to disable the feature explicitly with
 again disabled by default.
 {{< /warning >}}
 
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1, v3.12.6</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
