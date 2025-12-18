@@ -39,6 +39,10 @@ parameters:
     type: string
     default: "undefined"
 
+  arangodb-oem:
+    type: string
+    default: "undefined"
+
   arangodb-3_12:
     type: string
     default: "undefined"
@@ -79,7 +83,7 @@ parameters:
 jobs:
   generate-config:
     docker:
-      - image: cimg/python:3.11.1
+      - image: cimg/python:3.14.1
     executor: continuation/default
     steps:
       - run:
@@ -89,7 +93,10 @@ jobs:
             fetched=false
             for i in $(seq 1 5); do
               echo ""
-              res=$(curl -fsS https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1) || curlStatus=$?
+              headers=$(mktemp)
+              res=$(curl -sS -D "$headers" -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1) || curlStatus=$?
+              headers_content=$(cat "$headers")
+              rm "$headers"
               if [[ -z "${curlStatus:-}" ]]; then
                 urls=$(echo "$res" | jq ".[].download_url") || jqStatus=$?
                 if [[ -z "${jqStatus:-}" ]]; then
@@ -99,7 +106,8 @@ jobs:
                 echo "jq failed with $jqStatus, input:"
                 echo "$res"
               else
-                echo "curl failed with $curlStatus"
+                echo "curl failed with $curlStatus, rate limit?"
+                echo "$headers_content" | grep -i "ratelimit\|retry-after"
               fi
               unset curlStatus
               unset jqStatus
@@ -109,14 +117,15 @@ jobs:
               echo "Failed to fetch download URLs"
               exit 1
             fi
-            echo "$urls" | xargs wget
-            wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
+            echo "$urls" | xargs -n 1 curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY"
+            curl -sS -O -H "Authorization: Bearer $CIRCLECI_GITHUB_READONLY" https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
 
             pip install pyyaml requests
 
+            # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> << pipeline.parameters.arangodb-oem >> \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \
