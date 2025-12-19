@@ -1,0 +1,15 @@
+{{ $method := (.Get 0) -}}
+{{ $url := (.Get 1) -}}
+{{ $validMethods := slice "GET" "HEAD" "POST" "PATCH" "PUT" "DELETE" -}}
+{{ if or (in $validMethods $method) (eq $method "") -}}
+  <div class="endpoint">
+    {{ if $method }}<span class="endpoint-method endpoint-method-{{ $method | lower }}" title="HTTP method">{{ $method }}</span> {{ end -}}
+    <span class="endpoint-url">{{
+      ((htmlEscape $url |
+      replaceRE `(&lt;.+?&gt;)` `<span class="endpoint-placeholder" title="Replace with actual value">$1</span>`) |
+      replaceRE `\{(.+?)\}` `<span class="endpoint-param" title="Replace with actual value">:$1</span>`) | safeHTML
+    }}</span>
+  </div>
+{{- else -}}
+  {{ errorf "'%s' is not a valid HTTP method for an endpoint" $method -}}
+{{ end -}}
