@@ -41,7 +41,7 @@ Before using the Retriever service, you need to:
    managing projects, see the [Projects](ai-orchestrator.md#projects) section in the 
    AI Orchestration Service documentation.
 
-2. **Import data** - Use the [Importer](importer.md) service to transform your 
+2. **Import data** - Use the [Importer](importer/) service to transform your 
    text documents into a knowledge graph stored in ArangoDB.
 
 ## Search Methods

@@ -26,7 +26,7 @@ following steps:
 
 1. Install the Triton LLM Host service.
 2. Register your LLM model to MLflow by uploading the required files.
-3. Configure the [Importer](importer.md#using-triton-inference-server-for-chat-and-embedding) service to use your LLM model.
+3. Configure the [Importer](importer/llm-configuration.md#using-triton-inference-server) service to use your LLM model.
 4. Configure the [Retriever](retriever.md#using-triton-inference-server-for-chat-and-embedding) service to use your LLM model.
 
 {{< tip >}}

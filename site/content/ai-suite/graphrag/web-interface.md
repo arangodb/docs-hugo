@@ -94,7 +94,7 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [Importer](../reference/importer.md) service documentation.
+See also the [Importer](../reference/importer/) service documentation.
 
 ## Add data source
 

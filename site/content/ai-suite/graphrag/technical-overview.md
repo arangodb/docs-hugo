@@ -68,7 +68,7 @@ The web interface guides you through the process of the following:
 ### API and Services
 
 The [AI Orchestrator](../reference/ai-orchestrator.md), 
-[Importer](../reference/importer.md), and [Retriever](../reference/retriever.md) 
+[Importer](../reference/importer/), and [Retriever](../reference/retriever.md) 
 services provide programmatic access to create and manage GraphRAG pipelines, 
 and give you access to advanced search methods.
 
@@ -106,7 +106,7 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../reference/importer.md) service documentation.
+[Importer](../reference/importer/) service documentation.
 
 ### Query your Knowledge Graph
 
@@ -153,14 +153,13 @@ OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-h
 LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
-- [Importer - Deployment Options](../reference/importer.md#deployment-options)
+- [Importer - Deployment Options](../reference/importer/#deployment-options)
 - [Retriever - Installation](../reference/retriever.md#installation)
 
 ## Limitations
 
 The pre-release version of Arango GraphRAG has the following limitations:
 
-- You can only import a single file.
 - The knowledge graph generated from the file is imported into a named graph
   with a fixed name of `KnowledgeGraph` and set of collections which also have
   fixed names.
