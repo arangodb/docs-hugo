@@ -3996,13 +3996,13 @@
       and the machines can communicate to one-another.
     * Second: Check ArangoDB logs of this server for more details, most likely
       you see `WARN` or `ERROR` messages in the `replication` log topic. If you contact
-      ArangoDB support for this issue, it helps to include these servers logs as well.
+      the Arango support for this issue, it helps to include these servers logs as well.
     * Third: (Unlikely) If the logs contain unexpected format or value entries
       please check if you are running all ArangoDB DB-Servers within the same
       version of ArangoDB. Only upgrades of one minor version at a time are supported
       in general, so if you are running one server with a much newer / older version
       please upgrade all servers to the newest version.
-    * Forth: If none of the above applies, please contact ArangoDB Support.
+    * Forth: If none of the above applies, please contact the Arango support.
 
 - name: arangodb_replication_initial_chunks_requests_time_total
   renamedFrom: arangodb_replication_initial_chunks_requests_time
@@ -4804,7 +4804,7 @@
     ArangoDB than RocksDB can keep up with its background processing.
     This has lead to actual write stops, which are bad since they can lead
     to unavailability. If you see this number grow, you need to act,
-    if in doubt, contact ArangoDB support.
+    if in doubt, contact the Arango support.
   troubleshoot: |
     Quite often, RocksDB is limited by the available I/O bandwidth. Sometimes,
     it is not the bandwidth itself, but the number of I/O operations per
@@ -5846,7 +5846,7 @@
     in the ArangoDB web interface, or use the
     [cluster maintenance tools](https://github.com/arangodb/cluster-maintenance)
     (`create-move-plan` and `execute-move-plan` specifically). In the latter
-    case, contact ArangoDB customer support.
+    case, contact the Arango customer support.
 
 - name: arangodb_shards_not_replicated
   introducedIn: "3.7.1"
@@ -5871,7 +5871,7 @@
     and waiting is a good measure at first. However, if the situation
     persists, something is wrong, potentially some constant server crash
     (maybe out of memory crashes?) or another situation preventing
-    shards to get in sync. Contact ArangoDB customer support in this case.
+    shards to get in sync. Contact the Arango customer support in this case.
 
 - name: arangodb_shards_number
   renamedFrom: arangodb_shards_total_count
@@ -5896,7 +5896,7 @@
     ArangoDB web interface, or use the
     [cluster maintenance tools](https://github.com/arangodb/cluster-maintenance)
     (`create-move-plan` and `execute-move-plan` specifically). In the latter
-    case, contact ArangoDB customer support.
+    case, contact the Arango customer support.
 
 - name: arangodb_shards_out_of_sync
   introducedIn: "3.7.1"
@@ -5922,7 +5922,7 @@
     and waiting is a good measure at first. However, if the situation
     persists, something is wrong, potentially some constant server crash
     (maybe out of memory crashes?) or another situation preventing shards
-    to get in sync. Contact ArangoDB customer support in this case.
+    to get in sync. Contact the Arango customer support in this case.
 
 - name: arangodb_sync_rebuilds_total
   introducedIn: "3.8.0"
@@ -5948,7 +5948,7 @@
   troubleshoot: |
     This number is always `0` from version 3.9.3 onwards. If it is
     non-zero in previous versions, then something is wrong, please 
-    contact ArangoDB customer support in this case.
+    contact the Arango customer support in this case.
 
 - name: arangodb_sync_timeouts_total
   introducedIn: "3.9.2"
@@ -6015,7 +6015,7 @@
     incremental resync process starts from scratch.
   troubleshoot: |
     Normally, this number is always `0`. If it is not, then usually
-    something is wrong, please contact ArangoDB customer support in this
+    something is wrong, please contact the Arango customer support in this
     case.
 
 - name: arangodb_transactions_aborted_total
@@ -6412,7 +6412,7 @@
     However, if the situation persists, something is wrong, potentially
     some constant server crash (maybe out of memory crashes?) or another
     situation preventing shards to get in sync.
-    Contact ArangoDB customer support in this case.
+    Contact the Arango customer support in this case.
 
 - name: arangodb_vocbase_transactions_lost_subordinates_total
   introducedIn: "3.12.4"
@@ -7368,7 +7368,7 @@
     files and the RocksDB background threads have not managed to keep up
     with their compaction work. This situation should be avoided, since
     nasty delays in database operations are incurred. If in doubt,
-    contact ArangoDB support.
+    contact the Arango support.
 
 - name: rocksdb_live_blob_file_garbage_size
   introducedIn: "3.12.6"
