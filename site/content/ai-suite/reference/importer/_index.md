@@ -67,11 +67,11 @@ both HTTP and gRPC interfaces for communication.
 
 ### OpenAI-compatible APIs
 
-Alternatively, if you prefer a simpler setup and don't have specific privacy
-requirements, you can use OpenAI-compatible APIs. This option connects to cloud-based
-services like OpenAI's models via the OpenAI API or a large array of models
-(Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option.
-It also works with private corporate LLMs that expose an OpenAI-compatible endpoint.
+Arango's AI Services are fully compatible with OpenAI-compatible APIs, whether cloud-based or self-hosted.
+
+Thus, you can connects to cloud-based services like OpenAI's models via the OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option, as well as private Azure endpoints.
+
+This option also works with private corporate LLMs that expose an OpenAI-compatible endpoint.
 
 ## Getting Started
 
