@@ -484,10 +484,35 @@ If you want to place a remark in the source files that should not end up in the
 generated output, you can use a comment as follows:
 
 ```markdown
-{{% comment %}}
+{{< comment >}}
 Content or reminder that should not be rendered.
-{{% /comment %}}
+{{< /comment >}}
 ```
+
+#### Endpoints
+
+You can display endpoint URLs of HTTP APIs with some formatting to make them
+look neater:
+
+```markdown
+{{< endpoint "METHOD" "https://<PLACEHOLDER>:8529/path/{PARAM}/action">}}
+```
+
+Available positional parameters:
+
+1. The HTTP method. Possible values: `HEAD`, `GET`, `POST`, `PATCH`, `PUT`, `DELETE`,
+   or empty string (`""`) to omit the method.
+
+2. The URL, which can include the protocol, host, port, path, and query parameters.
+
+   You can wrap path parameters that the user is supposed to fill in with curly
+   braces, e.g. `{GRAPH_ID}`. This is rendered as `:GRAPH_ID` for compatibility
+   with tools like Postman and it is highlighted to make it visually distinct
+   from static parts of the URL.
+
+   You can wrap any other placeholders that the user is supposed to substitute
+   in angled brackets, e.g. `<EXTERNAL_ENDPOINT>`. This is rendered verbatim and
+   it is highlighted to make it visually distinct from static parts of the URL.
 
 #### Special shortcodes
 
