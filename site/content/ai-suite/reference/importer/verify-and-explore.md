@@ -105,6 +105,7 @@ collection. All collections are using the name of your project as a prefix.
   - `level`: The hierarchical level of the community (e.g., `1` for top-level communities).
   - `occurrence`: A normalized score (ranging from `0` to `1`) showing the relative frequency with which this community is mentioned or identified throughout your documents. A value close to 1 means this community is very common in your data and a value near `0` means it is rare.
   - `sub_communities`: References to more specific sub-communities that are part of this larger community.
+  - `embedding`: Vector representation of the community for similarity search (when `enable_community_embeddings` is `true`).
   - `partition_id`: The partition the document belongs to.
 - **Usage**: Enables you to:
   - Identify and analyze major narrative threads and themes.
@@ -166,13 +167,16 @@ Document
 
 ## Vector Search Capabilities
 
-The system automatically creates vector indexes on the `embedding` field in the Entities collection, enabling:
+The system automatically creates vector indexes on the `embedding` field in collections where embeddings are enabled (Entities, Chunks, Edges, and Communities), enabling:
 - Semantic similarity search
 - Nearest neighbor queries
 - Efficient vector-based retrieval
 
 These vector indexes are automatically configured and optimized for the embedding model 
-you selected during [LLM configuration](llm-configuration.md).
+you selected during [LLM configuration](llm-configuration.md). You can customize the vector 
+index behavior using parameters like `vector_index_metric`, `vector_index_use_hnsw`, and 
+`vector_index_n_lists`. See the [Parameters guide](parameters.md#vector-index-configuration) 
+for more details.
 
 ## Next Steps
 

@@ -141,15 +141,39 @@ These parameters control which graph elements receive embedding vectors for sema
 
 - `enable_chunk_embeddings`: Whether to enable embeddings for chunks.
 - `enable_edge_embeddings`: Whether to enable embeddings for edges.
+- `enable_community_embeddings`: Whether to enable embeddings for communities.
 
 **Example:**
 
 ```json
 {
   "enable_chunk_embeddings": true,
-  "enable_edge_embeddings": false
+  "enable_edge_embeddings": false,
+  "enable_community_embeddings": true
 }
 ```
+
+## Vector Index Configuration
+
+These parameters configure the vector indexes used for semantic search and similarity queries. Vector indexes are automatically created on embedding fields when embeddings are enabled.
+
+- `vector_index_metric`: Distance metric for vector similarity search. The supported values are `"cosine"` (default), `"l2"`, and `"innerProduct"`.
+- `vector_index_n_lists`: Number of lists for approximate search (optional). If not set, it is automatically computed as `8 * sqrt(collection_size)`. This parameter is ignored when using HNSW.
+- `vector_index_use_hnsw`: Whether to use HNSW (Hierarchical Navigable Small World) index instead of the default inverted index (default: `false`).
+
+**Example:**
+
+```json
+{
+  "vector_index_n_lists": 100,
+  "vector_index_metric": "cosine",
+  "vector_index_use_hnsw": false
+}
+```
+
+{{< info >}}
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search documentation](../../../../arangodb/stable/index-and-search/indexing/working-with-indexes/vector-indexes.md).
+{{< /info >}}
 
 ## Semantic Units and Image Processing
 
@@ -229,11 +253,12 @@ This example includes entity extraction, chunking, and embeddings with standard 
   "entity_types": ["person", "organization", "location", "event"],
   "relationship_types": ["WORKS_FOR", "LOCATED_IN", "PARTICIPATES_IN"],
   "enable_chunk_embeddings": true,
+  "enable_community_embeddings": false,
   "batch_size": 1000
 }
 ```
 
-For advanced use cases, this configuration adds semantic units for image processing, custom markdown-specific chunk separators, strict type filtering, and extended community reports.
+For advanced use cases, this configuration adds semantic units for image processing, custom markdown-specific chunk separators, strict type filtering, extended community reports, community embeddings, and optimized vector index settings.
 
 ```json
 {
@@ -246,9 +271,12 @@ For advanced use cases, this configuration adds semantic units for image process
   "relationship_types": ["USES", "RELATED_TO", "PART_OF"],
   "enable_strict_types": true,
   "enable_chunk_embeddings": true,
+  "enable_community_embeddings": true,
   "enable_semantic_units": true,
   "process_images": true,
   "community_report_num_findings": "7-12",
+  "vector_index_metric": "cosine",
+  "vector_index_use_hnsw": true,
   "batch_size": 500
 }
 ```

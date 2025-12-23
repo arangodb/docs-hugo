@@ -65,7 +65,8 @@ curl -X POST https://<your-platform-url>/v1/import \
     "entity_types": ["person", "organization", "location", "event"],
     "relationship_types": ["WORKS_FOR", "LOCATED_IN", "PARTICIPATES_IN"],
     "enable_chunk_embeddings": false,
-    "enable_edge_embeddings": false
+    "enable_edge_embeddings": false,
+    "enable_community_embeddings": true
   }'
 ```
 
@@ -111,13 +112,81 @@ curl -X POST https://<your-platform-url>/v1/import-multiple \
     "batch_size": 1000,
     "chunk_token_size": 1200,
     "chunk_overlap_token_size": 100,
-    "entity_types": ["person", "organization", "location", "event"]
+    "entity_types": ["person", "organization", "location", "event"],
+    "enable_chunk_embeddings": true,
+    "enable_community_embeddings": true,
+    "vector_index_metric": "cosine"
   }'
 ```
 
 Replace `<your-platform-url>` with your Arango Data Platform URL.
 
 For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
+
+### Full example with all parameters
+
+This comprehensive example demonstrates all available import parameters for the multi-file import endpoint:
+
+```json
+{
+  "files": [
+    {
+      "name": "document1.txt",
+      "content": "VGhpcyBpcyBkb2MxIGNvbnRlbnQgaW4gYmFzZTY0Lg==",
+      "citable_url": "https://example.com/doc1"
+    },
+    {
+      "name": "document2.md",
+      "content": "VGhpcyBpcyBkb2MyIGNvbnRlbnQgaW4gYmFzZTY0Lg==",
+      "citable_url": "https://example.com/doc2"
+    }
+  ],
+  "store_in_s3": false,
+  "batch_size": 1000,
+  "enable_chunk_embeddings": true,
+  "enable_edge_embeddings": true,
+  "enable_community_embeddings": true,
+  "chunk_token_size": 1000,
+  "chunk_overlap_token_size": 200,
+  "chunk_min_token_size": 50,
+  "chunk_custom_separators": [
+    "\n\n",
+    "---",
+    "###"
+  ],
+  "preserve_chunk_separator": true,
+  "entity_types": [
+    "PERSON",
+    "ORGANIZATION",
+    "LOCATION",
+    "TECHNOLOGY"
+  ],
+  "relationship_types": [
+    "RELATED_TO",
+    "PART_OF",
+    "USES",
+    "LOCATED_IN"
+  ],
+  "enable_strict_types": true,
+  "entity_extract_max_gleaning": 1,
+  "community_report_num_findings": "5-10",
+  "community_report_instructions": "Focus on key entities, relationships, and risk-related findings.",
+  "enable_semantic_units": true,
+  "process_images": true,
+  "store_image_data": true,
+  "vector_index_n_lists": 2048,
+  "vector_index_metric": "cosine",
+  "vector_index_use_hnsw": true,
+  "smart_graph_attribute": "region",
+  "shard_count": 3,
+  "is_disjoint": false,
+  "satellite_collections": [
+    "sat_col_1",
+    "sat_col_2"
+  ],
+  "partition_id": "my_partition_id_001"
+}
+```
 
 ### Streaming Progress Responses
 
@@ -163,7 +232,10 @@ payload = {
         }
     ],
     "batch_size": 1000,
-    "chunk_token_size": 1200
+    "chunk_token_size": 1200,
+    "enable_chunk_embeddings": True,
+    "enable_community_embeddings": True,
+    "vector_index_metric": "cosine"
 }
 
 response = requests.post(url, json=payload, stream=True)
