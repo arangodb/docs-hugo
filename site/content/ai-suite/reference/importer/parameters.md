@@ -172,7 +172,7 @@ These parameters configure the vector indexes used for semantic search and simil
 ```
 
 {{< info >}}
-Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search documentation](../../../../arangodb/stable/index-and-search/indexing/working-with-indexes/vector-indexes.md).
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
 {{< /info >}}
 
 ## Semantic Units and Image Processing
@@ -218,7 +218,7 @@ These parameters configure ArangoDB graph features for distributed deployments.
 
 {{< info >}}
 These parameters are primarily used for distributed ArangoDB deployments. 
-Consult the [ArangoDB SmartGraphs documentation](../../../../arangodb/stable/graphs/smartgraphs/_index.md) 
+Consult the [ArangoDB SmartGraphs documentation](../../../arangodb/3.12/graphs/smartgraphs/_index.md) 
 for more details.
 {{< /info >}}
 
