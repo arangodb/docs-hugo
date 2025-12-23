@@ -1282,4 +1282,4 @@ Sets a license.
 - `force` (boolean, _optional_): Whether to change the license even if it expires
   sooner than the current one. Default: `false`.
 
-Also see [Apply a license](../../../operations/administration/license-management.md#apply-a-license).
+Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).

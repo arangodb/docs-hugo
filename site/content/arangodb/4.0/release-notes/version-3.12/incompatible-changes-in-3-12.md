@@ -1007,6 +1007,23 @@ more data, less file descriptors are used.
   - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
   - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
+## License management changes
+
+<small>Introduced in: v3.12.6</small>
+
+Enterprise Edition license keys are now longer issued directly. Customers receive
+license credentials instead. You can use a command-line tool to either activate
+deployments or generate license keys using these credentials. An internet
+connection is required for both. A generated key can subsequently be applied to
+an air-gapped deployment without internet access.
+
+The activation and license keys are now typically short-lived and need to be
+renewed every two weeks. Old license keys remain valid until their regular
+expiration.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
 ## Added and removed consolidation options for inverted indexs and `arangosearch` Views
 
 <small>Introduced in: v3.12.7</small>
