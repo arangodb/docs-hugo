@@ -12,7 +12,7 @@ function addShowMoreButton(parentElem) {
 }
 
 function initCopyToClipboard() {
-    $('article pre > code, .endpoint-url').each(function() {
+    $('article pre > code').each(function() {
         code = $(this);
         code.addClass('copy-to-clipboard-code');
         code.parent().addClass( 'copy-to-clipboard' );
@@ -29,7 +29,7 @@ function initCopyToClipboard() {
 }
 
 function copyCode(event) {
-    var parent = $(event.target).siblings('code')[0] || $(event.target).siblings('.endpoint-url')[0];
+    var parent = $(event.target).siblings('code')[0];
     var text = parent.innerText;
     navigator.clipboard.writeText(text).then(() => {
         console.log("Copied")

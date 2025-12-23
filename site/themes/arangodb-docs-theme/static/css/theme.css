@@ -1487,10 +1487,38 @@ div > .box-content-container {
     text-shadow: none;
 }
 
-.endpoint {
+.endpoint-group {
     display: flex;
     align-items: flex-start;
     position: relative;
+}
+   
+.clipboard-copy {
+    color: var(--neutral-white);
+    background: var(--color-avocado);
+    border-radius: .25rem;
+    margin: .25rem;
+    padding: .5rem;
+    opacity: 0;
+}
+
+.clipboard-copy::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0c5";
+    display: inline-block;
+    width: 1rem;
+}
+
+.clipboard-copy.tooltipped::before {
+    content: "\f00c";
+}
+
+.clipboard-copy:hover {
+    background: var(--color-evergreen);
+}
+
+.endpoint-group:hover .clipboard-copy {
+    opacity: 1;
 }
 
 .endpoint-method {
@@ -1531,15 +1559,12 @@ div > .box-content-container {
     font-family: var(--font-code);
     word-wrap: break-word;
     color: var(--neutral-black);
+    min-width: 0;
 }
 
 .endpoint-placeholder, .endpoint-param {
     background: var(--neutral-gray-lighter);
     border-radius: .25rem;
-}
-
-.fa-copy {
-    color: #e4d9d9;
 }
 
 blockquote {

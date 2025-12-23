@@ -612,6 +612,25 @@ function handleDocumentClick(event) {
         }
         return;
     }
+
+    // Endpoint copy button clicks
+    if (closest('.clipboard-copy')) {
+        event.preventDefault();
+        const copyAncestor = target.closest('.copy-ancestor');
+        if (!copyAncestor) {
+            console.log("No copy ancestor found");
+            return;
+        }
+        const copyElement = copyAncestor.querySelector('.copy-this');
+        if (copyElement) {
+            navigator.clipboard.writeText(copyElement.textContent).then(() => {
+                target.classList.add("tooltipped");
+                setTimeout(function() {
+                    target.classList.remove("tooltipped");
+                }, 1000);
+            });
+        }
+    }
   
     // Code show more button clicks
     if (closest('.code-show-more')) {
