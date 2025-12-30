@@ -73,9 +73,9 @@ ArangoDB Enterprise Edition v3.12.5. For AI Suite features in this release, see
 
 ### Arango Data Platform
 
-The Arango Data Platform is a Kubernetes-native technical infrastructure that
-brings together the entire ArangoDB offering into a unified solution.
-See [Get Started with the Arango Data Platform](get-started.md).
+The [Arango Data Platform](_index.md) is a Kubernetes-native technical
+infrastructure that brings together the entire ArangoDB offering into a
+unified solution.
 
 What's included:
 
@@ -91,6 +91,6 @@ What's included:
 - **Unified web interface**: Single interface for accessing all Platform services
   and components.
 
-The Platform can be extended with the [AI Suite](../ai-suite/_index.md) for
+The Data Platform can be extended with the [AI Suite](../ai-suite/_index.md) for
 advanced capabilities like GraphRAG, GraphML, Graph Analytics, AQLizer, and more
 (requires separate license).
