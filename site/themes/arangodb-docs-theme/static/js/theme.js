@@ -214,23 +214,24 @@ async function loadNav() {
     // TODO: Support multiple versions
     const selectedVersion = getSelectedVersion();
     const versionInfo = getVersionInfo(selectedVersion);
-    if (!versionInfo) {
-      console.log("Selected version not found in version info");
-    }
-    const selectedVersionAlias = versionInfo.alias;
-    const versionSelector = mainNavContent.querySelector(".version-selector");
-    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
-      versionSelector.value = selectedVersionAlias;
-      
-      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-        if (navList.dataset.version == selectedVersion) {
-          navList.classList.add("selected-version");
-        } else {  
-          navList.classList.remove("selected-version");
-        }
-      });
+    if (versionInfo) {
+      const selectedVersionAlias = versionInfo.alias;
+      const versionSelector = mainNavContent.querySelector(".version-selector");
+      if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+        versionSelector.value = selectedVersionAlias;
+        
+        versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+          if (navList.dataset.version == selectedVersion) {
+            navList.classList.add("selected-version");
+          } else {  
+            navList.classList.remove("selected-version");
+          }
+        });
+      } else {
+        console.log("Selected/stored version not available in version selector");
+      }
     } else {
-      console.log("Selected/stored version not available in version selector");
+      console.log("Selected version not found in version info");
     }
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
@@ -611,6 +612,25 @@ function handleDocumentClick(event) {
             updateHistory(href);
         }
         return;
+    }
+
+    // Endpoint copy button clicks
+    if (closest('.clipboard-copy')) {
+        event.preventDefault();
+        const copyAncestor = target.closest('.copy-ancestor');
+        if (!copyAncestor) {
+            console.log("No copy ancestor found");
+            return;
+        }
+        const copyElement = copyAncestor.querySelector('.copy-this');
+        if (copyElement) {
+            navigator.clipboard.writeText(copyElement.textContent).then(() => {
+                target.classList.add("tooltipped");
+                setTimeout(function() {
+                    target.classList.remove("tooltipped");
+                }, 1000);
+            });
+        }
     }
   
     // Code show more button clicks
