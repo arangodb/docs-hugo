@@ -276,6 +276,18 @@
     }
   },
   {
+    "name": "replace-any-eq-with-in",
+    "description": "Replace `ANY ==` array comparison operator expressions in a\n`FILTER` node with an equivalent `IN` condition.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "remove-redundant-or",
     "description": "Combine multiple `OR` conditions for the same variable or\nattribute into a single condition.",
     "flags": {
