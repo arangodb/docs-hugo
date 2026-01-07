@@ -167,7 +167,7 @@ Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
 ```sh
-VERSION_OPERATOR='1.3.3' # Use a newer version if available
+VERSION_OPERATOR='1.3.4' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arangodb \
@@ -480,8 +480,22 @@ You can stop the port forwarding in the command-line with the key combination
 You can access the Arango Data Platform web interface with a browser by appending
 `/ui/` to the base URL, e.g. `https://127.0.0.1:8529/ui/`.
 
-### ArangoDB Core
+For a local deployment without further certificate configuration, your browser
+will show a warning because a self-signed certificate is used. Continue anyway
+to access the web interface. Depending on your browser, the option to continue
+may require that you click a button for advanced options.
 
-The HTTP API of the ArangoDB Core database system is available at the base URL.
-For example, the URL of the Cursor API for submitting AQL queries (against the
-`_system` database) is `https://127.0.0.1:8529/_db/_system/_api/cursor`.
+### ArangoDB
+
+The HTTP API of the ArangoDB core database system is available at the base URL.
+For example, the URL of the Cursor API for running AQL queries
+(in the `_system` database) is `https://127.0.0.1:8529/_db/_system/_api/cursor`.
+
+For a local deployment without further certificate configuration, you may need
+to explicitly allow self-signed certificates in drivers or tools to access the
+Data Platform. For example, cURL requires that you specify the `-k` / `--insecure`
+option:
+
+```sh
+curl -k -u root: -d '{"query":"RETURN 42"}' https://127.0.0.1:8529/_db/_system/_api/cursor
+```
