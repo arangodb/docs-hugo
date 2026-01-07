@@ -161,5 +161,5 @@ For detailed configuration examples, see:
 The pre-release version of Arango GraphRAG has the following limitations:
 
 - The knowledge graph generated from the file is imported into a named graph
-  with a fixed name of `KnowledgeGraph` and set of collections which also have
-  fixed names.
+  with the name `{project_name}_kg` and set of collections prefixed with your
+  project name (e.g., `{project_name}_Documents`, `{project_name}_Chunks`, etc.).

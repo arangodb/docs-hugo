@@ -146,8 +146,8 @@ This comprehensive example demonstrates all available import parameters for the 
   "enable_chunk_embeddings": true,
   "enable_edge_embeddings": true,
   "enable_community_embeddings": true,
-  "chunk_token_size": 1000,
-  "chunk_overlap_token_size": 200,
+  "chunk_token_size": 1200,
+  "chunk_overlap_token_size": 100,
   "chunk_min_token_size": 50,
   "chunk_custom_separators": [
     "\n\n",
@@ -211,7 +211,59 @@ The `type` field indicates the current stage of processing:
 - `IMPORT_PROGRESS_TYPE_COMPLETED` (value: `5`): All processing completed successfully.
 - `IMPORT_PROGRESS_TYPE_ERROR` (value: `6`): Error occurred during processing.
 
-### Example: Handling Streaming Responses
+### Response Stream Format
+
+The multi-file import endpoint uses **Server-Sent Events (SSE)**, a standard HTTP streaming protocol (part of HTML5). SSE allows the server to push real-time progress updates to clients over a single HTTP connection.
+
+**SSE Format:**
+
+The server returns an SSE stream with these characteristics:
+
+**HTTP Response Headers:**
+- `Content-Type: text/event-stream` (indicates SSE format)
+- Connection kept open for streaming
+
+**Stream Body Format** (identical for all clients):
+- Each event line starts with `data: ` followed by JSON
+- Empty lines separate individual events
+- Stream continues until completion or error
+
+**Raw stream example:**
+```
+data: {"type": "IMPORT_PROGRESS_TYPE_FILES_RECEIVED", "message": "Received 2 files for processing", "current_file_index": 0, "total_files": 2, "success": true}
+
+data: {"type": "IMPORT_PROGRESS_TYPE_FILE_PROCESSING", "message": "Processing file 1/2: doc1.txt", "current_file_index": 0, "total_files": 2, "success": true}
+
+data: {"type": "IMPORT_PROGRESS_TYPE_COMPLETED", "message": "Import completed successfully", "success": true}
+```
+
+### Example: Streaming with curl
+
+Use curl to view the raw SSE stream as it arrives:
+
+```bash
+curl -X POST https://<your-platform-url>/v1/import-multiple \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  --no-buffer \
+  -d '{
+    "files": [
+      {
+        "name": "doc1.txt",
+        "content": "<base64-encoded-content>",
+        "citable_url": "https://example.com/doc1"
+      }
+    ],
+    "batch_size": 1000,
+    "enable_chunk_embeddings": true
+  }'
+```
+
+The `--no-buffer` flag ensures curl displays data immediately as it arrives.
+
+### Example: Streaming with Python
+
+When using Python, you must parse the SSE format and strip the `data: ` prefix:
 
 ```python
 import requests
@@ -242,15 +294,37 @@ response = requests.post(url, json=payload, stream=True)
 
 for line in response.iter_lines():
     if line:
-        progress = json.loads(line)
-        print(f"Progress: {progress['message']}")
-        print(f"File: {progress['current_file_index'] + 1}/{progress['total_files']}")
+        # Decode bytes to string
+        line_str = line.decode('utf-8') if isinstance(line, bytes) else line
         
-        if progress['type'] == 5:  # COMPLETED
-            print("Import completed successfully!")
-        elif progress['type'] == 6:  # ERROR
-            print(f"Error: {progress['error_message']}")
-            break
+        # Strip SSE 'data: ' prefix if present
+        if line_str.startswith('data: '):
+            line_str = line_str[6:]
+        elif line_str.startswith('data:'):
+            line_str = line_str[5:].strip()
+        
+        # Skip empty lines
+        if not line_str.strip():
+            continue
+        
+        try:
+            progress = json.loads(line_str)
+            
+            # Display progress information
+            print(f"Progress: {progress['message']}")
+            if progress.get('current_file_index') is not None:
+                print(f"File: {progress['current_file_index'] + 1}/{progress['total_files']}")
+            
+            # Check completion status
+            if progress['type'] == 'IMPORT_PROGRESS_TYPE_COMPLETED':
+                print("Import completed successfully!")
+                break
+            elif progress['type'] == 'IMPORT_PROGRESS_TYPE_ERROR':
+                print(f"Error: {progress.get('error_message', 'Unknown error')}")
+                break
+        except json.JSONDecodeError:
+            # Skip malformed lines
+            continue
 ```
 
 ## Next Steps

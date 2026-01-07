@@ -40,9 +40,14 @@ Alternatively, you can also see if the import was successful by checking your Ar
 
 1. Connect to your ArangoDB instance.
 2. Navigate to the specified database.
-3. Verify that the following collections exist:
-   - `knowledge_graph_vertices`: Contains the nodes of the knowledge graph i.e. documents, chunks, communities, and entities.
-   - `knowledge_graph_edges`: Contains the relationships between nodes i.e. relations.
+3. Verify that the following collections exist (where `{project_name}` is your project name):
+   - `{project_name}_Documents`: Contains the original documents that were processed
+   - `{project_name}_Chunks`: Contains text chunks extracted from documents
+   - `{project_name}_Entities`: Contains entities extracted from the text
+   - `{project_name}_Communities`: Contains thematic clusters of related entities
+   - `{project_name}_Relations`: Edge collection containing relationships between nodes
+   - `{project_name}_SemanticUnits`: Contains semantic units like images (only if `enable_semantic_units` is `true`)
+   - Graph named `{project_name}_kg`: The graph structure connecting all collections
 
 ## What ArangoDB Collections Look Like After Import
 
@@ -52,15 +57,26 @@ collection. All collections are using the name of your project as a prefix.
 
 ### Documents Collection
 
-- **Purpose**: Stores the original text document that were processed.
+- **Collection type**: Vertex collection.
+- **Purpose**: Stores the original text documents that were processed.
 - **Key Fields**:
   - `_key`: Unique identifier for the document.
   - `content`: The full text content of the document.
+  - `file_name` (multi-file imports only): Original filename of the document.
+  - `citable_url` (multi-file imports only): URL to be cited in inline citations.
   - `partition_id`: The partition the document belongs to.
 - **Usage**: Acts as the root level container for all document-related data.
 
+{{< info >}}
+When using [multi-file imports](importing-files.md#multi-file-import), the `file_name`
+and `citable_url` fields are stored in the Documents collection, allowing you to track
+which file each document came from and provide citable URLs for inline citations at
+retrieval. Single file imports do not include these fields.
+{{< /info >}}
+
 ### Chunks Collection
 
+- **Collection type**: Vertex collection.
 - **Purpose**: Stores text chunks extracted from documents for better processing and analysis.
 - **Key Fields**:
   - `_key`: Unique identifier for the chunk.
@@ -72,6 +88,7 @@ collection. All collections are using the name of your project as a prefix.
 
 ### Entities Collection
 
+- **Collection type**: Vertex collection.
 - **Purpose**: Stores entities extracted from the text, such as persons, organizations, concepts, etc.
 - **Key Fields**:
   - `_key`: Unique identifier for the entity.
@@ -85,6 +102,7 @@ collection. All collections are using the name of your project as a prefix.
 
 ### Communities Collection
 
+- **Collection type**: Vertex collection.
 - **Purpose**: Stores thematic clusters of related entities that form meaningful
   communities within your documents. Each community represents a cohesive group
   of concepts, characters, or themes that are closely related and interact with
@@ -116,6 +134,7 @@ collection. All collections are using the name of your project as a prefix.
 
 ### Relations Collection
 
+- **Collection type**: Edge collection.
 - **Purpose**: Stores relationships between different nodes in the graph.
 - **Key Fields**:
   - `_from`: Source node reference.
@@ -131,6 +150,7 @@ collection. All collections are using the name of your project as a prefix.
 
 ### Semantic Units Collection
 
+- **Collection type**: Vertex collection.
 - **Purpose**: Stores semantic units extracted from documents, including image
   references and web URLs. This collection is only created when `enable_semantic_units`
   is set to `true`.

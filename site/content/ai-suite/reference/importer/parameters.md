@@ -54,7 +54,9 @@ Each file in the `files` array requires:
 
 - `name` (required): Original filename with extension.
 - `content` (required): File content as base64-encoded bytes.
-- `citable_url` (required): URL to be cited in inline citations.
+- `citable_url` (optional): URL to be cited in inline citations. This URL is stored in
+  the document metadata and used at retrieval. When querying your knowledge graph, citations
+  can be optionally included in the response. 
 
 **Example:**
 
@@ -79,9 +81,9 @@ Each file in the `files` array requires:
 
 These parameters control how documents are split into smaller chunks for processing.
 
-- `chunk_token_size`: Maximum tokens per chunk.
+- `chunk_token_size`: Maximum tokens per chunk. The default value is `1200`.
 - `chunk_overlap_token_size`: Number of overlapping tokens between consecutive
-  chunks.
+  chunks. The default value is `100`.
 - `chunk_min_token_size`: Minimum tokens per chunk.
 - `chunk_custom_separators`: Custom separators for chunking (e.g., `["\n\n", "\n", " "]`).
 - `preserve_chunk_separator`: Whether to preserve separator characters in chunks
@@ -228,7 +230,7 @@ These parameters control data storage and organization.
 
 - `store_in_s3`: Whether to store processed data in S3.
 - `partition_id`: Partition identifier.
-- `batch_size`: Number of documents, entities, and relationships to insert in a single batch.
+- `batch_size`: Number of documents, entities, and relationships to insert in a single batch. The default value is `1000`.
 
 **Example:**
 
@@ -258,7 +260,7 @@ This example includes entity extraction, chunking, and embeddings with standard 
 }
 ```
 
-For advanced use cases, this configuration adds semantic units for image processing, custom markdown-specific chunk separators, strict type filtering, extended community reports, community embeddings, and optimized vector index settings.
+For advanced use cases, this configuration adds semantic units for image processing, custom markdown-specific chunk separators, strict type filtering, extended community reports, community embeddings, and optimized vector index settings. Note that this example uses custom (non-default) values for several parameters to demonstrate advanced customization options.
 
 ```json
 {
