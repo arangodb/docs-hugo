@@ -113,8 +113,8 @@ described below.
    or call the [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id):
 
    ```sh
-   # User credentials
-   curl -uroot: http://localhost:8529/_admin/deployment/id
+   # User credentials (-u username:password)
+   curl -u root: http://localhost:8529/_admin/deployment/id
 
    # JWT session token
    curl -H "Authorization: Bearer eyJh..." http://localhost:8529/_admin/deployment/id

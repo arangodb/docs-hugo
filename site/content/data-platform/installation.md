@@ -207,9 +207,13 @@ Create an `ArangoDeployment` specification for ArangoDB. See the
 and the linked reference.
 
 You need to enable the gateway feature by setting `spec.gateway.enabled` and
-`spec.gateway.dynamic` to `true` in the specification. You also need to set
-`spec.license` to the secret created earlier. Example for an ArangoDB cluster
-deployment using version 3.12.7 with three DB-Servers and two Coordinators:
+`spec.gateway.dynamic` to `true` in the specification. Enable vector indexes
+(on DB-Servers and Coordinators respectively on single server) because they are
+required by features such as GraphRAG. You also need to set `spec.license` to
+the secret created earlier.
+
+Example for an ArangoDB cluster deployment using version 3.12.7 with three
+DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
 apiVersion: "database.arangodb.com/v1"
@@ -226,8 +230,12 @@ spec:
     count: 1
   dbservers:
     count: 3
+    args:
+      - --vector-index
   coordinators:
     count: 2
+    args:
+      - --vector-index
   license:
     secretName: arango-license-key
   # ...
@@ -243,8 +251,8 @@ kubectl apply -f deployment.yaml
 kubectl get pods --namespace arangodb --watch  # Ctrl+C to stop watching
 ```
 
-Given the above specification, you should eventually see pods with the following
-names with a status of `Running`:
+Given the above specification using the name `deployment-example`, you should
+eventually see pods with the following names with a status of `Running`:
 - `deployment-example-agnt-*` (3 Agents)
 - `deployment-example-crdn-*` (2 Coordinators)
 - `deployment-example-prmr-*` (3 DB-Servers)
@@ -274,10 +282,11 @@ the unified web interface of the Data Platform.
 
 Substitute `<license-client-id>` and `<license-client-secret>`
 with the actual license credentials and `./platform.yaml` with the path to the
-package configuration file.
+package configuration file. The platform name (`deployment-example`) needs to
+match the name as specified in the `ArangoDeployment` configuration.
 
 ```sh
-arangodb_operator_platform --context arangodb package install \
+arangodb_operator_platform --namespace arangodb package install \
   --license.client.id "<license-client-id>" \
   --license.client.secret "<license-client-secret>" \
   --platform.name deployment-example \
@@ -289,8 +298,8 @@ and in case of the AI Data Platform, also the AI Suite.
 
 ### Step 9: Set up object storage
 
-Features like GraphML require an additional storage system to save model
-training data, for instance.
+Features like MLflow and GraphML require an additional storage system to save
+model training data, for instance.
 
 The following example shows how to set up a local MinIO and integrate it with
 the Arango Data Platform, but you can also use a remote object storage like S3.
@@ -317,9 +326,22 @@ kubectl create secret generic minio-credentials \
   --from-literal=secretKey=miniopassword
 ```
 
-Create a file to configure MinIO service and call it e.g. `minio.yaml`:
+Create a file to configure MinIO service and call it e.g. `minio.yaml`.
+Example using a Persistent Volume Claim (PVC) of five gibibytes:
 
 ```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: minio-data-pvc
+ namespace: minio
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 5Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -351,7 +373,8 @@ spec:
             mountPath: /data
       volumes:
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: minio-data-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -433,8 +456,24 @@ kubectl apply -f ./platform-storage.yaml
 ## Interfaces
 
 The Arango Data Platform uses a gateway to make all its services available via a
-single port at the external address of the deployment. For a local deployment,
-the base URL is `https://127.0.0.1:8529`.
+single port at the external address of the deployment. The service port of the
+Data Platform is `8529` inside Kubernetes, but outside it can be different
+depending on the configuration.
+
+For a local deployment, you can use temporary port forwarding to access the
+Data Platform from your host machine. You can select the gateway pod
+(`deployment-example-gway-*`) via the higher-level service resource for
+external access (`-ea`) and specify the ports like `targetPort:servicePort`:
+
+```sh
+kubectl port-forward --namespace arangodb \
+  service/deployment-example-ea 8529:8529
+```
+
+In this case, the base URL to access the Data Platform is `https://127.0.0.1:8529`.
+
+You can stop the port forwarding in the command-line with the key combination
+{{< kbd "Ctrl C" >}}.
 
 ### Unified web interface
 
