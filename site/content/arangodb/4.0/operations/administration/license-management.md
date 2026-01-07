@@ -23,12 +23,6 @@ There are different license management flows:
   An activation is generally valid for two weeks and it is recommended to
   renew the activation weekly.
 
-  {{< info >}}
-  If you use the ArangoDB Kubernetes Operator (including the Data Platform),
-  check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
-  for more details on how to set a license key in a Kubernetes-managed deployment.
-  {{< /info >}}
-
 - **Apply a license key**:\
   Up to v3.12.5, customers received a license key directly and it was typically
   valid for one year. From v3.12.6 onward, customers receive license credentials
@@ -38,6 +32,16 @@ There are different license management flows:
   You can also activate a deployment instead of generating a license key, but
   this requires an internet connection. For air-gapped environments for example,
   the license key flow is required and the license key has a longer validity.
+
+{{< info >}}
+If you use the ArangoDB Kubernetes Operator (including the Data Platform),
+check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
+for more details on how to set the license credentials (managed license) or a
+license key in a Kubernetes-managed deployment.
+
+To change the license, delete the Kubernetes secret with the license information
+and create a new secret with the same name and the updated license information.
+{{< /info >}}
 
 How to activate a deployment or apply a license key to it, as well as how to
 retrieve information about the current license via different interfaces is
