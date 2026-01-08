@@ -36,11 +36,8 @@ There are different license management flows:
 {{< info >}}
 If you use the ArangoDB Kubernetes Operator (including the Data Platform),
 check the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
-for more details on how to set the license credentials (managed license) or a
-license key in a Kubernetes-managed deployment.
-
-To change the license, delete the Kubernetes secret with the license information
-and create a new secret with the same name and the updated license information.
+for more details on how to set the license credentials or a license key in a
+Kubernetes-managed deployment.
 {{< /info >}}
 
 How to activate a deployment or apply a license key to it, as well as how to
