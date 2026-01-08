@@ -1652,27 +1652,6 @@ details[open] > summary::before {
     font-weight: bold;
 }
 
-.method-get {
-    color: #47afe8
-}
-
-.method-head {
-    color: #9012fe;
-}
-.method-post {
-    color: #690;
-}
-.method-patch {
-    color: #00997a;
-}
-.method-put {
-    color: #ef8c1b;
-}
-
-.method-delete {
-    color: #f06560;
-}
-
 .openapi-description {
     margin-top: 1em;
     margin-bottom: 2em;
