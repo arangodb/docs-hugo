@@ -338,6 +338,15 @@ documentation.
 Also see [Authentication with access tokens](#authentication-with-access-tokens)
 for related API changes.
 
+#### Deployment ID
+
+<small>Introduced in: v3.12.6</small>
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
 ### Endpoints augmented
 
 #### View API

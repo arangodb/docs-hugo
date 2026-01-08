@@ -8,13 +8,17 @@ description: >-
 ---
 The Kubernetes operator lets you do the following:
 
-- Manage deployments of the ArangoDB database
+- Manage deployments of the ArangoDB database system
+- Manage deployments of the Arango Data Platform
 - Manage backups
 - Provide `PersistentVolumes` on local storage of your nodes for optimal storage performance
 
 Continue with [Using the ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/using-the-operator)
 to learn how to install the ArangoDB Kubernetes operator and create your first
 deployment.
+
+To learn more about deploying the Data Platform with the operator, see
+[Install the Arango Data Platform](../../../data-platform/installation.md).
 
 You can find information about troubleshooting, CustomResource references, and
 other details in the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/).
