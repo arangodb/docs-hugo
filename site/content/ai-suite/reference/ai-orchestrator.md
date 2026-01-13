@@ -60,7 +60,7 @@ The following example shows a complete request body with all available options:
 
 The parameters required for the deployment of each service are defined in the
 corresponding service documentation. See [Importer](importer.md)
-and [Retriever](retriever.md).
+and [Retriever](retriever/_index.md).
 
 ## Projects
 
