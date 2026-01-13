@@ -103,6 +103,8 @@ A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12
 
 A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
 
+A `replace-any-eq-with-in` rule has been added in v3.12.8.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
