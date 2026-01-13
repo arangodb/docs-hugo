@@ -12,6 +12,12 @@
     deprecated: false
     inDevelopment: false
 
+  - name: "oem"
+    version: "OEM LTS"
+    alias: "oem"
+    deprecated: false
+    inDevelopment: false
+
   - name: "3.11"
     version: "3.11.14"
     alias: "3.11"

@@ -26,6 +26,7 @@ module:
       #excludeFiles:
       #  - arangodb/3.10/*
       #  - arangodb/3.11/*
+      #  - arangodb/oem/*
       #  - arangodb/4.0/*
 
     - source: content/arangodb/3.12
