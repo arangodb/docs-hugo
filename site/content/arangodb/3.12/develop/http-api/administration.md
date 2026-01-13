@@ -1257,6 +1257,108 @@ x-content-type-options: nosniff
 ```
 {{< /details >}}
 
+### Get the deployment ID
+
+<small>Introduced in: v3.12.6</small>
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/deployment/id:
+    get:
+      operationId: getDeploymentId
+      description: |
+        Get the unique identifier of this ArangoDB deployment.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The deployment ID has been retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    description: |
+                      The UUID that uniquely identifies the deployment.
+                    type: string
+                    format: uuid
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+**Examples**
+
+{{< comment >}}
+Example not generated because it the deployment ID would change on every run.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/deployment/id
+```
+
+{{< details summary="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 45
+
+{"id":"6172616e-676f-4000-0000-9396df268f7f"}
+```
+{{< /details >}}
+
 ## Shutdown
 
 ### Start the shutdown sequence

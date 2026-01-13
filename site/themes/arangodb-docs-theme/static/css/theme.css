@@ -34,6 +34,7 @@
 
     --font-headlines: "Urbanist", sans-serif;
     --font-content: "Inter", sans-serif;
+    --font-code: Consolas, "liberation mono", Menlo, Courier, monospace;
 
     --padding-1: 8px;
     --padding-2: 16px;
@@ -1279,10 +1280,8 @@ li > code {
 
 .copy-to-clipboard-button {
     position: absolute;
-    right: 16px;
     align-items: center;
     justify-content: center;
-    position: absolute;
     right: 0;
     cursor: pointer;
     background: var(--gray-200);
@@ -1331,7 +1330,7 @@ pre > code {
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
-    font-family: Consolas,liberation mono,Menlo,Courier,monospace;
+    font-family: var(--font-code);
     padding: 28px;
     font-size: 1rem;
 }
@@ -1477,9 +1476,84 @@ div > .box-content-container {
     text-shadow: none;
 }
 
+.endpoint-group {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+}
+   
+.clipboard-copy {
+    color: var(--neutral-white);
+    background: var(--color-avocado);
+    border-radius: .25rem;
+    margin: .25rem;
+    padding: .5rem;
+    opacity: 0;
+}
 
-.fa-copy {
-    color: #e4d9d9;
+.clipboard-copy::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0c5";
+    display: inline-block;
+    width: 1rem;
+}
+
+.clipboard-copy.tooltipped::before {
+    content: "\f00c";
+}
+
+.clipboard-copy:hover {
+    background: var(--color-evergreen);
+}
+
+.endpoint-group:hover .clipboard-copy {
+    opacity: 1;
+}
+
+.endpoint-method {
+    padding: .1rem .6rem;
+    border-radius: .25rem;
+    background: var(--neutral-gray);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: .8rem;
+    font-weight: 500;
+    margin-right: .5rem;
+}
+
+.endpoint-method-head {
+    background: var(--color-plum);
+}
+
+.endpoint-method-get {
+    background: var(--state-info-dark);
+}
+
+.endpoint-method-post {
+    background: var(--state-success-dark);
+}
+
+.endpoint-method-patch {
+    background: var(--color-seaglass);
+}
+
+.endpoint-method-put {
+    background: var(--state-warning-dark);
+}
+
+.endpoint-method-delete {
+    background: var(--state-danger-dark);
+}
+
+.endpoint-url {
+    font-family: var(--font-code);
+    word-wrap: break-word;
+    color: var(--neutral-black);
+    min-width: 0;
+}
+
+.endpoint-placeholder, .endpoint-param {
+    background: var(--neutral-gray-lighter);
+    border-radius: .25rem;
 }
 
 blockquote {
@@ -1576,27 +1650,6 @@ details[open] > summary::before {
 
 .bold-text {
     font-weight: bold;
-}
-
-.method-get {
-    color: #47afe8
-}
-
-.method-head {
-    color: #9012fe;
-}
-.method-post {
-    color: #690;
-}
-.method-patch {
-    color: #00997a;
-}
-.method-put {
-    color: #ef8c1b;
-}
-
-.method-delete {
-    color: #f06560;
 }
 
 .openapi-description {

@@ -2509,6 +2509,27 @@ environment variable `NAME`. If there is an environment variable called `PID` or
 `TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
 value of the respective environment variable.
 
+### License management changes
+
+<small>Introduced: v3.12.6</small>
+
+The Enterprise Edition requires a license and customers used to receive a
+license key directly. Going forward, customers receive license credentials
+instead. You can use a command-line tool to either activate deployments or
+generate license keys using these credentials.
+
+The activation and license keys are now typically short-lived and need to be
+renewed every two weeks. Old license keys remain valid until their regular
+expiration.
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
 ### New consolidation algorithm for inverted indexes and `arangosearch` Views
 
 <small>Introduced in: v3.12.7</small>
@@ -2625,6 +2646,18 @@ with large shards.
   dump data on the server for a faster transfer. This is helpful especially if
   the network is slow or its capacity is maxed out. The data is decompressed on
   the client side and recompressed if you enable the  `--compress-output` option.
+
+- You can tune the dumping performance with the following new _arangodump_
+  startup options:
+
+  - `--dbserver-prefetch-batches`: Number of batches to prefetch on each DB-Server.
+  - `--dbserver-worker-threads`: Number of worker threads on each DB-Server.
+  - `--local-network-threads`: Number of local writer threads.
+  - `--local-writer-threads`: Number of local network threads, i.e. how many
+    requests are sent in parallel.
+  - `--docs-per-batch`: The maximum number of documents to be returned per batch.
+    You can limit this on the server-side with the `--dump.max-docs-per-batch`
+  _arangod_ startup option.
 
 #### Server-side resource usage limits and metrics
 

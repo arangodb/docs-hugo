@@ -49,7 +49,7 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --docker.net-mode=default
 ```
 
-If you have a license for the Enterprise Edition, set the license key
+If you have a license key for the Enterprise Edition, set the license key
 in an environment variable by adding this option to the above `docker` command
 (replace `<the-key>` with the actual license key):
 

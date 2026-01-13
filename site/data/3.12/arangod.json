@@ -2399,7 +2399,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "/var/lib/arangodb3",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3536,7 +3536,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js/apps",
+    "default" : "/var/lib/arangodb3-apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3800,7 +3800,6 @@
       "single"
     ],
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3873,7 +3872,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -4319,7 +4318,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "-",
     "deprecatedIn" : null,
     "description" : "Shortcut for `--log.output file://<filename>`",
     "dynamic" : false,
@@ -9192,7 +9191,7 @@
       "agent",
       "single"
     ],
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "If enabled, the document data for different collections/shards will end up in different .sst files.",
     "dynamic" : false,
@@ -11004,7 +11003,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "ArangoDB uses JSON Web Tokens to authenticate\nrequests. Using this option lets you specify a JWT secret stored in a file.\nThe secret must be at most 64 bytes long.\n\n**Warning**: Avoid whitespace characters in the secret because they may get\ntrimmed, leading to authentication problems:\n- Character Tabulation (`\\t`, U+0009)\n- End of Line (`\\n`, U+000A)\n- Line Tabulation (`\\v`, U+000B)\n- Form Feed (`\\f`, U+000C)\n- Carriage Return (`\\r`, U+000D)\n- Space (U+0020)\n- Next Line (U+0085)\n- No-Nreak Space (U+00A0)\n\nIn single server setups, ArangoDB generates a secret if none is specified.\n\nIn cluster deployments which have authentication enabled, a secret must\nbe set consistently across all cluster nodes so they can talk to each other.\n\nArangoDB also supports an `--server.jwt-secret` option to pass the secret\ndirectly (without a file). However, this is discouraged for security\nreasons.\n\nYou can reload JWT secrets from disk without restarting the server or the nodes\nof a cluster deployment via the `POST /_admin/server/jwt` HTTP API endpoint.\nYou can use this feature to roll out new JWT secrets throughout a cluster.",
+    "longDescription" : "ArangoDB uses JSON Web Tokens to authenticate\nrequests. Using this option lets you specify a JWT secret stored in a file.\nThe secret must be at most 64 bytes long.\n\n**Warning**: Avoid whitespace characters in the secret because they may get\ntrimmed, leading to authentication problems:\n- Character Tabulation (`\\t`, U+0009)\n- End of Line (`\\n`, U+000A)\n- Line Tabulation (`\\v`, U+000B)\n- Form Feed (`\\f`, U+000C)\n- Carriage Return (`\\r`, U+000D)\n- Space (U+0020)\n- Next Line (U+0085)\n- No-Break Space (U+00A0)\n\nIn single server setups, ArangoDB generates a secret if none is specified.\n\nIn cluster deployments which have authentication enabled, a secret must\nbe set consistently across all cluster nodes so they can talk to each other.\n\nArangoDB also supports an `--server.jwt-secret` option to pass the secret\ndirectly (without a file). However, this is discouraged for security\nreasons.\n\nYou can reload JWT secrets from disk without restarting the server or the nodes\nof a cluster deployment via the `POST /_admin/server/jwt` HTTP API endpoint.\nYou can use this feature to roll out new JWT secrets throughout a cluster.",
     "obsolete" : false,
     "os" : [
       "linux"

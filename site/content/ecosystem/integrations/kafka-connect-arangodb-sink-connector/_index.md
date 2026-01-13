@@ -16,13 +16,19 @@ Check out the [connector demo](https://github.com/arangodb/kafka-connect-arangod
 to learn more about the connector.
 {{< /info >}}
 
-## Supported versions
+## Compatibility
 
-This connector is compatible with:
+This connector is compatible with all supported versions of ArangoDB.
+For more information, see
+the [End-of-life announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
-- Kafka 3.4 and higher versions
-- JDK 8 and higher versions
-- ArangoDB 3.11.1 and higher versions
+This integration has multiple versions released, and each one is compatible with
+the corresponding version of Apache Kafka:
+
+| Kafka Connect ArangoDB | Apache Kafka             |
+|------------------------|--------------------------|
+| 1.*.*                  | 3.*.* (from 3.7 onwards) |
+| 2.*.*                  | 4.*.*                    |
 
 ## Installation
 
