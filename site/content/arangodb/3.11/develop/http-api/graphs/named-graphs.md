@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for named graphs
+title: HTTP interface for named graphs (Gharial)
 menuTitle: Named graphs
 weight: 5
 description: >-
