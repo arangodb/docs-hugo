@@ -132,8 +132,9 @@ calculate it dynamically using an expression.
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
 ```
 
-Note that these operators do not utilize indexes in regular queries.
-The operators are also supported in [SEARCH expressions](high-level-operations/search.md),
+Note that these operators do not utilize indexes in regular queries, except `ANY ==`
+from v3.12.8 onward because it can be transformed into an equivalent `IN` operator.
+The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
 
