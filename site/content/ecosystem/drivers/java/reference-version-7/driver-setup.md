@@ -88,6 +88,9 @@ Here are examples to integrate configuration properties from different sources:
 - `sslCertValue(String)`:        SSL certificate value as Base64-encoded String
 - `sslAlgorithm(String)`:        Name of the SSL Trust manager algorithm (default: `SunX509`)
 - `sslProtocol(String)`:         Name of the SSLContext protocol (default: `TLS`)
+- `sslTrustStorePath(String)`:   File path to the SSL trust store
+- `sslTrustStorePassword(String)`:                Password to access the SSL trust store
+- `sslTrustStoreType(String)`:   Type of the SSL trust store (default: `PKCS12`)
 - `verifyHost(Boolean)`:         Enable hostname verification, (HTTP only, default: `true`)
 - `maxConnections(Integer)`:     Max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
 - `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000`)
@@ -145,6 +148,9 @@ The properties read are:
 - `sslCertValue`: SSL certificate as Base64-encoded string
 - `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
 - `sslProtocol`: SSLContext protocol (default: `TLS`)
+- `sslTrustStorePath`: File path to the SSL trust store
+- `sslTrustStorePassword`: Password to access the SSL trust store
+- `sslTrustStoreType`: Type of the SSL trust store (default: `PKCS12`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -162,9 +168,18 @@ The properties read are:
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true`.
-By default, the driver uses the default `SSLContext`.
-To change this, you can provide the `SSLContext` instance to use:
+To use TLS-secured connections to ArangoDB, set the configuration `useSsl` to `true`.
+By default, the driver uses the default `SSLContext`:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .build();
+```
+
+The `SSLContext` to be used can be customized in one of the following ways:
+
+- Provide the `SSLContext` instance to use:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -173,16 +188,22 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-Alternatively, the driver can create a new `SSLContext` using the provided
-configuration. In this case, it is required to set the configuration `sslCertValue`
-with the SSL certificate value as Base64-encoded String:
+- Provide the Base64-encoded certificate with the configuration `sslCertValue`:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
   .useSsl(true)
   .sslCertValue("<certificate>") // SSL certificate as Base64-encoded String
-  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
-  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+- Load the trust store from file by configuring `sslTrustStorePath` and optionally `sslTrustStorePassword`:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslTrustStorePath("<trustStore path>")
+  .sslTrustStorePassword("<trustStore password>")
   .build();
 ```
 
