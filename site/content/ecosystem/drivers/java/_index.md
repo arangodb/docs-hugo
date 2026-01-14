@@ -13,26 +13,16 @@ The official ArangoDB Java Driver.
 
 - Repository: <https://github.com/arangodb/arangodb-java-driver>
 - [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/test-non-functional/src/test/java/example)
-- [Reference](reference-version-7/_index.md) (driver setup, serialization, changes in version 7)
+- [Reference](reference-version-7/_index.md) (driver setup, serialization, changes)
 - [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html) (generated reference documentation)
 - [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md)
 
 ## Supported versions
 
-Version 7 is the latest supported and actively developed release.
-
 The driver is compatible with all supported stable versions of ArangoDB server, see
 [Product Support End-of-life Announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 The driver is compatible with JDK 8 and higher versions.
-
-{{< warning >}}
-Version 6 reached End of Life (EOL) and is not actively developed anymore.
-Upgrading to version 7 is recommended.
-
-The API changes between version 6 and 7 are documented in
-[Changes in version 7](reference-version-7/changes-in-version-7.md).
-{{< /warning >}}
 
 ## Project configuration
 
