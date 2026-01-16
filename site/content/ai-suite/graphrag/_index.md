@@ -80,4 +80,4 @@ conceptual understanding.
 
 For deeper implementation details, explore the individual services:
 - **[Importer Service](../reference/importer.md)**: Transform documents into knowledge graphs.
-- **[Retriever Service](../reference/retriever.md)**: Query and extract insights from your knowledge graphs.
+- **[Retriever Service](../reference/retriever/_index.md)**: Query and extract insights from your knowledge graphs.

@@ -180,14 +180,14 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [Retriever](../reference/retriever.md) documentation.
+See also the [Retriever](../reference/retriever/) documentation.
 
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Instant search](../reference/retriever.md#instant-search): Instant
+- [Instant search](../reference/retriever/search-methods.md#instant-search): Instant
   queries provide fast responses.
-- [Deep search](../reference/retriever.md#deep-search): This option will take
+- [Deep search](../reference/retriever/search-methods.md#deep-search): This option will take
   longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
