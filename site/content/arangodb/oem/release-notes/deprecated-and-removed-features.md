@@ -18,6 +18,9 @@ aliases:
   - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
   - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../data-science/pregel # 3.11 -> OEM
+  - ../data-science/pregel/algorithms # 3.11 -> OEM
+  - ../develop/http-api/pregel # 3.11 -> OEM
   - ../operations/installation/macos # 3.11 -> OEM
   - ../components/arangodb-server/ldap # 3.11 -> OEM
 ---
@@ -43,6 +46,14 @@ detailed information about breaking changes before upgrading.
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
   not supported for the OEM / Embedded version and longer available starting with
   v3.12.0.
+
+- **Pregel**:\
+  The distributed iterative graph processing (Pregel) system is not supported
+  in the OEM / Embedded version and not available from v3.12 onward.
+  All Pregel graph algorithms, the Pregel JavaScript API and
+  HTTP API, and everything else related to Pregel is out of support.
+  All other graph features including AQL graph traversals and path finding
+  algorithms are unaffected.
 
 - **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)
