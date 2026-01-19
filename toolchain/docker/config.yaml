@@ -6,6 +6,9 @@ servers:
   - image: ${ARANGODB_BRANCH_3_11_IMAGE}
     version: ${ARANGODB_BRANCH_3_11_VERSION}
 
+  - image: ${ARANGODB_BRANCH_OEM_IMAGE}
+    version: ${ARANGODB_BRANCH_OEM_VERSION}
+
   - image: ${ARANGODB_BRANCH_3_12_IMAGE}
     version: ${ARANGODB_BRANCH_3_12_VERSION}
 
