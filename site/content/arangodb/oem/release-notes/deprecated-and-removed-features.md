@@ -22,6 +22,11 @@ aliases:
   - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.12
   - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.12
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> OEM
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> OEM
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> OEM
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> OEM
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> OEM
   - ../data-science/pregel # 3.11 -> OEM
   - ../data-science/pregel/algorithms # 3.11 -> OEM
   - ../develop/http-api/pregel # 3.11 -> OEM
@@ -91,6 +96,14 @@ detailed information about breaking changes before upgrading.
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.
 
+- **Self-compiling**:\
+  The features formerly exclusive to the Enterprise Edition are included in the
+  Community Edition from v3.12.5 onward, but only in the prebuilt packages and
+  official container images. The source code of these features is not public.
+  For instructions to compile the public code, see
+  [`CONTRIBUTING.md`](https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md#building)
+  in the `arangodb/arangodb` repository.
+
 - **Fast cluster restore procedure**:\
   The procedure for speeding up _arangorestore_ in a cluster environment has been
   removed from the documentation because the tool supports threading more
@@ -106,8 +119,7 @@ detailed information about breaking changes before upgrading.
 
 - **Leader/Follower Deployment Mode**:\
   The Leader/Follower deployment mode is deprecated and already removed from
-  documentation. Active Failover and OneShard databases in clusters are better
-  alternatives.
+  documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
