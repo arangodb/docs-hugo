@@ -1,9 +1,9 @@
 ---
-title: Known Issues in ArangoDB OEM LTS
-menuTitle: Known Issues in OEM LTS
+title: Known Issues in ArangoDB OEM / Embedded
+menuTitle: Known Issues in OEM
 weight: 10
 description: >-
-  Important issues affecting the OEM LTS versions of the ArangoDB suite of products
+  Important issues affecting the OEM / Embedded versions of the ArangoDB suite of products
 ---
 Note that this page does not list all open issues.
 

@@ -1,6 +1,6 @@
 ---
 title: Recommended Resources
-menuTitle: 'OEM LTS'
+menuTitle: 'OEM / Embedded'
 weight: 97
 layout: default
 ---

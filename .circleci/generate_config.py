@@ -452,7 +452,7 @@ def findOpensslVersion(branch):
 
 def findOemVersion():
     r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/3.11.14/ARANGO-VERSION')
-    print(f"Find latest (hotfix) version of OEM LTS")
+    print(f"Find latest (hotfix) version of OEM / Embedded")
     print(f"Github response: {r.text}")
     version = r.text.strip()
     return version

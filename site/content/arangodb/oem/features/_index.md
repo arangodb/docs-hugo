@@ -5,30 +5,51 @@ weight: 10
 description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
+aliases:
+  - ../operations/installation/compiling # 3.11 -> OEM
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> OEM
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> OEM
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> OEM
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> OEM
 ---
+## Feature overview
+
+- Long-term support (LTS) for the Linux and Windows Enterprise Edition of
+  ArangoDB version 3.11
+- One database core for all graph, document, key-value, search, and vector needs
+- A single composable query language for all data models
+- Cluster deployments for high availability and resilience, with a multi-tenant
+  deployment option for the transactional guarantees and performance of a single server
+- Performance options to smartly shard and replicate graphs and datasets for
+  optimal data locality
+- Enhanced data security with on-disk and backup encryption, key rotation,
+  audit logging, and incremental backups without downtime
+
+See the full [Feature list of the ArangoDB database system](list.md).
+
+## OEM / Embedded Version
+
+The OEM / Embedded version is for independent software vendors (ISVs) and
+SaaS companies who want to embed ArangoDB into their products and distribute it
+at scale.
+
+The OEM / Embedded version has special long-term lifecycle support. It is based
+on ArangoDB version 3.11.14, which receives hotfixes to address important issues
+like security patches.
+
+For more information, [Request a quote](https://arango.ai/request-pricing).
+
 ## On-premises versus Cloud
 
 ### Fully managed cloud service
 
 The fully managed multi-cloud
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-is the easiest and fastest way to get started. It runs the Enterprise Edition
-of ArangoDB, lets you deploy clusters with just a few clicks, and is operated
-by a dedicated team of ArangoDB engineers day and night. You can choose from a
-variety of support plans to meet your needs.
-
-- Supports many of the AWS and GCP cloud deployment regions
-- High availability featuring multi-region zone clusters, managed backups,
-  and zero-downtime upgrades
-- Integrated monitoring, alerting, and log management
-- Highly secure with encryption at transit and at rest
-- Includes elastic scalability for all deployment models (OneShard and Sharded clusters)
-
-To learn more, go to the [AMP documentation](../../../amp/_index.md). 
+[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) does not support the OEM / Embedded version of
+ArangoDB.
 
 ### Self-managed in the cloud
 
-ArangoDB can be self-deployed on AWS or other cloud platforms, too. However, when
+ArangoDB can be self-deployed on AWS or other cloud platforms. However, when
 using a self-managed deployment, you take full control of managing the resources
 needed to run it in the cloud. This involves tasks such as configuring,
 provisioning, and monitoring the system. For more details, see
@@ -61,26 +82,12 @@ Kubernetes cluster.
 
 ## ArangoDB Editions
 
-### Community Edition
+While ArangoDB version 3.11 is available in a **Community Edition**, the
+OEM / Embedded version is limited to the Enterprise Edition.
 
-ArangoDB is freely available in a **Community Edition** under the Apache 2.0
-open-source license. It is a fully-featured version without time or size
-restrictions and includes cluster support.
-
-- Open source under a permissive license
-- One database core for all graph, document, key-value, and search needs
-- A single composable query language for all data models
-- Extensible through microservices with custom REST APIs and user-definable
-  query functions
-- Cluster deployments for high availability and resilience
-
-See all [Community Edition Features](community-edition.md).
-
-### Enterprise Edition
-
-ArangoDB is also available in a commercial version, called the
-**Enterprise Edition**. It includes additional features for performance and
-security, such as for scaling graphs and managing your data safely.
+The commercial version of ArangoDB is called the **Enterprise Edition**.
+It includes additional features for performance and security, such as for
+scaling graphs and managing your data safely.
 
 - Includes all Community Edition features
 - Performance options to smartly shard and replicate graphs and datasets for
@@ -90,32 +97,3 @@ security, such as for scaling graphs and managing your data safely.
 - Enhanced data security with on-disk and backup encryption, key rotation,
   audit logging, and LDAP authentication
 - Incremental backups without downtime and off-site replication
-
-See all [Enterprise Edition Features](enterprise-edition.md).
-
-### Differences between the Editions
-
-| Community Edition | Enterprise Edition |
-|-------------------|--------------------|
-| Apache 2.0 License | Commercial License |
-| Sharding using consistent hashing on the default or custom shard keys | In addition, **smart sharding** for improved data locality |
-| Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** with an automatic sharding key selection |
-| Only regular collection replication without data locality optimizations | **SatelliteCollections** to replicate collections on all cluster nodes and data locality optimizations for queries |
-| No optimizations when querying sharded graphs and replicated collections together | **SmartGraphs using SatelliteCollections** to enable more local execution of graph queries |
-| Only regular graph replication without local execution optimizations | **SatelliteGraphs** to execute graph traversals locally on a cluster node |
-| Collections can be sharded alike but joins do not utilize co-location | **SmartJoins** for co-located joins in a cluster using identically sharded collections |
-| Graph traversals without parallel execution | **Parallel execution of traversal queries** with many start vertices |
-| Graph traversals always load full documents | **Traversal projections** optimize the data loading of AQL traversal queries if only a few document attributes are accessed |
-| Iterative graph processing (Pregel) for single servers | **Pregel graph processing for clusters** and single servers |
-| Inverted indexes and Views without support for search highlighting and nested search | **Search highlighting** for getting the substring positions of matches and **nested search** for matching arrays with all the conditions met by a single object |
-| Only standard Jaccard index calculation | **Jaccard similarity approximation** with MinHash for entity resolution, such as for finding duplicate records, based on how many common elements they have |{{% comment %}} Experimental feature
-| No fastText model support | Classification of text tokens and finding similar tokens using supervised **fastText word embedding models** |
-{{% /comment %}}
-| Only regular cluster deployments | **OneShard** deployment option to store all collections of a database on a single cluster node, to combine the performance of a single server and ACID semantics with a fault-tolerant cluster setup |
-| ACID transactions for multi-document / multi-collection queries on single servers, for single document operations in clusters, and for multi-document queries in clusters for collections with a single shard | In addition, ACID transactions for multi-collection queries using the OneShard feature |
-| Always read from leader shards in clusters | Optionally allow dirty reads to **read from followers** to scale reads |
-| TLS key and certificate rotation | In addition, **key rotation for JWT secrets** and **server name indication** (SNI) |
-| Built-in user management and authentication | Additional **LDAP authentication** option |
-| Only server logs | **Audit log** of server interactions |
-| No on-disk encryption | **Encryption at Rest** with hardware-accelerated on-disk encryption and key rotation |
-| Only unencrypted backups and basic data masking for backups | **Hot Backups**, **encrypted backups**, and **enhanced data masking** for backups |

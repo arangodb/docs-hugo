@@ -11,8 +11,8 @@ description: >-
 For a high level list of changes, please refer to one of the following sections:
 
 - What's New in 3.x:
-  [OEM](version-oem/whats-new-in-oem.md),
-  [3.11](version-oem/whats-new-in-oem.md),
+  [OEM / Embedded](version-oem/whats-new-in-oem.md),
+  [3.11](version-3.11/whats-new-in-3-11.md),
   [3.10](version-3.10/whats-new-in-3-10.md),
   [3.9](version-3.9/whats-new-in-3-9.md),
   [3.8](version-3.8/whats-new-in-3-8.md),
@@ -31,7 +31,7 @@ For a detailed list of changes to the ArangoDB core programs and tools,
 please refer to the version specific changelogs:
 
 - Changelogs 3.x:
-  [OEM](https://raw.githubusercontent.com/arangodb/arangodb/3.11.14/CHANGELOG),
+  [OEM / Embedded](https://raw.githubusercontent.com/arangodb/arangodb/3.11.14/CHANGELOG),
   [3.11](https://raw.githubusercontent.com/arangodb/arangodb/3.11/CHANGELOG),
   [3.10](https://raw.githubusercontent.com/arangodb/arangodb/3.10/CHANGELOG),
   [3.9](https://raw.githubusercontent.com/arangodb/arangodb/3.9/CHANGELOG),
@@ -56,8 +56,8 @@ Additional changelogs for tools not included in the main repository:
 For a list of incompatible changes, please refer to one of the following sections.
 
 - Incompatible changes in 3.x:
-  [OEM](version-oem/incompatible-changes-in-oem.md),
-  [3.11](version-oem/incompatible-changes-in-oem.md),
+  [OEM / Embedded](version-oem/incompatible-changes-in-oem.md),
+  [3.11](version-3.11/incompatible-changes-in-3-11.md),
   [3.10](version-3.10/incompatible-changes-in-3-10.md),
   [3.9](version-3.9/incompatible-changes-in-3-9.md),
   [3.8](version-3.8/incompatible-changes-in-3-8.md),
@@ -76,8 +76,8 @@ For an overview of changes to ArangoDB's interfaces, have a look at below
 sections. The HTTP API part is especially relevant for driver maintainers.
 
 - API Changes in 3.x:
-  [OEM](version-oem/api-changes-in-oem.md),
-  [3.11](version-oem/api-changes-in-oem.md),
+  [OEM / Embedded](version-oem/api-changes-in-oem.md),
+  [3.11](version-3.11/api-changes-in-3-11.md),
   [3.10](version-3.10/api-changes-in-3-10.md),
   [3.9](version-3.9/api-changes-in-3-9.md),
   [3.8](version-3.8/api-changes-in-3-8.md),
@@ -88,8 +88,8 @@ sections. The HTTP API part is especially relevant for driver maintainers.
 For a list of known issues, please refer to one of the following sections:
 
 - Known Issues in 3.x:
-  [OEM](version-oem/known-issues-in-oem.md),
-  [3.11](version-oem/known-issues-in-oem.md),
+  [OEM / Embedded](version-oem/known-issues-in-oem.md),
+  [3.11](version-3.11/known-issues-in-3-11.md),
   [3.10](version-3.10/known-issues-in-3-10.md),
   [3.9](version-3.9/known-issues-in-3-9.md),
   [3.8](version-3.8/known-issues-in-3-8.md),

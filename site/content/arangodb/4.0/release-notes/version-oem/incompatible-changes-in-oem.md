@@ -1,6 +1,6 @@
 ---
-title: Incompatible changes in ArangoDB OEM LTS
-menuTitle: Incompatible changes in OEM LTS
+title: Incompatible changes in ArangoDB OEM / Embedded
+menuTitle: Incompatible changes in OEM
 weight: 15
 description: >-
   Check the following list of potential breaking changes **before** upgrading to

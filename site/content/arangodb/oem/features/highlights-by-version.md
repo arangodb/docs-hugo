@@ -6,15 +6,23 @@ description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
 ---
+## OEM / Embedded Version
+
+**Enterprise Edition**
+
+- **Long-term support (LTS)** for the Enterprise Edition of ArangoDB version 3.11.
+
+Also see [What's New in OEM / Embedded](../release-notes/version-oem/whats-new-in-oem.md).
+
 ## Version 3.11
 
 **All Editions**
 
-- [**Parallel gather**](../release-notes/version-oem/whats-new-in-oem.md#parallel-gather):
+- [**Parallel gather**](../release-notes/version-3.11/whats-new-in-3-11.md#parallel-gather):
   Faster, more memory-efficient processing of cluster queries by combining
   results on Coordinators in parallel.
 
-- [**Index cache refilling**](../release-notes/version-oem/whats-new-in-oem.md#index-cache-refilling):
+- [**Index cache refilling**](../release-notes/version-3.11/whats-new-in-3-11.md#index-cache-refilling):
   Automatically repopulate in-memory index caches after writes that affect an
   edge index or cache-enabled persistent indexes to maximize cache hits and thus
   query performance.
@@ -30,7 +38,7 @@ description: >-
   Efficiently index geo-spatial data using different binary formats, tuning the
   size on disk, the precision, and query performance.
 
-Also see [What's New in 3.11](../release-notes/version-oem/whats-new-in-oem.md).
+Also see [What's New in 3.11](../release-notes/version-3.11/whats-new-in-3-11.md).
 
 ## Version 3.10
 

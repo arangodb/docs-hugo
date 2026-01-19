@@ -1,29 +1,34 @@
 ---
-title: Community Edition Features
-menuTitle: Community Edition
+title: Feature list of the ArangoDB core database system
+menuTitle: Core Database
 weight: 5
 description: >-
-  The open-source version of ArangoDB is available under the permissive
-  Apache 2.0 license and offers an extensive feature set including cluster
-  support for free
+  All features of the OEM / Embedded edition of ArangoDB, available in
+  the Enterprise Edition for Windows
 aliases:
-   - list # 3.11 -> 3.12
+  - community-edition # 3.11 -> OEM
+  - enterprise-edition # 3.11 -> OEM
 ---
 ## General
 
 - [**Graph Database**](../concepts/data-models.md#graph-model):
-  Native support for storing and querying graphs comprised of vertices and edges.
-  You can model complex domains because edges are documents without any
-  restrictions in complexity.
+  Native support for storing and querying graphs comprised of nodes and edges.
+  You can model complex domains because both nodes and edges are fully-fledged
+  documents, without restrictions in complexity. Edges can connect node documents
+  to express m:n relations with any depth.
 
 - [**Document Database**](../concepts/data-models.md#document-model):
   A modern document database system that allows you to model data intuitively
   and evolve the data model easily. Documents can be organized in collections,
   and collections in databases for multi-tenancy.
 
-{{% comment %}}
-  TODO: Add a bullet point for multi-model? (unified query language, lower TCO, ...)
-{{% /comment %}}
+- **Native Multi-model**:
+  The capabilities of a graph database, a document database, a key-value store
+  in one C++ core with a unified query language for a lower TCO (total cost of
+  ownership). Easily change the data access strategy or even combine all
+  supported data models in a single query. Add full-text search with ranking on
+  top and mix it with graph traversals, geo queries, aggregations, or any other
+  supported access pattern.
 
 - [**Data Format**](../concepts/data-structure/_index.md#documents):
   JSON, internally stored in a binary format invented by ArangoDB called
@@ -44,14 +49,11 @@ aliases:
   Persistent document attributes that are generated when documents are created
   or modified, using an AQL expression.
 
-- [**In the cloud or on-prem**](_index.md#on-premises-versus-cloud):
-  Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
-  self-managed in the cloud, or on-premises.
-
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):
-  Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
-  production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
-  Linux for evaluation, as well as production-ready for the x86-64 architecture.
+  Run ArangoDB on Linux using the production-ready packages for the x86-64
+  architecture, on bare metal or in containers.
+  Develop and test with ArangoDB on Windows, macOS, and Linux using the official
+  ArangoDB Docker images, available for the x86-64 architecture and 64-bit ARM chips.
 
 ## Scalability & High Availability
 
@@ -65,16 +67,8 @@ aliases:
   is reached. Synchronous replication works on a per-shard basis. For each
   collection, you can configure how many copies of each shard are kept in the cluster.
 
-- [**Active Failover**](../deploy/active-failover/_index.md):
-  Run a single server with asynchronous replication to one or more passive
-  single servers for automatic failover.
-
 - [**Automatic Failover Cluster**](../deploy/cluster/_index.md#automatic-failover):
-  If a node goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
-
-{{% comment %}}
-  TODO: - **Master/Master Conflict Resolution**: What does this refer to? How does it work? MVCC?
-{{% /comment %}}
+  If a cluster node goes down, another node takes over to avoid downtime.
 
 - **Load-Balancer Support**:
   Round-robin load-balancer support for cloud environments.
@@ -104,31 +98,22 @@ aliases:
   insert-or-ignore requests, that result in one or the other operation depending
   on whether the target document exists already.
 
-- **Graph Relations**:
-  Edges can connect vertex and even edge documents to express complex m:n
-  relations with any depth, creating graphs and hyper-graphs.
-  <!-- TODO: does this refer to the data model, graph traversals, or something else? -->
-
 - [**Relational Joins**](../aql/examples-and-query-patterns/joins.md):
   Joins similar to those in relational database systems can be leveraged to
   match up documents from different collections, allowing normalized data models.
 
 - **Advanced Path-Finding with Multiple Algorithms**:
-  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL to
-  retrieve direct and indirect neighbor nodes using a fixed or variable depth.
+  Graphs can be [traversed](../aql/graph-queries/traversals-explained.md) with AQL
+  in outbound, inbound, or both directions to retrieve direct and indirect
+  neighbor nodes using a fixed or variable depth.
   The [traversal order](../aql/graph-queries/traversals.md) can be
   depth-first, breadth-first, or in order of increasing edge weights
   ("Weighted Traversals"). Stop conditions for pruning paths are supported.
   Traversal algorithms to get a [shortest path](../aql/graph-queries/shortest-path.md),
   [all shortest paths](../aql/graph-queries/all-shortest-paths.md), paths in order of
   increasing length ("[k Shortest Paths](../aql/graph-queries/k-shortest-paths.md)"),
-  and to enumerate all paths between two vertices
+  and to enumerate all paths between two nodes
   ("[k Paths](../aql/graph-queries/k-paths.md)") are available, too.
-
-- [**Pregel**](../data-science/pregel/_index.md):
-  Iterative graph processing for single servers with pre-built algorithms like
-  PageRank, Connected Components, and Label Propagation. Cluster support
-  requires the Enterprise Edition.
 
 - [**ArangoSearch for Text Search and Ranking**](../indexes-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.
@@ -144,11 +129,28 @@ aliases:
   for geo-spatial queries.
 
 {{% comment %}} Experimental feature
-- [**Query result spillover**](../aql/how-to-invoke-aql/with-arangosh.md#spilloverthresholdmemoryusage)
+- [**Query result spillover**](../aql/how-to-invoke-aql/with-arangosh.md#spilloverthresholdmemoryusage):
   AQL queries can store intermediate and final results temporarily on disk
   (also known as external result sets) to decrease memory usage when a specified
   threshold is reached.
 {{% /comment %}}
+
+- [**Search highlighting**](../indexes-and-search/arangosearch/search-highlighting.md):
+  Get the substring positions of matched terms, phrases, or _n_-grams.
+
+- [**Nested search**](../indexes-and-search/arangosearch/nested-search.md):
+  Match arrays of objects with all the conditions met by a single sub-object,
+  and define for how many of the elements this must be true.
+
+{{% comment %}} Experimental feature
+- **[`classification`](../indexes-and-search/analyzers.md#classification) and [`nearest_neighbors` Analyzers](../indexes-and-search/analyzers.md#nearest_neighbors)**:
+  Classification of text tokens and finding similar tokens using supervised
+  fastText word embedding models.
+{{% /comment %}}
+
+- [**Skip inaccessible collections**](../aql/how-to-invoke-aql/with-arangosh.md#skipinaccessiblecollections):
+  Let AQL queries like graph traversals pretend that collections are empty if
+  the user has no access to them instead of failing the query.
 
 ## Transactions
 
@@ -178,9 +180,64 @@ aliases:
   Using cluster deployments, single-document operations are fully ACID, too.
   Multi-document queries in a cluster are not ACID, except for collections with
   a single shard. Multi-collection queries require the OneShard
-  feature of the Enterprise Edition to be ACID. <!-- TODO: can we put it like this? -->
+  feature to be ACID. <!-- TODO: can we put it like this? -->
 
 ## Performance
+
+- [**SmartGraphs**](../graphs/smartgraphs/_index.md):
+  Value-based sharding of large graph datasets for better data locality when
+  traversing graphs.
+
+- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
+  A specialized version of SmartGraphs, with an automatic sharding key selection.
+
+- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md):
+  Collections replicated on all cluster nodes can be combined with graphs
+  sharded by document attributes to enable more local execution of graph queries.
+
+- [**SatelliteGraphs**](../graphs/satellitegraphs/_index.md):
+  Graphs replicated on all cluster nodes to execute graph traversals locally.
+
+- [**SatelliteCollections**](../develop/satellitecollections.md):
+  Collections replicated on all cluster nodes to execute joins with sharded
+  data locally.
+
+- [**SmartJoins**](../develop/smartjoins.md):
+  Co-located joins in a cluster using identically sharded collections.
+
+- [**OneShard**](../deploy/oneshard.md):
+  Option to store all collections of a database on a single cluster node, to
+  combine the performance of a single server and ACID semantics with a
+  fault-tolerant cluster setup.
+
+- [**Traversal**](../release-notes/version-3.7/whats-new-in-3-7.md#traversal-parallelization-enterprise-edition)
+  [**Parallelization**](../release-notes/version-3.10/whats-new-in-3-10.md#parallelism-for-sharded-graphs-enterprise-edition):
+  Parallel execution of traversal queries with many start nodes, leading to
+  faster results.
+
+- [**Traversal Projections**](../release-notes/version-3.10/whats-new-in-3-10.md#traversal-projections-enterprise-edition):
+  Optimized data loading for AQL traversal queries if only a few document
+  attributes are accessed.
+
+- [**Parallel index creation**](../release-notes/version-3.10/whats-new-in-3-10.md#parallel-index-creation-enterprise-edition):
+  Non-unique indexes can be created with multiple threads in parallel.
+
+- [**`minhash` Analyzer**](../indexes-and-search/analyzers.md#minhash):
+  Jaccard similarity approximation for entity resolution, such as for finding
+  duplicate records, based on how many elements they have in common
+
+- [**`geo_s2` Analyzer**](../indexes-and-search/analyzers.md#geo_s2):
+  Efficiently index geo-spatial data using different binary formats, tuning the
+  size on disk, the precision, and query performance.
+
+- [**ArangoSearch column cache**](../release-notes/version-3.10/whats-new-in-3-10.md#arangosearch-column-cache-enterprise-edition):
+  Always cache field normalization values, Geo Analyzer auxiliary data,
+  stored values, primary sort columns, and primary key columns in memory to
+  improve the performance of Views and inverted indexes.
+
+- [**Read from followers in clusters**](../develop/http-api/documents.md#read-from-followers):
+  Allow dirty reads so that Coordinators can read from any shard replica and not
+  only from the leader, for scaling reads.
 
 - [**Persistent Indexes**](../indexes-and-search/indexing/basics.md#persistent-index):
   Indexes are stored on disk to enable fast server restarts. You can create
@@ -212,7 +269,7 @@ aliases:
 - [**Background Indexing**](../indexes-and-search/indexing/basics.md#creating-indexes-in-background):
   Indexes can be created in the background to not block queries in the meantime.
 
-- [**Index cache refilling**](../release-notes/version-oem/whats-new-in-oem.md#index-cache-refilling):
+- [**Index cache refilling**](../release-notes/version-3.11/whats-new-in-3-11.md#index-cache-refilling):
   In-memory index caches are automatically repopulated after writes that affect
   an edge index or cache-enabled persistent indexes to maximize cache hits and
   thus query performance.
@@ -223,7 +280,7 @@ aliases:
   collection scans. Inlining of certain subqueries to improve execution time.
   <!-- TODO, move to Querying? -->
 
-- [**Parallel gather**](../release-notes/version-oem/whats-new-in-oem.md#parallel-gather):
+- [**Parallel gather**](../release-notes/version-3.11/whats-new-in-3-11.md#parallel-gather):
   Fast, memory-efficient processing of cluster queries by combining
   results in parallel.
 
@@ -238,6 +295,27 @@ aliases:
   You can extend AQL with user-defined functions written in JavaScript.
 
 ## Security
+
+- [**Auditing**](../operations/security/audit-logging.md):
+  Audit logs of all server interactions.
+
+- [**Encryption at Rest**](../operations/security/encryption-at-rest.md):
+  Hardware-accelerated on-disk encryption for your data.
+
+- [**Encrypted Backups**](../components/tools/arangodump/examples.md#encryption):
+  Data dumps can be encrypted using a strong 256-bit AES block cipher.
+
+- [**Hot Backups**](../operations/backup-and-restore.md#hot-backups):
+  Consistent, incremental data backups without downtime for single servers and clusters.
+
+- [**Enhanced Data Masking**](../components/tools/arangodump/maskings.md#masking-functions):
+  Extended data masking capabilities for attributes containing sensitive data
+  / PII when creating backups.
+
+- **Advanced Encryption and Security Configuration**:
+  Key rotation for [JWT secrets](../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+  and [on-disk encryption](../develop/http-api/security.md#encryption-at-rest),
+  as well as [Server Name Indication (SNI)](../components/arangodb-server/options.md#--sslserver-name-indication).
 
 - [**Authentication**](../operations/administration/user-management/_index.md):
   Built-in user management with password- and token-based authentication.

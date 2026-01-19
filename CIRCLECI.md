@@ -77,7 +77,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
-| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -96,7 +96,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
-| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -125,7 +125,7 @@ or for multiple versions.
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
-| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM LTS |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | boolean | `commit-generated` | `true` |
@@ -153,7 +153,7 @@ use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
 
 For OEM, make sure to use the latest hotfix version of 3.11.14 (which is the
-OEM LTS version) when specifying a Docker image. You can find the version in
+OEM / Embedded version) when specifying a Docker image. You can find the version in
 <https://github.com/arangodb/arangodb/blob/3.11.14/ARANGO-VERSION>.
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on

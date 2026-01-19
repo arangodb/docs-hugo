@@ -1,13 +1,13 @@
 ---
-title: Features and Improvements in ArangoDB OEM LTS
-menuTitle: What's New in OEM LTS
+title: Features and Improvements in ArangoDB OEM / Embedded
+menuTitle: What's New in OEM
 weight: 5
 description: >-
   Improved performance and reporting for AQL queries, new caching features for
   indexed data, improvements to the web interface
 ---
 The following list shows in detail which features have been added or improved in
-ArangoDB OEM LTS. ArangoDB OEM LTS also contains several bug fixes that are not listed
+ArangoDB OEM / Embedded. ArangoDB OEM / Embedded also contains several bug fixes that are not listed
 here.
 
 ## ArangoSearch

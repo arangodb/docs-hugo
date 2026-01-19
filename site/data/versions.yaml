@@ -13,7 +13,7 @@
     inDevelopment: false
 
   - name: "oem"
-    version: "OEM LTS"
+    version: "OEM / Embedded"
     alias: "oem"
     deprecated: false
     inDevelopment: false

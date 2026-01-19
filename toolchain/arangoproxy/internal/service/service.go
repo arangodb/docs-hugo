@@ -180,7 +180,7 @@ func init() {
 				branch := version.Name
 				if version.Name == "oem" {
 					branch = "3.11.14"
-					displayVersion = "OEM LTS"
+					displayVersion = "OEM / Embedded"
 				}
 				license["name"] = "Apache 2.0"
 				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", branch)

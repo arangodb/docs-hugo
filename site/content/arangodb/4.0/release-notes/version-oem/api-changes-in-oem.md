@@ -1,6 +1,6 @@
 ---
-title: API Changes in ArangoDB OEM LTS
-menuTitle: API changes in OEM LTS
+title: API Changes in ArangoDB OEM / Embedded
+menuTitle: API changes in OEM
 weight: 20
 description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
