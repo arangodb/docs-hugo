@@ -288,20 +288,6 @@ the following steps.
      (v3.12.2 only addresses this but not [another issue](../../../3.12/release-notes/version-3.12/incompatible-changes-in-3-12.md#corrected-sorting-order-for-strings-in-velocypack-indexes)).
      You need to use a new database directory.
 
-   - **Active Failover**: You need to replace all servers of the deployment.
-     You can do so in a rolling manner.
-   
-     Create a new server and add it as a new follower to the deployment.
-     When it is in-sync with the leader, remove one of the old followers.
-     Replace any other old followers in the same manner. Then create
-     one more new server, add it as a follower, and wait until it is in-sync.
-     Then remove the old leader, failing over to one of the new followers.
-     You should stop all writes temporarily before and after the failover so
-     that nothing is lost, as the Active Failover replication is asynchronous.
-
-     You can also follow the single server instructions if it's acceptable to
-     have downtime.
-
    - **Cluster**: Replace the DB-Server nodes until they all run at least
      v3.11.11 or v3.12.4 (rolling upgrade). Syncing new nodes writes the data in
      the correct order. This deployment mode and approach avoids downtimes.

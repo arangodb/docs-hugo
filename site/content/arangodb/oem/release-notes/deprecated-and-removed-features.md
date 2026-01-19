@@ -7,6 +7,10 @@ description: >-
 aliases:
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../deploy/active-failover # 3.11 -> OEM
+  - ../deploy/active-failover/administration # 3.11 -> OEM
+  - ../deploy/active-failover/manual-start # 3.11 -> OEM
+  - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> OEM
   - ../deploy/arangosync # 3.11 -> 3.12
   - ../deploy/arangosync/administration # 3.11 -> 3.12
   - ../deploy/arangosync/monitoring # 3.11 -> 3.12

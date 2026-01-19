@@ -29,5 +29,4 @@ Select `Replace` to install the new ArangoDB version.
 
 The procedure described above is a first step to upgrade more complex
 deployments such as
-[Cluster](../../../deploy/cluster/_index.md)
-and [Active Failover](../../../deploy/active-failover/_index.md).
+[Cluster](../../../deploy/cluster/_index.md).

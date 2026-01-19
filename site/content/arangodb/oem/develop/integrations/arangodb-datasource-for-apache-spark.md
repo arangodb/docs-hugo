@@ -135,7 +135,7 @@ configure the certificate to use. This can be achieved in one of the following w
 
 ### Supported deployment topologies
 
-The connector can work with a single server, a cluster and active failover deployments of ArangoDB.
+The connector can work with a single server and cluster deployments of ArangoDB.
 
 ## Batch Read
 

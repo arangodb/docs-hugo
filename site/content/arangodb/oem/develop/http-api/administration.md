@@ -613,12 +613,11 @@ paths:
         '200':
           description: |
             This API will return HTTP 200 in case the server is up and running and usable for
-            arbitrary operations, is not set to read-only mode and is currently not a follower
-            in case of an Active Failover deployment setup.
+            arbitrary operations and is not set to read-only mode.
         '503':
           description: |
-            HTTP 503 will be returned in case the server is during startup or during shutdown,
-            is set to read-only mode or is currently a follower in an Active Failover deployment setup.
+            HTTP 503 will be returned in case the server is during startup or during shutdown
+            or is set to read-only mode.
 
             In addition, HTTP 503 will be returned in case the fill grade of the scheduler
             queue exceeds the configured high-water mark (adjustable via startup option

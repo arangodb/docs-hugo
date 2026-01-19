@@ -61,7 +61,7 @@ about the API, how requests are handled, and what endpoints are available.
 
 [ArangoDB Starter](../components/tools/arangodb-starter/_index.md) (`arangodb` binary) helps you set up
 and deploy ArangoDB instances on bare-metal servers and supports all ArangoDB
-deployment modes (single server instance, Active Failover, cluster).
+deployment modes (single server instance, cluster).
 
 In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:
