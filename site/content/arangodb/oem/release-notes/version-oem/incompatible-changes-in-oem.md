@@ -88,7 +88,8 @@ deployment offline to perform the upgrade procedure in the safest possible manne
 ## Datacenter-to-Datacenter Replication (DC2DC) removed
 
 The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
-_arangosync_ tool is no longer supported from v3.12 onward.
+_arangosync_ tool is not supported in the OEM / Embedded version and longer
+available from v3.12 onward.
 
 ## Corrected sorting order for numbers in VelocyPack indexes
 

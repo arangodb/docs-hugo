@@ -41,5 +41,3 @@ Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.11.
 Upgraded OpenSSL to version 3.5.4.
 
 Updated the timezone data (tzdata) to the version as of 2025-11-05.
-
-Upgrade arangosync to version 2.19.20.
