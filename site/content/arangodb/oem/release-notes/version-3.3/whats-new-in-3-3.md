@@ -225,8 +225,7 @@ The following options have been added to it:
   - `--ldap.roles-exclude`
   - `--ldap.superuser-role`
 
-  Please refer to [LDAP](../../components/arangodb-server/ldap.md) for a detailed
-  explanation.
+  Please refer to LDAP for a detailed explanation.
 
 ## Miscellaneous features
 

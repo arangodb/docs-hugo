@@ -390,10 +390,6 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
 
 **Enterprise Edition**
 
-- [**LDAP integration**](../components/arangodb-server/ldap.md): Users and permissions
-  can be managed from outside ArangoDB with an LDAP server in different
-  authentication configurations.
-
 - [**Encryption at Rest**](../operations/security/encryption-at-rest.md): Let the server
   persist your sensitive data strongly encrypted to protect it even if the
   physical storage medium gets stolen.

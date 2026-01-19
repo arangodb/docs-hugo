@@ -95,5 +95,5 @@ scaling graphs and managing your data safely.
 - Multi-tenant deployment option for the transactional guarantees and
   performance of a single server
 - Enhanced data security with on-disk and backup encryption, key rotation,
-  audit logging, and LDAP authentication
+  and audit logging
 - Incremental backups without downtime and off-site replication
