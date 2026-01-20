@@ -453,6 +453,410 @@ Integrate the object storage with the Data Platform by applying the file:
 kubectl apply -f ./platform-storage.yaml
 ```
 
+## Air-gapped setup
+
+### Step 1: Download the installation files and information
+
+{{< tag "Internet-connected system" >}}
+
+In case of an installation on hardware without internet access, everything needed
+to install the services of the Platform Suite has to be downloaded on a system
+with internet access and needs to be transferred to the offline or air-gapped
+system before the setup.
+
+
+- You receive a package configuration file and license credentials from the
+  Arango team. Store them on the system with internet access for now.
+
+  The Data Platform **package configuration** is a YAML file that defines which
+  services to install and their configurations.
+
+  The **license credentials** are composed of a client ID and client secret that
+  you need to activate a deployment online or to generate license keys for
+  offline deployments (e.g. air-gapped).
+
+- Download the latest enterprise version of the ArangoDB Kubernetes Operator
+  `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
+
+  Look for the files called `kube-arangodb-enterprise-x.x.x.tgz` and
+  `kube-arangodb-enterprise-arm64-x.x.x.tgz` (where `x.x.x` is the version number).
+  You may need to click **Show all # assets** to reveal all files.
+  The former is the operator for x86-64 CPUs and the latter for 64-bit ARM chips.
+
+- Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
+  <https://github.com/arangodb/kube-arangodb/releases>.
+  It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
+  architecture (e.g. `arangodb_operator_platform_linux_amd64`).
+
+  It is recommended to rename the downloaded executable to
+  `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
+  the `PATH` environment variable to make it available as a command in the system.
+
+  The Platform CLI tool simplifies the further setup and later management of
+  the Platform's Kubernetes services.
+
+- If you want to set up a local object storage, make sure to download the
+  installation files or the container image. For example, <!-- TODO -->
+  `minio/minio:latest`
+
+### Step 2: Install the Operator
+
+{{< tag "Air-gapped system" >}}
+
+Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
+(`kube-arangodb`) from the downloaded `.tgz` file with Helm.
+
+This operator is the core component that manages ArangoDB
+deployments and the Data Platform. It watches for custom resources and creates
+the necessary Kubernetes resources.
+
+Make sure set the the options as shown below to enable certificates, <!-- TODO: Is certificate related to cert-manager that we no longer need with 1.4.0? -->
+the gateway feature, and machine learning:
+
+```sh
+VERSION_OPERATOR='1.4.0' # Use a newer version if available
+ARCH_OPERATOR='' # Empty for x86-64, 'arm64-' for ARM CPUs
+
+helm upgrade --install operator \
+  --namespace arangodb \
+  kube-arangodb-enterprise-${ARCH_OPERATOR}${VERSION_OPERATOR}.tgz" \
+  --set "certificate.enabled=true" \
+  --set "operator.args[0]=--deployment.feature.gateway=true" \
+  --set "operator.features.platform=true" \
+  --set "operator.features.ml=true" \
+  --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
+```
+
+You may use the following commands to wait for the operator to be ready and
+verify it is running:
+
+```bash
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=kube-arangodb-enterprise -n arangodb --timeout=120s
+
+kubectl get deployment -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
+kubectl get pods -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
+```
+
+Expected output (`x` stands for varying letter or digit):
+
+```
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+arango-operator-operator   1/1     1            1           45s
+
+NAME                                        READY   STATUS    RESTARTS   AGE
+arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
+```
+
+### Step 3: Create a namespace
+
+{{< tag "Air-gapped system" >}}
+
+Ensure `kubectl` is properly configured and can communicate with your
+Kubernetes cluster, e.g. by running the following commands:
+
+```sh
+kubectl cluster-info
+kubectl get nodes
+```
+
+Create a Kubernetes namespace for ArangoDB and the Platform Suite resources.
+The namespace used throughout this guide is called `arangodb`, but you can use
+a different name.
+
+```sh
+kubectl create namespace arangodb
+```
+
+### Step 4: Create a deployment
+
+{{< tag "Air-gapped system" >}}
+
+Create an `ArangoDeployment` specification for ArangoDB. See the
+[ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
+and the linked reference.
+
+You need to enable the gateway feature by setting `spec.gateway.enabled` and
+`spec.gateway.dynamic` to `true` in the specification. Enable vector indexes
+(on DB-Servers and Coordinators respectively on single server) because they are
+required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
+a secret that you will create later.
+
+Example for an ArangoDB cluster deployment using version 3.12.7 with three
+DB-Servers and two Coordinators with the name `deployment-example`:
+
+```yaml
+apiVersion: "database.arangodb.com/v1"
+kind: "ArangoDeployment"
+metadata:
+  name: "deployment-example"
+spec:
+  mode: Cluster
+  image: "arangodb/enterprise:3.12.7"
+  gateway:
+    enabled: true
+    dynamic: true
+  gateways:
+    count: 1
+  dbservers:
+    count: 3
+    args:
+      - --vector-index
+  coordinators:
+    count: 2
+    args:
+      - --vector-index
+  license:
+    secretName: arango-license-key
+  # ...
+```
+
+You can save the specification as a YAML file, e.g. `deployment.yaml`.
+
+Apply the specification and wait for the pods to be ready:
+
+```sh
+kubectl apply -f deployment.yaml
+
+kubectl get pods --namespace arangodb --watch  # Ctrl+C to stop watching
+```
+
+Given the above specification using the name `deployment-example`, you should
+eventually see pods with the following names with a status of `Running`:
+- `deployment-example-agnt-*` (3 Agents)
+- `deployment-example-crdn-*` (2 Coordinators)
+- `deployment-example-prmr-*` (3 DB-Servers)
+- `deployment-example-gway-*` (1 Gateway)
+
+### Step 5: Collect information for the licensing
+
+{{< tag "Air-gapped system" >}}
+
+Inventory
+
+Deployment ID
+
+### Step 6: Generate a license key
+
+{{< tag "Internet-connected system" >}}
+
+platform CLI
+
+### Step 7: Create a secret for the license
+
+Create a Kubernetes secret with your license credentials.
+
+Substitute `<license-string>` with the license key you generated:
+
+```sh
+kubectl create secret generic arango-license-key \
+  --namespace arangodb \
+  --from-literal=token-v2="<license-string>"
+```
+
+You may run the following command to verify that the secret was created:
+
+```sh
+kubectl get secret arango-license-key -n arangodb
+```
+
+Expected output:
+
+```
+NAME                 TYPE     DATA   AGE
+arango-license-key   Opaque   2      10s
+```
+
+### Step 8: Create a Data Platform package
+
+{{< tag "Internet-connected system" >}}
+
+package export using Arango registry
+
+### Step 9: Install the Data Platform package
+
+{{< tag "Air-gapped system" >}}
+
+Install the package using the package configuration you received from the
+Arango team (`platform.yaml`).
+
+The package installation creates and enables various services, including
+the unified web interface of the Data Platform.
+
+Substitute `<license-client-id>` and `<license-client-secret>`
+with the actual license credentials and `./platform.yaml` with the path to the
+package configuration file. The platform name (`deployment-example`) needs to
+match the name as specified in the `ArangoDeployment` configuration.
+
+```sh
+arangodb_operator_platform --namespace arangodb package install \
+  --license.client.id "<license-client-id>" \
+  --license.client.secret "<license-client-secret>" \
+  --platform.name deployment-example \
+  ./platform.yaml
+```
+
+It can take a while to run this command because it downloads the Platform Suite,
+and in case of the AI Data Platform, also the AI Suite.
+
+### Step 10: Set up object storage
+
+{{< tag "Air-gapped system" >}}
+
+Features like MLflow and GraphML require an additional storage system to save
+model training data, for instance.
+
+The following example shows how to set up a local MinIO and integrate it with
+the Arango Data Platform, but you can also use a remote object storage like S3.
+For the supported storage systems, see the
+[`kube-arangodb` documentation](https://arangodb.github.io/kube-arangodb/docs/platform/storage.html).
+
+Create a Kubernetes namespace for MinIO, then create a secret in this namespace
+with the username and password to use for the MinIO root user (replace `minioadmin`
+and `miniopassword` with the credentials you actually want to use). Create another
+secret with the same credentials but in the namespace of your `ArangoDeployment`,
+which is `arangodb` in this example:
+
+```sh
+kubectl create namespace minio
+
+kubectl create secret generic minio-root \
+  --namespace minio \
+  --from-literal=MINIO_ROOT_USER=minioadmin \
+  --from-literal=MINIO_ROOT_PASSWORD=miniopassword
+
+kubectl create secret generic minio-credentials \
+  --namespace arangodb \
+  --from-literal=accessKey=minioadmin \
+  --from-literal=secretKey=miniopassword
+```
+
+Create a file to configure MinIO service and call it e.g. `minio.yaml`.
+Example using a Persistent Volume Claim (PVC) of five gibibytes:
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: minio-data-pvc
+ namespace: minio
+spec:
+ accessModes:
+   - ReadWriteOnce
+ resources:
+   requests:
+     storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+  namespace: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+      - name: minio
+        image: minio/minio:latest
+        args:
+          - server
+          - /data
+        envFrom:
+          - secretRef:
+              name: minio-root
+        ports:
+          - containerPort: 9000
+        volumeMounts:
+          - name: data
+            mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: minio-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: minio
+spec:
+  selector:
+    app: minio
+  ports:
+    - port: 9000
+      targetPort: 9000
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-create-bucket
+  namespace: minio
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mc
+          image: minio/mc
+          env:
+            - name: MINIO_ENDPOINT
+              value: http://minio.minio.svc.cluster.local:9000
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-root
+                  key: MINIO_ROOT_USER
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-root
+                  key: MINIO_ROOT_PASSWORD
+          command:
+            - sh
+            - -c
+            - |
+              mc alias set local $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+              mc mb local/arango-platform-storage || true
+```
+
+Set up the MinIO service by applying the configuration file:
+
+```sh
+kubectl apply -f ./minio.yaml
+```
+
+Create another file to configure the storage for the Data Platform and call the
+file e.g. `platform-storage.yaml`. Note that the name of the `ArangoPlatformStorage`
+must be the same as for the `ArangoDeployment`:
+
+```yaml
+apiVersion: platform.arangodb.com/v1beta1
+kind: ArangoPlatformStorage
+metadata:
+  name: deployment-example
+  namespace: arangodb
+spec:
+  backend:
+    s3:
+      bucketName: arango-platform-storage
+      credentialsSecret:
+        name: minio-credentials
+      endpoint: http://minio.minio.svc.cluster.local:9000
+```
+
+Integrate the object storage with the Data Platform by applying the file:
+
+```sh
+kubectl apply -f ./platform-storage.yaml
+```
+
 ## Interfaces
 
 The Arango Data Platform uses a gateway to make all its services available via a
