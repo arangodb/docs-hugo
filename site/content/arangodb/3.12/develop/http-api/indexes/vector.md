@@ -175,6 +175,10 @@ paths:
         '201':
           description: |
             The index is created as there is no such existing index.
+        '400':
+          description: |
+            The vector index feature is not enabled. You need to run ArangoDB
+            with the `--vector-index` startup option.
         '404':
           description: |
             The collection is unknown.

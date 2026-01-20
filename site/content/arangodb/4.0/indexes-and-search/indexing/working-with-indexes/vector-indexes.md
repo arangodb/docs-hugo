@@ -18,26 +18,14 @@ The vector index implementation uses the [Faiss library](https://github.com/face
 
 ## How to use vector indexes
 
-{{< warning >}}
-You need to enable the vector index feature for the
-ArangoDB server with the `--vector-index` startup option.
-Once enabled for a deployment, it cannot be disabled anymore because it
-permanently changes how the data is managed by the RocksDB storage engine
-(it adds an additional column family).
-
-To restore a dump that contains vector indexes, the `--vector-index`
-startup option needs to be enabled on the deployment you want to restore to.
-{{< /warning >}}
-
-1. Enable the vector index feature.
-2. Calculate vector embeddings using [Arango's GraphML](../../../../../ai-suite/graphml/_index.md)
+1. Calculate vector embeddings using [Arango's GraphML](../../../../../ai-suite/graphml/_index.md)
    capabilities (available in the AI Data Platform) or using external tools.
    Store each vector as an attribute in the respective document.
-3. Create a vector index over this attribute. You need to choose which
+2. Create a vector index over this attribute. You need to choose which
    similarity metric you want to use later for querying. See
    [Vector index properties](#vector-index-properties) for all available
    configuration options.
-4. Run AQL queries that use [Vector similarity functions](../../../aql/functions/vector.md)
+3. Run AQL queries that use [Vector similarity functions](../../../aql/functions/vector.md)
    to retrieve a given number of similar documents relative to a vector embedding
    you provide.
 
