@@ -29,7 +29,11 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## Startup options
 
+### Vector index enabled by default
 
+The `vector` index type is now enabled by default and the `--vector-index`
+startup option is obsolete, meaning you can still specify the option without
+causing an error about an unknown startup option but no longer has any effect.
 
 ## Client tools
 
