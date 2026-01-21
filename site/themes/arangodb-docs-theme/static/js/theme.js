@@ -111,8 +111,9 @@ function loadPage(target) {
         return;
       }
       replaceArticle(href, newDoc);
-      scrollToFragment();
       initArticle(href);
+      // Wait for fonts to load before scrolling to prevent layout shifts
+      waitForFontsAndScroll();
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
@@ -442,6 +443,40 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
+ function waitForFontsAndScroll() {
+  if (document.fonts && document.fonts.ready) {
+    // Modern browsers with Font Loading API
+    document.fonts.ready.then(() => {
+      scrollToFragment();
+      
+      // Set up a listener for any additional fonts that might load
+      // and cause layout shifts after the initial scroll
+      const fontLoadHandler = () => {
+        if (location.hash) {
+          scrollToFragment();
+        }
+      };
+      
+      // Listen for font loading events for a short period
+      document.fonts.addEventListener('loadingdone', fontLoadHandler);
+      
+      // Clean up the listener after a reasonable time
+      setTimeout(() => {
+        document.fonts.removeEventListener('loadingdone', fontLoadHandler);
+      }, 2000);
+      
+    }).catch(() => {
+      // Fallback if font loading fails
+      scrollToFragment();
+    });
+  } else {
+    // Fallback for older browsers - use a short delay
+    setTimeout(() => {
+      scrollToFragment();
+    }, 100);
+  }
+}
+
  function scrollToFragment() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
@@ -704,6 +739,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentVersion = getVersionFromURL();
     if (currentVersion) {
       localStorage.setItem('docs-version', currentVersion);
+    }
+
+    // For initial page load with fragment, wait for fonts before scrolling
+    if (location.hash) {
+      waitForFontsAndScroll();
     }
 
     loadPage(window.location.href)
