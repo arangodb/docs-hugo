@@ -27,7 +27,7 @@ pip install python-arango --upgrade
 
 You can then import the library in your project as follows:
 
-```python
+```py
 from arango import ArangoClient
 ```
 
@@ -37,7 +37,7 @@ The following example shows how to use the driver from connecting to ArangoDB,
 over creating databases, collections, indexes, and documents, to retrieving
 data using queries:
 
-```python
+```py
 from arango import ArangoClient
 
 # Initialize the client for ArangoDB.
@@ -71,7 +71,7 @@ student_names = [document["name"] for document in cursor]
 The following example shows how to create a [named graph](../../graphs/_index.md),
 populate it with vertices and edges, and query it with a graph traversal:
 
-```python
+```py
 from arango import ArangoClient
 
 # Initialize the client for ArangoDB.
@@ -134,7 +134,7 @@ To connect to a database, create an instance of `ArangoClient` which provides a
 connection to the database server. Then call its `db` method and pass the
 database name, user name, and password as parameters.
 
-```python
+```py
 from arango import ArangoClient
 
 # Initialize a client
@@ -149,7 +149,7 @@ sys_db = client.db("_system", username="root", password="qwerty")
 To retrieve a list of all databases on an ArangoDB server, connect to the
 `_system` database and call the `databases()` method.
 
-```python
+```py
 # Retrieve the names of all databases on the server as list of strings
 db_list = sys_db.databases()
 ```
@@ -159,7 +159,7 @@ db_list = sys_db.databases()
 To create a new database, connect to the `_system` database and call
 `create_database()`.
 
-```python
+```py
 # Create a new database named "test".
 sys_db.create_database("test")
 
@@ -174,7 +174,7 @@ To delete an existing database, connect to the `_system` database and call
 parameter. The `_system` database cannot be deleted. Make sure to specify
 the correct database name when you are deleting databases.
 
-```python
+```py
 # Delete the 'test' database
 sys_db.delete_database("test")
 ```
@@ -186,7 +186,7 @@ sys_db.delete_database("test")
 To retrieve a list of collections in a database, connect to the database and
 call `collections()`.
 
-```python
+```py
 # Connect to the database
 db = client.db(db_name, username=user_name, password=pass_word)
 
@@ -198,7 +198,7 @@ collection_list = db.collections()
 
 To create a new collection, connect to the database and call `create_collection()`.
 
-```python
+```py
 # Create a new collection for doctors
 doctors_col = db.create_collection(name="doctors")
 
@@ -212,7 +212,7 @@ To delete a collection, connect to the database and call `delete_collection()`,
 passing the name of the collection to be deleted as a parameter. Make sure to
 specify the correct collection name when you delete collections.
 
-```python
+```py
 # Delete the 'doctors' collection
 db.delete_collection(name="doctors")
 ```
@@ -225,7 +225,7 @@ To create a new document, get a reference to the collection and call its
 `insert()` method, passing the object/document to be created in ArangoDB as
 a parameter.
 
-```python
+```py
 # Get a reference to the 'patients' collection
 patients_col = db.collection(name="patients")
 
@@ -252,7 +252,7 @@ To patch or partially update a document, call the `update()` method of the
 collection and pass the object/document as a parameter. The document must have
 a property named `_key` holding the unique key assigned to the document.
 
-```python
+```py
 # Patch John's patient record by adding a city property to the document
 patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
@@ -280,7 +280,7 @@ collection and pass the object/document that fully replaces thee existing
 document as a parameter. The document must have a property named `_key` holding
 the unique key assigned to the document.
 
-```python
+```py
 # Replace John's document
 patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
@@ -306,7 +306,7 @@ not specified in the request when the document was fully replaced.
 To delete a document, call the `delete()` method of the collection and pass an
 document containing at least the `_key` attribute as a parameter.
 
-```python
+```py
 # Delete John's document
 patients_col.delete({ "_key": "741603" })
 ```
@@ -319,7 +319,7 @@ To run a query, connect to the desired database and call `aql.execute()`.
 This returns a cursor, which lets you fetch the results in batches. You can
 iterate over the cursor to automatically fetch the data.
 
-```python
+```py
 # Run a query
 cursor = db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 
