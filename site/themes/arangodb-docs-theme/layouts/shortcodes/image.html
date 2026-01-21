@@ -14,7 +14,9 @@
 {{- if $img -}}
 <img alt="{{ $alt }}" src="{{ $img.RelPermalink }}"
   {{- with $class }} class="{{ . }}"{{ end }}
-  {{- with $style }} style="{{ . | safeCSS }}"{{ end }}>
+  {{- with $style }} style="{{ . | safeCSS }}"{{ end }}
+  {{- with $img.Width }} width="{{ . }}"{{ end }}
+  {{- with $img.Height }} height="{{ . }}"{{ end }}>
 {{- else }}
   {{- errorf "<error code=1>Broken image reference '%v' found in %v </error><br>" $src $file.Path }}
 {{- end }}
