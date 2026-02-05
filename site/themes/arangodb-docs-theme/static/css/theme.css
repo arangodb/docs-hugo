@@ -1478,7 +1478,7 @@ div > .box-content-container {
 
 .endpoint-group {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     position: relative;
 }
    
