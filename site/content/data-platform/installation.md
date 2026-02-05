@@ -33,15 +33,17 @@ the Arango team.
 - **Helm**: A package manager for Kubernetes.
 
   You need to have [helm](https://helm.sh/docs/intro/install/) installed in order
-  to install the required certificate manager and the ArangoDB Kubernetes Operator
-  as part of the Platform setup.
+  to install the ArangoDB Kubernetes Operator as part of the Data Platform setup.
 
 - **Container registry**: A repository for storing and accessing container images.
 
   For offline installation such as for air-gapped environments, you need to have
   a container registry that available in your environment. It can be a local
-  registry. It is needed for important and installing the images of the
+  registry. It is needed for importing and installing the images of the
   Platform Suite.
+
+  In environments with internet access, you don't need your own container registry
+  but you can optionally use one.
 
 {{< comment >}}
 - **Licenses**: If you want to use any paid features, you need to purchase the
@@ -79,12 +81,21 @@ kubectl get nodes
 ```
 
 Create a Kubernetes namespace for ArangoDB and the Platform Suite resources.
-The namespace used throughout this guide is called `arangodb`, but you can use
+The namespace used throughout this guide is called `arango`, but you can use
 a different name.
 
 ```sh
-kubectl create namespace arangodb
+kubectl create namespace arango
 ```
+
+{{< info >}}
+When you specify the namespace for a command, you can do that in two ways:
+
+- `--namespace arango` (long-form option)
+- `-n arango` (short-form option)
+
+This guide uses long-form options for clarity.
+{{< /info >}}
 
 ### Step 3: Create a secret for the license
 
@@ -95,7 +106,7 @@ with the actual license credentials:
 
 ```sh
 kubectl create secret generic arango-license-key \
-  --namespace arangodb \
+  --namespace arango \
   --from-literal=license-client-id="<license-client-id>" \
   --from-literal=license-client-secret="<license-client-secret>"
 ```
@@ -103,7 +114,7 @@ kubectl create secret generic arango-license-key \
 You may run the following command to verify that the secret was created:
 
 ```sh
-kubectl get secret arango-license-key -n arangodb
+kubectl get secret arango-license-key --namespace arango
 ```
 
 Expected output:
@@ -113,47 +124,7 @@ NAME                 TYPE     DATA   AGE
 arango-license-key   Opaque   2      10s
 ```
 
-### Step 4: Install the certificate manager
-
-Install the certificate manager via the Jetstack Helm repository.
-
-The `cert-manager` creates and renews TLS certificates for WebHooks in the
-ArangoDB Kubernetes Operator.
-
-You can check <https://github.com/cert-manager/cert-manager>
-for the available releases.
-
-```sh
-VERSION_CERT='1.19.2' # Use a newer version if available
-
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-
-helm upgrade --install cert-manager \
-  --namespace cert-manager --create-namespace \
-  --version "v${VERSION_CERT}" \
-  jetstack/cert-manager \
-  --set crds.enabled=true
-```
-
-You may use the following commands to wait for `cert-manager` to be ready and
-verify that it is running:
-
-```sh
-kubectl wait --for=condition=ready pod -l app.kubernetes.io/instance=cert-manager -n cert-manager --timeout=120s
-kubectl get pods -n cert-manager
-```
-
-Expected output (`x` stands for varying letter or digit):
-
-```
-NAME                                       READY   STATUS    RESTARTS   AGE
-cert-manager-xxxxxxxxxx-xxxxx              1/1     Running   0          20s
-cert-manager-cainjector-xxxxxxxxxx-xxxxx   1/1     Running   0          20s
-cert-manager-webhook-xxxxxxxxx-xxxxx       1/1     Running   0          20s
-```
-
-### Step 5: Install the Operator
+### Step 4: Install the Operator
 
 Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`) with Helm. It is the core component that manages ArangoDB
@@ -166,28 +137,67 @@ You can find the latest release on GitHub:
 Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
+{{< tabs "cpu-arch" >}}
+
+{{< tab "x86-64" >}}
 ```sh
-VERSION_OPERATOR='1.3.4' # Use a newer version if available
+VERSION_OPERATOR='1.4.1' # Use a newer version if available
 
 helm upgrade --install operator \
-  --namespace arangodb \
+  --namespace arango \
   "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
-  --set "webhooks.enabled=true" \
-  --set "certificate.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.features.platform=true" \
   --set "operator.features.ml=true" \
-  --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
+  --set "operator.architectures={amd64}"
+```
+{{< /tab >}}
+
+{{< tab "ARM" >}}
+```sh
+VERSION_OPERATOR='1.4.1' # Use a newer version if available
+
+helm upgrade --install operator \
+  --namespace arango \
+  "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
+  --set "operator.args[0]=--deployment.feature.gateway=true" \
+  --set "operator.features.platform=true" \
+  --set "operator.features.ml=true" \
+  --set "operator.architectures={arm64}"
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+The output looks similar to the following on success:
+
+```
+Release "operator" does not exist. Installing it now.
+NAME: operator
+LAST DEPLOYED: Thu Feb  5 16:12:21 2026
+NAMESPACE: arango
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+You have installed Kubernetes ArangoDB Operator in version 1.4.1
+
+To access ArangoDeployments you can use:
+
+kubectl --namespace "arango" get arangodeployments
+
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.1/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
 verify it is running:
 
 ```bash
-kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=kube-arangodb-enterprise -n arangodb --timeout=120s
+kubectl wait --for=condition=ready pod --selector app.kubernetes.io/name=kube-arangodb-enterprise --namespace arango --timeout=120s
 
-kubectl get deployment -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
-kubectl get pods -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
+kubectl get deployment --namespace arango --selector app.kubernetes.io/name=kube-arangodb-enterprise
+kubectl get pods --namespace arango --selector app.kubernetes.io/name=kube-arangodb-enterprise
 ```
 
 Expected output (`x` stands for varying letter or digit):
@@ -200,7 +210,7 @@ NAME                                        READY   STATUS    RESTARTS   AGE
 arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
 ```
 
-### Step 6: Create a deployment
+### Step 5: Create a deployment
 
 Create an `ArangoDeployment` specification for ArangoDB. See the
 [ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
@@ -243,12 +253,13 @@ spec:
 
 You can save the specification as a YAML file, e.g. `deployment.yaml`.
 
-Apply the specification and wait for the pods to be ready:
+Apply the specification using the previously created name (here: `arango`)
+and wait for the pods to be ready:
 
 ```sh
-kubectl apply -f deployment.yaml
+kubectl apply --namespace arango -f deployment.yaml
 
-kubectl get pods --namespace arangodb --watch  # Ctrl+C to stop watching
+kubectl get pods --namespace arango --watch  # Ctrl+C to stop watching
 ```
 
 Given the above specification using the name `deployment-example`, you should
@@ -258,7 +269,7 @@ eventually see pods with the following names with a status of `Running`:
 - `deployment-example-prmr-*` (3 DB-Servers)
 - `deployment-example-gway-*` (1 Gateway)
 
-### Step 7: Get the Data Platform CLI tool
+### Step 6: Get the Data Platform CLI tool
 
 Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
 <https://github.com/arangodb/kube-arangodb/releases>.
@@ -272,7 +283,7 @@ the `PATH` environment variable to make it available as a command in the system.
 The Platform CLI tool simplifies the further setup and later management of
 the Platform's Kubernetes services.
 
-### Step 8: Install the Data Platform package
+### Step 7: Install the Data Platform package
 
 Install the package using the package configuration you received from the
 Arango team (`platform.yaml`).
@@ -286,7 +297,7 @@ package configuration file. The platform name (`deployment-example`) needs to
 match the name as specified in the `ArangoDeployment` configuration.
 
 ```sh
-arangodb_operator_platform --namespace arangodb package install \
+arangodb_operator_platform --namespace arango package install \
   --license.client.id "<license-client-id>" \
   --license.client.secret "<license-client-secret>" \
   --platform.name deployment-example \
@@ -296,7 +307,7 @@ arangodb_operator_platform --namespace arangodb package install \
 It can take a while to run this command because it downloads the Platform Suite,
 and in case of the AI Data Platform, also the AI Suite.
 
-### Step 9: Set up object storage
+### Step 8: Set up object storage
 
 Features like MLflow and GraphML require an additional storage system to save
 model training data, for instance.
@@ -310,7 +321,7 @@ Create a Kubernetes namespace for MinIO, then create a secret in this namespace
 with the username and password to use for the MinIO root user (replace `minioadmin`
 and `miniopassword` with the credentials you actually want to use). Create another
 secret with the same credentials but in the namespace of your `ArangoDeployment`,
-which is `arangodb` in this example:
+which is `arango` in this example:
 
 ```sh
 kubectl create namespace minio
@@ -321,7 +332,7 @@ kubectl create secret generic minio-root \
   --from-literal=MINIO_ROOT_PASSWORD=miniopassword
 
 kubectl create secret generic minio-credentials \
-  --namespace arangodb \
+  --namespace arango \
   --from-literal=accessKey=minioadmin \
   --from-literal=secretKey=miniopassword
 ```
@@ -437,7 +448,7 @@ apiVersion: platform.arangodb.com/v1beta1
 kind: ArangoPlatformStorage
 metadata:
   name: deployment-example
-  namespace: arangodb
+  namespace: arango
 spec:
   backend:
     s3:
@@ -465,15 +476,24 @@ with internet access and needs to be transferred to the offline or air-gapped
 system before the setup.
 
 
-- You receive a package configuration file and license credentials from the
-  Arango team. Store them on the system with internet access for now.
+- You receive **license credentials** from the Arango team. Store them securely
+  on the system with internet access for repeated use.
 
-  The Data Platform **package configuration** is a YAML file that defines which
-  services to install and their configurations.
-
-  The **license credentials** are composed of a client ID and client secret that
-  you need to activate a deployment online or to generate license keys for
+  The license credentials are composed of a **client ID** and **client secret**
+  that you need to activate a deployment online or to generate license keys for
   offline deployments (e.g. air-gapped).
+
+- You either receive a package configuration file or a pre-made package for
+  download.
+  
+  A **platform package** is a zipped file that contains manifests and container
+  images of various services for installing the Data Platform. You can import
+  the platform package into your container registry from where Kubernetes can
+  pull the images.
+
+  A Data Platform **package configuration** is a YAML file that defines which
+  services to install and their configurations. You can use it to create a
+  platform package yourself by exporting from Arango's container registry.
 
 - Download the latest enterprise version of the ArangoDB Kubernetes Operator
   `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
@@ -493,61 +513,18 @@ system before the setup.
   the `PATH` environment variable to make it available as a command in the system.
 
   The Platform CLI tool simplifies the further setup and later management of
-  the Platform's Kubernetes services.
+  the Platform's Kubernetes services. You also need it on the system with
+  internet access for generating license keys.
+
+<!-- TODO
+- Pull operator image? `arangodb/kube-arangodb-enterprise:1.4.1`
 
 - If you want to set up a local object storage, make sure to download the
-  installation files or the container image. For example, <!-- TODO -->
+  installation files or the container image. For example,
   `minio/minio:latest`
+-->
 
-### Step 2: Install the Operator
-
-{{< tag "Air-gapped system" >}}
-
-Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
-(`kube-arangodb`) from the downloaded `.tgz` file with Helm.
-
-This operator is the core component that manages ArangoDB
-deployments and the Data Platform. It watches for custom resources and creates
-the necessary Kubernetes resources.
-
-Make sure set the the options as shown below to enable certificates, <!-- TODO: Is certificate related to cert-manager that we no longer need with 1.4.0? -->
-the gateway feature, and machine learning:
-
-```sh
-VERSION_OPERATOR='1.4.0' # Use a newer version if available
-ARCH_OPERATOR='' # Empty for x86-64, 'arm64-' for ARM CPUs
-
-helm upgrade --install operator \
-  --namespace arangodb \
-  kube-arangodb-enterprise-${ARCH_OPERATOR}${VERSION_OPERATOR}.tgz" \
-  --set "certificate.enabled=true" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
-  --set "operator.architectures={amd64}" # or {arm64} for ARM-based CPUs
-```
-
-You may use the following commands to wait for the operator to be ready and
-verify it is running:
-
-```bash
-kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=kube-arangodb-enterprise -n arangodb --timeout=120s
-
-kubectl get deployment -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
-kubectl get pods -n arangodb -l app.kubernetes.io/name=kube-arangodb-enterprise
-```
-
-Expected output (`x` stands for varying letter or digit):
-
-```
-NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
-arango-operator-operator   1/1     1            1           45s
-
-NAME                                        READY   STATUS    RESTARTS   AGE
-arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
-```
-
-### Step 3: Create a namespace
+### Step 2: Create a namespace
 
 {{< tag "Air-gapped system" >}}
 
@@ -560,11 +537,113 @@ kubectl get nodes
 ```
 
 Create a Kubernetes namespace for ArangoDB and the Platform Suite resources.
-The namespace used throughout this guide is called `arangodb`, but you can use
+The namespace used throughout this guide is called `arango`, but you can use
 a different name.
 
 ```sh
-kubectl create namespace arangodb
+kubectl create namespace arango
+```
+
+{{< info >}}
+When you specify the namespace for a command, you can do that in two ways:
+
+- `--namespace arango` (long-form option)
+- `-n arango` (short-form option)
+
+This guide uses long-form options for clarity.
+{{< /info >}}
+
+### Step 3: Install the Operator
+
+{{< tag "Air-gapped system" >}}
+
+Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
+(`kube-arangodb`) from the downloaded `.tgz` file with Helm.
+
+This operator is the core component that manages ArangoDB
+deployments and the Data Platform. It watches for custom resources and creates
+the necessary Kubernetes resources.
+
+Make sure set the the options as shown below to enable the gateway feature and
+machine learning feature:
+<!-- TODO:
+--set "certificate.enabled=true" \
+Is this related to cert-manager that we no longer need with 1.4.0+?
+-->
+
+{{< tabs "cpu-arch" >}}
+
+{{< tab "x86-64" >}}
+```sh
+VERSION_OPERATOR='1.4.1' # Use a newer version if available
+
+helm upgrade --install operator \
+  --namespace arango \
+  kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
+  --set "operator.args[0]=--deployment.feature.gateway=true" \
+  --set "operator.features.platform=true" \
+  --set "operator.features.ml=true" \
+  --set "operator.architectures={amd64}"
+```
+{{< /tab >}}
+
+{{< tab "ARM" >}}
+```sh
+VERSION_OPERATOR='1.4.1' # Use a newer version if available
+
+helm upgrade --install operator \
+  --namespace arango \
+  kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
+  --set "operator.args[0]=--deployment.feature.gateway=true" \
+  --set "operator.features.platform=true" \
+  --set "operator.features.ml=true" \
+  --set "operator.architectures={arm64}"
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+The output looks similar to the following on success:
+
+```
+Release "operator" does not exist. Installing it now.
+NAME: operator
+LAST DEPLOYED: Thu Feb  5 16:12:21 2026
+NAMESPACE: arango
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+You have installed Kubernetes ArangoDB Operator in version 1.4.1
+
+To access ArangoDeployments you can use:
+
+kubectl --namespace "arango" get arangodeployments
+
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.1/docs
+```
+
+You may use the following commands to wait for the operator to be ready and
+verify it is running:
+
+```bash
+kubectl wait --for=condition=ready pod --selector app.kubernetes.io/name=kube-arangodb-enterprise --namespace arango --timeout=120s
+
+kubectl get deployment --namespace arango --selector app.kubernetes.io/name=kube-arangodb-enterprise
+kubectl get pods --namespace arango --selector app.kubernetes.io/name=kube-arangodb-enterprise
+```
+
+Expected output (`x` stands for varying letter or digit):
+
+```
+pod/arango-operator-operator-xxxxxxxxxx-xxxxx condition met
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+arango-operator-operator   1/1     1            1           45s
+
+NAME                                        READY   STATUS    RESTARTS   AGE
+arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
 ```
 
 ### Step 4: Create a deployment
@@ -573,7 +652,7 @@ kubectl create namespace arangodb
 
 Create an `ArangoDeployment` specification for ArangoDB. See the
 [ArangoDeployment Custom Resource Overview](https://arangodb.github.io/kube-arangodb/docs/deployment-resource-reference.html)
-and the linked reference.
+and the linked reference. The example below is a minimal specification
 
 You need to enable the gateway feature by setting `spec.gateway.enabled` and
 `spec.gateway.dynamic` to `true` in the specification. Enable vector indexes
@@ -612,12 +691,13 @@ spec:
 
 You can save the specification as a YAML file, e.g. `deployment.yaml`.
 
-Apply the specification and wait for the pods to be ready:
+Apply the specification using the previously created name (here: `arango`)
+and wait for the pods to be ready:
 
 ```sh
-kubectl apply -f deployment.yaml
+kubectl apply --namespace arango -f deployment.yaml
 
-kubectl get pods --namespace arangodb --watch  # Ctrl+C to stop watching
+kubectl get pods --namespace arango --watch  # Ctrl+C to stop watching
 ```
 
 Given the above specification using the name `deployment-example`, you should
@@ -631,15 +711,131 @@ eventually see pods with the following names with a status of `Running`:
 
 {{< tag "Air-gapped system" >}}
 
-Inventory
+Before you can create a license key that you can apply on the air-gapped system,
+you need to get some information about the ArangoDB deployment.
 
-Deployment ID
+Use the Platform CLI tool to create an inventory file. You need to specify the
+authentication method for ArangoDB (`Disabled`, `Basic`, `Token`), additional
+authentication details depending on the selected authentication method, where the
+ArangoDB instance can be reached, as well as a file path for the inventory file:
+
+```sh
+arangodb_operator_platform license inventory \
+  --arango.authentication <auth-method> \
+  ...
+  --arango.endpoint <arangodb-endpoint> \
+  inventory.json
+```
+
+The required authentication options per authentication method:
+
+- **Disabled**: \
+  If the ArangoDB instance has authentication disabled, then you don't need to
+  specify any additional authentication details. You can also leave out
+  `--arango.authentication Disabled` because `Disabled` is the default value.
+
+- **Basic**: \
+  If you want to use ArangoDB user credentials, you need to specify that you want
+  to use HTTP Basic Authentication together with a user name and their password:
+
+  ```sh
+    --arango.authentication Basic \
+    --arango.basic.username "<user-name>" \
+    --arango.basic.password "<password>" \
+  ```
+
+- **Token**: \
+  If you want to use a JWT session token, you need to specify that you want to
+  use a token as well as the JWT itself:
+
+  ```sh
+    --arango.authentication Token \
+    --arango.token <jwt> \
+  ```
+
+If the ArangoDB instance uses a self-signed certificate, you need to specify
+the following additional option to skip TLS certificate validation:
+
+```sh
+  --arango.insecure
+```
+
+Expected output:
+
+```
+2026-02-05T17:03:07+01:00 INF Connecting to the server...
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.7-2 (enterprise)
+2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
+2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
+2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0
+2026-02-05T17:03:07+01:00 INF Starting executor name=deployment.id thread=0
+```
+
+Finally, get the deployment ID using an endpoint of ArangoDB's HTTP API.
+Substitute `https://127.0.0.1:8529` with the endpoint at which ArangoDB can be
+reached. You may need to specify additional options for authentication in place
+of `...`:
+
+```sh
+curl ... https://127.0.0.1:8529/_admin/deployment/id
+```
+
+The authentication options:
+
+- **Disabled**: \
+  If the ArangoDB instance has authentication disabled, then you don't need to
+  specify any additional authentication options.
+
+- **Username and password**: \
+  If you want to use ArangoDB user credentials, set cURL's `-u` option and
+  provide the user name and password separated by a colon:
+
+  ```sh
+  curl -u "<user-name>:<password>" https://...
+  ```
+
+- **Token**: \
+  If you want to use a JWT session token, use cURL's `-H` option to set an
+  HTTP header with the token:
+
+  ```sh
+  curl -H "Authorization: bearer <token>" https://...
+  ```
+
+If the ArangoDB instance uses self-signed certificates, you additionally need to
+set the `--insecure` / `-k` option to skip TLS certificate validation:
+
+```sh
+curl --insecure ...
+```
+
+Expected output (`x` stands for varying letter or digit):
+
+```json
+{"id":"xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx"}
+```
+
+The UUID wrapped in quote marks is the deployment ID.
 
 ### Step 6: Generate a license key
 
 {{< tag "Internet-connected system" >}}
 
-platform CLI
+Use your license credentials as well as the information from the previous step
+to create a license key.
+
+Substitute `<license-client-id>` and `<license-client-secret>`
+with the actual license credentials. Specify the path to the inventory file
+`inventory.json` and replace `<deployment-id>` with the deployment ID from
+the previous step:
+
+```sh
+arangodb_operator_platform license generate \
+  --license.client.id <license-client-id> \
+  --license.client.secret <license-client-secret> \
+  --inventory ./inventory.json \
+  --deployment.id <deployment-id>
+```
 
 ### Step 7: Create a secret for the license
 
@@ -649,14 +845,14 @@ Substitute `<license-string>` with the license key you generated:
 
 ```sh
 kubectl create secret generic arango-license-key \
-  --namespace arangodb \
+  --namespace arango \
   --from-literal=token-v2="<license-string>"
 ```
 
 You may run the following command to verify that the secret was created:
 
 ```sh
-kubectl get secret arango-license-key -n arangodb
+kubectl get secret arango-license-key --namespace arango
 ```
 
 Expected output:
@@ -670,35 +866,88 @@ arango-license-key   Opaque   2      10s
 
 {{< tag "Internet-connected system" >}}
 
-package export using Arango registry
+If the Arango team provided you a pre-made platform package, download it and
+continue with the next step. Otherwise, create a platform package yourself as
+described below.
 
-### Step 9: Install the Data Platform package
+Use the Platform CLI tool to download the manifests and container images of the
+Platform Suite from Arango's public container registry. This requires
+license credentials and internet access to `*.license.arango.ai`.
+
+What to download is defined by the package configuration file that you received
+from the Arango team. The Platform CLI tool creates a single `.zip` file out of
+the downloaded data. Depending on the configuration, it can be over 40 GiB.
+
+Substitute `<license-client-id>` and `<license-client-secret>`
+with the actual license credentials and `./platform.yaml` with the path to the
+package configuration file. Specify the path and a file name for the output file,
+e.g. `platform.zip`:
+
+```sh
+arangodb_operator_platform package export \
+  --license.client.id "<license-client-id>" \
+  --license.client.secret "<license-client-secret>" \
+  ./platform.yaml \
+  platform.zip
+```
+
+It can take a while to download everything. If you get errors because of
+internet connection issues or timeouts, re-run the command. The Platform CLI tool
+caches what it downloads in a `cache` folder in the current working directory. <!-- TODO: or relative to executable? -->
+You can therefore retry and continue the download where it left off.
+
+<!-- TODO
+You need both the package configuration file (`platform.yaml`) and the zipped
+package (`platform.zip`) on the air-gapped system.
+-->
+
+### Step 9: Import the Data Platform package
+
+Load the manifests and container images stored in the zipped package into your
+container registry using the Platform CLI tool.
+
+Specify the address under which the container registry is available and the
+path to the `platform.zip` file. Furthermore, provide a file path for the
+Platform CLI tool to write the package configuration to. This file will be used
+in the next step:
+
+```sh
+arangodb_operator_platform package import \
+  <your-registry-address:5000> \
+  ./platform.zip \
+  platform.imported.yaml
+```
+<!-- TODO: In case of a pre-made package, do we also share a package config, or does it work without? -->
+
+If the container registry uses the HTTP protocol instead of HTTPS, you need to
+specify the following option in addition:
+
+```sh
+  --registry.docker.insecure <your-registry-address:5000>
+```
+
+### Step 10: Install the Data Platform package
 
 {{< tag "Air-gapped system" >}}
 
-Install the package using the package configuration you received from the
-Arango team (`platform.yaml`).
+Install the platform package using the Platform CLI tool.
 
 The package installation creates and enables various services, including
 the unified web interface of the Data Platform.
 
-Substitute `<license-client-id>` and `<license-client-secret>`
-with the actual license credentials and `./platform.yaml` with the path to the
-package configuration file. The platform name (`deployment-example`) needs to
-match the name as specified in the `ArangoDeployment` configuration.
+The platform name (`deployment-example`) needs to match the name as specified in
+the `ArangoDeployment` configuration. Substitute  `./platform.imported.yaml` with the
+path to the package configuration file from the previous step:
 
 ```sh
-arangodb_operator_platform --namespace arangodb package install \
-  --license.client.id "<license-client-id>" \
-  --license.client.secret "<license-client-secret>" \
+arangodb_operator_platform --namespace arango package install \
   --platform.name deployment-example \
-  ./platform.yaml
+  ./platform.imported.yaml
 ```
 
-It can take a while to run this command because it downloads the Platform Suite,
-and in case of the AI Data Platform, also the AI Suite.
+It can take a while to import everything into the container registry.
 
-### Step 10: Set up object storage
+### Step 11: Set up object storage
 
 {{< tag "Air-gapped system" >}}
 
@@ -714,7 +963,7 @@ Create a Kubernetes namespace for MinIO, then create a secret in this namespace
 with the username and password to use for the MinIO root user (replace `minioadmin`
 and `miniopassword` with the credentials you actually want to use). Create another
 secret with the same credentials but in the namespace of your `ArangoDeployment`,
-which is `arangodb` in this example:
+which is `arango` in this example:
 
 ```sh
 kubectl create namespace minio
@@ -725,7 +974,7 @@ kubectl create secret generic minio-root \
   --from-literal=MINIO_ROOT_PASSWORD=miniopassword
 
 kubectl create secret generic minio-credentials \
-  --namespace arangodb \
+  --namespace arango \
   --from-literal=accessKey=minioadmin \
   --from-literal=secretKey=miniopassword
 ```
@@ -841,7 +1090,7 @@ apiVersion: platform.arangodb.com/v1beta1
 kind: ArangoPlatformStorage
 metadata:
   name: deployment-example
-  namespace: arangodb
+  namespace: arango
 spec:
   backend:
     s3:
@@ -870,7 +1119,7 @@ Data Platform from your host machine. You can select the gateway pod
 external access (`-ea`) and specify the ports like `targetPort:servicePort`:
 
 ```sh
-kubectl port-forward --namespace arangodb \
+kubectl port-forward --namespace arango \
   service/deployment-example-ea 8529:8529
 ```
 
