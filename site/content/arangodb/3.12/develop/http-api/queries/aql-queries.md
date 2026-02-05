@@ -2771,40 +2771,7 @@ paths:
       operationId: listAqlQueries
       description: |
         Returns an array containing the AQL queries currently running in the selected
-        database. Each query is a JSON object with the following attributes:
-
-        - `id`: the query's id
-
-        - `database`: the name of the database the query runs in
-
-        - `user`: the name of the user that started the query
-
-        - `query`: the query string (potentially truncated)
-
-        - `bindVars`: the bind parameter values used by the query
-
-        - `started`: the date and time when the query was started
-
-        - `runTime`: the query's run time up to the point the list of queries was
-          queried
-
-        - `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)
-
-        - `state`: the query's current execution state (as a string). One of:
-          - `"initializing"`
-          - `"parsing"`
-          - `"optimizing ast"`
-          - `"loading collections"`
-          - `"instantiating plan"`
-          - `"optimizing plan"`
-          - `"instantiating executors"`
-          - `"executing"`
-          - `"finalizing"`
-          - `"finished"`
-          - `"killed"`
-          - `"invalid"`
-
-        - `stream`: whether or not the query uses a streaming cursor
+        database.
       parameters:
         - name: database-name
           in: path
@@ -2829,6 +2796,101 @@ paths:
         '200':
           description: |
             Is returned when the list of queries can be retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - database
+                    - user
+                    - query
+                    - bindVars
+                    - started
+                    - runTime
+                    - peakMemoryUsage
+                    - state
+                    - stream
+                    - modificationQuery
+                    - warnings
+                  properties:
+                    id:
+                      description: |
+                        The query's id.
+                      type: string
+                      example: "2199023265625"
+                    database:
+                      description: |
+                        The name of the database the query runs in.
+                      type: string
+                      example: "_system"
+                    user:
+                      description: |
+                        The name of the user that started the query.
+                      type: string
+                      example: "root"
+                    query:
+                      description: |
+                        The query string (potentially truncated).
+                      type: string
+                      example: "FOR i IN 1..@max RETURN i"
+                    bindVars:
+                      description: |
+                        The bind parameter values used by the query.
+                      type: object
+                      additionalProperties: true
+                      example: {"max": 3}
+                    started:
+                      description: |
+                        The date and time when the query was started.
+                      type: string
+                      format: date-time
+                      example: "2026-01-27T15:32:07Z"
+                    runTime:
+                      description: |
+                        The query's run time up to the point the list of queries was queried.
+                      type: number
+                      example: 0.38477
+                    peakMemoryUsage:
+                      description: |
+                        The query's peak memory usage in bytes (in increments of 32KB).
+                      type: integer
+                      example: 0
+                    state:
+                      description: |
+                        The query's current execution state.
+                      type: string
+                      enum:
+                        - "initializing"
+                        - "parsing"
+                        - "optimizing ast"
+                        - "loading collections"
+                        - "instantiating plan"
+                        - "optimizing plan"
+                        - "instantiating executors"
+                        - "executing"
+                        - "finalizing"
+                        - "finished"
+                        - "killed"
+                        - "invalid"
+                      example: "executing"
+                    stream:
+                      description: |
+                        Whether or not the query uses a streaming cursor.
+                      type: boolean
+                      example: false
+                    modificationQuery:
+                      description: |
+                        Whether or not the query modifies data.
+                      type: boolean
+                      example: false
+                    warnings:
+                      description: |
+                        The number of warnings generated by the query.
+                      type: integer
+                      example: 0
         '400':
           description: |
             The request is malformed.
