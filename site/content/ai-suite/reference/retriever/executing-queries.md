@@ -19,7 +19,7 @@ The Retriever service provides two main endpoints:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphrag-query-stream" >}}
 
 {{< tip >}}
-The Instant Search endpoint (`/v1/graphrag-query-stream`) returns streaming responses, 
+The Instant Search endpoint (`/ai/v1/graphrag-query-stream`) returns streaming responses, 
 making it ideal for real-time applications and interactive interfaces.
 {{< /tip >}}
 
@@ -37,7 +37,7 @@ it using the following HTTP endpoints.
 {{< tab "Instant Search" >}}
 
 ```bash
-curl -X POST /v1/graphrag-query-stream \
+curl -X POST /ai/v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -d '{
     "query": "How are X and Y related?",
@@ -52,7 +52,7 @@ curl -X POST /v1/graphrag-query-stream \
 {{< tab "Deep Search" >}}
 
 ```bash
-curl -X POST /v1/graphrag-query \
+curl -X POST /ai/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What are the properties of a specific entity?",
@@ -68,7 +68,7 @@ curl -X POST /v1/graphrag-query \
 {{< tab "Global Search" >}}
 
 ```bash
-curl -X POST /v1/graphrag-query \
+curl -X POST /ai/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What are the main themes discussed in the document?",
@@ -84,7 +84,7 @@ curl -X POST /v1/graphrag-query \
 {{< tab "Local Search" >}}
 
 ```bash
-curl -X POST /v1/graphrag-query \
+curl -X POST /ai/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What is the AR3 Drone?",
@@ -107,7 +107,7 @@ For detailed information about all available parameters, see the
 **Instant Search example:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/v1/graphrag-query-stream \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -d '{
     "query": "How are X and Y related?",
@@ -123,7 +123,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/v1/graphrag-query-stream \
 **Deep Search example:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What are all the technical specifications mentioned?",
@@ -139,7 +139,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/v1/graphrag-query \
 **Global Search example:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -d '{
     "query": "What are the main themes in my documents?",
