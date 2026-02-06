@@ -308,7 +308,6 @@ hr {
 }
 
 pre {
-    margin-bottom: 2rem;
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
     line-height: 1.8rem;
     position: relative;
@@ -318,7 +317,7 @@ pre {
     flex-direction: column;
     position: relative;
     color: #202951;
-    margin-bottom: 2rem;
+    margin: 0 0 2rem 0;
     transition: 150ms ease-in-out;
     transition-property: border,box-shadow;
     border: 0;
