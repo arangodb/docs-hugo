@@ -95,7 +95,7 @@ Triton service. Each model requires the following two files:
 1. **`model.py`**
    Implements the Python backend model. Triton uses this file to load and 
    execute your model for inference.
-   ```python
+   ```py
    class TritonPythonModel:
        def initialize(self, args):
            # Load your model here
