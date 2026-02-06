@@ -24,10 +24,10 @@ This library works with all the non-EOLed [ArangoDB versions](https://arango.ai/
 
 There are several variants of this library, each one compatible with different Spark and Scala versions:
 
-- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
-- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
 - `com.arangodb:arangodb-spark-datasource-3.5_2.12` (Spark 3.5, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.5_2.13` (Spark 3.5, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-4.0_2.13` (Spark 4.0, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-4.1_2.13` (Spark 4.1, Scala 2.13)
 
 The following variants are no longer supported:
 
@@ -38,6 +38,8 @@ The following variants are no longer supported:
 - `com.arangodb:arangodb-spark-datasource-3.2_2.13` (Spark 3.2, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.12` (Spark 3.3, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
 
 Since version `1.7.0`, due to [breaking changes](https://github.com/apache/spark/commit/ad29290a02fb94a958fd21e301100338c9f5b82a#diff-b25c8acff88c1b4850c6642e80845aac4fb882c664795c3b0aa058e37ed732a0L42-R52)
 in Spark `3.4.2`, `arangodb-spark-datasource-3.4` is not compatible anymore with Spark versions `3.4.0` and `3.4.1`.
@@ -344,7 +346,7 @@ When writing to an edge collection (`table.type=edge`), the schema of the Datafr
 ## Mapping Configuration
 
 Serialization and deserialization of Spark Dataframe Row to and from JSON (or Velocypack) can be customized using the following options:
-- `ignoreNullFields`: whether to ignore null fields during serialization, `false` by default (only supported in Spark 3.x)
+- `ignoreNullFields`: whether to ignore null fields during serialization, `false` by default
 
 ## Supported Spark data types
 
