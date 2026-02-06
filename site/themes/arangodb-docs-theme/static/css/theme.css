@@ -318,7 +318,7 @@ pre {
     flex-direction: column;
     position: relative;
     color: #202951;
-    margin: 0 1rem 2rem 0;
+    margin-bottom: 2rem;
     transition: 150ms ease-in-out;
     transition-property: border,box-shadow;
     border: 0;
