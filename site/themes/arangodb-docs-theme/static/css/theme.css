@@ -1486,7 +1486,7 @@ div > .box-content-container {
     color: var(--neutral-white);
     background: var(--color-avocado);
     border-radius: .25rem;
-    margin: .25rem;
+    margin: 0;
     margin-left: auto;
     padding: .5rem;
     opacity: 0;
