@@ -37,7 +37,7 @@
     {{- range $method, $items := $methods }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
-        "Url"    ($path | replaceRE "#.*" "")
+        "Url"    (printf "http://<EXTERNAL_ENDPOINT>:8529%s" $path | replaceRE "#.*" "")
       ) }}
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
