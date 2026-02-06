@@ -466,6 +466,19 @@ kubectl apply -f ./platform-storage.yaml
 
 ## Air-gapped setup
 
+For offline installation and the special case of a fully air-gapped environment,
+you need another environment with internet access to download data and for
+generating license keys. Data needs to be transferred in both directions between
+the offline and the online environment at different steps, but only small amounts
+from the offline to the online system for the licensing.
+
+What needs to be done in which environemnt is indicated by each step:
+
+- **Air-gapped system**: The offline environment.
+
+- **Internet-connected system**: The online environment. Can also be the
+  offline environment if temporary or restricted internet access is possible.
+
 ### Step 1: Download the installation files and information
 
 {{< tag "Internet-connected system" >}}
