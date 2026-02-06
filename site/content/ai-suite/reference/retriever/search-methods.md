@@ -24,6 +24,9 @@ fast unified retrieval over relevant parts of the knowledge graph via hybrid
 (semantic and lexical) search and graph expansion algorithms, producing a fast,
 streamed natural-language response with clickable references to the relevant documents.
 
+{{< diagram src="/images/retriever-instant-search-architecture.svg" 
+           alt="Instant Search Architecture showing parallel retrieval flow" >}}
+
 {{< info >}}
 The Instant Search method is also available via the [Web interface](../../graphrag/web-interface.md).
 {{< /info >}}
@@ -45,6 +48,9 @@ detail and accuracy are required (e.g. aggregation of highly technical details) 
 very short latency is not (i.e. caching responses for frequently asked questions,
 or use case with agents or research use cases).
 
+{{< diagram src="/images/retriever-deep-search-architecture.png" 
+           alt="Deep Search Architecture showing LLM-guided research process" >}}
+
 {{< info >}}
 The Deep Search method is also available via the [Web interface](../../graphrag/web-interface.md).
 {{< /info >}}
@@ -63,6 +69,9 @@ The Deep Search method is also available via the [Web interface](../../graphrag/
 Global search is designed for queries that require understanding and aggregation of 
 information across your entire document. It's particularly effective for questions 
 about overall themes, patterns, or high-level insights in your data.
+
+{{< diagram src="/images/retriever-global-search-architecture.png" 
+           alt="Global Search Architecture showing Map-Reduce processing" >}}
 
 **Configuration:**
 
@@ -86,6 +95,9 @@ about overall themes, patterns, or high-level insights in your data.
 
 Local search focuses on specific entities and their relationships within your knowledge 
 graph. It is ideal for detailed queries about particular concepts, entities, or relationships.
+
+{{< diagram src="/images/retriever-local-search-architecture.png" 
+           alt="Local Search Architecture showing entity-based retrieval" >}}
 
 **Configuration:**
 
