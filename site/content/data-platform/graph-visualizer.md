@@ -276,7 +276,7 @@ flows. You can also download an image of what is displayed.
 ### Export graph
 
 You can export the nodes and edges currently visible on the canvas in CSV format
-using the export menu in the bottom right corner of the viewport
+or save a screenshot using the export menu in the bottom right corner of the viewport
 ({{< icon "download" >}}):
 
 - **Download screenshot**: Save a PNG image of what is currently displayed on
@@ -293,7 +293,7 @@ using the export menu in the bottom right corner of the viewport
 
 - **Export edges as CSV**: Export only the edges currently visible on the
   canvas as a CSV file. The file contains all document attributes of the edges,
-  including `_from` and `_to` which reference the connected nodes.
+  including `_from` and `_to` which reference the connected nodes by their `_id`.
 
 ## Edit graph data
 
