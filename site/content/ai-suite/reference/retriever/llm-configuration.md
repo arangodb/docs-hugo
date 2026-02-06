@@ -140,7 +140,7 @@ service using the below configuration:
     "embedding_api_url": "your-arangodb-llm-host-url",
     "chat_model": "mistral-nemo-instruct",
     "embedding_model": "nomic-embed-text-v1",
-    "embedding_dim": "786"
+    "embedding_dim": "768"
   },
 }
 ```

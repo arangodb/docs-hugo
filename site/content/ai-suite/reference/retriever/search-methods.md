@@ -45,8 +45,8 @@ Deep Search is designed for highly detailed, accurate responses that require und
 what kind of information is available in different parts of the knowledge graph and
 sequentially retrieving information in an LLM-guided research process. Use whenever
 detail and accuracy are required (e.g. aggregation of highly technical details) and
-very short latency is not (i.e. caching responses for frequently asked questions,
-or use case with agents or research use cases).
+very short latency is not required; responses can be cached for frequently asked questions
+or for agent/research use cases.
 
 {{< diagram src="/images/retriever-deep-search-architecture.png" 
            alt="Deep Search Architecture showing LLM-guided research process" >}}
@@ -67,7 +67,7 @@ The Deep Search method is also available via the [Web interface](../../graphrag/
 ## Global Search
 
 Global search is designed for queries that require understanding and aggregation of 
-information across your entire document. It's particularly effective for questions 
+information across your entire documents. It's particularly effective for questions 
 about overall themes, patterns, or high-level insights in your data.
 
 {{< diagram src="/images/retriever-global-search-architecture.png" 
