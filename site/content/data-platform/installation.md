@@ -827,7 +827,7 @@ to create a license key.
 Substitute `<license-client-id>` and `<license-client-secret>`
 with the actual license credentials. Specify the path to the inventory file
 `inventory.json` and replace `<deployment-id>` with the deployment ID from
-the previous step:
+the previous step.
 
 ```sh
 arangodb_operator_platform license generate \
@@ -835,6 +835,19 @@ arangodb_operator_platform license generate \
   --license.client.secret <license-client-secret> \
   --inventory ./inventory.json \
   --deployment.id <deployment-id>
+```
+
+The command logs information to the standard output (also known as _stdout_)
+and writes the license key to the standard error stream (also known as _stderr_).
+You may want to redirect _stderr_ and thus the license key to a file by appending
+`2> license.txt` to the above command (with a leading space).
+
+Expected output (_stdout_, `x` stands for varying letter or digit):
+
+```
+2026-02-05T17:27:28+01:00 INF Using identity for client identity={}
+2026-02-05T17:27:28+01:00 INF Generating License ClusterID=<deployment-id> Inventory=true
+2026-02-05T17:27:28+01:00 INF License Generated and printed to STDERR ClusterID=<deployment-id> Inventory=true LicenseID=xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 ### Step 7: Create a secret for the license
