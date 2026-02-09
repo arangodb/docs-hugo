@@ -96,7 +96,7 @@ centroids and the quality of vector search thus degrades.
     into, respectively the number of centroids in the index. What value to choose
     depends on the data distribution and chosen metric. According to
     [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should be
-    around `N / 15` where `N` is the number of documents in the collection,
+    around `sqrt(N) / 15` where `N` is the number of documents in the collection,
     respectively the number of documents in the shard for cluster deployments.
     A bigger value produces more correct results but increases the training time
     and thus how long it takes to build the index. It cannot be bigger than the
