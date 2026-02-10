@@ -519,15 +519,28 @@ system before the setup.
 - Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases>.
   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
-  architecture (e.g. `arangodb_operator_platform_linux_amd64`).
+  architecture, for example:
+  
+  - `arangodb_operator_platform_darwin_arm64` for macOS with Apple M1 and later CPUs
+  - `arangodb_operator_platform_linux_amd64` for Linux-based systems with x86-64 CPU
+  - `arangodb_operator_platform_linux_arm64` for Linux-based systems with 64-bit ARM CPU
+  - `arangodb_operator_platform_windows_amd64` for Windows with 64-bit x86-64 CPU
+
+  The Platform CLI tool simplifies the further setup and later management of
+  the Platform's Kubernetes services. You also need it on the system with
+  internet access for generating license keys.
 
   It is recommended to rename the downloaded executable to
   `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
   the `PATH` environment variable to make it available as a command in the system.
 
-  The Platform CLI tool simplifies the further setup and later management of
-  the Platform's Kubernetes services. You also need it on the system with
-  internet access for generating license keys.
+  On Linux and macOS, you need to make the file executable. Your file manager
+  may allow that in a visual way, or you can use a command-line to run
+  `chmod +x arangodb_operator_platform`.
+
+  On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine`
+  in a command-line to remove the flag that marks it as downloadead from the
+  internet to be able to run it.
 
 <!-- TODO
 - Pull operator image? `arangodb/kube-arangodb-enterprise:1.4.1`
@@ -592,7 +605,7 @@ VERSION_OPERATOR='1.4.1' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
-  kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
+  "kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.features.platform=true" \
   --set "operator.features.ml=true" \
@@ -606,7 +619,7 @@ VERSION_OPERATOR='1.4.1' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
-  kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
+  "kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.features.platform=true" \
   --set "operator.features.ml=true" \
@@ -735,7 +748,7 @@ ArangoDB instance can be reached, as well as a file path for the inventory file:
 ```sh
 arangodb_operator_platform license inventory \
   --arango.authentication <auth-method> \
-  ...
+  ... # See below
   --arango.endpoint <arangodb-endpoint> \
   inventory.json
 ```
@@ -766,11 +779,23 @@ The required authentication options per authentication method:
     --arango.token <jwt> \
   ```
 
-If the ArangoDB instance uses a self-signed certificate, you need to specify
+If the ArangoDB instance uses a **self-signed certificate**, you need to specify
 the following additional option to skip TLS certificate validation:
 
 ```sh
-  --arango.insecure
+  --arango.insecure \
+```
+
+Full command example:
+
+```sh
+arangodb_operator_platform license inventory \
+  --arango.authentication Basic \
+  --arango.basic.username root \
+  --arango.basic.password "" \
+  --arango.insecure \
+  --arango.endpoint https://127.0.0.1:8529 \
+  inventory.json
 ```
 
 Expected output:
@@ -822,6 +847,12 @@ set the `--insecure` / `-k` option to skip TLS certificate validation:
 curl --insecure ...
 ```
 
+Full command example:
+
+```sh
+curl -u "root:" --insecure https://127.0.0.1:8529/_admin/deployment/id
+```
+
 Expected output (`x` stands for varying letter or digit):
 
 ```json
@@ -849,6 +880,21 @@ arangodb_operator_platform license generate \
   --inventory ./inventory.json \
   --deployment.id <deployment-id>
 ```
+
+{{< tip >}}
+You can also set the license credentials as environment variables
+`LICENSE_CLIENT_ID` and `LICENSE_CLIENT_SECRET`. You can then leave out the
+`--license.client.id` and `--license.client.secret` command-line options.
+
+```sh
+export LICENSE_CLIENT_ID=<license-client-id>
+export LICENSE_CLIENT_SECRET=<license-client-secret>
+
+arangodb_operator_platform license generate \
+  --inventory ./inventory.json \
+  --deployment.id <deployment-id>
+```
+{{< /tip >}}
 
 ### Step 7: Create a secret for the license
 
