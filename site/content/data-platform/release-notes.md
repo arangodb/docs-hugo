@@ -10,6 +10,19 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 [get in touch](https://arango.ai/contact-us/) with the Arango team.
 {{< /tip >}}
 
+## March 2026 (v4.0)
+
+### Query Editor
+
+The [Query Editor](query-editor.md) has been extended with the following capabiltiies:
+
+- **Graph Visualization**: If a query returns edges or traversal paths, the
+  results are shown by an embedded version of the Graph Visualizer. You can
+  still switch to a JSON view mode of the results.
+
+- **Syntax highlighting**: AQL queries in the query editor are colorized for
+  better readability.
+
 ## October 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.6</small>

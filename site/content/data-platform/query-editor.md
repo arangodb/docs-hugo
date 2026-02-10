@@ -21,6 +21,11 @@ The Query Editor of the Arango Data Platform offers the following features:
   You can individually collapse and expand the entries, as well as clear the
   entire history.
 
+- **Graph Visualization**:
+  Results of graph queries are shown by an embedded version of the
+  Graph Visualizer to let you understand the topology. You can also switch to
+  a JSON view mode.
+
 - **Saved queries**:
   You can save frequently used queries to add them to a sidebar for all users
   in the current database.  
@@ -33,20 +38,15 @@ The Query Editor of the Arango Data Platform offers the following features:
   You can drag and drop tabs to re-order them and move them between existing
   panels, as well as split panels vertically and horizontally into more panels.
 
+- **Syntax highlighting**:
+  AQL queries in the query editor are colorized for better readability.
+
 - **Ask AI for AQL Queries (AQLizer)**:
   Describe what you want in natural language and generate AQL queries right
   from the Query Editor. This feature is only available in the
   Arango AI Data Platform.
 
 ![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
-
-{{< info >}}
-The Query Editor of the Data Platform is not feature-complete. It currently
-lacks features like syntax highlighting and a way to set query options.
-Use the query editor of ArangoDB instead if you need these features.
-You can find it under **Management** in the Data Platform web interface, and
-then **Queries** in the second-level navigation.
-{{< /info >}}
 
 ## Work with queries
 
@@ -57,9 +57,11 @@ tabs ({{< icon "add" >}}).
 You can close tabs with the button next to the tab name ({{< icon "close" >}}).
 When you close all tabs, the viewport opens the **Welcome** tab.
 
-A floating panel in the top right corner lets you enter values for
-**Bind variables** if there are any such placeholders in the query. You can
-minimize this panel to a button.
+There is a floating panel in the top right corner for **Bind variables & Options**.
+You can minimize this panel to a button. The panel lets you enter values for
+[bind variables](../arangodb/3.12/aql/fundamentals/bind-parameters.md) if there
+are any such placeholders in the query (`@value`, `@@collection`). You can also
+set query options here on the **Options** tab using a **Form** or **JSON** mode.
 
 The following buttons are available at the bottom of a query tab:
 
@@ -68,9 +70,10 @@ The following buttons are available at the bottom of a query tab:
   left-hand side under **Saved**, where you can also clone, rename, and delete them.
 - **AQLizer**: This button is only visible if you use the AI Data Platform.
   See [Generate queries (AQLizer)](#generate-queries-aqlizer).
-- **Run query**: Execute the AQL query normally.
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.
+- **Run query**: Execute the AQL query normally. You can also press
+  {{< kbd "Ctrl E" >}} respectively {{< kbd "Cmd E" >}}.
 
 The sidebar on the left-hand side allows you to manage queries:
 
