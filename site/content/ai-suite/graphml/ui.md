@@ -46,7 +46,7 @@ For existing projects, you can:
 - Use the **GraphML Workflow Guide** panel for quick reference.
 
 Job cards display the job ID, status, database, and submission time. Key statuses include:
-**QUEUED**, **RUNNING**, **READY FOR TRAINING** , **READY FOR MODEL SELECTION**, **COMPLETED**, or **FAILED** if errors occur.
+**QUEUED**, **RUNNING**, **READY FOR TRAINING**, **READY FOR MODEL SELECTION**, **COMPLETED**, or **FAILED** if errors occur.
 
 ## Featurization phase
 
