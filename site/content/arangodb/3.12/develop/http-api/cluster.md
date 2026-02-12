@@ -74,6 +74,7 @@ paths:
             - `ShortName`: A string representing the shortname of the server, e.g. `"Coordinator0001"`.
             - `Timestamp`: ISO 8601 timestamp specifying the last heartbeat received. (deprecated)
             - `Host`: An optional string, specifying the host machine if known.
+            - `SyncTime`: ISO 8601 timestamp of the last sync time reported by the node.
 
             **Coordinators** only
             - `AdvertisedEndpoint`: A string representing the advertised endpoint, if set. (e.g. external IP address or load balancer, optional)
