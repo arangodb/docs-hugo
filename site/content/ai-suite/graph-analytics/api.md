@@ -804,7 +804,7 @@ A common definitions of centrality is the **closeness centrality**
 length of the shortest path between the node and all other nodes.
 For nodes *x*, *y* and shortest distance `d(y, x)` it is defined as:
 
-![Vertex Closeness Formula](../images/closeness.png)
+![Vertex Closeness Formula](../../images/closeness.png)
 
 Effective Closeness approximates the closeness measure. The algorithm works by
 iteratively estimating the number of shortest paths passing through each node.
