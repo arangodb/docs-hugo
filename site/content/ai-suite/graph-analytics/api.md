@@ -1,36 +1,11 @@
 ---
-title: Graph Analytics
-menuTitle: Graph Analytics
-weight: 15
+title: HTTP API for Graph Analytics Engines
+menuTitle: HTTP API
+weight: 20
 description: >-
-  Graph analytics analyzes information networks to extract insights from data
-  relationships using algorithms like PageRank for fraud detection,
-  recommendations, and network analysis
+  Use the HTTP APIs to programmatically manage Graph Analytics Engines,
+  load data, run algorithms, and store results
 ---
-Graph analytics is a branch of data science that deals with analyzing information
-networks known as graphs, and extracting information from the data relationships.
-It ranges from basic measures that characterize graphs, over PageRank, to complex
-algorithms. Common use cases include fraud detection, recommender systems,
-and network flow analysis.
-
-ArangoDB offers a feature for running algorithms on your graph data,
-called Graph Analytics Engines (GAEs). It is available on request for the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [AI Data Platform](../data-platform/_index.md).
-
-Key features:
-
-- **Separation of storage and compute**: GAEs are a solution that lets you run
-  graph analytics independent of your ArangoDB Core, including on dedicated machines
-  optimized for compute tasks. This separation of OLAP and OLTP workloads avoids
-  affecting the performance of the transaction-oriented database systems.
-
-- **Fast data loading**: You can easily and efficiently import graph data from
-  ArangoDB and export results back to ArangoDB.
-
-- **In-memory processing**: All imported data is held and processed in the
-  main memory of the compute machines for very fast execution of graph algorithms
-  such as connected components, label propagation, and PageRank.
 
 ## Workflow
 
@@ -103,22 +78,22 @@ well as to authenticate requests to the [Engine API](#engine-api).
 {{< tab "Arango Managed Platform (AMP)" >}}
 The [Management API](#management-api) for deploying and deleting engines requires
 an AMP **API key**. See
-[Generating an API Key](../amp/api/get-started.md#generating-an-api-key)
+[Generating an API Key](../../amp/api/get-started.md#generating-an-api-key)
 on how to create one.
 
 You then need to generate an **access token** using the API key. See
-[Authenticating with oasisctl](../amp/api/get-started.md#authenticating-with-oasisctl)
+[Authenticating with oasisctl](../../amp/api/get-started.md#authenticating-with-oasisctl)
 on how to do so using `oasisctl login`.
 
 The [Engine API](#engine-api) uses one of two authentication methods, depending
-on the [__auto login to database UI__](../amp/deployments/_index.md#auto-login-to-database-ui)
+on the [__auto login to database UI__](../../amp/deployments/_index.md#auto-login-to-database-ui)
 setting in AMP:
 - **Enabled**: You can use an AMP access token created with an API key
   (see above), allowing you to use one token for both the Management API and
   the Engine API.
 - **Disabled**: You need use a JWT user token created from ArangoDB credentials.
   These session tokens need to be renewed every hour by default. See
-  [HTTP API Authentication](../arangodb/3.12/develop/http-api/authentication.md#jwt-user-tokens)
+  [HTTP API Authentication](../../arangodb/3.12/develop/http-api/authentication.md#jwt-user-tokens)
   for details.
 {{< /tab >}}
 
@@ -147,7 +122,7 @@ This section covers managing Graph Analytics Engines on the **AI Data Platform**
 If you're using **Arango Managed Platform (AMP)**, skip to the [Management API](#management-api) section instead.
 {{< /info >}}
 
-GAEs are deployed and deleted via the [AI orchestration service](reference/ai-orchestrator.md)
+GAEs are deployed and deleted via the [AI orchestration service](../reference/ai-orchestrator.md)
 in the AI Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
@@ -255,7 +230,7 @@ All requests require an AMP access token in the Authorization header:
 Authorization: bearer <ARANGO_GRAPH_TOKEN>
 ```
 
-You can create an AMP access token with [`oasisctl login`](../amp/oasisctl/login.md). Save it in a
+You can create an AMP access token with [`oasisctl login`](../../amp/oasisctl/login.md). Save it in a
 variable to ease scripting. Note that this should be the token string only and
 not include quote marks. The following examples assume Bash as the shell and
 that the `curl` and `jq` commands are available.
@@ -500,7 +475,7 @@ curl -sSk -H "Authorization: bearer $ADB_TOKEN" "https://$EXTERNAL_ENDPOINT:8529
 
 {{< tab "Arango Managed Platform (AMP)" >}}
 
-The authentication method depends on the [**Auto login to database UI**](../amp/deployments/_index.md#auto-login-to-database-ui) setting:
+The authentication method depends on the [**Auto login to database UI**](../../amp/deployments/_index.md#auto-login-to-database-ui) setting:
 
 - If **Auto login to database UI** is enabled for the AMP deployment, this can
   be the same access token as used for the management API.
@@ -541,7 +516,7 @@ Request and response payloads are JSON-encoded in the engine API.
 
 Import graph data from a database of the ArangoDB deployment. You can import
 named graphs as well as sets of node and edge collections (see
-[Managed and unmanaged graphs](../arangodb/3.12/graphs/_index.md#managed-and-unmanaged-graphs)).
+[Managed and unmanaged graphs](../../arangodb/3.12/graphs/_index.md#managed-and-unmanaged-graphs)).
 
 {{< tabs "platforms" >}}
 
@@ -772,7 +747,7 @@ It is probably impossible to discover an efficient algorithm which computes
 them in a distributed way. Fortunately there are scalable substitutions
 available, which should be equally usable for most use cases.
 
-![Illustration of an execution of different centrality measures (Freeman 1977)](../images/centrality_visual.png)
+![Illustration of an execution of different centrality measures (Freeman 1977)](../../images/centrality_visual.png)
 
 ##### Betweenness Centrality 
 
@@ -893,7 +868,7 @@ Another common measure is the [*betweenness* centrality](https://en.wikipedia.or
 It measures the number of times a node is part of shortest paths between any
 pairs of nodes. For a node *v* betweenness is defined as:
 
-![Vertex Betweenness Formula](../images/betweenness.png)
+![Vertex Betweenness Formula](../../images/betweenness.png)
 
 Where the &sigma; represents the number of shortest paths between *x* and *y*,
 and &sigma;(v) represents the number of paths also passing through a node *v*.
@@ -1355,3 +1330,4 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -X DELETE "https://abcdef123
 {{< /tabs >}}
 
 Delete a specific set of graph data, removing it from the memory of the engine node.
+
