@@ -18,7 +18,6 @@ for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 - [Repository](https://github.com/arangodb/spring-data)
 - [Demo without Spring Boot Starter](https://github.com/arangodb/spring-data/tree/main/tutorial/src/main/java/com/arangodb/spring/demo)
 - [Demo with Spring Boot Starter](https://github.com/arangodb/spring-boot-starter/tree/main/demo)
-- [Reference Documentation](./_index.md)
 - [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-spring-data/latest)
 - [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#changelog)
 
