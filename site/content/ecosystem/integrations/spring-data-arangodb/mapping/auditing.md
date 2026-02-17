@@ -4,17 +4,12 @@ menuTitle: Auditing
 weight: 40
 description: ''
 aliases:
-  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
-  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
-  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/auditing
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/auditing
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/auditing
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/mapping/auditing
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
-Since version 3.0.0 Spring Data ArangoDB provides basic auditing functionality
+Spring Data ArangoDB provides basic auditing functionality
 where you can track who made changes on your data and when.
 
 To enable auditing you have to add the annotation `@EnableArangoAuditing` to
@@ -102,8 +97,8 @@ public class MyEntity {
 }
 ```
 
-To customize the behavior of deciding whether an entity instance is new or
-has already been persisted previously, the entity can implement the
+To customize the behavior of deciding whether an entity instance is new or has
+already been persisted previously, the entity can implement the
 `org.springframework.data.domain.Persistable<ID>` interface which is defined as follows:
 
 ```java

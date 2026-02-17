@@ -18,18 +18,24 @@ for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 - [Repository](https://github.com/arangodb/spring-data)
 - [Demo without Spring Boot Starter](https://github.com/arangodb/spring-data/tree/main/tutorial/src/main/java/com/arangodb/spring/demo)
 - [Demo with Spring Boot Starter](https://github.com/arangodb/spring-boot-starter/tree/main/demo)
-- [Reference (version 4)](reference-version-4/_index.md)
-- [Reference (version 3)](reference-version-3/_index.md)
+- [Reference Documentation](./_index.md)
 - [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-spring-data/latest)
 - [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#changelog)
 - [Migration](migration/_index.md)
 
-## Supported versions
+## Compatibility
 
-Spring Data ArangoDB is compatible with:
-- all the still supported Spring Boot 3.x [versions](https://spring.io/projects/spring-boot#support)
-  and related Spring Framework versions
-- all the still supported ArangoDB [versions](https://arango.ai/arangodb-product-support-end-of-life-announcements/)
+Spring Data ArangoDB is compatible with all supported versions of ArangoDB.
+For more information, see
+the [End-of-life announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
+
+It has multiple versions released, and each one is compatible with
+the corresponding version of Spring Framework:
+
+| Spring Data ArangoDB | Spring Framework | Spring Boot |
+|----------------------|------------------|-------------|
+| 5.x                  | 7.0              | 4.0         |
+| 4.x                  | 6.2              | 3.5         |
 
 ## Get started
 

@@ -4,16 +4,11 @@ menuTitle: Query methods
 weight: 10
 description: ''
 aliases:
-  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
-  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
-  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
-  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/query-methods
+  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
+  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
+  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
+  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
 Queries using [ArangoDB Query Language (AQL)](../../../../../../arangodb/3.12/aql/_index.md)
 can be supplied with the `@Query` annotation on methods.
 

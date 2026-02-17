@@ -23,12 +23,12 @@ This integration has multiple versions released, and each one is compatible with
 the corresponding versions of Spring Boot, Spring Framework, Spring Data ArangoDB,
 and ArangoDB Java Driver:
 
-| Spring Boot Starter ArangoDB | Spring Boot | Spring Framework | Spring Data ArangoDB | ArangoDB Java Driver |
-|------------------------------|-------------|------------------|----------------------|----------------------|
-| 3.3-x                        | 3.3         | 6.1              | 4.2                  | 7.7                  |
-| 3.2-x                        | 3.2         | 6.1              | 4.2                  | 7.7                  |
+| Spring Boot Starter ArangoDB | Spring Boot | Spring Framework | Spring Data ArangoDB |
+|------------------------------|-------------|------------------|----------------------|
+| 4.0-x                        | 4.0         | 7.0              | 5.0                  |
+| 3.5-x                        | 3.5         | 6.2              | 4.x                  |
 
-Note that the adopted versioning scheme does not honor the semantic versioning
+Note that the adopted versioning scheme does **not** honor the semantic versioning
 rules, i.e. minor or patch releases may introduce new features or breaking
 changes. Please refer to [releases](https://github.com/arangodb/spring-boot-starter/releases)
 for details.
@@ -613,7 +613,7 @@ to be built. You can define conditions on entity properties and concatenate them
 with `And` and `Or`.
 
 You can find the complete list of part types for derived queries in the
-[reference documentation](spring-data-arangodb/reference-version-4/repositories/queries/derived-queries.md).
+[reference documentation](spring-data-arangodb/repositories/queries/derived-queries.md).
 
 ### Simple findBy
 
@@ -622,7 +622,7 @@ Start with an easy example and find characters based on their `surname`.
 The only thing you have to do is to add a method `findBySurname(String)` to your
 `CharacterRepository` with a return type which allows the method to return
 multiple instances of `Character`. For more information on which return types are
-possible, see the [reference documentation](spring-data-arangodb/reference-version-4/repositories/queries/_index.md#return-types).
+possible, see the [reference documentation](spring-data-arangodb/repositories/queries/_index.md#return-types).
 
 ```java
 public interface CharacterRepository extends ArangoRepository<Character, String> {
@@ -1297,7 +1297,7 @@ affected fields.
 Spring Data ArangoDB offers two ways of defining an index. With the
 `@<IndexType>Indexed` annotations, indexes for single fields can be defined.
 If the index should include multiple fields, the `@<IndexType>Index` annotations
-can be used on the type instead. See the [reference documentation](spring-data-arangodb/reference-version-4/mapping/indexes.md)
+can be used on the type instead. See the [reference documentation](spring-data-arangodb/mapping/indexes.md)
 for more information.
 
 Create a new `Location` class:
