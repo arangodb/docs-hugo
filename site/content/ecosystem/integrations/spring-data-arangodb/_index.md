@@ -21,9 +21,8 @@ for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 - [Reference Documentation](./_index.md)
 - [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-spring-data/latest)
 - [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#changelog)
-- [Migration](migration/_index.md)
 
-## Compatibility
+## Supported versions
 
 Spring Data ArangoDB is compatible with all supported versions of ArangoDB.
 For more information, see
