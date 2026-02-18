@@ -2596,6 +2596,47 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### New server activities API
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature, allowing you to
+see which high-level processes are currently running on the server (HTTP handlers,
+AQL queries, and so on). Example:
+
+```json
+{
+  "activities": [
+    {
+      "id": "0x7ec9c067a040",
+      "type": "RestHandler",
+      "parent": {
+        "id": "0x0"
+      },
+      "metadata": {
+        "method": "POST",
+        "url": "/_api/cursor",
+        "handler": "RestCursorHandler"
+      }
+    },
+    {
+      "id": "0x7ec9c022f3c0",
+      "type": "AQLQuery",
+      "parent": {
+        "id": "0x7ec9c067a040"
+      },
+      "metadata": {
+        "query": "RETURN SLEEP(@seconds)"
+      }
+    },
+    ...
+  ]
+}
+```
+
+See the [`GET /_admin/activities`](../../develop/http-api/monitoring/activities.md)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
@@ -2752,6 +2793,26 @@ Startup options to enable transparent compression of the data that is sent
 between a client tool and the ArangoDB server have been added. See the
 [Server options](#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
 section above that includes a description of the added client tool options.
+
+### arangosh
+
+#### New activities module
+
+<small>Introduced in: v3.12.8</small>
+
+The new [`@arangodb/activities` module](../../develop/javascript-api/actions.md)
+lets you pretty-print the high-level server activities in the ArangoDB Shell:
+
+```js
+const activities = require("@arangodb/activities");
+activities.get_snapshot();
+```
+
+```
+ ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
+    └── AQLQuery: {"query":"RETURN SLEEP(@seconds)"}
+ ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
+```
 
 ## Internal changes
 
