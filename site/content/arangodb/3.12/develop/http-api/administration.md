@@ -259,7 +259,7 @@ paths:
       responses:
         '200':
           description: |
-            is returned in all cases.
+            Successfully retrieved storage engine name.
           content:
             application/json:
               schema:
@@ -269,7 +269,38 @@ paths:
                 properties:
                   name:
                     description: |
-                      will be `rocksdb`
+                      Always `rocksdb`.
+                    type: string
+        '401':
+          description: |
+            Missing read access to the given database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
       tags:
         - Administration
@@ -288,6 +319,72 @@ var response = logCurlRequest('GET', '/_api/engine');
 assert(response.code === 200);
 
 logJsonResponse(response);
+```
+
+### Get the storage engine statistics
+
+```openapi
+paths:
+  /_db/{database-name}/_api/engine/stats:
+    get:
+      operationId: getEngineStats
+      description: |
+        Returns detailed statistics related to the RocksDB storage engine activity,
+        including figures about data size, cache usage, individual column families, etc.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Successfully retrieved the storage engine statistics.
+          content:
+            application/json:
+              schema:
+                description: |
+                  A plethora of information about RocksDB.
+                type: object
+        '401':
+          description: |
+            Missing read access to the given database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
 ```
 
 ### Get the system time
