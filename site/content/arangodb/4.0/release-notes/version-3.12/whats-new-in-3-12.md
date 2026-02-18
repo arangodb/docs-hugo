@@ -2602,7 +2602,7 @@ The size of the currently mounted disk is already exposed by the
 
 A new activities API has been added as an observability feature, allowing you to
 see which high-level processes are currently running on the server (HTTP handlers,
-AQL queries, and so on). Example:
+AQL queries, and so on).
 
 ```json
 {
@@ -2634,8 +2634,21 @@ AQL queries, and so on). Example:
 }
 ```
 
-See the [`GET /_admin/activities`](../../develop/http-api/monitoring/activities.md)
+See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
 for details.
+
+The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
+lets you limit the access from admin users to superusers.
+
+The following metrics related to activities have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_activities_total` | Total number of created activities since database process start |
+| `arangodb_activities_existing` | Number of currently existing activities |
+| `arangodb_activities_ready_for_deletion` | Number of currently existing activities that wait for their garbage collection |
+| `arangodb_activities_thread_registries_total` | Total number of threads that started actities since database process start |
+| `arangodb_activities_existing_thread_registries` | Number of currently existing activity thread registries |
 
 ## Client tools
 

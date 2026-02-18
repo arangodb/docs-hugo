@@ -7,9 +7,9 @@ description: >-
   processes are currently ongoing in the database system
 ---
 The activities API lets you observe which high-level processes are currently
-running on the server, such as HTTP request handlers and AQL queries. Each
-activity has a type, an optional parent (for nesting), and type-specific
-metadata.
+running on the server, such as HTTP request handlers, AQL queries, and index
+creation. Each activity has a type, an optional parent to indicate a dependency,
+and type-specific metadata. Not all server activity is necessarily reported.
 
 The permissions required to use the `/_admin/activities` endpoint depend on
 the [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
