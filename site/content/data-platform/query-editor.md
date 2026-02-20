@@ -40,6 +40,11 @@ The Query Editor of the Arango Data Platform offers the following features:
   You can drag and drop tabs to re-order them and move them between existing
   panels, as well as split panels vertically and horizontally into more panels.
 
+- **Bind variables and query options**:
+  Bind variables in queries are detected automatically and you can parameterize
+  them using a form or JSON mode. You can also specify options for the query
+  in either of these modes.
+
 - **Syntax highlighting**:
   AQL queries in the query editor are colorized for better readability.
 
