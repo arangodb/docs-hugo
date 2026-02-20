@@ -16,9 +16,12 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 
 The [Query Editor](query-editor.md) has been extended with the following capabiltiies:
 
-- **Graph Visualization**: If a query returns edges or traversal paths, the
-  results are shown by an embedded version of the Graph Visualizer. You can
-  still switch to a JSON view mode of the results.
+- **Graph visualization**: If a query returns edges or traversal paths, the
+  results are shown by an embedded graph viewer. You can still switch to a JSON
+  view mode of the results.
+
+- **Download results**:
+  You can download the results of queries in JSON and CSV format.
 
 - **Syntax highlighting**: AQL queries in the query editor are colorized for
   better readability.

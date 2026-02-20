@@ -21,10 +21,12 @@ The Query Editor of the Arango Data Platform offers the following features:
   You can individually collapse and expand the entries, as well as clear the
   entire history.
 
-- **Graph Visualization**:
-  Results of graph queries are shown by an embedded version of the
-  Graph Visualizer to let you understand the topology. You can also switch to
-  a JSON view mode.
+- **Graph visualization**:
+  Results of graph queries are shown by an embedded graph viewer to let you
+  understand the topology. You can also switch to a JSON view mode.
+
+- **Download results**:
+  You can download the results of queries in JSON and CSV format.
 
 - **Saved queries**:
   You can save frequently used queries to add them to a sidebar for all users
@@ -75,6 +77,44 @@ The following buttons are available at the bottom of a query tab:
 - **Run query**: Execute the AQL query normally. You can also press
   {{< kbd "Ctrl E" >}} respectively {{< kbd "Cmd E" >}}.
 
+## Work with query results
+
+When you run, explain, or profile a query, the results show up in a separate
+tab than the query's tab. The query tab is typically on the left-hand side and
+the results tab on the right-hand side in the viewport. This lets you view both
+side-by-side, but you can [rearrange the tabs](#adjust-the-viewport) as desired.
+
+Each pair of a query tab and a results tab is linked so that multiple executions
+from a query tab have all the results listed in the corresponding results tab.
+
+You can collapse ({{< icon "caret-down" >}}) and remove ({{< icon "delete" >}})
+individual results, see the time of the execution, as well as clear the entire
+result history.
+
+For queries you ran, there are up to four different view modes for the results
+that you can switch between:
+
+- **Graph**: Show the results with an embedded graph viewer. Only available if
+  the query returned edges or traversal paths.
+- **Geo**: Display the results on a world map. Only available if the query
+  returned GeoJSON Features or geometry (like `{"type":"Point","coordinates":[...]}`).
+- **Table**: View the results in a tabular format where you can sort columns.
+  Only available if most results have at least one common document attribute.
+- **JSON**: View the results as text in the JavaScript Object Notation format.
+  This mode is always available.
+
+You have the following actions available for queries you ran: 
+
+- **Open in Explorer**: Go to the Graph Visualizer and open the named graph
+  used by the query. Only enabled if the query mentions a named graph
+  (like `GRAPH "my-graph"`).
+- **Download CSV**: Get a file with the results in the comma-separated values format.
+- **Download JSON**: Get a file with the results in JSON format.
+- **Copy query to editor**: Restore the query text and the bind variables of this
+  query run in the corresponding query tab.
+
+## Manage queries
+
 The sidebar on the left-hand side allows you to manage queries:
 
 - **Search queries**: Filter the list of **Saved** queries by name.
@@ -82,7 +122,7 @@ The sidebar on the left-hand side allows you to manage queries:
   small button ({{< icon "ellipsis" >}}) to duplicate, rename, or delete
   saved queries.
 - **Running**: Open a tab with an overview over the currently executing queries.
-  You can also kill a query from this view.
+  You can also kill queries in this view.
 - **Slow Queries**: Open a tab with a list of past queries that ran longer than
   a server-configured threshold.
 
