@@ -716,8 +716,11 @@ logJsonResponse(response);
 
 ## Startup options
 
-The permissions required to use the `/_admin/options*` endpoints depends on the
-setting of the [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+The permissions required to use the `/_admin/options` and `/_admin/options-description`
+endpoints depend on the setting of the
+[`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+The `/_admin/options-public` endpoint is always available to any authenticated user
+with read access to a database and is not affected by that setting.
 
 ### Get the startup option configuration
 
@@ -838,6 +841,139 @@ paths:
             application/json:
               schema:
                 type: object
+      tags:
+        - Administration
+```
+
+### Get the public startup option configuration
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/options-public:
+    get:
+      operationId: getPublicStartupOptions
+      description: |
+        Return a small, curated subset of the configured server startup options
+        that are safe to expose to any authenticated user with read access to the
+        requested database.
+
+        Administrative tools can use this endpoint to adapt their behavior to the server
+        configuration. For example, they can show the valid range for `replicationFactor`
+        when creating a collection, or respect `--database.extended-names` when
+        validating names on the client-side.
+
+        This endpoint is available regardless of the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        setting, so that the Arango Data Platform web interface for instance can always
+        access the public options.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Any database the user has at least read
+            access to can be used.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            An object with public startup option names as keys and their
+            effective values.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  database.extended-names:
+                    description: |
+                      Whether the traditional or extended naming constraints
+                      apply for collections, Views, etc.
+                    type: boolean
+                  cluster.min-replication-factor:
+                    description: |
+                      Minimum replication factor for collections.
+                    type: integer
+                  cluster.max-replication-factor:
+                    description: |
+                      Maximum replication factor for collections.
+                    type: integer
+                  cluster.max-number-of-shards:
+                    description: |
+                      Maximum number of shards per collection.
+                    type: integer
+                  cluster.api-jwt-policy:
+                    description: |
+                      The permissions required for accessing `/_admin/cluster/*` endpoints.
+                    type: string
+                  server.session-timeout:
+                    description: |
+                      The timeout for JWT session tokens in seconds.
+                    type: number
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
