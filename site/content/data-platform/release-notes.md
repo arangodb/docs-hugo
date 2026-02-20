@@ -12,6 +12,14 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 
 ## March 2026 (v4.0)
 
+### Dashboard
+
+A new home screen has been added, providing the following information and actions:
+
+- A cluster respectively single server health overview
+- Shard distribution information and rebalancing options
+- The cluster maintenance status
+
 ### Query Editor
 
 The [Query Editor](query-editor.md) has been extended with the following capabiltiies:
