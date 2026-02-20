@@ -138,7 +138,7 @@ centroids and the quality of vector search thus degrades.
 6. Optionally give the index a user-defined **Name**.
 7. Optionally define **Extra stored values** you want to filter on.
 8. Set the parameters for the vector index. See [Vector index properties](#vector-index-properties)
-   under `param`. Optionally adjust the index options such as **Sparse**.
+   under `params`. Optionally adjust the index options such as **Sparse**.
 9. Click **Create**.
 {{< /tab >}}
 
@@ -203,6 +203,13 @@ in the _arangojs_ documentation for details.
 The Go driver supports vector indexes from v2.2.0 onward.
 
 ```go
+import (
+    "github.com/arangodb/go-driver/v2/arangodb"
+    "github.com/arangodb/go-driver/v2/utils"
+)
+
+// ...
+
 fields := []string{ "embedding" }
 
 params := arangodb.VectorParams{
