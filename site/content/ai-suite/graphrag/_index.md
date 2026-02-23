@@ -79,5 +79,5 @@ conceptual understanding.
 - **[GraphRAG Tutorial using integrated Notebook servers](tutorial-notebook.md)**: Follow hands-on examples and implementation guidance via Jupyter Notebooks.
 
 For deeper implementation details, explore the individual services:
-- **[Importer Service](../reference/importer/)**: Transform documents into knowledge graphs.
-- **[Retriever Service](../reference/retriever.md)**: Query and extract insights from your knowledge graphs.
+- **[Importer Service](../reference/importer.md)**: Transform documents into knowledge graphs.
+- **[Retriever Service](../reference/retriever/_index.md)**: Query and extract insights from your knowledge graphs.

@@ -17,7 +17,7 @@ See also the [Arango Data Platform Release Notes](../data-platform/release-notes
 
 ### GraphRAG enhancements
 
-- **Instant and Deep Search**: New [Retriever](reference/retriever.md#search-methods) search methods
+- **Instant and Deep Search**: New [Retriever](reference/retriever/search-methods.md) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the

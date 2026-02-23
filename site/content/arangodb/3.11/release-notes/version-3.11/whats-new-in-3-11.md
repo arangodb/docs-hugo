@@ -1453,6 +1453,15 @@ with large shards.
   is disabled by default because dumps created with this option enabled cannot
   be restored into previous versions of ArangoDB.
 
+- You can tune the dumping performance with the following new experimental
+  _arangodump_ startup options:
+
+  - `--dbserver-prefetch-batches`: Number of batches to prefetch on each DB-Server.
+  - `--dbserver-worker-threads`: Number of worker threads on each DB-Server.
+  - `--local-network-threads`: Number of local writer threads.
+  - `--local-writer-threads`: Number of local network threads, i.e. how many
+    requests are sent in parallel.
+
 ## Internal changes
 
 ### Upgraded bundled library versions

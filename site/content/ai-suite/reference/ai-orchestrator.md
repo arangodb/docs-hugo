@@ -59,8 +59,8 @@ The following example shows a complete request body with all available options:
   they can be used.
 
 The parameters required for the deployment of each service are defined in the
-corresponding service documentation. See [Importer](importer/)
-and [Retriever](retriever.md).
+corresponding service documentation. See [Importer](importer.md)
+and [Retriever](retriever/_index.md).
 
 ## Projects
 
