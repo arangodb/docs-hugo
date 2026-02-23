@@ -339,7 +339,8 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database.
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
           schema:
             type: string
       responses:

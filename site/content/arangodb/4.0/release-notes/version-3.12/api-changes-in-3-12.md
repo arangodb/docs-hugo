@@ -243,8 +243,8 @@ for this topic are ignored.
 
 <small>Introduced in: v3.12.8</small>
 
-The `GET /_api/engine/stats` endpoint previously returned hard-to-read strings
-under `columnFamilies.*.dbstats`:
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
 
 ```json
 {
