@@ -18,9 +18,9 @@ deployment. If the value of a secret changes, you only need to update it in
 a single place.
 
 {{< tip >}}
-For example, the importer and retriever services of the AI Suite for GraphRAG
-require a Large Language Model (LLM) and utilize the secret manager for storing
-an LLM API key like from OpenAI.
+Services that utilize the secret manager are, for example, the GraphRAG importer
+and retriever services of the AI Suite. They require a Large Language Model
+(LLM) and need to store an API key for the LLM like OpenAI.
 {{< /tip >}}
 
 ## Encryption and access
@@ -34,7 +34,7 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 ### Store a secret
 
-1. In the Arango Data Platform web interface, go to the
+1. In the main navigation of the Arango Data Platform web interface, go to the
    **Control Panel** ({{< icon "settings" >}}).
 2. Click **Secrets Manager** in the navigation.
 3. Click **Add Secret**.
@@ -46,7 +46,7 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 ### Edit a secret
 
-1. Go to the **Control Panel** ({{< icon "settings" >}}).
+1. In the main navigation, go to the **Control Panel** ({{< icon "settings" >}}).
 2. Click **Secrets Manager** in the navigation.
 3. In the **Actions** column, click the edit icon ({{< icon "edit-square" >}}).
 4. Adjust the information.
