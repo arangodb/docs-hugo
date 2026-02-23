@@ -347,12 +347,12 @@ identifier that you can retrieve via a new
 [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
 
-#### Activities API
+#### Activities API (experimental)
 
 <small>Introduced in: v3.12.8</small>
 
 A new activities API has been added as an observability feature.
-See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
+See the [`GET /_arango/_experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
 for details.
 
 ### Endpoints augmented

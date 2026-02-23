@@ -2596,7 +2596,7 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
-### New server activities API
+### New server activities API (experimental)
 
 <small>Introduced in: v3.12.8</small>
 
@@ -2640,6 +2640,10 @@ for details.
 The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
 lets you limit the access from admin users to superusers.
 
+The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
+option controls how often garbage-collection is performed by threads involved
+in the activity tracking.
+
 The following metrics related to activities have been added:
 
 | Label | Description |
@@ -2647,7 +2651,7 @@ The following metrics related to activities have been added:
 | `arangodb_activities_total` | Total number of created activities since database process start |
 | `arangodb_activities_existing` | Number of currently existing activities |
 | `arangodb_activities_ready_for_deletion` | Number of currently existing activities that wait for their garbage collection |
-| `arangodb_activities_thread_registries_total` | Total number of threads that started actities since database process start |
+| `arangodb_activities_thread_registries_total` | Total number of threads that started activities since database process start |
 | `arangodb_activities_existing_thread_registries` | Number of currently existing activity thread registries |
 
 ## Client tools

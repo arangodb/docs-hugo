@@ -13,7 +13,7 @@ and type-specific metadata. Not all server activity is necessarily reported.
 
 The permissions required to use the `/_admin/activities` endpoint depend on
 the [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
-By default, administrate access to the `_system` database is sufficient. If the
+By default, *administrate* access to the `_system` database is sufficient. If the
 startup option is enabled, the endpoint requires a superuser authenticated with
 a token created from the JWT secret.
 
@@ -21,10 +21,14 @@ a token created from the JWT secret.
 
 ```openapi
 paths:
-  /_db/{database-name}/_admin/activities:
+  /_arango/_experimental/_db/{database-name}/_admin/activities:
     get:
       operationId: getActivities
       description: |
+        {{</* warning */>}}
+        The activities API is incomplete and thus an experimental feature.
+        {{</* /warning */>}}
+
         Returns the list of activities currently in progress on the server.
         Each activity has an identifier, a type (e.g. `RestHandler`, `AQLQuery`),
         an optional parent reference, and a `metadata` object. The structure of
@@ -38,7 +42,7 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            to this database and *administrate* access to the `_system` database.
           schema:
             type: string
       responses:
@@ -117,7 +121,7 @@ paths:
                     description: |
                       The HTTP response status code.
                     type: integer
-                    example: 400
+                    example: 401
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
