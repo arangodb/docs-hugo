@@ -35,8 +35,8 @@ components into a unified solution:
   smart search, and visual layouts.
 
 - **Arango Platform Suite**: Enterprise-grade features including high availability
-  and monitoring, comprehensive APIs and connectors, centralized orchestration and
-  resource management.
+  and monitoring, comprehensive APIs and connectors, centralized orchestration,
+  resource, and secrets management.
 
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.
