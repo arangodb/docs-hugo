@@ -1,0 +1,21 @@
+{{- $src := .Get "src" }}
+{{- $alt := .Get "alt" }}
+{{- $caption := .Get "caption" }}
+{{- $maxWidth := .Get "maxWidth" | default "1200px" }}
+<figure class="diagram-figure" style="margin: 2rem 0; text-align: center;">
+  <a href="#" class="diagram-link" data-diagram-src="{{ $src }}" onclick="return false;">
+    <img src="{{ $src }}" 
+         alt="{{ $alt }}"
+         style="width: 100%; max-width: {{ $maxWidth }}; height: auto; border: 1px solid #e0e0e0; border-radius: 4px; cursor: zoom-in;">
+  </a>
+  {{- if $caption }}
+  <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;">
+    <em>{{ $caption | markdownify }}</em>
+  </figcaption>
+  {{- else }}
+  <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;">
+    <em>Click diagram to enlarge</em>
+  </figcaption>
+  {{- end }}
+</figure>
+

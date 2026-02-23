@@ -267,6 +267,28 @@ flows. You can also download an image of what is displayed.
   You can also move nodes around manually by clicking and dragging them on the
   canvas.
 
+### Export graph
+
+You can export the nodes and edges currently visible on the canvas in CSV format
+or save a screenshot using the export menu in the bottom right corner of the viewport
+({{< icon "download" >}}):
+
+- **Download screenshot**: Save a PNG image of what is currently displayed on
+  the canvas.
+
+- **Export whole graph as CSV**: Export all nodes and edges currently visible
+  on the canvas as a single CSV file. The file contains all document attributes,
+  with nodes and edges combined in one table. Rows representing nodes have empty
+  values for edge-specific columns (like `_from`, `_to`) and rows representing
+  edges have empty values for node-specific columns.
+
+- **Export nodes as CSV**: Export only the nodes currently visible on the
+  canvas as a CSV file. The file contains all document attributes of the nodes.
+
+- **Export edges as CSV**: Export only the edges currently visible on the
+  canvas as a CSV file. The file contains all document attributes of the edges,
+  including `_from` and `_to` which reference the connected nodes by their `_id`.
+
 ## Edit graph data
 
 While the Graph Visualizer is primarily designed for exploring graph data, you

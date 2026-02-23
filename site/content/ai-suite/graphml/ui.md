@@ -9,7 +9,8 @@ description: >-
 ## The GraphML workflow in the web interface
 
 The entire process is organized into sequential steps within a **Project**,
-giving you a clear path from data to prediction:
+giving you a clear path from data to prediction. Jobs are displayed on a
+board with four columns, one for each phase:
 
 1. **Featurization**: Select your data and convert it into numerical representations.
 2. **Training**: Train a GraphSAGE model on the features and graph structure.
@@ -17,23 +18,43 @@ giving you a clear path from data to prediction:
 4. **Prediction**: Use the selected model to generate predictions on your data.
    You can also automate the prediction process to run at regular intervals.
 
+![GraphML Workflow](../../images/graphml-ui-workflow-steps.png)
+
 ## Create a GraphML project
 
 To create a new GraphML project using the Arango Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **AI Suite** to open the GraphML project management interface, then click **Run GraphML**.
-   ![Create GraphML Project](../../images/graphml-ui-create-project.png)  
+2. In the left-hand sidebar, click **AI Suite** and then click **Run GraphML**.
 3. In the **GraphML projects** view, click **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
 6. After creation, the new project appears in the list under **GraphML projects**.
-   Click the project name to begin with a Featurization job.
+   Click the project name to open the GraphML jobs board.
+
+## The GraphML jobs board
+
+After opening a project, you see a board displaying all jobs organized
+into four columns: **Featurization**, **Training**, **Generated Models**, and **Prediction**.
+
+For new projects with no existing jobs, the **New Featurization** modal automatically
+opens, prompting you to configure and start your first featurization job.
+
+For existing projects, you can:
+- Click any job card to view details and proceed to the next phase;
+- Click **Start a new job** to create a new featurization job;
+- Use the **GraphML Workflow Guide** panel for quick reference.
+
+Job cards display the job ID, status, database, and submission time. Key statuses include:
+**QUEUED**, **RUNNING**, **READY FOR TRAINING**, **READY FOR MODEL SELECTION**, **COMPLETED**, or **FAILED** if errors occur.
 
 ## Featurization phase
 
-After clicking on a project name, you are taken to a screen where you can
-configure and start a new Featurization job. Follow these steps:
+To start a new featurization job, click **Start a new job** from the jobs board,
+or for empty projects, the **New Featurization** modal opens automatically.
+
+In the featurization modal, configure your job as follows:
+
 1. **Select a Graph**: In the **Features** section, choose your target graph from the **Select a graph** dropdown menu.
 2. **Select Vertex Collection(s)**: Pick the node collection(s) that you want to include for feature extraction.
 3. **Select Attributes**: Choose the attributes from your node collection to
@@ -45,11 +66,13 @@ edge collections and the specified attributes). This is what you see represented
 in the metagraph object in the JSON specification on the right.
 {{< /info >}}
 
+![GraphML Featurization](../../images/graphml-ui-featurization.png)
+
 ### Configuration options
 
 The featurization process has several configurable options, grouped into
 **Configuration** and **Advanced** settings. These are also shown in a JSON
-format on the right side of the screen for transparency.
+format on the right side of the modal for transparency.
 
 In the **Configuration** tab, you can control the overall featurization job and
 how features are stored.
@@ -84,22 +107,31 @@ the strategies below to control how each feature type (**Text**, **Numeric**,
 |                   | **Coerce and Raise**   | Attempts to convert (coerce) the value to the correct type (e.g. string "123" to number `123`). If the conversion is successful, it uses the new value. If it fails, the job stops. | A balanced approach, often the best default strategy.                     |
 |                   | **Coerce and Replace** | The most forgiving option. The system first tries to convert the value. If it fails, it replaces the value with the specified default and continues the job.                        | For very dirty datasets where completing the job is the highest priority. |
 
-Once you’ve set your strategies, click **Begin featurization** to start the node
-embedding-compatible featurization job. When the job status updates to
-**Ready for training**, proceed to the **Training** step.
+Once you've set your strategies, click **Begin featurization** to submit the job.
+The button shows a loading state while the job is being submitted. After submission,
+the modal closes and the new job appears in the Featurization column on the jobs board
+with a **QUEUED** status.
 
-![Navigate to Featurization](../../images/graphml-ui-featurization.png) 
+As the job progresses, its status updates automatically. You can click the job card
+at any time to view details or cancel a queued or running job using the **Cancel job** button.
+When the job status updates to **READY FOR TRAINING**, you can proceed to the Training phase. 
 
 ## Training phase
 
-The training is the second step in the ML workflow after featurization.
-In the training phase, you configure and launch a machine learning training
-job on your graph data.
+The training phase is the second step in the ML workflow after featurization.
+Once your featurization job completes with a status of **READY FOR TRAINING**,
+click the job card in the Featurization column to open the job details modal.
 
-From the **Select a type of training job** dropdown menu, choose the type of
-model you want to train (**Node Classification** or **Node Embeddings**).
+The job details modal displays:
+- **Meta Graph**: Shows the vertex and edge collections and attributes you selected
+- **Featurization Job Status**: Displays "READY FOR TRAINING"
+- **Training configuration form**: Appears on the right side of the modal
 
-#### Node classification
+In the training configuration form, select the type of model you want to train
+from the **Select a type of training job** dropdown menu: **Node Classification**
+or **Node Embeddings**.
+
+### Node classification
 
 Node Classification is used to categorize the nodes in your graph based on their
 features and structural connections within the graph.
@@ -117,11 +149,11 @@ features and structural connections within the graph.
 - **Enable GPU**: Enables GPU-accelerated training using GPU-capable profiles
   configured for the project (e.g., `gpu-g4dn-xlarge`).
 
-After setting these values, click the **Begin training** button to start the job.
+After setting these values, click the **Begin training** button to submit the job.
+The button displays a loading state during submission, then the modal closes and
+the training job appears in the Training column.
 
-![Node Classification](../../images/graphml-ui-node-classification.png)
-
-####  Node embeddings
+### Node embeddings
 
 Node Embeddings are used to generate vector embeddings (dense numerical representations)
 of graph nodes that capture structural and feature-based information.
@@ -133,43 +165,80 @@ of graph nodes that capture structural and feature-based information.
 **Configuration parameters:**
 - **Type of Training Job:** Node embeddings
 - **Target Vertex Collection:** Select the collection to generate embeddings for (e.g. `movie` or `person`)
+- **Embedding size:** The dimensionality of the generated embedding vectors (e.g. `256`)
+- **Batch Size:** The number of documents processed in a single training iteration (e.g. `256`)
+- **Data Load Batch Size:** The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase (e.g. `50000`)
+- **Data Load Parallelism:** The number of parallel processes used when loading data from ArangoDB into memory for training (e.g. `10`)
+- **Enable GPU:** Enables GPU-accelerated training using GPU-capable profiles configured for the project
 - No label is required for training in this mode
 
 The target collection is where the model's predictions are stored when running a prediction job.
 
-Once the configuration is complete, click **Begin training** to start the embedding job.
-
-![Node Embeddings](../../images/graphml-ui-node-embedding.png)
+Once the configuration is complete, click **Begin training** to submit the job.
+After submission, the training job appears in the Training column on the jobs board.
+When complete, trained models appear in the Generated Models column.
 
 ## Model selection phase
 
-Once the training is finished, the job status updates to **READY FOR MODEL SELECTION**.
-This means the model has been trained using the provided node and edge data
-and is now ready for evaluation.
+Once training completes with a status of **READY FOR MODEL SELECTION**, 
+click the training job card in the Training column to open the job details modal.
 
-A list of trained models is displayed, along with performance metrics
-(**Accuracy**, **Precision**, **Recall**, **F1 score**, **Loss**). Review the results of different
-model runs and configurations.
+The modal displays a table of all trained models with their performance metrics:
+- **Model ID**: Unique identifier for each model
+- **Accuracy**: Overall correctness of predictions (for classification)
+- **Precision**: Ratio of correct positive predictions
+- **Recall**: Ratio of actual positives correctly identified
+- **F1 score**: Harmonic mean of precision and recall
+- **Loss**: Training loss value (for embeddings)
+- **Matrix**: Button to view the confusion matrix (for classification models)
 
 ![GraphML Model Selection](../../images/graphml-ui-model.png)
 
-Select the best performing model suitable for your prediction task. You can also
-open the **Confusion Matrix** to compare predicted values versus actual values.
+### Selecting a model
+
+To select a model for prediction:
+
+1. Review the performance metrics in the table to identify the best performing model
+2. Click the radio button next to your chosen model to select it
+3. For classification models, optionally click the **Matrix** button to view the confusion matrix 
+   and understand model performance across different classes
+4. Click the **Select model for prediction** button at the bottom of the modal
 
 ![GraphML Confusion Matrix](../../images/graphml-ui-confusion-matrix.png)
 
+After selecting a model, the prediction configuration form appears, allowing you to
+set up and run predictions using the selected model.
+
 ## Prediction phase
 
-After selecting a model, you can create a Prediction Job. The Prediction Job
-generates predictions and persists them to the source graph, either in a new
-collection or within the source documents.
+After selecting a model in the Model Selection phase and clicking **Select model for prediction**,
+the prediction configuration form appears. This allows you to configure how inference runs 
+using the selected model.
 
-The Prediction interface allows inference to be run using the selected model.
-It enables configuration of how predictions are executed, which collections are
-involved, and whether new or outdated documents should be automatically featurized
-before prediction.
+You can specify which collections are involved and whether new or outdated documents 
+should be automatically featurized before prediction.
 
-You have two important options:
+![GraphML prediction phase](../../images/graphml-ui-prediction.png)
+
+### Configuration options
+
+Configure your prediction job with the following options:
+
+- **Select Model**: Displays the model you selected. This model performs the inference.
+- **Target Vertex Collection**: The node collection on which predictions are applied.
+- **Prediction Type**: Depending on the training job (classification or embedding), 
+  the prediction outputs class labels or updated embeddings.
+- **Prediction field**: The field in the documents where the predicted values are stored.
+- **Data load batch size**: Specifies the number of documents to load in a
+  single batch (e.g. `500000`).
+- **Data load parallelism**: The number of parallel threads used to process
+  the prediction workload (e.g. `10`).
+- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
+  configured for the project (e.g., `gpu-g4dn-xlarge`).
+
+### Featurization options
+
+You have two important options for handling dynamic data:
 
 - **Featurize new documents:** Enable this option to generate features for
   documents that have been added since the model was trained. This is useful
@@ -179,28 +248,8 @@ You have two important options:
   attributes (used during featurization) have changed since the last feature
   computation. This ensures your predictions reflect the latest changes to your data.
 
-In addition to these settings, you can also define the target data, where to store
-results, and whether to run the job on a recurring schedule.
-
 These options provide flexibility in handling dynamic graph data and keeping
 predictions relevant without repeating the entire ML workflow.
-
-- **Data load batch size**: Specifies the number of documents to load in a
-  single batch (e.g. `500000`).
-- **Data load parallelism**: The number of parallel threads used to process
-  the prediction workload (e.g. `10`).
-- **Prediction field**: The field in the documents where the predicted values are stored.
-- **Enable GPU**: Enables GPU-accelerated prediction using GPU-capable profiles
-  configured for the project (e.g., `gpu-g4dn-xlarge`).
-
-![GraphML prediction phase](../../images/graphml-ui-prediction.png)
-
-### Configuration options
-
-The Prediction screen displays the following configuration options:
-- **Select Model**: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
-- **Target Vertex Collection**: This is the node collection on which predictions are applied.
-- **Prediction Type**: Depending on the training job (for example, classification or embedding), the prediction outputs class labels or updated embeddings.
 
 ### Enable scheduling
 
@@ -229,9 +278,12 @@ Below the CRON field, a user-friendly scheduling interface helps translate it:
 
 ### Execute prediction
 
-After reviewing the configuration, click the **Run Prediction** button. 
-Once prediction is complete, you can analyze the results directly in
-the Web Interface or export them for downstream use.
+After reviewing the configuration, click the **Run Prediction** button to submit
+the job. The button shows a loading state during submission. Once submitted, the
+modal closes and the prediction job appears in the Prediction column on the jobs board.
+
+Click a completed prediction job card to view its results. You can analyze the
+results directly in the Web Interface or export them for downstream use.
 
 ## Limitations
 

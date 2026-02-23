@@ -62,7 +62,7 @@ The web interface guides you through the process of the following:
 ### API and Services
 
 The [AI Orchestrator](../reference/ai-orchestrator.md), 
-[Importer](../reference/importer.md), and [Retriever](../reference/retriever.md) 
+[Importer](../reference/importer.md), and [Retriever](../reference/retriever/_index.md) 
 services provide programmatic access to create and manage GraphRAG pipelines, 
 and give you access to advanced search methods.
 
@@ -100,13 +100,13 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../reference/importer.md) service documentation.
+[Importer](../reference/importer/) service documentation.
 
 ### Query your Knowledge Graph
 
 The Retriever service enables intelligent search and retrieval using multiple 
 search methods optimized for different query types. For detailed information 
-about the service, see the [Retriever](../reference/retriever.md) service documentation.
+about the service, see the [Retriever](../reference/retriever/_index.md) service documentation.
 
 The Retriever provides different search methods, each optimized for specific query patterns:
 
@@ -118,7 +118,7 @@ The Retriever provides different search methods, each optimized for specific que
 {{< info >}}
 The Web Interface exposes **Instant Search** and **Deep Search** as the primary 
 methods for ease of use. For access to all search methods with advanced 
-parameters, use the API directly. See [Retriever - Search Methods](../reference/retriever.md#search-methods) 
+parameters, use the API directly. See [Retriever - Search Methods](../reference/retriever/search-methods.md) 
 for complete details.
 {{< /info >}}
 
@@ -148,13 +148,12 @@ LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
 - [Importer - Deployment Options](../reference/importer.md#deployment-options)
-- [Retriever - Installation](../reference/retriever.md#installation)
+- [Retriever - Installation](../reference/retriever/_index.md)
 
 ## Limitations
 
 The pre-release version of Arango GraphRAG has the following limitations:
 
-- You can only import a single file.
 - The knowledge graph generated from the file is imported into a named graph
-  with a fixed name of `KnowledgeGraph` and set of collections which also have
-  fixed names.
+  with the name `{project_name}_kg` and set of collections prefixed with your
+  project name (e.g., `{project_name}_Documents`, `{project_name}_Chunks`, etc.).
