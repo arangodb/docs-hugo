@@ -5,12 +5,6 @@ weight: 20
 description: >-
   Visually explore and interact with your ArangoDB graphs through an intuitive interface
 ---
-{{< tip >}}
-The Arango Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/contact-us/) with
-the Arango team.
-{{< /tip >}}
-
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
 of the Arango Data Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes

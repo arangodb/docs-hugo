@@ -5,12 +5,6 @@ description: >-
   Enable your GraphRAG pipeline to use private LLMs via Triton Inference Server 
 weight: 30
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## Overview
 
 The **Triton LLM Host** service provides scalable deployment of Large Language

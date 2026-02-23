@@ -5,11 +5,6 @@ weight: 50
 description: >-
   Features and improvements in the Arango Data Platform
 ---
-{{< tip >}}
-The Arango Data Platform is available as a pre-release. To get exclusive early access,
-[get in touch](https://arango.ai/contact-us/) with the Arango team.
-{{< /tip >}}
-
 ## March 2026 (v4.0)
 
 ### Dashboard

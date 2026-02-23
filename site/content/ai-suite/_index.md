@@ -1,5 +1,5 @@
 ---
-title: The AI Suite of the Arango AI Data Platform (v3.0)
+title: The AI Suite of the Arango AI Data Platform (v4.0)
 menuTitle: AI Suite
 weight: 2
 description: >-
@@ -14,12 +14,6 @@ aliases:
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## What's included
 
 The AI Suite is composed of three major components:

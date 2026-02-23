@@ -6,12 +6,6 @@ description: >-
   Technical overview of ArangoDB's GraphRAG solution, including
   architecture, services, and deployment options
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## Introduction
 
 Large language models (LLMs) and knowledge graphs are two prominent and

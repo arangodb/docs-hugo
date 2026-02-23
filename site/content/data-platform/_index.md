@@ -1,5 +1,5 @@
 ---
-title: The Arango Data Platform (v3.0)
+title: The Arango Data Platform (v4.0)
 menuTitle: Arango Data Platform
 weight: 1
 description: >-
@@ -8,12 +8,6 @@ description: >-
 aliases:
   - data-platform/get-started
 ---
-{{< tip >}}
-The Arango Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/contact-us/) with
-the Arango team.
-{{< /tip >}}
-
 The Arango Data Platform is a **Kubernetes-native** technical infrastructure that
 acts as the umbrella for hosting the entire ArangoDB offering of products.
 Built from the ground up for cloud-native orchestration, the platform leverages
@@ -85,7 +79,7 @@ You can set up and run the Arango Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
 For a guide how to set up the Data Platform yourself, see
-[Install the Arango Data Platform](installation.md).
+[Install and upgrade the Arango Data Platform](install-and-upgrade/_index.md).
 
 {{< info >}}
 **Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 

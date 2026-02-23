@@ -1,5 +1,5 @@
 ---
-title: Architecture and Features of the Arango Data Platform (v3.0)
+title: Architecture and Features of the Arango Data Platform (v4.0)
 menuTitle: Architecture and Features
 weight: 5
 description: >-

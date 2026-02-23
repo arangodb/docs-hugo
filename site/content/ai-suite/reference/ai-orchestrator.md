@@ -6,12 +6,6 @@ description: >-
   for GraphRAG in your Kubernetes cluster
 weight: 5
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## Overview
 
 The basic operations that the AI orchestration service carries out are the following:
