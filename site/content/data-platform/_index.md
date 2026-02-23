@@ -79,7 +79,7 @@ You can set up and run the Arango Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
 For a guide how to set up the Data Platform yourself, see
-[Install the Arango Data Platform](installation.md).
+[Install and upgrade the Arango Data Platform](install-and-upgrade/_index.md).
 
 {{< info >}}
 **Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 
