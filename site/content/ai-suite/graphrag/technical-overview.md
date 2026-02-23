@@ -106,7 +106,7 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../reference/importer.md) service documentation.
+[Importer](../reference/importer/) service documentation.
 
 ### Query your Knowledge Graph
 
@@ -160,7 +160,6 @@ For detailed configuration examples, see:
 
 The pre-release version of Arango GraphRAG has the following limitations:
 
-- You can only import a single file.
 - The knowledge graph generated from the file is imported into a named graph
-  with a fixed name of `KnowledgeGraph` and set of collections which also have
-  fixed names.
+  with the name `{project_name}_kg` and set of collections prefixed with your
+  project name (e.g., `{project_name}_Documents`, `{project_name}_Chunks`, etc.).

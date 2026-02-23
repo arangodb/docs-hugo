@@ -182,7 +182,7 @@ documentation.
 
 ## Complete Service lifecycle example
 
-The example below shows how to install, monitor, and uninstall the [Importer](importer.md) service.
+The example below shows how to install, monitor, and uninstall the [Importer](importer/) service.
 
 ### Step 1: Installing the service
 
