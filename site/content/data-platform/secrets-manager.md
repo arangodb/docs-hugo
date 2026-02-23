@@ -49,7 +49,8 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 1. In the main navigation, go to the **Control Panel** ({{< icon "settings" >}}).
 2. Click **Secrets Manager** in the navigation.
 3. In the **Actions** column, click the edit icon ({{< icon "edit-square" >}}).
-4. Adjust the information.
+4. Adjust the information. To edit the **Secret Value**, click the toggle next to
+   the label and then enter the new value.
 5. Click **Save Changes**.
 
 ### Delete a secret
