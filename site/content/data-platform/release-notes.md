@@ -10,6 +10,30 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 [get in touch](https://arango.ai/contact-us/) with the Arango team.
 {{< /tip >}}
 
+## March 2026 (v4.0)
+
+### Dashboard
+
+A new home screen has been added, providing the following information and actions:
+
+- A cluster respectively single server health overview
+- Shard distribution information and rebalancing options
+- The cluster maintenance status
+
+### Query Editor
+
+The [Query Editor](query-editor.md) has been extended with the following capabiltiies:
+
+- **Graph visualization**: If a query returns edges or traversal paths, the
+  results are shown by an embedded graph viewer. You can still switch to a JSON
+  view mode of the results.
+
+- **Download results**:
+  You can download the results of queries in JSON and CSV format.
+
+- **Syntax highlighting**: AQL queries in the query editor are colorized for
+  better readability.
+
 ## October 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.6</small>
