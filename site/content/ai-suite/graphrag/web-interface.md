@@ -5,12 +5,6 @@ weight: 20
 description: >-
  Learn how to create, configure, and run a full GraphRAG workflow in just a few steps
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## The GraphRAG workflow in the web interface
 
 The entire process is organized into sequential steps within a **Project**:

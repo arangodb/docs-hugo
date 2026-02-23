@@ -5,11 +5,6 @@ weight: 100
 description: >-
   Features and improvements in the AI Suite of the Arango Data Platform
 ---
-{{< tip >}}
-The AI Suite is available as a pre-release. To get exclusive early access,
-[get in touch](https://arango.ai/ai-preview/) with the Arango team.
-{{< /tip >}}
-
 ## October 2025 (pre-release)
 
 This release introduces new features and enhancements to the AI Suite components.

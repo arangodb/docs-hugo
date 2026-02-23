@@ -5,12 +5,6 @@ description: >-
   Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
 weight: 25
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## Tutorial overview
 
 This tutorial guides you through the process of building a

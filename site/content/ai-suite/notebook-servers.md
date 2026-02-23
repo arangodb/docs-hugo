@@ -5,12 +5,6 @@ weight: 20
 description: >-
   Colocated Jupyter Notebooks within the Arango Data Platform
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, AI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are

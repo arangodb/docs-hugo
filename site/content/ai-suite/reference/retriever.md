@@ -6,12 +6,6 @@ description: >-
   retrieval from knowledge graphs created by the Importer service
 weight: 15
 ---
-{{< tip >}}
-The Arango AI Data Platform is available as a pre-release. To get
-exclusive early access, [get in touch](https://arango.ai/ai-preview/) with
-the Arango team.
-{{< /tip >}}
-
 ## Overview
 
 The Retriever service provides intelligent search and retrieval from knowledge graphs,
