@@ -19,7 +19,9 @@ use of the file manager for application code, too.
 
 ### View files
 
-1. In the Arango Data Platform web interface, go to the
+<!-- TODO: Scoped to database? If not, why is it under Database? -->
+
+1. In the main navigation of the Arango Data Platform web interface, go to the
    **Database** ({{< icon "database" >}}).
 2. Click **File Manager** in the navigation.
 3. Go the the desired tab:
@@ -34,8 +36,7 @@ use of the file manager for application code, too.
 
 ### Delete files
 
-1. In the Arango Data Platform web interface, go to the
-   **Database** ({{< icon "database" >}}).
+1. In the main navigation, go to the **Database** ({{< icon "database" >}}).
 2. Click **File Manager** in the navigation.
 3. Go the the desired tab:
    - **Container Services**: You can delete files if they are not currently
@@ -45,3 +46,7 @@ use of the file manager for application code, too.
      delete them.
 4. In the row of the desired item, click the delete icon ({{< icon "delete" >}})
    in the **Actions** column and confirm by clicking **Delete**.
+
+<!-- TODO:
+## API
+-->
