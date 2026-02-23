@@ -49,11 +49,47 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
    - In the **Actions** column, click the remove icon ({{< icon "delete" >}})
      and confirm by clicking **Delete**.
    - At the start of the row, tick the checkboxes of the secrets you want to
-     remove. Then click **Delete selected (#)** in the top-right corner and
-     confirm by clicking **Delete # Secret(s)**.
+     remove. Then click the **Delete selected (#)** button in the top-right
+     corner and confirm by clicking **Delete # Secret(s)**.
+
+### Import secrets
+
+1. Go to the **Control Panel** ({{< icon "settings" >}}).
+2. Click **Secrets Manager** in the navigation.
+3. Click the **Import** button in the top-right corner.
+4. You can **Paste JSON** from the clipboard or go to the **Upload File**
+   tab to select or drop a JSON file. You can inspect and edit the uploaded
+   data in the **Paste JSON** tab.
+5. Click **Validate & Preview**. Fix missing fields or syntax errors if necessary.
+6. Verify the data. You can remove ({{< icon "delete" >}}) individual rows to
+   exclude secrets from the import.
+7. Click **Import # Secret(s)**.
 
 ## API
 
-<!-- TODO: Where are the methods mapped to endpoints?
-https://github.com/arangoml/mlflow_http_artifact_repository/blob/main/packages/arango_platform_clients/arango_platform_clients/secrets/manager.py
--->
+<!-- TODO: Link to reference docs -->
+
+Before you create a secret, take a look at the available types you can specify:
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secret_types" >}}
+
+Now create a new secret with this endpoint:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secrets" >}}
+
+The request body needs to be a JSON object with the following attributes:
+
+- `name` (string, _required_): The name for referencing the secret.
+- `secretData` (string, _required_): The sensitive information
+   (API key, password, or similar).
+- `profileType` (string): One of the available types (see above), e.g. `LLM`.
+- `provider` (string): One of the available providers as returned when you
+   listed the types.
+- `description` (string): Information that helps to identify the secret or is
+   noteworthy.
+- `metadata` (object): Additional information as key-value pairs (both strings).
+
+You can list the existing secret objects (but without the sensitive secrets
+themselves):
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secrets" >}}
