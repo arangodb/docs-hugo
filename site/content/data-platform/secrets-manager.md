@@ -80,6 +80,8 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 <!-- TODO: Link to reference docs -->
 
+### How to use the secrets manager API
+
 <!-- TODO: /ai prefix to be replaced -->
 
 Before you create a secret, take a look at the available types you can specify:
