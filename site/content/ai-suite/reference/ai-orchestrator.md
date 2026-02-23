@@ -60,7 +60,7 @@ The following example shows a complete request body with all available options:
 
 The parameters required for the deployment of each service are defined in the
 corresponding service documentation. See [Importer](importer.md)
-and [Retriever](retriever.md).
+and [Retriever](retriever/_index.md).
 
 ## Projects
 
@@ -182,7 +182,7 @@ documentation.
 
 ## Complete Service lifecycle example
 
-The example below shows how to install, monitor, and uninstall the [Importer](importer.md) service.
+The example below shows how to install, monitor, and uninstall the [Importer](importer/) service.
 
 ### Step 1: Installing the service
 
