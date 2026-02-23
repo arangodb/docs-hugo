@@ -1,7 +1,7 @@
 ---
 title: The Arango Data Platform (v4.0)
-menuTitle: Arango Data Platform
-weight: 1
+menuTitle: Arango Platform Suite
+weight: 4
 description: >-
   The Arango Data Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service
@@ -22,11 +22,17 @@ of the platform features with enterprise-grade automation and reliability.
 The Arango Data Platform is built on a layered architecture that combines powerful
 components into a unified solution:
 
-- **ArangoDB Enterprise Edition**: The multi-model database foundation supporting
-  graphs, documents, key-value, vector search, and full-text search capabilities.
+- [**ArangoDB Enterprise Edition**](../arangodb/_index.md):
+  The multi-model database foundation supporting graphs, documents, key-value,
+  vector search, and full-text search capabilities.
 
-- **Graph Visualizer**: A sophisticated web-based interface for graph exploration,
-  smart search, and visual layouts.
+- [**Graph Visualizer**](graph-visualizer.md):
+  A sophisticated web-based interface for graph exploration, smart search, and
+  visual layouts.
+
+- [**Graph Analytics**](graph-analytics/_index.md):
+  Run graph algorithms such as PageRank on dedicated compute resources to
+  discover influential nodes and patterns.
 
 - **Arango Platform Suite**: Enterprise-grade features including high availability
   and monitoring, comprehensive APIs and connectors, centralized orchestration and
@@ -39,26 +45,9 @@ For a detailed breakdown of each component, see [Features and Architecture](feat
 
 ## Extend the Arango Data Platform with AI capabilities
 
-Extend the Arango Data Platform with the [**AI Suite**](../ai-suite/_index.md) 
+Extend the Arango Data Platform with the [**Agentic AI Suite**](../agentic-ai-suite/_index.md) 
 that offers advanced AI and machine learning capabilities that integrate seamlessly
 into the platform's unified web interface.
-
-What you get with the AI Suite:
-
-- [GraphRAG](../ai-suite/graphrag/): Generate knowledge graphs from documents and enable
-   conversational querying of your data.
-- [GraphML](../ai-suite/graphml/): Apply machine learning algorithms that leverage graph
-  structure for better predictions.
-- [Graph Analytics](../ai-suite/graph-analytics/): Run advanced algorithms like PageRank
-  to discover influential nodes and patterns.
-- [AQLizer](../ai-suite/aqlizer.md): Generate AQL queries from natural language.
-- [Jupyter notebooks](../ai-suite/notebook-servers.md): Run Jupyter Notebooks to build and
-  experiment with graph-powered data, AI, and machine learning workflows directly connected
-  to ArangoDB databases. 
-- Public and private LLM support: Use public LLMs such as OpenAI
-  or private LLMs with [Triton Inference Server](../ai-suite/reference/triton-inference-server.md).
-- [MLflow integration](../ai-suite/reference/mlflow.md): Use the popular MLflow as a model registry
-  for private LLMs or to run machine learning experiments as part of the Arango Data Platform.
 
 {{< tip >}}
 The AI Suite requires a separate license.
@@ -110,7 +99,7 @@ Learn about the Kubernetes-native foundation that the Arango Data Platform is pu
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
 {{% /card %}}
 
-{{% card title="AI Suite" link="../../ai-suite/" %}}
+{{% card title="Agentic AI Suite" link="../../agentic-ai-suite/" %}}
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 

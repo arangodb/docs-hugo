@@ -1,12 +1,11 @@
 ---
 title: Ecosystem
 menuTitle: Ecosystem
-weight: 5
-layout: default
+weight: 10
+description: >-
+  The ArangoDB ecosystem includes official drivers, integrations, and adapters that
+  help you connect ArangoDB to your applications and data science tools
 ---
-The ArangoDB ecosystem includes official drivers, integrations, and adapters that
-help you connect ArangoDB to your applications and data science tools.
-
 ## Drivers
 
 Official [drivers](drivers/_index.md) for various programming languages allow you to

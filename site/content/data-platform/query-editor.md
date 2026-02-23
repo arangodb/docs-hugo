@@ -133,10 +133,10 @@ The sidebar on the left-hand side allows you to manage queries:
 
 ## Generate queries (AQLizer)
 
-{{< tag "AI Data Platform" >}}
+{{< tag "Contextual Data Platform" >}}
 
 For an introduction to the AQLizer, see
-[The AQLizer feature of the Arango AI Data Platform](../ai-suite/aqlizer.md).
+[The AQLizer feature of the Arango Agentic AI Suite](../agentic-ai-suite/aqlizer.md).
 
 Before you can generate AQL queries, you need to set up the AQLizer feature.
 

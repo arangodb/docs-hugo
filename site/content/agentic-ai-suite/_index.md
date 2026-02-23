@@ -1,7 +1,7 @@
 ---
-title: The AI Suite of the Arango AI Data Platform (v4.0)
-menuTitle: AI Suite
-weight: 2
+title: The Arango Agentic AI Suite for the Data Platform (v4.0)
+menuTitle: Agentic AI Suite
+weight: 3
 description: >-
   A comprehensive AI solution that transforms your data into intelligent
   knowledge graphs with GraphRAG capabilities, applies advanced machine learning
@@ -31,8 +31,6 @@ Arango Data Platform web interface, guiding you through the process.
 
 Alongside these components, you also get the following additional features:
 
-- [**Graph Analytics**](graph-analytics.md): Run graph algorithms such as PageRank
-  on dedicated compute resources.
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
   Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.

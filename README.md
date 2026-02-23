@@ -726,15 +726,15 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, AI Data Platform,
+Features exclusive to the Data Platform, Contextual Data Platform,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
 
-In the AI Data Platform only:
+In the Contextual Data Platform only:
 
 ```markdown
-{{< tag "AI Data Platform" >}}
+{{< tag "Contextual Data Platform" >}}
 ```
 
 In the Arango Managed Platform (AMP) only:

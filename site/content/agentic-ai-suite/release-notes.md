@@ -49,8 +49,8 @@ components. For Data Platform features in this release, see
 - **[GraphML](graphml/_index.md)**: Apply machine learning to graphs with node
   classification and embedding generation, built on GraphSAGE framework.
 
-- **[Graph Analytics](graph-analytics.md)**: Run algorithms like PageRank,
-  Connected Components, and more.
+- **[Graph Analytics](../data-platform/graph-analytics/_index.md)**:
+  Run algorithms like PageRank, Connected Components, and more.
 
 - **[Jupyter Notebooks](notebook-servers.md)**: Launch integrated Jupyter
   notebook servers with pre-installed ArangoDB drivers and data science libraries

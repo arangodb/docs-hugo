@@ -1,13 +1,11 @@
 ---
 title: Graph Analytics
 menuTitle: Graph Analytics
-weight: 15
+weight: 33
 description: >-
   Graph analytics analyzes information networks to extract insights from data
   relationships using algorithms like PageRank for fraud detection,
   recommendations, and network analysis
-aliases:
-  - /ai-suite/graph-analytics.html
 ---
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
@@ -18,7 +16,7 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [AI Data Platform](../../data-platform/_index.md).
+and included in the [Arango Data Platform](../../data-platform/_index.md).
 
 Key features:
 

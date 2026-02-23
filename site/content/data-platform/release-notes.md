@@ -35,7 +35,7 @@ The [Query Editor](query-editor.md) has been extended with the following capabil
 
 This release includes new features and enhancements for the Data Platform web
 interface, running with ArangoDB Enterprise Edition v3.12.6. For AI Suite updates
-in this release, see [AI Suite Release Notes](../ai-suite/release-notes.md).
+in this release, see [Agentic AI Suite Release Notes](../agentic-ai-suite/release-notes.md).
 
 ### Query Editor
 
@@ -93,8 +93,8 @@ Key improvements:
 <small>ArangoDB Enterprise Edition: v3.12.5</small>
 
 This release marks the initial internal launch of the Arango Data Platform, running with
-ArangoDB Enterprise Edition v3.12.5. For AI Suite features in this release, see
-[AI Suite Release Notes](../ai-suite/release-notes.md).
+ArangoDB Enterprise Edition v3.12.5. For Agentic AI Suite features in this release, see
+[Agentic AI Suite Release Notes](../agentic-ai-suite/release-notes.md).
 
 ### Arango Data Platform
 
@@ -116,6 +116,6 @@ What's included:
 - **Unified web interface**: Single interface for accessing all Platform services
   and components.
 
-The Data Platform can be extended with the [AI Suite](../ai-suite/_index.md) for
+The Data Platform can be extended with the [Agentic AI Suite](../agentic-ai-suite/_index.md) for
 advanced capabilities like GraphRAG, GraphML, Graph Analytics, AQLizer, and more
 (requires separate license).
