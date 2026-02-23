@@ -737,16 +737,16 @@ paths:
         This endpoint may reveal sensitive information about the deployment!
         {{</* /security */>}}
 
-        The endpoint can only be accessed via the `_system` database.
-        In addition, the `--server.options-api` startup option controls the
-        required privileges to access the option endpoints and allows you to
-        disable them entirely. The option can have the following values:
-        - `disabled`: the option endpoints are disabled
-        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
-        - `admin`: the option endpoints can only be accessed by users with
-          *Administrate* access level for the `_system` database
-        - `public`: every user with access to the `_system` database can access
-          the option endpoints
+        The endpoint can only be accessed via the `_system` database. In addition, the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        controls the required privileges to access the option endpoints and allows
+        you to disable them entirely. The option can have the following values:
+        - `disabled`: This endpoint is disabled.
+        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `admin`: This endpoint can only be accessed by users with
+          *Administrate* access level for the `_system` database.
+        - `public`: Every user with access to the `_system` database can access
+          this endpoint.
       responses:
         '200':
           description: |
@@ -757,6 +757,101 @@ paths:
             application/json:
               schema:
                 type: object
+        '401':
+          description: |
+            You tried to authenticate with user credentials but a superuser token
+            is required, the credentials are wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            You don't have write access to the `_system` database or you tried
+            to access the endpoint using a database other than `_system`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
@@ -772,16 +867,16 @@ paths:
         Return the startup options available to configure the queried _arangod_
         instance, similar to the `--dump-options` startup option.
 
-        The endpoint can only be accessed via the `_system` database.
-        In addition, the `--server.options-api` startup option controls the
-        required privileges to access the option endpoints and allows you to
-        disable them entirely. The option can have the following values:
-        - `disabled`: the option endpoints are disabled
-        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
-        - `admin`: the option endpoints can be accessed by admin users in the `_system`
-          database only.
-        - `public`: every user with access to the `_system` database can access
-          the option endpoints.
+        The endpoint can only be accessed via the `_system` database. In addition, the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        controls the required privileges to access the option endpoints and allows
+        you to disable them entirely. The option can have the following values:
+        - `disabled`: This endpoint is disabled.
+        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `admin`: This endpoint can only be accessed by users with
+          *Administrate* access level for the `_system` database.
+        - `public`: Every user with access to the `_system` database can access
+          this endpoint.
       responses:
         '200':
           description: |
@@ -841,6 +936,101 @@ paths:
             application/json:
               schema:
                 type: object
+        '401':
+          description: |
+            You tried to authenticate with user credentials but a superuser token
+            is required, the credentials are wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            You don't have write access to the `_system` database or you tried
+            to access the endpoint using a database other than `_system`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
@@ -872,8 +1062,9 @@ paths:
           required: true
           example: _system
           description: |
-            The name of a database. Any database the user has at least read
-            access to can be used.
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
           schema:
             type: string
       responses:
@@ -911,10 +1102,11 @@ paths:
                     description: |
                       The timeout for JWT session tokens in seconds.
                     type: number
-        '403':
+        '401':
           description: |
             Returned if authentication is enabled and the user does not have at
-            least read access to the database.
+            least read access to the database, the credentials are wrong or the
+            user account is inactive.
           content:
             application/json:
               schema:
@@ -934,7 +1126,7 @@ paths:
                     description: |
                       The HTTP response status code.
                     type: integer
-                    example: 403
+                    example: 401
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
