@@ -63,6 +63,12 @@ Key improvements:
 - **Performance improvements**: Optimized rendering for large graphs with
   millions of nodes and edges.
 
+### Platform Services
+
+- **Secrets Manager**: Store secrets like API keys for Large Language Model (LLM)
+  for easy use across the Data Platform. Secrets are encrypted at rest and can be
+  accessed by services via a metadata sidecar container.
+
 ## July 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.5</small>
