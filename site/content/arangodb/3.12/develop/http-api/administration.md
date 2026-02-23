@@ -1105,7 +1105,7 @@ paths:
         '401':
           description: |
             Returned if authentication is enabled and the user does not have at
-            least read access to the database, the credentials are wrong or the
+            least read access to the database, the credentials are wrong, or the
             user account is inactive.
           content:
             application/json:
