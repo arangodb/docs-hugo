@@ -2596,6 +2596,20 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### Shard monitoring and replication metrics
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into shard distribution and replication health across your cluster. You can monitor the total number of shard (leaders and followers), track replication status, and identify shards that are out of sync or not properly replicated.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_metadata_total_number_of_shards` | Total number of leader and follower shards in the deployment. In a cluster, this is the number of shards across collections of all databases. |
+| `arangodb_metadata_number_follower_shards` | Number of follower shards that exist across collections of all databases. |
+| `arangodb_metadata_number_out_of_sync_shards` | Number of shards that are out of sync across collections of all databases. Indicates where the Plan (expected state) differs from Current (actual state). |
+| `arangodb_metadata_number_not_replicated_shards` | Number of shards that are not replicated across collections of all databases. Represents potential single points of failure where shards lack follower redundancy. |
+| `arangodb_metadata_shard_followers_out_of_sync_number` | Number of follower shards across the cluster that are out of sync with their leader. Computed by the coordinator by comparing the Plan (expected state) with Current state (actual state). |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
