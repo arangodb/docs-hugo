@@ -2600,7 +2600,7 @@ The size of the currently mounted disk is already exposed by the
 
 <small>Introduced in: v3.12.8</small>
 
-The following new metrics have been introduced to provide visibility into shard distribution and replication health across your cluster. You can monitor the total number of shard (leaders and followers), track replication status, and identify shards that are out of sync or not properly replicated.
+The following new metrics have been introduced to provide visibility into shard distribution and replication health across your cluster. You can monitor the total number of shards (leaders and followers), track replication status, and identify shards that are out of sync or not properly replicated.
 
 | Label | Description |
 |:------|:------------|
