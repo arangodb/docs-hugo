@@ -39,7 +39,7 @@ GraphRAG is particularly valuable for use cases like the following:
 - Reasoning over interconnected information
 - Discovery of relationships between concepts across documents
 
-For detailed business scenarios, see [GraphRAG Use Cases](use-cases.md).
+For detailed business scenarios, see [GraphRAG Use Cases](../autograph/use-cases.md).
 
 ## Ways to use GraphRAG
 

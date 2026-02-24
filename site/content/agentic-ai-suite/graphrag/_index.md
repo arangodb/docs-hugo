@@ -67,7 +67,7 @@ conceptual understanding.
 
 ## What's next
 
-- **[GraphRAG Enterprise Use Cases](use-cases.md)**: Understand the business value through real-world scenarios.
+- **[GraphRAG Enterprise Use Cases](../autograph/use-cases.md)**: Understand the business value through real-world scenarios.
 - **[GraphRAG Technical Overview](technical-overview.md)**: Dive into the architecture, services, and implementation details.
 - **[GraphRAG Web Interface](web-interface.md)**: Try GraphRAG using the interactive web interface.
 - **[GraphRAG Tutorial using integrated Notebook servers](tutorial-notebook.md)**: Follow hands-on examples and implementation guidance via Jupyter Notebooks.
