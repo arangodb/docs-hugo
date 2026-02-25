@@ -2596,6 +2596,35 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### Crash dumps
+
+<small>Introduced in: v3.12.8</small>
+
+On crash, the server can now write diagnostic data such as recent API calls and
+AQL queries, a backtrace, and system info into separate files on disk. The most
+recent 10 of these crash dumps are kept. Older ones are removed at startup.
+
+An HTTP API for viewing and managing crash dumps has been added as well.
+
+You can disable the creation of crash dumps and the management API with the
+new `--crash-handler.enable-dumps` startup option.
+
+The management API has the following endpoints:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+```bash
+UUID=$(curl http://localhost:8529/_admin/crashes | jq -r .result[-1])
+curl http://localhost:8529/_admin/crashes/$UUID
+curl -XDELETE http://localhost:8529/_admin/crashes/$UUID
+```
+
+See [HTTP interface for server administration](../../develop/http-api/administration.md#crash-dump-management)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints

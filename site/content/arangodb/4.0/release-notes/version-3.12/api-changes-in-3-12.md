@@ -347,6 +347,20 @@ identifier that you can retrieve via a new
 [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
 
+#### Crash dump management
+
+<small>Introduced in: v3.12.8</small>
+
+New endpoints for viewing and managing crash dumps have been added to the HTTP API:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+for details.
+
 ### Endpoints augmented
 
 #### View API
