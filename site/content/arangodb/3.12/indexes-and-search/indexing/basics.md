@@ -442,15 +442,14 @@ db.posts.ensureIndex({ type: "persistent", fields: [ "name.last", "name.first" ]
 
 ## Indexing array values
 
-If an index attribute contains an array, ArangoDB will store the entire array as the index value
+If an index attribute contains an array, ArangoDB stores the entire array as the index value
 by default. Accessing individual members of the array via the index is not possible this
 way. 
 
 To make an index insert the individual array members into the index instead of the entire array
 value, a special array index needs to be created for the attribute. Array indexes can be set up 
-like regular persistent indexes using the `collection.ensureIndex()` function. To make a 
-persistent index an array index, the index attribute name needs to be extended with `[*]`
-when creating the index and when filtering in an AQL query using the `IN` operator.
+like regular `persistent` indexes but the array to expand needs to be extended with `[*]`
+in the index definition.
 
 The following example creates an persistent array index on the `tags` attribute in a collection named
 `posts`:
@@ -479,25 +478,31 @@ FOR doc IN posts
   RETURN doc
 ```
 
-The following FILTER conditions will **not use** the array index:
+The following `FILTER` conditions can **not use** the array index:
 
 ```aql
-FILTER doc.tags ANY == 'foobar'
 FILTER doc.tags ANY IN 'foobar'
 FILTER doc.tags IN 'foobar'
 FILTER doc.tags == 'foobar'
 FILTER 'foobar' == doc.tags
 ```
 
-It is also possible to create an index on subattributes of array values. This makes sense
-if the index attribute is an array of objects, e.g.
+From version 3.12.8 onward, the following `FILTER` condition is automatically
+transformed and can use the array index:
+
+```aql
+FILTER doc.tags ANY == 'foobar'  # Transformed into FILTER 'foobar' IN doc.tags
+```
+
+It is also possible to create an index on sub-attributes of array values. This makes sense
+if the index attribute is an array of objects. Example:
 
 ```js
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*].name" ] });
 db.posts.insert({ tags: [ { name: "foobar" }, { name: "baz" }, { name: "quux" } ] });
 ```
 
-The following query will then use the array index (this does require the
+The following query then uses the array index (this does require the
 [array expansion operator](../../aql/operators.md#array-expansion)):
 
 ```aql
@@ -507,7 +512,7 @@ FOR doc IN posts
 ```
 
 If you store a document having the array which does contain elements not having
-the sub-attributes this document will also be indexed with the value `null`, which
+the sub-attributes this document is also indexed with the value `null`, which
 in ArangoDB is equal to attribute not existing.
 
 ArangoDB supports creating array indexes with a single `[*]` operator per index 
@@ -517,9 +522,9 @@ attribute. For example, creating an index as follows is **not supported**:
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*].name[*].value" ] });
 ```
 
-Array values will automatically be de-duplicated before being inserted into an array index.
+Array values are automatically be de-duplicated before being inserted into an array index.
 For example, if the following document is inserted into the collection, the duplicate array
-value `bar` will be inserted only once:
+value `bar` is inserted only once:
 
 ```js
 db.posts.insert({ tags: [ "foobar", "bar", "bar" ] });
@@ -528,27 +533,27 @@ db.posts.insert({ tags: [ "foobar", "bar", "bar" ] });
 This is done to avoid redundant storage of the same index value for the same document, which
 would not provide any benefit.
 
-If an array index is declared **unique**, the de-duplication of array values will happen before 
+If an array index is declared **unique**, the de-duplication of array values happens before 
 inserting the values into the index, so the above insert operation with two identical values
-`bar` will not necessarily fail
+`bar` doesn't necessarily fail.
 
-It will always fail if the index already contains an instance of the `bar` value. However, if
-the value `bar` is not already present in the index, then the de-duplication of the array values will
-effectively lead to `bar` being inserted only once.
+It always fails if the index already contains an instance of the `bar` value. However, if
+the value `bar` is not already present in the index, then the de-duplication of the array values
+effectively leads to `bar` being inserted only once.
 
 To turn off the deduplication of array values, it is possible to set the **deduplicate** attribute
 on the array index to `false`. The default value for **deduplicate** is `true` however, so 
-de-duplication will take place if not explicitly turned off.
+de-duplication takes place if not explicitly turned off.
 
 ```js
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*]" ], deduplicate: false });
 
-// will fail now
+// Fails because "bar" is not de-duplicated
 db.posts.insert({ tags: [ "foobar", "bar", "bar" ] }); 
 ```
 
-If an array index is declared and you store documents that do not have an array at the specified attribute
-this document will not be inserted in the index. Hence the following objects will not be indexed:
+If an array index is declared and you store documents that do not have an array at the specified attribute,
+this document is not inserted in the index. Hence the following objects are not indexed:
 
 ```js
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*]" ] });
@@ -558,38 +563,42 @@ db.posts.insert({ tags: "this is no array" });
 db.posts.insert({ tags: { content: [1, 2, 3] } });
 ```
 
-An array index is able to index explicit `null` values. When queried for `null`values, it 
-will only return those documents having explicitly `null` stored in the array, it will not 
-return any documents that do not have the array at all.
+An array index is able to index explicit `null` values. When queried for `null` values, it
+only returns those documents having explicitly `null` stored in the array. It doesn't
+return any documents that don't have the array at all.
 
 ```js
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*]" ] });
-db.posts.insert({tags: null}) // Will not be indexed
-db.posts.insert({tags: []})  // Will not be indexed
-db.posts.insert({tags: [null]}); // Will be indexed for null
-db.posts.insert({tags: [null, 1, 2]}); // Will be indexed for null, 1 and 2
+db.posts.insert({tags: null}) // Not indexed
+db.posts.insert({tags: []})  // Not indexed
+db.posts.insert({tags: [null]}); // Indexed for null
+db.posts.insert({tags: [null, 1, 2]}); // Indexed for null, 1, and 2
 ```
 
 Declaring an array index as **sparse** does not have an effect on the array part of the index,
 this in particular means that explicit `null` values are also indexed in the **sparse** version.
-If an index is combined from an array and a normal attribute the sparsity will apply for the attribute e.g.:
+If an index is combined from an array and a normal attribute, the sparsity applies for the attribute:
 
 ```js
 db.posts.ensureIndex({ type: "persistent", fields: [ "tags[*]", "name" ], sparse: true });
-db.posts.insert({tags: null, name: "alice"}) // Will not be indexed
-db.posts.insert({tags: [], name: "alice"}) // Will not be indexed
-db.posts.insert({tags: [1, 2, 3]}) // Will not be indexed
-db.posts.insert({tags: [1, 2, 3], name: null}) // Will not be indexed
+db.posts.insert({tags: null, name: "alice"}) // Not indexed
+db.posts.insert({tags: [], name: "alice"}) // Not indexed
+db.posts.insert({tags: [1, 2, 3]}) // Not indexed
+db.posts.insert({tags: [1, 2, 3], name: null}) // Not indexed
+
 db.posts.insert({tags: [1, 2, 3], name: "alice"})
-// Will be indexed for [1, "alice"], [2, "alice"], [3, "alice"]
+// Indexed for [1, "alice"], [2, "alice"], [3, "alice"]
+
 db.posts.insert({tags: [null], name: "bob"})
-// Will be indexed for [null, "bob"] 
+// Indexed for [null, "bob"] 
 ```
 
 Please note that filtering using array indexes only works from within AQL queries and
-only if the query filters on the indexed attribute using the `IN` operator. The other
-comparison operators (`==`, `!=`, `>`, `>=`, `<`, `<=`, `ANY`, `ALL`, `NONE`)
-cannot use array indexes currently.
+only if the query filters on the indexed attribute using the `IN` operator.
+From 3.12.8 onward, the `ANY ==` operator can be transformed to an equivalent
+expressions using the `IN` operator and can thus the array index, too. The other
+comparison operators (`==`, `!=`, `>`, `>=`, `<`, `<=`, `ANY`, `ALL`, `NONE`, `AT LEAST`)
+cannot use array indexes.
 
 ## Ensuring uniqueness of relations in edge collections
 
