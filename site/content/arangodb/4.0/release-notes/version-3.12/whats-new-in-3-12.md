@@ -2606,8 +2606,8 @@ recent 10 of these crash dumps are kept. Older ones are removed at startup.
 
 An HTTP API for viewing and managing crash dumps has been added as well.
 
-You can disable the creation of crash dumps and the management API with the
-new `--crash-handler.enable-dumps` startup option.
+You can disable the creation of crash dumps and the management API by setting
+the new `--crash-handler.enable-dumps` startup option to `false`.
 
 The management API has the following endpoints:
 
