@@ -2662,11 +2662,11 @@ See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/ac
 for details.
 
 The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
-lets you limit the access from admin users to superusers.
+lets you restrict the access from admin users to only the superuser.
 
 The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
-option controls how often garbage-collection is performed by threads involved
-in the activity tracking.
+option controls the interval (in seconds) between garbage collections that is
+performed by threads involved in the activity tracking.
 
 The following metrics related to activities have been added:
 
@@ -2841,7 +2841,7 @@ section above that includes a description of the added client tool options.
 
 <small>Introduced in: v3.12.8</small>
 
-The new [`@arangodb/activities` module](../../develop/javascript-api/actions.md)
+The new [`@arangodb/activities` module](../../develop/javascript-api/activities.md)
 lets you pretty-print the high-level server activities in the ArangoDB Shell:
 
 ```js

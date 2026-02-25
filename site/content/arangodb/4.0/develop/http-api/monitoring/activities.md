@@ -11,13 +11,7 @@ running on the server, such as HTTP request handlers, AQL queries, and index
 creation. Each activity has a type, an optional parent to indicate a dependency,
 and type-specific metadata. Not all server activity is necessarily reported.
 
-The permissions required to use the `/_admin/activities` endpoint depend on
-the [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
-By default, *administrate* access to the `_system` database is sufficient. If the
-startup option is enabled, the endpoint requires a superuser authenticated with
-a token created from the JWT secret.
-
-## Get the activities
+## Get the activities (experimental)
 
 ```openapi
 paths:
@@ -34,6 +28,13 @@ paths:
         an optional parent reference, and a `metadata` object. The structure of
         `metadata` depends on the activity type and may be extended in future
         versions.
+
+        The permissions required to use the endpoint depend on the
+        [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
+        By default, *administrate* access for the `_system` database is
+        sufficient. If the startup option is enabled, the endpoint is restricted
+        to the superuser and you therefore need to authenticate with a token
+        created from the JWT secret.
       parameters:
         - name: database-name
           in: path
@@ -42,7 +43,7 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database and *administrate* access to the `_system` database.
+            to this database and write access to the `_system` database.
           schema:
             type: string
       responses:
@@ -100,8 +101,9 @@ paths:
                           type: object
         '401':
           description: |
-            The request is not authorized because the user account you authenticated
-            with lacks read access for the specified database.
+            The user account you authenticated with lacks read access for the
+            specified database, the credentials are wrong, or the user account
+            is inactive.
           content:
             application/json:
               schema:
@@ -132,10 +134,15 @@ paths:
                     type: string
         '403':
           description: |
-            The request is not authorized. By default, administrate access to
-            the `_system` database is required. If the `--activities.only-superuser-enabled`
-            startup option is enabled, a superuser authenticated with a token created
-            from the JWT secret is required.
+            The request is not authorized due to a lack of permissions.
+            The reason depends on the setting of the
+            `--activities.only-superuser-enabled` startup option:
+
+            - `false`: The endpoint is restricted to admin users but the
+              user account you authenticated with lacks write access to the
+              `_system` database.
+            - `true`: The endpoint is restricted to the superuser but you didn't
+              authenticate with a token created from the JWT secret.
           content:
             application/json:
               schema:
@@ -200,6 +207,10 @@ paths:
 ```
 
 **Examples**
+
+{{< comment >}}
+Example not generated because it changes on every run and it is difficult to control what/how many activities get included.
+{{< /comment >}}
 
 ```bash
 curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/activities

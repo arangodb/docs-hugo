@@ -8,7 +8,8 @@ description: >-
 ---
 On crash, the server can write diagnostic data such as recent API calls and
 AQL queries, a backtrace, and system info into separate files on disk (e.g.
-`backtrace.txt`, `system_info.txt`, `ApiRecording.json`, `AsyncRegistry.json`).
+`backtrace.txt`, `system_info.txt`, `ApiRecording.json`, `Activities.json`,
+`AsyncRegistry.json`).
 
 This data can be helpful to analyze why _arangod_ encountered a fatal error
 and you may want to share it with the Arango support and development teams.
