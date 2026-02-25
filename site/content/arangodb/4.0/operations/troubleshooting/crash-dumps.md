@@ -1,5 +1,5 @@
 ---
-title: Crash dumps of the ArangoDB server
+title: The crash dumps feature of the ArangoDB server
 menuTitle: Crash dumps
 weight: 12
 description: >-
@@ -39,9 +39,11 @@ The HTTP API for managing crash dumps has the following endpoints:
 **Example**
 
 ```bash
-UUID=$(curl http://localhost:8529/_admin/crashes | jq -r .result[-1])
-curl http://localhost:8529/_admin/crashes/$UUID
-curl -XDELETE http://localhost:8529/_admin/crashes/$UUID
+UUID=$(curl -sS http://localhost:8529/_admin/crashes | jq -r ".result | last // empty")
+if [ -n "$UUID" ]; then
+  curl -sS http://localhost:8529/_admin/crashes/$UUID
+  curl -sS -XDELETE http://localhost:8529/_admin/crashes/$UUID
+fi
 ```
 
 See [HTTP interface for server administration](../../develop/http-api/administration.md#crash-dump-management)

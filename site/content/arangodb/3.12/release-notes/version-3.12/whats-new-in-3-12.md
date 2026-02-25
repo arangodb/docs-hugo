@@ -2616,13 +2616,8 @@ The management API has the following endpoints:
   in `<database-directory>/crashes/<uuid>/`.
 - `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
 
-```bash
-UUID=$(curl http://localhost:8529/_admin/crashes | jq -r .result[-1])
-curl http://localhost:8529/_admin/crashes/$UUID
-curl -XDELETE http://localhost:8529/_admin/crashes/$UUID
-```
-
 See [HTTP interface for server administration](../../develop/http-api/administration.md#crash-dump-management)
+as well as [The crash dumps feature of the ArangoDB server](../../operations/troubleshooting/crash-dumps.md)
 for details.
 
 ## Client tools

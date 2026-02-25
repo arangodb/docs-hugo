@@ -1390,7 +1390,7 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database and administrate access to the `_system` database.
+            to this database and write access to the `_system` database.
           schema:
             type: string
       responses:
@@ -1455,7 +1455,7 @@ paths:
         '403':
           description: |
             Returned if authentication is enabled and the user does not have
-            *administrate* access to the `_system` database.
+            write access to the `_system` database.
           content:
             application/json:
               schema:
@@ -1627,10 +1627,42 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
-        '404':
+        '403':
           description: |
             Returned if authentication is enabled and the user does not have
             write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
           content:
             application/json:
               schema:
@@ -1793,10 +1825,42 @@ paths:
                     description: |
                       A descriptive error message.
                     type: string
-        '404':
+        '403':
           description: |
             Returned if authentication is enabled and the user does not have
             write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
           content:
             application/json:
               schema:
