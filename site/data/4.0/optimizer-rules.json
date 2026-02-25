@@ -300,6 +300,30 @@
     }
   },
   {
+    "name": "use-vector-index",
+    "description": "Utilize a vector index to accelerate the comparison of\nvector embeddings with vector similarity AQL functions.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "push-filter-into-enumerate-near",
+    "description": "Push Filter into EnumerateNearVector node. Can also optimize\n    filtering by using storedValues. This rule is enabled only by use-vector-index rule",
+    "flags": {
+      "hidden": true,
+      "clusterOnly": false,
+      "canBeDisabled": false,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": true,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "use-indexes",
     "description": "Use indexes to iterate over collections, replacing\n`EnumerateCollectionNode` with `IndexNode` in the query plan.",
     "flags": {
@@ -332,30 +356,6 @@
       "canBeDisabled": true,
       "canCreateAdditionalPlans": false,
       "disabledByDefault": false,
-      "enterpriseOnly": false
-    }
-  },
-  {
-    "name": "use-vector-index",
-    "description": "Utilize a vector index to accelerate the comparison of\nvector embeddings with vector similarity AQL functions.",
-    "flags": {
-      "hidden": false,
-      "clusterOnly": false,
-      "canBeDisabled": true,
-      "canCreateAdditionalPlans": false,
-      "disabledByDefault": false,
-      "enterpriseOnly": false
-    }
-  },
-  {
-    "name": "push-filter-into-enumerate-near",
-    "description": "Push Filter into EnumerateNearVector node. Can also optimize\n    filtering by using storedValues. This rule is enabled only by use-vector-index rule",
-    "flags": {
-      "hidden": true,
-      "clusterOnly": false,
-      "canBeDisabled": false,
-      "canCreateAdditionalPlans": false,
-      "disabledByDefault": true,
       "enterpriseOnly": false
     }
   },
@@ -757,7 +757,7 @@
   },
   {
     "name": "restrict-to-single-shard",
-    "description": "Restrict operations to a single shard instead of applying\nthem for all shards if a collection operation (`IndexNode` or a\ndata modification node) only affects a single shard.\n  \nThis optimization can be applied for queries that access a collection only once\nin the query, and that do not use traversals, shortest path queries, and that\ndo not access collection data dynamically using the `DOCUMENT()`, `FULLTEXT()`,\n`NEAR()` or `WITHIN()` AQL functions. Additionally, the optimizer can only\napply this optimization if it can safely determine the values of all the\ncollection's shard keys from the query, and when the shard keys are covered by\na single index (this is always true if the shard key is the default `_key`).",
+    "description": "Restrict operations to a single shard instead of applying\nthem for all shards if a collection operation (`IndexNode` or a\ndata modification node) only affects a single shard.\n\nThis optimization can be applied for queries that access a collection only once\nin the query, and that do not use traversals, shortest path queries, and that\ndo not access collection data dynamically using the `DOCUMENT()`, `FULLTEXT()`,\n`NEAR()` or `WITHIN()` AQL functions. Additionally, the optimizer can only\napply this optimization if it can safely determine the values of all the\ncollection's shard keys from the query, and when the shard keys are covered by\na single index (this is always true if the shard key is the default `_key`).",
     "flags": {
       "hidden": false,
       "clusterOnly": true,
