@@ -128,6 +128,7 @@ Other attributes may be necessary, depending on the index type.
   - `"geo"`: geo-spatial index, with _one_ or _two_ attributes
   - `"mdi"`: multi-dimensional index
   - `"mdi-prefixed"`: multi-dimensional index with search prefix, including vertex-centric index
+  - `"vector"`: vector index for similarity search on embeddings
 
 - `fields`: an array of attribute paths, containing the document attributes
   (or sub-attributes) to be indexed. Some indexes allow using only a single path,
@@ -143,10 +144,11 @@ Other attributes may be necessary, depending on the index type.
   that the index attribute value is treated as an array and all array members are
   indexed separately. This is possible with `persistent` and `inverted` indexes.
 
-- `storedValues`: in indexes of type `persistent`, `inverted`, `mdi`, and `mdi-prefixed`, additional
-  attributes can be stored in the index. These additional attributes cannot be used for
-  index lookups or for sorting, but they can be used for projections. This allows an
-  index to fully cover more queries and avoid extra document lookups.
+- `storedValues`: in indexes of type `persistent`, `inverted`, `mdi`, `mdi-prefixed`, and `vector`, additional
+  attributes can be stored in the index. For `persistent`, `inverted`, `mdi`, and `mdi-prefixed` indexes,
+  these additional attributes cannot be used for index lookups or for sorting, but they can be used for
+  projections. This allows an index to fully cover more queries and avoid extra document lookups.
+  For `vector` indexes, `storedValues` are used for attributes that you filter on, not for projections.
   Non-existing attributes are stored as `null` values inside `storedValues`.
   The maximum number of attributes in `storedValues` is 32.
   It is not possible to create multiple indexes with the same `fields` attributes
@@ -168,7 +170,7 @@ Other attributes may be necessary, depending on the index type.
   If no index hints are used, going with the auto-generated index names is fine.
 
 - `sparse`: can be `true` or `false`.
-  You can control the sparsity for `persistent`, `mdi`, and `mdi-prefixed` indexes.
+  You can control the sparsity for `persistent`, `mdi`, `mdi-prefixed`, and `vector` indexes.
   The `inverted`, `fulltext`, and `geo` index types are
   [sparse](../which-index-to-use-when.md) by definition.
 
