@@ -785,6 +785,19 @@ and physical memory:
 - `arangodb_server_statistics_effective_cpu_cores`
 - `arangodb_server_statistics_effective_physical_memory`
 
+---
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster:
+
+- `arangodb_metadata_total_number_of_shards`
+- `arangodb_metadata_number_follower_shards`
+- `arangodb_metadata_number_out_of_sync_shards`
+- `arangodb_metadata_number_not_replicated_shards`
+- `arangodb_metadata_shard_followers_out_of_sync_number`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
