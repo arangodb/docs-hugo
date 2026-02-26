@@ -239,6 +239,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
