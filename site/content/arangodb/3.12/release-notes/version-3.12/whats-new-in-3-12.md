@@ -2596,6 +2596,17 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### Endpoint to get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added to the HTTP API for retrieving a small, curated subset of the
+configured server startup options that are safe to expose to any authenticated user.
+
+Administrative tools like the Arango Data Platform web interface can use this
+endpoint to adapt their behavior to the server configuration.
+
 ### Crash dumps
 
 <small>Introduced in: v3.12.8</small>
