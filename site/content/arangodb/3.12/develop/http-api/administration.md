@@ -876,9 +876,9 @@ paths:
         - `disabled`: This endpoint is disabled.
         - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
         - `admin`: This endpoint can only be accessed by users with
-          *Administrate* access level for the `_system` database.
-        - `public`: Every user with access to the `_system` database can access
-          this endpoint.
+          write access to the `_system` database.
+        - `public`: Every user with read access to the `_system` database can
+          access this endpoint.
       responses:
         '200':
           description: |
@@ -892,7 +892,10 @@ paths:
         '401':
           description: |
             You tried to authenticate with user credentials but a superuser token
-            is required, the credentials are wrong, or the user account is inactive.
+            created from the JWT secret is required (`--server.options-api` set
+            to `jwt`), you lack read access to the `_system` database
+            (`--server.options-api` set to `public`), the credentials are wrong,
+            or the user account is inactive.
           content:
             application/json:
               schema:
@@ -923,8 +926,9 @@ paths:
                     type: string
         '403':
           description: |
-            You don't have write access to the `_system` database or you tried
-            to access the endpoint using a database other than `_system`.
+            You don't have write access to the `_system` database
+            (`--server.options-api` set to `admin`) or you tried to access the
+            endpoint using a database other than `_system`.
           content:
             application/json:
               schema:
@@ -1006,9 +1010,9 @@ paths:
         - `disabled`: This endpoint is disabled.
         - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
         - `admin`: This endpoint can only be accessed by users with
-          *Administrate* access level for the `_system` database.
-        - `public`: Every user with access to the `_system` database can access
-          this endpoint.
+          write access to the `_system` database.
+        - `public`: Every user with read access to the `_system` database can
+          access this endpoint.
       responses:
         '200':
           description: |
@@ -1236,9 +1240,9 @@ paths:
                     type: number
         '401':
           description: |
-            Returned if authentication is enabled and the user does not have at
-            least read access to the database, the credentials are wrong, or the
-            user account is inactive.
+            Authentication is enabled and the user account you authenticated with
+            doesn't have at least read access to the specified database, the
+            credentials are wrong, or the user account is inactive.
           content:
             application/json:
               schema:
