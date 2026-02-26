@@ -1373,6 +1373,16 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Batched neighbor retrieval for traversals
+
+<small>Introduced in: v3.12.8</small>
+
+Graph traversals using depth-first search (`dfs`) or breadth-first search (`bfs`)
+now internally batch the fetching of neighbor nodes. Additionally, some unecessary
+waiting for responses is avoided in clusters. This improves the performance of
+traversal queries, especially in cluster deployments and if there is a `LIMIT`
+operations that applies to the traversal results.
+
 ### Cancelation of graph queries
 
 <small>Introduced in: v3.12.8</small>
