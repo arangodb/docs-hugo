@@ -1373,6 +1373,14 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Cancelation of graph queries
+
+<small>Introduced in: v3.12.8</small>
+
+AQL queries can now be killed during the execution of graph traversals and
+paths searches. These operations previously lacked cancelation points to stop
+the execution quickly.
+
 ## Indexing
 
 ### Multi-dimensional indexes
