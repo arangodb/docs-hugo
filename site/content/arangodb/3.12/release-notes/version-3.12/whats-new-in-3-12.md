@@ -1373,6 +1373,27 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Batched neighbor retrieval for traversals
+
+<small>Introduced in: v3.12.8</small>
+
+Graph traversals using depth-first search (`dfs`) or breadth-first search (`bfs`)
+now internally batch the fetching of neighbor nodes. Additionally, some unnecessary
+waiting for responses is avoided in clusters. This improves the performance of
+traversal queries, especially in cluster deployments and if there is a `LIMIT`
+operation that caps the traversal results.
+
+Batching is not supported for `weighted` traversals, SmartGraphs, EnterpriseGraphs,
+and SatelliteGraphs.
+
+### Cancellation of graph queries
+
+<small>Introduced in: v3.12.8</small>
+
+AQL queries can now be killed during the execution of graph traversals and
+paths searches. These operations previously lacked cancellation points to stop
+the execution quickly.
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -2595,6 +2616,34 @@ _arangod_ process into account:
 
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
+
+### Shard monitoring and replication metrics
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster. You can monitor
+the total number of shards (leaders and followers), track the replication status,
+and identify shards that are out of sync or not properly replicated.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_metadata_total_number_of_shards` | Total number of leader and follower shards in the deployment. In a cluster, this is the number of shards across collections of all databases. |
+| `arangodb_metadata_number_follower_shards` | Number of follower shards that exist across collections of all databases. |
+| `arangodb_metadata_number_out_of_sync_shards` | Number of shards that are out of sync across collections of all databases. Indicates where the Plan (expected state) differs from Current (actual state). |
+| `arangodb_metadata_number_not_replicated_shards` | Number of shards that are not replicated across collections of all databases. Represents potential single points of failure where shards lack follower redundancy. |
+| `arangodb_metadata_shard_followers_out_of_sync_number` | Number of follower shards across the cluster that are out of sync with their leader. Computed by the coordinator by comparing the Plan (expected state) with Current state (actual state). |
+
+### Endpoint to get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added to the HTTP API for retrieving a small, curated subset of the
+configured server startup options that are safe to expose to any authenticated user.
+
+Administrative tools like the Arango Data Platform web interface can use this
+endpoint to adapt their behavior to the server configuration.
 
 ### Crash dumps
 

@@ -2957,7 +2957,7 @@ paths:
 Running AQL queries can be killed on the server. To kill a running query, its ID
 (as returned for the query in the list of currently running queries) must be
 specified. The kill flag of the query is then set, and the query is aborted as
-soon as it reaches a cancelation point.
+soon as it reaches a cancellation point.
 
 ### Kill a running AQL query
 
@@ -2968,7 +2968,7 @@ paths:
       operationId: deleteAqlQuery
       description: |
         Kills a running query in the currently selected database. The query will be
-        terminated at the next cancelation point.
+        terminated at the next cancellation point.
       parameters:
         - name: database-name
           in: path

@@ -239,6 +239,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
@@ -346,6 +398,14 @@ Licenses are now bound to specific deployments. Each deployment has a unique
 identifier that you can retrieve via a new
 [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
+
+#### Get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added for retrieving a small, curated subset of the configured server
+startup options that are safe to expose to any authenticated user.
 
 #### Crash dump management
 
@@ -732,6 +792,19 @@ and physical memory:
 - `arangodb_server_statistics_cpu_cgroup_version`
 - `arangodb_server_statistics_effective_cpu_cores`
 - `arangodb_server_statistics_effective_physical_memory`
+
+---
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster:
+
+- `arangodb_metadata_total_number_of_shards`
+- `arangodb_metadata_number_follower_shards`
+- `arangodb_metadata_number_out_of_sync_shards`
+- `arangodb_metadata_number_not_replicated_shards`
+- `arangodb_metadata_shard_followers_out_of_sync_number`
 
 #### Stream Transactions API
 
