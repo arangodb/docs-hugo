@@ -213,7 +213,7 @@ Example not generated because it changes on every run and it is difficult to con
 {{< /comment >}}
 
 ```bash
-curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/activities
+curl --header 'accept: application/json' --dump - http://localhost:8529/_arango/experimental/_admin/activities
 ```
 
 {{< details summary="Show output" >}}
