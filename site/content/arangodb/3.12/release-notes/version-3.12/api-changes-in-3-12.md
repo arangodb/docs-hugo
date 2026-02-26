@@ -239,6 +239,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
@@ -346,6 +398,20 @@ Licenses are now bound to specific deployments. Each deployment has a unique
 identifier that you can retrieve via a new
 [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
+
+#### Crash dump management
+
+<small>Introduced in: v3.12.8</small>
+
+New endpoints for viewing and managing crash dumps have been added to the HTTP API:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+for details.
 
 ### Endpoints augmented
 
