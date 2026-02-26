@@ -1491,6 +1491,572 @@ Content-Length: 45
 ```
 {{< /details >}}
 
+## Crash dump management
+
+### List crash dumps
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes:
+    get:
+      operationId: listCrashDumps
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Return the list of crash dump directory identifiers (UUIDs).
+
+        When the server crashes, the crash handler writes diagnostic data into
+        a per-crash directory under `<database-directory>/crashes/<uuid>/`.
+        Each dump includes information such as recent API calls and AQL queries,
+        a backtrace, and system information.
+
+        The server keeps the most recent 10 crash dumps. Older ones are removed
+        during startup.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns a list of crash dump identifiers (UUIDs).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      Array of crash dump identifiers (UUIDs).
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+### Get a crash dump
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes/{crashId}:
+    get:
+      operationId: getCrashDump
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Return the contents of a specific crash dump. The response includes all
+        files from the crash directory (e.g. `backtrace.txt`, `system_info.txt`,
+        `ApiRecording.json`, `AsyncRegistry.json`) as an object mapping filenames
+        to their contents. Crash dumps are stored under
+        `<database-directory>/crashes/<uuid>/`.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+        - name: crashId
+          in: path
+          required: true
+          description: |
+            The UUID of the crash dump directory.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: |
+            Returns the crash dump contents.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    type: object
+                    required:
+                      - crashId
+                      - files
+                    properties:
+                      crashId:
+                        description: |
+                          The crash dump identifier (UUID).
+                        type: string
+                        format: uuid
+                      files:
+                        description: |
+                          Object mapping file names to their contents (e.g.
+                          `backtrace.txt`, `system_info.txt`, `ApiRecording.json`,
+                          `AsyncRegistry.json`).
+                        type: object
+                        additionalProperties:
+                          type: string
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+### Delete a crash dump
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes/{crashId}:
+    delete:
+      operationId: deleteCrashDump
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Delete a specific crash dump directory and its contents. Crash dumps are
+        stored under `<database-directory>/crashes/<uuid>/`. The server keeps the
+        most recent 10 crash dumps. Older ones are removed during startup.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+        - name: crashId
+          in: path
+          required: true
+          description: |
+            The UUID of the crash dump directory to delete.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: |
+            The crash dump was deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    type: object
+                    required:
+                      - deleted
+                      - crashId
+                    properties:
+                      deleted:
+                        type: boolean
+                        example: true
+                      crashId:
+                        type: string
+                        format: uuid
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
 ## Shutdown
 
 ### Start the shutdown sequence
