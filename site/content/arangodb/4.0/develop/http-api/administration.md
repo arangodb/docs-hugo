@@ -1072,7 +1072,8 @@ paths:
     get:
       operationId: getLicense
       description: |
-        View the license information and status of an Enterprise Edition instance.
+        View the license information and status of the ArangoDB deployment.
+
         Can be called on single servers, Coordinators, and DB-Servers.
       parameters:
         - name: database-name
@@ -1138,19 +1139,18 @@ paths:
                       The `status` attribute allows you to confirm the state of the
                       applied license at a glance.
 
-                      - `good`: The license is valid for more than 2 weeks.
-                      - `expiring`: The license is valid for less than 2 weeks.
-                        Not applicable if you use license activation rather than a
-                        license key, in which case the transition is directly from
-                        `good` to `read-only`.
-                      - `expired`: The license has expired. In this situation, no new
-                        Enterprise Edition features can be utilized.
-                      - `read-only`: The license is expired over 2 weeks. The instance is now
+                      - `good`: The license is still valid for more than a week.
+                      - `expiring`: The license is valid for less than a week.
+                        This status is not applicable if you use license activation
+                        (managed license, from v3.12.6 onward) rather than a license key,
+                        in which case the transition is directly from `good` to
+                        `read-only` when the activation expires.
+                      - `read-only`: The license has expired. The instance is now
                         restricted to read-only mode.
 
                       This attribute is only present if an Enterprise Edition license is applied.
                     type: string
-                    enum: [good, expiring, expired, read-only]
+                    enum: [good, expiring, read-only]
                     example: good
                   upgrading:
                     description: |

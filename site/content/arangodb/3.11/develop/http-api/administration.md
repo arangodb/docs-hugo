@@ -897,14 +897,12 @@ paths:
                       The `status` key allows you to confirm the state of the installed license on a
                       glance.
 
-                      - `good`: The license is valid for more than 2 weeks.
-                      - `expiring`: The license is valid for less than 2 weeks.
-                      - `expired`: The license has expired. In this situation, no new
-                        Enterprise Edition features can be utilized.
-                      - `read-only`: The license is expired over 2 weeks. The instance is now
+                      - `good`: The license is still valid for more than a week.
+                      - `expiring`: The license is valid for less than a week.
+                      - `read-only`: The license has expired. The instance is now
                         restricted to read-only mode.
                     type: string
-                    enum: [good, expiring, expired, read-only]
+                    enum: [good, expiring, read-only]
                     example: good
                   upgrading:
                     description: |
