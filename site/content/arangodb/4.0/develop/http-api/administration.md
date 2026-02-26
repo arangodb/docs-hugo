@@ -1140,6 +1140,9 @@ paths:
 
                       - `good`: The license is valid for more than 2 weeks.
                       - `expiring`: The license is valid for less than 2 weeks.
+                        Not applicable if you use license activation rather than a
+                        license key, in which case the transition is directly from
+                        `good` to `read-only`.
                       - `expired`: The license has expired. In this situation, no new
                         Enterprise Edition features can be utilized.
                       - `read-only`: The license is expired over 2 weeks. The instance is now
