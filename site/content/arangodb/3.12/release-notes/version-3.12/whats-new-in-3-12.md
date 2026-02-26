@@ -2665,8 +2665,8 @@ The new [`--activities.only-superuser-enabled` startup option](../../components/
 lets you restrict the access from admin users to only the superuser.
 
 The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
-option controls the interval (in seconds) between garbage collections that is
-performed by threads involved in the activity tracking.
+option controls the interval (in seconds) at which the activity registry is
+garbage-collected by a background cleanup thread.
 
 The following metrics related to activities have been added:
 

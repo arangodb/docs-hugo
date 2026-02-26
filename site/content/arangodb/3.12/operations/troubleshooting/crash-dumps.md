@@ -16,7 +16,7 @@ and you may want to share it with the Arango support and development teams.
 
 You can disable the creation of crash dumps as well as the HTTP API for
 managing crash dumps by setting the
-[`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+[`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps)
 to `false`.
 
 ## Crash dump location on disk
