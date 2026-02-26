@@ -421,6 +421,14 @@ New endpoints for viewing and managing crash dumps have been added to the HTTP A
 See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
 for details.
 
+#### Activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature.
+See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API

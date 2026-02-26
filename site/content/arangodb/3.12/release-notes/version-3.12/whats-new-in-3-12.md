@@ -2669,6 +2669,64 @@ See [HTTP interface for server administration](../../develop/http-api/administra
 as well as [The crash dumps feature of the ArangoDB server](../../operations/troubleshooting/crash-dumps.md)
 for details.
 
+### New server activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature, allowing you to
+see which high-level processes are currently running on the server (HTTP handlers,
+AQL queries, and so on).
+
+```json
+{
+  "activities": [
+    {
+      "id": "0x7ec9c067a040",
+      "type": "RestHandler",
+      "parent": {
+        "id": "0x0"
+      },
+      "metadata": {
+        "method": "POST",
+        "url": "/_api/cursor",
+        "handler": "RestCursorHandler"
+      }
+    },
+    {
+      "id": "0x7ec9c022f3c0",
+      "type": "AQLQuery",
+      "parent": {
+        "id": "0x7ec9c067a040"
+      },
+      "metadata": {
+        "query": "RETURN SLEEP(@seconds)"
+      }
+    },
+    ...
+  ]
+}
+```
+
+See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
+for details.
+
+The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
+lets you restrict the access from admin users to only the superuser.
+
+The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
+option controls the interval (in seconds) at which the activity registry is
+garbage-collected by a background cleanup thread.
+
+The following metrics related to activities have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_activities_total` | Total number of created activities since database process start |
+| `arangodb_activities_existing` | Number of currently existing activities |
+| `arangodb_activities_ready_for_deletion` | Number of currently existing activities that wait for their garbage collection |
+| `arangodb_activities_thread_registries_total` | Total number of threads that started activities since database process start |
+| `arangodb_activities_existing_thread_registries` | Number of currently existing activity thread registries |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
@@ -2825,6 +2883,26 @@ Startup options to enable transparent compression of the data that is sent
 between a client tool and the ArangoDB server have been added. See the
 [Server options](#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
 section above that includes a description of the added client tool options.
+
+### arangosh
+
+#### New activities module
+
+<small>Introduced in: v3.12.8</small>
+
+The new [`@arangodb/activities` module](../../develop/javascript-api/activities.md)
+lets you pretty-print the high-level server activities in the ArangoDB Shell:
+
+```js
+const activities = require("@arangodb/activities");
+activities.get_snapshot();
+```
+
+```
+ ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
+    └── AQLQuery: {"query":"RETURN SLEEP(@seconds)"}
+ ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
+```
 
 ## Internal changes
 

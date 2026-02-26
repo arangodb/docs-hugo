@@ -2059,7 +2059,7 @@ paths:
                         description: |
                           Object mapping file names to their contents (e.g.
                           `backtrace.txt`, `system_info.txt`, `ApiRecording.json`,
-                          `AsyncRegistry.json`).
+                          `Activities.json`, `AsyncRegistry.json`).
                         type: object
                         additionalProperties:
                           type: string
