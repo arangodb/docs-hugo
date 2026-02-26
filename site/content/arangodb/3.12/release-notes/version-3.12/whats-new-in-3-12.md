@@ -1378,17 +1378,20 @@ Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 <small>Introduced in: v3.12.8</small>
 
 Graph traversals using depth-first search (`dfs`) or breadth-first search (`bfs`)
-now internally batch the fetching of neighbor nodes. Additionally, some unecessary
+now internally batch the fetching of neighbor nodes. Additionally, some unnecessary
 waiting for responses is avoided in clusters. This improves the performance of
 traversal queries, especially in cluster deployments and if there is a `LIMIT`
-operations that applies to the traversal results.
+operation that caps the traversal results.
 
-### Cancelation of graph queries
+Batching is not supported for `weighted` traversals, SmartGraphs, EnterpriseGraphs,
+and SatelliteGraphs.
+
+### Cancellation of graph queries
 
 <small>Introduced in: v3.12.8</small>
 
 AQL queries can now be killed during the execution of graph traversals and
-paths searches. These operations previously lacked cancelation points to stop
+paths searches. These operations previously lacked cancellation points to stop
 the execution quickly.
 
 ## Indexing
