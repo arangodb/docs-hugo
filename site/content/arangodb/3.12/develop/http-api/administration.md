@@ -355,7 +355,9 @@ paths:
                 type: object
         '401':
           description: |
-            Missing read access to the given database.
+            The user account you authenticated with lacks read access to the
+            specified database, the credentials are wrong, or the user account
+            is inactive.
           content:
             application/json:
               schema:
@@ -376,6 +378,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The `--server.harden` startup option is enabled but the user account
+            you authenticated with lacks write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
