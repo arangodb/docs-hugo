@@ -204,8 +204,9 @@ The Go driver supports vector indexes from v2.2.0 onward.
 
 ```go
 import (
-    "github.com/arangodb/go-driver/v2/arangodb"
-    "github.com/arangodb/go-driver/v2/utils"
+  "github.com/arangodb/go-driver/v2/arangodb"
+  "github.com/arangodb/go-driver/v2/utils"
+  "fmt"
 )
 
 // ...
@@ -247,7 +248,7 @@ The Java driver supports vector indexes from v7.24.0 onward.
 Collection<String> fields = Collections.singletonList("embedding");
 
 VectorIndexParams params = new VectorIndexParams()
-        .metric(VectorIndexParams.Metric.l2)
+        .metric(VectorIndexParams.Metric.L2)
         .dimension(544)
         .nLists(100)
         .defaultNProbe(1)
