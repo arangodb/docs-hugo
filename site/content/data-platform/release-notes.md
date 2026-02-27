@@ -5,10 +5,29 @@ weight: 50
 description: >-
   Features and improvements in the Arango Data Platform
 ---
-{{< tip >}}
-The Arango Data Platform is available as a pre-release. To get exclusive early access,
-[get in touch](https://arango.ai/contact-us/) with the Arango team.
-{{< /tip >}}
+## March 2026 (v4.0)
+
+### Dashboard
+
+A new home screen has been added, providing the following information and actions:
+
+- A cluster respectively single server health overview
+- Shard distribution information and rebalancing options
+- The cluster maintenance status
+
+### Query Editor
+
+The [Query Editor](query-editor.md) has been extended with the following capabiltiies:
+
+- **Graph visualization**: If a query returns edges or traversal paths, the
+  results are shown by an embedded graph viewer. You can still switch to a JSON
+  view mode of the results.
+
+- **Download results**:
+  You can download the results of queries in JSON and CSV format.
+
+- **Syntax highlighting**: AQL queries in the query editor are colorized for
+  better readability.
 
 ## October 2025 (pre-release)
 
@@ -16,7 +35,7 @@ The Arango Data Platform is available as a pre-release. To get exclusive early a
 
 This release includes new features and enhancements for the Data Platform web
 interface, running with ArangoDB Enterprise Edition v3.12.6. For AI Suite updates
-in this release, see [AI Suite Release Notes](../ai-suite/release-notes.md).
+in this release, see [Agentic AI Suite Release Notes](../agentic-ai-suite/release-notes.md).
 
 ### Query Editor
 
@@ -63,13 +82,19 @@ Key improvements:
 - **Performance improvements**: Optimized rendering for large graphs with
   millions of nodes and edges.
 
+### Platform Services
+
+- **Secrets Manager**: Store secrets like API keys for Large Language Model (LLM)
+  for easy use across the Data Platform. Secrets are encrypted at rest and can be
+  accessed by services via a metadata sidecar container.
+
 ## July 2025 (pre-release)
 
 <small>ArangoDB Enterprise Edition: v3.12.5</small>
 
 This release marks the initial internal launch of the Arango Data Platform, running with
-ArangoDB Enterprise Edition v3.12.5. For AI Suite features in this release, see
-[AI Suite Release Notes](../ai-suite/release-notes.md).
+ArangoDB Enterprise Edition v3.12.5. For Agentic AI Suite features in this release, see
+[Agentic AI Suite Release Notes](../agentic-ai-suite/release-notes.md).
 
 ### Arango Data Platform
 
@@ -91,6 +116,6 @@ What's included:
 - **Unified web interface**: Single interface for accessing all Platform services
   and components.
 
-The Data Platform can be extended with the [AI Suite](../ai-suite/_index.md) for
+The Data Platform can be extended with the [Agentic AI Suite](../agentic-ai-suite/_index.md) for
 advanced capabilities like GraphRAG, GraphML, Graph Analytics, AQLizer, and more
 (requires separate license).

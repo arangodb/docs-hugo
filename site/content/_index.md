@@ -19,10 +19,12 @@ key-value, vector, and full-text search with one query language.
 Adds platform services for scalability, reliability, governance, and a graph exploration tool.
 {{% /card %}}
 
-{{% card title="AI Suite" link="ai-suite/" icon="avo-full.svg" %}}
-Supercharge your Data Platform with GraphRAG, GraphML,
-and queries generated from natural language for AI-powered insights.
+{{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" icon="avo-full.svg" %}}
+Supercharge your Data Platform with GraphRAG, GraphML, and queries generated from
+natural language for AI-powered insights.
 {{% /card %}}
+
+<!-- TODO: Add cards for Agentic AI Suite and Platform Suite? -->
 
 {{% card title="Arango Managed Platform (AMP)" link="amp/" %}}
 Arango's fully-managed cloud offering for a faster time to value,
@@ -77,8 +79,8 @@ Unlike with graph queries, this involves the entire graph at once.
 Graph analytics can answer questions like\
 **Who are the most connected persons?**
 
-Arango offers a [Graph Analytics](ai-suite/graph-analytics.md) solution as part
-of the [Arango AI Data Platform](data-platform/features.md) to run algorithms
+Arango offers a [Graph Analytics](data-platform/graph-analytics/_index.md) solution
+as part of the [Arango Data Platform](data-platform/features.md) to run algorithms
 such as connected components, label propagation, and PageRank on your data.
 
 ### GraphML
@@ -93,8 +95,8 @@ GraphML can answer questions like:
 - **Is this particular transaction anomalous?**
 
 Arango's enterprise-ready, graph-powered machine learning capabilities are
-included in the [AI Suite](ai-suite/_index.md) as part of the
-Arango AI Data Platform. See [Arango GraphML](ai-suite/graphml/_index.md).
+included in the [Agentic AI Suite](agentic-ai-suite/_index.md) as part of the
+Arango Contextual Data Platform. See [Arango GraphML](agentic-ai-suite/graphml/_index.md).
 
 ### GraphRAG
 
@@ -103,8 +105,8 @@ data is not properly or cleanly represented. GraphRAG is a technique that
 turbocharges GenAI applications using the power of graph relationships and
 vector embeddings.
 
-Arango's [GraphRAG](ai-suite/graphrag/_index.md) included in the
-[AI Suite](ai-suite/_index.md) is a turn-key solution to transform your
+Arango's [GraphRAG](agentic-ai-suite/graphrag/_index.md) included in the
+[Agentic AI Suite](agentic-ai-suite/_index.md) is a turn-key solution to transform your
 organization's data into a knowledge graph and let everyone utilize the
 knowledge by asking questions in natural language.
 
