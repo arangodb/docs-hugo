@@ -11,7 +11,7 @@ amounts data. This data needs to be stored outside of the ArangoDB database syst
 
 The Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
-the AI Suite for instance, such as for storing AI models and training-related
+the Agentic AI Suite for instance, such as for storing AI models and training-related
 metadata, as well as for user-uploaded GraphRAG content. Custom services make
 use of the file manager for application code, too.
 

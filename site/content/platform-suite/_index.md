@@ -2,25 +2,13 @@
 title: The Arango Platform Suite (v4.0)
 menuTitle: Arango Platform Suite
 weight: 3
-description: >-
-  The Arango Data Platform brings everything ArangoDB offers together to a single
-  solution that you can deploy on-prem or use as a managed service
+description: >- # TODO
+  The Arango Data Platform includes the Platform Suite, a set of services and
+  features for operating ArangoDB with Kubernetes and making the most of your data
 aliases:
   - data-platform/get-started
 ---
-The Arango Data Platform is a **Kubernetes-native** technical infrastructure that
-acts as the umbrella for hosting the entire ArangoDB offering of products.
-Built from the ground up for cloud-native orchestration, the platform leverages
-the power of Kubernetes to make it easy to deploy, scale, and operate the core
-ArangoDB database system along with additional services and AI solutions for
-GraphRAG, graph machine learning, data explorations, and more. You can
-run it on-premises or in the cloud yourself on top of Kubernetes to access all
-of the platform features with enterprise-grade automation and reliability.
-
-## What Makes Up the Arango Data Platform
-
-The Arango Data Platform is built on a layered architecture that combines powerful
-components into a unified solution:
+## What Makes Up the Arango Platform Suite
 
 - [**ArangoDB Enterprise Edition**](../arangodb/_index.md):
   The multi-model database foundation supporting graphs, documents, key-value,
@@ -37,13 +25,14 @@ components into a unified solution:
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.
 
-For a detailed breakdown of each component, see [Features and Architecture](features/).
+For a detailed breakdown of each component, see [Features and Architecture](features.md).
 
 ## Extend the Arango Data Platform with AI capabilities
 
-Extend the Arango Data Platform with the [**Agentic AI Suite**](../agentic-ai-suite/_index.md) 
-that offers advanced AI and machine learning capabilities that integrate seamlessly
-into the platform's unified web interface.
+Extend the Arango Data Platform and its Platform Suite with the
+[**Agentic AI Suite**](../agentic-ai-suite/_index.md) to get the full
+Arango Contextual Data Platform. It offers advanced AI and machine learning
+capabilities that integrate seamlessly into the platform's unified web interface.
 
 {{< tip >}}
 The Agentic AI Suite requires a separate license.
@@ -87,7 +76,7 @@ Optionally add the Agentic AI Suite to turn data into an AI-powered knowledge en
 Explore the Kubernetes-native architecture, unified interface, and enterprise-grade capabilities of the Arango Data Platform.
 {{% /card %}}
 
-{{% card title="Kubernetes-Native Architecture" link="kubernetes/" %}}
+{{% card title="Kubernetes-Native Architecture" link="../contextual-data-platform/kubernetes/" %}}
 Learn about the Kubernetes-native foundation that the Arango Data Platform is purpose-built on.
 {{% /card %}}
 
@@ -95,11 +84,11 @@ Learn about the Kubernetes-native foundation that the Arango Data Platform is pu
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
 {{% /card %}}
 
-{{% card title="Agentic AI Suite" link="../../agentic-ai-suite/" %}}
+{{% card title="Agentic AI Suite" link="../agentic-ai-suite/" %}}
 Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
 {{% /card %}}
 
-{{% card title="ArangoDB Core Database" link="../../arangodb/" %}}
+{{% card title="ArangoDB Core Database" link="../arangodb/" %}}
 Discover the multi-model database at the heart of the platform supporting graphs, documents, key-value, and vector search.
 {{% /card %}}
 

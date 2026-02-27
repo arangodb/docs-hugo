@@ -9,7 +9,7 @@ description: >-
 ## October 2025 (pre-release)
 
 This release introduces new features and enhancements to the Agentic AI Suite components.
-See also the [Arango Data Platform Release Notes](../data-platform/release-notes.md).
+See also the [Arango Data Platform Release Notes](../platform-suite/release-notes.md).
 
 ### GraphRAG enhancements
 
@@ -41,7 +41,7 @@ You can generate AQL queries from natural language directly in the Query Editor 
 
 This release marks the initial internal launch of the Agentic AI Suite with the following
 components. For Data Platform features in this release, see
-[Arango Data Platform Release Notes](../data-platform/release-notes.md).
+[Arango Data Platform Release Notes](../platform-suite/release-notes.md).
 
 - **[GraphRAG](graphrag/_index.md)**: Transform unstructured documents into
   intelligent knowledge graphs and natural language querying through Importer

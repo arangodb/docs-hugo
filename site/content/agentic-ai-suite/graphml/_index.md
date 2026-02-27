@@ -29,7 +29,7 @@ traditional ML, which primarily operates on tabular data, GraphML applies
 specialized algorithms like Graph Neural Networks (GNNs), node embeddings, and
 link prediction to uncover complex patterns and insights.
 
-The underlying framework for ArangoDB's GraphML is **[GraphSAGE](https://snap.stanford.edu/graphsage/)**.
+The underlying framework for Arango's GraphML is **[GraphSAGE](https://snap.stanford.edu/graphsage/)**.
 GraphSAGE (Graph Sample and AggreGatE) is a powerful Graph Neural Network (GNN)
 **framework** designed for inductive representation learning on large graphs.
 It is used to generate low-dimensional vector representations for nodes and is
@@ -60,7 +60,7 @@ to recommendation systems.
 ![GraphML Workflow](../../images/GraphML-How-it-works.webp)
 
 You no longer need to understand the complexities of graph machine learning to
-benefit from it. Solutions with ArangoDB's GraphML only require input from a user about
+benefit from it. Solutions with Arango's GraphML only require input from a user about
 their data, and the GraphML managed service handles the rest.
 
 The platform comes preloaded with all the tools needed to prepare your graph

@@ -16,7 +16,8 @@ key-value, vector, and full-text search with one query language.
 {{% /card %}}
 
 {{% card title="Arango Data Platform" link="data-platform/" icon="avo-middle.svg" %}}
-Adds platform services for scalability, reliability, governance, and a graph exploration tool.
+Adds platform services for scalability, reliability, governance, as well as a
+query editor and graph visualizer.
 {{% /card %}}
 
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" icon="avo-full.svg" %}}

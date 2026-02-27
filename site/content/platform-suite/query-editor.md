@@ -51,7 +51,7 @@ The Query Editor of the Arango Data Platform offers the following features:
 - **Ask AI for AQL Queries (AQLizer)**:
   Describe what you want in natural language and generate AQL queries right
   from the Query Editor. This feature is only available in the
-  Arango AI Data Platform.
+  Arango Contextual Data Platform.
 
 ![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
 
@@ -75,7 +75,7 @@ The following buttons are available at the bottom of a query tab:
 - **Save**: Store the query and the bind variables under a name you provide.
   The saved queries of the current database are listed in the sidebar on the
   left-hand side under **Saved**, where you can also clone, rename, and delete them.
-- **AQLizer**: This button is only visible if you use the AI Data Platform.
+- **AQLizer**: This button is only visible if you use the Arango Contextual Data Platform.
   See [Generate queries (AQLizer)](#generate-queries-aqlizer).
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.

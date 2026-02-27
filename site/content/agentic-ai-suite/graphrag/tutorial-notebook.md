@@ -2,14 +2,15 @@
 title: GraphRAG Notebook Tutorial
 menuTitle: Notebook Tutorial
 description: >-
-  Building a GraphRAG pipeline using ArangoDB's integrated notebook servers
+  Building a GraphRAG pipeline using the integrated notebook servers of the
+  Arango Contextual Data Platform
 weight: 25
 ---
 ## Tutorial overview
 
 This tutorial guides you through the process of building a
 Graph-based Retrieval Augmented Generation (GraphRAG) pipeline using
-the integrated Notebook servers of the Arango AI Data Platform. GraphRAG is an advanced framework that
+the integrated Notebook servers of the Arango Contextual Data Platform. GraphRAG is an advanced framework that
 combines the power of knowledge graphs (KGs) and large language models (LLMs)
 to provide precise and contextually relevant responses from unstructured text data.
 
@@ -43,7 +44,7 @@ and setting up the network functions for interacting with ArangoDB services.
 ### Install required libraries
 
 First, install all the Python libraries necessary for PDF parsing, Markdown
-conversion, and interacting with the ArangoDB GraphRAG services.
+conversion, and interacting with the Arango GraphRAG services.
 
 ```py
 ! pip install fitz
@@ -245,7 +246,7 @@ pprint(importerResponse)
 ### Visualize and interact with the Knowledge Graph
 
 Once the importer service has processed the document, you can visualize and
-interact with the generated Knowledge Graph using the [Graph Visualizer](../../data-platform/graph-visualizer.md)
+interact with the generated Knowledge Graph using the [Graph Visualizer](../../platform-suite/graph-visualizer.md)
 directly from the Arango Data Platform web interface.
 
 1. In the Arango Data Platform web interface, select the database you have previously used.
@@ -467,7 +468,7 @@ Then, you can launch the global retriever and the local retriever interfaces:
 import gradio as gr
 
 gr.ChatInterface(
-    title="ArangoDB GraphRAG Global Retriever",
+    title="Arango GraphRAG Global Retriever",
     fn=global_query,
     chatbot=gr.Chatbot(height=1000, type="messages"),
     type="messages",
@@ -479,7 +480,7 @@ gr.ChatInterface(
 import gradio as gr
 
 gr.ChatInterface(
-    title="ArangoDB GraphRAG Local Retriever",
+    title="Arango GraphRAG Local Retriever",
     fn=local_query,
     chatbot=gr.Chatbot(height=1000, type="messages"),
     type="messages",

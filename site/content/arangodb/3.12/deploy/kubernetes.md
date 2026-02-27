@@ -18,7 +18,7 @@ to learn how to install the ArangoDB Kubernetes operator and create your first
 deployment.
 
 To learn more about deploying the Data Platform with the operator, see
-[Install and upgrade the Arango Data Platform](../../../data-platform/install-and-upgrade/_index.md).
+[Install and upgrade the Arango Data Platform](../../../platform-suite/install-and-upgrade/_index.md).
 
 You can find information about troubleshooting, CustomResource references, and
 other details in the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/).

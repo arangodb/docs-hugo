@@ -20,8 +20,8 @@ description: >-
 See the full [Feature list of the ArangoDB database system](list.md).
 
 For a scalable architecture based on Kubernetes that supports the full offering
-of ArangoDB including graph-powered machine learning and AI features, see
-the [Feature list of the Arango Data Platform](../../../data-platform/features.md).
+of Arango including graph-powered machine learning and AI features, see
+the [Feature list of the Arango Contextual Data Platform](../../../platform-suite/features.md).
 
 ## On-premises versus Cloud
 

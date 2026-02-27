@@ -9,7 +9,7 @@ description: >-
 
 - **Early access to the Arango Data Platform**:
   [Get in touch](https://arango.ai/contact-us/) with the Arango team to get
-  exclusive early access to the pre-release of the Arango Data Platform & AI Suite.
+  exclusive early access to the pre-release of the Arango Data Platform & Agentic AI Suite.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Data Platform, running them in containers for safety and scalability.
