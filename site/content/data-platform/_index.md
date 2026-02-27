@@ -1,7 +1,7 @@
 ---
-title: The Arango Data Platform (v4.0)
+title: The Arango Platform Suite (v4.0)
 menuTitle: Arango Platform Suite
-weight: 4
+weight: 3
 description: >-
   The Arango Data Platform brings everything ArangoDB offers together to a single
   solution that you can deploy on-prem or use as a managed service

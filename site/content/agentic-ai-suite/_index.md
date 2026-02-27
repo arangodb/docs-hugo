@@ -1,7 +1,7 @@
 ---
 title: The Arango Agentic AI Suite for the Data Platform (v4.0)
 menuTitle: Agentic AI Suite
-weight: 3
+weight: 2
 description: >-
   A comprehensive AI solution that transforms your data into intelligent
   knowledge graphs with GraphRAG capabilities, applies advanced machine learning
