@@ -34,10 +34,24 @@ Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
 ### Upgraded bundled library versions
 
+<small>Introduced in: v3.11.14-2</small>
+
 Upgraded ArangoDB Starter to version 0.18.19.
 
-Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.11.
+Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.11 and
+updated dependencies.
 
 Upgraded OpenSSL to version 3.5.4.
 
 Updated the timezone data (tzdata) to the version as of 2025-11-05.
+
+---
+
+<small>Introduced in: v3.11.14-3</small>
+
+Upgraded ArangoDB Starter to version 0.18.21.
+
+Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.13 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.5.
