@@ -95,8 +95,9 @@ centroids and the quality of vector search thus degrades.
   - **nLists** (number): The number of Voronoi cells to partition the vector space
     into, respectively the number of centroids in the index. What value to choose
     depends on the data distribution and chosen metric. According to
-    [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should be
-    around `N / 15` where `N` is the number of documents in the collection,
+    [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should scale
+    sublinearly with the document count. The recommendation for ArangoDB is to use
+    approximately `15 * sqrt(N)` where `N` is the number of documents in the collection,
     respectively the number of documents in the shard for cluster deployments.
     A bigger value produces more correct results but increases the training time
     and thus how long it takes to build the index. It cannot be bigger than the
@@ -133,11 +134,12 @@ centroids and the quality of vector search thus degrades.
 2. Go to the **Indexes** tab.
 3. Click **Add index**.
 4. Select **Vector** as the **Type**.
-5. Enter the name of the attribute that holds the vector embeddings into **Fields**.
-6. Set the parameters for the vector index. See [Vector index properties](#vector-index-properties)
-   under `param`.
-7. Optionally give the index a user-defined name.
-8. Click **Create**.
+5. Enter the name of the attribute that holds the vector embeddings into **Field**.
+6. Optionally give the index a user-defined **Name**.
+7. Optionally define **Extra stored values** you want to filter on.
+8. Set the parameters for the vector index. See [Vector index properties](#vector-index-properties)
+   under `params`. Optionally adjust the index options such as **Sparse**.
+9. Click **Create**.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
@@ -152,15 +154,25 @@ db.coll.ensureIndex({
     nLists: 100,
     defaultNProbe: 1,
     trainingIterations: 25
-  }
+  },
+  inBackground: false,
+  parallelism: 1,
+  sparse: false,
+  storedValues: ["attr1", "attr2"]
 });
 ```
+
+Also see [`collection.ensureIndex()`](_index.md#creating-an-index)
+in the _JavaScript API_.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
 ```sh
-curl -d '{"name":"vector_l2","type":"vector","fields":["embedding"],"params":{"metric":"l2","dimension":544,"nLists":100,"defaultNProbe":1,"trainingIterations":25}}' http://localhost:8529/_db/mydb/_api/index?collection=coll
+curl -d '{"name":"vector_l2","type":"vector","fields":["embedding"],"params":{"metric":"l2","dimension":544,"nLists":100,"defaultNProbe":1,"trainingIterations":25},"inBackground":false,"parallelism":1,"sparse":false,"storedValues":["attr1","attr2"]}' http://localhost:8529/_db/mydb/_api/index?collection=coll
 ```
+
+See the [`POST /_db/{database-name}/_api/index`](../../../develop/http-api/indexes/vector.md#create-a-vector-index)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -175,17 +187,85 @@ const info = await coll.ensureIndex({
     nLists: 100,
     defaultNProbe: 1,
     trainingIterations: 25
-  }
+  },
+  inBackground: false,
+  parallelism: 1,
+  sparse: false,
+  storedValues: ["attr1", "attr2"]
 });
 ```
+
+See [`DocumentCollection.ensureIndex()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#ensureIndex)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
-The Go driver does not support vector indexes yet.
+The Go driver supports vector indexes from v2.2.0 onward.
+
+```go
+import (
+  "github.com/arangodb/go-driver/v2/arangodb"
+  "github.com/arangodb/go-driver/v2/utils"
+  "fmt"
+)
+
+// ...
+
+fields := []string{ "embedding" }
+
+params := arangodb.VectorParams{
+  DefaultNProbe: utils.NewType(1),
+  Dimension: utils.NewType(544),
+  Metric: utils.NewType(arangodb.VectorMetricL2),
+  NLists: utils.NewType(100),
+  TrainingIterations: utils.NewType(25),
+}
+
+options := arangodb.CreateVectorIndexOptions{
+  InBackground: utils.NewType(false),
+  Name: utils.NewType("vector_l2"),
+  Parallelism: utils.NewType(1),
+  Sparse: utils.NewType(false),
+  StoredValues: []string{ "attr1", "attr2" },
+}
+
+idx, newlyCreated, err := coll.EnsureVectorIndex(ctx, fields, &params, &options)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Index %s, new: %v\n", idx.ID, newlyCreated)
+}
+```
+
+See [`CollectionIndexes.EnsureVectorIndex()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionIndexes)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
-The Java driver does not support vector indexes yet.
+The Java driver supports vector indexes from v7.24.0 onward.
+
+```java
+Collection<String> fields = Collections.singletonList("embedding");
+
+VectorIndexParams params = new VectorIndexParams()
+        .metric(VectorIndexParams.Metric.L2)
+        .dimension(544)
+        .nLists(100)
+        .defaultNProbe(1)
+        .trainingIterations(25);
+
+IndexEntity idx = coll.ensureVectorIndex(fields, new VectorIndexOptions()
+        .name("vector_l2")
+        .params(params)
+        .inBackground(false)
+        .parallelism(1)
+        .sparse(false)
+        .storedValues("attr1", "attr2")
+);
+```
+
+See [`ArangoCollection.ensureVectorIndex()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#ensureVectorIndex%28java.lang.Iterable,com.arangodb.model.VectorIndexOptions%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -196,13 +276,20 @@ info = coll.add_index({
   "fields": ["embedding"],
   "params": {
     "metric": "l2",
-    "dimension": 544
+    "dimension": 544,
     "nLists": 100,
     "defaultNProbe": 1,
     "trainingIterations": 25
-  }
+  },
+  "inBackground": False,
+  "parallelism": 1,
+  "sparse": False,
+  "storedValues": ["attr1", "attr2"]
 })
 ```
+
+See [`StandardCollection.add_index()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.add_index)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
