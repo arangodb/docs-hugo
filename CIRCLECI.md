@@ -77,6 +77,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -95,6 +96,7 @@ arguments are invoked:
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -123,6 +125,7 @@ or for multiple versions.
 | string | `workflow` | `generate` |
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-oem`  | [Upstream reference](#upstream-references) for OEM / Embedded |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | boolean | `commit-generated` | `true` |
@@ -136,6 +139,7 @@ Documentation pull requests specify upstream references like so:
 ```markdown
 - 3.10: 
 - 3.11: https://github.com/arangodb/arangodb/pull/12345
+- OEM: arangodb/enterprise-preview:3.11.14.2
 - 3.12: arangodb/enterprise-preview:devel-nightly
 ```
 
@@ -147,6 +151,10 @@ For 3.11, a link to a PR in the `arangodb/arangodb` repository is given. It is
 used by the GitHub integration to determine the feature branch to compile and
 use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
+
+For OEM, make sure to use the latest hotfix version of 3.11.14 (which is the
+OEM / Embedded version) when specifying a Docker image. You can find the version in
+<https://github.com/arangodb/arangodb/blob/3.11.14/ARANGO-VERSION>.
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
 [Docker Hub](https://hub.docker.com/) is specified. Using Docker images has the
@@ -204,6 +212,7 @@ Invoke Args:
 | string | `workflow` | `generate-scheduled` |
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| string | `arangodb-oem`  | `arangodb/enterprise-preview:3.11.14.2` (use latest hotfix) |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
 | string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |

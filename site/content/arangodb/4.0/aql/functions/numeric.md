@@ -465,10 +465,18 @@ MIN( [ null, null ] ) // null
 `PERCENTILE(numArray, n, method) → percentile`
 
 Return the *n*th percentile of the values in *numArray*.
+The order of the elements does not matter.
 
 - **numArray** (array): an array of numbers, *null* values are ignored
-- **n** (number): must be between 0 (excluded) and 100 (included)
-- **method** (string, *optional*): "rank" (default) or "interpolation"
+- **n** (number): must be between 0 (included) and 100 (included)
+- **method** (string, *optional*): Possible values:
+  - `"rank"` (default): The nearest rank.
+  - `"interpolation"`: Linearly interpolate between adjacent ranked values.
+
+    The range 0% to 100% is divided into pieces (one more than numbers in the
+    array). The smallest value is used for the left-most piece and the highest
+    value for the right-most piece. The middle pieces are interpolated between.
+
 - returns **percentile** (number\|null): the *n*th percentile, or *null* if the
   array is empty or only *null* values are contained in it or the percentile
   cannot be calculated

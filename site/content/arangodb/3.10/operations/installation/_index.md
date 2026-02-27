@@ -46,7 +46,7 @@ to run ArangoDB in the cloud.
 
 ### Linux
 
-ArangoDB is available for the following architectures:
+ArangoDB is available for the following CPU architectures:
 
 - **x86-64**: The processor(s) must support the **x86-64** architecture with the
   **SSE 4.2** and **AVX** instruction set extensions (Intel Sandy Bridge or better,
@@ -59,7 +59,7 @@ to use a page size of **4096 bytes** or less.
 
 ## macOS
 
-ArangoDB is available for the following architectures:
+ArangoDB is available for the following CPU architectures:
 
 - **x86-64**: The processor(s) must support the **x86-64** architecture with the
   **SSE 4.2** and **AVX** instruction set extensions (Intel Sandy Bridge or better,
@@ -69,7 +69,7 @@ ArangoDB is available for the following architectures:
 
 ## Windows  
 
-ArangoDB is available for the following architectures:
+ArangoDB is available for the following CPU architectures:
 
 - **x86-64**: The processor(s) must support the **x86-64** architecture with the
   **SSE 4.2** and **AVX** instruction set extensions (Intel Sandy Bridge or better,

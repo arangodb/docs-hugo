@@ -3,7 +3,7 @@
     {{ $versions := index site.Data.versions "/arangodb/" -}}
     {{ range $i, $version := $versions -}}
       <option value="{{ $version.alias }}"{{/* if eq $version.alias "stable" }} selected{{ end */}}>
-        {{- $version.name }}
+        {{- $version.name | upper }}{{/* HACK: convert "oem" to uppercase */}}
         {{- if ne $version.name $version.alias }} ({{ $version.alias }}){{ end -}}
       </option>
     {{ end -}}
