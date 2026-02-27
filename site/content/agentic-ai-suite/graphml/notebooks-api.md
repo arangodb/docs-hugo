@@ -10,10 +10,11 @@ aliases:
   - ../../arangodb/4.0/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/devel/data-science/arangographml/getting-started # 3.10, 3.11
 ---
-The Arango AI Data Platform provides an easy-to-use & scalable interface to run
-Graph Machine Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
-managed by the AI Data Platform, all that is typically required are JSON specifications outlining
-individual processes to solve a Machine Learning task.
+The Arango Contextual Data Platform provides an easy-to-use & scalable interface
+to run Graph Machine Learning on ArangoDB data. Since all the orchestration and
+Machine Learning logic is managed by the Arango Contextual Data Platform, all
+that is typically required are JSON specifications outlining individual
+processes to solve a Machine Learning task.
 
 The `arangoml` Python package allows you to manage all the necessary
 GraphML components, including:

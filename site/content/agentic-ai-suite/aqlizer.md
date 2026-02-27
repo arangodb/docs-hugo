@@ -1,14 +1,14 @@
 ---
-title: The AQLizer feature of the Arango AI Data Platform
+title: The AQLizer feature of the Arango Contextual Data Platform
 menuTitle: AQLizer
 weight: 17
 description: >-
   Generate AQL queries from natural language with the AQLizer feature of the
-  AI Suite
+  Agentic AI Suite
 ---
 ## Overview
 
-The AQLizer feature makes it very easy to query your data in the AI Data Platform.
+The AQLizer feature makes it very easy to query your data in the Arango Contextual Data Platform.
 It automatically translates your requests written in plain language to ArangoDB's
 query language AQL using generative AI. You can start to explore your data and
 gain insights without having to learn the query language first.
@@ -22,10 +22,10 @@ For example, you can ask questions or use instructions like the following:
 
 ### Web interface
 
-The AQLizer feature is integrated into the AI Data Platform web interface.
+The AQLizer feature is integrated into the Contextual Data Platform web interface.
 You can access it directly from the **Query Editor**. You can generate, verify,
 and refine queries in one place. To learn more about how to set up and generate
-queries, see the [Query Editor](../data-platform/query-editor.md#generate-queries-aqlizer)
+queries, see the [Query Editor](../platform-suite/query-editor.md#generate-queries-aqlizer)
 documentation of the Data Platform.
 
 ![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)

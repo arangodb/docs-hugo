@@ -117,7 +117,7 @@ in the **Graph** section.
 
 For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
 
-For more information, see the [Graph Visualizer](../../data-platform/graph-visualizer.md) documentation.
+For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
 ## Update the Knowledge Graph
 

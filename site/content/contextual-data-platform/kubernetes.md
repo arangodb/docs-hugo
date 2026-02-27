@@ -1,7 +1,7 @@
 ---
 title: Kubernetes-Native Architecture
 menuTitle: Kubernetes
-weight: 15
+weight: 5
 description: >-
   The Arango Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management

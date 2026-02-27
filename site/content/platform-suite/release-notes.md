@@ -34,7 +34,7 @@ The [Query Editor](query-editor.md) has been extended with the following capabil
 <small>ArangoDB Enterprise Edition: v3.12.6</small>
 
 This release includes new features and enhancements for the Data Platform web
-interface, running with ArangoDB Enterprise Edition v3.12.6. For AI Suite updates
+interface, running with ArangoDB Enterprise Edition v3.12.6. For Agentic AI Suite updates
 in this release, see [Agentic AI Suite Release Notes](../agentic-ai-suite/release-notes.md).
 
 ### Query Editor

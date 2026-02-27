@@ -19,7 +19,7 @@ ArangoDB database, where you can query and analyze the relationships between
 different concepts in your document with the Retriever service.
 
 {{< tip >}}
-You can also use the GraphRAG Importer service via the [AI Data Platform web interface](../../graphrag/web-interface.md).
+You can also use the GraphRAG Importer service via the [Contextual Data Platform web interface](../../graphrag/web-interface.md).
 {{< /tip >}}
 
 ## Prerequisites

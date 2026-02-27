@@ -19,7 +19,7 @@ a single place.
 
 {{< tip >}}
 Services that utilize the secret manager are, for example, the GraphRAG importer
-and retriever services of the AI Suite. They require a Large Language Model
+and retriever services of the Agentic AI Suite. They require a Large Language Model
 (LLM) and need to store an API key for the LLM like OpenAI.
 {{< /tip >}}
 

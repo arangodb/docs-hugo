@@ -5,7 +5,7 @@ weight: 115
 description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
 ---
-ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
+Arango's Graph Analytics and GraphML capabilities provide various solutions
 in data science and data analytics. Multiple data science personas within the
 engineering space can make use of ArangoDB's set of tools and technologies that
 enable analytics and machine learning on graph data. 
@@ -52,7 +52,7 @@ Graph analytics can answer questions like _**Who are the most connected persons*
 ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
 connected components, label propagation, and PageRank on your data. This feature
 is available for the Arango Managed Platform (AMP). See
-[Graph Analytics](../../../data-platform/graph-analytics/_index.md) for details.
+[Graph Analytics](../../../agentic-ai-suite/graph-analytics/_index.md) for details.
 
 ### GraphML
 

@@ -2,7 +2,7 @@
 title: Architecture and Features of the Arango Data Platform (v4.0)
 menuTitle: Architecture and Features
 weight: 5
-description: >-
+description: >- # TODO: Visualizer is part of Platform Suite...
   Discover how the Arango Data Platform combines database, visualization, and enterprise
   features into a unified, Kubernetes-native architecture
 ---
@@ -24,7 +24,7 @@ At its core, the Arango Data Platform is purpose-built for Kubernetes environmen
 [official ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/) 
 (`kube-arangodb`) to deliver enterprise-grade automation, scalability, and operational excellence.
 
-For detailed information about the Kubernetes foundation, see [Kubernetes Integration](kubernetes/).
+For detailed information about the Kubernetes foundation, see [Kubernetes Integration](../contextual-data-platform/kubernetes.md).
 
 ### Technical Infrastructure
 

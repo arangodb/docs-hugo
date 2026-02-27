@@ -16,7 +16,8 @@ key-value, vector, and full-text search with one query language.
 {{% /card %}}
 
 {{% card title="Arango Data Platform" link="data-platform/" icon="avo-middle.svg" %}}
-Adds platform services for scalability, reliability, governance, and a graph exploration tool.
+Adds platform services for scalability, reliability, governance, as well as a
+query editor and graph visualizer.
 {{% /card %}}
 
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" icon="avo-full.svg" %}}
@@ -79,9 +80,10 @@ Unlike with graph queries, this involves the entire graph at once.
 Graph analytics can answer questions like\
 **Who are the most connected persons?**
 
-Arango offers a [Graph Analytics](data-platform/graph-analytics/_index.md) solution
-as part of the [Arango Data Platform](data-platform/features.md) to run algorithms
-such as connected components, label propagation, and PageRank on your data.
+Arango offers a [Graph Analytics](agentic-ai-suite/graph-analytics/_index.md)
+solution included in the [Agentic AI Suite](agentic-ai-suite/_index.md)
+to run algorithms such as connected components, label propagation, and PageRank
+on your data.
 
 ### GraphML
 

@@ -1,7 +1,7 @@
 ---
-title: The Arango Agentic AI Suite for the Data Platform (v4.0)
+title: The Agentic AI Suite of the Arango Contextual Data Platform (v4.0)
 menuTitle: Agentic AI Suite
-weight: 3
+weight: 2
 description: >-
   A comprehensive AI solution that transforms your data into intelligent
   knowledge graphs with GraphRAG capabilities, applies advanced machine learning
@@ -16,13 +16,16 @@ aliases:
 ---
 ## What's included
 
-The AI Suite is composed of three major components:
+The Agentic AI Suite is composed of four major components:
 
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
 - [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
+- [**Graph Analytics**](graph-analytics/_index.md):
+  Run graph algorithms such as PageRank on dedicated compute resources to
+  discover influential nodes and patterns.
 - [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
   your data and gain insights without having to learn the query language first.
 
@@ -39,7 +42,7 @@ Alongside these components, you also get the following additional features:
 - [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
-  AI Suite and build your own integrations. See the
+  Agentic AI Suite and build your own integrations. See the
   [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.
 

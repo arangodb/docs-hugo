@@ -573,8 +573,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../data-platform/_index.md` instead of `/data-platform/_index.md` or
-  `https://docs.arango.ai/data-platform/`.
+  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
+  `https://docs.arango.ai/platform-suite/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -619,8 +619,12 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Data Platform_, _Arango AI Data Platform_, and _AI Suite_, but not
-    ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~, ~~AI Services~~, or ~~GenAI Suite~~
+  - _Arango Data Platform_ and _Arango Contextual Data Platform_, but not
+     ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~,
+    or ~~Arango AI Data Platform~~
+  - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
+    ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
+  - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write

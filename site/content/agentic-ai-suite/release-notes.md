@@ -1,14 +1,15 @@
 ---
-title: What's new in the AI Suite
+title: What's new in the Agentic AI Suite
 menuTitle: Release notes
 weight: 100
 description: >-
-  Features and improvements in the AI Suite of the Arango Data Platform
+  Features and improvements in the Agentic AI Suite of the
+  Arango Contextual Data Platform
 ---
 ## October 2025 (pre-release)
 
-This release introduces new features and enhancements to the AI Suite components.
-See also the [Arango Data Platform Release Notes](../data-platform/release-notes.md).
+This release introduces new features and enhancements to the Agentic AI Suite components.
+See also the [Arango Data Platform Release Notes](../platform-suite/release-notes.md).
 
 ### GraphRAG enhancements
 
@@ -38,9 +39,9 @@ You can generate AQL queries from natural language directly in the Query Editor 
 
 ## July 2025 (pre-release)
 
-This release marks the initial internal launch of the AI Suite with the following
+This release marks the initial internal launch of the Agentic AI Suite with the following
 components. For Data Platform features in this release, see
-[Arango Data Platform Release Notes](../data-platform/release-notes.md).
+[Arango Data Platform Release Notes](../platform-suite/release-notes.md).
 
 - **[GraphRAG](graphrag/_index.md)**: Transform unstructured documents into
   intelligent knowledge graphs and natural language querying through Importer
@@ -49,7 +50,7 @@ components. For Data Platform features in this release, see
 - **[GraphML](graphml/_index.md)**: Apply machine learning to graphs with node
   classification and embedding generation, built on GraphSAGE framework.
 
-- **[Graph Analytics](../data-platform/graph-analytics/_index.md)**:
+- **[Graph Analytics](../agentic-ai-suite/graph-analytics/_index.md)**:
   Run algorithms like PageRank, Connected Components, and more.
 
 - **[Jupyter Notebooks](notebook-servers.md)**: Launch integrated Jupyter

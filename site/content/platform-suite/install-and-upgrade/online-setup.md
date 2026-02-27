@@ -259,7 +259,7 @@ arangodb_operator_platform --namespace arango package install \
 ```
 
 It can take a while to run this command because it downloads the Platform Suite,
-and in case of the AI Data Platform, also the AI Suite.
+and in case of the Arango Contextual Data Platform, also the Agentic AI Suite.
 
 ## Step 8: Set up object storage
 
