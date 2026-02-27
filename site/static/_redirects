@@ -1,4 +1,3 @@
-/data-platform/installation/  /data-platform/install-and-upgrade/  302
-/ai-suite/graph-analytics/    /data-platform/graph-analytics/      302
+/data-platform/installation/  /data-platform/install-and-upgrade/   302
 
-/ai-suite/*                   /agentic-ai-suite/:splat             302
+/ai-suite/*                   /agentic-ai-suite/:splat              302

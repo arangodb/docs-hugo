@@ -14,7 +14,7 @@ How to perform the steps is detailed in the subsequent sections.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
@@ -62,7 +62,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 You can use any of the available authentication methods the Data Platform
 supports to start and stop `graphanalytics` services via the AI service as
 well as to authenticate requests to the [Engine API](#engine-api).
@@ -101,7 +101,7 @@ setting in AMP:
 
 {{< info >}}
 Note that all cURL examples use placeholder values that you should replace with your actual values:
-- **Data Platform**: `ai-data-platform.example.org` (platform endpoint), `tqcge` (service ID).
+- **Contextual Data Platform**: `data-platform.example.org` (platform endpoint), `tqcge` (service ID).
 - **AMP**: `abcdef123456.arangodb.cloud` (deployment endpoint), `zYxWvU9876` (engine ID).
 {{< /info >}}
 
@@ -109,12 +109,12 @@ Note that all cURL examples use placeholder values that you should replace with 
 
 The interface for managing the engines depends on the environment you use:
 
-- **Data Platform**: [AI service](#ai-service)
+- **Contextual Data Platform**: [AI service](#ai-service)
 - **Arango Managed Platform (AMP)**: [Management API](#management-api)
 
 ### AI service
 
-{{< tag "Data Platform" >}}
+{{< tag "Contextual Data Platform" >}}
 
 {{< info >}}
 This section covers managing Graph Analytics Engines on the **Arango Data Platform**.
@@ -123,7 +123,7 @@ If you're using **Arango Managed Platform (AMP)**, skip to the [Management API](
 {{< /info >}}
 
 GAEs are deployed and deleted via the [AI orchestration service](../../agentic-ai-suite/reference/ai-orchestrator.md)
-in the Data Platform.
+in the Contextual Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
 if the Platform deployment uses a self-signed certificate (default).
@@ -136,7 +136,7 @@ Start a GAE via the AI service with an empty request body. This returns a **SERV
 
 ```bash
 # Set your Data Platform endpoint
-EXTERNAL_ENDPOINT="<your-endpoint>"  # Example: ai-data-platform.example.org
+EXTERNAL_ENDPOINT="<your-endpoint>"  # Example: data-platform.example.org
 
 # Get an authentication token (example with JWT session token)
 ADB_TOKEN=$(curl -sSk -X POST \
@@ -186,7 +186,7 @@ You can list all running services managed by the AI service, including the
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X POST "https://ai-data-platform.example.org:8529/ai/v1/list_services" | jq
+  -X POST "https://data-platform.example.org:8529/ai/v1/list_services" | jq
 ```
 
 #### Stop a `graphanalytics` service
@@ -197,7 +197,7 @@ Delete the desired engine via the AI service using the service ID:
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X DELETE "https://ai-data-platform.example.org:8529/ai/v1/service/tqcge" | jq
+  -X DELETE "https://data-platform.example.org:8529/ai/v1/service/tqcge" | jq
 ```
 
 ### Management API
@@ -207,7 +207,7 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
 {{< info >}}
 This section covers managing Graph Analytics Engines on the **Arango Managed Platform (AMP)**.
 
-If you are using the **Data Platform**, use the [AI service](#ai-service) instead.
+If you are using the **Contextual Data Platform**, use the [AI service](#ai-service) instead.
 {{< /info >}}
 
 GAEs are deployed and deleted with the Management API for graph analytics on the
@@ -343,18 +343,18 @@ The Engine API URL is constructed from multiple parts depending on your platform
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/" >}}
 
 Where:
-- `<EXTERNAL_ENDPOINT>`: Your Data Platform endpoint (e.g., `ai-data-platform.example.org`)
+- `<EXTERNAL_ENDPOINT>`: Your Data Platform endpoint (e.g., `data-platform.example.org`)
 - `<SERVICE_ID>`: From the [AI service response](#start-a-graphanalytics-service) when you started the service
 
 **Example:**
 
 ```
-https://ai-data-platform.example.org:8529/gral/tqcge/v1/pagerank
+https://data-platform.example.org:8529/gral/tqcge/v1/pagerank
 ```
 
 The port `:8529` is added when constructing URLs.
@@ -369,7 +369,7 @@ For convenience, you can store the Engine API base URL in a variable:
 
 ```bash
 # Your Platform endpoint (without port)
-EXTERNAL_ENDPOINT="ai-data-platform.example.org"
+EXTERNAL_ENDPOINT="data-platform.example.org"
 
 # Service ID from when you started the service
 SERVICE_ID="tqcge"
@@ -447,7 +447,7 @@ Authorization: bearer <TOKEN>
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 You can save the token in a variable to ease scripting. Note that this should be
 the token string only and not include quote marks. The following examples assume
@@ -457,7 +457,7 @@ Bash as the shell and that the `curl` and `jq` commands are available.
 
 ```bash
 # Platform endpoint (from previous section)
-EXTERNAL_ENDPOINT="ai-data-platform.example.org"
+EXTERNAL_ENDPOINT="data-platform.example.org"
 
 # Service ID from when you started the service
 SERVICE_ID="tqcge"
@@ -520,14 +520,14 @@ named graphs as well as sets of node and edge collections (see
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/loaddata" >}}
 
 **Example:**
 
 ```bash
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","graph_name":"connectedComponentsGraph"}' "https://ai-data-platform.example.org:8529/gral/tqcge/v1/loaddata"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d '{"database":"_system","graph_name":"connectedComponentsGraph"}' "https://data-platform.example.org:8529/gral/tqcge/v1/loaddata"
 ```
 
 {{< /tab >}}
@@ -553,7 +553,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_sys
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/pagerank" >}}
 
@@ -561,7 +561,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_sys
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/pagerank"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "https://data-platform.example.org:8529/gral/tqcge/v1/pagerank"
 ```
 
 {{< /tab >}}
@@ -642,7 +642,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/wcc" >}}
 
@@ -650,7 +650,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/wcc"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://data-platform.example.org:8529/gral/tqcge/v1/wcc"
 ```
 
 {{< /tab >}}
@@ -689,7 +689,7 @@ obtain different IDs.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/scc" >}}
 
@@ -697,7 +697,7 @@ obtain different IDs.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/scc"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "https://data-platform.example.org:8529/gral/tqcge/v1/scc"
 ```
 
 {{< /tab >}}
@@ -753,7 +753,7 @@ available, which should be equally usable for most use cases.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/betweennesscentrality" >}}
 
@@ -761,7 +761,7 @@ available, which should be equally usable for most use cases.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/betweennesscentrality"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "https://data-platform.example.org:8529/gral/tqcge/v1/betweennesscentrality"
 ```
 
 {{< /tab >}}
@@ -836,7 +836,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/linerank" >}}
 
@@ -844,7 +844,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.0000001,\"maximum_supersteps\":500}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/linerank"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.0000001,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/linerank"
 ```
 
 {{< /tab >}}
@@ -905,7 +905,7 @@ based on common location, interests, occupation, etc.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/labelpropagation" >}}
 
@@ -913,7 +913,7 @@ based on common location, interests, occupation, etc.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/labelpropagation"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/labelpropagation"
 ```
 
 {{< /tab >}}
@@ -984,7 +984,7 @@ The result is a community ID for each node.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/attributepropagation" >}}
 
@@ -992,7 +992,7 @@ The result is a community ID for each node.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"backwards\":false,\"maximum_supersteps\":500}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/attributepropagation"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"backwards\":false,\"maximum_supersteps\":500}" "https://data-platform.example.org:8529/gral/tqcge/v1/attributepropagation"
 ```
 
 {{< /tab >}}
@@ -1082,7 +1082,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/storeresults" >}}
 
@@ -1090,7 +1090,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 ```bash
 JOB_ID="123"
-curl -H "Authorization: bearer $ADB_TOKEN" -X POST -d "{\"database\":\"_system\",\"target_collection\":\"coll\",\"job_ids\":[$JOB_ID],\"attribute_names\":[\"attr\"]}" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/storeresults"
+curl -H "Authorization: bearer $ADB_TOKEN" -X POST -d "{\"database\":\"_system\",\"target_collection\":\"coll\",\"job_ids\":[$JOB_ID],\"attribute_names\":[\"attr\"]}" "https://data-platform.example.org:8529/gral/tqcge/v1/storeresults"
 ```
 
 {{< /tab >}}
@@ -1135,14 +1135,14 @@ Parameters:
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs" >}}
 
 **Example:**
 
 ```bash
-curl -H "Authorization: bearer $ADB_TOKEN" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/jobs"
+curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/jobs"
 ```
 
 {{< /tab >}}
@@ -1167,7 +1167,7 @@ List all active and finished jobs.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
 
@@ -1175,7 +1175,7 @@ List all active and finished jobs.
 
 ```bash
 JOB_ID="123"
-curl -H "Authorization: bearer $ADB_TOKEN" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
+curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
 ```
 
 {{< /tab >}}
@@ -1201,7 +1201,7 @@ Get detailed information about a specific job.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
 
@@ -1209,7 +1209,7 @@ Get detailed information about a specific job.
 
 ```bash
 JOB_ID="123"
-curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://ai-data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
+curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://data-platform.example.org:8529/gral/tqcge/v1/jobs/$JOB_ID"
 ```
 
 {{< /tab >}}
@@ -1235,14 +1235,14 @@ Delete a specific job.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs" >}}
 
 **Example:**
 
 ```bash
-curl -H "Authorization: bearer $ADB_TOKEN" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/graphs"
+curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/graphs"
 ```
 
 {{< /tab >}}
@@ -1267,7 +1267,7 @@ List all loaded sets of graph data that reside in the memory of the engine node.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
 
@@ -1275,7 +1275,7 @@ List all loaded sets of graph data that reside in the memory of the engine node.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" "https://ai-data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
+curl -H "Authorization: bearer $ADB_TOKEN" "https://data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
 ```
 
 {{< /tab >}}
@@ -1301,7 +1301,7 @@ Get detailed information about a specific set of graph data.
 
 {{< tabs "platforms" >}}
 
-{{< tab "Data Platform" >}}
+{{< tab "Contextual Data Platform" >}}
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
 
@@ -1309,7 +1309,7 @@ Get detailed information about a specific set of graph data.
 
 ```bash
 GRAPH_ID="234"
-curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://ai-data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
+curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "https://data-platform.example.org:8529/gral/tqcge/v1/graphs/$GRAPH_ID"
 ```
 
 {{< /tab >}}

@@ -30,10 +30,6 @@ components into a unified solution:
   A sophisticated web-based interface for graph exploration, smart search, and
   visual layouts.
 
-- [**Graph Analytics**](graph-analytics/_index.md):
-  Run graph algorithms such as PageRank on dedicated compute resources to
-  discover influential nodes and patterns.
-
 - **Arango Platform Suite**: Enterprise-grade features including high availability
   and monitoring, comprehensive APIs and connectors, centralized orchestration and
   resource management.
@@ -50,7 +46,7 @@ that offers advanced AI and machine learning capabilities that integrate seamles
 into the platform's unified web interface.
 
 {{< tip >}}
-The AI Suite requires a separate license.
+The Agentic AI Suite requires a separate license.
 {{< /tip >}}
 
 ## Deployment options
@@ -83,7 +79,7 @@ to provide automated deployment, scaling, and management capabilities.
 {{< comment >}}
 {{% card title="Get started with the Arango Data Platform" link="get-started/" %}}
 Deploy the core ArangoDB database system with Kubernetes orchestration.
-Optionally add AI Suite to turn data into an AI-powered knowledge engine.
+Optionally add the Agentic AI Suite to turn data into an AI-powered knowledge engine.
 {{% /card %}}
 {{< /comment >}}
 
