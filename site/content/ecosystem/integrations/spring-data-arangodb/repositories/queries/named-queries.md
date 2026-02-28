@@ -4,16 +4,11 @@ menuTitle: Named queries
 weight: 15
 description: ''
 aliases:
-  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
-  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
-  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
-  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
+  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/repositories/queries/named-queries
+  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/repositories/queries/named-queries
+  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/repositories/queries/named-queries
+  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/repositories/queries/named-queries
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
 An alternative to using the `@Query` annotation on methods is specifying them in
 a separate `.properties` file. The default path for the file is
 `META-INF/arango-named-queries.properties` and can be changed with the
