@@ -247,6 +247,28 @@ successful, the status is `ok`, otherwise `failed`.
 This message occurs whenever a user attempts to delete a document. If
 successful, the status is `ok`, otherwise `failed`.
 
+### User Management
+
+#### User read
+
+```
+2025-12-09 10:19:37 | server1 | audit-document | root | _system | 127.0.0.1:12345 | http jwt | read user 'username' | ok | /_api/user/username
+```
+
+This message occurs whenever a user attempts to read user information via the
+REST API (e.g., `GET /_api/user/<username>`, `GET /_api/user/<username>/database`,
+or `GET /_api/user/<username>/config`). If successful, the status is `ok`,
+otherwise `failed`.
+
+#### List all users
+
+```
+2025-12-09 10:19:37 | server1 | audit-document | root | _system | 127.0.0.1:12345 | http jwt | read user '*' | ok | /_api/user
+```
+
+This message occurs whenever a user attempts to list all users via the REST API
+(`GET /_api/user`). If successful, the status is `ok`, otherwise `failed`.
+
 ### Queries
 
 ```
