@@ -38,6 +38,28 @@ description: >-
 
 ### Endpoints removed
 
+#### Simple Queries endpoints removed
+
+The following endpoints that were deprecated since v3.4.0 have now been removed:
+
+- `PUT /_api/simple/lookup-by-keys`: Find documents by their keys
+- `PUT /_api/simple/remove-by-keys`: Remove documents by their keys
+- `PUT /_api/simple/all`: Return all documents
+- `PUT /_api/simple/all-keys`: Read all document keys
+- `PUT /_api/simple/any`: Return a random document
+- `PUT /_api/simple/by-example`: Simple query by-example
+- `PUT /_api/simple/first-example`: Find documents matching an example
+- `PUT /_api/simple/fulltext`: Fulltext index query
+- `PUT /_api/simple/near`: Return documents near coordinates
+- `PUT /_api/simple/range`: Simple range query
+- `PUT /_api/simple/remove-by-example`: Remove documents by example
+- `PUT /_api/simple/replace-by-example`: Replace documents by example
+- `PUT /_api/simple/update-by-example`: Update documents by example
+- `PUT /_api/simple/within`: Find documents within a radius around coordinates
+- `PUT /_api/simple/within-rectangle`: Find documents within a rectangular area
+
+You can use AQL queries instead.
+
 #### Batch request API
 
 <small>Removed in: v3.12.3</small>

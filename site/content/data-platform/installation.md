@@ -209,7 +209,8 @@ and the linked reference.
 You need to enable the gateway feature by setting `spec.gateway.enabled` and
 `spec.gateway.dynamic` to `true` in the specification. Enable vector indexes
 (on DB-Servers and Coordinators respectively on single server) because they are
-required by features such as GraphRAG. You also need to set `spec.license` to
+required by features such as GraphRAG (from ArangoDB version 4.0.0 onward, the
+vector index feature is enabled by default). You also need to set `spec.license` to
 the secret created earlier.
 
 Example for an ArangoDB cluster deployment using version 3.12.7 with three
@@ -231,11 +232,11 @@ spec:
   dbservers:
     count: 3
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   coordinators:
     count: 2
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   license:
     secretName: arango-license-key
   # ...
