@@ -465,18 +465,27 @@ MIN( [ null, null ] ) // null
 `PERCENTILE(numArray, n, method) → percentile`
 
 Return the *n*th percentile of the values in *numArray*.
+The order of the elements does not matter.
 
 - **numArray** (array): an array of numbers, *null* values are ignored
-- **n** (number): must be between 0 (excluded) and 100 (included)
-- **method** (string, *optional*): "rank" (default) or "interpolation"
+- **n** (number): must be between 0 (included) and 100 (included)
+- **method** (string, *optional*): Possible values:
+  - `"rank"` (default): The nearest rank.
+  - `"interpolation"`: Linearly interpolate between adjacent ranked values.
+
+    The range 0% to 100% is divided into pieces (one more than numbers in the
+    array). The smallest value is used for the left-most piece and the highest
+    value for the right-most piece. The middle pieces are interpolated between
 - returns **percentile** (number\|null): the *n*th percentile, or *null* if the
   array is empty or only *null* values are contained in it or the percentile
   cannot be calculated
 
+The interpolation values show that when a percentile falls between two data points, it calculates the exact weighted average - for example, the 30th percentile gives 1.5 (halfway between values 1 and 2), and the 50th percentile gives 2.5 (halfway between values 2 and 3). This method provides smooth, continuous percentile estimates by linearly interpolating between adjacent ranked values rather than using discrete ranks.
+
 ```aql
 PERCENTILE( [1, 2, 3, 4], 50 ) // 2
 PERCENTILE( [1, 2, 3, 4], 50, "rank" ) // 2
-PERCENTILE( [1, 2, 3, 4], 50, "interpolation" ) // 2.5
+PERCENTILE( [1, 2, 3, 4], 50, "interpolation" ) // 2.5  (halfway between values 2 and 3)
 ```
 
 ## PI()
