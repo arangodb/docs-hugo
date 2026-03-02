@@ -37,7 +37,7 @@ artifacts.
 - Install project dependencies automatically.
 - Generate `.tar.gz` archives that are ready for upload to Container Manager.
 - Support for local Docker image testing before deployment.
-- Optionally, pushes Docker images to container registries.
+- Optionally push Docker images to container registries.
 - Work with standard project structures (`pyproject.toml`, `requirements.txt`, `package.json`).
 
 For installation and usage instructions, see the
