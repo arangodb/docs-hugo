@@ -24,6 +24,27 @@ production services.
 
 ### Prepare Your Service Package
 
+You can prepare your service package in two ways:
+
+#### Using ServiceMaker (Recommended)
+
+ServiceMaker is a command-line tool that automates code preparation for
+deploying services. It processes standard projects and generates deployment-ready
+artifacts.
+
+**Features:**
+- Build Docker container images using platform runtime base images.
+- Install project dependencies automatically.
+- Generate `.tar.gz` archives that are ready for upload to Container Manager.
+- Support for local Docker image testing before deployment.
+- Optionally, pushes Docker images to container registries.
+- Work with standard project structures (`pyproject.toml`, `requirements.txt`, `package.json`).
+
+For installation and usage instructions, see the
+[ServiceMaker repository](https://github.com/arangodb/servicemaker).
+
+#### Manual Packaging
+
 Package your application code as a `.tar.gz` archive containing:
 
 - Your application code and entry point.
