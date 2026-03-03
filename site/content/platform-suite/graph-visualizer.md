@@ -1,5 +1,5 @@
 ---
-title: The Graph Visualizer of the Arango Data Platform
+title: The Graph Visualizer of the Arango Platform Suite
 menuTitle: Graph Visualizer
 weight: 20
 description: >-

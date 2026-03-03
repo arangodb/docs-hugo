@@ -25,7 +25,8 @@ aliases:
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.
 
-For a detailed breakdown of each component, see [Features and Architecture](features.md).
+For a detailed breakdown of each component, its architecture and features, see
+[The Arango Contextual Data Platform](../contextual-data-platform/_index.md).
 
 ## Extend the Arango Data Platform with AI capabilities
 
@@ -72,8 +73,8 @@ Optionally add the Agentic AI Suite to turn data into an AI-powered knowledge en
 {{% /card %}}
 {{< /comment >}}
 
-{{% card title="Features and Architecture" link="features/" %}}
-Explore the Kubernetes-native architecture, unified interface, and enterprise-grade capabilities of the Arango Data Platform.
+{{% card title="Features and Architecture" link="../contextual-data-platform/features/" %}}
+Explore the Kubernetes-native architecture, unified interface, and enterprise-grade capabilities of the Arango Contextual Data Platform.
 {{% /card %}}
 
 {{% card title="Kubernetes-Native Architecture" link="../contextual-data-platform/kubernetes/" %}}
