@@ -1,9 +1,10 @@
 ---
-title: Install and upgrade the Arango Data Platform (v4.0)
+title: Install and upgrade the Arango Contextual Data Platform (v4.0)
 menuTitle: Install & Upgrade
-weight: 13
+weight: 25
 description: >-
-  How to set up and upgrade the Data Platform online and offline
+  How to set up and upgrade a self-managed Contextual Data Platform
+  online or offline
 ---
 ## Requirements for self-hosting
 

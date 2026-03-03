@@ -1,10 +1,10 @@
 ---
-title: Install the Arango Data Platform (v4.0) on-premises online
-menuTitle: Online on-prem setup
+title: Install the Arango Contextual Data Platform (v4.0) on-premises online
+menuTitle: Online setup
 weight: 5
 description: >-
-  How to set up the Data Platform on your own hardware in an environment with
-  internet access
+  How to set up the Contextual Data Platform on your own hardware in an
+  environment with internet access
 ---
 ## Step 1: Get the installation files and information
 

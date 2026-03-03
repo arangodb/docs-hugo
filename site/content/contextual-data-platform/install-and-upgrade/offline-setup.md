@@ -1,10 +1,10 @@
 ---
-title: Install the Arango Data Platform (v4.0) on-premises offline
-menuTitle: Offline on-prem setup
+title: Install the Arango Contextual Data Platform (v4.0) on-premises offline
+menuTitle: Offline setup
 weight: 10
 description: >-
-  How to set up the Data Platform on your own hardware in an environment without
-  internet access, including air-gapped environments
+  How to set up the Contextual Data Platform on your own hardware in an
+  environment without internet access, including air-gapped environments
 ---
 For offline installation and the special case of a fully air-gapped environment,
 you need another environment with internet access to download data and for
@@ -13,7 +13,7 @@ the offline and the online environment at different steps, but mainly from the
 online to offline system and only small amounts from the offline to the online
 system (for the licensing).
 
-What needs to be done in which environemnt is indicated by each step:
+What needs to be done in which environment is indicated by each step:
 
 - **Air-gapped system**: The offline environment.
 - **Internet-connected system**: The online environment.
