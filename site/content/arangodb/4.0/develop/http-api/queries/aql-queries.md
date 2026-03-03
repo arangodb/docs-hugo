@@ -2501,10 +2501,13 @@ paths:
           of slow queries. If the list of slow queries is full, the oldest entry in
           it will be discarded when additional slow queries occur.
 
-        - `slowQueryThreshold`: the threshold value for treating a query as slow. A
-          query with a runtime greater or equal to this threshold value will be
-          put into the list of slow queries when slow query tracking is enabled.
-          The value for `slowQueryThreshold` is specified in seconds.
+        - `slowQueryThreshold`: If the runtime of a regular query (in seconds)
+          is greater or equal to this value, it is added to the list of
+          slow queries if slow query tracking is enabled.
+
+        - `slowStreamingQueryThreshold`: If the runtime of a streaming query
+          (`stream` set to `true`; in seconds) is greater or equal to this value,
+          it is added to the list of slow queries if slow query tracking is enabled.
 
         - `maxQueryStringLength`: the maximum query string length to keep in the
           list of queries. Query strings can have arbitrary lengths, and this property
@@ -2670,6 +2673,18 @@ paths:
           - `"invalid"`
 
         - `stream`: whether or not the query uses a streaming cursor
+
+        - `modificationQuery`: Whether the query writes data (`true`)
+          or only reads (`false`).
+
+        - `warnings`: The number of query warnings that occurred.
+
+          Values other than `0` may not be observable because this information
+          typically becomes available when the query finishes, at which point
+          it is longer listed as a running query. However, other values can be
+          observed when enabling `stream` and there is more than one batch of
+          results.
+
       parameters:
         - name: database-name
           in: path
@@ -2742,6 +2757,16 @@ paths:
           for the list of slow queries)
 
         - `stream`: whether or not the query uses a streaming cursor
+
+        - `modificationQuery`: Whether the query wrote data (`true`)
+          or only read (`false`).
+
+        - `warnings`: The number of query warnings that occurred.
+
+        - `exitCode`: An error code (`errorNum`) that indicates why the query
+          failed, or `0` on success. See
+          [The error codes of ArangoDB and their meanings](../../error-codes.md).
+
       parameters:
         - name: database-name
           in: path
