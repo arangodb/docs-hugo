@@ -1,10 +1,10 @@
 ---
 title: The Arango Platform Suite (v4.0)
-menuTitle: Arango Platform Suite
+menuTitle: Platform Suite
 weight: 3
-description: >- # TODO
-  The Arango Data Platform includes the Platform Suite, a set of services and
-  features for operating ArangoDB with Kubernetes and making the most of your data
+description: >-
+  The Platform Suite is a set of services and features for operating ArangoDB
+  with Kubernetes and includes a Graph Visualizer and advanced Query Editor
 aliases:
   - data-platform/get-started
 ---
