@@ -1209,7 +1209,7 @@ var body = {
   query: "FOR i IN 1..10 LET a = 1 LET b = 2 FILTER a + b == 3 RETURN i",
   count: true,
   options: {
-    maxPlans: 1,
+    maxNumberOfPlans: 1,
     optimizer: {
       rules: [ "-all", "+remove-unnecessary-filters" ]
     }
