@@ -3,7 +3,7 @@ title: GraphRAG Technical Overview
 menuTitle: Technical Overview
 weight: 15
 description: >-
-  Technical overview of ArangoDB's GraphRAG solution, including
+  Technical overview of Arango's GraphRAG solution, including
   architecture, services, and deployment options
 ---
 ## Introduction
@@ -26,7 +26,7 @@ Arango's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
-The GraphRAG component of the AI Suite brings all the capabilities
+The GraphRAG component of the Agentic AI Suite brings all the capabilities
 together with an easy-to-use interface, so you can make the knowledge accessible
 to your organization.
 
@@ -61,9 +61,8 @@ The web interface guides you through the process of the following:
 
 ### API and Services
 
-The [AI Orchestrator](../reference/ai-orchestrator.md), 
-[Importer](../reference/importer.md), and [Retriever](../reference/retriever/_index.md) 
-services provide programmatic access to create and manage GraphRAG pipelines, 
+The [Importer](../reference/importer.md) and [Retriever](../reference/retriever/_index.md)
+services provide programmatic access to create and manage GraphRAG pipelines,
 and give you access to advanced search methods.
 
 ## How GraphRAG works

@@ -1,10 +1,10 @@
 ---
-title: Install the Arango Data Platform (v4.0) on-premises online
-menuTitle: Online on-prem setup
+title: Install the Arango Contextual Data Platform (v4.0) on-premises online
+menuTitle: Online setup
 weight: 5
 description: >-
-  How to set up the Data Platform on your own hardware in an environment with
-  internet access
+  How to set up the Contextual Data Platform on your own hardware in an
+  environment with internet access
 ---
 ## Step 1: Get the installation files and information
 
@@ -259,7 +259,7 @@ arangodb_operator_platform --namespace arango package install \
 ```
 
 It can take a while to run this command because it downloads the Platform Suite,
-and in case of the AI Data Platform, also the AI Suite.
+and in case of the Arango Contextual Data Platform, also the Agentic AI Suite.
 
 ## Step 8: Set up object storage
 

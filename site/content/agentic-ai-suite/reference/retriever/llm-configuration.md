@@ -60,16 +60,27 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named docs creates docs_Documents, docs_Chunks, etc.)
+- `genai_project_name`: The project name created via the
+  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `chat_api_url`: API endpoint URL for the chat/language model service. Defaults to `https://api.openai.com/v1` if not provided.
+- `chat_api_url`: API endpoint URL for the chat/language model service.
+  Defaults to `https://api.openai.com/v1` if not provided.
 - `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `embedding_api_url`: API endpoint URL for the embedding model service. Defaults to `https://api.openai.com/v1` if not provided.
-- `chat_model`: Specific language model to use for text generation and analysis. Defaults to `gpt-4o` when using OpenAI.
-- `embedding_model`: Specific model to use for generating text embeddings. Defaults to `text-embedding-3-small` when using OpenAI.
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Defaults to `https://api.openai.com/v1` if not provided.
+- `chat_model`: Specific language model to use for text generation and analysis.
+  Defaults to `gpt-4o` when using OpenAI.
+- `embedding_model`: Specific model to use for generating text embeddings.
+  Defaults to `text-embedding-3-small` when using OpenAI.
 - `chat_api_key`: API key for authenticating with the chat/language model service.
 - `embedding_api_key`: API key for authenticating with the embedding model service.
-- `embedding_dim`: Optional embedding dimension. The default value is `512` (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a custom embedding model with a different dimension. It must match the embedding model's output dimension.
+- `embedding_dim`: Optional embedding dimension. The default value is `512`
+  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
+  custom embedding model with a different dimension. It must match the
+  embedding model's output dimension.
 
 ### Using different OpenAI-compatible services for chat and embedding
 
@@ -107,16 +118,29 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named docs creates docs_Documents, docs_Chunks, etc.).
+- `genai_project_name`: The project name created via the
+  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `chat_api_url`: API endpoint URL for the chat/language model service. Must be explicitly provided for OpenRouter and other OpenAI-compatible APIs. The service detects OpenRouter when this URL contains `openrouter.ai`.
+- `chat_api_url`: API endpoint URL for the chat/language model service.
+  Must be explicitly provided for OpenRouter and other OpenAI-compatible APIs.
+  The service detects OpenRouter when this URL contains `openrouter.ai`.
 - `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `embedding_api_url`: API endpoint URL for the embedding model service. Defaults to `https://api.openai.com/v1` if not provided.
-- `chat_model`: Specific language model to use for text generation and analysis. Defaults to `mistralai/mistral-nemo` for OpenRouter or `gpt-4o` for other OpenAI-compatible APIs.
-- `embedding_model`: Specific model to use for generating text embeddings. Defaults to `text-embedding-3-small`.
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Defaults to `https://api.openai.com/v1` if not provided.
+- `chat_model`: Specific language model to use for text generation and analysis.
+  Defaults to `mistralai/mistral-nemo` for OpenRouter or `gpt-4o` for other
+  OpenAI-compatible APIs.
+- `embedding_model`: Specific model to use for generating text embeddings.
+  Defaults to `text-embedding-3-small`.
 - `chat_api_key`: API key for authenticating with the chat/language model service.
 - `embedding_api_key`: API key for authenticating with the embedding model service.
-- `embedding_dim`: Optional embedding dimension. The default value is `512` (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a custom embedding model with a different dimension. It must match the embedding model's output dimension.
+- `embedding_dim`: Optional embedding dimension. The default value is `512`
+  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
+  custom embedding model with a different dimension. It must match the
+  embedding model's output dimension.
 
 ## Using Triton Inference Server for chat and embedding
 
@@ -147,17 +171,33 @@ service using the below configuration:
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named docs creates docs_Documents, docs_Chunks, etc.)
-- `chat_api_provider`: Set to `"triton"` to use Triton Inference Server for language model services.
-- `embedding_api_provider`: Set to `"triton"` to use Triton Inference Server for embedding model services.
-- `chat_api_url`: API endpoint URL for the chat/language model service. Must be explicitly provided when using Triton.
-- `embedding_api_url`: API endpoint URL for the embedding model service. Must be explicitly provided when using Triton.
-- `chat_model`: Specific language model to use for text generation and analysis. Defaults to `mistral-nemo-instruct` for Triton.
-- `embedding_model`: Specific model to use for generating text embeddings. Defaults to `nomic-embed-text-v1` for Triton.
-- `embedding_dim`: Optional embedding dimension. The default value is `512` (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a custom embedding model with a different dimension. It must match the embedding model's output dimension.
+- `genai_project_name`: The project name created via the
+  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
+- `chat_api_provider`: Set to `"triton"` to use Triton Inference Server for
+  language model services.
+- `embedding_api_provider`: Set to `"triton"` to use Triton Inference Server for
+  embedding model services.
+- `chat_api_url`: API endpoint URL for the chat/language model service.
+  Must be explicitly provided when using Triton.
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Must be explicitly provided when using Triton.
+- `chat_model`: Specific language model to use for text generation and analysis.
+  Defaults to `mistral-nemo-instruct` for Triton.
+- `embedding_model`: Specific model to use for generating text embeddings.
+  Defaults to `nomic-embed-text-v1` for Triton.
+- `embedding_dim`: Optional embedding dimension. The default value is `512`
+  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
+  custom embedding model with a different dimension. It must match the
+  embedding model's output dimension.
 
 ## Next Steps
 
-- **[Learn about search methods](search-methods.md)**: Understand Instant, Deep, Global, and Local search.
-- **[Execute queries](executing-queries.md)**: Start querying your knowledge graph.
-- **[Explore all parameters](parameters.md)**: Customize your queries.
+- [**Learn about search methods**](search-methods.md):
+  Understand Instant, Deep, Global, and Local search.
+- [**Execute queries**](executing-queries.md):
+  Start querying your knowledge graph.
+- [**Explore all parameters**](parameters.md):
+  Customize your queries.

@@ -1,7 +1,7 @@
 ---
 title: Monitoring tools in the Arango Data Platform
 menuTitle: Monitoring
-weight: 18
+weight: 35
 description: >-
   Monitor your Arango Data Platform deployment with integrated Grafana and Prometheus dashboards
 ---

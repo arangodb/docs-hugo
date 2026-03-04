@@ -1,15 +1,12 @@
 ---
-title: Install and upgrade the Arango Data Platform (v4.0)
+title: Install and upgrade the Arango Contextual Data Platform (v4.0)
 menuTitle: Install & Upgrade
-weight: 13
+weight: 25
 description: >-
-  How to set up and upgrade the Data Platform online and offline
+  How to set up and upgrade a self-managed Contextual Data Platform
+  online or offline
 ---
 ## Requirements for self-hosting
-
-- **Early access to the Arango Data Platform**:
-  [Get in touch](https://arango.ai/contact-us/) with the Arango team to get
-  exclusive early access to the pre-release of the Arango Data Platform & AI Suite.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Data Platform, running them in containers for safety and scalability.

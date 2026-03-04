@@ -20,7 +20,7 @@ multiple methods.
 You can verify the state of the import process via the following endpoint:
 
 ```
-GET /ai/v1/project_by_name/<your_project>
+GET /_platform/acp/v1/project_by_name/<your_project>
 ```
 
 For example, the `status` object found within `importerServices` may contain the following
@@ -203,7 +203,7 @@ for more details.
 Now that you've successfully imported and verified your knowledge graph:
 
 - **Query your data**: Use the [Retriever service](../retriever.md) to perform semantic search and retrieval
-- **Visualize relationships**: Explore your graph using the [Graph Visualizer](../../../data-platform/graph-visualizer.md)
+- **Visualize relationships**: Explore your graph using the [Graph Visualizer](../../../platform-suite/graph-visualizer.md)
 - **Import more documents**: Return to the [Import Files guide](importing-files.md) to add more data
 - **Optimize parameters**: Review the [Parameters guide](parameters.md) to fine-tune your imports
 

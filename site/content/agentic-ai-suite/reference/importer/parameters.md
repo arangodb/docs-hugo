@@ -285,5 +285,5 @@ For advanced use cases, this configuration adds semantic units for image process
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [GraphRAG Importer API Reference](https://arangoml.github.io/platform-dss-api/graphrag_importer/proto/index.html).

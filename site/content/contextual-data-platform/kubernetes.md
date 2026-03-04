@@ -1,7 +1,7 @@
 ---
 title: Kubernetes-Native Architecture
 menuTitle: Kubernetes
-weight: 15
+weight: 20
 description: >-
   The Arango Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
@@ -14,8 +14,8 @@ that powers the entire platform architecture.
 {{< info >}}
 **Kubernetes Required**: The Arango Data Platform cannot operate without Kubernetes.
 It relies on Kubernetes orchestration and the 
-[ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) for
-all deployment, scaling, and management operations.
+[ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
+(`kube-arangodb`) for all deployment, scaling, and management operations.
 {{< /info >}}
 
 ## Why Kubernetes?
@@ -79,3 +79,10 @@ means you can do the following:
 This Kubernetes-native approach ensures the Arango Data Platform fits naturally
 into modern cloud-native environments and DevOps practices.
 
+## Third-party components used by the platform
+
+- **Helm**: A package manager for Kubernetes that enables consistent, repeatable
+  installations and version control.
+
+- **Envoy**: A high-performance service proxy that acts as the gateway for the
+  Arango Contextual Data Platform for centralizing authentication and routing.

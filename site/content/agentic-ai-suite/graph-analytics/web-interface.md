@@ -1,13 +1,13 @@
 ---
-title: How to use Graph Analytics in the Arango Data Platform web interface
+title: How to use Graph Analytics in the Arango Contextual Data Platform web interface
 menuTitle: Web Interface
 weight: 10
 description: >-
-  Learn how to manage Graph Analytics Engines, load graphs, run algorithms,
-  and monitor jobs using the web interface in the Arango Data Platform
+  Learn how to manage Graph Analytics Engines (GAEs), load graphs, run algorithms,
+  and monitor jobs using the web interface of the Arango Contextual Data Platform
 ---
 
-The Graph Analytics web interface in the Arango Data Platform provides a graphical
+The Graph Analytics web interface in the Arango Contextual Data Platform provides a graphical
 way to run graph algorithms on your data. You can start engines, load graphs into
 memory, execute algorithms with custom parameters, and monitor job progress.
 
