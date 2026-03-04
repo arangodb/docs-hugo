@@ -42,7 +42,7 @@ Alongside these components, you also get the following additional features:
 - [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
-  Agentic AI Suite and build your own integrations. See the
+  Agentic AI Suite and build your own integrations. See the <!-- TODO: New API reference and link -->
   [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.
 

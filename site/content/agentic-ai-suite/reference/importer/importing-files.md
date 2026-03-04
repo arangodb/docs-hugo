@@ -15,10 +15,12 @@ weight: 30
 Before you can import files, make sure you've completed these steps:
 
 1. **Create a GraphRAG project**
-   Learn how to [create and manage projects](../ai-orchestrator.md#projects).
+   Learn how to [create and manage projects](../../../platform-suite/control-plane-acp.md#projects).
 
 2. **Install the Importer service**
-   Deploy the service using the `/v1/graphragimporter` endpoint. See the [AI Orchestration Service](../ai-orchestrator.md) documentation for installation instructions.
+   Deploy the service using the `/v1/graphragimporter` endpoint. See
+   [The Arango Control Plane (ACP) service](../../../platform-suite/control-plane-acp.md)
+   documentation for installation instructions.
 
 3. **Configure your LLM provider**
    Choose between OpenAI-compatible APIs or Triton Inference Server. Follow the [LLM Configuration guide](llm-configuration.md) to set up your models.

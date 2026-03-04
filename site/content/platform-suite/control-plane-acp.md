@@ -1,14 +1,18 @@
 ---
-title: AI Orchestration Service
-menuTitle: AI Orchestrator
+title: The Arango Control Plane (ACP) service
+menuTitle: Control Plane
+weight: 30
 description: >-
-  The AI orchestrator service installs, manages, and runs AI-based services
-  for GraphRAG in your Kubernetes cluster
-weight: 5
+  Orchestrate the Contextual Data Platform with the Arango Control Plane to
+  install, manage, and run services in your Kubernetes cluster
+# TODO: Generalize, potentially move GraphRAG management to Agentic Suite Suite
+#       chapter, and add missing things
 ---
 ## Overview
 
-The basic operations that the AI orchestration service carries out are the following:
+The basic operations that the Arango Control Plane (ACP) service carries out
+are the following:
+
 - Install a service
 - Uninstall a service
 - Get the status of a service
@@ -53,8 +57,8 @@ The following example shows a complete request body with all available options:
   they can be used.
 
 The parameters required for the deployment of each service are defined in the
-corresponding service documentation. See [Importer](importer.md)
-and [Retriever](retriever/_index.md).
+corresponding service documentation. See [Importer](../agentic-ai-suite/reference/importer/_index.md)
+and [Retriever](../agentic-ai-suite/reference/retriever/_index.md).
 
 ## Projects
 
@@ -176,7 +180,8 @@ documentation.
 
 ## Complete Service lifecycle example
 
-The example below shows how to install, monitor, and uninstall the [Importer](importer/) service.
+The example below shows how to install, monitor, and uninstall the
+[Importer](../agentic-ai-suite/reference/importer/_index.md) service.
 
 ### Step 1: Installing the service
 
@@ -268,7 +273,7 @@ curl -X DELETE https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb
 
 ## Service configuration
 
-The AI orchestrator service is **started by default**. 
+The ACP service is **started by default**. 
 
 It will be available at the following URL:
 `https://<ExternalEndpoint>:8529/_platform/acp/v1/service`
@@ -290,5 +295,5 @@ Bearer token, the request fails.
 
 ## API Reference
 
-For detailed API documentation, see the
-[AI service Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
+[Arango Control Plane service Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).

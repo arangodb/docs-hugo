@@ -19,7 +19,8 @@ ArangoDB database, where you can query and analyze the relationships between
 different concepts in your document with the Retriever service.
 
 {{< tip >}}
-You can also use the GraphRAG Importer service via the [Contextual Data Platform web interface](../../graphrag/web-interface.md).
+You can also use the GraphRAG Importer service via the
+[Contextual Data Platform web interface](../../graphrag/web-interface.md).
 {{< /tip >}}
 
 ## Prerequisites
@@ -28,20 +29,21 @@ Before importing data, you need to create a GraphRAG project. Projects help you
 organize your work and keep your data separate from other projects.
 
 For detailed instructions on creating and managing projects, see the 
-[Projects](../ai-orchestrator.md#projects) section in the AI Orchestration Service 
-documentation.
+[Projects](../../../platform-suite/control-plane-acp.md#projects) section in
+the Arango Control Plane (ACP) service documentation.
 
 Once you have created a project, you can reference it when deploying the Importer 
 service using the `project_name` field in the service configuration.
 
 ## Installation
 
-To install and start the Importer service, use the AI service endpoint `/v1/graphragimporter`. 
-This endpoint is part of the AI Orchestration Service, which manages the lifecycle of all 
-AI services in the platform.
+To install and start the Importer service, use the AI service endpoint
+`/v1/graphragimporter`. This endpoint is part of the Arango Control Plane (ACP)
+service, which manages the lifecycle of all AI services in the platform.
 
 For detailed instructions on installing, monitoring, and managing the Importer service, 
-see the [AI Orchestration Service](../ai-orchestrator.md) documentation.
+see [The Arango Control Plane (ACP) service](../../../platform-suite/control-plane-acp.md)
+documentation.
 
 ## Deployment options
 
@@ -61,28 +63,37 @@ both HTTP and gRPC interfaces for communication.
 
 ### OpenAI-compatible APIs
 
-Arango's AI Services are fully compatible with OpenAI-compatible APIs, whether cloud-based or self-hosted.
+Arango's AI Services are fully compatible with OpenAI-compatible APIs, whether
+cloud-based or self-hosted.
 
-Thus, you can connects to cloud-based services like OpenAI's models via the OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted open-source models, etc.) via the OpenRouter option, as well as private Azure endpoints.
+Thus, you can connects to cloud-based services like OpenAI's models via the
+OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted
+open-source models, etc.) via the OpenRouter option, as well as private Azure
+endpoints.
 
-This option also works with private corporate LLMs that expose an OpenAI-compatible endpoint.
+This option also works with private corporate LLMs that expose an
+OpenAI-compatible endpoint.
 
 ## Getting Started
 
 To use the Importer service, follow these steps:
 
-1. **[Create a GraphRAG project](../ai-orchestrator.md#creating-a-project)**: Set up a project to organize your data.
-2. **[Configure your LLM provider](llm-configuration.md)**: Choose and configure either Triton or OpenAI-compatible APIs.
-3. **[Import your documents](importing-files.md)**: Upload single or multiple files to build your knowledge graph.
-4. **[Verify the results](verify-and-explore.md)**: Check that your data was imported successfully and what ArangoDB collections look like after the import.
+1. [**Create a GraphRAG project**](../../../platform-suite/control-plane-acp.md#creating-a-project):
+   Set up a project to organize your data.
+2. [**Configure your LLM provider**](llm-configuration.md):
+   Choose and configure either Triton or OpenAI-compatible APIs.
+3. [**Import your documents**](importing-files.md):
+   Upload single or multiple files to build your knowledge graph.
+4. [**Verify the results**](verify-and-explore.md):
+   Check that your data was imported successfully and what ArangoDB collections
+   look like after the import.
 
 **Additional resources:**
 
-- **[Semantic Units](semantic-units.md)**: Process images and multimedia content.
-- **[Parameter Reference](parameters.md)**: Complete list of import parameters.
+- [**Semantic Units**](semantic-units.md): Process images and multimedia content.
+- [**Parameter Reference**](parameters.md): Complete list of import parameters.
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [GraphRAG Importer API Reference](https://arangoml.github.io/platform-dss-api/graphrag_importer/proto/index.html).
-

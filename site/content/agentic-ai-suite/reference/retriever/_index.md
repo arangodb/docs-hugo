@@ -32,8 +32,8 @@ for Instant and Deep Search, or through the API for full control over all query 
 Before using the Retriever service, you need to:
 
 1. **Create a GraphRAG project** - For detailed instructions on creating and 
-   managing projects, see the [Projects](../ai-orchestrator.md#projects) section in the 
-   AI Orchestration Service documentation.
+   managing projects, see the [Projects](../../../platform-suite/control-plane-acp.md#projects)
+   section in the Arango Control Plane (ACP) service documentation.
 
 2. **Import data** - Use the [Importer](../importer/) service to transform your 
    text documents into a knowledge graph stored in ArangoDB.
@@ -44,8 +44,9 @@ To start the service, use the AI service endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
-Please refer to the documentation of the [AI orchestration service](../ai-orchestrator.md) for more
-information on how to use it.
+Please refer to the documentation of
+[The Arango Control Plane (ACP) service](../../../platform-suite/control-plane-acp.md)
+for more information on how to use it.
 
 ## LLM options
 
@@ -75,19 +76,23 @@ This option also works with private corporate LLMs that expose an OpenAI-compati
 
 To use the Retriever service, follow these steps:
 
-1. **[Create a GraphRAG project](../ai-orchestrator.md#creating-a-project)**: Set up a project to organize your data.
-2. **[Import data](../importer/)**: Build your knowledge graph using the Importer service.
-3. **[Configure your LLM provider](llm-configuration.md)**: Choose and configure either Triton or OpenAI-compatible APIs.
-4. **[Understand search methods](search-methods.md)**: Learn about Instant, Deep, Global, and Local search.
-5. **[Execute queries](executing-queries.md)**: Start querying your knowledge graph.
+1. [**Create a GraphRAG project**](../../../platform-suite/control-plane-acp.md#creating-a-project):
+   Set up a project to organize your data.
+2. [**Import data**](../importer/):
+   Build your knowledge graph using the Importer service.
+3. [**Configure your LLM provider**](llm-configuration.md):
+   Choose and configure either Triton or OpenAI-compatible APIs.
+4. [**Understand search methods**](search-methods.md):
+   Learn about Instant, Deep, Global, and Local search.
+5. [**Execute queries**](executing-queries.md):
+   Start querying your knowledge graph.
 
 **Additional resources:**
 
-- **[Verify and Monitor](verify-and-monitor.md)**: Check service health and query status.
-- **[Parameter Reference](parameters.md)**: Complete list of query parameters.
+- [**Verify and Monitor**](verify-and-monitor.md): Check service health and query status.
+- [**Parameter Reference**](parameters.md): Complete list of query parameters.
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [GraphRAG Retrievers API Reference](https://arangoml.github.io/platform-dss-api/graphrag_retrievers/proto/index.html).
-

@@ -1,7 +1,7 @@
 ---
 title: The File Manager of the Arango Data Platform
 menuTitle: File Manager
-weight: 34
+weight: 25
 description: >-
   View and manage the data of services, such as your uploaded content
   for GraphRAG and the files used by service containers

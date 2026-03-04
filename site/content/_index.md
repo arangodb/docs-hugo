@@ -10,7 +10,7 @@ description: >-
 
 {{< cards >}}
 
-{{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" icon="avo-full.svg" %}}
+{{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" %}}
 The full Arango Contextual Data Platform provides entity-aware retrieval,
 graph-based reasoning, temporal state management, and platform-level governance
 to support reliable, stateful agentic AI systems in production environments.

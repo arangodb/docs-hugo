@@ -2,4 +2,5 @@
 /data-platform/features/      /contextual-data-platform/            302
 /data-platform/*              /platform-suite/:splat                302
 
+/at-suite/reference/ai-orchestrator/  /platform-suite/control-plane-acp/  302
 /ai-suite/*                   /agentic-ai-suite/:splat              302

@@ -1,7 +1,7 @@
 ---
 title: The Query Editor of the Arango Data Platform
 menuTitle: Query Editor
-weight: 30
+weight: 10
 description: >-
   Write, run, and analyze AQL queries using an IDE-like interface
 ---

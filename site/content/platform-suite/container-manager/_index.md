@@ -1,22 +1,27 @@
 ---
 title: Container Manager
 menuTitle: Container Manager
-weight: 17
+weight: 15
 description: >-
   Deploy and manage custom services within the Arango Data Platform using
   your own code packages
 ---
+The **Container Manager** lets you deploy and run custom services directly within
+the Arango Data Platform. Run your own applications and workloads alongside
+Arango's services while seamlessly integrating with the platform's existing
+infrastructure, including authentication, routing, telemetry, and license management.
 
-The **Container Manager** lets you deploy and run custom services directly within the Arango Data Platform. Run your own applications and workloads alongside Arango's services while seamlessly integrating with the platform's existing infrastructure, including authentication, routing, telemetry, and license management.
-
-Upload your source code packages, and the Container Manager builds secure containers using platform-provided hardened base images, then orchestrates deployment through the GenAI Service. The platform handles containerization, security, and integration automatically.
+Upload your source code packages, and the Container Manager builds secure
+containers using platform-provided hardened base images, then orchestrates
+deployment through the Arango Control Plane (ACP) service. The platform handles
+containerization, security, and integration automatically.
 
 ## How It Works
 
 1. **Package Your Code**: Create a `.tar.gz` package from your source code.
 2. **Upload**: Upload the package via the web interface or API.
 3. **Containerization**: The platform builds a secure container using hardened base images.
-4. **Deploy**: The GenAI Service orchestrates and deploys your service.
+4. **Deploy**: The Arango Control Plane (ACP) orchestrates and deploys your service.
 5. **Run**: Your service runs with full platform integration.
 
 ## Key Capabilities

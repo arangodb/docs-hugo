@@ -61,9 +61,8 @@ The web interface guides you through the process of the following:
 
 ### API and Services
 
-The [AI Orchestrator](../reference/ai-orchestrator.md), 
-[Importer](../reference/importer.md), and [Retriever](../reference/retriever/_index.md) 
-services provide programmatic access to create and manage GraphRAG pipelines, 
+The [Importer](../reference/importer.md) and [Retriever](../reference/retriever/_index.md)
+services provide programmatic access to create and manage GraphRAG pipelines,
 and give you access to advanced search methods.
 
 ## How GraphRAG works

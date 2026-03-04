@@ -1,7 +1,7 @@
 ---
 title: The Secrets Manager of the Arango Data Platform
 menuTitle: Secrets Manager
-weight: 35
+weight: 20
 description: >-
   Store secrets like API keys for easy use across the Data Platform
 ---

@@ -122,7 +122,7 @@ This section covers managing Graph Analytics Engines on the **Arango Data Platfo
 If you're using **Arango Managed Platform (AMP)**, skip to the [Management API](#management-api) section instead.
 {{< /info >}}
 
-GAEs are deployed and deleted via the [AI orchestration service](../../agentic-ai-suite/reference/ai-orchestrator.md)
+GAEs are deployed and deleted via the [Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
 in the Contextual Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests

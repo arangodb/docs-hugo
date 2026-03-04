@@ -48,7 +48,11 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
+- `genai_project_name`: The project name created via the
+   [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
 - `chat_api_url`: API endpoint URL for the chat/language model service
 - `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -58,7 +62,9 @@ Where:
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
 - `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a custom embedding model with a different dimension. It must match the embedding model's output dimension.
+  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
+  custom embedding model with a different dimension. It must match the
+  embedding model's output dimension.
 
 {{< info >}}
 When using the official OpenAI API, the service defaults to `gpt-4o` and 
@@ -101,7 +107,11 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
+- `genai_project_name`: The project name created via the
+  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
 - `chat_api_url`: API endpoint URL for the chat/language model service (in this example, OpenRouter)
 - `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -111,7 +121,9 @@ Where:
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
 - `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a custom embedding model with a different dimension. It must match the embedding model's output dimension.
+  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
+  custom embedding model with a different dimension. It must match the
+  embedding model's output dimension.
 
 ## Using Triton Inference Server
 
@@ -141,7 +153,11 @@ service using the below configuration:
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or [Project API](../ai-orchestrator.md#creating-a-project). This name is used as a prefix for all ArangoDB collections (e.g., a project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
+- `genai_project_name`: The project name created via the
+  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Specifies which LLM provider to use for language model services
 - `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
 - `chat_api_url`: API endpoint URL for the chat/language model service
@@ -161,6 +177,9 @@ Where:
 
 ## Next Steps
 
-- **[Import your first document](importing-files.md)**: Learn how to import files to build your knowledge graph.
-- **[Explore all import parameters](parameters.md)**: Customize your import process.
-- **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
+- [**Import your first document**](importing-files.md):
+  Learn how to import files to build your knowledge graph.
+- [**Explore all import parameters**](parameters.md):
+  Customize your import process.
+- [**Enable semantic units**](semantic-units.md):
+  Process images and multimedia content.

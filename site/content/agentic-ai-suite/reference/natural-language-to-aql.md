@@ -396,9 +396,11 @@ Common issues and solutions:
    - Check LLM provider configuration.
    - Verify that the database schema matches the query context.
    - The quality of the generated AQL may vary depending on the LLM model used.
-     Therefore, it is recommended to use an AQL-capable coding model (e.g., a frontier AQL-capable LLM or a fine-tuned AQL-capable coding model) for better results.
+     Therefore, it is recommended to use an AQL-capable coding model
+     (for example, a frontier AQL-capable LLM or a fine-tuned AQL-capable
+     coding model) for better results.
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [Natural Language Service API Reference](https://arangoml.github.io/platform-dss-api/natural-language-service/proto/index.html).

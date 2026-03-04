@@ -18,7 +18,11 @@ aliases:
   A sophisticated web-based interface for graph exploration, smart search, and
   visual layouts.
 
-- **Arango Platform Suite**: Enterprise-grade features including high availability
+- [**Query Editor**](query-editor.md):
+  Write, run, and analyze AQL queries using an IDE-like interface with tabs,
+  result history, query management, and more.
+
+- **Operational features**: Enterprise-grade features including high availability
   and monitoring, comprehensive APIs and connectors, centralized orchestration and
   resource management.
 
@@ -41,7 +45,7 @@ The Agentic AI Suite requires a separate license.
 
 ## Deployment options
 
-### Use the Arango Data Platform as a managed service
+### Use the Arango Contextual Data Platform as a managed service
 
 You can request the Arango Data Platform as a managed service for the
 [Arango Managed Platform (AMP)](../../amp/_index.md).
@@ -54,7 +58,7 @@ You can set up and run the Arango Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
 For a guide how to set up the Data Platform yourself, see
-[Install and upgrade the Arango Data Platform](../contextual-data-platform/install-and-upgrade/_index.md).
+[Install and upgrade the Arango Contextual Data Platform](../contextual-data-platform/install-and-upgrade/_index.md).
 
 {{< info >}}
 **Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 
@@ -66,31 +70,12 @@ to provide automated deployment, scaling, and management capabilities.
 
 {{< cards >}}
 
-{{< comment >}}
-{{% card title="Get started with the Arango Data Platform" link="get-started/" %}}
-Deploy the core ArangoDB database system with Kubernetes orchestration.
-Optionally add the Agentic AI Suite to turn data into an AI-powered knowledge engine.
-{{% /card %}}
-{{< /comment >}}
-
-{{% card title="Features and Architecture" link="../contextual-data-platform/features/" %}}
-Explore the Kubernetes-native architecture, unified interface, and enterprise-grade capabilities of the Arango Contextual Data Platform.
-{{% /card %}}
-
-{{% card title="Kubernetes-Native Architecture" link="../contextual-data-platform/kubernetes/" %}}
+{{% card title="Query Editor" link="query-editor/" %}}
 Learn about the Kubernetes-native foundation that the Arango Data Platform is purpose-built on.
 {{% /card %}}
 
 {{% card title="Graph Visualizer" link="graph-visualizer/" %}}
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
-{{% /card %}}
-
-{{% card title="Agentic AI Suite" link="../agentic-ai-suite/" %}}
-Supercharge your platform with GraphRAG, GraphML, and advanced analytics for AI-powered data insights.
-{{% /card %}}
-
-{{% card title="ArangoDB Core Database" link="../arangodb/" %}}
-Discover the multi-model database at the heart of the platform supporting graphs, documents, key-value, and vector search.
 {{% /card %}}
 
 {{< /cards >}}
