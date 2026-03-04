@@ -61,7 +61,7 @@ Create the service instance with your configuration:
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>:8529/ai/v1/graphrag \
+  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -132,7 +132,7 @@ Check that the service is properly deployed:
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graph-rag-<serviceID> \
+  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb-graph-rag-<serviceID> \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 

@@ -17,7 +17,7 @@ The basic operations that the AI orchestration service carries out are the follo
 Each unique service has its own API endpoint for the deployment.
 
 **Endpoint LLM Host:**
-`https://<ExternalEndpoint>:8529/ai/v1/llmhost`
+`https://<ExternalEndpoint>:8529/_platform/acp/v1/llmhost`
 
 While services have their own unique endpoint, they share the same creation
 request body and the same response body structure. The `env` field is used
@@ -73,7 +73,7 @@ Projects are required for the following services:
 To create a new GraphRAG project, send a POST request to the project endpoint:
 
 ```bash
-curl -X POST "https://<ExternalEndpoint>:8529/ai/v1/project" \
+curl -X POST "https://<ExternalEndpoint>:8529/_platform/acp/v1/project" \
   -H "Authorization: Bearer <your-bearer-token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -108,7 +108,7 @@ Once created, you can reference your project in service deployments using the
 **List all project names in a database:**
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/all_project_names/<database_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/_platform/acp/v1/all_project_names/<database_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -117,7 +117,7 @@ This returns only the project names for quick reference.
 **List all projects with full metadata in a database:**
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/all_projects/<database_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/_platform/acp/v1/all_projects/<database_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -129,7 +129,7 @@ and knowledge graph information.
 Retrieve comprehensive metadata for a specific project:
 
 ```bash
-curl -X GET "https://<ExternalEndpoint>:8529/ai/v1/project_by_name/<database_name>/<project_name>" \
+curl -X GET "https://<ExternalEndpoint>:8529/_platform/acp/v1/project_by_name/<database_name>/<project_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -145,7 +145,7 @@ The response includes:
 Remove a project's metadata from the AI service:
 
 ```bash
-curl -X DELETE "https://<ExternalEndpoint>:8529/ai/v1/project/<database_name>/<project_name>" \
+curl -X DELETE "https://<ExternalEndpoint>:8529/_platform/acp/v1/project/<database_name>/<project_name>" \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -181,7 +181,7 @@ The example below shows how to install, monitor, and uninstall the [Importer](im
 ### Step 1: Installing the service
 
 ```bash
-curl -X POST https://<ExternalEndpoint>:8529/ai/v1/graphragimporter \
+curl -X POST https://<ExternalEndpoint>:8529/_platform/acp/v1/graphragimporter \
   -H "Authorization: Bearer <your-bearer-token>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -226,7 +226,7 @@ Where:
 ### Step 2: Checking the service status
 
 ```bash
-curl -X GET https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-importer-of1ml \
+curl -X GET https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -245,7 +245,7 @@ curl -X GET https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-impo
 ### Step 3: Uninstalling the service
 
 ```bash
-curl -X DELETE https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-importer-of1ml \
+curl -X DELETE https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
@@ -271,14 +271,14 @@ curl -X DELETE https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graphrag-i
 The AI orchestrator service is **started by default**. 
 
 It will be available at the following URL:
-`https://<ExternalEndpoint>:8529/ai/v1/service`
+`https://<ExternalEndpoint>:8529/_platform/acp/v1/service`
 
 ## Health check
 
 To test whether the service is running, you can use the following snippet:
 
 ```bash
-curl -X GET https://<ExternalEndpoint>:8529/ai/v1/health
+curl -X GET https://<ExternalEndpoint>:8529/_platform/acp/v1/health
 ```
 
 Expected output on success: `{"status":"OK"}`

@@ -87,11 +87,11 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 Before you create a secret, take a look at the available types you can specify:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secret_types" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secret_types" >}}
 
 Now create a new secret with this endpoint:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secrets" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets" >}}
 
 The request body needs to be a JSON object with the following attributes:
 
@@ -108,10 +108,10 @@ The request body needs to be a JSON object with the following attributes:
 **Example**
 
 ```sh
-curl -H "Authorization: bearer <TOKEN>" -d '{"name":"OpenAI-API","profileType":"LLM","provider":"openai","secretData":"sk-...","description":"Production API key for OpenAI"}' https://127.0.0.1:8529/ai/v1/secrets
+curl -H "Authorization: bearer <TOKEN>" -d '{"name":"OpenAI-API","profileType":"LLM","provider":"openai","secretData":"sk-...","description":"Production API key for OpenAI"}' https://127.0.0.1:8529/_platform/acp/v1/secrets
 ```
 
 You can list the existing secret objects (but without the sensitive secrets
 themselves):
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/secrets" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets" >}}

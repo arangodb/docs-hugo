@@ -156,7 +156,7 @@ project_payload = {
     "project_description": f"GraphRAG project for {FILE_NAME}"
 }
 
-project_response = send_request("/ai/v1/project", project_payload, "POST")
+project_response = send_request("/_platform/acp/v1/project", project_payload, "POST")
 pprint(project_response)
 ```
 

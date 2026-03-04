@@ -130,7 +130,7 @@ if the Platform deployment uses a self-signed certificate (default).
 
 #### Start a `graphanalytics` service
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphanalytics" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
 
 Start a GAE via the AI service with an empty request body. This returns a **SERVICE_ID** that you will need to construct the Engine API URL in the next section.
 
@@ -145,7 +145,7 @@ ADB_TOKEN=$(curl -sSk -X POST \
 
 # Start the Graph Analytics service
 Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" \
-  -X POST "https://$EXTERNAL_ENDPOINT:8529/ai/v1/graphanalytics")
+  -X POST "https://$EXTERNAL_ENDPOINT:8529/_platform/acp/v1/graphanalytics")
 
 # Extract the service ID (needed for Engine API URL construction)
 ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
@@ -179,25 +179,25 @@ Save the `serviceId` from the response. You will use it to construct the Engine 
 
 #### List the services
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/list_services" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
 You can list all running services managed by the AI service, including the
 `graphanalytics` services:
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X POST "https://data-platform.example.org:8529/ai/v1/list_services" | jq
+  -X POST "https://data-platform.example.org:8529/_platform/acp/v1/list_services" | jq
 ```
 
 #### Stop a `graphanalytics` service
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/service/{SERVICE_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{SERVICE_ID}" >}}
 
 Delete the desired engine via the AI service using the service ID:
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X DELETE "https://data-platform.example.org:8529/ai/v1/service/tqcge" | jq
+  -X DELETE "https://data-platform.example.org:8529/_platform/acp/v1/service/tqcge" | jq
 ```
 
 ### Management API

@@ -20,7 +20,7 @@ multiple methods.
 You can verify the state of the import process via the following endpoint:
 
 ```
-GET /ai/v1/project_by_name/<your_project>
+GET /_platform/acp/v1/project_by_name/<your_project>
 ```
 
 For example, the `status` object found within `importerServices` may contain the following

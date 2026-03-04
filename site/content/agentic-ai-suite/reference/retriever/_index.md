@@ -42,7 +42,7 @@ Before using the Retriever service, you need to:
 
 To start the service, use the AI service endpoint:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/graphragretriever" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
 Please refer to the documentation of the [AI orchestration service](../ai-orchestrator.md) for more
 information on how to use it.
