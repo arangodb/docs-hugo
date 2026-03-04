@@ -10,26 +10,38 @@ description: >-
 
 {{< cards >}}
 
-{{% card title="ArangoDB" link="arangodb/" icon="avo-core.svg" %}}
-Native multi-model database system that unifies graph, document,
-key-value, vector, and full-text search with one query language.
-{{% /card %}}
-
-{{% card title="Arango Data Platform" link="data-platform/" icon="avo-middle.svg" %}}
-Adds platform services for scalability, reliability, governance, as well as a
-query editor and graph visualizer.
-{{% /card %}}
-
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" icon="avo-full.svg" %}}
-Supercharge your Data Platform with GraphRAG, GraphML, and queries generated from
-natural language for AI-powered insights.
+The full Arango Contextual Data Platform provides entity-aware retrieval,
+graph-based reasoning, temporal state management, and platform-level governance
+to support reliable, stateful agentic AI systems in production environments.
 {{% /card %}}
 
-<!-- TODO: Add cards for Agentic AI Suite and Platform Suite? -->
+{{% card title="Agentic AI Suite" link="agentic-ai-suite/" icon="avo-full.svg" %}}
+Supercharge your Data Platform with GraphRAG, GraphML, Graph Analytics, queries
+generated from natural language, and machine learning infrastructure for
+AI-powered insights.
+{{% /card %}}
+
+{{% card title="Platform Suite" link="platform-suite/" icon="avo-middle.svg" %}}
+Enterprise-grade services for scalability, reliability, governance with
+Kubernetes orchestration, custom services with Bring Your Own Code, as well as
+a unified web interface with a Graph Visualizer and advanced Query Editor.
+{{% /card %}}
+
+{{% card title="ArangoDB" link="arangodb/" icon="avo-core.svg" %}}
+The native multi-model database system that unifies graph, document,
+key-value, full-text, and vector search with one query language.
+{{% /card %}}
 
 {{% card title="Arango Managed Platform (AMP)" link="amp/" %}}
 Arango's fully-managed cloud offering for a faster time to value,
 formerly known as ArangoGraph Insights Platform.
+{{% /card %}}
+
+{{% card title="Ecosystem" link="ecosystem/" %}}
+Official drivers, integrations, and adapters that help you connect ArangoDB and
+the Contextual Data Platform to your applications and data science tools,
+as well as an MCP server.
 {{% /card %}}
 
 {{< /cards >}}
