@@ -1,6 +1,8 @@
-/data-platform/installation/  /platform-suite/install-and-upgrade/  302
-/data-platform/features/      /contextual-data-platform/            302
-/data-platform/*              /platform-suite/:splat                302
+/data-platform/installation/                       /contextual-data-platform/install-and-upgrade/     302
+/data-platform/features/                           /contextual-data-platform/                         302
+/data-platform/release-notes/                      /contextual-data-platform/release-notes/           302
+/data-platform/*                                   /platform-suite/:splat                             302
 
-/at-suite/reference/ai-orchestrator/  /platform-suite/control-plane-acp/  302
-/ai-suite/*                   /agentic-ai-suite/:splat              302
+/ai-suite/release-notes/                           /contextual-data-platform/release-notes/           302
+/ai-suite/reference/ai-orchestrator/               /platform-suite/control-plane-acp/                 302
+/ai-suite/*                                        /agentic-ai-suite/:splat                           302
