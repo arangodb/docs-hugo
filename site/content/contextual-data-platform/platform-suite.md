@@ -5,11 +5,12 @@ weight: 10
 description: >-
   The Platform Suite is a set of services for scalability, reliability,
   governance, as well as a query editor and graph visualizer, all
-  included in the Arango Data Platform
+  included in the Arango Contextual Data Platform
 ---
-## Operational features
+The **Platform Suite** adds enterprise-grade capabilities on top of ArangoDB.
+It is part of both, the Arango Data Platform and the full Arango Contextual Data Platform.
 
-The **Platform Suite** adds enterprise-grade capabilities <!-- TODO: To what? --> such as:
+## Operational features
 
 - **High Availability and Monitoring**: Comprehensive health checks, metrics collection,
   alerting, and automatic failover mechanisms ensure your data platform stays operational.
@@ -29,7 +30,9 @@ The **Platform Suite** adds enterprise-grade capabilities <!-- TODO: To what? --
 These enterprise features are orchestrated through Kubernetes and the ArangoDB
 Kubernetes Operator, providing automated management and enterprise-grade reliability.
 
-## Graph Visualizer
+## Unified web interface
+
+### Graph Visualizer
 
 The [**Graph Visualizer**](../platform-suite/graph-visualizer.md)
 provides an intuitive web-based interface that brings your data to life with:
@@ -48,3 +51,16 @@ provides an intuitive web-based interface that brings your data to life with:
 
 The Graph Visualizer seamlessly integrates with the ArangoDB database and provides the
 primary interface for data exploration and analysis.
+
+### Query editor
+
+### Container manager
+
+### File manager
+
+### Secrets manager
+
+## Additional services
+
+### Cypher2AQL (experimental)
+

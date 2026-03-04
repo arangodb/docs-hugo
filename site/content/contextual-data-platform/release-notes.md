@@ -140,7 +140,7 @@ and its Agentic AI Suite and Platform Suite.
 
 The minimum required ArangoDB version is the Enterprise Edition v3.12.5.
 
-### Agentic AI Suite
+### Introducing the Arango Agentic AI Suite
 
 {{< tag "Agentic AI Suite" >}}
 
@@ -169,7 +169,7 @@ What's included:
   Host private Large Language Models using NVIDIA Triton Inference Server for
   secure, on-premises AI capabilities.
 
-### Platform Suite
+### Introducing the Arango Platform Suite
 
 {{< tag "Platform Suite" >}}
 
@@ -178,15 +178,21 @@ What's included:
 - [**ArangoDB Enterprise Edition**](../arangodb/_index.md):
   Multi-model database foundation supporting
   graphs, documents, key-value, vector search, and full-text search capabilities.
+- **Unified web interface**: Single interface for accessing all
+   Contextual Data Platform services and components.
 - [**Graph Visualizer**](../platform-suite/graph-visualizer.md):
   Sophisticated web-based interface for interactive graph
   exploration, visual customization, and direct graph editing.
-- [**Arango Platform Suite**](../platform-suite/_index.md):
-  Enterprise-grade features including high availability
-  and monitoring, comprehensive APIs and connectors, and centralized orchestration
-  and resource management.
+- [**Query Editor**](../platform-suite/query-editor.md):
+  Write, run, and analyze AQL queries using an IDE-like interface with tabs,
+  result history, query management, and more.
 - [**Kubernetes orchestration**](kubernetes.md):
   Powered by the official ArangoDB Kubernetes
   Operator for automated deployment, scaling, and management.
-- **Unified web interface**: Single interface for accessing all Platform services
-  and components.
+- [**Operational features**](../platform-suite/_index.md):
+  Enterprise-grade features including high availability and monitoring,
+  comprehensive APIs and connectors, and centralized orchestration and
+  resource management.
+- **Additional services**: Cypher2AQL service for translating graph queries
+  written in Neo4j's Cypher query language to ArangoDB's AQL query language
+  (experimental)

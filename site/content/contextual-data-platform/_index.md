@@ -19,8 +19,9 @@ scalability and reliability.
 The Arango Contextual Data Platform is a layered architecture that combines
 powerful components into a unified solution. It builds on the Arango Data Platform,
 combining the [Platform Suite](../platform-suite/_index.md) with the
-[Agentic AI Suite](../agentic-ai-suite/_index.md). The ArangoDB multi-model
-database system is the foundation for it all.
+[Agentic AI Suite](../agentic-ai-suite/_index.md).
+The [ArangoDB](../arangodb/_index.md) multi-model database system is the
+foundation for it all.
 
 {{< image src="../images/Arango-Contextual-Data-Platform-All.svg" alt="Product layers and features of the Arango Contextual Data Platform" style="display: block; margin: 2rem auto;" >}}
 
@@ -43,12 +44,11 @@ Follow the links for a more details explanation of each component.
 
 - [**Kubernetes**](kubernetes.md):\
   At its core, the Arango Contextual Data Platform is purpose-built for
-  Kubernetes environments. [Kubernetes](https://kubernetes.io/) is the technical
-  infrastructure that is used for container orchestration, automated deployment,
-  scaling, and management. The official
-  [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/docs/)
-  (`kube-arangodb`) is leveraged to deliver enterprise-grade database management,
-  automation, scalability, high availability, and operational excellence.
+  Kubernetes environments. Kubernetes is the technical infrastructure that is
+  used for container orchestration, automated deployment, scaling, and
+  management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
+  leveraged to deliver enterprise-grade database management, automation,
+  scalability, high availability, and operational excellence.
 
 - [**ArangoDB Enterprise Edition**](arangodb.md):\
   The multi-model database system acts as the solid foundation for all your
