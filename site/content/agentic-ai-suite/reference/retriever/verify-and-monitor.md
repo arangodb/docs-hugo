@@ -14,13 +14,13 @@ weight: 50
 
 You can monitor the Retriever service health using the health endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
 
 ## Verify Service Status
 
 You can verify the state of the Retriever service via the project endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/ai/v1/project_by_name/<your_project>" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/<your_project>" >}}
 
 For example, the `status` object found within `retrieverServices` may contain the following
 properties:

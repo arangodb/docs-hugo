@@ -61,7 +61,7 @@ Create the service instance with your configuration:
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>:8529/ai/v1/graphrag \
+  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -132,7 +132,7 @@ Check that the service is properly deployed:
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>:8529/ai/v1/service/arangodb-graph-rag-<serviceID> \
+  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb-graph-rag-<serviceID> \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 
@@ -396,9 +396,11 @@ Common issues and solutions:
    - Check LLM provider configuration.
    - Verify that the database schema matches the query context.
    - The quality of the generated AQL may vary depending on the LLM model used.
-     Therefore, it is recommended to use an AQL-capable coding model (e.g., a frontier AQL-capable LLM or a fine-tuned AQL-capable coding model) for better results.
+     Therefore, it is recommended to use an AQL-capable coding model
+     (for example, a frontier AQL-capable LLM or a fine-tuned AQL-capable
+     coding model) for better results.
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [Natural Language Service API Reference](https://arangoml.github.io/platform-dss-api/natural-language-service/proto/index.html).

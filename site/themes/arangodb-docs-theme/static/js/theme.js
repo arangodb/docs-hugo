@@ -605,9 +605,9 @@ function handleDocumentClick(event) {
     }
   
     // Card link clicks
-    if (target.classList.contains('card-link')) {
+    if (closest('.card-link')) {
         event.preventDefault();
-        const href = target.getAttribute('href');
+        const href = target.closest('.card-link').getAttribute('href');
         if (href) {
             updateHistory(href);
         }

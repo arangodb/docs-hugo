@@ -1373,6 +1373,27 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Batched neighbor retrieval for traversals
+
+<small>Introduced in: v3.12.8</small>
+
+Graph traversals using depth-first search (`dfs`) or breadth-first search (`bfs`)
+now internally batch the fetching of neighbor nodes. Additionally, some unnecessary
+waiting for responses is avoided in clusters. This improves the performance of
+traversal queries, especially in cluster deployments and if there is a `LIMIT`
+operation that caps the traversal results.
+
+Batching is not supported for `weighted` traversals, SmartGraphs, EnterpriseGraphs,
+and SatelliteGraphs.
+
+### Cancellation of graph queries
+
+<small>Introduced in: v3.12.8</small>
+
+AQL queries can now be killed during the execution of graph traversals and
+paths searches. These operations previously lacked cancellation points to stop
+the execution quickly.
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -2596,6 +2617,116 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### Shard monitoring and replication metrics
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster. You can monitor
+the total number of shards (leaders and followers), track the replication status,
+and identify shards that are out of sync or not properly replicated.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_metadata_total_number_of_shards` | Total number of leader and follower shards in the deployment. In a cluster, this is the number of shards across collections of all databases. |
+| `arangodb_metadata_number_follower_shards` | Number of follower shards that exist across collections of all databases. |
+| `arangodb_metadata_number_out_of_sync_shards` | Number of shards that are out of sync across collections of all databases. Indicates where the Plan (expected state) differs from Current (actual state). |
+| `arangodb_metadata_number_not_replicated_shards` | Number of shards that are not replicated across collections of all databases. Represents potential single points of failure where shards lack follower redundancy. |
+| `arangodb_metadata_shard_followers_out_of_sync_number` | Number of follower shards across the cluster that are out of sync with their leader. Computed by the coordinator by comparing the Plan (expected state) with Current state (actual state). |
+
+### Endpoint to get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added to the HTTP API for retrieving a small, curated subset of the
+configured server startup options that are safe to expose to any authenticated user.
+
+Administrative tools like the Arango Data Platform web interface can use this
+endpoint to adapt their behavior to the server configuration.
+
+### Crash dumps
+
+<small>Introduced in: v3.12.8</small>
+
+On crash, the server can now write diagnostic data such as recent API calls and
+AQL queries, a backtrace, and system info into separate files on disk. The most
+recent 10 of these crash dumps are kept. Older ones are removed at startup.
+
+An HTTP API for viewing and managing crash dumps has been added as well.
+
+You can disable the creation of crash dumps and the management API by setting
+the new `--crash-handler.enable-dumps` startup option to `false`.
+
+The management API has the following endpoints:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [HTTP interface for server administration](../../develop/http-api/administration.md#crash-dump-management)
+as well as [The crash dumps feature of the ArangoDB server](../../operations/troubleshooting/crash-dumps.md)
+for details.
+
+### New server activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature, allowing you to
+see which high-level processes are currently running on the server (HTTP handlers,
+AQL queries, and so on).
+
+```json
+{
+  "activities": [
+    {
+      "id": "0x7ec9c067a040",
+      "type": "RestHandler",
+      "parent": {
+        "id": "0x0"
+      },
+      "metadata": {
+        "method": "POST",
+        "url": "/_api/cursor",
+        "handler": "RestCursorHandler"
+      }
+    },
+    {
+      "id": "0x7ec9c022f3c0",
+      "type": "AQLQuery",
+      "parent": {
+        "id": "0x7ec9c067a040"
+      },
+      "metadata": {
+        "query": "RETURN SLEEP(@seconds)"
+      }
+    },
+    ...
+  ]
+}
+```
+
+See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
+for details.
+
+The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
+lets you restrict the access from admin users to only the superuser.
+
+The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
+option controls the interval (in seconds) at which the activity registry is
+garbage-collected by a background cleanup thread.
+
+The following metrics related to activities have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_activities_total` | Total number of created activities since database process start |
+| `arangodb_activities_existing` | Number of currently existing activities |
+| `arangodb_activities_ready_for_deletion` | Number of currently existing activities that wait for their garbage collection |
+| `arangodb_activities_thread_registries_total` | Total number of threads that started activities since database process start |
+| `arangodb_activities_existing_thread_registries` | Number of currently existing activity thread registries |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
@@ -2752,6 +2883,26 @@ Startup options to enable transparent compression of the data that is sent
 between a client tool and the ArangoDB server have been added. See the
 [Server options](#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
 section above that includes a description of the added client tool options.
+
+### arangosh
+
+#### New activities module
+
+<small>Introduced in: v3.12.8</small>
+
+The new [`@arangodb/activities` module](../../develop/javascript-api/activities.md)
+lets you pretty-print the high-level server activities in the ArangoDB Shell:
+
+```js
+const activities = require("@arangodb/activities");
+activities.get_snapshot();
+```
+
+```
+ ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
+    └── AQLQuery: {"query":"RETURN SLEEP(@seconds)"}
+ ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
+```
 
 ## Internal changes
 

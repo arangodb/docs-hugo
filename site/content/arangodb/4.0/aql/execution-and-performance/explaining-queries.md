@@ -158,7 +158,7 @@ stmt.explain({ allPlans: true }).plans.map(
 ```
 
 `explain()` also accepts the following additional options:
-- `maxPlans`: limits the maximum number of plans that are created by the AQL query optimizer
+- `maxNumberOfPlans`: limits the maximum number of plans that are created by the AQL query optimizer
 - `optimizer`:
   - `rules`: an array of to-be-included or to-be-excluded optimizer rules
     can be put into this attribute, telling the optimizer to include or exclude

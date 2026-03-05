@@ -156,5 +156,5 @@ different structures depending on the query type.
 
 ## API Reference
 
-For detailed API documentation, see the
+For detailed API documentation, see the <!-- TODO: New API reference and link -->
 [GraphRAG Retriever API Reference](https://arangoml.github.io/platform-dss-api/graphrag_retrievers/proto/index.html).

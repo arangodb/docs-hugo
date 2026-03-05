@@ -1243,8 +1243,8 @@ as a list of supported features such as types of indexes.
 
 ### `db._engineStats()`
 
-Returns statistics related to the storage engine activity, including figures
-about data size, cache usage, etc.
+Returns detailed statistics related to the RocksDB storage engine activity,
+including figures about data size, cache usage, individual column families, etc.
 
 ### `db._version()`
 

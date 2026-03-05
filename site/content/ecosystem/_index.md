@@ -3,9 +3,15 @@ title: Ecosystem
 menuTitle: Ecosystem
 weight: 10
 description: >-
-  The ArangoDB ecosystem includes official drivers, integrations, and adapters that
-  help you connect ArangoDB to your applications and data science tools
+  The Arango ecosystem includes an MCP server, drivers, integrations, and
+  adapters that help you connect ArangoDB and the Arango Contextual Data Platform
+  to your applications and data science tools
 ---
+## MCP Server
+
+A focused [MCP Server](arangodb-mcp-server.md) for generating and executing
+ArangoDB AQL queries using AI assistants like Claude and Cursor IDE.
+
 ## Drivers
 
 Official [drivers](drivers/_index.md) for various programming languages allow you to
@@ -18,7 +24,7 @@ connect to and interact with ArangoDB from your applications:
 
 ## Integrations
 
-[Integrations](integrations/_index.md) for popular frameworks and tools:
+ArangoDB [Integrations](integrations/_index.md) for popular frameworks and tools:
 
 - [Spring Data & Spring Boot](integrations/spring-data-arangodb/_index.md)
 - [Apache Spark](integrations/arangodb-datasource-for-apache-spark.md)
