@@ -1,0 +1,26 @@
+# OpenAPI base info per service. Used by arangoproxy when building OpenAPI specs.
+# For ArangoDB, version and license are computed in Go (from versions.yaml and API version index).
+# For other services, all fields are read from here; version can be a fixed string.
+
+arangodb:
+  title: ArangoDB Core API
+  summary: The RESTful HTTP API of the ArangoDB Core Database System
+  contact:
+    name: ArangoDB Inc.
+    url: https://arango.ai
+  externalDocs:
+    description: Arango Documentation
+    url: https://docs.arango.ai
+  # license: computed per version in Go (BSL 1.1 for 3.12+, Apache 2.0 for 3.10/3.11)
+  # version: computed as "<version> (API v0)" etc. in Go
+
+cypher2aql:
+  title: Cypher to AQL Translation Service API
+  summary: Translate Cypher queries to AQL for use with ArangoDB
+  version: "1.0.0"
+  contact:
+    name: ArangoDB Inc.
+    url: https://arango.ai
+  externalDocs:
+    description: Documentation
+    url: https://docs.arango.ai

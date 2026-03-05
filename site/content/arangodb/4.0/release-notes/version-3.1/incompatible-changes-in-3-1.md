@@ -133,5 +133,3 @@ the server:
 The QUnit interface to Mocha has been removed. This affects the behavior of the `suite`, `test`, `before`, `after`, `beforeEach` and `afterEach` functions in Foxx test suites. The `suite` and `test` functions are now provided by the TDD interface. The `before`, `after`, `beforeEach` and `afterEach` functions are now provided by the BDD interface.
 
 This should not cause any problems with existing tests but may result in failures in test cases that previously passed for the wrong reasons. Specifically the execution order of the `before`, `after`, etc functions now follows the intended order and is no longer arbitrary.
-
-For details on the expected behavior of these functions see the [testing chapter](../../develop/foxx-microservices/guides/testing-foxx-services.md) in the Foxx documentation.
