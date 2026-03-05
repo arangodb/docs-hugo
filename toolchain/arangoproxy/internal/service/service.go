@@ -206,6 +206,8 @@ func init() {
 func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, headers http.Header, globalOpenapiChannel chan map[string]interface{}) {
 	summary := strings.TrimLeft(headers.Get("Endpoint-Title"), "# ")
 	version := headers.Get("Page-Version")
+	service := headers.Get("Service-Name")
+	apiVersions := headers.Get("API-Versions")
 
 	spec["version"] = version
 

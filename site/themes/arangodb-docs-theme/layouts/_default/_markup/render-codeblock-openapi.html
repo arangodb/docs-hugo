@@ -2,9 +2,24 @@
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
 {{- $title := .Page.Scratch.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
+{{- $service := "arangodb" }}
+{{- $apiVersions := slice }}
+{{- $body := "" }}
+
+{{- $matches := findRESubmatches `(?ms)^---\r?\n(.*?)^---\r?\n(.*)$` .Inner 2 }}
+{{- if $matches }}
+  {{- $frontmatter := index (index $matches 0) 1 | transform.Unmarshal }}
+  {{- $body = index (index $matches 0) 2 }}
+  {{- $service = $frontmatter.service }}
+  {{- $apiVersions = $frontmatter.apiVersions }}
+{{- else }}
+  {{- $body = .Inner }}
+  {{- /* $service defaults to "arangodb" */}}
+  {{- $apiVersions = slice "v0" "v1" }}
+{{- end }}
 
 {{- $linkMap := dict }}
-{{- range $match := findRESubmatch `\[([^\]]+)\]\((.*?)\)` .Inner }}
+{{- range $match := findRESubmatch `\[([^\]]+)\]\((.*?)\)` $body }}
   {{- $url := index $match 2 }}
   {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
   {{- if not $isRemote }}
@@ -15,7 +30,7 @@
     {{- $linkMap = merge $linkMap (dict (index $match 0) $newLink) }}
   {{- end }}
 {{- end }}
-{{- $innerAbsLinks := .Inner }}
+{{- $innerAbsLinks := $body }}
 {{- range $old, $new := $linkMap }}
   {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
 {{- end }}
@@ -26,18 +41,20 @@
       "Content-Type" "application/json"
       "Page-Version" $pageVersion
       "Endpoint-Title" $title
+      "Service-Name" $service
+      "API-Versions" $apiVersions
     )
   )
 }}
 {{- $title = $title | urlize }}
-{{- $yamlBlock := .Inner | transform.Unmarshal }}
+{{- $yamlBlock := $body | transform.Unmarshal }}
 {{- with $yamlBlock }}
   <div class="openapi">
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
-        "Url"    (printf "http://<EXTERNAL_ENDPOINT>:8529%s" $path | replaceRE "#.*" "")
+        "Url"    (printf "http%s://<EXTERNAL_ENDPOINT>:8529%s" (cond (eq $service "arangodb") "" "s") $path | replaceRE "#.*" "")
       ) }}
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
