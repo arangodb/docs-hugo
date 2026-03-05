@@ -26,7 +26,7 @@
     {{- else if eq $pageVersion "4.0" }}
       {{- $apiVersions = slice "v1" }}
     {{- else }}
-  {{- $apiVersions = slice "v0" "v1" }}
+      {{- $apiVersions = slice "v0" "v1" }}
     {{- end }}
   {{- end }}
 {{- end }}
@@ -266,7 +266,9 @@
         </summary>
         {{- $description := $value.description | $page.RenderString }}
         <div class="openapi-prop-content">
-          {{- if isset $value.schema "enum" }}
+          {{- if isset $value.schema "const" }}
+            <p class="regular-font">Set this to the value: <code>{{ $value.schema.const | jsonify }}</code></p>
+          {{- else if isset $value.schema "enum" }}
             <p class="regular-font">Possible values:
               {{- range $i, $val := $value.schema.enum }}
                 {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
@@ -306,14 +308,18 @@
       </summary>
       {{- $description := $value.description | $page.RenderString }}
       <div class="openapi-prop-content">
-        {{- if isset $value "enum" }}
+        {{- if isset $value "const" }}
+          <p class="regular-font">Set this to the value: <code>{{ $value.const | jsonify }}</code></p>
+        {{- else if isset $value "enum" }}
           <p class="regular-font">Possible values:
             {{- range $i, $val := $value.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
             {{- end }}
           </p>
         {{- end }}
-        {{- if and ($value.items) (isset $value.items "enum") }}
+        {{- if and ($value.items) (isset $value.items "const") }}
+          <p class="regular-font">Set each element to the value: <code>{{ $value.items.const | jsonify }}</code></p>
+        {{- else if and ($value.items) (isset $value.items "enum") }}
           <p class="regular-font">Possible values in array:
             {{- range $i, $val := $value.items.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
