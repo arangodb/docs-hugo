@@ -6,16 +6,29 @@
 {{- $apiVersions := slice }}
 {{- $body := "" }}
 
-{{- $matches := findRESubmatches `(?ms)^---\r?\n(.*?)^---\r?\n(.*)$` .Inner 2 }}
+{{- $matches := findRESubmatch `(?ms)^---\r?\n(.*?)^---\r?\n(.*)$` .Inner 2 }}
 {{- if $matches }}
   {{- $frontmatter := index (index $matches 0) 1 | transform.Unmarshal }}
   {{- $body = index (index $matches 0) 2 }}
-  {{- $service = $frontmatter.service }}
+  {{- $service = $frontmatter.service | default $service }}
   {{- $apiVersions = $frontmatter.apiVersions }}
+  {{- if and (eq $service "arangodb") (or (not $apiVersions) (eq (len $apiVersions) 0)) }}
+    {{- errorf "openapi codeblock: service is arangodb but apiVersions is missing or empty (set apiVersions in frontmatter, e.g. apiVersions: [v0] or apiVersions: [experimental])" }}
+  {{- end }}
 {{- else }}
   {{- $body = .Inner }}
-  {{- /* $service defaults to "arangodb" */}}
+  {{- /* $service defaults to "arangodb"; apiVersions depend on ArangoDB version (3.10/3.11→v0, 3.12→v0+v1, 4.0→v1) */}}
+  {{- if eq $service "arangodb" }}
+    {{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}
+      {{- $apiVersions = slice "v0" }}
+    {{- else if eq $pageVersion "3.12" }}
+      {{- $apiVersions = slice "v0" "v1" }}
+    {{- else if eq $pageVersion "4.0" }}
+      {{- $apiVersions = slice "v1" }}
+    {{- else }}
   {{- $apiVersions = slice "v0" "v1" }}
+    {{- end }}
+  {{- end }}
 {{- end }}
 
 {{- $linkMap := dict }}
@@ -39,10 +52,10 @@
     "body" $innerAbsLinks
     "headers" (dict 
       "Content-Type" "application/json"
-      "Page-Version" $pageVersion
       "Endpoint-Title" $title
       "Service-Name" $service
-      "API-Versions" $apiVersions
+      "API-Versions" ($apiVersions | jsonify)
+      "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
     )
   )
 }}
@@ -52,9 +65,13 @@
   <div class="openapi">
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
+      {{- $displayPath := $path }}
+      {{- if and (eq $service "arangodb") (in $apiVersions "experimental") }}
+        {{- $displayPath = printf "/_arango/experimental%s" $path }}
+      {{- end }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
-        "Url"    (printf "http%s://<EXTERNAL_ENDPOINT>:8529%s" (cond (eq $service "arangodb") "" "s") $path | replaceRE "#.*" "")
+        "Url"    (printf "http%s://<EXTERNAL_ENDPOINT>:8529%s" (cond (eq $service "arangodb") "" "s") $displayPath | replaceRE "#.*" "")
       ) }}
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
