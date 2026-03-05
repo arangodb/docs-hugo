@@ -24,6 +24,13 @@ containerization, security, and integration automatically.
 4. **Deploy**: The Arango Control Plane (ACP) orchestrates and deploys your service.
 5. **Run**: Your service runs with full platform integration.
 
+{{< tip >}}
+Use [ServiceMaker](https://github.com/arangodb/servicemaker) to prepare and package your code.
+It builds Docker images locally, handles dependencies, and generates deployment-ready
+`.tar.gz` archives. You can run and test the generated Docker images on your local machine
+before uploading to Container Manager.
+{{< /tip >}}
+
 ## Key Capabilities
 
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) and
