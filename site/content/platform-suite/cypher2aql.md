@@ -85,7 +85,7 @@ paths:
                   description: |
                     The name of the service to deploy.
                   type: string
-                  enum: ["arango-cypher2aql"]
+                  const: arango-cypher2aql
       responses:
         '200':
           description: |
