@@ -28,8 +28,10 @@ methods of the [`db` object](../../develop/javascript-api/@arangodb/db-object.md
 also describes how to use bind parameters, statistics, counting, and cursors with
 arangosh.
 
-If you use Foxx microservices, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
-for examples including tagged template strings.
+<!-- TODO:
+Foxx content shows how to write database queries with tagged template strings.
+Bring something like this back for arangosh, or is it covered somewhere else already? Link from here to that?
+-->
 
 If you want to run AQL queries from your application via the HTTP REST API,
 see the full API description at [HTTP interface for AQL queries](../../develop/http-api/queries/aql-queries.md).

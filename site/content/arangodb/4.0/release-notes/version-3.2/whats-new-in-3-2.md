@@ -207,7 +207,7 @@ are available in the *Enterprise Edition*.
 
 ## Foxx
 
-- There is now an [official HTTP API for managing services](../../develop/http-api/foxx.md),
+- There is now an official HTTP API for managing services,
   allowing services to be installed, modified, uninstalled and reconfigured without
   the administrative web interface.
 
@@ -352,12 +352,12 @@ Read more in the [overview](../../operations/administration/user-management/_ind
 
 ## Foxx and authorization
 
-- the [cookie session transport](../../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport.md) now supports
-  all options supported by the [cookie method of the response object](../../develop/foxx-microservices/reference/routers/response.md#cookie).
+- the cookie session transport now supports
+  all options supported by the cookie method of the response object.
 
-- it's now possible to provide your own version of the `graphql-sync` module when using the [GraphQL extensions for Foxx](../../develop/foxx-microservices/reference/related-modules/graphql.md) by passing a copy of the module using the new _graphql_ option.
+- it's now possible to provide your own version of the `graphql-sync` module when using the GraphQL extensions for Foxx by passing a copy of the module using the new _graphql_ option.
 
-- custom API endpoints can now be tagged using the [tag method](../../develop/foxx-microservices/reference/routers/endpoints.md#tag) to generate a cleaner Swagger documentation.
+- custom API endpoints can now be tagged using the tag method to generate a cleaner Swagger documentation.
 
 ## Miscellaneous Changes
 

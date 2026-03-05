@@ -25,22 +25,16 @@ queries.properties({slowStreamingQueryThreshold: 1});
 
 ## Currently running queries
 
-We [create a task](tasks.md) that spawns queries, so we have nice output. Since this task
-uses resources, you may want to increase `period` (and not forget to remove it... afterwards):
-
 ```js
 ---
 name: QUERY_02_listQueries
-description: ''
+description: |
+  The example code starts a query in a non-blocking fashion before calling
+  `queries.current()` so that it returns something.
 ---
 ~var queries = require("@arangodb/aql/queries");
-var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
-var tasks = require("@arangodb/tasks");
-tasks.register({
-  id: "mytask-1",
-  name: "this is a sample task to spawn a slow aql query",
-  command: "require('@arangodb').db._query('" + theQuery + "');"
-});
+var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1) RETURN sleepLoooong';
+arango.POST('/_api/cursor', { query: theQuery }, { "X-Arango-Async": true });
 ~while (true) {
 ~  require("internal").wait(1);
 ~  if (queries.current().filter(function(query) {
@@ -89,8 +83,8 @@ name: QUERY_05_killQueries
 description: ''
 ---
 ~var queries = require("@arangodb/aql/queries");
-~var tasks = require("@arangodb/tasks");
-~var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
+~var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1) RETURN sleepLoooong';
+~arango.POST("/_api/cursor", {query:"RETURN SLEEP(5)"}, {"X-Arango-Async":true})
 var runningQueries = queries.current().filter(function(query) {
   return query.query === theQuery;
 });

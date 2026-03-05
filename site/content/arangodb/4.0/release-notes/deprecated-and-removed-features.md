@@ -139,8 +139,6 @@ detailed information about breaking changes before upgrading.
   `graphql-sync`, `highlight.js`, `i` (inflect), `iconv-lite`, `joi`,
   `js-yaml`, `lodash`, `minimatch`, `qs`, `semver`, `sinon`, and `timezone`
   have been deprecated in 3.9 and will be removed in a future version of ArangoDB.
-  If you want to use NPM modules in your Foxx service, please refer to the
-  [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
   The batch request REST API with the `/_api/batch` endpoint was deprecated in
@@ -208,7 +206,7 @@ detailed information about breaking changes before upgrading.
 - **Actions**:\
   Snippets of JavaScript code on the server-side for minimal
   custom endpoints. Since the Foxx revamp in 3.0, it became really easy to
-  write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
+  write Foxx Microservices, which allow you to define
   custom endpoints even with complex business logic.
 
   From v3.5.0 on, the system collections `_routing` and `_modules` are not

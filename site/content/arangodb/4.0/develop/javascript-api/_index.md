@@ -3,26 +3,14 @@ title: JavaScript API
 menuTitle: JavaScript API
 weight: 270
 description: >-
-  You can use ArangoDB's JavaScript interface on the server-side as well as in
-  ArangoDB's shell to interact with the server using the JavaScript language
+  You can use ArangoDB's JavaScript interface in ArangoDB's shell `arangosh`
+  to interact with the server using the JavaScript language
 ---
-The JavaScript API is available on the server-side in the following contexts:
-
-- [Foxx microservices](../foxx-microservices/_index.md)
-- [User-defined AQL functions](../../aql/user-defined-functions.md)
-- [JavaScript Transactions](../transactions/javascript-transactions.md)
-- [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)
-
-Running on the server-side means that the code runs directly inside of the
-_arangod_ process, bypassing the HTTP API. In cluster deployments, the code
-is executed on a Coordinator.
-
-The JavaScript API is also available in the ArangoDB Shell client tool:
+The JavaScript API is available in the ArangoDB Shell client tool:
 
 - [arangosh](../../components/tools/arangodb-shell/_index.md)
 
 It communicates with the server via the HTTP API.
-<!-- TODO (DOC-139): There are some differences to the server-side API. -->
 
 {{< tip >}}
 The JavaScript API cannot be used in browsers, Node.js, or other JavaScript
@@ -170,13 +158,6 @@ You can use the following modules as an end-user:
 - [**@arangodb/crypto**](crypto.md)
   provides various cryptography functions including hashing algorithms.
 
-- [**@arangodb/foxx**](../foxx-microservices/_index.md)
-  is the namespace providing the various building blocks of the Foxx
-  microservice framework.
-
-  - [**@arangodb/locals**](../foxx-microservices/reference/related-modules/_index.md#the-arangodblocals-module)
-    is a helper module to use Foxx together with Webpack.
-
 - Graph-related modules:
 
   - [**@arangodb/general-graph**](../../graphs/general-graphs/_index.md)
@@ -197,9 +178,6 @@ You can use the following modules as an end-user:
 
 - [**@arangodb/request**](request.md)
   provides the functionality for making synchronous HTTP/HTTPS requests.
-
-- [**@arangodb/tasks**](tasks.md)
-  implements task management methods
 
 - [**@arangodb/users**](../../operations/administration/user-management/in-arangosh.md)
   provides an interface for user management.
