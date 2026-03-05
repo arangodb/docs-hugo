@@ -123,17 +123,9 @@ description: ''
 db._help(); 
 ```
 
-The [`db` object](../../../develop/javascript-api/@arangodb/db-object.md) is available in _arangosh_
-as well as on _arangod_ i.e. if you're using [Foxx](../../../develop/foxx-microservices/_index.md). While its
-interface is persistent between the _arangosh_ and the _arangod_ implementations,
-its underpinning is not. The _arangod_ implementation are JavaScript wrappers
-around ArangoDB's native C++ implementation, whereas the _arangosh_ implementation
-wraps HTTP accesses to ArangoDB's [RESTful API](../../../develop/http-api/_index.md).
-
-So while this code may produce similar results when executed in _arangosh_ and
-_arangod_, the CPU usage and time required differs since the
-_arangosh_ version performs around 100k HTTP requests, and the
-_arangod_ version directly writes to the database:
+The implementation of the `db` object wraps HTTP accesses
+to ArangoDB's [HTTP API](../../../develop/http-api/_index.md).
+It means that the following code performs around 100k HTTP requests:
 
 ```js
 for (i = 0; i < 100000; i++) {
@@ -141,7 +133,22 @@ for (i = 0; i < 100000; i++) {
 }
 ```
 
+You should avoid making excessive calls like this and instead save batches of
+documents in fewer HTTP requests:
+
+```js
+var batch = [];
+for (i = 0; i < 100000; i++) {
+    batch.push({ name: { first: "Jan" }, count: i});
+    if (batch.length >= 1000) {
+        db.test.save(batch);
+        batch = [];
+    }
+}
+```
+
 ## Using `arangosh` via Unix shebang mechanisms
+
 In Unix operating systems, you can start scripts by specifying the interpreter in the first line of the script.
 This is commonly called `shebang` or `hash bang`. You can also do that with `arangosh`, i.e. create `~/test.js`:
 
