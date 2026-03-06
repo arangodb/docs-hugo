@@ -2816,7 +2816,7 @@ paths:
 
           Values other than `0` may not be observable because this information
           typically becomes available when the query finishes, at which point
-          it is longer listed as a running query. However, other values can be
+          it is no longer listed as a running query. However, other values can be
           observed when enabling `stream` and there is more than one batch of
           results.
 
