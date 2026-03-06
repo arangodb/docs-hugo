@@ -8,6 +8,8 @@ description: >-
 ---
 ## User manuals by product
 
+{{< embed-svg "Arango-Contextual-Data-Platform-All-Links" >}}
+
 {{< cards >}}
 
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" %}}

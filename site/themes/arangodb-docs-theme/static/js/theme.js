@@ -58,7 +58,7 @@ function updateHistory(urlPath) {
   //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
-  dispatchEvent(popStateEvent);
+  window.dispatchEvent(popStateEvent);
 }
 
 
@@ -508,28 +508,39 @@ function toggleExpandShortcode(event) {
     parent.classList.toggle('expand-expanded');
 }
 
+function getLinkHref(el) {
+  return el.getAttribute("href") || el.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+}
+
+function setLinkHref(el, url) {
+  el.setAttribute("href", url);
+  if (el.namespaceURI === "http://www.w3.org/2000/svg") {
+    el.setAttributeNS("http://www.w3.org/1999/xlink", "href", url);
+  }
+}
+
 function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
     document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
-      const originalUrl = el.getAttribute("href");
-      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const originalUrl = getLinkHref(el);
+      const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
         const newUrl = "/arangodb/" + currentVersion + matches[2];
         //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
-        el.setAttribute("href", newUrl);
+        setLinkHref(el, newUrl);
       }
     });
   } else {
     document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
-      const originalUrl = el.getAttribute("href");
-      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const originalUrl = getLinkHref(el);
+      const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
       if (matches && matches.length > 2 && previousVersion) {
         const newUrl = "/arangodb/" + previousVersion + matches[2];
         //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
-        el.setAttribute("href", newUrl);
+        setLinkHref(el, newUrl);
       }
     });
   }
@@ -604,10 +615,11 @@ function handleDocumentClick(event) {
         return;
     }
   
-    // Card link clicks
-    if (closest('.card-link')) {
+    // Card link clicks (including SVG links – closest() handles children; getLinkHref supports xlink:href)
+    const cardLinkEl = closest('.card-link');
+    if (cardLinkEl) {
         event.preventDefault();
-        const href = target.closest('.card-link').getAttribute('href');
+        const href = getLinkHref(cardLinkEl);
         if (href) {
             updateHistory(href);
         }
