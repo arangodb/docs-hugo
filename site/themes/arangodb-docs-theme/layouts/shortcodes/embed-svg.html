@@ -1,0 +1,8 @@
+{{ $svgName := .Get 0 -}}
+{{ $svgPath := printf "content/images/%s.svg" $svgName -}}
+{{ $svgContent := readFile $svgPath -}}
+{{ if $svgContent -}}
+  {{ $svgContent | safeHTML -}}
+{{ else -}}
+  {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}
+{{ end -}}

@@ -465,6 +465,10 @@ table.fixed code {
     border-bottom: 0;
 }
 
+svg a.card-link {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
     .cards {
         grid-template-columns: 1fr;
