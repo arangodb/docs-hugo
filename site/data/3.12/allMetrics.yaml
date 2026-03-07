@@ -13,51 +13,6 @@
   description: |
     Number of currently existing activities.
 
-- name: arangodb_activities_existing_thread_registries
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activity thread registries.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activity thread registries. One thread registry is created when the first activity is created on a thread. The registry lives at least as long as long as the thread itself but also at least as long as the last activity inside it - therefore it can exist longer than the thread itself.
-
-- name: arangodb_activities_ready_for_deletion
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activities that wait for their garbage collection.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activities that wait for their garbage collection.
-
-- name: arangodb_activities_thread_registries_total
-  introducedIn: "3.12.8"
-  help: |
-    Total number of threads that started activities since database process start.
-  unit: number
-  type: counter
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Total number of threads that started activities since database process start. It can be higher than the total number of threads if a thread was restarted at some point.
-
 - name: arangodb_activities_total
   introducedIn: "3.12.8"
   help: |

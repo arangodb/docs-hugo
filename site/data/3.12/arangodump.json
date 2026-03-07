@@ -557,7 +557,7 @@
   "local-network-threads" : {
     "base" : 1,
     "category" : "option",
-    "default" : 5,
+    "default" : 4,
     "deprecatedIn" : null,
     "description" : "Number of local network threads, i.e. how many requests are sent in parallel.",
     "dynamic" : false,
@@ -571,7 +571,7 @@
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
       "linux"
