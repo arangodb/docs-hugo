@@ -343,7 +343,7 @@ error is thrown. For information about the naming constraints for collections, s
   reported.
 
   When using the *Enterprise Edition* of ArangoDB, the `replicationFactor`
-  may be set to `"satellite"` making the collection locally joinable
+  may be set to `"satellite"`, making the collection locally joinable
   on every DB-Server. This reduces the number of network hops
   dramatically when using joins in AQL at the costs of reduced write
   performance on these collections.
@@ -1171,6 +1171,10 @@ db._view("exampleView");
 See [`db._createStatement()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_createstatement-arangostatement).
 
 ### `db._query(queryString [, bindVars [, mainOptions] [, subOptions]])`
+
+See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
+
+### `db._query(queryObject [, mainOptions] [, subOptions]])`
 
 See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
 
