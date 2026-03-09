@@ -504,6 +504,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -937,6 +943,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1401,6 +1413,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2058,6 +2076,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2516,6 +2540,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -3269,7 +3299,8 @@ paths:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
                     collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-                    properties from the specified collection (referred to as the _prototype collection_)
+                    properties from the specified collection (referred to as the
+                    _prototype collection_ or sometimes _initial collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. This data co-location is utilized to optimize queries.
 
@@ -3516,6 +3547,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -4245,6 +4282,10 @@ paths:
 
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
+
+                    If `distributeShardsLike` is set, you can only change the `replicationFactor`
+                    of the indicated prototype collection to change the `replicationFactor for
+                    this collection (and any other collections that also use this prototype collection).
                   type: integer
                 writeConcern:
                   description: |
@@ -4460,6 +4501,11 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the reported `replicationFactor` of
+                      this collection is the value as of the time at which the collection was
+                      created, but it may have been changed through the prototype collection
+                      in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -5043,6 +5089,12 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, query the indicated `prototype`
+                      collection to get the current `replicationFactor` for this collection.
+                      The reported `replicationFactor` of this collection is the value as
+                      of the time at which the collection was created, but it may have been
+                      changed through the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
