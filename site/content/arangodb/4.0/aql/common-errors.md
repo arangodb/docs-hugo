@@ -54,7 +54,7 @@ when applications build queries naively, without using security mechanisms often
 provided by database software or querying mechanisms.
 
 AQL is not vulnerable to parameter injection in itself, but queries might be
-constructed on the client-side, on an application server or in a Foxx service.
+constructed on the client-side or on an application server.
 Assembling query strings with simple **string concatenation** looks trivial,
 but is potentially **unsafe**. You should use
 [bind parameters](fundamentals/bind-parameters.md) instead whenever possible,
@@ -65,9 +65,8 @@ for example) or at least sanitize user input with great care.
 ### Parameter injection examples
 
 Below you find a simple query using the [JavaScript API](../develop/javascript-api/_index.md)
-that is fed with some dynamic input value, pretending it coming from a web form.
-This could be the case in a Foxx service. The route happily picks up the input
-value, and puts it into a query:
+that is fed with some dynamic input value, pretending it's coming from a web form.
+The route happily picks up the input value, and puts it into a query:
 
 ```js
 // evil!

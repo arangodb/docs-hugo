@@ -318,11 +318,6 @@ ArangoDB will add the following headers to the response:
 - `access-control-expose-headers`: will be set to a list of response headers used
   by the ArangoDB HTTP API.
 
-When making CORS requests to endpoints of Foxx services, the value of the
-`access-control-expose-headers` header will instead be set to a list of
-response headers used in the response itself (but not including the
-`access-control-` headers).
-
 ### Cookies and authentication
 
 In order for the client to be allowed to correctly provide authentication

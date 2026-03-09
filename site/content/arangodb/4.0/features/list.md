@@ -336,9 +336,7 @@ aliases:
   Built-in user management with password- and token-based authentication.
 
 - **Role-based Access Control**:
-  ArangoDB supports all basic security requirements. By using ArangoDB's Foxx
-  microservice framework users can achieve very high security standards
-  fitting individual needs.
+  ArangoDB supports all basic security requirements. <!-- TODO -->
 
 - [**TLS Encryption**](../components/arangodb-server/options.md#ssl):
   Internal and external communication over encrypted network connections with

@@ -9,9 +9,9 @@ description: >-
 # Undocumented on purpose:
 #   db._path() // MMFiles legacy  
 ---
-The `db` object of the JavaScript API is available in [arangosh](../../../components/tools/arangodb-shell/_index.md)
-by default, and can also be imported and used in Foxx services and other
-server-side JavaScript contexts from the `@arangodb` module.
+The `db` object of the JavaScript API is automatically imported from the
+`@arangodb` module and therefore available in
+[arangosh](../../../components/tools/arangodb-shell/_index.md) by default.
 
 ## Property access
 

@@ -9,7 +9,7 @@ description: >-
 You can execute AQL queries using different interfaces:
 
 - The web interface
-- The `db` object of the JavaScript API (either in arangosh or in a Foxx service)
+- The `db` object of the JavaScript API in _arangosh_
 - The raw HTTP REST API
 - Through a [driver](../../../../ecosystem/drivers/_index.md) or
   [integration](../../../../ecosystem/integrations/_index.md) as an abstraction over the
@@ -27,11 +27,6 @@ with the [`db._query()`](with-arangosh.md#with-db_query) and
 methods of the [`db` object](../../develop/javascript-api/@arangodb/db-object.md). This chapter
 also describes how to use bind parameters, statistics, counting, and cursors with
 arangosh.
-
-<!-- TODO:
-Foxx content shows how to write database queries with tagged template strings.
-Bring something like this back for arangosh, or is it covered somewhere else already? Link from here to that?
--->
 
 If you want to run AQL queries from your application via the HTTP REST API,
 see the full API description at [HTTP interface for AQL queries](../../develop/http-api/queries/aql-queries.md).

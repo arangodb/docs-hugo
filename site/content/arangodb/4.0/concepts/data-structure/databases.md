@@ -9,8 +9,8 @@ description: >-
 ArangoDB can handle multiple databases in the same server instance. Databases
 can be used to logically group and separate data. An ArangoDB database consists
 of collections and dedicated database-specific worker processes. A database
-contains its own collections (which cannot be accessed from other databases),
-Foxx applications, and replication loggers and appliers. Each ArangoDB database
+contains its own collections (which cannot be accessed from other databases)
+and replication loggers and appliers.<!-- TODO: Remove repl, other? --> Each ArangoDB database
 contains its own system collections (e.g. `_users`, `_graphs`, ...).
 
 There is always at least one database in ArangoDB. This is the default
@@ -93,11 +93,7 @@ refused.
   up when a database is created. This makes the creation of a database take a while.
 - Replication can be configured globally or on a per-database level. In the
   latter case, you need to configure any replication logging or applying for new
-  databases explicitly after they have been created.
-- Foxx applications are only available in the context of the database they have
-  been installed in. A new database only provides access to the system
-  applications shipped with ArangoDB (mainly the web interface). You need to
-  explicitly install other Foxx applications.
+  databases explicitly after they have been created. <!-- TODO: Remove repl? -->
 
 ## Database organization on disk
 
@@ -108,22 +104,7 @@ documents of various collections and databases.
 ArangoSearch stores data in database-specific directories underneath the
 `databases` folder.
 
-Foxx applications are also organized in database-specific directories but inside
-the application path. The filesystem layout could look like this:
-
-```
-apps/                   # the instance's application directory
-  system/               # system applications (can be ignored)
-  _db/                  # sub-directory containing database-specific applications
-    <database-dir>/     # sub-directory for a single database
-      <mountpoint>/APP  # sub-directory for a single application
-      <mountpoint>/APP  # sub-directory for a single application
-    <database-dir>/     # sub-directory for another database
-      <mountpoint>/APP  # sub-directory for a single application
-```
-
-The name of `<database-dir>` will be the database's original name or the
-database's ID if its name contains special characters.
+<!-- TODO: File system layout example -->
 
 ## Database interfaces
 
@@ -145,11 +126,6 @@ access multiple databases, even if they exist. The only intended and
 supported way in ArangoDB is to use one database at a time for a command,
 an action, a script, or a query. Operations started in one database must
 not switch the database later and continue operating in another.
-
-Foxx applications are only available in the context of the database they have
-been installed in. A new database only provides access to the system
-applications shipped with ArangoDB (the web interface) and no other Foxx
-applications until they are explicitly installed for a particular database.
 
 {{< tabs "interfaces" >}}
 
