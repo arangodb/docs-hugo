@@ -97,6 +97,34 @@ Note: data-modification AQL queries normally do not return a result unless the
 AQL query contains a `RETURN` operation at the top-level. Without a `RETURN`
 operation, the `toArray()` method returns an empty array.
 
+{{< security >}}
+When using plain strings as queries, ArangoDB provides no safeguards to prevent
+accidental AQL injections:
+
+```js
+// Malicious user input where you might expect a number
+const evil = "1 FOR doc IN mycollection REMOVE doc IN mycollection";
+
+// DO NOT DO THIS
+const numbers = db._query(`
+  FOR i IN 1..${evil}
+  RETURN i
+`).toArray();
+```
+
+The actual query executed by the above code:
+
+```aql
+FOR i IN 1..1
+  FOR doc IN mycollection
+    REMOVE doc IN mycollection
+    RETURN i
+```
+
+If possible, you should always use the `query` or `aql` template tags rather
+than passing raw query strings to `db._query` directly.
+{{< /security >}}
+
 ### Statistics and extra Information
 
 `cursor.getExtra() → queryInfo`
