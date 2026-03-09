@@ -505,7 +505,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -947,7 +947,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -1420,7 +1420,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -2086,7 +2086,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -2553,7 +2553,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -3266,7 +3266,7 @@ paths:
                     copies take over, usually without an error being reported.
 
                     Default:
-                    If `distributeShardsLike` is set, the `replicationFactor`
+                    If `distributeShardsLike` is set, the default `replicationFactor`
                     is that of the indicated prototype collection. Otherwise,
                     the default `replicationFactor` is defined by the database.
                   type: integer
@@ -3574,7 +3574,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -4315,7 +4315,7 @@ paths:
                     If `distributeShardsLike` is set, the `replicationFactor`
                     is that of the indicated prototype collection. You can only
                     change the `replicationFactor` of the prototype collection
-                    to change the `replicationFactor for this collection (and for
+                    to change the `replicationFactor` for this collection (and for
                     all other collections that follow this prototype collection).
                   type: integer
                 writeConcern:
@@ -4534,7 +4534,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
@@ -5126,7 +5126,7 @@ paths:
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
 
-                      If `distributeShardsLike` is set, the `replicationFactor`
+                      If `distributeShardsLike` is set, the actual replication factor
                       is that of the indicated prototype collection. Query the
                       prototype collection to get the current `replicationFactor`
                       for this collection. The reported `replicationFactor` of
