@@ -2773,8 +2773,18 @@ paths:
     get:
       operationId: listAqlQueries
       description: |
-        Returns an array containing the AQL queries currently running in the selected
-        database. Each query is a JSON object with the following attributes:
+        Returns a list of the AQL queries that currently run in the specified
+        database.
+
+        Query tracking needs to be enabled by the
+        [`--query.tracking` startup option](../../../components/arangodb-server/options.md#--querytracking)
+        or at runtime with the `enabled` query tracking property of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
+        If query tracking is disabled for the current database,
+        an **empty list** is returned.
+
+        Each running query in the list is represented by a JSON object with the
+        following attributes:
 
         - `id`: the query's id
 
@@ -2782,9 +2792,29 @@ paths:
 
         - `user`: the name of the user that started the query
 
-        - `query`: the query string (potentially truncated)
+        - `query`: The query string (potentially truncated).
 
-        - `bindVars`: the bind parameter values used by the query
+          The cutoff is controlled by the `maxQueryStringLength` query tracking
+          property that you can change via the
+          `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
+
+          Whether the actual query string is tracked or only a value of
+          `"<hidden>"` is returned depends on the
+          [`--query.tracking-with-querystring` startup option](../../../components/arangodb-server/options.md#--querytracking-with-querystring).
+
+        - `bindVars`: The bind parameter values used by the query.
+
+          Whether the actual bind variables or an empty object is returned is
+          controlled by the
+          [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+          or the `trackBindVars` query tracking property that you can change via
+          the `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
+
+        - `dataSources`: The collections and Views involved in the query.
+
+          Only present if the
+          [`--query.tracking-with-datasources` startup option](../../../components/arangodb-server/options.md#--querytracking-with-datasources)
+          is enabled.
 
         - `started`: the date and time when the query was started
 
@@ -2863,24 +2893,60 @@ paths:
     get:
       operationId: listSlowAqlQueries
       description: |
-        Returns an array containing the last AQL queries that are finished and
-        have exceeded the slow query threshold in the selected database.
+        Returns a list of the recently finished AQL queries that exceeded the
+        slow query threshold in the specified database.
+
+        Slow query tracking needs to be enabled by the
+        [`--query.tracking-slow-queries` startup option](../../../components/arangodb-server/options.md#--querytracking-slow-queries)
+        or at runtime with the `trackSlowQueries` query tracking property of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
+        If slow query tracking disabled for the current database,
+        an **empty list** is returned.
+
         The maximum amount of queries in the list can be controlled by setting
-        the query tracking property `maxSlowQueries`. The threshold for treating
-        a query as *slow* can be adjusted by setting the query tracking property
-        `slowQueryThreshold`.
+        the `maxSlowQueries` query tracking property via the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
 
-        Each query is a JSON object with the following attributes:
+        The threshold for treating a query as *slow* can be adjusted separate
+        for queries with the `stream` option on or off by setting the
+        [`--query.slow-threshold`](../../../components/arangodb-server/options.md#--queryslow-threshold)
+        and [`--query.slow-streaming-threshold`](../../../components/arangodb-server/options.md#--queryslow-streaming-threshold)
+        startup options or at runtime with the `slowQueryThreshold` and
+        `slowStreamingQueryThreshold` query tracking properties of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
 
-        - `id`: the query's id
+        Each slow query in the list is represented by a JSON object with the
+        following attributes:
 
-        - `database`: the name of the database the query runs in
+        - `id`: The identifier of the query.
 
-        - `user`: the name of the user that started the query
+        - `database`: The name of the database the query runs in.
 
-        - `query`: the query string (potentially truncated)
+        - `user`: The name of the user that started the query
 
-        - `bindVars`: the bind parameter values used by the query
+        - `query`: The query string (potentially truncated).
+
+          The cutoff is controlled by the `maxQueryStringLength` query tracking
+          property that you can change via the
+          `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
+
+          Whether the actual query string is tracked or only a value of
+          `"<hidden>"` is returned depends on the
+          [`--query.tracking-with-querystring` startup option](../../../components/arangodb-server/options.md#--querytracking-with-querystring).
+
+        - `bindVars`: The bind parameter values used by the query.
+
+          Whether the actual bind variables or an empty object is returned is
+          controlled by the
+          [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+          or the `trackBindVars` query tracking property that you can change via
+          the `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
+
+        - `dataSources`: The collections and Views involved in the query.
+
+          Only present if the
+          [`--query.tracking-with-datasources` startup option](../../../components/arangodb-server/options.md#--querytracking-with-datasources)
+          is enabled.
 
         - `started`: the date and time when the query was started
 
@@ -2915,8 +2981,8 @@ paths:
           in: query
           required: false
           description: |
-            If set to `true`, will return the slow queries from all databases, not just
-            the selected one.
+            If set to `true`, returns the slow queries from all databases, not just
+            the specified one.
             Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
@@ -2959,8 +3025,8 @@ paths:
           in: query
           required: false
           description: |
-            If set to `true`, will clear the slow query history in all databases, not just
-            the selected one.
+            If set to `true`, clears the slow query history in all databases, not just
+            the specified one.
             Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
