@@ -15,7 +15,7 @@ and type-specific metadata. Not all server activity is necessarily reported.
 
 ```openapi
 paths:
-  /_db/{database-name}/_arango/experimental/_admin/activities:
+  /_arango/experimental/_db/{database-name}/_admin/activities:
     get:
       operationId: getActivities
       description: |
