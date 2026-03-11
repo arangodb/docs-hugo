@@ -1,6 +1,6 @@
 {{- $context := . }}
 {{- $program := .Get "name" }}
-{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $pageVersion := .Page.Store.Get "versionShort" | default (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $options := index $dataFolderByVersion $program }}
 {{- if not $options }}{{ errorf "Could not find %q in %q data folder" $program $pageVersion }}{{ end }}

@@ -1,5 +1,5 @@
 {{- $componentMap := dict "single" "Single Servers" "dbserver" "DB-Servers" "coordinator" "Coordinators" "agent" "Agents" }}
-{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $pageVersion := .Page.Store.Get "versionShort" | default (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $allMetricsFile := index $dataFolderByVersion "allMetrics" }}
 {{- if not $allMetricsFile }}{{ errorf "Could not find %q in %q data folder" "allMetrics" $pageVersion}}{{ end }}

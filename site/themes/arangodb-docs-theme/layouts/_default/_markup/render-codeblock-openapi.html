@@ -1,5 +1,5 @@
 {{- $page := .Page }}
-{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $pageVersion := .Page.Store.Get "versionShort" | default (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- $title := .Page.Scratch.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
 

@@ -10,7 +10,7 @@
 {{ $description := $options.description }}
 {{ $type := $options.type | default "single" }}
 {{ $cacheEntry := printf "%s_%s" $name $type }}
-{{ $pageVersion := $context.Page.Store.Get "versionShort" }}
+{{ $pageVersion := $context.Page.Store.Get "versionShort" | default (partialCached "version-short.html" $context.Page.RelPermalink $context.Page.RelPermalink) }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
