@@ -16,20 +16,27 @@ containers using platform-provided hardened base images, then orchestrates
 deployment through the Arango Control Plane (ACP) service. The platform handles
 containerization, security, and integration automatically.
 
-## How It Works
+## Getting Started
 
-1. **Package Your Code**: Create a `.tar.gz` package from your source code.
-2. **Upload**: Upload the package via the web interface or API.
-3. **Containerization**: The platform builds a secure container using hardened base images.
-4. **Deploy**: The Arango Control Plane (ACP) orchestrates and deploys your service.
-5. **Run**: Your service runs with full platform integration.
+### Package Your Code
+
+Create a `.tar.gz` package from your source code with your dependencies.
+
+See how to [Package Your Code](package-code/) for detailed instructions.
 
 {{< tip >}}
-Use [ServiceMaker](https://github.com/arangodb/servicemaker) to prepare and package your code.
-It builds Docker images locally, handles dependencies, and generates deployment-ready
-`.tar.gz` archives. You can run and test the generated Docker images on your local machine
-before uploading to Container Manager.
+Use [ServiceMaker](https://github.com/arangodb/servicemaker) to automate packaging.
+It handles dependencies, builds Docker images, and generates deployment-ready archives.
 {{< /tip >}}
+
+### Choose Your Deployment Method
+
+You can [Deploy via Web Interface](web-interface/) or
+[Deploy via API](deploy-api/).
+
+### Deploy and Run
+
+The platform builds a secure container, orchestrates deployment through the Arango Control Plane (ACP), and runs your service with full platform integration.
 
 ## Key Capabilities
 
@@ -39,17 +46,11 @@ before uploading to Container Manager.
 - **Multiple Runtimes**: Choose from Python (with optional CUDA/GPU support)
   and Node.js runtime environments.
   
-- **Flexible Resource Allocation**: Select from predefined machine classes
-  (Small, Medium, Large GPU) to match your service's CPU, memory, and GPU needs.
-  
 - **Version Management**: Maintain and deploy multiple versions of the same
   service with easy updates and rollbacks.
   
 - **Service Scopes**: Deploy services globally across all databases or scope
   them to specific databases.
-  
-- **Integrated Monitoring**: Track service status, resource usage, and health
-  directly from the unified web interface.
 
 ## Where Services Run
 
@@ -68,19 +69,9 @@ used for data-processing APIs, webhook handlers, or any processing that should r
 Deploy services using runtime environments and resources tailored to your needs.
 
 **Runtimes:**
-- **Python 3.11** and **Python 3.11 (CUDA)**
-- **Python 3.12** and **Python 3.12 (CUDA)**
+- **Python 3.13** (base, PyTorch, and cuGraph variants available)
 - **Node.js 20** and **Node.js 22**
-
-**Machine Classes:**
-- **Small** (2 CPU, 4GB RAM): Lightweight services.
-- **Medium** (4 CPU, 8GB RAM): Standard workloads.
-- **Large** (8 CPU, 16GB RAM): CPU-intensive applications.
-- **Small GPU** (4 CPU, 8GB RAM, 4GB GPU): Light GPU workloads.
-- **Large GPU** (16 CPU, 16GB RAM, 8GB GPU): Heavy GPU-accelerated computing.
 
 ## Security
 
-All deployed services operate within the platform's security framework.
-
-## API Reference
+All deployed services operate within the platform's security framework, with integrated authentication, network isolation, and access controls.

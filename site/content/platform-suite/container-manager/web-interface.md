@@ -1,135 +1,45 @@
 ---
-title: How to deploy a new service via the Web Interface
+title: Deploy via Web Interface
 menuTitle: Web Interface
-weight: 5
+weight: 20
 description: >-
-  Complete guide to deploying, monitoring, and managing services through the
-  Container Manager web interface
+  Deploy and manage services through the Container Manager web interface
 ---
 
-The Container Manager web interface provides a unified view for deploying new
-services and monitoring existing ones. This guide covers everything you need to
-know to use the web interface effectively, from your first deployment to managing
-production services.
+The Container Manager web interface provides a visual way to deploy and manage services with drag-and-drop upload and interactive configuration.
 
-## How to Access the Container Manager
+{{< info >}}
+Before deploying, you need a `.tar.gz` package with your application code.
+See [Package Your Code](package-code/) for instructions.
+{{< /info >}}
+
+## Access the Container Manager
 
 1. Log in to the Arango Data Platform web interface.
-2. Click **Container Manager** in the main navigation sidebar.
+2. Go to **Control Panel** in the main navigation sidebar and then click
+**Container Manager**.
 3. The Container Manager opens with two main sections:
    - **Deploy new service** (left panel): For uploading and deploying new services.
-   - **Running services** (right panel): For monitoring and managing existing services.
+   - **Packages** (right panel): For viewing, filtering, and managing existing services.
 
 ## Deploy a New Service
 
-### Prepare Your Service Package
-
-You can prepare your service package in two ways:
-
-#### Using ServiceMaker (Recommended)
-
-ServiceMaker is a command-line tool that automates code preparation for
-deploying services. It processes standard projects and generates deployment-ready
-artifacts.
-
-**What ServiceMaker automates:**
-- Builds Docker container images using platform runtime base images.
-- Installs and packages project dependencies using `uv`.
-- Generates `.tar.gz` archives ready for upload to Container Manager.
-- Creates Dockerfile configurations tailored to your project.
-- Sets up virtual environments that match platform base images.
-- Enables local Docker image testing before deployment.
-- Optionally publishes Docker images to container registries.
-- Processes standard project formats (`pyproject.toml`, `requirements.txt`, `package.json`).
-
-For installation and usage instructions, see the
-[ServiceMaker repository](https://github.com/arangodb/servicemaker).
-
-#### Manual Packaging
-
-If you prefer to prepare your service package manually without ServiceMaker,
-follow the steps below.
-
-1. Create a project structure with your application code and entry point script.
-2. Add a dependency configuration file:
-   - For Python: Create a `pyproject.toml` with your dependencies and Python version requirement.
-   - For Node.js: Create a `package.json` with your dependencies.
-3. Use `uv` for Python projects (recommended):
-   - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
-     (e.g., `">=3.11"` for Python 3.11 runtimes).
-   - List all dependencies in the `dependencies` array.
-   - The platform uses `uv` to install dependencies during containerization.
-4. Create the archive:
-   ```bash
-   tar -czf myservice.tar.gz myproject/
-   ```
-5. Test locally (optional but recommended):
-   - Install dependencies using `uv pip install -r pyproject.toml` or `npm install`.
-   - Run your entry point script to verify it works before uploading.
-
-**Example: Python project structure**
-```
-myproject/
-├── pyproject.toml
-├── main.py
-└── config.json
-```
-
-**Example: `pyproject.toml`**
-```toml
-[project]
-name = "my-service"
-version = "1.0.0"
-requires-python = ">=3.11"
-dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.32.0",
-]
-```
-
-### Upload and Configure
-
-1. In the **Deploy new service** panel, upload your service package:
-   - Drag and drop your `.tar.gz` file into the **Service Package** area, or
-   - Click to browse and select your file.
-2. Enter a **Service Name** (e.g., `ml-prediction-service`, `express-api-gateway`).
-3. Specify a **Version** for your service. Use semantic versioning
-  (e.g., `1.0.0`, `2.1.3`) to easily maintain multiple versions of the same service.
-4. Define the **Service URL Path**. This is the URL path where your service will
-  be accessible, for example `/_services/_db/_system/ml-prediction-service-2`.
-5. Optionally, check **Make this a global URL service**. When this option is
-  enabled, the service is accessible globally across all databases.
-6. Select a **Runtime Container** that matches your application's requirements:
-     - **Python 3.11**
-     - **Python 3.11 (CUDA)**
-     - **Python 3.12**
-     - **Python 3.12 (CUDA)**
-     - **Node.js 20**
-     - **Node.js 22**
-7. Choose a **Machine Class**. This determines the computational resources allocated
-  to your service:
-     - **Small**: 2 CPU, 4GB RAM
-     - **Medium**: 4 CPU, 8GB RAM
-     - **Large**: 8 CPU, 16GB RAM
-     - **Small GPU**: 4 CPU, 8GB RAM, 4GB GPU
-     - **Large GPU**: 16 CPU, 16GB RAM, 8GB GPU
-8. Click **Deploy Service** to deploy your service.
-
-The platform uploads your package, provisions the resources, and starts your
-service in the Kubernetes cluster.
-
-## Running Services
-
-The **Running services** section displays all deployed services with real-time
-status information. You can filter services by their current status or by runtime
-and machine class.
-
-### Service Versions
-
-Deployed services can have multiple versions. Click to expand and see all
-deployed versions with their respective details and timestamps.
+1. In the **Deploy new service** panel, drag and drop your `.tar.gz` file into the **Service Package** area, or click to browse and select your file.
+2. Enter a unique name for your service (e.g., `ml-prediction-service`, `express-api-gateway`).
+3. Specify a version using semantic versioning (e.g., `1.0.0`, `2.1.3`). This allows you to maintain multiple versions of the same service.
+4. Select **Python** or **Node.js** from the language dropdown menu.
+5. Choose the base image:
+  - `py13base`: Python 3.13 base runtime
+  - `py13torch`: Python 3.13 with PyTorch
+  - `py13cugraph`: Python 3.13 with cuGraph 
+// TODO: Add Node.js base images (e.g., node20base, node22base) to the Available Base Images table once Node.js support is implemented.
+6. Define the **Service URL Path** where your service will be accessible, for example: `/_service/uds/_db/_system/ml-prediction-service-2`.
+7. Check the **Make this a global URL Service** option to make the service accessible globally across all databases. Leave it unchecked for database-specific services.
+8.  Click **Deploy Service**. The platform uploads your package, provisions the resources, and starts your service in the Kubernetes cluster.
 
 ## Update a Service
+
+To deploy a new version of an existing service, follow the steps below.
 
 1. Follow the steps in [Deploy a New Service](#deploy-a-new-service).
 2. Use the same **Service Name** as the existing service.
@@ -137,27 +47,16 @@ deployed versions with their respective details and timestamps.
 4. Upload the updated service package.
 5. Click **Deploy Service**.
 
-The new version is deployed alongside the existing version.
+The new version is deployed alongside the existing version. You can run multiple versions simultaneously.
 
 ## Stop a Service
 
-1. Locate the running service in the **Running services** section.
+To stop a running service, follow the steps below.
+
+1. Locate the service in the **Running services** section.
 2. Click the service card to open the detail view.
 3. Click **Stop Service**.
 4. Confirm the action.
-
-The service transitions to the **Stopped** state and stops consuming resources,
-but remains available for restart.
-
-## Restart a Service
-
-To restart a stopped service:
-
-1. Navigate to the **Stopped** tab in the Running services panel.
-2. Click the service you want to restart.
-3. Click **Start Service**.
-
-The service restarts with the same configuration.
 
 ## Delete a Service
 
@@ -166,3 +65,11 @@ To permanently remove a service:
 1. Locate the service in the **Running services** panel.
 2. Click the delete button ({{< icon "delete" >}}) on the service card.
 3. Confirm the deletion.
+
+{{< warning >}}
+Deletion is permanent. The service and all its versions will be removed and cannot be recovered.
+{{< /warning >}}
+
+## API Alternative
+
+For programmatic deployment and automation, see [Deploy via API](deploy-api/).
