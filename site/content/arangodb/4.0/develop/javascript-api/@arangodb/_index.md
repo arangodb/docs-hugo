@@ -99,7 +99,7 @@ FOR d IN 1..1
     RETURN d
 ```
 
-If possible, you should always use the `query` or `aql` template tags rather
+If possible, you should always use the `aql` or `query` template tags rather
 than passing raw query strings to `db._query()` directly.
 {{< /security >}}
 
