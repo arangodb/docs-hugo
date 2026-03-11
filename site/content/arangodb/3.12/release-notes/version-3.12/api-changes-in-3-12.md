@@ -524,7 +524,7 @@ Two new statistics are included in the response when you execute an AQL query:
 
 #### Query API
 
-<small>Introduced in: 3.12.2</small>
+<small>Introduced in: v3.12.2</small>
 
 The endpoints for the lists of currently running queries and slow queries
 (`/_api/query/current` and `/_api/query/slow`) now include the following

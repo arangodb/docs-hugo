@@ -350,20 +350,20 @@ paths:
 
                     The time-to-live is renewed upon every access to the cursor.
 
-                    Default: Controlled by the `--query.registry-ttl` startup option.
+                    Default: Controlled by the [`--query.registry-ttl` startup option](../../../components/arangodb-server/options.md#--queryregistry-ttl).
                     If not set, the defaults are 30 seconds for single servers and 600 seconds for
                     Coordinators of a cluster deployment.
-                  type: integer
+                  type: number
                 memoryLimit:
                   description: |
                     The maximum amount of memory (in bytes) that the query is allowed to
                     use. If set, then the query fails with error "resource limit exceeded" in
                     case it allocates too much memory. A value of `0` indicates that there is
-                    no memory limit, but the `--query.global-memory-limit` startup option
+                    no memory limit, but the [`--query.global-memory-limit` startup option](../../../components/arangodb-server/options.md#--queryglobal-memory-limit)
                     may still limit it.
 
                     Default: You can configure a default per-query memory limit with the
-                    `--query.memory-limit` startup option. You can only increase
+                    [`--query.memory-limit` startup option](../../../components/arangodb-server/options.md#--querymemory-limit). You can only increase
                     this default memory limit if `--query.memory-limit-override`
                     is enabled.
                   type: integer
@@ -409,7 +409,7 @@ paths:
                       description: |
                         Limits the maximum number of plans that are created by the AQL query optimizer.
 
-                        Default: Controlled by the `--query.optimizer-max-plans` startup option.
+                        Default: Controlled by the [`--query.optimizer-max-plans` startup option](../../../components/arangodb-server/options.md#--queryoptimizer-max-plans).
                       type: integer
                     maxNodesPerCallstack:
                       description: |
@@ -419,7 +419,7 @@ paths:
                         This option is only useful for testing and debugging and normally does not need
                         any adjustment.
 
-                        Default: Controlled by the `--query.max-nodes-per-callstack` startup option.
+                        Default: Controlled by the [`--query.max-nodes-per-callstack` startup option](../../../components/arangodb-server/options.md#--querymax-nodes-per-callstack).
                       type: integer
                     maxWarningCount:
                       description: |
@@ -434,7 +434,7 @@ paths:
                         early. When the attribute is set to `false`, warnings are not propagated to
                         exceptions and are returned with the query result.
 
-                        Default: Controlled by the `--query.fail-on-warning` startup option,
+                        Default: Controlled by the [`--query.fail-on-warning` startup option](../../../components/arangodb-server/options.md#--queryfail-on-warning),
                         so you don't need to set it on a per-query basis.
                       type: boolean
                     allowRetry:
@@ -521,7 +521,7 @@ paths:
                         for the query. If you set it to `true`, the query cache is checked for a cached result
                         **if** the query cache mode is either set to `on` or `demand`.
 
-                        Default: Controlled by the `--query.cache-mode` startup option.
+                        Default: Controlled by the [`--query.cache-mode` startup option](../../../components/arangodb-server/options.md#--querycache-mode).
                       type: boolean
 
                     spillOverThresholdMemoryUsage:
@@ -533,11 +533,10 @@ paths:
                         This option only has an effect on queries that use the `SORT` operation but
                         without a `LIMIT`, and if you enable the spillover feature by setting a path
                         for the directory to store the temporary data in with the
-                        `--temp.intermediate-results-path` startup option.
+                        [`--temp.intermediate-results-path` startup option](../../../components/arangodb-server/options.md#--tempintermediate-results-path).
 
                         Default: 128 MiB, respectively the value of the
-                        `--temp.intermediate-results-spillover-threshold-memory-usage`
-                        startup option.
+                        [`--temp.intermediate-results-spillover-threshold-memory-usage` startup option](../../../components/arangodb-server/options.md#--tempintermediate-results-spillover-threshold-memory-usage).
 
                         {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
@@ -558,11 +557,10 @@ paths:
                         This option only has an effect on queries that use the `SORT` operation but
                         without a `LIMIT`, and if you enable the spillover feature by setting a path
                         for the directory to store the temporary data in with the
-                        `--temp.intermediate-results-path` startup option.
+                        [`--temp.intermediate-results-path` startup option](../../../components/arangodb-server/options.md#--tempintermediate-results-path).
 
                         Default: 5 million rows, respectively the value of the
-                        `--temp.intermediate-results-spillover-threshold-num-rows`
-                        startup option.
+                        [`--temp.intermediate-results-spillover-threshold-num-rows` startup option](../../../components/arangodb-server/options.md#--tempintermediate-results-spillover-threshold-num-rows).
 
                         {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
@@ -610,7 +608,7 @@ paths:
                         The query has to be executed within the given runtime or it is killed.
                         The value is specified in seconds. A value of `0.0` means no timeout.
                         
-                        Default: Controlled by the `--query.max-runtime` startup option.
+                        Default: Controlled by the [`--query.max-runtime` startup option](../../../components/arangodb-server/options.md#--querymax-runtime).
                       type: number
                     maxDNFConditionMembers:
                       description: |
@@ -628,28 +626,28 @@ paths:
                         condition, the conversion is aborted, and the query continues with a simplified
                         internal representation of the condition, which **cannot be used for index lookups**.
 
-                        Default: Controlled by the `--query.max-dnf-condition-members` startup option
+                        Default: Controlled by the [`--query.max-dnf-condition-members` startup option](../../../components/arangodb-server/options.md#--querymax-dnf-condition-members)
                         to set the threshold globally instead of per query.
                       type: integer
                     maxTransactionSize:
                       description: |
                         The transaction size limit in bytes.
 
-                        Default: Controlled by the `--rocksdb.max-transaction-size` startup option.
+                        Default: Controlled by the [`--rocksdb.max-transaction-size` startup option](../../../components/arangodb-server/options.md#--rocksdbmax-transaction-size).
                       type: integer
                     intermediateCommitSize:
                       description: |
                         The maximum total size of operations after which an intermediate commit is performed
                         automatically.
 
-                        Default: Controlled by `--rocksdb.intermediate-commit-size` startup option.
+                        Default: Controlled by [`--rocksdb.intermediate-commit-size` startup option](../../../components/arangodb-server/options.md#--rocksdbintermediate-commit-size).
                       type: integer
                     intermediateCommitCount:
                       description: |
                         The maximum number of operations after which an intermediate commit is performed
                         automatically.
 
-                        Default: Controlled by the `--rocksdb.intermediate-commit-count` startup option.
+                        Default: Controlled by the [`--rocksdb.intermediate-commit-count` startup option](../../../components/arangodb-server/options.md#--rocksdbintermediate-commit-count).
                       type: integer
                     skipInaccessibleCollections:
                       description: |
@@ -2593,7 +2591,7 @@ paths:
                   trackSlowQueries:
                     description: |
                       Whether slow queries are tracked. The `enabled` property
-                      needs to set to `true` as well in order to track slow queries.
+                      must be set to `true` as well in order to track slow queries.
 
                       Queries are added to the list of slow queries after
                       finishing and if their runtime exceeded the value set in
@@ -2606,7 +2604,7 @@ paths:
                   maxSlowQueries:
                     description: |
                       The maximum number of slow queries kept in the list.
-                      If the list of slow queries is full, the oldest entry in
+                      If the list of slow queries is full, the oldest entry
                       is discarded when additional slow queries occur.
                     type: integer
                   slowQueryThreshold:
@@ -2699,7 +2697,7 @@ paths:
                 trackSlowQueries:
                   description: |
                     Whether to track slow queries. The `enabled` property
-                    needs to set to `true` as well in order to track slow queries.
+                    must be set to `true` as well in order to track slow queries.
 
                     Queries are added to the list of slow queries after
                     finishing and if their runtime exceeded the value set in
@@ -2726,14 +2724,14 @@ paths:
                     (the `stream` option is `false` for the query).
 
                     Default: Controlled by the [`--query.slow-threshold` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold).
-                  type: integer
+                  type: number
                 slowStreamingQueryThreshold:
                   description: |
                     Threshold in seconds for treating a streaming query as slow
                     (the `stream` option is `true` for the query).
 
                     Default: Controlled by the [`--query.slow-streaming-threshold` startup option](../../../components/arangodb-server/options.md#--queryslow-streaming-threshold).
-                  type: integer
+                  type: number
                 maxQueryStringLength:
                   description: |
                     The maximum query string length to keep in the list of queries.
@@ -2785,7 +2783,7 @@ paths:
                   trackSlowQueries:
                     description: |
                       Whether slow queries are tracked. The `enabled` property
-                      needs to set to `true` as well in order to track slow queries.
+                      must be set to `true` as well in order to track slow queries.
 
                       Queries are added to the list of slow queries after
                       finishing and if their runtime exceeded the value set in
@@ -2798,7 +2796,7 @@ paths:
                   maxSlowQueries:
                     description: |
                       The maximum number of slow queries kept in the list.
-                      If the list of slow queries is full, the oldest entry in
+                      If the list of slow queries is full, the oldest entry
                       is discarded when additional slow queries occur.
                     type: integer
                   slowQueryThreshold:
@@ -2931,8 +2929,10 @@ paths:
                       description: |
                         The query string (potentially truncated).
 
-                        The cutoff is controlled by the `maxQueryStringLength`
-                        query tracking property that you can change via the
+                        The cutoff is controlled by the
+                        [`--query.max-artifact-log-length` startup option](../../../components/arangodb-server/options.md#--querymax-artifact-log-length)
+                        or the `maxQueryStringLength` query tracking property
+                        that you can change via the
                         `PUT /_db/{database-name}/_api/query/properties` endpoint
                         at runtime.
 
@@ -2946,14 +2946,14 @@ paths:
                         
                         Whether the actual bind variables or an empty object is
                         returned is controlled by the
-                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--querytracking-with-bindvars)
                         or the `trackBindVars` query tracking property that you can
                         change via the `PUT /_db/{database-name}/_api/query/properties`
                         endpoint at runtime.
                       type: object
                     started:
                       description: |
-                        The date and time when the query was started (ISO 8601).
+                        The date and time when the query was started (in ISO 8601 format).
                       type: string
                       format: date-time
                     runTime:
@@ -3070,7 +3070,7 @@ paths:
         [`--query.tracking-slow-queries` startup option](../../../components/arangodb-server/options.md#--querytracking-slow-queries)
         or at runtime with the `trackSlowQueries` query tracking property of the
         `PUT /_db/{database-name}/_api/query/properties` endpoint.
-        If slow query tracking disabled for the current database,
+        If slow query tracking is disabled for the current database,
         an **empty list** is returned.
 
         The maximum amount of queries in the list can be controlled by setting
@@ -3131,7 +3131,7 @@ paths:
                   properties:
                     id:
                       description: |
-                        The query identifier.
+                        The internal identifier of the query.
                       type: string
                     database:
                       description: |
@@ -3139,14 +3139,16 @@ paths:
                       type: string
                     user:
                       description: |
-                        The name of the user that started the query.
+                        The name of the user who started the query.
                       type: string
                     query:
                       description: |
                         The query string (potentially truncated).
 
-                        The cutoff is controlled by the `maxQueryStringLength`
-                        query tracking property that you can change via the
+                        The cutoff is controlled by the
+                        [`--query.max-artifact-log-length` startup option](../../../components/arangodb-server/options.md#--querymax-artifact-log-length)
+                        or the `maxQueryStringLength` query tracking property
+                        that you can change via the
                         `PUT /_db/{database-name}/_api/query/properties` endpoint
                         at runtime.
 
@@ -3160,7 +3162,7 @@ paths:
                         
                         Whether the actual bind variables or an empty object is
                         returned is controlled by the
-                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--querytracking-with-bindvars)
                         or the `trackBindVars` query tracking property that you can
                         change via the `PUT /_db/{database-name}/_api/query/properties`
                         endpoint at runtime.
@@ -3188,7 +3190,7 @@ paths:
                         - invalid
                     stream:
                       description: |
-                        Whether the query used a streaming cursor.
+                        Whether the query used a streaming cursor (`stream` query option).
                       type: boolean
                     exitCode:
                       description: |
@@ -3518,7 +3520,7 @@ paths:
                         generate. Setting this attribute to a low value allows you to put a
                         cap on the amount of work the optimizer does.
 
-                        Default: Controlled by the `--query.optimizer-max-plans` startup option.
+                        Default: Controlled by the [`--query.optimizer-max-plans` startup option](../../../components/arangodb-server/options.md#--queryoptimizer-max-plans).
                       type: integer
                     fullCount:
                       description: |
@@ -3543,7 +3545,7 @@ paths:
                         This option is only useful for testing and debugging and normally does not need
                         any adjustment.
 
-                        Default: Controlled by the `--query.max-nodes-per-callstack` startup option.
+                        Default: Controlled by the [`--query.max-nodes-per-callstack` startup option](../../../components/arangodb-server/options.md#--querymax-nodes-per-callstack).
                       type: integer
                     maxWarningCount:
                       description: |
@@ -3558,7 +3560,7 @@ paths:
                         early. When the attribute is set to `false`, warnings are not propagated to
                         exceptions and are returned with the query result.
 
-                        Default: Controlled by the `--query.fail-on-warning` startup option,
+                        Default: Controlled by the [`--query.fail-on-warning` startup option](../../../components/arangodb-server/options.md#--queryfail-on-warning),
                         so you don't need to set it on a per-query basis.
                       type: boolean
                     optimizer:
