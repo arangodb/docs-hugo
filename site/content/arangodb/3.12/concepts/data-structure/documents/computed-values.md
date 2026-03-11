@@ -35,7 +35,7 @@ affect subsequent write operations. Existing documents remain in their state.
 
 Computed value definitions are included in dumps, and the attributes they added,
 too, but no expressions are executed when restoring dumps. The collections and
-documents are restored as they are in the dump and no attributes are recalculated.
+documents are **restored as they are in the dump** and no attributes are recalculated.
 
 ## Interfaces
 
