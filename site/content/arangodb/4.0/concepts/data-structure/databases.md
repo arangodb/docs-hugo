@@ -8,10 +8,11 @@ description: >-
 ---
 ArangoDB can handle multiple databases in the same server instance. Databases
 can be used to logically group and separate data. An ArangoDB database consists
-of collections and dedicated database-specific worker processes. A database
-contains its own collections (which cannot be accessed from other databases)
-and replication loggers and appliers.<!-- TODO: Remove repl, other? --> Each ArangoDB database
-contains its own system collections (e.g. `_users`, `_graphs`, ...).
+of collections and dedicated database-specific worker processes.
+
+The collections of one database cannot be accessed from another database.
+Queries always run in the context of a single database and can only access the
+data stored in the collections of this database.
 
 There is always at least one database in ArangoDB. This is the default
 database named `_system`. This database cannot be dropped and provides special
@@ -20,6 +21,11 @@ operations for creating, dropping, and enumerating databases.
 You can create additional databases and give them unique names to access them
 later. You need to be in the `_system` database for executing database management
 operations. They cannot be initiated while in a user-defined database.
+
+Alongside user-created collections, each ArangoDB database contains its own
+system collections (e.g. `_analyzers`, `_graphs`, ...). The `_system` database
+also contains system collections that only exist in this database (e.g. `_users`).
+You can create own collections in the `_system` database, too.
 
 ## Database names
 
