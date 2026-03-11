@@ -122,7 +122,7 @@ sampled. The document structure is as follows:
 - `warnings` (integer): The number of query warnings that occurred.
 
 - `exitCode` (integer): An error code (`errorNum`) that indicates why the query
-  failed, or `0` on success. See the [error codes](../../error-codes.md) documentation.
+  failed, or `0` on success. See the [error codes](../../develop/error-codes.md) documentation.
 
 You can retrieve and analyze the stored query metadata by running AQL queries on
 the `_queries` collection in the `_system` database. You can use arbitrary
