@@ -2545,33 +2545,7 @@ paths:
     get:
       operationId: getAqlQueryTrackingProperties
       description: |
-        Returns the current query tracking configuration. The configuration is a
-        JSON object with the following properties:
-
-        - `enabled`: if set to `true`, then queries will be tracked. If set to
-          `false`, neither queries nor slow queries will be tracked.
-
-        - `trackSlowQueries`: if set to `true`, then slow queries will be tracked
-          in the list of slow queries if their runtime exceeds the value set in
-          `slowQueryThreshold`. In order for slow queries to be tracked, the `enabled`
-          property must also be set to `true`.
-
-        - `trackBindVars`: if set to `true`, then bind variables used in queries will
-          be tracked.
-
-        - `maxSlowQueries`: the maximum number of slow queries to keep in the list
-          of slow queries. If the list of slow queries is full, the oldest entry in
-          it will be discarded when additional slow queries occur.
-
-        - `slowQueryThreshold`: the threshold value for treating a query as slow. A
-          query with a runtime greater or equal to this threshold value will be
-          put into the list of slow queries when slow query tracking is enabled.
-          The value for `slowQueryThreshold` is specified in seconds.
-
-        - `maxQueryStringLength`: the maximum query string length to keep in the
-          list of queries. Query strings can have arbitrary lengths, and this property
-          can be used to save memory in case very long query strings are used. The
-          value is specified in bytes.
+        Returns the current query tracking properties of the specified database.
       parameters:
         - name: database-name
           in: path
@@ -2584,10 +2558,107 @@ paths:
       responses:
         '200':
           description: |
-            Is returned if properties were retrieved successfully.
+            The query tracking properties were retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - enabled
+                  - trackSlowQueries
+                  - trackBindVars
+                  - maxSlowQueries
+                  - slowQueryThreshold
+                  - slowStreamingQueryThreshold
+                  - maxQueryStringLength
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  enabled:
+                    description: |
+                      Whether query tracking is enabled for the specified
+                      database. If set to `false`, neither the currently
+                      running queries nor slow queries are tracked.
+                    type: boolean
+                  trackSlowQueries:
+                    description: |
+                      Whether slow queries are tracked. The `enabled` property
+                      needs to set to `true` as well in order to track slow queries.
+
+                      Queries are added to the list of slow queries after
+                      finishing and if their runtime exceeded the value set in
+                      `slowQueryThreshold`.
+                    type: boolean
+                  trackBindVars:
+                    description: |
+                      Whether bind variables used in queries are tracked.
+                    type: boolean
+                  maxSlowQueries:
+                    description: |
+                      The maximum number of slow queries kept in the list.
+                      If the list of slow queries is full, the oldest entry in
+                      is discarded when additional slow queries occur.
+                    type: integer
+                  slowQueryThreshold:
+                    description: |
+                      Threshold in seconds for treating a regular query as slow
+                      (the `stream` option is `false` for the query).
+                    type: number
+                  slowStreamingQueryThreshold:
+                    description: |
+                      Threshold in seconds for treating a streaming query as slow
+                      (the `stream` option is `true` for the query).
+                    type: number
+                  maxQueryStringLength:
+                    description: |
+                      Maximum query string length kept in the list of queries
+                      (in bytes).
+
+                      Query strings can have arbitrary lengths, and you can use
+                      this property to save memory in case very long query strings
+                      are used.
+                    type: integer
         '400':
           description: |
             The request is malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2600,11 +2671,8 @@ paths:
     put:
       operationId: updateAqlQueryTrackingProperties
       description: |
-        The properties need to be passed in the attribute `properties` in the body
-        of the HTTP request. `properties` needs to be a JSON object.
-
-        After the properties have been changed, the current set of properties will
-        be returned in the HTTP response.
+        Modify one or more query tracking properties at runtime for the
+        specified database.
       parameters:
         - name: database-name
           in: path
@@ -2622,26 +2690,28 @@ paths:
               properties:
                 enabled:
                   description: |
-                    If set to `true`, then queries are tracked. If set to
-                    `false`, neither regular queries nor slow queries are tracked.
+                    Whether to track queries for the specified database.
+                    If set to `false`, neither the currently
+                    running queries nor slow queries are tracked.
 
-                    Default: Controlled by the `--query.tracking` startup option.
+                    Default: Controlled by the [`--query.tracking` startup option](../../../components/arangodb-server/options.md#--querytracking).
                   type: boolean
                 trackSlowQueries:
                   description: |
-                    If set to `true`, then slow queries are tracked
-                    in the list of slow queries if their runtime exceeds the value set in
-                    `slowQueryThreshold`. In order for slow queries to be tracked, the `enabled`
-                    property must also be set to `true`.
+                    Whether to track slow queries. The `enabled` property
+                    needs to set to `true` as well in order to track slow queries.
 
-                    Default: Controlled by the `--query.tracking-slow-queries` startup option.
+                    Queries are added to the list of slow queries after
+                    finishing and if their runtime exceeded the value set in
+                    `slowQueryThreshold`.
+
+                    Default: Controlled by the [`--query.tracking-slow-queries` startup option](../../../components/arangodb-server/options.md#--querytracking-slow-queries).
                   type: boolean
                 trackBindVars:
                   description: |
-                    If set to `true`, then the bind variables used in queries are tracked
-                    along with queries.
+                    Whether to track bind variables used in queries.
 
-                    Default: Controlled by the `--query.tracking-with-bindvars` startup option.
+                    Default: Controlled by the [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--querytracking-with-bindvars).
                   type: boolean
                 maxSlowQueries:
                   description: |
@@ -2652,39 +2722,135 @@ paths:
                   default: 64
                 slowQueryThreshold:
                   description: |
-                    The threshold value for treating a query as slow (in seconds).
-                    A query with a runtime greater or equal to this threshold value is
-                    put into the list of slow queries if slow query tracking is enabled.
+                    Threshold in seconds for treating a regular query as slow
+                    (the `stream` option is `false` for the query).
 
-                    Default: Controlled by the `--query.slow-threshold` startup option.
+                    Default: Controlled by the [`--query.slow-threshold` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold).
                   type: integer
                 slowStreamingQueryThreshold:
                   description: |
-                    The threshold value for treating a streaming query as slow (in seconds).
-                    A query with `"stream"` set to `true` and a runtime greater or equal to this
-                    threshold value is put into the list of slow queries if slow query tracking
-                    is enabled.
+                    Threshold in seconds for treating a streaming query as slow
+                    (the `stream` option is `true` for the query).
 
-                    Default: Controlled by the `--query.slow-streaming-threshold` startup option.
+                    Default: Controlled by the [`--query.slow-streaming-threshold` startup option](../../../components/arangodb-server/options.md#--queryslow-streaming-threshold).
                   type: integer
                 maxQueryStringLength:
                   description: |
                     The maximum query string length to keep in the list of queries.
-                    Query strings can have arbitrary lengths, and this property
-                    can be used to save memory in case very long query strings are used. The
-                    value is specified in bytes.
 
-                    You can disable the tracking of query strings with the
-                    `--query.tracking-with-querystring` startup option.
+                    Query strings can have arbitrary lengths, and you can use
+                    this property to save memory in case very long query strings
+                    are used.
+
+                    You can disable the tracking of query strings by default
+                    with the [`--query.tracking-with-querystring` startup option](../../../components/arangodb-server/options.md#--querytracking-with-querystring).
                   type: integer
                   default: 4096
       responses:
         '200':
           description: |
-            Is returned if the properties were changed successfully.
+            The properties were changed successfully. The response body contains
+            the current set of query tracking properties.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - enabled
+                  - trackSlowQueries
+                  - trackBindVars
+                  - maxSlowQueries
+                  - slowQueryThreshold
+                  - slowStreamingQueryThreshold
+                  - maxQueryStringLength
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  enabled:
+                    description: |
+                      Whether query tracking is enabled for the specified
+                      database. If set to `false`, neither the currently
+                      running queries nor slow queries are tracked.
+                    type: boolean
+                  trackSlowQueries:
+                    description: |
+                      Whether slow queries are tracked. The `enabled` property
+                      needs to set to `true` as well in order to track slow queries.
+
+                      Queries are added to the list of slow queries after
+                      finishing and if their runtime exceeded the value set in
+                      `slowQueryThreshold`.
+                    type: boolean
+                  trackBindVars:
+                    description: |
+                      Whether bind variables used in queries are tracked.
+                    type: boolean
+                  maxSlowQueries:
+                    description: |
+                      The maximum number of slow queries kept in the list.
+                      If the list of slow queries is full, the oldest entry in
+                      is discarded when additional slow queries occur.
+                    type: integer
+                  slowQueryThreshold:
+                    description: |
+                      Threshold in seconds for treating a regular query as slow
+                      (the `stream` option is `false` for the query).
+                    type: number
+                  slowStreamingQueryThreshold:
+                    description: |
+                      Threshold in seconds for treating a streaming query as slow
+                      (the `stream` option is `true` for the query).
+                    type: number
+                  maxQueryStringLength:
+                    description: |
+                      Maximum query string length kept in the list of queries
+                      (in bytes).
+
+                      Query strings can have arbitrary lengths, and you can use
+                      this property to save memory in case very long query strings
+                      are used.
+                    type: integer
         '400':
           description: |
             The request is malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2697,41 +2863,15 @@ paths:
     get:
       operationId: listAqlQueries
       description: |
-        Returns an array containing the AQL queries currently running in the selected
-        database. Each query is a JSON object with the following attributes:
+        Returns a list of the AQL queries that currently run in the specified
+        database.
 
-        - `id`: the query's id
-
-        - `database`: the name of the database the query runs in
-
-        - `user`: the name of the user that started the query
-
-        - `query`: the query string (potentially truncated)
-
-        - `bindVars`: the bind parameter values used by the query
-
-        - `started`: the date and time when the query was started
-
-        - `runTime`: the query's run time up to the point the list of queries was
-          queried
-
-        - `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)
-
-        - `state`: the query's current execution state (as a string). One of:
-          - `"initializing"`
-          - `"parsing"`
-          - `"optimizing ast"`
-          - `"loading collections"`
-          - `"instantiating plan"`
-          - `"optimizing plan"`
-          - `"instantiating executors"`
-          - `"executing"`
-          - `"finalizing"`
-          - `"finished"`
-          - `"killed"`
-          - `"invalid"`
-
-        - `stream`: whether or not the query uses a streaming cursor
+        Query tracking needs to be enabled by the
+        [`--query.tracking` startup option](../../../components/arangodb-server/options.md#--querytracking)
+        or at runtime with the `enabled` query tracking property of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
+        If query tracking is disabled for the current database,
+        an **empty list** is returned.
       parameters:
         - name: database-name
           in: path
@@ -2755,14 +2895,162 @@ paths:
       responses:
         '200':
           description: |
-            Is returned when the list of queries can be retrieved successfully.
+            The list of currently running AQL queries for the specified database.
+            Empty if query tracking is disabled.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - database
+                    - user
+                    - query
+                    - bindVars
+                    - started
+                    - runTime
+                    - peakMemoryUsage
+                    - state
+                    - stream
+                  properties:
+                    id:
+                      description: |
+                        The query identifier.
+                      type: string
+                    database:
+                      description: |
+                        The name of the database the query runs in.
+                      type: string
+                    user:
+                      description: |
+                        The name of the user that started the query.
+                      type: string
+                    query:
+                      description: |
+                        The query string (potentially truncated).
+
+                        The cutoff is controlled by the `maxQueryStringLength`
+                        query tracking property that you can change via the
+                        `PUT /_db/{database-name}/_api/query/properties` endpoint
+                        at runtime.
+
+                        Whether the actual query string is tracked or only a
+                        value of `"<hidden>"` is returned depends on the
+                        [`--query.tracking-with-querystring` startup option](../../../components/arangodb-server/options.md#--querytracking-with-querystring).
+                      type: string
+                    bindVars:
+                      description: |
+                        The bind parameter values used by the query.
+                        
+                        Whether the actual bind variables or an empty object is
+                        returned is controlled by the
+                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+                        or the `trackBindVars` query tracking property that you can
+                        change via the `PUT /_db/{database-name}/_api/query/properties`
+                        endpoint at runtime.
+                      type: object
+                    started:
+                      description: |
+                        The date and time when the query was started (ISO 8601).
+                      type: string
+                      format: date-time
+                    runTime:
+                      description: |
+                        The query duration up to the point the query list was
+                        requested (in seconds).
+                      type: number
+                    peakMemoryUsage:
+                      description: |
+                        The query's peak memory usage in bytes (in increments of 32KB),
+                        up to the point the query list was requested.
+                      type: integer
+                    state:
+                      description: |
+                        The query's current execution state.
+                      type: string
+                      enum:
+                        - initializing
+                        - parsing
+                        - optimizing ast
+                        - loading collections
+                        - instantiating plan
+                        - optimizing plan
+                        - instantiating executors
+                        - executing
+                        - finalizing
+                        - finished
+                        - killed
+                        - invalid
+                    stream:
+                      description: |
+                        Whether the query uses a streaming cursor.
+                      type: boolean
         '400':
           description: |
             The request is malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '403':
           description: |
-            In case the `all` parameter is used but the request was made in a
-            different database than `_system`, or by a non-privileged user.
+            Returned when the `all` parameter is used but the request was made
+            in a database other than `_system`, or by a user without superuser
+            privileges.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2775,35 +3063,27 @@ paths:
     get:
       operationId: listSlowAqlQueries
       description: |
-        Returns an array containing the last AQL queries that are finished and
-        have exceeded the slow query threshold in the selected database.
+        Returns a list of the recently finished AQL queries that exceeded the
+        slow query threshold in the specified database.
+
+        Slow query tracking needs to be enabled by the
+        [`--query.tracking-slow-queries` startup option](../../../components/arangodb-server/options.md#--querytracking-slow-queries)
+        or at runtime with the `trackSlowQueries` query tracking property of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
+        If slow query tracking disabled for the current database,
+        an **empty list** is returned.
+
         The maximum amount of queries in the list can be controlled by setting
-        the query tracking property `maxSlowQueries`. The threshold for treating
-        a query as *slow* can be adjusted by setting the query tracking property
-        `slowQueryThreshold`.
+        the `maxSlowQueries` query tracking property via the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint at runtime.
 
-        Each query is a JSON object with the following attributes:
-
-        - `id`: the query's id
-
-        - `database`: the name of the database the query runs in
-
-        - `user`: the name of the user that started the query
-
-        - `query`: the query string (potentially truncated)
-
-        - `bindVars`: the bind parameter values used by the query
-
-        - `started`: the date and time when the query was started
-
-        - `runTime`: the query's total run time
-
-        - `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)
-
-        - `state`: the query's current execution state (will always be "finished"
-          for the list of slow queries)
-
-        - `stream`: whether or not the query uses a streaming cursor
+        The threshold for treating a query as *slow* can be adjusted separate
+        for queries with the `stream` option on or off by setting the
+        [`--query.slow-threshold`](../../../components/arangodb-server/options.md#--queryslow-threshold)
+        and [`--query.slow-streaming-threshold`](../../../components/arangodb-server/options.md#--queryslow-streaming-threshold)
+        startup options or at runtime with the `slowQueryThreshold` and
+        `slowStreamingQueryThreshold` query tracking properties of the
+        `PUT /_db/{database-name}/_api/query/properties` endpoint.
       parameters:
         - name: database-name
           in: path
@@ -2817,8 +3097,8 @@ paths:
           in: query
           required: false
           description: |
-            If set to `true`, will return the slow queries from all databases, not just
-            the selected one.
+            If set to `true`, returns the slow queries from all databases, not just
+            the specified one.
             Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
@@ -2827,14 +3107,159 @@ paths:
       responses:
         '200':
           description: |
-            Is returned when the list of queries can be retrieved successfully.
+            The list of recently finished AQL queries that exceeded the slow
+            query threshold. Empty if query tracking or slow query tracking is
+            disabled.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - database
+                    - user
+                    - query
+                    - bindVars
+                    - started
+                    - runTime
+                    - peakMemoryUsage
+                    - state
+                    - stream
+                    - exitCode
+                  properties:
+                    id:
+                      description: |
+                        The query identifier.
+                      type: string
+                    database:
+                      description: |
+                        The name of the database the query ran in.
+                      type: string
+                    user:
+                      description: |
+                        The name of the user that started the query.
+                      type: string
+                    query:
+                      description: |
+                        The query string (potentially truncated).
+
+                        The cutoff is controlled by the `maxQueryStringLength`
+                        query tracking property that you can change via the
+                        `PUT /_db/{database-name}/_api/query/properties` endpoint
+                        at runtime.
+
+                        Whether the actual query string is tracked or only a
+                        value of `"<hidden>"` is returned depends on the
+                        [`--query.tracking-with-querystring` startup option](../../../components/arangodb-server/options.md#--querytracking-with-querystring).
+                      type: string
+                    bindVars:
+                      description: |
+                        The bind parameter values used by the query.
+                        
+                        Whether the actual bind variables or an empty object is
+                        returned is controlled by the
+                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--queryslow-threshold)
+                        or the `trackBindVars` query tracking property that you can
+                        change via the `PUT /_db/{database-name}/_api/query/properties`
+                        endpoint at runtime.
+                      type: object
+                    started:
+                      description: |
+                        The date and time when the query was started (ISO 8601).
+                      type: string
+                      format: date-time
+                    runTime:
+                      description: |
+                        The total query duration (in seconds).
+                      type: number
+                    peakMemoryUsage:
+                      description: |
+                        The query's peak memory usage in bytes (in increments of 32KB).
+                      type: integer
+                    state:
+                      description: |
+                        The query's last execution state.
+                      type: string
+                      enum:
+                        - finished
+                        - killed
+                        - invalid
+                    stream:
+                      description: |
+                        Whether the query used a streaming cursor.
+                      type: boolean
+                    exitCode:
+                      description: |
+                        An error code (`errorNum`) that indicates why the query
+                        failed, or `0` on success. See the
+                        [error codes](../../error-codes.md) documentation.
+                      type: integer
         '400':
           description: |
             The request is malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '403':
           description: |
-            In case the `all` parameter is used but the request was made in a
-            different database than `_system`, or by a non-privileged user.
+            Returned when the `all` parameter is used but the request was made
+            in a database other than `_system`, or by a user without superuser
+            privileges.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2861,8 +3286,8 @@ paths:
           in: query
           required: false
           description: |
-            If set to `true`, will clear the slow query history in all databases, not just
-            the selected one.
+            If set to `true`, clears the slow query history in all databases, not just
+            the specified one.
             Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
@@ -2871,10 +3296,56 @@ paths:
       responses:
         '200':
           description: |
-            The list of queries has been cleared successfully.
+            The list of slow queries was cleared successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
         '400':
           description: |
             The request is malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Queries
 ```
@@ -2884,7 +3355,7 @@ paths:
 Running AQL queries can be killed on the server. To kill a running query, its ID
 (as returned for the query in the list of currently running queries) must be
 specified. The kill flag of the query is then set, and the query is aborted as
-soon as it reaches a cancelation point.
+soon as it reaches a cancellation point.
 
 ### Kill a running AQL query
 
@@ -2895,7 +3366,7 @@ paths:
       operationId: deleteAqlQuery
       description: |
         Kills a running query in the currently selected database. The query will be
-        terminated at the next cancelation point.
+        terminated at the next cancellation point.
       parameters:
         - name: database-name
           in: path
@@ -3044,7 +3515,7 @@ paths:
                     maxNumberOfPlans:
                       description: |
                         The maximum number of plans that the optimizer is allowed to
-                        generate. Setting this attribute to a low value allows to put a
+                        generate. Setting this attribute to a low value allows you to put a
                         cap on the amount of work the optimizer does.
 
                         Default: Controlled by the `--query.optimizer-max-plans` startup option.
