@@ -334,7 +334,7 @@ paths:
                     Whether to store results of queries that involve
                     system collections in the cache.
 
-                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections)
+                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections).
                   type: boolean
       responses:
         '200':

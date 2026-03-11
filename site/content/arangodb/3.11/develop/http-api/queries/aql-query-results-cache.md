@@ -58,7 +58,7 @@ paths:
                   properties:
                     hash:
                       description: |
-                        The hash value calculated from the the query string,
+                        The hash value calculated from the query string,
                         certain query options, and the bind variables.
                       type: string
                     query:
@@ -119,7 +119,7 @@ db._create("coll");
 for (let i = 0; i < 3; i++) {
   db._query("FOR doc IN @@coll FILTER doc.attr == @val RETURN doc", {
     "@coll": "coll", val: "foo"
-  }, { cache: true });
+  }, { cache: true, fullCount: true });
 }
 db._query("RETURN 42", {}, { cache: true });
 
@@ -334,7 +334,7 @@ paths:
                     Whether to store results of queries that involve
                     system collections in the cache.
 
-                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections)
+                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections).
                   type: boolean
       responses:
         '200':
