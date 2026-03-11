@@ -8,7 +8,9 @@ description: >-
 ---
 ## Foxx removed
 
-The Foxx microservice framework including tasks/queues has been removed.
+The Foxx microservice framework including tasks/queues, the related
+startup options, JavaScript modules, and HTTP API endpoints have been removed.
+The `foxx-cli` tool has been discontinued as well.
 
 Running JavaScript code on the server-side enabled interesting customization
 abilities, but usability and scalability issues limited the field of application.

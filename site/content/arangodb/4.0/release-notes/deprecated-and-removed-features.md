@@ -52,6 +52,16 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **Foxx microservices**:\
+  The Foxx microservice framework including tasks/queues, the related
+  startup options, JavaScript modules, and HTTP API endpoints have been removed.
+  The `foxx-cli` tool has been discontinued as well.
+
+  You may use Node.js together with the [arangojs driver](../../../ecosystem/drivers/javascript.md)
+  to work with ArangoDB from the outside using JavaScript as your language.
+
+  <!-- TODO: BYOC with node-foxx compatibility layer -->
+
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
