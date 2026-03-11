@@ -1,9 +1,14 @@
 FROM alpine:3.16 AS base
 MAINTAINER Max Neunhoeffer <hackers@arango.ai>
 
+ARG ARANGODB_VERSION=3.12
+ENV ARANGODB_VERSION=${ARANGODB_VERSION}
+
 RUN apk add --no-cache pwgen nodejs numactl numactl-tools curl
-# TODO: Make Foxx CLI conditional on version
-RUN apk add --no-cache npm && npm install -g foxx-cli && apk del npm
+# foxx-cli only available up to ArangoDB 3.x but removed in 4.0
+RUN if [ "${ARANGODB_VERSION%%.*}" = "3" ]; then \
+      apk add --no-cache npm && npm install -g foxx-cli && apk del npm; \
+    fi
 
 ENV GLIBCXX_FORCE_NEW=1
 
