@@ -257,7 +257,10 @@ ul ul, ul ol, ol ul, ol ol {
     border-bottom: 2px solid var(--color-evergreen);
 }
 
-.link:hover{
+.link:hover,
+.link:visited,
+.link:focus,
+.link:focus-visible {
     border-bottom: 2px solid var(--color-leaf-green);
     color: var(--gray-950);
 }
@@ -2074,7 +2077,6 @@ nav.pagination .next {
 }
 
 .link-nav:hover, .expand-nav:hover, .link-nav-active + .expand-nav:hover {
-    color: var(--gray-100);
     background-color: var(--gray-900);
 }
 
@@ -2088,6 +2090,13 @@ nav.pagination .next {
     font-weight: 400;
 }
 
+.link-nav:hover,
+.link-nav:visited,
+.link-nav:focus,
+.link-nav:focus-visible {
+    color: var(--gray-100);
+}
+
 .main-nav-ol > .nav-section > .nav-section-header > .link-nav {
     font-weight: 500;
 }
@@ -2096,8 +2105,19 @@ nav.pagination .next {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.link-nav-active, .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav, .link-nav:focus {
+.link-nav-active,
+.link-nav-active:hover,
+.link-nav-active:visited,
+.link-nav-active:focus,
+.link-nav-active:focus-visible,
+.link-nav-active + .expand-nav,
+.nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
     color: var(--color-electric-lime);
+}
+
+.link-nav:focus-visible {
+    outline: 2px solid var(--color-electric-lime);
+    outline-offset: 2px;
 }
 
 .nav-section-header > .link-nav {
