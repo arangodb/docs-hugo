@@ -511,7 +511,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -521,8 +521,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -953,7 +955,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -963,8 +965,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -1426,7 +1430,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1436,8 +1440,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -2092,7 +2098,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2102,8 +2108,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -2559,7 +2567,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2569,8 +2577,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -3278,8 +3288,10 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    Default: If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the indicated prototype collection.
+                    Default: If `distributeShardsLike` is set when the collection is created,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
 
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
@@ -3324,8 +3336,8 @@ paths:
                 distributeShardsLike:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
-                    collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-                    properties from the specified collection (referred to as the
+                    collection follows the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+                    properties of the specified collection (referred to as the
                     _prototype collection_ or sometimes _initial collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. This data co-location is utilized to optimize queries.
@@ -3580,7 +3592,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -3590,8 +3602,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -4326,8 +4340,10 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the indicated prototype collection.
+                    If `distributeShardsLike` is set,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
 
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
@@ -4540,7 +4556,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -4550,8 +4566,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -5132,7 +5150,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -5142,8 +5160,10 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the indicated prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.

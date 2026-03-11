@@ -527,7 +527,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -543,7 +543,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -990,7 +990,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1006,7 +1006,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                       
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -1484,7 +1484,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1500,7 +1500,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -2171,7 +2171,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2187,7 +2187,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -2659,7 +2659,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2675,7 +2675,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -3373,8 +3373,8 @@ paths:
                 distributeShardsLike:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
-                    collection copies the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
-                    properties from the specified collection (referred to as the
+                    collection follows the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
+                    properties of the specified collection (referred to as the
                     _prototype collection_ or sometimes _initial collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. In an Enterprise Edition cluster, this data co-location is
@@ -3648,7 +3648,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -3664,7 +3664,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -4633,7 +4633,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -4649,7 +4649,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
@@ -5246,7 +5246,7 @@ paths:
                       for this collection. The reported `replicationFactor` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -5262,7 +5262,7 @@ paths:
                       for this collection. The reported `writeConcern` of
                       this collection is the value as of the time at which the
                       collection was created, but it may have been changed
-                      through the prototype collection in the meantime.
+                      for the prototype collection in the meantime.
 
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
