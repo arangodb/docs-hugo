@@ -817,6 +817,12 @@ shard distribution and replication health across your cluster:
 - `arangodb_metadata_number_not_replicated_shards`
 - `arangodb_metadata_shard_followers_out_of_sync_number`
 
+Furthermore, the following metrics have been added as part of the experimental
+activities feature:
+
+- `arangodb_activities_total`
+- `arangodb_activities_existing`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
