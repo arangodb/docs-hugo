@@ -106,7 +106,7 @@ have been performed on your production system before you go live.
   `false`. This prevents the registration of custom JavaScript functions via the
   `/_api/aqlfunction` endpoint and no custom functions can be executed in AQL.
 
-- **Tasks / Queues**: If you deployment does not use the higher-level
+- **Tasks / Queues**: If your deployment does not use the higher-level
   [Foxx queues](../develop/foxx-microservices/reference/related-modules/queues.md),
   or the underlying [Tasks](../develop/javascript-api/tasks.md) feature, you can
   disable these features by setting `--foxx.queues` and `--javascript.tasks` to
