@@ -181,6 +181,7 @@ specified database, unless specified otherwise.
 name: arangosh_use_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 db._useDatabase("mydb");
 ~db._useDatabase("_system");
@@ -369,6 +370,7 @@ To switch to the desired database, see [Set the database context](#set-the-datab
 name: arangosh_get_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("mydb");
 db._properties();
@@ -457,6 +459,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_list_databases
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("_system"); // _system database context required
 db._databases();
@@ -542,6 +545,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_delete_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("_system"); // _system database context required
 db._dropDatabase("mydb");

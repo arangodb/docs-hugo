@@ -452,6 +452,7 @@ name: RestDatabaseDrop
 var url = "/_db/_system/_api/database";
 var name = "example";
 
+db._useDatabase("_system");
 db._createDatabase(name);
 var response = logCurlRequest('DELETE', url + '/' + name);
 

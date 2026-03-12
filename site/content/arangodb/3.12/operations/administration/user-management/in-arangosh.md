@@ -59,6 +59,7 @@ Back to our user account *JohnSmith*. Let us create a new database
 and grant him access to it with `grantDatabase()`:
 
 ```js
+> db._useDatabase('_system');
 > db._createDatabase('testdb');
 > users.grantDatabase('JohnSmith', 'testdb', 'rw');
 ```

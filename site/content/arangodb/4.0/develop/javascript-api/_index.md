@@ -34,6 +34,7 @@ The `db` object lets you access and manage databases, for example:
 
 ```js
 // Create a new database
+db._useDatabase("_system");
 db._createDatabase("myDB");
 
 // Make it the current database

@@ -94,6 +94,8 @@ with the extra option `{ sharding: "single" }`. As done in the following
 example:
 
 ```js
+arangosh> db._useDatabase("_system");
+
 arangosh> db._createDatabase("oneShardDB", { sharding: "single" } )
 
 arangosh> db._useDatabase("oneShardDB")
@@ -200,6 +202,8 @@ transferred to the Coordinator. In case you do the same with a collection
 that consists of several shards, you get a different result:
 
 ```js
+arangosh> db._useDatabase("_system");
+
 arangosh> db._createDatabase("shardedDB")
 
 arangosh> db._useDatabase("shardedDB")

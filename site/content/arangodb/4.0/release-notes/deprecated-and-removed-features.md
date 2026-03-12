@@ -5,8 +5,8 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 aliases:
-  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/arangodb-server/ldap # 3.11 -> 3.12
   - ../data-science/pregel # 3.11 -> 3.12
   - ../data-science/pregel/algorithms # 3.11 -> 3.12

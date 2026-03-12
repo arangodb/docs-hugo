@@ -80,6 +80,7 @@ require("@arangodb/users").remove(username);
 Alternatively, you can specify user data directly. For example:
 
 ```js
+db._useDatabase("_system");
 db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active: true}])
 ```
 
