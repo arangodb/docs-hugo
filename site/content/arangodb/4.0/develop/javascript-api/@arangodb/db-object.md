@@ -1152,6 +1152,10 @@ See [`db._createStatement()`](../../../aql/how-to-invoke-aql/with-arangosh.md#wi
 
 See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
 
+### `db._query(queryObject [, mainOptions] [, subOptions]])`
+
+See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
+
 ### `db._explain(queryString)`
 
 See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.md).
