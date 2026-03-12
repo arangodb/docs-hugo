@@ -23,20 +23,20 @@
   {{- if $isOnlyFragment }}
     {{- if not (.Page.Fragments.Identifiers.Contains $url.Fragment) }}
       {{- if site.Params.failOnBrokenLinks }}
-        {{- errorf "<error code=1> Broken anchor link '%v' found in %s, available anchors: %v </error><br>" $fragment $currentFile (delimit .Page.Fragments.Identifiers ", ") }}
+        {{- errorf "<error code=1> Broken anchor link '%v' found in %s, available anchors:\n %v </error><br>" $fragment $currentFile (delimit .Page.Fragments.Identifiers ", ") }}
       {{- else }}
-        {{- warnf "Broken anchor link '%v' found in %s, available anchors: %v" $fragment $currentPage (delimit .Page.Fragments.Identifiers ", ") }}
+        {{- warnf "Broken anchor link '%v' found in %s, available anchors:\n %v" $fragment $currentPage (delimit .Page.Fragments.Identifiers ", ") }}
       {{- end }}
     {{- end }}
     {{- $permalink = $fragment }}
   {{- else }}
     {{- $page := .Page.GetPage $path }}
     {{- if $page }}
-      {{- if and 0 $fragment (not ($page.Fragments.Identifiers.Contains $url.Fragment)) }}
+      {{- if and $fragment (not ($page.Fragments.Identifiers.Contains $url.Fragment)) (not (or (strings.HasPrefix $currentPage "/arangodb/stable/") (strings.HasPrefix $currentPage "/arangodb/devel/"))) }}
         {{- if site.Params.failOnBrokenLinks }}
-          {{- errorf "<error code=1> Broken anchor link '%v%v' found in %s, available anchors: %v </error><br>" $path $fragment $currentFile (delimit $page.Fragments.Identifiers ", ") }}
+          {{- errorf "<error code=1> Broken anchor link '%v%v' found in %s, available anchors:\n %v </error><br>" $path $fragment $currentFile (delimit $page.Fragments.Identifiers ", ") }}
         {{- else }}
-          {{- warnf "Broken anchor link '%v%v' found in %s, available anchors: %v" $path $fragment $currentPage (delimit $page.Fragments.Identifiers ", ") }}
+          {{- warnf "Broken anchor link '%v%v' found in %s, available anchors:\n %v" $path $fragment $currentPage (delimit $page.Fragments.Identifiers ", ") }}
         {{- end }}
       {{- end }}
       {{- $permalink = printf "%s%s" $page.RelPermalink $fragment }}
