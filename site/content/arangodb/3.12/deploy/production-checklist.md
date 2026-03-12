@@ -57,7 +57,7 @@ have been performed on your production system before you go live.
   --server.harden=true
   --javascript.harden=true
   --javascript.environment-variables-allowlist="^$"
-  --javascript.files-allowlist="/usr/share/arangodb3/js"
+  --javascript.files-allowlist="^$"
   --javascript.endpoints-allowlist="^$"
   ```
 
