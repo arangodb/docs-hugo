@@ -1,4 +1,7 @@
-{{- $pageVersion := .Page.Store.Get "versionShort" | default (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
+{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- if not $pageVersion }}
+  {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
+{{- end }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $data := index $dataFolderByVersion "errors" }}
 {{- $basePage := .Page.RelPermalink }}
