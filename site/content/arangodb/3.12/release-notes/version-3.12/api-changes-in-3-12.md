@@ -522,6 +522,17 @@ Two new statistics are included in the response when you execute an AQL query:
 }
 ```
 
+#### Query API
+
+<small>Introduced in: v3.12.2</small>
+
+The endpoints for the lists of currently running queries and slow queries
+(`/_api/query/current` and `/_api/query/slow`) now include the following
+attributes:
+- `dataSources` (array of strings), only present if tracking of data sources is enabled
+- `modificationQuery` (boolean)
+- `warnings` (integer)
+
 #### Query plan cache attributes
 
 <small>Introduced in: v3.12.4</small>

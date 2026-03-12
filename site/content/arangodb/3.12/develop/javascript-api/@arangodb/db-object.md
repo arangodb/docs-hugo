@@ -392,8 +392,8 @@ error is thrown. For information about the naming constraints for collections, s
 
 - `distributeShardsLike` (string, _optional_, default: `""`):
   The name of another collection. If this property is set in a cluster, the
-  collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-  properties from the specified collection (referred to as the _prototype collection_)
+  collection follows the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+  properties of the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
   the other collection. This data co-location is utilized to optimize queries.
 
@@ -1168,6 +1168,10 @@ db._view("exampleView");
 See [`db._createStatement()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_createstatement-arangostatement).
 
 ### `db._query(queryString [, bindVars [, mainOptions] [, subOptions]])`
+
+See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
+
+### `db._query(queryObject [, mainOptions] [, subOptions]])`
 
 See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
 
