@@ -59,20 +59,21 @@ have been performed on your production system before you go live.
   JavaScript Transactions can access. Add the following startup options
   to your configuration:
 
-  {{< tabs "config" >}}
+  {{< tabs "startup-options" >}}
 
   {{< tab "Command-line" >}}
   ```sh
-  --server.harden
-  --javascript.harden
-  --javascript.environment-variables-allowlist '^$'
-  --javascript.files-allowlist '^$'
+  arangod ... \
+  --server.harden \
+  --javascript.harden \
+  --javascript.environment-variables-allowlist '^$' \
+  --javascript.files-allowlist '^$' \
   --javascript.endpoints-allowlist '^$'
   ```
   {{< /tab >}}
 
   {{< tab "Configuration file" >}}
-  ```conf
+  ```cfg
   [server]
   harden = true
 
