@@ -89,10 +89,11 @@ have been performed on your production system before you go live.
   Add the following startup options to your configuration:
 
   ```
+  --server.harden=true
   --javascript.harden=true
-  --javascript.environment-variables-allowlist=""
+  --javascript.environment-variables-allowlist="^$"
   --javascript.files-allowlist="/usr/share/arangodb3/js"
-  --javascript.endpoints-allowlist=""
+  --javascript.endpoints-allowlist="^$"
   ```
 
   {{< warning >}}
