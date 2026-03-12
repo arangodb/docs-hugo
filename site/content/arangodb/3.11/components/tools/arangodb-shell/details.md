@@ -74,7 +74,7 @@ name: usingToArray
 description: ''
 ---
 db._create("five")
-for (i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {
   db.five.save({value:i});
 }
 db.five.toArray()
@@ -137,8 +137,8 @@ _arangosh_ version performs around 100k HTTP requests, and the
 _arangod_ version directly writes to the database:
 
 ```js
-for (i = 0; i < 100000; i++) {
-    db.test.save({ name: { first: "Jan" }, count: i});
+for (var i = 0; i < 100000; i++) {
+  db.test.save({ name: { first: "Jan" }, count: i});
 }
 ```
 

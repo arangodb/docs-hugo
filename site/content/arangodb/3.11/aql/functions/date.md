@@ -1301,7 +1301,7 @@ var timestamps = [
   "2014-05-08T11:19:09.522",
   "2014-05-08T18:19:09.522"
 ];
-for (i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {
   db.exampleTime.save({value:i, ts: timestamps[i]});
 }
 db._query(`

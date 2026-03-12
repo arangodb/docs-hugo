@@ -162,7 +162,7 @@ then create a query and explain it to inspect the execution plan.
 ```js
 arangosh@oneShardDB> for (let i = 0; i < 10000; i++) { db.example.insert({ "value" : i }); }
 
-arangosh@oneShardDB> q = "FOR doc IN @@collection FILTER doc.value % 2 == 0 SORT doc.value ASC LIMIT 10 RETURN doc";
+arangosh@oneShardDB> var q = "FOR doc IN @@collection FILTER doc.value % 2 == 0 SORT doc.value ASC LIMIT 10 RETURN doc";
 
 arangosh@oneShardDB> db._explain(q, { "@collection" : "example" })
 

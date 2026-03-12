@@ -73,7 +73,7 @@ name: usingToArray
 description: ''
 ---
 db._create("five")
-for (i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {
   db.five.save({value:i});
 }
 db.five.toArray()
@@ -109,9 +109,9 @@ db._query(aql`RETURN ${somepath}`)
 
 ## Database Wrappers
 
-_arangosh_ provides the `db` object by default, and this object can
-be used for switching to a different database and managing collections inside the
-current database.
+_arangosh_ provides the [`db` object](../../../develop/javascript-api/@arangodb/db-object.md)
+by default, and this object can be used for switching to a different database
+and managing collections inside the current database.
 
 For a list of available methods for the `db` object, type
 
@@ -123,12 +123,12 @@ description: ''
 db._help(); 
 ```
 
-The implementation of the `db` object wraps HTTP accesses
+The implementation of the `db` object wraps HTTP requests
 to ArangoDB's [HTTP API](../../../develop/http-api/_index.md).
 It means that the following code performs around 100k HTTP requests:
 
 ```js
-for (i = 0; i < 100000; i++) {
+for (var i = 0; i < 100000; i++) {
     db.test.save({ name: { first: "Jan" }, count: i});
 }
 ```
@@ -138,7 +138,7 @@ documents in fewer HTTP requests:
 
 ```js
 var batch = [];
-for (i = 0; i < 100000; i++) {
+for (var i = 0; i < 100000; i++) {
     batch.push({ name: { first: "Jan" }, count: i});
     if (batch.length >= 1000) {
         db.test.save(batch);

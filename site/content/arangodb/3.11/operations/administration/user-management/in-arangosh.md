@@ -39,7 +39,7 @@ ArangoShell's history. To avoid that, either disable the history
 (`--console.history false`) or use a dynamically created password, e.g.:
 
 ```js
-> passwd = require('internal').genRandomAlphaNumbers(20);
+> var passwd = require('internal').genRandomAlphaNumbers(20);
 > users.save('JohnSmith', passwd);
 ```
 
@@ -51,7 +51,7 @@ user too. Otherwise one will be able to connect with the default `root` user
 and its empty password. The following commands change the `root` user's password:
 
 ```js
-> passwd = require('internal').genRandomAlphaNumbers(20);
+> var passwd = require('internal').genRandomAlphaNumbers(20);
 > require('@arangodb/users').update('root', passwd);
 ```
 

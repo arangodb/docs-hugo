@@ -111,8 +111,8 @@ making the function **not** side-effect free:
 
 ```js
 function (values) {
-  for (i = 0; i < values.length; ++i) {
-    name = values[i];
+  for (var i = 0; i < values.length; ++i) {
+    var name = values[i];
     if (name === "foo") {
       return i;
     }
@@ -213,7 +213,7 @@ and save it as file. For example:
 
 function greeting(name) {
     if (name === undefined) {
-        name = "World";
+        var name = "World";
     }
     return `Hello ${name}!`;
 }
