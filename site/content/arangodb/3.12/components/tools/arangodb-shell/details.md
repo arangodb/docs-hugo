@@ -136,7 +136,7 @@ lower. The code basically produces the same results with both:
 
 ```js
 for (var i = 0; i < 100000; i++) {
-    db.test.save({ name: { first: "Jan" }, count: i});
+  db.test.save({ name: { first: "Jan" }, count: i});
 }
 ```
 
@@ -146,11 +146,14 @@ instead save batches of documents in fewer HTTP requests:
 ```js
 var batch = [];
 for (var i = 0; i < 100000; i++) {
-    batch.push({ name: { first: "Jan" }, count: i});
-    if (batch.length >= 1000) {
-        db.test.save(batch);
-        batch = [];
-    }
+  batch.push({ name: { first: "Jan" }, count: i});
+  if (batch.length >= 1000) {
+    db.test.save(batch);
+    batch = [];
+  }
+}
+if (batch.length > 0) {
+  db.test.save(batch);
 }
 ```
 

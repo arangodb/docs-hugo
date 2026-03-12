@@ -129,7 +129,7 @@ It means that the following code performs around 100k HTTP requests:
 
 ```js
 for (var i = 0; i < 100000; i++) {
-    db.test.save({ name: { first: "Jan" }, count: i});
+  db.test.save({ name: { first: "Jan" }, count: i});
 }
 ```
 
@@ -139,11 +139,14 @@ documents in fewer HTTP requests:
 ```js
 var batch = [];
 for (var i = 0; i < 100000; i++) {
-    batch.push({ name: { first: "Jan" }, count: i});
-    if (batch.length >= 1000) {
-        db.test.save(batch);
-        batch = [];
-    }
+  batch.push({ name: { first: "Jan" }, count: i});
+  if (batch.length >= 1000) {
+    db.test.save(batch);
+    batch = [];
+  }
+}
+if (batch.length > 0) {
+  db.test.save(batch);
 }
 ```
 
