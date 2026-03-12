@@ -16,7 +16,8 @@ following line in the `[server]` section:
 authentication = true
 ```
 
-This will make ArangoDB require authentication for every request.
+This makes ArangoDB require authentication for every request, except for
+endpoints with the `/_open` prefix that never require authentication.
 
 When finished making changes, you need to restart ArangoDB, e.g.:
 
@@ -380,11 +381,8 @@ notice. The system collections follow these rules:
 | Collection                           | Access level |
 |--------------------------------------|--------------|
 | `_users` (in the `_system` database) | No Access    |
-| `_queues`                            | Read-Only    |
 | `_frontend`                          | Read/Write   |
 | `*` (default)                        | *based on the current database* |
-
-<!-- TODO: Update table -->
 
 All other system collections have access level *Read/Write* if the
 user has *Administrate* access to the database. They have access level

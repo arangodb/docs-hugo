@@ -216,10 +216,10 @@ detailed information about breaking changes before upgrading.
 - **Actions**:\
   Snippets of JavaScript code on the server-side for minimal
   custom endpoints. Since the Foxx revamp in 3.0, it became really easy to
-  write Foxx Microservices, which allow you to define
+  write Foxx Microservices, which allowed you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
