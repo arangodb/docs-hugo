@@ -7,8 +7,11 @@ description: >-
   applications
 ---
 ArangoDB can handle multiple databases in the same server instance. Databases
-can be used to logically group and separate data. An ArangoDB database consists
-of collections and dedicated database-specific worker processes.
+can be used to logically group and separate data, such as for multi-tenancy
+(e.g. one database per customer).
+
+An ArangoDB database contains a set of collections, similar to how a file cabinet
+contains folders.
 
 The collections of one database cannot be accessed from another database.
 Queries always run in the context of a single database and can only access the
@@ -25,7 +28,7 @@ operations. They cannot be initiated while in a user-defined database.
 Alongside user-created collections, each ArangoDB database contains its own
 system collections (e.g. `_analyzers`, `_graphs`, ...). The `_system` database
 also contains system collections that only exist in this database (e.g. `_users`).
-You can create own collections in the `_system` database, too.
+You can create your own collections in the `_system` database, too.
 
 ## Database names
 
