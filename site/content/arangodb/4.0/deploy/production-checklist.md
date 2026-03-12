@@ -107,9 +107,9 @@ have been performed on your production system before you go live.
 
 - **Query memory limits**: Configure appropriate memory limits for AQL queries:
   - Set [`--query.memory-limit`](../components/arangodb-server/options.md#--querymemory-limit)
-    to limit memory usage per individual query.
+    to limit the memory used per individual query.
   - Consider setting [`--query.global-memory-limit`](../components/arangodb-server/options.md#--queryglobal-memory-limit)
-    to limit total memory used by all concurrent queries (per _arangod_ process).
+    to limit the total memory used by all concurrent queries (per _arangod_ process).
 
 ### Service Management
 

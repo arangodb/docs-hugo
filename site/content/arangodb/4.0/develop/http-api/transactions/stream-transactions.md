@@ -159,8 +159,7 @@ paths:
                   description: |
                     Transaction size limit in bytes.
 
-                    Default: Controlled by the `--transaction.streaming-max-transaction-size`
-                    startup option.
+                    Default: Controlled by the [`--transaction.streaming-max-transaction-size` startup option](../../../components/arangodb-server/options.md#--transactionstreaming-max-transaction-size).
                   type: integer
                 skipFastLockRound:
                   description: |
