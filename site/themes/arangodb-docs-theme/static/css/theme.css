@@ -252,13 +252,13 @@ ul ul, ul ol, ol ul, ol ol {
     margin-bottom: .5rem;
 }
 
-.link {
+.link,
+.link:visited {
     text-decoration: none;
     border-bottom: 2px solid var(--color-evergreen);
 }
 
 .link:hover,
-.link:visited,
 .link:focus,
 .link:focus-visible {
     border-bottom: 2px solid var(--color-leaf-green);
