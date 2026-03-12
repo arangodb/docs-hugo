@@ -79,13 +79,14 @@ paths:
           application/json:
             schema:
               type: object
-              required: service_name
+              required:
+                - service_name
               properties:
                 service_name:
                   description: |
-                    The name of the service to deploy.
+                    The name of the service to deploy, here `"arango-cypher2aql"`.
                   type: string
-                  enum: ["arango-cypher2aql"]
+                  const: arango-cypher2aql
       responses:
         '200':
           description: |
@@ -95,48 +96,77 @@ paths:
 
 ### Translate Cypher to AQL
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/cypher2aql" >}}
-
-Translates a Cypher query string into AQL.
-
-**Request body**
-
-| Field      | Type   | Required | Description |
-|-----------|--------|----------|-------------|
-| `cypher`  | string | Yes      | The Cypher query to translate. |
-| `database`| string | No       | Reserved for future use; can be omitted. |
-
-**Success response (HTTP 200)**
-
-When translation succeeds, `error` is `false`:
-
-| Field          | Type   | Description |
-|----------------|--------|-------------|
-| `cypher`       | string | The original Cypher query. |
-| `AQL`          | string | The translated AQL query. |
-| `error`        | boolean| `false`. |
-| `errorMessage` | string | Empty. |
-| `errorCode`    | number | `0`. |
-
-**Translation failure (HTTP 200)**
-
-When the Cypher is invalid or uses unsupported features, the service still returns HTTP 200 but sets `error` to `true`:
-
-| Field          | Type   | Description |
-|----------------|--------|-------------|
-| `cypher`       | string | The Cypher query that was sent. |
-| `AQL`          | string | Empty. |
-| `error`        | boolean| `true`. |
-| `errorMessage` | string | A short explanation of the error. |
-| `errorCode`    | number | `422`. |
-
-**Client error (HTTP 400)**
-
-Returned when the request body is missing, not valid JSON, or cannot be read. The body is still a JSON object with `error: true`, `errorMessage` describing the issue, and `errorCode: 400`.
-
-**Unauthorized (HTTP 401)**
-
-Returned when the platform has authentication enabled and the request is missing or invalid credentials.
+```openapi
+---
+service: cypher2aql
+---
+paths:
+  /cypher2aql/{serviceId}/v1/cypher2aql:
+    post:
+      operationId: translateCypherToAql
+      description: |
+        Translates a query string from Cypher to AQL.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: |
+            The ID of the Cypher to AQL service instance that runs in the data platform.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cypher
+              properties:
+                cypher:
+                  description: |
+                    The Cypher query to translate.
+                  type: string
+                database:
+                  description: |
+                    Reserved for future use; can be omitted.
+                  type: string
+      responses:
+        '200':
+          description: |
+            Translation result. When translation succeeds, `error` is `false`.
+            When the Cypher is invalid or uses unsupported features, the service
+            still returns HTTP 200 but sets `error` to `true`, `errorCode` to 422,
+            and `errorMessage` with an explanation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cypher:
+                    description: The original Cypher query.
+                    type: string
+                  AQL:
+                    description: |
+                      The translated AQL query when successful; empty on translation failure.
+                    type: string
+                  error:
+                    description: |
+                      `false` on success; `true` when translation failed or request was invalid.
+                    type: boolean
+                  errorMessage:
+                    description: Empty on success; short explanation of the error otherwise.
+                    type: string
+                  errorCode:
+                    description: `0` on success; `422` on translation failure; `400` on client error.
+                    type: number
+        '400':
+          description: |
+            The request body is missing, not valid JSON, or cannot be read.
+            The body is still a JSON object with `error`, `errorMessage`, and `errorCode`.
+        '401':
+          description: |
+            The platform has authentication enabled and the request is missing or invalid credentials.
+```
 
 **Example: successful translation**
 
@@ -170,15 +200,37 @@ curl -s -X POST "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/cyp
 
 ### Service version
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/version" >}}
-
-Returns the service version.
-
-**Response (HTTP 200)**
-
-| Field     | Type   | Description |
-|-----------|--------|-------------|
-| `version` | string | Version identifier of the service. |
+```openapi
+---
+service: cypher2aql
+---
+paths:
+  /cypher2aql/{serviceId}/v1/version:
+    get:
+      operationId: getVersion
+      description: |
+        Returns the service version.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: |
+            The ID of the Cypher to AQL service instance that runs in the data platform.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Version identifier of the service.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    description: Version identifier of the service.
+                    type: string
+```
 
 **Example**
 
@@ -197,15 +249,39 @@ Example response:
 
 ### Health check
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/health" >}}
-
-Returns a simple health status.
-
-**Response (HTTP 200)**
-
-| Field    | Type   | Description |
-|----------|--------|-------------|
-| `status` | string | `"ok"` when the service is healthy. |
+```openapi
+---
+service: cypher2aql
+---
+paths:
+  /cypher2aql/{serviceId}/v1/health:
+    get:
+      operationId: getHealth
+      description: |
+        Returns a simple health status.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: |
+            The ID of the Cypher to AQL service instance that runs in the data platform.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The health status.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    description: |
+                      The service is healthy.
+                    type: string
+                    example: ok
+```
 
 **Example**
 
@@ -224,9 +300,32 @@ Example response:
 
 ### Uninstall the `arango-cypher2aql` service
 
-Use the ACP service to delete the service
+Use the ACP service to delete the service.
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{SERVICE_ID}" >}}
+```openapi
+---
+service: cypher2aql
+---
+paths:
+  /_platform/acp/v1/service/{serviceId}:
+    delete:
+      operationId: deleteService
+      description: |
+        Stop a service instance using the Arango Control Plane (ACP).
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          description: |
+            The ID of the service to stop, here the ID of a
+            `arango-cypher2aql` service instance.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The service instance was successfully stopped.
+```
 
 ## Supported Cypher and limitations
 
