@@ -83,10 +83,13 @@ name: QUERY_05_killQueries
 description: ''
 ---
 ~var queries = require("@arangodb/aql/queries");
-~var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1) RETURN sleepLoooong';
-~arango.POST("/_api/cursor", {query:"RETURN SLEEP(5)"}, {"X-Arango-Async":true})
-var runningQueries = queries.current().filter(function(query) {
-  return query.query === theQuery;
-});
+~var theQuery = "RETURN SLEEP(5)";
+~arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
+~while (true) {
+~  if (queries.current().filter(q => q.query === theQuery).length > 0)
+~    break;
+~  internal.sleep(0.25);
+~}
+var runningQueries = queries.current().filter(q => q.query === theQuery);
 queries.kill(runningQueries[0].id);
 ```
