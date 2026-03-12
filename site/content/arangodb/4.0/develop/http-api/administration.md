@@ -56,18 +56,54 @@ paths:
                 type: object
                 required:
                   - server
+                  - license
                   - version
                 properties:
                   server:
-                    description: |
-                      will always contain `arango`
+                    description: '' # TODO: Test
                     type: string
+                    const: arango
+                  license:
+                    description: |
+                      Whether this build of ArangoDB includes the non-public
+                      enterprise code. Reports `"enterprise"` for both the
+                      Community Edition and Enterprise Edition if you use the
+                      prepackaged binaries or official container images.
+                    type: string
+                    enum:
+                      - community # Only custom builds
+                      - enterprise
                   version:
                     description: |
                       the server version string. The string has the format
                       `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
                       may contain a number or a textual version.
                     type: string
+                  apiVersions:
+                    description: |
+                     The available versions of the HTTP API.
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v1]
+                  deprecatedApiVersions:
+                    description: |
+                      The versions of the HTTP API that are still supported by
+                      this ArangoDB server version but should no longer be used.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [] # TODO: Do this or replace with example: []?
+                  requestedApiVersion:
+                    description: |
+                      The HTTP API version specified for this request via the
+                      `/_arango/{api-version}` prefix, or the default API version
+                      if not specified.
+                    type: string
+                    enum: [v1] # TODO: What about experimental?
                   details:
                     description: |
                       an optional JSON object with additional details. This is

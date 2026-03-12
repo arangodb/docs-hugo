@@ -68,6 +68,31 @@ paths:
                       `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
                       may contain a number or a textual version.
                     type: string
+                  apiVersions:
+                    description: |
+                     The available versions of the HTTP API.
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v0, v1]
+                  deprecatedApiVersions:
+                    description: |
+                      The versions of the HTTP API that are still supported by
+                      this ArangoDB server version but should no longer be used.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v0] # TODO: Is this correct for 3.12.x?
+                  requestedApiVersion:
+                    description: |
+                      The HTTP API version specified for this request via the
+                      `/_arango/{api-version}` prefix, or the default API version
+                      if not specified.
+                    type: string
+                    enum: [v0, v1] # TODO: What about experimental?
                   details:
                     description: |
                       an optional JSON object with additional details. This is
