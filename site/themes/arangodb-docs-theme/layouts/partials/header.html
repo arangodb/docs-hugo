@@ -22,7 +22,7 @@
   </div>
   <div class="container-right" style="display: hidden;"></div>
   <div class="search-and-version-container" >
-    <a href="/" class="home-link is-current" aria-label="Go to home page"></a>
+    <a href="{{ .Site.Home.RelPermalink }}" class="home-link is-current" aria-label="Go to home page"></a>
     <div class="docsearch"></div>
     {{ partialCached "inkeep-widget.html" . -}}
   </div>
