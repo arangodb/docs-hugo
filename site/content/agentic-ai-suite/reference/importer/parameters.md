@@ -77,6 +77,26 @@ Each file in the `files` array requires:
 }
 ```
 
+## RAG Mode Configuration
+
+The Importer supports two operational modes that determine how documents are processed and what knowledge graph elements are created:
+
+- `rag_mode`: Specifies the retrieval mode. Valid values are:
+  - `"full_graphrag"` (default): Full knowledge graph extraction with entities, relationships, and communities
+  - `"vector_rag"`: Simple vector-based retrieval using only chunk embeddings (skips entity extraction)
+
+**Example:**
+
+```json
+{
+  "rag_mode": "full_graphrag"
+}
+```
+
+{{< info >}}
+When using `"vector_rag"` mode, chunk embeddings are automatically enabled regardless of the `enable_chunk_embeddings` setting. Entity extraction, relationships, and community detection are skipped for faster processing. Use this mode when you only need semantic search over document chunks without the full knowledge graph structure.
+{{< /info >}}
+
 ## Chunking Parameters
 
 These parameters control how documents are split into smaller chunks for processing.
@@ -84,10 +104,13 @@ These parameters control how documents are split into smaller chunks for process
 - `chunk_token_size`: Maximum tokens per chunk. The default value is `1200`.
 - `chunk_overlap_token_size`: Number of overlapping tokens between consecutive
   chunks. The default value is `100`.
-- `chunk_min_token_size`: Minimum tokens per chunk.
-- `chunk_custom_separators`: Custom separators for chunking (e.g., `["\n\n", "\n", " "]`).
+- `chunk_min_token_size`: Minimum tokens per chunk (optional).
+- `chunk_custom_separators`: Custom separators for chunking (optional, e.g., `["\n\n", "\n", " "]`).
 - `preserve_chunk_separator`: Whether to preserve separator characters in chunks
   (default: `false`).
+- `ignore_chunk_token_size`: If `true`, chunks are split only by separators without
+  enforcing token size limits. When enabled, `chunk_token_size` and `chunk_overlap_token_size`
+  are ignored (default: `false`).
 
 **Example:**
 
@@ -97,9 +120,24 @@ These parameters control how documents are split into smaller chunks for process
   "chunk_overlap_token_size": 100,
   "chunk_min_token_size": 50,
   "chunk_custom_separators": ["\n\n", "\n", " "],
+  "preserve_chunk_separator": false,
+  "ignore_chunk_token_size": false
+}
+```
+
+**Example with separator-only chunking:**
+
+```json
+{
+  "chunk_custom_separators": ["\n## ", "\n\n", "\n"],
+  "ignore_chunk_token_size": true,
   "preserve_chunk_separator": false
 }
 ```
+
+{{< tip >}}
+Use `ignore_chunk_token_size: true` when you want pure separator-based chunking. This is useful for documents with clear structural boundaries (like markdown headers) where token-based limits might split content in undesirable ways.
+{{< /tip >}}
 
 ## Entity and Relationship Extraction
 
@@ -107,8 +145,8 @@ These parameters define what entities and relationships to extract from your doc
 
 - `entity_types`: Entity types to extract from the document (e.g., `["person", "organization", "geo", "event"]`).
 - `relationship_types`: Relationship types to extract (e.g., `["RELATED_TO", "PART_OF", "USES"]`).
-- `enable_strict_types`: Enable strict filtering of entities and relationships from the specified types.
-- `entity_extract_max_gleaning`: Maximum number of extraction iterations.
+- `enable_strict_types`: Enable strict filtering of entities and relationships from the specified types (default: `false`).
+- `entity_extract_max_gleaning`: Maximum number of extraction iterations (default: `1`).
 
 **Example:**
 
@@ -121,29 +159,43 @@ These parameters define what entities and relationships to extract from your doc
 }
 ```
 
-## Community Report Parameters
+{{< info >}}
+Entity and relationship extraction is only performed in `"full_graphrag"` mode. When using `"vector_rag"` mode, these parameters are ignored.
+{{< /info >}}
 
-These parameters control how community reports are generated.
+## Custom Prompts
 
-- `community_report_num_findings`: Number of key insights to generate (e.g., `"5-10"`).
-- `community_report_instructions`: Custom instructions (e.g., "Focus on key relationships and insights").
+You can customize the prompts used for entity extraction, relationship extraction, and community report generation. This is an advanced feature for domain-specific customization.
+
+- `custom_prompts`: A dictionary mapping prompt names to custom prompt text. When provided, custom prompts override the default prompts. If empty or not provided, default prompts are used.
+
+Available prompt keys:
+- `"entity_extraction"`: Prompt for extracting entities from text chunks
+- `"entity_relationship"`: Prompt for extracting relationships between entities
+- `"community_report"`: Prompt for generating community summary reports
 
 **Example:**
 
 ```json
 {
-  "community_report_num_findings": "5-10",
-  "community_report_instructions": "Focus on key relationships and technical insights"
+  "custom_prompts": {
+    "entity_extraction": "Extract technical entities including: software libraries, programming languages, APIs, and architectural components. For each entity provide: name, type, and a brief description.",
+    "community_report": "Generate a technical summary focusing on: 1) Key technologies and their relationships, 2) Architectural patterns, 3) Integration points. Provide 5-7 key insights."
+  }
 }
 ```
+
+{{< warning >}}
+Custom prompts are an advanced feature. Poorly designed prompts may result in lower quality entity extraction or community reports. Use the default prompts unless you have specific domain requirements.
+{{< /warning >}}
 
 ## Embedding Parameters
 
 These parameters control which graph elements receive embedding vectors for semantic search.
 
-- `enable_chunk_embeddings`: Whether to enable embeddings for chunks.
-- `enable_edge_embeddings`: Whether to enable embeddings for edges.
-- `enable_community_embeddings`: Whether to enable embeddings for communities.
+- `enable_chunk_embeddings`: Whether to enable embeddings for text chunks (default: `false` for `"full_graphrag"` mode, always `true` for `"vector_rag"` mode).
+- `enable_edge_embeddings`: Whether to enable embeddings for relationship edges (default: `false`).
+- `enable_community_embeddings`: Whether to enable embeddings for community reports (default: `true`).
 
 **Example:**
 
@@ -154,6 +206,10 @@ These parameters control which graph elements receive embedding vectors for sema
   "enable_community_embeddings": true
 }
 ```
+
+{{< info >}}
+In `"vector_rag"` mode, chunk embeddings are always enabled regardless of the `enable_chunk_embeddings` setting. The `enable_edge_embeddings` and `enable_community_embeddings` parameters are ignored since edges and communities are not created in vector RAG mode.
+{{< /info >}}
 
 ## Vector Index Configuration
 
@@ -229,56 +285,109 @@ for more details.
 These parameters control data storage and organization.
 
 - `store_in_s3`: Whether to store processed data in S3.
-- `partition_id`: Partition identifier.
+- `partition_id`: Partition identifier for grouping related documents together.
 - `batch_size`: Number of documents, entities, and relationships to insert in a single batch. The default value is `1000`.
+
+### `partition_id`
+
+The `partition_id` parameter enables semantic sharding and horizontal scaling by grouping related documents into logical partitions.
+
+**Key benefits:**
+- **Semantic sharding**: Documents from the same domain/cluster are stored together
+- **Horizontal scaling**: Different partitions can be distributed across multiple machines
+- **Multi-tenancy**: Isolate documents for different projects, customers, or use cases
+- **Efficient querying**: Retriever can target specific partitions for faster searches
+
+**Usage patterns:**
+
+1. **With Autograph**: Use Autograph-generated `rag_partition_id` values (format: `{cluster_index}_{a|b}`) to group documents by semantic similarity and RAG strategy
+2. **Manual partitioning**: Define your own partition scheme based on domain, project, or tenant
+3. **Auto-generated**: If not specified, a random partition ID is generated
+
+**Example:**
+
+```json
+{
+  "partition_id": "0_a",
+  "files": [...]
+}
+```
+
+{{< tip >}}
+When using Autograph for corpus analysis, use the `rag_partition_id` values from the strategizer results as your `partition_id` values when calling the Importer. This ensures documents from the same semantic cluster are stored together, enabling efficient two-stage retrieval.
+{{< /tip >}}
 
 **Example:**
 
 ```json
 {
   "store_in_s3": false,
-  "partition_id": "project_alpha",
+  "partition_id": "cluster_0_a",
   "batch_size": 1000
 }
 ```
 
 ## Examples
 
-This example includes entity extraction, chunking, and embeddings with standard parameters that work well across different document types.
+### Standard Full GraphRAG Example
+
+This example uses full GraphRAG mode with entity extraction, chunking, and embeddings:
 
 ```json
 {
   "file_content": "base64_encoded_content",
   "file_name": "document.txt",
+  "rag_mode": "full_graphrag",
   "chunk_token_size": 1200,
   "chunk_overlap_token_size": 100,
   "entity_types": ["person", "organization", "location", "event"],
   "relationship_types": ["WORKS_FOR", "LOCATED_IN", "PARTICIPATES_IN"],
-  "enable_chunk_embeddings": true,
-  "enable_community_embeddings": false,
+  "enable_chunk_embeddings": false,
+  "enable_community_embeddings": true,
   "batch_size": 1000
 }
 ```
 
-For advanced use cases, this configuration adds semantic units for image processing, custom markdown-specific chunk separators, strict type filtering, extended community reports, community embeddings, and optimized vector index settings. Note that this example uses custom (non-default) values for several parameters to demonstrate advanced customization options.
+### Vector RAG Example
+
+This example uses vector RAG mode for fast, simple semantic search without entity extraction:
+
+```json
+{
+  "file_content": "base64_encoded_content",
+  "file_name": "document.txt",
+  "rag_mode": "vector_rag",
+  "chunk_token_size": 1200,
+  "chunk_overlap_token_size": 100,
+  "batch_size": 1000
+}
+```
+
+### Advanced Full GraphRAG Example
+
+For advanced use cases, this configuration demonstrates custom prompts, separator-based chunking, semantic units for image processing, strict type filtering, and optimized vector index settings:
 
 ```json
 {
   "file_content": "base64_encoded_content",
   "file_name": "document.md",
-  "chunk_token_size": 1500,
-  "chunk_overlap_token_size": 150,
-  "chunk_custom_separators": ["\n## ", "\n\n", "\n", " "],
+  "rag_mode": "full_graphrag",
+  "chunk_custom_separators": ["\n## ", "\n\n", "\n"],
+  "ignore_chunk_token_size": true,
   "entity_types": ["person", "organization", "technology", "concept"],
   "relationship_types": ["USES", "RELATED_TO", "PART_OF"],
   "enable_strict_types": true,
+  "entity_extract_max_gleaning": 2,
   "enable_chunk_embeddings": true,
   "enable_community_embeddings": true,
   "enable_semantic_units": true,
   "process_images": true,
-  "community_report_num_findings": "7-12",
   "vector_index_metric": "cosine",
   "vector_index_use_hnsw": true,
+  "custom_prompts": {
+    "entity_extraction": "Extract technical components, APIs, and architectural elements with their relationships.",
+    "community_report": "Summarize key technical insights and system architecture patterns."
+  },
   "batch_size": 500
 }
 ```
