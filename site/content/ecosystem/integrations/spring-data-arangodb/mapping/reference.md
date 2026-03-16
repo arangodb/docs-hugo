@@ -4,16 +4,11 @@ menuTitle: Reference
 weight: 15
 description: ''
 aliases:
-  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
-  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
-  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
+  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/reference
+  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/reference
+  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/reference
+  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/mapping/reference
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
 With the annotation `@Ref` applied on a field the nested object isn't stored as
 a nested object in the document. The `_id` field of the nested object is stored
 in the document and the nested object has to be stored as a separate document in

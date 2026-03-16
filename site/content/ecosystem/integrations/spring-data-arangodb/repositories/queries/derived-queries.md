@@ -4,16 +4,11 @@ menuTitle: Derived queries
 weight: 5
 description: ''
 aliases:
-  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
-  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
-  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
-  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/derived-queries
+  - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/repositories/queries/derived-queries
+  - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/repositories/queries/derived-queries
+  - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/repositories/queries/derived-queries
+  - ../../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/repositories/queries/derived-queries
 ---
-{{< warning >}}
-Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
-developed anymore. Upgrading to version 4 is recommended.
-{{< /warning >}}
-
 ## Semantic parts
 
 Spring Data ArangoDB supports queries derived from methods names by splitting it
