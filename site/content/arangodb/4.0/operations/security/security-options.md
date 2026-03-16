@@ -320,8 +320,3 @@ extra options are available for locking down JavaScript access to server functio
   [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md). It disallows
   the execution of user-defined JavaScript code on the server inside of
   JavaScript Transactions.
-
-- `--javascript.user-defined-functions`: You can set this option to `false` to
-  turn off [user-defined functions](../../aql/user-defined-functions.md) (UDFs). It disallows
-  the execution of user-defined JavaScript code on the server inside of
-  user-defined AQL functions (introduced in: v3.10.4).

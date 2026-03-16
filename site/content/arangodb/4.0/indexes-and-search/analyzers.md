@@ -752,8 +752,7 @@ The query must not access the storage engine. This means no `FOR` loops over
 collections or Views, no use of the `DOCUMENT()` function, no graph traversals.
 AQL functions are allowed as long as they do not involve Analyzers (`TOKENS()`,
 `PHRASE()`, `NGRAM_MATCH()`, `ANALYZER()` etc.) or data access, and if they can
-be run on DB-Servers in case of a cluster deployment. User-defined functions
-are not permitted.
+be run on DB-Servers in case of a cluster deployment.
 
 The input data is provided to the query via a bind parameter `@param`.
 It is always a string. The AQL query is invoked for each token in case of

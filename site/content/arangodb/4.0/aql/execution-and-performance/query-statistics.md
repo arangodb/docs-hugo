@@ -46,10 +46,10 @@ The meaning of the statistics attributes is as follows:
   (`JoinNode` in the execution plan).
 - **scannedFull**: The total number of documents iterated over when scanning a collection 
   without an index. Documents scanned by subqueries are included in the result, but
-  operations triggered by built-in or user-defined AQL functions are not.
+  operations triggered by built-in AQL functions are not.
 - **scannedIndex**: The total number of documents iterated over when scanning a collection using
   an index. Documents scanned by subqueries are included in the result, but operations
-  triggered by built-in or user-defined AQL functions are not.
+  triggered by built-in AQL functions are not.
 - **cursorsCreated**: The total number of cursor objects created during query execution. Cursor
   objects are created for index lookups.
 - **cursorsRearmed**: The total number of times an existing cursor object was repurposed.

@@ -304,11 +304,6 @@ aliases:
   Fast, memory-efficient processing of cluster queries by combining
   results in parallel.
 
-## Extensibility
-
-- [**Server-Side Functions**](../aql/user-defined-functions.md):
-  You can extend AQL with user-defined functions written in JavaScript.
-
 ## Security
 
 - [**Auditing**](../operations/security/audit-logging.md):

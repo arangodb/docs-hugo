@@ -293,7 +293,6 @@ Computed value expressions have the following properties:
   - `WITHIN()`
   - `WITHIN_RECTANGLE()`
   - `FULLTEXT()`
-  - [User-defined functions (UDFs)](../../../aql/user-defined-functions.md)
 
 Expressions that do not meet the requirements or that are syntactically invalid
 are rejected immediately, when setting or modifying the computed value definitions
