@@ -13,7 +13,7 @@ for dates (neither does JSON, which is usually used as a format to ship data int
 out of ArangoDB). Instead, dates in AQL are represented by either numbers or strings.
 
 All date function operations are done in the *Unix time* system. Unix time counts
-all non leap seconds beginning with January 1st 1970 00:00:00.000 UTC, also known as
+all non-leap seconds beginning with January 1st 1970 00:00:00.000 UTC, also known as
 the Unix epoch. A point in time is called a timestamp. A timestamp has the same value
 at every point on earth. The date functions use millisecond precision for timestamps.
 
@@ -148,8 +148,8 @@ The date time string always uses UTC / Zulu time, indicated by the `Z` at its en
 
 `DATE_ISO8601(year, month, day, hour, minute, second, millisecond) → dateString`
 
-Return an ISO 8601 date time string from `date`, but allows you to specify the individual
-date components separately. All parameters after `day` are optional.
+Return an ISO 8601 date time string from separately specified date components.
+All parameters after `day` are optional.
 
 - **year** (number): typically in the range 0..9999, e.g. `2017`
 - **month** (number): 1..12 for January through December

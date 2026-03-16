@@ -105,7 +105,16 @@ documents of various collections and databases.
 ArangoSearch stores data in database-specific directories underneath the
 `databases` folder.
 
-<!-- TODO: File system layout example -->
+```
+<database-directory>/
+├── crashes/
+├── engine-rocksdb/
+│   └── journals/
+│       └── archive/
+└── databases/
+    └── database-#/
+        └── arangosearch-#_#/
+```
 
 ## Database interfaces
 

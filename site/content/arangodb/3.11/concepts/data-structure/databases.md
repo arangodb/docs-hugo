@@ -112,7 +112,7 @@ ArangoSearch stores data in database-specific directories underneath the
 `databases` folder.
 
 Foxx applications are also organized in database-specific directories but inside
-the application path. The filesystem layout could look like this:
+the application path (here: `apps`). The filesystem layout could look like this:
 
 ```
 apps/                   # the instance's application directory
