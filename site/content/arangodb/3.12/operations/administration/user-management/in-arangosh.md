@@ -360,5 +360,7 @@ name: USER_05_permission
 description: ''
 ---
 ~require("@arangodb/users").grantDatabase("my-user", "testdb");
-require("@arangodb/users").permission("my-user", "testdb");
+const users = require("@arangodb/users");
+users.permission("my-user", "testdb");
+users.permission("my-user", "testdb", "_graphs");
 ```

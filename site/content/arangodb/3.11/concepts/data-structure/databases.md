@@ -25,10 +25,15 @@ You can create additional databases and give them unique names to access them
 later. You need to be in the `_system` database for executing database management
 operations. They cannot be initiated while in a user-defined database.
 
+Foxx applications are only available in the context of the database they have
+been installed in. A new database only provides access to the system
+applications shipped with ArangoDB (mainly the web interface). You need to
+explicitly install other Foxx applications.
+
 Alongside user-created collections, each ArangoDB database contains its own
 system collections (e.g. `_analyzers`, `_graphs`, ...). The `_system` database
-also contains system collections that only exist in this database (e.g. `_users`).
-You can create your own collections in the `_system` database, too.
+contains additional system collections that only exist in this database
+(e.g. `_users`). You can create your own collections in the `_system` database, too.
 
 ## Database names
 
@@ -96,18 +101,6 @@ Coordinators and DB-Servers of the cluster. Otherwise, the startup is
 refused. In DC2DC setups it is also required to use the same naming
 constraints for both datacenters to avoid incompatibilities.
 {{< /warning >}}
-
-## Notes
-
-- Each database contains its own system collections, which ArangoDB has to set
-  up when a database is created. This makes the creation of a database take a while.
-- Replication can be configured globally or on a per-database level. In the
-  latter case, you need to configure any replication logging or applying for new
-  databases explicitly after they have been created.
-- Foxx applications are only available in the context of the database they have
-  been installed in. A new database only provides access to the system
-  applications shipped with ArangoDB (mainly the web interface). You need to
-  explicitly install other Foxx applications.
 
 ## Database organization on disk
 

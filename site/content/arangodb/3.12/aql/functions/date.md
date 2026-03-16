@@ -1607,7 +1607,6 @@ db._query(`
     FILTER d.ts > '2014-05-07T14:19:09.522' AND d.ts < '2014-05-08T18:19:09.522'
     RETURN d
 `).toArray()
-~addIgnoreCollection("example")
 ~db._drop("exampleTime")
 ```
 

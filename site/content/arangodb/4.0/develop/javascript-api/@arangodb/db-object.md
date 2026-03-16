@@ -10,7 +10,7 @@ description: >-
 #   db._path() // MMFiles legacy  
 ---
 The `db` object of the JavaScript API is automatically imported from the
-`@arangodb` module and therefore available in
+`@arangodb` module and is therefore available in
 [arangosh](../../../components/tools/arangodb-shell/_index.md) by default.
 
 ## Property access
@@ -93,7 +93,7 @@ Note that the database specified by `name` must already exist.
 
 When performing this command from arangosh, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
-connect to the database specified by `name`. Additionally, the database
+connect to the database specified by `name`. Additionally, the database can
 only be accessed from certain endpoints only. In this case, switching the
 database might not work, and the connection / session should be closed and
 restarted with different username and password credentials and/or
@@ -675,7 +675,6 @@ description: ''
 ~db._create("example");
 var coll = db._collection("example");
 db._drop(coll);
-~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -1253,7 +1252,7 @@ require("@arangodb").db._version();
 
 {{< tag "arangosh" >}}
 
-Returns the current license.
+Returns information about the current license.
 
 Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
@@ -1268,3 +1267,4 @@ Sets a license.
   sooner than the current one. Default: `false`.
 
 Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
+

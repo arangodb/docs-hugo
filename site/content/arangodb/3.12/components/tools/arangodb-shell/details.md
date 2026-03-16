@@ -125,7 +125,7 @@ db._help();
 
 The _arangosh_ implementation of the `db` object wraps HTTP requests
 to ArangoDB's [HTTP API](../../../develop/http-api/_index.md).
-The _arangod_ implemention provides JavaScript wrappers around ArangoDB's
+The _arangod_ implementation provides JavaScript wrappers around ArangoDB's
 native C++ implementation and is used by [Foxx](../../../develop/foxx-microservices/_index.md)
 and other server-side JavaScript contexts.
 

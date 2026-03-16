@@ -2563,10 +2563,13 @@ paths:
           of slow queries. If the list of slow queries is full, the oldest entry in
           it will be discarded when additional slow queries occur.
 
-        - `slowQueryThreshold`: the threshold value for treating a query as slow. A
-          query with a runtime greater or equal to this threshold value will be
-          put into the list of slow queries when slow query tracking is enabled.
-          The value for `slowQueryThreshold` is specified in seconds.
+        - `slowQueryThreshold`: If the runtime of a regular query (in seconds)
+          is greater or equal to this value, it is added to the list of
+          slow queries if slow query tracking is enabled.
+
+        - `slowStreamingQueryThreshold`: If the runtime of a streaming query
+          (`stream` set to `true`; in seconds) is greater or equal to this value,
+          it is added to the list of slow queries if slow query tracking is enabled.
 
         - `maxQueryStringLength`: the maximum query string length to keep in the
           list of queries. Query strings can have arbitrary lengths, and this property
@@ -2884,7 +2887,7 @@ paths:
 Running AQL queries can be killed on the server. To kill a running query, its ID
 (as returned for the query in the list of currently running queries) must be
 specified. The kill flag of the query is then set, and the query is aborted as
-soon as it reaches a cancelation point.
+soon as it reaches a cancellation point.
 
 ### Kill a running AQL query
 
@@ -2895,7 +2898,7 @@ paths:
       operationId: deleteAqlQuery
       description: |
         Kills a running query in the currently selected database. The query will be
-        terminated at the next cancelation point.
+        terminated at the next cancellation point.
       parameters:
         - name: database-name
           in: path
@@ -3044,7 +3047,7 @@ paths:
                     maxNumberOfPlans:
                       description: |
                         The maximum number of plans that the optimizer is allowed to
-                        generate. Setting this attribute to a low value allows to put a
+                        generate. Setting this attribute to a low value allows you to put a
                         cap on the amount of work the optimizer does.
 
                         Default: Controlled by the `--query.optimizer-max-plans` startup option.

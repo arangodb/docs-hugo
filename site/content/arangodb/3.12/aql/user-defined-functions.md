@@ -111,8 +111,8 @@ making the function **not** side-effect free:
 
 ```js
 function (values) {
-  for (var i = 0; i < values.length; ++i) {
-    var name = values[i];
+  for (i = 0; i < values.length; ++i) {
+    name = values[i];
     if (name === "foo") {
       return i;
     }
@@ -122,7 +122,8 @@ function (values) {
 ```
 
 The above function can be made free of side effects by using the `var`, `let`,
-or `const` keywords, so the variables become function-local variables:
+or `const` keywords, so the variables become function-local respectively
+scope-local variables:
 
 ```js
 function (values) {
@@ -213,7 +214,7 @@ and save it as file. For example:
 
 function greeting(name) {
     if (name === undefined) {
-        var name = "World";
+        name = "World";
     }
     return `Hello ${name}!`;
 }

@@ -27,8 +27,8 @@ operations. They cannot be initiated while in a user-defined database.
 
 Alongside user-created collections, each ArangoDB database contains its own
 system collections (e.g. `_analyzers`, `_graphs`, ...). The `_system` database
-also contains system collections that only exist in this database (e.g. `_users`).
-You can create your own collections in the `_system` database, too.
+contains additional system collections that only exist in this database
+(e.g. `_users`). You can create your own collections in the `_system` database, too.
 
 ## Database names
 
@@ -95,14 +95,6 @@ cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
 refused.
 {{< /warning >}}
-
-## Notes
-
-- Each database contains its own system collections, which ArangoDB has to set
-  up when a database is created. This makes the creation of a database take a while.
-- Replication can be configured globally or on a per-database level. In the
-  latter case, you need to configure any replication logging or applying for new
-  databases explicitly after they have been created. <!-- TODO: Remove repl? -->
 
 ## Database organization on disk
 

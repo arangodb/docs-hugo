@@ -6,11 +6,11 @@ description: >-
   You can use ArangoDB's JavaScript interface in ArangoDB's shell `arangosh`
   to interact with the server using the JavaScript language
 ---
-The JavaScript API is available in the ArangoDB Shell client tool:
+The JavaScript API is available in the ArangoDB Shell client tool
+[arangosh](../../components/tools/arangodb-shell/_index.md).
 
-- [arangosh](../../components/tools/arangodb-shell/_index.md)
-
-It communicates with the server via the HTTP API.
+It communicates with the server via the
+[HTTP API](../../develop/http-api/_index.md).
 
 {{< tip >}}
 The JavaScript API cannot be used in browsers, Node.js, or other JavaScript
@@ -21,18 +21,15 @@ Note that it has a different interface.
 ## Usage example
 
 The key element for using the JavaScript API is the
-[`db` object](@arangodb/db-object.md), which is available by default
-in _arangosh_ and can be imported in server-side JavaScript code from the
-`@arangodb` module.
-
-```js
-// Import the db object (only in server-side contexts)
-let db = require("@arangodb").db;
-```
+[`db` object](@arangodb/db-object.md), which is automatically imported from the
+`@arangodb` module in _arangosh_.
 
 The `db` object lets you access and manage databases, for example:
 
 ```js
+// The db object is available by default in arangosh
+//let db = require("@arangodb").db;
+
 // Create a new database
 db._useDatabase("_system");
 db._createDatabase("myDB");
@@ -96,8 +93,8 @@ AQL query returns a [_cursor_ object](@arangodb/cursor-object.md).
 let cursor = db._query(`FOR doc IN collection FILTER doc.value >= "bar" RETURN doc`);
 cursor.toArray();
 
-// Import the aql query helper (only in server-side contexts)
-const aql = require("@arangodb").aql;
+// The aql query helper is available by default in arangosh
+//const aql = require("@arangodb").aql;
 
 // Run an AQL query using the query helper to use variables as bind parameters
 let limit = 5;
@@ -117,8 +114,7 @@ ArangoDB uses a Node.js-compatible module system. You can use the function
 `require()` in order to load a module or library. It returns the exported
 variables and functions of the module.
 
-The following global variables are available in _arangosh_ and all server-side
-JavaScript contexts in ArangoDB:
+The following global variables are available in _arangosh_:
 
 - `global`
 - `process`
