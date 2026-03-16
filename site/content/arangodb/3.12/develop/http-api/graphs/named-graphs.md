@@ -286,6 +286,8 @@ paths:
                 isSmart:
                   description: |
                     Define if the created graph should be smart.
+                    - Setting the `smartGraphAttribute` options creates a SmartGraph.
+                    - Setting `isSmart` to `true` but no `smartGraphAttribute` creates an EnterpriseGraph.
                   type: boolean
                   default: false
                 isDisjoint:
@@ -301,7 +303,7 @@ paths:
                   properties:
                     smartGraphAttribute:
                       description: |
-                        Required to create a SmartGraph.
+                        Setting this option creates a SmartGraph.
 
                         The attribute name that is used to smartly shard the nodes of a graph.
                         Every node in this SmartGraph has to have this attribute.
