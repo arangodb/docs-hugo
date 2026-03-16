@@ -1,11 +1,13 @@
-{{ $pageVersion := .Page.Store.Get "versionShort" }}
+{{ $pageVersion := .Page.Store.Get "versionShort" -}}
+{{ if not $pageVersion -}}
+  {{ $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) -}}
+{{ end -}}
 
-{{ $dataFolderByVersion := index site.Data $pageVersion }}
+{{ $dataFolderByVersion := index site.Data $pageVersion -}}
 {{ $rules := index $dataFolderByVersion "optimizer-rules" }}
 
-
-{{ with $rules }}
-{{ range . }}
+{{ with $rules -}}
+{{ range . -}}
 {{ if not .flags.hidden -}}
 #### `{{ .name }}`
 
@@ -31,6 +33,5 @@ Only available in cluster deployments.
 
 {{ end }}
 {{ end }}
-
 
 {{ end }}

@@ -271,8 +271,6 @@ paths:
                         up-to-date copies succeed at the same time, however. The value of
                         `writeConcern` cannot be greater than `replicationFactor`.
 
-                        If `distributeShardsLike` is set, the default `writeConcern`
-                        is that of the prototype collection.
                         For SatelliteCollections, the `writeConcern` is automatically controlled to
                         equal the number of DB-Servers and has a value of `0`.
                         Otherwise, the default value is controlled by the `--cluster.write-concern`
