@@ -58,18 +58,6 @@ To stop a running service, follow the steps below.
 3. Click **Stop Service**.
 4. Confirm the action.
 
-## Delete a Service
-
-To permanently remove a service:
-
-1. Locate the service in the **Running services** panel.
-2. Click the delete button ({{< icon "delete" >}}) on the service card.
-3. Confirm the deletion.
-
-{{< warning >}}
-Deletion is permanent. The service and all its versions will be removed and cannot be recovered.
-{{< /warning >}}
-
 ## API Alternative
 
 For programmatic deployment and automation, see [Deploy via API](deploy-api/).

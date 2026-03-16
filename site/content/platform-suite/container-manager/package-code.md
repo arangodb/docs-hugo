@@ -42,7 +42,7 @@ follow the steps below.
    - For Node.js: Create a `package.json` with your dependencies.
 3. Use `uv` for Python projects (recommended):
    - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
-     (e.g., `">=3.11"` for Python 3.11 runtimes).
+     (e.g., `">=3.11"` for Python 3.11 and newer runtimes).
    - List all dependencies in the `dependencies` array.
    - The platform uses `uv` to install dependencies during containerization.
 4. Create the archive:

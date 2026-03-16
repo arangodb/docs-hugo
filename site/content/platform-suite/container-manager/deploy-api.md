@@ -22,7 +22,7 @@ To deploy services via the API, you need:
 
 ## Upload Your Archive
 
-Upload your application archive to the FileManager service:
+Upload your application archive to the storage backend via the FileManager service:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
@@ -87,7 +87,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/v1/uds" \
 | `app_version` | body | Must match the `version` from upload step | Yes |
 | `service_type` | env | Set to `base_type` | Yes |
 | `base_image` | env | Base image name (see [Available Base Images](#available-base-images)) | Yes |
-| `app_instance_name` | env | Service instance name (alphanumeric, used in routing) | Yes |
+| `app_instance_name` | env | Service instance name (alphanumeric with a 32 characters length limit, used in routing) | Yes |
 | `db_name` | env | Database name (optional) | No |
 
 ### Available Base Images
@@ -240,26 +240,6 @@ curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/
 ```
 
 The file content is streamed back with `Content-Type: application/octet-stream`.
-
-### Delete a Service Version
-
-Delete a specific version of an uploaded service:
-
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
-
-**Response:**
-
-```json
-{
-  "name": "my-service",
-  "version": "1.0.0",
-  "status": "deleted"
-}
-```
-
-{{< warning >}}
-Files can only be deleted if they are marked as `safe_to_delete: true`. Otherwise, the API returns a `423` (Locked) status code. This prevents accidental deletion of files that are actively being used by deployed services.
-{{< /warning >}}
 
 ## Complete Example
 
