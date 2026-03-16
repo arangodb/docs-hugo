@@ -9,6 +9,11 @@ description: >-
 For more information on Foxx and its JavaScript APIs see the
 [Foxx documentation](../foxx-microservices/_index.md).
 
+{{< warning >}}
+The Foxx microservice feature including the management API is deprecated and
+removed in ArangoDB v4.0.
+{{< /warning >}}
+
 ## Management
 
 ### List the installed services

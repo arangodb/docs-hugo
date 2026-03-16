@@ -6,6 +6,10 @@ description: >-
   The HTTP API for tasks lets you manage the periodic or timed execution of
   server-side JavaScript code
 ---
+{{< warning >}}
+The tasks feature is deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 ## List all tasks
 
 ```openapi

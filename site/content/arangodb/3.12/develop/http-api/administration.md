@@ -2826,6 +2826,10 @@ paths:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
       description: |
+        {{< /* warning */ >}}
+        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
+        {{< /* /warning */ >}}
+
         Executes the JavaScript code in the body on the server as the body
         of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type

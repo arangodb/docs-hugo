@@ -16,6 +16,10 @@ All user functions managed through this interface are stored in the
 `_aqlfunctions` system collection. You should not modify the documents in this
 collection directly, but only via the dedicated interfaces.
 
+{{< warning >}}
+User-defined AQL functions are deprecated and the feature is removed in ArangoDB v4.0.
+{{< /warning >}}
+
 ## Create a user-defined AQL function
 
 ```openapi
