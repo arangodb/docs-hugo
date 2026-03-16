@@ -860,7 +860,7 @@ hard-coded value.
 
 The new `--javascript.user-defined-functions` startup option lets you disable
 user-defined AQL functions so that no user-defined JavaScript code of
-[UDFs](../../aql/user-defined-functions.md) runs on the server. This can be useful to close off
+UDFs runs on the server. This can be useful to close off
 a potential attack vector in case no user-defined AQL functions are used.
 Also see [Server security options](../../operations/security/security-options.md).
 
