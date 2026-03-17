@@ -40,7 +40,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 |-------|-------------|----------|
 | `name` | Application name identifier (alphanumeric, hyphens, underscores) | Yes |
 | `version` | Application version (e.g., `1.0.0`) | Yes |
-| `language` | Programming language: `python` or `nodejs` | Yes |
+| `language` | Programming language: `python` | Yes |
 | `type` | Deployment type: `Service` | Yes |
 | `file` | The `.tar.gz` archive file | Yes |
 
@@ -97,8 +97,6 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/v1/uds" \
 | `py13base` | Python 3.13 base runtime |
 | `py13torch` | Python 3.13 with PyTorch |
 | `py13cugraph` | Python 3.13 with cuGraph |
-// TODO: Add Node.js base images (e.g., node20base, node22base) to the Available Base Images table once Node.js support is implemented.
-
 
 ## Service Access
 
@@ -139,7 +137,7 @@ Get a list of all uploaded BYOC services:
 | Parameter | Description | Required |
 |-----------|-------------|----------|
 | `name` | Filter by service name | No |
-| `language` | Filter by language (`python` or `nodejs`) | No |
+| `language` | Filter by language (`python`) | No |
 | `type` | Filter by type (`Service` or `Job`) | No |
 | `limit` | Maximum results to return (default: 100) | No |
 | `offset` | Pagination offset (default: 0) | No |

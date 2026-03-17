@@ -43,8 +43,7 @@ The platform builds a secure container, orchestrates deployment through the Aran
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) and
   deploy them as running services with configurable resources.
   
-- **Multiple Runtimes**: Choose from Python (with optional CUDA/GPU support)
-  and Node.js runtime environments.
+- **Multiple Runtimes**: Python with optional CUDA/GPU support runtime environments.
   
 - **Version Management**: Maintain and deploy multiple versions of the same
   service with easy updates and rollbacks.
@@ -70,7 +69,6 @@ Deploy services using runtime environments and resources tailored to your needs.
 
 **Runtimes:**
 - **Python 3.13** (base, PyTorch, and cuGraph variants available)
-- **Node.js 20** and **Node.js 22**
 
 ## Security
 

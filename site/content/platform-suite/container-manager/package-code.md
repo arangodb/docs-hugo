@@ -39,7 +39,6 @@ follow the steps below.
 1. Create a project structure with your application code and entry point script.
 2. Add a dependency configuration file:
    - For Python: Create a `pyproject.toml` with your dependencies and Python version requirement.
-   - For Node.js: Create a `package.json` with your dependencies.
 3. Use `uv` for Python projects (recommended):
    - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
      (e.g., `">=3.11"` for Python 3.11 and newer runtimes).
@@ -73,35 +72,6 @@ dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
 ]
-```
-
-**Create the archive:**
-```bash
-tar -czf myservice.tar.gz myproject/
-```
-
-## Example: Node.js Project
-
-**Project structure:**
-```
-myproject/
-├── package.json
-├── server.js
-└── config.json
-```
-
-**Example `package.json`:**
-```json
-{
-  "name": "my-service",
-  "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.18.0"
-  },
-  "scripts": {
-    "start": "node server.js"
-  }
-}
 ```
 
 **Create the archive:**

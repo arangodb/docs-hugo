@@ -27,12 +27,11 @@ See [Package Your Code](package-code/) for instructions.
 1. In the **Deploy new service** panel, drag and drop your `.tar.gz` file into the **Service Package** area, or click to browse and select your file.
 2. Enter a unique name for your service (e.g., `ml-prediction-service`, `express-api-gateway`).
 3. Specify a version using semantic versioning (e.g., `1.0.0`, `2.1.3`). This allows you to maintain multiple versions of the same service.
-4. Select **Python** or **Node.js** from the language dropdown menu.
+4. Select **Python** from the language dropdown menu.
 5. Choose the base image:
   - `py13base`: Python 3.13 base runtime
   - `py13torch`: Python 3.13 with PyTorch
   - `py13cugraph`: Python 3.13 with cuGraph 
-// TODO: Add Node.js base images (e.g., node20base, node22base) to the Available Base Images table once Node.js support is implemented.
 6. Define the **Service URL Path** where your service will be accessible, for example: `/_service/uds/_db/_system/ml-prediction-service-2`.
 7. Check the **Make this a global URL Service** option to make the service accessible globally across all databases. Leave it unchecked for database-specific services.
 8.  Click **Deploy Service**. The platform uploads your package, provisions the resources, and starts your service in the Kubernetes cluster.
