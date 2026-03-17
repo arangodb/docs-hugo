@@ -71,11 +71,9 @@ double-precision floating point values internally. The internal floating-point
 format used is IEEE 754.
 
 {{< warning >}}
-When exposing any numeric integer values to JavaScript via
-[user-defined AQL functions](../user-defined-functions.md), numbers that exceed 32 bit
-precision are converted to floating-point values, so large integers can lose
-some bits of precision. The same is true when converting AQL numeric results to
-JavaScript (e.g. returning them to Foxx).
+When returning numeric integer values to JavaScript, numbers that exceed 32-bit
+precision are converted to floating-point values and large integers can lose
+some bits of precision.
 {{< /warning >}}
 
 Numeric integer literals can also be expressed as binary

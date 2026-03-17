@@ -823,13 +823,13 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1580,13 +1580,13 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -2082,13 +2082,13 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
                             type: integer
                           cursorsCreated:
                             description: |

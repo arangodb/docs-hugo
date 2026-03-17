@@ -62,6 +62,12 @@ detailed information about breaking changes before upgrading.
 
   <!-- TODO: BYOC with node-foxx compatibility layer -->
 
+- **User-defined AQL functions (UDFs)**:\
+  The ability to register custom functions for the AQL query language written
+  in JavaScript has been removed.
+
+  <!-- TODO: Hygenic macros for some use cases (once supported) -->
+
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS

@@ -962,7 +962,7 @@ The operator precedence in AQL is similar as in other familiar languages
 
 | Operator(s)          | Description
 |:---------------------|:-----------
-| `::`                 | scope (user-defined AQL functions)
+| `::`                 | function scope
 | `[*]`                | array expansion
 | `[]`                 | indexed value access (arrays), attribute access (objects)
 | `.`                  | attribute access (objects)

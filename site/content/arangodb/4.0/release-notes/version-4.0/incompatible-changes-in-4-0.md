@@ -26,6 +26,18 @@ to work with ArangoDB from the outside using JavaScript as your language.
 
 <!-- TODO: BYOC with node-foxx compatibility layer -->
 
+## User-defined AQL functions removed
+
+The ability to register custom functions for the AQL query language written
+in JavaScript has been removed.
+
+The AQL optimizer had no insight into such user-defined functions (UDFs) and
+they had to be executed on Coordinators where all server-side JavaScript code
+was run. This caused them to perform poorly when a lot of data was involved
+that had to be transferred between cluster nodes.
+
+<!-- TODO: Hygenic macros for some use cases (once supported) -->
+
 ## HTTP RESTful API
 
 ### Batch request endpoint removed
@@ -41,42 +53,26 @@ that can insert, update, replace, or remove arrays of documents.
 
 ### Foxx API removed
 
-The following endpoints have been removed due to the removal of Foxx:
-
-- `GET /_db/{database-name}/_api/foxx`
-- `POST /_db/{database-name}/_api/foxx`
-- `GET /_db/{database-name}/_api/foxx/service`
-- `PATCH /_db/{database-name}/_api/foxx/service`
-- `PUT /_db/{database-name}/_api/foxx/service`
-- `DELETE /_db/{database-name}/_api/foxx/service`
-- `GET /_db/{database-name}/_api/foxx/configuration`
-- `PATCH /_db/{database-name}/_api/foxx/configuration`
-- `PUT /_db/{database-name}/_api/foxx/configuration`
-- `GET /_db/{database-name}/_api/foxx/dependencies`
-- `PATCH /_db/{database-name}/_api/foxx/dependencies`
-- `PUT /_db/{database-name}/_api/foxx/dependencies`
-- `GET /_db/{database-name}/_api/foxx/scripts`
-- `POST /_db/{database-name}/_api/foxx/scripts/{name}`
-- `POST /_db/{database-name}/_api/foxx/tests`
-- `POST /_db/{database-name}/_api/foxx/development`
-- `DELETE /_db/{database-name}/_api/foxx/development`
-- `GET /_db/{database-name}/_api/foxx/readme`
-- `GET /_db/{database-name}/_api/foxx/swagger`
-- `POST /_db/{database-name}/_api/foxx/download`
-- `POST /_db/{database-name}/_api/foxx/commit`
+All `/_api/foxx*` endpoints have been removed due to the removal of Foxx.
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed)
+for a detailed list.
 
 ## JavaScript API
 
-### Foxx modules removed
+### Foxx and UDF modules removed
 
 The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
 removed due to the removal of Foxx.
 
+The `@arangodb/aql/functions` module has been removed due to the removal of
+user-defined AQL functions.
+
 ## Startup options
 
-### Foxx startup options removed
+### Startup options related to server-side JavaScript removed
 
-The following startup options are now obsolete due to the removal of Foxx:
+The following startup options are now obsolete due to the removal of Foxx and
+user-defined AQL functions (UDFs):
 
 - `--server.authentication-system-only`
 - `--foxx.allow-install-from-remote`
@@ -86,6 +82,7 @@ The following startup options are now obsolete due to the removal of Foxx:
 - `--foxx.queues`
 - `--foxx.queues-poll-interval`
 - `--foxx.store`
+- `--javascript.user-defined-functions`
 
 You can still specify these startup options without causing a fatal error during
 startup. They are recognized, but they don't have any effect anymore.

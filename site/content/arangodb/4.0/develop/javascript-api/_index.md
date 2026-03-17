@@ -149,9 +149,6 @@ You can use the following modules as an end-user:
   - [**@arangodb/aql/explainer**](../../aql/execution-and-performance/explaining-queries.md)
     provides methods to debug, explain and profile AQL queries.
 
-  - [**@arangodb/aql/functions**](../../aql/user-defined-functions.md#registering-and-unregistering-user-functions)
-    provides an interface to (un-)register user-defined AQL functions.
-
 - [**@arangodb/crypto**](crypto.md)
   provides various cryptography functions including hashing algorithms.
 
