@@ -1,2 +1,15 @@
-/arangodb/4.0/aql/user-defined-functions/        /arangodb/4.0/release-notes/deprecated-and-removed-features/  302
-/arangodb/4.0/develop/http-api/queries/user-defined-aql-functions/  /arangodb/4.0/release-notes/deprecated-and-removed-features/  302
+/arangodb/4.0/aql/user-defined-functions/                                       /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/4.0/develop/http-api/queries/user-defined-aql-functions/              /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/devel/aql/user-defined-functions/                                     /arangodb/devel/release-notes/deprecated-and-removed-features/  302
+/arangodb/devel/develop/http-api/queries/user-defined-aql-functions/            /arangodb/devel/release-notes/deprecated-and-removed-features/  302
+
+/arangodb/4.0/develop/transactions/javascript-transactions/                     /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/4.0/develop/http-api/transactions/javascript-transactions/            /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/4.0/develop/transactions/limitations/                                 /arangodb/4.0/develop/transactions/                             302
+/arangodb/4.0/develop/transactions/durability/                                  /arangodb/4.0/develop/transactions/                             302
+/arangodb/4.0/develop/transactions/locking-and-isolation/                       /arangodb/4.0/develop/transactions/                             302
+/arangodb/devel/develop/transactions/javascript-transactions/                   /arangodb/devel/release-notes/deprecated-and-removed-features/  302
+/arangodb/devel/develop/http-api/transactions/javascript-transactions/          /arangodb/devel/release-notes/deprecated-and-removed-features/  302
+/arangodb/devel/develop/transactions/limitations/                               /arangodb/devel/develop/transactions/                           302
+/arangodb/devel/develop/transactions/durability/                                /arangodb/devel/develop/transactions/                           302
+/arangodb/devel/develop/transactions/locking-and-isolation/                     /arangodb/devel/develop/transactions/                           302
