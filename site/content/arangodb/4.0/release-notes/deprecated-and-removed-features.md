@@ -56,7 +56,7 @@ detailed information about breaking changes before upgrading.
   The ArangoDB server process could be started in an interactive command-line
   mode (JavaScript REPL) with the `--console` option. This was primarily used
   for debugging purposes in the development of _arangod_.
-  This option and feature has been removed.
+  This option and feature have been removed.
 
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
