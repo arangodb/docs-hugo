@@ -18,7 +18,7 @@ if sys.version_info[0] != 3:
 
 ## Load versions
 versions = yaml.safe_load(open("versions.yaml", "r"))
-versions = sorted(versions["/arangodb/"], key=lambda d: d['name']) 
+versions = sorted(versions["/arangodb/"], key=lambda d: d['name'])
 
 
 print(f"Loaded versions {versions}")
@@ -33,7 +33,7 @@ parser.add_argument(
     "--workflow", help="The workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow"
+    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow (sorted by name)"
 )
 parser.add_argument(
     "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
@@ -135,7 +135,7 @@ def workflow_generate(config):
                     }
                 })
 
-            if version in ["3.10", "3.11"]:
+            if version in ["3.10", "3.11", "oem"]:
                 if openssl.startswith("3.0"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
                 elif openssl.startswith("3.1"):
@@ -186,12 +186,19 @@ def workflow_generate_scheduled(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+
+        if version in ["3.10", "3.11"]:
+            imageVersion = f"{version}-nightly"
+        elif version == "oem":
+            imageVersion = findOemVersion()
+        else:
+            imageVersion = "devel-nightly"
         
         compileJob = {
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
+                "arangodb-branch": f"arangodb/enterprise-preview:{imageVersion}", # TODO: Any other 3.12.x image we could use?
                 "version": version
             }
         }
@@ -241,7 +248,7 @@ def workflow_release_arangodb(config):
         }
     }
 
-    if args.docs_version in ["3.10", "3.11"]:
+    if args.docs_version in ["3.10", "3.11", "oem"]:
         if openssl.startswith("3.0"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
         elif openssl.startswith("3.1"):
@@ -307,7 +314,13 @@ export GENERATORS='<< parameters.generators >>'\n"
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
+            if version in ["3.10", "3.11"]:
+                imageVersion = f"{version}-nightly"
+            elif version == "oem":
+                imageVersion = findOemVersion()
+            else:
+                imageVersion = "devel-nightly"
+            branch = f"arangodb/enterprise-preview:{imageVersion}" # TODO: Any other 3.12.x image we could use?
 
         if branch == "undefined":
             continue
@@ -436,6 +449,13 @@ def findOpensslVersion(branch):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
             return version
+
+def findOemVersion():
+    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/3.11.14/ARANGO-VERSION')
+    print(f"Find latest (hotfix) version of OEM / Embedded")
+    print(f"Github response: {r.text}")
+    version = r.text.strip()
+    return version
 
 
 ## MAIN
