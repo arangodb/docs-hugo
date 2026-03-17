@@ -52,6 +52,10 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **arangobench**:\
+  The benchmark and test tool _arangobench_ has been removed. It was primarily
+  used internally in the development of ArangoDB.
+
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS

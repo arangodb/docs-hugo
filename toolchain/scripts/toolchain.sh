@@ -448,8 +448,12 @@ function generate_startup_options() {
   container_name="$1"
   version="$2"
   log "[generate_startup_options] Starting options dump for container " "$container_name"
-  declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
-
+  # arangobench removed in ArangoDB 4.0
+  if [[ "$version" =~ ^3\. ]]; then
+    declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
+  else
+    declare -a ALLPROGRAMS=("arangobackup" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
+  fi
 
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       log "[generate_startup_options] Dumping program options of ${HELPPROGRAM}"

@@ -18,7 +18,6 @@ A full ArangoDB installation package contains the [ArangoDB server](../arangodb-
 | `arangobackup`  | Tool to [perform hot backup operations](arangobackup/_index.md) on an ArangoDB installation.
 | `arangoimport`  | [Bulk importer](arangoimport/_index.md) for the ArangoDB server. It supports JSON and CSV.
 | `arangoexport`  | [Bulk exporter](arangoexport/_index.md) for the ArangoDB server. It supports JSON, CSV and XML.
-| `arangobench`   | [Benchmark and test tool](arangobench/_index.md). It can be used for performance and server function testing.
 | `arangovpack`   | Utility to validate and [convert VelocyPack](arangovpack/_index.md) and JSON data.
 | `arangoinspect` | [Inspection tool](arangoinspect/_index.md) that gathers server setup information.
 

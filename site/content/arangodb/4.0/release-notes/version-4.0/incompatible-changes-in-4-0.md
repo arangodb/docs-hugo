@@ -33,12 +33,10 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## Client tools
 
-### arangobench
+### arangobench removed
 
-#### Batch size option removed
+The benchmark and test tool _arangobench_ has been removed.
 
-<small>Removed in: v3.12.3</small>
-
-The `--batch-size` startup option is now ignored by arangobench and no longer
-has an effect. It allowed you to specify the number of operations to issue in
-one batch but the batch request API has been removed on the server-side.
+It was originally used internally in the development of ArangoDB for performance
+and server function testing, but lost its relevance over time and became
+unmaintained.
