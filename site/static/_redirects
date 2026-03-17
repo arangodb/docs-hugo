@@ -1,2 +1,4 @@
-/arangodb/4.0/aql/user-defined-functions/        /arangodb/4.0/release-notes/deprecated-and-removed-features/  302
-/arangodb/4.0/develop/http-api/queries/user-defined-aql-functions/  /arangodb/4.0/release-notes/deprecated-and-removed-features/  302
+/arangodb/4.0/aql/user-defined-functions/                                       /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/4.0/develop/http-api/queries/user-defined-aql-functions/              /arangodb/4.0/release-notes/deprecated-and-removed-features/    302
+/arangodb/devel/aql/user-defined-functions/                                     /arangodb/devel/release-notes/deprecated-and-removed-features/  302
+/arangodb/devel/develop/http-api/queries/user-defined-aql-functions/            /arangodb/devel/release-notes/deprecated-and-removed-features/  302
