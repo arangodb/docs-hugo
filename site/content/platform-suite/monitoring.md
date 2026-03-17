@@ -1,19 +1,19 @@
 ---
-title: Monitoring tools in the Arango Data Platform
+title: Monitoring tools in the Arango Contextual Data Platform
 menuTitle: Monitoring
 weight: 35
 description: >-
-  Monitor your Arango Data Platform deployment with integrated Grafana and Prometheus dashboards
+  Monitor your Arango Contextual Data Platform deployment with integrated Grafana and Prometheus dashboards
 ---
 
 ## Overview
 
-The **Monitoring** section of the Arango Data Platform provides integrated access
+The **Monitoring** section of the Arango Contextual Data Platform provides integrated access
 to observability tools for tracking the health, performance, and resource
 utilization of your deployment. This feature gives you real-time insights into
 your clusters and platform components.
 
-The Arango Data Platform includes two monitoring tools embedded
+The Arango Contextual Data Platform includes two monitoring tools embedded
 directly in the web interface:
 
 - **Grafana**: A visualization and analytics platform for creating and viewing
@@ -27,17 +27,17 @@ additional configuration.
 
 ## How to access the monitoring dashboards
 
-You can access the monitoring dashboards from the Arango Data Platform web interface:
+You can access the monitoring dashboards from the Arango Contextual Data Platform web interface:
 
 1. Navigate to the **Monitoring** section in the main navigation menu.
 2. Select either **Grafana** or **Prometheus** from the sidebar.
 3. The selected monitoring dashboard loads in an embedded view within the
-   Arango Data Platform interface.
+   Arango Contextual Data Platform interface.
 
 ## Grafana
 
 Grafana provides rich visualization capabilities for exploring metrics collected
-from your Arango Data Platform deployment. You can monitor:
+from your Arango Contextual Data Platform deployment. You can monitor:
 
 - **Database performance metrics**: Query response times, throughput, cache hit
   rates, and operation counts.

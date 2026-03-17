@@ -3,7 +3,7 @@ title: ArangoDB MLflow Service
 menuTitle: MLflow
 description: >-
   The ArangoDB MLflow Service integrates the MLflow platform for managing the
-  full machine learning lifecycle into the Arango Data Platform
+  full machine learning lifecycle into the Arango Contextual Data Platform
 weight: 25
 ---
 ## Overview

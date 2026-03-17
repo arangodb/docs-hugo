@@ -63,7 +63,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 {{< tabs "platforms" >}}
 
 {{< tab "Contextual Data Platform" >}}
-You can use any of the available authentication methods the Data Platform
+You can use any of the available authentication methods the Contextual Data Platform
 supports to start and stop `graphanalytics` services via the AI service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
@@ -117,7 +117,8 @@ The interface for managing the engines depends on the environment you use:
 {{< tag "Contextual Data Platform" >}}
 
 {{< info >}}
-This section covers managing Graph Analytics Engines on the **Arango Data Platform**.
+This section covers managing Graph Analytics Engines on the
+**Arango Contextual Data Platform**.
 
 If you're using **Arango Managed Platform (AMP)**, skip to the [Management API](#management-api) section instead.
 {{< /info >}}
@@ -135,7 +136,7 @@ if the Platform deployment uses a self-signed certificate (default).
 Start a GAE via the AI service with an empty request body. This returns a **SERVICE_ID** that you will need to construct the Engine API URL in the next section.
 
 ```bash
-# Set your Data Platform endpoint
+# Set your Contextual Data Platform endpoint
 EXTERNAL_ENDPOINT="<your-endpoint>"  # Example: data-platform.example.org
 
 # Get an authentication token (example with JWT session token)
@@ -348,7 +349,7 @@ The Engine API URL is constructed from multiple parts depending on your platform
 {{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/" >}}
 
 Where:
-- `<EXTERNAL_ENDPOINT>`: Your Data Platform endpoint (e.g., `data-platform.example.org`)
+- `<EXTERNAL_ENDPOINT>`: Your Contextual Data Platform endpoint (e.g., `data-platform.example.org`)
 - `<SERVICE_ID>`: From the [AI service response](#start-a-graphanalytics-service) when you started the service
 
 **Example:**

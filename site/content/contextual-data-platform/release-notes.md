@@ -30,7 +30,7 @@ A new home screen has been added, providing the following information and action
 The [Query Editor](../platform-suite/query-editor.md) has been extended with the following capabilities:
 
 - **Graph visualization**: If a query returns edges or traversal paths, the
-  results are shown by an embedded graph viewer. You can still switch to a JSON
+  results are shown by an embedded graph visualizer. You can still switch to a JSON
   view mode of the results.
 
 - **Download results**:
@@ -41,7 +41,7 @@ The [Query Editor](../platform-suite/query-editor.md) has been extended with the
 
 ## October 2025 (v3.0, pre-release 2)
 
-This release includes new features and enhancements for the Data Platform
+This release includes new features and enhancements for the Contextual Data Platform
 web interface as well as the components of the Agentic AI Suite.
 
 The minimum required ArangoDB version has been raised to Enterprise Edition v3.12.6.
@@ -81,7 +81,7 @@ You can generate AQL queries from natural language directly in the Query Editor 
 {{< tag "Platform Suite" >}}
 
 A new [Query Editor](../platform-suite/query-editor.md) has been integrated into the
-Arango Data Platform web interface for writing, executing, and managing AQL queries.
+Arango Contextual Data Platform web interface for writing, executing, and managing AQL queries.
 
 Key features:
 
@@ -130,7 +130,7 @@ Key improvements:
 {{< tag "Platform Suite" >}}
 
 - **Secrets Manager**: Store secrets like API keys for Large Language Model (LLM)
-  for easy use across the Data Platform. Secrets are encrypted at rest and can be
+  for easy use across the Contextual Data Platform. Secrets are encrypted at rest and can be
   accessed by services via a metadata sidecar container.
 
 ## July 2025 (v3.0, pre-release 1)

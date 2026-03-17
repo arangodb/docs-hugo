@@ -1190,8 +1190,8 @@ paths:
 
         This endpoint is available regardless of the
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
-        setting, so that the Arango Data Platform web interface for instance can always
-        access the public options.
+        setting, so that the Arango Contextual Data Platform web interface for
+        instance can always access the public options.
       parameters:
         - name: database-name
           in: path

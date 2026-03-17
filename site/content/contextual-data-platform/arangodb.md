@@ -19,4 +19,4 @@ high-level features:
 It runs standalone or in combination with the Platform Suite and Agentic AI Suite
 to form the Arango Contextual Data Platform.
 The [**ArangoDB Enterprise Edition**](../arangodb/_index.md) is the foundation
-of the Data Platform.
+of the Contextual Data Platform.

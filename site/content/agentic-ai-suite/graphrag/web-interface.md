@@ -1,5 +1,5 @@
 ---
-title: How to use GraphRAG in the Arango Data Platform web interface
+title: How to use GraphRAG in the Arango Contextual Data Platform web interface
 menuTitle: Web Interface
 weight: 20
 description: >-
@@ -17,7 +17,8 @@ The entire process is organized into sequential steps within a **Project**:
 
 ## Create a GraphRAG project
 
-To create a new GraphRAG project using the Arango Data Platform web interface, follow these steps:
+To create a new GraphRAG project using the Arango Contextual Data Platform
+web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
 2. In the left-hand sidebar, click **AI Suite** to open the GraphRAG project management

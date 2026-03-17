@@ -16,8 +16,12 @@ aliases:
 ---
 ## What's included
 
-The Agentic AI Suite is composed of four major components:
+The Agentic AI Suite is composed of the following major components:
 
+- **Ada**: The AI digital assistant, for natural language interaction and development.
+- [**AutoGraph**](autograph/_index.md): Organize enterprise data into contextual
+  knowledge graph, using **AutoRAG** to optimize retrieval across graph, vector,
+  and document data.
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
@@ -30,12 +34,12 @@ The Agentic AI Suite is composed of four major components:
   your data and gain insights without having to learn the query language first.
 
 Each component has an intuitive graphical user interface integrated into the
-Arango Data Platform web interface, guiding you through the process.
+Arango Contextual Data Platform web interface, guiding you through the process.
 
 Alongside these components, you also get the following additional features:
 
 - [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
-  Data Platform for hosting interactive notebooks for experimentation and
+  Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
   such as OpenAI or private LLMs with [Triton Inference Server](reference/triton-inference-server.md).  

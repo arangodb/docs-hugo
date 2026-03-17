@@ -72,7 +72,7 @@ curl -X POST https://<your-platform-url>/v1/import \
   }'
 ```
 
-Replace `<your-platform-url>` with your Arango Data Platform URL.
+Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 The service will:
 - Process the document using the configured LLM model.
@@ -121,7 +121,7 @@ curl -X POST https://<your-platform-url>/v1/import-multiple \
   }'
 ```
 
-Replace `<your-platform-url>` with your Arango Data Platform URL.
+Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
 

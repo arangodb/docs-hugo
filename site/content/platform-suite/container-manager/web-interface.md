@@ -14,7 +14,7 @@ production services.
 
 ## How to Access the Container Manager
 
-1. Log in to the Arango Data Platform web interface.
+1. Log in to the Arango Contextual Data Platform web interface.
 2. Click **Container Manager** in the main navigation sidebar.
 3. The Container Manager opens with two main sections:
    - **Deploy new service** (left panel): For uploading and deploying new services.

@@ -1,15 +1,15 @@
 ---
-title: The File Manager of the Arango Data Platform
+title: The File Manager of the Arango Contextual Data Platform
 menuTitle: File Manager
 weight: 25
 description: >-
   View and manage the data of services, such as your uploaded content
-  for GraphRAG and the files used by service containers
+  for AutoGraph and GraphRAG, as well as the files used by service containers
 ---
-Some of the services that run in the Arango Data Platform need to store larger
+Some of the services that run in the Arango Contextual Data Platform need to store larger
 amounts data. This data needs to be stored outside of the ArangoDB database system.
 
-The Data Platform supports different blob storage solutions for this data
+The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
 the Agentic AI Suite for instance, such as for storing AI models and training-related
 metadata, as well as for user-uploaded GraphRAG content. Custom services make
@@ -21,7 +21,7 @@ use of the file manager for application code, too.
 
 <!-- TODO: Scoped to database? If not, why is it under Database? -->
 
-1. In the main navigation of the Arango Data Platform web interface, go to the
+1. In the main navigation of the Arango Contextual Data Platform web interface, go to the
    **Database** ({{< icon "database" >}}).
 2. Click **File Manager** in the navigation.
 3. Go the the desired tab:

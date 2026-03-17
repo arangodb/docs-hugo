@@ -17,9 +17,9 @@ to support reliable, stateful agentic AI systems in production environments.
 {{% /card %}}
 
 {{% card title="Agentic AI Suite" link="agentic-ai-suite/" icon="avo-full.svg" %}}
-Supercharge your Data Platform with GraphRAG, GraphML, Graph Analytics, queries
-generated from natural language, and machine learning infrastructure for
-AI-powered insights.
+Supercharge your Contextual Data Platform with Ada, AutoGraph, GraphRAG, GraphML,
+Graph Analytics, queries generated from natural language, and machine learning
+infrastructure for AI-powered insights.
 {{% /card %}}
 
 {{% card title="Platform Suite" link="platform-suite/" icon="avo-middle.svg" %}}
@@ -68,8 +68,8 @@ queries, and more.
 ### Data Exploration
 
 You can visually explore and interact with your ArangoDB graphs through an
-intuitive web interface called the [Graph Visualizer](data-platform/graph-visualizer.md).
-It is part of the [Arango Data Platform](data-platform/_index.md) that builds on
+intuitive web interface called the [Graph Visualizer](platform-suite//graph-visualizer.md).
+It is part of the [Arango Platform Suite](platform-suite/_index.md) that builds on
 ArangoDB, extending it to a Kubernetes-native environment that unifies
 data management, monitoring, and automation.
 
@@ -130,3 +130,7 @@ semantically similar entities, and stores everything in ArangoDB. When you ask a
 question, the large language model (LLM) is supplied with additional context
 from the knowledge graph, using lexical and semantic search. This enables
 accurate, context-aware intelligence grounded in enterprise data.
+
+### AutoGraph with AutoRAG
+
+<!-- TODO -->

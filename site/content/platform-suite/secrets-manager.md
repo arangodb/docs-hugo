@@ -1,19 +1,19 @@
 ---
-title: The Secrets Manager of the Arango Data Platform
+title: The Secrets Manager of the Arango Contextual Data Platform
 menuTitle: Secrets Manager
 weight: 20
 description: >-
-  Store secrets like API keys for easy use across the Data Platform
+  Store secrets like API keys for easy use across the Contextual Data Platform
 ---
 If you want to use external services like cloud APIs, you need API keys
 or other means to authenticate and authorize the usage.
 
-In the Arango Data Platform, you may have multiple internal services that
+In the Arango Contextual Data Platform, you may have multiple internal services that
 utilize the same third-party API, but manually specifying the API key each time
-would be tedious. Instead, you can use the Secrets Manager of the Data Platform
+would be tedious. Instead, you can use the Secrets Manager of the Contextual Data Platform
 to centrally store API keys, account credentials, and so on.
 
-The Secrets Manager stores secrets globally for the entire Data Platform
+The Secrets Manager stores secrets globally for the entire Contextual Data Platform
 deployment. If the value of a secret changes, you only need to update it in
 a single place.
 
@@ -27,14 +27,14 @@ and retriever services of the Agentic AI Suite. They require a Large Language Mo
 
 Secrets are encrypted at rest using a token derived from the Kubernetes namespace.
 
-Each service that runs in the Data Platform can access the secrets via a
+Each service that runs in the Contextual Data Platform can access the secrets via a
 sidecar container for metadata that runs in the pod of the service. <!-- TODO: Does it need to be enabled via a configuration? -->
 
 ## Web interface
 
 ### Store a secret
 
-1. In the main navigation of the Arango Data Platform web interface, go to the
+1. In the main navigation of the Arango Contextual Data Platform web interface, go to the
    **Control Panel** ({{< icon "settings" >}}).
 2. Click **Secrets Manager** in the navigation.
 3. Click **Add Secret**.
