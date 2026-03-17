@@ -12,13 +12,6 @@ For an introduction to this transaction type, see
 To use a Stream Transaction, a client first sends the [configuration](#begin-a-stream-transaction)
 of the transaction to the ArangoDB server.
 
-{{< info >}}
-Contrary to [JavaScript Transactions](javascript-transactions.md),
-the definition of Stream Transaction must only contain the collections that are
-going to be used and (optionally) the various transaction options supported by
-ArangoDB. No `action` attribute is supported.
-{{< /info >}}
-
 The Stream Transaction API works in *conjunction* with other APIs in ArangoDB.
 To use the transaction for a supported operation a client needs to specify
 the transaction identifier in the `x-arango-trx-id` HTTP header on each request.
