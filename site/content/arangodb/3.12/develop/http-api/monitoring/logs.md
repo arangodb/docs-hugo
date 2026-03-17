@@ -128,6 +128,7 @@ paths:
   /_admin/log:
     get:
       operationId: getLog
+      deprecated: true
       description: |
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.

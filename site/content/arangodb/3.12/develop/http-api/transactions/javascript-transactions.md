@@ -34,10 +34,11 @@ paths:
   /_db/{database-name}/_api/transaction:
     post:
       operationId: executeJavaScriptTransaction
+      deprecated: true
       description: |
         {{</* warning */>}}
-        JavaScript Transactions are deprecated from v3.12.0 onward and will be
-        removed in a future version.
+        JavaScript Transactions are deprecated from v3.12.0 onward and are
+        removed in v4.0.
         {{</* /warning */>}}
 
         The transaction description must be passed in the body of the POST request.

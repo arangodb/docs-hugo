@@ -2825,6 +2825,7 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
+      deprecated: true
       description: |
         {{</* warning */>}}
         The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
@@ -2901,6 +2902,7 @@ paths:
   /_db/_system/_api/endpoint:
     get:
       operationId: listEndpoints
+      deprecated: true
       description: |
         {{</* warning */>}}
         This route should no longer be used.

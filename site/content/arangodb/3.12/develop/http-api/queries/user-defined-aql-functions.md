@@ -27,6 +27,7 @@ paths:
   /_db/{database-name}/_api/aqlfunction:
     post:
       operationId: createAqlUserFunction
+      deprecated: true
       description: |
         Registers a user-defined function (UDF) written in JavaScript for the use in
         AQL queries in the current database.
@@ -189,6 +190,7 @@ paths:
   /_db/{database-name}/_api/aqlfunction/{name}:
     delete:
       operationId: deleteAqlUserFunction
+      deprecated: true
       description: |
         Deletes an existing user-defined function (UDF) or function group identified by
         `name` from the current database.
@@ -360,6 +362,7 @@ paths:
   /_db/{database-name}/_api/aqlfunction:
     get:
       operationId: listAqlUserFunctions
+      deprecated: true
       description: |
         Returns all registered user-defined functions (UDFs) for the use in AQL of the
         current database.

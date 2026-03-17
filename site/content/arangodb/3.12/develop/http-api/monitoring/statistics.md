@@ -13,6 +13,7 @@ paths:
   /_db/{database-name}/_admin/statistics:
     get:
       operationId: getStatistics
+      deprecated: true
       description: |
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
@@ -542,6 +543,7 @@ paths:
   /_db/{database-name}/_admin/statistics-description:
     get:
       operationId: getStatisticsDescription
+      deprecated: true
       description: |
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
