@@ -87,7 +87,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 | `app_version` | body | Must match the `version` from upload step | Yes |
 | `service_type` | env | Set to `base_type` | Yes |
 | `base_image` | env | Base image name (see [Available Base Images](#available-base-images)) | Yes |
-| `app_instance_name` | env | Service instance name (alphanumeric with a 32 characters length limit, used in routing) | Yes |
+| `app_instance_name` | env | Service instance name (alphanumeric with a 32-character length limit, used in routing) | Yes |
 | `db_name` | env | Database name (optional) | No |
 
 ### Available Base Images
@@ -265,7 +265,7 @@ curl -X POST "$ENDPOINT/_platform/filemanager/global/byoc/" \
 
 # Step 2: Deploy the service
 echo "Deploying service..."
-curl -X POST "$ENDPOINT/v1/_platform/acp/v1/uds" \
+curl -X POST "$ENDPOINT/_platform/acp/v1/uds" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{
