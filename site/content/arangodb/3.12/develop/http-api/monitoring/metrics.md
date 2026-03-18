@@ -33,7 +33,7 @@ needs to be enabled.
 paths:
   /_db/{database-name}/_admin/metrics:
     get:
-      operationId: getMetricsV2
+      operationId: getMetrics
       description: |
         Returns the instance's current metrics in Prometheus format. The
         returned document collects all instance metrics, which are measured
