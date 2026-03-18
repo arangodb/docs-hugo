@@ -15,9 +15,9 @@ See [Package Your Code](package-code/) for instructions.
 
 ## Access the Container Manager
 
-1. Log in to the Arango Data Platform web interface.
-2. Go to **Control Panel** in the main navigation sidebar and then click
-**Container Manager**.
+1. Log in to the Arango Contextual Data Platform web interface.
+2. Go to **Control Panel** in the main navigation sidebar and then
+   click **Container Manager**.
 3. The Container Manager opens with two main sections:
    - **Deploy new service** (left panel): For uploading and deploying new services.
    - **Packages** (right panel): For viewing, filtering, and managing existing services.

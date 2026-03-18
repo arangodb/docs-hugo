@@ -3,11 +3,11 @@ title: Container Manager
 menuTitle: Container Manager
 weight: 15
 description: >-
-  Deploy and manage custom services within the Arango Data Platform using
+  Deploy and manage custom services within the Arango Contextual Data Platform using
   your own code packages
 ---
 The **Container Manager** lets you deploy and run custom services directly within
-the Arango Data Platform. Run your own applications and workloads alongside
+the Arango Contextual Data Platform. Run your own applications and workloads alongside
 Arango's services while seamlessly integrating with the platform's existing
 infrastructure, including authentication, routing, telemetry, and license management.
 

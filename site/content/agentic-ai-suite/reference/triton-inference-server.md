@@ -15,7 +15,7 @@ and seamless Kubernetes integration.
 ## Workflow
 
 The Triton LLM Host enables your GraphRAG pipeline to use privately hosted
-LLMs directly from the Arango Data Platform environment. The process involves the
+LLMs directly from the Arango Contextual Data Platform environment. The process involves the
 following steps:
 
 1. Install the Triton LLM Host service.
@@ -31,7 +31,7 @@ more about the service and how to interact with it.
 ## Deployment
 
 The Triton LLM Host service is deployed as a **Kubernetes application** using Helm charts in
-the Arango Data Platform ecosystem. It integrates with the:
+the Arango Contextual Data Platform ecosystem. It integrates with the:
 - MLFlow model registry for model management.
 - Storage sidecar for artifact storage.
 
@@ -57,7 +57,7 @@ You can also specify multiple models:
 ```json
 {
   "log_level": "INFO",
-  "profiles": "profile1,profile2"
+  "profiles": "profile1,profile2",
   "resources_requests_memory": "",     // Minimum memory required for the container
   "resources_requests_cpu": "",        // Minimum CPU required for the container
   "resources_limits_memory": "",       // Maximum memory the container can use
@@ -159,7 +159,7 @@ requests for example. Refer to the specific service with which you are using
 Triton Inference Server for more details.
 {{< /info >}}
 
-- **Internal access (within Arango Data Platform)**:
+- **Internal access (within Arango Contextual Data Platform)**:
   `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000`
   - `KUBERNETES_NAMESPACE` is available as an environment variable.
   - `SERVICE_ID` is returned by the AI service API.
@@ -168,9 +168,9 @@ Triton Inference Server for more details.
   To check server health:
   `GET https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000/v2/health/ready`
 
-- **External access (outside Arango Data Platform)**:
+- **External access (outside Arango Contextual Data Platform)**:
   `https://{BASE_URL}:8529/llm/{SERVICE_POSTFIX}/`
-  - `BASE_URL`: Your Arango Data Platform base URL.
+  - `BASE_URL`: Your Arango Contextual Data Platform base URL.
   - `SERVICE_POSTFIX`: Last 5 characters of the service ID.
 
   **Example**:

@@ -247,9 +247,9 @@ pprint(importerResponse)
 
 Once the importer service has processed the document, you can visualize and
 interact with the generated Knowledge Graph using the [Graph Visualizer](../../platform-suite/graph-visualizer.md)
-directly from the Arango Data Platform web interface.
+directly from the Arango Contextual Data Platform web interface.
 
-1. In the Arango Data Platform web interface, select the database you have previously used.
+1. In the Arango Contextual Data Platform web interface, select the database you have previously used.
 2. Click **Graphs** in the main navigation.
 3. Select the graph named **KnowledgeGraph** from the list.
 4. The viewport of the Graph Visualizer opens for exploring the graph.

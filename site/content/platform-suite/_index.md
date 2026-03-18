@@ -32,11 +32,11 @@ scaling, and management with enterprise-grade reliability.
 For a detailed breakdown of each component, its architecture and features, see
 [The Arango Contextual Data Platform](../contextual-data-platform/_index.md).
 
-## Extend the Arango Data Platform with AI capabilities
+## Extend the Arango Contextual Data Platform with AI capabilities
 
-Extend the Arango Data Platform and its Platform Suite with the
-[**Agentic AI Suite**](../agentic-ai-suite/_index.md) to get the full
-Arango Contextual Data Platform. It offers advanced AI and machine learning
+Extend the Arango Contextual Data Platform and its Platform Suite with the
+[**Agentic AI Suite**](../agentic-ai-suite/_index.md) to get the fully featured
+data platform with all its services. It offers advanced AI and machine learning
 capabilities that integrate seamlessly into the platform's unified web interface.
 
 {{< tip >}}
@@ -47,21 +47,21 @@ The Agentic AI Suite requires a separate license.
 
 ### Use the Arango Contextual Data Platform as a managed service
 
-You can request the Arango Data Platform as a managed service for the
+You can request the Arango Contextual Data Platform as a managed service for the
 [Arango Managed Platform (AMP)](../../amp/_index.md).
 
 [Get in touch](https://arango.ai/contact-us/) with the Arango team to learn more.
 
-### Self-host the Arango Data Platform
+### Self-host the Arango Contextual Data Platform
 
-You can set up and run the Arango Data Platform on-premises or in the cloud and
+You can set up and run the Arango Contextual Data Platform on-premises or in the cloud and
 manage this deployment yourself.
 
-For a guide how to set up the Data Platform yourself, see
+For a guide how to set up the Contextual Data Platform yourself, see
 [Install and upgrade the Arango Contextual Data Platform](../contextual-data-platform/install-and-upgrade/_index.md).
 
 {{< info >}}
-**Kubernetes-Native**: The Arango Data Platform is built specifically for Kubernetes 
+**Kubernetes-Native**: The Arango Contextual Data Platform is built specifically for Kubernetes 
 environments and relies on the official [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/) 
 to provide automated deployment, scaling, and management capabilities.
 {{< /info >}}
@@ -70,12 +70,12 @@ to provide automated deployment, scaling, and management capabilities.
 
 {{< cards >}}
 
-{{% card title="Query Editor" link="query-editor/" %}}
-Learn about the Kubernetes-native foundation that the Arango Data Platform is purpose-built on.
-{{% /card %}}
-
 {{% card title="Graph Visualizer" link="graph-visualizer/" %}}
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
+{{% /card %}}
+
+{{% card title="Query Editor" link="query-editor/" %}}
+Learn about the Kubernetes-native foundation that the Arango Contextual Data Platform is purpose-built on.
 {{% /card %}}
 
 {{< /cards >}}
