@@ -16,8 +16,9 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
-        Use `/_admin/metrics/v2` instead, which provides the data exposed by this API
+        This endpoint should no longer be used. It is deprecated from
+        version 3.8.0 onward and removed in ArangoDB v4.0.
+        Use `/_admin/metrics` instead, which provides the data exposed by this API
         and a lot more.
         {{</* /warning */>}}
 
@@ -546,8 +547,9 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
-        Use `/_admin/metrics/v2` instead, which provides the data exposed by the
+        This endpoint should no longer be used. It is deprecated from
+        version 3.8.0 onward and removed in ArangoDB v4.0.
+        Use `/_admin/metrics` instead, which provides the data exposed by the
         statistics API and a lot more.
         {{</* /warning */>}}
 

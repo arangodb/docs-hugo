@@ -25,13 +25,13 @@ For additional document read and write metrics, the
 [`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
 needs to be enabled.
 
-## Metrics API v2
+## Metrics API
 
 ### Get the metrics
 
 ```openapi
 paths:
-  /_db/{database-name}/_admin/metrics/v2:
+  /_db/{database-name}/_admin/metrics:
     get:
       operationId: getMetricsV2
       description: |
@@ -41,8 +41,8 @@ paths:
 
         The document contains different metrics and metrics groups dependent
         on the role of the queried instance. All exported metrics are
-        published with the prefix `arangodb_` or `rocksdb_` to distinguish them from
-        other collected data.
+        published with a `arangodb_` or `rocksdb_` prefix to distinguish them
+        from other collected data.
 
         The API then needs to be added to the Prometheus configuration file
         for collection.
@@ -84,9 +84,9 @@ paths:
 ```curl
 ---
 description: ''
-name: RestAdminMetricsV2
+name: RestAdminMetrics
 ---
-var url = "/_admin/metrics/v2";
+var url = "/_admin/metrics";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
@@ -138,21 +138,20 @@ paths:
         - Monitoring
 ```
 
-## Metrics API
+## Metrics API v2
 
 ### Get the metrics (deprecated)
 
 ```openapi
 paths:
-  /_db/{database-name}/_admin/metrics:
+  /_db/{database-name}/_admin/metrics/v2:
     get:
-      operationId: getMetrics
+      operationId: getMetricsV2
       deprecated: true
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
-        Use `/_admin/metrics/v2` instead. From version 3.10.0 onward, `/_admin/metrics`
-        returns the same metrics as `/_admin/metrics/v2`.
+        The `/_admin/metrics` and `/_admin/metrics/v2` return the same metrics
+        since ArangoDB v3.10.0. The latter is deprecated and removed in v4.0.
         {{</* /warning */>}}
 
         Returns the instance's current metrics in Prometheus format. The
@@ -161,7 +160,7 @@ paths:
 
         The document contains different metrics and metrics groups dependent
         on the role of the queried instance. All exported metrics are
-        published with the `arangodb_` or `rocksdb_` string to distinguish
+        published with a `arangodb_` or `rocksdb_` prefix to distinguish
         them from other collected data.
 
         The API then needs to be added to the Prometheus configuration file
@@ -204,9 +203,9 @@ paths:
 ```curl
 ---
 description: ''
-name: RestAdminMetrics
+name: RestAdminMetricsV2
 ---
-var url = "/_admin/metrics";
+var url = "/_admin/metrics/v2";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);

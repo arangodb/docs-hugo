@@ -668,12 +668,14 @@ paths:
                       foxxmaster:
                         description: |
                           The server ID of the Coordinator that is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
                       isFoxxmaster:
                         description: |
                           Whether the queried Coordinator is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
