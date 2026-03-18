@@ -1895,6 +1895,7 @@ paths:
   /_db/{database-name}/_api/cursor/{cursor-identifier}:
     put:
       operationId: getNextAqlQueryCursorBatchPut
+      deprecated: true
       description: |
         {{</* warning */>}}
         This endpoint is deprecated in favor its functionally equivalent POST counterpart.

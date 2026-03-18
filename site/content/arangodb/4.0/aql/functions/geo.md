@@ -635,8 +635,9 @@ each shape.
 Determine whether a point is inside a polygon.
 
 {{< warning >}}
-The `IS_IN_POLYGON()` AQL function is **deprecated** as of ArangoDB 3.4.0 in
-favor of the new [`GEO_CONTAINS()` AQL function](#geo_contains), which works with
+The `IS_IN_POLYGON()` AQL function is **deprecated** as of ArangoDB 3.4.0
+and removed in ArangoDB v4.0 in favor of the new
+[`GEO_CONTAINS()` AQL function](#geo_contains), which works with
 [GeoJSON](https://tools.ietf.org/html/rfc7946) Polygons and MultiPolygons.
 {{< /warning >}}
 
