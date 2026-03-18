@@ -4,6 +4,7 @@ menuTitle: Embeddings
 description: >-
   Generate embeddings for specific fields in ArangoDB collections
 weight: 40
+draft: true
 ---
 
 {{< info >}}

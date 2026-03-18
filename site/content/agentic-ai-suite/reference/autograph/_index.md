@@ -59,7 +59,6 @@ The typical AutoGraph workflow consists of these stages:
 5. **[Orchestrate Importer Workers](orchestration.md)**: Automatically spawn workers to build knowledge graphs
 
 **Optional operations:**
-- **[Embed Fields](embeddings.md)**: Generate embeddings for specific collection fields
 - **[Incremental Updates](corpus-build.md#incremental-builds)**: Add new modules without rebuilding everything
 
 ## Service Architecture
