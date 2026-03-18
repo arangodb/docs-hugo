@@ -39,28 +39,28 @@ of the platform features with enterprise-grade automation and reliability.
 The Arango Contextual Data Platform consists of multiple integrated components
 that work together to provide a complete, enterprise-ready solution.
 
+At its core, the Arango Contextual Data Platform is purpose-built for
+Kubernetes environments. Kubernetes is the technical infrastructure that is
+used for container orchestration, automated deployment, scaling, and
+management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
+leveraged to deliver enterprise-grade database management, automation,
+scalability, high availability, and operational excellence. Read more about
+the the platform's [Kubernetes-native architecture](kubernetes.md).
+
 The following list gives you a high-level overview of the Contextual Data Platform.
 Follow the links for a more details explanation of each component.
-
-- [**Kubernetes**](kubernetes.md):\
-  At its core, the Arango Contextual Data Platform is purpose-built for
-  Kubernetes environments. Kubernetes is the technical infrastructure that is
-  used for container orchestration, automated deployment, scaling, and
-  management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
-  leveraged to deliver enterprise-grade database management, automation,
-  scalability, high availability, and operational excellence.
-
-- [**ArangoDB Enterprise Edition**](arangodb.md):\
-  The multi-model database system acts as the solid foundation for all your
-  graph, document, key-value, search, and vector needs.
-
-- [**Arango Platform Suite**](platform-suite.md):\
-  Various services and features for working with your data and operating the
-  data platform. It includes a **unified web interface** with a
-  **Graph Visualizer** and an advanced **Query Editor**.
 
 - [**Arango Agentic AI Suite**](agentic-ai-suite.md):\
   An agent-focused capability layer to enhance the data platform. It connects
   LLMs to governed enterprise data using contextual retrieval and tool-based
   execution, so agents and co-pilots can deliver relevant, policy-aligned
   outcomes with human-guided control.
+
+- [**Arango Platform Suite**](platform-suite.md):\
+  Various services and features for working with your data and operating the
+  data platform. It includes a **unified web interface** with a
+  **Graph Visualizer** and an advanced **Query Editor**.
+
+  - [**ArangoDB Enterprise Edition**](arangodb.md):\
+  The multi-model database system acts as the solid foundation for all your
+  graph, document, key-value, search, and vector needs.
