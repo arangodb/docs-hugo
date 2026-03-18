@@ -596,7 +596,7 @@ paths:
                 httpclient:
                   description: |
                     Logs the activity of the HTTP request subsystem that is used
-                    in replication, client tools, and V8.
+                    in replication and client tools.
                   type: string
                 libiresearch:
                   description: |

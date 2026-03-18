@@ -281,7 +281,6 @@ Computed value expressions have the following properties:
   - `CALL()`
   - `APPLY()`
   - `DOCUMENT()`
-  - `V8()`
   - `SCHEMA_GET()`
   - `SCHEMA_VALIDATE()`
   - `VERSION()`

@@ -26,7 +26,16 @@ description: >-
 
 ### Endpoints augmented
 
+#### Metrics API
 
+The following V8-related metrics have been removed:
+
+- `arangodb_v8_context_alive`
+- `arangodb_v8_context_busy`
+- `arangodb_v8_context_dirty`
+- `arangodb_v8_context_free`
+- `arangodb_v8_context_max`
+- `arangodb_v8_context_min`
 
 ### Endpoints moved
 
