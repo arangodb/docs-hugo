@@ -22,16 +22,16 @@ The Agentic AI Suite is composed of the following major components:
 - [**AutoGraph**](autograph/_index.md): Organize enterprise data into contextual
   knowledge graph, using **AutoRAG** to optimize retrieval across graph, vector,
   and document data.
+- [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
+  your data and gain insights without having to learn the query language first.
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
 - [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
-  classification, and similar tasks.
+  classification, and computing embeddings.
 - [**Graph Analytics**](graph-analytics/_index.md):
   Run graph algorithms such as PageRank on dedicated compute resources to
   discover influential nodes and patterns.
-- [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
-  your data and gain insights without having to learn the query language first.
 
 Each component has an intuitive graphical user interface integrated into the
 Arango Contextual Data Platform web interface, guiding you through the process.

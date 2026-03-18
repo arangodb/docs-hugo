@@ -56,17 +56,11 @@ Follow the links for a more details explanation of each component.
 
 - [**Arango Platform Suite**](platform-suite.md):\
   Various services and features for working with your data and operating the
-  platform. It includes a **unified web interface** with a **Graph Visualizer**
-  and an advanced **Query Editor**.
+  data platform. It includes a **unified web interface** with a
+  **Graph Visualizer** and an advanced **Query Editor**.
 
 - [**Arango Agentic AI Suite**](agentic-ai-suite.md):\
-  A sophisticated set of services and features in addition to the Platform Suite
-  to enhance the Contextual Data Platform.
-
-  Includes **Ada**, the AI digital assistant, **AutoGraph** to organize
-  enterprise data into contextual knowledge graph, **AutoRAG** to optimize
-  retrieval across graph, vector, and document data, **AQLizer** to generate
-  optimized queries from natural language, **Arango GraphML** (graph machine learning)
-  for node classification and computing embeddings, **Graph Analytics Engines**
-  for running graph algorithms, as well as integrations for machine learning
-  projects such as **Jupyter notebooks** and **MLflow**.
+  An agent-focused capability layer to enhance the data platform. It connects
+  LLMs to governed enterprise data using contextual retrieval and tool-based
+  execution, so agents and co-pilots can deliver relevant, policy-aligned
+  outcomes with human-guided control.

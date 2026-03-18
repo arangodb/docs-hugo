@@ -116,13 +116,13 @@ Arango Contextual Data Platform. See [Arango GraphML](agentic-ai-suite/graphml/_
 
 Generative AI often struggle with hallucinations because the connectedness of
 data is not properly or cleanly represented. GraphRAG is a technique that
-turbocharges GenAI applications using the power of graph relationships and
-vector embeddings.
+lets you ground GenAI applications in trusted context using the power of graph
+relationships and vector embeddings.
 
 Arango's [GraphRAG](agentic-ai-suite/graphrag/_index.md) included in the
-[Agentic AI Suite](agentic-ai-suite/_index.md) is a turn-key solution to transform your
-organization's data into a knowledge graph and let everyone utilize the
-knowledge by asking questions in natural language.
+[Agentic AI Suite](agentic-ai-suite/_index.md) is a turn-key solution to
+transform your organization's data into a knowledge graph and let everyone
+utilize the knowledge by asking questions in natural language.
 
 It automatically creates a knowledge graph from raw text by identifying and
 extracting entities and relationships within the data, groups and summarizes
@@ -133,4 +133,11 @@ accurate, context-aware intelligence grounded in enterprise data.
 
 ### AutoGraph with AutoRAG
 
-<!-- TODO -->
+Arango [AutoGraph](agentic-ai-suite/autograph/_index.md) turbocharges GraphRAG
+with AutoRAG to automatically create a knowledge graph out of your organization's
+data with per-domain RAG partitions. Queries are intelligently routed, selecting
+the optimal domain-aware retrieval strategy.
+
+It creates knowledge shards for AI agents and co-pilot that let you improve
+response accuracy, consistency, and explainability across enterprise
+AI applications.

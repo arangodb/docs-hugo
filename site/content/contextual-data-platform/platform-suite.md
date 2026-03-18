@@ -96,6 +96,13 @@ as well as the files used by service containers.
 The [Secrets manager](../platform-suite/secrets-manager.md) store secrets like
 API keys for easy use across the Contextual Data Platform.
 
+### Arango Control Plane (ACP)
+
+The [Arango Control Plane (ACP)](../platform-suite/control-plane-acp.md) is an
+orchestration service to install, manage, and run services in your
+Contextual Data Platform. It is used by built-in features such as AutoGraph but
+also for custom services.
+
 ## Additional services
 
 ### Cypher2AQL (experimental)
