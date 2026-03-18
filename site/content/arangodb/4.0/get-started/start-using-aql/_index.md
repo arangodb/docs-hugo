@@ -54,8 +54,9 @@ db._query(aql`RETURN CONCAT("Hello, ", ${name})`).toArray();
 See [`db._query()`](../../develop/javascript-api/@arangodb/db-object.md#db_queryquerystring--bindvars--mainoptions--suboptions)
 in the _JavaScript API_ for details.
 
-If you use Foxx, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
-for examples including tagged template strings.
+<!-- TODO: The Foxx content desribed how to write database queries using tagged template strings.
+Add something for that but arangosh, or link to existing content here?
+-->
 {{< /tab >}}
 
 {{< tab "cURL" >}}

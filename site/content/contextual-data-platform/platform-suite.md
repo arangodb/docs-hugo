@@ -62,5 +62,7 @@ primary interface for data exploration and analysis.
 
 ## Additional services
 
-### Cypher2AQL (experimental)
+### Cypher to AQL (experimental)
+
+The [**Cypher to AQL**](../platform-suite/cypher2aql.md) service translates Cypher queries into AQL so you can use Cypher-style syntax and run the resulting AQL against ArangoDB. It is available only as part of the Contextual Data Platform and is currently experimental.
 
