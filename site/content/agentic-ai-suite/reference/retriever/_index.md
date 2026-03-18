@@ -15,6 +15,7 @@ corporate LLMs), making it flexible for various deployment and infrastructure re
 
 **Key features:**
 - Multiple search methods optimized for different use cases
+- Two-stage retrieval architecture for scalability
 - Streaming support for real-time responses for `UNIFIED` queries
 - Optional LLM orchestration for `LOCAL` queries
 - Configurable community hierarchy levels for `GLOBAL` queries
@@ -26,6 +27,26 @@ corporate LLMs), making it flexible for various deployment and infrastructure re
 You can use the Retriever service via the [web interface](../../graphrag/web-interface.md)
 for Instant and Deep Search, or through the API for full control over all query types.
 {{< /tip >}}
+
+## Two-Stage Retrieval Architecture
+
+The Retriever uses a two-stage process for efficient querying at scale, especially when working with partitioned knowledge graphs created by Autograph:
+
+### Stage 1: Partition Discovery
+When documents are organized into semantic partitions (via the `partition_id` parameter during import), the retriever can first identify which partitions are relevant to your query. This dramatically narrows the search space.
+
+### Stage 2: In-Partition Search
+Once relevant partitions are identified, the retriever performs deep search within those specific partitions using the appropriate search method (Local, Global, Unified, or Deep Search).
+
+**Benefits:**
+- **Scalability**: Only query relevant partitions, not the entire knowledge base
+- **Performance**: Parallel querying of multiple partitions across distributed deployments
+- **Semantic routing**: Related information is co-located in partitions based on Autograph clustering
+- **Horizontal scaling**: Different partitions can reside on different machines
+
+{{< info >}}
+When using Autograph for corpus analysis, documents from the same semantic cluster are automatically imported into the same partition, enabling this efficient two-stage retrieval pattern.
+{{< /info >}}
 
 ## Prerequisites
 

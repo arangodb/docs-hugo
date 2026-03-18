@@ -38,11 +38,21 @@ This approach solves the compounding challenges modern enterprises face:
 
 Traditional RAG solutions treat all documents the same way, leading to either inadequate processing of complex content or wasteful over-processing of simple content. AutoGraph adapts to your data.
 
+### Automating Context Creation
+
+AutoGraph automatically organizes enterprise data into contextual knowledge graphs that represent relationships between business entities, systems, and operational events.
+
+This automation generates a contextual data layer for AI agents to reason, decide, and act. AI systems can:
+- Reason across enterprise relationships
+- Understand real-time operational states
+- Operate within governance policies
+- Produce explainable outputs with traceable lineage
+
 ## Architecture Overview
 
-AutoGraph's **three-layer architecture** organizes data from business taxonomy through semantic discovery to optimized retrieval.
+AutoGraph's layered architecture organizes data from business taxonomy through semantic discovery to optimized retrieval.
 
-### Layer 1: Business Taxonomy
+### Business Taxonomy
 
 The first layer reflects your company's explicit organizational structure. This is where you define:
 - Document categories based on business needs (e.g., legal, technical, marketing)
@@ -52,7 +62,7 @@ The first layer reflects your company's explicit organizational structure. This 
 
 In practice, this creates **multiple parallel corpora** — separate document collections that reflect your organizational taxonomy. While each corpus can be processed independently, they remain connected within a single database, enabling cross-corpus queries when needed.
 
-### Layer 2: Corpus Graph
+### Corpus Graph
 
 Within a business-defined corpus, AutoGraph automatically discovers natural knowledge domains. The **Corpus Graph** is AutoGraph's automated semantic map showing:
 - Which documents exist in your corpus
@@ -66,7 +76,7 @@ This context layer provides intelligent routing and retrieval by:
 - Building a Corpus Graph showing documents, domains, and relationships
 - Providing intelligent routing to relevant domains
 
-### Layer 3: RAG Partitions
+### RAG Partitions
 
 Each discovered knowledge domain becomes a specialized RAG partition with optimized processing. This architecture enables:
 
@@ -75,3 +85,17 @@ Each discovered knowledge domain becomes a specialized RAG partition with optimi
 - **Optimized Processing**: Each domain gets the best RAG strategy for its complexity. Choose from cheap and fast (NaiveRAG) for simple content to complex and powerful (Full GraphRAG) for technical documents, resulting in major cost savings compared to processing everything uniformly.
 
 All partitions are unified into the **MegaGraph** — a single, unified knowledge graph containing all the individual RAG partitions. It is built as an ArangoDB **SmartGraph**, which means data within the same partition is kept together for high performance, but partitions can still be connected. This creates a single graph composed of many smaller, weakly connected knowledge graphs.
+
+## AutoRAG: Automated Retrieval Strategy Selection
+
+AutoRAG automatically selects the optimal retrieval strategy by combining:
+- GraphRAG
+- Vector search
+- Hybrid retrieval
+- Contextual summarization
+
+The system dynamically selects the retrieval approach based on the query, enabling AI systems to reason across connected enterprise context.
+
+## API Reference
+
+For detailed API documentation and service configuration, see the [AutoGraph Service Reference](../reference/autograph/_index.md).
