@@ -106,8 +106,22 @@ If not specified, the response types are using the following default instruction
 
 Whether to use caching for this query.
 
-- **Required**: No (defaults to `false`)
-- **Description**: When enabled, checks cache for hits and saves responses to cache. When disabled, skips cache entirely (no check, no write).
+- **Required**: No (defaults to `true`)
+- **Description**: When enabled (default), checks cache for hits and saves responses to cache. When disabled, skips cache entirely (no check, no write).
+
+**Example to disable caching:**
+
+```json
+{
+  "query": "What is X?",
+  "query_type": "LOCAL",
+  "use_cache": false
+}
+```
+
+{{< tip >}}
+Caching is enabled by default to improve response times for repeated queries. Disable it when you need fresh results or when testing changes to your knowledge graph.
+{{< /tip >}}
 
 ## Response Format
 
