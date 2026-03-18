@@ -61,10 +61,10 @@ Save the `name` and `version` values as you will need them in the deployment ste
 
 After uploading your archive, deploy it as a running service:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/v1/_platform/acp/v1/uds" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/v1/_platform/acp/v1/uds" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{

@@ -21,7 +21,7 @@ To create a new GraphRAG project using the Arango Contextual Data Platform
 web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **AI Suite** to open the GraphRAG project management
+2. In the left-hand sidebar, click **Agentic AI Suite** to open the GraphRAG project management
    interface, then click **Run GraphRAG**.
 3. In the **GraphRAG projects** view, click **Add new project**.
 4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally

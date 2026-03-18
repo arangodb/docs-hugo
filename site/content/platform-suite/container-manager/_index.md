@@ -43,7 +43,7 @@ The platform builds a secure container, orchestrates deployment through the Aran
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) and
   deploy them as running services with configurable resources.
   
-- **Multiple Runtimes**: Python with optional CUDA/GPU support runtime environments.
+- **Multiple Runtimes**: Supported runtime environments include Python with optional CUDA/GPU support.
   
 - **Version Management**: Maintain and deploy multiple versions of the same
   service with easy updates and rollbacks.
