@@ -6,9 +6,20 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
-## 
+## New CPU requirements
 
+The minimum requirements to run ArangoDB were previously met by processors
+using the Intel Sandy Bridge (2011), AMD Bulldozer (2011), or better
+microarchitectures, as well as 64-bit CPUs based on ARMv8 with NEON.
 
+ArangoDB 4.0 now requires newer microarchitectures/designs and can utilize
+their instruction set extensions for improved performance:
+
+- **x86-64**: Intel Haswell (2013) or better, AMD Excavator (2015) or better, etc.
+- **ARM**: CPUs like AWS Graviton2 with ARM Neoverse N1 cores.
+
+For more details about the necessary CPU features, see
+[Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
 ## HTTP RESTful API
 
