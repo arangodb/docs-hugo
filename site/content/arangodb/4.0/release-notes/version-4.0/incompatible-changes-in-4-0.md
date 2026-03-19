@@ -132,6 +132,16 @@ JavaScript contexts:
 You can still specify these startup options without causing a fatal error during
 startup. They are recognized, but they don't have any effect anymore.
 
+### Log topic changes and removals
+
+The only remaining use of the `security` log topic was for the log message with
+ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
+It has been changed to the `v8` log topic.
+
+The `security` log topic has been removed.
+Attempts to set the log level for this topic logs a warning, for example, using
+a startup option like `--log.level security=debug`.
+
 ## Client tools
 
 ### arangobench
