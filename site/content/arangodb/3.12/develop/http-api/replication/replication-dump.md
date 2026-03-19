@@ -217,7 +217,7 @@ paths:
                 ttl:
                   description: |
                     The time-to-live for the new batch (in seconds).
-                  type: integer
+                  type: number
       responses:
         '200':
           description: |
@@ -332,8 +332,8 @@ paths:
               properties:
                 ttl:
                   description: |
-                    the time-to-live for the new batch (in seconds)
-                  type: integer
+                    The time-to-live for the new batch (in seconds)
+                  type: number
       responses:
         '204':
           description: |

@@ -573,9 +573,13 @@ function handleDocumentClick(event) {
     const closest = (selector) => target.closest(selector);
 
     if (target.classList.contains("expand-nav")) return;
+
+    // Allow browser default for Ctrl/Cmd+click (new tab) or Shift+click (new window)
+    const openInNew = event.ctrlKey || event.metaKey || event.shiftKey;
   
     // Menu link clicks
     if (target.classList.contains("link-nav")) {
+        if (openInNew) return;
         event.preventDefault();
         target.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
@@ -596,6 +600,7 @@ function handleDocumentClick(event) {
   
     // Internal link clicks (.link)
     if (target.classList.contains('link') && !target.getAttribute("target")) {
+        if (openInNew) return;
         event.preventDefault();
         let href = target.getAttribute('href');
         if (href) {
@@ -605,9 +610,10 @@ function handleDocumentClick(event) {
     }
   
     // Card link clicks
-    if (target.classList.contains('card-link')) {
+    if (closest('.card-link')) {
+        if (openInNew) return;
         event.preventDefault();
-        const href = target.getAttribute('href');
+        const href = target.closest('.card-link').getAttribute('href');
         if (href) {
             updateHistory(href);
         }
@@ -682,6 +688,7 @@ function handleDocumentClick(event) {
   
     // Homepage clicks
     if (target.classList.contains('home-link')) {
+        if (openInNew) return;
         event.preventDefault();
         updateHistory("/");
         return;
@@ -717,4 +724,65 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
+    // Initialize custom diagram lightbox
+    initDiagramLightbox();
+
 });
+
+/*
+ * Custom diagram lightbox
+ * Simple, clean lightbox implementation for diagrams without external dependencies
+ */
+function initDiagramLightbox() {
+    // Create lightbox container if it doesn't exist
+    if (!document.querySelector('.diagram-lightbox')) {
+        const lightbox = document.createElement('div');
+        lightbox.className = 'diagram-lightbox';
+        lightbox.innerHTML = `
+            <button class="diagram-lightbox-close" aria-label="Close">&times;</button>
+            <img src="" alt="">
+        `;
+        document.body.appendChild(lightbox);
+
+        // Close on click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.classList.contains('diagram-lightbox-close')) {
+                closeDiagramLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeDiagramLightbox();
+            }
+        });
+    }
+
+    // Add click handlers to diagram links
+    document.addEventListener('click', function(e) {
+        const diagramLink = e.target.closest('.diagram-link');
+        if (diagramLink) {
+            e.preventDefault();
+            const src = diagramLink.getAttribute('data-diagram-src');
+            const img = diagramLink.querySelector('img');
+            const alt = img ? img.getAttribute('alt') : '';
+            openDiagramLightbox(src, alt);
+        }
+    });
+}
+
+function openDiagramLightbox(src, alt) {
+    const lightbox = document.querySelector('.diagram-lightbox');
+    const img = lightbox.querySelector('img');
+    img.src = src;
+    img.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDiagramLightbox() {
+    const lightbox = document.querySelector('.diagram-lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}

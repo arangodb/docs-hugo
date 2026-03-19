@@ -794,7 +794,7 @@ every optimizer rule that briefly explains what it does.
 
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
-The endpoint will be removed in ArangoDB v3.12.
+The endpoint is removed in ArangoDB v4.0.
 
 ## JavaScript API
 
