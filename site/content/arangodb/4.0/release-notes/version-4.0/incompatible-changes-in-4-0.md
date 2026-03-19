@@ -29,7 +29,16 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## Startup options
 
+### Log topic changes and removals
 
+The only remaining use of the `bench` log topic (due to the removal of
+_arangobench_) was for the log message with ID `bafc2`, used by _arangoexport_
+to report a JSON format error related to the `--custom-query-bindvars`
+startup option. It has been changed to the `config` log topic.
+
+The `bench` log topic has been removed.
+Attempts to set the log level for this topic logs a warning, for example, using
+a startup option like `--log.level bench=debug`.
 
 ## Client tools
 

@@ -520,10 +520,6 @@ paths:
                   description: |
                     Logs events related to Hot Backup.
                   type: string
-                bench:
-                  description: |
-                    Logs events related to benchmarking with _arangobench_.
-                  type: string
                 cache:
                   description: |
                     Logs events related to caching documents and index entries

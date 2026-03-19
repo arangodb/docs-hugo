@@ -10,7 +10,11 @@ description: >-
 
 ### Behavior changes
 
+#### Log API
 
+The `bench` log topic has been removed.
+The `/_admin/log/level` endpoints no longer include this log topic in responses
+and attempts to set the log level for this topic are ignored.
 
 ### Privilege changes
 
