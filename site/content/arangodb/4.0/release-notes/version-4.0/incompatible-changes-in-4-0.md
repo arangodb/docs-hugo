@@ -6,11 +6,53 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
-## 
+## New CPU requirements
 
+The minimum requirements to run ArangoDB were previously met by processors
+using the Intel Sandy Bridge (2011), AMD Bulldozer (2011), or better
+microarchitectures, as well as 64-bit CPUs based on ARMv8 with NEON.
 
+ArangoDB 4.0 now requires newer microarchitectures/designs and can utilize
+their instruction set extensions for improved performance:
+
+- **x86-64**: Intel Haswell (2013) or better, AMD Excavator (2015) or better, etc.
+- **ARM**: CPUs like AWS Graviton2 with ARM Neoverse N1 cores.
+
+For more details about the necessary CPU features, see
+[Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
 ## HTTP RESTful API
+
+### Simple Queries endpoints removed
+
+The server-side Simple Queries functionality was deprecated since v3.4.0,
+removed from the documentation in v3.8.0, and the endpoints have now been
+removed from the code as well. The same functionality is available in the
+AQL query language, where it can be used with more flexibility, better
+performance, and lower resource consumption.
+
+The client-side Simple Queries functionality found in _arangosh_ in the form
+of methods like `collection.byExample()` is still available but has been
+re-implemented to use AQL instead of relying on the server-side Simple Queries
+interface.
+
+The removed endpoints are the following:
+
+- `PUT /_api/simple/lookup-by-keys`: Find documents by their keys
+- `PUT /_api/simple/remove-by-keys`: Remove documents by their keys
+- `PUT /_api/simple/all`: Return all documents
+- `PUT /_api/simple/all-keys`: Read all document keys
+- `PUT /_api/simple/any`: Return a random document
+- `PUT /_api/simple/by-example`: Simple query by-example
+- `PUT /_api/simple/first-example`: Find documents matching an example
+- `PUT /_api/simple/fulltext`: Fulltext index query
+- `PUT /_api/simple/near`: Return documents near coordinates
+- `PUT /_api/simple/range`: Simple range query
+- `PUT /_api/simple/remove-by-example`: Remove documents by example
+- `PUT /_api/simple/replace-by-example`: Replace documents by example
+- `PUT /_api/simple/update-by-example`: Update documents by example
+- `PUT /_api/simple/within`: Find documents within a radius around coordinates
+- `PUT /_api/simple/within-rectangle`: Find documents within a rectangular area
 
 ### Batch request endpoint removed
 
@@ -29,7 +71,11 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## Startup options
 
+### Vector index enabled by default
 
+The `vector` index type is now enabled by default and the `--vector-index`
+startup option is obsolete, meaning you can still specify the option without
+causing an error about an unknown startup option but no longer has any effect.
 
 ## Client tools
 
