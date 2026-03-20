@@ -18,11 +18,11 @@ is set to `true` and authentication is enabled, non-admin users are denied
 access to the following HTTP APIs:
 
 - `/_admin/cluster/numberOfServers`
-- `/_admin/log`
-- `/_admin/log/level`
+- `/_admin/license`
+- `/_admin/metrics`
 - `/_admin/status`
-- `/_admin/statistics`
-- `/_admin/statistics-description`
+- `/_admin/system-report`
+- `/_admin/usage-metrics`
 - `/_api/engine/stats`
 
 Additionally, no version details are revealed by the version HTTP API at

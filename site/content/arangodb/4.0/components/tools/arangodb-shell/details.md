@@ -373,7 +373,7 @@ JavaScript operations, with the following exceptions:
   JavaScript code is given access to this directory for storing temporary files.
   The temporary directory location can be specified explicitly via the
   `--temp.path` startup option.
-  If the option is not specified, ArangoDB automatically use a subdirectory
+  If the option is not specified, _arangosh_ automatically use a subdirectory
   of the system's temporary directory.
 
 - **Bundled JavaScript code**, shipped with _arangosh_:\
