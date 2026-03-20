@@ -67,7 +67,7 @@ Transactions in ArangoDB have been designed with particular use cases
 in mind. They are mainly for **short and small** data retrieval operations,
 modification operations, or both.
 
-The implementation is **not** optimized for **very long-running** or
+The implementation is **not optimized** for **very long-running** or
 **very voluminous** operations, and may not be usable for these cases.
 
 One limitation is that a transaction operation information must fit into main
@@ -188,7 +188,7 @@ replication, `waitForSync`, or both, increases the durability
 [Intermediate commits](../../aql/fundamentals/limitations.md#storage-engine-properties)
 that would automatically split and commit parts of big transactions are
 **disabled** for Stream Transactions in the RocksDB storage engine, including
-AQL queries that run inside of such transactions.
+AQL queries that run inside of such transactions (but not for standalone AQL queries).
 
 #### Limits for Stream Transactions
 
@@ -259,10 +259,10 @@ consistency after a restart.
 
 ## Locking and isolation of transactions
 
-Transactions need to specify from which collections they will read data and which
-collections they intend to modify. This can be done by setting the `read`, `write`,
-or `exclusive` attributes in the `collections` attribute when starting a Stream
-Transaction:
+Transactions need to specify from which collections they will read data and
+which collections they intend to modify. This can be done by setting the
+`read`, `write`, or `exclusive` attributes in the `collections` attribute when
+starting a Stream Transaction:
 
 ```js
 var trx = db._createTransaction({
@@ -315,7 +315,7 @@ This snapshot is based on the state of the database at the moment in time when t
 begins. No locks are acquired on the underlying data to keep this snapshot, which permits
 other transactions to execute without being blocked by an older uncompleted transaction
 (so long as they do not try to modify the same documents or unique index-entries concurrently).
-In the cluster a snapshot is acquired on each DB-Server individually.
+In the cluster, a snapshot is acquired on each DB-Server individually.
 
 ### Lazily adding collections
 
