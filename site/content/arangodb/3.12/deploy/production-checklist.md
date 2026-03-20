@@ -68,7 +68,8 @@ have been performed on your production system before you go live.
   --javascript.harden \
   --javascript.environment-variables-allowlist '^$' \
   --javascript.files-allowlist '^$' \
-  --javascript.endpoints-allowlist '^$'
+  --javascript.endpoints-allowlist '^$' \
+  --javascript.startup-options-allowlist '^$'
   ```
   {{< /tab >}}
 
@@ -82,6 +83,7 @@ have been performed on your production system before you go live.
   environment-variables-allowlist = ^$
   files-allowlist = ^$
   endpoints-allowlist = ^$
+  startup-options-allowlist = ^$
   ```
   {{< /tab >}}
 
@@ -89,12 +91,23 @@ have been performed on your production system before you go live.
 
   {{< security >}}
   When `--javascript.environment-variables-allowlist`,
-  `--javascript.files-allowlist`, and `--javascript.endpoints-allowlist`
+  `--javascript.files-allowlist`, `--javascript.endpoints-allowlist`,
+  and `--javascript.startup-options-allowlist`
   are left unset (the default), they permit **all** access rather than
   no access. You must explicitly set them to restrict JavaScript code
-  from reading arbitrary files, accessing environment variables, or
-  making outbound HTTP requests from within the server process. A value of
-  `^$` for an allowlist will allow nothing.
+  from reading and writing arbitrary files, accessing environment variables,
+  reading startup configuration values, or making outbound HTTP requests
+  from within the server process. A value of `^$` for an allowlist will
+  allow nothing.
+
+  Note that these options restrict all JavaScript execution within the
+  _arangod_ process, not just UDFs. Foxx microservices and server-side
+  operations initiated through _arangosh_ are also subject to these
+  restrictions. In particular, `--javascript.files-allowlist` is the most
+  likely to cause visible side effects, as file operations are fundamental
+  to Foxx app installation and server-side administration. Deployments that
+  rely on Foxx or make outbound HTTP calls from Foxx services should
+  evaluate these settings before applying them.
   {{< /security >}}
 
   See [Server security options](../operations/security/security-options.md#javascript-security-options)
