@@ -11,7 +11,8 @@ aliases:
 ---
 {{< info >}}
 Feature parity between the Community Edition and the Enterprise Edition is
-available from v3.12.5 onward.
+available from v3.12.5 onward. See
+[Features and Improvements in ArangoDB 3.12](../release-notes/version-3.12/whats-new-in-3-12.md#all-enterprise-edition-features-in-community-edition).
 {{< /info >}}
 
 ## General

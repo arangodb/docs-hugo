@@ -308,7 +308,7 @@ paths:
                     The consolidation policy to apply for selecting which segments should be merged.
 
                     - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_

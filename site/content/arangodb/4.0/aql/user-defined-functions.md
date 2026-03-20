@@ -5,6 +5,10 @@ weight: 45
 description: >-
   You can write UDFs in JavaScript to extend AQL or to simplify queries
 ---
+{{< warning >}}
+User-defined AQL functions are deprecated and the feature is removed in ArangoDB v4.0.
+{{< /warning >}}
+
 AQL comes with a [built-in set of functions](functions/_index.md), but it is
 not a fully-featured programming language. To add missing functionality or to
 simplify queries, you may write your own user-defined functions (**UDFs**) in
