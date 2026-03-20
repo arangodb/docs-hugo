@@ -45,62 +45,44 @@ If _arangoinspect_ succeeds to authenticate, it starts to gather information
 and writes the result to `arangodb-inspector.json`, then exits:
 
 ```
-arangoinspect --server.endpoint tcp://127.0.0.1:8629
+arangoinspect --server.endpoint tcp://127.0.0.1:9730
 
 Please specify the JWT secret: 
-Connected to ArangoDB 'http+tcp://127.0.0.1:8629' version: 3.4.devel [server], database: '_system', username: 'root'
+Connected to ArangoDB 'http+tcp://localhost:9730, version: 4.0.0 [COORDINATOR, unknown mode], database: '_system', username: 'root'
 
     _                                  ___                           _
    / \   _ __ __ _ _ __   __ _  ___   |_ _|_ __  ___ _ __   ___  ___| |_ ___  _ __
   / _ \ | '__/ _` | '_ \ / _` |/ _ \   | || '_ \/ __| '_ \ / _ \/ __| __/ _ \| '__|
  / ___ \| | | (_| | | | | (_| | (_) |  | || | | \__ \ |_) |  __/ (__| || (_) | |
 /_/   \_\_|  \__,_|_| |_|\__, |\___/  |___|_| |_|___/ .__/ \___|\___|\__\___/|_|
-                         |___/                      |_|                         
+                         |___/                      |_|
 
-2018-06-05T19:40:10Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:4001', version 3.4.devel [server], database '_system', username: 'root'
-2018-06-05T19:40:10Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:4001', version 3.4.devel [server], database '_system', username: 'root'
-INFO changing endpoint for AGNT-01e83a4b-8a51-4919-9f50-ff640accb9fa from http+tcp://[::1]:4001 to tcp://[::1]:4001
-INFO changing endpoint for PRMR-9f5b337e-c1de-4b7d-986a-d6ad2eb8f857 from tcp://127.0.0.1:8629 to tcp://[::1]:8629
+INFO changing endpoint for CRDN-803fd418-f44e-4e7e-8e1e-5e3c0b6c5a0e from undefined to tcp://localhost:9730
 INFO Analysing agency dump ...
-INFO Plan (version 22)
+INFO Plan (version 10)
 INFO   Databases
 INFO     _system
 INFO   Collections
 INFO     _system
-INFO       _graphs
 INFO       _users
-INFO       _modules
-INFO       _iresearch_analyzers
-INFO       _routing
-INFO       _aqlfunctions
-INFO       _frontend
-INFO       _queues
-INFO       _jobs
-INFO       _apps
-INFO       _appbundles
-INFO       _statisticsRaw
-INFO       _statistics
-INFO       _statistics15
+INFO       _graphs
+INFO       _analyzers
 INFO Server health
 INFO   DB Servers
-INFO     PRMR-9f5b337e-c1de-4b7d-986a-d6ad2eb8f857(DBServer0001)
-INFO     PRMR-90ff8c20-b0f3-49c5-a5dd-7b186bb7db33(DBServer0002)
+INFO     PRMR-933e8aaf-0e07-4379-a38e-735f100fe4f7(DBServer0003)
+INFO     PRMR-0e53c515-d46e-46dd-8e2a-84be01727ec2(DBServer0002)
+INFO     PRMR-3b6d09c4-8975-43e9-8648-cf9fe5fbefaa(DBServer0001)
 INFO   Coordinators
-INFO     CRDN-0dbf16ec-8a06-4203-9359-447d97757b4e(Coordinator0001)
+INFO     CRDN-803fd418-f44e-4e7e-8e1e-5e3c0b6c5a0e(Coordinator0002)
 INFO Supervision activity
 INFO   Jobs: undefined(To do: 0, Pending: 0, Finished: 0, Failed: 0)
 INFO Summary
 INFO   1 databases
-INFO   14 collections 
-INFO   14 shards 
+INFO   3 collections
+INFO   3 shards
 INFO ... agency analysis finished.
-INFO Collecting diagnostics from all servers ... 
-2018-06-05T19:40:10Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:8629', version 3.4.devel [server], database '_system', username: 'root'
-2018-06-05T19:40:11Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:4001', version 3.4.devel [server], database '_system', username: 'root'
-2018-06-05T19:40:11Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:8630', version 3.4.devel [server], database '_system', username: 'root'
-2018-06-05T19:40:11Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:8530', version 3.4.devel [server], database '_system', username: 'root'
-2018-06-05T19:40:11Z [19858] INFO Connected to ArangoDB 'http+tcp://[::1]:4001', version 3.4.devel [server], database '_system', username: 'root'
-INFO ... diagnostics collected.
+INFO Collecting diagnostics from all servers ...
+INFO ... dignostics collected.
 INFO Report written to arango-inspector.json.
 ```
 

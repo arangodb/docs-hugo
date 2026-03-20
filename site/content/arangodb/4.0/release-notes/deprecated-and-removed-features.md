@@ -37,6 +37,7 @@ aliases:
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
   - ../develop/http-api/batch-requests # 3.12 -> 4.0
+  - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -181,10 +182,12 @@ detailed information about breaking changes before upgrading.
   guidelines for metrics.
 
 - **Statistics REST API**:\
-  The endpoints `/_admin/statistics` and `/_admin/statistics-description`
-  are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
-  The metrics API provides a lot more information than the statistics API, so
-  it is much more useful.
+  The endpoints `/_admin/statistics`, `/_admin/statistics-description`,
+  `/_admin/cluster/nodeStatistics`, and `/_admin/cluster/statistics`
+  are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
+  with the endpoint `GET /_admin/metrics`.
+  The metrics API provides a lot more information than the statistics endpoints,
+  so it is much more useful.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the

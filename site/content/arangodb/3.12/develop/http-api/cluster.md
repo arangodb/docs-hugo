@@ -19,7 +19,12 @@ paths:
   /_admin/cluster/statistics:
     get:
       operationId: getClusterStatistics
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Queries the statistics of the given DB-Server
       parameters:
         - name: DBserver
