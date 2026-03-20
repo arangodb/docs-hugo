@@ -41,7 +41,7 @@ of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-r
 The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
 removed from the JavaScript API.
 
-The `3xxx` error codes used by Foxx have been removed.
+The `30xx` error codes used by Foxx have been removed.
 
 **Alternatives and migration**
 
@@ -58,6 +58,8 @@ but you may use a standard Node.js runtime with its entire ecosystem including
 async libraries, or use different programming languages altogether. Moreover, a
 compatibility layer to run existing Foxx services on top of Node.js is available
 to ease the migration to the data platform.
+
+<!-- TODO: See node-foxx docs... -->
 
 ## HTTP RESTful API
 
