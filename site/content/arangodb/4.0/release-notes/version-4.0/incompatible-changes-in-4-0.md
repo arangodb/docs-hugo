@@ -23,6 +23,12 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Metrics API v2 endpoint removed
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
+
 ## JavaScript API
 
 
