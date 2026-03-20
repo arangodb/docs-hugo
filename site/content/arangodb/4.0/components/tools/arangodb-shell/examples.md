@@ -72,8 +72,10 @@ can use the `db._useDatabase()` command in _arangosh_:
 name: shellUseDB
 description: ''
 ---
+db._useDatabase("_system");
 db._createDatabase("myapp");
 db._useDatabase("myapp");
+
 db._useDatabase("_system");
 db._dropDatabase("myapp");
 ```

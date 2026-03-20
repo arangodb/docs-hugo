@@ -3,26 +3,14 @@ title: JavaScript API
 menuTitle: JavaScript API
 weight: 270
 description: >-
-  You can use ArangoDB's JavaScript interface on the server-side as well as in
-  ArangoDB's shell to interact with the server using the JavaScript language
+  You can use ArangoDB's JavaScript interface in ArangoDB's shell `arangosh`
+  to interact with the server using the JavaScript language
 ---
-The JavaScript API is available on the server-side in the following contexts:
+The JavaScript API is available in the ArangoDB Shell client tool
+[arangosh](../../components/tools/arangodb-shell/_index.md).
 
-- [Foxx microservices](../foxx-microservices/_index.md)
-- [User-defined AQL functions](../../aql/user-defined-functions.md)
-- [JavaScript Transactions](../transactions/javascript-transactions.md)
-- [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)
-
-Running on the server-side means that the code runs directly inside of the
-_arangod_ process, bypassing the HTTP API. In cluster deployments, the code
-is executed on a Coordinator.
-
-The JavaScript API is also available in the ArangoDB Shell client tool:
-
-- [arangosh](../../components/tools/arangodb-shell/_index.md)
-
-It communicates with the server via the HTTP API.
-<!-- TODO (DOC-139): There are some differences to the server-side API. -->
+It communicates with the server via the
+[HTTP API](../../develop/http-api/_index.md).
 
 {{< tip >}}
 The JavaScript API cannot be used in browsers, Node.js, or other JavaScript
@@ -33,19 +21,17 @@ Note that it has a different interface.
 ## Usage example
 
 The key element for using the JavaScript API is the
-[`db` object](@arangodb/db-object.md), which is available by default
-in _arangosh_ and can be imported in server-side JavaScript code from the
-`@arangodb` module.
-
-```js
-// Import the db object (only in server-side contexts)
-let db = require("@arangodb").db;
-```
+[`db` object](@arangodb/db-object.md), which is automatically imported from the
+`@arangodb` module in _arangosh_.
 
 The `db` object lets you access and manage databases, for example:
 
 ```js
+// The db object is available by default in arangosh
+//let db = require("@arangodb").db;
+
 // Create a new database
+db._useDatabase("_system");
 db._createDatabase("myDB");
 
 // Make it the current database
@@ -107,8 +93,8 @@ AQL query returns a [_cursor_ object](@arangodb/cursor-object.md).
 let cursor = db._query(`FOR doc IN collection FILTER doc.value >= "bar" RETURN doc`);
 cursor.toArray();
 
-// Import the aql query helper (only in server-side contexts)
-const aql = require("@arangodb").aql;
+// The aql query helper is available by default in arangosh
+//const aql = require("@arangodb").aql;
 
 // Run an AQL query using the query helper to use variables as bind parameters
 let limit = 5;
@@ -128,8 +114,7 @@ ArangoDB uses a Node.js-compatible module system. You can use the function
 `require()` in order to load a module or library. It returns the exported
 variables and functions of the module.
 
-The following global variables are available in _arangosh_ and all server-side
-JavaScript contexts in ArangoDB:
+The following global variables are available in _arangosh_:
 
 - `global`
 - `process`
@@ -173,13 +158,6 @@ You can use the following modules as an end-user:
 - [**@arangodb/crypto**](crypto.md)
   provides various cryptography functions including hashing algorithms.
 
-- [**@arangodb/foxx**](../foxx-microservices/_index.md)
-  is the namespace providing the various building blocks of the Foxx
-  microservice framework.
-
-  - [**@arangodb/locals**](../foxx-microservices/reference/related-modules/_index.md#the-arangodblocals-module)
-    is a helper module to use Foxx together with Webpack.
-
 - Graph-related modules:
 
   - [**@arangodb/general-graph**](../../graphs/general-graphs/_index.md)
@@ -200,9 +178,6 @@ You can use the following modules as an end-user:
 
 - [**@arangodb/request**](request.md)
   provides the functionality for making synchronous HTTP/HTTPS requests.
-
-- [**@arangodb/tasks**](tasks.md)
-  implements task management methods
 
 - [**@arangodb/users**](../../operations/administration/user-management/in-arangosh.md)
   provides an interface for user management.
