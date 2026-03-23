@@ -2,15 +2,24 @@
 
 ## Args: $1=architecture
 
+# Stop after this many attempts (2s apart) if HTTP 200 is never seen.
+MAX_REACHABILITY_ATTEMPTS="${MAX_REACHABILITY_ATTEMPTS:-30}"
+
 function checkIPIsReachable() {
-   res=$(curl -s -I $1 | grep HTTP/ | awk {'print $2'})
+   local url="$1"
+   local attempt="${2:-1}"
+   res=$(curl -s -I "$url" | grep HTTP/ | awk {'print $2'})
    if [ "$res" = "200" ]; then
      echo "Connection success"
-   else
-     echo "Connection failed for $1"
-    sleep 2s
-    checkIPIsReachable $1
+     return 0
    fi
+   echo "Connection failed for $url (attempt $attempt/$MAX_REACHABILITY_ATTEMPTS)"
+   if [ "$attempt" -ge "$MAX_REACHABILITY_ATTEMPTS" ]; then
+     echo "ERROR: gave up waiting for HTTP 200 from $url after $MAX_REACHABILITY_ATTEMPTS attempts" >&2
+     exit 1
+   fi
+   sleep 2s
+   checkIPIsReachable "$url" $((attempt + 1))
 }
 
 ARANGOPROXY_ARGS=""
