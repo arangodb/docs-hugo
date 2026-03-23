@@ -8,7 +8,9 @@ MAX_REACHABILITY_ATTEMPTS="${MAX_REACHABILITY_ATTEMPTS:-30}"
 function checkIPIsReachable() {
    local url="$1"
    local attempt="${2:-1}"
-   res=$(curl -s --dump-header --output /dev/null "$url" | grep HTTP/ | awk {'print $2'})
+   # HEAD (-I) returns 405 for /_api/version in ArangoDB 4.0+
+   res=$(curl -sS --connect-timeout 5 -o /dev/null -w '%{http_code}' -X GET "$url" 2>/dev/null || true)
+   [ -z "$res" ] && res="000"
    if [ "$res" = "200" ]; then
      echo "Connection success"
      return 0
