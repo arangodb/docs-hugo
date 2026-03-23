@@ -675,12 +675,36 @@ function trap_container_exit() {
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1
   docker stop docs_arangoproxy docs_site
+
+  arangoproxy_exit=0
+  site_exit=0
+  if docker inspect docs_arangoproxy &>/dev/null; then
+    arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+  fi
+  if docker inspect docs_site &>/dev/null; then
+    site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+  fi
+  arangoproxy_exit=${arangoproxy_exit:-0}
+  site_exit=${site_exit:-0}
+
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
-  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
-  log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
 
-  exit $exitStatus
+  summary_exit=$(grep -oE '<error code=[0-9]+' /home/summary.md 2>/dev/null | head -n 1 | cut -d '=' -f2)
+  if [ -n "$summary_exit" ]; then
+    log "[stop_all_containers] Toolchain Exit Status (summary) $summary_exit" >> /home/toolchain.log
+    exit "$summary_exit"
+  fi
+  if [ "${arangoproxy_exit:-0}" -ne 0 ]; then
+    log "[stop_all_containers] Toolchain Exit Status (docs_arangoproxy) $arangoproxy_exit" >> /home/toolchain.log
+    exit "$arangoproxy_exit"
+  fi
+  if [ "${site_exit:-0}" -ne 0 ]; then
+    log "[stop_all_containers] Toolchain Exit Status (docs_site) $site_exit" >> /home/toolchain.log
+    exit "$site_exit"
+  fi
+  log "[stop_all_containers] Toolchain Exit Status 0" >> /home/toolchain.log
+  exit 0
 }
 
 
