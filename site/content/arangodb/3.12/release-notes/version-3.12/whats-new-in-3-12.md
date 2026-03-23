@@ -2724,6 +2724,20 @@ The following metrics related to activities have been added:
 | `arangodb_activities_total` | Total number of created activities since database process start |
 | `arangodb_activities_existing` | Number of currently existing activities |
 
+### Vector index metrics
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vector_index_ingestion_duration` | Duration of vector index ingestion in seconds.
+| `arangodb_vector_index_training_duration` | Duration of vector index training in seconds.
+| `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing.
+| `arangodb_vector_index_waiting_for_training` | Number of unusable vector indexes on this DB-Server.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
