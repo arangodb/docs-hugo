@@ -156,6 +156,16 @@ as they are either obsolete or didn't provide much value and better alternatives
     RETURN doc`, { "@collection": "coll", latitude: 50.93, longitude: 6.93 });
   ```
 
+- `range(name, left, right)`:
+
+  Use an AQL query like this:
+
+  ```js
+  db._query(`FOR doc IN @@collection
+    FILTER doc.@attribute >= @left && doc.@attribute < @right
+    RETURN doc`, { "@collection": "coll", attribute: "name", left: "bert", right: "emily" });
+  ```
+
 - `removeByKeys(keys)`:
 
   Use `remove(keys)`, which can also remove multiple documents, but it returns

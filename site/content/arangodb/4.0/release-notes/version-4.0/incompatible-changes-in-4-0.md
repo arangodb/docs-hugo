@@ -46,6 +46,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `load()`
 - `lookupByKeys()`
 - `near()`
+- `range()`
 - `removeByKeys()`
 - `unload()`
 - `within()`
