@@ -57,7 +57,8 @@ The following methods have been removed from
 [_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
 as they are either obsolete or didn't provide much value and better alternatives exist:
 
-- `closedRange(name, left, right)`:\
+- `closedRange(name, left, right)`:
+
   Use an AQL query like this:
 
   ```js
