@@ -1178,8 +1178,6 @@ arangobench \
 This does not compromise the use of the other client tools, that preserve
 the behavior of having one Coordinator and one endpoint.
 
-Also see [_arangobench_ Options](../../components/tools/arangobench/_index.md#general-configuration)
-
 ### arangodump
 
 _arangodump_ now supports multiple Coordinators. The flag `--server.endpoint`
