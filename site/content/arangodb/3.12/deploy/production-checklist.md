@@ -61,7 +61,7 @@ have been performed on your production system before you go live.
   - Set [`--server.export-metrics-api`](../components/arangodb-server/options.md#--serverexport-metrics-api) to `true` to enable the metrics endpoints
   - Enable [`--server.export-read-write-metrics`](../components/arangodb-server/options.md#--serverexport-read-write-metrics) for additional document read/write metrics
   - Consider enabling [`--server.export-shard-usage-metrics`](../components/arangodb-server/options.md#--serverexport-shard-usage-metrics) for detailed shard usage tracking
-  - Configure your monitoring system (Prometheus/Grafana) to scrape the `/_admin/metrics/v2` endpoint
+  - Configure your monitoring system (Prometheus/Grafana) to scrape the `/_admin/metrics` endpoint
   - See [HTTP interface for server metrics](../develop/http-api/monitoring/metrics.md) for detailed information
 
 - **Enable RocksDB statistics**: Consider enabling [`--rocksdb.enable-statistics`](../components/arangodb-server/options.md#--rocksdbenable-statistics) to `true` for detailed RocksDB performance metrics.

@@ -128,9 +128,11 @@ paths:
   /_admin/log:
     get:
       operationId: getLog
+      deprecated: true
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
+        This endpoint should no longer be used. It is deprecated from version
+        3.8.0 onward and removed in ArangoDB 4.0.
         Use `/_admin/log/entries` instead, which provides the same data in a more
         intuitive and easier to process format.
         {{</* /warning */>}}

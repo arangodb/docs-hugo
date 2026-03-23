@@ -668,12 +668,14 @@ paths:
                       foxxmaster:
                         description: |
                           The server ID of the Coordinator that is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
                       isFoxxmaster:
                         description: |
                           Whether the queried Coordinator is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
@@ -1190,8 +1192,8 @@ paths:
 
         This endpoint is available regardless of the
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
-        setting, so that the Arango Data Platform web interface for instance can always
-        access the public options.
+        setting, so that the Arango Contextual Data Platform web interface for
+        instance can always access the public options.
       parameters:
         - name: database-name
           in: path
@@ -2825,7 +2827,12 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Executes the JavaScript code in the body on the server as the body
         of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type
@@ -2897,6 +2904,7 @@ paths:
   /_db/_system/_api/endpoint:
     get:
       operationId: listEndpoints
+      deprecated: true
       description: |
         {{</* warning */>}}
         This route should no longer be used.

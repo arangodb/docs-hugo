@@ -5,8 +5,8 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 aliases:
-  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/arangodb-server/ldap # 3.11 -> 3.12
   - ../data-science/pregel # 3.11 -> 3.12
   - ../data-science/pregel/algorithms # 3.11 -> 3.12
@@ -192,8 +192,8 @@ detailed information about breaking changes before upgrading.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
-  more general version API with the endpoint `GET /_api/version`. The endpoint may be
-  removed in a future version of ArangoDB.
+  more general version API with the endpoint `GET /_api/version`. The endpoint
+  is removed in ArangoDB v4.0.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
