@@ -76,6 +76,14 @@ as they are either obsolete or didn't provide much value and better alternatives
   The full-text index type has been removed. Use `inverted` indexes or
   ArangoSearch Views instead.
 
+- `ensureGeoConstraint(lat, lon)`:
+
+  Use `ensureIndex(description)` with a `geo` index type.
+
+- `ensureGeoIndex(lat, lon)`:
+
+  Use `ensureIndex(description)` with a `geo` index type.
+
 - `ensureHashIndex(description)`:
 
   Use `ensureIndex(description)` with a `persistent` index type.
@@ -83,6 +91,11 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `ensureSkiplist(description)`:
 
   Use `ensureIndex(description)` with a `persistent` index type.
+
+- `ensureUniqueConstraint(description)`:
+
+  Use `ensureIndex(description)` with a `persistent` index type and `unique`
+  set to `true`.
 
 - `ensureUniqueSkiplist(description)`
 

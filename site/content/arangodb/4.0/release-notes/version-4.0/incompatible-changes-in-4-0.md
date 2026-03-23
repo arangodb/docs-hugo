@@ -34,8 +34,11 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `closedRange()`
 - `documents()`
 - `ensureFulltextIndex()`
+- `ensureGeoConstraint()`
+- `ensureGeoIndex()`
 - `ensureHashIndex()`
 - `ensureSkiplist()`
+- `ensureUniqueConstraint()`
 - `ensureUniqueSkiplist()`
 - `fulltext()`
 - `geo()`
