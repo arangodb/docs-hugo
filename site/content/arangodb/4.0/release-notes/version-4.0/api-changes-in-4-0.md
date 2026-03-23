@@ -177,7 +177,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `withinRectangle(lat1, lon1, lat2, lon2)`
 
   Use an AQL query like this, but note that a GeoJSON polygon uses geodesic lines
-  from version 3.10.0 onward (see [GeoJSON interpretation](#geojson-interpretation)):
+  from version 3.10.0 onward (see [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)):
 
   ```js
   db._query(`LET rect = GEO_POLYGON([ [
@@ -187,7 +187,7 @@ as they are either obsolete or didn't provide much value and better alternatives
       [lon1, lat2], // top-left
       [lon1, lat1], // bottom-left
     ] ])
-    FOR doc IN @collection
+    FOR doc IN @@collection
       FILTER GEO_CONTAINS(rect, [doc.longitude, doc.latitude])
       RETURN doc`, { "@collection": "coll", lat1: 50.93, lon1: 6.93, lat2: 50.94, lon2: 6.94 });
   ```
