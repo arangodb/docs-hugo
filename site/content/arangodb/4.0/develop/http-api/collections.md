@@ -333,7 +333,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -773,7 +772,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -1162,7 +1160,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -1891,7 +1888,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -2385,7 +2381,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -3414,7 +3409,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -4378,7 +4372,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)
@@ -4972,7 +4965,6 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
                   #   status (legacy)

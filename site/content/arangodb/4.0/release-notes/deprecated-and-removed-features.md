@@ -240,13 +240,9 @@ detailed information about breaking changes before upgrading.
   provides more flexibility.
 
 - **`minReplicationFactor` collection option**:\
-  The `minReplicationFactor`
-  option for collections has been renamed to `writeConcern`. If
-  `minReplicationFactor` is specified and no `writeConcern` is set, the
-  `minReplicationFactor` value will still be picked up and used as
-  `writeConcern` value. However, this compatibility mode will be removed
-  eventually, so changing applications from using `minReplicationFactor` to
-  `writeConcern` is advised.
+  The `minReplicationFactor` option for collections has been renamed to
+  `writeConcern`. You can no longer use `minReplicationFactor` as an alias for
+  `writeConcern` from ArangoDB v4.0 onward.
 
 - **Outdated startup options**:\
   The following _arangod_ startup options are deprecated and will be removed
