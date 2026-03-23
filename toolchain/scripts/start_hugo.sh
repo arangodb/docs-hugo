@@ -8,7 +8,7 @@ MAX_REACHABILITY_ATTEMPTS="${MAX_REACHABILITY_ATTEMPTS:-40}"
 function checkIPIsReachable() {
    local url="$1"
    local attempt="${2:-1}"
-   res=$(curl -s -I "$url" | grep HTTP/ | awk {'print $2'})
+   res=$(curl -s --dump-header --output /dev/null "$url" | grep HTTP/ | awk {'print $2'})
    if [ "$res" = "200" ]; then
      echo "Connection success"
      return 0
