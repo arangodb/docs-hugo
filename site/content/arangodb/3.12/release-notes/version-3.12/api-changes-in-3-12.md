@@ -823,6 +823,18 @@ activities feature:
 - `arangodb_activities_total`
 - `arangodb_activities_existing`
 
+---
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes:
+
+- `arangodb_vector_index_ingestion_duration`
+- `arangodb_vector_index_training_duration`
+- `arangodb_vector_index_training_ongoing`
+- `arangodb_vector_index_unusable`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
