@@ -94,6 +94,15 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 
 			output = output + scanner.Text() + "\n"
 		}
+		if buf {
+			break
+		}
+		if err := scanner.Err(); err != nil {
+			models.Logger.Printf("[%s] [arangosh.Exec] stdout read error: %v", exampleName, err)
+			break
+		}
+		// EOF or arangosh exited without printing EOFD (e.g. fatal error) — do not spin forever.
+		break
 	}
 	return
 }
