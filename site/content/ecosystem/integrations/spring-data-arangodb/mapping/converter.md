@@ -4,11 +4,16 @@ menuTitle: Converter
 weight: 30
 description: ''
 aliases:
-  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/converter
-  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/converter
-  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/converter
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/converter
-  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/mapping/converter
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
 ---
 ## Registering a Spring Converter
 

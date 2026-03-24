@@ -4,11 +4,16 @@ menuTitle: Relations
 weight: 20
 description: ''
 aliases:
-  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/relations
-  - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/relations
-  - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/relations
-  - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/relations
-  - ../../../../../arangodb/devel/develop/integrations/spring-data-arangodb/mapping/relations
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
+  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
+  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
+  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
+  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
 ---
 With the annotation `@Relations` applied on a collection or array field in a
 class annotated with `@Document`, the nested objects are fetched from the

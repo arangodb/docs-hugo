@@ -4,7 +4,7 @@
 /arangodb/3.11/develop/integrations/kafka-connect-arangodb-sink-connector/configuration/                            /ecosystem/integrations/kafka-connect-arangodb-sink-connector/configuration/        301
 /arangodb/3.11/develop/integrations/spring-boot-arangodb/                                                           /ecosystem/integrations/spring-boot-arangodb/                                       301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/                                                           /ecosystem/integrations/spring-data-arangodb/                                       301
-/arangodb/3.11/develop/integrations/spring-data-arangodb/migration/                                                 /ecosystem/integrations/spring-data-arangodb/migration/                             301
+/arangodb/3.11/develop/integrations/spring-data-arangodb/migration/                                                 /ecosystem/integrations/spring-data-arangodb/                                       301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/                                       /ecosystem/integrations/spring-data-arangodb/                                       301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/                               /ecosystem/integrations/spring-data-arangodb/mapping/                               301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing/                      /ecosystem/integrations/spring-data-arangodb/mapping/auditing/                      301

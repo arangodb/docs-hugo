@@ -6,6 +6,21 @@ description: >-
   Integrations for third-party tools and frameworks let you use ArangoDB as the
   database backend for these products
 aliases:
+  - ../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../arangodb/3.11/develop/integrations/spring-data-arangodb/migration
+  - ../arangodb/3.12/develop/integrations/spring-data-arangodb/migration
+  - ../arangodb/stable/develop/integrations/spring-data-arangodb/migration
+  - ../arangodb/4.0/develop/integrations/spring-data-arangodb/migration
+  - ../arangodb/devel/develop/integrations/spring-data-arangodb/migration
   - ../arangodb/3.11/develop/integrations
   - ../arangodb/3.12/develop/integrations
   - ../arangodb/stable/develop/integrations

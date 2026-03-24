@@ -6,11 +6,16 @@ description: >-
   The features and conventions for mapping Java objects to documents and how to
   override those conventions with annotation based mapping metadata
 aliases:
-  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping
-  - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping
-  - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping
-  - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/mapping
+  - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping
+  - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping
+  - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping
+  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping
+  - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping
 ---
 ## Conventions
 
