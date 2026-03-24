@@ -6,7 +6,7 @@ description: >-
   `foxx-cli` is command line tool for managing and developing ArangoDB Foxx services
 ---
 {{< warning >}}
-Foxx microservices are deprecated and removed in ArangoDB v4.0.
+The Foxx microservices feature is deprecated and removed in ArangoDB v4.0.
 Foxx CLI is therefore not maintained anymore.
 {{< /warning >}}
 
