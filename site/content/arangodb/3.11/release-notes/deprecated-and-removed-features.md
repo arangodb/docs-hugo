@@ -131,8 +131,8 @@ detailed information about breaking changes before upgrading.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
-  more general version API with the endpoint `GET /_api/version`. The endpoint may be
-  removed in a future version of ArangoDB.
+  more general version API with the endpoint `GET /_api/version`. The endpoint
+  is removed in ArangoDB v4.0.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and

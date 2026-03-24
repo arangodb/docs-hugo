@@ -114,6 +114,7 @@ paths:
   /_db/{database-name}/_api/replication/logger-follow:
     get:
       operationId: getReplicationLoggerFollow
+      deprecated: true
       description: |
         {{</* warning */>}}
         This route should no longer be used.
