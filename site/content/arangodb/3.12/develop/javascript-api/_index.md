@@ -147,6 +147,9 @@ You can use the following modules as an end-user:
 - [**@arangodb**](@arangodb/_index.md)
   provides direct access to the database and its collections.
 
+- [**@arangodb/activities**](activities.md)
+  lets you pretty-print the current server activities.
+
 - [**@arangodb/analyzers**](analyzers.md)
   provides an interface to manage ArangoSearch Analyzers.
 

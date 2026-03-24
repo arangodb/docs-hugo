@@ -392,8 +392,8 @@ error is thrown. For information about the naming constraints for collections, s
 
 - `distributeShardsLike` (string, _optional_, default: `""`):
   The name of another collection. If this property is set in a cluster, the
-  collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-  properties from the specified collection (referred to as the _prototype collection_)
+  collection follows the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+  properties of the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
   the other collection. This data co-location is utilized to optimize queries.
 
@@ -1171,6 +1171,10 @@ See [`db._createStatement()`](../../../aql/how-to-invoke-aql/with-arangosh.md#wi
 
 See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
 
+### `db._query(queryObject [, mainOptions] [, subOptions]])`
+
+See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
+
 ### `db._explain(queryString)`
 
 See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.md).
@@ -1243,8 +1247,8 @@ as a list of supported features such as types of indexes.
 
 ### `db._engineStats()`
 
-Returns statistics related to the storage engine activity, including figures
-about data size, cache usage, etc.
+Returns detailed statistics related to the RocksDB storage engine activity,
+including figures about data size, cache usage, individual column families, etc.
 
 ### `db._version()`
 
@@ -1282,4 +1286,4 @@ Sets a license.
 - `force` (boolean, _optional_): Whether to change the license even if it expires
   sooner than the current one. Default: `false`.
 
-Also see [Apply a license](../../../operations/administration/license-management.md#apply-a-license).
+Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
