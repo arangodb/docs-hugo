@@ -54,7 +54,7 @@ reduce the attack surface.
   - `jwt`: Enable the API but restrict it to superuser JWTs.
   - `true` (default): Enable the API.
 
-- [`--cluster.api-jwt-policy`](../../components/arangodb-server/options.md#--clusterapi.jwt-policy):
+- [`--cluster.api-jwt-policy`](../../components/arangodb-server/options.md#--clusterapi-jwt-policy):
   - `jwt-all`: Superuser JWT required to access all operations
   - `jwt-write`: Superuser JWT required for `POST`/`PUT`/`DELETE` operations
   - `jwt-compat` (default): ArangoDB v3.7 compatibility mode
