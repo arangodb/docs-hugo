@@ -674,18 +674,26 @@ function trap_container_exit() {
 
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1
-  docker stop docs_arangoproxy docs_site
 
+  # Read exit codes before docker stop; after stop, ExitCode is often 137 from SIGKILL, not the app.
   arangoproxy_exit=0
   site_exit=0
   if docker inspect docs_arangoproxy &>/dev/null; then
-    arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+    arangoproxy_status=$(docker inspect docs_arangoproxy --format '{{.State.Status}}')
+    if [ "$arangoproxy_status" = "exited" ]; then
+      arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+    fi
   fi
   if docker inspect docs_site &>/dev/null; then
-    site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+    site_status=$(docker inspect docs_site --format '{{.State.Status}}')
+    if [ "$site_status" = "exited" ]; then
+      site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+    fi
   fi
   arangoproxy_exit=${arangoproxy_exit:-0}
   site_exit=${site_exit:-0}
+
+  docker stop docs_arangoproxy docs_site
 
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
