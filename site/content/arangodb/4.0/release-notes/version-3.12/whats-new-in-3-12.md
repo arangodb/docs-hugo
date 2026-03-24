@@ -2733,10 +2733,10 @@ state of the vector indexes.
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_vector_index_ingestion_duration` | Duration of vector index ingestion in seconds.
-| `arangodb_vector_index_training_duration` | Duration of vector index training in seconds.
-| `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing.
-| `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server.
+| `arangodb_vector_index_ingestion_duration` | Duration of vector index ingestion in seconds. |
+| `arangodb_vector_index_training_duration` | Duration of vector index training in seconds. |
+| `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing. |
+| `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server. |
 
 ## Client tools
 
