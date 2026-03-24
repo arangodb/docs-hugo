@@ -370,8 +370,8 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-AI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
-of them. See [Environment remarks](#environment-remarks) for details.
+Agentic AI Suite, the Contextual Data Platform, the Arango Managed Platform (AMP),
+or multiple of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
 version 3.12.5.
@@ -573,8 +573,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../data-platform/_index.md` instead of `/data-platform/_index.md` or
-  `https://docs.arango.ai/data-platform/`.
+  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
+  `https://docs.arango.ai/platform-suite/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -620,8 +620,12 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Data Platform_, _Arango AI Data Platform_, and _AI Suite_, but not
-    ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~, ~~AI Services~~, or ~~GenAI Suite~~
+  - _Arango Contextual Data Platform_, but not
+     ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
+  - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
+    ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
+  - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
@@ -727,15 +731,27 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, AI Data Platform,
+Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
 
-In the AI Data Platform only:
+In the Contextual Data Platform only:
 
 ```markdown
-{{< tag "AI Data Platform" >}}
+{{< tag "Contextual Data Platform" >}}
+```
+
+In the Platform Suite of the Contextual Data Platform:
+
+```markdown
+{{< tag "Platform Suite" >}}
+```
+
+In the Agentic AI Suite of the Contextual Data Platform only:
+
+```markdown
+{{< tag "Agentic AI Suite" >}}
 ```
 
 In the Arango Managed Platform (AMP) only:

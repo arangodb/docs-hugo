@@ -6,7 +6,10 @@ description: >-
   The HTTP API for JavaScript Transactions lets you run a transaction that
   leverages ArangoDB's JavaScript API by submitting a single HTTP request
 ---
-<small>Deprecated in: v3.12.0</small>
+{{< warning >}}
+JavaScript Transactions are deprecated from v3.12.0 onward and are removed
+in ArangoDB v4.0.
+{{< /warning >}}
 
 JavaScript Transactions are executed on the server. Transactions can be 
 initiated by clients by sending the transaction description for execution to
@@ -31,10 +34,11 @@ paths:
   /_db/{database-name}/_api/transaction:
     post:
       operationId: executeJavaScriptTransaction
+      deprecated: true
       description: |
         {{</* warning */>}}
-        JavaScript Transactions are deprecated from v3.12.0 onward and will be
-        removed in a future version.
+        JavaScript Transactions are deprecated from v3.12.0 onward and are
+        removed in v4.0.
         {{</* /warning */>}}
 
         The transaction description must be passed in the body of the POST request.

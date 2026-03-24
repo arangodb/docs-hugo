@@ -147,18 +147,18 @@ have been performed on your production system before you go live.
 - **Third-party monitoring**: Configure third-party metrics monitoring tools
   like Grafana with Prometheus to monitor ArangoDB metrics comprehensively.
 
-- **Metrics collection**: Enable the ArangoDB metrics API for
+- **Configure metrics collection**: Enable the ArangoDB metrics API for
   production monitoring:
   - Set [`--server.export-metrics-api`](../components/arangodb-server/options.md#--serverexport-metrics-api)
-    to `true` to enable the metrics endpoints
+    to `true` to enable the metrics endpoints.
   - Enable [`--server.export-read-write-metrics`](../components/arangodb-server/options.md#--serverexport-read-write-metrics)
-    for additional document read/write metrics
+    for additional document read/write metrics.
   - Consider enabling [`--server.export-shard-usage-metrics`](../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
-    for detailed shard usage tracking
+    for detailed shard usage tracking.
   - Configure your monitoring system (Prometheus/Grafana) to scrape the
-    `/_admin/metrics/v2` endpoint
+    `/_admin/metrics` endpoint.
   - See [HTTP interface for server metrics](../develop/http-api/monitoring/metrics.md)
-    for detailed information
+    for detailed information.
 
 - **RocksDB statistics**: Consider enabling
   [`--rocksdb.enable-statistics`](../components/arangodb-server/options.md#--rocksdbenable-statistics)
