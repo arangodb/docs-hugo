@@ -225,17 +225,18 @@ in a batch part will be ignored.
 
 ### Execute a batch request
 
-{{< warning >}}
-The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
-in v3.12.3.
-{{< /warning >}}
-
 ```openapi
 paths:
   /_db/{database-name}/_api/batch:
     post:
       operationId: executeBatchRequest
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
+        in v3.12.3.
+        {{</* /warning */>}}
+
         Executes a batch request. A batch request can contain any number of
         other requests that can be sent to ArangoDB in isolation. The benefit of
         using batch requests is that batching requests requires less client/server

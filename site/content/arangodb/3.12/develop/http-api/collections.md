@@ -5741,11 +5741,12 @@ paths:
   /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The load function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
@@ -5932,11 +5933,12 @@ paths:
   /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The unload function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
