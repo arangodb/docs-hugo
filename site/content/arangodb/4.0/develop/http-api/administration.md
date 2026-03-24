@@ -664,21 +664,6 @@ paths:
                       Information about the Coordinators.
                       *Cluster only* (Coordinators)
                     type: object
-                    properties:
-                      foxxmaster:
-                        description: |
-                          The server ID of the Coordinator that is the Foxx master.
-                          **Deprecated**
-                        type: array
-                        items:
-                          type: string
-                      isFoxxmaster:
-                        description: |
-                          Whether the queried Coordinator is the Foxx master.
-                          **Deprecated**
-                        type: array
-                        items:
-                          type: string
                   agent:
                     description: |
                       Information about the Agents.

@@ -10,7 +10,10 @@ description: >-
 
 ### Behavior changes
 
+#### Server status API
 
+The `GET /_admin/status` endpoint no longer includes the sub-attributes
+`foxxmaster` and `isFoxxmaster` under `coordinator` due to the removal of Foxx.
 
 ### Privilege changes
 
