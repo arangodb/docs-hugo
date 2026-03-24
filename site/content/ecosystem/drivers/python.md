@@ -6,6 +6,7 @@ description: >-
   Python-Arango is the official ArangoDB driver that provides Python
   applications with the complete range of features exposed by the server API
 aliases:
+  - ../../arangodb/3.11/develop/drivers/python
   - ../../arangodb/3.12/develop/drivers/python
   - ../../arangodb/stable/develop/drivers/python
   - ../../arangodb/4.0/develop/drivers/python
@@ -66,8 +67,6 @@ from arangoasync import ArangoClient
 {{< /tab >}}
 
 {{< /tabs >}}
-
-
 
 ## Get started
 
@@ -352,6 +351,9 @@ db_list = sys_db.databases()
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Retrieve the names of all databases on the server as list of strings
     db_list = await sys_db.databases()
 ```
@@ -379,6 +381,9 @@ test_db = client.db("test", username="root", password="passwd")
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Create a new database named "test".
     ok = await sys_db.create_database("test")
 
@@ -407,6 +412,9 @@ sys_db.delete_database("test")
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Delete the 'test' database
     ok = await sys_db.delete_database("test")
 ```
@@ -435,6 +443,9 @@ collection_list = db.collections()
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Connect to the database
     db = await client.db(db_name, auth=Auth(username=user_name, password=pass_word))
 
@@ -463,6 +474,9 @@ patients_col = db.create_collection(name="patients")
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Create a new collection for doctors
     doctors_col = await db.create_collection(name="doctors")
 
@@ -490,6 +504,9 @@ db.delete_collection(name="doctors")
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Delete the 'doctors' collection
     ok = await db.delete_collection(name="doctors")
 ```
@@ -520,6 +537,9 @@ meta2 = patients_col.insert({"name": "John", "age": 18})
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Get a reference to the 'patients' collection
     patients_col = db.collection(name="patients")
 
@@ -560,6 +580,9 @@ meta = patients_col.update({ "_key": "741603", "city": "Cleveland" })
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Patch John's patient record by adding a city property to the document
     meta = await patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
@@ -601,6 +624,9 @@ meta = patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 1
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Replace John's document
     meta = await patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
@@ -640,6 +666,9 @@ patients_col.delete({ "_key": "741603" })
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Delete John's document
     meta = await patients_col.delete({ "_key": "741603" })
 ```
@@ -670,6 +699,9 @@ for doc in cursor:
 
 {{< tab "python-arango-async" >}}
 ```python
+#async with ... as client:
+    # ...
+
     # Run a query
     cursor = await db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 
