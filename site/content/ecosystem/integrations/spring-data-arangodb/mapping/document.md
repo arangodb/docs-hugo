@@ -4,6 +4,7 @@ menuTitle: Document
 weight: 5
 description: ''
 aliases:
+  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/document
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/document
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/document
   - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/document

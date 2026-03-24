@@ -4,6 +4,7 @@ menuTitle: Converter
 weight: 30
 description: ''
 aliases:
+  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/converter
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/converter
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/converter
   - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/converter

@@ -4,6 +4,7 @@ menuTitle: Query methods
 weight: 10
 description: ''
 aliases:
+  - ../../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
   - ../../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
   - ../../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/repositories/queries/query-methods
   - ../../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/repositories/queries/query-methods

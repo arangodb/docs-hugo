@@ -4,6 +4,7 @@ menuTitle: Indexes
 weight: 25
 description: ''
 aliases:
+  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/indexes
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/indexes
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/indexes
   - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/indexes

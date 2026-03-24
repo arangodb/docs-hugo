@@ -6,6 +6,7 @@ description: >-
   Interact with ArangoDB using the high-level and consistent abstraction
   provided by Spring Data repositories
 aliases:
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/repositories
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/repositories
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/repositories
   - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/repositories

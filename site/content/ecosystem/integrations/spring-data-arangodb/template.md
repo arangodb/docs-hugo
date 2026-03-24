@@ -6,6 +6,7 @@ description: >-
   With `ArangoTemplate`, Spring Data ArangoDB offers a central support for
   interactions with the database over a rich feature set
 aliases:
+  - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/template
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/template
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/template
   - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/template

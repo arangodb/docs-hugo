@@ -6,6 +6,7 @@ description: >-
   The Spring Data ArangoDB integration is a library for accessing data stored in
   ArangoDB from Spring-based Java application
 aliases:
+  - ../../arangodb/3.11/develop/integrations/spring-data-arangodb
   - ../../arangodb/3.12/develop/integrations/spring-data-arangodb
   - ../../arangodb/stable/develop/integrations/spring-data-arangodb
   - ../../arangodb/4.0/develop/integrations/spring-data-arangodb

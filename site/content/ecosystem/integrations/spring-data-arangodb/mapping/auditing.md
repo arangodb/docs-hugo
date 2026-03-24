@@ -4,6 +4,7 @@ menuTitle: Auditing
 weight: 40
 description: ''
 aliases:
+  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/auditing
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/auditing
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/auditing
   - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/auditing

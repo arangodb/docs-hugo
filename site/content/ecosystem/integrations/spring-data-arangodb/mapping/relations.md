@@ -4,6 +4,7 @@ menuTitle: Relations
 weight: 20
 description: ''
 aliases:
+  - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/mapping/relations
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/mapping/relations
   - ../../../../../arangodb/stable/develop/integrations/spring-data-arangodb/mapping/relations
   - ../../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/mapping/relations
