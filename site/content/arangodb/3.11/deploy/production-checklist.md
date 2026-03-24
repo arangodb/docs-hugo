@@ -101,8 +101,8 @@ have been performed on your production system before you go live.
   allow nothing.
 
   Note that these options restrict all JavaScript execution within the
-  _arangod_ process, not just UDFs. Foxx microservices and server-side
-  operations initiated through _arangosh_ are also subject to these
+  _arangod_ process, not just a single feature like UDFs. Foxx microservices and
+  server-side operations initiated through _arangosh_ are also subject to these
   restrictions. In particular, `--javascript.files-allowlist` is the most
   likely to cause visible side effects, as file operations are fundamental
   to Foxx app installation and server-side administration. Deployments that
