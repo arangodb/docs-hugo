@@ -239,6 +239,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
@@ -347,6 +399,36 @@ identifier that you can retrieve via a new
 [`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
 in the HTTP API.
 
+#### Get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added for retrieving a small, curated subset of the configured server
+startup options that are safe to expose to any authenticated user.
+
+#### Crash dump management
+
+<small>Introduced in: v3.12.8</small>
+
+New endpoints for viewing and managing crash dumps have been added to the HTTP API:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+for details.
+
+#### Activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature.
+See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -439,6 +521,17 @@ Two new statistics are included in the response when you execute an AQL query:
   }
 }
 ```
+
+#### Query API
+
+<small>Introduced in: v3.12.2</small>
+
+The endpoints for the lists of currently running queries and slow queries
+(`/_api/query/current` and `/_api/query/slow`) now include the following
+attributes:
+- `dataSources` (array of strings), only present if tracking of data sources is enabled
+- `modificationQuery` (boolean)
+- `warnings` (integer)
 
 #### Query plan cache attributes
 
@@ -711,6 +804,25 @@ and physical memory:
 - `arangodb_server_statistics_effective_cpu_cores`
 - `arangodb_server_statistics_effective_physical_memory`
 
+---
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster:
+
+- `arangodb_metadata_total_number_of_shards`
+- `arangodb_metadata_number_follower_shards`
+- `arangodb_metadata_number_out_of_sync_shards`
+- `arangodb_metadata_number_not_replicated_shards`
+- `arangodb_metadata_shard_followers_out_of_sync_number`
+
+Furthermore, the following metrics have been added as part of the experimental
+activities feature:
+
+- `arangodb_activities_total`
+- `arangodb_activities_existing`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -824,7 +936,7 @@ are unaffected.
 
 The `GET /_admin/database/target-version` endpoint has been removed in favor of the
 more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3.
+The endpoint was deprecated since v3.11.3 and it is removed in ArangoDB v4.0.
 
 #### JavaScript-based traversal using `/_api/traversal`
 
