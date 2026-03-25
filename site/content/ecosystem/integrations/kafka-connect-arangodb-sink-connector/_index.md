@@ -264,13 +264,13 @@ processing, are available via JMX. For more information, see
 To connect to ArangoDB using an SSL connection, you must set the `ssl.enabled`
 configuration property to `true`.
 
-### Certificate from file
+### Certificate from a file
 
-The connector can load the trust store to be used from file. The following
+The connector can load the trust store from a file. The following
 configuration properties can be used:
 
-- `ssl.truststore.location`: the location of the trust store file
-- `ssl.truststore.password`: the password for the trust store file
+- `ssl.truststore.location`: The location of the trust store file
+- `ssl.truststore.password`: The password for the trust store file
 
 Note that the trust store file path needs to be accessible at the same given
 location from all Kafka Connect workers.
