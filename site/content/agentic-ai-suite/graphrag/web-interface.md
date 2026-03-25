@@ -91,6 +91,37 @@ service automatically downloads and loads models from the MLflow registry.
 
 See also the [Importer](../reference/importer/) service documentation.
 
+## Update Importer service parameters
+
+You can update the Importer service parameters at any time from the
+**Project Settings** dialog, for example if you selected an incorrect model or
+provider combination, or if your API key has changed or expired.
+
+{{< tabs "update-importer-service" >}}
+
+{{< tab "OpenAI" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click the **Edit** button.
+3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "OpenRouter" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click the **Edit** button.
+3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**, or **OpenRouter API Key** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "Triton LLM Host" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click the **Edit** button.
+3. Update the **LLM API Provider** or **Model** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ## Add data source
 
 To add your first data source:
@@ -176,6 +207,37 @@ service automatically downloads and loads models from the MLflow registry.
 {{< /tabs >}}
 
 See also the [Retriever](../reference/retriever/) documentation.
+
+## Update Retriever service parameters
+
+You can update the Retriever service parameters at any time from the
+**Project Settings** dialog, for example if you selected an incorrect model or
+provider combination, or if your API key has changed or expired.
+
+{{< tabs "update-retriever-service" >}}
+
+{{< tab "OpenAI" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click the **Edit** button.
+3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "OpenRouter" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click the **Edit** button.
+3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "Triton LLM Host" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click the **Edit** button.
+3. Update the **LLM API Provider** or **Model** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Chat with your Knowledge Graph
 
