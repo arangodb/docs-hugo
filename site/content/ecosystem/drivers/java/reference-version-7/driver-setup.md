@@ -346,7 +346,7 @@ ArangoDB arango = new ArangoDB.Builder()
 
 The driver supports setting a keep-alive interval (in seconds) for VST connections
 (up to ArangoDB v3.11). If set, every VST connection performs a no-op request
-at the specified intervals, to avoid to be closed due to inactivity by the
+at the specified intervals, to avoid being closed due to inactivity by the
 server or by the external environment, such as the firewall, intermediate routers,
 the operating system, or similar.
 

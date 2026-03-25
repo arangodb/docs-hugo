@@ -102,7 +102,7 @@ The main driver artifact `com.arangodb:arangodb-java-driver` has transitive depe
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
-Alternative modules for user-data serde:
+Alternative modules:
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
 - `com.arangodb:vst-protocol`: `VST` communication protocol (only up to ArangoDB v3.11)
 
