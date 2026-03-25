@@ -243,6 +243,6 @@ Spring Data ArangoDB serialization behavior.
 
 ## Limitations
 
-- GraalVM Native Image (available with Spring Boot 3) is not supported (DE-677)
+- GraalVM Native Image (available with Spring Boot 3 and later) is not supported (DE-677)
 - Spring Data REST is not supported (DE-43)
 - Spring Data Reactive is not supported (DE-678)
