@@ -101,21 +101,21 @@ provider combination, or if your API key has changed or expired.
 
 {{< tab "OpenAI" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Importer** section, click the **Edit** button.
+2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
 {{< tab "OpenRouter" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Importer** section, click the **Edit** button.
+2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**, or **OpenRouter API Key** as needed.
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
 {{< tab "Triton LLM Host" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Importer** section, click the **Edit** button.
+2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider** or **Model** as needed.
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
@@ -218,21 +218,21 @@ provider combination, or if your API key has changed or expired.
 
 {{< tab "OpenAI" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Retriever** section, click the **Edit** button.
+2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 
 {{< tab "OpenRouter" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Retriever** section, click the **Edit** button.
+2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 
 {{< tab "Triton LLM Host" >}}
 1. Open the **Project Settings** dialog.
-2. In the **Retriever** section, click the **Edit** button.
+2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider** or **Model** as needed.
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
