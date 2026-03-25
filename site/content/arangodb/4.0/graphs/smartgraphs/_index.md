@@ -3,7 +3,8 @@ title: SmartGraphs
 menuTitle: SmartGraphs
 weight: 95
 description: >-
-  SmartGraphs enable you to manage graphs at scale, using value-based sharding for improved data locality
+  SmartGraphs enable you to manage graphs at scale, using value-based sharding
+  for excellent data locality
 ---
 SmartGraphs are specifically targeted at graphs that need scalability and
 high performance. They let you intelligently shard large graph datasets for
@@ -109,9 +110,8 @@ subgraphs and prohibit edges connecting them.
 
 ![Disjoint SmartGraphs](../../../../images/SmartGraphs-Disjoint.png)
 
-_This ensures that graph traversals, shortest path, and k-shortest-paths queries
-can be executed locally on a DB-Server, achieving improved performance for
-these type of queries._
+_This ensures that graph traversals and path search queries can be executed
+locally on a DB-Server, achieving optimal performance for these type of queries._
 
 ## Disjoint SmartGraphs using SatelliteCollections
 

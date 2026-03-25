@@ -239,8 +239,9 @@ For more information, see [SmartGraphs](../graphs/smartgraphs/_index.md).
 If there are no clear sub-graphs in the data and you therefore don't have a
 SmartGraph attribute for partitioning, consider using EnterpriseGraphs as the
 next best option. It distributes the graph data equally but places the incident
-edges of a vertex in the same shard as the vertex. This partial data locality is
-exploited to speed up graph traversals and path searches.
+edges of a node in the same shard as the node. This partial data locality as
+well as accidental co-location of nodes on the same DB-Server is exploited to
+speed up graph traversals and path searches.
 
 ## Document and Transaction Sizes
 
