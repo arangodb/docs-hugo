@@ -6,6 +6,11 @@ description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
 aliases:
+  - ../../../../arangodb/3.11/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/3.12/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/stable/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/devel/develop/drivers/java/reference-version-6/driver-setup
   - ../../../../arangodb/3.11/develop/drivers/java/reference-version-7/driver-setup
   - ../../../../arangodb/3.12/develop/drivers/java/reference-version-7/driver-setup
   - ../../../../arangodb/stable/develop/drivers/java/reference-version-7/driver-setup
