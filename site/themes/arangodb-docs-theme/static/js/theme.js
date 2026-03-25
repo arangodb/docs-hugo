@@ -512,7 +512,7 @@ function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
-    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
+    document.querySelectorAll(".link:not([target]), .card-link:not([target]), .node-link:not([target])").forEach(el => {
       const originalUrl = el.getAttribute("href");
       const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
@@ -522,7 +522,7 @@ function linkToVersionedContent() {
       }
     });
   } else {
-    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target]), .node-link:not([target])").forEach(el => {
       const originalUrl = el.getAttribute("href");
       const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
@@ -609,11 +609,11 @@ function handleDocumentClick(event) {
         return;
     }
   
-    // Card link clicks
-    if (closest('.card-link')) {
+    // Card and SVG node link clicks
+    if (closest('.card-link, .node-link')) {
         if (openInNew) return;
         event.preventDefault();
-        const href = target.closest('.card-link').getAttribute('href');
+        const href = target.closest('.card-link, .node-link').getAttribute('href');
         if (href) {
             updateHistory(href);
         }

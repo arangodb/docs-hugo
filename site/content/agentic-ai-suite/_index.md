@@ -106,14 +106,14 @@ aliases:
 
   <!-- Chunks (top half) -->
   <a class="node-link" href="graphrag/">
-    <rect x="35" y="244" width="180" height="104" rx="10" fill="transparent"/>
+    <rect x="35" y="244" width="180" height="104" rx="10" class="suite-node" fill="transparent"/>
     <text x="125" y="291" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Chunks</text>
     <text x="125" y="309" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">Document fragments</text>
   </a>
 
   <!-- Knowledge Shards (bottom half) -->
   <a class="node-link" href="autograph/">
-    <rect x="35" y="348" width="180" height="104" rx="10" fill="transparent"/>
+    <rect x="35" y="348" width="180" height="104" rx="10" class="suite-node" fill="transparent"/>
     <text x="125" y="390" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Knowledge</text>
     <text x="125" y="408" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Shards</text>
     <text x="125" y="426" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">AutoGraph</text>
