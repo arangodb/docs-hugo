@@ -131,16 +131,12 @@ New data is applied automatically.
 
 **When paused:**
 The refresh interval selector is replaced with **Auto-refresh paused**.
-If new graph data is detected in the background, an orange alert banner
-appears: **"New graph data is available"**.
-- Click **Refresh** to fetch and apply the changes immediately.
-- Click **X** to dismiss the alert. Polling stops until you resume
-  auto-refresh or reload the page.
+If new graph data is detected in the background, a blue alert banner
+appears: **"Graph data has changed. Update to see the latest."**
+- Click **Update now** to fetch and apply the changes immediately.
+- Click **X** to dismiss the alert.
 
-Clicking the **Resume** button applies any pending changes immediately and
-resumes automatic polling.
-
-The paused state is preserved across page reloads.
+Click the **Resume** (▶) button to resume automatic polling.
 
 ## Update the Knowledge Graph
 
