@@ -120,6 +120,28 @@ For a more detailed exploration, click the **Explore** button to open the Knowle
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
+## Manage Knowledge Graph auto-refresh
+
+The **Graph** section automatically polls for new data. You can control this
+behavior using the **Pause/Resume** button next to the refresh interval selector.
+
+**When running (default):**
+The graph polls for updates at the selected refresh interval.
+New data is applied automatically.
+
+**When paused:**
+The refresh interval selector is replaced with **Auto-refresh paused**.
+If new graph data is detected in the background, an orange alert banner
+appears: **"New graph data is available"**.
+- Click **Refresh** to fetch and apply the changes immediately.
+- Click **X** to dismiss the alert. Polling stops until you resume
+  auto-refresh or reload the page.
+
+Clicking the **Resume** button applies any pending changes immediately and
+resumes automatic polling.
+
+The paused state is preserved across page reloads.
+
 ## Update the Knowledge Graph
 
 Once you have created your initial Knowledge Graph, you can update it by uploading 
