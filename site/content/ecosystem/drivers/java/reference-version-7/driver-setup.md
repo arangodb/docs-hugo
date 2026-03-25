@@ -205,7 +205,8 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-- Load the trust store from file by configuring `sslTrustStorePath` and optionally `sslTrustStorePassword`:
+- Load the trust store from a file by configuring `sslTrustStorePath` and
+  optionally `sslTrustStorePassword`:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
