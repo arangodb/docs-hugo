@@ -300,7 +300,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 
 In case of an _Active Failover_ deployment (up to ArangoDB v3.11), the driver
 should be configured in the following way:
-- the load balancing strategy must be either set to `LoadBalancingStrategy.NONE` (default)
+- The load balancing strategy must be set to `LoadBalancingStrategy.NONE` (default)
 - `acquireHostList` should be set to `true`
 
 ```java
