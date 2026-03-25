@@ -190,6 +190,10 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   directly in the chat
 - Change or create a new retriever service
 - Clear the chat
+- Toggle **Cache** to enable or disable response caching for the current conversation
+  or individual messages (see [`use_cache`](../reference/retriever/parameters.md#use_cache))
+- Toggle **Citations** to show or hide inline citations in responses
+  (see [`show_citations`](../reference/retriever/parameters.md#show_citations))
 
 ## Integrate the Knowledge Graph chat service into your application
 
