@@ -71,11 +71,13 @@ Whether to include metadata in the response.
 Whether to show inline citations in the response.
 
 - **Required**: No (defaults to `true`).
-- **Description**: When enabled, citations are formatted as `[[X](URL)]` or `[X]` 
-  in the response. Works with the `citable_url` field set during import.
+- **Description**:
+  - When `true` (default): Citations appear inline as `[X]` in the response.
+  - When `false`: All `[CITE:X]` patterns are stripped from the response.
+- **Configurable via**: Retrievers chat UI toggle (per conversation or message).
 
 {{< warning >}}
-For deep search queries (`use_llm_planner=true`), citations are always disabled 
+For deep search queries (`use_llm_planner=true`), citations are always disabled
 regardless of this setting.
 {{< /warning >}}
 
@@ -106,21 +108,24 @@ If not specified, the response types are using the following default instruction
 
 Whether to use caching for this query.
 
-- **Required**: No (defaults to `true`)
-- **Description**: When enabled (default), checks cache for hits and saves responses to cache. When disabled, skips cache entirely (no check, no write).
+- **Required**: No (defaults to `false` when unspecified).
+- **Description**:
+  - When `true`: Checks cache for hits and saves responses to cache.
+  - When `false` (default): Skips cache entirely — no check, no write.
+- **Configurable via**: Retrievers chat UI toggle (per conversation or message).
 
-**Example to disable caching:**
+**Example to enable caching:**
 
 ```json
 {
   "query": "What is X?",
   "query_type": "LOCAL",
-  "use_cache": false
+  "use_cache": true
 }
 ```
 
 {{< tip >}}
-Caching is enabled by default to improve response times for repeated queries. Disable it when you need fresh results or when testing changes to your knowledge graph.
+Enable caching to improve response times for repeated queries. Leave it disabled (default) when you need fresh results or when testing changes to your knowledge graph.
 {{< /tip >}}
 
 ## Response Format
