@@ -1,15 +1,15 @@
-/ecosystem/drivers/                                                             /ecosystem/drivers/                                                301
-/ecosystem/drivers/go/                                                          /ecosystem/drivers/go/                                             301
-/ecosystem/drivers/javascript/                                                  /ecosystem/drivers/javascript/                                     301
-/ecosystem/drivers/python/                                                      /ecosystem/drivers/python/                                         301
-/ecosystem/drivers/java/                                                        /ecosystem/drivers/java/                                           301
-/ecosystem/drivers/java/reference-version-6/                                    /ecosystem/drivers/java/reference-version-7/                       301
-/ecosystem/drivers/java/reference-version-6/driver-setup/                       /ecosystem/drivers/java/reference-version-7/driver-setup/          301
-/ecosystem/drivers/java/reference-version-6/serialization/                      /ecosystem/drivers/java/reference-version-7/serialization/         301
-/ecosystem/drivers/java/reference-version-7/                                    /ecosystem/drivers/java/reference-version-7/                       301
-/ecosystem/drivers/java/reference-version-7/driver-setup/                       /ecosystem/drivers/java/reference-version-7/driver-setup/          301
-/ecosystem/drivers/java/reference-version-7/serialization/                      /ecosystem/drivers/java/reference-version-7/serialization/         301
-/ecosystem/drivers/java/reference-version-7/changes-in-version-7/               /ecosystem/drivers/java/reference-version-7/changes-in-version-7/  301
+/arangodb/3.11/develop/drivers/                                                 /ecosystem/drivers/                                                301
+/arangodb/3.11/develop/drivers/go/                                              /ecosystem/drivers/go/                                             301
+/arangodb/3.11/develop/drivers/javascript/                                      /ecosystem/drivers/javascript/                                     301
+/arangodb/3.11/develop/drivers/python/                                          /ecosystem/drivers/python/                                         301
+/arangodb/3.11/develop/drivers/java/                                            /ecosystem/drivers/java/                                           301
+/arangodb/3.11/develop/drivers/java/reference-version-6/                        /ecosystem/drivers/java/reference-version-7/                       301
+/arangodb/3.11/develop/drivers/java/reference-version-6/driver-setup/           /ecosystem/drivers/java/reference-version-7/driver-setup/          301
+/arangodb/3.11/develop/drivers/java/reference-version-6/serialization/          /ecosystem/drivers/java/reference-version-7/serialization/         301
+/arangodb/3.11/develop/drivers/java/reference-version-7/                        /ecosystem/drivers/java/reference-version-7/                       301
+/arangodb/3.11/develop/drivers/java/reference-version-7/driver-setup/           /ecosystem/drivers/java/reference-version-7/driver-setup/          301
+/arangodb/3.11/develop/drivers/java/reference-version-7/serialization/          /ecosystem/drivers/java/reference-version-7/serialization/         301
+/arangodb/3.11/develop/drivers/java/reference-version-7/changes-in-version-7/   /ecosystem/drivers/java/reference-version-7/changes-in-version-7/  301
 
 /data-platform/installation/                       /contextual-data-platform/install-and-upgrade/     302
 /data-platform/features/                           /contextual-data-platform/                         302
