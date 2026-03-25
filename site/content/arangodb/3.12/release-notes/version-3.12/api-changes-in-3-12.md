@@ -101,6 +101,8 @@ A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
 
 A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12.4.
 
+A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
@@ -237,6 +239,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
@@ -336,9 +390,50 @@ documentation.
 Also see [Authentication with access tokens](#authentication-with-access-tokens)
 for related API changes.
 
+#### Deployment ID
+
+<small>Introduced in: v3.12.6</small>
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
+#### Get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added for retrieving a small, curated subset of the configured server
+startup options that are safe to expose to any authenticated user.
+
+#### Crash dump management
+
+<small>Introduced in: v3.12.8</small>
+
+New endpoints for viewing and managing crash dumps have been added to the HTTP API:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+for details.
+
+#### Activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature.
+See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
+
+##### `optimizeTopK` property for `arangosearch` Views
 
 Views of type `arangosearch` accept a new `optimizeTopK` View property for the
 ArangoSearch WAND optimization. It is an immutable array of strings, optional,
@@ -346,6 +441,39 @@ and defaults to `[]`.
 
 See the [`optimizeTopK` View property](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
+
+##### Changed consolidation defaults for `arangosearch` Views
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating `arangosearch` Views have been changed.
+By consolidating less often and with more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
+
+##### Added and removed consolidation options for `arangosearch` Views
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating `arangosearch` Views have been removed
+and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The following new options have been added:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `maxSkewThreshold` (number in range `[0.0, 1.0]`, default: `0.4`)
+  - `minDeletionRatio` (number in range `[0.0, 1.0]`, default: `0.5`)
 
 #### Document API
 
@@ -393,6 +521,17 @@ Two new statistics are included in the response when you execute an AQL query:
   }
 }
 ```
+
+#### Query API
+
+<small>Introduced in: v3.12.2</small>
+
+The endpoints for the lists of currently running queries and slow queries
+(`/_api/query/current` and `/_api/query/slow`) now include the following
+attributes:
+- `dataSources` (array of strings), only present if tracking of data sources is enabled
+- `modificationQuery` (boolean)
+- `warnings` (integer)
 
 #### Query plan cache attributes
 
@@ -463,13 +602,46 @@ add the `withHidden=true` query parameter to the call of the endpoint.
 curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
-#### Vector indexes
+##### Vector indexes
 
 <small>Introduced in: v3.12.4</small>
 
 A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
+
+##### Changed consolidation defaults for inverted indexes
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating inverted indexes have been changed.
+By consolidating less often and with more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
+
+##### Added and removed consolidation options for inverted indexes
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating inverted indexes have been removed
+and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The following new options have been added:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `maxSkewThreshold` (number in range `[0.0, 1.0]`, default: `0.4`)
+  - `minDeletionRatio` (number in range `[0.0, 1.0]`, default: `0.5`)
 
 #### Optimizer rule descriptions
 
@@ -595,6 +767,62 @@ DB-Servers in a cluster has been added:
 
 - `arangodb_vocbase_transactions_lost_subordinates_total`
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+A metric has been added for the time spent on API call recording:
+
+- `arangodb_api_recording_call_time`
+
+---
+
+<small>Introduced in: v3.12.6</small>
+
+A metric has been added for the time spent on AQL query recording, along with
+multiple RocksDB metrics:
+
+- `arangodb_aql_recording_call_time`
+- `rocksdb_block_cache_charge_per_entry`
+- `rocksdb_block_cache_entries`
+- `rocksdb_live_blob_file_garbage_size`
+- `rocksdb_live_blob_file_size`
+- `rocksdb_num_blob_files`
+
+---
+
+<small>Introduced in: v3.12.7</small>
+
+The following new metrics have been added to track the global number of databases,
+collections, and shards, as well as the CGroup version and effective CPU cores
+and physical memory:
+
+- `arangodb_metadata_number_of_databases`
+- `arangodb_metadata_number_of_collections`
+- `arangodb_metadata_number_of_shards`
+- `arangodb_server_statistics_cpu_cgroup_version`
+- `arangodb_server_statistics_effective_cpu_cores`
+- `arangodb_server_statistics_effective_physical_memory`
+
+---
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster:
+
+- `arangodb_metadata_total_number_of_shards`
+- `arangodb_metadata_number_follower_shards`
+- `arangodb_metadata_number_out_of_sync_shards`
+- `arangodb_metadata_number_not_replicated_shards`
+- `arangodb_metadata_shard_followers_out_of_sync_number`
+
+Furthermore, the following metrics have been added as part of the experimental
+activities feature:
+
+- `arangodb_activities_total`
+- `arangodb_activities_existing`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -708,7 +936,7 @@ are unaffected.
 
 The `GET /_admin/database/target-version` endpoint has been removed in favor of the
 more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3.
+The endpoint was deprecated since v3.11.3 and it is removed in ArangoDB v4.0.
 
 #### JavaScript-based traversal using `/_api/traversal`
 

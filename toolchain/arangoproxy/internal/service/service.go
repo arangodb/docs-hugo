@@ -10,7 +10,6 @@ import (
 	"reflect"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -137,17 +136,31 @@ type OpenapiService struct{}
 
 var OpenapiFormatter = format.OpenapiFormatter{}
 var OpenapiGlobalMap map[string]interface{}
+var OpenapiGlobalMapMutex sync.RWMutex
+var OpenapiPendingSpecs sync.WaitGroup
+var OpenapiSpecCounter map[string]int
+var OpenapiSpecCounterMutex sync.Mutex
+var OpenapiRejectedSpecs int
+var OpenapiRejectedSpecsMutex sync.Mutex
+var OpenapiSpecError error
+var OpenapiSpecErrorMutex sync.Mutex
+var OpenapiValidationError error
+var OpenapiValidationErrorMutex sync.Mutex
 var Versions map[string][]models.Version
 
 func init() {
 	OpenapiGlobalMap = make(map[string]interface{})
+	OpenapiSpecCounter = make(map[string]int)
 	Versions = models.LoadVersions()
+
+	models.Logger.Debug("[OpenapiService.init] Initializing OpenAPI maps for versions...")
 
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
 			continue
 		}
 		for _, version := range versionList {
+			models.Logger.Debug("[OpenapiService.init] Creating OpenAPI map for version: %s", version.Name)
 			tags := []map[string]string{}
 			yamlFile, err := os.ReadFile("/home/site/data/openapi_tags.yaml")
 			if err != nil {
@@ -196,38 +209,163 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 
 	spec["version"] = version
 
-	specDebug, _ := json.Marshal(spec)
-	models.Logger.Debug("[ProcessOpenapiSpec] Processing Spec %s", specDebug)
-
 	path := reflect.ValueOf(spec["paths"].(map[string]interface{})).MapKeys()[0].String()
 	method := reflect.ValueOf(spec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
+
+	OpenapiSpecCounterMutex.Lock()
+	if _, exists := OpenapiSpecCounter[version]; !exists {
+		OpenapiSpecCounter[version] = 0
+	}
+	OpenapiSpecCounter[version]++
+	specNum := OpenapiSpecCounter[version]
+	OpenapiSpecCounterMutex.Unlock()
+
+	models.Logger.Debug("[ProcessOpenapiSpec #%d] Received spec for version '%s': %s %s", specNum, version, method, path)
+
 	spec["paths"].(map[string]interface{})[path].(map[string]interface{})[method].(map[string]interface{})["summary"] = summary
 
+	OpenapiPendingSpecs.Add(1)
 	globalOpenapiChannel <- spec
 }
 
 func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface{}) error {
-	for {
-		select {
-		case openapiSpec := <-chnl:
-			version := openapiSpec["version"]
-			path := reflect.ValueOf(openapiSpec["paths"].(map[string]interface{})).MapKeys()[0].String()
-			method := reflect.ValueOf(openapiSpec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
+	operationIdMap := make(map[string]bool)
+	errorEncountered := false
+	for openapiSpec := range chnl {
+		versionStr := openapiSpec["version"].(string)
+		specPaths := openapiSpec["paths"].(map[string]interface{})
+		path := reflect.ValueOf(specPaths).MapKeys()[0].String()
+		method := reflect.ValueOf(specPaths[path].(map[string]interface{})).MapKeys()[0].String()
 
-			if _, ok := OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path]; ok {
-				OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path].(map[string]interface{})[method] = openapiSpec["paths"].(map[string]interface{})[path].(map[string]interface{})[method]
-			} else {
-				OpenapiGlobalMap[version.(string)].(map[string]interface{})["paths"].(map[string]interface{})[path] = openapiSpec["paths"].(map[string]interface{})[path]
+		models.Logger.Debug("[AddSpecToGlobalSpec] Processing path %s %s for version '%s'", method, path, versionStr)
+
+		OpenapiGlobalMapMutex.Lock()
+
+		// Check if version exists in global map
+		versionMap, versionExists := OpenapiGlobalMap[versionStr]
+		if !versionExists {
+			errorEncountered = true
+			models.Logger.Printf("[ERROR] Version %s not found in OpenapiGlobalMap. Available versions: %v",
+				versionStr, reflect.ValueOf(OpenapiGlobalMap).MapKeys())
+			OpenapiRejectedSpecsMutex.Lock()
+			OpenapiRejectedSpecs++
+			OpenapiRejectedSpecsMutex.Unlock()
+			OpenapiSpecErrorMutex.Lock()
+			if OpenapiSpecError == nil {
+				OpenapiSpecError = fmt.Errorf("version %s not found in OpenapiGlobalMap", versionStr)
 			}
-
+			OpenapiSpecErrorMutex.Unlock()
+			OpenapiGlobalMapMutex.Unlock()
+			OpenapiPendingSpecs.Done()
+			continue
 		}
+
+		// Get paths map for this version
+		versionMapTyped := versionMap.(map[string]interface{})
+		pathsMap := versionMapTyped["paths"].(map[string]interface{})
+		newMethodEntry := specPaths[path].(map[string]interface{})[method]
+
+		// Check for duplicate operationId values across all endpoints
+		// (excluding identical endpoint descriptions that due to Hugo caching)
+		operationId := newMethodEntry.(map[string]interface{})["operationId"].(string)
+		opAndVersion := fmt.Sprintf("%s (%s)", operationId, versionStr)
+		if _, operationIdExists := operationIdMap[opAndVersion]; operationIdExists {
+			errorEncountered = true
+			models.Logger.Printf("[ERROR] Duplicate operationId %s", opAndVersion)
+			OpenapiSpecErrorMutex.Lock()
+			if OpenapiSpecError == nil {
+				OpenapiSpecError = fmt.Errorf("duplicate operationId: %s", opAndVersion)
+			}
+			OpenapiSpecErrorMutex.Unlock()
+		} else {
+			operationIdMap[opAndVersion] = true
+		}
+
+		// Check if path already exists
+		if existingPath, pathExists := pathsMap[path]; pathExists {
+			// Path exists, add/update method
+			existingPathMap := existingPath.(map[string]interface{})
+
+			if methodEntry, methodExists := existingPathMap[method]; !methodExists {
+				existingPathMap[method] = newMethodEntry
+			} else {
+				errorEncountered = true
+				errorMsg := fmt.Sprintf("Method %s already exists for path '%s' in version %s (and the endpoint description is not identical)", strings.ToUpper(method), path, versionStr)
+				models.Logger.Printf("[ERROR] %s", errorMsg)
+				// Hugo caches resources.GetRemote, which means for identical endpoint descriptions,
+				// arangoproxy is only called once (per version) and we can't count the duplicates here.
+
+				methodJson, _ := json.MarshalIndent(methodEntry, "", "  ")
+				newMethodJson, _ := json.MarshalIndent(newMethodEntry, "", "  ")
+
+				models.Logger.Printf("--- Existing endpoint %s\n%s\n--- Conflicting endpoint %s\n%s\n%s",
+					strings.Repeat("-", 58), string(methodJson),
+					strings.Repeat("-", 55), string(newMethodJson),
+					strings.Repeat("-", 80))
+
+				OpenapiSpecErrorMutex.Lock()
+				if OpenapiSpecError == nil {
+					OpenapiSpecError = fmt.Errorf("%s", errorMsg)
+				}
+				OpenapiSpecErrorMutex.Unlock()
+			}
+		} else {
+			// Path doesn't exist, add entire path
+			pathsMap[path] = specPaths[path]
+		}
+
+		OpenapiGlobalMapMutex.Unlock()
+
+		OpenapiPendingSpecs.Done()
 	}
+	if errorEncountered {
+		models.Logger.Summary("<error code=2>%s</error>", "Conflict(s) in OpenAPI specifications")
+		return fmt.Errorf("OpenAPI specification conflicts detected")
+	}
+	return nil
 }
 
-func (service OpenapiService) ValidateOpenapiGlobalSpec() {
-	time.Sleep(time.Second * 4) // TODO: Investigate timing issue
+func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
+	// Reset error state from previous validation runs
+	OpenapiSpecErrorMutex.Lock()
+	OpenapiSpecError = nil
+	OpenapiSpecErrorMutex.Unlock()
+
+	OpenapiValidationErrorMutex.Lock()
+	OpenapiValidationError = nil
+	OpenapiValidationErrorMutex.Unlock()
+
+	OpenapiSpecCounterMutex.Lock()
+	totalSpecs := 0
+	for _, count := range OpenapiSpecCounter {
+		totalSpecs += count
+	}
+	OpenapiSpecCounterMutex.Unlock()
+
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] Waiting for %d pending specs to be processed...", totalSpecs)
+	OpenapiPendingSpecs.Wait()
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] All specs processed. Starting validation...")
+
 	var wg sync.WaitGroup
 	models.Logger.Summary("<h2>OPENAPI</h2>")
+
+	OpenapiGlobalMapMutex.RLock()
+	totalEndpoints := 0
+	for versionKey := range OpenapiGlobalMap {
+		versionEndpoints := 0
+		pathsMap := OpenapiGlobalMap[versionKey].(map[string]interface{})["paths"].(map[string]interface{})
+		for _, pathValue := range pathsMap {
+			pathMethods := pathValue.(map[string]interface{})
+			versionEndpoints += len(pathMethods)
+		}
+		OpenapiSpecCounterMutex.Lock()
+		receivedForVersion := OpenapiSpecCounter[versionKey]
+		OpenapiSpecCounterMutex.Unlock()
+		models.Logger.Debug("[ValidateOpenapiGlobalSpec] Version %s: received %d specs, added %d endpoints", versionKey, receivedForVersion, versionEndpoints)
+		totalEndpoints += versionEndpoints
+	}
+	models.Logger.Debug("[ValidateOpenapiGlobalSpec] Total endpoints across all versions: %d (expected: %d, rejected: %d)", totalEndpoints, totalSpecs, OpenapiRejectedSpecs)
+	OpenapiGlobalMapMutex.RUnlock()
 
 	for key, versionList := range Versions {
 		if key != "/arangodb/" {
@@ -240,12 +378,31 @@ func (service OpenapiService) ValidateOpenapiGlobalSpec() {
 
 		wg.Wait()
 	}
+
+	// Check for errors from spec processing
+	OpenapiSpecErrorMutex.Lock()
+	specError := OpenapiSpecError
+	OpenapiSpecErrorMutex.Unlock()
+
+	// Check for errors from swagger-cli validation
+	OpenapiValidationErrorMutex.Lock()
+	validationError := OpenapiValidationError
+	OpenapiValidationErrorMutex.Unlock()
+
+	// Return first error encountered
+	if specError != nil {
+		return specError
+	}
+	return validationError
 }
 
 func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) error {
 	defer wg.Done()
 
+	OpenapiGlobalMapMutex.RLock()
 	file, _ := json.MarshalIndent(OpenapiGlobalMap[version], "", " ")
+	OpenapiGlobalMapMutex.RUnlock()
+
 	os.WriteFile("/home/site/data/"+version+"/api-docs.json", file, 0644)
 
 	cmd := exec.Command("swagger-cli", "validate", "/home/site/data/"+version+"/api-docs.json")
@@ -261,9 +418,14 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 		if exitError, ok := err.(*exec.ExitError); ok {
 			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
 			models.Logger.Summary("%s</error>", er.String())
+			OpenapiValidationErrorMutex.Lock()
+			if OpenapiValidationError == nil {
+				OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for version %s", version)
+			}
+			OpenapiValidationErrorMutex.Unlock()
 		}
 	} else {
 		models.Logger.Summary("%s &#x2713;", version)
 	}
-	return nil
+	return err
 }

@@ -1,3 +1,78 @@
+- name: arangodb_activities_existing
+  introducedIn: "3.12.8"
+  help: |
+    Number of currently existing activities.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+    - agent
+  description: |
+    Number of currently existing activities.
+
+- name: arangodb_activities_existing_thread_registries
+  introducedIn: "3.12.8"
+  help: |
+    Number of currently existing activity thread registries.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+    - agent
+  description: |
+    Number of currently existing activity thread registries. One thread registry is created when the first activity is created on a thread. The registry lives at least as long as long as the thread itself but also at least as long as the last activity inside it - therefore it can exist longer than the thread itself.
+
+- name: arangodb_activities_ready_for_deletion
+  introducedIn: "3.12.8"
+  help: |
+    Number of currently existing activities that wait for their garbage collection.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+    - agent
+  description: |
+    Number of currently existing activities that wait for their garbage collection.
+
+- name: arangodb_activities_thread_registries_total
+  introducedIn: "3.12.8"
+  help: |
+    Total number of threads that started activities since database process start.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+    - agent
+  description: |
+    Total number of threads that started activities since database process start. It can be higher than the total number of threads if a thread was restarted at some point.
+
+- name: arangodb_activities_total
+  introducedIn: "3.12.8"
+  help: |
+    Total number of created activities since database process start.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+    - agent
+  description: |
+    Total number of created activities since database process start.
+
 - name: arangodb_agency_append_hist
   introducedIn: "3.7.1"
   help: |
@@ -721,7 +796,7 @@
 - name: arangodb_async_existing_promises
   introducedIn: "3.12.4"
   help: |
-    Number of currently existing asynchronous promises.
+    Number of currently existing asynchronous operations.
   unit: number
   type: gauge
   category: Statistics
@@ -730,12 +805,12 @@
     - dbserver
     - coordinator
   description: |
-    Number of currently existing asynchronous promises.
+    Number of currently existing asynchronous operations.
 
 - name: arangodb_async_existing_thread_registries
   introducedIn: "3.12.4"
   help: |
-    Number of threads that started currently existing asyncronous operations.
+    Number of currently existing async thread registires.
   unit: number
   type: gauge
   category: Statistics
@@ -744,12 +819,12 @@
     - dbserver
     - coordinator
   description: |
-    Number of threads that started currently existing asyncronous operations. The thread itself does not need to exist any more. This number also includes still running threads that have started asyncronous operations which do not exist any more.
+    Number of currently existing async thread registries. One thread registry is created when the first async operation is created on a thread. The registry lives at least as long as long as the thread itself but also at least as long as the last async operation inside it - therefore it can exist longer than the thread itself.
 
 - name: arangodb_async_promises_total
   introducedIn: "3.12.4"
   help: |
-    Total number of created asynchronous promises since database creation.
+    Total number of created asynchronous operations since database process start.
   unit: number
   type: counter
   category: Statistics
@@ -758,12 +833,12 @@
     - dbserver
     - coordinator
   description: |
-    Total number of created asynchronous promises since database creation.
+    Total number of created asynchronous operations since database process start.
 
 - name: arangodb_async_ready_for_deletion_promises
   introducedIn: "3.12.4"
   help: |
-    Number of currently existing asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous operations that wait for their garbage collection.
   unit: number
   type: gauge
   category: Statistics
@@ -772,12 +847,12 @@
     - dbserver
     - coordinator
   description: |
-    Number of currently existing asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous operations that wait for their garbage collection.
 
 - name: arangodb_async_thread_registries_total
   introducedIn: "3.12.4"
   help: |
-    Total number of threads that started asynchronous operations since database creation.
+    Total number of threads that started asynchronous operations since database process start.
   unit: number
   type: counter
   category: Statistics
@@ -786,7 +861,7 @@
     - dbserver
     - coordinator
   description: |
-    Total number of threads that started asynchronous operations since database creation.
+    Total number of threads that started asynchronous operations since database process start. It can be higher than the total number of threads if a thread was restarted at some point.
 
 - name: arangodb_client_connection_statistics_bytes_received
   introducedIn: "3.8.0"
@@ -2689,6 +2764,304 @@
     This metric tracks the runtime of phase2 of an Agency sync. Phase2 calculates
     what actions to execute given the difference of the local and target state.
 
+- name: arangodb_metadata_number_follower_shards
+  introducedIn: "3.12.8"
+  help: |
+    Number of follower shards.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Number of follower shards that exist across collections of all databases.
+  troubleshoot: |
+    **Configuration:**
+    - Max per collection: `--cluster.max-number-of-shards` (default: 1000)
+    - Exceeding limit returns `TRI_ERROR_CLUSTER_TOO_MANY_SHARDS`
+    - Query limit: `--query.max-collections-per-query` affects total shards in queries
+    - Queries exceeding this fail with "too many collections/shards" error
+    - Practical cluster limit: ~50,000 total shards across all collections
+  
+    **Impact:**
+    - High shard counts increase cluster coordination overhead
+    - Affects query performance, memory usage, leader election, and rebalancing
+  
+    **Recommendations:**
+    - Choose shard count based on data volume, query patterns, and DB-Server count
+    - Use rebalancing to ensure even distribution
+  
+    **Note:**
+    - Approaching 50k shards may cause performance degradation
+  
+    **See also:**
+    - Cluster limitations: https://docs.arango.ai/arangodb/stable/deploy/cluster/limitations/
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_not_replicated_shards
+  introducedIn: "3.12.8"
+  help: |
+    Number of not replicated shards.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Number of shards that are not replicated across collections of all databases.
+  troubleshoot: |
+    This metric indicates shards that should have followers according to the Plan
+    (replicationFactor > 1) but only have a leader (or no servers) in Current. This
+    represents a single point of failure and reduced resilience.
+  
+    **Common Causes:**
+    - Collection creation in progress: Followers may not yet be created by supervision
+    - DBServer failures: Followers may be missing if their DBServers are down or unreachable
+    - Network issues: Connectivity problems preventing follower creation or synchronization
+    - Supervision delays: The supervision process may need time to create missing followers
+    - Collection deletion in progress: Shards may be in transition during deletion
+  
+    **Impact:**
+    - Reduced data resilience: Data loss risk if the leader fails
+    - Single point of failure: No redundancy for affected shards
+    - May indicate cluster health issues if persistent
+  
+    **Recommendations:**
+    - During normal operations: Wait and observe, as supervision should create followers automatically
+    - If persistent: Check DBServer health and availability
+    - Verify network connectivity between DBServers
+    - Check supervision logs for errors preventing follower creation
+    - During upgrades or restarts: Temporary non-zero values are expected
+    - If the situation persists: Investigate supervision issues or contact ArangoDB support
+  
+    **See also:**
+    - Related metrics: `arangodb_metadata_number_out_of_sync_shards` (broader sync issues),
+      `arangodb_metadata_shard_followers_out_of_sync_number` (follower sync state)
+    - DBServer perspective: `arangodb_shards_not_replicated` (leader's view)
+
+- name: arangodb_metadata_number_of_collections
+  introducedIn: "3.12.7"
+  help: |
+    Global number of collections.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of collections in the deployment (cluster or single server).
+    This includes system collections.
+  troubleshoot: |
+    **Configuration:**
+    - No global limit on collection count
+    - Query limit: `--query.max-collections-per-query` (default: 2048)
+    - Queries exceeding this fail with "too many collections/shards" error
+  
+    **Impact:**
+    - High counts affect startup/shutdown times, memory, and file descriptors
+    - Each collection consumes memory for indexes and metadata
+    - Impacts backup and restore operations
+  
+    **Recommendations:**
+    - Remove unused or temporary collections regularly
+    - Consider consolidating related collections
+    - Review schema design to reduce collection proliferation
+  
+    **See also:**
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_of_databases
+  introducedIn: "3.12.7"
+  help: |
+    Global number of databases.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of databases in the deployment (cluster or single server).
+  troubleshoot: |
+    **Configuration:**
+    - Maximum controlled by `--database.max-databases` (default: unlimited)
+    - Exceeding limit returns `TRI_ERROR_RESOURCE_LIMIT`
+  
+    **Impact:**
+    - High counts affect startup time, memory usage, and file descriptors
+    - Each database adds operational overhead
+  
+    **Recommendations:**
+    - Remove unused databases
+  
+    **See also:**
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_of_shards
+  introducedIn: "3.12.7"
+  help: |
+    Number of leader shards.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Number of leader shards in the deployment. In a cluster,
+    this is the number of leader shards across all collections.
+    For the total number of shards (including follower shards),
+    see `arangodb_metadata_total_number_of_shards`.
+  troubleshoot: |
+    **Configuration:**
+    - Max per collection: `--cluster.max-number-of-shards` (default: 1000)
+    - Exceeding limit returns `TRI_ERROR_CLUSTER_TOO_MANY_SHARDS`
+    - Query limit: `--query.max-collections-per-query` affects total shards in queries
+    - Queries exceeding this fail with "too many collections/shards" error
+    - Practical cluster limit: ~50,000 total shards across all collections
+  
+    **Impact:**
+    - High shard counts increase cluster coordination overhead
+    - Affects query performance, memory usage, leader election, and rebalancing
+  
+    **Recommendations:**
+    - Choose shard count based on data volume, query patterns, and DB-Server count
+    - Use rebalancing to ensure even distribution
+  
+    **Note:**
+    - This metric counts leader shards only. For total shard count (leaders + followers),
+      see `arangodb_metadata_total_number_of_shards`
+    - Approaching 50k shards may cause performance degradation
+  
+    **See also:**
+    - Cluster limitations: https://docs.arango.ai/arangodb/stable/deploy/cluster/limitations/
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
+- name: arangodb_metadata_number_out_of_sync_shards
+  introducedIn: "3.12.8"
+  help: |
+    Number of out of sync shards. 
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Number of shards that are out of sync across collections of all databases.
+  troubleshoot: |
+    This metric indicates shards where the Plan (expected state) differs from Current
+    (actual state). This includes shards with missing or extra servers, or shards that
+    exist in one but not the other. It's a broad indicator of cluster state synchronization
+    issues.
+  
+    **Common Causes:**
+    - Collection lifecycle transitions: Shards being created or deleted (Plan vs Current mismatch)
+    - Replication issues: Followers not created or removed when they should be
+    - DBServer failures: Servers going down or becoming unreachable
+    - Network issues: Connectivity problems preventing supervision from updating Current
+    - Supervision delays: The supervision process may need time to reconcile Plan and Current
+    - Leader election: Temporary mismatches during leader changes
+    - Manual interventions: Agency or cluster state modifications
+  
+    **Impact:**
+    - Reduced data resilience: Missing followers reduce redundancy
+    - Potential data inconsistency: Mismatched server assignments
+    - Cluster coordination overhead: Supervision must work to reconcile differences
+    - May indicate broader cluster health issues if persistent
+  
+    **Recommendations:**
+    - During normal operations: Wait and observe, as supervision should reconcile differences automatically
+    - During collection creation/deletion: Temporary non-zero values are expected
+    - If persistent: Check DBServer health and availability
+    - Verify network connectivity between all cluster components
+    - Check supervision logs for errors preventing state reconciliation
+    - During upgrades or restarts: Temporary non-zero values are expected
+    - Monitor related metrics for more specific issues:
+      - `arangodb_metadata_number_not_replicated_shards` (missing followers)
+      - `arangodb_metadata_shard_followers_out_of_sync_number` (follower sync state)
+    - If the situation persists: Investigate supervision issues or contact ArangoDB support
+  
+    **See also:**
+    - Related metrics: `arangodb_metadata_number_not_replicated_shards` (replication state),
+      `arangodb_metadata_shard_followers_out_of_sync_number` (follower sync details)
+    - DBServer perspective: `arangodb_shards_out_of_sync` (leader's view of replication)
+
+- name: arangodb_metadata_shard_followers_out_of_sync_number
+  introducedIn: "3.12.8"
+  help: |
+    Number of follower shards across the cluster that are out of sync with their leader.
+  unit: number
+  type: gauge
+  category: Replication
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Number of follower shards across the cluster that are not in sync with their leader.
+    This metric is computed by the coordinator by comparing the Plan (expected state) with
+    Current (actual state). A follower shard is counted as out of sync when it is expected
+    in the Plan but missing from Current, indicating it has not caught up with the latest
+    data from its leader. This is the follower-perspective counterpart to arangodb_shards_out_of_sync,
+    which reports from the leader's perspective on each DBServer.
+  troubleshoot: |
+    If this metric shows a non-zero value for an extended period, it indicates that
+    some follower shards across the cluster are lagging behind their leaders. This could be due to:
+    - Network issues between DBServers hosting followers and their leaders
+    - DBServers hosting followers being overloaded or slow
+    - Large amounts of data being replicated
+    - Collection locks (write or exclusive) preventing followers from getting in sync
+    - DBServer restarts or failures during replication
+  
+    Investigate the replication logs on the affected DBServers and check their resource utilization.
+    Compare this metric with arangodb_shards_out_of_sync (leader perspective) to identify
+    which shards are affected. If the problem persists, contact ArangoDB customer support.
+
+- name: arangodb_metadata_total_number_of_shards
+  introducedIn: "3.12.8"
+  help: |
+    Global number of shards.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Total number of leader and follower shards in the deployment. In a cluster,
+    this is the number of shards across collections of all databases.
+  troubleshoot: |
+    **Configuration:**
+    - Max per collection: `--cluster.max-number-of-shards` (default: 1000)
+    - Exceeding limit returns `TRI_ERROR_CLUSTER_TOO_MANY_SHARDS`
+    - Query limit: `--query.max-collections-per-query` affects total shards in queries
+    - Queries exceeding this fail with "too many collections/shards" error
+    - Practical cluster limit: ~50,000 total shards across all collections
+  
+    **Impact:**
+    - High shard counts increase cluster coordination overhead
+    - Affects query performance, memory usage, leader election, and rebalancing
+  
+    **Recommendations:**
+    - Choose shard count based on data volume, query patterns, and DB-Server count
+    - Use rebalancing to ensure even distribution
+  
+    **Note:**
+    - Approaching 50k shards may cause performance degradation
+  
+    **See also:**
+    - Cluster limitations: https://docs.arango.ai/arangodb/stable/deploy/cluster/limitations/
+    - Query limits: https://github.com/arangodb/arangodb/issues/10787
+    - Operational factors: https://docs.arango.ai/arangodb/stable/develop/operational-factors/
+
 - name: arangodb_network_connectivity_failures_coordinators_total
   introducedIn: "3.11.4"
   help: |
@@ -3897,13 +4270,13 @@
       and the machines can communicate to one-another.
     * Second: Check ArangoDB logs of this server for more details, most likely
       you see `WARN` or `ERROR` messages in the `replication` log topic. If you contact
-      ArangoDB support for this issue, it helps to include these servers logs as well.
+      the Arango support for this issue, it helps to include these servers logs as well.
     * Third: (Unlikely) If the logs contain unexpected format or value entries
       please check if you are running all ArangoDB DB-Servers within the same
       version of ArangoDB. Only upgrades of one minor version at a time are supported
       in general, so if you are running one server with a much newer / older version
       please upgrade all servers to the newest version.
-    * Forth: If none of the above applies, please contact ArangoDB Support.
+    * Forth: If none of the above applies, please contact the Arango support.
 
 - name: arangodb_replication_initial_chunks_requests_time_total
   renamedFrom: arangodb_replication_initial_chunks_requests_time
@@ -4705,7 +5078,7 @@
     ArangoDB than RocksDB can keep up with its background processing.
     This has lead to actual write stops, which are bad since they can lead
     to unavailability. If you see this number grow, you need to act,
-    if in doubt, contact ArangoDB support.
+    if in doubt, contact the Arango support.
   troubleshoot: |
     Quite often, RocksDB is limited by the available I/O bandwidth. Sometimes,
     it is not the bandwidth itself, but the number of I/O operations per
@@ -5500,6 +5873,30 @@
     Amount of memory in bytes that is used for writing to an inverted index of
     a collection or index of a View (`arangosearch` View link).
 
+- name: arangodb_server_statistics_cpu_cgroup_version
+  introducedIn: "3.12.7"
+  help: |
+    CGroup version detected on the system (0=none, 1=v1, 2=v2).
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Indicates which cgroup version was detected on the system at startup:
+    - 0: No cgroup support detected
+    - 1: cgroup v1 (legacy) detected
+    - 2: cgroup v2 (unified hierarchy) detected
+    
+    This metric is useful for understanding whether container resource limits
+    (CPU quotas) can be detected by ArangoDB. Systems with cgroup support
+    typically report more accurate CPU core counts when running in containers.
+  
+
 - name: arangodb_server_statistics_cpu_cores
   introducedIn: "3.8.0"
   help: |
@@ -5517,6 +5914,74 @@
     Number of CPU cores visible to the arangod process, unless the
     environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES`
     is set. In that case, the environment variable's value is reported.
+
+- name: arangodb_server_statistics_effective_cpu_cores
+  introducedIn: "3.12.7"
+  help: |
+    Number of effective CPU cores available to the arangod process.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Number of effective CPU cores available to the arangod process, taking into
+    account container CPU limits when running in containerized environments.
+  
+    This value is determined by:
+    - **cgroup v1**: Reading `/sys/fs/cgroup/cpu/cpu.cfs_quota_us` and
+      `/sys/fs/cgroup/cpu/cpu.cfs_period_us` to calculate CPU quota
+    - **cgroup v2**: Reading `/sys/fs/cgroup/cpu.max` to get CPU quota
+    - **No cgroups**: Falls back to total CPU cores from the system
+  
+    When running in Docker or Kubernetes with CPU limits set (e.g., `--cpus=2`),
+    this metric will report the container's CPU limit rather than the host's
+    total CPU cores, providing a more accurate view of available CPU resources
+    for capacity planning and auto-scaling decisions.
+  
+    If the environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES`
+    is set, it takes precedence over both cgroup limits and detected CPU cores.
+  
+    This metric includes a `machine_id` label to help identify the physical host
+    in containerized environments.
+  
+
+- name: arangodb_server_statistics_effective_physical_memory
+  introducedIn: "3.12.7"
+  help: |
+    Effective physical memory available to the arangod process in bytes.
+  unit: bytes
+  type: gauge
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Effective physical memory available to the arangod process in bytes, 
+    taking into account container memory limits when running in containerized
+    environments.
+    
+    This value is determined by:
+    - **cgroup v1**: Reading `/sys/fs/cgroup/memory/memory.limit_in_bytes`
+    - **cgroup v2**: Reading `/sys/fs/cgroup/memory.max`
+    - **No cgroups**: Falls back to total physical memory
+    
+    When running in Docker or Kubernetes with memory limits set, this metric
+    will report the container's memory limit rather than the host's total
+    physical memory, providing a more accurate view of available memory for
+    capacity planning and monitoring.
+    
+    If the environment variable `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
+    is set, it takes precedence over both cgroup limits and detected physical
+    memory.
+  
 
 - name: arangodb_server_statistics_idle_percent
   introducedIn: "3.8.0"
@@ -5628,6 +6093,53 @@
     a value between `0` and `100`, and as reported by the operating system.
     This metric is only reported on some operating systems.
 
+- name: arangodb_shard_followers_out_of_sync_number
+  introducedIn: "3.12.8"
+  help: |
+    Number of follower shards on this machine that are out of sync with their leader.
+  unit: number
+  type: gauge
+  category: Replication
+  complexity: simple
+  exposedBy:
+    - dbserver
+  description: |
+    Number of follower shards on this machine that are not in sync with their leader.
+    This is the follower-perspective counterpart to arangodb_shards_out_of_sync, which
+    reports from the leader's perspective. A follower shard is out of sync when it has
+    not caught up with the latest data from its leader.
+  troubleshoot: |
+    If this metric shows a non-zero value for an extended period, it indicates that
+    some follower shards on this DBServer are lagging behind their leaders. This could be due to:
+    - Network issues between this DBServer and the leaders
+    - This DBServer being overloaded or slow
+    - Large amounts of data being replicated
+    - Collection locks (write or exclusive) preventing the follower from getting in sync
+  
+    Investigate the replication logs and check the server's resource utilization.
+    If the problem persists, contact ArangoDB customer support.
+
+- name: arangodb_shards_follower_number
+  introducedIn: "3.12.8"
+  help: |
+    Number of follower shards on this machine.
+  unit: number
+  type: gauge
+  category: Replication
+  complexity: simple
+  exposedBy:
+    - dbserver
+  description: |
+    Number of follower shards on this machine. Every shard has a leader and
+    potentially multiple followers. This metrics should be equal to the number of
+    arangodb_shards_number - arangodb_shards_leader_number.
+  troubleshoot: |
+    This metric is used to track the number of follower shards on this machine.
+    It is calculated as the difference between the total number of shards and the
+    number of leader shards.
+    If this metric is not equal to the difference between the total number of shards and the
+    number of leader shards, then something is wrong. Please contact ArangoDB customer support.
+
 - name: arangodb_shards_leader_number
   renamedFrom: arangodb_shards_leader_count
   introducedIn: "3.8.0"
@@ -5638,9 +6150,7 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of leader shards on this machine. Every shard has a leader and
     potentially multiple followers.
@@ -5657,7 +6167,7 @@
     in the ArangoDB web interface, or use the
     [cluster maintenance tools](https://github.com/arangodb/cluster-maintenance)
     (`create-move-plan` and `execute-move-plan` specifically). In the latter
-    case, contact ArangoDB customer support.
+    case, contact the Arango customer support.
 
 - name: arangodb_shards_not_replicated
   introducedIn: "3.7.1"
@@ -5668,13 +6178,11 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of shards not replicated at all. This is counted for all shards
     for which this server is currently the leader. The number is increased
-    by one for every shards for which no follower is in sync.
+    by one for every shard for which no follower is in sync.
   troubleshoot: |
     Needless to say, such a situation is very bad for resilience, since it
     indicates a single point of failure. So, if this number is greater than 0,
@@ -5684,7 +6192,7 @@
     and waiting is a good measure at first. However, if the situation
     persists, something is wrong, potentially some constant server crash
     (maybe out of memory crashes?) or another situation preventing
-    shards to get in sync. Contact ArangoDB customer support in this case.
+    shards to get in sync. Contact the Arango customer support in this case.
 
 - name: arangodb_shards_number
   renamedFrom: arangodb_shards_total_count
@@ -5709,7 +6217,7 @@
     ArangoDB web interface, or use the
     [cluster maintenance tools](https://github.com/arangodb/cluster-maintenance)
     (`create-move-plan` and `execute-move-plan` specifically). In the latter
-    case, contact ArangoDB customer support.
+    case, contact the Arango customer support.
 
 - name: arangodb_shards_out_of_sync
   introducedIn: "3.7.1"
@@ -5722,9 +6230,9 @@
   exposedBy:
     - dbserver
   description: |
-    Number of leader shards not fully replicated. This is counted for all
+    Number of shards that are not fully replicated. This is counted for all
     shards for which this server is currently the leader. The number is
-    increased by one for every shards for which not all followers are in sync.
+    increased by one for every shard for which not all followers are in sync.
   troubleshoot: |
     Needless to say, such a situation is not good resilience, since we
     do not have as many copies of the data as the `replicationFactor`
@@ -5735,7 +6243,7 @@
     and waiting is a good measure at first. However, if the situation
     persists, something is wrong, potentially some constant server crash
     (maybe out of memory crashes?) or another situation preventing shards
-    to get in sync. Contact ArangoDB customer support in this case.
+    to get in sync. Contact the Arango customer support in this case.
 
 - name: arangodb_sync_rebuilds_total
   introducedIn: "3.8.0"
@@ -5761,7 +6269,7 @@
   troubleshoot: |
     This number is always `0` from version 3.9.3 onwards. If it is
     non-zero in previous versions, then something is wrong, please 
-    contact ArangoDB customer support in this case.
+    contact the Arango customer support in this case.
 
 - name: arangodb_sync_timeouts_total
   introducedIn: "3.9.2"
@@ -5828,7 +6336,7 @@
     incremental resync process starts from scratch.
   troubleshoot: |
     Normally, this number is always `0`. If it is not, then usually
-    something is wrong, please contact ArangoDB customer support in this
+    something is wrong, please contact the Arango customer support in this
     case.
 
 - name: arangodb_transactions_aborted_total
@@ -6225,7 +6733,7 @@
     However, if the situation persists, something is wrong, potentially
     some constant server crash (maybe out of memory crashes?) or another
     situation preventing shards to get in sync.
-    Contact ArangoDB customer support in this case.
+    Contact the Arango customer support in this case.
 
 - name: arangodb_vocbase_transactions_lost_subordinates_total
   introducedIn: "3.12.4"
@@ -7181,7 +7689,7 @@
     files and the RocksDB background threads have not managed to keep up
     with their compaction work. This situation should be avoided, since
     nasty delays in database operations are incurred. If in doubt,
-    contact ArangoDB support.
+    contact the Arango support.
 
 - name: rocksdb_live_blob_file_garbage_size
   introducedIn: "3.12.6"

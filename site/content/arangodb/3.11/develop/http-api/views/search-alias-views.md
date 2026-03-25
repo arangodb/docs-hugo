@@ -211,9 +211,9 @@ db._drop(coll.name());
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/view/{view-name}:
+  /_db/{database-name}/_api/view/{view-name}#searchalias:
     get:
-      operationId: getView
+      operationId: getViewSearchAlias
       description: |
         Returns the basic information about a specific View.
       parameters:
@@ -1012,10 +1012,10 @@ db._drop(coll.name());
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/view/{view-name}/rename:
+  /_db/{database-name}/_api/view/{view-name}/rename#searchalias:
     put:
     # The PATCH method can be used as an alias
-      operationId: renameView
+      operationId: renameViewSearchAlias
       description: |
         Renames a View.
 

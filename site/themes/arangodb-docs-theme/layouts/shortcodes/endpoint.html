@@ -1,0 +1,6 @@
+{{ $method := (.Get 0) -}}
+{{ $url := (.Get 1) -}}
+{{ partial "shortcodes/endpoint.html" (dict
+  "Method" $method
+  "Url"    $url
+) }}

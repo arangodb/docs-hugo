@@ -9,5 +9,5 @@ servers:
   - image: ${ARANGODB_BRANCH_3_12_IMAGE}
     version: ${ARANGODB_BRANCH_3_12_VERSION}
 
-  - image: ${ARANGODB_BRANCH_3_13_IMAGE}
-    version: ${ARANGODB_BRANCH_3_13_VERSION}
+  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
+    version: ${ARANGODB_BRANCH_4_0_VERSION}

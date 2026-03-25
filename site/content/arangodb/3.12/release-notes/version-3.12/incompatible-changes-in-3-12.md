@@ -920,8 +920,21 @@ RocksDB-related startup options have been changed:
 
 - `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128 KiB to 1 GiB.
 - `--rocksdb.pending-compactions-stop-trigger` has been changed from 16 GiB to 32 GiB.
-- `--rocksdb.partition-files-for-documents` has been changed from false to true.
 - `--rocksdb.throttle-slow-down-writes-trigger` has been obsoleted.
+- `--rocksdb.partition-files-for-documents` has been changed from false to true.
+
+{{< warning >}}
+If the `--rocksdb.partition-files-for-documents` startup option is enabled, it
+causes RocksDB to use separate `.sst` files for every collection/shard to store
+document data. This can create a very large number of files and use the same
+amount of file descriptors for deployments with many collections/shards and a
+high write load.
+
+It is recommended to disable the feature explicitly with
+`--rocksdb.partition-files-for-documents false` in versions from 3.12.6 through
+3.12.7 where it is enabled by default. From 3.12.7-1 and 3.12.8 onward, it is
+again disabled by default.
+{{< /warning >}}
 
 ## Optional elevation for GeoJSON Points
 
@@ -978,6 +991,61 @@ When _arangod_ parses HTTP requests and encounters an unexpected `Content-Length
 header or an invalid URL, it now sends a response with an error object instead
 of closing the connection, e.g. that the URL is corrupt with an HTTP status code
 of 400.
+
+## Changed consolidation defaults for inverted indexes and `arangosearch` Views
+
+<small>Introduced in: v3.12.6</small>
+
+The default values for consolidating inverted indexes as well as
+`arangosearch` Views have been changed. By consolidating less often and with
+more data, less file descriptors are used.
+
+- `consolidationIntervalMsec` increased from `1000` to `5000`
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin` increased from `1` to `50`
+  - `segmentsMax` increased from `10` to `200`
+  - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
+  - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
+
+## License management changes
+
+<small>Introduced in: v3.12.6</small>
+
+Enterprise Edition license keys are now longer issued directly. Customers receive
+license credentials instead. You can use a command-line tool to either activate
+deployments or generate license keys using these credentials. An internet
+connection is required for both. A generated key can subsequently be applied to
+an air-gapped deployment without internet access.
+
+The activation and license keys are now typically short-lived and need to be
+renewed every two weeks. Old license keys remain valid until their regular
+expiration.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
+## Added and removed consolidation options for inverted indexs and `arangosearch` Views
+
+<small>Introduced in: v3.12.7</small>
+
+The following options for consolidating inverted indexes as well as
+`arangosearch` Views have been removed and are now ignored when specified in a request:
+
+- `consolidationPolicy` (with `type` set to `tier`):
+  - `segmentsMin`
+  - `segmentsMax`
+  - `segmentsBytesFloor`
+  - `minScore`
+
+The consolidation works differently now and uses the new `maxSkewThreshold` and
+`minDeletionRatio` options together with the existing `segmentsBytesMax`. If you
+previously used customized settings for the removed options, check if the default
+values of the new options are acceptable or if you need to tune them according to
+your workload.
+
+For details, see:
+- [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
+- [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 
 ## HTTP RESTful API
 

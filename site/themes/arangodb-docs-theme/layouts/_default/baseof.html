@@ -30,9 +30,3 @@
     {{ partialCached "search.html" . -}}
   </body>
 </html>
-{{- /* Trigger validation at the end of the build once */ -}}
-{{ if .IsHome -}}
-  {{ with templates.Defer -}}
-    {{ partial "openapi-validate.html" (dict "key" "global") -}}
-  {{ end -}}
-{{ end -}}

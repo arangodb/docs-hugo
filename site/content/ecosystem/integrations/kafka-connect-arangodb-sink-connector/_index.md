@@ -6,6 +6,7 @@ description: >-
   The Kafka connector allows you to export data from Apache Kafka to ArangoDB
   by writing data from one or more topics in Kafka to a collection in ArangoDB
 aliases:
+  - ../../arangodb/3.11/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/3.12/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/stable/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/4.0/develop/integrations/kafka-connect-arangodb-sink-connector
@@ -16,13 +17,19 @@ Check out the [connector demo](https://github.com/arangodb/kafka-connect-arangod
 to learn more about the connector.
 {{< /info >}}
 
-## Supported versions
+## Compatibility
 
-This connector is compatible with:
+This connector is compatible with all supported versions of ArangoDB.
+For more information, see
+the [End-of-life announcements](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
-- Kafka 3.4 and higher versions
-- JDK 8 and higher versions
-- ArangoDB 3.11.1 and higher versions
+This integration has multiple versions released, and each one is compatible with
+the corresponding version of Apache Kafka:
+
+| Kafka Connect ArangoDB | Apache Kafka             |
+|------------------------|--------------------------|
+| 1.*.*                  | 3.*.* (from 3.7 onwards) |
+| 2.*.*                  | 4.*.*                    |
 
 ## Installation
 
@@ -257,13 +264,13 @@ processing, are available via JMX. For more information, see
 To connect to ArangoDB using an SSL connection, you must set the `ssl.enabled`
 configuration property to `true`.
 
-### Certificate from file
+### Certificate from a file
 
-The connector can load the trust store to be used from file. The following
+The connector can load the trust store from a file. The following
 configuration properties can be used:
 
-- `ssl.truststore.location`: the location of the trust store file
-- `ssl.truststore.password`: the password for the trust store file
+- `ssl.truststore.location`: The location of the trust store file
+- `ssl.truststore.password`: The password for the trust store file
 
 Note that the trust store file path needs to be accessible at the same given
 location from all Kafka Connect workers.

@@ -65,6 +65,23 @@ paths:
                   maxItems: 1
                   items:
                     type: string
+                storedValues:
+                  description: |
+                    Store additional attributes in the index (introduced in v3.12.7).
+                    Unlike with other index types, this is not for covering projections
+                    with the index but for adding attributes that you filter on.
+                    This lets you make the lookup in the vector index more efficient
+                    because it avoids materializing documents twice, once for the
+                    filtering and once for the matches.
+
+                    The maximum number of attributes that you can use in `storedValues` is 32.
+                  type: array
+                  uniqueItems: true
+                  items:
+                    description: |
+                      A list of attribute paths. The `.` character denotes sub-attributes.
+                      type: string
+                    type: string
                 sparse:
                   description: |
                     Whether to create a sparse index that excludes documents with
@@ -113,8 +130,9 @@ paths:
                         The number of Voronoi cells to partition the vector space
                         into, respectively the number of centroids in the index. What value to choose
                         depends on the data distribution and chosen metric. According to
-                        [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should be
-                        around `15 * sqrt(N)` where `N` is the number of documents in the collection,
+                        [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should scale
+                        sublinearly with the document count. The recommendation for ArangoDB is to use
+                        approximately `15 * sqrt(N)` where `N` is the number of documents in the collection,
                         respectively the number of documents in the shard for cluster deployments.
                         A bigger value produces more correct results but increases the training time
                         and thus how long it takes to build the index. It cannot be bigger than the

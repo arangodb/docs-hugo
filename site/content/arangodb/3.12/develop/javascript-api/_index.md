@@ -9,6 +9,7 @@ description: >-
 The JavaScript API is available on the server-side in the following contexts:
 
 - [Foxx microservices](../foxx-microservices/_index.md)
+- [Tasks](tasks.md) / [Queues](../foxx-microservices/reference/related-modules/queues.md)
 - [User-defined AQL functions](../../aql/user-defined-functions.md)
 - [JavaScript Transactions](../transactions/javascript-transactions.md)
 - [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)
@@ -146,6 +147,9 @@ You can use the following modules as an end-user:
 
 - [**@arangodb**](@arangodb/_index.md)
   provides direct access to the database and its collections.
+
+- [**@arangodb/activities**](activities.md)
+  lets you pretty-print the current server activities.
 
 - [**@arangodb/analyzers**](analyzers.md)
   provides an interface to manage ArangoSearch Analyzers.

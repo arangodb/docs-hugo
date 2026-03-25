@@ -382,7 +382,7 @@ See [Vector Indexes](working-with-indexes/vector-indexes.md) for details.
 ## Fulltext Index
 
 {{< warning >}}
-The fulltext index type is deprecated from version 3.10 onwards.
+The fulltext index type is deprecated from version 3.10 onward and removed in ArangoDB v4.0.
 It is recommended to use [ArangoSearch](../arangosearch/_index.md) for advanced full-text search capabilities.
 {{< /warning >}}
 
