@@ -93,9 +93,6 @@ aliases:
   <rect x="10" y="200" width="780" height="400" rx="14" fill="#0b2218" stroke="#22c55e" stroke-width="2"/>
   <rect x="10" y="200" width="780" height="32"  rx="14" fill="#134d2e"/>
   <rect x="10" y="216" width="780" height="16"  fill="#134d2e"/>
-  <circle cx="32"  cy="216" r="6" fill="#ff5f57"/>
-  <circle cx="52"  cy="216" r="6" fill="#febc2e"/>
-  <circle cx="72"  cy="216" r="6" fill="#28c840"/>
   <text x="400" y="221" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Arango Agentic AI Suite</text>
 
 
