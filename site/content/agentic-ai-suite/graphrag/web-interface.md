@@ -252,6 +252,9 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   directly in the chat
 - Change or create a new retriever service
 - Clear the chat
+- Toggle **Cache** to enable or disable response caching for the current query.
+  Enabling caching improves response times for repeated queries. Leave it disabled when you need fresh results or when testing changes to your knowledge graph.
+- Toggle **Citations** to show or hide inline citations in responses. For deep search queries, citations are always disabled.
 
 ## Integrate the Knowledge Graph chat service into your application
 
