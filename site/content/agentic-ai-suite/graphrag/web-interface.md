@@ -133,13 +133,6 @@ To add your first data source:
 3. Enter a descriptive name for your file.
 4. Click the **Start import** button.
 
-{{< info >}}
-Currently, you can import one file at a time in either Markdown (`.md`) or
-plain text (`.txt`) format. Additional files can be added to update the Knowledge Graph.
-{{< /info >}}
-
-![Upload file in GraphRAG web interface](../../images/graphrag-ui-upload-file.png)
-
 ## Explore the Knowledge Graph
 
 After your file is processed, you can view and explore the generated Knowledge Graph
