@@ -26,14 +26,18 @@ For more details about the necessary CPU features, see
 ### Simple Queries endpoints removed
 
 The server-side Simple Queries functionality was deprecated since v3.4.0,
-removed from the documentation in v3.8.0, and the endpoints have now been
-removed from the code as well. The same functionality is available in the
-AQL query language, where it can be used with more flexibility, better
+removed from the documentation in v3.8.0, and the `/_api/simple/*` endpoints
+have now been removed from the code as well. The same functionality is available
+in the AQL query language, where it can be used with more flexibility, better
 performance, and lower resource consumption.
 
 The client-side Simple Queries functionality found in _arangosh_ in the form
 of methods like `collection.byExample()` is still available but has been
 re-implemented to use AQL instead of relying on the server-side Simple Queries
+interface (which already used AQL internally).
+
+For a detailed list of the removed endpoints, see
+[API Changes in ArangoDB 4.0](api-changes-in-4-0.md#simple-queries-endpoints-removed).
 
 ### Unsupported HTTP methods disallowed
 

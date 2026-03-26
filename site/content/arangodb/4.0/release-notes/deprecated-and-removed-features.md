@@ -161,13 +161,14 @@ detailed information about breaking changes before upgrading.
   It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries, with
+  corresponding endpoints on the server-side (`/_api/simple/*`).
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
-  *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
-  are translated internally to AQL, then the AQL query is optimized and run
-  against the database in recent versions, because of better performance and
-  reduced maintenance complexity.
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
+  Simple Queries could ever be. In fact, the still supported methods in the
+  JavaScript API use AQL internally because of better performance and reduced
+  maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
+  removed in ArangoDB v4.0.
 
 - **Accessing collections by ID instead of by name**:\
   Accessing collections by their internal ID instead of accessing them by name
