@@ -14,6 +14,9 @@ startup options and HTTP API endpoints related to the statistics features have
 been removed and no `_statistics*` system collections are used by _arangod_
 anymore.
 
+When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
+system collections are actively removed.
+
 The following startup options are now obsolete:
 - `--server.statistics`
 - `--server.statistics-history`

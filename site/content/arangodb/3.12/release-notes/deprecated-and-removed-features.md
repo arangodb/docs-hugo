@@ -185,7 +185,7 @@ detailed information about breaking changes before upgrading.
   are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
   with the endpoint `GET /_admin/metrics`.
   The metrics API provides a lot more information than the statistics endpoints,
-  so it is much more useful.
+  so it is much more useful and uses the standard Prometheus format.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
