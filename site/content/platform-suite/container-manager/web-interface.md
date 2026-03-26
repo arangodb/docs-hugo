@@ -7,8 +7,8 @@ description: >-
 ---
 
 The Container Manager web interface provides a visual way to deploy and manage
-services with drag-and-drop upload and interactive configuration. You can deploy
-services using a code package or a Docker image URL.
+services. You can deploy services using a code package with drag-and-drop upload
+or by providing a Docker image URL.
 
 ## Access the Container Manager
 
@@ -61,7 +61,11 @@ To deploy a new version of an existing service:
 5. Click **Deploy Service**.
 
 The new version is deployed alongside the existing version. You can run
-multiple versions simultaneously.
+multiple versions simultaneously. Additionally, you can run multiple instances
+of the same version, as long as each instance has a different `app_instance_name`
+per database. This allows you to deploy the same service version to different
+databases or create multiple instances within the same database context with
+unique identifiers.
 
 ## Deploy Service from a Docker Image
 
