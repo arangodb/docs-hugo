@@ -74,6 +74,7 @@ Deploy services using runtime environments and resources tailored to your needs.
 
 All deployed services operate within the platform's security framework, with integrated authentication, network isolation, and access controls.
 
+{{< comment >}}
 ## Scaling and High Availability
 
 Services deployed through the Container Manager inherit the platform's Kubernetes-native scaling and high availability capabilities:
@@ -85,3 +86,4 @@ Services deployed through the Container Manager inherit the platform's Kubernete
 - **Zero-Downtime Updates**: Rolling updates enable you to deploy new versions of your services with minimal or no service disruption.
 
 For detailed information about the platform's scaling architecture and high availability features, see [Operational Features](../../contextual-data-platform/platform-suite.md#operational-features).
+{{< /comment >}}

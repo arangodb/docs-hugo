@@ -12,33 +12,11 @@ It it always included with the Arango Contextual Data Platform.
 
 ## Operational features
 
-- **Scaling Capabilities for Multi-Model Workloads**: The platform supports 
-  Kubernetes-native scaling for multi-model workloads, including both horizontal 
-  and vertical autoscaling. By integrating with standard Kubernetes primitives 
-  such as Deployments and StatefulSets, as well as with operators that provide 
-  availability and shard awareness, the platform enables online scaling operations 
-  with minimal service disruption. For storage, the platform relies on Persistent 
-  Volume Claims (PVCs) and therefore inherits the elasticity and scaling capabilities 
-  of the underlying storage provider. The architecture also supports compute-storage 
-  decoupling, depending on the workload and storage backend, which enables compute 
-  resources to scale independently from persistent storage. Combined with shard-aware 
-  orchestration and rolling operational patterns, this helps enable zero-downtime or 
-  near-zero-downtime scaling for supported deployments.
-
-- **Multi-AZ and High Availability**: By relying on Kubernetes, the platform 
-  natively supports multi-availability zone (multi-AZ) deployments. Workloads 
-  can be distributed across zones using built-in scheduling, anti-affinity rules, 
-  and topology-aware routing, enabling high availability and fault tolerance. 
-  Stateful workloads can also be deployed with replication and shard awareness 
-  to maintain resilience across zones. Comprehensive health checks, metrics 
-  collection, alerting, and automatic failover mechanisms ensure your data 
-  platform stays operational. Real-time monitoring dashboards provide visibility 
-  into cluster performance, resource utilization, and query patterns.
-
-- **Cloud-Native Architecture**: The platform is fully cloud-native, built on 
-  top of Kubernetes, and leverages standard Kubernetes primitives and ecosystem 
-  components. This ensures portability across environments, including public 
-  cloud, private cloud, and hybrid deployments.
+- **High Availability and Monitoring**: Multi-availability zones, comprehensive
+  health checks, metrics collection,
+  alerting, and automatic failover mechanisms ensure your data platform stays operational.
+  Real-time monitoring dashboards provide visibility into cluster performance,
+  resource utilization, and query patterns.
 
 - **APIs, Drivers and Connectors**: Comprehensive programmatic access through
   RESTful APIs, native drivers for popular programming languages (Java, Python,
@@ -103,7 +81,7 @@ with re-organizable tabs for writing, executing, analyzing, and managing AQL que
 
 The [Container manager](../platform-suite/container-manager/_index.md) lets you
 deploy and manage custom services within the Arango Contextual Data Platform
-using your own code packages.
+using your own code packages or Docker images.
 
 It is available in the web interface of the Contextual Data Platform as well as
 an API.
