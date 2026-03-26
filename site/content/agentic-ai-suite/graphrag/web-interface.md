@@ -120,23 +120,34 @@ For a more detailed exploration, click the **Explore** button to open the Knowle
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
-## Manage Knowledge Graph auto-refresh
+## Auto-refresh and Pause Controls
 
-The **Graph** section automatically polls for new data. You can control this
-behavior using the **Pause/Resume** button next to the refresh interval selector.
+The graph section automatically checks for changes to the data currently displayed
+on the graph. You can control this behavior using the refresh controls in the
+top-right corner.
 
-**When running (default):**
-The graph polls for updates at the selected refresh interval.
-New data is applied automatically.
+### Auto-refresh
 
-**When paused:**
-The refresh interval selector is replaced with **Auto-refresh paused**.
-If new graph data is detected in the background, a blue alert banner
-appears: **"Graph data has changed. Update to see the latest."**
-- Click **Update now** to fetch and apply the changes immediately.
-- Click **X** to dismiss the alert.
+The auto-refresh feature detects when any of those documents have been modified
+or deleted from the database. It does not detect new documents added to the knowledge
+graph, such as those created by the Importer. To see newly imported data, use the
+**Search Graph** button to find and add specific nodes to the canvas.
 
-Click the **Resume** (▶) button to resume automatic polling.
+When auto-refresh is active, the graph checks the database at a configurable
+interval. You can choose the refresh frequency from the **Refresh every**
+dropdown menu (5s, 10s, 15s, 30s, or 60s). When a change is detected, the graph
+updates automatically without any action needed from you.
+
+### Pausing Auto-refresh
+
+You can also stop automatic updates via the **Pause auto-fresh** button. While
+paused, the graph still checks for changes in the background. If changes are
+detected, a banner appears at the top of the graph informing you that the graph
+data has changed. You can either apply the latest changes to the graph or dismiss
+without applying the changes.
+
+To resume auto-refresh, click the Play button. Normal automatic checking resumes
+at your selected interval.
 
 ## Update the Knowledge Graph
 
