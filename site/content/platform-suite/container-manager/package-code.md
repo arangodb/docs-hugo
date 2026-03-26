@@ -58,7 +58,7 @@ follow the steps below.
    tar -czf myservice.tar.gz myproject/
    ```
 5. Test locally (optional but recommended):
-   - Install dependencies using `uv pip install -r pyproject.toml`.
+   - Install dependencies using `uv sync`.
    - Run your entry point script to verify it works before uploading.
 
 ## Example: Python Project

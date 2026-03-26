@@ -41,7 +41,8 @@ It handles dependencies, builds Docker images, and generates deployment-ready ar
 
 Provide a Docker image URL and the platform deploys it directly.
 By default, the platform routes traffic to an HTTP server on port `8000`,
-which your Docker image must expose.
+which your Docker image must expose. Your image must also handle requests at
+the root path (`/`).
 
 ## Key Capabilities
 
