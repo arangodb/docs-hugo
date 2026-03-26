@@ -34,25 +34,19 @@ performance, and lower resource consumption.
 The client-side Simple Queries functionality found in _arangosh_ in the form
 of methods like `collection.byExample()` is still available but has been
 re-implemented to use AQL instead of relying on the server-side Simple Queries
-interface.
 
-The removed endpoints are the following:
+### Unsupported HTTP methods disallowed
 
-- `PUT /_api/simple/lookup-by-keys`: Find documents by their keys
-- `PUT /_api/simple/remove-by-keys`: Remove documents by their keys
-- `PUT /_api/simple/all`: Return all documents
-- `PUT /_api/simple/all-keys`: Read all document keys
-- `PUT /_api/simple/any`: Return a random document
-- `PUT /_api/simple/by-example`: Simple query by-example
-- `PUT /_api/simple/first-example`: Find documents matching an example
-- `PUT /_api/simple/fulltext`: Fulltext index query
-- `PUT /_api/simple/near`: Return documents near coordinates
-- `PUT /_api/simple/range`: Simple range query
-- `PUT /_api/simple/remove-by-example`: Remove documents by example
-- `PUT /_api/simple/replace-by-example`: Replace documents by example
-- `PUT /_api/simple/update-by-example`: Update documents by example
-- `PUT /_api/simple/within`: Find documents within a radius around coordinates
-- `PUT /_api/simple/within-rectangle`: Find documents within a rectangular area
+The following endpoints could previously be called using any HTTP method of
+`HEAD`, `GET`, `POST`, `PATCH`, `PUT`, `DELETE`:
+
+ - `/_api/version`
+ - `/_admin/time`
+ - `/_admin/status`
+ - `/_admin/support-info`
+ 
+ The HTTP method is now checked and only `GET` requests are allowed for these
+ endpoints. Only the `GET` variants were documented.
 
 ### Batch request endpoint removed
 

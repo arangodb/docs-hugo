@@ -10,7 +10,18 @@ description: >-
 
 ### Behavior changes
 
+#### Unsupported HTTP methods disallowed
 
+The following endpoints could previously be called using any HTTP method of
+`HEAD`, `GET`, `POST`, `PATCH`, `PUT`, `DELETE`:
+
+ - `/_api/version`
+ - `/_admin/time`
+ - `/_admin/status`
+ - `/_admin/support-info`
+ 
+ The HTTP method is now checked and only `GET` requests are allowed for these
+ endpoints. Only the `GET` variants were documented.
 
 ### Privilege changes
 
