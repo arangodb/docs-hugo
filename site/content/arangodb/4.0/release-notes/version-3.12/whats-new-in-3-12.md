@@ -1428,7 +1428,7 @@ From v3.12.9 onward, the query can utilize both indexes as well as projections:
 Execution plan:
  Id   NodeType          Par   Est.   Comment
   1   SingletonNode              1   * ROOT 
-  7   IndexNode           ✓   4000     - FOR doc IN c   /* persistent index scan, index scan + document lookup (projections: `description`, `name`, `price`) */    LET #3 = doc.`description`, #4 = doc.`name`, #5 = doc.`price`   
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup (projections: `description`, `name`, `price`) */    LET #3 = doc.`description`, #4 = doc.`name`, #5 = doc.`price`   
   3   CalculationNode     ✓   4000       - LET #1 = ((#5 < 5) || (#4 == "avocado"))   /* simple expression */
   4   FilterNode          ✓   4000       - FILTER #1
   6   ReturnNode              4000       - RETURN #3
