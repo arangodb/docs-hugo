@@ -7,11 +7,6 @@ description: >-
   information and methods for executing collection-related operations
 # Undocumented on purpose:
 #   collection.count(true); // document count per shard (cluster only)
-#   collection.load()   // MMFiles legacy
-#   collection.unload() // MMFiles legacy
-#   collection.documents(keys)    // Simple Queries
-#   collection.removeByKeys(keys) // Simple Queries
-#   collection.iterate(iterator [, options]) // Deprecated
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`:

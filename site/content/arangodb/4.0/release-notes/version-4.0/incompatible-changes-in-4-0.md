@@ -25,7 +25,35 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## JavaScript API
 
+### Removed collection methods
 
+The following methods have been removed from
+[_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
+as they are either obsolete or didn't provide much value and better alternatives exist:
+
+- `closedRange()`
+- `documents()`
+- `ensureFulltextIndex()`
+- `ensureGeoConstraint()`
+- `ensureGeoIndex()`
+- `ensureHashIndex()`
+- `ensureSkiplist()`
+- `ensureUniqueConstraint()`
+- `ensureUniqueSkiplist()`
+- `fulltext()`
+- `geo()`
+- `iterate()`
+- `load()`
+- `lookupByKeys()`
+- `near()`
+- `range()`
+- `removeByKeys()`
+- `unload()`
+- `within()`
+- `withinRectangle()`
+
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-methods)
+for details like how you can replace this functionality.
 
 ## Startup options
 
