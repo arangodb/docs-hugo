@@ -1394,6 +1394,46 @@ AQL queries can now be killed during the execution of graph traversals and
 paths searches. These operations previously lacked cancellation points to stop
 the execution quickly.
 
+### Support projections when different indexes are utilized for OR conditions
+
+<small>Introduced in: v3.12.9</small>
+
+Queries with `OR` conditions in `FILTER` operations can utilize indexes for both
+sides of the `OR`. If these are different indexes, the AQL optimizer used to
+ignore whether projections could be used to improve the query performance.
+
+```aql
+ FOR doc IN coll
+   FILTER doc.price < 5 OR doc.name == "avocado"
+   RETURN doc.description
+```
+
+For example, if the collection `coll` has persistent indexes on `price`  and
+`name`, the above query would utilize both indexes but not use projections:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    
+  3   CalculationNode     ✓   4000       - LET #1 = ((doc.`price` < 5) || (doc.`name` == "avocado"))   /* simple expression */   /* collections used: doc : coll */
+  4   FilterNode          ✓   4000       - FILTER #1
+  5   CalculationNode     ✓   4000       - LET #2 = doc.`description`   /* attribute expression */   /* collections used: doc : coll */
+  6   ReturnNode              4000       - RETURN #2
+```
+
+From v3.12.9 onward, the query can utilize both indexes as well as projections:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup (projections: `description`, `name`, `price`) */    LET #3 = doc.`description`, #4 = doc.`name`, #5 = doc.`price`   
+  3   CalculationNode     ✓   4000       - LET #1 = ((#5 < 5) || (#4 == "avocado"))   /* simple expression */
+  4   FilterNode          ✓   4000       - FILTER #1
+  6   ReturnNode              4000       - RETURN #3
+```
+
 ## Indexing
 
 ### Multi-dimensional indexes
