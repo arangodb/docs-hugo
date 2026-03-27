@@ -386,8 +386,10 @@ paths:
                     type: boolean
                   fields:
                     description: |
-                      The list of attribute paths the index is created on.
+                      The list with exactly one attribute path the index is created on.
                     type: array
+                    minItems: 1
+                    maxItems: 1
                     items:
                       type: string
                   storedValues:
