@@ -788,6 +788,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -830,6 +831,11 @@ paths:
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
                               triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1545,6 +1551,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -1587,6 +1594,11 @@ paths:
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
                               triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |
@@ -2047,6 +2059,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -2089,6 +2102,11 @@ paths:
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
                               triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |

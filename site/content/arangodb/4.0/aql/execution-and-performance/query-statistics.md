@@ -50,6 +50,8 @@ The meaning of the statistics attributes is as follows:
 - **scannedIndex**: The total number of documents iterated over when scanning a collection using
   an index. Documents scanned by subqueries are included in the result, but operations
   triggered by built-in or user-defined AQL functions are not.
+- **searchParallelism**: The number of threads used by ArangoSearch for this
+  query (introduced in v3.12.9).
 - **cursorsCreated**: The total number of cursor objects created during query execution. Cursor
   objects are created for index lookups.
 - **cursorsRearmed**: The total number of times an existing cursor object was repurposed.
