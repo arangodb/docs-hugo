@@ -173,7 +173,7 @@ Apple silicon like M1).
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```sh
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
 
 The site will be available at `http://localhost:1313`.

@@ -146,7 +146,12 @@ commands:
           name: Build
           command: |
             set +e
-            cmake --build --preset enterprise-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench arangobackup arangovpack
+            # arangobench removed in ArangoDB 4.0
+            BUILD_TARGETS="arangod arangosh arangoimport arangoexport arangodump arangorestore arangobackup arangovpack"
+            if [[ "<< parameters.version >>" =~ ^3\. ]]; then
+              BUILD_TARGETS="$BUILD_TARGETS arangobench"
+            fi
+            cmake --build --preset enterprise-pr --parallel 8 --target $BUILD_TARGETS
 
             if [ "$?" != "0" ]; then
               echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
@@ -422,7 +427,7 @@ jobs:
             export HUGO_ENV=frontend
 
             cd /home/circleci/project/docs-hugo/toolchain/docker/amd64
-            docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+            docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
       - upload-summary:
           summary-name: "plain-build-summary"
       - when:
