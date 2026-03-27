@@ -11,7 +11,7 @@ running on the server, such as HTTP request handlers, AQL queries, transactions,
 and index creations.
 
 Each activity has a type, creation time, an optional parent to indicate a
-dependency, and type-specific metadata. Not all server activity is necessarily
+dependency, and type-specific data. Not all server activity is necessarily
 reported.
 
 ## Get the activities (experimental)
@@ -74,7 +74,7 @@ paths:
                       properties:
                         id:
                           description: |
-                            Unique identifier of the activity (opaque string).
+                            Unique identifier of the activity.
                           type: integer
                           example: 370
                         type:
