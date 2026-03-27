@@ -442,7 +442,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`.
           schema:
             type: boolean
             default: false
@@ -458,32 +458,18 @@ paths:
           schema:
             type: boolean
             default: false
-        - name: overwrite
-          in: query
-          required: false
-          description: |
-            If set to `true`, the insert becomes a replace-insert. If a document with the
-            same `_key` already exists, the new document is not rejected with unique
-            constraint violation error but replaces the old document. Note that operations
-            with `overwrite` parameter require a `_key` attribute in the request payload,
-            therefore they can only be performed on collections sharded by `_key`.
-          schema:
-            type: boolean
-            default: false
         - name: overwriteMode
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes:
+            This option offers the following modes:
             - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
             - `"replace"`: if a document with the specified `_key` value exists already,
-              it is overwritten with the specified document value. This mode is
-              also used when no overwrite mode is specified but the `overwrite`
-              flag is set to `true`.
+              it is overwritten with the specified document value.
             - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
@@ -491,7 +477,11 @@ paths:
             - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
-              not set, and the `overwrite` flag is `false` or not set either.
+              not set.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]
@@ -534,8 +524,7 @@ paths:
           in: query
           required: false
           description: |
-            Only applicable if `overwrite` is set to `true` or `overwriteMode`
-            is set to `update` or `replace`.
+            Only applicable if `overwriteMode` is set to `update` or `replace`.
 
             You can use the `versionAttribute` option for external versioning support.
             If set, the attribute with the name specified by the option is looked up in the
@@ -789,7 +778,7 @@ assert(response.code === 201);
 logJsonResponse(response);
 
 body = '{ "Hello": "Universe", "_key" : "lock" }';
-url = "/_api/document/" + cn + "?overwrite=true";
+url = "/_api/document/" + cn + "?overwriteMode=replace";
 response = logCurlRequest('POST', url, body);
 // insert same key
 assert(response.code === 201);
@@ -2009,7 +1998,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`.
           schema:
             type: boolean
             default: false
@@ -2026,32 +2015,18 @@ paths:
           schema:
             type: boolean
             default: false
-        - name: overwrite
-          in: query
-          required: false
-          description: |
-            If set to `true`, the insert becomes a replace-insert. If a document with the
-            same `_key` already exists, the new document is not rejected with a unique
-            constraint violation error but replaces the old document. Note that operations
-            with `overwrite` parameter require a `_key` attribute in the request payload,
-            therefore they can only be performed on collections sharded by `_key`.
-          schema:
-            type: boolean
-            default: false
         - name: overwriteMode
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes:
+            This option offers the following modes:
             - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
             - `"replace"`: if a document with the specified `_key` value exists already,
-              it is overwritten with the specified document value. This mode is
-              also used when no overwrite mode is specified but the `overwrite`
-              flag is set to `true`.
+              it is overwritten with the specified document value.
             - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
@@ -2059,7 +2034,11 @@ paths:
             - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
-              not set, and the `overwrite` flag is `false` or not set either.
+              not set.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]
@@ -2102,8 +2081,7 @@ paths:
           in: query
           required: false
           description: |
-            Only applicable if `overwrite` is set to `true` or `overwriteMode`
-            is set to `update` or `replace`.
+            Only applicable if `overwriteMode` is set to `update` or `replace`.
 
             You can use the `versionAttribute` option for external versioning support.
             If set, the attribute with the name specified by the option is looked up in the
