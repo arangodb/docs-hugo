@@ -113,7 +113,7 @@ Using the `arangod` configuration file as input for `arangodb` binary is not sup
 The configuration file also supports setting pass-through options. Options with
 same prefixes can be split into sections.
 
-```conf
+```cfg
 # passthrough-example.conf
 
 args.all.log.level = startup=trace

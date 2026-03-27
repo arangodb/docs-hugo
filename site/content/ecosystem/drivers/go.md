@@ -4,6 +4,7 @@ menuTitle: Go driver
 weight: 15
 description: ''
 aliases:
+  - ../../arangodb/3.11/develop/drivers/go
   - ../../arangodb/3.12/develop/drivers/go
   - ../../arangodb/stable/develop/drivers/go
   - ../../arangodb/4.0/develop/drivers/go
