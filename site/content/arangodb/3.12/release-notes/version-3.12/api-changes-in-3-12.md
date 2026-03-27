@@ -610,6 +610,28 @@ A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
 
+---
+
+<small>Introduced in: v3.12.9</small>
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): Possible values:
+  - `"unusable"`
+  - `"training"`
+  - `"ingesting"`
+  - `"ready"`
+- `errorMessage` (string):
+  Only present if there is a problem with the index/training.
+
+You can now create a vector index first if you set `inBackground` to `true` and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
+
 ##### Changed consolidation defaults for inverted indexes
 
 <small>Introduced in: v3.12.6</small>

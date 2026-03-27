@@ -1629,6 +1629,31 @@ FOR doc IN c OPTIONS { indexHint: ["vec_idx_1", "vec_idx_2"], forceIndexHint: tr
    RETURN doc
 ```
 
+---
+
+<small>Introduced in: v3.12.9</small>
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): The current training state of the vector index:
+  - `"unusable"`: The index is not yet trained or cannot be
+    trained, for example, because of insufficient training data.
+  - `"training"`: The index is currently being trained.
+  - `"ingesting"`: The index has been trained and data is being
+    ingested.
+  - `"ready"`: The index is fully trained and ready for queries.
+- `errorMessage` (string): An optional message with details about the
+  training state, for example, `"not enough training data for vector index"`.
+  Only present if there is a problem with the index.
+
+You can now create a vector index first if you set `inBackground` to `true` and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
+
 ## Server options
 
 ### Effective and available startup options
