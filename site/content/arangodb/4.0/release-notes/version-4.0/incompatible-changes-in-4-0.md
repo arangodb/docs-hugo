@@ -43,6 +43,19 @@ removed from the JavaScript API.
 
 The `30xx` error codes used by Foxx have been removed.
 
+For new deployments, the following Foxx-related system collections are not
+created anymore:
+
+- `_appbundles`
+- `_apps`
+- `_jobs`
+- `_modules`
+- `_queues`
+- `_routing`
+
+When upgrading existing deployments, these collections are not actively removed
+in case they contain any data that is still relevant to you.
+
 **Alternatives and migration**
 
 You may use Node.js together with the [arangojs driver](../../../../ecosystem/drivers/javascript.md)
