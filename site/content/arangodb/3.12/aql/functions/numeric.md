@@ -462,25 +462,28 @@ MIN( [ null, null ] ) // null
 
 ## PERCENTILE()
 
-`PERCENTILE(numArray, n, method) → percentile`
+`PERCENTILE(numArray, p, method) → value`
 
-Return the *n*th percentile of the values in *numArray*.
-The order of the elements does not matter.
+Return the *p*th percentile of the values in the input array.
+It is a number from the same scale as the data such that *p* percent of the
+data (roughly) lies at or below it.
 
-- **numArray** (array): an array of numbers, *null* values are ignored
-- **n** (number): must be between 0 (included) and 100 (included)
+- **numArray** (array): An array of numbers. The order of the elements does
+  not matter. Each occurrence of a value counts, duplicates are not removed.
+  Any `null` values are ignored.
+- **p** (number): The percentile index. Must be between `0` (included) and
+  `100` (included). A value of `50` is the median.
 - **method** (string, *optional*): Possible values:
-  - `"rank"` (default): The nearest rank.
-  - `"interpolation"`: Linearly interpolate between adjacent ranked values.
-
-    The range 0% to 100% is divided into pieces (one more than numbers in the
-    array). The smallest value is used for the left-most piece and the highest
-    value for the right-most piece. The middle pieces are interpolated between
-- returns **percentile** (number\|null): the *n*th percentile, or *null* if the
-  array is empty or only *null* values are contained in it or the percentile
-  cannot be calculated
-
-The interpolation values show that when a percentile falls between two data points, it calculates the exact weighted average - for example, the 30th percentile gives 1.5 (halfway between values 1 and 2), and the 50th percentile gives 2.5 (halfway between values 2 and 3). This method provides smooth, continuous percentile estimates by linearly interpolating between adjacent ranked values rather than using discrete ranks.
+  - `"rank"` (default):
+    The nearest rank. Repeated values occupy consecutive positions.
+  - `"interpolation"`: 
+    The interval from 0 to 100 is split into segments, one more than there are
+    non-`null` values in the array. The two outer segments return the minimum and
+    maximum, whereas interior segments use linear interpolation between adjacent
+    sorted values.
+- returns **value** (number\|null): The percentile value (*p*th percentile),
+  or `null` if the array is empty, only contains `null` values, or the 
+  percentile value cannot be calculated because `p` out of range.
 
 ```aql
 PERCENTILE( [1, 2, 3, 4], 50 ) // 2
