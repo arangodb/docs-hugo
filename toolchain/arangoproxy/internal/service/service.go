@@ -175,17 +175,23 @@ func init() {
 				"name": "Business Source License 1.1",
 				"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
 			}
-			if version.Name == "3.10" || version.Name == "3.11" {
+			displayVersion := version.Version
+			if version.Name == "3.10" || version.Name == "3.11" || version.Name == "oem" {
+				branch := version.Name
+				if version.Name == "oem" {
+					branch = "3.11.14"
+					displayVersion = "OEM / Embedded"
+				}
 				license["name"] = "Apache 2.0"
-				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
+				license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", branch)
 			}
 
 			OpenapiGlobalMap[version.Name] = map[string]interface{}{
 				"openapi": "3.1.0",
 				"info": map[string]interface{}{
-					"title":   "ArangoDB Core API",
-					"summary": "The RESTful HTTP API of the ArangoDB Core Database System",
-					"version": version.Version,
+					"title":   "ArangoDB API",
+					"summary": "The RESTful HTTP API of the ArangoDB database system",
+					"version": displayVersion,
 					"license": license,
 					"contact": map[string]interface{}{
 						"name": "ArangoDB Inc.",
