@@ -72,8 +72,8 @@ that can insert, update, replace, or remove arrays of documents.
 ### Vector index enabled by default
 
 The `vector` index type is now enabled by default and the `--vector-index`
-startup option is obsolete, meaning you can still specify the option without
-causing an error about an unknown startup option but no longer has any effect.
+startup option is obsolete. You can still specify the option without causing an
+error about an unknown option at startup but it no longer has any effect.
 
 ## Client tools
 
