@@ -77,6 +77,13 @@ causing an error about an unknown startup option but no longer has any effect.
 
 ## Client tools
 
+### arangoimp removed
+
+The _arangoimport_ client tool used to be called _arangoimp_ and was still
+shipped (at least as a symlink) under the old name in packages and container
+images for backward compatibility. This is no longer the case and there is only
+the _arangoimport_ executable now.
+
 ### arangobench
 
 #### Batch size option removed
