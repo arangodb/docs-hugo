@@ -49,6 +49,19 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+#### Statistics endpoints
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
+
 ## JavaScript API
 
 
