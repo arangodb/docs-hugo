@@ -82,6 +82,13 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Deprecated `PUT` cursor endpoint removed
+
+The deprecated `PUT /_api/cursor/{cursor-identifier}` endpoint to
+read the next batch from a cursor has been removed.
+
+Use `POST /_api/cursor/{cursor-identifier}` instead.
+
 ## JavaScript API
 
 
