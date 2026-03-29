@@ -201,9 +201,8 @@ detailed information about breaking changes before upgrading.
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\

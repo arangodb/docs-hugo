@@ -70,6 +70,13 @@ read the next batch from a cursor has been removed.
 
 Use `POST /_api/cursor/{cursor-identifier}` instead.
 
+### Endpoints to load and unload collections removed
+
+The deprecated `PUT /_api/collection/load` and `PUT /_api/collection/unload`
+endpoints to load and unload collections have been removed. There is no
+concept of loading status anymore and the endpoints didn't have any effect for
+a while.
+
 ## JavaScript API
 
 
