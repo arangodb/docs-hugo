@@ -483,7 +483,7 @@ data (roughly) lies at or below it.
     sorted values.
 - returns **value** (number\|null): The percentile value (*p*th percentile),
   or `null` if the array is empty, only contains `null` values, or the 
-  percentile value cannot be calculated because `p` out of range.
+  percentile value cannot be calculated because `p` is out of range.
 
 ```aql
 PERCENTILE( [1, 2, 3, 4], 50 ) // 2
