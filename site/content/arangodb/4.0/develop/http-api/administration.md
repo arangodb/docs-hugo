@@ -2592,36 +2592,6 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
-### Reload the routing table
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/routing/reload:
-    post:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
-      operationId: reloadRouting
-      description: |
-        Reloads the routing information from the `_routing` system collection if it
-        exists, and makes Foxx rebuild its local routing table on the next request.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            The routing information has been reloaded successfully.
-      tags:
-        - Administration
-```
-
 ### Echo a request
 
 ```openapi

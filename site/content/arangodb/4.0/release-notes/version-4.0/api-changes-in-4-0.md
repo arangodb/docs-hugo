@@ -84,6 +84,13 @@ The following `/_api/foxx` endpoints have been removed due to the removal of Fox
 The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
 It was used for service bundle and file uploads.
 
+### Routing reload API removed
+
+The `POST /_admin/routing/reload` endpoint has been removed due to the removal
+of the Action and Foxx features. It was used to reload the routing information
+from the `_routing` system collection and make Foxx rebuild its local routing
+table on the next request.
+
 ## JavaScript API
 
 
