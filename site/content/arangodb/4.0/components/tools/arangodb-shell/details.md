@@ -282,7 +282,7 @@ These sets are resolved internally to the following regular expressions:
 
 ```sh
 --javascript.startup-options-allowlist = "^server\.|^log\."
---javascript.startup-options-denylist = "^javascript\.|endpoint"
+--javascript.startup-options-denylist = "^javascript\.|^endpoint$"
 ```
 
 Invoking _arangosh_ with these options hides the denied command-line

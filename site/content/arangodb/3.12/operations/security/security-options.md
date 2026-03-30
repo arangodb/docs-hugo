@@ -35,7 +35,7 @@ The default value for this option is `false`.
 ## API availability and access
 
 Certain administrative endpoints can be restricted with startup options. Some
-only let you control the availability of APIs endpoint while others let you
+only let you control the availability of API endpoints while others let you
 specify the access permissions and required level of authentication, or both.
 Disabling APIs you don't use and increasing the access restriction help to
 reduce the attack surface.
@@ -69,7 +69,7 @@ reduce the attack surface.
 
 - [`--server.export-metrics-api`](../../components/arangodb-server/options.md#--serverexport-metrics-api):
   - `false`: Disable the API.
-  - `true` (true): Enable the API.
+  - `true` (default): Enable the API.
 
 ## JavaScript security options
 
@@ -102,7 +102,7 @@ pattern, these patterns are combined with a _logical or_ to the actual pattern
 ArangoDB uses.
 
 These patterns and how they are applied can be observed in the `arangod` or
-`arangosh` log output by enabling `--log.level SECURITY=debug`.
+`arangosh` log output by enabling `--log.level security=debug`.
 
 ### Options for allowlisting and denylisting
 

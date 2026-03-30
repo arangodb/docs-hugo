@@ -40,7 +40,7 @@ that had to be transferred between cluster nodes.
 
 ## Removed AQL functions
 
-- `V8()`: There no longer is a V8 JavaScript engine on the server-side to
+- `V8()`: There is no longer a V8 JavaScript engine on the server-side to
   enforce for query expressions.
 
 ## HTTP RESTful API
@@ -139,7 +139,7 @@ ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists)
 It has been changed to the `v8` log topic.
 
 The `security` log topic has been removed.
-Attempts to set the log level for this topic logs a warning, for example, using
+Attempts to set the log level for this topic log a warning, for example, using
 a startup option like `--log.level security=debug`.
 
 ## Client tools
