@@ -6,21 +6,22 @@ description: >-
   Deploy and manage services programmatically using the Container Manager APIs
 ---
 
-The Container Manager API enables programmatic deployment and management of services, ideal for automation, CI/CD pipelines, and infrastructure-as-code workflows.
-
-{{< info >}}
-Before deploying, you need a `.tar.gz` package with your application code.
-See [Package Your Code](package-code/) for instructions.
-{{< /info >}}
+The Container Manager API enables programmatic deployment and management of
+services, ideal for automation, CI/CD pipelines, and infrastructure-as-code
+workflows.
 
 ## Prerequisites
 
 To deploy services via the API, you need:
 - A Bearer token for authentication
-- Your `.tar.gz` service package
 - The external endpoint URL for your Arango Platform deployment
+- For **Bring Your Own Code**: A `.tar.gz` service package
+  (see [Package Your Code](package-code/))
+- For **Bring Your Own Container**: A Docker image URL (public or private)
 
-## Upload Your Archive
+## Deploy a Code-Based Service
+
+### Upload Your Archive
 
 Upload your application archive to the storage backend via the FileManager service:
 
@@ -57,7 +58,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 
 Save the `name` and `version` values as you will need them in the deployment step.
 
-## Deploy Service
+### Deploy the Service
 
 After uploading your archive, deploy it as a running service:
 
@@ -98,6 +99,65 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 | `py13torch` | Python 3.13 with PyTorch |
 | `py13cugraph` | Python 3.13 with cuGraph |
 
+## Deploy an Image-Based Service
+
+Provide your own Docker image URL to deploy a service directly, without
+uploading a code package.
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "env": {
+      "service_type": "derived_type",
+      "image_url": "<DOCKER_IMAGE_URL>",
+      "app_instance_name": "<APP_INSTANCE_NAME>",
+      "db_name": "<DATABASE_NAME>"
+    }
+  }'
+```
+
+**Parameters:**
+
+| Parameter | Location | Description | Required |
+|-----------|----------|-------------|----------|
+| `service_type` | env | Set to `derived_type` | Yes |
+| `image_url` | env | Full Docker image URL including registry, name, and tag (e.g., `docker.io/myorg/myapp:1.0.0`) | Yes |
+| `app_instance_name` | env | Service instance name (alphanumeric with a 32-character length limit, used in routing) | Yes |
+| `container_port` | env | Port your container exposes for HTTP traffic (default: `8000`) | No |
+| `db_name` | env | Database name (optional) | No |
+| `imagePullSecrets` | env | List of Kubernetes Secret names that contain credentials for private Docker registries | No |
+
+### Private Registry Authentication
+
+For Docker images hosted in private registries, provide `imagePullSecrets`
+with the names of [Kubernetes Secrets](https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod) that hold your registry credentials.
+These secrets must exist in the target namespace before deployment.
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "env": {
+      "service_type": "derived_type",
+      "image_url": "<PRIVATE_REGISTRY_IMAGE_URL>",
+      "app_instance_name": "<APP_INSTANCE_NAME>",
+      "imagePullSecrets": ["<REGISTRY_SECRET_NAME>"]
+    }
+  }'
+```
+
+### Container Requirements
+
+Your Docker image must:
+- Expose an HTTP server on the configured port (default: `8000`).
+- Handle requests at the root path (`/`). The platform routes traffic to
+  your container's root.
+
 ## Service Access
 
 Once deployed, your service is accessible via HTTP at a specific endpoint pattern which depends on whether your service is database-scoped or global.
@@ -126,9 +186,14 @@ All HTTP requests to these paths are routed to your container's service.
 
 ## Manage Uploaded Files
 
+{{< info >}}
+These endpoints apply to code-based (Bring Your Own Code) deployments only.
+Container-based deployments do not use the FileManager service.
+{{< /info >}}
+
 ### List All Uploaded Services
 
-Get a list of all uploaded BYOC services:
+Get a list of all uploaded services:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
@@ -239,9 +304,12 @@ curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/
 
 The file content is streamed back with `Content-Type: application/octet-stream`.
 
-## Complete Example
+## Complete Examples
 
-See below a complete workflow for uploading and deploying a database-scoped service.
+### Code-Based Deployment
+
+A complete workflow for uploading and deploying a database-scoped service
+from a code package:
 
 ```bash
 #!/bin/bash
@@ -274,6 +342,36 @@ curl -X POST "$ENDPOINT/_platform/acp/v1/uds" \
     \"env\": {
       \"service_type\": \"base_type\",
       \"base_image\": \"py13base\",
+      \"app_instance_name\": \"$INSTANCE_NAME\",
+      \"db_name\": \"$DATABASE\"
+    }
+  }"
+
+echo "Service deployed successfully!"
+echo "Access your service at: $ENDPOINT/_service/uds/_db/$DATABASE/$INSTANCE_NAME/"
+```
+
+### Container-Based Deployment
+
+A complete workflow for deploying a service from a Docker image:
+
+```bash
+#!/bin/bash
+
+ENDPOINT="https://your-platform.example.com:8529"
+TOKEN="your_jwt_token"
+IMAGE_URL="docker.io/myorg/my-web-service:1.0.0"
+INSTANCE_NAME="my-web-service"
+DATABASE="mydb"
+
+echo "Deploying container image..."
+curl -X POST "$ENDPOINT/_platform/acp/v1/uds" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"env\": {
+      \"service_type\": \"derived_type\",
+      \"image_url\": \"$IMAGE_URL\",
       \"app_instance_name\": \"$INSTANCE_NAME\",
       \"db_name\": \"$DATABASE\"
     }

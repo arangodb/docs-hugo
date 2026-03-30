@@ -23,6 +23,12 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ## JavaScript API
 
 
