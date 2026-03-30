@@ -462,21 +462,33 @@ MIN( [ null, null ] ) // null
 
 ## PERCENTILE()
 
-`PERCENTILE(numArray, n, method) → percentile`
+`PERCENTILE(numArray, p, method) → value`
 
-Return the *n*th percentile of the values in *numArray*.
+Return the *p*th percentile of the values in the input array.
+It is a number from the same scale as the data such that *p* percent of the
+data (roughly) lies at or below it.
 
-- **numArray** (array): an array of numbers, *null* values are ignored
-- **n** (number): must be between 0 (excluded) and 100 (included)
-- **method** (string, *optional*): "rank" (default) or "interpolation"
-- returns **percentile** (number\|null): the *n*th percentile, or *null* if the
-  array is empty or only *null* values are contained in it or the percentile
-  cannot be calculated
+- **numArray** (array): An array of numbers. The order of the elements does
+  not matter. Each occurrence of a value counts, duplicates are not removed.
+  Any `null` values are ignored.
+- **p** (number): The percentile index. Must be between `0` (included) and
+  `100` (included). A value of `50` is the median.
+- **method** (string, *optional*): Possible values:
+  - `"rank"` (default):
+    The nearest rank. Repeated values occupy consecutive positions.
+  - `"interpolation"`: 
+    The interval from 0 to 100 is split into segments, one more than there are
+    non-`null` values in the array. The two outer segments return the minimum and
+    maximum, whereas interior segments use linear interpolation between adjacent
+    sorted values.
+- returns **value** (number\|null): The percentile value (*p*th percentile),
+  or `null` if the array is empty, only contains `null` values, or the 
+  percentile value cannot be calculated because `p` is out of range.
 
 ```aql
 PERCENTILE( [1, 2, 3, 4], 50 ) // 2
 PERCENTILE( [1, 2, 3, 4], 50, "rank" ) // 2
-PERCENTILE( [1, 2, 3, 4], 50, "interpolation" ) // 2.5
+PERCENTILE( [1, 2, 3, 4], 50, "interpolation" ) // 2.5  (halfway between values 2 and 3)
 ```
 
 ## PI()
