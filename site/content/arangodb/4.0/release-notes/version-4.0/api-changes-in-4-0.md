@@ -42,6 +42,12 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 ### Endpoints removed
 
+#### Metrics API v2
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
+
 #### Batch request API
 
 <small>Removed in: v3.12.3</small>
