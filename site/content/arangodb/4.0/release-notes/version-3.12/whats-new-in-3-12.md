@@ -1398,7 +1398,7 @@ the execution quickly.
 
 <small>Introduced in: v3.12.9</small>
 
-AQL queries now returns an additional statistics value under `extra.stats` in
+AQL queries now return an additional statistic under `extra.stats` in
 the HTTP API:
 
 - `searchParallelism` (integer):

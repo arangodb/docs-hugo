@@ -526,7 +526,7 @@ Two new statistics are included in the response when you execute an AQL query:
 
 <small>Introduced in: v3.12.9</small>
 
-The cursor API now returns an additional statistics value under `extra.stats`:
+The cursor API now returns an additional statistic under `extra.stats`:
 
 - `searchParallelism` (integer):
   The number of threads used by ArangoSearch for this query.

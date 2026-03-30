@@ -859,7 +859,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -908,7 +908,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:
@@ -1622,7 +1622,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -1671,7 +1671,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:
@@ -2268,7 +2268,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -2317,7 +2317,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:
