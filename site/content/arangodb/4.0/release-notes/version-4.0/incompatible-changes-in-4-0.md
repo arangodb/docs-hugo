@@ -114,7 +114,10 @@ methods for managing Foxx services.
 
 ## Startup options
 
+### `--server.allow-use-database` removed
 
+The `--server.allow-use-database` startup option related to the long-deprecated
+and now removed Action feature has been removed. It was only used internally.
 
 ## Client tools
 
