@@ -2652,7 +2652,13 @@ paths:
   /_db/{database-name}/_admin/echo:
     post:
       operationId: echoRequest
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The Action feature, including this debug endpoint, is deprecated and
+        removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         The call returns an object with the servers request information
       requestBody:
         content:
