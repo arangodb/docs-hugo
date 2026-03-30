@@ -11,42 +11,70 @@ Administrators can use these options to limit access to certain ArangoDB
 server functionality as well as preventing the leakage of information about
 the environment that a server is running in.
 
-## General security options
+## Server hardening
 
-The following security options are available:
+If the [`--server.harden` startup option](../../components/arangodb-server/options.md#--serverharden)
+is set to `true` and authentication is enabled, non-admin users are denied
+access to the following HTTP APIs:
 
-- `--server.harden`
-  If this option is set to `true` and authentication is enabled, non-admin users
-  will be denied access to the following REST APIs:
+- `/_admin/cluster/numberOfServers`
+- `/_admin/license`
+- `/_admin/metrics`
+- `/_admin/statistics-description`
+- `/_admin/statistics`
+- `/_admin/status`
+- `/_admin/system-report`
+- `/_admin/usage-metrics`
+- `/_api/engine/stats`
 
-  - `/_admin/cluster/numberOfServers`
-  - `/_admin/log`
-  - `/_admin/log/level`
-  - `/_admin/status`
-  - `/_admin/statistics`
-  - `/_admin/statistics-description`
-  - `/_api/engine/stats`
+Additionally, no version details are revealed by the version HTTP API at
+`/_api/version`.
 
-  Additionally, no version details will be revealed by the version REST API at 
-  `/_api/version`.
+The default value for this option is `false`.
 
-  The default value for this option is `false`.
+## API availability and access
 
-- `--server.support-info-api`
-  This option controls access to the REST API endpoint `/_admin/support-info` 
-  for retrieving deployment information. It can have the following values:
-  - `disabled`: support info API is disabled.
-  - `jwt`: support info API can only be accessed via superuser JWT.
-  - `admin` (default): the support info API can only be accessed by admin users and superuser JWTs.
-  - `public`: everyone with access to the `_system` database can access the
-    support info API.
+Certain administrative endpoints can be restricted with startup options. Some
+only let you control the availability of API endpoints while others let you
+specify the access permissions and required level of authentication, or both.
+Disabling APIs you don't use and increasing the access restriction help to
+reduce the attack surface.
 
-  The default value for this option is `admin`.
+- [`--server.support-info-api`](../../components/arangodb-server/options.md#--serversupport-info-api)\
+  [`--server.options-api`](../../components/arangodb-server/options.md#--serveroptions-api):
+
+  - `disabled`: Disable the API.
+  - `jwt`: The API can only be accessed via superuser JWTs.
+  - `admin` (default): The API can only be accessed by admin users
+    and superuser JWTs.
+  - `public`: Everyone with access to the `_system` database can access the API.
+
+- [`--backup.api-enabled`](../../components/arangodb-server/options.md#--backupapi-enabled)\
+  [`--log.api-enabled`](../../components/arangodb-server/options.md#--logapi-enabled)\
+  [`--log.recording-api-enabled`](../../components/arangodb-server/options.md#--logrecording-api-enabled):
+  - `false`: Disable the API.
+  - `jwt`: The API can only be accessed via superuser JWTs.
+  - `true` (default): The API can only be accessed by admin users
+    and superuser JWTs.
+
+- [`--cluster.api-jwt-policy`](../../components/arangodb-server/options.md#--clusterapi-jwt-policy):
+  - `jwt-all`: Superuser JWT required to access all operations
+  - `jwt-write`: Superuser JWT required for `POST`/`PUT`/`DELETE` operations
+  - `jwt-compat` (default): ArangoDB v3.7 compatibility mode
+
+- [`--activities.only-superuser-enabled`](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled):
+  - `true`: The API can only be accessed via superuser JWTs.
+  - `false` (default): The API can only be accessed by admin users
+    and superuser JWTs.
+
+- [`--server.export-metrics-api`](../../components/arangodb-server/options.md#--serverexport-metrics-api):
+  - `false`: Disable the API.
+  - `true` (default): Enable the API.
 
 ## JavaScript security options
 
 `arangod` has several options that allow you to make your installation more
-secure when it comes to running application code in it. Below you will find 
+secure when it comes to running application code in it. Below you find
 an overview of the relevant options.
 
 ### Allowlists and denylists
@@ -58,40 +86,41 @@ components.
 
 The set theory for these lists works as follow:
 
-- **Only a denylist is specified:**
+- **Only a denylist is specified:**\
   Everything is allowed except a set of items matching the denylist.
-- **Only an allowlist is specified:**
+- **Only an allowlist is specified:**\
   Everything is disallowed except the set of items matching the allowlist.
-- **Both allowlist and denylist are specified:**
+- **Both allowlist and denylist are specified:**\
   Everything is disallowed except the set of items matching the allowlist.
   From this allowed set, subsets can be forbidden again using the denylist.
 
 Values for denylist and allowlist options need to be specified as ECMAScript 
 regular expressions.
-Each option can be used multiple times. When specifying more than one 
-pattern, these patterns will be combined with a _logical or_ to the actual pattern
-ArangoDB will use.
 
-These patterns and how they are applied can be observed by enabling 
-`--log.level SECURITY=debug` in the `arangod` or `arangosh` log output.
+Each option can be used multiple times. When specifying more than one 
+pattern, these patterns are combined with a _logical or_ to the actual pattern
+ArangoDB uses.
+
+These patterns and how they are applied can be observed in the `arangod` or
+`arangosh` log output by enabling `--log.level security=debug`.
 
 ### Options for allowlisting and denylisting
 
 The following options are available for allowlisting and denylisting access
 to dedicated functionality for application code:
 
-- `--javascript.startup-options-[allowlist|denylist]`:
-  These options control which startup options will be exposed to JavaScript code.
+- `--javascript.startup-options-[allowlist|denylist]`:\
+  These options control which startup options are exposed to JavaScript code.
 
-- `--javascript.environment-variables-[allowlist|denylist]`:
-  These options control which environment variables will be exposed to
+- `--javascript.environment-variables-[allowlist|denylist]`:\
+  These options control which environment variables are exposed to
   JavaScript code.
 
-- `--javascript.files-allowlist`:
+- `--javascript.files-allowlist`:\
   This option controls which filesystem paths can be accessed from JavaScript
   code. There is only an allowlist option for file access.
 
-- `--javascript.endpoints-[allowlist|denylist]`:
+- `--javascript.endpoints-[allowlist|denylist]`:\
   These options control which endpoints can be used from within the
   `@arangodb/request` JavaScript module.
 
@@ -100,77 +129,82 @@ to dedicated functionality for application code:
 The security option to observe the behavior of the pattern matching most easily
 is the masquerading of the startup options:
 
-```
+```sh
 --javascript.startup-options-allowlist "^server\."
 --javascript.startup-options-allowlist "^log\."
 --javascript.startup-options-denylist "^javascript\."
 --javascript.startup-options-denylist "^endpoint$"
 ```
 
-These sets will resolve internally to the following regular expressions:
+These sets are resolved internally to the following regular expressions:
 
-```
+```sh
 --javascript.startup-options-allowlist = "^server\.|^log\."
 --javascript.startup-options-denylist = "^javascript\.|endpoint"
 ```
 
-Invoking _arangosh_ with these options will hide the denied command-line
-options from the output of: 
+Invoking _arangosh_ with these options hides the denied command-line
+options from the output of the following method:
 
 ```js
 require('internal').options()
 ```
 
-… and an exception will be thrown when trying to access items that are masked
-in the same way as if they weren't there in first place.
+An exception is thrown when trying to access items that are masked
+in the same way as if they wouldn't exist.
 
 #### Environment variable access
 
 Access to environment variables can be restricted to hide sensitive information
 from JavaScript code, for example:
 
-```
+```sh
 --javascript.environment-variables-allowlist "^ARANGO_"
 --javascript.environment-variables-denylist "PASSWORD"
 ```
 
-This will allow JavaScript code to only see environment variables that start
-with `ARANGO_` except if they contain `PASSWORD`. It excludes the variables
+This allows JavaScript code to only see environment variables that start
+with `ARANGO_`, except if they contain `PASSWORD`. It excludes the variables
 `PATH` and `ARANGO_ROOT_PASSWORD` for instance.
 
-Note that regular expression matching is case-sensitive. `PASSWORD` will not
+Note that regular expression matching is case-sensitive. `PASSWORD` won't
 exclude environment variables that include `password`. You may use
 `[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]` for case-insensitive matching.
 
-You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 3.7
+You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 3.12
 Docker image:
 
+```sh
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
+  arangosh --javascript.execute-string "print(process.env)"
 ```
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.7 arangosh --javascript.execute-string "print(process.env)"
-...
+
+```js
 {
-  "ARANGO_PACKAGE" : "arangodb3_3.7.15-1_amd64.deb",
-  "HOSTNAME" : "84fe29186eba",
+  "HOSTNAME" : "0aea68ec522d",
   "SHLVL" : "1",
   "HOME" : "/root",
   "ARANGO_ROOT_PASSWORD" : "secret",
-  "ARANGO_VERSION" : "3.7.15",
+  "ARANGO_VERSION" : "3.12.8",
   "PATH" : "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-  "ARANGO_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64",
-  "ARANGO_PACKAGE_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64/arangodb3_3.7.15-1_amd64.deb",
-  "ARANGO_SIGNATURE_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64/arangodb3_3.7.15-1_amd64.deb.asc",
   "PWD" : "/",
+  "GLIBCXX_FORCE_NEW" : "1",
+  "ICU_DATA_LEGACY" : "/usr/share/arangodb3/",
   "ICU_DATA" : "/usr/share/arangodb3/"
 }
+```
 
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.7 arangosh --javascript.execute-string "print(process.env)" --javascript.environment-variables-allowlist "^ARANGO_" --javascript.environment-variables-denylist "PASSWORD"
+```sh
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
+  arangosh --javascript.execute-string "print(process.env)" \
+  --javascript.environment-variables-allowlist "^ARANGO_" \
+  --javascript.environment-variables-denylist "PASSWORD"
+```
+
+```js
 ...
 [Object {
-  "ARANGO_PACKAGE" : "arangodb3_3.7.15-1_amd64.deb",
-  "ARANGO_VERSION" : "3.7.15",
-  "ARANGO_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64",
-  "ARANGO_PACKAGE_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64/arangodb3_3.7.15-1_amd64.deb",
-  "ARANGO_SIGNATURE_URL" : "https://download.arangodb.com/arangodb37/DEBIAN/amd64/arangodb3_3.7.15-1_amd64.deb.asc"
+  "ARANGO_VERSION" : "3.12.8"
 }]
 ```
 
@@ -179,43 +213,43 @@ docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.7 arangosh --javascr
 In contrast to other areas, access to directories and files from JavaScript
 operations is only controlled via an allowlist, which can be specified via the
 startup option `--javascript.files-allowlist`. Thus any files or directories
-not matching the allowlist will be inaccessible from JavaScript filesystem
-functions.
+not matching the allowlist are inaccessible from JavaScript filesystem
+functions. Example:
 
-For example, when using the following startup options
-
-```
+```sh
 --javascript.files-allowlist "^/etc/required/"
 --javascript.files-allowlist "^/etc/mtab/"
 --javascript.files-allowlist "^/etc/issue$"
 ```
 
-The file `/etc/issue` will be allowed to accessed and all files in the directories
-`/etc/required` and `/etc/mtab` plus their subdirectories will be accessible,
-while access to files in any other directories will be disallowed from
+The file `/etc/issue` can be accessed and all files in the directories
+`/etc/required` and `/etc/mtab` plus their subdirectories are accessible,
+while access to files in any other directories are disallowed from
 JavaScript operations, with the following exceptions:
 
-- ArangoDB's temporary directory: JavaScript code is given access to this
-  directory for storing temporary files. The temporary directory location 
-  can be specified explicitly via the `--temp.path` option at startup. 
-  If the option is not specified, ArangoDB will automatically use a subdirectory 
+- **Temporary directory**:\
+  JavaScript code is given access to this directory for storing temporary files.
+  The temporary directory location can be specified explicitly via the
+  `--temp.path` startup option.
+  If the option is not specified, ArangoDB automatically use a subdirectory
   of the system's temporary directory.
-- ArangoDB's own JavaScript code, shipped with the ArangoDB release packages.
-  Files in this directory and its subdirectories will be readable for JavaScript
-  code running in ArangoDB. The exact path can be specified by the startup option 
-  `--javascript.startup-directory`.
+
+- **Bundled JavaScript code**, shipped with _arangod_ and _arangosh_:\
+  Files in this directory and its subdirectories are readable for JavaScript
+  code running in _arangosh_. The exact path can be specified with the
+  `--javascript.startup-directory` startup option.
 
 #### Endpoint access
 
 The endpoint allow-/denylisting limits access to external HTTP resources:
 
-```
+```sh
 --javascript.endpoints-denylist "<regex>"
 --javascript.endpoints-allowlist "<regex>"
 ```
 
-Filtering is done against the full request URL, including protocol, hostname /
-IP address, port, and path.
+Filtering is done against the full request URL, including protocol,
+hostname/IP address, port, and path.
 
 {{< security >}}
 Keep in mind that these startup options are treated as regular expressions.
@@ -225,7 +259,7 @@ fully specify URLs and to use a leading `^` and potentially a trailing `$` to
 ensure that no other than the intended URLs are matched.
 {{< /security >}}
 
-Specifying `arangodb.org` will match:
+Specifying `arangodb.org` matches:
 - `http://arangodb.org`
 - `http://arangodb.org/`
 - `http://arangodb.org/folder/file.html`
@@ -235,27 +269,27 @@ Specifying `arangodb.org` will match:
 - `https://arangodb-org.evil.domain` **(!)**
 - etc.
 
-An unescaped `.` represents any character. For a literal dot use `\.`.
+An unescaped `.` represents any character. For a literal dot, use `\.`.
 
-Specifying `http://arangodb\.org` will match:
+Specifying `http://arangodb\.org` matches:
 - `http://arangodb.org`
 - `http://arangodb.org:12345`
 - `http://arangodb.organic` **(!)**
 - `http://arangodb.org.evil.domain` **(!)**
 - etc.
 
-Specifying `^http://arangodb\.org$` will only match `http://arangodb.org`.
-Despite port 80 being the default HTTP port, this will not match
+Specifying `^http://arangodb\.org$` only matches `http://arangodb.org`.
+Despite port 80 being the default HTTP port, this doesn't match
 `http://arangodb.org:80` with an explicitly stated port. Conversely, specifying
-`^http://arangodb\.org:80$` will match `http://arangodb.org:80` with an explicit
+`^http://arangodb\.org:80$` matches `http://arangodb.org:80` with an explicit
 port in the request URL but not `http://arangodb.org` with the port left out.
 To allow both, you can make the port optional like `^http://arangodb\.org(:80)?$`.
 However, the trailing `$` demands that the URL has no path. This means
-`http://arangodb.org/folder/file.html` and even `http://arangodb.org/` will not
+`http://arangodb.org/folder/file.html` and even `http://arangodb.org/` don't
 match. You can specify `^http://arangodb\.org(:80)?/` to allow any path (but
-the trailing slash will be needed in the request URL).
+the trailing slash is needed in the request URL).
 
-Specifying `^https?://arangodb\.org(:80|:443)?(/|$)` will match:
+Specifying `^https?://arangodb\.org(:80|:443)?(/|$)` matches:
 - `http://arangodb.org`
 - `http://arangodb.org/`
 - `http://arangodb.org/folder/file.html`
@@ -267,10 +301,11 @@ Specifying `^https?://arangodb\.org(:80|:443)?(/|$)` will match:
 - `https://arangodb.org:443/folder/file.html`
 - etc.
 
-You can test the allow-/denylisting in _arangosh_:
+You can test the allow-/denylisting in _arangosh_ as follows:
 
-```
+```sh
 arangosh --javascript.endpoints-allowlist "^https://arangodb\.org(:443)?/"
+
 127.0.0.1:8529@_system> require('internal').download('http://arangodb.org/file.zip')
 JavaScript exception: ArangoError 11: not allowed to connect to this URL: http://arangodb.org/file.zip
 ...
@@ -289,15 +324,16 @@ shells (`\$`, `\\`) unless the entire string is wrapped in single quotes
 ### Additional JavaScript security options
 
 In addition to the allowlisting and denylisting security options, the following
-extra options are available for locking down JavaScript access to server functionality:
+extra options are available for locking down JavaScript access to certain
+functionality:
 
 - `--javascript.allow-port-testing`:
   If set to `true`, this option enables the `testPort` JavaScript function in the
   `internal` module. The default value is `false`.
 
 - `--javascript.allow-external-process-control`:
-  If set to `true`, this option allows the execution and control of external processes
-  from JavaScript code via the functions from the `internal` module:
+  If set to `true`, this option allows the execution and control of external
+  processes from JavaScript code via functions from the `internal` module:
   
   - `executeExternal`
   - `executeExternalAndWait`
@@ -308,7 +344,7 @@ extra options are available for locking down JavaScript access to server functio
   - `statusExternal`
 
 - `--javascript.harden`:
-  If set to `true`, this setting will deactivate the following JavaScript functions
+  If set to `true`, this setting deactivates the following JavaScript functions
   from the `internal` module, which may leak information about the environment:
 
   - `getPid()`

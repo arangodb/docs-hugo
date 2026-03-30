@@ -345,7 +345,7 @@ use case, but normally it is extremely undesired).
 ## Unexpected long running queries
 
 Slow queries can have various reasons and be legitimate for queries with a high
-computational complexity or if they touch a lot of data. Use the *Explain*
+computational complexity or if they touch a lot of data. Use the **Explain**
 feature to inspect execution plans and verify that appropriate indexes are
 utilized. Also check for mistakes such as references to the wrong variables.
 
@@ -354,28 +354,30 @@ A literal collection name, which is not part of constructs like `FOR`,
 and can cause an entire collection to be materialized before further
 processing. It should thus be avoided.
 
-Check the execution plan for `/* all collection documents */` and verify that
-it is intended. You should also see a warning if you execute such a query:
+{{< tip >}}
+By default, using collection names in arbitrary places in AQL expressions is
+disallowed to prevent mistakes. However, you can allow it with the
+[`--query.allow-collections-in-expressions` startup option](../components/arangodb-server/options.md#--queryallow-collections-in-expressions).
+{{< /tip >}}
 
-> collection 'coll' used as expression operand
-
-For example, instead of:
+For example, you should avoid queries like the following:
 
 ```aql
 RETURN coll[* LIMIT 1]
 ```
 
-... with the execution plan ...
-
 ```aql
 Execution plan:
- Id   NodeType          Est.   Comment
-  1   SingletonNode        1   * ROOT
-  2   CalculationNode      1     - LET #2 = coll   /* all collection documents */[* LIMIT  0, 1]   /* v8 expression */
-  3   ReturnNode           1     - RETURN #2
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  8   SubqueryStartNode                  1     - LET #4 = ( /* subquery begin */
+  3   EnumerateCollectionNode           42       - FOR #3 IN coll   /* full collection scan  */
+  9   SubqueryEndNode                    1         - RETURN  #3 ) /* subquery end */
+  6   CalculationNode                    1     - LET #2 = #4[* LIMIT  0, 1]   /* simple expression */
+  7   ReturnNode     
 ```
 
-... you can use the following equivalent query:
+You can use the following equivalent query with a better execution plan:
 
 ```aql
 FOR doc IN coll
@@ -383,15 +385,13 @@ FOR doc IN coll
     RETURN doc
 ```
 
-... with the (better) execution plan:
-
 ```aql
 Execution plan:
- Id   NodeType                  Est.   Comment
-  1   SingletonNode                1   * ROOT
-  2   EnumerateCollectionNode     44     - FOR doc IN Characters   /* full collection scan */
-  3   LimitNode                    1       - LIMIT 0, 1
-  4   ReturnNode                   1       - RETURN doc
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode           42     - FOR doc IN coll   /* full collection scan  */
+  3   LimitNode                          1       - LIMIT 0, 1
+  4   ReturnNode                         1       - RETURN doc
 ```
 
 Similarly, make sure you have not confused any variable names with collection
@@ -403,11 +403,6 @@ LET names = ["John", "Mary", ...]
 FOR name IN Names
     ...
 ```
-
-You can set the startup option `--query.allow-collections-in-expressions` to
-*false* to disallow collection names in arbitrary places in AQL expressions
-to prevent such mistakes. Also see
-[ArangoDB Server Query Options](../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
 
 {{% comment %}}
 Rename to Error Sources?
