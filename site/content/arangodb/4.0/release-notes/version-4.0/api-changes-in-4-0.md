@@ -93,4 +93,10 @@ table on the next request.
 
 ## JavaScript API
 
+### Foxx-related removals
 
+The `@arangodb/foxx` module and the related `@arangodb/locals` module have been
+removed from the JavaScript API.
+
+Furthermore, the `global.fm` object has been removed. It provided various
+methods for managing Foxx services.

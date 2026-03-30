@@ -41,8 +41,8 @@ of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-r
 The `GET /_admin/status` no longer includes a `coordinator` object with the
 attributes `foxxmaster` and `isFoxxmaster`.
 
-The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
-removed from the JavaScript API.
+The `@arangodb/foxx` module and the related `@arangodb/locals` module as well as
+`global.fm` have been removed from the JavaScript API.
 
 The `30xx` error codes used by Foxx have been removed.
 
@@ -104,7 +104,13 @@ table on the next request.
 
 ## JavaScript API
 
+### Foxx-related removals
 
+The `@arangodb/foxx` module and the related `@arangodb/locals` module have been
+removed from the JavaScript API.
+
+Furthermore, the `global.fm` object has been removed. It provided various
+methods for managing Foxx services.
 
 ## Startup options
 
