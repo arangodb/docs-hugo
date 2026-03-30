@@ -2617,7 +2617,13 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: reloadRouting
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The Action and Foxx microservice features, including this endpoint for
+        route reloading, are deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Reloads the routing information from the `_routing` system collection if it
         exists, and makes Foxx rebuild its local routing table on the next request.
       parameters:
