@@ -12,15 +12,15 @@ It it always included with the Arango Contextual Data Platform.
 
 ## Operational features
 
-- **High Availability and Monitoring**: Multi-availability zones, comprehensive
-  health checks, metrics collection,
-  alerting, and automatic failover mechanisms ensure your data platform stays operational.
+- **High Availability and Monitoring**: Multiple availability zones,
+  comprehensive health checks, metrics collection, alerting, and
+  automatic failover mechanisms ensure your data platform stays operational.
   Real-time monitoring dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
 
 - **APIs, Drivers and Connectors**: Comprehensive programmatic access through
-  RESTful APIs, native drivers for popular programming languages (Java, Python,
-  JavaScript, Go, PHP, and more), and connectors for data integration tools
+  HTTP APIs, native drivers for popular programming languages (Java, Python,
+  JavaScript, Go), and connectors for data integration tools
   and BI platforms.
 
 - **Centralized Orchestration and Resource Management**: Unified control plane

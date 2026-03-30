@@ -36,7 +36,8 @@ You can [Deploy via Web Interface](web-interface/) or
 
 ### Deploy and Run
 
-The platform builds a secure container, orchestrates deployment through the Arango Control Plane (ACP), and runs your service with full platform integration.
+The platform builds a secure container, orchestrates deployment through the
+Arango Control Plane (ACP), and runs your service with full platform integration.
 
 ## Key Capabilities
 
@@ -56,12 +57,13 @@ The platform builds a secure container, orchestrates deployment through the Aran
 Control where your services are accessible and how they integrate with your databases:
 
 - **Global**: Services are accessible across all databases in your deployment.
-Platform-wide or global services are typically used for shared infrastructure
-like API gateways, machine learning model serving, or notification services that
-need to operate across multiple databases.
+  Platform-wide or global services are typically used for shared infrastructure
+  like API gateways, machine learning model serving, or notification services that
+  need to operate across multiple databases.
 
 - **Database-Specific**: Services are bound to a single database. These are typically
-used for data-processing APIs, webhook handlers, or any processing that should remain isolated to one database context.
+  used for data-processing APIs, webhook handlers, or any processing that should
+  remain isolated to one database context.
 
 ## Supported Environments
 
@@ -72,18 +74,28 @@ Deploy services using runtime environments and resources tailored to your needs.
 
 ## Security
 
-All deployed services operate within the platform's security framework, with integrated authentication, network isolation, and access controls.
+All deployed services operate within the platform's security framework, with
+integrated authentication, network isolation, and access controls.
 
 {{< comment >}}
 ## Scaling and High Availability
 
-Services deployed through the Container Manager inherit the platform's Kubernetes-native scaling and high availability capabilities:
+Services deployed through the Container Manager inherit the platform's
+Kubernetes-native scaling and high availability capabilities:
 
-- **Automatic Scaling**: Your services can scale horizontally and vertically based on workload demands, leveraging Kubernetes autoscaling mechanisms.
+- **Automatic Scaling**:\
+  Your services can scale horizontally and vertically based on workload demands,
+  leveraging Kubernetes autoscaling mechanisms.
 
-- **Multi-AZ Deployment**: Services can be distributed across availability zones for fault tolerance and resilience.
+- **Multi-AZ Deployment**:\
+  Services can be distributed across availability zones for fault tolerance
+  and resilience.
 
-- **Zero-Downtime Updates**: Rolling updates enable you to deploy new versions of your services with minimal or no service disruption.
+- **Zero-Downtime Updates**:\
+  Rolling updates enable you to deploy new versions of your services with
+  minimal or no service disruption.
 
-For detailed information about the platform's scaling architecture and high availability features, see [Operational Features](../../contextual-data-platform/platform-suite.md#operational-features).
+For detailed information about the platform's scaling architecture and
+high availability features, see
+[Operational Features](../../contextual-data-platform/platform-suite.md#operational-features).
 {{< /comment >}}
