@@ -53,7 +53,7 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
-### Foxx API removed
+#### Foxx API removed
 
 The following `/_api/foxx` endpoints have been removed due to the removal of Foxx:
 
@@ -79,12 +79,12 @@ The following `/_api/foxx` endpoints have been removed due to the removal of Fox
 - `POST /_db/{database-name}/_api/foxx/download`
 - `POST /_db/{database-name}/_api/foxx/commit`
 
-### Upload API removed
+#### Upload API removed
 
 The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
 It was used for service bundle and file uploads.
 
-### Routing reload API removed
+#### Routing reload API removed
 
 The `POST /_admin/routing/reload` endpoint has been removed due to the removal
 of the Action and Foxx features. It was used to reload the routing information
