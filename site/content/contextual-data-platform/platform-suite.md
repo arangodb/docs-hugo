@@ -12,7 +12,8 @@ It it always included with the Arango Contextual Data Platform.
 
 ## Operational features
 
-- **High Availability and Monitoring**: Comprehensive health checks, metrics collection,
+- **High Availability and Monitoring**: Multi-availability zones, comprehensive
+  health checks, metrics collection,
   alerting, and automatic failover mechanisms ensure your data platform stays operational.
   Real-time monitoring dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
@@ -80,7 +81,7 @@ with re-organizable tabs for writing, executing, analyzing, and managing AQL que
 
 The [Container manager](../platform-suite/container-manager/_index.md) lets you
 deploy and manage custom services within the Arango Contextual Data Platform
-using your own code packages.
+using your own code packages or Docker images.
 
 It is available in the web interface of the Contextual Data Platform as well as
 an API.

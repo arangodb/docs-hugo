@@ -85,3 +85,17 @@ Deploy services using runtime environments and resources tailored to your needs.
 ## Security
 
 All deployed services operate within the platform's security framework, with integrated authentication, network isolation, and access controls.
+
+{{< comment >}}
+## Scaling and High Availability
+
+Services deployed through the Container Manager inherit the platform's Kubernetes-native scaling and high availability capabilities:
+
+- **Automatic Scaling**: Your services can scale horizontally and vertically based on workload demands, leveraging Kubernetes autoscaling mechanisms.
+
+- **Multi-AZ Deployment**: Services can be distributed across availability zones for fault tolerance and resilience.
+
+- **Zero-Downtime Updates**: Rolling updates enable you to deploy new versions of your services with minimal or no service disruption.
+
+For detailed information about the platform's scaling architecture and high availability features, see [Operational Features](../../contextual-data-platform/platform-suite.md#operational-features).
+{{< /comment >}}
