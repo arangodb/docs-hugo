@@ -79,6 +79,11 @@ The following `/_api/foxx` endpoints have been removed due to the removal of Fox
 - `POST /_db/{database-name}/_api/foxx/download`
 - `POST /_db/{database-name}/_api/foxx/commit`
 
+### Upload API removed
+
+The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+It was used for service bundle and file uploads.
+
 ## JavaScript API
 
 

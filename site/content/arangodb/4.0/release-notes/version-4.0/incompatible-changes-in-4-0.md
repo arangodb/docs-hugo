@@ -90,6 +90,11 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Upload API removed
+
+The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+It was used for service bundle and file uploads.
+
 ## JavaScript API
 
 
