@@ -102,6 +102,13 @@ of the Action and Foxx features. It was used to reload the routing information
 from the `_routing` system collection and make Foxx rebuild its local routing
 table on the next request.
 
+### Echo API removed
+
+The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, `DELETE`, and `OPTIONS` HTTP methods have been removed. They returned
+an object with the servers request information, the HTTP request headers, or
+both and were used for debugging purposes.
+
 ## JavaScript API
 
 ### Foxx-related removals
