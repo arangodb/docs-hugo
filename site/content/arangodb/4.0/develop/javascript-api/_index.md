@@ -12,7 +12,6 @@ The JavaScript API is available on the server-side in the following contexts:
 - [Tasks](tasks.md) / [Queues](../foxx-microservices/reference/related-modules/queues.md)
 - [User-defined AQL functions](../../aql/user-defined-functions.md)
 - [JavaScript Transactions](../transactions/javascript-transactions.md)
-- [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)
 
 Running on the server-side means that the code runs directly inside of the
 _arangod_ process, bypassing the HTTP API. In cluster deployments, the code
