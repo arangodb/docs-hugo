@@ -1409,7 +1409,8 @@ ignore whether projections could be used to improve the query performance.
 ```
 
 For example, if the collection `coll` has persistent indexes on `price`  and
-`name`, the above query would utilize both indexes but not use projections:
+`name`, the above query would utilize both indexes but not use projections,
+neither for the `FILTER` nor the downstream attribute access for the `RETURN`:
 
 ```aql
 Execution plan:
@@ -1422,7 +1423,9 @@ Execution plan:
   6   ReturnNode              4000       - RETURN #2
 ```
 
-From v3.12.9 onward, the query can utilize both indexes as well as projections:
+From v3.12.9 onward, the query can utilize both the two indexes as well as
+projections, `price` and `name` as filter projections and `description` as
+projection downstream:
 
 ```aql
 Execution plan:
