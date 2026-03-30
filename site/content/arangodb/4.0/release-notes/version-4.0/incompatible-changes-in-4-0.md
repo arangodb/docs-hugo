@@ -6,9 +6,12 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
-## 
+## Emergency console mode removed
 
-
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+This feature has been removed and the `--console` startup option is obsolete now.
 
 ## HTTP RESTful API
 
@@ -29,7 +32,10 @@ that can insert, update, replace, or remove arrays of documents.
 
 ## Startup options
 
+### `--console` obsolete
 
+The `--console` startup option no longer has an effect but it is still
+recognized to avoid causing a fatal error on startup if you specify it.
 
 ## Client tools
 
