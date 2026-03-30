@@ -26,7 +26,7 @@ See how to [Package Your Code](package-code/) for detailed instructions.
 
 {{< tip >}}
 Use [ServiceMaker](https://github.com/arangodb/servicemaker) to automate packaging.
-It handles dependencies, builds Docker images, and generates deployment-ready archives.
+It handles dependencies, builds container images, and generates deployment-ready archives.
 {{< /tip >}}
 
 ### Choose Your Deployment Method

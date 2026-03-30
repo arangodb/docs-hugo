@@ -86,7 +86,7 @@ From version 3.12.5 onward, the **Community Edition** includes all
 Enterprise Edition features without time restrictions. It is governed by the
 [ArangoDB Community License](https://arangodb.com/community-license/).
 You can download the extensively tested prepackaged binaries and official
-Docker images for free. The use for commercial purposes is prohibited for
+container images for free. The use for commercial purposes is prohibited for
 production. The Community Edition does not include the right to distribute, embed
 within other products, or combine with ArangoDB's Enterprise Edition of the software.
 The dataset size is limited to a 100 GiB. If you exceed the size limit, you get

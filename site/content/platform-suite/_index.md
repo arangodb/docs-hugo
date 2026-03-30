@@ -23,7 +23,7 @@ aliases:
   result history, query management, and more.
 
 - [**Container Manager**](./container-manager/_index.md)
-  Deploy and manage custom services using your own code packages or Docker images.
+  Deploy and manage custom services using your own code packages or container images.
 
 ## Operational features
 

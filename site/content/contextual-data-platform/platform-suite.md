@@ -81,7 +81,7 @@ with re-organizable tabs for writing, executing, analyzing, and managing AQL que
 
 The [Container manager](../platform-suite/container-manager/_index.md) lets you
 deploy and manage custom services within the Arango Contextual Data Platform
-using your own code packages or Docker images.
+using your own code packages or container images.
 
 It is available in the web interface of the Contextual Data Platform as well as
 an API.

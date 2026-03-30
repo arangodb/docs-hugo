@@ -25,7 +25,7 @@ artifacts.
 - Creates Dockerfile configurations tailored to your project.
 - Sets up virtual environments that match platform base images.
 - Enables local Docker image testing before deployment.
-- Optionally publishes Docker images to container registries.
+- Optionally publishes container images to container registries.
 - Processes standard project formats (`pyproject.toml`, `requirements.txt`, `package.json`).
 
 For installation and usage instructions, see the

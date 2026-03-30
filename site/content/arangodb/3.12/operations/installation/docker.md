@@ -5,7 +5,7 @@ weight: 5
 description: >-
   You can use Docker images to run ArangoDB in containers on Linux, macOS, and Windows
 ---
-The recommended way of using ArangoDB is via ArangoDB Docker images with,
+The recommended way of using ArangoDB is via ArangoDB container images with,
 for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/). 
 
 You can choose one of the following:
