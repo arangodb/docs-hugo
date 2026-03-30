@@ -21,6 +21,8 @@ description: >-
 
 The `GET /_admin/status` endpoint no longer includes the sub-attributes
 `foxxmaster` and `isFoxxmaster` under `coordinator` due to the removal of Foxx.
+As the `coordinator` object doesn't have any other attributes, it is removed
+as well.
 
 ### Endpoints added
 

@@ -38,6 +38,9 @@ startup. They are recognized, but they don't have any effect anymore.
 The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
 of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed).
 
+The `GET /_admin/status` no longer includes a `coordinator` object with the
+attributes `foxxmaster` and `isFoxxmaster`.
+
 The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
 removed from the JavaScript API.
 
