@@ -6,6 +6,12 @@ description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
 aliases:
+  - ../../../../arangodb/3.11/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/3.12/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/stable/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/devel/develop/drivers/java/reference-version-6/driver-setup
+  - ../../../../arangodb/3.11/develop/drivers/java/reference-version-7/driver-setup
   - ../../../../arangodb/3.12/develop/drivers/java/reference-version-7/driver-setup
   - ../../../../arangodb/stable/develop/drivers/java/reference-version-7/driver-setup
   - ../../../../arangodb/4.0/develop/drivers/java/reference-version-7/driver-setup
@@ -78,7 +84,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           Adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          Communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          Communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (not supported from ArangoDB v3.12.0 onward), (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            Connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                Username for authentication, (default: `root`)
 - `password(String)`:            Password for authentication
@@ -88,9 +94,14 @@ Here are examples to integrate configuration properties from different sources:
 - `sslCertValue(String)`:        SSL certificate value as Base64-encoded String
 - `sslAlgorithm(String)`:        Name of the SSL Trust manager algorithm (default: `SunX509`)
 - `sslProtocol(String)`:         Name of the SSLContext protocol (default: `TLS`)
+- `sslTrustStorePath(String)`:   File path to the SSL trust store
+- `sslTrustStorePassword(String)`:                Password to access the SSL trust store
+- `sslTrustStoreType(String)`:   Type of the SSL trust store (default: `PKCS12`)
 - `verifyHost(Boolean)`:         Enable hostname verification, (HTTP only, default: `true`)
-- `maxConnections(Integer)`:     Max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
-- `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000`)
+- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
+- `maxConnections(Integer)`:     Max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`, `1` for `VST`)
+- `connectionTtl(Long)`:         Time to live of an inactive connection (ms), (default: `30_000`, no TTL for VST)
+- `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes are sent)
 - `acquireHostList(Boolean)`:    Acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             The interval for acquiring the host list (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: Load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
@@ -136,7 +147,7 @@ file name can be specified using its overloaded variants.
 
 The properties read are:
 - `hosts`: comma-separated list of `<hostname>:<port>` entries
-- `protocol`: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, or `VST` (unsupported from ArangoDB v3.12 onward)
+- `protocol`: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, or `VST` (not supported from ArangoDB v3.12.0 onward)
 - `timeout`
 - `user`
 - `password`
@@ -145,6 +156,9 @@ The properties read are:
 - `sslCertValue`: SSL certificate as Base64-encoded string
 - `sslAlgorithm`: SSL trust manager algorithm (default: `SunX509`)
 - `sslProtocol`: SSLContext protocol (default: `TLS`)
+- `sslTrustStorePath`: File path to the SSL trust store
+- `sslTrustStorePassword`: Password to access the SSL trust store
+- `sslTrustStoreType`: Type of the SSL trust store (default: `PKCS12`)
 - `verifyHost`
 - `chunkSize`
 - `maxConnections`
@@ -162,9 +176,18 @@ The properties read are:
 
 ## SSL
 
-To use SSL, you have to set the configuration `useSsl` to `true`.
-By default, the driver uses the default `SSLContext`.
-To change this, you can provide the `SSLContext` instance to use:
+To use TLS-secured connections to ArangoDB, set the configuration `useSsl` to `true`.
+By default, the driver uses the default `SSLContext`:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .build();
+```
+
+The `SSLContext` to be used can be customized in one of the following ways:
+
+- Provide the `SSLContext` instance to use:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -173,16 +196,23 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-Alternatively, the driver can create a new `SSLContext` using the provided
-configuration. In this case, it is required to set the configuration `sslCertValue`
-with the SSL certificate value as Base64-encoded String:
+- Provide the Base64-encoded certificate with the configuration `sslCertValue`:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
   .useSsl(true)
   .sslCertValue("<certificate>") // SSL certificate as Base64-encoded String
-  .sslAlgorithm("SunX509")       // SSL Trust manager algorithm (optional, default: SunX509)
-  .sslProtocol("TLS")            // SSLContext protocol (optional, default: TLS)
+  .build();
+```
+
+- Load the trust store from a file by configuring `sslTrustStorePath` and
+  optionally `sslTrustStorePassword`:
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .useSsl(true)
+  .sslTrustStorePath("<trustStore path>")
+  .sslTrustStorePassword("<trustStore password>")
   .build();
 ```
 
@@ -267,6 +297,20 @@ ArangoDB arangoDB = new ArangoDB.Builder()
         .build();
 ```
 
+## Active Failover
+
+In case of an _Active Failover_ deployment (up to ArangoDB v3.11), the driver
+should be configured in the following way:
+- The load balancing strategy must be set to `LoadBalancingStrategy.NONE` (default)
+- `acquireHostList` should be set to `true`
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+  .loadBalancingStrategy(LoadBalancingStrategy.NONE)
+  .acquireHostList(true)
+  .build();
+```
+
 ## Connection time to live
 
 The driver supports setting a TTL (time to live) for connections:
@@ -279,7 +323,7 @@ ArangoDB arango = new ArangoDB.Builder()
 
 In this example, inactive connections are closed after 5 minutes.
 
-The default connection TTL is `30` seconds.
+The default connection TTL is `30` seconds (`null` for VST connections).
 
 If set to `null`, no automatic connection closure is performed.
 
@@ -303,3 +347,20 @@ ArangoDB arango = new ArangoDB.Builder()
                 .build())
         .build();
 ```
+
+## VST Keep-Alive
+
+The driver supports setting a keep-alive interval (in seconds) for VST connections
+(up to ArangoDB v3.11). If set, every VST connection performs a no-op request
+at the specified intervals, to avoid being closed due to inactivity by the
+server or by the external environment, such as the firewall, intermediate routers,
+the operating system, or similar.
+
+```java
+ArangoDB arangoDB = new ArangoDB.Builder()
+        .keepAliveInterval(1_800) // 30 minutes
+        .build();
+```
+
+If not set or set to `null` (default), no keep-alive probes are sent.
+
