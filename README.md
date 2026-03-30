@@ -392,7 +392,7 @@ Start `arangod` with the startup option `--log.level startup=trace`.
 {{< tab "Configuration file" >}}
 Include the following startup option setting in your `arangod.conf`:
 
-```conf
+```cfg
 [log]
 level = startup=trace
 ```
@@ -599,6 +599,7 @@ The following shortcodes also exist but are rarely used:
   or after the language, and use the following languages in favor of the ones in
   parentheses for consistency:
 
+  - `` ```cfg `` (instead of `` ```conf `` or `` ```ini ``)
   - `` ```py `` (instead of `` ```python ``)
   - `` ```yaml `` (instead of `` ```yml ``)
   - `` ```sh `` (instead of `` ```shell ``)

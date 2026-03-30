@@ -9,6 +9,7 @@ description: >-
 The JavaScript API is available on the server-side in the following contexts:
 
 - [Foxx microservices](../foxx-microservices/_index.md)
+- [Tasks](tasks.md) / [Queues](../foxx-microservices/reference/related-modules/queues.md)
 - [User-defined AQL functions](../../aql/user-defined-functions.md)
 - [JavaScript Transactions](../transactions/javascript-transactions.md)
 - [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)
@@ -26,7 +27,7 @@ It communicates with the server via the HTTP API.
 
 {{< tip >}}
 The JavaScript API cannot be used in browsers, Node.js, or other JavaScript
-environments. You can use the [arangojs driver](../../develop/drivers/javascript.md) instead.
+environments. You can use the [arangojs driver](../../../../ecosystem/drivers/javascript.md) instead.
 Note that it has a different interface.
 {{< /tip >}}
 

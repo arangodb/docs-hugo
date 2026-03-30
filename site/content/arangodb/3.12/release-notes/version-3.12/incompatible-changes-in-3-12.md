@@ -22,6 +22,15 @@ only internal business purposes.
 
 For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
 
+## Downgrading vector indexes
+
+ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
+replication. You can upgrade normally, but any vector indexes created with
+v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
+
+If you need to downgrade, drop the vector indexes first and recreate them after
+the downgrade.
+
 ## Upgrading 3.12 Kubernetes deployments
 
 To avoid potential issues when upgrading Kubernetes-managed ArangoDB deployments
