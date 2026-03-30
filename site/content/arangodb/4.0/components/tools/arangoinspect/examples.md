@@ -82,7 +82,7 @@ INFO   3 collections
 INFO   3 shards
 INFO ... agency analysis finished.
 INFO Collecting diagnostics from all servers ...
-INFO ... dignostics collected.
+INFO ... diagnostics collected.
 INFO Report written to arango-inspector.json.
 ```
 
