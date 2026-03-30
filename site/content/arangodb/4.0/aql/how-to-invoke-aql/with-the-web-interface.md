@@ -29,14 +29,14 @@ Bind parameters (table view mode):
 
 | Key         | Value  |
 |-------------|--------|
-| @collection | _apps  |
+| @collection | apps  |
 | search      | arango |
 
 Bind parameters (JSON view mode):
 
 ```json
 {
-    "@collection": "_apps",
+    "@collection": "apps",
     "search": "arango"
 }
 ```
