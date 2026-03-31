@@ -11,10 +11,10 @@ run it is named `arangod`. The `d` stands for daemon. A daemon is a long-running
 background process that answers requests for services.
 
 The server process serves the various client connections to the server via the
-TCP/HTTP protocol. It also provides a [web interface](../web-interface/_index.md).
+TCP/HTTP protocol.
 
-_arangod_ can run in different modes for a variety of setups like single server
-and clusters.
+_arangod_ can run in different deployment modes for single server and cluster
+setups.
 
 See [Administration](../../operations/administration/_index.md) for server configuration
 and [Deploy](../../deploy/_index.md) for operation mode details.

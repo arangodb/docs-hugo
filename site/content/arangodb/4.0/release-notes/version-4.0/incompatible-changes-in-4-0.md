@@ -59,6 +59,13 @@ The following endpoints could previously be called using any HTTP method of
  The HTTP method is now checked and only `GET` requests are allowed for these
  endpoints. Only the `GET` variants were documented.
 
+### Endpoint API removed
+
+The long-deprecated `GET /_api/endpoint` for retrieving all configured endpoints
+the server is listening on has been removed. For cluster deployments, you can
+use `GET /_api/cluster/endpoints` to find all current Coordinator endpoints.
+See [HTTP interface for clusters](../../develop/http-api/cluster.md#endpoints).
+
 ### Batch request endpoint removed
 
 <small>Removed in: v3.12.3</small>

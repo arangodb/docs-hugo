@@ -83,6 +83,13 @@ The `GET /_admin/database/target-version` endpoint has been removed in favor of
 the more general version API with the endpoint `GET /_api/version`.
 The endpoint was deprecated since v3.11.3.
 
+#### Endpoint API
+
+The long-deprecated `GET /_api/endpoint` for retrieving all configured endpoints
+the server is listening on has been removed. For cluster deployments, you can
+use `GET /_api/cluster/endpoints` to find all current Coordinator endpoints.
+See [HTTP interface for clusters](../../develop/http-api/cluster.md#endpoints).
+
 #### Batch request API
 
 <small>Removed in: v3.12.3</small>
