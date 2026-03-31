@@ -1068,14 +1068,19 @@ From v3.12.9 onward, each of the following _arangod_ startup options now
 defaults to **disallow** access to the respective resource unless configured
 otherwise, as if the given allowlist was set to `'^$'`:
 
-- `--javascript.environment-variables-allowlist`
 - `--javascript.files-allowlist`
-- `--javascript.endpoints-allowlist`
+- `--javascript.environment-variables-allowlist`
 - `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
 
-If you set denylist startup options, the access to the respective resource is
-restricted to only what you configure instead of disallowing everything by default:
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
 
 - `--javascript.environment-variables-denylist`
-- `--javascript.endpoints-denylist`
 - `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Note that file access is exclusively controlled by `--javascript.files-allowlist`
+with no corresponding `--javascript.files-denylist` option.
+

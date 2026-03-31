@@ -59,8 +59,8 @@ components.
 The set theory for these lists works as follow:
 
 - **No allowlist or denylist is specified**:
-  Everything is allowed in versions up to ArangoDB v3.12.8. From v3.12.9
-  onward, everything is disallowed in _arangod_.
+  Everything is allowed in versions up to ArangoDB v3.12.8. From v3.12.9 onward,
+  access to the respective resources is disallowed by default in _arangod_.
 - **Only a denylist is specified:**
   Everything is allowed except a set of items matching the denylist.
 - **Only an allowlist is specified:**
