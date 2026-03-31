@@ -1702,7 +1702,7 @@ Vector indexes now have two new attributes in success responses:
   training state, for example, `"not enough training data for vector index"`.
   Only present if there is a problem with the index.
 
-You can now create a vector index first if you set `inBackground` to `true` and
+You can now create a vector index first and
 then populate the collection with vector data. However, it is still recommended
 to load the data first and then create the index to ensure that all documents
 participate in the training process as the training is only executed once.
