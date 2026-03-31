@@ -1394,6 +1394,16 @@ AQL queries can now be killed during the execution of graph traversals and
 paths searches. These operations previously lacked cancellation points to stop
 the execution quickly.
 
+### New `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+AQL queries now return an additional statistic under `extra.stats` in
+the HTTP API:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
 ### Support projections when different indexes are utilized for OR conditions
 
 <small>Introduced in: v3.12.9</small>
