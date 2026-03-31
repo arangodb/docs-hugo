@@ -97,6 +97,20 @@ Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
 returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
 been removed.
 
+### Legacy log API removed
+
+The long-deprecated `GET /_admin/log` endpoint and the associated
+`DELETE /_admin/log` endpoint have been removed.
+
+The structure of this legacy log was parallel lists that required you to pick
+the elements with the same index from each array of the returned object to
+determine what belongs together for a given log entry.
+
+A more intuitive log format where each log entry is an object is available
+with the `GET /_admin/log/entries` endpoint. See
+[HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-the-global-server-logs)
+for details.
+
 ## JavaScript API
 
 
