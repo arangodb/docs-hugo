@@ -111,6 +111,19 @@ with the `GET /_admin/log/entries` endpoint. See
 [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-the-global-server-logs)
 for details.
 
+### Obsolete replication APIs removed
+
+The following endpoints related to replication functionality that is no longer
+used have been removed:
+
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/wal/open-transactions`
+- `GET /_admin/wal/transactions`
+- `GET /_admin/wal/properties`
+- `PUT /_admin/wal/properties`
+
 ## JavaScript API
 
 

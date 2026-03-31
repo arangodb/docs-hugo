@@ -97,6 +97,19 @@ The `GET /_admin/database/target-version` endpoint has been removed in favor of
 the more general version API with the endpoint `GET /_api/version`.
 The endpoint was deprecated since v3.11.3.
 
+#### Obsolete replication APIs
+
+The following endpoints related to replication functionality that is no longer
+used have been removed:
+
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/wal/open-transactions`
+- `GET /_admin/wal/transactions`
+- `GET /_admin/wal/properties`
+- `PUT /_admin/wal/properties`
+
 #### Endpoint API
 
 The long-deprecated `GET /_api/endpoint` for retrieving all configured endpoints
