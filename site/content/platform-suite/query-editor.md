@@ -53,6 +53,10 @@ The Query Editor of the Arango Contextual Data Platform offers the following fea
   from the Query Editor. This feature is only available in the
   Arango Contextual Data Platform.
 
+- **Optimize queries with AI (Reasoner)**:
+  Analyze and optimize your AQL queries using AI-powered reasoning directly
+  from the Query Editor. This feature requires a license.
+
 ![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
 
 ## Work with queries
@@ -77,6 +81,8 @@ The following buttons are available at the bottom of a query tab:
   left-hand side under **Saved**, where you can also clone, rename, and delete them.
 - **AQLizer**: This button is only visible if you use the Arango Contextual Data Platform.
   See [Generate queries (AQLizer)](#generate-queries-aqlizer).
+- **Optimize in Reasoner**: This button is only visible if you have the required
+  license. See [Optimize queries (Reasoner)](#optimize-queries-reasoner).
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.
 - **Run query**: Execute the AQL query normally. You can also press
@@ -162,6 +168,39 @@ AI can make mistakes or produce unexpected results.
 {{< /warning >}}
 
 ![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
+
+## Optimize queries (Reasoner)
+
+{{< tag "Agentic AI Suite" >}}
+
+The Reasoner is an AI-powered service that analyzes your AQL queries and provides
+optimization suggestions through a streaming chat interface. It uses the MCP Server
+to interact with ArangoDB to understand your data model and suggest improvements.
+
+Before you can optimize queries, you need to start the Reasoner service.
+
+1. Click **Optimize in Reasoner** at the bottom of a query tab to open the
+   Reasoner panel.
+2. On first use, you need to configure and start the Reasoner service. Click
+   **Start Service** and wait for the startup to complete. A progress indicator
+   shows the startup status, including MCP server connectivity.
+3. You can check the service and MCP server status, and restart or stop the
+   service from the **Manage Services** dialog.
+
+Once the Reasoner service is ready, you can optimize queries.
+
+1. The query from the active editor tab is automatically provided as context.
+   You can also enter additional instructions or questions in the chat input.
+2. Click **Send** or press {{< kbd "Return" >}} to start the reasoning session.
+3. The Reasoner responds in real time. Tool calls and validations are shown in
+   collapsible cards. Review and approve or reject any permission prompts.
+4. Click **Open in Editor** in a response to apply a suggested query to a new
+   query tab, where you can verify and run it.
+
+{{< warning >}}
+Always verify AI-generated query optimizations.
+AI can make mistakes or produce unexpected results.
+{{< /warning >}}
 
 ## Adjust the viewport
 
