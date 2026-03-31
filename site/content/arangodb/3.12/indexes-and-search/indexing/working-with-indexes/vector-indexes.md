@@ -60,11 +60,18 @@ centroids and the quality of vector search thus degrades.
   identification. If not specified, a name is automatically generated.
 - **type**: The index type. Needs to be `"vector"`.
 - **fields** (array of strings): A list with a single attribute path to specify
-  where the vector embedding is stored in each document. The vector data needs
-  to be populated before creating the index.
+  where the vector embedding is stored in each document.
 
   If you want to index another vector embedding attribute, you need to create a
   separate vector index.
+
+  Up to ArangoDB v3.12.8, the vector data needs to be populated before creating
+  the index. From v3.12.9 onward, you can create the vector index first if you
+  set `inBackground` to `true` and then populate the collection with vector data.
+  However, it is still recommended to load the data first and then create the
+  index to ensure that all documents participate in the training process as the
+  training is only executed once (and starts automatically as soon as there are
+  enough documents to index).
 - **sparse** (boolean): Whether to create a sparse index that excludes documents
   with the attribute for indexing missing or set to `null`. This attribute is
   defined by `fields`. Default: `false`.
@@ -74,6 +81,15 @@ centroids and the quality of vector search thus degrades.
   Set this option to `true` to keep the collection/shards available for
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
+
+  From v3.12.9 onward, if you enable the option, the training is triggered
+  automatically if the vector index hasn't been trained yet and the number
+  of documents to index exceeds the threshold of `nLists` documents.
+  Check the `trainingState` to see if the index is `"ready"`
+  and `errorMessage` for the reason if it's not.
+
+  If the option is disabled, the call returns only after the index is
+  ready (but timeouts may occur), or if an error is encountered.
 - **storedValues** (array of strings, introduced in v3.12.7):
   Store additional attributes in the index. Unlike with other index types, this
   is not for covering projections with the index but for adding attributes that

@@ -21,6 +21,13 @@ their instruction set extensions for improved performance:
 For more details about the necessary CPU features, see
 [Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
+## Emergency console mode removed
+
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+This feature has been removed and the `--console` startup option is obsolete now.
+
 ## HTTP RESTful API
 
 ### Simple Queries endpoints removed
@@ -77,6 +84,12 @@ endpoints to load and unload collections have been removed. There is no
 concept of loading status anymore and the endpoints didn't have any effect for
 a while.
 
+### Metrics API v2 endpoint removed
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
+
 ## JavaScript API
 
 
@@ -88,6 +101,11 @@ a while.
 The `vector` index type is now enabled by default and the `--vector-index`
 startup option is obsolete. You can still specify the option without causing an
 error about an unknown option at startup but it no longer has any effect.
+
+### `--console` obsolete
+
+The `--console` startup option no longer has an effect but it is still
+recognized to avoid causing a fatal error on startup if you specify it.
 
 ## Client tools
 
