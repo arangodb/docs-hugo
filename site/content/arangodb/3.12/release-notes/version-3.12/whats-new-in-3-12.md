@@ -1686,6 +1686,10 @@ FOR doc IN c OPTIONS { indexHint: ["vec_idx_1", "vec_idx_2"], forceIndexHint: tr
 
 <small>Introduced in: v3.12.9</small>
 
+The AQL optimizer now prefers a vector index whose `storedValues` cover the
+`FILTER` operation of a query if there are multiple suitable vector indexes.
+This is implemented in the `push-filter-into-enumerate-near` optimizer rule.
+
 Vector indexes now have two new attributes in success responses:
 - `trainingState` (string): The current training state of the vector index:
   - `"unusable"`: The index is not yet trained or cannot be
