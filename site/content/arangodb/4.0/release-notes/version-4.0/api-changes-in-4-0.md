@@ -117,6 +117,12 @@ the server is listening on has been removed. For cluster deployments, you can
 use `GET /_api/cluster/endpoints` to find all current Coordinator endpoints.
 See [HTTP interface for clusters](../../develop/http-api/cluster.md#endpoints).
 
+#### Job and version admin APIs
+
+The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
+been removed. The identical functionality is now only available using the
+corresponding `/_api/job*` and `/_api/version` endpoints.
+
 #### Batch request API
 
 <small>Removed in: v3.12.3</small>

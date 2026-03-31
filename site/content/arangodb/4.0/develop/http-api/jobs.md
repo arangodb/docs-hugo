@@ -5,7 +5,6 @@ weight: 80
 description: >-
   The HTTP API for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
-# All /_api/job* endpoints are also available via /_admin/job*
 ---
 For an introduction to non-blocking execution of requests and how to create
 async jobs with the `x-arango-async` request header, see

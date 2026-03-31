@@ -17,9 +17,7 @@ description: >-
 ```openapi
 paths:
   /_db/{database-name}/_api/version:
-  # /_admin/version is an (undocumented) alias
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number.
@@ -428,7 +426,6 @@ paths:
 paths:
   /_db/{database-name}/_admin/time:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
@@ -481,7 +478,6 @@ paths:
 paths:
   /_db/{database-name}/_admin/status:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
         Returns status information about the server.
@@ -767,7 +763,6 @@ paths:
 paths:
   /_db/_system/_admin/support-info:
     get:
-      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getSupportInfo
       description: |
         Retrieves deployment information for support purposes. The endpoint returns data

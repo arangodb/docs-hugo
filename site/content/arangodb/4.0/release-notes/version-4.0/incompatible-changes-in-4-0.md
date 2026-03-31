@@ -124,6 +124,12 @@ used have been removed:
 - `GET /_admin/wal/properties`
 - `PUT /_admin/wal/properties`
 
+#### Job and version admin APIs removed
+
+The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
+been removed. The identical functionality is now only available using the
+corresponding `/_api/job*` and `/_api/version` endpoints.
+
 ## JavaScript API
 
 
