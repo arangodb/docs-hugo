@@ -1708,8 +1708,9 @@ to load the data first and then create the index to ensure that all documents
 participate in the training process as the training is only executed once.
 The training is triggered automatically if the vector index hasn't been trained
 yet and the number of documents to index exceeds the threshold of
-`nLists` documents (ignoring documents without the vector embedding field if
-`sparse` is set to `true`). Check the `trainingState` to see if the
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ## Server options

@@ -41,12 +41,15 @@ startup option needs to be enabled on the deployment you want to restore to.
    to retrieve a given number of similar documents relative to a vector embedding
    you provide.
 
-Creating a vector index triggers training the index on top of real data and it
-cannot be done incrementally without affecting the quality of the computation.
-A vector index expects the data to already exist in the specified attribute.
+Up ArangoDB v3.12.8, a vector index expects the data to already exist in the specified attribute.
 This means **you cannot create a vector index for a collection upfront**, unlike
 with all other index types. The documents need to already have vector embeddings
 stored in an attribute that you then create the index over and train on.
+
+From ArangoDB v3.12.9 onward, you can create a vector index first and the
+training is automatically triggered once there is sufficient data. It is still
+recommended to load the data first and then create the vector index to ensure
+the training uses all of the desired data.
 
 While it is possible to add more documents with vector embeddings over time,
 they can only be assigned to existing clusters in the high-dimensional vector
@@ -72,8 +75,9 @@ centroids and the quality of vector search thus degrades.
   participate in the training process as the training is only executed once.
   The training is triggered automatically if the vector index hasn't been
   trained yet and the number of documents to index exceeds the threshold of
-  `nLists` documents (ignoring documents without the vector embedding field if
-  `sparse` is set to `true`). Check the `trainingState` to see if the index is
+  `nLists` documents. If `sparse` is set to `true`, documents without the
+  vector embedding field are not counted toward this threshold.
+  Check the `trainingState` to see if the index is
   `"ready"` and `errorMessage` for the reason if it's not.
 - **sparse** (boolean): Whether to create a sparse index that excludes documents
   with the attribute for indexing missing or set to `null`. This attribute is
