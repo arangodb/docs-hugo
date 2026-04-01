@@ -13,6 +13,28 @@ Platform Suite and the Agentic AI Suite.
 
 The minimum required ArangoDB version is Enterprise Edition v4.0.0.
 
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+[AutoGraph](../agentic-ai-suite/autograph/_index.md) is an automation copilot
+that analyzes enterprise documents, discovers natural knowledge domains, and
+automatically builds optimized knowledge graphs for intelligent retrieval at scale.
+
+Key features:
+
+- **Automated domain discovery**: Analyzes document relationships and discovers
+natural clusters using graph algorithms, creating specialized RAG partitions per domain.
+- **Intelligent RAG strategy selection**: Automatically recommends FullGraphRAG
+or VectorRAG for each domain based on content complexity.
+- **Knowledge graph creation**: Transforms documents into structured knowledge graphs
+with entities, relationships, and semantic connections.
+- **Natural language querying**: Chat with your knowledge graph using natural language
+to ask questions and retrieve insights from your documents.
+- **Web interface**: Streamlined [workflow](../agentic-ai-suite/autograph/web-interface.md)
+guides you through document upload, corpus building, strategy generation, knowledge graph
+import, retriever deployment, and chat.
+
 ### Ada
 
 {{< tag "Agentic AI Suite" >}}

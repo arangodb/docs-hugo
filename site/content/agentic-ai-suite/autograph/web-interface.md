@@ -19,6 +19,8 @@ To create a new AutoGraph project using the Arango Contextual Data Platform
 web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
+   You can also switch to a different database if you wish to create your project
+   elsewhere.
 2. In the left-hand sidebar, click **Agentic AI Suite**, then click **AutoGraph**.
 3. In the **AutoGraph** view, click **+ New Project**.
 4. The **New Project** dialog opens. Enter a **Project Name** and optionally
