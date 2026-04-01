@@ -92,15 +92,16 @@ paths:
                     items:
                       type: string
                       enum: [v1]
-                  deprecatedApiVersions: # TODO: Versions staged for removal within the same series?
+                  deprecatedApiVersions:
                     description: |
                       The versions of the HTTP API that are still supported by
-                      this ArangoDB server version but should no longer be used.
+                      this ArangoDB server version but should no longer be used
+                      because of their pending removal in the next major version.
                     type: array
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [] # TODO: Do this or replace with example: []?
+                      enum: [] # Currently no deprecated versions
                   requestedApiVersion:
                     description: |
                       The HTTP API version specified for this request via the
