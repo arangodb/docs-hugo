@@ -321,7 +321,8 @@ ArangoDB will add the following headers to the response:
 When making CORS requests to endpoints of Foxx services, the value of the
 `access-control-expose-headers` header will instead be set to a list of
 response headers used in the response itself (but not including the
-`access-control-` headers).
+`access-control-` headers). Note that
+[Foxx services may override this behavior](../foxx-microservices/guides/access-from-the-browser.md#cross-origin-resource-sharing-cors).
 
 ### Cookies and authentication
 
@@ -390,6 +391,7 @@ The following APIs may use request forwarding:
 - `/_api/job`
 - `/_api/replication`
 - `/_api/query`
+- `/_api/tasks`
 - `/_api/transaction`
 
 Note: since forwarding such requests requires an additional cluster-internal HTTP
@@ -399,7 +401,6 @@ at a client-level or by enabling request "stickiness" on a load balancer. Since
 these approaches are not always possible in a given environment, we support the
 request forwarding as a fall-back solution.
 
-<!-- TODO: Replace removed tasks endpoint with something esle -->
 Note: some endpoints which return "global" data, such as `GET /_api/tasks` will
 only return data corresponding to the server on which the request is executed.
 These endpoints will generally not work well with load-balancers.

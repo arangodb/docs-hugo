@@ -316,6 +316,11 @@ extra options are available for locking down JavaScript access to server functio
 
   The default value is `false`.
 
+- `--javascript.tasks`: You can set this option to `false` to turn off
+  [JavaScript tasks](../../develop/javascript-api/tasks.md). It disallows the
+  execution of user-defined JavaScript code on the server inside of periodic
+  and one-off tasks.
+
 - `--javascript.transactions`: You can set this option to `false` to turn off
   [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md). It disallows
   the execution of user-defined JavaScript code on the server inside of

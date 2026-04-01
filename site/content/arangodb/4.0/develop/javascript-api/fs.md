@@ -17,7 +17,8 @@ The directory functions below shouldn't use the current working directory of the
 You will not be able to tell whether the environment the server is running in will permit directory listing,
 reading or writing of files.
 
-You should base your directories with `getTempPath()`.
+You should either base your directories with `getTempPath()`, or as a Foxx service use the
+[module.context.basePath](../foxx-microservices/reference/service-context.md).
 
 ## Single File Directory Manipulation
 

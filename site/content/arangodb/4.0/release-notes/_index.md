@@ -54,6 +54,7 @@ please refer to the version specific changelogs:
 Additional changelogs for tools not included in the main repository:
 
 - [ArangoDB Starter](https://github.com/arangodb-helper/arangodb/blob/master/CHANGELOG.md)
+- [Foxx CLI](https://github.com/arangodb/foxx-cli/blob/main/CHANGELOG.md)
 - [kube-arangodb](https://github.com/arangodb/kube-arangodb/blob/master/CHANGELOG.md)
 
 ## Incompatible changes

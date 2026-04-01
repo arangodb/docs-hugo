@@ -211,12 +211,12 @@ valid and will be supported in the near future. Use whatever suits you best.
 
 ### GraphQL
 
-It is now easy to get started with providing GraphQL APIs in Foxx with Foxx GraphQL.
+It is now easy to get started with providing GraphQL APIs in Foxx, see [Foxx GraphQL](../../develop/foxx-microservices/reference/related-modules/graphql.md).
 
 ### OAuth2
 
-Foxx now officially provides a module for implementing OAuth2 clients with Foxx OAuth2.
+Foxx now officially provides a module for implementing OAuth2 clients, see [Foxx OAuth2](../../develop/foxx-microservices/reference/related-modules/oauth-2-0.md).
 
 ### Per-route middleware
 
-It's now possible to specify middleware functions for a route when defining a route handler. These middleware functions only apply to the single route and share the route's parameter definitions.
+It's now possible to specify middleware functions for a route when defining a route handler. These middleware functions only apply to the single route and share the route's parameter definitions. Check out the [Foxx Router documentation](../../develop/foxx-microservices/reference/routers/_index.md) for more information.

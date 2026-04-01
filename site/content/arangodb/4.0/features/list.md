@@ -306,6 +306,11 @@ aliases:
 
 ## Extensibility
 
+- [**Microservice Support with ArangoDB Foxx**](../develop/foxx-microservices/_index.md):
+  Use ArangoDB as an application server and fuse your application and database
+  together for maximal throughput.
+  With fault-tolerant cluster support.
+
 - [**Server-Side Functions**](../aql/user-defined-functions.md):
   You can extend AQL with user-defined functions written in JavaScript.
 

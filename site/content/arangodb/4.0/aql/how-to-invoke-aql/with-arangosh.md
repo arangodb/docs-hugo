@@ -337,6 +337,11 @@ Options related to the query optimizer.
 Set this option to `true` to make it possible to retry fetching the latest batch
 from a cursor.
 
+{{< info >}}
+This feature cannot be used on the server-side, like in [Foxx](../../develop/foxx-microservices/_index.md), as
+there is no client connection and no batching.
+{{< /info >}}
+
 If retrieving a result batch fails because of a connection issue, you can ask
 for that batch again using the `POST /_api/cursor/<cursor-id>/<batch-id>`
 endpoint. The first batch has an ID of `1` and the value is incremented by 1

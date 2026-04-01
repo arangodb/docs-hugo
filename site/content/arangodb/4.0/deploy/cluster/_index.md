@@ -354,8 +354,8 @@ the ArangoDB Cluster.
 ## Microservices and zero administration
 
 The design and capabilities of ArangoDB are geared towards usage in
-modern microservice architectures of applications. With
-<-- TODO: BYOC in data platform --> it is very easy to deploy a data
+modern microservice architectures of applications. With the
+[Foxx services](../../develop/foxx-microservices/_index.md) it is very easy to deploy a data
 centric microservice within an ArangoDB Cluster.
 
 In addition, one can deploy multiple instances of ArangoDB within the

@@ -29,7 +29,6 @@ sed -i \
     /etc/arangodb3/arangod.conf
 
 rm -f /usr/bin/foxx
-# TODO: Make Foxx/V8 related things conditional on version (also above)
 cat >> /usr/bin/foxx <<'EOF'
 #!/bin/sh
 test -d /tmp/foxx || mkdir -m 700 /tmp/foxx

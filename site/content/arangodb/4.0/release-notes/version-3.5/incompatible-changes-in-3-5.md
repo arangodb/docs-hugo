@@ -56,7 +56,7 @@ The following APIs have been expanded:
 - Indexes can now have user-defined names
 - The new "ttl" index type has been added to the [index creation API](../../develop/http-api/indexes/_index.md)
 - [Collection creation API now provides the `smartJoinAttribute` parameter](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
-- `filter` foxx-tests for testing
+- [`filter` foxx-tests](../../develop/http-api/foxx.md#miscellaneous) for testing
 
 The following documentation has been enhanced:
 
