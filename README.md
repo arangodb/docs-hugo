@@ -1481,7 +1481,7 @@ paths:
 ````
 
 A value of `[v0]` for the `apiVersions` option will add the endpoint only to
-`0-openapi.json`. The experimental API used the next available number, hence
+`0-openapi.json`. The experimental API uses the next available number, hence
 `2-openapi.json`.
 
 ````yaml
@@ -1517,7 +1517,8 @@ paths:
     ...
 ````
 
-The default front matter values are:
+The default front matter values allow you to omit the front matter block
+entirely in many cases. The defaults are:
 - `service: arangodb`
 - `apiVersions: [v0]` for ArangoDB 3.10
 - `apiVersions: [v0]` for ArangoDB 3.11
@@ -1561,18 +1562,17 @@ version index; for other services, all fields are read from this file. Example:
 ```yaml
 arangodb:
   title: ArangoDB Core API
-  summary: The RESTful HTTP API of the ArangoDB Core Database System
+  summary: The HTTP API of the ArangoDB graph database system
   contact:
     name: ArangoDB Inc.
     url: https://arango.ai
   externalDocs:
-    description: Arango Documentation
-    url: https://docs.arango.ai
+    description: ArangoDB Documentation
+    url: https://docs.arango.ai/arangodb/
 
 cypher2aql:
   title: Cypher to AQL Translation Service API
   version: "1.0.0"
-  contact: { name: ArangoDB Inc., url: https://arango.ai }
   # ...
 ```
 

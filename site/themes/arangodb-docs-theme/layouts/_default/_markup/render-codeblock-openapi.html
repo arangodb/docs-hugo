@@ -69,8 +69,12 @@
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
       {{- $displayPath := $path }}
-      {{- if and (eq $service "arangodb") (in $apiVersions "experimental") }}
-        {{- $displayPath = printf "/_arango/experimental%s" $path }}
+      {{- if (eq $service "arangodb") }}
+        {{- if (in $apiVersions "v1") }}
+          {{- $displayPath = printf "/_arango/v1%s" $path }}
+        {{- else if (in $apiVersions "experimental") }}
+          {{- $displayPath = printf "/_arango/experimental%s" $path }}
+        {{- end }}
       {{- end }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
