@@ -10,7 +10,16 @@ description: >-
 
 ### Behavior changes
 
+#### Status API
 
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`), and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
 
 ### Privilege changes
 

@@ -691,15 +691,15 @@ paths:
                     type: string
                   mode:
                     description: |
-                      Either `"server"` or `"console"`. **Deprecated**, use `operationMode` instead.
+                      Either `"server"` or `"console"`. **Deprecated**
                     type: string
                   operationMode:
                     description: |
-                      Either `"server"` or `"console"`.
+                      Either `"server"` or `"console"`. **Deprecated**
                     type: string
                   foxxApi:
                     description: |
-                      Whether the Foxx API is enabled.
+                      Whether the Foxx API is enabled. **Deprecated**
                     type: boolean
                   host:
                     description: |

@@ -681,9 +681,6 @@ paths:
                   - server
                   - license
                   - version
-                  - mode
-                  - operationMode
-                  - foxxApi
                   - host
                   - pid
                   - serverInfo
@@ -700,18 +697,6 @@ paths:
                     description: |
                       The server version as a string.
                     type: string
-                  mode:
-                    description: |
-                      Either `"server"` or `"console"`. **Deprecated**, use `operationMode` instead.
-                    type: string
-                  operationMode:
-                    description: |
-                      Either `"server"` or `"console"`.
-                    type: string
-                  foxxApi:
-                    description: |
-                      Whether the Foxx API is enabled.
-                    type: boolean
                   host:
                     description: |
                       A host identifier defined by the `HOST` or `NODE_NAME` environment variable,
