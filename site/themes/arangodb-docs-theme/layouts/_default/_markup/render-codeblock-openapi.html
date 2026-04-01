@@ -281,6 +281,8 @@
             <p class="regular-font">Possible values:
               {{- range $i, $val := $value.schema.enum }}
                 {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+              {{- else }}
+                <em>(none)</em>
               {{- end }}
             </p>
           {{- end }}
@@ -324,6 +326,8 @@
           <p class="regular-font">Possible values:
             {{- range $i, $val := $value.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- else }}
+              <em>(none)</em>
             {{- end }}
           </p>
         {{- end }}
@@ -333,6 +337,8 @@
           <p class="regular-font">Possible values in array:
             {{- range $i, $val := $value.items.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- else }}
+              <em>(none)</em>
             {{- end }}
           </p>
         {{- end }}
