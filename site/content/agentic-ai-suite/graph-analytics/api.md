@@ -547,6 +547,66 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_sys
 
 {{< /tabs >}}
 
+Parameters:
+- `database` (string, required): The database to load the graph from.
+- `graph_name` (string, optional): The name of a named graph to load. Required
+  if `vertex_collections` and `edge_collections` are not specified.
+- `vertex_collections` (array of strings, optional): Vertex collections to load.
+  Required together with `edge_collections` if `graph_name` is not specified.
+- `edge_collections` (array of strings, optional): Edge collections to load.
+  Required together with `vertex_collections` if `graph_name` is not specified.
+- `vertex_attributes` (array of strings, optional): The names of vertex
+  attributes to load. Only the specified attributes are loaded into memory.
+  If omitted or empty, only the graph topology is loaded without any vertex
+  attributes.
+- `parallelism` (integer, optional): The number of parallel threads to use for
+  loading data (default: `4`).
+- `batch_size` (integer, optional): The number of documents per batch
+  (default: `400000`).
+
+The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
+loading progress via the [Jobs API](#list-all-jobs).
+
+**Example with vertex collections, edge collections, and vertex attributes:**
+
+{{< tabs "platforms" >}}
+
+{{< tab "Contextual Data Platform" >}}
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_collections": ["persons"],
+    "edge_collections": ["knows"],
+    "vertex_attributes": ["name", "age"],
+    "parallelism": 8,
+    "batch_size": 100000
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddata"
+```
+
+{{< /tab >}}
+
+{{< tab "Arango Managed Platform (AMP)" >}}
+
+```bash
+curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_collections": ["persons"],
+    "edge_collections": ["knows"],
+    "vertex_attributes": ["name", "age"],
+    "parallelism": 8,
+    "batch_size": 100000
+  }' \
+  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/loaddata"
+```
+
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ### Load data using AQL queries
 
 Import graph data using custom AQL queries. This gives you full control over
