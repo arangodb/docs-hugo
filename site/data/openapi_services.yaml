@@ -9,18 +9,8 @@ arangodb:
     name: ArangoDB Inc.
     url: https://arango.ai
   externalDocs:
-    description: Arango Documentation
-    url: https://docs.arango.ai
+    description: ArangoDB Documentation
+    url: https://docs.arango.ai/arangodb/
   # license: computed per version in Go (BSL 1.1 for 3.12+, Apache 2.0 for 3.10/3.11)
   # version: computed as "<version> (API v0)" etc. in Go
 
-cypher2aql:
-  title: Cypher to AQL Translation Service API
-  summary: Translate Cypher queries to AQL for use with ArangoDB
-  version: "1.0.0"
-  contact:
-    name: ArangoDB Inc.
-    url: https://arango.ai
-  externalDocs:
-    description: Documentation
-    url: https://docs.arango.ai
