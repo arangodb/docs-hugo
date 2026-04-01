@@ -56,17 +56,32 @@ paths:
                 type: object
                 required:
                   - server
+                  - license
                   - version
+                  - apiVersions
+                  - deprecatedApiVersions
+                  - requestedApiVersion
                 properties:
                   server:
-                    description: |
-                      will always contain `arango`
+                    description: ''
                     type: string
+                    const: arango
+                  license:
+                    description: |
+                      Whether this build of ArangoDB includes the non-public
+                      enterprise code. Reports `"enterprise"` for both the
+                      Community Edition and Enterprise Edition if you use the
+                      prepackaged binaries or official container images.
+                    type: string
+                    enum:
+                      - community # Only custom builds
+                      - enterprise
                   version:
                     description: |
-                      the server version string. The string has the format
-                      `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
-                      may contain a number or a textual version.
+                      The server version string in the format `major.minor.sub`.
+                      The `major` and `minor` parts are numeric, and `sub` is a
+                      number that may have a version suffix starting with
+                      a hyphen minus (e.g. `3.12.7-2` or `4.0.0-devel`).
                     type: string
                   apiVersions:
                     description: |
@@ -76,8 +91,8 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [v0, v1]
-                  deprecatedApiVersions:
+                      enum: [v0] # TODO: Add v1 for v3.12.10
+                  deprecatedApiVersions: # TODO: Versions staged for removal within the same series?
                     description: |
                       The versions of the HTTP API that are still supported by
                       this ArangoDB server version but should no longer be used.
@@ -85,14 +100,14 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum: [v0] # TODO: Is this correct for 3.12.x?
+                      enum: [] # TODO: Do this or replace with example: []?
                   requestedApiVersion:
                     description: |
                       The HTTP API version specified for this request via the
                       `/_arango/{api-version}` prefix, or the default API version
                       if not specified.
                     type: string
-                    enum: [v0, v1] # TODO: What about experimental?
+                    enum: [v0]
                   details:
                     description: |
                       an optional JSON object with additional details. This is
@@ -105,9 +120,9 @@ paths:
                           The CPU architecture in terms of bitness.
                         type: string
                         const: 64bit
-                      arm: # TODO: Is it "true" on macOS when using an x86-64 build?
+                      arm:
                         description: |
-                          Whether the server runs on an ARM CPU.
+                          Whether the server binary has been compiled for an ARM CPU.
                         type: string
                         enum: ["true", "false"] # Boolean as string!
                       asan:
@@ -122,14 +137,16 @@ paths:
                           (only in development builds).
                         type: string
                         enum: ["true", "false"] # Boolean as string!
-                      avx: # TODO: This this report the hardware capability or the compile flags?
+                      avx:
                         description: |
-                          Whether the CPU supports AVX instructions.
+                          Whether the server binary has been compiled with
+                          AVX instruction support.
                         type: string
                         enum: ["true", "false"] # Boolean as string!
-                      avx2: # TODO: This this report the hardware capability or the compile flags?
+                      avx2:
                         description: |
-                          Whether the CPU supports AVX2 instructions.
+                          Whether the server binary has been compiled with
+                          AVX2 instruction support.
                         type: string
                         enum: ["true", "false"] # Boolean as string!
                       boost-version:
@@ -172,7 +189,8 @@ paths:
                         type: string
                         enum: ["true", "false"] # Boolean as string!
                       endianness:
-                        description: '' # TODO: Test, is this based on hardware detection or compile flag?
+                        description: |
+                          The byte order of the system, detected at runtime.
                         type: string
                         const: little
                       enterprise-build-repository:
@@ -293,7 +311,7 @@ paths:
                         type: string
                         const: linux
                       reactor-type:
-                        description: '' # TODO: Test
+                        description: ''
                         type: string
                         const: epoll
                       replication2-enabled:
@@ -321,9 +339,10 @@ paths:
                         description: |
                           Number of bytes for void pointers.
                         type: string
-                      sse42: # TODO: Is this detected hardware capability or compile flag?
+                      sse42:
                         description: |
-                          Whether the CPU is SSE 4.2 enabled.
+                          Whether the server binary has been compiled with
+                          SSE 4.2 instruction support.
                         type: string
                       tsan:
                         description: |
@@ -335,9 +354,9 @@ paths:
                           Whether this system supports unaligned memory accesses.
                         type: string
                         enum: ["true", "false"] # Boolean as string!
-                      v8-version: # TODO: Remove?
+                      v8-version:
                         description: |
-                          The bundled V8 javaScript engine version.
+                          The bundled V8 JavaScript engine version.
                         type: string
                       vpack-version:
                         description: |
