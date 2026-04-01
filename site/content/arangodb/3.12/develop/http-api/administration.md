@@ -944,6 +944,9 @@ paths:
 ### Get the required database version (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/database/target-version:
     get:
@@ -2816,6 +2819,9 @@ logJsonResponse(response);
 ### Reload the routing table
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/routing/reload:
     post:
@@ -2852,6 +2858,9 @@ paths:
 ### Echo a request
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/echo:
     post:
@@ -3038,6 +3047,9 @@ paths:
 ### Execute a script
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/execute:
     post:
@@ -3116,6 +3128,9 @@ the default `_system` database and none of the other databases.
 ### List the endpoints of a single server (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/_system/_api/endpoint:
     get:

@@ -1903,6 +1903,9 @@ logJsonResponse(response);
 ### Read the next batch from a cursor (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/cursor/{cursor-identifier}:
     put:
