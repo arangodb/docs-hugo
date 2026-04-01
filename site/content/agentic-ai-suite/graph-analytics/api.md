@@ -547,6 +547,110 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST -d '{"database":"_sys
 
 {{< /tabs >}}
 
+### Load data using AQL queries
+
+Import graph data using custom AQL queries. This gives you full control over
+which data to load, including the ability to filter, transform, or traverse the
+graph during loading. Each AQL query must return documents containing `vertices`
+and/or `edges` arrays.
+
+Queries are organized into **phases**. Phases are executed sequentially (each
+phase completes before the next begins), while queries within a phase run in
+parallel. This lets you order dependencies, for example, loading vertices in the
+first phase and edges in the second.
+
+Each query must return documents with the following format:
+
+```json
+{"vertices": [{"_id": "collection/key", ...}], "edges": [{"_from": "coll/a", "_to": "coll/b", ...}]}
+```
+
+Vertices require the `_id` field. Edges require the `_from` and `_to` fields.
+A single query can return both vertices and edges at the same time,
+for example, when using AQL traversals.
+
+{{< tabs "platforms" >}}
+
+{{< tab "Contextual Data Platform" >}}
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/loaddataaql" >}}
+
+**Example:**
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_attributes": [],
+    "edge_attributes": [],
+    "phases": [
+      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id}]}", "bind_vars": {"@V": "myVertices"}}]},
+      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to}]}", "bind_vars": {"@E": "myEdges"}}]}
+    ]
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
+```
+
+{{< /tab >}}
+
+{{< tab "Arango Managed Platform (AMP)" >}}
+
+{{< endpoint "POST" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/engines/{ENGINE_ID}/v1/loaddataaql" >}}
+
+**Example:**
+
+```bash
+curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_attributes": [],
+    "edge_attributes": [],
+    "phases": [
+      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id}]}", "bind_vars": {"@V": "myVertices"}}]},
+      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to}]}", "bind_vars": {"@E": "myEdges"}}]}
+    ]
+  }' \
+  "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/loaddataaql"
+```
+
+{{< /tab >}}
+
+{{< /tabs >}}
+
+Parameters:
+- `database` (string, required): The database to run the queries against.
+- `phases` (array, required): A list of query groups, executed sequentially.
+  Each group contains a `queries` array of AQL queries that run in parallel.
+  Each query object has:
+  - `query` (string): The AQL query string.
+  - `bind_vars` (object): Bind parameters as key-value pairs.
+- `vertex_attributes` (array, optional): A list of vertex attributes to load,
+  each with a `name` (string) and `data_type` (one of `Bool`, `String`, `U64`,
+  `I64`, `F64`, `JSON`).
+- `edge_attributes` (array, optional): A list of edge attributes to load, with
+  the same structure as `vertex_attributes`.
+- `batch_size` (integer, optional): The number of documents per batch
+  (default: `400000`).
+
+The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
+loading progress via the [Jobs API](#list-jobs). The loading job reports a total
+of `2` progress steps: `1` after all vertices have been processed, and `2` when
+all edges are processed and the graph is ready.
+
+**Example using a graph traversal (single-phase load):**
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
+  -d '{
+    "database": "_system",
+    "vertex_attributes": [],
+    "edge_attributes": [],
+    "phases": [
+      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" E RETURN {vertices: [v], edges: [e]}", "bind_vars": {}}]}
+    ]
+  }' \
+  "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
+```
 
 ### Run algorithms
 
