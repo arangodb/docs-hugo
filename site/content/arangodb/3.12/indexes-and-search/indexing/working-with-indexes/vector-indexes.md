@@ -41,7 +41,7 @@ startup option needs to be enabled on the deployment you want to restore to.
    to retrieve a given number of similar documents relative to a vector embedding
    you provide.
 
-Up ArangoDB v3.12.8, a vector index expects the data to already exist in the specified attribute.
+Up to ArangoDB v3.12.8, a vector index expects the data to already exist in the specified attribute.
 This means **you cannot create a vector index for a collection upfront**, unlike
 with all other index types. The documents need to already have vector embeddings
 stored in an attribute that you then create the index over and train on.
