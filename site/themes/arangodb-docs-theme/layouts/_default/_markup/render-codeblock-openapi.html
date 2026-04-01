@@ -70,7 +70,9 @@
     {{- range $method, $items := $methods }}
       {{- $displayPath := $path }}
       {{- if (eq $service "arangodb") }}
-        {{- if (in $apiVersions "v1") }}
+        {{- if (in $apiVersions "v0") }}
+          {{- /* Omit prefix for 3.12 docs */}}
+        {{- else if (in $apiVersions "v1") }}
           {{- $displayPath = printf "/_arango/v1%s" $path }}
         {{- else if (in $apiVersions "experimental") }}
           {{- $displayPath = printf "/_arango/experimental%s" $path }}

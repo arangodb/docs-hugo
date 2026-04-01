@@ -1576,6 +1576,20 @@ cypher2aql:
   # ...
 ```
 
+**Add new API versions or change the toolchain behavior**
+
+To adjust the rendering of prefixes for <https://docs.arango.ai> and the
+handling of front matter such as `apiVersions`, see
+[`render-codeblock-openapi.html`](site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-openapi.html).
+
+To adjust the OpenAPI processing and how the `*openapi.json` files are written,
+see [`service.go`](toolchain/arangoproxy/internal/service/service.go).
+
+If a new API version is added to ArangoDB, both need to adjusted to handle it,
+and you also need to update `allowedAPIVersions` fields for affected versions in
+[`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
+OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
+
 ### Add a new cURL example
 
 Complete example:
