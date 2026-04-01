@@ -199,9 +199,8 @@ detailed information about breaking changes before upgrading.
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\
@@ -282,14 +281,11 @@ detailed information about breaking changes before upgrading.
   prevent unknown startup option errors.
 
 - **arangoimp** executable:\
-  ArangoDB release packages install an executable named
-  _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
-  provide compatibility with older releases, in which _arangoimport_ did not
-  yet exist and was named _arangoimp_. The renaming was actually carried out in
-  the codebase in December 2017. Using the _arangoimp_ executable is deprecated,
-  and it is always favorable to use _arangoimport_ instead. 
-  While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
-  removed in a future version of ArangoDB.
+  The _arangoimport_ client tool was originally named _arangoimp_.
+  ArangoDB release packages and container images up to v3.12 include the
+  _arangoimp_ executable or symlink as an alias for _arangoimport_.
+  From ArangoDB v4.0, _arangoimp_ is no longer included and you need to use
+  _arangoimport_.
 
 - **HTTP and JavaScript traversal APIs**:\
   The HTTP traversal API as well as the

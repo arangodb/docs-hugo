@@ -315,11 +315,11 @@ spec:
   dbservers:
     count: 3
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   coordinators:
     count: 2
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   license:
     secretName: arango-license-key
   # ...

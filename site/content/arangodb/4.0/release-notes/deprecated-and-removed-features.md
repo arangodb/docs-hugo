@@ -167,13 +167,14 @@ detailed information about breaking changes before upgrading.
   It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries, with
+  corresponding endpoints on the server-side (`/_api/simple/*`).
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
-  *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
-  are translated internally to AQL, then the AQL query is optimized and run
-  against the database in recent versions, because of better performance and
-  reduced maintenance complexity.
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
+  Simple Queries could ever be. In fact, the still supported methods in the
+  JavaScript API use AQL internally because of better performance and reduced
+  maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
+  removed in ArangoDB v4.0.
 
 - **Accessing collections by ID instead of by name**:\
   Accessing collections by their internal ID instead of accessing them by name
@@ -199,16 +200,15 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  removed in ArangoDB v4.0. Client applications should use the REST 
+  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\
@@ -289,14 +289,11 @@ detailed information about breaking changes before upgrading.
   prevent unknown startup option errors.
 
 - **arangoimp** executable:\
-  ArangoDB release packages install an executable named
-  _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
-  provide compatibility with older releases, in which _arangoimport_ did not
-  yet exist and was named _arangoimp_. The renaming was actually carried out in
-  the codebase in December 2017. Using the _arangoimp_ executable is deprecated,
-  and it is always favorable to use _arangoimport_ instead. 
-  While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
-  removed in a future version of ArangoDB.
+  The _arangoimport_ client tool was originally named _arangoimp_.
+  ArangoDB release packages and container images up to v3.12 include the
+  _arangoimp_ executable or symlink as an alias for _arangoimport_.
+  From ArangoDB v4.0, _arangoimp_ is no longer included and you need to use
+  _arangoimport_.
 
 - **HTTP and JavaScript traversal APIs**:\
   The HTTP traversal API as well as the

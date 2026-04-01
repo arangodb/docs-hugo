@@ -17,9 +17,7 @@ description: >-
 ```openapi
 paths:
   /_db/{database-name}/_api/version:
-  # /_admin/version is an (undocumented) alias
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number.
@@ -428,7 +426,6 @@ paths:
 paths:
   /_db/{database-name}/_admin/time:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
@@ -481,7 +478,6 @@ paths:
 paths:
   /_db/{database-name}/_admin/status:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
         Returns status information about the server.
@@ -767,7 +763,6 @@ paths:
 paths:
   /_db/_system/_admin/support-info:
     get:
-      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getSupportInfo
       description: |
         Retrieves deployment information for support purposes. The endpoint returns data
@@ -2875,74 +2870,4 @@ paths:
             is returned if ArangoDB was not compiled for cluster operation.
       tags:
         - Administration
-```
-
-## Endpoints
-
-{{< warning >}}
-The `/_api/endpoint` endpoint is deprecated. For cluster deployments, you can
-use `/_api/cluster/endpoints` instead to find all current Coordinator endpoints.
-See [Cluster](cluster.md#endpoints).
-{{< /warning >}}
-
-An ArangoDB server can listen for incoming requests on multiple _endpoints_.
-
-The endpoints are normally specified either in the _arangod_ configuration
-file or on the command-line, using the `--server.endpoint` startup option.
-The default endpoint for ArangoDB is `tcp://127.0.0.1:8529` (IPv4 localhost on
-port 8529 over the HTTP protocol).
-
-Note that all endpoint management operations can only be accessed via
-the default `_system` database and none of the other databases.
-
-### List the endpoints of a single server (deprecated)
-
-```openapi
-paths:
-  /_db/_system/_api/endpoint:
-    get:
-      operationId: listEndpoints
-      deprecated: true
-      description: |
-        {{</* warning */>}}
-        This route should no longer be used.
-        It is considered as deprecated from version 3.4.0 on.
-        {{</* /warning */>}}
-
-        Returns an array of all configured endpoints the server is listening on.
-
-        The result is a JSON array of JSON objects, each with `"entrypoint"` as
-        the only attribute, and with the value being a string describing the
-        endpoint.
-
-        {{</* info */>}}
-        Retrieving the array of all endpoints is allowed in the system database
-        only. Calling this action in any other database will make the server return
-        an error.
-        {{</* /info */>}}
-      responses:
-        '200':
-          description: |
-            is returned when the array of endpoints can be determined successfully.
-        '400':
-          description: |
-            is returned if the action is not carried out in the system database.
-        '405':
-          description: |
-            The server will respond with *HTTP 405* if an unsupported HTTP method is used.
-      tags:
-        - Administration
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestEndpointGet
----
-var url = "/_db/_system/_api/endpoint";
-var response = logCurlRequest('GET', url);
-assert(response.code === 200);
-logJsonResponse(response);
 ```

@@ -455,7 +455,9 @@ paths:
         '400':
           description: |
             The request body or its content is invalid, for example,
-            because of a missing or malformed `params` attribute.
+            because of a missing or malformed `params` attribute,
+            or the vector index feature is not enabled. You need to run ArangoDB
+            with the `--vector-index` startup option.
           content:
             application/json:
               schema:
