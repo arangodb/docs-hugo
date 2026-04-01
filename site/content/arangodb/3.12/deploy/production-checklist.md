@@ -90,7 +90,7 @@ have been performed on your production system before you go live.
   {{< /tabs >}}
 
   {{< security >}}
-  When `--javascript.environment-variables-allowlist`,
+  Up to ArangoDB v3.12.8, when `--javascript.environment-variables-allowlist`,
   `--javascript.files-allowlist`, `--javascript.endpoints-allowlist`,
   and `--javascript.startup-options-allowlist`
   are left unset (the default), they permit **all** access rather than
@@ -99,6 +99,9 @@ have been performed on your production system before you go live.
   reading startup configuration values, or making outbound HTTP requests
   from within the server process. A value of `^$` for an allowlist will
   allow nothing.
+
+  From v3.12.9 onward, the default is to disallow access to the respective
+  resource if the corresponding startup option is left unset.
 
   Note that these options restrict all JavaScript execution within the
   _arangod_ process, not just a single feature like UDFs. Foxx microservices and
@@ -156,7 +159,7 @@ have been performed on your production system before you go live.
   - Consider enabling [`--server.export-shard-usage-metrics`](../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
     for detailed shard usage tracking.
   - Configure your monitoring system (Prometheus/Grafana) to scrape the
-    `/_admin/metrics` endpoint.
+    `GET /_admin/metrics` endpoint.
   - See [HTTP interface for server metrics](../develop/http-api/monitoring/metrics.md)
     for detailed information.
 

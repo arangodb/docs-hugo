@@ -93,6 +93,9 @@
 /arangodb/devel/develop/javascript-api/actions/                                 /arangodb/devel/release-notes/deprecated-and-removed-features/  302
 /arangodb/devel/develop/javascript-api/tasks/                                   /arangodb/devel/release-notes/deprecated-and-removed-features/  302
 
+/arangodb/4.0/operations/troubleshooting/emergency-console/                     /arangodb/4.0/release-notes/deprecated-and-removed-features/       302
+/arangodb/devel/operations/troubleshooting/emergency-console/                   /arangodb/devel/release-notes/deprecated-and-removed-features/     302
+
 /arangodb/3.11/develop/drivers/                                                 /ecosystem/drivers/                                                301
 /arangodb/3.11/develop/drivers/go/                                              /ecosystem/drivers/go/                                             301
 /arangodb/3.11/develop/drivers/javascript/                                      /ecosystem/drivers/javascript/                                     301

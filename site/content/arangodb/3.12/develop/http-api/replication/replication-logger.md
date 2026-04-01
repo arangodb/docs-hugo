@@ -356,7 +356,12 @@ paths:
   /_db/{database-name}/_api/replication/logger-first-tick:
     get:
       operationId: getReplicationLoggerFirstTick
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Returns the first available tick value that can be served from the server's
         replication log. This method can be called by replication clients after to
         determine if certain data (identified by a tick value) is still available
@@ -419,7 +424,12 @@ paths:
   /_db/{database-name}/_api/replication/logger-tick-ranges:
     get:
       operationId: getReplicationLoggerTickRanges
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Returns the currently available ranges of tick values for all currently
         available WAL logfiles. The tick values can be used to determine if certain
         data (identified by tick value) are still available for replication.

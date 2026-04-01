@@ -77,6 +77,13 @@ to ease the migration to the data platform.
 
 <!-- TODO: See node-foxx docs... -->
 
+## Emergency console mode removed
+
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+This feature has been removed and the `--console` startup option is obsolete now.
+
 ## HTTP RESTful API
 
 ### Batch request endpoint removed
@@ -109,6 +116,12 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
+### Metrics API v2 endpoint removed
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
+
 ## JavaScript API
 
 ### Foxx-related removals
@@ -125,6 +138,11 @@ methods for managing Foxx services.
 
 The `--server.allow-use-database` startup option related to the long-deprecated
 and now removed Action feature has been removed. It was only used internally.
+
+### `--console` obsolete
+
+The `--console` startup option no longer has an effect but it is still
+recognized to avoid causing a fatal error on startup if you specify it.
 
 ## Client tools
 

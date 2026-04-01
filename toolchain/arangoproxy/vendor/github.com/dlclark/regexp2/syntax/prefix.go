@@ -607,7 +607,7 @@ func (b *BmPrefix) String() string {
 	return string(b.pattern)
 }
 
-// Dump returns the contents of the filter as a human readable string
+// Dump returns the contents of the filter as a human-readable string
 func (b *BmPrefix) Dump(indent string) string {
 	buf := &bytes.Buffer{}
 
