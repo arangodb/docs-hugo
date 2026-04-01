@@ -358,11 +358,6 @@ paths:
                         description: |
                           The version of the bundled zlib compression library.
                         type: string
-                      mode:
-                        description: |
-                          The mode the server runs in.
-                        type: string
-                        enum: [server, console, script] # TODO: Remove console, script (V8)?
                       role:
                         description: |
                           The server role.

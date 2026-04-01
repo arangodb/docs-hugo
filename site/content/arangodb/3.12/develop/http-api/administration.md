@@ -349,9 +349,9 @@ paths:
                         type: string
                       mode:
                         description: |
-                          The mode the server runs in.
+                          The mode the server runs in. **Deprecated**
                         type: string
-                        enum: [server, console, script] # TODO: Remove console, script (V8)?
+                        enum: [server, console, script]
                       role:
                         description: |
                           The server role.
