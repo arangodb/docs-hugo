@@ -351,7 +351,7 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 			"serviceName":  serviceName,
 			"spec":         spec,
 		}
-		models.Logger.Debug("[ProcessOpenapiSpec] Received spec for service '%s': %s %s", serviceName, method, path)
+		models.Logger.Debug("[ProcessOpenapiSpec] Received spec for service '%s': %s %s", serviceName, strings.ToUpper(method), path)
 		return
 	}
 
@@ -361,16 +361,23 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	for _, idx := range arangoDBAllowedAPIVersionIndices(pageVersion) {
 		allowedIndices[idx] = true
 	}
+	acceptedVersions := 0
 	for _, av := range apiVersions {
 		apiIdx, ok := arangoDBAPIVersionToIndex[av]
 		if !ok {
-			models.Logger.Printf("[ERROR] Unknown ArangoDB API version %q (expected v0, v1, or experimental)", av)
-			continue
+			models.Logger.Printf("[ERROR] Unknown ArangoDB API version %q (expected v0, v1, or experimental) in %s endpoint %s %s (%s)", av, pageVersion, strings.ToUpper(method), path, summary)
+			OpenapiSpecErrorMutex.Lock()
+			if OpenapiSpecError == nil {
+				OpenapiSpecError = fmt.Errorf("unknown ArangoDB API version %q (expected v0, v1, or experimental) in %s endpoint %s %s (%s)", av, pageVersion, strings.ToUpper(method), path, summary)
+			}
+			OpenapiSpecErrorMutex.Unlock()
+			return
 		}
 		if !allowedIndices[apiIdx] {
 			models.Logger.Debug("[ProcessOpenapiSpec] Skipping API version %s for page version %s (not supported)", av, pageVersion)
 			continue
 		}
+		acceptedVersions++
 		prefix := arangoDBAPIVersionPrefix[apiIdx]
 		prefixedPath := path
 		if prefix != "" {
@@ -386,7 +393,7 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 		OpenapiSpecCounter[mapKey]++
 		specNum := OpenapiSpecCounter[mapKey]
 		OpenapiSpecCounterMutex.Unlock()
-		models.Logger.Debug("[ProcessOpenapiSpec #%s %d] Received spec for version '%s' API %s: %s %s", mapKey, specNum, pageVersion, av, method, prefixedPath)
+		models.Logger.Debug("[ProcessOpenapiSpec #%s %d] Received spec for version '%s' API %s: %s %s", mapKey, specNum, pageVersion, av, strings.ToUpper(method), prefixedPath)
 		OpenapiPendingSpecs.Add(1)
 		globalOpenapiChannel <- map[string]interface{}{
 			"_target":         "arangodb",
@@ -394,6 +401,14 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 			"apiVersionIndex": apiIdx,
 			"spec":            specCopy,
 		}
+	}
+	if acceptedVersions == 0 {
+		models.Logger.Printf("[ERROR] None of the requested apiVersions %v are allowed for page version %s (endpoint: %s %s)", apiVersions, pageVersion, strings.ToUpper(method), path)
+		OpenapiSpecErrorMutex.Lock()
+		if OpenapiSpecError == nil {
+			OpenapiSpecError = fmt.Errorf("none of the requested apiVersions %v are allowed for page version %s (endpoint: %s %s)", apiVersions, pageVersion, strings.ToUpper(method), path)
+		}
+		OpenapiSpecErrorMutex.Unlock()
 	}
 }
 
@@ -465,7 +480,7 @@ func (service OpenapiService) AddSpecToGlobalSpec(chnl chan map[string]interface
 		path := reflect.ValueOf(specPaths).MapKeys()[0].String()
 		method := reflect.ValueOf(specPaths[path].(map[string]interface{})).MapKeys()[0].String()
 
-		models.Logger.Debug("[AddSpecToGlobalSpec] Processing path %s %s for %s", method, path, mapKey)
+		models.Logger.Debug("[AddSpecToGlobalSpec] Processing path %s %s for %s", strings.ToUpper(method), path, mapKey)
 
 		OpenapiGlobalMapMutex.Lock()
 
@@ -606,10 +621,14 @@ func (service OpenapiService) addServiceSpec(serviceName string, spec map[string
 			"tags":         tags,
 			"externalDocs": externalDocs,
 		}
+		OpenapiSpecCounterMutex.Lock()
 		OpenapiSpecCounter[serviceName] = 0
+		OpenapiSpecCounterMutex.Unlock()
 		existing = OpenapiServiceMap[serviceName]
 	}
+	OpenapiSpecCounterMutex.Lock()
 	OpenapiSpecCounter[serviceName]++
+	OpenapiSpecCounterMutex.Unlock()
 	serviceSpec := existing.(map[string]interface{})
 	pathsMap := serviceSpec["paths"].(map[string]interface{})
 
@@ -640,9 +659,8 @@ func (service OpenapiService) addServiceSpec(serviceName string, spec map[string
 }
 
 func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
-	OpenapiSpecErrorMutex.Lock()
-	OpenapiSpecError = nil
-	OpenapiSpecErrorMutex.Unlock()
+	// NOTE: Do not reset OpenapiSpecError here — it is set during ProcessOpenapiSpec
+	// (the Hugo build phase) and must survive until checked at the end of this function.
 
 	OpenapiValidationErrorMutex.Lock()
 	OpenapiValidationError = nil
@@ -747,7 +765,15 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 		OpenapiValidationErrorMutex.Unlock()
 		return err
 	}
-	os.WriteFile(path, file, 0644)
+	if err := os.WriteFile(path, file, 0644); err != nil {
+		models.Logger.Printf("[ERROR] Failed to write file %s: %v", path, err)
+		OpenapiValidationErrorMutex.Lock()
+		if OpenapiValidationError == nil {
+			OpenapiValidationError = err
+		}
+		OpenapiValidationErrorMutex.Unlock()
+		return err
+	}
 
 	cmd := exec.Command("swagger-cli", "validate", path)
 	var out, er bytes.Buffer
@@ -760,12 +786,14 @@ func (service OpenapiService) ValidateArangoDBFile(version string, apiVersionInd
 		if exitError, ok := err.(*exec.ExitError); ok {
 			models.Logger.Summary("<error code=2>%s %s - <strong>Error %d</strong>:", version, fileName, exitError.ExitCode())
 			models.Logger.Summary("%s</error>", er.String())
-			OpenapiValidationErrorMutex.Lock()
-			if OpenapiValidationError == nil {
-				OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for %s/%s", version, fileName)
-			}
-			OpenapiValidationErrorMutex.Unlock()
+		} else {
+			models.Logger.Printf("[ERROR] swagger-cli failed for %s/%s: %v\nstdout: %s\nstderr: %s", version, fileName, err, out.String(), er.String())
 		}
+		OpenapiValidationErrorMutex.Lock()
+		if OpenapiValidationError == nil {
+			OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for %s/%s: %w", version, fileName, err)
+		}
+		OpenapiValidationErrorMutex.Unlock()
 	} else {
 		models.Logger.Summary("%s %s &#x2713;", version, fileName)
 	}
@@ -794,7 +822,15 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 		OpenapiValidationErrorMutex.Unlock()
 		return err
 	}
-	os.WriteFile(path, file, 0644)
+	if err := os.WriteFile(path, file, 0644); err != nil {
+		models.Logger.Printf("[ERROR] Failed to write file %s: %v", path, err)
+		OpenapiValidationErrorMutex.Lock()
+		if OpenapiValidationError == nil {
+			OpenapiValidationError = err
+		}
+		OpenapiValidationErrorMutex.Unlock()
+		return err
+	}
 
 	cmd := exec.Command("swagger-cli", "validate", path)
 	var out, er bytes.Buffer
@@ -807,12 +843,14 @@ func (service OpenapiService) ValidateServiceFile(serviceName string, wg *sync.W
 		if exitError, ok := err.(*exec.ExitError); ok {
 			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", serviceName, exitError.ExitCode())
 			models.Logger.Summary("%s</error>", er.String())
-			OpenapiValidationErrorMutex.Lock()
-			if OpenapiValidationError == nil {
-				OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for service %s", serviceName)
-			}
-			OpenapiValidationErrorMutex.Unlock()
+		} else {
+			models.Logger.Printf("[ERROR] swagger-cli failed for service %s: %v\nstdout: %s\nstderr: %s", serviceName, err, out.String(), er.String())
 		}
+		OpenapiValidationErrorMutex.Lock()
+		if OpenapiValidationError == nil {
+			OpenapiValidationError = fmt.Errorf("swagger-cli validation failed for service %s: %w", serviceName, err)
+		}
+		OpenapiValidationErrorMutex.Unlock()
 	} else {
 		models.Logger.Summary("%s &#x2713;", serviceName)
 	}

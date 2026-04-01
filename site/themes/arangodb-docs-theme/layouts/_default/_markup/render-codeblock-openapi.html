@@ -15,8 +15,10 @@
   {{- $body = index (index $matches 0) 2 }}
   {{- $service = $frontmatter.service | default $service }}
   {{- $apiVersions = $frontmatter.apiVersions }}
-  {{- if and (eq $service "arangodb") (or (not $apiVersions) (eq (len $apiVersions) 0)) }}
-    {{- errorf "openapi codeblock: service is arangodb but apiVersions is missing or empty (set apiVersions in frontmatter, e.g. apiVersions: [v0] or apiVersions: [experimental])" }}
+  {{- if eq $service "arangodb" }}
+    {{- if or (not $apiVersions) (not (reflect.IsSlice $apiVersions)) (eq (len $apiVersions) 0) }}
+      {{- errorf "OpenAPI front matter: service is %s but apiVersions is missing, not an array, or empty (got %T: %v)" $service $apiVersions $apiVersions }}
+    {{- end }}
   {{- end }}
 {{- else }}
   {{- $body = .Inner }}
@@ -29,7 +31,7 @@
     {{- else if eq $pageVersion "4.0" }}
       {{- $apiVersions = slice "v1" }}
     {{- else }}
-      {{- $apiVersions = slice "v0" "v1" }}
+      {{- errorf "OpenAPI front matter: Unsupported ArangoDB page version %q — add an apiVersions mapping for this version" $pageVersion }}
     {{- end }}
   {{- end }}
 {{- end }}
