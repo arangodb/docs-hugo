@@ -27,10 +27,17 @@ web interface, follow these steps:
 
 ## Upload documents
 
-After creating your project, you are guided through setting up your AutoGraph workflow:
+After creating your project, you are guided through setting up your AutoGraph workflow.
+
+{{< info >}}
+AutoGraph is checking the [File Manager](../../platform-suite/file-manager.md) for
+documents previously uploaded to this database. Files uploaded to the File Manager
+are shared across all projects within the same database. You can choose to use
+these existing files or upload new ones.
+{{< /info >}}
 
 1. The interface displays a drag-and-drop area for uploading documents.
-2. Drag and drop files, or click to browse. Supported file formats include:
+2. Drag and drop files, or click to browse. Supported file formats are:
    - **Text files**: `.txt`, `.md`
    - **PDF files**: `.pdf`
    - **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
@@ -106,8 +113,8 @@ For details on how strategies are determined, see
 1. After corpus building completes, click **Generate Strategies**.
 2. Review the **Strategy Overview** which shows:
    - Number of partitions (e.g., "1 partition: 1 VectorRAG")
-   - Number of documents (e.g., "35 documents")
    - Strategy type (e.g., **VECTORRAG**)
+   - Number of documents (e.g., "35 documents")
    - Entity types that will be extracted (e.g., `APP_VERSION`, `PROGRAMMING_LANGUAGE`, `DEPLOYMENT_TYPE`, `ARCHIVE_FILE`, etc.)
 3. Click **Continue to Import** to proceed with the import.
 
@@ -185,4 +192,5 @@ To view and manage all deployed retriever services:
 Each retriever can have different settings for search level, response
 instructions, and other parameters, allowing you to create specialized
 retrievers optimized for different types of queries or use cases. For more
-details, see the [Retriever service reference](../reference/retriever/_index.md).
+details, see the [Retriever service](../reference/retriever/_index.md)
+reference documentation.
