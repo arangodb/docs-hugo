@@ -323,7 +323,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 #### Reset log levels
@@ -522,6 +522,15 @@ Two new statistics are included in the response when you execute an AQL query:
 }
 ```
 
+##### `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+The cursor API now returns an additional statistic under `extra.stats`:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
 #### Query API
 
 <small>Introduced in: v3.12.2</small>
@@ -609,6 +618,30 @@ curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
+
+---
+
+<small>Introduced in: v3.12.9</small>
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): Possible values:
+  - `"unusable"`
+  - `"training"`
+  - `"ingesting"`
+  - `"ready"`
+- `errorMessage` (string):
+  Only present if there is a problem with the index/training.
+
+You can now create a vector index first and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ##### Changed consolidation defaults for inverted indexes
 
@@ -823,6 +856,18 @@ activities feature:
 - `arangodb_activities_total`
 - `arangodb_activities_existing`
 
+---
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes:
+
+- `arangodb_vector_index_ingestion_duration`
+- `arangodb_vector_index_training_duration`
+- `arangodb_vector_index_training_ongoing`
+- `arangodb_vector_index_unusable`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -932,12 +977,6 @@ are unaffected.
 
 ### Endpoints removed
 
-#### Database target version API
-
-The `GET /_admin/database/target-version` endpoint has been removed in favor of the
-more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3 and it is removed in ArangoDB v4.0.
-
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
@@ -1044,7 +1083,7 @@ The option defaults to `false` so that fast locking is tried.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 for details.
 
-#### Query plan cache module
+### Query plan cache module
 
 <small>Introduced in: v3.12.4</small>
 
@@ -1053,3 +1092,34 @@ and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
 
 See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
 for details.
+
+### Stricter JavaScript security defaults
+
+<small>Introduced in: v3.12.9</small>
+
+Up to v3.12.8, the default access for server-side JavaScript code like Foxx,
+user-defined AQL functions (UDFs), and JavaScript Transactions was to **allow**
+everything. This included reading and writing arbitrary files, accessing
+environment variables, reading startup configuration values, and making outbound
+HTTP requests from within the server process.
+
+From v3.12.9 onward, each of the following _arangod_ startup options now
+defaults to **disallow** access to the respective resource unless configured
+otherwise, as if the given allowlist was set to `'^$'`:
+
+- `--javascript.files-allowlist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
+
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
+
+- `--javascript.environment-variables-denylist`
+- `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Note that file access is exclusively controlled by `--javascript.files-allowlist`
+with no corresponding `--javascript.files-denylist` option.
+

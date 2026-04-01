@@ -96,7 +96,7 @@ logPlainResponse(response);
 
 {{% metrics %}}
 
-## Get usage metrics
+## Get the usage metrics
 
 ```openapi
 paths:
@@ -106,8 +106,9 @@ paths:
       description: |
         Returns detailed shard usage metrics on DB-Servers.
         
-        These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
-        startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+        These metrics can be enabled by setting the
+        [`--server.export-shard-usage-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
+        to `enabled-per-shard` to make DB-Servers collect per-shard
         usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
         usage metrics per shard and per user whenever a shard is accessed.
       parameters:
@@ -126,8 +127,9 @@ paths:
           in: query
           required: false
           description: |
-            Returns the usage metrics of the specified server. If no `serverId` is given,
-            the asked server will reply. This parameter is only meaningful on Coordinators.
+            Returns the usage metrics of the specified server (`PRMR-...`).
+            If no `serverId` is specified, the asked server replies.
+            This parameter is only meaningful on Coordinators.
           schema:
             type: string
       responses:
@@ -150,8 +152,9 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        The `/_admin/metrics` and `/_admin/metrics/v2` return the same metrics
-        since ArangoDB v3.10.0. The latter is deprecated and removed in v4.0.
+        The `GET /_admin/metrics` and `GET /_admin/metrics/v2` endpoints return
+        the same metrics since ArangoDB v3.10.0. The latter is deprecated and
+        removed in v4.0.
         {{</* /warning */>}}
 
         Returns the instance's current metrics in Prometheus format. The

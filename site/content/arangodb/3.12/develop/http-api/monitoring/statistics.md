@@ -18,8 +18,8 @@ paths:
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from
         version 3.8.0 onward and removed in ArangoDB v4.0.
-        Use `/_admin/metrics` instead, which provides the data exposed by this API
-        and a lot more.
+        Use `GET /_admin/metrics` instead, which provides the data exposed by
+        this API and a lot more.
         {{</* /warning */>}}
 
         Returns the statistics information. The returned object contains the
@@ -549,7 +549,7 @@ paths:
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from
         version 3.8.0 onward and removed in ArangoDB v4.0.
-        Use `/_admin/metrics` instead, which provides the data exposed by the
+        Use `GET /_admin/metrics` instead, which provides the data exposed by the
         statistics API and a lot more.
         {{</* /warning */>}}
 

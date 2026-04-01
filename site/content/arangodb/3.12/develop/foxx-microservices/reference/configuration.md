@@ -21,7 +21,7 @@ The parameter definition can have the following properties:
 
 - **description**: `string`
 
-  Human readable description of the parameter.
+  Human-readable description of the parameter.
 
 - **type**: `string` (Default: `"string"`)
 

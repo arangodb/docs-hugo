@@ -53,6 +53,12 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **Emergency console**:\
+  The ArangoDB server process could be started in an interactive command-line
+  mode (JavaScript REPL) with the `--console` option. This was primarily used
+  for debugging purposes in the development of _arangod_.
+  This option and feature have been removed.
+
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
   operating systems has been removed and ArangoDB packages for Windows and macOS
