@@ -633,7 +633,7 @@ Parameters:
   (default: `400000`).
 
 The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
-loading progress via the [Jobs API](#list-jobs). The loading job reports a total
+loading progress via the [Jobs API](#list-all-jobs). The loading job reports a total
 of `2` progress steps: `1` after all vertices have been processed, and `2` when
 all edges are processed and the graph is ready.
 
