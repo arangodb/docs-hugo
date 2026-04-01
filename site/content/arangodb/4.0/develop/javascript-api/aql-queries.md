@@ -25,29 +25,24 @@ queries.properties({slowStreamingQueryThreshold: 1});
 
 ## Currently running queries
 
-We [create a task](tasks.md) that spawns queries, so we have nice output. Since this task
-uses resources, you may want to increase `period` (and not forget to remove it... afterwards):
-
 ```js
 ---
 name: QUERY_02_listQueries
-description: ''
+description: |
+  The example code starts a query in a non-blocking fashion before calling
+  `queries.current()` so that it returns something.
 ---
 ~var queries = require("@arangodb/aql/queries");
-var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
-var tasks = require("@arangodb/tasks");
-tasks.register({
-  id: "mytask-1",
-  name: "this is a sample task to spawn a slow aql query",
-  command: "require('@arangodb').db._query('" + theQuery + "');"
-});
+var theQuery = "FOR sleepLong IN 1..5 LET sleepLonger = SLEEP(1) RETURN sleepLong";
+arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
+~var i = 0;
 ~while (true) {
-~  require("internal").wait(1);
-~  if (queries.current().filter(function(query) {
-~    return query.query === theQuery;
-~  }).length > 0) {
+~  if (queries.current().filter(q => q.query === theQuery).length > 0) {
 ~    break;
 ~  }
+~  i++;
+~  if (i > 20) assert(false); // timeout
+~  internal.sleep(0.25);
 ~}
 queries.current();
 ```
@@ -89,10 +84,18 @@ name: QUERY_05_killQueries
 description: ''
 ---
 ~var queries = require("@arangodb/aql/queries");
-~var tasks = require("@arangodb/tasks");
-~var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
-var runningQueries = queries.current().filter(function(query) {
-  return query.query === theQuery;
-});
+~var theQuery = "FOR sleepLong IN 1..4 LET sleepLonger = SLEEP(1) RETURN sleepLong";
+~arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
+~var i = 0;
+~while (true) {
+~  if (queries.current().filter(q => q.query === theQuery).length > 0) {
+~    break;
+~  }
+~  i++;
+~  if (i > 20) assert(false); // timeout
+~  internal.sleep(0.25);
+~}
+var runningQueries = queries.current().filter(q => q.query === theQuery);
+~assert(runningQueries.length > 0);
 queries.kill(runningQueries[0].id);
 ```

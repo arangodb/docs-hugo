@@ -428,12 +428,6 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
 
-- [**Fault-Tolerant Foxx**](../develop/http-api/foxx.md): The Foxx management
-  internals have been rewritten from the ground up to make sure
-  multi-coordinator cluster setups always keep their services in sync and
-  new Coordinators are fully initialized even when all existing Coordinators
-  are unavailable.
-
 **Enterprise Edition**
 
 - **LDAP integration**: Users and permissions
@@ -491,7 +485,7 @@ Also see [What's New in 3.1](../release-notes/version-3.1/whats-new-in-3-1.md).
 - [**Persistent indexes**](../indexes-and-search/indexing/working-with-indexes/persistent-indexes.md) via RocksDB suitable
   for sorting and range queries.
 
-- [**Foxx 3.0**](../develop/foxx-microservices/_index.md): overhauled JS framework for data-centric
+- **Foxx 3.0**: overhauled JS framework for data-centric
   microservices
 
 - Significantly improved [**Web Interface**](../components/web-interface/_index.md)

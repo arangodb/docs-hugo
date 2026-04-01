@@ -40,7 +40,7 @@ description: ''
 ~addIgnoreCollection("test")
 ~db._drop("test");
 var coll = db._create("test");
-for (i = 0; i < 100; ++i) { db.test.save({ value: i }); }
+for (var i = 0; i < 100; ++i) { db.test.save({ value: i }); }
 var idx = db.test.ensureIndex({ type: "persistent", fields: [ "value" ] });
 var explain = require("@arangodb/aql/explainer").explain;
 explain("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value", {colors:false});

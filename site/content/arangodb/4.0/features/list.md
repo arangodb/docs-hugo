@@ -306,11 +306,6 @@ aliases:
 
 ## Extensibility
 
-- [**Microservice Support with ArangoDB Foxx**](../develop/foxx-microservices/_index.md):
-  Use ArangoDB as an application server and fuse your application and database
-  together for maximal throughput.
-  With fault-tolerant cluster support.
-
 - [**Server-Side Functions**](../aql/user-defined-functions.md):
   You can extend AQL with user-defined functions written in JavaScript.
 
@@ -341,9 +336,7 @@ aliases:
   Built-in user management with password- and token-based authentication.
 
 - **Role-based Access Control**:
-  ArangoDB supports all basic security requirements. By using ArangoDB's Foxx
-  microservice framework users can achieve very high security standards
-  fitting individual needs.
+  ArangoDB supports all basic security requirements. <!-- TODO -->
 
 - [**TLS Encryption**](../components/arangodb-server/options.md#ssl):
   Internal and external communication over encrypted network connections with

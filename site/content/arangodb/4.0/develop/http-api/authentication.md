@@ -10,12 +10,13 @@ description: >-
 Client authentication can be achieved by using the `Authorization` HTTP header
 in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
 
-Authentication is turned on by default for all internal database APIs but
-turned off for custom Foxx apps. To toggle authentication for incoming
-requests to the internal database APIs, use the
+Authentication is enabled for all incoming requests to the HTTP API by default.
+The only exception are endpoints that start with the path `/_open` that never
+require authentication.
+
+You can turn authentication off via the
 [`--server.authentication`](../../components/arangodb-server/options.md#--serverauthentication)
-startup option. This option is turned on by default so authentication is
-required for the database APIs.
+startup option.
 
 {{< security >}}
 Requests using the HTTP `OPTIONS` method are answered by
@@ -25,34 +26,6 @@ requests (see [Cross Origin Resource Sharing requests](general-request-handling.
 The response to an HTTP `OPTIONS` request is generic and doesn't expose any
 private data.
 {{< /security >}}
-
-There is an additional option to control authentication for custom Foxx apps. The
-[`--server.authentication-system-only`](../../components/arangodb-server/options.md#--serverauthentication-system-only)
-startup option controls whether authentication is required only for requests to
-the internal database APIs and the admin interface. It is turned on by default,
-meaning that other APIs (this includes custom Foxx apps) do not require
-authentication.
-
-The default values allow exposing a public custom Foxx API built with ArangoDB
-to the outside world without the need for HTTP authentication, but still
-protecting the usage of the internal database APIs (i.e. `/_api/`, `/_admin/`)
-with HTTP authentication.
-
-If the server is started with the `--server.authentication-system-only`
-option set to `false`, all incoming requests need HTTP authentication
-if the server is configured to require HTTP authentication
-(i.e. `--server.authentication true`). Setting the option to `true`
-makes the server require authentication only for requests to the internal
-database APIs and allows unauthenticated requests to all other URLs.
-
-Here is a short summary:
-
-- `--server.authentication true --server.authentication-system-only true`:
-  This requires authentication for all requests to the internal database
-  APIs but not custom Foxx apps. This is the default setting.
-- `--server.authentication true --server.authentication-system-only false`:
-  This requires authentication for all requests (including custom Foxx apps).
-- `--server.authentication false`: Authentication is disabled for all requests.
 
 Whenever authentication is required and the client has not yet authenticated,
 ArangoDB returns **HTTP 401** (Unauthorized). It also sends the

@@ -73,7 +73,7 @@ name: usingToArray
 description: ''
 ---
 db._create("five")
-for (i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {
   db.five.save({value:i});
 }
 db.five.toArray()
@@ -109,9 +109,9 @@ db._query(aql`RETURN ${somepath}`)
 
 ## Database Wrappers
 
-_arangosh_ provides the `db` object by default, and this object can
-be used for switching to a different database and managing collections inside the
-current database.
+_arangosh_ provides the [`db` object](../../../develop/javascript-api/@arangodb/db-object.md)
+by default, and this object can be used for switching to a different database
+and managing collections inside the current database.
 
 For a list of available methods for the `db` object, type
 
@@ -123,25 +123,42 @@ description: ''
 db._help(); 
 ```
 
-The [`db` object](../../../develop/javascript-api/@arangodb/db-object.md) is available in _arangosh_
-as well as on _arangod_ i.e. if you're using [Foxx](../../../develop/foxx-microservices/_index.md). While its
-interface is persistent between the _arangosh_ and the _arangod_ implementations,
-its underpinning is not. The _arangod_ implementation are JavaScript wrappers
-around ArangoDB's native C++ implementation, whereas the _arangosh_ implementation
-wraps HTTP accesses to ArangoDB's [RESTful API](../../../develop/http-api/_index.md).
+The _arangosh_ implementation of the `db` object wraps HTTP requests
+to ArangoDB's [HTTP API](../../../develop/http-api/_index.md).
+The _arangod_ implementation provides JavaScript wrappers around ArangoDB's
+native C++ implementation and is used by [Foxx](../../../develop/foxx-microservices/_index.md)
+and other server-side JavaScript contexts.
 
-So while this code may produce similar results when executed in _arangosh_ and
-_arangod_, the CPU usage and time required differs since the
-_arangosh_ version performs around 100k HTTP requests, and the
-_arangod_ version directly writes to the database:
+It means that the following code performs around 100k HTTP requests when using
+the _arangosh_ implementation, whereas the _arangod_ implementation writes to the
+database system directly and therefore requires less time and the CPU usage is
+lower. The code basically produces the same results with both:
 
 ```js
-for (i = 0; i < 100000; i++) {
-    db.test.save({ name: { first: "Jan" }, count: i});
+for (var i = 0; i < 100000; i++) {
+  db.test.save({ name: { first: "Jan" }, count: i});
+}
+```
+
+You should avoid making excessive calls like this when using _arangosh_ and
+instead save batches of documents in fewer HTTP requests:
+
+```js
+var batch = [];
+for (var i = 0; i < 100000; i++) {
+  batch.push({ name: { first: "Jan" }, count: i});
+  if (batch.length >= 1000) {
+    db.test.save(batch);
+    batch = [];
+  }
+}
+if (batch.length > 0) {
+  db.test.save(batch);
 }
 ```
 
 ## Using `arangosh` via Unix shebang mechanisms
+
 In Unix operating systems, you can start scripts by specifying the interpreter in the first line of the script.
 This is commonly called `shebang` or `hash bang`. You can also do that with `arangosh`, i.e. create `~/test.js`:
 

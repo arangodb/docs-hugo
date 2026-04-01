@@ -6,6 +6,77 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Foxx removed
+
+The Foxx microservice framework including tasks/queues, the related
+startup options, JavaScript modules, and HTTP API endpoints have been removed.
+The `foxx-cli` tool has been discontinued as well.
+
+Running JavaScript code on the server-side enabled interesting customization
+abilities, but usability and scalability issues limited the field of application.
+It lacked proper debugging capabilities, only implemented a subset of the Node.js
+API, and did not support async code, which made many libraries incompatible.
+The conversion of data types between native code and JavaScript could be slow
+and the possibility of out-of-memory crashes forced Foxx onto Coordinators in
+cluster deployments in order to not put the DB-Servers with your valuable data
+at risk.
+
+The following startup options are now obsolete due to the removal of Foxx:
+
+- `--server.authentication-system-only`
+- `--foxx.allow-install-from-remote`
+- `--foxx.api`
+- `--foxx.enable`
+- `--foxx.force-update-on-startup`
+- `--foxx.queues`
+- `--foxx.queues-poll-interval`
+- `--foxx.store`
+
+You can still specify these startup options without causing a fatal error during
+startup. They are recognized, but they don't have any effect anymore.
+
+The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
+of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed).
+
+The `GET /_admin/status` no longer includes a `coordinator` object with the
+attributes `foxxmaster` and `isFoxxmaster`.
+
+The `@arangodb/foxx` module and the related `@arangodb/locals` module as well as
+`global.fm` have been removed from the JavaScript API.
+
+The `30xx` error codes used by Foxx have been removed.
+
+For new deployments, the following Foxx-related system collections are not
+created anymore:
+
+- `_appbundles`
+- `_apps`
+- `_jobs`
+- `_modules`
+- `_queues`
+- `_routing`
+
+When upgrading existing deployments, these collections are not actively removed
+in case they contain any data that is still relevant to you.
+
+**Alternatives and migration**
+
+You may use Node.js together with the [arangojs driver](../../../../ecosystem/drivers/javascript.md)
+to work with ArangoDB from the outside using JavaScript as your language.
+
+If you upgrade to the [Arango Contextual Data Platform](../../../../contextual-data-platform/_index.md),
+you can run custom services in the data platform with the
+[Container Manager](../../../../platform-suite/container-manager/_index.md)
+You can think of it as a more powerful incarnation of Foxx because it is a
+microservice architecture but with a clear separation of the core database system
+and the surrounding services. It is also not limited to (synchronous) JavaScript
+but you may use a standard Node.js runtime with its entire ecosystem including
+async libraries, or use different programming languages altogether. Moreover, a
+compatibility layer to run existing Foxx services on top of Node.js is available
+to ease the migration to the data platform.
+
+<!-- TODO: See node-foxx docs... -->
+
 ## Emergency console mode removed
 
 The ArangoDB server process could be started in an interactive command-line
@@ -26,6 +97,25 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Upload API removed
+
+The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+It was used for service bundle and file uploads.
+
+### Routing reload API removed
+
+The `POST /_admin/routing/reload` endpoint has been removed due to the removal
+of the Action and Foxx features. It was used to reload the routing information
+from the `_routing` system collection and make Foxx rebuild its local routing
+table on the next request.
+
+### Echo API removed
+
+The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, `DELETE`, and `OPTIONS` HTTP methods have been removed. They returned
+an object with the servers request information, the HTTP request headers, or
+both and were used for debugging purposes.
+
 ### Metrics API v2 endpoint removed
 
 Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
@@ -34,9 +124,20 @@ been removed.
 
 ## JavaScript API
 
+### Foxx-related removals
 
+The `@arangodb/foxx` module and the related `@arangodb/locals` module have been
+removed from the JavaScript API.
+
+Furthermore, the `global.fm` object has been removed. It provided various
+methods for managing Foxx services.
 
 ## Startup options
+
+### `--server.allow-use-database` removed
+
+The `--server.allow-use-database` startup option related to the long-deprecated
+and now removed Action feature has been removed. It was only used internally.
 
 ### `--console` obsolete
 
