@@ -12,7 +12,7 @@
     alias: "stable"
     deprecated: false
     inDevelopment: false
-    allowedAPIVersions: [v0, v1, experimental]
+    allowedAPIVersions: [v0, experimental] # TODO: Add "v1" again for 3.12.10
 
   - name: "3.11"
     version: "3.11.14"
