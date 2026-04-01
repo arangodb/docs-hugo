@@ -18,7 +18,11 @@ description: >-
 
 ### Endpoint return value changes
 
+#### Timestamp removed from cluster health API
 
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
 
 ### Endpoints added
 

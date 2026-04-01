@@ -326,7 +326,7 @@ paths:
                       description: |
                         The replication factor used when initially creating collections for this graph.
                         Can be set to `"satellite"` to create a SatelliteGraph, which then ignores
-                        `numberOfShards`, `minReplicationFactor`, and `writeConcern`.
+                        `numberOfShards` and `writeConcern`.
 
                         Default: The `replicationFactor` defined by the database.
                       type: integer

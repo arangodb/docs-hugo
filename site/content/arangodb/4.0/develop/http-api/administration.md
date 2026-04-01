@@ -528,10 +528,6 @@ paths:
                     description: |
                       The server version as a string.
                     type: string
-                  mode:
-                    description: |
-                      Either `"server"` or `"console"`. **Deprecated**, use `operationMode` instead.
-                    type: string
                   operationMode:
                     description: |
                       Either `"server"` or `"console"`.
@@ -560,7 +556,6 @@ paths:
                     required:
                       - progress
                       - role
-                      - writeOpsEnabled
                       - readOnly
                       - maintenance
                     properties:
@@ -604,10 +599,6 @@ paths:
                         description: |
                           Either `"SINGLE"`, `"COORDINATOR"`, `"PRIMARY"` (DB-Server), or `"AGENT"`.
                         type: string
-                      writeOpsEnabled:
-                        description: |
-                          Whether writes are enabled. **Deprecated**, use `readOnly` instead.
-                        type: boolean
                       readOnly:
                         description: |
                           Whether writes are disabled.

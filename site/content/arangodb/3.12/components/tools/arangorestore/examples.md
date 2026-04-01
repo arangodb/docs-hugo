@@ -106,8 +106,8 @@ The following parameters are available to adjust this behavior:
 - `--create-collection <bool>`: set to `true` to create collections in the target
   database if they don't yet exist. If the target database already contains a 
   collection with the same name, then it is dropped and recreated with the
-  same properties as in the dump if the `overwrite` option is also set. 
-  If the `overwrite` option is not set, an existing collection is used as is,
+  same properties as in the dump if the `overwrite` option is enabled.
+  If the `overwrite` option is set to `false`, an existing collection is used as is,
   and its properties are not updated nor is its data discarded before restoring.
   If `--create-collection` is set to `false`, then _arangorestore_ does not make any
   attempts to create the collection or modify its properties. Data is restored

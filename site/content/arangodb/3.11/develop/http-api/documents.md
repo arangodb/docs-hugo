@@ -452,7 +452,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -1951,7 +1951,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
