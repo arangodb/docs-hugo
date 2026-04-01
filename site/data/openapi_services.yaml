@@ -4,7 +4,7 @@
 
 arangodb:
   title: ArangoDB Core API
-  summary: The RESTful HTTP API of the ArangoDB Core Database System
+  summary: The HTTP API of the ArangoDB graph database system
   contact:
     name: ArangoDB Inc.
     url: https://arango.ai
