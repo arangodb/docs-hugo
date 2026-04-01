@@ -9,7 +9,7 @@ description: >-
 
 ## Workflow
 
-The following lists outlines how you can use Graph Analytics Engines (GAEs).
+The following list outlines how you can use Graph Analytics Engines (GAEs).
 How to perform the steps is detailed in the subsequent sections.
 
 {{< tabs "platforms" >}}
@@ -304,7 +304,7 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" \
 
 {{< endpoint "GET" "https://<APPLICATION_ENDPOINT>:8829/graph-analytics/api/graphanalytics/v1/engines" >}}
 
-List all deployed GAEs of a AMP deployment.
+List all deployed GAEs of an AMP deployment.
 
 The engine IDs are in the `id` attributes.
 
@@ -401,13 +401,13 @@ Where:
 **Example:**
 
 ```
-https://123456abcdef.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/pagerank
+https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/pagerank
 ```
 For convenience, you can store the Engine API base URL in a variable:
 
 ```bash
 # Your AMP deployment endpoint (without port)
-APPLICATION_ENDPOINT="123456abcdef.arangodb.cloud"
+APPLICATION_ENDPOINT="abcdef123456.arangodb.cloud"
 
 # Engine ID from when you deployed the engine
 ENGINE_ID="zYxWvU9876"
@@ -489,7 +489,7 @@ assume Bash as the shell and that the `curl` and `jq` commands are available.
 An example of authenticating a request using cURL and a session token:
 
 ```bash
-APPLICATION_ENDPOINT="123456abcdef.arangodb.cloud"
+APPLICATION_ENDPOINT="abcdef123456.arangodb.cloud"
 
 # Engine ID from when you deployed the engine
 ENGINE_ID="zYxWvU9876"
@@ -641,11 +641,16 @@ for example, when using AQL traversals.
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
   -d '{
     "database": "_system",
-    "vertex_attributes": [],
-    "edge_attributes": [],
+    "vertex_attributes": [
+      {"name": "name", "data_type": "String"},
+      {"name": "age", "data_type": "U64"}
+    ],
+    "edge_attributes": [
+      {"name": "weight", "data_type": "F64"}
+    ],
     "phases": [
-      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id}]}", "bind_vars": {"@V": "myVertices"}}]},
-      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to}]}", "bind_vars": {"@E": "myEdges"}}]}
+      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id, name: v.name, age: v.age}]}", "bind_vars": {"@V": "myVertices"}}]},
+      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to, weight: e.weight}]}", "bind_vars": {"@E": "myEdges"}}]}
     ]
   }' \
   "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
@@ -663,11 +668,16 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" -XPOST \
   -d '{
     "database": "_system",
-    "vertex_attributes": [],
-    "edge_attributes": [],
+    "vertex_attributes": [
+      {"name": "name", "data_type": "String"},
+      {"name": "age", "data_type": "U64"}
+    ],
+    "edge_attributes": [
+      {"name": "weight", "data_type": "F64"}
+    ],
     "phases": [
-      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id}]}", "bind_vars": {"@V": "myVertices"}}]},
-      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to}]}", "bind_vars": {"@E": "myEdges"}}]}
+      {"queries": [{"query": "FOR v IN @@V RETURN {vertices: [{_id: v._id, name: v.name, age: v.age}]}", "bind_vars": {"@V": "myVertices"}}]},
+      {"queries": [{"query": "FOR e IN @@E RETURN {edges: [{_from: e._from, _to: e._to, weight: e.weight}]}", "bind_vars": {"@E": "myEdges"}}]}
     ]
   }' \
   "https://abcdef123456.arangodb.cloud:8829/graph-analytics/engines/zYxWvU9876/v1/loaddataaql"
@@ -703,10 +713,15 @@ all edges are processed and the graph is ready.
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
   -d '{
     "database": "_system",
-    "vertex_attributes": [],
-    "edge_attributes": [],
+    "vertex_attributes": [
+      {"name": "name", "data_type": "String"},
+      {"name": "age", "data_type": "U64"}
+    ],
+    "edge_attributes": [
+      {"name": "weight", "data_type": "F64"}
+    ],
     "phases": [
-      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" E RETURN {vertices: [v], edges: [e]}", "bind_vars": {}}]}
+      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" @@E RETURN {vertices: [v], edges: e ? [e] : []}", "bind_vars": {"@E": "E"}}]}
     ]
   }' \
   "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
