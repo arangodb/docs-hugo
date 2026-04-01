@@ -573,9 +573,13 @@ function handleDocumentClick(event) {
     const closest = (selector) => target.closest(selector);
 
     if (target.classList.contains("expand-nav")) return;
+
+    // Allow browser default for Ctrl/Cmd+click (new tab) or Shift+click (new window)
+    const openInNew = event.ctrlKey || event.metaKey || event.shiftKey;
   
     // Menu link clicks
     if (target.classList.contains("link-nav")) {
+        if (openInNew) return;
         event.preventDefault();
         target.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
@@ -596,6 +600,7 @@ function handleDocumentClick(event) {
   
     // Internal link clicks (.link)
     if (target.classList.contains('link') && !target.getAttribute("target")) {
+        if (openInNew) return;
         event.preventDefault();
         let href = target.getAttribute('href');
         if (href) {
@@ -606,6 +611,7 @@ function handleDocumentClick(event) {
   
     // Card link clicks
     if (closest('.card-link')) {
+        if (openInNew) return;
         event.preventDefault();
         const href = target.closest('.card-link').getAttribute('href');
         if (href) {
@@ -682,6 +688,7 @@ function handleDocumentClick(event) {
   
     // Homepage clicks
     if (target.classList.contains('home-link')) {
+        if (openInNew) return;
         event.preventDefault();
         updateHistory("/");
         return;

@@ -18,6 +18,11 @@ creates a structured knowledge graph. This graph is then imported into your
 ArangoDB database, where you can query and analyze the relationships between
 different concepts in your document with the Retriever service.
 
+The service supports two operational modes:
+
+- **Full GraphRAG** (default): Extracts entities, relationships, and community structures to build a complete knowledge graph with rich semantic connections.
+- **Vector RAG**: Performs faster, simpler processing using only document chunks and embeddings for semantic search.
+
 {{< tip >}}
 You can also use the GraphRAG Importer service via the
 [Contextual Data Platform web interface](../../graphrag/web-interface.md).

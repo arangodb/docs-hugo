@@ -1,112 +1,98 @@
 ---
-title: How to deploy a new service via the Web Interface
+title: Deploy via Web Interface
 menuTitle: Web Interface
-weight: 5
+weight: 20
 description: >-
-  Complete guide to deploying, monitoring, and managing services through the
-  Container Manager web interface
+  Deploy and manage services through the Container Manager web interface
 ---
 
-The Container Manager web interface provides a unified view for deploying new
-services and monitoring existing ones. This guide covers everything you need to
-know to use the web interface effectively, from your first deployment to managing
-production services.
+The Container Manager web interface provides a visual way to deploy and manage
+services. You can deploy services using a code package with drag-and-drop upload
+or by providing a Docker image URL.
 
-## How to Access the Container Manager
+## Access the Container Manager
 
-1. Log in to the Arango Data Platform web interface.
-2. Click **Container Manager** in the main navigation sidebar.
-3. The Container Manager opens with two main sections:
-   - **Deploy new service** (left panel): For uploading and deploying new services.
-   - **Running services** (right panel): For monitoring and managing existing services.
+1. Log in to the Arango Contextual Data Platform web interface.
+2. Go to **Control Panel** in the main navigation sidebar and then
+   click **Container Manager**.
+3. The Container Manager opens with two tabs:
+   - **Packages**: For deploying services from code packages and managing
+     uploaded packages.
+   - **Containers**: For deploying services from Docker images and managing
+     running containers.
 
-## Deploy a New Service
+Each tab has a **Deploy new Service** panel on the left and a list of
+existing services on the right.
 
-### Prepare Your Service Package
+## Deploy Service from a Code Package
 
-Package your application code as a `.tar.gz` archive containing:
+{{< info >}}
+Before deploying, you need a `.tar.gz` package with your application code.
+See [Package Your Code](package-code/) for instructions.
+{{< /info >}}
 
-- Your application code and entry point.
-- A configuration file specifying dependencies (e.g., `requirements.txt` for
-  Python, `package.json` for Node.js).
-- Any additional files your service needs to run.
+1. Select the **Packages** tab.
+2. In the **Deploy new Service** panel, drag and drop your `.tar.gz` file
+   into the upload area, or click to browse and select your file.
+3. Enter a **File name** for your service
+   (e.g., `ml-prediction-service`).
+4. Specify a **Version** using semantic versioning (e.g., `1.0.0`, `2.1.3`).
+   This allows you to maintain multiple versions of the same service.
+5. Choose the **Base Image** from the dropdown:
+   - `py13base`: Python 3.13 base runtime
+   - `py13torch`: Python 3.13 with PyTorch
+   - `py13cugraph`: Python 3.13 with cuGraph
+6. Define the **Service URL Path** where your service will be accessible
+   (e.g., `my-service`).
+7. Check **Make this a global URL service** to make the service accessible
+   globally across all databases. Leave it unchecked for database-specific
+   services.
+8. Click **Deploy Service**. The platform uploads your package, provisions
+   the resources, and starts your service in the Kubernetes cluster.
 
-### Upload and Configure
+### Update a Code Package Service
 
-1. In the **Deploy new service** panel, upload your service package:
-   - Drag and drop your `.tar.gz` file into the **Service Package** area, or
-   - Click to browse and select your file.
-2. Enter a **Service Name** (e.g., `ml-prediction-service`, `express-api-gateway`).
-3. Specify a **Version** for your service. Use semantic versioning
-  (e.g., `1.0.0`, `2.1.3`) to easily maintain multiple versions of the same service.
-4. Define the **Service URL Path**. This is the URL path where your service will
-  be accessible, for example `/_services/_db/_system/ml-prediction-service-2`.
-5. Optionally, check **Make this a global URL service**. When this option is
-  enabled, the service is accessible globally across all databases.
-6. Select a **Runtime Container** that matches your application's requirements:
-     - **Python 3.11**
-     - **Python 3.11 (CUDA)**
-     - **Python 3.12**
-     - **Python 3.12 (CUDA)**
-     - **Node.js 20**
-     - **Node.js 22**
-7. Choose a **Machine Class**. This determines the computational resources allocated
-  to your service:
-     - **Small**: 2 CPU, 4GB RAM
-     - **Medium**: 4 CPU, 8GB RAM
-     - **Large**: 8 CPU, 16GB RAM
-     - **Small GPU**: 4 CPU, 8GB RAM, 4GB GPU
-     - **Large GPU**: 16 CPU, 16GB RAM, 8GB GPU
-8. Click **Deploy Service** to deploy your service.
+To deploy a new version of an existing service:
 
-The platform uploads your package, provisions the resources, and starts your
-service in the Kubernetes cluster.
-
-## Running Services
-
-The **Running services** section displays all deployed services with real-time
-status information. You can filter services by their current status or by runtime
-and machine class.
-
-### Service Versions
-
-Deployed services can have multiple versions. Click to expand and see all
-deployed versions with their respective details and timestamps.
-
-## Update a Service
-
-1. Follow the steps in [Deploy a New Service](#deploy-a-new-service).
-2. Use the same **Service Name** as the existing service.
+1. Follow the steps in [Deploy Service from a Code Package](#deploy-service-from-a-code-package).
+2. Use the same **File name** as the existing service.
 3. Provide a new **Version** number (e.g., increment from `1.0.0` to `1.1.0`).
 4. Upload the updated service package.
 5. Click **Deploy Service**.
 
-The new version is deployed alongside the existing version.
+The new version is deployed alongside the existing version. You can run
+multiple versions simultaneously. Additionally, you can run multiple instances
+of the same version, as long as each instance has a different `app_instance_name`
+per database. This allows you to deploy the same service version to different
+databases or create multiple instances within the same database context with
+unique identifiers.
+
+## Deploy Service from a Docker Image
+
+1. Select the **Containers** tab.
+2. In the **Deploy new Service** panel, enter the **Image URL** for your
+   Docker image (e.g., `docker.io/org/image:tag`).
+3. Define the **Service URL Path** where your service will be accessible
+   (e.g., `my-service`).
+4. Check **Make this a global URL service** to make the service accessible
+   globally across all databases. Leave it unchecked for database-specific
+   services.
+5. Click **Deploy Container**. The platform pulls your Docker image,
+   provisions the resources, and starts your service in the Kubernetes cluster.
+
+Your Docker image must expose an HTTP server (default port: `8000`) and handle
+requests at the root path (`/`).
 
 ## Stop a Service
 
-1. Locate the running service in the **Running services** section.
+To stop a running service:
+
+1. Locate the service in the **Running** filter of the relevant tab
+   (**Packages** or **Containers**).
 2. Click the service card to open the detail view.
 3. Click **Stop Service**.
 4. Confirm the action.
 
-The service transitions to the **Stopped** state and stops consuming resources,
-but remains available for restart.
+## API Alternative
 
-## Restart a Service
-
-To restart a stopped service:
-
-1. Navigate to the **Stopped** tab in the Running services panel.
-2. Click the service you want to restart.
-3. Click **Start Service**.
-
-The service restarts with the same configuration.
-
-## Delete a Service
-
-To permanently remove a service:
-
-1. Locate the service in the **Running services** panel.
-2. Click the delete button ({{< icon "delete" >}}) on the service card.
-3. Confirm the deletion.
+For programmatic deployment and automation, see [Deploy via API](deploy-api/).

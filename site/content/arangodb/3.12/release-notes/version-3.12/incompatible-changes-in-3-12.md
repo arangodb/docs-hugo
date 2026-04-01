@@ -22,6 +22,15 @@ only internal business purposes.
 
 For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
 
+## Downgrading vector indexes
+
+ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
+replication. You can upgrade normally, but any vector indexes created with
+v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
+
+If you need to downgrade, drop the vector indexes first and recreate them after
+the downgrade.
+
 ## Upgrading 3.12 Kubernetes deployments
 
 To avoid potential issues when upgrading Kubernetes-managed ArangoDB deployments
@@ -1231,6 +1240,36 @@ It was supposed to let you configure the wait timeout in milliseconds for
 locking a document in a transaction. However, the lock timeout is actually set
 to differnet values internally, depending on what is a meaningful timeout for
 a given case.
+
+### Stricter JavaScript security defaults
+
+<small>Introduced in: v3.12.9</small>
+
+Up to v3.12.8, the default access for server-side JavaScript code like Foxx,
+user-defined AQL functions (UDFs), and JavaScript Transactions was to **allow**
+everything. This included reading and writing arbitrary files, accessing
+environment variables, reading startup configuration values, and making outbound
+HTTP requests from within the server process.
+
+From v3.12.9 onward, each of the following _arangod_ startup options now
+defaults to **disallow** access to the respective resource unless configured
+otherwise, as if the given allowlist was set to `'^$'`:
+
+- `--javascript.files-allowlist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
+
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
+
+- `--javascript.environment-variables-denylist`
+- `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Note that file access is exclusively controlled by `--javascript.files-allowlist`
+with no corresponding `--javascript.files-denylist` option.
 
 ## Client tools
 

@@ -361,7 +361,8 @@ accordance with the number of available CPU cores.
 The `parallelism` option should be considered a hint. Not all search queries are
 eligible. Queries also don't wait for the specified number of threads to be
 available. They start immediately even if only single-threaded and may acquire
-more threads later.
+more threads later. The actually achieved parallelism is reported by the
+`searchParallelism` cursor statistic.
 
 ```aql
 FOR doc IN restaurantsView

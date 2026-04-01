@@ -372,8 +372,8 @@ Inner shortcode
 Tags let you display badges, usually below a headline.
 
 This is mainly used for pointing out if a feature is only available in the
-AI Suite, the Data Platform, the Arango Managed Platform (AMP), or multiple
-of them. See [Environment remarks](#environment-remarks) for details.
+Agentic AI Suite, the Contextual Data Platform, the Arango Managed Platform (AMP),
+or multiple of them. See [Environment remarks](#environment-remarks) for details.
 
 It is also used for [Edition remarks](#edition-remarks) in content before
 version 3.12.5.
@@ -394,7 +394,7 @@ Start `arangod` with the startup option `--log.level startup=trace`.
 {{< tab "Configuration file" >}}
 Include the following startup option setting in your `arangod.conf`:
 
-```conf
+```cfg
 [log]
 level = startup=trace
 ```
@@ -601,6 +601,7 @@ The following shortcodes also exist but are rarely used:
   or after the language, and use the following languages in favor of the ones in
   parentheses for consistency:
 
+  - `` ```cfg `` (instead of `` ```conf `` or `` ```ini ``)
   - `` ```py `` (instead of `` ```python ``)
   - `` ```yaml `` (instead of `` ```yml ``)
   - `` ```sh `` (instead of `` ```shell ``)
@@ -621,9 +622,9 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Data Platform_ and _Arango Contextual Data Platform_, but not
-     ~~Arango AI Services Data Platform~~, ~~Arango AI Suite Data Platform~~,
-    or ~~Arango AI Data Platform~~
+  - _Arango Contextual Data Platform_, but not
+     ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+     ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
@@ -732,7 +733,7 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Data Platform, Contextual Data Platform,
+Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
 Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
 because they are in dedicated parts of the documentation. However, if there are
 subsections with different procedures, each can be tagged accordingly.
@@ -741,6 +742,18 @@ In the Contextual Data Platform only:
 
 ```markdown
 {{< tag "Contextual Data Platform" >}}
+```
+
+In the Platform Suite of the Contextual Data Platform:
+
+```markdown
+{{< tag "Platform Suite" >}}
+```
+
+In the Agentic AI Suite of the Contextual Data Platform only:
+
+```markdown
+{{< tag "Agentic AI Suite" >}}
 ```
 
 In the Arango Managed Platform (AMP) only:

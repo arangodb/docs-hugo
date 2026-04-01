@@ -39,11 +39,11 @@ system before the setup.
   download.
   
   A **platform package** is a zipped file that contains manifests and container
-  images of various services for installing the Data Platform. You can import
+  images of various services for installing the Contextual Data Platform. You can import
   the platform package into your container registry from where Kubernetes can
   pull the images.
 
-  A Data Platform **package configuration** is a YAML file that defines which
+  A Contextual Data Platform **package configuration** is a YAML file that defines which
   services to install and their configurations. You can use it to create a
   platform package yourself by exporting from Arango's container registry.
 
@@ -55,7 +55,7 @@ system before the setup.
   You may need to click **Show all # assets** to reveal all files.
   The former is the operator for x86-64 CPUs and the latter for 64-bit ARM chips.
 
-- Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
+- Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases>.
   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
   architecture, for example:
@@ -197,7 +197,7 @@ Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arang
 (`kube-arangodb`) from the downloaded `.tgz` file with Helm.
 
 This operator is the core component that manages ArangoDB
-deployments and the Data Platform. It watches for custom resources and creates
+deployments and the Contextual Data Platform. It watches for custom resources and creates
 the necessary Kubernetes resources.
 
 Make sure set the the options as shown below to enable the gateway feature and
@@ -544,7 +544,7 @@ NAME                 TYPE     DATA   AGE
 arango-license-key   Opaque   2      10s
 ```
 
-## Step 9: Create a Data Platform package
+## Step 9: Create a Contextual Data Platform package
 
 {{< tag "Internet-connected system" >}}
 
@@ -583,7 +583,7 @@ You need both the package configuration file (`platform.yaml`) and the zipped
 package (`platform.zip`) on the air-gapped system.
 -->
 
-## Step 10: Import the Data Platform package
+## Step 10: Import the Contextual Data Platform package
 
 Load the manifests and container images stored in the zipped package into your
 container registry using the Platform CLI tool.
@@ -608,14 +608,14 @@ specify the following option in addition:
   --registry.docker.insecure <YOUR_REGISTRY_ADDRESS:5000>
 ```
 
-## Step 11: Install the Data Platform package
+## Step 11: Install the Contextual Data Platform package
 
 {{< tag "Air-gapped system" >}}
 
 Install the platform package using the Platform CLI tool.
 
 The package installation creates and enables various services, including
-the unified web interface of the Data Platform.
+the unified web interface of the Contextual Data Platform.
 
 The platform name (`deployment-example`) needs to match the name as specified in
 the `ArangoDeployment` configuration. Substitute  `./platform.imported.yaml` with the
@@ -637,7 +637,7 @@ Features like MLflow and GraphML require an additional storage system to save
 model training data, for instance.
 
 The following example shows how to set up a local MinIO and integrate it with
-the Arango Data Platform, but you can also use a remote object storage like S3.
+the Arango Contextual Data Platform, but you can also use a remote object storage like S3.
 For the supported storage systems, see the
 [`kube-arangodb` documentation](https://arangodb.github.io/kube-arangodb/docs/platform/storage.html).
 
@@ -763,7 +763,7 @@ Set up the MinIO service by applying the configuration file:
 kubectl apply -f ./minio.yaml
 ```
 
-Create another file to configure the storage for the Data Platform and call the
+Create another file to configure the storage for the Contextual Data Platform and call the
 file e.g. `platform-storage.yaml`. Note that the name of the `ArangoPlatformStorage`
 must be the same as for the `ArangoDeployment`:
 
@@ -782,7 +782,7 @@ spec:
       endpoint: http://minio.minio.svc.cluster.local:9000
 ```
 
-Integrate the object storage with the Data Platform by applying the file:
+Integrate the object storage with the Contextual Data Platform by applying the file:
 
 ```sh
 kubectl apply -f ./platform-storage.yaml

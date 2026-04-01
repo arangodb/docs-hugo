@@ -311,8 +311,6 @@ in ArangoDB 3.10. The following startup options are available for the configurat
 memory-mapped files: `--pregel.memory-mapped-files` and `--pregel.memory-mapped-files-location-type`.
 {{< /info >}}
 
-For more information on the new options, please refer to [ArangoDB Server Pregel Options](../../components/arangodb-server/options.md#pregel).
-
 ## HTTP RESTful API
 
 ### Validation of collections in named graphs

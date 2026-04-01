@@ -11,7 +11,7 @@ description: >-
 You receive a package configuration file and license credentials from the
 Arango team.
 
-The Data Platform **package configuration** is a YAML file that defines which
+The Contextual Data Platform **package configuration** is a YAML file that defines which
 services to install and their configurations.
 
 The **license credentials** are composed of a client ID and client secret that
@@ -82,7 +82,7 @@ arango-license-key   Opaque   2      10s
 
 Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`) with Helm. It is the core component that manages ArangoDB
-deployments and the Data Platform. It watches for custom resources and creates
+deployments and the Contextual Data Platform. It watches for custom resources and creates
 the necessary Kubernetes resources.
 
 You can find the latest release on GitHub:
@@ -223,9 +223,9 @@ eventually see pods with the following names with a status of `Running`:
 - `deployment-example-prmr-*` (3 DB-Servers)
 - `deployment-example-gway-*` (1 Gateway)
 
-## Step 6: Get the Data Platform CLI tool
+## Step 6: Get the Contextual Data Platform CLI tool
 
-Download the Arango Data Platform CLI tool `arangodb_operator_platform` from
+Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
 <https://github.com/arangodb/kube-arangodb/releases>.
 It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
 architecture (e.g. `arangodb_operator_platform_linux_amd64`).
@@ -237,13 +237,13 @@ the `PATH` environment variable to make it available as a command in the system.
 The Platform CLI tool simplifies the further setup and later management of
 the Platform's Kubernetes services.
 
-## Step 7: Install the Data Platform package
+## Step 7: Install the Contextual Data Platform package
 
 Install the package using the package configuration you received from the
 Arango team (`platform.yaml`).
 
 The package installation creates and enables various services, including
-the unified web interface of the Data Platform.
+the unified web interface of the Contextual Data Platform.
 
 Substitute `<license-client-id>` and `<license-client-secret>`
 with the actual license credentials and `./platform.yaml` with the path to the
@@ -267,7 +267,7 @@ Features like MLflow and GraphML require an additional storage system to save
 model training data, for instance.
 
 The following example shows how to set up a local MinIO and integrate it with
-the Arango Data Platform, but you can also use a remote object storage like S3.
+the Arango Contextual Data Platform, but you can also use a remote object storage like S3.
 For the supported storage systems, see the
 [`kube-arangodb` documentation](https://arangodb.github.io/kube-arangodb/docs/platform/storage.html).
 
@@ -393,7 +393,7 @@ Set up the MinIO service by applying the configuration file:
 kubectl apply -f ./minio.yaml
 ```
 
-Create another file to configure the storage for the Data Platform and call the
+Create another file to configure the storage for the Contextual Data Platform and call the
 file e.g. `platform-storage.yaml`. Note that the name of the `ArangoPlatformStorage`
 must be the same as for the `ArangoDeployment`:
 
@@ -412,7 +412,7 @@ spec:
       endpoint: http://minio.minio.svc.cluster.local:9000
 ```
 
-Integrate the object storage with the Data Platform by applying the file:
+Integrate the object storage with the Contextual Data Platform by applying the file:
 
 ```sh
 kubectl apply -f ./platform-storage.yaml

@@ -829,12 +829,14 @@ paths:
                       foxxmaster:
                         description: |
                           The server ID of the Coordinator that is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
                       isFoxxmaster:
                         description: |
                           Whether the queried Coordinator is the Foxx master.
+                          **Deprecated**
                         type: array
                         items:
                           type: string
@@ -916,6 +918,30 @@ paths:
             queue exceeds the configured high-water mark (adjustable via startup option
             `--server.unavailability-queue-fill-grade`), which by default is set to 75 % of
             the maximum queue length.
+      tags:
+        - Administration
+```
+
+### Get the required database version (deprecated)
+
+```openapi
+paths:
+  /_admin/database/target-version:
+    get:
+      operationId: getDatabaseVersion
+      deprecated: true
+      description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and should no longer be used.
+        It is removed in ArangoDB v4.0. Use `GET /_api/version` instead.
+        {{</* /warning */>}}
+
+        Returns the database version that this server requires.
+        The version is returned in the `version` attribute of the result.
+      responses:
+        '200':
+          description: |
+            Is returned in all cases.
       tags:
         - Administration
 ```
@@ -1351,8 +1377,8 @@ paths:
 
         This endpoint is available regardless of the
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
-        setting, so that the Arango Data Platform web interface for instance can always
-        access the public options.
+        setting, so that the Arango Contextual Data Platform web interface for
+        instance can always access the public options.
       parameters:
         - name: database-name
           in: path
@@ -2776,7 +2802,13 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: reloadRouting
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The Action and Foxx microservice features, including this endpoint for
+        route reloading, are deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Reloads the routing information from the `_routing` system collection if it
         exists, and makes Foxx rebuild its local routing table on the next request.
       parameters:
@@ -2805,7 +2837,13 @@ paths:
   /_db/{database-name}/_admin/echo:
     post:
       operationId: echoRequest
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The Action feature, including this debug endpoint, is deprecated and
+        removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         The call returns an object with the servers request information
       requestBody:
         content:
@@ -2986,7 +3024,12 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Executes the JavaScript code in the body on the server as the body
         of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type
@@ -3058,6 +3101,7 @@ paths:
   /_db/_system/_api/endpoint:
     get:
       operationId: listEndpoints
+      deprecated: true
       description: |
         {{</* warning */>}}
         This route should no longer be used.

@@ -6,6 +6,7 @@ description: >-
   arangojs is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
 aliases:
+  - ../../arangodb/3.11/develop/drivers/javascript
   - ../../arangodb/3.12/develop/drivers/javascript
   - ../../arangodb/stable/develop/drivers/javascript
   - ../../arangodb/4.0/develop/drivers/javascript

@@ -7,9 +7,12 @@ description: >-
   processes are currently ongoing in the database system
 ---
 The activities API lets you observe which high-level processes are currently
-running on the server, such as HTTP request handlers, AQL queries, and index
-creation. Each activity has a type, an optional parent to indicate a dependency,
-and type-specific metadata. Not all server activity is necessarily reported.
+running on the server, such as HTTP request handlers, AQL queries, transactions,
+and index creations.
+
+Each activity has a type, creation time, an optional parent to indicate a
+dependency, and type-specific data. Not all server activity is necessarily
+reported.
 
 ## Get the activities (experimental)
 
@@ -18,7 +21,7 @@ and type-specific metadata. Not all server activity is necessarily reported.
 apiVersions: [experimental]
 ---
 paths:
-  /_db/{database-name}/_admin/activities:
+  /_arango/experimental/_db/{database-name}/_admin/activities:
     get:
       operationId: getActivities
       description: |
@@ -27,10 +30,10 @@ paths:
         {{</* /warning */>}}
 
         Returns the list of activities currently in progress on the server.
-        Each activity has an identifier, a type (e.g. `RestHandler`, `AQLQuery`),
-        an optional parent reference, and a `metadata` object. The structure of
-        `metadata` depends on the activity type and may be extended in future
-        versions.
+        Each activity has an identifier, a type (e.g. `RestHandler`, `AqlQuery`,
+        `TransactionActivity`), a creation time, an optional parent reference,
+        and a `data` object. The structure of `data` depends on the activity type
+        and may be extended in future versions.
 
         The permissions required to use the endpoint depend on the
         [`--activities.only-superuser-enabled` startup option](../../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled).
@@ -69,33 +72,30 @@ paths:
                       required:
                         - id
                         - type
-                        - parent
-                        - metadata
+                        - created
+                        - data
                       properties:
                         id:
                           description: |
-                            Unique identifier of the activity (opaque string).
-                          type: string
-                          example: "0x7ec9c067a7c0"
+                            Unique identifier of the activity.
+                          type: integer
+                          example: 370
                         type:
                           description: |
                             The kind of activity (e.g. `RestHandler`, `AQLQuery`).
                           type: string
                           example: "RestHandler"
+                        created:
+                          description: |
+                            The start time of the activity (in ISO 8601 format).
+                          type: string
+                          format: date-time
                         parent:
                           description: |
-                            The parent activity, if any. Use `id` to correlate
-                            with another entry in the list. The value `"0x0"` means no parent.
-                          type: object
-                          required:
-                            - id
-                          properties:
-                            id:
-                              description: |
-                                Identifier of the parent activity.
-                              type: string
-                              example: "0x0"
-                        metadata:
+                            The `id` of the parent activity, if any.
+                          type: integer
+                          example: 370
+                        data:
                           description: |
                             Type-specific details for this activity. The shape of
                             this object depends on the activity type and is
@@ -220,41 +220,41 @@ curl --header 'accept: application/json' --dump - http://localhost:8529/_arango/
 ```
 
 {{< details summary="Show output" >}}
-```bash
+```json
 {
   "activities": [
     {
-      "id": "0x7ec9c067a7c0",
+      "id": 372,
       "type": "RestHandler",
-      "parent": {
-        "id": "0x0"
-      },
-      "metadata": {
+      "created": "2026-03-26T15:43:56Z",
+      "data": {
         "method": "GET",
         "url": "/_admin/activities",
         "handler": "ActivityRegistryRestHandler"
       }
     },
     {
-      "id": "0x7ec9c067a040",
-      "type": "RestHandler",
-      "parent": {
-        "id": "0x0"
-      },
-      "metadata": {
-        "method": "POST",
-        "url": "/_api/cursor",
-        "handler": "RestCursorHandler"
+      "id": 371,
+      "type": "AqlQuery",
+      "created": "2026-03-26T15:43:54Z",
+      "parent": 370,
+      "data": {
+        "queryId": 0,
+        "startTime": 20919.354783951,
+        "database": "_system",
+        "user": "",
+        "queryString": "RETURN SLEEP(@seconds)",
+        ...
       }
     },
     {
-      "id": "0x7ec9c022f3c0",
-      "type": "AQLQuery",
-      "parent": {
-        "id": "0x7ec9c067a040"
-      },
-      "metadata": {
-        "query": "RETURN SLEEP(@seconds)"
+      "id": 370,
+      "type": "RestHandler",
+      "created": "2026-03-26T15:43:54Z",
+      "data": {
+        "method": "POST",
+        "url": "/_api/cursor",
+        "handler": "RestCursorHandler"
       }
     }
   ]
