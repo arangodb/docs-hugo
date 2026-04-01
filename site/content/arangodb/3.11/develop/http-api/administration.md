@@ -628,7 +628,6 @@ paths:
         - Administration
 ```
 
-
 ### Get the required database version (deprecated)
 
 ```openapi
@@ -652,7 +651,6 @@ paths:
       tags:
         - Administration
 ```
-
 
 ### Get information about the deployment
 

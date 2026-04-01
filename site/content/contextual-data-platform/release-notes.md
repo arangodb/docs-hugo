@@ -13,6 +13,15 @@ Platform Suite and the Agentic AI Suite.
 
 The minimum required ArangoDB version is Enterprise Edition v4.0.0.
 
+### Ada
+
+{{< tag "Agentic AI Suite" >}}
+
+[Ada](../agentic-ai-suite/ada.md) is a new AI digital assistant integrated into the Arango
+Contextual Data Platform. It lets you interact with your database using natural language,
+generate and execute AQL queries, explore collections and data structures, and save reusable
+query artifacts through a conversational chat interface.
+
 ### Dashboard
 
 {{< tag "Platform Suite" >}}
