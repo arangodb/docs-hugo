@@ -40,7 +40,7 @@ paths:
                   type: string
                 type:
                   description: |
-                    The type of the View. Must be equal to `"search-alias"`.
+                    The type of the View. Needs to be set to `"search-alias"`.
                     This option is immutable.
                   type: string
                   example: search-alias
