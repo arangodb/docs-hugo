@@ -67,7 +67,8 @@ paths:
                     participate in the training process as the training is only executed once.
                     The training is triggered automatically if the vector index hasn't been
                     trained yet and the number of documents to index exceeds the threshold of
-                    `nLists` documents. Check the `trainingState` to see if the index is
+                    `nLists` documents (ignoring documents without the vector embedding field if
+                    `sparse` is set to `true`). Check the `trainingState` to see if the index is
                     `"ready"` and `errorMessage` for the reason if it's not.
                   type: array
                   minItems: 1
