@@ -78,7 +78,7 @@ system before the setup.
   `chmod +x arangodb_operator_platform`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine arangodb_operator_platform`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
 - Pull the necessary images from the internet and save them to files in order to
