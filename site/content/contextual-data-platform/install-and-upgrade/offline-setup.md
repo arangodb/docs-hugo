@@ -201,10 +201,6 @@ the necessary Kubernetes resources.
 
 Make sure set the the options as shown below to enable the gateway feature and
 machine learning feature:
-<!-- TODO:
---set "certificate.enabled=true" \
-Is this related to cert-manager that we no longer need with 1.4.0+?
--->
 
 ```sh
 VERSION_OPERATOR='1.4.1' # Use a newer version if available
