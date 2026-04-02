@@ -5,9 +5,39 @@
 {{- end }}
 {{- $title := .Page.Scratch.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
+{{- $service := "arangodb" }}
+{{- $apiVersions := slice }}
+{{- $body := "" }}
+
+{{- $matches := findRESubmatch `(?ms)^---\r?\n(.*?)^---\r?\n(.*)$` .Inner 2 }}
+{{- if $matches }}
+  {{- $frontmatter := index (index $matches 0) 1 | transform.Unmarshal }}
+  {{- $body = index (index $matches 0) 2 }}
+  {{- $service = $frontmatter.service | default $service }}
+  {{- $apiVersions = $frontmatter.apiVersions }}
+  {{- if eq $service "arangodb" }}
+    {{- if or (not $apiVersions) (not (reflect.IsSlice $apiVersions)) (eq (len $apiVersions) 0) }}
+      {{- errorf "OpenAPI front matter: service is %s but apiVersions is missing, not an array, or empty (got %T: %v)" $service $apiVersions $apiVersions }}
+    {{- end }}
+  {{- end }}
+{{- else }}
+  {{- $body = .Inner }}
+  {{- /* $service defaults to "arangodb"; apiVersions depend on ArangoDB version (3.10/3.11→v0, 3.12→v0+v1, 4.0→v1) */}}
+  {{- if eq $service "arangodb" }}
+    {{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}
+      {{- $apiVersions = slice "v0" }}
+    {{- else if eq $pageVersion "3.12" }}
+      {{- $apiVersions = slice "v0" }}{{/* TODO: Add "v1" again for 3.12.10 */}}
+    {{- else if eq $pageVersion "4.0" }}
+      {{- $apiVersions = slice "v1" }}
+    {{- else }}
+      {{- errorf "OpenAPI front matter: Unsupported ArangoDB page version %q — add an apiVersions mapping for this version" $pageVersion }}
+    {{- end }}
+  {{- end }}
+{{- end }}
 
 {{- $linkMap := dict }}
-{{- range $match := findRESubmatch `\[([^\]]+)\]\((.*?)\)` .Inner }}
+{{- range $match := findRESubmatch `\[([^\]]+)\]\((.*?)\)` $body }}
   {{- $url := index $match 2 }}
   {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
   {{- if not $isRemote }}
@@ -18,7 +48,7 @@
     {{- $linkMap = merge $linkMap (dict (index $match 0) $newLink) }}
   {{- end }}
 {{- end }}
-{{- $innerAbsLinks := .Inner }}
+{{- $innerAbsLinks := $body }}
 {{- range $old, $new := $linkMap }}
   {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
 {{- end }}
@@ -27,20 +57,32 @@
     "body" $innerAbsLinks
     "headers" (dict 
       "Content-Type" "application/json"
-      "Page-Version" $pageVersion
       "Endpoint-Title" $title
+      "Service-Name" $service
+      "API-Versions" ($apiVersions | jsonify)
+      "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
     )
   )
 }}
 {{- $title = $title | urlize }}
-{{- $yamlBlock := .Inner | transform.Unmarshal }}
+{{- $yamlBlock := $body | transform.Unmarshal }}
 {{- with $yamlBlock }}
   <div class="openapi">
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
+      {{- $displayPath := $path }}
+      {{- if (eq $service "arangodb") }}
+        {{- if (in $apiVersions "v0") }}
+          {{- /* Omit prefix for 3.12 docs because older versions don't have a versioned API */}}
+        {{- else if (in $apiVersions "v1") }}
+          {{- $displayPath = printf "/_arango/v1%s" $path }}
+        {{- else if (in $apiVersions "experimental") }}
+          {{- $displayPath = printf "/_arango/experimental%s" $path }}
+        {{- end }}
+      {{- end }}
       {{- partial "shortcodes/endpoint.html" (dict
         "Method" ($method | upper)
-        "Url"    (printf "http://<EXTERNAL_ENDPOINT>:8529%s" $path | replaceRE "#.*" "")
+        "Url"    (printf "http%s://<EXTERNAL_ENDPOINT>:8529%s" (cond (eq $service "arangodb") "" "s") $displayPath | replaceRE "#.*" "")
       ) }}
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
@@ -122,12 +164,12 @@
       {{- range $k, $v := $content.content }}
         {{- if eq $v.schema.type "array" }}
           {{- $required := false }}
-          {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page }}
+          {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page "isResponse" false }}
         {{- else }}
           {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
           {{- range $prop, $value := $v.schema.properties}}
             {{- $required := in $v.schema.required $prop }}
-            {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page }}
+            {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page "isResponse" false }}
           {{- end }}
         {{- end }}
       {{- end }}
@@ -193,12 +235,12 @@
                   {{- range $k, $v := $content.content }}
                     {{- if eq $v.schema.type "array" }}
                       {{- $required := false }}
-                      {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page}}
+                      {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page "isResponse" true}}
                     {{- else }}
                       {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
                       {{- range $prop, $value := $v.schema.properties}}
                         {{- $required := in $v.schema.required $prop }}
-                        {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page}}
+                        {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page "isResponse" true}}
                       {{- end }}
                     {{- end }}
                   {{- end }}
@@ -235,10 +277,14 @@
         </summary>
         {{- $description := $value.description | $page.RenderString }}
         <div class="openapi-prop-content">
-          {{- if isset $value.schema "enum" }}
+          {{- if isset $value.schema "const" }}
+            <p class="regular-font">Set this to the value: <code>{{ $value.schema.const | jsonify }}</code></p>
+          {{- else if isset $value.schema "enum" }}
             <p class="regular-font">Possible values:
               {{- range $i, $val := $value.schema.enum }}
                 {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+              {{- else }}
+                <em>(none)</em>
               {{- end }}
             </p>
           {{- end }}
@@ -255,6 +301,7 @@
   {{- $value := .value }}
   {{- $required := .required }}
   {{- $page := .page }}
+  {{- $isResponse := .isResponse }}
 
   {{- $type := $value.type }}
   {{- $anchor := printf "%s_%s" $title $prop }}
@@ -275,17 +322,25 @@
       </summary>
       {{- $description := $value.description | $page.RenderString }}
       <div class="openapi-prop-content">
-        {{- if isset $value "enum" }}
+        {{- if isset $value "const" }}
+          <p class="regular-font">{{ if $isResponse }}The value is always:{{ else }}Set this to the value:{{ end }} <code>{{ $value.const | jsonify }}</code></p>
+        {{- else if isset $value "enum" }}
           <p class="regular-font">Possible values:
             {{- range $i, $val := $value.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- else }}
+              <em>(none)</em>
             {{- end }}
           </p>
         {{- end }}
-        {{- if and ($value.items) (isset $value.items "enum") }}
+        {{- if and ($value.items) (isset $value.items "const") }}
+          <p class="regular-font">{{ if $isResponse }}Each element has the value:{{ else }}Set each element to the value:{{ end }} <code>{{ $value.items.const | jsonify }}</code></p>
+        {{- else if and ($value.items) (isset $value.items "enum") }}
           <p class="regular-font">Possible values in array:
             {{- range $i, $val := $value.items.enum }}
               {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- else }}
+              <em>(none)</em>
             {{- end }}
           </p>
         {{- end }}
@@ -294,7 +349,7 @@
           <ul class="openapi-table">
           {{- range $k, $v := $value.properties }}
             {{- $required = in $value.required $k }}
-            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page "isResponse" $isResponse }}
           {{- end }}
           </ul>
         {{- end }}
@@ -302,7 +357,7 @@
           <ul class="openapi-table">
           {{- range $k, $v := $value.items.properties }}
             {{- $required = in $value.items.required $k }}
-            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page "isResponse" $isResponse }}
           {{- end }}
           </ul>
         {{- end }}
