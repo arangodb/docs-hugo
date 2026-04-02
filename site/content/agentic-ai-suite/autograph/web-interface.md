@@ -100,7 +100,7 @@ your documents and generating optimized import strategies:
 
 After the AutoGraph service is deployed, build the corpus from your uploaded
 documents. For details on what happens during this step, see
-[Corpus Build](../reference/autograph/corpus-build.md).
+[Corpus Build](reference/corpus-build.md).
 
 1. The interface displays **Ready to build the corpus from your uploaded documents**.
 2. Click **Build Corpus**.
@@ -110,7 +110,7 @@ documents. For details on what happens during this step, see
 
 The RAG strategizer analyzes your documents and generates import strategies.
 For details on how strategies are determined, see
-[RAG Strategizer](../reference/autograph/rag-strategizer.md).
+[RAG Strategizer](reference/rag-strategizer.md).
 
 1. After corpus building completes, click **Generate Strategies**.
 2. Review the **Strategy Overview** which shows:
