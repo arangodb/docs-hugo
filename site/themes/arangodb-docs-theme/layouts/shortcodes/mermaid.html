@@ -1,10 +1,17 @@
-{{- if not (.Page.Store.Get "hasMermaid") -}}
-  {{- .Page.Store.Set "hasMermaid" true -}}
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
-  </script>
-{{- end -}}
-<pre class="mermaid">
+<script type="module">
+  if (!window._mermaidInit) {
+    window._mermaidInit = true;
+    const { default: mermaid } = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+    document.querySelectorAll('script[type="text/mermaid"]').forEach(function(src) {
+      var pre = document.createElement('pre');
+      pre.className = 'mermaid';
+      pre.textContent = src.textContent;
+      src.replaceWith(pre);
+    });
+    mermaid.run();
+  }
+</script>
+<script type="text/mermaid">
   {{- .Inner -}}
-</pre>
+</script>
