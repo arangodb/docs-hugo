@@ -8,6 +8,11 @@ description: >-
 ---
 ## Requirements for self-hosting
 
+- **ArangoDB Enterprise Edition**: The multi-model database system for graph,
+  document, key-value, search, and vector.
+  
+  The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
+
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Contextual Data Platform, running them in containers for safety and scalability.
 
@@ -18,7 +23,7 @@ description: >-
   control plane.
 
   Install [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for applying
-  specifications such as for creating the ArangoDB Core deployment, as well as
+  specifications such as for creating the ArangoDB core deployment, as well as
   for checking pods, logs, etc.
 
 - **Helm**: A package manager for Kubernetes.
