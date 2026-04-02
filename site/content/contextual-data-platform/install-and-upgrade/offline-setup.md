@@ -112,7 +112,7 @@ system before the setup.
   `chmod +x regctl`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine regctl`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
   To pull the image and save it to a file as follows:
