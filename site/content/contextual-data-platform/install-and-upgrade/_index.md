@@ -41,6 +41,19 @@ description: >-
   In environments with internet access, you don't need your own container registry
   but you can optionally use one.
 
+- **x86-64 CPU**: The processor(s) must support the **x86-64** architecture.
+  See the [Supported platforms and architectures](../../arangodb/3.12/operations/installation/_index.md#supported-platforms-and-architectures)
+  of ArangoDB for details.
+
+  {{< tip >}}
+  Arango is fully committed to supporting the ARM architecture and infrastructure
+  for all products (ArangoDB, Arango Contextual Data Platform, and
+  Arango Agentic AI Suite) and tests them before each release. As Arango develops
+  new services and components for the data platform, some of them may be under
+  validation and QA. If you have a specific request for a new feature, especially
+  around AI services, please reach out to your sales/service/support team to confirm.
+  {{< /tip >}}
+
 {{< comment >}}
 - **Licenses**: If you want to use any paid features, you need to purchase the
   respective packages.

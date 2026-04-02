@@ -50,10 +50,9 @@ system before the setup.
 - Download the latest enterprise version of the ArangoDB Kubernetes Operator
   `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
 
-  Look for the files called `kube-arangodb-enterprise-x.x.x.tgz` and
-  `kube-arangodb-enterprise-arm64-x.x.x.tgz` (where `x.x.x` is the version number).
-  You may need to click **Show all # assets** to reveal all files.
-  The former is the operator for x86-64 CPUs and the latter for 64-bit ARM chips.
+  Look for the file called `kube-arangodb-enterprise-x.x.x.tgz` (where `x.x.x`
+  is the version number). It is the operator for x86-64 CPUs.
+  You may need to click **Show all # assets** to reveal all files. 
 
 - Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases>.
@@ -207,9 +206,6 @@ machine learning feature:
 Is this related to cert-manager that we no longer need with 1.4.0+?
 -->
 
-{{< tabs "cpu-arch" >}}
-
-{{< tab "x86-64" >}}
 ```sh
 VERSION_OPERATOR='1.4.1' # Use a newer version if available
 
@@ -221,23 +217,6 @@ helm upgrade --install operator \
   --set "operator.features.ml=true" \
   --set "operator.architectures={amd64}"
 ```
-{{< /tab >}}
-
-{{< tab "ARM" >}}
-```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
-
-helm upgrade --install operator \
-  --namespace arango \
-  "kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
-  --set "operator.architectures={arm64}"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The output looks similar to the following on success:
 
