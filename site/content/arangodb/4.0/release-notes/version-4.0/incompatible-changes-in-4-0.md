@@ -15,6 +15,24 @@ This feature has been removed and the `--console` startup option is obsolete now
 
 ## HTTP RESTful API
 
+### Sub-attribute removed from the version API
+
+The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
+under `details` when requesting the detailed version information. This is
+due to the removal of the emergency console (`arangod --console`) and the
+V8 JavaScript engine in general from the server-side.
+
+### Attributes removed from the status API
+
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`) and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
+
 ### Batch request endpoint removed
 
 <small>Removed in: v3.12.3</small>

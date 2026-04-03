@@ -42,7 +42,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"inverted"`.
+                    Needs to be set to `"inverted"`.
                   type: string
                   example: inverted
                 name:
