@@ -72,7 +72,7 @@ The [Query Editor](../platform-suite/query-editor.md) has been extended with the
 
 {{< tag "Agentic AI Suite" >}}
 
-A new **Optimize in Reasoner** button has been added to query tabs for
+A new **Optimize** button has been added to query tabs for
 [AI-powered query optimization](../platform-suite/query-editor.md#optimize-queries-reasoner).
 The Reasoner analyzes your AQL query and suggests improvements through a
 streaming chat interface with real-time tool call and validation feedback.
