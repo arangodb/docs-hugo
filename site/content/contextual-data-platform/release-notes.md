@@ -86,7 +86,7 @@ or [API](../platform-suite/container-manager/deploy-api/).
 
 {{< tag "Platform Suite" >}}
 
-The [File Manager](../platform-suite/file-manager.md) provides a centralized interface
+The [File Manager](../platform-suite/file-manager/_index.md) provides a centralized interface
 for viewing and managing data stored by platform services, including container
 service files, RAG content, and AutoGraph files.
 

@@ -87,7 +87,7 @@ an API.
 
 ### File manager
 
-The [File manager](../platform-suite/file-manager.md) lets you view and manage
+The [File manager](../platform-suite/file-manager/_index.md) lets you view and manage
 the data of services, such as your uploaded content for AutoGraph and GraphRAG,
 as well as the files used by service containers.
 
