@@ -264,6 +264,8 @@ function initArticle(url) {
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  if (window.renderMermaid) window.renderMermaid();
+  if (window.initMermaidZoom) window.initMermaidZoom();
 }
 
 
