@@ -6,6 +6,33 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Statistics features removed
+
+Server and cluster statistics are superseded by the
+[Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
+startup options and HTTP API endpoints related to the statistics features have
+been removed and no `_statistics*` system collections are used by _arangod_
+anymore.
+
+When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
+system collections are actively removed.
+
+The following startup options are now obsolete:
+- `--server.statistics`
+- `--server.statistics-history`
+- `--server.statistics-all-databases`
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
+
 ## Emergency console mode removed
 
 The ArangoDB server process could be started in an interactive command-line
