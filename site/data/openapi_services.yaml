@@ -1,0 +1,16 @@
+# OpenAPI base info per service. Used by arangoproxy when building OpenAPI specs.
+# For ArangoDB, version and license are computed in Go (from versions.yaml and API version index).
+# For other services, all fields are read from here; version can be a fixed string.
+
+arangodb:
+  title: ArangoDB Core API
+  summary: The HTTP API of the ArangoDB graph database system
+  contact:
+    name: ArangoDB Inc.
+    url: https://arango.ai
+  externalDocs:
+    description: ArangoDB Documentation
+    url: https://docs.arango.ai/arangodb/
+  # license: computed per version in Go (BSL 1.1 for 3.12+, Apache 2.0 for 3.10/3.11)
+  # version: computed as "<version> (API v0)" etc. in Go
+

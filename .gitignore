@@ -8,6 +8,7 @@ node_modules/
 *.log
 
 /site/data/*/api-docs.json
+/site/data/*/*openapi.json
 /site/public/
 /site/resources/
 /migration-tools/scripts/*/*.tar.gz

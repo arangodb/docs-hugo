@@ -42,7 +42,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"mdi"` or `"mdi-prefixed"`.
+                    Needs to be set to `"mdi"` or `"mdi-prefixed"`.
                   type: string
                   example: mdi
                 name:
@@ -62,7 +62,7 @@ paths:
                     type: string
                 fieldValueTypes:
                   description: |
-                    Must be equal to `"double"`. Currently only doubles are supported as values.
+                    Needs to be set to `"double"`. Currently only doubles are supported as values.
                   type: string
                 prefixFields:
                   description: |

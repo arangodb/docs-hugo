@@ -145,6 +145,9 @@ paths:
 ### Get the metrics (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/metrics/v2:
     get:
