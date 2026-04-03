@@ -17,8 +17,11 @@ reported.
 ## Get the activities (experimental)
 
 ```openapi
+---
+apiVersions: [experimental]
+---
 paths:
-  /_arango/experimental/_db/{database-name}/_admin/activities:
+  /_db/{database-name}/_admin/activities:
     get:
       operationId: getActivities
       description: |

@@ -15,6 +15,9 @@ setting of the [`--cluster.api-jwt-policy` startup option](../../components/aran
 ### Get the statistics of a DB-Server
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/cluster/statistics:
     get:

@@ -62,15 +62,13 @@ execution, job monitoring, and trigger jobs to persist results of algorithms int
 Queries are organized into phases that run sequentially, while queries within each phase
 execute in parallel for optimal performance.
 
-### Dashboard
+### Graph Visualizer
 
 {{< tag "Platform Suite" >}}
 
-A new home screen has been added, providing the following information and actions:
-
-- A cluster respectively single server health overview
-- Shard distribution information and rebalancing options
-- The cluster maintenance status
+The [Graph Visualizer](../platform-suite/graph-visualizer.md) now supports exporting
+graph data in CSV format. Export the entire visible canvas, or export nodes and
+edges separately with all document attributes included.
 
 ### Query Editor
 
@@ -87,6 +85,56 @@ The [Query Editor](../platform-suite/query-editor.md) has been extended with the
 
 - **Syntax highlighting**: AQL queries in the query editor are colorized for
   better readability.
+
+### Container Manager
+
+{{< tag "Platform Suite" >}}
+
+The [Container Manager](../platform-suite/container-manager/_index.md) enables you to
+deploy and manage custom services directly within the Arango Contextual Data Platform,
+running your own applications alongside platform services.
+
+Deploy services by uploading source code packages (`.tar.gz`) or providing Docker
+image URLs, with support for Python 3.13 runtimes (including PyTorch and cuGraph
+variants). Services can be scoped globally or per-database, with version management
+and deployment via [web interface](../platform-suite/container-manager/web-interface.md)
+or [API](../platform-suite/container-manager/deploy-api/).
+
+### File Manager
+
+{{< tag "Platform Suite" >}}
+
+The [File Manager](../platform-suite/file-manager.md) provides a centralized interface
+for viewing and managing data stored by platform services, including container
+service files, RAG content, and AutoGraph files.
+
+### Secrets Manager
+
+{{< tag "Platform Suite" >}}
+
+The [Secrets Manager](../platform-suite/secrets-manager.md) has been introduced
+for managing API keys and credentials across the platform.
+Secrets are encrypted at rest and accessible to services via sidecar containers,
+with support for bulk operations, import/export, and multiple secret types.
+
+### Monitoring
+
+{{< tag "Platform Suite" >}}
+
+Integrated [Monitoring](../platform-suite/monitoring.md) with Grafana and Prometheus
+provides observability for the entire deployment. Both tools are embedded in the
+unified web interface with authenticated access for tracking performance metrics,
+cluster health, and resource utilization.
+
+### Dashboard
+
+{{< tag "Platform Suite" >}}
+
+A new home screen has been added, providing the following information and actions:
+
+- A cluster respectively single server health overview
+- Shard distribution information and rebalancing options
+- The cluster maintenance status
 
 ## October 2025 (v3.0, pre-release 2)
 

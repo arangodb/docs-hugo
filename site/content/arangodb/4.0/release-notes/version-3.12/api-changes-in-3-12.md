@@ -632,13 +632,15 @@ Vector indexes now have two new attributes in success responses:
 - `errorMessage` (string):
   Only present if there is a problem with the index/training.
 
-You can now create a vector index first if you set `inBackground` to `true` and
+You can now create a vector index first and
 then populate the collection with vector data. However, it is still recommended
 to load the data first and then create the index to ensure that all documents
 participate in the training process as the training is only executed once.
 The training is triggered automatically if the vector index hasn't been trained
 yet and the number of documents to index exceeds the threshold of
-`nLists` documents. Check the `trainingState` to see if the
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ##### Changed consolidation defaults for inverted indexes

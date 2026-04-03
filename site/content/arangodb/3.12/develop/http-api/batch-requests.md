@@ -226,6 +226,9 @@ in a batch part will be ignored.
 ### Execute a batch request
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/batch:
     post:
