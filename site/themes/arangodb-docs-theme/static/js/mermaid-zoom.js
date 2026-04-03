@@ -73,12 +73,16 @@ function wrapMermaidDiagrams() {
   });
 }
 
-// Poll briefly for mermaid to finish rendering
-var attempts = 0;
-var checkInterval = setInterval(function() {
-  wrapMermaidDiagrams();
-  attempts++;
-  if (attempts > 20 || !document.querySelector('.mermaid:not([data-zoom-init])')) {
-    clearInterval(checkInterval);
-  }
-}, 200);
+window.initMermaidZoom = function() {
+  var attempts = 0;
+  var checkInterval = setInterval(function() {
+    wrapMermaidDiagrams();
+    attempts++;
+    if (attempts > 20 || !document.querySelector('.mermaid:not([data-zoom-init])')) {
+      clearInterval(checkInterval);
+    }
+  }, 200);
+};
+
+// Run on initial page load
+window.initMermaidZoom();

@@ -28,19 +28,16 @@
     </section>
     {{ partialCached "back-to-top.html" . -}}
     {{ partialCached "search.html" . -}}
-    {{- if .Store.Get "hasMermaid" }}
     <link href="{{"css/mermaid.css" | relURL}}" rel="stylesheet">
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs';
       mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
-      function renderMermaid() {
-        const nodes = document.querySelectorAll('.mermaid:not([data-processed])');
+      window.renderMermaid = function() {
+        const nodes = document.querySelectorAll('pre.mermaid');
         if (nodes.length) mermaid.run({ nodes });
-      }
-      renderMermaid();
-      new MutationObserver(renderMermaid).observe(document.body, { childList: true, subtree: true });
+      };
+      window.renderMermaid();
     </script>
     <script src="{{"js/mermaid-zoom.js" | relURL}}"></script>
-    {{- end }}
   </body>
 </html>
