@@ -55,7 +55,7 @@ and a new AQL-based data loading API.
 is now available for managing Graph Analytics Engines, loading graphs, running algorithms
 (PageRank, Connected Components, Label Propagation, and more), and monitoring job progress.
 The interface provides an intuitive workflow for engine management, graph loading, algorithm
-execution, and job monitoring.
+execution, job monitoring, and trigger jobs to persist results of algorithms into collections.
 
 - **AQL-based data loading API**: A new API endpoint allows you to import graph data using
 [custom AQL queries](../agentic-ai-suite/graph-analytics/api.md#load-data-using-aql-queries).

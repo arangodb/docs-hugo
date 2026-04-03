@@ -565,7 +565,7 @@ Parameters:
   (default: `400000`).
 
 The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
-loading progress via the [Jobs API](#list-all-jobs).
+loading progress via the [Jobs API](#get-a-job).
 
 **Example with vertex collections, edge collections, and vertex attributes:**
 
@@ -614,10 +614,11 @@ which data to load, including the ability to filter, transform, or traverse the
 graph during loading. Each AQL query must return documents containing `vertices`
 and/or `edges` arrays.
 
-Queries are organized into **phases**. Phases are executed sequentially (each
-phase completes before the next begins), while queries within a phase run in
-parallel. This lets you order dependencies, for example, loading vertices in the
-first phase and edges in the second.
+Queries are organized into **phases**, where each phase is a set of queries
+that run in parallel. You can have multiple phases (query groups), and they are
+executed sequentially, each phase completes before the next begins. This lets you
+order dependencies, for example, loading vertices in the first phase and edges
+in the second.
 
 Each query must return documents with the following format:
 
@@ -703,7 +704,7 @@ Parameters:
   (default: `400000`).
 
 The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
-loading progress via the [Jobs API](#list-all-jobs). The loading job reports a total
+loading progress via the [Jobs API](#get-a-job). The loading job reports a total
 of `2` progress steps: `1` after all vertices have been processed, and `2` when
 all edges are processed and the graph is ready.
 
@@ -721,7 +722,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
       {"name": "weight", "data_type": "F64"}
     ],
     "phases": [
-      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" @@E RETURN {vertices: [v], edges: e ? [e] : []}", "bind_vars": {"@E": "E"}}]}
+      {"queries": [{"query": "FOR v, e IN 0..3 OUTBOUND \"V/0\" @@edgeCollection RETURN {vertices: [v], edges: e ? [e] : []}", "bind_vars": {"@edgeCollection": "myEdges"}}]}
     ]
   }' \
   "https://data-platform.example.org:8529/gral/tqcge/v1/loaddataaql"
