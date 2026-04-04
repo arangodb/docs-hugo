@@ -11,7 +11,7 @@ The Arango Contextual Data Platform has been officially released and comes with
 various improvements and major additions to the unified web interface, the
 Platform Suite and the Agentic AI Suite.
 
-The minimum required ArangoDB version is Enterprise Edition v4.0.0.
+The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
 
 ### AutoGraph
 
