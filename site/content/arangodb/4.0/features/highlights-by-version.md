@@ -119,8 +119,9 @@ Also see [What's New in 3.11](../release-notes/version-3.11/whats-new-in-3-11.md
 
 **Enterprise Edition**
 
-- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md): A new specialized version of
-  SmartGraphs, with an automatic sharding key selection.
+- [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
+  Hash-based sharding with automatic sharding key selection that keeps the edges
+  of graphs next to their connected nodes.
 
 - [**Search highlighting**](../indexes-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.

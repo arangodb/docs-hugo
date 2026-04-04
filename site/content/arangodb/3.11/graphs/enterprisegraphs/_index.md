@@ -4,7 +4,7 @@ menuTitle: EnterpriseGraphs
 weight: 100
 description: >-
   EnterpriseGraphs enable you to manage graphs at scale with automated sharding
-  key selection
+  key selection and co-location of edges with their connected nodes
 ---
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
@@ -33,16 +33,17 @@ This is known as the `smartGraphAttribute`, a value that is stored in every vert
 which ensures data co-location of all vertices sharing this attribute and their
 immediate edges.
 
-EnterpriseGraphs come with a concept of "random sharding", meaning that the
-sharding key is randomly selected while ensuring that all vertices with the
-same sharding key and their adjacent edges are co-located on the same servers,
-whenever possible. This approach provides significant advantages as it
-minimizes the impact of having suboptimal sharding keys defined when creating
-the graph.
+EnterpriseGraphs use hash-based sharding similar to General Graphs that
+pseudo-randomly distribute vertices across shards, but EnterpriseGraphs ensure that
+the adjacent edges of vertices are co-located in the same shard. As a consequence,
+you **cannot** define `_key` values for edges. You can also **not modify** the
+`_from ` and `_to` edge attributes because they contain the sharding key which
+cannot be changed.
 
-This means that, when using EnterpriseGraphs, the `smartGraphAttribute` is
-**not** required. As a consequence, you **cannot** define `_key` values on
-edges. 
+While not as effective as the sharding of SmartGraphs, your data may not have a
+suitable `smartGraphAttribute`. You can use EnterpriseGraphs as the next best
+option to get better performance. EnterpriseGraphs can also take advantage of
+accidental co-location of vertices on the same DB-Server, which General Graphs cannot.
 
 ## EnterpriseGraphs using SatelliteCollections
 

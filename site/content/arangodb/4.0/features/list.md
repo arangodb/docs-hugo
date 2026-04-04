@@ -197,15 +197,16 @@ aliases:
 ## Performance
 
 - [**SmartGraphs**](../graphs/smartgraphs/_index.md):
-  Value-based sharding of large graph datasets for better data locality when
-  traversing graphs.
+  Value-based sharding of large graph datasets for excellent data locality when
+  querying graphs.
 
 - [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
-  A specialized version of SmartGraphs, with an automatic sharding key selection.
+  Hash-based sharding with automatic sharding key selection that keeps the edges
+  of graphs next to their connected nodes.
 
-- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md):
+- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md#smartgraphs-using-satellitecollections):
   Collections replicated on all cluster nodes can be combined with graphs
-  sharded by document attributes to enable more local execution of graph queries.
+  sharded by values to enable more local execution of graph queries.
 
 - [**SatelliteGraphs**](../graphs/satellitegraphs/_index.md):
   Graphs replicated on all cluster nodes to execute graph traversals locally.
