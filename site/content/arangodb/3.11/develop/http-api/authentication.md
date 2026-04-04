@@ -174,7 +174,7 @@ Please note that all JWT tokens must contain the `iss` field with string value
 
 ```openapi
 paths:
-  /_open/auth:
+  /_open/{foo}/auth/:
   # Independent of database
     post:
       operationId: createSessionToken
