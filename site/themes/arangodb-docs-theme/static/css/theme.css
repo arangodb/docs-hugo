@@ -1223,6 +1223,27 @@ article > h6 > code {
     white-space: normal;
 }
 
+@keyframes target-highlight {
+    from {
+        background-color: var(--color-electric-lime);
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+/* Defer until theme.js enables (after SPA replaces SSR markup); otherwise hard loads
+   with a fragment animate twice — once on first paint, again after replaceArticle(). */
+html.docs-target-highlight-ready :target {
+    animation: target-highlight 0.5s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.docs-target-highlight-ready :target {
+        animation: none;
+    }
+}
+
 article ul li {
     margin-left: .75rem;
     line-height: 25px;
