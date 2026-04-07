@@ -23,35 +23,43 @@ without additional configuration.
 
 ## Web interface
 
+The **FileManager Service** page lets you manage container service files and RAG
+input files from a single place.
+
 ### View files
 
 1. Log in to the Arango Contextual Data Platform web interface.
 2. Go to **Control Panel** in the main navigation sidebar and then
    click **File Manager**.
-3. Select the desired tab:
+3. Select the desired tab. The number of files in each tab is shown in
+   parentheses next to the tab name:
    - **Container Services**: Files uploaded for container service deployments,
-     grouped by service name. Each service row shows the total number of versions
-     and their combined size. Click a service to expand it and browse individual
-     versions, each with its own version number, language, storage location, size,
-     and status.
+     grouped by service name. The table columns are **Service Name**,
+     **Version**, **Language**, **Storage Location**, **Size**, **Status**, and
+     **Actions**. Services with multiple versions show the version count and
+     combined size below the service name. Click the expand arrow next to a
+     version to see its individual details.
    - **RAG Input Files**: Files uploaded for GraphRAG processing. Use the
-     **Database** dropdown above the table to filter files by database. The table
-     shows each file's name, version, database, content type, storage location,
-     size, and status.
-4. The summary cards at the top of each tab show the total number of files, their
-   combined size, and how many are currently safe to delete.
+     **Database** dropdown above the table to filter files by database. The
+     table columns are **File Name**, **Version**, **Database**,
+     **Content Type**, **Storage Location**, **Size**, **Status**, and
+     **Actions**.
+4. The summary cards at the top of each tab show:
+   - **Total Files**: the number of files in the current tab
+   - **Total Size**: the combined size of all files
+   - **Safe to Delete**: the number of files that can currently be deleted
 
-A **Status** column indicates whether a file is currently **In use** by a running
-service. Files marked as **In use** cannot be deleted.
+The **Status** column indicates whether a file is currently **In use** by a
+running service. Files marked as **In use** cannot be deleted.
 
 ### Delete files
 
-Files can only be deleted when they are not in use by any running service.
+A **File Deletion Policy** info box is displayed at the bottom of the page:
 
-- **Container Services**: A file can be deleted only if it is not currently used
-  by a running service.
-- **RAG Input Files**: A file can be deleted only if it is not currently in use
-  by any service in the system.
+- **Container Services**: Can only be deleted if not currently used by a running
+  service.
+- **RAG Input**: Can only be deleted if not currently in use by any service in
+  the system.
 
 To delete a file:
 
