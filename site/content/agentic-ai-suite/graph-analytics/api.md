@@ -1,6 +1,6 @@
 ---
 title: HTTP API for Graph Analytics Engines
-menuTitle: HTTP API
+menuTitle: API Reference
 weight: 20
 description: >-
   Use the HTTP APIs to programmatically manage Graph Analytics Engines,
