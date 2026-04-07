@@ -616,9 +616,9 @@ and/or `edges` arrays.
 
 Queries are organized into **phases**, where each phase is a set of queries
 that run in parallel. You can have multiple phases (query groups), and they are
-executed sequentially, each phase completes before the next begins. This lets you
-order dependencies, for example, loading vertices in the first phase and edges
-in the second.
+executed sequentially, where each phase completes before the next begins. This
+lets you order dependencies, for example, loading vertices in the first phase
+and edges in the second.
 
 Each query must return documents with the following format:
 
