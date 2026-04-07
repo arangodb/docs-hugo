@@ -63,7 +63,8 @@ flowchart TD
     Available indexes and collection sizes examined"]
     C --> D["**Optimize**
     A new query is produced using applicable techniques
-    (consults relevant AQL manual sections as needed)"]
+    (consults relevant AQL manual sections as needed,
+    e.g. aggregation, graph traversal, subqueries, filtering)"]
     D --> E["**Validate**
     The optimized query is verified to return identical
     results and achieve a measurable improvement (≥ 5%)"]
