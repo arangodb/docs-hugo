@@ -278,6 +278,29 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   Enabling caching improves response times for repeated queries. Leave it disabled when you need fresh results or when testing changes to your knowledge graph.
 - Toggle **Citations** to show or hide inline citations in responses. For deep search queries, citations are always disabled.
 
+## Graph canvas integration
+
+When the Retriever returns a response, the graph canvas automatically fetches and
+displays the documents and edges that were used to answer your query. These
+retriever-sourced elements are highlighted in green on the canvas so you can
+immediately see which parts of your Knowledge Graph contributed to the answer.
+A loading overlay is shown on the canvas while the graph data is being fetched.
+
+Each assistant message in the chat includes two canvas action buttons that appear
+when you hover over the message:
+
+| Button | Icon | Behavior |
+|--------|------|----------|
+| **Add to canvas** | Hub icon | Fetches the subgraph for that message and merges it into the existing canvas, preserving any nodes already displayed. |
+| **Clear canvas & display subgraph** | Focus icon | Clears the canvas and displays only the subgraph referenced by that message. |
+
+Use **Add to canvas** to build up context across multiple queries. Use **Clear
+canvas & display subgraph** to focus on a single response without the clutter of
+previous results.
+
+Starting a new query automatically clears the green highlights from the previous
+response before the new results are fetched.
+
 ## Integrate the Knowledge Graph chat service into your application
 
 To integrate any service into your own applications,
