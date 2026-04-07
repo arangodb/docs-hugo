@@ -173,40 +173,12 @@ AI can make mistakes or produce unexpected results.
 
 {{< tag "Agentic AI Suite" >}}
 
-The Reasoner is an AI-powered service that analyzes your AQL queries and provides
-optimization suggestions. It uses the MCP Server to interact with ArangoDB to
-understand your data model and suggest improvements.
+The **Optimize** button opens the Reasoner panel, which uses AI to analyze your
+AQL queries and return a validated, faster version with a performance comparison
+report.
 
-For an introduction to the Reasoner, see
-[The Reasoner feature of the Arango Agentic AI Suite](../agentic-ai-suite/reasoner.md).
-
-Before you can optimize queries, you need to start the Reasoner service.
-
-1. Click **Optimize** at the bottom of a query tab to open the Reasoner panel.
-2. On first use, the **Setup Reasoner** panel prompts you to configure an AI
-   provider. Enter your **OpenAI API Key** and select an **OpenAI Model**.
-3. Click **Start Service** and wait for the startup to complete. A progress
-   indicator shows the startup status. Chat input is enabled once
-   **MCP Connected** is shown in the status bar.
-4. You can check the service and MCP server status, and restart or stop the
-   service from the **Manage Services** dialog.
-
-Once the Reasoner service is ready, you can optimize queries.
-
-1. Enter your question or instruction in the input field at the bottom of the
-   Reasoner panel, for example `Optimize this query` or
-   `Find all users connected to product X`.
-2. Click **Ask** or press {{< kbd "Enter" >}} to submit. Use
-   {{< kbd "Shift Enter" >}} to insert a line break without sending.
-3. The Reasoner responds with an **AI Reasoning Response**. Each question is
-   independent — there is no follow-up context between messages.
-4. Click **Open in Editor** in a response to apply a suggested query to a new
-   query tab, where you can verify and run it.
-
-{{< warning >}}
-Always verify AI-generated query optimizations.
-AI can make mistakes or produce unexpected results.
-{{< /warning >}}
+For setup instructions and full usage details, see
+[Reasoner — Web Interface](../agentic-ai-suite/reasoner/web-interface.md).
 
 ## Adjust the viewport
 
