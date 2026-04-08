@@ -71,6 +71,7 @@ CATEGORYNAMES = [
     "Statistics",
     "Transactions",
     "V8", # Up to v3.12
+    "VectorIndex", # From v3.12.9 onward
 ]
 
 NODE_TYPES = ["coordinator", "dbserver", "agent", "single"]
