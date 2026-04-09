@@ -15,12 +15,6 @@ files, and MLflow artifacts.
 
 Authentication uses a Bearer token in the `Authorization` header.
 
-{{< info >}}
-The File Manager service automatically integrates with the ArangoDB MCP
-(Model Context Protocol) service. MCP-related endpoints are not exposed
-through this API and require no additional configuration.
-{{< /info >}}
-
 ## Health Check
 
 {{< endpoint "GET" "/_platform/filemanager/health" >}}
@@ -43,7 +37,7 @@ BYOC files represent application code packages uploaded for container service
 deployments. They are globally scoped (not tied to a specific database) and
 versioned by name and version string.
 
-Uploading to the same `name` + `version` combination overwrites the existing
+Uploading to the same `name` and `version` combination overwrites the existing
 file. The original filename is preserved in the `file_name` metadata field.
 
 ### Upload a BYOC File

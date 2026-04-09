@@ -8,8 +8,6 @@ description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform
 ---
-Some of the services that run in the Arango Contextual Data Platform need to store larger
-amounts of data. This data needs to be stored outside of the ArangoDB database system.
 
 The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
@@ -17,15 +15,9 @@ the Agentic AI Suite for instance, such as for storing AI models and training-re
 metadata, as well as for user-uploaded GraphRAG content. Custom services make
 use of the file manager for application code, too.
 
-{{< info >}}
-The File Manager service automatically connects to the ArangoDB MCP (Model Context
-Protocol) service, enabling AI-assisted workflows to access and manage stored files
-without additional configuration.
-{{< /info >}}
-
 ## Web interface
 
-The **FileManager Service** page lets you manage container service files and RAG
+The **File Manager Service** page lets you manage container service files and RAG
 input files from a single place.
 
 ### View files
