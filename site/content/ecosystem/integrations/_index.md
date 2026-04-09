@@ -6,6 +6,7 @@ description: >-
   Integrations for third-party tools and frameworks let you use ArangoDB as the
   database backend for these products
 aliases:
+  - ../arangodb/3.11/develop/integrations
   - ../arangodb/3.12/develop/integrations
   - ../arangodb/stable/develop/integrations
   - ../arangodb/4.0/develop/integrations

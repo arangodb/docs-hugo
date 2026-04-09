@@ -6,11 +6,32 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
-## 
+## Emergency console mode removed
 
-
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+This feature has been removed and the `--console` startup option is obsolete now.
 
 ## HTTP RESTful API
+
+### Sub-attribute removed from the version API
+
+The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
+under `details` when requesting the detailed version information. This is
+due to the removal of the emergency console (`arangod --console`) and the
+V8 JavaScript engine in general from the server-side.
+
+### Attributes removed from the status API
+
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`) and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
 
 ### Batch request endpoint removed
 
@@ -23,13 +44,22 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Metrics API v2 endpoint removed
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
+
 ## JavaScript API
 
 
 
 ## Startup options
 
+### `--console` obsolete
 
+The `--console` startup option no longer has an effect but it is still
+recognized to avoid causing a fatal error on startup if you specify it.
 
 ## Client tools
 

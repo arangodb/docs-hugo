@@ -10,7 +10,23 @@ description: >-
 
 ### Behavior changes
 
+#### Version API
 
+The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
+under `details` when requesting the detailed version information. This is
+due to the removal of the emergency console (`arangod --console`) and the
+V8 JavaScript engine in general from the server-side.
+
+#### Status API
+
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`), and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
 
 ### Privilege changes
 
@@ -37,6 +53,12 @@ description: >-
 
 
 ### Endpoints removed
+
+#### Metrics API v2
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
 
 #### Batch request API
 

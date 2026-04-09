@@ -21,6 +21,15 @@ documents or designing taxonomies, AutoGraph handles the following:
 
 The result is a domain-aware knowledge base that scales horizontally across machines.
 
+### Supported File Formats
+
+AutoGraph can process a wide variety of document formats:
+- **Text files**: `.txt`, `.md`
+- **PDF files**: `.pdf`
+- **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
+- **OpenDocument formats**: `.odt`, `.odp`, `.ods`
+- **Rich Text Format**: `.rtf`
+
 ### Why AutoGraph?
 
 AutoGraph automatically discovers that enterprise data naturally divides into **knowledge domains**, with each domain deserving its own optimized processing and retrieval strategy. By building a **Corpus Graph** (the map of your knowledge) and importing each domain into **specialized RAG partitions**, AutoGraph enables:

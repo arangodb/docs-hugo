@@ -55,8 +55,8 @@ Each file in the `files` array requires:
 - `name` (required): Original filename with extension.
 - `content` (required): File content as base64-encoded bytes.
 - `citable_url` (optional): URL to be cited in inline citations. This URL is stored in
-  the document metadata and used at retrieval. When querying your knowledge graph, citations
-  can be optionally included in the response. 
+  the document metadata and used at retrieval. When querying your knowledge graph, whether
+  citations are displayed is controlled by the [`show_citations`](../retriever/parameters.md#show_citations) parameter.
 
 **Example:**
 

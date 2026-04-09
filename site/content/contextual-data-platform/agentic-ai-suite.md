@@ -8,7 +8,7 @@ description: >-
 ---
 ## Key features
 
-- **Ada**:
+- [**Ada**](../agentic-ai-suite/ada.md):
   The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](../agentic-ai-suite/autograph/_index.md):
   Organize enterprise data into contextual knowledge graph using

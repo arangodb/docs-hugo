@@ -19,15 +19,7 @@ coupled to specific internals that may be replaced by other mechanisms in the
 future.
 {{< /warning >}}
 
-Whether the `/_admin/metrics*` endpoints are available depends on the setting of
-the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
-For additional document read and write metrics, the
-[`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
-needs to be enabled.
-
-## Metrics API
-
-### Get the metrics
+## Get the metrics
 
 ```openapi
 paths:
@@ -35,8 +27,15 @@ paths:
     get:
       operationId: getMetrics
       description: |
-        Returns the instance's current metrics in Prometheus format. The
-        returned document collects all instance metrics, which are measured
+        Returns the instance's current metrics in Prometheus format.
+        
+        Whether the endpoint is available depends on the setting of
+        the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
+        For additional document read and write metrics, the
+        [`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+        needs to be enabled.
+
+        The returned document collects all instance metrics, which are measured
         at any given time and exposes them for collection by Prometheus.
 
         The document contains different metrics and metrics groups dependent
@@ -96,7 +95,7 @@ logPlainResponse(response);
 
 {{% metrics %}}
 
-## Get usage metrics
+## Get the usage metrics
 
 ```openapi
 paths:
@@ -106,8 +105,9 @@ paths:
       description: |
         Returns detailed shard usage metrics on DB-Servers.
         
-        These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
-        startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+        These metrics can be enabled by setting the
+        [`--server.export-shard-usage-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
+        to `enabled-per-shard` to make DB-Servers collect per-shard
         usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
         usage metrics per shard and per user whenever a shard is accessed.
       parameters:
@@ -126,8 +126,9 @@ paths:
           in: query
           required: false
           description: |
-            Returns the usage metrics of the specified server. If no `serverId` is given,
-            the asked server will reply. This parameter is only meaningful on Coordinators.
+            Returns the usage metrics of the specified server (`PRMR-...`).
+            If no `serverId` is specified, the asked server replies.
+            This parameter is only meaningful on Coordinators.
           schema:
             type: string
       responses:
@@ -136,79 +137,4 @@ paths:
             Metrics were returned successfully.
       tags:
         - Monitoring
-```
-
-## Metrics API v2
-
-### Get the metrics (deprecated)
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/metrics/v2:
-    get:
-      operationId: getMetricsV2
-      deprecated: true
-      description: |
-        {{</* warning */>}}
-        The `/_admin/metrics` and `/_admin/metrics/v2` return the same metrics
-        since ArangoDB v3.10.0. The latter is deprecated and removed in v4.0.
-        {{</* /warning */>}}
-
-        Returns the instance's current metrics in Prometheus format. The
-        returned document collects all instance metrics, which are measured
-        at any given time and exposes them for collection by Prometheus.
-
-        The document contains different metrics and metrics groups dependent
-        on the role of the queried instance. All exported metrics are
-        published with a `arangodb_` or `rocksdb_` prefix to distinguish
-        them from other collected data.
-
-        The API then needs to be added to the Prometheus configuration file
-        for collection.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database. If the `--server.harden` startup option is enabled,
-            administrate access to the `_system` database is required.
-          schema:
-            type: string
-        - name: serverId
-          in: query
-          required: false
-          description: |
-            Returns metrics of the specified server. If no serverId is given, the asked
-            server will reply. This parameter is only meaningful on Coordinators.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Metrics were returned successfully.
-        '404':
-          description: |
-            The metrics API may be disabled using `--server.export-metrics-api false`
-            setting in the server. In this case, the result of the call indicates the API
-            to be not found.
-      tags:
-        - Monitoring
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestAdminMetricsV2
----
-var url = "/_admin/metrics/v2";
-var response = logCurlRequest('GET', url);
-
-assert(response.code === 200);
-
-logPlainResponse(response);
 ```

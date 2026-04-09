@@ -85,7 +85,7 @@ parameter definition unless overridden.
 
 - **description**: `string` (optional)
 
-  A human readable string that is shown in the API documentation.
+  A human-readable string that is shown in the API documentation.
 
 Returns the endpoint.
 
