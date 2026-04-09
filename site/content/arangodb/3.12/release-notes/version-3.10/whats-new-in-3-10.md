@@ -1179,8 +1179,6 @@ temporary data:
   files written by Pregel. This option is only meaningful, if memory-mapped
   files are used. 
 
-For more information on the new options, please refer to [ArangoDB Server Pregel Options](../../components/arangodb-server/options.md#pregel).
-
 ### Query spillover options
 
 The following new options are available to control the

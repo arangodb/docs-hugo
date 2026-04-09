@@ -3,12 +3,12 @@ title: Notebook Servers
 menuTitle: Notebook Servers
 weight: 20
 description: >-
-  Colocated Jupyter Notebooks within the Arango Data Platform
+  Colocated Jupyter Notebooks within the Arango Contextual Data Platform
 ---
 ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, AI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are
-embedded in the Arango Data Platform ecosystem and offer a
+embedded in the Arango Contextual Data Platform ecosystem and offer a
 pre-configured environment where everything, including all the necessary services
 and configurations, comes preloaded. You don't need to set up or configure the
 infrastructure, and can immediately start using the GraphML and AI
@@ -31,7 +31,7 @@ The ArangoDB Notebooks include the following:
 
 ## Quickstart
 
-1. In the Arango Data Platform web interface, expand **AI Tools** in the
+1. In the Arango Contextual Data Platform web interface, expand **AI Tools** in the
    main navigation and click **Notebook servers**.
 2. The page displays an overview of the notebook services.
    Click **New notebook server** to create a new one.

@@ -42,7 +42,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
     "chat_api_key": "your_openai_api_key",
     "embedding_api_key": "your_openai_api_key",
     "embedding_dim": "512"
-  },
+  }
 }
 ```
 
@@ -101,7 +101,7 @@ different URLs in `chat_api_url` and `embedding_api_url`.
         "chat_api_key": "your_openrouter_api_key",
         "embedding_api_key": "your_openai_api_key",
         "embedding_dim": "512"
-      },
+      }
     }
 ```
 
@@ -147,7 +147,7 @@ service using the below configuration:
     "embedding_api_url": "your-arangodb-llm-host-url",
     "chat_model": "mistral-nemo-instruct",
     "embedding_model": "nomic-embed-text-v1"
-  },
+  }
 }
 ```
 

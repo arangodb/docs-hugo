@@ -1,5 +1,5 @@
 ---
-title: The Query Editor of the Arango Data Platform
+title: The Query Editor of the Arango Contextual Data Platform
 menuTitle: Query Editor
 weight: 10
 description: >-
@@ -7,7 +7,7 @@ description: >-
 ---
 ## Features
 
-The Query Editor of the Arango Data Platform offers the following features:
+The Query Editor of the Arango Contextual Data Platform offers the following features:
 
 - **Tabbed interface**:
   Work on multiple queries concurrently via tabs.

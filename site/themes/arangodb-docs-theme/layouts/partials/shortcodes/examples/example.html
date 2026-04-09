@@ -11,7 +11,9 @@
 {{ $type := $options.type | default "single" }}
 {{ $cacheEntry := printf "%s_%s" $name $type }}
 {{ $pageVersion := $context.Page.Store.Get "versionShort" }}
-
+{{ if not $pageVersion }}
+  {{ $pageVersion = (partialCached "version-short.html" $context.Page.RelPermalink $context.Page.RelPermalink) }}
+{{ end }}
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
 {{ $cacheFound :=  index $cache $cacheEntry }}

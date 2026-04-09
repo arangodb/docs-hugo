@@ -49,11 +49,30 @@ if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
     sys.exit(0)
 
 # Some data:
-CATEGORYNAMES = ["Health", "AQL", "Transactions", "Foxx", "Pregel",
-                 "Statistics", "Replication", "Disk", "Errors",
-                 "RocksDB", "Hotbackup", "k8s", "Connectivity", "Network",
-                 "V8", "Agency", "Scheduler", "Maintenance", "kubearangodb",
-                 "License", "ArangoSearch"]
+CATEGORYNAMES = [
+    "Agency",
+    "AQL",
+    "ArangoSearch",
+    "Connectivity",
+    "Disk", # Unused
+    "Errors",
+    "Foxx", # Up to v3.12
+    "Health",
+    "Hotbackup", # Unused
+    "k8s", # Unused
+    "kubearangodb", # Unused
+    "License",
+    "Maintenance",
+    "Network",
+    "Pregel", # Up to v3.12
+    "Replication",
+    "RocksDB",
+    "Scheduler",
+    "Statistics",
+    "Transactions",
+    "V8", # Up to v3.12
+    "VectorIndex", # From v3.12.9 onward
+]
 
 NODE_TYPES = ["coordinator", "dbserver", "agent", "single"]
 

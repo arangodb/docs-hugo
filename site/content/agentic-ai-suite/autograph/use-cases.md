@@ -6,8 +6,6 @@ description: >-
   Real-world enterprise use cases for Arango's AutoGraph copilot and 
   comparison with traditional RAG approaches, including business benefits 
   and practical applications
-aliases:
-  - /agentic-ai-suite/graphrag/use-cases/
 ---
 
 AutoGraph enables AI agents and co-pilots across enterprise workflows where contextual 
@@ -110,33 +108,3 @@ topology and real-time telemetry. The co-pilot provides context, impact analysis
 - 70% reduction in mean time to resolution
 - Predict failures before user impact
 - Understand blast radius before changes
-
-## GraphRAG vs Traditional RAG
-
-Understanding the difference between GraphRAG (used in AutoGraph) and traditional vector-only 
-RAG explains why AutoGraph delivers more accurate answers.
-
-**Traditional RAG (Vector-Only)**: Finds text chunks semantically similar to your query. 
-Retrieves isolated chunks with no understanding of relationships. LLM receives "a pile of 
-ingredients" without the recipe.
-
-**GraphRAG (AutoGraph)**: Retrieves a subgraph of interconnected information—entities, 
-relationships, and chunks together. LLM receives "the actual recipe" with clear instructions.
-
-**Example:**
-
-**Question**: "What is the fix for Issue A?"
-
-**Vector-Only RAG**: Retrieves two separate chunks about Issue A and Fix 1 but cannot link 
-them. Response: _"The context does not provide a specific fix for Issue A."_
-
-**GraphRAG**: Retrieves structured relationships:
-```
-(Issue A) -> [HAS_FIX] -> (Fix 1)
-(Issue A) -> [CAUSED_BY] -> (Connection Pool Exhaustion)
-(Fix 1) -> [MODIFIES] -> (config.yaml)
-```
-
-Response: _"The fix for Issue A is Fix 1, which involves increasing the connection pool 
-size in config.yaml."_
-

@@ -1,0 +1,37 @@
+{{ $pageVersion := .Page.Store.Get "versionShort" -}}
+{{ if not $pageVersion -}}
+  {{ $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) -}}
+{{ end -}}
+
+{{ $dataFolderByVersion := index site.Data $pageVersion -}}
+{{ $rules := index $dataFolderByVersion "optimizer-rules" }}
+
+{{ with $rules -}}
+{{ range . -}}
+{{ if not .flags.hidden -}}
+#### `{{ .name }}`
+
+{{ if .flags.enterpriseOnly -}}
+_Enterprise Edition only_
+{{ end }}
+
+{{ if .flags.disabledByDefault -}}
+This rule is disabled by default.
+{{ end }}
+
+{{ if not .flags.canBeDisabled -}}
+This rule cannot be turned off.
+{{ end }}
+
+{{ if .flags.clusterOnly -}}
+Only available in cluster deployments.
+{{ end }}
+
+{{ .description }}
+
+---
+
+{{ end }}
+{{ end }}
+
+{{ end }}

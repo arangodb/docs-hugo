@@ -9,15 +9,24 @@ description: >-
 For more information on Foxx and its JavaScript APIs see the
 [Foxx documentation](../foxx-microservices/_index.md).
 
+{{< warning >}}
+The Foxx microservice feature including the management API is deprecated and
+removed in ArangoDB v4.0.
+{{< /warning >}}
+
 ## Management
 
 ### List the installed services
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx:
     get:
       operationId: listFoxxServices
+      deprecated: true
       description: |
         Fetches a list of services installed in the current database.
 
@@ -60,10 +69,14 @@ paths:
 ### Get the service description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     get:
       operationId: getFoxxServiceDescription
+      deprecated: true
       description: |
         Fetches detailed information for the service at the given mount path.
 
@@ -109,10 +122,14 @@ paths:
 ### Install a new service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx:
     post:
       operationId: createFoxxService
+      deprecated: true
       description: |
         Installs the given new service at the given mount path.
 
@@ -194,10 +211,14 @@ paths:
 ### Uninstall a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     delete:
       operationId: deleteFoxxService
+      deprecated: true
       description: |
         Removes the service at the given mount path from the database and file system.
 
@@ -237,10 +258,14 @@ paths:
 ### Replace a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     put:
       operationId: replaceFoxxService
+      deprecated: true
       description: |
         Removes the service at the given mount path from the database and file system.
         Then installs the given new service at the same mount path.
@@ -335,10 +360,14 @@ paths:
 ### Upgrade a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     patch:
       operationId: upgradeFoxxService
+      deprecated: true
       description: |
         Installs the given new service on top of the service currently installed at the given mount path.
         This is only recommended for switching between different versions of the same service.
@@ -435,10 +464,14 @@ paths:
 ### Get the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     get:
       operationId: getFoxxConfiguration
+      deprecated: true
       description: |
         Fetches the current configuration for the service at the given mount path.
 
@@ -471,10 +504,14 @@ paths:
 ### Update the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     patch:
       operationId: updateFoxxConfiguration
+      deprecated: true
       description: |
         Replaces the given service's configuration partially.
 
@@ -514,10 +551,14 @@ paths:
 ### Replace the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     put:
       operationId: replaceFoxxConfiguration
+      deprecated: true
       description: |
         Replaces the given service's configuration completely.
 
@@ -557,10 +598,14 @@ paths:
 ### Get the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     get:
       operationId: getFoxxDependencies
+      deprecated: true
       description: |
         Fetches the current dependencies for service at the given mount path.
 
@@ -593,10 +638,14 @@ paths:
 ### Update the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     patch:
       operationId: updateFoxxDependencies
+      deprecated: true
       description: |
         Replaces the given service's dependencies.
 
@@ -641,10 +690,14 @@ paths:
 ### Replace the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     put:
       operationId: replaceFoxxDependencies
+      deprecated: true
       description: |
         Replaces the given service's dependencies completely.
 
@@ -691,10 +744,14 @@ paths:
 ### List the service scripts
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/scripts:
     get:
       operationId: listFoxxScripts
+      deprecated: true
       description: |
         Fetches a list of the scripts defined by the service.
 
@@ -726,10 +783,14 @@ paths:
 ### Run a service script
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/scripts/{name}:
     post:
       operationId: runFoxxScript
+      deprecated: true
       description: |
         Runs the given script for the service at the given mount path.
 
@@ -775,10 +836,14 @@ paths:
 ### Run the service tests
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/tests:
     post:
       operationId: runFoxxTests
+      deprecated: true
       description: |
         Runs the tests for the service at the given mount path and returns the results.
 
@@ -851,10 +916,14 @@ paths:
 ### Enable the development mode
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/development:
     post:
       operationId: enableFoxxDevelopmentMode
+      deprecated: true
       description: |
         Puts the service into development mode.
 
@@ -893,10 +962,14 @@ paths:
 ### Disable the development mode
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/development:
     delete:
       operationId: disableFoxxDevelopmentMode
+      deprecated: true
       description: |
         Puts the service at the given mount path into production mode.
 
@@ -930,10 +1003,14 @@ paths:
 ### Get the service README
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/readme:
     get:
       operationId: getFoxxReadme
+      deprecated: true
       description: |
         Fetches the service's README or README.md file's contents if any.
       parameters:
@@ -966,10 +1043,14 @@ paths:
 ### Get the Swagger description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/swagger:
     get:
       operationId: getFoxxSwaggerDescription
+      deprecated: true
       description: |
         Fetches the Swagger API description for the service at the given mount path.
 
@@ -1001,10 +1082,14 @@ paths:
 ### Download a service bundle
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/download:
     post:
       operationId: downloadFoxxService
+      deprecated: true
       description: |
         Downloads a zip bundle of the service directory.
 
@@ -1042,10 +1127,14 @@ paths:
 ### Commit the local service state
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/commit:
     post:
       operationId: commitFoxxServiceState
+      deprecated: true
       description: |
         Commits the local service state of the Coordinator to the database.
 

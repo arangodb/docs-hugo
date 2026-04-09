@@ -141,8 +141,8 @@ const numbers = db._query(`
 // RETURN i
 ```
 
-If possible, you should always use the `query` or `aql` template tags
-rather than passing raw query strings to `db._query` directly.
+If possible, you should always use the `aql` or `query` template tags
+rather than passing raw query strings to `db._query()` directly.
 
 ## AQL fragments
 

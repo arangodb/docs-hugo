@@ -42,7 +42,6 @@ curl -X POST /_platform/acp/v1/graphrag-query-stream \
   -d '{
     "query": "How are X and Y related?",
     "query_type": "UNIFIED",
-    "provider": 0,
     "include_metadata": true
   }'
 ```
@@ -58,7 +57,6 @@ curl -X POST /_platform/acp/v1/graphrag-query \
     "query": "What are the properties of a specific entity?",
     "query_type": "LOCAL",
     "use_llm_planner": true,
-    "provider": 0,
     "include_metadata": true
   }'
 ```
@@ -74,7 +72,6 @@ curl -X POST /_platform/acp/v1/graphrag-query \
     "query": "What are the main themes discussed in the document?",
     "query_type": "GLOBAL",
     "level": 1,
-    "provider": 0,
     "include_metadata": true
   }'
 ```
@@ -90,7 +87,6 @@ curl -X POST /_platform/acp/v1/graphrag-query \
     "query": "What is the AR3 Drone?",
     "query_type": "LOCAL",
     "use_llm_planner": false,
-    "provider": 0,
     "include_metadata": true
   }'
 ```
@@ -112,7 +108,6 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphrag-query-st
   -d '{
     "query": "How are X and Y related?",
     "query_type": "UNIFIED",
-    "provider": 0,
     "include_metadata": true,
     "show_citations": true,
     "use_cache": false,
@@ -129,9 +124,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphrag-query \
     "query": "What are all the technical specifications mentioned?",
     "query_type": "LOCAL",
     "use_llm_planner": true,
-    "provider": 0,
     "include_metadata": true,
-    "show_citations": true,
     "response_instruction": "Focus on technical details and specifications"
   }'
 ```
@@ -145,7 +138,6 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphrag-query \
     "query": "What are the main themes in my documents?",
     "query_type": "GLOBAL",
     "level": 1,
-    "provider": 0,
     "include_metadata": true,
     "response_instruction": "Provide a high-level summary"
   }'

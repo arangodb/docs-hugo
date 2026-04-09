@@ -68,7 +68,7 @@ paths:
                     bindVars:
                       description: |
                         The bind parameters. This attribute is omitted if the
-                        `--query.tracking-with-bindvars` startup option is set
+                        [`--query.tracking-with-bindvars` startup option](../../../components/arangodb-server/options.md#--querytracking-with-bindvars) is set
                         to `false`.
                       type: object
                     size:
@@ -304,7 +304,7 @@ paths:
                   description: |
                      The mode the AQL query cache shall operate in.
 
-                     Default: Controlled by the `--query.cache-mode` startup option.
+                     Default: Controlled by the [`--query.cache-mode` startup option](../../../components/arangodb-server/options.md#--querycache-mode).
                   type: string
                   # Unquoted on and off are booleans in YAML 1.1!
                   enum: ["off", "on", "demand"]
@@ -313,29 +313,28 @@ paths:
                     The maximum number of query results that are stored per
                     database-specific cache.
 
-                    Default: Controlled by the  `--query.cache-entries` startup option.
+                    Default: Controlled by the [`--query.cache-entries` startup option](../../../components/arangodb-server/options.md#--querycache-entries).
                   type: integer
                 maxResultsSize:
                   description: |
                     The maximum cumulated size of query results that are stored
                     per database-specific cache (in bytes).
 
-                    Default: Controlled by the `--query.cache-entries-max-size` startup option.
+                    Default: Controlled by the [`--query.cache-entries-max-size` startup option](../../../components/arangodb-server/options.md#--querycache-entries-max-size).
                   type: integer
                 maxEntrySize:
                   description: |
                     The maximum individual size of query results that are stored
                     per database-specific cache (in bytes).
 
-                    Default: Controlled by the `--query.cache-entry-max-size` startup option.
+                    Default: Controlled by the [`--query.cache-entry-max-size` startup option](../../../components/arangodb-server/options.md#--querycache-entry-max-size).
                   type: integer
                 includeSystem:
                   description: |
                     Whether to store results of queries that involve
                     system collections in the cache.
 
-                    Default: Controlled by the `--query.cache-include-system-collections`
-                    startup option
+                    Default: Controlled by the [`--query.cache-include-system-collections` startup option](../../../components/arangodb-server/options.md#--querycache-include-system-collections).
                   type: boolean
       responses:
         '200':

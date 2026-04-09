@@ -3,16 +3,16 @@ title: Kubernetes-Native Architecture
 menuTitle: Kubernetes
 weight: 20
 description: >-
-  The Arango Data Platform is purpose-built for Kubernetes, leveraging
+  The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
 ---
-The Arango Data Platform is **Kubernetes-native** by design, meaning it is built
+The Arango Contextual Data Platform is **Kubernetes-native** by design, meaning it is built
 from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
 it to function. This is not an optional feature, Kubernetes is the foundation
 that powers the entire platform architecture.
 
 {{< info >}}
-**Kubernetes Required**: The Arango Data Platform cannot operate without Kubernetes.
+**Kubernetes Required**: The Arango Contextual Data Platform cannot operate without Kubernetes.
 It relies on Kubernetes orchestration and the 
 [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`) for all deployment, scaling, and management operations.
@@ -20,7 +20,7 @@ It relies on Kubernetes orchestration and the
 
 ## Why Kubernetes?
 
-By building exclusively on Kubernetes, the Arango Data Platform delivers
+By building exclusively on Kubernetes, the Arango Contextual Data Platform delivers
 enterprise-grade capabilities that would be difficult or impossible to achieve
 with traditional deployment approaches:
 
@@ -43,7 +43,7 @@ with traditional deployment approaches:
 
 ## The ArangoDB Kubernetes Operator
 
-The Arango Data Platform is powered by the official
+The Arango Contextual Data Platform is powered by the official
 [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`), which provides the following features:
 
@@ -67,7 +67,7 @@ For detailed information about the operator, see the
 
 ## Platform Services as Kubernetes Resources
 
-All components of the Arango Data Platform, from the core database to the optional
+All components of the Arango Contextual Data Platform, from the core database to the optional
 AI Suite, are deployed and managed as native Kubernetes resources. This
 means you can do the following:
 
@@ -76,7 +76,7 @@ means you can do the following:
 - Integrate with existing Kubernetes infrastructure and workflows
 - Apply your organization's Kubernetes policies and security controls
 
-This Kubernetes-native approach ensures the Arango Data Platform fits naturally
+This Kubernetes-native approach ensures the Arango Contextual Data Platform fits naturally
 into modern cloud-native environments and DevOps practices.
 
 ## Third-party components used by the platform

@@ -26,7 +26,7 @@ The AQLizer feature is integrated into the Contextual Data Platform web interfac
 You can access it directly from the **Query Editor**. You can generate, verify,
 and refine queries in one place. To learn more about how to set up and generate
 queries, see the [Query Editor](../platform-suite/query-editor.md#generate-queries-aqlizer)
-documentation of the Data Platform.
+documentation of the Contextual Data Platform.
 
 ![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
 

@@ -1,5 +1,5 @@
 ---
-title: How to use GraphML in the Arango Data Platform web interface
+title: How to use GraphML in the Arango Contextual Data Platform web interface
 menuTitle: Web Interface
 weight: 10
 description: >-
@@ -22,7 +22,7 @@ board with four columns, one for each phase:
 
 ## Create a GraphML project
 
-To create a new GraphML project using the Arango Data Platform web interface, follow these steps:
+To create a new GraphML project using the Arango Contextual Data Platform web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
 2. In the left-hand sidebar, click **AI Suite** and then click **Run GraphML**.

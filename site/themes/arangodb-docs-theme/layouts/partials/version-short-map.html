@@ -1,0 +1,14 @@
+{{- $versionNameOrAlias := . }}
+{{- $versionsMap := dict }}
+{{- $versions := index site.Data.versions "/arangodb/" }}
+{{- range $i, $version := $versions }}
+  {{- $versionsMap = merge $versionsMap (dict
+    $version.name $version.name
+    $version.alias $version.name) }}
+{{- end }}
+{{- $versionName := index $versionsMap $versionNameOrAlias }}
+{{- if not $versionName }}
+  {{- errorf "Failed to look up version name from name or alias '%v'" $versionNameOrAlias }}
+{{- end }}
+{{- /* warnf "Looked up version name '%v' from name or alias '%v', %v" $versionName $versionNameOrAlias $versionsMap */}}
+{{- return $versionName -}}

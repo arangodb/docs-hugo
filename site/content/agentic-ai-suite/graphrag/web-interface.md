@@ -1,5 +1,5 @@
 ---
-title: How to use GraphRAG in the Arango Data Platform web interface
+title: How to use GraphRAG in the Arango Contextual Data Platform web interface
 menuTitle: Web Interface
 weight: 20
 description: >-
@@ -17,10 +17,11 @@ The entire process is organized into sequential steps within a **Project**:
 
 ## Create a GraphRAG project
 
-To create a new GraphRAG project using the Arango Data Platform web interface, follow these steps:
+To create a new GraphRAG project using the Arango Contextual Data Platform
+web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
-2. In the left-hand sidebar, click **AI Suite** to open the GraphRAG project management
+2. In the left-hand sidebar, click **Agentic AI Suite** to open the GraphRAG project management
    interface, then click **Run GraphRAG**.
 3. In the **GraphRAG projects** view, click **Add new project**.
 4. The **Create GraphRAG project** modal opens. Enter a **Name** and optionally
@@ -90,6 +91,37 @@ service automatically downloads and loads models from the MLflow registry.
 
 See also the [Importer](../reference/importer/) service documentation.
 
+## Update Importer service parameters
+
+You can update the Importer service parameters at any time from the
+**Project Settings** dialog, for example if you selected an incorrect model or
+provider combination, or if your API key has changed or expired.
+
+{{< tabs "update-importer-service" >}}
+
+{{< tab "OpenAI" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click **Edit service**.
+3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "OpenRouter" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click **Edit service**.
+3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**, or **OpenRouter API Key** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "Triton LLM Host" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Importer** section, click **Edit service**.
+3. Update the **LLM API Provider** or **Model** as needed.
+4. Click the **Update importer service** button to apply the changes.
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ## Add data source
 
 To add your first data source:
@@ -101,13 +133,6 @@ To add your first data source:
 3. Enter a descriptive name for your file.
 4. Click the **Start import** button.
 
-{{< info >}}
-Currently, you can import one file at a time in either Markdown (`.md`) or
-plain text (`.txt`) format. Additional files can be added to update the Knowledge Graph.
-{{< /info >}}
-
-![Upload file in GraphRAG web interface](../../images/graphrag-ui-upload-file.png)
-
 ## Explore the Knowledge Graph
 
 After your file is processed, you can view and explore the generated Knowledge Graph
@@ -118,6 +143,35 @@ in the **Graph** section.
 For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
+
+## Auto-refresh and Pause Controls
+
+The graph section automatically checks for changes to the data currently displayed
+on the graph. You can control this behavior using the refresh controls in the
+top-right corner.
+
+### Auto-refresh
+
+The auto-refresh feature detects when any of those documents have been modified
+or deleted from the database. It does not detect new documents added to the knowledge
+graph, such as those created by the Importer. To see newly imported data, use the
+**Search Graph** button to find and add specific nodes to the canvas.
+
+When auto-refresh is active, the graph checks the database at a configurable
+interval. You can choose the refresh frequency from the **Refresh every**
+dropdown menu (5s, 10s, 15s, 30s, or 60s). When a change is detected, the graph
+updates automatically without any action needed from you.
+
+### Pausing Auto-refresh
+
+You can also stop automatic updates via the **Pause auto-fresh** button. While
+paused, the graph still checks for changes in the background. If changes are
+detected, a banner appears at the top of the graph informing you that the graph
+data has changed. You can either apply the latest changes to the graph or dismiss
+without applying the changes.
+
+To resume auto-refresh, click the Play button. Normal automatic checking resumes
+at your selected interval.
 
 ## Update the Knowledge Graph
 
@@ -176,6 +230,37 @@ service automatically downloads and loads models from the MLflow registry.
 
 See also the [Retriever](../reference/retriever/) documentation.
 
+## Update Retriever service parameters
+
+You can update the Retriever service parameters at any time from the
+**Project Settings** dialog, for example if you selected an incorrect model or
+provider combination, or if your API key has changed or expired.
+
+{{< tabs "update-retriever-service" >}}
+
+{{< tab "OpenAI" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click **Edit service**.
+3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "OpenRouter" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click **Edit service**.
+3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< tab "Triton LLM Host" >}}
+1. Open the **Project Settings** dialog.
+2. In the **Retriever** section, click **Edit service**.
+3. Update the **LLM API Provider** or **Model** as needed.
+4. Click the **Update retriever service** button to apply the changes.
+{{< /tab >}}
+
+{{< /tabs >}}
+
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
@@ -189,6 +274,9 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   directly in the chat
 - Change or create a new retriever service
 - Clear the chat
+- Toggle **Cache** to enable or disable response caching for the current query.
+  Enabling caching improves response times for repeated queries. Leave it disabled when you need fresh results or when testing changes to your knowledge graph.
+- Toggle **Citations** to show or hide inline citations in responses. For deep search queries, citations are always disabled.
 
 ## Integrate the Knowledge Graph chat service into your application
 

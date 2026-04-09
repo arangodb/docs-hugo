@@ -24,7 +24,7 @@ before using the API.
 {{< /warning >}}
 
 The permissions required to use the `/_admin/backup/*` endpoints depends on the
-setting of the [`--backup.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+setting of the [`--backup.api-enabled` startup option](../../components/arangodb-server/options.md#--backupapi-enabled).
 
 ## Create a backup
 

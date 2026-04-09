@@ -6,6 +6,10 @@ description: >-
   The HTTP API for tasks lets you manage the periodic or timed execution of
   server-side JavaScript code
 ---
+{{< warning >}}
+The tasks feature is deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 ## List all tasks
 
 ```openapi
@@ -13,6 +17,7 @@ paths:
   /_db/{database-name}/_api/tasks:
     get:
       operationId: listTasks
+      deprecated: true
       description: |
         Fetches all existing tasks on the server.
       parameters:
@@ -110,6 +115,7 @@ paths:
   /_db/{database-name}/_api/tasks/{id}:
     get:
       operationId: getTask
+      deprecated: true
       description: |
         fetches one existing task on the server specified by `id`
       parameters:
@@ -226,6 +232,7 @@ paths:
   /_db/{database-name}/_api/tasks:
     post:
       operationId: createTask
+      deprecated: true
       description: |
         Creates a new task with a generated identifier.
       parameters:
@@ -361,6 +368,7 @@ paths:
   /_db/{database-name}/_api/tasks/{id}:
     put:
       operationId: createTaskWithId
+      deprecated: true
       description: |
         Registers a new task with the specified ID.
 
@@ -507,6 +515,7 @@ paths:
   /_db/{database-name}/_api/tasks/{id}:
     delete:
       operationId: deleteTask
+      deprecated: true
       description: |
         Deletes the task identified by `id` on the server.
       parameters:

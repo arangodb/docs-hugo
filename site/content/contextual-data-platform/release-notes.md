@@ -11,7 +11,102 @@ The Arango Contextual Data Platform has been officially released and comes with
 various improvements and major additions to the unified web interface, the
 Platform Suite and the Agentic AI Suite.
 
-The minimum required ArangoDB version is Enterprise Edition v4.0.0.
+The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
+
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+[AutoGraph](../agentic-ai-suite/autograph/_index.md) is an automation copilot
+that analyzes enterprise documents, discovers natural knowledge domains, and
+automatically builds optimized knowledge graphs for intelligent retrieval at scale.
+
+Key features:
+
+- **Automated domain discovery**: Analyzes document relationships and discovers
+natural clusters using graph algorithms, creating specialized RAG partitions per domain.
+- **Intelligent RAG strategy selection**: Automatically recommends FullGraphRAG
+or VectorRAG for each domain based on content complexity.
+- **Knowledge graph creation**: Transforms documents into structured knowledge graphs
+with entities, relationships, and semantic connections.
+- **Natural language querying**: Chat with your knowledge graph using natural language
+to ask questions and retrieve insights from your documents.
+- **Web interface**: Streamlined [workflow](../agentic-ai-suite/autograph/web-interface.md)
+guides you through document upload, corpus building, strategy generation, knowledge graph
+import, retriever deployment, and chat.
+
+### Ada
+
+{{< tag "Agentic AI Suite" >}}
+
+[Ada](../agentic-ai-suite/ada.md) is a new AI digital assistant integrated into the Arango
+Contextual Data Platform. It lets you interact with your database using natural language,
+generate and execute AQL queries, explore collections and data structures, and save reusable
+query artifacts through a conversational chat interface.
+
+### Graph Visualizer
+
+{{< tag "Platform Suite" >}}
+
+The [Graph Visualizer](../platform-suite/graph-visualizer.md) now supports exporting
+graph data in CSV format. Export the entire visible canvas, or export nodes and
+edges separately with all document attributes included.
+
+### Query Editor
+
+{{< tag "Platform Suite" >}}
+
+The [Query Editor](../platform-suite/query-editor.md) has been extended with the following capabilities:
+
+- **Graph visualization**: If a query returns edges or traversal paths, the
+  results are shown by an embedded graph visualizer. You can still switch to a JSON
+  view mode of the results.
+
+- **Download results**:
+  You can download the results of queries in JSON and CSV format.
+
+- **Syntax highlighting**: AQL queries in the query editor are colorized for
+  better readability.
+
+### Container Manager
+
+{{< tag "Platform Suite" >}}
+
+The [Container Manager](../platform-suite/container-manager/_index.md) enables you to
+deploy and manage custom services directly within the Arango Contextual Data Platform,
+running your own applications alongside platform services.
+
+Deploy services by uploading source code packages (`.tar.gz`) or providing Docker
+image URLs, with support for Python 3.13 runtimes (including PyTorch and cuGraph
+variants). Services can be scoped globally or per-database, with version management
+and deployment via [web interface](../platform-suite/container-manager/web-interface.md)
+or [API](../platform-suite/container-manager/deploy-api/).
+
+### File Manager
+
+{{< tag "Platform Suite" >}}
+
+The [File Manager](../platform-suite/file-manager.md) provides a centralized interface
+for viewing and managing data stored by platform services, including container
+service files, RAG content, and AutoGraph files.
+
+### Secrets Manager
+
+{{< tag "Platform Suite" >}}
+
+The [Secrets Manager](../platform-suite/secrets-manager.md) has been introduced
+for managing API keys and credentials across the platform.
+Secrets are encrypted at rest and accessible to services via sidecar containers,
+with support for bulk operations, import/export, and multiple secret types.
+
+### Monitoring
+
+{{< tag "Platform Suite" >}}
+
+Integrated [Monitoring](../platform-suite/monitoring.md) with Grafana and Prometheus
+provides observability for the entire deployment. Both tools are embedded in the
+unified web interface with authenticated access for tracking performance metrics,
+cluster health, and resource utilization.
 
 ### Dashboard
 
@@ -23,25 +118,9 @@ A new home screen has been added, providing the following information and action
 - Shard distribution information and rebalancing options
 - The cluster maintenance status
 
-### Query Editor
-
-{{< tag "Platform Suite" >}}
-
-The [Query Editor](../platform-suite/query-editor.md) has been extended with the following capabilities:
-
-- **Graph visualization**: If a query returns edges or traversal paths, the
-  results are shown by an embedded graph viewer. You can still switch to a JSON
-  view mode of the results.
-
-- **Download results**:
-  You can download the results of queries in JSON and CSV format.
-
-- **Syntax highlighting**: AQL queries in the query editor are colorized for
-  better readability.
-
 ## October 2025 (v3.0, pre-release 2)
 
-This release includes new features and enhancements for the Data Platform
+This release includes new features and enhancements for the Contextual Data Platform
 web interface as well as the components of the Agentic AI Suite.
 
 The minimum required ArangoDB version has been raised to Enterprise Edition v3.12.6.
@@ -81,7 +160,7 @@ You can generate AQL queries from natural language directly in the Query Editor 
 {{< tag "Platform Suite" >}}
 
 A new [Query Editor](../platform-suite/query-editor.md) has been integrated into the
-Arango Data Platform web interface for writing, executing, and managing AQL queries.
+Arango Contextual Data Platform web interface for writing, executing, and managing AQL queries.
 
 Key features:
 
@@ -130,7 +209,7 @@ Key improvements:
 {{< tag "Platform Suite" >}}
 
 - **Secrets Manager**: Store secrets like API keys for Large Language Model (LLM)
-  for easy use across the Data Platform. Secrets are encrypted at rest and can be
+  for easy use across the Contextual Data Platform. Secrets are encrypted at rest and can be
   accessed by services via a metadata sidecar container.
 
 ## July 2025 (v3.0, pre-release 1)

@@ -5,6 +5,11 @@ weight: 55
 description: >-
   `foxx-cli` is command line tool for managing and developing ArangoDB Foxx services
 ---
+{{< warning >}}
+Foxx microservices are deprecated and removed in ArangoDB v4.0.
+Foxx CLI is therefore not maintained anymore.
+{{< /warning >}}
+
 Foxx CLI is an optional tool which requires Node.js and can be installed via the
 package managers NPM and Yarn.
 

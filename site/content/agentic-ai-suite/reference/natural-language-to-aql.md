@@ -54,7 +54,8 @@ This returns a JWT token that you can use as your Bearer token in all subsequent
 ### Start the service
 
 {{< info >}}
-Replace `<ExternalEndpoint>` in all examples below with your Arango Data Platform deployment URL.
+Replace `<ExternalEndpoint>` in all examples below with your
+Arango Contextual Data Platform deployment URL.
 {{< /info >}}
 
 Create the service instance with your configuration:

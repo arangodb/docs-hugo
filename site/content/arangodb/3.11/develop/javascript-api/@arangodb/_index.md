@@ -75,6 +75,34 @@ const result2 = db._query(aql`
 `).toArray();
 ```
 
+{{< security >}}
+When using plain strings as queries, ArangoDB provides no safeguards to prevent
+accidental AQL injections:
+
+```js
+// Malicious user input where you might expect a number
+const evil = "1 FOR u IN mydata REMOVE u IN mydata";
+
+// DO NOT DO THIS
+const numbers = db._query(`
+  FOR d IN 1..${evil}
+  RETURN d
+`).toArray();
+```
+
+The actual query executed by the above code:
+
+```aql
+FOR d IN 1..1
+  FOR u IN mydata
+    REMOVE u IN mydata
+    RETURN d
+```
+
+If possible, you should always use the `aql` or `query` template tags rather
+than passing raw query strings to `db._query()` directly.
+{{< /security >}}
+
 ## The `aql.literal` helper
 
 `arangodb.aql.literal`
@@ -159,8 +187,8 @@ const result = db._query(aql`
 
 `arangodb.query`
 
-In most cases you will likely use the `aql` template handler to create a query
-you directly pass to `db._query()`. To make this even easier ArangoDB provides
+In most cases, you likely use the `aql` template handler to create a query
+you directly pass to `db._query()`. To make this even easier, ArangoDB provides
 the `query` template handler, which behaves exactly like `aql` but also directly
 executes the query and returns the result cursor instead of the query object:
 

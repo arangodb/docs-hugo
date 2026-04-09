@@ -28,7 +28,7 @@ properties:
 ```json
 "status": {
     "status": "service_started",
-    "progress": 100,
+    "progress": 100
 }
 ```
 

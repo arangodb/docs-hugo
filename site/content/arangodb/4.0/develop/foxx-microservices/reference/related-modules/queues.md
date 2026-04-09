@@ -4,6 +4,10 @@ menuTitle: Queues
 weight: 25
 description: ''
 ---
+{{< warning >}}
+The tasks and Foxx queues features are deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 `const queues = require('@arangodb/foxx/queues')`
 
 Foxx allows defining job queues that let you perform slow or expensive actions

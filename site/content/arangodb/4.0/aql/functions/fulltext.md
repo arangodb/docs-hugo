@@ -9,7 +9,7 @@ See [fulltext indexes](../../indexes-and-search/indexing/working-with-indexes/fu
 for details.
 
 {{< warning >}}
-The fulltext index type is deprecated from version 3.10 onwards.
+The fulltext index type is deprecated from version 3.10 onwards and removed in ArangoDB v4.0.
 It is recommended to use [Inverted indexes](../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md) or
 [ArangoSearch](../../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 {{< /warning >}}

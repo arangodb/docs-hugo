@@ -8,6 +8,13 @@ description: >-
 ---
 ## Key features
 
+- [**Ada**](../agentic-ai-suite/ada.md):
+  The AI digital assistant, for natural language interaction and development.
+- [**AutoGraph**](../agentic-ai-suite/autograph/_index.md):
+  Organize enterprise data into contextual knowledge graph using
+  **AutoRAG** to optimize retrieval across graph, vector, and document data
+- [**AQLizer**](../agentic-ai-suite/aqlizer.md):
+  Generate AQL queries from natural language.
 - [**GraphRAG**](../agentic-ai-suite/graphrag/_index.md):
   Generate knowledge graphs from documents and enable conversational querying
   of your data.
@@ -17,8 +24,6 @@ description: >-
 - [**Graph Analytics**](../agentic-ai-suite/graph-analytics/_index.md):
   Run graph algorithms such as PageRank on dedicated compute resources to
   discover influential nodes and patterns.
-- [**AQLizer**](../agentic-ai-suite/aqlizer.md):
-  Generate AQL queries from natural language.
 
 ## Additional features
 

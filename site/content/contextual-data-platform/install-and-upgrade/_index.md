@@ -8,8 +8,13 @@ description: >-
 ---
 ## Requirements for self-hosting
 
+- **ArangoDB Enterprise Edition**: The multi-model database system for graph,
+  document, key-value, search, and vector.
+  
+  The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
+
 - **Kubernetes**: Orchestrates the selected services that comprise the
-  Arango Data Platform, running them in containers for safety and scalability.
+  Arango Contextual Data Platform, running them in containers for safety and scalability.
 
   Set up a [Kubernetes](https://kubernetes.io/) cluster if you don't have one
   available yet.
@@ -18,13 +23,13 @@ description: >-
   control plane.
 
   Install [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for applying
-  specifications such as for creating the ArangoDB Core deployment, as well as
+  specifications such as for creating the ArangoDB core deployment, as well as
   for checking pods, logs, etc.
 
 - **Helm**: A package manager for Kubernetes.
 
   You need to have [helm](https://helm.sh/docs/intro/install/) installed in order
-  to install the ArangoDB Kubernetes Operator as part of the Data Platform setup.
+  to install the ArangoDB Kubernetes Operator as part of the Contextual Data Platform setup.
 
 - **Container registry**: A repository for storing and accessing container images.
 
@@ -36,29 +41,44 @@ description: >-
   In environments with internet access, you don't need your own container registry
   but you can optionally use one.
 
+- **x86-64 CPU**: The processor(s) must support the **x86-64** architecture.
+  See the [Supported platforms and architectures](../../arangodb/3.12/operations/installation/_index.md#supported-platforms-and-architectures)
+  of ArangoDB for details.
+
+  {{< tip >}}
+  Arango is fully committed to supporting the ARM architecture and infrastructure
+  for all products (ArangoDB, Arango Contextual Data Platform, and
+  Arango Agentic AI Suite) and tests them before each release. As Arango develops
+  new services and components for the data platform, some of them may be under
+  validation and QA. If you have a specific request for a new feature, especially
+  around AI services, please reach out to your sales/service/support team to confirm.
+  {{< /tip >}}
+
 {{< comment >}}
 - **Licenses**: If you want to use any paid features, you need to purchase the
   respective packages.
 {{< /comment >}}
 
-## Install the Data Platform
+## Install the Contextual Data Platform
 
-Follow the guide for deploying the Arango Data Platform that matches your needs:
+Follow the guide for deploying the Arango Contextual Data Platform that matches your needs:
 
 - [**Online on-prem setup**](online-setup.md): Install with internet access.
 - [**Offline on-prem setup**](offline-setup.md): Install without internet access,
   including fully air-gapped environments.
 
-## Upgrade the Data Platform
+<!-- TODO
+## Upgrade the Contextual Data Platform
 
 - [**Upgrade from ArangoDB**](upgrade-from-arangodb.md): Migrate your existing
-  ArangoDB deployment to a Kubernetes-managed Data Platform deployment.
+  ArangoDB deployment to a Kubernetes-managed Contextual Data Platform deployment.
 - [**Upgrade version**](upgrade-version.md): Upgrade to a newer version of the
-  Data Platform.
+  Contextual Data Platform.
+-->
 
 ## Interfaces
 
-The Arango Data Platform uses a gateway to make all its services available via a
+The Arango Contextual Data Platform uses a gateway to make all its services available via a
 single port at the external address of the deployment. The service port of the
 Data Platform is `8529` inside Kubernetes, but outside it can be different
 depending on the configuration.
@@ -73,14 +93,14 @@ kubectl port-forward --namespace arango \
   service/deployment-example-ea 8529:8529
 ```
 
-In this case, the base URL to access the Data Platform is `https://127.0.0.1:8529`.
+In this case, the base URL to access the Contextual Data Platform is `https://127.0.0.1:8529`.
 
 You can stop the port forwarding in the command-line with the key combination
 {{< kbd "Ctrl C" >}}.
 
 ### Unified web interface
 
-You can access the Arango Data Platform web interface with a browser by appending
+You can access the Arango Contextual Data Platform web interface with a browser by appending
 `/ui/` to the base URL, e.g. `https://127.0.0.1:8529/ui/`.
 
 For a local deployment without further certificate configuration, your browser

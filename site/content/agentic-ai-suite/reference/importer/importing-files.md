@@ -28,6 +28,18 @@ Before you can import files, make sure you've completed these steps:
 Once you've completed these steps, you're ready to import documents to build 
 your Knowledge Graph using either single file import or multi-file import.
 
+## Choosing a RAG Mode
+
+The Importer supports two operational modes:
+
+- **Full GraphRAG** (default): Extracts entities, relationships, and community structures from your documents to build a complete knowledge graph. Best for complex queries that require understanding relationships between concepts.
+
+- **Vector RAG**: Performs simple vector-based retrieval using only document chunks. Faster processing but without the rich graph structure. Best for straightforward semantic search use cases.
+
+{{< tip >}}
+If you're unsure which mode to use, start with Full GraphRAG. You can always switch to Vector RAG later if you need faster processing and simpler retrieval. See the [Parameters Reference](parameters.md#rag-mode-configuration) for more details.
+{{< /tip >}}
+
 ## Single File Import
 
 Use single file import when you want to process one document at a time. This is 
@@ -72,7 +84,7 @@ curl -X POST https://<your-platform-url>/v1/import \
   }'
 ```
 
-Replace `<your-platform-url>` with your Arango Data Platform URL.
+Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 The service will:
 - Process the document using the configured LLM model.
@@ -121,9 +133,41 @@ curl -X POST https://<your-platform-url>/v1/import-multiple \
   }'
 ```
 
-Replace `<your-platform-url>` with your Arango Data Platform URL.
+Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
+
+### Vector RAG example
+
+For faster processing when you only need semantic search over document chunks:
+
+```bash
+curl -X POST https://<your-platform-url>/v1/import-multiple \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [
+      {
+        "name": "document1.md",
+        "content": "'$(base64 -i document1.md)'",
+        "citable_url": "https://example.com/docs/document1"
+      },
+      {
+        "name": "document2.txt",
+        "content": "'$(base64 -i document2.txt)'",
+        "citable_url": "https://example.com/docs/document2"
+      }
+    ],
+    "rag_mode": "vector_rag",
+    "batch_size": 1000,
+    "chunk_token_size": 1200,
+    "chunk_overlap_token_size": 100,
+    "vector_index_metric": "cosine"
+  }'
+```
+
+{{< info >}}
+In `"vector_rag"` mode, entity extraction is skipped and chunk embeddings are automatically enabled. This results in faster processing but without the knowledge graph structure.
+{{< /info >}}
 
 ### Full example with all parameters
 
@@ -143,6 +187,7 @@ This comprehensive example demonstrates all available import parameters for the 
       "citable_url": "https://example.com/doc2"
     }
   ],
+  "rag_mode": "full_graphrag",
   "store_in_s3": false,
   "batch_size": 1000,
   "enable_chunk_embeddings": true,
@@ -157,6 +202,7 @@ This comprehensive example demonstrates all available import parameters for the 
     "###"
   ],
   "preserve_chunk_separator": true,
+  "ignore_chunk_token_size": false,
   "entity_types": [
     "PERSON",
     "ORGANIZATION",
@@ -171,8 +217,10 @@ This comprehensive example demonstrates all available import parameters for the 
   ],
   "enable_strict_types": true,
   "entity_extract_max_gleaning": 1,
-  "community_report_num_findings": "5-10",
-  "community_report_instructions": "Focus on key entities, relationships, and risk-related findings.",
+  "custom_prompts": {
+    "entity_extraction": "Extract key entities with detailed context.",
+    "community_report": "Focus on key entities, relationships, and risk-related findings. Provide 5-10 insights."
+  },
   "enable_semantic_units": true,
   "process_images": true,
   "store_image_data": true,
