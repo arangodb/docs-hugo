@@ -703,6 +703,13 @@ Parameters:
 - `batch_size` (integer, optional): The number of documents per batch
   (default: `400000`).
 
+{{< info >}}
+If a value does not match the specified data type, the engine attempts automatic
+coercion (e.g., numeric string to integer, float to integer via rounding). If
+coercion fails, a type-specific default value is used (e.g., `0` for integers,
+`""` for strings) and processing continues.
+{{< /info >}}
+
 The response contains a `job_id` and `graph_id`. Use the `job_id` to track the
 loading progress via the [Jobs API](#get-a-job). The loading job reports a total
 of `2` progress steps: `1` after all vertices have been processed, and `2` when
