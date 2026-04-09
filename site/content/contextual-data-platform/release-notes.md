@@ -44,6 +44,24 @@ Contextual Data Platform. It lets you interact with your database using natural 
 generate and execute AQL queries, explore collections and data structures, and save reusable
 query artifacts through a conversational chat interface.
 
+### Graph Analytics
+
+{{< tag "Agentic AI Suite" >}}
+
+[Graph Analytics](../agentic-ai-suite/graph-analytics/_index.md) now includes a web interface
+and a new AQL-based data loading API.
+
+- **Web interface**: A new [graphical interface](../agentic-ai-suite/graph-analytics/web-interface.md)
+is now available for managing Graph Analytics Engines, loading graphs, running algorithms
+(PageRank, Connected Components, Label Propagation, and more), and monitoring job progress.
+The interface provides an intuitive workflow for engine management, graph loading, algorithm
+execution, job monitoring, and trigger jobs to persist results of algorithms into collections.
+
+- **AQL-based data loading API**: A new API endpoint allows you to import graph data using
+[custom AQL queries](../agentic-ai-suite/graph-analytics/api.md#load-data-using-aql-queries).
+Queries are organized into phases that run sequentially, while queries within each phase
+execute in parallel for optimal performance.
+
 ### Graph Visualizer
 
 {{< tag "Platform Suite" >}}
