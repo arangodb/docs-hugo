@@ -147,6 +147,9 @@ documentation.
 curl -H "Authorization: Bearer <your_token>" http://localhost:8080/v1/health
 ```
 
+A healthy service responds with `{"status": "SERVING"}`. If you receive
+`NOT_SERVING`, the service is not yet ready.
+
 ## Authentication
 
 All endpoints require a **JWT** in the header:
@@ -165,20 +168,20 @@ REST is exposed on **`http://<host>:8080`**. The same operations are available o
 
 All calls require a valid **`Authorization: Bearer <token>`** header.
 
-**Standard workflow — knowledge graph build**
+**Standard workflow - knowledge graph build**
 
-1. `GET /v1/health` — confirm the service is ready.
-2. `POST /v1/import-multiple` — upload documents. Repeat once per module (e.g. call once for `"legal"`, once for `"engineering"`, and so on).
-3. `POST /v1/corpus/builds` — trigger the corpus build for all imported modules.
+1. `GET /v1/health` - confirm the service is ready.
+2. `POST /v1/import-multiple` - upload documents. Repeat once per module (e.g. call once for `"legal"`, once for `"engineering"`, and so on).
+3. `POST /v1/corpus/builds` - trigger the corpus build for all imported modules.
 4. Poll `GET /v1/corpus/builds/{corpus_build_id}` until `status` is `completed`.
-5. `POST /v1/rag-strategizer/analyze` — assign RAG strategies to clusters.
-6. *(Optional)* `GET /v1/rag-strategizer/strategy` — inspect the assigned strategies.
-7. `POST /v1/orchestrate` — spawn Importer workers to build the knowledge graph.
+5. `POST /v1/rag-strategizer/analyze` - assign RAG strategies to clusters.
+6. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
+7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
 
 **Embed-only (no corpus build needed)**
 
 1. `GET /v1/health`
-2. `POST /v1/embed-field-in-collection` — add vector embeddings to an existing ArangoDB collection. Repeat per `(collection, field)` pair.
+2. `POST /v1/embed-field-in-collection` - add vector embeddings to an existing ArangoDB collection. Repeat per `(collection, field)` pair.
 
 **Adding a new module to an existing corpus**
 
@@ -198,6 +201,9 @@ The typical AutoGraph workflow consists of these stages:
 
 **Optional operations:**
 - **[Incremental Updates](corpus-build.md#incremental-builds)**: Add new modules without rebuilding everything
+- **[Embed Field](embeddings.md)**: Add vector embeddings to an existing collection (no corpus build needed)
+
+For guidance on structuring your data with modules, see the [Design Guide](../design-guide.md).
 
 ## Complete Workflow Examples
 

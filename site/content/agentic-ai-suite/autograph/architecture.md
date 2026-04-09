@@ -1,7 +1,7 @@
 ---
 title: Architecture
 menuTitle: Architecture
-weight: 10
+weight: 20
 description: >-
   AutoGraph's three-layer knowledge graph architecture, ArangoDB collections, and named graphs
 ---
@@ -15,7 +15,7 @@ All collection names are prefixed with your project name. For example, if the pr
 
 ## Collections per layer
 
-```
+```mermaid
 graph TD
   subgraph "Layer 1 — Modules  (defined by you)"
     modules["modules\n(vertex: one per module label)"]
@@ -76,7 +76,7 @@ The GraphRAG Importer constructs Layer 3 by processing documents into a detailed
 | `Entities` | vertex (extracted entities with embeddings) | yes | — |
 | `Communities` | vertex (entity clusters with optional embeddings) | yes | — |
 | `Relations` | edge (PART_OF, MENTIONED_IN, RELATED_TO, IN_COMMUNITY, SUB_COMMUNITY_OF) | yes | yes |
-| `SemanticUnits` | vertex (web URLs and images — optional) | if enabled | if enabled |
+| `SemanticUnits` | vertex (web URLs and images, optional) | if enabled | if enabled |
 
 Layer 3 collections share the same `{project}_` prefix. Each document in Layer 3 carries a `partition_id` field so data from different partitions coexists in the same collections.
 

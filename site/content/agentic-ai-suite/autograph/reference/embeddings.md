@@ -14,7 +14,7 @@ aliases:
 
 Add embeddings to documents in **any** ArangoDB collection you already have. This path is **independent** of import, corpus build, clustering, and the `{project}_CorpusGraph` named graph.
 
-**Recommended path:** This endpoint works independently — no import or corpus build required. Call once per `(collection, field)` pair; repeated calls only process documents still missing the embedding.
+**Recommended path:** This endpoint works independently; no import or corpus build required. Call once per `(collection, field)` pair; repeated calls only process documents still missing the embedding.
 
 ## Request
 

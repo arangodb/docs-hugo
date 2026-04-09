@@ -16,7 +16,7 @@ Trigger a corpus build from imported files or File Manager.
 
 **Recommended path:** Call this after importing all documents for the modules you want to build. For a first build, omit `incremental` (it defaults to false - existing module data is wiped and rebuilt cleanly). To add or update specific modules without touching the rest of the corpus, set `incremental: true` and list the target modules in `modules`. Only one build may run at a time.
 
-### Request (Option A — File Manager Integration)
+### Request (Option A - File Manager Integration)
 
 ```json
 {
@@ -31,7 +31,7 @@ Trigger a corpus build from imported files or File Manager.
 }
 ```
 
-### Request (Option B — Previously Imported Files)
+### Request (Option B - Previously Imported Files)
 
 ```json
 {
@@ -126,7 +126,7 @@ Check the progress of a corpus build.
 | `status` | string | **`pending`** → **`running`** → **`completed`** or **`failed`**. Only proceed to strategizer on **`completed`**. |
 | `message` | string | Human-readable stage (e.g. similarity or clustering). |
 | `progress` | integer | **0–100**; use together with `message` for UI. |
-| `error` | string | Non-empty when **`failed`** — use for support tickets. |
+| `error` | string | Non-empty when **`failed`**. Use for support tickets. |
 | `started_at` | double | Unix epoch seconds (float). |
 | `completed_at` | double | Set when finished; **0** while running. |
 
@@ -141,7 +141,7 @@ curl -H "Authorization: Bearer <token>" \
 
 ## Incremental Builds
 
-Incremental builds allow you to add new modules or update existing ones without rebuilding the entire corpus.
+Incremental builds allow you to add new modules or update existing ones without rebuilding the entire corpus. For guidance on structuring modules, see the [Design Guide](../design-guide.md#designing-modules).
 
 **When to use incremental builds:**
 - Adding new document modules to an existing corpus

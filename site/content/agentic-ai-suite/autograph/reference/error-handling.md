@@ -27,9 +27,9 @@ Error bodies are usually JSON with a **`message`** (and sometimes a **`code`**) 
 
 ## Troubleshooting
 
-- **Cannot reach ArangoDB** — Check network/firewall and the ArangoDB URL your deployment uses.
-- **401 / auth** — Use `Authorization: Bearer <token>` with a space after `Bearer`.
-- **Build stuck or failed** — Poll `GET /v1/corpus/builds/{id}` for `status`, `message`, and `error`.
-- **Strategizer fails** — Finish corpus build first; ensure clusters exist.
-- **Orchestration fails** — Ensure strategies exist in `rags`; confirm platform auth and GenAI/importer integration are configured for your environment.
-- **Embed field** — Collection must exist; source field must have non-empty values; embedding must be configured on the service.
+- **Cannot reach ArangoDB** - check network/firewall and the ArangoDB URL your deployment uses.
+- **401 / auth** - use `Authorization: Bearer <token>` with a space after `Bearer`.
+- **Build stuck or failed** - poll `GET /v1/corpus/builds/{id}` for `status`, `message`, and `error`.
+- **Strategizer fails** - finish the corpus build first; ensure clusters exist.
+- **Orchestration fails** - ensure strategies exist in `rags`; confirm platform auth and GenAI/importer integration are configured for your environment.
+- **Embed field** - collection must exist; source field must have non-empty values; embedding must be configured on the service.

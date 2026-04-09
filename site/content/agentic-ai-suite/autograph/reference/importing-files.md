@@ -41,7 +41,7 @@ Import documents into the corpus for later processing.
 | `files[].content` | string (base64) | Yes | Raw file bytes, **base64-encoded** in JSON. | Encode the full file; avoid partial uploads. |
 | `files[].citable_url` | string | No | Canonical URL shown in citations. | Set for web-sourced docs; empty string if not applicable. |
 | `files[].metadata` | string | No | Opaque string carried in metadata (often JSON as text). | Use for stable ids, versions, or tags your app parses later; omit if unused. |
-| `module` | string | No | Module label applied to **every** file in this request. | Use a **stable** module id (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
+| `module` | string | No | Module label applied to **every** file in this request. See [Designing modules](../design-guide.md#designing-modules) for naming guidance. | Use a **stable** module id (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
 
 ## Response
 
