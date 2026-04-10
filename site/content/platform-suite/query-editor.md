@@ -142,7 +142,7 @@ The sidebar on the left-hand side allows you to manage queries:
 {{< tag "Contextual Data Platform" >}}
 
 For an introduction to the AQLizer, see
-[The AQLizer feature of the Arango Agentic AI Suite](../agentic-ai-suite/aqlizer.md).
+[Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/_index.md).
 
 Before you can generate AQL queries, you need to set up the AQLizer feature.
 
