@@ -1,5 +1,29 @@
 var theme = true;
 
+var _mermaidModule = null;
+var _mermaidRendering = false;
+var _mermaidQueued = false;
+
+async function initMermaid() {
+  if (_mermaidRendering) { _mermaidQueued = true; return; }
+  var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
+  if (!nodes.length) return;
+  if (!_mermaidModule) {
+    var mod = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
+    _mermaidModule = mod.default;
+    _mermaidModule.initialize({ startOnLoad: false, theme: 'neutral' });
+  }
+  _mermaidRendering = true;
+  try {
+    await _mermaidModule.run({ nodes: nodes });
+  } catch (e) {
+    console.warn('Mermaid rendering error:', e);
+  } finally {
+    _mermaidRendering = false;
+    if (_mermaidQueued) { _mermaidQueued = false; initMermaid(); }
+  }
+}
+
 function closeAllEntries() {
     document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
 }
@@ -264,6 +288,7 @@ function initArticle(url) {
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  initMermaid();
 }
 
 
