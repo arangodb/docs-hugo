@@ -3,66 +3,67 @@ title: Cypher to AQL Translation Service
 menuTitle: Cypher to AQL
 weight: 25
 description: >-
-  Translate Cypher queries to AQL for use with ArangoDB with the `cypher2aql`
-  service for the Data Platform
+  Translate Cypher queries to AQL for use with ArangoDB using the
+  `arango-cypher2aql` service, available for the Arango Contextual Data Platform
 ---
 {{< warning >}}
 The Cypher to AQL service is **experimental**. The API and supported Cypher
 subset may change in future releases.
 {{< /warning >}}
 
-The **Cypher to AQL** service translates [Cypher](https://neo4j.com/docs/cypher-manual/current/)
+The `arango-cypher2aql` service translates [Cypher](https://neo4j.com/docs/cypher-manual/current/)
 queries into [AQL](../arangodb/3.12/aql/_index.md) (ArangoDB Query Language).
 You send a Cypher query to the service and receive the equivalent AQL query,
 which you can then run against your ArangoDB deployment.
 
 ## Purpose
 
-<!--
-- **Adopt Cypher syntax**: Use Cypher-style `MATCH` patterns and `RETURN` clauses when you prefer that notation or when integrating with tooling that speaks Cypher.
--->
 - **Bridge to AQL**: Get executable AQL that runs on ArangoDB, so you can reuse
   existing Cypher knowledge or scripts without rewriting them manually.
 - **Single read-query flow**: The service focuses on read-only query translation
   (e.g. `MATCH ... RETURN`). It does not execute the query; you run the returned
   AQL yourself against ArangoDB.
 - **API use only**: The translation service can be used via an HTTP API but not
-  the web interface of the Data Platform.
+  the web interface of the Contextual Data Platform.
 
 ## High-level workflow
 
-1. **Start the service**:
+1. **Start the service**:\
    Use the Arango Control Plane (ACP) to start an instance of the Cypher to AQL
-   service (`arango-cypher2aql`) in your Contextual Data Platform deployment.<!-- TODO: Start via container manager? -->
-2. **Determine the API path**: 
+   service (`arango-cypher2aql`) in your data platform deployment.
+2. **Determine the API path**:\
    The platform exposes the service at a base URL (`/cypher2aql/<SERVICE_ID>/v1`).
-3. **Send a Cypher query**:
+3. **Send a Cypher query**:\
    Send a `POST` request to the translate endpoint (`/cypher2aql`) with a JSON
-   body containing your Cypher query string (and optionally a database name for
-   future use). <!-- TODO: db name?! -->
-4. **Receive AQL query**:
+   body containing your Cypher query string
+   <!-- TODO: Currently unused:
+   and optionally a database name -->
+4. **Receive AQL query**:\
    The response contains both the original Cypher query as well as the translated
    AQL query in the `cypher` and `AQL` attributes when translation succeeds.
    If the Cypher is unsupported or invalid, the response includes an error flag
    and message.
-5. **Validate the query**:
+5. **Validate the query**:\
    Review the generated AQL query and adjust it if needed.
-5. **Run the query**:
+5. **Run the query**:\
    Execute the returned AQL query against your ArangoDB database.
 
 ## HTTP API
 
-The service exposes a small HTTP API under the versioned path `/v1/`. In the examples, replace `<EXTERNAL_ENDPOINT>` with your Data Platform endpoint (e.g. `data-platform.example.org`) and `<SERVICE_ID>` with the Cypher to AQL service ID from your platform (the suffix assigned when the service is started).
+The service exposes a small HTTP API under the versioned path `/v1/`. In the
+examples, replace `<EXTERNAL_ENDPOINT>` with your data platform endpoint
+(e.g. `data-platform.example.org`).
 
-All requests and responses use JSON and the `application/json` content type. Authentication is required when the platform has it enabled; use the same credentials (e.g. JWT or basic auth) that you use for other platform services.
+All requests and responses use JSON and the `application/json` content type.
 
 {{< info >}}
-If your deployment uses a self-signed certificate, you may need to use `-k` or `--insecure` with cURL for testing.
+If your deployment uses a self-signed certificate, you may need to specify the
+`-k` or `--insecure` option of cURL.
 {{< /info >}}
 
 ### Deploy an `arango-cypher2aql` service
 
-Use the ACP service to create a generic service
+Use the ACP service to create a generic service.
 
 ```openapi
 ---
@@ -92,7 +93,124 @@ paths:
           description: |
             Successfully deployed the service. It may not be ready immediately
             for responding to requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  serviceInfo:
+                    description: |
+                      Information about the deployed service.
+                    type: object
+                    properties:
+                      serviceId:
+                        description: |
+                          The unique identifier assigned to the service.
+                        type: string
+                        example: arango-cypher2aql-z8fue
+                      description:
+                        description: |
+                          A human-readable status message about the deployment.
+                        type: string
+                        example: Install complete
+                      status:
+                        description: |
+                          The deployment status of the service.
+                        type: string
+                        example: DEPLOYED
+                      namespace:
+                        description: |
+                          The namespace in which the service is deployed.
+                        type: string
+                      managingEntity:
+                        description: |
+                          The entity managing the service.
+                        type: string
+                        example: ACP
+        '400':
+          description: |
+            The request body has invalid JSON syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: |
+                      The gRPC status code. `3` corresponds to `INVALID_ARGUMENT`.
+                    type: integer
+                    example: 3
+                  message:
+                    description: |
+                      A message describing the syntax error.
+                    type: string
+                  details:
+                    description: |
+                      Additional error details (typically empty).
+                    type: array
+                    items:
+                      type: object
+        '401':
+          description: |
+            The data platform has authentication enabled but the request misses
+            or contains invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: |
+                      An error message indicating that the request is unauthorized.
+                    type: string
+                    example: Unauthorized
+        '500':
+          description: |
+            An internal server error occurred, for example, because the
+            service could not be found or a required field is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: |
+                      The gRPC status code. `13` corresponds to `INTERNAL`.
+                    type: integer
+                    example: 13
+                  message:
+                    description: |
+                      A message describing the internal error.
+                    type: string
+                  details:
+                    description: |
+                      Additional error details (typically empty).
+                    type: array
+                    items:
+                      type: object
 ```
+
+**Example**
+
+```bash
+curl -s "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service" \
+  -H "Authorization: bearer <YOUR_TOKEN>" \
+  -d '{"service_name":"arango-cypher2aql"}'
+```
+
+{{< details summary="Show output" >}}
+```json
+{
+  "serviceInfo": {
+    "serviceId": "arango-cypher2aql-z8fue",
+    "description": "Install complete",
+    "status": "DEPLOYED",
+    "namespace": "arango",
+    "managingEntity": "ACP"
+  }
+}
+```
+{{< /details >}}
 
 ### Translate Cypher to AQL
 
@@ -111,9 +229,10 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service instance that runs in the data platform.
+            The ID of the Cypher to AQL service that runs in the data platform.
           schema:
             type: string
+            example: arango-cypher2aql-z8fue
       requestBody:
         content:
           application/json:
@@ -134,16 +253,18 @@ paths:
         '200':
           description: |
             Translation result. When translation succeeds, `error` is `false`.
-            When the Cypher is invalid or uses unsupported features, the service
-            still returns HTTP 200 but sets `error` to `true`, `errorCode` to 422,
-            and `errorMessage` with an explanation.
+            When the Cypher query is invalid or uses unsupported features, the
+            service still returns the HTTP status code `200` but sets `error`
+            to `true`, `errorCode` to 422, and `errorMessage` to an explanation
+            of the problem.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   cypher:
-                    description: The original Cypher query.
+                    description: |
+                      The original Cypher query.
                     type: string
                   AQL:
                     description: |
@@ -154,18 +275,57 @@ paths:
                       `false` on success; `true` when translation failed or request was invalid.
                     type: boolean
                   errorMessage:
-                    description: Empty on success; short explanation of the error otherwise.
+                    description: |
+                      Empty on success; short explanation of the error otherwise.
                     type: string
                   errorCode:
-                    description: `0` on success; `422` on translation failure; `400` on client error.
+                    description: |
+                      `0` on success; `422` on translation failure; `400` on client error.
                     type: number
         '400':
           description: |
             The request body is missing, not valid JSON, or cannot be read.
-            The body is still a JSON object with `error`, `errorMessage`, and `errorCode`.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cypher:
+                    description: |
+                      Empty string.
+                    type: string
+                  AQL:
+                    description: |
+                      Empty string.
+                    type: string
+                  error:
+                    description: |
+                      Always `true` for this status code.
+                    type: boolean
+                    example: true
+                  errorMessage:
+                    description: |
+                      A message describing why the request body could not be parsed.
+                    type: string
+                  errorCode:
+                    description: |
+                      Always `400` for this status code.
+                    type: number
+                    example: 400
         '401':
           description: |
-            The platform has authentication enabled and the request is missing or invalid credentials.
+            The data platform has authentication enabled but the request misses
+            or contains invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: |
+                      An error message indicating that the request is unauthorized.
+                    type: string
+                    example: Unauthorized
 ```
 
 **Example: successful translation**
@@ -177,8 +337,7 @@ curl -s -X POST "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/cyp
   -d '{"cypher":"MATCH (n:Person) RETURN n"}'
 ```
 
-Example response:
-
+{{< details summary="Show output" >}}
 ```json
 {
   "cypher": "MATCH (n:Person) RETURN n",
@@ -188,17 +347,9 @@ Example response:
   "errorCode": 0
 }
 ```
+{{< /details >}}
 
-**Example: with optional database field**
-
-```bash
-curl -s -X POST "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/cypher2aql" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: bearer <YOUR_TOKEN>" \
-  -d '{"cypher":"MATCH (n) RETURN n LIMIT 10", "database": "mydb"}'
-```
-
-### Service version
+### Get the service version
 
 ```openapi
 ---
@@ -215,9 +366,10 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service instance that runs in the data platform.
+            The ID of the Cypher to AQL service that runs in the data platform.
           schema:
             type: string
+            example: arango-cypher2aql-z8fue
       responses:
         '200':
           description: |
@@ -228,8 +380,24 @@ paths:
                 type: object
                 properties:
                   version:
-                    description: Version identifier of the service.
+                    description: |
+                      Version identifier of the service.
                     type: string
+                    example: "0.9.5"
+        '401':
+          description: |
+            The data platform has authentication enabled but the request misses
+            or contains invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: |
+                      An error message indicating that the request is unauthorized.
+                    type: string
+                    example: Unauthorized
 ```
 
 **Example**
@@ -239,15 +407,15 @@ curl -s "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/version" \
   -H "Authorization: bearer <YOUR_TOKEN>"
 ```
 
-Example response:
-
+{{< details summary="Show output" >}}
 ```json
 {
-  "version": "0.1.0"
+  "version": "0.9.5"
 }
 ```
+{{< /details >}}
 
-### Health check
+### Check the service health
 
 ```openapi
 ---
@@ -264,9 +432,10 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service instance that runs in the data platform.
+            The ID of the Cypher to AQL service that runs in the data platform.
           schema:
             type: string
+            example: arango-cypher2aql-z8fue
       responses:
         '200':
           description: |
@@ -281,6 +450,20 @@ paths:
                       The service is healthy.
                     type: string
                     example: ok
+        '401':
+          description: |
+            The data platform has authentication enabled but the request misses
+            or contains invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: |
+                      An error message indicating that the request is unauthorized.
+                    type: string
+                    example: Unauthorized
 ```
 
 **Example**
@@ -290,15 +473,15 @@ curl -s "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/health" \
   -H "Authorization: bearer <YOUR_TOKEN>"
 ```
 
-Example response:
-
+{{< details summary="Show output" >}}
 ```json
 {
   "status": "ok"
 }
 ```
+{{< /details >}}
 
-### Uninstall the `arango-cypher2aql` service
+### Uninstall a `arango-cypher2aql` service
 
 Use the ACP service to delete the service.
 
@@ -311,27 +494,141 @@ paths:
     delete:
       operationId: deleteService
       description: |
-        Stop a service instance using the Arango Control Plane (ACP).
+        Stop a service using the Arango Control Plane (ACP).
       parameters:
         - name: serviceId
           in: path
           required: true
           description: |
-            The ID of the service to stop, here the ID of a
-            `arango-cypher2aql` service instance.
+            The ID of the service to stop, here the ID of an
+            `arango-cypher2aql` service.
           schema:
             type: string
+            example: arango-cypher2aql-z8fue
       responses:
         '200':
           description: |
-            The service instance was successfully stopped.
+            The service was successfully stopped.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  serviceInfo:
+                    description: |
+                      Information about the uninstalled service.
+                    type: object
+                    properties:
+                      serviceId:
+                        description: |
+                          The unique identifier of the service.
+                        type: string
+                        example: arango-cypher2aql-z8fue
+                      description:
+                        description: |
+                          A human-readable status message about the uninstallation.
+                        type: string
+                        example: Uninstallation complete
+                      status:
+                        description: |
+                          The status of the service after deletion.
+                        type: string
+                        example: UNINSTALLED
+                      namespace:
+                        description: |
+                          The namespace the service was deployed in.
+                        type: string
+                      managingEntity:
+                        description: |
+                          The entity that managed the service.
+                        type: string
+                        example: ACP
+        '401':
+          description: |
+            The data platform has authentication enabled but the request misses
+            or contains invalid credentials.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    description: |
+                      An error message indicating that the request is unauthorized.
+                    type: string
+                    example: Unauthorized
+        '500':
+          description: |
+            An internal server error occurred, for example, because the
+            service ID is unknown or missing from the request path.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    description: |
+                      The gRPC status code. `13` corresponds to `INTERNAL`.
+                    type: integer
+                    example: 13
+                  message:
+                    description: |
+                      A message describing the internal error.
+                    type: string
+                  details:
+                    description: |
+                      Additional error details (typically empty).
+                    type: array
+                    items:
+                      type: object
 ```
 
-## Supported Cypher and limitations
+**Example**
+
+```bash
+curl -s -X DELETE "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/<SERVICE_ID>" \
+  -H "Authorization: bearer <YOUR_TOKEN>"
+```
+
+{{< details summary="Show output" >}}
+```json
+{
+  "serviceInfo": {
+    "serviceId": "arango-cypher2aql-z8fue",
+    "description": "Uninstallation complete",
+    "status": "UNINSTALLED",
+    "namespace": "arango",
+    "managingEntity": "ACP"
+  }
+}
+```
+{{< /details >}}
+
+## Supported Cypher subset and limitations
 
 The translator supports a subset of Cypher focused on read-only query patterns:
 
-- **Supported**: Single-statement queries with `MATCH`, optional `WHERE`, `ORDER BY`, `SKIP`, `LIMIT`, `WITH`, and `RETURN`. Node and relationship patterns are constrained (e.g. no variable-length relationships, no `OPTIONAL MATCH`). The pattern graph must be connected and acyclic. Only simple label expressions for nodes and relationship types are supported (no union/intersection-style expressions). Aggregations are limited to standard aggregation functions.
-- **Not supported**: Schema changes, write statements (`CREATE`, `DELETE`, etc.), `UNION`, `OPTIONAL MATCH`, variable-length relationships, `SHORTEST_PATH`, and more complex label or type expressions.
+**Supported**:
 
-If you send unsupported or invalid Cypher, the service returns HTTP 200 with `error: true`, `errorCode: 422`, and an `errorMessage` describing the issue. Use that message to adjust your query or fall back to writing AQL directly.
+- Single-statement queries with `MATCH`,
+  optionally `WHERE`, `ORDER BY`, `SKIP`, `LIMIT`, `WITH`, and `RETURN`.
+- Node and relationship patterns are constrained (e.g. no variable-length
+  relationships, no `OPTIONAL MATCH`).
+- The pattern graph must be connected and acyclic.
+- Only simple label expressions for nodes and relationship types
+  (no union/intersection-style expressions).
+- Aggregations are limited to standard aggregation functions.
+
+**Not supported**:
+
+- Schema changes
+- Write statements (`CREATE`, `DELETE`, etc.)
+- `UNION`
+- `OPTIONAL MATCH`
+- `SHORTEST_PATH`
+- Variable-length relationships
+- More complex label or type expressions
+
+If you send unsupported or invalid Cypher, the service returns an `errorMessage`
+describing the issue. Use that message to adjust your query or fall back to
+writing AQL directly.
