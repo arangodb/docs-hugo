@@ -286,8 +286,8 @@ retriever-sourced elements are highlighted in green on the canvas so you can
 immediately see which parts of your Knowledge Graph contributed to the answer.
 A loading overlay is shown on the canvas while the graph data is being fetched.
 
-Each assistant message in the chat includes two canvas action buttons that appear
-when you hover over the message:
+Each assistant message in the chat includes two additional action buttons that appear
+when you hover over the message (alongside the copy button):
 
 | Button | Icon | Behavior |
 |--------|------|----------|
@@ -305,6 +305,6 @@ response before the new results are fetched.
 
 To integrate any service into your own applications,
 go to **Project Settings** and use the copy button next to each service to
-copy its integration endpoint. You cam make `POST` requests to the endpoints
+copy its integration endpoint. You can make `POST` requests to the endpoints
 with your queries, the services accept `JSON` payloads and return structured
 responses for building custom interfaces.
