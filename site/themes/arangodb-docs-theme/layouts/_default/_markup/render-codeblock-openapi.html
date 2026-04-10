@@ -1,6 +1,6 @@
 {{- $page := .Page }}
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
-{{- if not $pageVersion }}
+{{- if and (not $pageVersion) (strings.HasPrefix .Page.RelPermalink "/arangodb/") }}
   {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- end }}
 {{- $title := .Page.Scratch.Get "currentHeadline" }}
