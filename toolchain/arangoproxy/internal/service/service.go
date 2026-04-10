@@ -308,6 +308,15 @@ func init() {
 	}
 }
 
+func firstSpecPath(spec map[string]interface{}) string {
+	if paths, ok := spec["paths"].(map[string]interface{}); ok {
+		for p := range paths {
+			return p
+		}
+	}
+	return "<unknown>"
+}
+
 func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, headers http.Header, globalOpenapiChannel chan map[string]interface{}) {
 	summary := strings.TrimLeft(headers.Get("Endpoint-Title"), "# ")
 	pageVersion := headers.Get("Page-Version")
@@ -318,19 +327,19 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	if serviceName == "arangodb" || serviceName == "" {
 		serviceName = "arangodb"
 		if err := json.Unmarshal([]byte(apiVersionsRaw), &apiVersions); err != nil || len(apiVersions) == 0 {
-			models.Logger.Printf("[ERROR] ArangoDB openapi spec missing or invalid API-Versions header (JSON array): %s", apiVersionsRaw)
+			models.Logger.Printf("[ERROR] ArangoDB openapi spec missing or invalid API-Versions header (JSON array): %s, endpoint: %s, summary: %s", apiVersionsRaw, firstSpecPath(spec), summary)
 			OpenapiSpecErrorMutex.Lock()
 			if OpenapiSpecError == nil {
-				OpenapiSpecError = fmt.Errorf("ArangoDB openapi spec missing or invalid API-Versions header")
+				OpenapiSpecError = fmt.Errorf("ArangoDB openapi spec missing or invalid API-Versions header, endpoint: %s, summary: %s", firstSpecPath(spec), summary)
 			}
 			OpenapiSpecErrorMutex.Unlock()
 			return
 		}
 		if pageVersion == "" {
-			models.Logger.Printf("[ERROR] ArangoDB openapi spec missing Page-Version header")
+			models.Logger.Printf("[ERROR] ArangoDB openapi spec missing Page-Version header, endpoint: %s, summary: %s", firstSpecPath(spec), summary)
 			OpenapiSpecErrorMutex.Lock()
 			if OpenapiSpecError == nil {
-				OpenapiSpecError = fmt.Errorf("ArangoDB openapi spec missing Page-Version header")
+				OpenapiSpecError = fmt.Errorf("ArangoDB openapi spec missing Page-Version header, endpoint: %s, summary: %s", firstSpecPath(spec), summary)
 			}
 			OpenapiSpecErrorMutex.Unlock()
 			return
