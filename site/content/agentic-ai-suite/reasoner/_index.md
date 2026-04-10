@@ -16,10 +16,11 @@ You can interact with the Reasoner directly from the **Query Editor** in the
 Arango Contextual Data Platform, or through its HTTP API for programmatic
 integrations.
 
-> **Note:** The Reasoner requires the **ArangoDB MCP Server** to be running and
-> connected. Both services must be active for the Reasoner to function. The MCP
-> Server is the bridge through which the Reasoner interacts with your ArangoDB
-> database.
+{{< info >}}
+The Reasoner requires the **ArangoDB MCP Server** to be running and connected.
+Both services must be active for the Reasoner to function. The MCP Server is
+the bridge through which the Reasoner interacts with your ArangoDB database.
+{{< /info >}}
 
 ## Key capabilities
 
