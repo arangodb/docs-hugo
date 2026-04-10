@@ -52,6 +52,7 @@
 {{- range $old, $new := $linkMap }}
   {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
 {{- end }}
+
 {{- $remote := resources.GetRemote $endpoint (dict
     "method" "post"
     "body" $innerAbsLinks
@@ -289,6 +290,9 @@
             </p>
           {{- end }}
           <p class="regular-font">{{ $description }}</p>
+          {{- if isset $value.schema "example" }}
+            <p class="regular-font">Example: <code>{{ $value.schema.example | jsonify }}</code></p>
+          {{- end }}
         </div>
       </details>
     </li>
@@ -345,6 +349,9 @@
           </p>
         {{- end }}
         <p class="regular-font">{{ $description }}</p>
+        {{- if isset $value "example" }}
+          <p class="regular-font">Example: <code>{{ $value.example | jsonify }}</code></p>
+        {{- end }}
         {{- if $value.properties }}
           <ul class="openapi-table">
           {{- range $k, $v := $value.properties }}
