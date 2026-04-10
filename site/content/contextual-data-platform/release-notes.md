@@ -148,12 +148,12 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 {{< tag "Agentic AI Suite" >}}
 
-The [Natural Language to AQL Translation Service](../agentic-ai-suite/reference/natural-language-to-aql.md)
+The [Natural Language to AQL Translation Service](../agentic-ai-suite/natural-language-to-aql/_index.md)
 enables you to query your ArangoDB database using natural language or get
 LLM-powered answers to general questions. 
 
 You can generate AQL queries from natural language directly in the Query Editor using the
-[AQLizer](../agentic-ai-suite/aqlizer.md) mode. More advanced features are available via the API.
+[AQLizer](../agentic-ai-suite/natural-language-to-aql/_index.md) mode. More advanced features are available via the API.
 
 ### Query Editor
 
