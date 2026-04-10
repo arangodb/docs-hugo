@@ -77,7 +77,7 @@ The Graph Visualizer interface is comprised of the following components:
   adding nodes to the canvas by searching their document IDs.
   See [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually).
 - **Queries**:
-  A dropdown button in the top bar, next to the search field. Opens a panel
+  A button in the top bar, next to the search field. Opens a dialog
   with two tabs — **Queries** for running or saving AQL queries, and
   **Canvas actions** for selection-based queries.
   See [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query)
@@ -94,8 +94,8 @@ The Graph Visualizer interface is comprised of the following components:
 You can add individual nodes to the canvas in addition to what is already
 displayed.
 
-1. Click the **Search & add nodes to canvas** field in the top bar. The
-   **Search & add nodes to canvas** dialog opens.
+1. Click the **Search & add nodes to canvas** field in the top bar. This
+   opens the dialog for manually adding nodes.
 2. Select a **Node type**. This is the name of the collection that stores the
    nodes you want to select.
 3. Enter a document ID into the **Search** field (**Search by ID**). The list
@@ -112,7 +112,7 @@ displayed.
 
 You can run an AQL query to add nodes, edges, or paths of the graph to the canvas.
 
-1. Click **Queries** in the top bar to open the queries panel.
+1. Click **Queries** in the top bar to open the queries dialog.
 2. On the **Queries** tab, click **New query**.
 3. Enter an AQL query that returns nodes, edges, or paths
    (e.g. a graph traversal query), for example:
