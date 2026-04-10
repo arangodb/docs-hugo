@@ -22,9 +22,16 @@ aliases:
   Write, run, and analyze AQL queries using an IDE-like interface with tabs,
   result history, query management, and more.
 
+- [**Cypher to AQL Translation Service**](cypher2aql.md) (experimental):
+  Translate Cypher queries to AQL.
+
+- [**Arango Control Plane**](control-plane-acp.md):
+  Install, manage, and run services in the Contextual Data Platform with the
+  Arango Control Plane (ACP).
+
 - **Operational features**: Enterprise-grade features including high availability
-  and monitoring, comprehensive APIs and connectors, centralized orchestration and
-  resource management.
+  and [monitoring](monitoring.md), comprehensive APIs and connectors,
+  centralized orchestration and resource management.
 
 All components are orchestrated through Kubernetes, providing automated deployment,
 scaling, and management with enterprise-grade reliability.

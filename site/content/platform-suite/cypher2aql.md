@@ -1,7 +1,7 @@
 ---
 title: Cypher to AQL Translation Service
 menuTitle: Cypher to AQL
-weight: 25
+weight: 28
 description: >-
   Translate Cypher queries to AQL for use with ArangoDB using the
   `arango-cypher2aql` service, available for the Arango Contextual Data Platform
