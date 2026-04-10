@@ -1,5 +1,17 @@
 var theme = true;
 
+var _mermaid = null;
+async function renderMermaidDiagrams() {
+  var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
+  if (!nodes.length) return;
+  if (!_mermaid) {
+    var mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
+    _mermaid = mermaidjs.default;
+    _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+  }
+  await _mermaid.run({ nodes });
+}
+
 function closeAllEntries() {
     document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
 }
@@ -264,6 +276,7 @@ function initArticle(url) {
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  renderMermaidDiagrams();
 }
 
 
