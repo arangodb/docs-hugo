@@ -72,9 +72,16 @@ The Graph Visualizer interface is comprised of the following components:
 - **Top bar**: The name and type of the graph, as well as a button to get
   back to the list of named graphs.
 - **Canvas**: The main area of the viewport.
-- **Search & add nodes to canvas** and **Queries**:
-  A widget in the top left corner that opens dialogs for selecting nodes and
-  edges to display (manually or using queries).
+- **Search & add nodes to canvas**:
+  A search field in the top bar. Click it to open the dialog for finding and
+  adding nodes to the canvas by searching their document IDs.
+  See [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually).
+- **Queries**:
+  A button in the top bar, next to the search field. Opens a dialog
+  with two tabs — **Queries** for running or saving AQL queries, and
+  **Canvas actions** for selection-based queries.
+  See [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query)
+  and [Canvas Actions](#add-nodes-and-edges-using-a-query-based-on-a-selection-canvas-actions).
 - [**Legend**](#legend-and-visual-customization):
   A panel on the right-hand side that shows you what colors and icons are used
   for nodes and edges, as well as to adjust the styling, and to select all
@@ -87,20 +94,16 @@ The Graph Visualizer interface is comprised of the following components:
 You can add individual nodes to the canvas in addition to what is already
 displayed.
 
-1. Click **Search & add nodes to canvas**.
+1. Click the **Search & add nodes to canvas** field in the top bar. This
+   opens the dialog for manually adding nodes.
 2. Select a **Node type**. This is the name of the collection that stores the
    nodes you want to select.
-3. Enter a value into the **Search** field. This searches for document IDs
-<!-- TODO: Will this come back?
-This searches common attributes as indicated by the placeholder text and finds
-up to 10 nodes that contain this text in one of these attributes
--->and finds up to 10 nodes that contain this text (case-insensitive).
-4. Select one or more nodes from the list on the left-hand side.
-5. Optional: You can inspect the attributes of the selected nodes on the
-   right-hand side. Use the buttons at the bottom
-   ({{< icon "caret-left" >}}, {{< icon "caret-right" >}}) to switch between nodes.
-6. Click **Add # nodes**.
-7. To see the neighbor nodes and the edges that connect them, right-click a node,
+3. Enter a document ID into the **Search** field (**Search by ID**). The list
+   shows up to 10 matching nodes.
+4. Select one or more nodes from the list on the left-hand side. The attributes
+   of the selected node are displayed on the right-hand side.
+5. Click **Add # nodes**.
+6. To see the neighbor nodes and the edges that connect them, right-click a node,
    click **Expand (#)** and then **All (#)**.
 
 ![A screenshot of the dialog for adding nodes with two persons selected](../images/graph-visualizer-add-nodes.png)
@@ -109,7 +112,7 @@ up to 10 nodes that contain this text in one of these attributes
 
 You can run an AQL query to add nodes, edges, or paths of the graph to the canvas.
 
-1. Click **Queries** of the top-left widget.
+1. Click **Queries** in the top bar to open the queries dialog.
 2. On the **Queries** tab, click **New query**.
 3. Enter an AQL query that returns nodes, edges, or paths
    (e.g. a graph traversal query), for example:
@@ -122,19 +125,21 @@ You can run an AQL query to add nodes, edges, or paths of the graph to the canva
    ```aql
    FOR v, e, p IN 1..3 ANY "coll/753" GRAPH "myGraph" RETURN p  // [ { "vertices": [...], "edges": [...] }, ... ]
    ```
-4. Click **Run query**. Depending on what the query returns, either only nodes
+4. Optionally adjust the results limit using the dropdown (default: **1000 Results**).
+   You can choose 100, 300, 1000, 2000, 5000, or **All Results**.
+5. Click **Run query**. Depending on what the query returns, either only nodes
    or edges with their nodes appear on the canvas, in addition to what is
    already displayed.
 
 {{< tip >}}
 You can save queries for future use: 
 
-1. Click **Queries** of the top-left widget.
+1. Click **Queries** in the top bar.
 2. On the **Queries** tab, click **New query**.
 3. Enter or edit the AQL query you want to save. You can optionally use
    bind variables (like `@var`, `@@coll`) to parameterize saved queries.
 4. Enter a name and optionally a description, then click **Save**.
-5. To run a saved query, click **Queries** of the top-left widget.
+5. To run a saved query, click **Queries** in the top bar.
 6. Select a query from the list. The following actions are available for each query:
   - Copy ({{< icon "duplicate" >}}) the query string to the clipboard.
   - **Bind Variables** to set for the query.
@@ -172,7 +177,7 @@ the currently selected nodes respectively edges.
 2. Right-click the canvas, click **Canvas Action**, and select a saved action.
 3. Depending on the query, additional nodes or edges with their nodes are added
    to the canvas.
-4. To create a custom Canvas Action query, click **Queries** of the top-left widget.
+4. To create a custom Canvas Action query, click **Queries** in the top bar.
 5. Go to the **Canvas actions** tab and click **New action**.
 6. Enter an AQL query that makes use of the special bind variable `@nodes`,
    `@edges`, or both and returns nodes, edges, or paths. For example, iterate

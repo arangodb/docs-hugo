@@ -5,7 +5,7 @@ weight: 100
 description: >-
   Features and improvements released for the Contextual Data Platform
 ---
-## March 2026 (v4.0, General Availability)
+## April 2026 (v4.0, General Availability)
 
 The Arango Contextual Data Platform has been officially released and comes with
 various improvements and major additions to the unified web interface, the
@@ -85,6 +85,16 @@ The [Query Editor](../platform-suite/query-editor.md) has been extended with the
 
 - **Syntax highlighting**: AQL queries in the query editor are colorized for
   better readability.
+
+### AQL Optimizer (Reasoner)
+
+{{< tag "Agentic AI Suite" >}}
+
+A new **Optimize** button has been added to query tabs for
+[AI-powered query optimization](../platform-suite/query-editor.md#optimize-queries-reasoner).
+The Reasoner analyzes your AQL query and suggests improvements through a
+streaming chat interface with real-time tool call and validation feedback.
+This feature requires a license.
 
 ### Container Manager
 

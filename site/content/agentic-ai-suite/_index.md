@@ -24,6 +24,8 @@ The Agentic AI Suite is composed of the following major components:
   and document data.
 - [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
   your data and gain insights without having to learn the query language first.
+- [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
+  using AI-powered reasoning, with validated performance improvements.
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
