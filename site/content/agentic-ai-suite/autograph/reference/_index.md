@@ -23,7 +23,7 @@ The diagram below shows the full end-to-end flow across all service APIs and the
 ```mermaid
 flowchart TD
 
-    Client["Client / HTTP REST / gRPC"]
+    Client["Client / HTTP REST"]
 
     %% Entry points
     Client -->|Step 0| HEALTH
@@ -162,7 +162,7 @@ The service handles token renewal automatically, including for long-running back
 
 ## Service Endpoints
 
-REST is exposed on **`http://<host>:8080`**. The same operations are available over **gRPC** on **`9090`**; RPC and message names match the service's proto definition (see [gRPC and protocol buffers](#grpc-and-protocol-buffers)).
+The REST HTTP service endpoints are exposed on **`http://<host>:8080`**.
 
 ### Recommended call sequence
 
@@ -271,7 +271,3 @@ curl -X POST \
 
 For detailed API documentation, see the
 [AutoGraph API Reference](https://arangoml.github.io/platform-dss-api/AutoGraph/proto/index.html).
-
-## gRPC and protocol buffers
-
-The service exposes a **gRPC** interface on port **9090** alongside the HTTP REST API on port **8080**. The RPC and message names correspond to the REST paths documented in this reference section. Your operator can provide the `.proto` service definition file if you need to generate gRPC client stubs for your language.
