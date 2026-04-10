@@ -5,7 +5,7 @@ weight: 100
 description: >-
   Features and improvements released for the Contextual Data Platform
 ---
-## March 2026 (v4.0, General Availability)
+## April 2026 (v4.0, General Availability)
 
 The Arango Contextual Data Platform has been officially released and comes with
 various improvements and major additions to the unified web interface, the
@@ -44,6 +44,24 @@ Contextual Data Platform. It lets you interact with your database using natural 
 generate and execute AQL queries, explore collections and data structures, and save reusable
 query artifacts through a conversational chat interface.
 
+### Graph Analytics
+
+{{< tag "Agentic AI Suite" >}}
+
+[Graph Analytics](../agentic-ai-suite/graph-analytics/_index.md) now includes a web interface
+and a new AQL-based data loading API.
+
+- **Web interface**: A new [graphical interface](../agentic-ai-suite/graph-analytics/web-interface.md)
+is now available for managing Graph Analytics Engines, loading graphs, running algorithms
+(PageRank, Connected Components, Label Propagation, and more), and monitoring job progress.
+The interface provides an intuitive workflow for engine management, graph loading, algorithm
+execution, job monitoring, and trigger jobs to persist results of algorithms into collections.
+
+- **AQL-based data loading API**: A new API endpoint allows you to import graph data using
+[custom AQL queries](../agentic-ai-suite/graph-analytics/api.md#load-data-using-aql-queries).
+Queries are organized into phases that run sequentially, while queries within each phase
+execute in parallel for optimal performance.
+
 ### Graph Visualizer
 
 {{< tag "Platform Suite" >}}
@@ -68,6 +86,16 @@ The [Query Editor](../platform-suite/query-editor.md) has been extended with the
 - **Syntax highlighting**: AQL queries in the query editor are colorized for
   better readability.
 
+### AQL Optimizer (Reasoner)
+
+{{< tag "Agentic AI Suite" >}}
+
+A new **Optimize** button has been added to query tabs for
+[AI-powered query optimization](../platform-suite/query-editor.md#optimize-queries-reasoner).
+The Reasoner analyzes your AQL query and suggests improvements through a
+streaming chat interface with real-time tool call and validation feedback.
+This feature requires a license.
+
 ### Container Manager
 
 {{< tag "Platform Suite" >}}
@@ -86,7 +114,7 @@ or [API](../platform-suite/container-manager/deploy-api/).
 
 {{< tag "Platform Suite" >}}
 
-The [File Manager](../platform-suite/file-manager.md) provides a centralized interface
+The [File Manager](../platform-suite/file-manager/_index.md) provides a centralized interface
 for viewing and managing data stored by platform services, including container
 service files, RAG content, and AutoGraph files.
 
