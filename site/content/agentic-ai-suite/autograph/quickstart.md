@@ -32,6 +32,25 @@ AutoGraph can process a wide variety of document formats:
 - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
 - **Rich Text Format**: `.rtf`
 
+## Prerequisites
+
+- **ArangoDB** 3.12.9+
+- **LLM and embedding API access** (commonly OpenAI-compatible or Triton-compatible endpoints)
+- **Valid JWT** for the API (`Authorization: Bearer ...`)
+- **Platform auth** reachable from the service (for token validation and
+  renewal), if your deployment uses it
+
+Before importing data, you need to create a GraphRAG project. Projects keep
+datasets and configurations isolated from each other.
+
+For detailed instructions on creating and managing projects, see the
+[Projects](../../platform-suite/control-plane-acp.md#projects) section in
+the Arango Control Plane (ACP) documentation.
+
+To install and start the AutoGraph service, use the AI service endpoint
+`/v1/AutoGraph` in the
+[Arango Control Plane (ACP)](../../platform-suite/control-plane-acp.md).
+
 ## Get started
 
 {{< tabs "autograph-setup" >}}

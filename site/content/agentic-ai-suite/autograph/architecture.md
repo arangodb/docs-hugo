@@ -84,3 +84,95 @@ The named graph `{project}_CorpusGraph` ties Layers 1 and 2 together.
 It contains two edge definitions:
 - `similarities` (connecting sources to sources),
 - `corpus_relations` (connecting sources, domains, and modules).
+
+## Complete Pipeline
+
+The diagram below shows the full end-to-end API flow across all three layers.
+Solid arrows are the sequential pipeline steps; dashed arrows are polling and
+inspection calls that you can make at any time.
+
+```mermaid
+flowchart TD
+
+    Client["Client / HTTP REST"]
+
+    %% Entry points
+    Client -->|Step 0| HEALTH
+    Client -->|Step 1| IMP
+    Client -->|Step 2| BUILD
+    Client -.->|poll anytime| STATUS
+    Client -->|Step 3| STRAT
+    Client -.->|inspect anytime| GETSTRAT
+    Client -->|Step 4| ORCH
+
+    %% Health
+    HEALTH["GET /v1/health\nConfirm service status is SERVING"]
+
+    %% Layer 1
+    subgraph L1 [Layer 1 - Modules]
+        IMP["POST /v1/import-multiple\nUpload documents\nAttach module label\nFiles stored on disk"]
+    end
+
+    %% Layer 2
+    subgraph L2 [Layer 2 - Corpus Graph]
+
+        %% Build Pipeline
+        subgraph BUILD_PIPE [Corpus Build Background Task]
+            BUILD["POST /v1/corpus/builds\nReturns corpus_build_id"]
+            STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
+
+            B1["Read files from disk"]
+            B2["Extract text\nPDF / Office / JSON / HTML"]
+            B3["Generate embeddings\nFirst 1200 tokens"]
+            B4["Insert document nodes"]
+            B5["Build similarity edges\nVector + BM25 + RRF"]
+            B6["Store similarity edges"]
+            B7["Leiden clustering per module"]
+            B8["Create cluster nodes"]
+            B9["Link docs to clusters"]
+            B10["Build corpus relations"]
+            B11["Register named graph"]
+
+            BUILD --> B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> B7 --> B8 --> B9 --> B10 --> B11
+        end
+
+        %% Strategizer
+        subgraph STRAT_PIPE [RAG Strategizer Background Task]
+            STRAT["POST /v1/rag-strategizer/analyze"]
+            GETSTRAT["GET /v1/rag-strategizer/strategy"]
+
+            S1["Read clusters"]
+            S2["Generate per-cluster ontology\n(8-12 entity types via LLM)"]
+            S3["Compute complexity score"]
+            S4{"Rank clusters by complexity"}
+            S5["Assign FullGraphRAG"]
+            S6["Assign VectorRAG"]
+            S7["Store strategy profiles"]
+
+            STRAT --> S1 --> S2 --> S3 --> S4
+            S4 -->|Top N%| S5 --> S7
+            S4 -->|Remaining| S6 --> S7
+        end
+    end
+
+    %% Layer 3
+    subgraph L3 [Layer 3 - Knowledge Graph]
+
+        subgraph ORCH_PIPE [Orchestration Background Task]
+            ORCH["POST /v1/orchestrate\nReturns orchestration_id"]
+
+            O1["Load jobs from rags\n(all strategy profiles)"]
+            O2["Spawn Importer replicas"]
+            O3["Submit jobs with rag_mode\nvector_rag or full_graphrag"]
+            O4["Poll Importer until done"]
+            O5["Tear down workers"]
+
+            ORCH --> O1 --> O2 --> O3 --> O4 --> O5
+        end
+    end
+
+    %% Cross-layer connections
+    IMP -->|files on disk| B1
+    B11 -->|Corpus ready| S1
+    S7 -->|Strategies ready| O1
+```

@@ -131,4 +131,3 @@ curl -H "Authorization: Bearer <token>" \
 
 - **[Orchestrate Pipeline](orchestration.md)**: Automatically build knowledge graphs for all strategies
 - **[Per-cluster ontology](../design-guide.md#per-cluster-ontology-entity_types)**: How entity types shape your knowledge graph
-- **[Import Files](../../reference/importer/importing-files.md)**: Manually import with strategy parameters
