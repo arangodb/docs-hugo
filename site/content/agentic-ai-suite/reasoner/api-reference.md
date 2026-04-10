@@ -194,61 +194,6 @@ attempt did not pass. Common scenarios:
 | `content_match: false` | Row counts match but the content did not |
 | `improvement_pct` below threshold | The optimization is valid but the improvement is less than the minimum required (5%); the Reasoner retries with a different approach |
 
-## MCP Server registration
-
-The Reasoner connects to ArangoDB through the ArangoDB MCP Server. In managed
-deployments (Kubernetes / platform), the MCP server is auto-configured at pod
-startup via the `MCP_SERVER_URL` environment variable — no manual registration
-is needed.
-
-For local or custom deployments, use `POST /mcp/register` to register the MCP
-server at runtime.
-
-**Remote (HTTP) MCP Server:**
-
-```bash
-curl -X POST http://localhost:8080/mcp/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "arangodb",
-    "config": {
-      "type": "remote",
-      "url": "http://arangodb-mcp-server-<pod_id>:8080/",
-      "enabled": true
-    }
-  }'
-```
-
-Where `<pod_id>` is the ID of your running ArangoDB MCP Server pod (for example
-`ir6oe`), giving a URL of the form `http://arangodb-mcp-server-ir6oe:8080/` —
-the same pattern used by `MCP_SERVER_POD_ID` at startup.
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "message": "MCP server 'arangodb' registered successfully",
-  "server_name": "arangodb"
-}
-```
-
-> **Note:** Only one MCP server is supported at a time.
-
-### List registered MCP servers
-
-```bash
-curl http://localhost:8080/mcp/registered
-```
-
-**Response:**
-
-```json
-{
-  "registered_servers": ["arangodb"]
-}
-```
-
 ## Health and monitoring
 
 The Reasoner exposes three health endpoints for use with Kubernetes probes and
