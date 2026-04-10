@@ -25,6 +25,13 @@ aliases:
 - [**Container Manager**](./container-manager/_index.md):
   Deploy and manage custom services using your own code packages or container images.
 
+- [**Cypher to AQL Translation Service**](cypher2aql.md) (experimental):
+  Translate Cypher queries to AQL.
+
+- [**Arango Control Plane**](control-plane-acp.md):
+  Install, manage, and run services in the Contextual Data Platform with the
+  Arango Control Plane (ACP).
+
 ## Operational features
 
 - **Scaling Capabilities for Multi-Model Workloads:**
@@ -51,7 +58,7 @@ aliases:
   
   Comprehensive health checks, metrics collection, alerting, and automatic
   failover mechanisms ensure your data platform stays operational. Real-time
-  monitoring dashboards provide visibility into cluster performance,
+  [monitoring](monitoring.md) dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
 
 - **Cloud-Native Architecture:** 
