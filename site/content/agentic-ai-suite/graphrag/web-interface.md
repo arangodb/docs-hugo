@@ -140,25 +140,26 @@ in the **Graph** section.
 
 ![Explore Knowledge Graph in GraphRAG web interface](../../images/graphrag-ui-explore-knowledge-graph.png)
 
-For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
+For a more detailed exploration, click the **Explore** button to open the
+Knowledge Graph in the dedicated Graph Visualizer.
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
 ## Auto-refresh and Pause Controls
 
-The graph section automatically checks for changes to the data currently displayed
-on the graph. You can control this behavior using the refresh controls in the
+The **Graph** section automatically checks for changes to the data currently
+displayed. You can control this behavior using the refresh controls in the
 top-right corner.
 
 ### Auto-refresh
 
-The auto-refresh feature detects when any of those documents have been modified
+The auto-refresh feature detects when any of the displayed documents have been modified
 or deleted from the database. It does not detect new documents added to the knowledge
 graph, such as those created by the Importer. To see newly imported data, use the
 **Search Graph** button in the top bar of the **Graph** section to open the
 **Search & add nodes to canvas** dialog. Select a **Node type** (collection),
-enter a document ID in the **Search by ID** field, select the nodes you want to
-add, and click **Add nodes**.
+enter a document ID in the **Search** field (**Search by ID**), select the nodes
+you want to add, and click **Add nodes**.
 
 When auto-refresh is active, the graph checks the database at a configurable
 interval. You can choose the refresh frequency from the **Refresh every**
@@ -167,8 +168,8 @@ updates automatically without any action needed from you.
 
 ### Pausing Auto-refresh
 
-You can also stop automatic updates via the **Pause auto-fresh** button. While
-paused, the graph still checks for changes in the background. If changes are
+You can also stop automatic updates via the **Pause auto-fresh** button ({{< icon "pause" >}}).
+While paused, the graph still checks for changes in the background. If changes are
 detected, a banner appears at the top of the graph informing you that the graph
 data has changed. You can either apply the latest changes to the graph or dismiss
 without applying the changes.
