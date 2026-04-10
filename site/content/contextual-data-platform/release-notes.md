@@ -5,7 +5,7 @@ weight: 100
 description: >-
   Features and improvements released for the Contextual Data Platform
 ---
-## March 2026 (v4.0, General Availability)
+## April 2026 (v4.0, General Availability)
 
 The Arango Contextual Data Platform has been officially released and comes with
 various improvements and major additions to the unified web interface, the
