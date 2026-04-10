@@ -16,6 +16,9 @@ queries into [AQL](../arangodb/3.12/aql/_index.md) (ArangoDB Query Language).
 You send a Cypher query to the service and receive the equivalent AQL query,
 which you can then run against your ArangoDB deployment.
 
+This service uses a deterministic parser and translation pipeline. It does not
+use a Large Language Model (LLM).
+
 ## Purpose
 
 - **Bridge to AQL**: Get executable AQL that runs on ArangoDB, so you can reuse
