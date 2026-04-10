@@ -155,7 +155,10 @@ top-right corner.
 The auto-refresh feature detects when any of those documents have been modified
 or deleted from the database. It does not detect new documents added to the knowledge
 graph, such as those created by the Importer. To see newly imported data, use the
-**Search Graph** button to find and add specific nodes to the canvas.
+**Search Graph** button in the top bar of the **Graph** section to open the
+**Search & add nodes to canvas** dialog. Select a **Node type** (collection),
+enter a document ID in the **Search by ID** field, select the nodes you want to
+add, and click **Add nodes**.
 
 When auto-refresh is active, the graph checks the database at a configurable
 interval. You can choose the refresh frequency from the **Refresh every**
