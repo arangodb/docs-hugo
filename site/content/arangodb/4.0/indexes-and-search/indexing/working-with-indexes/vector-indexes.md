@@ -41,9 +41,6 @@ startup option needs to be enabled on the deployment you want to restore to.
    to retrieve a given number of similar documents relative to a vector embedding
    you provide.
 
-Creating a vector index triggers training the index on top of real data and it
-cannot be done incrementally without affecting the quality of the computation.
-
 Up to ArangoDB v3.12.8, a vector index expects the data to already exist in the specified attribute.
 This means **you cannot create a vector index for a collection upfront**, unlike
 with all other index types. The documents need to already have vector embeddings
@@ -53,6 +50,9 @@ From ArangoDB v3.12.9 onward, you can create a vector index first and the
 training is automatically triggered once there is sufficient data. It is still
 recommended to load the data first and then create the vector index to ensure
 the training uses all of the desired data.
+
+Vector indexes are trained on your data and this cannot be done incrementally
+without affecting the quality of the computation.
 
 While it is possible to add more documents with vector embeddings over time,
 they can only be assigned to existing clusters in the high-dimensional vector

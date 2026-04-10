@@ -34,7 +34,7 @@ See how to [Package Your Code](package-code/) for detailed instructions.
 
 {{< tip >}}
 Use [ServiceMaker](https://github.com/arangodb/servicemaker) to automate packaging.
-It handles dependencies, builds Docker images, and generates deployment-ready archives.
+It handles dependencies, builds container images, and generates deployment-ready archives.
 {{< /tip >}}
 
 ### Bring Your Own Container
@@ -84,4 +84,28 @@ Deploy services using runtime environments and resources tailored to your needs.
 
 ## Security
 
-All deployed services operate within the platform's security framework, with integrated authentication, network isolation, and access controls.
+All deployed services operate within the platform's security framework, with
+integrated authentication, network isolation, and access controls.
+
+{{< comment >}}
+## Scaling and High Availability
+
+Services deployed through the Container Manager inherit the platform's
+Kubernetes-native scaling and high availability capabilities:
+
+- **Automatic Scaling**:\
+  Your services can scale horizontally and vertically based on workload demands,
+  leveraging Kubernetes autoscaling mechanisms.
+
+- **Multi-AZ Deployment**:\
+  Services can be distributed across availability zones for fault tolerance
+  and resilience.
+
+- **Zero-Downtime Updates**:\
+  Rolling updates enable you to deploy new versions of your services with
+  minimal or no service disruption.
+
+For detailed information about the platform's scaling architecture and
+high availability features, see
+[Operational Features](../../contextual-data-platform/platform-suite.md#operational-features).
+{{< /comment >}}

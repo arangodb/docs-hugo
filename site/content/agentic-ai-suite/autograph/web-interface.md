@@ -32,7 +32,7 @@ web interface, follow these steps:
 After creating your project, you are guided through setting up your AutoGraph workflow.
 
 {{< info >}}
-AutoGraph is checking the [File Manager](../../platform-suite/file-manager.md) for
+AutoGraph is checking the [File Manager](../../platform-suite/file-manager/_index.md) for
 documents previously uploaded to this database. Files uploaded to the File Manager
 are shared across all projects within the same database. You can choose to use
 these existing files or upload new ones.

@@ -50,10 +50,9 @@ system before the setup.
 - Download the latest enterprise version of the ArangoDB Kubernetes Operator
   `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
 
-  Look for the files called `kube-arangodb-enterprise-x.x.x.tgz` and
-  `kube-arangodb-enterprise-arm64-x.x.x.tgz` (where `x.x.x` is the version number).
-  You may need to click **Show all # assets** to reveal all files.
-  The former is the operator for x86-64 CPUs and the latter for 64-bit ARM chips.
+  Look for the file called `kube-arangodb-enterprise-x.x.x.tgz` (where `x.x.x`
+  is the version number). It is the operator for x86-64 CPUs.
+  You may need to click **Show all # assets** to reveal all files. 
 
 - Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases>.
@@ -78,7 +77,7 @@ system before the setup.
   `chmod +x arangodb_operator_platform`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine arangodb_operator_platform`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
 - Pull the necessary images from the internet and save them to files in order to
@@ -113,7 +112,7 @@ system before the setup.
   `chmod +x regctl`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine regctl`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
   To pull the image and save it to a file as follows:
@@ -202,14 +201,7 @@ the necessary Kubernetes resources.
 
 Make sure set the the options as shown below to enable the gateway feature and
 machine learning feature:
-<!-- TODO:
---set "certificate.enabled=true" \
-Is this related to cert-manager that we no longer need with 1.4.0+?
--->
 
-{{< tabs "cpu-arch" >}}
-
-{{< tab "x86-64" >}}
 ```sh
 VERSION_OPERATOR='1.4.1' # Use a newer version if available
 
@@ -221,23 +213,6 @@ helm upgrade --install operator \
   --set "operator.features.ml=true" \
   --set "operator.architectures={amd64}"
 ```
-{{< /tab >}}
-
-{{< tab "ARM" >}}
-```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
-
-helm upgrade --install operator \
-  --namespace arango \
-  "kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
-  --set "operator.architectures={arm64}"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The output looks similar to the following on success:
 
@@ -296,7 +271,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
 a secret that you will create later.
 
-Example for an ArangoDB cluster deployment using version 3.12.7 with three
+Example for an ArangoDB cluster deployment using version 3.12.9 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -306,7 +281,7 @@ metadata:
   name: "deployment-example"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.7"
+  image: "arangodb/enterprise:3.12.9"
   gateway:
     enabled: true
     dynamic: true
@@ -412,7 +387,7 @@ Expected output:
 
 ```
 2026-02-05T17:03:07+01:00 INF Connecting to the server...
-2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.7-2 (enterprise)
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.9 (enterprise)
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0

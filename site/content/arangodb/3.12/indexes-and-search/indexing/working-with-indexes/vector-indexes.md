@@ -51,6 +51,9 @@ training is automatically triggered once there is sufficient data. It is still
 recommended to load the data first and then create the vector index to ensure
 the training uses all of the desired data.
 
+Vector indexes are trained on your data and this cannot be done incrementally
+without affecting the quality of the computation.
+
 While it is possible to add more documents with vector embeddings over time,
 they can only be assigned to existing clusters in the high-dimensional vector
 space as determined by the original vector index training. This can be suboptimal

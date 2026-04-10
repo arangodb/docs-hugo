@@ -61,6 +61,6 @@ Follow the links for a more details explanation of each component.
   data platform. It includes a **unified web interface** with a
   **Graph Visualizer** and an advanced **Query Editor**.
 
-  - [**ArangoDB Enterprise Edition**](arangodb.md):\
+- [**ArangoDB Enterprise Edition**](arangodb.md):\
   The multi-model database system acts as the solid foundation for all your
   graph, document, key-value, search, and vector needs.
