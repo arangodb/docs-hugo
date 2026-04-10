@@ -140,22 +140,26 @@ in the **Graph** section.
 
 ![Explore Knowledge Graph in GraphRAG web interface](../../images/graphrag-ui-explore-knowledge-graph.png)
 
-For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
+For a more detailed exploration, click the **Explore** button to open the
+Knowledge Graph in the dedicated Graph Visualizer.
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
 ## Auto-refresh and Pause Controls
 
-The graph section automatically checks for changes to the data currently displayed
-on the graph. You can control this behavior using the refresh controls in the
+The **Graph** section automatically checks for changes to the data currently
+displayed. You can control this behavior using the refresh controls in the
 top-right corner.
 
 ### Auto-refresh
 
-The auto-refresh feature detects when any of those documents have been modified
+The auto-refresh feature detects when any of the displayed documents have been modified
 or deleted from the database. It does not detect new documents added to the knowledge
 graph, such as those created by the Importer. To see newly imported data, use the
-**Search Graph** button to find and add specific nodes to the canvas.
+**Search Graph** button in the top bar of the **Graph** section to open the
+**Search & add nodes to canvas** dialog. Select a **Node type** (collection),
+enter a document ID in the **Search** field (**Search by ID**), select the nodes
+you want to add, and click **Add nodes**.
 
 When auto-refresh is active, the graph checks the database at a configurable
 interval. You can choose the refresh frequency from the **Refresh every**
@@ -164,8 +168,8 @@ updates automatically without any action needed from you.
 
 ### Pausing Auto-refresh
 
-You can also stop automatic updates via the **Pause auto-fresh** button. While
-paused, the graph still checks for changes in the background. If changes are
+You can also stop automatic updates via the **Pause auto-fresh** button ({{< icon "pause" >}}).
+While paused, the graph still checks for changes in the background. If changes are
 detected, a banner appears at the top of the graph informing you that the graph
 data has changed. You can either apply the latest changes to the graph or dismiss
 without applying the changes.
@@ -278,10 +282,33 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   Enabling caching improves response times for repeated queries. Leave it disabled when you need fresh results or when testing changes to your knowledge graph.
 - Toggle **Citations** to show or hide inline citations in responses. For deep search queries, citations are always disabled.
 
+## Graph canvas integration
+
+When the Retriever returns a response, the graph canvas automatically fetches and
+displays the documents and edges that were used to answer your query. These
+retriever-sourced elements are highlighted in green on the canvas so you can
+immediately see which parts of your Knowledge Graph contributed to the answer.
+A loading overlay is shown on the canvas while the graph data is being fetched.
+
+Each assistant message in the chat includes two additional action buttons that appear
+when you hover over the message (alongside the copy button):
+
+| Button | Icon | Behavior |
+|--------|------|----------|
+| **Add to canvas** | Hub icon | Fetches the subgraph for that message and merges it into the existing canvas, preserving any nodes already displayed. |
+| **Clear canvas & display subgraph** | Focus icon | Clears the canvas and displays only the subgraph referenced by that message. |
+
+Use **Add to canvas** to build up context across multiple queries. Use **Clear
+canvas & display subgraph** to focus on a single response without the clutter of
+previous results.
+
+Starting a new query automatically clears the green highlights from the previous
+response before the new results are fetched.
+
 ## Integrate the Knowledge Graph chat service into your application
 
 To integrate any service into your own applications,
 go to **Project Settings** and use the copy button next to each service to
-copy its integration endpoint. You cam make `POST` requests to the endpoints
+copy its integration endpoint. You can make `POST` requests to the endpoints
 with your queries, the services accept `JSON` payloads and return structured
 responses for building custom interfaces.
