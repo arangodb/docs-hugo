@@ -33,7 +33,7 @@ Kubernetes Operator, providing automated management and enterprise-grade reliabi
 
 ## Unified web interface
 
-The Contextual Data Platform includes single, unified web interface for
+The Contextual Data Platform includes a single, unified web interface for
 accessing services and components seamlessly.
 
 ### Graph Visualizer
