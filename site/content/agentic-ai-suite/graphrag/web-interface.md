@@ -232,7 +232,7 @@ service automatically downloads and loads models from the MLflow registry.
 
 {{< /tabs >}}
 
-See also the [Retriever](../reference/retriever/) documentation.
+See also the [Retriever](../retriever/) documentation.
 
 ## Update Retriever service parameters
 
@@ -268,9 +268,9 @@ provider combination, or if your API key has changed or expired.
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Instant search](../reference/retriever/search-methods.md#instant-search): Instant
+- [Instant search](../retriever/search-methods/unified-search.md): Instant
   queries provide fast responses.
-- [Deep search](../reference/retriever/search-methods.md#deep-search): This option will take
+- [Deep search](../retriever/search-methods/deep-search.md): This option will take
   longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:

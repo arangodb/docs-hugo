@@ -141,7 +141,7 @@ You can explore the generated knowledge graph in the [Graph Visualizer](../../pl
 
 ## Deploy the Retriever service
 
-The [Retriever service](../reference/retriever/_index.md) enables intelligent
+The [Retriever service](../retriever/) enables intelligent
 search and retrieval of information from your knowledge graph.
 
 1. The interface automatically shows the retriever deployment section with your previously configured LLM provider.
@@ -158,16 +158,16 @@ You can deploy multiple retriever services with different configurations for the
 {{< /info >}}
 
 1. The chat interface provides three
-   [search modes](../reference/retriever/search-methods.md):
+   [search modes](../retriever/search-methods/_index.md):
    - **LOCAL**: Searches at the entity level within relevant partitions.
    - **UNIFIED**: Combines semantic and lexical search with graph expansion
      for fast, streamed responses (Instant Search).
    - **GLOBAL**: Searches at the community level across the knowledge graph.
 2. Toggle **Deep Search** to enable LLM-planned multi-step retrieval over
-   LOCAL search. See [Search Methods](../reference/retriever/search-methods.md)
+   LOCAL search. See [Search Methods](../retriever/search-methods/_index.md)
    for details.
 3. Under **Advanced** options, you can adjust additional
-   [retriever parameters](../reference/retriever/parameters.md):
+   [retriever parameters](../retriever/parameters.md):
    - Adjust the **Level (GLOBAL)** setting.
    - Add custom **Response Instruction** to override the LLM answer style.
    - Toggle **Show citations** to include source references.
@@ -194,5 +194,5 @@ To view and manage all deployed retriever services:
 Each retriever can have different settings for search level, response
 instructions, and other parameters, allowing you to create specialized
 retrievers optimized for different types of queries or use cases. For more
-details, see the [Retriever service](../reference/retriever/_index.md)
+details, see the [Retriever service](../retriever/)
 reference documentation.

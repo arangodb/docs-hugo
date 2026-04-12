@@ -166,7 +166,7 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 {{< tag "Agentic AI Suite" >}}
 
-- **Instant and Deep Search**: New [Retriever](../agentic-ai-suite/reference/retriever/search-methods.md) search methods
+- **Instant and Deep Search**: New [Retriever](../agentic-ai-suite/retriever/search-methods/_index.md) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the

@@ -58,7 +58,7 @@ The following example shows a complete request body with all available options:
 
 The parameters required for the deployment of each service are defined in the
 corresponding service documentation. See [Importer](../agentic-ai-suite/importer/_index.md)
-and [Retriever](../agentic-ai-suite/reference/retriever/_index.md).
+and [Retriever](../agentic-ai-suite/retriever/_index.md).
 
 ## Projects
 
