@@ -95,7 +95,7 @@ These prompts are used when `use_llm_planner=true` with Local Search
 
 - **`ds_final_synthesis`**: Synthesizes all step results into a comprehensive
   final answer.
-  - Template variables: `{original_query}`, `{response_instruction}`,
+  - Template variables: `{original_query}`, `{response_instructions}`,
     `{all_step_results}`.
 
 - **`no_relevant_data_message`**: Message returned when no relevant data is

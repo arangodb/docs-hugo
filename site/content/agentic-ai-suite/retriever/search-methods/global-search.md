@@ -9,7 +9,7 @@ weight: 10
 ## Overview
 
 Global Search is designed for queries that require understanding and aggregation
-of information across your entire documents. It is particularly effective for
+of information across your entire document set. It is particularly effective for
 questions about overall themes, patterns, or high-level insights in your data.
 
 {{< diagram src="/images/retriever-global-search-architecture.png" 
