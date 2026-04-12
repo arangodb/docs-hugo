@@ -42,10 +42,10 @@ The default value is `false`.
 
 ### `process_images` 
 
-- **Purpose**: Enables processing of storage URLs (base64/S3 images).
+- **Purpose**: Enables processing of storage-style URLs (base64/S3/FileManager artifact URLs).
 - **Functionality**:
   - When `false`: Only processes web URLs (https://, http://).
-  - When `true`: Processes both web URLs AND storage URLs (base64/S3).
+  - When `true`: Processes both web URLs AND storage-style URLs (base64/S3/FileManager artifact URLs).
 - **Requirements**: `enable_semantic_units` must be `true`.
 - **Use Cases**:
   - Document analysis with embedded base64 images.
@@ -56,10 +56,10 @@ The default value is `false` and requires `enable_semantic_units` to be set to `
 
 ### `store_image_data`
 
-- **Purpose**: Controls whether actual image data is stored for storage URLs.
+- **Purpose**: Controls whether actual image data is stored for storage-style URLs.
 - **Functionality**:
   - For web URLs: No effect (always stores only metadata).
-  - For storage URLs: When `true`, stores the actual image data in the `image_data` field.
+  - For storage-style URLs: When `true`, stores the actual image data in the `image_data` field.
 - **Requirements**: `process_images` must be `true`.
 - **Use Cases**:
   - Offline access to base64-encoded images.
@@ -123,12 +123,13 @@ In this example, the Importer extracts all image references and stores complete 
 Here's a complete import request with semantic units enabled alongside other import parameters:
 
 ```bash
-curl -X POST https://<your-platform-url>/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
     "file_content": "'$base64_content'",
     "file_name": "document.md",
-    "chunk_token_size": 1200,
+    "chunk_token_size": 1024,
     "entity_types": ["person", "organization", "technology"],
     "enable_semantic_units": true,
     "process_images": true,
@@ -136,7 +137,7 @@ curl -X POST https://<your-platform-url>/v1/import \
   }'
 ```
 
-In this example, the Importer processes the markdown document by extracting entities (person, organization, technology), chunking the text into 1200-token segments, and extracting all image references (web URLs and storage URLs). The resulting Knowledge Graph includes entity nodes, relationships, and a `SemanticUnits` collection containing image metadata without storing the actual image data.
+In this example, the Importer processes the markdown document by extracting entities (person, organization, technology), chunking the text into 1024-token segments, and extracting all image references (web URLs and storage URLs). The resulting Knowledge Graph includes entity nodes, relationships, and a `SemanticUnits` collection containing image metadata without storing the actual image data.
 
 ## Supported Content Types
 
@@ -145,6 +146,7 @@ The semantic units feature supports:
 - **Web URLs**: `https://example.com/image.jpg`
 - **Base64 Images**: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
 - **S3 URLs**: `s3://bucket/path/image.jpg`
+- **FileManager artifact URLs**: `/_platform/filemanager/_db/{db}/rag-input/{file_id}/download?version={n}`
 - **Markdown Image Syntax**: `![Alt text](https://example.com/image.jpg)`
 
 ## Performance Considerations

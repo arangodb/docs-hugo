@@ -85,5 +85,5 @@ curl -X POST \
 ## Next Steps
 
 - **[Retriever Setup](../../reference/retriever/)**: Query your built knowledge graphs
-- **[Monitor Results](../../reference/importer/verify-and-explore.md)**: Verify import success
+- **[Monitor Results](../../importer/verify-and-explore.md)**: Verify import success
 - **[Design Guide - Modules to partitions](../design-guide.md#how-modules-become-a-partitioned-knowledge-graph)**: How module names flow into partition IDs

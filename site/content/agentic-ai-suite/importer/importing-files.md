@@ -15,11 +15,11 @@ weight: 30
 Before you can import files, make sure you've completed these steps:
 
 1. **Create a GraphRAG project**
-   Learn how to [create and manage projects](../../../platform-suite/control-plane-acp.md#projects).
+   Learn how to [create and manage projects](../../platform-suite/control-plane-acp.md#projects).
 
 2. **Install the Importer service**
    Deploy the service using the `/v1/graphragimporter` endpoint. See
-   [The Arango Control Plane (ACP) service](../../../platform-suite/control-plane-acp.md)
+   [The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
    documentation for installation instructions.
 
 3. **Configure your LLM provider**
@@ -27,6 +27,11 @@ Before you can import files, make sure you've completed these steps:
 
 Once you've completed these steps, you're ready to import documents to build 
 your Knowledge Graph using either single file import or multi-file import.
+
+{{< info >}}
+Platform routes require authentication. Include a standard `Authorization`
+header (e.g., `Bearer <token>`) on all import requests.
+{{< /info >}}
 
 ## Choosing a RAG Mode
 
@@ -46,9 +51,7 @@ Use single file import when you want to process one document at a time. This is
 ideal for testing, small documents, or when you need immediate feedback without 
 streaming progress updates.
 
-```
-POST /v1/import
-```
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import" >}}
 
 ### Basic example
 
@@ -57,8 +60,9 @@ POST /v1/import
 base64_content=$(base64 -i your_document.txt)
 
 # Send to the Importer service
-curl -X POST https://<your-platform-url>/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
     "file_content": "'$base64_content'",
     "file_name": "your_document.txt"
@@ -68,14 +72,15 @@ curl -X POST https://<your-platform-url>/v1/import \
 ### Example with common parameters
 
 ```bash
-curl -X POST https://<your-platform-url>/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
     "file_content": "'$base64_content'",
     "file_name": "your_document.txt",
     "batch_size": 1000,
-    "chunk_token_size": 1200,
-    "chunk_overlap_token_size": 100,
+    "chunk_token_size": 1024,
+    "chunk_overlap_token_size": 128,
     "entity_types": ["person", "organization", "location", "event"],
     "relationship_types": ["WORKS_FOR", "LOCATED_IN", "PARTICIPATES_IN"],
     "enable_chunk_embeddings": false,
@@ -83,8 +88,6 @@ curl -X POST https://<your-platform-url>/v1/import \
     "enable_community_embeddings": true
   }'
 ```
-
-Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 The service will:
 - Process the document using the configured LLM model.
@@ -100,16 +103,14 @@ Use multi-file import when you need to process multiple documents into a single
 Knowledge Graph. This API provides streaming progress updates, making it 
 ideal for batch processing and long-running imports where you need to track progress.
 
-```
-POST /v1/import-multiple
-```
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple" >}}
 
 ### Basic example
 
 ```bash
-# Create JSON payload with multiple files
-curl -X POST https://<your-platform-url>/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
     "files": [
       {
@@ -124,16 +125,14 @@ curl -X POST https://<your-platform-url>/v1/import-multiple \
       }
     ],
     "batch_size": 1000,
-    "chunk_token_size": 1200,
-    "chunk_overlap_token_size": 100,
+    "chunk_token_size": 1024,
+    "chunk_overlap_token_size": 128,
     "entity_types": ["person", "organization", "location", "event"],
     "enable_chunk_embeddings": true,
     "enable_community_embeddings": true,
     "vector_index_metric": "cosine"
   }'
 ```
-
-Replace `<your-platform-url>` with your Arango Contextual Data Platform URL.
 
 For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
 
@@ -142,8 +141,9 @@ For detailed information about all available parameters, see the [Import Paramet
 For faster processing when you only need semantic search over document chunks:
 
 ```bash
-curl -X POST https://<your-platform-url>/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
     "files": [
       {
@@ -159,8 +159,8 @@ curl -X POST https://<your-platform-url>/v1/import-multiple \
     ],
     "rag_mode": "vector_rag",
     "batch_size": 1000,
-    "chunk_token_size": 1200,
-    "chunk_overlap_token_size": 100,
+    "chunk_token_size": 1024,
+    "chunk_overlap_token_size": 128,
     "vector_index_metric": "cosine"
   }'
 ```
@@ -193,8 +193,8 @@ This comprehensive example demonstrates all available import parameters for the 
   "enable_chunk_embeddings": true,
   "enable_edge_embeddings": true,
   "enable_community_embeddings": true,
-  "chunk_token_size": 1200,
-  "chunk_overlap_token_size": 100,
+  "chunk_token_size": 1024,
+  "chunk_overlap_token_size": 128,
   "chunk_min_token_size": 50,
   "chunk_custom_separators": [
     "\n\n",
@@ -292,7 +292,7 @@ data: {"type": "IMPORT_PROGRESS_TYPE_COMPLETED", "message": "Import completed su
 Use curl to view the raw SSE stream as it arrives:
 
 ```bash
-curl -X POST https://<your-platform-url>/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   --no-buffer \
@@ -319,7 +319,7 @@ When using Python, you must parse the SSE format and strip the `data: ` prefix:
 import requests
 import json
 
-url = "https://<your-platform-url>/v1/import-multiple"
+url = "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple"
 payload = {
     "files": [
         {
@@ -334,7 +334,7 @@ payload = {
         }
     ],
     "batch_size": 1000,
-    "chunk_token_size": 1200,
+    "chunk_token_size": 1024,
     "enable_chunk_embeddings": True,
     "enable_community_embeddings": True,
     "vector_index_metric": "cosine"
@@ -376,6 +376,29 @@ for line in response.iter_lines():
             # Skip malformed lines
             continue
 ```
+
+## Job Management and Health
+
+The Importer service provides additional endpoints for monitoring import jobs
+and checking service health.
+
+### Check job status
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs/{job_id}" >}}
+
+Returns the current status of a specific import job.
+
+### List all jobs
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs" >}}
+
+Returns a list of all import jobs and their statuses.
+
+### Health check
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/health" >}}
+
+Returns the health status of the Importer service.
 
 ## Next Steps
 

@@ -19,9 +19,7 @@ multiple methods.
 
 You can verify the state of the import process via the following endpoint:
 
-```
-GET /_platform/acp/v1/project_by_name/<your_project>
-```
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_name}" >}}
 
 For example, the `status` object found within `importerServices` may contain the following
 properties:
@@ -103,20 +101,20 @@ retrieval. Single file imports do not include these fields.
 ### Communities Collection
 
 - **Collection type**: Vertex collection.
-- **Purpose**: Stores thematic clusters of related entities that form meaningful
-  communities within your documents. Each community represents a cohesive group
-  of concepts, characters, or themes that are closely related and interact with
-  each other. These communities help identify and analyze the main narrative
-  threads, character relationships, and thematic elements in your documents.
+- **Purpose**: Stores clusters of related entities that form meaningful
+  communities within your documents. Each community represents a group of
+  entities (e.g., people, organizations, locations) that are closely related.
+  Communities help you understand the key topics, entity relationships, and
+  thematic structure of your data.
 - **Key Fields**:
   - `_key`: Unique identifier for the community.
-  - `title`: Cluster ID to which this community belongs to.
+  - `title`: Cluster ID to which this community belongs.
   - `report_string`: A detailed markdown-formatted analysis that explains the
     community's theme, key relationships, and significance. This includes
     sections on main characters, their roles, relationships, and the impact of key events or locations.
   - `report_json`: Structured data containing:
     - `title`: The main theme or focus of the community.
-    - `summary`: A concise overview of the community's central narrative.
+    - `summary`: A concise overview of the community's central topic.
     - `rating`: A numerical score indicating the community's significance (the higher, the better).
     - `rating_explanation`: Justification for the rating.
     - `findings`: An array of detailed analyses, each containing a summary and explanation of key aspects.
@@ -126,11 +124,11 @@ retrieval. Single file imports do not include these fields.
   - `embedding`: Vector representation of the community for similarity search (when `enable_community_embeddings` is `true`).
   - `partition_id`: The partition the document belongs to.
 - **Usage**: Enables you to:
-  - Identify and analyze major narrative threads and themes.
-  - Understand complex relationships between characters and concepts.
-  - Track the significance and impact of different story elements.
-  - Navigate through hierarchical relationships between themes.
-  - Discover patterns and recurring elements in your documents.
+  - Identify and analyze major topics and themes in your data.
+  - Understand complex relationships between entities.
+  - Assess the significance of different entity groups via ratings.
+  - Navigate hierarchical community structures (communities and sub-communities).
+  - Discover recurring patterns across your documents.
 
 ### Relations Collection
 
@@ -157,10 +155,15 @@ retrieval. Single file imports do not include these fields.
 - **Key Fields**:
   - `_key`: Unique identifier for the semantic unit.
   - `type`: Type of semantic unit (always "image" for image references).
-  - `image_url`: URL or reference to the image/web resource.
-  - `is_storage_url`: Boolean indicating if the URL is a storage URL (base64/S3) or web URL.
+  - `image_url`: URL or reference to the image/web resource. For extracted
+    uploaded images, this is stored as a FileManager download path
+    (e.g., `/_platform/filemanager/_db/{db}/rag-input/{file_id}/download?version={n}`).
+  - `is_storage_url`: Boolean indicating if the URL is a storage-style URL
+    (e.g., base64/S3/FileManager artifact URL) or a normal web URL.
   - `import_number`: Import batch number for tracking.
   - `source_chunk_id`: Reference to the chunk where this semantic unit was found.
+  - `description`: Description of the semantic unit (surrounding text or AI-generated).
+  - `embedding`: Vector embedding representation (when `enable_semantic_unit_embeddings` is `true`).
 
 {{< info >}}
 Learn more about semantic units in the [Semantic Units guide](semantic-units.md).
@@ -174,23 +177,32 @@ The system creates several types of relationships between nodes:
 2. **MENTIONED_IN**: Connects entities to the chunks where they are mentioned.
 3. **RELATED_TO**: Shows relationships between different entities.
 4. **IN_COMMUNITY**: Associates entities with their community groups.
+5. **SUB_COMMUNITY_OF**: Relates a sub-community to its parent community in the hierarchy.
 
 ### Relationship Diagram
 
-```
-Document
-  └─[PART_OF]─> Chunk
-                  └─[MENTIONED_IN]─> Entity
-                                       ├─[RELATED_TO]─> Entity
-                                       └─[IN_COMMUNITY]─> Community
+```mermaid
+graph LR
+  Document -->|PART_OF| Chunk
+  Chunk -->|MENTIONED_IN| Entity
+  Entity -->|RELATED_TO| Entity2["Entity"]
+  Entity -->|IN_COMMUNITY| Community
+  Community -->|SUB_COMMUNITY_OF| Community2["Community"]
 ```
 
 ## Vector Search Capabilities
 
-The system automatically creates vector indexes on the `embedding` field in collections where embeddings are enabled (Entities, Chunks, Edges, and Communities), enabling:
+The system automatically creates vector indexes on the `embedding` field for
+collections enabled by the import mode and request flags:
+- **Entities**: When the selected `rag_mode` imports entities (e.g., `full_graphrag`).
+- **Chunks**: When chunk embeddings are enabled (`enable_chunk_embeddings=true` in `full_graphrag`; always on in `vector_rag`).
+- **SemanticUnits**: When `enable_semantic_unit_embeddings=true`.
+- **Relations**: When `enable_edge_embeddings=true` and the selected `rag_mode` imports relations.
+
+These indexes enable:
 - Semantic similarity search
 - Nearest neighbor queries
-- Efficient vector-based retrieval
+- Efficient vector-based retrieval across multiple collection types
 
 These vector indexes are automatically configured and optimized for the embedding model 
 you selected during [LLM configuration](llm-configuration.md). You can customize the vector 
@@ -202,8 +214,7 @@ for more details.
 
 Now that you've successfully imported and verified your knowledge graph:
 
-- **Query your data**: Use the [Retriever service](../retriever.md) to perform semantic search and retrieval
-- **Visualize relationships**: Explore your graph using the [Graph Visualizer](../../../platform-suite/graph-visualizer.md)
+- **Query your data**: Use the [Retriever service](../reference/retriever/) to perform semantic search and retrieval
+- **Visualize relationships**: Explore your graph using the [Graph Visualizer](../../platform-suite/graph-visualizer.md)
 - **Import more documents**: Return to the [Import Files guide](importing-files.md) to add more data
 - **Optimize parameters**: Review the [Parameters guide](parameters.md) to fine-tune your imports
-

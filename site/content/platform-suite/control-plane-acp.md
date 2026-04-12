@@ -57,7 +57,7 @@ The following example shows a complete request body with all available options:
   they can be used.
 
 The parameters required for the deployment of each service are defined in the
-corresponding service documentation. See [Importer](../agentic-ai-suite/reference/importer/_index.md)
+corresponding service documentation. See [Importer](../agentic-ai-suite/importer/_index.md)
 and [Retriever](../agentic-ai-suite/reference/retriever/_index.md).
 
 ## Projects
@@ -181,7 +181,7 @@ documentation.
 ## Complete Service lifecycle example
 
 The example below shows how to install, monitor, and uninstall the
-[Importer](../agentic-ai-suite/reference/importer/_index.md) service.
+[Importer](../agentic-ai-suite/importer/_index.md) service.
 
 ### Step 1: Installing the service
 

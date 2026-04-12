@@ -56,7 +56,7 @@ Before using the Retriever service, you need to:
    managing projects, see the [Projects](../../../platform-suite/control-plane-acp.md#projects)
    section in the Arango Control Plane (ACP) service documentation.
 
-2. **Import data** - Use the [Importer](../importer/) service to transform your 
+2. **Import data** - Use the [Importer](../../importer/) service to transform your 
    text documents into a knowledge graph stored in ArangoDB.
 
 ## Installation
@@ -99,7 +99,7 @@ To use the Retriever service, follow these steps:
 
 1. [**Create a GraphRAG project**](../../../platform-suite/control-plane-acp.md#creating-a-project):
    Set up a project to organize your data.
-2. [**Import data**](../importer/):
+2. [**Import data**](../../importer/):
    Build your knowledge graph using the Importer service.
 3. [**Configure your LLM provider**](llm-configuration.md):
    Choose and configure either Triton or OpenAI-compatible APIs.
