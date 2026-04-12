@@ -32,7 +32,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
@@ -48,7 +48,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
+- `project_name`: The project name created via the
    [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
   [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
@@ -98,12 +98,12 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "openai",
     "embedding_api_provider": "openai",
     "chat_api_url": "https://openrouter.ai/api/v1",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "mistral-nemo",
+    "chat_model": "mistralai/mistral-nemo",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": "your_openrouter_api_key",
     "embedding_api_key": "your_openai_api_key",
@@ -114,7 +114,7 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `genai_project_name`: The project name created via the
+- `project_name`: The project name created via the
   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
   [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
@@ -147,7 +147,7 @@ service using the below configuration:
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "triton",
     "embedding_api_provider": "triton",
     "chat_api_url": "your-arangodb-llm-host-url",
@@ -160,7 +160,7 @@ service using the below configuration:
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
+- `project_name`: The project name created via the
   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
   [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
