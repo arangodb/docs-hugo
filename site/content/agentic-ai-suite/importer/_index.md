@@ -4,14 +4,18 @@ menuTitle: Importer
 description: >-
   The Importer service helps you transform your text documents into a knowledge graph,
   making it easier to analyze and understand complex information
-weight: 10
+weight: 6
 ---
 ## Overview
 
-The Importer service lets you turn text files into a knowledge graph.
-It supports the following text formats with UTF-8 encoding:
+The Importer service lets you turn documents into a knowledge graph.
+It supports the following formats with UTF-8 encoding:
 - `.txt` (Plain text)
 - `.md` (Markdown)
+- `.pdf` (PDF)
+
+Office files (e.g., `.docx`, `.pptx`) and images are converted to PDF
+first and then processed through the same pipeline.
 
 The Importer takes your text, analyzes it using the configured language model, and
 creates a structured knowledge graph. This graph is then imported into your
@@ -25,7 +29,7 @@ The service supports two operational modes:
 
 {{< tip >}}
 You can also use the GraphRAG Importer service via the
-[Contextual Data Platform web interface](../../graphrag/web-interface.md).
+[Contextual Data Platform web interface](../graphrag/web-interface.md).
 {{< /tip >}}
 
 ## Prerequisites
@@ -34,20 +38,35 @@ Before importing data, you need to create a GraphRAG project. Projects help you
 organize your work and keep your data separate from other projects.
 
 For detailed instructions on creating and managing projects, see the 
-[Projects](../../../platform-suite/control-plane-acp.md#projects) section in
+[Projects](../../platform-suite/control-plane-acp.md#projects) section in
 the Arango Control Plane (ACP) service documentation.
 
 Once you have created a project, you can reference it when deploying the Importer 
 service using the `project_name` field in the service configuration.
 
+{{< warning >}}
+Because `project_name` is used as an ArangoDB collection name prefix,
+it must conform to ArangoDB naming rules:
+- Must start with a letter or underscore.
+- May only contain letters, digits, underscores (`_`), or hyphens (`-`).
+- Must not exceed 256 characters (including suffixes such as `_Documents`).
+
+If `project_name` is not set, the service falls back to `default_project`.
+An invalid name is not validated at startup and causes collection creation to
+fail at runtime.
+{{< /warning >}}
+
 ## Installation
 
-To install and start the Importer service, use the AI service endpoint
-`/v1/graphragimporter`. This endpoint is part of the Arango Control Plane (ACP)
-service, which manages the lifecycle of all AI services in the platform.
+To install and start the Importer service, use the AI service endpoint:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
+
+This endpoint is part of the Arango Control Plane (ACP) service, which manages
+the lifecycle of all AI services in the platform.
 
 For detailed instructions on installing, monitoring, and managing the Importer service, 
-see [The Arango Control Plane (ACP) service](../../../platform-suite/control-plane-acp.md)
+see [The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
 documentation.
 
 ## Deployment options
@@ -71,7 +90,7 @@ both HTTP and gRPC interfaces for communication.
 Arango's AI Services are fully compatible with OpenAI-compatible APIs, whether
 cloud-based or self-hosted.
 
-Thus, you can connects to cloud-based services like OpenAI's models via the
+Thus, you can connect to cloud-based services like OpenAI's models via the
 OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted
 open-source models, etc.) via the OpenRouter option, as well as private Azure
 endpoints.
@@ -83,7 +102,7 @@ OpenAI-compatible endpoint.
 
 To use the Importer service, follow these steps:
 
-1. [**Create a GraphRAG project**](../../../platform-suite/control-plane-acp.md#creating-a-project):
+1. [**Create a GraphRAG project**](../../platform-suite/control-plane-acp.md#creating-a-project):
    Set up a project to organize your data.
 2. [**Configure your LLM provider**](llm-configuration.md):
    Choose and configure either Triton or OpenAI-compatible APIs.
@@ -96,9 +115,10 @@ To use the Importer service, follow these steps:
 **Additional resources:**
 
 - [**Semantic Units**](semantic-units.md): Process images and multimedia content.
+- [**AutoGraph Integration**](autograph-integration.md): How the Importer works with AutoGraph for automated pipeline builds.
 - [**Parameter Reference**](parameters.md): Complete list of import parameters.
 
 ## API Reference
 
-For detailed API documentation, see the <!-- TODO: New API reference and link -->
-[GraphRAG Importer API Reference](https://arangoml.github.io/platform-dss-api/graphrag_importer/proto/index.html).
+For detailed API documentation, see the
+[GraphRAG Importer API Reference](https://apiref.arango.ai/#graphrag_importer).

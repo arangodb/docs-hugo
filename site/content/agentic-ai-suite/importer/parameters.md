@@ -22,12 +22,16 @@ Parameters differ between single file and multi-file import:
 
 ### Single File Import
 
-- `file_content` (required, or use `file_url`): Direct file content as base64-encoded string.
-- `file_url` (required, or use `file_content`): URL to download the file from.
+- `file_content` (required, or use `file_url` / `file_id`): Direct file content as base64-encoded string.
+- `file_url` (required, or use `file_content` / `file_id`): URL to download the file from.
+- `file_id` (required, or use `file_content` / `file_url`): RAG file ID from
+  [File Manager](../../platform-suite/file-manager/). When provided, the file
+  is fetched by ID and `file_content` / `file_url` are ignored.
 - `file_name` (required): Original filename with extension.
 
 {{< tip >}}
-For single file import, you can use either `file_content` or `file_url`, but not both in the same request.
+For single file import, provide exactly one of `file_content`, `file_url`, or
+`file_id`.
 {{< /tip >}}
 
 **Example with direct file content:**
@@ -50,13 +54,20 @@ For single file import, you can use either `file_content` or `file_url`, but not
 
 ### Multi-File Import
 
+You can provide files inline using the `files` array, or reference files
+already uploaded to [File Manager](../../platform-suite/file-manager/) using
+`file_ids`. When `file_ids` is provided, files are fetched by ID and the
+`files` array is ignored.
+
+- `file_ids` (required, or use `files`): An array of RAG file IDs from File Manager.
+
 Each file in the `files` array requires:
 
 - `name` (required): Original filename with extension.
 - `content` (required): File content as base64-encoded bytes.
 - `citable_url` (optional): URL to be cited in inline citations. This URL is stored in
   the document metadata and used at retrieval. When querying your knowledge graph, whether
-  citations are displayed is controlled by the [`show_citations`](../retriever/parameters.md#show_citations) parameter.
+  citations are displayed is controlled by the [`show_citations`](../reference/retriever/parameters.md#show_citations) parameter.
 
 **Example:**
 
@@ -101,13 +112,14 @@ When using `"vector_rag"` mode, chunk embeddings are automatically enabled regar
 
 These parameters control how documents are split into smaller chunks for processing.
 
-- `chunk_token_size`: Maximum tokens per chunk. The default value is `1200`.
+- `chunk_token_size`: Maximum tokens per chunk. The default value is `1024`.
 - `chunk_overlap_token_size`: Number of overlapping tokens between consecutive
-  chunks. The default value is `100`.
-- `chunk_min_token_size`: Minimum tokens per chunk (optional).
+  chunks. The default value is `128`.
+- `chunk_min_token_size`: Minimum tokens per chunk. Chunks smaller than this are
+  merged with adjacent chunks. The default value is `64`.
 - `chunk_custom_separators`: Custom separators for chunking (optional, e.g., `["\n\n", "\n", " "]`).
 - `preserve_chunk_separator`: Whether to preserve separator characters in chunks
-  (default: `false`).
+  (default: `true`).
 - `ignore_chunk_token_size`: If `true`, chunks are split only by separators without
   enforcing token size limits. When enabled, `chunk_token_size` and `chunk_overlap_token_size`
   are ignored (default: `false`).
@@ -116,11 +128,11 @@ These parameters control how documents are split into smaller chunks for process
 
 ```json
 {
-  "chunk_token_size": 1200,
-  "chunk_overlap_token_size": 100,
-  "chunk_min_token_size": 50,
+  "chunk_token_size": 1024,
+  "chunk_overlap_token_size": 128,
+  "chunk_min_token_size": 64,
   "chunk_custom_separators": ["\n\n", "\n", " "],
-  "preserve_chunk_separator": false,
+  "preserve_chunk_separator": true,
   "ignore_chunk_token_size": false
 }
 ```
@@ -143,8 +155,10 @@ Use `ignore_chunk_token_size: true` when you want pure separator-based chunking.
 
 These parameters define what entities and relationships to extract from your documents.
 
-- `entity_types`: Entity types to extract from the document (e.g., `["person", "organization", "geo", "event"]`).
+- `entity_types`: Entity types to extract from the document. The default value is
+  `["person", "organization", "geo", "event"]`.
 - `relationship_types`: Relationship types to extract (e.g., `["RELATED_TO", "PART_OF", "USES"]`).
+  If not provided, relationships are extracted based on the LLM's judgment.
 - `enable_strict_types`: Enable strict filtering of entities and relationships from the specified types (default: `false`).
 - `entity_extract_max_gleaning`: Maximum number of extraction iterations (default: `1`).
 
@@ -165,28 +179,53 @@ Entity and relationship extraction is only performed in `"full_graphrag"` mode. 
 
 ## Custom Prompts
 
-You can customize the prompts used for entity extraction, relationship extraction, and community report generation. This is an advanced feature for domain-specific customization.
+You can customize the prompts used for entity extraction, community report
+generation, and other processing steps. This is an advanced feature for
+domain-specific customization.
 
-- `custom_prompts`: A dictionary mapping prompt names to custom prompt text. When provided, custom prompts override the default prompts. If empty or not provided, default prompts are used.
+- `custom_prompts`: A dictionary mapping prompt names to custom prompt text.
+  When provided, custom prompts override the default prompts. Only the prompts
+  you specify are overridden; all others use their defaults. If empty or not
+  provided, default prompts are used.
 
 Available prompt keys:
-- `"entity_extraction"`: Prompt for extracting entities from text chunks
-- `"entity_relationship"`: Prompt for extracting relationships between entities
-- `"community_report"`: Prompt for generating community summary reports
+- `"entity_extraction"`: Prompt for extracting entities and relationships from text chunks.
+- `"community_report"`: Prompt for generating community summary reports.
+- `"claim_extraction"`: Prompt for extracting claims against entities.
+- `"summarize_entity_descriptions"`: Prompt for combining multiple entity descriptions into one.
+- `"entity_continue_extraction"`: Follow-up prompt when entities may have been missed.
+- `"entity_if_loop_extraction"`: Prompt to determine if additional extraction iterations are needed.
+
+**Template variables:**
+
+Custom prompts support the following template variables that are automatically
+filled at runtime:
+
+- `{entity_types}`: Comma-separated list of entity types.
+- `{relationship_types}`: Comma-separated list of relationship types.
+- `{relationship_type_instruction}`: Dynamic instruction about relationship types.
+- `{input_text}`: The text chunk being processed.
+- `{tuple_delimiter}`: Field separator (default: `<|>`).
+- `{record_delimiter}`: Record separator (default: `##`).
+- `{completion_delimiter}`: End marker (default: `<|COMPLETE|>`).
 
 **Example:**
 
 ```json
 {
   "custom_prompts": {
-    "entity_extraction": "Extract technical entities including: software libraries, programming languages, APIs, and architectural components. For each entity provide: name, type, and a brief description.",
-    "community_report": "Generate a technical summary focusing on: 1) Key technologies and their relationships, 2) Architectural patterns, 3) Integration points. Provide 5-7 key insights."
+    "entity_extraction": "Extract technical entities including: software libraries, programming languages, APIs, and architectural components. For each entity provide: name, type, and a brief description.\n\nEntity_types: {entity_types}\nRelationship_types: {relationship_types}\nText: {input_text}\nOutput:",
+    "community_report": "Generate a technical summary focusing on: 1) Key technologies and their relationships, 2) Architectural patterns, 3) Integration points. Provide 5-7 key insights.\n\nText:\n{input_text}\nOutput:"
   }
 }
 ```
 
 {{< warning >}}
-Custom prompts are an advanced feature. Poorly designed prompts may result in lower quality entity extraction or community reports. Use the default prompts unless you have specific domain requirements.
+Custom prompts are an advanced feature. Poorly designed prompts may result in
+lower quality entity extraction or community reports. Your custom prompt must
+include the required template variables (e.g., `{input_text}`, `{entity_types}`,
+`{tuple_delimiter}`) for the system to function correctly. Use the default
+prompts unless you have specific domain requirements.
 {{< /warning >}}
 
 ## Embedding Parameters
@@ -230,7 +269,7 @@ These parameters configure the vector indexes used for semantic search and simil
 ```
 
 {{< info >}}
-Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
 {{< /info >}}
 
 ## Semantic Units and Image Processing
@@ -238,11 +277,14 @@ Vector index parameters apply to all embedding fields in your knowledge graph (c
 These parameters enable extraction of images and multimedia references. For detailed 
 information, see the [Semantic Units guide](semantic-units.md).
 
-- `enable_semantic_units`: Enable semantic unit processing (extracts web URLs and image references).
-- `process_images`: Process storage URLs like base64/S3 links (requires `enable_semantic_units=true`).
-- `store_image_data`: Store actual image data for storage URLs (requires `process_images=true`).
+- `enable_semantic_units`: Enable semantic unit processing (extracts web URLs and image references). Default: `false`.
+- `process_images`: Process storage-style URLs like base64/S3/FileManager artifact URLs (requires `enable_semantic_units=true`). Default: `false`.
+- `store_image_data`: Store actual image data for storage-style URLs (requires `process_images=true`). Default: `false`.
+- `enable_semantic_unit_embeddings`: Generate vector embeddings for semantic units (requires `enable_semantic_units=true`). Default: `false`.
+- `crop_images`: Extract images from documents and include markdown references. Default: `false`.
+- `store_images_to_s3`: Upload extracted images via sidecar as FileManager artifacts and replace local paths with FileManager download URLs. Default: `false`.
 
-These parameters are hierarchical - each requires the previous one to be enabled.
+The first three parameters are hierarchical; each requires the previous one to be enabled.
 
 **Example:**
 
@@ -276,7 +318,7 @@ These parameters configure ArangoDB graph features for distributed deployments.
 
 {{< info >}}
 These parameters are primarily used for distributed ArangoDB deployments. 
-Consult the [ArangoDB SmartGraphs documentation](../../../arangodb/3.12/graphs/smartgraphs/_index.md) 
+Consult the [ArangoDB SmartGraphs documentation](../../arangodb/3.12/graphs/smartgraphs/_index.md) 
 for more details.
 {{< /info >}}
 
@@ -300,22 +342,9 @@ The `partition_id` parameter enables semantic sharding and horizontal scaling by
 
 **Usage patterns:**
 
-1. **With Autograph**: Use Autograph-generated `rag_partition_id` values (format: `{cluster_index}_{a|b}`) to group documents by semantic similarity and RAG strategy
+1. **With AutoGraph**: Use AutoGraph-generated `rag_partition_id` values (format: `{cluster_index}_{a|b}`) to group documents by semantic similarity and RAG strategy
 2. **Manual partitioning**: Define your own partition scheme based on domain, project, or tenant
 3. **Auto-generated**: If not specified, a random partition ID is generated
-
-**Example:**
-
-```json
-{
-  "partition_id": "0_a",
-  "files": [...]
-}
-```
-
-{{< tip >}}
-When using Autograph for corpus analysis, use the `rag_partition_id` values from the strategizer results as your `partition_id` values when calling the Importer. This ensures documents from the same semantic cluster are stored together, enabling efficient two-stage retrieval.
-{{< /tip >}}
 
 **Example:**
 
@@ -326,6 +355,10 @@ When using Autograph for corpus analysis, use the `rag_partition_id` values from
   "batch_size": 1000
 }
 ```
+
+{{< tip >}}
+When using AutoGraph for corpus analysis, use the `rag_partition_id` values from the strategizer results as your `partition_id` values when calling the Importer. This ensures documents from the same semantic cluster are stored together, enabling efficient two-stage retrieval.
+{{< /tip >}}
 
 ## Examples
 
@@ -338,8 +371,8 @@ This example uses full GraphRAG mode with entity extraction, chunking, and embed
   "file_content": "base64_encoded_content",
   "file_name": "document.txt",
   "rag_mode": "full_graphrag",
-  "chunk_token_size": 1200,
-  "chunk_overlap_token_size": 100,
+  "chunk_token_size": 1024,
+  "chunk_overlap_token_size": 128,
   "entity_types": ["person", "organization", "location", "event"],
   "relationship_types": ["WORKS_FOR", "LOCATED_IN", "PARTICIPATES_IN"],
   "enable_chunk_embeddings": false,
@@ -357,8 +390,8 @@ This example uses vector RAG mode for fast, simple semantic search without entit
   "file_content": "base64_encoded_content",
   "file_name": "document.txt",
   "rag_mode": "vector_rag",
-  "chunk_token_size": 1200,
-  "chunk_overlap_token_size": 100,
+  "chunk_token_size": 1024,
+  "chunk_overlap_token_size": 128,
   "batch_size": 1000
 }
 ```
@@ -394,5 +427,5 @@ For advanced use cases, this configuration demonstrates custom prompts, separato
 
 ## API Reference
 
-For detailed API documentation, see the <!-- TODO: New API reference and link -->
-[GraphRAG Importer API Reference](https://arangoml.github.io/platform-dss-api/graphrag_importer/proto/index.html).
+For detailed API documentation, see the
+[GraphRAG Importer API Reference](https://apiref.arango.ai/#graphrag_importer).

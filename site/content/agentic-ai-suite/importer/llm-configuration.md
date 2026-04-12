@@ -32,7 +32,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
@@ -48,9 +48,9 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
-   [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -68,8 +68,15 @@ Where:
 
 {{< info >}}
 When using the official OpenAI API, the service defaults to `gpt-4o` and 
-`text-embedding-3-small` models.
+`text-embedding-3-small` models. When an OpenRouter URL is detected, the
+chat model defaults to `mistralai/mistral-nemo`.
 {{< /info >}}
+
+{{< tip >}}
+Instead of inline API keys, you can use `chat_secret_profile_id` and
+`embedding_secret_profile_id` when your platform supports secret profiles
+for the Importer install.
+{{< /tip >}}
 
 ### Using different OpenAI-compatible services
 
@@ -88,28 +95,28 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 **Example using OpenRouter for chat and OpenAI for embedding:**
 
 ```json
-    {
-      "env": {
-        "db_name": "your_database_name",
-        "genai_project_name": "your_project_name",
-        "chat_api_provider": "openai",
-        "embedding_api_provider": "openai",
-        "chat_api_url": "https://openrouter.ai/api/v1",
-        "embedding_api_url": "https://api.openai.com/v1",
-        "chat_model": "mistral-nemo",
-        "embedding_model": "text-embedding-3-small",
-        "chat_api_key": "your_openrouter_api_key",
-        "embedding_api_key": "your_openai_api_key",
-        "embedding_dim": "512"
-      }
-    }
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "embedding_api_provider": "openai",
+    "chat_api_url": "https://openrouter.ai/api/v1",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "mistralai/mistral-nemo",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openrouter_api_key",
+    "embedding_api_key": "your_openai_api_key",
+    "embedding_dim": "512"
+  }
+}
 ```
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `genai_project_name`: The project name created via the
-  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -130,8 +137,8 @@ Where:
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../triton-inference-server.md)
-and [MLflow](../mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](../reference/triton-inference-server.md)
+and [MLflow](../reference/mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:
@@ -140,7 +147,7 @@ service using the below configuration:
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "triton",
     "embedding_api_provider": "triton",
     "chat_api_url": "your-arangodb-llm-host-url",
@@ -153,9 +160,9 @@ service using the below configuration:
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
-  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Specifies which LLM provider to use for language model services

@@ -61,7 +61,7 @@ The web interface guides you through the process of the following:
 
 ### API and Services
 
-The [Importer](../reference/importer.md) and [Retriever](../reference/retriever/_index.md)
+The [Importer](../importer/) and [Retriever](../reference/retriever/_index.md)
 services provide programmatic access to create and manage GraphRAG pipelines,
 and give you access to advanced search methods.
 
@@ -99,7 +99,7 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../reference/importer/) service documentation.
+[Importer](../importer/) service documentation.
 
 ### Query your Knowledge Graph
 
@@ -146,7 +146,7 @@ OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-h
 LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
-- [Importer - Deployment Options](../reference/importer.md#deployment-options)
+- [Importer - Deployment Options](../importer/#deployment-options)
 - [Retriever - Installation](../reference/retriever/_index.md)
 
 ## Limitations

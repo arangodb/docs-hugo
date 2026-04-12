@@ -74,7 +74,7 @@ Whether to show inline citations in the response.
 - **Description**:
   - When `true` (default): Citations appear inline as `[X]` in the response.
   - When `false`: All `[CITE:X]` patterns are stripped from the response.
-  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../importer/parameters.md#file-source-parameters) at import time.
+  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../../importer/parameters.md#file-source-parameters) at import time.
 
 {{< warning >}}
 For deep search queries (`use_llm_planner=true`), citations are always disabled
