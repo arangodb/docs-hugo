@@ -7,20 +7,20 @@ weight: 50
 ---
 
 {{< info >}}
-**Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods.md) → [Execute Queries](executing-queries.md) → **Verify**
+**Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → **Verify**
 {{< /info >}}
 
 ## Health Check
 
 You can monitor the Retriever service health using the health endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/health" >}}
 
 ## Verify Service Status
 
 You can verify the state of the Retriever service via the project endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/<your_project>" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_name}" >}}
 
 For example, the `status` object found within `retrieverServices` may contain the following
 properties:
@@ -36,4 +36,4 @@ properties:
 
 - **[Execute queries](executing-queries.md)**: Start querying your knowledge graph.
 - **[Explore all parameters](parameters.md)**: Customize your queries.
-- **[Learn about search methods](search-methods.md)**: Understand when to use each search type.
+- **[Learn about search methods](search-methods/_index.md)**: Understand when to use each search type.

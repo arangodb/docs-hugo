@@ -61,7 +61,7 @@ The web interface guides you through the process of the following:
 
 ### API and Services
 
-The [Importer](../importer/) and [Retriever](../reference/retriever/_index.md)
+The [Importer](../importer/) and [Retriever](../retriever/)
 services provide programmatic access to create and manage GraphRAG pipelines,
 and give you access to advanced search methods.
 
@@ -105,7 +105,7 @@ For detailed information about the service, see the
 
 The Retriever service enables intelligent search and retrieval using multiple 
 search methods optimized for different query types. For detailed information 
-about the service, see the [Retriever](../reference/retriever/_index.md) service documentation.
+about the service, see the [Retriever](../retriever/) service documentation.
 
 The Retriever provides different search methods, each optimized for specific query patterns:
 
@@ -117,7 +117,7 @@ The Retriever provides different search methods, each optimized for specific que
 {{< info >}}
 The Web Interface exposes **Instant Search** and **Deep Search** as the primary 
 methods for ease of use. For access to all search methods with advanced 
-parameters, use the API directly. See [Retriever - Search Methods](../reference/retriever/search-methods.md) 
+parameters, use the API directly. See [Retriever - Search Methods](../retriever/search-methods/_index.md) 
 for complete details.
 {{< /info >}}
 
@@ -147,7 +147,7 @@ LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
 - [Importer - Deployment Options](../importer/#deployment-options)
-- [Retriever - Installation](../reference/retriever/_index.md)
+- [Retriever - Installation](../retriever/)
 
 ## Limitations
 

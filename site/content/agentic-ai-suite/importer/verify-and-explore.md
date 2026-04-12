@@ -214,7 +214,7 @@ for more details.
 
 Now that you've successfully imported and verified your knowledge graph:
 
-- **Query your data**: Use the [Retriever service](../reference/retriever/) to perform semantic search and retrieval
+- **Query your data**: Use the [Retriever service](../retriever/) to perform semantic search and retrieval
 - **Visualize relationships**: Explore your graph using the [Graph Visualizer](../../platform-suite/graph-visualizer.md)
 - **Import more documents**: Return to the [Import Files guide](importing-files.md) to add more data
 - **Optimize parameters**: Review the [Parameters guide](parameters.md) to fine-tune your imports

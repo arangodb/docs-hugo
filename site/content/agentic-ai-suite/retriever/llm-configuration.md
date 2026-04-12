@@ -7,7 +7,7 @@ weight: 20
 ---
 
 {{< info >}}
-**Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
+**Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}
 
 The Retriever service can be configured to use either Triton Inference Server or any 
@@ -44,7 +44,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
@@ -54,15 +54,15 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
     "chat_api_key": "your_openai_api_key",
     "embedding_api_key": "your_openai_api_key",
     "embedding_dim": "512"
-  },
+  }
 }
 ```
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
-  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -82,6 +82,12 @@ Where:
   custom embedding model with a different dimension. It must match the
   embedding model's output dimension.
 
+{{< tip >}}
+Instead of inline API keys, you can use `chat_secret_profile_id` and
+`embedding_secret_profile_id` when your platform supports secret profiles
+for the Retriever install.
+{{< /tip >}}
+
 ### Using different OpenAI-compatible services for chat and embedding
 
 You can use different OpenAI-compatible services for chat and embedding. For example, 
@@ -99,28 +105,28 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 **Example using OpenRouter for chat and OpenAI for embedding:**
 
 ```json
-    {
-      "env": {
-        "db_name": "your_database_name",
-        "genai_project_name": "your_project_name",
-        "chat_api_provider": "openai",
-        "embedding_api_provider": "openai",
-        "chat_api_url": "https://openrouter.ai/api/v1",
-        "embedding_api_url": "https://api.openai.com/v1",
-        "chat_model": "mistral-nemo",
-        "embedding_model": "text-embedding-3-small",
-        "chat_api_key": "your_openrouter_api_key",
-        "embedding_api_key": "your_openai_api_key",
-        "embedding_dim": "512"
-      },
-    }
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "embedding_api_provider": "openai",
+    "chat_api_url": "https://openrouter.ai/api/v1",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "mistralai/mistral-nemo",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openrouter_api_key",
+    "embedding_api_key": "your_openai_api_key",
+    "embedding_dim": "512"
+  }
+}
 ```
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `genai_project_name`: The project name created via the
-  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
@@ -147,8 +153,8 @@ Where:
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../triton-inference-server.md)
-and [MLflow](../mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](../reference/triton-inference-server.md)
+and [MLflow](../reference/mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start the Retriever
 service using the below configuration:
@@ -157,7 +163,7 @@ service using the below configuration:
 {
   "env": {
     "db_name": "your_database_name",
-    "genai_project_name": "your_project_name",
+    "project_name": "your_project_name",
     "chat_api_provider": "triton",
     "embedding_api_provider": "triton",
     "chat_api_url": "your-arangodb-llm-host-url",
@@ -165,15 +171,15 @@ service using the below configuration:
     "chat_model": "mistral-nemo-instruct",
     "embedding_model": "nomic-embed-text-v1",
     "embedding_dim": "768"
-  },
+  }
 }
 ```
 
 Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `genai_project_name`: The project name created via the
-  [web interface](../../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../../platform-suite/control-plane-acp.md#creating-a-project).
+- `project_name`: The project name created via the
+  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"triton"` to use Triton Inference Server for
@@ -195,7 +201,7 @@ Where:
 
 ## Next Steps
 
-- [**Learn about search methods**](search-methods.md):
+- [**Learn about search methods**](search-methods/_index.md):
   Understand Instant, Deep, Global, and Local search.
 - [**Execute queries**](executing-queries.md):
   Start querying your knowledge graph.
