@@ -85,6 +85,75 @@ get started quickly:
 To start a fresh conversation, click **+ New Chat** in the top bar. To browse
 previous conversations, click **History**.
 
+## Artifacts
+
+When Ada responds to a query, it may produce one or more artifacts. An artifacts is a rendered
+outputs that appear alongside the chat message. Ada supports three artifact
+types:
+
+### AQL artifact (type: `aql`)
+
+An AQL artifact stores an AQL query that Ada has generated or modified.
+
+- **Purpose**: Generate, execute, or modify AQL database queries.
+- **Features**: Stores and executes AQL queries (read-only in this context).
+  You can load these into the Query Editor, tweak, and re-run them as needed.
+- **Example**: Retrieving documents from a collection:
+
+  ```aql
+  FOR d IN drones_Documents LIMIT 10 RETURN d
+  ```
+
+### React artifact (type: `react`)
+
+A React artifact renders an interactive data visualization using Recharts
+components.
+
+- **Purpose**: Data visualizations using Recharts components (e.g., BarChart,
+  PieChart, LineChart, AreaChart, RadarChart, etc.).
+- **Features**: Interactive charts for dashboards and analytics. Highly
+  customizable for comparing categories, trends, or distributions.
+- **Example**:
+
+  ```jsx
+  const data = [
+    { name: 'Active', value: 12 },
+    { name: 'Inactive', value: 4 }
+  ];
+
+  function Chart() {
+    return (
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie data={data} dataKey="value" nameKey="name" />
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  }
+  ```
+
+### HTML artifact (type: `html`)
+
+An HTML artifact renders custom HTML, CSS, or SVG directly in the chat panel.
+
+- **Purpose**: Diagrams, dashboards, tables, content panels, styled lists, and
+  other visual or interactive UI components outside of charting.
+- **Features**: Flexible — can be standard HTML for tables, interactive
+  diagrams (e.g., SVG), or explanatory layouts.
+- **Example**:
+  - An entity relationship diagram using SVG
+  - Custom styled information boxes
+  - HTML tables of data
+
+### When to use each artifact type
+
+- Use AQL artifacts for queries.
+- Use React artifacts for charts, graphs, and dashboards.
+- Use HTML artifacts for diagrams, tables, or infographics not covered by
+  charting.
+
 ## What's next
 
 - **[AQLizer](natural-language-to-aql/_index.md)**: Generate AQL queries from natural language directly
