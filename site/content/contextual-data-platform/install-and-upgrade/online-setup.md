@@ -219,7 +219,8 @@ the Platform's Kubernetes services.
 ## Step 7: Install the Contextual Data Platform package
 
 Install the package using the package configuration you received from the
-Arango team (`platform.yaml`).
+Arango team (`platform.yaml`). This requires license credentials and internet
+access to `*.license.arango.ai`.
 
 The package installation creates and enables various services, including
 the unified web interface of the Contextual Data Platform.
