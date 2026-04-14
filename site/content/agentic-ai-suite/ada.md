@@ -87,22 +87,10 @@ previous conversations, click **History**.
 
 ## Artifacts
 
-When Ada responds to a query, it may produce one or more artifacts. An artifacts is a rendered
-outputs that appear alongside the chat message. Ada supports three artifact
+When Ada responds to a query, it may produce artifacts. An artifacts is a rendered
+outputs that appear alongside the chat message. Ada currently supports two artifact
 types:
 
-### AQL artifact (type: `aql`)
-
-An AQL artifact stores an AQL query that Ada has generated or modified.
-
-- **Purpose**: Generate, execute, or modify AQL database queries.
-- **Features**: Stores and executes AQL queries (read-only in this context).
-  You can load these into the Query Editor, tweak, and re-run them as needed.
-- **Example**: Retrieving documents from a collection:
-
-  ```aql
-  FOR d IN drones_Documents LIMIT 10 RETURN d
-  ```
 
 ### React artifact (type: `react`)
 
