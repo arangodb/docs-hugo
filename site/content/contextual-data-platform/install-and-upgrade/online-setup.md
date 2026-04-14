@@ -230,6 +230,8 @@ with the actual license credentials and `./platform.yaml` with the path to the
 package configuration file. The platform name (`deployment-example`) needs to
 match the name as specified in the `ArangoDeployment` configuration.
 
+<!-- TODO: There is --license.client.discover now, which defaults to true and tries to get the credentials from the ArangoDeployment - does this indirectly fetch the Kubernetes secret? -->
+
 ```sh
 arangodb_operator_platform --namespace arango package install \
   --license.client.id "<license-client-id>" \
