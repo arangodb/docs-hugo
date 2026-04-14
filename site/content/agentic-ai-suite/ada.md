@@ -91,7 +91,6 @@ When Ada responds to a query, it may produce artifacts. An artifacts is a render
 outputs that appear alongside the chat message. Ada currently supports two artifact
 types:
 
-
 ### React artifact (type: `react`)
 
 A React artifact renders an interactive data visualization using Recharts
@@ -137,7 +136,6 @@ An HTML artifact renders custom HTML, CSS, or SVG directly in the chat panel.
 
 ### When to use each artifact type
 
-- Use AQL artifacts for queries.
 - Use React artifacts for charts, graphs, and dashboards.
 - Use HTML artifacts for diagrams, tables, or infographics not covered by
   charting.
