@@ -13,10 +13,12 @@ the offline and the online environment at different steps, but mainly from the
 online to offline system and only small amounts from the offline to the online
 system (for the licensing).
 
+{{< tip >}}
 What needs to be done in which environment is indicated by each step:
 
 - **Air-gapped system**: The offline environment.
 - **Internet-connected system**: The online environment.
+{{< /tip >}}
 
 ## Step 1: Download the installation files and information
 
