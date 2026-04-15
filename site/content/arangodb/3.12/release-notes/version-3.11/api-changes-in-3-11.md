@@ -414,7 +414,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
@@ -794,7 +794,7 @@ every optimizer rule that briefly explains what it does.
 
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
-The endpoint will be removed in ArangoDB v3.12.
+The endpoint is removed in ArangoDB v4.0.
 
 ## JavaScript API
 

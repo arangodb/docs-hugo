@@ -6,7 +6,7 @@ description: >-
   The Foxx framework enables you to execute JavaScript inside of ArangoDB and write custom service endpoints
 ---
 {{< warning >}}
-The Foxx microservice feature is deprecated and will be removed in ArangoDB v4.0.
+The Foxx microservices feature is deprecated and removed in ArangoDB v4.0.
 {{< /warning >}}
 
 Traditionally, server-side projects have been developed as standalone applications

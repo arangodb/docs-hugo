@@ -56,18 +56,59 @@ paths:
                 type: object
                 required:
                   - server
+                  - license
                   - version
+                  - apiVersions
+                  - deprecatedApiVersions
+                  - requestedApiVersion
                 properties:
                   server:
-                    description: |
-                      will always contain `arango`
+                    description: ''
                     type: string
+                    const: arango
+                  license:
+                    description: |
+                      Whether this build of ArangoDB includes the non-public
+                      enterprise code. Reports `"enterprise"` for both the
+                      Community Edition and Enterprise Edition if you use the
+                      prepackaged binaries or official container images.
+                    type: string
+                    enum:
+                      - community # Only custom builds
+                      - enterprise
                   version:
                     description: |
-                      the server version string. The string has the format
-                      `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
-                      may contain a number or a textual version.
+                      The server version string in the format `major.minor.sub`.
+                      The `major` and `minor` parts are numeric, and `sub` is a
+                      number that may have a version suffix starting with
+                      a hyphen minus (e.g. `3.12.7-2` or `4.0.0-devel`).
                     type: string
+                  apiVersions:
+                    description: |
+                     The available versions of the HTTP API.
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v1]
+                  deprecatedApiVersions:
+                    description: |
+                      The versions of the HTTP API that are still supported by
+                      this ArangoDB server version but should no longer be used
+                      because of their pending removal in the next major version.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [] # Currently no deprecated versions
+                  requestedApiVersion:
+                    description: |
+                      The HTTP API version specified for this request via the
+                      `/_arango/{api-version}` prefix, or the default API version
+                      if not specified.
+                    type: string
+                    enum: [v1]
                   details:
                     description: |
                       an optional JSON object with additional details. This is
@@ -77,132 +118,267 @@ paths:
                     properties:
                       architecture:
                         description: |
-                          The CPU architecture, i.e. `64bit`
+                          The CPU architecture in terms of bitness.
                         type: string
+                        const: 64bit
                       arm:
                         description: |
-                          `false` - this is not running on an ARM cpu
+                          Whether the server binary has been compiled for an ARM CPU.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       asan:
                         description: |
-                          has this been compiled with the asan address sanitizer turned on? (should be false)
+                          Whether the server has been compiled with the
+                          ASAN address sanitizer enabled.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       assertions:
                         description: |
-                          do we have assertions compiled in (=> developer version)
+                          Whether the server has assertions compiled in
+                          (only in development builds).
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx2:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX2 instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       boost-version:
                         description: |
-                          which boost version do we bind
+                          Which version of the Boost library is used.
                         type: string
                       build-date:
                         description: |
-                          the date when this binary was created
+                          The date when this binary was created.
+                        type: string
+                      build-id:
+                        description: |
+                          The Git commit hash this was compiled from.
                         type: string
                       build-repository:
                         description: |
-                          reference to the git-ID this was compiled from
+                          Reference to the Git ID this was compiled from.
                         type: string
                       compiler:
                         description: |
-                          which compiler did we use
+                          The compiler that has been used.
                         type: string
+                      coverage:
+                        description: |
+                          Whether this build has code coverage instrumentation.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       cplusplus:
                         description: |
-                          C++ standards version
+                          The C++ standards version.
+                        type: string
+                      curl-version:
+                        description: |
+                          The linked cURL version, or `"none"` if not linked.
                         type: string
                       debug:
                         description: |
-                          `false` for production binaries
+                          Whether this is a debug build, `"false"` for
+                          production binaries.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       endianness:
                         description: |
-                          currently only `little` is supported
+                          The byte order of the system, detected at runtime.
                         type: string
+                        const: little
+                      enterprise-build-repository:
+                        description: |
+                          Reference to the enterprise Git ID this was compiled from.
+                        type: string
+                      enterprise-version:
+                        description: |
+                          Only present if this is a build that includes the
+                          non-public enterprise code.
+                        type: string
+                        const: enterprise
                       failure-tests:
                         description: |
-                          `false` for production binaries (the facility to invoke fatal errors is disabled)
+                          Whether the facility to invoke fatal errors is compiled
+                          in, `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      faiss:
+                        description: |
+                          The FAISS library version, if linked.
                         type: string
                       fd-client-event-handler:
                         description: |
-                          which method do we use to handle fd-sets, `poll` should be here on linux.
+                          Which method is used to handle fd-sets, typically `poll`
+                          on Linux.
                         type: string
                       fd-setsize:
                         description: |
-                          if not `poll` the fd setsize is valid for the maximum number of file descriptors
+                          If not `poll`, the fd setsize is valid for the maximum
+                          number of file descriptors.
                         type: string
                       full-version-string:
                         description: |
-                          The full version string
+                          The full version string including the build ID and
+                          the versions of major dependencies.
                         type: string
                       icu-version:
                         description: |
-                          Which version of ICU do we bundle
+                          The version of the bundled ICU library.
+                        type: string
+                      ipo:
+                        description: |
+                          Whether interprocedural optimization was enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      iresearch-version:
+                        description: |
+                          The ArangoSearch/IResearch library version.
                         type: string
                       jemalloc:
                         description: |
-                          `true` if we use jemalloc
+                          Whether the jemalloc memory allocator is used,
+                          typically `"true"`
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      license:
+                        description: |
+                          Whether this build of ArangoDB includes the non-public
+                          enterprise code. Reports `"enterprise"` for both the
+                          Community Edition and Enterprise Edition if you use the
+                          prepackaged binaries or official container images.
+                        type: string
+                        enum:
+                          - community # Only custom builds
+                          - enterprise
+                      libunwind:
+                        description: |
+                          Whether libunwind is linked for stack unwinding.
                         type: string
                       maintainer-mode:
                         description: |
-                          `false` if this is a production binary
+                          Whether the server has been compiled in maintainer mode,
+                          `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      memory-profiler:
+                        description: |
+                          Whether the memory profiler is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      ndebug:
+                        description: |
+                          Whether NDEBUG was defined for the build.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      openmp:
+                        description: |
+                          The OpenMP version used for parallelization.
                         type: string
                       openssl-version:
                         description: |
-                          which openssl version do we link?
+                          The OpenSSL version that is linked.
+                        type: string
+                      openssl-version-compile-time:
+                        description: |
+                          The OpenSSL version at compile time.
+                        type: string
+                      openssl-version-run-time:
+                        description: |
+                          The OpenSSL version at run time.
+                        type: string
+                      optimization-flags:
+                        description: |
+                          The compiler optimization flags used for this build.
+                        type: string
+                      pic:
+                        description: |
+                          The position-independent code setting.
+                        type: string
+                      pie:
+                        description: |
+                          The position-independent executable setting.
                         type: string
                       platform:
                         description: |
-                          the host operating system, always `linux`
+                          The operating system the server has been compiled for.
                         type: string
+                        const: linux
                       reactor-type:
-                        description: |
-                          `epoll`
+                        description: ''
                         type: string
+                        const: epoll
+                      replication2-enabled:
+                        description: |
+                          Whether replication2 is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       rocksdb-version:
                         description: |
-                          the rocksdb version this release bundles
+                          The rocksdb version this release bundles.
                         type: string
                       server-version:
                         description: |
-                          the ArangoDB release version
+                          The ArangoDB release version.
                         type: string
                       sizeof int:
                         description: |
-                          number of bytes for integers
+                          Number of bytes for integers.
+                        type: string
+                      sizeof long:
+                        description: |
+                          Number of bytes for long integers.
                         type: string
                       sizeof void*:
                         description: |
-                          number of bytes for void pointers
+                          Number of bytes for void pointers.
                         type: string
                       sse42:
                         description: |
-                          do we have a SSE 4.2 enabled cpu?
+                          Whether the server binary has been compiled with
+                          SSE 4.2 instruction support.
                         type: string
+                      tsan:
+                        description: |
+                          Whether this was compiled with the thread sanitizer.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       unaligned-access:
                         description: |
-                          does this system support unaligned memory access?
+                          Whether this system supports unaligned memory accesses.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       v8-version:
                         description: |
-                          the bundled V8 javascript engine version
+                          The bundled V8 JavaScript engine version.
                         type: string
                       vpack-version:
                         description: |
-                          the version of the used velocypack implementation
+                          The version of the used VelocyPack implementation.
                         type: string
                       zlib-version:
                         description: |
-                          the version of the bundled zlib
+                          The version of the bundled zlib compression library.
                         type: string
-                      mode:
+                      role:
                         description: |
-                          The mode arangod runs in.
+                          The server role.
+                          - `"SINGLE"`: Standalone single server
+                          - `"PRIMARY"`: DB-Server of a cluster
+                          - `"COORDINATOR"`: Coordinator of a cluster
+                          - `"AGENT"`: Part of the cluster's Agency
                         type: string
-                        enum: [server, console, script]
+                        enum: [SINGLE, PRIMARY, COORDINATOR, AGENT]
                       host:
                         description: |
-                          the host ID
+                          The host ID.
                         type: string
       tags:
         - Administration
@@ -509,9 +685,6 @@ paths:
                   - server
                   - license
                   - version
-                  - mode
-                  - operationMode
-                  - foxxApi
                   - host
                   - pid
                   - serverInfo
@@ -528,18 +701,6 @@ paths:
                     description: |
                       The server version as a string.
                     type: string
-                  mode:
-                    description: |
-                      Either `"server"` or `"console"`. **Deprecated**, use `operationMode` instead.
-                    type: string
-                  operationMode:
-                    description: |
-                      Either `"server"` or `"console"`.
-                    type: string
-                  foxxApi:
-                    description: |
-                      Whether the Foxx API is enabled.
-                    type: boolean
                   host:
                     description: |
                       A host identifier defined by the `HOST` or `NODE_NAME` environment variable,
@@ -664,19 +825,6 @@ paths:
                       Information about the Coordinators.
                       *Cluster only* (Coordinators)
                     type: object
-                    properties:
-                      foxxmaster:
-                        description: |
-                          The server ID of the Coordinator that is the Foxx master.
-                        type: array
-                        items:
-                          type: string
-                      isFoxxmaster:
-                        description: |
-                          Whether the queried Coordinator is the Foxx master.
-                        type: array
-                        items:
-                          type: string
                   agent:
                     description: |
                       Information about the Agents.
@@ -1190,7 +1338,7 @@ paths:
 
         This endpoint is available regardless of the
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
-        setting, so that the Arango Data Platform web interface for instance can always
+        setting, so that the Arango Contextual Data Platform web interface for instance can always
         access the public options.
       parameters:
         - name: database-name
@@ -2605,216 +2753,6 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
-### Reload the routing table
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/routing/reload:
-    post:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
-      operationId: reloadRouting
-      description: |
-        Reloads the routing information from the `_routing` system collection if it
-        exists, and makes Foxx rebuild its local routing table on the next request.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            The routing information has been reloaded successfully.
-      tags:
-        - Administration
-```
-
-### Echo a request
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/echo:
-    post:
-      operationId: echoRequest
-      description: |
-        The call returns an object with the servers request information
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              description: |
-                The request body can be of any type and is simply forwarded.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Echo was returned successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - authorized
-                  - user
-                  - isAdminUser
-                  - database
-                  - url
-                  - protocol
-                  - portType
-                  - server
-                  - client
-                  - internals
-                  - prefix
-                  - headers
-                  - requestType
-                  - requestBody
-                  - rawRequestBody
-                  - parameters
-                  - cookies
-                  - suffix
-                  - rawSuffix
-                  - path
-                properties:
-                  authorized:
-                    description: |
-                      Whether the session is authorized
-                    type: boolean
-                  user:
-                    description: |
-                      The name of the current user that sent this request
-                    type: string
-                  isAdminUser:
-                    description: |
-                      Whether the current user is an administrator
-                    type: boolean
-                  database:
-                    description: |
-                      The name of the database this request was executed on
-                    type: string
-                  url:
-                    description: |
-                      The raw request URL
-                    type: string
-                  protocol:
-                    description: |
-                      The transport protocol, one of `"http"`, `"https"`
-                    type: string
-                  portType:
-                    description: |
-                      The type of the socket, one of `"tcp/ip"`, `"unix"`, `"unknown"`
-                    type: string
-                  server:
-                    description: |
-                      Attributes of the server connection
-                    type: object
-                    required:
-                      - address
-                      - port
-                      - endpoint
-                    properties:
-                      address:
-                        description: |
-                          The bind address of the endpoint this request was sent to
-                        type: string
-                      port:
-                        description: |
-                          The port this request was sent to
-                        type: integer
-                      endpoint:
-                        description: |
-                          The endpoint this request was sent to
-                        type: string
-                  client:
-                    description: |
-                      Attributes of the client connection
-                    type: object
-                    required:
-                      - address
-                      - port
-                      - id
-                    properties:
-                      address:
-                        description: |
-                          The IP address of the client
-                        type: integer
-                      port:
-                        description: |
-                          The port of the TCP connection on the client-side
-                        type: integer
-                      id:
-                        description: |
-                          A server generated ID
-                        type: string
-                  internals:
-                    description: |
-                      Contents of the server internals struct
-                    type: object
-                  prefix:
-                    description: |
-                      The prefix of the database
-                    type: object
-                  headers:
-                    description: |
-                      The list of the HTTP headers you sent
-                    type: object
-                  requestType:
-                    description: |
-                      The HTTP method that was used for the request (`"POST"`). The endpoint can be
-                      queried using other verbs, too (`"GET"`, `"PUT"`, `"PATCH"`, `"DELETE"`).
-                    type: string
-                  requestBody:
-                    description: |
-                      Stringified version of the request body you sent
-                    type: string
-                  rawRequestBody:
-                    description: |
-                      The sent payload as a JSON-encoded Buffer object
-                    type: object
-                  parameters:
-                    description: |
-                      An object containing the query parameters
-                    type: object
-                  cookies:
-                    description: |
-                      A list of the cookies you sent
-                    type: object
-                  suffix:
-                    description: |
-                      A list of the decoded URL path suffixes. You can query the endpoint with
-                      arbitrary suffixes, e.g. `/_admin/echo/foo/123`
-                    type: array
-                    items:
-                      type: string
-                  rawSuffix:
-                    description: |
-                      A list of the percent-encoded URL path suffixes
-                    type: array
-                    items:
-                      type: string
-                  path:
-                    description: |
-                      The relative path of this request (decoded, excluding `/_admin/echo`)
-                    type: string
-      tags:
-        - Administration
-```
-
 ### Execute a script
 
 ```openapi
@@ -2823,7 +2761,12 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Executes the JavaScript code in the body on the server as the body
         of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type
@@ -2895,6 +2838,7 @@ paths:
   /_db/_system/_api/endpoint:
     get:
       operationId: listEndpoints
+      deprecated: true
       description: |
         {{</* warning */>}}
         This route should no longer be used.

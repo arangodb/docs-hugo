@@ -43,14 +43,15 @@ on a single DB-Server node for better performance and with transactional
 guarantees similar to a single server deployment. OneShard is primarily intended
 for multi-tenant use cases.
 
-### Arango Data Platform
+### Arango Contextual Data Platform
 
-The Arango Data Platform is the umbrella for deploying and operating the entire
-ArangoDB product offering with a unified interface in a Kubernetes cluster.
+The Arango Contextual Data Platform is the umbrella for deploying and operating
+the entire Arango product offering with a unified interface in a Kubernetes cluster.
 It is offered for self-hosting on-prem or in the cloud and as a managed service,
 superseding the Arango Managed Platform (AMP).
 
-See [The Arango Data Platform](../../../data-platform/_index.md) for details.
+See [The Arango Contextual Data Platform](../../../contextual-data-platform/_index.md)
+for details.
 
 ## How to deploy
 

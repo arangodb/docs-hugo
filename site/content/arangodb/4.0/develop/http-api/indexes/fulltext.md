@@ -11,6 +11,7 @@ paths:
   /_db/{database-name}/_api/index#fulltext:
     post:
       operationId: createIndexFulltext
+      deprecated: true
       description: |
         {{</* warning */>}}
         The fulltext index type is deprecated from version 3.10 onwards.
@@ -47,7 +48,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"fulltext"`.
+                    Needs to be set to `"fulltext"`.
                   type: string
                   example: fulltext
                 name:
