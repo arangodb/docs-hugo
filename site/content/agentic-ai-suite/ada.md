@@ -87,7 +87,7 @@ previous conversations, click **History**.
 
 ## What's next
 
-- **[AQLizer](aqlizer.md)**: Generate AQL queries from natural language directly
+- **[AQLizer](natural-language-to-aql/_index.md)**: Generate AQL queries from natural language directly
   in the Query Editor without leaving your query workflow.
 - **[Secrets Manager](../platform-suite/secrets-manager.md)**: Manage the API
   keys used by Ada and other services.

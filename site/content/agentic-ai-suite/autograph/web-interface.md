@@ -32,7 +32,7 @@ web interface, follow these steps:
 After creating your project, you are guided through setting up your AutoGraph workflow.
 
 {{< info >}}
-AutoGraph is checking the [File Manager](../../platform-suite/file-manager.md) for
+AutoGraph is checking the [File Manager](../../platform-suite/file-manager/_index.md) for
 documents previously uploaded to this database. Files uploaded to the File Manager
 are shared across all projects within the same database. You can choose to use
 these existing files or upload new ones.
@@ -100,7 +100,7 @@ your documents and generating optimized import strategies:
 
 After the AutoGraph service is deployed, build the corpus from your uploaded
 documents. For details on what happens during this step, see
-[Corpus Build](../reference/autograph/corpus-build.md).
+[Corpus Build](reference/corpus-build.md).
 
 1. The interface displays **Ready to build the corpus from your uploaded documents**.
 2. Click **Build Corpus**.
@@ -110,7 +110,7 @@ documents. For details on what happens during this step, see
 
 The RAG strategizer analyzes your documents and generates import strategies.
 For details on how strategies are determined, see
-[RAG Strategizer](../reference/autograph/rag-strategizer.md).
+[RAG Strategizer](reference/rag-strategizer.md).
 
 1. After corpus building completes, click **Generate Strategies**.
 2. Review the **Strategy Overview** which shows:
@@ -141,7 +141,7 @@ You can explore the generated knowledge graph in the [Graph Visualizer](../../pl
 
 ## Deploy the Retriever service
 
-The [Retriever service](../reference/retriever/_index.md) enables intelligent
+The [Retriever service](../retriever/) enables intelligent
 search and retrieval of information from your knowledge graph.
 
 1. The interface automatically shows the retriever deployment section with your previously configured LLM provider.
@@ -158,16 +158,16 @@ You can deploy multiple retriever services with different configurations for the
 {{< /info >}}
 
 1. The chat interface provides three
-   [search modes](../reference/retriever/search-methods.md):
+   [search modes](../retriever/search-methods/_index.md):
    - **LOCAL**: Searches at the entity level within relevant partitions.
    - **UNIFIED**: Combines semantic and lexical search with graph expansion
      for fast, streamed responses (Instant Search).
    - **GLOBAL**: Searches at the community level across the knowledge graph.
 2. Toggle **Deep Search** to enable LLM-planned multi-step retrieval over
-   LOCAL search. See [Search Methods](../reference/retriever/search-methods.md)
+   LOCAL search. See [Search Methods](../retriever/search-methods/_index.md)
    for details.
 3. Under **Advanced** options, you can adjust additional
-   [retriever parameters](../reference/retriever/parameters.md):
+   [retriever parameters](../retriever/parameters.md):
    - Adjust the **Level (GLOBAL)** setting.
    - Add custom **Response Instruction** to override the LLM answer style.
    - Toggle **Show citations** to include source references.
@@ -194,5 +194,5 @@ To view and manage all deployed retriever services:
 Each retriever can have different settings for search level, response
 instructions, and other parameters, allowing you to create specialized
 retrievers optimized for different types of queries or use cases. For more
-details, see the [Retriever service](../reference/retriever/_index.md)
+details, see the [Retriever service](../retriever/)
 reference documentation.

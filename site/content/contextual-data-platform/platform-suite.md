@@ -12,14 +12,15 @@ It it always included with the Arango Contextual Data Platform.
 
 ## Operational features
 
-- **High Availability and Monitoring**: Comprehensive health checks, metrics collection,
-  alerting, and automatic failover mechanisms ensure your data platform stays operational.
+- **High Availability and Monitoring**: Multiple availability zones,
+  comprehensive health checks, metrics collection, alerting, and
+  automatic failover mechanisms ensure your data platform stays operational.
   Real-time monitoring dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
 
 - **APIs, Drivers and Connectors**: Comprehensive programmatic access through
-  RESTful APIs, native drivers for popular programming languages (Java, Python,
-  JavaScript, Go, PHP, and more), and connectors for data integration tools
+  HTTP APIs, native drivers for popular programming languages (Java, Python,
+  JavaScript, Go), and connectors for data integration tools
   and BI platforms.
 
 - **Centralized Orchestration and Resource Management**: Unified control plane
@@ -32,8 +33,8 @@ Kubernetes Operator, providing automated management and enterprise-grade reliabi
 
 ## Unified web interface
 
-The Contextual Data Platform includes single, unified web interface for
-accessing all services and components seamlessly.
+The Contextual Data Platform includes a single, unified web interface for
+accessing services and components seamlessly.
 
 ### Graph Visualizer
 
@@ -80,14 +81,14 @@ with re-organizable tabs for writing, executing, analyzing, and managing AQL que
 
 The [Container manager](../platform-suite/container-manager/_index.md) lets you
 deploy and manage custom services within the Arango Contextual Data Platform
-using your own code packages.
+using your own code packages or container images.
 
 It is available in the web interface of the Contextual Data Platform as well as
 an API.
 
 ### File manager
 
-The [File manager](../platform-suite/file-manager.md) lets you view and manage
+The [File manager](../platform-suite/file-manager/_index.md) lets you view and manage
 the data of services, such as your uploaded content for AutoGraph and GraphRAG,
 as well as the files used by service containers.
 
@@ -96,6 +97,8 @@ as well as the files used by service containers.
 The [Secrets manager](../platform-suite/secrets-manager.md) store secrets like
 API keys for easy use across the Contextual Data Platform.
 
+## Additional services
+
 ### Arango Control Plane (ACP)
 
 The [Arango Control Plane (ACP)](../platform-suite/control-plane-acp.md) is an
@@ -103,10 +106,8 @@ orchestration service to install, manage, and run services in your
 Contextual Data Platform. It is used by built-in features such as AutoGraph but
 also for custom services.
 
-## Additional services
+### Cypher to AQL Translation Service (experimental)
 
-### Cypher2AQL (experimental)
-
-The **Cypher to AQL** service translates
+The [`arango-cypher2aql` service](../platform-suite/cypher2aql.md) translates
 Cypher queries into AQL so you can use Cypher-style syntax and run the resulting
 AQL queries against ArangoDB.
