@@ -103,10 +103,10 @@ are dropped and re-created with the properties and data found in the input direc
 
 The following startup options are available to adjust this behavior:
 
-- `--create-collection <bool>`: set to `true` to create collections in the target
+- `--create-collection <bool>`: Set to `true` to create collections in the target
   database if they don't yet exist. If the target database already contains a 
   collection with the same name, then it is dropped and recreated with the
-  same properties as in the dump if the `--overwrite` option is enabled.
+  same properties as in the dump if the `--overwrite` option is enabled (default).
   If the `--overwrite` option is set to `false`, an existing collection is used as is,
   and its properties are not updated nor is its data discarded before restoring.
   If `--create-collection` is set to `false`, then _arangorestore_ does not make any
@@ -116,12 +116,12 @@ The following startup options are available to adjust this behavior:
   input directory but not in the target database, it aborts with a
   "collection not found" error.
   The default value for `--create-collection` is `true`.
-- `--overwrite <bool>`: controls whether existing collections are dropped if
+- `--overwrite <bool>`: Controls whether existing collections are dropped if
   `--create-collection true` is used. The default value is `true`.
-- `--import-data <bool>`: set to `true` to load document data into the collections in
+- `--import-data <bool>`: Set to `true` to load document data into the collections in
   the target database. Set to `false` to not load any document data. The default value 
   is `true`.
-- `--include-system-collections <bool>`: whether or not to include system collections
+- `--include-system-collections <bool>`: Whether or not to include system collections
   when re-creating collections or reloading data. The default value is `false`.
 
 For example, to (re-)create all non-system collections and load document data into them, use:
