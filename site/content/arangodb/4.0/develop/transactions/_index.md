@@ -401,7 +401,9 @@ collection.
 
 ### Deadlocks and Deadlock detection
 
-<!-- TODO: Obsolete? -->
+<!-- TODO: Does not deadlock, even with exclusive locks. Does is work even with JavaScript Transactions?!
+We should rework the text to explain deadlocks as a concept but then that this doesn't deadlock, what snapshot isolation is, and what each query sees.
+-->
 
 A deadlock is a situation in which two or more concurrent operations
 (user transactions or AQL queries) try to access the same resources
