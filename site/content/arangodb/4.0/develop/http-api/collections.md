@@ -98,15 +98,6 @@ paths:
                             The name of the collection.
                           type: string
                           example: coll
-                        status:
-                          description: |
-                            The status of the collection.
-                            - `3`: loaded
-                            - `5`: deleted
-
-                            Every other status indicates a corrupted collection.
-                          type: integer
-                          example: 3
                         type:
                           description: |
                             The type of the collection:
@@ -208,15 +199,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -341,8 +323,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -357,8 +337,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -694,25 +672,6 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier:
-name: RestCollectionGetCollectionIdentifier
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id + "/properties";
-
-var response = logCurlRequest('GET', url);
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-```curl
----
-description: |-
   Using a name:
 name: RestCollectionGetCollectionName
 ---
@@ -776,8 +735,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -792,8 +749,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -1188,8 +1143,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1204,8 +1157,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -1918,8 +1869,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1934,8 +1883,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   shards:
                     description: |
@@ -2407,8 +2354,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -2423,8 +2368,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   revision:
                     description: |
@@ -2888,15 +2831,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -3459,8 +3393,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -3475,8 +3407,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -4409,8 +4339,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -4425,8 +4353,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -4994,8 +4920,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -5010,8 +4934,6 @@ paths:
                   #   isSmartChild (internal)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -5571,15 +5493,6 @@ paths:
                       an underscore are usually system collections.
                     type: boolean
                     example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   id:
                     description: |
                       A unique identifier of the collection (deprecated).

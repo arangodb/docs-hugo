@@ -10,7 +10,15 @@ description: >-
 
 ### Behavior changes
 
+#### Collection statuses removed
 
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
 
 ### Privilege changes
 
