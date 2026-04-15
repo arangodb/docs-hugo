@@ -48,7 +48,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"fulltext"`.
+                    Needs to be set to `"fulltext"`.
                   type: string
                   example: fulltext
                 name:

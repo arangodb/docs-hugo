@@ -19,6 +19,9 @@ removed in ArangoDB v4.0.
 ### List the installed services
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx:
     get:
@@ -66,6 +69,9 @@ paths:
 ### Get the service description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     get:
@@ -116,6 +122,9 @@ paths:
 ### Install a new service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx:
     post:
@@ -202,6 +211,9 @@ paths:
 ### Uninstall a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     delete:
@@ -246,6 +258,9 @@ paths:
 ### Replace a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     put:
@@ -345,6 +360,9 @@ paths:
 ### Upgrade a service
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/service:
     patch:
@@ -446,6 +464,9 @@ paths:
 ### Get the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     get:
@@ -483,6 +504,9 @@ paths:
 ### Update the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     patch:
@@ -527,6 +551,9 @@ paths:
 ### Replace the configuration options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/configuration:
     put:
@@ -571,6 +598,9 @@ paths:
 ### Get the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     get:
@@ -608,6 +638,9 @@ paths:
 ### Update the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     patch:
@@ -657,6 +690,9 @@ paths:
 ### Replace the dependency options
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/dependencies:
     put:
@@ -708,6 +744,9 @@ paths:
 ### List the service scripts
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/scripts:
     get:
@@ -744,6 +783,9 @@ paths:
 ### Run a service script
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/scripts/{name}:
     post:
@@ -794,6 +836,9 @@ paths:
 ### Run the service tests
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/tests:
     post:
@@ -871,6 +916,9 @@ paths:
 ### Enable the development mode
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/development:
     post:
@@ -914,6 +962,9 @@ paths:
 ### Disable the development mode
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/development:
     delete:
@@ -952,6 +1003,9 @@ paths:
 ### Get the service README
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/readme:
     get:
@@ -989,6 +1043,9 @@ paths:
 ### Get the Swagger description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/swagger:
     get:
@@ -1025,6 +1082,9 @@ paths:
 ### Download a service bundle
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/download:
     post:
@@ -1067,6 +1127,9 @@ paths:
 ### Commit the local service state
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/foxx/commit:
     post:

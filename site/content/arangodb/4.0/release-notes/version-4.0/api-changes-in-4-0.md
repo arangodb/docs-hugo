@@ -20,6 +20,24 @@ collections have no effect on it.
 The `status` and `statusString` attributes have now been removed from responses
 of the collections API (`/_api/collection*` endpoints).
 
+#### Version API
+
+The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
+under `details` when requesting the detailed version information. This is
+due to the removal of the emergency console (`arangod --console`) and the
+V8 JavaScript engine in general from the server-side.
+
+#### Status API
+
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`), and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
+
 ### Privilege changes
 
 

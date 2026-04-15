@@ -1394,6 +1394,59 @@ AQL queries can now be killed during the execution of graph traversals and
 paths searches. These operations previously lacked cancellation points to stop
 the execution quickly.
 
+### New `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+AQL queries now return an additional statistic under `extra.stats` in
+the HTTP API:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
+### Support projections when different indexes are utilized for OR conditions
+
+<small>Introduced in: v3.12.9</small>
+
+Queries with `OR` conditions in `FILTER` operations can utilize indexes for both
+sides of the `OR`. If these are different indexes, the AQL optimizer used to
+ignore whether projections could be used to improve the query performance.
+
+```aql
+ FOR doc IN coll
+   FILTER doc.price < 5 OR doc.name == "avocado"
+   RETURN doc.description
+```
+
+For example, if the collection `coll` has persistent indexes on `price`  and
+`name`, the above query would utilize both indexes but not use projections,
+neither for the `FILTER` nor the downstream attribute access for the `RETURN`:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    
+  3   CalculationNode     ✓   4000       - LET #1 = ((doc.`price` < 5) || (doc.`name` == "avocado"))   /* simple expression */   /* collections used: doc : coll */
+  4   FilterNode          ✓   4000       - FILTER #1
+  5   CalculationNode     ✓   4000       - LET #2 = doc.`description`   /* attribute expression */   /* collections used: doc : coll */
+  6   ReturnNode              4000       - RETURN #2
+```
+
+From v3.12.9 onward, the query can utilize both the two indexes as well as
+projections, `price` and `name` as filter projections and `description` as
+projection downstream:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup (projections: `description`, `name`, `price`) */    LET #3 = doc.`description`, #4 = doc.`name`, #5 = doc.`price`   
+  3   CalculationNode     ✓   4000       - LET #1 = ((#5 < 5) || (#4 == "avocado"))   /* simple expression */
+  4   FilterNode          ✓   4000       - FILTER #1
+  6   ReturnNode              4000       - RETURN #3
+```
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1633,6 +1686,10 @@ FOR doc IN c OPTIONS { indexHint: ["vec_idx_1", "vec_idx_2"], forceIndexHint: tr
 
 <small>Introduced in: v3.12.9</small>
 
+The AQL optimizer now prefers a vector index whose `storedValues` cover the
+`FILTER` operation of a query if there are multiple suitable vector indexes.
+This is implemented in the `push-filter-into-enumerate-near` optimizer rule.
+
 Vector indexes now have two new attributes in success responses:
 - `trainingState` (string): The current training state of the vector index:
   - `"unusable"`: The index is not yet trained or cannot be
@@ -1645,13 +1702,15 @@ Vector indexes now have two new attributes in success responses:
   training state, for example, `"not enough training data for vector index"`.
   Only present if there is a problem with the index.
 
-You can now create a vector index first if you set `inBackground` to `true` and
+You can now create a vector index first and
 then populate the collection with vector data. However, it is still recommended
 to load the data first and then create the index to ensure that all documents
 participate in the training process as the training is only executed once.
 The training is triggered automatically if the vector index hasn't been trained
 yet and the number of documents to index exceeds the threshold of
-`nLists` documents. Check the `trainingState` to see if the
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ## Server options

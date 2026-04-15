@@ -145,6 +145,9 @@ paths:
 ### Get the metrics (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/metrics/v2:
     get:
@@ -152,8 +155,9 @@ paths:
       deprecated: true
       description: |
         {{</* warning */>}}
-        The `/_admin/metrics` and `/_admin/metrics/v2` return the same metrics
-        since ArangoDB v3.10.0. The latter is deprecated and removed in v4.0.
+        The `GET /_admin/metrics` and `GET /_admin/metrics/v2` endpoints return
+        the same metrics since ArangoDB v3.10.0. The latter is deprecated and
+        removed in v4.0.
         {{</* /warning */>}}
 
         Returns the instance's current metrics in Prometheus format. The

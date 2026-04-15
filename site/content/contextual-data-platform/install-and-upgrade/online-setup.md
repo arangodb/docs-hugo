@@ -91,37 +91,16 @@ You can find the latest release on GitHub:
 Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
-{{< tabs "cpu-arch" >}}
-
-{{< tab "x86-64" >}}
 ```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
+VERSION_OPERATOR='1.4.2' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
   "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
+  --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
   --set "operator.architectures={amd64}"
 ```
-{{< /tab >}}
-
-{{< tab "ARM" >}}
-```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
-
-helm upgrade --install operator \
-  --namespace arango \
-  "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
-  --set "operator.architectures={arm64}"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The output looks similar to the following on success:
 
@@ -135,13 +114,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.1
+You have installed Kubernetes ArangoDB Operator in version 1.4.2
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.1/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.2/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -176,7 +155,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG. You also need to set `spec.license` to
 the secret created earlier.
 
-Example for an ArangoDB cluster deployment using version 3.12.7 with three
+Example for an ArangoDB cluster deployment using version 3.12.9 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -186,7 +165,7 @@ metadata:
   name: "deployment-example"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.7"
+  image: "arangodb/enterprise:3.12.9"
   gateway:
     enabled: true
     dynamic: true
