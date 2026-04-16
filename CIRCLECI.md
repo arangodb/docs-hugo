@@ -30,7 +30,7 @@ Invoke Args:
 ### Deploy a plain build to production
 
 To update the live documentation independently of an ArangoDB release, for
-example, because of changes to the Data Platform docs or to publish documentation
+example, because of changes to the Contextual Data Platform docs or to publish documentation
 improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -149,7 +149,7 @@ use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
-[Docker Hub](https://hub.docker.com/) is specified. Using Docker images has the
+[Docker Hub](https://hub.docker.com/) is specified. Using container images has the
 advantage that the compilation of ArangoDB can be skipped, making the example
 generation faster. Of course, this requires that an image containing relevant
 changes to ArangoDB exists.

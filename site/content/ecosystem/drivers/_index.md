@@ -6,6 +6,7 @@ description: >-
   ArangoDB drivers allow you to connect ArangoDB to your applications and manage
   the database system via a language-specific interface
 aliases:
+  - ../arangodb/3.11/develop/drivers
   - ../arangodb/3.12/develop/drivers
   - ../arangodb/stable/develop/drivers
   - ../arangodb/4.0/develop/drivers

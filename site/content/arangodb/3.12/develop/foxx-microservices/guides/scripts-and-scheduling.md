@@ -133,6 +133,10 @@ migrating existing data can safely be performed in separate scripts.
 
 ## Queues
 
+{{< warning >}}
+The tasks and Foxx queues features are deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 Services can schedule scripts of any service mounted in the same database
 using [Foxx queues](../reference/related-modules/queues.md):
 

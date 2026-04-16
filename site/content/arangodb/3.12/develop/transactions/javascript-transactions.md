@@ -8,8 +8,8 @@ description: >-
   read and modify multiple documents from multiple collections
 ---
 {{< warning >}}
-JavaScript Transactions are deprecated from v3.12.0 onward and will be
-removed in a future version.
+JavaScript Transactions are deprecated from v3.12.0 onward and are removed
+in ArangoDB v4.0.
 {{< /warning >}}
 
 JavaScript transactions are different from transactions in SQL.

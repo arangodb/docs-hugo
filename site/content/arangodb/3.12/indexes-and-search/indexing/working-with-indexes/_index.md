@@ -124,7 +124,7 @@ Other attributes may be necessary, depending on the index type.
   - `"persistent"`: persistent (array) index, including vertex-centric index
   - `"inverted"`: inverted index
   - `"ttl"`: time-to-live index
-  - `"fulltext"`: full-text index (deprecated from ArangoDB 3.10 onwards)
+  - `"fulltext"`: full-text index (deprecated from ArangoDB v3.10 onward and removed in v4.0)
   - `"geo"`: geo-spatial index, with _one_ or _two_ attributes
   - `"mdi"`: multi-dimensional index
   - `"mdi-prefixed"`: multi-dimensional index with search prefix, including vertex-centric index

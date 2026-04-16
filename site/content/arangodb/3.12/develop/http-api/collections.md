@@ -413,7 +413,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -873,7 +873,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -1364,7 +1364,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2048,7 +2048,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2533,7 +2533,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -3574,7 +3574,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -4554,7 +4554,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -5164,7 +5164,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -5737,15 +5737,19 @@ db._drop(cn);
 ### Load a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The load function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
@@ -5928,15 +5932,19 @@ db._drop(cn);
 ### Unload a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The unload function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to

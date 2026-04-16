@@ -14,7 +14,7 @@ Also see [What's New in 4.0](../release-notes/version-4.0/whats-new-in-4-0.md).
 ## Version 3.12
 
 {{< info >}}
-From version 3.12.5 onward, the prepackaged binaries and official Docker images
+From version 3.12.5 onward, the prepackaged binaries and official container images
 of the Community Edition include all features of the Enterprise Edition.
 See [ArangoDB Editions](_index.md#arangodb-editions) for details.
 {{< /info >}}

@@ -6,8 +6,8 @@ description: >-
   Indexes for full-text split strings into words that you can then search for
 ---
 {{< warning >}}
-The fulltext index type is deprecated from version 3.10 onwards.
-It is recommended to use [Inverted indexes](inverted-indexes.md) or
+The fulltext index type is deprecated from version 3.10 onwards and removed in
+ArangoDB v4.0. It is recommended to use [Inverted indexes](inverted-indexes.md) or
 [ArangoSearch](../../arangosearch/_index.md) for advanced full-text search capabilities.
 {{< /warning >}}
 
