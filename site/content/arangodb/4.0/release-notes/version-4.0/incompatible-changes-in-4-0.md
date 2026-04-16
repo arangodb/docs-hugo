@@ -68,7 +68,11 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 ## JavaScript API
 
+### Status collection method removed
 
+The `<collection>.status()` method has been removed as the server no longer
+reports a collection state (loaded, unloaded, etc.) and collection statuses
+have no meaning with the RocksDB storage engine anyway.
 
 ## Startup options
 
