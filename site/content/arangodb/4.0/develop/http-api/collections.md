@@ -84,7 +84,6 @@ paths:
                       required:
                         - id
                         - name
-                        - status
                         - type
                         - isSystem
                         - globallyUniqueId
@@ -175,7 +174,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -2801,7 +2799,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -3891,24 +3888,6 @@ paths:
 ```
 
 **Examples**
-
-```curl
----
-description: |-
-  Using an identifier:
-name: RestCollectionDeleteCollectionIdentifier
----
-var cn = "products1";
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id;
-
-var response = logCurlRequest('DELETE', url);
-db[cn] = undefined;
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-```
 
 ```curl
 ---
@@ -5460,7 +5439,6 @@ paths:
                   - name
                   - type
                   - isSystem
-                  - status
                   - id
                   - globallyUniqueId
                 properties:
