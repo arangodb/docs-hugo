@@ -19,13 +19,28 @@ OpenAI-compatible endpoint.
 
 The Retriever service supports the following provider configurations:
 
-- **OpenAI/OpenAI-compatible**: Use any OpenAI-compatible API (OpenAI, OpenRouter, 
-  Gemini, Anthropic, etc.) for chat and OpenAI for embeddings
-- **Triton**: Use Triton Inference Server for both chat and embeddings
+1. **OpenAI/OpenAI-Compatible for Chat, OpenAI for Embeddings**: Use OpenAI API, OpenAI-compatible (such as OpenRouter) for chat, and OpenAI for embeddings:
+   - OpenAI is detected when `chat_api_url` is `"https://api.openai.com/v1"` or not provided (defaults to OpenAI).
+   - OpenRouter is detected when `chat_api_url` contains `"openrouter.ai"`.
+   - Other OpenAI-compatible APIs are used when `chat_api_url` points to a compatible endpoint.
+2. **Triton for Chat, Triton for Embeddings**: Use Triton for both chat and embeddings.
 
 {{< warning >}}
-Other provider combinations are not supported and will result in a configuration error.
+Any other provider combinations will result in a configuration error. The system will reject invalid combinations.
 {{< /warning >}}
+
+**URL Defaults**: When using OpenAI provider, `chat_api_url` and `embedding_api_url` default to `"https://api.openai.com/v1"` if not specified. For Triton provider, these URLs are required and must be explicitly provided. For OpenAI-compatible APIs, you must explicitly provide the `chat_api_url` pointing to your compatible endpoint.
+
+**Model Defaults**:
+The following default models are automatically applied when `chat_model` or `embedding_model` are not specified:
+
+- **OpenAI**: `gpt-4o` for chat, `text-embedding-3-small` for embeddings
+- **OpenRouter**: `mistralai/mistral-nemo` for chat, `text-embedding-3-small` for embeddings (OpenRouter is detected via `chat_api_url` containing "openrouter.ai")
+- **Triton**: `mistral-nemo-instruct` for chat, `nomic-embed-text-v1` for embeddings
+
+{{< info >}}
+These defaults are applied automatically by the service when the corresponding model parameters are not provided.
+{{< /info >}}
 
 ## Using OpenAI-compatible APIs
 
@@ -58,35 +73,8 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
 }
 ```
 
-Where:
-- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `project_name`: The project name created via the
-  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
-  This name is used as a prefix for all ArangoDB collections (for example, a
-  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `chat_api_url`: API endpoint URL for the chat/language model service.
-  Defaults to `https://api.openai.com/v1` if not provided.
-- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `embedding_api_url`: API endpoint URL for the embedding model service.
-  Defaults to `https://api.openai.com/v1` if not provided.
-- `chat_model`: Specific language model to use for text generation and analysis.
-  Defaults to `gpt-4o` when using OpenAI.
-- `embedding_model`: Specific model to use for generating text embeddings.
-  Defaults to `text-embedding-3-small` when using OpenAI.
-- `chat_api_key`: API key for authenticating with the chat/language model service.
-- `embedding_api_key`: API key for authenticating with the embedding model service.
-- `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension. It must match the
-  embedding model's output dimension.
-
-{{< tip >}}
-Instead of inline API keys, you can use `chat_secret_profile_id` and
-`embedding_secret_profile_id` when your platform supports secret profiles
-for the Retriever install.
-{{< /tip >}}
+For a full description of all parameters, see
+[Configuration Parameters Reference](#configuration-parameters-reference).
 
 ### Using different OpenAI-compatible services for chat and embedding
 
@@ -100,6 +88,7 @@ Both `chat_api_provider` and `embedding_api_provider` must be set to the same va
 APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
 Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
 different URLs in `chat_api_url` and `embedding_api_url`.
+See [Supported Provider Combinations](#supported-provider-combinations) for details.
 {{< /info >}}
 
 **Example using OpenRouter for chat and OpenAI for embedding:**
@@ -122,31 +111,8 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 }
 ```
 
-Where:
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `project_name`: The project name created via the
-  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
-  This name is used as a prefix for all ArangoDB collections (for example, a
-  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `chat_api_url`: API endpoint URL for the chat/language model service.
-  Must be explicitly provided for OpenRouter and other OpenAI-compatible APIs.
-  The service detects OpenRouter when this URL contains `openrouter.ai`.
-- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API.
-- `embedding_api_url`: API endpoint URL for the embedding model service.
-  Defaults to `https://api.openai.com/v1` if not provided.
-- `chat_model`: Specific language model to use for text generation and analysis.
-  Defaults to `mistralai/mistral-nemo` for OpenRouter or `gpt-4o` for other
-  OpenAI-compatible APIs.
-- `embedding_model`: Specific model to use for generating text embeddings.
-  Defaults to `text-embedding-3-small`.
-- `chat_api_key`: API key for authenticating with the chat/language model service.
-- `embedding_api_key`: API key for authenticating with the embedding model service.
-- `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension. It must match the
-  embedding model's output dimension.
+For a full description of all parameters, see
+[Configuration Parameters Reference](#configuration-parameters-reference).
 
 ## Using Triton Inference Server for chat and embedding
 
@@ -175,29 +141,109 @@ service using the below configuration:
 }
 ```
 
-Where:
-- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+For a full description of all parameters, see
+[Configuration Parameters Reference](#configuration-parameters-reference).
+
+## Configuration Parameters Reference
+
+The following parameters are available when configuring the Retriever service.
+Provider-specific defaults and requirements are noted where applicable.
+
+### General parameters
+
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored.
 - `project_name`: The project name created via the
   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
   [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
-  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"triton"` to use Triton Inference Server for
-  language model services.
-- `embedding_api_provider`: Set to `"triton"` to use Triton Inference Server for
-  embedding model services.
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.).
+
+### Chat API parameters
+
+- `chat_api_provider` (**required**): The provider for chat/LLM services.
+  Set to `"openai"` for any OpenAI-compatible API, or `"triton"` for Triton
+  Inference Server.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
-  Must be explicitly provided when using Triton.
-- `embedding_api_url`: API endpoint URL for the embedding model service.
-  Must be explicitly provided when using Triton.
+  - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
+  - **OpenRouter and other OpenAI-compatible APIs**: Must be explicitly provided.
+    The service detects OpenRouter when this URL contains `openrouter.ai`.
+  - **Triton**: Must be explicitly provided.
+- `chat_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
+  for authenticating with the chat/language model service.
 - `chat_model`: Specific language model to use for text generation and analysis.
-  Defaults to `mistral-nemo-instruct` for Triton.
+  - **OpenAI**: Defaults to `gpt-4o`.
+  - **OpenRouter**: Defaults to `mistralai/mistral-nemo`.
+  - **Other OpenAI-compatible APIs**: Defaults to `gpt-4o`.
+  - **Triton**: Defaults to `mistral-nemo-instruct`.
+
+### Embedding API parameters
+
+- `embedding_api_provider` (**required**): The provider for embedding services.
+  Set to `"openai"` for any OpenAI-compatible API, or `"triton"` for Triton
+  Inference Server.
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
+  - **Triton**: Must be explicitly provided.
+- `embedding_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
+  for authenticating with the embedding model service.
 - `embedding_model`: Specific model to use for generating text embeddings.
-  Defaults to `nomic-embed-text-v1` for Triton.
+  - **OpenAI and OpenRouter**: Defaults to `text-embedding-3-small`.
+  - **Triton**: Defaults to `nomic-embed-text-v1`.
 - `embedding_dim`: Optional embedding dimension. The default value is `512`
   (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
   custom embedding model with a different dimension. It must match the
   embedding model's output dimension.
+
+{{< tip >}}
+Instead of inline API keys, you can use `chat_secret_profile_id` and
+`embedding_secret_profile_id` when your platform supports secret profiles
+for the Retriever install.
+{{< /tip >}}
+
+## Chat payload compatibility
+
+Set `chat_model` to the model your provider exposes (for example `gpt-4o`,
+`gpt-4o-mini`, `gpt-4.1`, or GPT-5 family names such as `gpt-5`, `gpt-5-mini`,
+`gpt-5.1`). Different model families accept different optional fields on chat
+completions. The Retriever builds the request from service environment variables
+and retries once if the API returns an unsupported-parameter error.
+
+Optional environment variables (also accepted in lowercase, e.g. `chat_parameter_policy`):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CHAT_PARAMETER_POLICY` | `safe` | In `safe` mode, only baseline fields are sent unless you add overrides below. Use `legacy` when you want older behavior such as sending `temperature` where the code path supplies it. |
+| `CHAT_TOKEN_LIMIT_PARAM` | `none` | One of `none`, `max_tokens`, `max_completion_tokens`, or `auto` (`auto` sends `max_completion_tokens`). Unrecognized values are ignored and no token limit is sent. A warning is logged when a limit was requested. |
+| `CHAT_DISABLED_PARAMS` | (empty) | Comma-separated optional parameters to strip from the outgoing payload (for example `temperature,max_tokens,max_completion_tokens,reasoning_effort`). |
+| `CHAT_EXTRA_PARAMS_JSON` | (empty) | JSON object merged into the chat request (for example `{"reasoning_effort":"low"}`). Invalid JSON is rejected at startup or when read. |
+| `CHAT_REASONING_EFFORT` | (unset) | Shorthand to set `reasoning_effort` on models that support it. |
+
+**GPT-4 series (typical usage):** Defaults (`safe`, no token limit param) work for many deployments. If you need explicit limits compatible with newer chat APIs, set `CHAT_TOKEN_LIMIT_PARAM` to `auto` or `max_completion_tokens` and, if required, `CHAT_PARAMETER_POLICY` to `legacy`.
+
+**GPT-5 series (typical usage):** Start with defaults (`safe`, `CHAT_TOKEN_LIMIT_PARAM=none`). If the provider rejects specific fields, add them to `CHAT_DISABLED_PARAMS` or rely on the built-in unsupported-parameter retry. Tune latency for reasoning-capable models with `CHAT_REASONING_EFFORT` or `CHAT_EXTRA_PARAMS_JSON` per your provider's documentation.
+
+{{< warning >}}
+**Access errors:** Messages about organization verification or model access come from the provider account, not from the Retriever configuration.
+{{< /warning >}}
+
+**Defaults vs. older behavior:** With defaults (`safe`, `none` for token limit), requests omit `temperature` and omit a token-limit field unless you configure otherwise - by design for compatibility. To approximate prior behavior (temperature plus a completion token cap where the code supplies a limit), use `CHAT_PARAMETER_POLICY=legacy` and `CHAT_TOKEN_LIMIT_PARAM=auto` (or an explicit `max_*` mode).
+
+**Per-process cache:** After a successful completion, the service remembers which optional parameters worked for each model name in the same process and reuses that shape on later calls. If the first success uses only `model` and `messages`, later calls for that model drop other optional keys until the process restarts. Streaming requests still pass `stream`.
+
+## Configuration Validation
+
+When configuring the service, ensure you:
+
+1. **Use only supported provider combinations** listed above.
+2. **Provide all required parameters**:
+   - `chat_api_provider` and `embedding_api_provider` (both required)
+   - `chat_api_url` and `embedding_api_url` (optional for OpenAI with defaults, required for Triton)
+   - `chat_api_key` and `embedding_api_key` (required for OpenAI and OpenAI-compatible providers)
+3. **Follow provider-specific requirements**:
+   - OpenAI provider requires valid API keys
+   - Triton provider requires valid server URLs
+
+The service will validate your configuration and reject any unsupported combinations or missing required parameters with an error message.
 
 ## Next Steps
 
