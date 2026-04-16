@@ -184,8 +184,8 @@ Provider-specific defaults and requirements are noted where applicable.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
   - **Triton**: Must be explicitly provided.
-- `embedding_api_key` (**required for OpenAI provider**): API key for authenticating
-  with the embedding model service.
+- `embedding_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
+  for authenticating with the embedding model service.
 - `embedding_model`: Specific model to use for generating text embeddings.
   - **OpenAI and OpenRouter**: Defaults to `text-embedding-3-small`.
   - **Triton**: Defaults to `nomic-embed-text-v1`.
@@ -238,7 +238,7 @@ When configuring the service, ensure you:
 2. **Provide all required parameters**:
    - `chat_api_provider` and `embedding_api_provider` (both required)
    - `chat_api_url` and `embedding_api_url` (optional for OpenAI with defaults, required for Triton)
-   - `chat_api_key` and `embedding_api_key` (required for OpenAI provider)
+   - `chat_api_key` and `embedding_api_key` (required for OpenAI and OpenAI-compatible providers)
 3. **Follow provider-specific requirements**:
    - OpenAI provider requires valid API keys
    - Triton provider requires valid server URLs
