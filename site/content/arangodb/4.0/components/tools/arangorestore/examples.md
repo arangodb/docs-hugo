@@ -23,18 +23,18 @@ _arangorestore_ connects to the `_system` database by default, using the default
 endpoint. To override the endpoint, or specify a different user, use one of the
 following startup options:
 
-- `--server.endpoint <string>`: endpoint to connect to
-- `--server.username <string>`: username
-- `--server.password <string>`: password or access token to use
+- `--server.endpoint <string>`: Endpoint to connect to
+- `--server.username <string>`: Username
+- `--server.password <string>`: Password or access token to use
   (omit this and you'll be prompted for the password)
-- `--server.authentication <bool>`: whether or not to use authentication
+- `--server.authentication <bool>`: Whether to use authentication
 
 If you want to connect to a different database or dump all databases you can additionally
 use the following startup options:
 
-- `--server.database <string>`: name of the database to connect to.
+- `--server.database <string>`: Name of the database to connect to.
   Defaults to the `_system` database.
-- `--all-databases true`: restore multiple databases from a dump which used the same option.
+- `--all-databases true`: Restore multiple databases from a dump which used the same option.
 
 Note that the specified user must have access to the database(s).
  
@@ -117,11 +117,11 @@ The following startup options are available to adjust this behavior:
   "collection not found" error.
   The default value for `--create-collection` is `true`.
 - `--overwrite <bool>`: Controls whether existing collections are dropped if
-  `--create-collection true` is used. The default value is `true`.
+  `--create-collection` is enabled. The default value is `true`.
 - `--import-data <bool>`: Set to `true` to load document data into the collections in
   the target database. Set to `false` to not load any document data. The default value 
   is `true`.
-- `--include-system-collections <bool>`: Whether or not to include system collections
+- `--include-system-collections <bool>`: Whether to include system collections
   when re-creating collections or reloading data. The default value is `false`.
 
 For example, to (re-)create all non-system collections and load document data into them, use:
@@ -311,12 +311,12 @@ silently ignored.
 
 The following factors affect speed of _arangorestore_ in a Cluster:
 
-- **Replication Factor**: the higher the _replication factor_, the more
+- **Replication Factor**: The higher the _replication factor_, the more
   time the restore takes. To speed up the restore you can restore
   using a _replication factor_ of `1` and then increase it again
   after the restore. This reduces the number of network hops needed
   during the restore.
-- **Restore Parallelization**: if the collections are not restored in
+- **Restore Parallelization**: If the collections are not restored in
   parallel, the restore speed is highly affected. A parallel restore can
   be done by using the `--threads` option of _arangorestore_.
   Depending on your specific case, you might be able to achieve additional
@@ -360,3 +360,4 @@ For restore this short overview is sufficient:
 - When creating a new database during restore, the given user needs `Administrate`
   access on `_system`. The user is promoted to `Administrate` access on the
   newly created database.
+
