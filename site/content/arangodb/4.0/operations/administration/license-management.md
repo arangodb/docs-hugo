@@ -47,7 +47,7 @@ described below.
 ## Activate a deployment
 
 1. Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -85,7 +85,7 @@ described below.
 ## Generate a license key
 
 1. Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
-   <https://github.com/arangodb/kube-arangodb/releases>.
+   <https://github.com/arangodb/kube-arangodb/releases/latest>.
    It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
    architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 

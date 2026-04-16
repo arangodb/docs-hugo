@@ -86,7 +86,7 @@ deployments and the Contextual Data Platform. It watches for custom resources an
 the necessary Kubernetes resources.
 
 You can find the latest release on GitHub:
-<https://github.com/arangodb/kube-arangodb/releases/>
+<https://github.com/arangodb/kube-arangodb/releases/latest/>
 
 Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
@@ -205,7 +205,7 @@ eventually see pods with the following names with a status of `Running`:
 ## Step 6: Get the Contextual Data Platform CLI tool
 
 Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
-<https://github.com/arangodb/kube-arangodb/releases>.
+<https://github.com/arangodb/kube-arangodb/releases/latest>.
 It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
 architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
