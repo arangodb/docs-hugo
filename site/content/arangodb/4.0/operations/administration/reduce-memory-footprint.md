@@ -488,25 +488,6 @@ that need to be inspected and processed. This is not always what happens under
 the hood, as some operations may lead to an intermediate result being computed before 
 any limit is applied.
 
-## Statistics
-
-The server collects
-[statistics](../../components/arangodb-server/options.md#--serverstatistics) regularly,
-which is displayed in the web interface. You will have a light query load every
-few seconds, even if your application is idle, because of the statistics. If required, you can 
-turn it off via:
-
-```
---server.statistics false
-```
-This setting will disable both the background statistics gathering and the statistics
-APIs. To only turn off the statistics gathering, you can use
-```
---server.statistics-history false
-```
-That leaves all statistics APIs enabled but still disables all background work
-done by the statistics gathering.
-
 ## JavaScript & Foxx
 
 [JavaScript](../../components/arangodb-server/options.md#javascript) is executed in the ArangoDB
