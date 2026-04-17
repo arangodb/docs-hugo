@@ -129,7 +129,6 @@ arangosh@oneShardDB> db.example1.properties()
     "type" : "traditional"
   },
   "replicationFactor" : 2,
-  "minReplicationFactor" : 1,
   "writeConcern" : 1,
   "distributeShardsLike" : "_graphs",
   "shardingStrategy" : "hash",

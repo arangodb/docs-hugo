@@ -133,10 +133,6 @@ Specify which traversal algorithm to use (string):
   step. The order of paths having the same cost is non-deterministic.
   Negative weights are not supported and abort the query with an error.
 
-#### `bfs`
-
-Deprecated, use `order: "bfs"` instead.
-
 #### `uniqueVertices`
 
 Ensure node uniqueness (string):

@@ -44,15 +44,35 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
 ### Metrics API v2 endpoint removed
 
 Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
 returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
 been removed.
 
+### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ## JavaScript API
 
+### Status collection method removed
 
+The `<collection>.status()` method has been removed as the server no longer
+reports a collection state (loaded, unloaded, etc.) and collection statuses
+have no meaning with the RocksDB storage engine anyway.
 
 ## Startup options
 

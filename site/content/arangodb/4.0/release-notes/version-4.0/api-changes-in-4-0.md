@@ -10,6 +10,16 @@ description: >-
 
 ### Behavior changes
 
+#### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
 #### Version API
 
 The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
@@ -34,7 +44,11 @@ server-side:
 
 ### Endpoint return value changes
 
+#### Timestamp removed from cluster health API
 
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
 
 ### Endpoints added
 
