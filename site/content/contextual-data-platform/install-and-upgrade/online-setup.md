@@ -53,7 +53,11 @@ This guide uses long-form options for clarity.
 
 ## Step 3: Create a secret for the license
 
-Create a Kubernetes secret with your license credentials.
+Create a Kubernetes secret with your license credentials. The ArangoDB
+Kubernetes Operator uses them to activate the deployment and renew the
+license automatically. For the renewal lifecycle, required network access
+(`license.arango.ai`), and configuration options, see
+[License Management](../license-management.md).
 
 Substitute `<license-client-id>` and `<license-client-secret>`
 with the actual license credentials:
