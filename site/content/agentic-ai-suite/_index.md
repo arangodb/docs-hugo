@@ -55,16 +55,22 @@ Alongside these components, you also get the following additional features:
 
 ## Where your data lives
 
-Everything the Agentic AI Suite produces (knowledge graphs, embeddings,
-analytics results, query history) is persisted in ArangoDB. Your data
-never leaves the database.
+The Arango Contextual Data Platform deploys and integrates multiple services,
+but the data itself lives in the ArangoDB core database system. Everything
+the Agentic AI Suite produces (knowledge graphs, embeddings, analytics
+results, query history) is persisted as collections and documents in
+ArangoDB databases, alongside your existing application data.
 
-The one exception is raw files (PDFs, images, office documents, and other
-binaries) that you upload for processing. These are stored in object storage
-(S3, MinIO, or another blob store) and managed through the
-[File Manager](../platform-suite/file-manager/_index.md) service.
-All structured data extracted from those files (entities, relationships,
-embeddings) is written back into ArangoDB.
+The exception is raw files (PDFs, images, office documents, and other
+binaries) that you upload for Agentic AI processing, such as GraphRAG input.
+These are stored in object storage (S3, MinIO, or another blob store) and
+managed through the
+[File Manager](../platform-suite/file-manager/_index.md) service. The same
+File Manager also holds the code packages uploaded through the Container
+Manager's
+[Bring Your Own Code](../platform-suite/container-manager/_index.md#bring-your-own-code)
+flow, so its contents are not exclusive to the Agentic AI Suite. Any structured data extracted from uploaded files
+(entities, relationships, embeddings) is written back into ArangoDB.
 
 ## Sample datasets
 
