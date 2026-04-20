@@ -36,6 +36,14 @@ natural language input and generate corresponding AQL queries. The workflow is a
 5. Results are returned in your chosen format: natural language explanation, the AQL
    query itself, or raw JSON data.
 
+### Schema-aware, data-private
+
+AQLizer is fully schema-aware: it inspects your collections, indexes, and
+document structure so that generated queries are accurate and efficient. The LLM
+acts purely as a translator. It receives the schema metadata, not your actual
+data. Your raw data never leaves ArangoDB; only the resulting AQL query is sent
+to the database for execution.
+
 ## Capabilities
 
 The service offers two main capabilities:

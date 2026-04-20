@@ -53,6 +53,19 @@ Alongside these components, you also get the following additional features:
   [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
   for more details.
 
+## Where your data lives
+
+Everything the Agentic AI Suite produces (knowledge graphs, embeddings,
+analytics results, query history) is persisted in ArangoDB. Your data
+never leaves the database.
+
+The one exception is raw files (PDFs, images, office documents, and other
+binaries) that you upload for processing. These are stored in object storage
+(S3, MinIO, or another blob store) and managed through the
+[File Manager](../platform-suite/file-manager/_index.md) service.
+All structured data extracted from those files (entities, relationships,
+embeddings) is written back into ArangoDB.
+
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
