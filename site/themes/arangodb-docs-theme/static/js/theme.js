@@ -12,14 +12,19 @@ async function renderMermaidDiagrams() {
   }
   await _mermaid.run({ nodes });
   if (!_mermaidPanZoom) {
-    var svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
-    _mermaidPanZoom = svgPanZoom.default;
+    try {
+      var svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
+      _mermaidPanZoom = svgPanZoom.default;
+    } catch (err) {
+      console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
+    }
   }
   nodes.forEach(attachMermaidPanZoom);
 }
 
 function attachMermaidPanZoom(pre) {
   if (pre.dataset.panzoomReady) return;
+  if (!_mermaidPanZoom) return;
   var svg = pre.querySelector('svg');
   if (!svg) return;
 
