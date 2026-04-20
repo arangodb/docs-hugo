@@ -1,6 +1,7 @@
 var theme = true;
 
 var _mermaid = null;
+var _mermaidPanZoom = null;
 async function renderMermaidDiagrams() {
   var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
   if (!nodes.length) return;
@@ -10,6 +11,28 @@ async function renderMermaidDiagrams() {
     _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
   }
   await _mermaid.run({ nodes });
+  if (!_mermaidPanZoom) {
+    var svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
+    _mermaidPanZoom = svgPanZoom.default;
+  }
+  nodes.forEach(attachMermaidPanZoom);
+}
+
+function attachMermaidPanZoom(pre) {
+  if (pre.dataset.panzoomReady) return;
+  var svg = pre.querySelector('svg');
+  if (!svg) return;
+
+  _mermaidPanZoom(svg, {
+    zoomEnabled: true,
+    controlIconsEnabled: true,
+    fit: true,
+    center: true,
+    minZoom: 0.5,
+    maxZoom: 10,
+  });
+
+  pre.dataset.panzoomReady = 'true';
 }
 
 function closeAllEntries() {
