@@ -103,8 +103,7 @@ you use only for license generation.
 With a Kubernetes-managed deployment, the ArangoDB Kubernetes Operator activates
 and re-activates the deployment for you. You only need to make your license
 credentials available as a Kubernetes secret and reference it from the
-`ArangoDeployment`. The cluster must be able to reach `license.arango.ai` over
-HTTPS.
+`ArangoDeployment`. The cluster must be able to reach `*.license.arango.ai`.
 
 1. Create a Kubernetes secret from your license credentials. Substitute
    `<license-client-id>` and `<license-client-secret>` with the actual values:

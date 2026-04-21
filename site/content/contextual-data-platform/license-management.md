@@ -25,23 +25,9 @@ page for the command-line and API-based flows.
 
 ## Required network access
 
-The Arango license service is hosted under the `license.arango.ai` domain.
-Kubernetes-managed deployments with internet access need to reach this service
-for both the initial activation and continuous renewal of the license.
-
-Allow outbound HTTPS (TCP port 443) from your cluster to the following hosts:
-
-- `license.arango.ai` — the apex host
-- `*.license.arango.ai` — any subdomain under `license.arango.ai`,
-  for example `registry.license.arango.ai`
-
-{{< info >}}
-A DNS wildcard of the form `*.license.arango.ai` matches exactly one label
-under `license.arango.ai`. It does **not** cover the apex host
-`license.arango.ai` itself, and it does not cover multi-level sub-subdomains
-such as `foo.bar.license.arango.ai`. Make sure to include the apex host
-explicitly in firewall allowlists, proxy configurations, and DNS policies.
-{{< /info >}}
+Kubernetes-managed deployments with internet access need to reach
+`*.license.arango.ai` for the initial activation and continuous renewal of
+the license.
 
 Air-gapped deployments do not need any outbound access from the cluster itself.
 License keys are generated on a separate internet-connected system using the
@@ -63,19 +49,18 @@ and renews it well before it expires. The default lifecycle is:
 1. The operator requests a license that is valid for **14 days** (the TTL).
 2. The license service grants the license and returns an actual expiry date.
 3. **3 days** before that expiry date (the grace period), the operator
-   automatically contacts the license service and requests a fresh license.
+   automatically connects to the license service and requests a fresh license.
 4. The new license is applied to the ArangoDB cluster without downtime.
 
 In practice, the operator contacts the license service roughly every 11 days
-(14-day TTL minus the 3-day grace period). License rollover is transparent to
-the running deployment.
+(14-day TTL minus the 3-day early renewal window). License rollover is
+transparent to the running deployment.
 
 ### Automatic TLS certificate rotation
 
-TLS certificates used inside the deployment are managed in the same spirit.
-They are generated with a validity of roughly **3 months**. When a certificate
-is about to expire, the operator automatically generates a new one and
-restarts the affected server. No manual action is required.
+TLS certificates are generated with a validity of roughly **3 months**. When a
+certificate is about to expire, the operator automatically generates a new one
+and restarts the affected server. No manual action is required.
 
 ### What happens if a renewal fails
 
@@ -83,13 +68,15 @@ The 3-day grace period is the safety buffer for renewal failures (internet
 outage, license service unreachable, etc.). The operator doesn't try only
 once — it keeps retrying on every reconciliation cycle:
 
-1. At day 11, the operator tries to contact the license service. If the
-   request fails, the action completes with an error log and a Kubernetes
-   warning event. Your existing license is still valid for 3 more days.
-2. On the next reconciliation loop (typically every few seconds), the
-   operator sees that renewal is still needed and tries again.
-3. This continues until renewal succeeds or the current license expires at
-   day 14.
+1. At day 11, the regeneration time is reached. The operator tries to contact
+   the license service. If the request fails, the action completes with an
+   error log and a Kubernetes warning event — but your existing license is
+   still valid for 3 more days.
+2. On the next reconciliation loop (which runs continuously, typically every
+   few seconds), the operator sees that regeneration is still needed and
+   tries again immediately.
+3. It keeps retrying on every reconciliation cycle until it succeeds or the
+   license expires at day 14.
 
 As soon as connectivity to the license service is restored — even briefly —
 the operator grabs a new license.
