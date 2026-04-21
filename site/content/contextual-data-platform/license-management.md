@@ -14,14 +14,27 @@ a deployment with the [ArangoDB Kubernetes Operator](https://arangodb.github.io/
 activate and renew licenses automatically, so you don't need to manage license
 expiry yourself.
 
-This page describes how the license service is reached, how the operator
-manages the license lifecycle, and how to apply a license in
-Kubernetes-managed deployments — both in environments with internet access
-and in air-gapped environments.
+## Two Kubernetes flows — online or air-gapped
 
-If you run a standalone ArangoDB deployment without the Kubernetes operator,
+Which steps you follow depends on whether your cluster can reach the Arango
+license service:
+
+| Your cluster | What you do | Platform CLI tool? |
+|---|---|---|
+| **Online** — can reach `*.license.arango.ai` | Create a Kubernetes secret with your **client ID** and **client secret**. The operator activates the deployment and renews the license automatically. | **No** |
+| **Air-gapped** — no outbound internet | Generate a **license key file** on a separate internet-connected machine using the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only |
+
+The rest of this page describes how the operator manages the license and
+how to apply it for each flow.
+
+{{< info >}}
+If you run a **standalone ArangoDB** deployment (no Kubernetes operator),
 see the [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md)
-page for the command-line and API-based flows.
+page instead. That page also hosts the
+[Docker tutorial](../arangodb/4.0/operations/administration/license-management.md#tutorial-generate-a-license-key-using-docker)
+for generating a license key with the Platform CLI tool — which is also what
+you use on the internet-connected machine in the air-gapped flow.
+{{< /info >}}
 
 ## Required network access
 
