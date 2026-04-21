@@ -5,21 +5,25 @@ var _mermaidPanZoom = null;
 async function renderMermaidDiagrams() {
   var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
   if (!nodes.length) return;
-  if (!_mermaid) {
-    var mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
-    _mermaid = mermaidjs.default;
-    _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
-  }
-  await _mermaid.run({ nodes });
-  if (!_mermaidPanZoom) {
-    try {
-      var svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
-      _mermaidPanZoom = svgPanZoom.default;
-    } catch (err) {
-      console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
+  try {
+    if (!_mermaid) {
+      var mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
+      _mermaid = mermaidjs.default;
+      _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
     }
+    await _mermaid.run({ nodes });
+    if (!_mermaidPanZoom) {
+      try {
+        var svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
+        _mermaidPanZoom = svgPanZoom.default;
+      } catch (err) {
+        console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
+      }
+    }
+    nodes.forEach(attachMermaidPanZoom);
+  } catch (err) {
+    console.warn('Mermaid rendering failed', err);
   }
-  nodes.forEach(attachMermaidPanZoom);
 }
 
 function attachMermaidPanZoom(pre) {
