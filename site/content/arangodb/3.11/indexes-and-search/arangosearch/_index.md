@@ -994,11 +994,10 @@ For relevance and performance tuning, as well as the reference documentation, se
 
 If you are interested in more technical details, have a look at:
 
-- [**ArangoSearch Tutorial**](https://www.arangodb.com/learn/search/tutorial/#:~:text=Ranking%20in%20ArangoSearch):
-  The tutorial includes sections about the View concept, Analysis, and the
-  ranking model.
-- [**ArangoSearch architecture overview**](https://www.arangodb.com/2018/04/arangosearch-architecture-overview/):
+<!-- TODO: Incorporate information
+- [**ArangoSearch architecture overview**](architecture.md):
   A description of ArangoSearch's design, its inverted index and some
   implementation details.
+-->
 - The [**IResearch library**](https://github.com/iresearch-toolkit/iresearch)
   that provides the searching and ranking capabilities.
