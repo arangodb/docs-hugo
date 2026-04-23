@@ -472,7 +472,7 @@ If your graph is comprised of multiple node or edge collections, you can
 also prune as soon as you reach a certain collection, using a condition like
 the following:
 
-```aql
+```aql-inline
 PRUNE IS_SAME_COLLECTION("stopCollection", v)
 ```
 

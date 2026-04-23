@@ -1,0 +1,5 @@
+{{ $options := merge .Options (dict "hl_inline" "true") -}}
+<span class="chroma">
+  {{- transform.Highlight .Inner "aql" $options -}}
+</span>
+asd
