@@ -44,6 +44,24 @@ By default, the platform routes traffic to an HTTP server on port `8000`,
 which your Docker image must expose. Your image must also handle requests at
 the root path (`/`).
 
+### Legacy Foxx services
+
+ArangoDB up to version 3.12 had the Foxx microservice framework to run JavaScript
+code on the server-side to enable customization. You can think of the
+data platform's user-defined services (bring your own code/container) as a more
+powerful incarnation of Foxx:
+
+- A microservice architecture but with a clear separation of the core
+  database system and the surrounding services.
+- Not limited to (synchronous) JavaScript – you may use a standard Node.js
+  runtime with its entire ecosystem including async libraries.
+- You can use different programming languages and environments altogether
+  thanks to containerization.
+
+Any existing Foxx services from ArangoDB v3.12 and older that you still require
+need to be rewritten for the data platform and ArangoDB 4.0+.
+You may consider using AI tools for this.
+
 ## Key Capabilities
 
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) or

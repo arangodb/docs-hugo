@@ -60,7 +60,10 @@ detailed information about breaking changes before upgrading.
   You may use Node.js together with the [arangojs driver](../../../ecosystem/drivers/javascript.md)
   to work with ArangoDB from the outside using JavaScript as your language.
 
-  <!-- TODO: BYOC with node-foxx compatibility layer -->
+  You can rewrite existing Foxx services or create new user-defined services for
+  the [Arango Contextual Data Platform](../../../contextual-data-platform/_index.md).
+  See the [Container Manager](../../../platform-suite/container-manager/_index.md)
+  to learn how to bring your own code and containers.
 
 - **Emergency console**:\
   The ArangoDB server process could be started in an interactive command-line

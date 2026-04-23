@@ -71,11 +71,13 @@ You can think of it as a more powerful incarnation of Foxx because it is a
 microservice architecture but with a clear separation of the core database system
 and the surrounding services. It is also not limited to (synchronous) JavaScript
 but you may use a standard Node.js runtime with its entire ecosystem including
-async libraries, or use different programming languages altogether. Moreover, a
-compatibility layer to run existing Foxx services on top of Node.js is available
-to ease the migration to the data platform.
+async libraries, or use different programming languages altogether.
 
-<!-- TODO: See node-foxx docs... -->
+Any existing Foxx services you still require need to be rewritten for the
+data platform. You may consider using AI tools for this. You can use Node.js or
+other environments respectively programming languages. You can run the
+replacements inside the data platform in containers as user-defined services,
+using your preferred technology.
 
 ## Emergency console mode removed
 
@@ -117,7 +119,7 @@ that can insert, update, replace, or remove arrays of documents.
 
 ### Upload API removed
 
-The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+The `POST /_api/upload` endpoint has been removed due to the removal of Foxx.
 It was used for service bundle and file uploads.
 
 ### Routing reload API removed

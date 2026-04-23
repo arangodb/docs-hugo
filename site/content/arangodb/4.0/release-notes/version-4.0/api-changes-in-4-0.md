@@ -104,7 +104,7 @@ The following `/_api/foxx` endpoints have been removed due to the removal of Fox
 
 #### Upload API removed
 
-The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+The `POST /_api/upload` endpoint has been removed due to the removal of Foxx.
 It was used for service bundle and file uploads.
 
 #### Routing reload API removed
