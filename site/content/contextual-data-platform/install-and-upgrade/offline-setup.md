@@ -13,10 +13,12 @@ the offline and the online environment at different steps, but mainly from the
 online to offline system and only small amounts from the offline to the online
 system (for the licensing).
 
+{{< tip >}}
 What needs to be done in which environment is indicated by each step:
 
 - **Air-gapped system**: The offline environment.
 - **Internet-connected system**: The online environment.
+{{< /tip >}}
 
 ## Step 1: Download the installation files and information
 
@@ -48,14 +50,14 @@ system before the setup.
   platform package yourself by exporting from Arango's container registry.
 
 - Download the latest enterprise version of the ArangoDB Kubernetes Operator
-  `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
+  `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases/latest>.
 
   Look for the file called `kube-arangodb-enterprise-x.x.x.tgz` (where `x.x.x`
   is the version number). It is the operator for x86-64 CPUs.
   You may need to click **Show all # assets** to reveal all files. 
 
 - Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
-  <https://github.com/arangodb/kube-arangodb/releases>.
+  <https://github.com/arangodb/kube-arangodb/releases/latest>.
   It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
   architecture, for example:
   

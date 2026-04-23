@@ -86,7 +86,7 @@ deployments and the Contextual Data Platform. It watches for custom resources an
 the necessary Kubernetes resources.
 
 You can find the latest release on GitHub:
-<https://github.com/arangodb/kube-arangodb/releases/>
+<https://github.com/arangodb/kube-arangodb/releases/latest/>
 
 Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
@@ -205,7 +205,7 @@ eventually see pods with the following names with a status of `Running`:
 ## Step 6: Get the Contextual Data Platform CLI tool
 
 Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
-<https://github.com/arangodb/kube-arangodb/releases>.
+<https://github.com/arangodb/kube-arangodb/releases/latest>.
 It is available for Linux, macOS, and Windows for the x86-64 as well as 64-bit ARM
 architecture (e.g. `arangodb_operator_platform_linux_amd64`).
 
@@ -219,7 +219,8 @@ the Platform's Kubernetes services.
 ## Step 7: Install the Contextual Data Platform package
 
 Install the package using the package configuration you received from the
-Arango team (`platform.yaml`).
+Arango team (`platform.yaml`). This requires license credentials and internet
+access to `*.license.arango.ai`.
 
 The package installation creates and enables various services, including
 the unified web interface of the Contextual Data Platform.
@@ -228,6 +229,8 @@ Substitute `<license-client-id>` and `<license-client-secret>`
 with the actual license credentials and `./platform.yaml` with the path to the
 package configuration file. The platform name (`deployment-example`) needs to
 match the name as specified in the `ArangoDeployment` configuration.
+
+<!-- TODO: There is --license.client.discover now, which defaults to true and tries to get the credentials from the ArangoDeployment - does this indirectly fetch the Kubernetes secret? -->
 
 ```sh
 arangodb_operator_platform --namespace arango package install \
