@@ -76,13 +76,13 @@ into account and can be controlled with parentheses.
 
 Consider the following contrived expression:
 
-```aql-inline
+```aql
 doc.value < 0 OR doc.value > 5 AND doc.value IN [-10, 10]
 ```
 
 `AND` has a higher precedence than `OR`. The expression is equivalent to:
 
-```aql-inline
+```aql
 doc.value < 0 OR (doc.value > 5 AND doc.value IN [-10, 10])
 ```
 
@@ -94,7 +94,7 @@ The conditions are thus:
 Parentheses can be used as follows to apply the `AND` condition to both of the
 `OR` conditions:
 
-```aql-inline
+```aql
 (doc.value < 0 OR doc.value > 5) AND doc.value IN [-10, 10]
 ```
 

@@ -1397,19 +1397,6 @@ FOR doc IN @@coll
   RETURN doc.@attr
 ```
 
-### Add AQL inline code with highlighting
-
-Unlike fenced codeblocks, `` `inline code` `` doesn't have an option for
-syntax highlighting. For long-ish AQL inline code, you can use a fenced
-codeblock with the `aql-inline` language to render it like inline code but
-with highlighting.
-
-````markdown
-```aql-inline
-FILTER doc.value < 0 OR doc.value > 5 AND doc.value IN [-10, 10]
-```
-````
-
 ### Add an AQL syntax description
 
 You can use a fenced codeblock with the `aql-syntax` language to describe an
