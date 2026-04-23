@@ -1,9 +1,14 @@
 function addShowMoreButton(parentElem) {
     $(parentElem).find("pre > code").each(function() {
-        code = $(this);
+        let code = $(this);
+        let noCollapse = false;
+        let wrapper = code.closest(".highlight");
+        if (wrapper) {
+            noCollapse = wrapper.hasClass("no-collapse");
+        }
         // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
         // False for currently collapsed code ("Show output" with display: none)
-        if (!code.hasClass('code-long') && code.prop('scrollHeight') > 20 * 1.8 * 16 ) {
+        if (!noCollapse && !code.hasClass('code-long') && code.prop('scrollHeight') > 20 * 1.8 * 16 ) {
             code.addClass('code-long');
             var showMore = $('<button class="code-show-more"></button>');
             code.after(showMore);

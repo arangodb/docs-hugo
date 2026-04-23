@@ -1560,6 +1560,39 @@ div > .box-content-container {
     border-radius: .25rem;
 }
 
+.aql-syntax-placeholder {
+    background: var(--neutral-gray-lightest);
+    border-radius: .25rem;
+    padding: .1rem .2rem;
+}
+
+.aql-syntax-placeholder:hover {
+    background-color: var(--neutral-gray-light);
+}
+
+.aql-syntax-optional::before {
+    position: absolute;
+    content: "Optional";
+    font-size: .75rem;
+    color: var(--neutral-gray);
+    top: -1.1rem;
+    left: 0;
+}
+
+.aql-syntax-optional {
+    position: relative;
+    display: inline-block;
+    border: 1px solid var(--neutral-gray-light);
+    border-radius: .25rem;
+    padding: .1rem .4rem;
+    margin: 1.3rem .1rem .1rem 0;
+    line-height: 1.5;
+}
+
+.aql-syntax-optional:not(:has(> .aql-syntax-optional:hover)):hover {
+    background-color: var(--neutral-white);
+}
+
 blockquote {
     margin: 0;
     margin-bottom: 0.85em;
