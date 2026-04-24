@@ -104,7 +104,7 @@ The following `/_api/foxx` endpoints have been removed due to the removal of Fox
 
 #### Upload API removed
 
-The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+The `POST /_api/upload` endpoint has been removed due to the removal of Foxx.
 It was used for service bundle and file uploads.
 
 #### Routing reload API removed
@@ -113,6 +113,14 @@ The `POST /_admin/routing/reload` endpoint has been removed due to the removal
 of the Action and Foxx features. It was used to reload the routing information
 from the `_routing` system collection and make Foxx rebuild its local routing
 table on the next request.
+
+#### User-defined AQL functions API  removed
+
+The following endpoints for managing UDFs have been removed:
+
+- `GET /_api/aqlfunction`
+- `POST /_api/aqlfunction`
+- `DELETE /_api/aqlfunction/{name}`
 
 #### Echo API removed
 
@@ -130,3 +138,7 @@ removed from the JavaScript API.
 
 Furthermore, the `global.fm` object has been removed. It provided various
 methods for managing Foxx services.
+
+### User-defined AQL functions module removed
+
+The `@arangodb/aql/functions` module has been removed from the JavaScript API.

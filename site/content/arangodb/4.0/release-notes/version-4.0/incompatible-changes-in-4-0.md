@@ -21,58 +21,6 @@ and the possibility of out-of-memory crashes forced Foxx onto Coordinators in
 cluster deployments in order to not put the DB-Servers with your valuable data
 at risk.
 
-You may use Node.js together with the [arangojs driver](../../../../ecosystem/drivers/javascript.md)
-to work with ArangoDB from the outside using JavaScript as your language.
-
-<!-- TODO: BYOC with node-foxx compatibility layer -->
-
-## User-defined AQL functions removed
-
-The ability to register custom functions for the AQL query language written
-in JavaScript has been removed.
-
-The AQL optimizer had no insight into such user-defined functions (UDFs) and
-they had to be executed on Coordinators where all server-side JavaScript code
-was run. This caused them to perform poorly when a lot of data was involved
-that had to be transferred between cluster nodes.
-
-<!-- TODO: Hygenic macros for some use cases (once supported) -->
-
-## HTTP RESTful API
-
-### Batch request endpoint removed
-
-<small>Removed in: v3.12.3</small>
-
-The `/_api/batch` endpoints that let you send multiple operations in a single
-HTTP request was deprecated in v3.8.0 and has now been removed.
-
-To send multiple documents at once to an ArangoDB instance, please use the
-[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
-that can insert, update, replace, or remove arrays of documents.
-
-### Foxx API removed
-
-All `/_api/foxx*` endpoints have been removed due to the removal of Foxx.
-See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed)
-for a detailed list.
-
-## JavaScript API
-
-### Foxx and UDF modules removed
-
-The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
-removed due to the removal of Foxx.
-
-The `@arangodb/aql/functions` module has been removed due to the removal of
-user-defined AQL functions.
-
-## Startup options
-
-### Startup options related to server-side JavaScript removed
-
-The following startup options are now obsolete due to the removal of Foxx and
-user-defined AQL functions (UDFs):
 The following startup options are now obsolete due to the removal of Foxx:
 
 - `--server.authentication-system-only`
@@ -83,10 +31,6 @@ The following startup options are now obsolete due to the removal of Foxx:
 - `--foxx.queues`
 - `--foxx.queues-poll-interval`
 - `--foxx.store`
-- `--javascript.user-defined-functions`
-
-You can still specify these startup options without causing a fatal error during
-startup. They are recognized, but they don't have any effect anymore.
 
 The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
 of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed).
@@ -124,13 +68,53 @@ You can think of it as a more powerful incarnation of Foxx because it is a
 microservice architecture but with a clear separation of the core database system
 and the surrounding services. It is also not limited to (synchronous) JavaScript
 but you may use a standard Node.js runtime with its entire ecosystem including
-async libraries, or use different programming languages altogether. Moreover, a
-compatibility layer to run existing Foxx services on top of Node.js is available
-to ease the migration to the data platform.
+async libraries, or use different programming languages altogether.
 
-<!-- TODO: See node-foxx docs... -->
+Any existing Foxx services you still require need to be rewritten for the
+data platform. You may consider using AI tools for this. You can use Node.js or
+other environments respectively programming languages. You can run the
+replacements inside the data platform in containers as user-defined services,
+using your preferred technology.
 
-## Emergency console mode removed
+## User-defined AQL functions removed
+
+The ability to register custom functions for the AQL query language written
+in JavaScript has been removed.
+
+The AQL optimizer had no insight into such user-defined functions (UDFs) and
+they had to be executed on Coordinators where all server-side JavaScript code
+was run. This caused them to perform poorly when a lot of data was involved
+that had to be transferred between cluster nodes.
+
+<!-- TODO: Hygenic macros for some use cases (once supported) -->
+
+The following startup option is now obsolete:
+
+- `--javascript.user-defined-functions`
+
+You can still specify this startup option without causing a fatal error during
+startup. It is recognized, but it doesn't have any effect anymore.
+
+The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
+
+The `@arangodb/aql/functions` module has been removed from the JavaScript API.
+
+## HTTP RESTful API
+
+### Batch request endpoint removed
+
+<small>Removed in: v3.12.3</small>
+
+The `/_api/batch` endpoints that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
+
+## Startup options
+
+### Emergency console mode removed
 
 The ArangoDB server process could be started in an interactive command-line
 mode (JavaScript REPL) with the `--console` option. This was primarily used
@@ -170,7 +154,7 @@ that can insert, update, replace, or remove arrays of documents.
 
 ### Upload API removed
 
-The `POST /_api/upload` endpoint has been removed due to the removal Foxx.
+The `POST /_api/upload` endpoint has been removed due to the removal of Foxx.
 It was used for service bundle and file uploads.
 
 ### Routing reload API removed
@@ -195,13 +179,16 @@ been removed.
 
 ## JavaScript API
 
-### Foxx-related removals
+### Removed modules and methods
 
-The `@arangodb/foxx` module and the related `@arangodb/locals` module have been
-removed from the JavaScript API.
+The following things have been removed:
 
-Furthermore, the `global.fm` object has been removed. It provided various
-methods for managing Foxx services.
+- `@arangodb/foxx` module
+- `@arangodb/locals` module
+- `global.fm` object
+- `@arangodb/aql/functions` module
+
+For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javascript-api).
 
 ## Startup options
 
