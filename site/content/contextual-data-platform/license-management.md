@@ -7,7 +7,7 @@ description: >-
   of the Contextual Data Platform and ArangoDB, including the required network
   access
 ---
-The Arango Enterprise Edition of ArangoDB and the Arango Contextual Data Platform
+The Enterprise Edition of ArangoDB and the Arango Contextual Data Platform
 are activated using a managed license service operated by Arango. When you run
 a deployment with the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`), the operator talks to this service on your behalf to
@@ -22,16 +22,16 @@ license service:
 | Your cluster | What you do | Platform CLI tool? |
 |---|---|---|
 | **Online** — can reach `*.license.arango.ai` | Create a Kubernetes secret with your **client ID** and **client secret**. The operator activates the deployment and renews the license automatically. | **No** |
-| **Air-gapped** — no internet access | Generate a **license key file** on a separate internet-connected machine using the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only |
+| **Air-gapped** — no internet access | Generate a **license key** on a separate internet-connected machine using the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only |
 
 The rest of this page describes how the operator manages the license and
 how to apply it for each flow.
 
 {{< info >}}
-If you run a **standalone ArangoDB** deployment (no Kubernetes operator),
+If you run a **standalone ArangoDB** deployment (not managed by Kubernetes),
 see the [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md)
 page instead. That page also hosts the
-[Docker tutorial](../arangodb/4.0/operations/administration/license-management.md#tutorial-generate-a-license-key-using-docker)
+[container walkthrough](../arangodb/4.0/operations/administration/license-management.md#walkthrough-generate-a-key-in-a-container)
 for generating a license key with the Platform CLI tool — which is also what
 you use on the internet-connected machine in the air-gapped flow.
 {{< /info >}}
@@ -93,7 +93,7 @@ the operator grabs a new license.
 
 If the full 3-day grace period passes without a successful renewal, the
 license expires and ArangoDB enters read-only mode — reads keep working,
-but no data or data-definition changes can be made. The database itself
+but no data or data-definition changes can be made. The database system
 keeps running, and there is no subsequent shutdown: it stays in read-only
 mode until a valid license is reapplied.
 
@@ -164,7 +164,7 @@ installation flow.
 
 ### Offline / air-gapped: Apply a generated license key
 
-In air-gapped environments the Kubernetes cluster cannot reach the license service, so
+In air-gapped environments, the Kubernetes cluster cannot reach the license service, so
 you generate a long-lived license key on an internet-connected system and
 apply it as a secret on the air-gapped cluster.
 
@@ -196,9 +196,9 @@ applies the updated key on its next reconciliation cycle.
 To check the current license status of a running deployment, use any of the
 interfaces described in [Check the license](../arangodb/4.0/operations/administration/license-management.md#check-the-license)
 on the ArangoDB License Management page (HTTP API, arangosh, or a driver).
-The Contextual Data Platform does not currently provide a dedicated license
-view or Swagger UI, so use one of those interfaces directly against the
-ArangoDB endpoint.
+The Contextual Data Platform does not provide a dedicated license view or
+Swagger UI, so use one of those interfaces directly against the ArangoDB
+endpoint.
 
 For monitoring the remaining validity automatically, the
 `arangodb_license_expires` metric is exposed by Coordinators and DB-Servers.
