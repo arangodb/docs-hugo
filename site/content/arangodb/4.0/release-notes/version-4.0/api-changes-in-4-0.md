@@ -114,7 +114,7 @@ of the Action and Foxx features. It was used to reload the routing information
 from the `_routing` system collection and make Foxx rebuild its local routing
 table on the next request.
 
-#### User-defined AQL functions API  removed
+#### User-defined AQL functions API removed
 
 The following endpoints for managing UDFs have been removed:
 

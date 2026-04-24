@@ -32,6 +32,9 @@ The following startup options are now obsolete due to the removal of Foxx:
 - `--foxx.queues-poll-interval`
 - `--foxx.store`
 
+You can still specify these startup options without causing a fatal error during
+startup. They are recognized, but they don't have any effect anymore.
+
 The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
 of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed).
 
@@ -101,28 +104,6 @@ The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
 ## HTTP RESTful API
 
-### Batch request endpoint removed
-
-<small>Removed in: v3.12.3</small>
-
-The `/_api/batch` endpoints that let you send multiple operations in a single
-HTTP request was deprecated in v3.8.0 and has now been removed.
-
-To send multiple documents at once to an ArangoDB instance, please use the
-[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
-that can insert, update, replace, or remove arrays of documents.
-
-## Startup options
-
-### Emergency console mode removed
-
-The ArangoDB server process could be started in an interactive command-line
-mode (JavaScript REPL) with the `--console` option. This was primarily used
-for debugging purposes in the development of _arangod_.
-This feature has been removed and the `--console` startup option is obsolete now.
-
-## HTTP RESTful API
-
 ### Sub-attribute removed from the version API
 
 The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
@@ -140,17 +121,6 @@ server-side:
 - `mode`
 - `operationMode`
 - `foxxApi`
-
-### Batch request endpoint removed
-
-<small>Removed in: v3.12.3</small>
-
-The `/_api/batch` endpoints that let you send multiple operations in a single
-HTTP request was deprecated in v3.8.0 and has now been removed.
-
-To send multiple documents at once to an ArangoDB instance, please use the
-[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
-that can insert, update, replace, or remove arrays of documents.
 
 ### Upload API removed
 
@@ -177,6 +147,17 @@ Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
 returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
 been removed.
 
+### Batch request endpoint removed
+
+<small>Removed in: v3.12.3</small>
+
+The `/_api/batch` endpoints that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
+
 ## JavaScript API
 
 ### Removed modules and methods
@@ -197,10 +178,15 @@ For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javasc
 The `--server.allow-use-database` startup option related to the long-deprecated
 and now removed Action feature has been removed. It was only used internally.
 
-### `--console` obsolete
+### Emergency `--console` mode removed
 
-The `--console` startup option no longer has an effect but it is still
-recognized to avoid causing a fatal error on startup if you specify it.
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+
+This feature has been removed and the `--console` startup option is obsolete now.
+It no longer has an effect but it is still recognized to avoid causing a fatal
+error on startup if you specify it.
 
 ## Client tools
 
