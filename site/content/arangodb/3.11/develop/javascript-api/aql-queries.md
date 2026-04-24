@@ -35,14 +35,16 @@ description: |
 ~var queries = require("@arangodb/aql/queries");
 var theQuery = "FOR sleepLong IN 1..5 LET sleepLonger = SLEEP(1) RETURN sleepLong";
 arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
-~var i = 0;
+~var listQueryAttempts = 0;
 ~while (true) {
 ~  if (queries.current().filter(q => q.query === theQuery).length > 0) {
 ~    break;
 ~  }
-~  i++;
-~  if (i > 20) assert(false); // timeout
-~  internal.sleep(0.25);
+~  listQueryAttempts++;
+~  if (listQueryAttempts > 30) {
+~    assert(false, "timeout waiting for query to be listed as running");
+~  }
+~  internal.sleep(0.5);
 ~}
 queries.current();
 ```
@@ -86,14 +88,14 @@ description: ''
 ~var queries = require("@arangodb/aql/queries");
 ~var theQuery = "FOR sleepLong IN 1..4 LET sleepLonger = SLEEP(1) RETURN sleepLong";
 ~arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
-~var i = 0;
+~var listQueryAttempts = 0;
 ~while (true) {
 ~  if (queries.current().filter(q => q.query === theQuery).length > 0) {
 ~    break;
 ~  }
-~  i++;
-~  if (i > 20) assert(false); // timeout
-~  internal.sleep(0.25);
+~  listQueryAttempts++;
+~  if (listQueryAttempts > 30) assert(false); // timeout
+~  internal.sleep(0.5);
 ~}
 var runningQueries = queries.current().filter(q => q.query === theQuery);
 ~assert(runningQueries.length > 0);
