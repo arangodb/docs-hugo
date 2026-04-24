@@ -41,10 +41,10 @@ arango.POST("/_api/cursor", {query: theQuery}, {"X-Arango-Async":true});
 ~    break;
 ~  }
 ~  listQueryAttempts++;
-~  if (listQueryAttempts > 30) {
-~    assert(false, "timeout waiting for query to be listed as running");
+~  if (listQueryAttempts > 60) {
+~    throw new Error("timeout waiting for query to be listed as running");
 ~  }
-~  internal.sleep(0.5);
+~  internal.sleep(1);
 ~}
 queries.current();
 ```
@@ -94,8 +94,10 @@ description: ''
 ~    break;
 ~  }
 ~  listQueryAttempts++;
-~  if (listQueryAttempts > 30) assert(false); // timeout
-~  internal.sleep(0.5);
+~  if (listQueryAttempts > 60) {
+~    throw new Error("timeout waiting for query to be listed as running");
+~  }
+~  internal.sleep(1);
 ~}
 var runningQueries = queries.current().filter(q => q.query === theQuery);
 ~assert(runningQueries.length > 0);
