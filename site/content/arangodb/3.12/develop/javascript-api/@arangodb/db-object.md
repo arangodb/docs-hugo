@@ -44,7 +44,7 @@ be created in the new database (_cluster only_):
 - `sharding`: The sharding method to use. Valid values are: `""` or `"single"`.
   Setting this option to `"single"` enables the OneShard feature.
 - `replicationFactor`: Default replication factor. Special values:
-  - `"satellite"`: Replicate the collection to every DB-Server
+  - `"satellite"`: Replicate the collection to every DB-Server (Enterprise Edition only)
   - `1`: Disable replication
 - `writeConcern`: How many copies of each shard are required to be in sync on
   the different DB-Servers. If there are less then these many copies in the
@@ -80,6 +80,7 @@ require("@arangodb/users").remove(username);
 Alternatively, you can specify user data directly. For example:
 
 ```js
+db._useDatabase("_system");
 db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active: true}])
 ```
 
@@ -93,8 +94,8 @@ in server-side actions (including Foxx).
 
 When performing this command from arangosh, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
-connect to the database specified by `name`. Additionally, the database
-only be accessed from certain endpoints only. In this case, switching the
+connect to the database specified by `name`. Additionally, the database can
+be accessed from certain endpoints only. In this case, switching the
 database might not work, and the connection / session should be closed and
 restarted with different username and password credentials and/or
 endpoint data.
@@ -694,7 +695,6 @@ description: ''
 ~db._create("example");
 var coll = db._collection("example");
 db._drop(coll);
-~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -1272,7 +1272,7 @@ require("@arangodb").db._version();
 
 {{< tag "arangosh" >}}
 
-Returns the current license.
+Returns information about the current license.
 
 Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
@@ -1287,3 +1287,4 @@ Sets a license.
   sooner than the current one. Default: `false`.
 
 Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
+

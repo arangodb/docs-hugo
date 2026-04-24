@@ -316,11 +316,6 @@ extra options are available for locking down JavaScript access to server functio
 
   The default value is `false`.
 
-- `--javascript.tasks`: You can set this option to `false` to turn off
-  [JavaScript tasks](../../develop/javascript-api/tasks.md). It disallows the
-  execution of user-defined JavaScript code on the server inside of periodic
-  and one-off tasks.
-
 - `--javascript.transactions`: You can set this option to `false` to turn off
   [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md). It disallows
   the execution of user-defined JavaScript code on the server inside of
@@ -330,40 +325,3 @@ extra options are available for locking down JavaScript access to server functio
   turn off [user-defined functions](../../aql/user-defined-functions.md) (UDFs). It disallows
   the execution of user-defined JavaScript code on the server inside of
   user-defined AQL functions (introduced in: v3.10.4).
-
-## Security options for managing Foxx applications
-
-The following options are available for controlling the installation of Foxx applications
-in an ArangoDB server:
-
-- `--foxx.enable` (introduced in: v3.10.5):
-  If set to `false`, this option disables access to any user-defined Foxx apps.
-  Accessing the URL of any (existing or potentially existing) Foxx app produces an
-  HTTP `403 Forbidden` error with this setting.
-  ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
-  except the Foxx service management API, which makes it impossible to install and
-  uninstall Foxx applications. Setting the option to `false` also deactivates the
-  **Services** section in the web interface.
-  The default value is `true`, meaning that Foxx apps can be accessed. 
-
-- `--foxx.api`:
-  If set to `false`, this option disables the Foxx management API, which will make it
-  impossible to install and uninstall Foxx applications. Setting the option to `false`
-  will also deactivate the "Services" section in the web interface. 
-  The default value is `true`, meaning that Foxx apps can be installed and uninstalled.
-
-- `--foxx.store`:
-  If set to `false`, this option disables the Foxx app store in ArangoDB's web interface,
-  which will also prevent ArangoDB and its web interface from making calls to the main Foxx 
-  application Github repository at
-  [github.com/arangodb/foxx-apps](https://github.com/arangodb/foxx-apps).
-  The default value is `true`.
-
-- `--foxx.allow-install-from-remote`:
-  When set to `false`, this option prevents installation of Foxx apps from any
-  remote source other than GitHub and deactivates the **Remote** tab in the **Services**
-  section of the web interface. Installing apps from Github and/or zip files is 
-  still possible with this setting, but any other remote sources are blocked.
-  When set to `true`, installing Foxx apps from other remote sources via URLs
-  is allowed (introduced in: v3.8.5).
-  The default value is `false`.

@@ -110,7 +110,7 @@ Because we have told both collections that distribute their data alike, their
 shards are now also populated alike:
 
 ```js
-arangosh> for (i = 0; i < 100; ++i) { 
+arangosh> for (var i = 0; i < 100; ++i) { 
   db.c1.insert({ _key: "test" + i }); 
   db.c2.insert({ _key: "test" + i }); 
 }
@@ -173,9 +173,9 @@ and even for non-unique shard key values, e.g.:
 arangosh> db._create("c1", {numberOfShards: 4, shardKeys: ["_key"]});
 arangosh> db._create("c2", {shardKeys: ["parent"], distributeShardsLike: "c1"});
 arangosh> db.c2.ensureIndex({ type: "hash", fields: ["parent"] });
-arangosh> for (i = 0; i < 100; ++i) { 
+arangosh> for (var i = 0; i < 100; ++i) { 
   db.c1.insert({ _key: "test" + i }); 
-  for (j = 0; j < 10; ++j) {
+  for (var j = 0; j < 10; ++j) {
     db.c2.insert({ parent: "test" + i });
   }
 }
@@ -221,7 +221,7 @@ The setup thus becomes:
 arangosh> db._create("c1", {numberOfShards: 4, shardKeys: ["_key"]});
 arangosh> db._create("c2", {shardKeys: ["_key:"], smartJoinAttribute: "parent", distributeShardsLike: "c1"});
 arangosh> db.c2.ensureIndex({ type: "hash", fields: ["parent"] });
-arangosh> for (i = 0; i < 100; ++i) { 
+arangosh> for (var i = 0; i < 100; ++i) { 
   db.c1.insert({ _key: "test" + i }); 
   db.c2.insert({ _key: "test" + i + ":" + "ownKey" + i, parent: "test" + i }); 
 }
