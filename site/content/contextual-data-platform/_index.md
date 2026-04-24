@@ -23,7 +23,7 @@ powerful components into a unified solution. It always includes the
 The [ArangoDB](../arangodb/_index.md) multi-model database system is the
 foundation for it all.
 
-{{< image src="../images/Arango-Contextual-Data-Platform-All.svg" alt="Product layers and features of the Arango Contextual Data Platform" style="display: block; margin: 2rem auto;" >}}
+{{< embed-svg "Arango-Contextual-Data-Platform-Overview" >}}
 
 The Contextual Data Platform is a [**Kubernetes-native**](kubernetes.md) technical infrastructure that
 acts as the umbrella for hosting the entire Arango offering of products.
