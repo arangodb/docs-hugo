@@ -174,10 +174,6 @@ aliases:
   Transactions with individual begin and commit / abort commands that can span
   multiple AQL queries and API calls of supported APIs.
 
-- [**JavaScript Transactions**](../develop/http-api/transactions/javascript-transactions.md):
-  Single-request transactions written in JavaScript that leverage ArangoDB's
-  JavaScript API.
-
 - **Multi-Document Transactions**:
   Transactions are not limited to single documents, but can involve many
   documents of a collection.

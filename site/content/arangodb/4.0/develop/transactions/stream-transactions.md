@@ -71,6 +71,84 @@ make some effort to serialize certain operations (see
 however, this degrades the server's performance and may lead to sporadic
 errors with code `28` (locked).
 
+### Declaration of Collections
+
+All collections participating in a transaction need to be declared
+beforehand. This is necessary to ensure proper locking and isolation.
+
+Collections can be used in a transaction in write mode or in read-only mode.
+<!-- TODO: exclusive -->
+
+If any data modification operations are to be executed, the collection must be
+declared for use in write mode. The write mode allows modifying and reading data
+from the collection during the transaction (i.e. the write mode includes the
+read mode).
+
+Contrary, using a collection in read-only mode will only allow performing
+read operations on a collection. Any attempt to write into a collection used
+in read-only mode will make the transaction fail.
+
+Collections for a transaction are declared by providing them in the `collections`
+attribute of the object passed to the `_executeTransaction()` function. The
+`collections` attribute can have the sub-attributes `read`, `write`, and
+`exclusive`:
+
+```js
+db._executeTransaction({
+  collections: {
+    write: [ "users", "logins" ],
+    read: [ "recommendations" ]
+  }
+});
+```
+
+`read`, `write`, and `exclusive` are optional attributes, and only need to be
+specified if the operations inside the transactions demand for it.
+
+The attribute values can each be lists of collection names or a single
+collection name (as a string):
+
+```js
+db._executeTransaction({
+  collections: {
+    write: "users",
+    read: "recommendations"
+  }
+});
+```
+
+**Note**: It is optional to specify collections for read-only access by default.
+Even without specifying them, it is still possible to read from such collections
+from within a transaction, but with relaxed isolation. Please read about
+[transactions locking](_index.md#locking-and-isolation-of-transactions) for more details.
+
+In order to make a transaction fail when a non-declared collection is used inside
+for reading, the optional `allowImplicit` sub-attribute of `collections` can be
+set to `false`:
+
+```js
+db._executeTransaction({
+  collections: {
+    read: "recommendations",
+    allowImplicit: false  /* this disallows read access to other collections
+                             than specified */
+  },
+  action: function () {
+    var db = require("@arangodb").db;
+    return db.foobar.toArray(); /* will fail because db.foobar must not be accessed
+                                   for reading inside this transaction */
+  }
+});
+```
+
+The default value for `allowImplicit` is `true`. Write-accessing collections that
+have not been declared in the `collections` array is never possible, regardless of
+the value of `allowImplicit`.
+
+## Handling errors
+
+If individual ops fail, either handle errors or abort transaction - no auto abort!
+
 ## JavaScript API
 
 ### Create Transaction
@@ -89,6 +167,13 @@ Begin a Stream Transaction.
     transaction in write or read mode.
   - `exclusive`: A single collection or a list of collections to acquire
     exclusive write access for.
+
+  Collections that will be written to in the transaction must be declared with
+  the `write` or `exclusive` attribute or it will fail, whereas non-declared
+  collections from which is solely read will be added lazily. You can set the
+  `allowImplicit` option to `false` to let transactions fail in case of
+  undeclared collections for reading. Collections for reading should be fully
+  declared if possible, to avoid deadlocks.
 
 Additionally, `options` can have the following optional attributes:
 
@@ -149,6 +234,8 @@ trx.status();
 
 Commit a Stream Transaction and return the [status](#status).
 
+All changes done by the transaction are persisted.
+
 Committing is an idempotent operation. It is not an error to commit a transaction
 more than once.
 
@@ -157,6 +244,11 @@ more than once.
 `trx.abort() → status`
 
 Abort a Stream Transaction and return the [status](#status).
+
+All operations performed in the transaction are rolled back, reverting all
+changes as if the transaction never happened. As required by the *consistency*
+principle, aborting a transaction also restores secondary indexes to the state
+at transaction start.
 
 Aborting is an idempotent operation. It is not an error to abort a transaction
 more than once.
