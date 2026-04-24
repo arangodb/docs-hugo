@@ -194,7 +194,8 @@ The output files will be written to `site/public/`.
 
 **Configuration**
 
-The toolchain container needs to be set up via config file in `toolchain/docker/config.yaml`:
+The toolchain container needs to be set up via config file in
+[`toolchain/docker/config.yaml`](toolchain/docker/config.yaml):
 
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
@@ -216,19 +217,33 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 
 The generators entry is a space-separated string.
 
-If `metrics`, `error-codes`, or `exit-coddes` is in the `generators` string,
-the following environment variable has to be exported:
+If `metrics`, `error-codes`, or `exit-codes` is in the `generators` string,
+the following environment variable has to be exported to point to a working copy
+of the [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository:
 
 ```sh
-export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
+export ARANGODB_SRC_{VERSION}=path/to/arangodb  # Bash
+set -xg ARANGODB_SRC_{VERSION} path/to/arangodb # Fish
 ```
 
-Substitute `{VERSION}` with a version number like `3_11`.
+Substitute `{VERSION}` with a version number like `3_12`.
 
 On Windows using PowerShell, use a Unix-like path:
 
 ```powershell
-$Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
+$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
+```
+
+As long as `toolchain/docker/config.yaml` is unmodified and has the original
+placeholders like `generators: ${GENERATORS}`, you can also use environment
+variables to configure the build:
+
+```sh
+export GENERATORS="examples options optimizer"
+export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
+export ARANGODB_SRC_3_12="path/to/arangodb"
+export ARANGODB_BRANCH_4_0="arangodb/enterprise-preview:4.0-nightly"
+export ARANGODB_SRC_4_0="path/to/arangodb2"
 ```
 
 **Configuration example**
