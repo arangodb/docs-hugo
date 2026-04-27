@@ -213,7 +213,7 @@ It is probably impossible to discover an efficient algorithm which computes
 them in a distributed way. Fortunately there are scalable substitutions
 available, which should be equally usable for most use cases.
 
-![Illustration of an execution of different centrality measures (Freeman 1977)](../../../../images/centrality_visual.png)
+![Illustration of an execution of different centrality measures (Freeman 1977)](../../../../images/centrality_visual.svg)
 
 #### Effective Closeness
 

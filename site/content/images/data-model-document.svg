@@ -1,0 +1,31 @@
+<svg viewBox="0 0 380 200" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:380px;margin:0 auto">
+  <text x="20" y="22" font-family="sans-serif" font-size="16" font-weight="bold" fill="#5a5a5a">Person</text>
+  <text x="225" y="22" font-family="sans-serif" font-size="16" font-weight="bold" fill="#5a5a5a">Book</text>
+
+  <path d="M 15 60 L 50 60 L 65 45 L 175 45 L 175 175 Q 175 185 165 185 L 25 185 Q 15 185 15 175 Z"
+        fill="#b0b0b0" stroke="#9a9a9a" stroke-width="1.5"/>
+
+  <path d="M 220 60 L 255 60 L 270 45 L 365 45 L 365 175 Q 365 185 355 185 L 230 185 Q 220 185 220 175 Z"
+        fill="#b0b0b0" stroke="#9a9a9a" stroke-width="1.5"/>
+
+  <g>
+    <path d="M 30 75 L 80 75 L 95 90 L 95 165 L 30 165 Z" fill="#a9bb38" stroke="#7d8c1f" stroke-width="2"/>
+    <path d="M 80 75 L 80 90 L 95 90 Z" fill="#cfdf6c" stroke="#7d8c1f" stroke-width="1"/>
+    <text x="38" y="115" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">Name:</text>
+    <text x="38" y="130" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">Mary</text>
+  </g>
+
+  <g>
+    <path d="M 100 75 L 150 75 L 165 90 L 165 165 L 100 165 Z" fill="#f0a020" stroke="#b8740a" stroke-width="2"/>
+    <path d="M 150 75 L 150 90 L 165 90 Z" fill="#fac46e" stroke="#b8740a" stroke-width="1"/>
+    <text x="108" y="115" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">Name:</text>
+    <text x="108" y="130" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">John</text>
+  </g>
+
+  <g>
+    <path d="M 250 75 L 320 75 L 335 90 L 335 165 L 250 165 Z" fill="#5dc1b9" stroke="#2f8a82" stroke-width="2"/>
+    <path d="M 320 75 L 320 90 L 335 90 Z" fill="#a3decd" stroke="#2f8a82" stroke-width="1"/>
+    <text x="260" y="115" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">Title:</text>
+    <text x="260" y="130" font-family="sans-serif" font-size="11" font-weight="bold" fill="#3a3a3a">Arango</text>
+  </g>
+</svg>
