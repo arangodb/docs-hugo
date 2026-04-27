@@ -38,7 +38,7 @@
     <path d="M 450 90 L 450 145" stroke="#6b7280" stroke-width="1.8" fill="none" marker-end="url(#arrow-g)"/>
     <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#6b7280">HTTP/HTTPS (ingress)</text>
 
-    <a class="card-link" xlink:href="https://www.envoyproxy.io/" target="_blank">
+    <a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
       <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#ecfccb" stroke="#65a30d" stroke-width="2"/>
       <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#1a2e05">Envoy</text>
       <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#3f6212">(API Gateway &amp;</text>
