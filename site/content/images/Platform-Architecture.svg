@@ -5,171 +5,171 @@
   <style>
     .arch .card-link { cursor: pointer; }
     .arch .card-link .node { transition: fill 120ms, stroke 120ms; }
-    .arch .card-link:hover .node    { fill: #dcfce7; stroke: #16a34a; }
-    .arch .card-link:hover .node-db { fill: #bbf7d0; stroke: #16a34a; }
-    .arch .card-link:hover .node-ai { fill: #f3e8ff; stroke: #7c3aed; }
-    .arch .card-link:hover .node-byoc { fill: #fed7aa; stroke: #ea580c; }
-    .arch .card-link:hover .node-op { fill: #d1fae5; stroke: #16a34a; }
+    .arch .card-link:hover .node    { fill: #BEFE99; stroke: #044926; }
+    .arch .card-link:hover .node-db { fill: #B9FF38; stroke: #044926; }
+    .arch .card-link:hover .node-ai { fill: #e9d8fb; stroke: #470878; }
+    .arch .card-link:hover .node-byoc { fill: #FFFC4E; stroke: #5a3a1f; }
+    .arch .card-link:hover .node-op { fill: #BEFE99; stroke: #044926; }
   </style>
   <defs>
     <marker id="arrow-g" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <polygon points="0 0,10 4,0 8" fill="#6b7280"/>
+      <polygon points="0 0,10 4,0 8" fill="#4F6D8B"/>
     </marker>
     <marker id="arrow-g-start" markerWidth="10" markerHeight="8" refX="0" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <polygon points="10 0,0 4,10 8" fill="#6b7280"/>
+      <polygon points="10 0,0 4,10 8" fill="#4F6D8B"/>
     </marker>
   </defs>
 
   <g class="arch">
-    <rect width="900" height="600" fill="#f8fafc" rx="6"/>
+    <rect width="900" height="600" fill="#F4FAF4" rx="6"/>
 
     <g>
-      <circle cx="450" cy="40" r="18" fill="#e5e7eb" stroke="#9ca3af" stroke-width="1.5"/>
-      <circle cx="450" cy="35" r="5" fill="#6b7280"/>
-      <path d="M 442 56 A 8 16 0 0 1 458 56 Z" fill="#6b7280"/>
-      <text x="450" y="82" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#374151">USER</text>
+      <circle cx="450" cy="40" r="18" fill="#dbe2eb" stroke="#4F6D8B" stroke-width="1.5"/>
+      <circle cx="450" cy="35" r="5" fill="#4F6D8B"/>
+      <path d="M 442 56 A 8 16 0 0 1 458 56 Z" fill="#4F6D8B"/>
+      <text x="450" y="82" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">USER</text>
     </g>
 
-    <rect x="20" y="100" width="860" height="490" rx="12" fill="#f0f9ff" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6 4"/>
+    <rect x="20" y="100" width="860" height="490" rx="12" fill="#F4FAF4" stroke="#02245F" stroke-width="2" stroke-dasharray="6 4"/>
     <a xlink:href="https://kubernetes.io/" target="_blank">
-      <text x="35" y="129" font-family="sans-serif" font-size="11" font-weight="bold" fill="#1e40af">KUBERNETES CLUSTER (k8s)</text>
+      <text x="35" y="129" font-family="sans-serif" font-size="11" font-weight="bold" fill="#02245F">KUBERNETES CLUSTER (k8s)</text>
     </a>
 
-    <path d="M 450 90 L 450 145" stroke="#6b7280" stroke-width="1.8" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#6b7280">HTTP/HTTPS (ingress)</text>
+    <path d="M 450 90 L 450 145" stroke="#4F6D8B" stroke-width="1.8" fill="none" marker-end="url(#arrow-g)"/>
+    <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#4F6D8B">HTTP/HTTPS (ingress)</text>
 
     <a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
-      <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#ecfccb" stroke="#65a30d" stroke-width="2"/>
-      <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#1a2e05">Envoy</text>
-      <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#3f6212">(API Gateway &amp;</text>
-      <text x="450" y="206" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#3f6212">HTTP Frontend)</text>
+      <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#BEFE99" stroke="#044926" stroke-width="2"/>
+      <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#044926">Envoy</text>
+      <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#044926">(API Gateway &amp;</text>
+      <text x="450" y="206" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#044926">HTTP Frontend)</text>
     </a>
 
     <a class="card-link" xlink:href="/platform-suite/container-manager/">
-      <rect x="620" y="135" width="250" height="100" rx="10" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <text x="745" y="152" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#9a3412">USER-DEFINED SERVICES (BYOC)</text>
+      <rect x="620" y="135" width="250" height="100" rx="10" fill="#FFFEE0" stroke="#FFFC4E" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="745" y="152" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#5a3a1f">USER-DEFINED SERVICES (BYOC)</text>
     </a>
 
     <a class="card-link" xlink:href="/platform-suite/container-manager/">
-      <rect x="635" y="162" width="110" height="65" rx="8" class="node-byoc" fill="#ffedd5" stroke="#fb923c" stroke-width="1.5"/>
-      <text x="690" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#9a3412">BYOC</text>
-      <text x="690" y="198" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#9a3412">Service A</text>
-      <text x="690" y="216" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#c2410c">Bring Your Own Code</text>
+      <rect x="635" y="162" width="110" height="65" rx="8" class="node-byoc" fill="#FFFEE0" stroke="#FFFC4E" stroke-width="1.5"/>
+      <text x="690" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">BYOC</text>
+      <text x="690" y="198" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">Service A</text>
+      <text x="690" y="216" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#5a3a1f">Bring Your Own Code</text>
     </a>
     <a class="card-link" xlink:href="/platform-suite/container-manager/">
-      <rect x="750" y="162" width="110" height="65" rx="8" class="node-byoc" fill="#ffedd5" stroke="#fb923c" stroke-width="1.5"/>
-      <text x="805" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#9a3412">BYOC</text>
-      <text x="805" y="198" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#9a3412">Service B</text>
-      <text x="805" y="216" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#c2410c">Bring Your Own Code</text>
+      <rect x="750" y="162" width="110" height="65" rx="8" class="node-byoc" fill="#FFFEE0" stroke="#FFFC4E" stroke-width="1.5"/>
+      <text x="805" y="184" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">BYOC</text>
+      <text x="805" y="198" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">Service B</text>
+      <text x="805" y="216" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#5a3a1f">Bring Your Own Code</text>
     </a>
 
-    <path d="M 560 181 L 620 181" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="585" y="176" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#6b7280">/byoc-a/</text>
+    <path d="M 560 181 L 620 181" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
+    <text x="585" y="176" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4F6D8B">/byoc-a/</text>
 
     <a class="card-link" xlink:href="/platform-suite/">
-      <rect x="25" y="250" width="850" height="335" rx="10" fill="#ffffff" stroke="#9ca3af" stroke-width="1.5"/>
-      <text x="411" y="270" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#374151">ARANGODB PLATFORM SERVICES</text>
+      <rect x="25" y="250" width="850" height="335" rx="10" fill="#ffffff" stroke="#4F6D8B" stroke-width="1.5"/>
+      <text x="411" y="270" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">ARANGODB PLATFORM SERVICES</text>
     </a>
 
     <a class="card-link" xlink:href="/platform-suite/">
-      <rect x="195" y="288" width="430" height="95" rx="8" fill="#f9fafb" stroke="#d1d5db" stroke-width="1" stroke-dasharray="3 3"/>
-      <text x="410" y="305" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#4b5563">PLATFORM ENABLERS</text>
+      <rect x="195" y="288" width="430" height="95" rx="8" fill="#F4FAF4" stroke="#4F6D8B" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="410" y="305" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#044926">PLATFORM ENABLERS</text>
     </a>
 
     <a class="card-link" xlink:href="/platform-suite/file-manager/">
-      <rect x="215" y="315" width="190" height="55" rx="8" class="node" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="310" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">File Manager</text>
-      <text x="310" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4b5563">(Object Storage)</text>
+      <rect x="215" y="315" width="190" height="55" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="310" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#044926">File Manager</text>
+      <text x="310" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Object Storage)</text>
     </a>
     <a class="card-link" xlink:href="/platform-suite/secrets-manager/">
-      <rect x="415" y="315" width="195" height="55" rx="8" class="node" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="512" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">Secret Manager</text>
-      <text x="512" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4b5563">(Secrets)</text>
+      <rect x="415" y="315" width="195" height="55" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="512" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#044926">Secret Manager</text>
+      <text x="512" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Secrets)</text>
     </a>
 
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="200" y="405" width="420" height="175" rx="10" class="node-db" fill="#ecfccb" stroke="#65a30d" stroke-width="2"/>
-      <text x="410" y="428" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#1a2e05">ARANGODB</text>
-      <text x="410" y="444" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#3f6212">(Distributed Multi-Model Database)</text>
+      <rect x="200" y="405" width="420" height="175" rx="10" class="node-db" fill="#BEFE99" stroke="#044926" stroke-width="2"/>
+      <text x="410" y="428" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#044926">ARANGODB</text>
+      <text x="410" y="444" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Distributed Multi-Model Database)</text>
     </a>
 
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="215" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="275" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Coordinator</text>
-      <text x="275" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Nodes</text>
+      <rect x="215" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="275" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Coordinator</text>
+      <text x="275" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="345" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="405" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">DB Server</text>
-      <text x="405" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Nodes</text>
+      <rect x="345" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="405" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">DB Server</text>
+      <text x="405" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="475" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="535" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Agent</text>
-      <text x="535" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Nodes</text>
+      <rect x="475" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="535" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Agent</text>
+      <text x="535" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
     </a>
 
-    <path d="M 275 565 L 535 565" stroke="#6b7280" stroke-width="1.5" fill="none"/>
-    <path d="M 275 565 L 275 545" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <path d="M 405 565 L 405 545" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <path d="M 535 565 L 535 545" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 275 565 L 535 565" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
+    <path d="M 275 565 L 275 545" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 405 565 L 405 545" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 535 565 L 535 545" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
     <a class="card-link" xlink:href="/agentic-ai-suite/">
-      <rect x="660" y="255" width="210" height="320" rx="10" fill="#faf5ff" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <text x="765" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5b21b6">AI TOOLS &amp; GRAPH ANALYTICS</text>
+      <rect x="660" y="255" width="210" height="320" rx="10" fill="#f5edff" stroke="#470878" stroke-width="1.5" stroke-dasharray="4 3"/>
+      <text x="765" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#470878">AI TOOLS &amp; GRAPH ANALYTICS</text>
     </a>
-    <path d="M 590 181 L 590 240 L 720 240 L 720 255" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 590 181 L 590 240 L 720 240 L 720 255" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
     <a class="card-link" xlink:href="/agentic-ai-suite/graph-analytics/">
-      <rect x="675" y="290" width="180" height="70" rx="8" class="node-ai" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
-      <text x="765" y="320" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">Graph Analytics</text>
-      <text x="765" y="338" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">Engine</text>
+      <rect x="675" y="290" width="180" height="70" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="320" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Graph Analytics</text>
+      <text x="765" y="338" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Engine</text>
     </a>
     <a class="card-link" xlink:href="/agentic-ai-suite/importer/">
-      <rect x="675" y="380" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
-      <text x="765" y="405" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">AutoGraph</text>
-      <text x="765" y="421" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">Loader</text>
+      <rect x="675" y="380" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="405" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
+      <text x="765" y="421" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Loader</text>
     </a>
     <a class="card-link" xlink:href="/agentic-ai-suite/retriever/">
-      <rect x="675" y="460" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
-      <text x="765" y="485" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">AutoGraph</text>
-      <text x="765" y="501" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3b0764">Retriever</text>
+      <rect x="675" y="460" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="485" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
+      <text x="765" y="501" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Retriever</text>
     </a>
 
     <a class="card-link" xlink:href="https://arangodb.github.io/kube-arangodb/" target="_blank">
-      <rect x="30" y="420" width="130" height="110" rx="10" class="node-op" fill="#ffffff" stroke="#86efac" stroke-width="1.5"/>
-      <text x="95" y="471" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">ArangoDB</text>
-      <text x="95" y="487" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0b2e1e">Operator</text>
+      <rect x="30" y="420" width="130" height="110" rx="10" class="node-op" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
+      <text x="95" y="471" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">ArangoDB</text>
+      <text x="95" y="487" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Operator</text>
     </a>
 
-    <path d="M 160 450 L 200 450" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)" marker-start="url(#arrow-g-start)"/>
-    <text x="180" y="444" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b7280">Manages</text>
+    <path d="M 160 450 L 200 450" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)" marker-start="url(#arrow-g-start)"/>
+    <text x="180" y="444" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#4F6D8B">Manages</text>
 
-    <path d="M 160 485 L 200 485" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="180" y="479" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#6b7280">Configuration</text>
+    <path d="M 160 485 L 200 485" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
+    <text x="180" y="479" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#4F6D8B">Configuration</text>
 
-    <path d="M 160 520 L 200 520" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="180" y="507" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#6b7280">Query/Data</text>
-    <text x="180" y="514" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#6b7280">access</text>
+    <path d="M 160 520 L 200 520" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
+    <text x="180" y="507" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#4F6D8B">Query/Data</text>
+    <text x="180" y="514" text-anchor="middle" font-family="sans-serif" font-size="6" fill="#4F6D8B">access</text>
 
-    <path d="M 95 420 L 95 181 L 340 181" stroke="#6b7280" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 95 420 L 95 181 L 340 181" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 360 217 L 360 240 L 310 240 L 310 313" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <path d="M 512 217 L 512 313" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 360 217 L 360 240 L 310 240 L 310 313" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 512 217 L 512 313" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 540 217 L 540 245 L 630 245 L 630 388 L 550 388 L 550 405" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 540 217 L 540 245 L 630 245 L 630 388 L 550 388 L 550 405" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 310 370 L 310 405" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <path d="M 528 370 L 528 405" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 310 370 L 310 405" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 528 370 L 528 405" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 795 255 L 795 229" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <path d="M 815 227 L 815 253" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 795 255 L 795 229" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 815 227 L 815 253" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 620 410 L 647 410 L 647 325 L 675 325" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="652" y="372" font-family="sans-serif" font-size="9" fill="#6b7280">Query/Data access</text>
+    <path d="M 620 410 L 647 410 L 647 325 L 675 325" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <text x="652" y="372" font-family="sans-serif" font-size="9" fill="#4F6D8B">Query/Data access</text>
 
-    <path d="M 675 420 L 620 420" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 675 420 L 620 420" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 620 490 L 675 490" stroke="#6b7280" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 620 490 L 675 490" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
   </g>
 </svg>
