@@ -194,7 +194,8 @@ The output files will be written to `site/public/`.
 
 **Configuration**
 
-The toolchain container needs to be set up via config file in `toolchain/docker/config.yaml`:
+The toolchain container needs to be set up via config file in
+[`toolchain/docker/config.yaml`](toolchain/docker/config.yaml):
 
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
@@ -216,30 +217,44 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 
 The generators entry is a space-separated string.
 
-If `metrics`, `error-codes`, or `exit-coddes` is in the `generators` string,
-the following environment variable has to be exported:
+If `metrics`, `error-codes`, or `exit-codes` is in the `generators` string,
+the following environment variable has to be exported to point to a working copy
+of the [`arangodb/arangodb`](https://github.com/arangodb/arangodb) repository:
 
 ```sh
-export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
+export ARANGODB_SRC_{VERSION}=path/to/arangodb  # Bash
+set -xg ARANGODB_SRC_{VERSION} path/to/arangodb # Fish
 ```
 
-Substitute `{VERSION}` with a version number like `3_11`.
+Substitute `{VERSION}` with a version number like `3_12`.
 
 On Windows using PowerShell, use a Unix-like path:
 
 ```powershell
-$Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
+$Env:ARANGODB_SRC_{VERSION} = "/Drive/path/to/arangodb"
+```
+
+As long as `toolchain/docker/config.yaml` is unmodified and has the original
+placeholders like `generators: ${GENERATORS}`, you can also use environment
+variables to configure the build:
+
+```sh
+export GENERATORS="examples options optimizer"
+export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
+export ARANGODB_SRC_3_12="path/to/arangodb"
+export ARANGODB_BRANCH_4_0="arangodb/enterprise-preview:4.0-nightly"
+export ARANGODB_SRC_4_0="path/to/arangodb2"
 ```
 
 **Configuration example**
 
 ```yaml
-generators: examples oasisctl options optimizer
+generators: examples options optimizer
 servers:
-  - image: arangodb/enterprise-preview:3.11-nightly
-    version: "3.11"
-  - image: arangodb/enterprise-preview:devel-nightly
+  - image: arangodb/enterprise:3.12.9
     version: "3.12"
+  - image: arangodb/enterprise-preview:4.0-nightly
+    version: "4.0"
 ```
 
 **Run the toolchain**
@@ -1162,20 +1177,28 @@ For example, if the current stable version is 3.11 and the devel version is 3.12
 the `site/data/versions.yaml` file may look like this:
 
 ```yaml
-- name: "4.0"
-  version: "4.0.0"
-  alias: "4.0"
-  deprecated: false
+/arangodb/:
 
-- name: "3.12"
-  version: "3.12.0"
-  alias: "devel"
-  deprecated: false
+  - name: "4.0"
+    version: "4.0.0"
+    alias: "4.0"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v1, experimental]
 
-- name: "3.11"
-  version: "3.11.4"
-  alias: "stable"
-  deprecated: false
+  - name: "3.12"
+    version: "3.12.9"
+    alias: "devel"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v0, experimental]
+
+  - name: "3.11"
+    version: "3.11.14"
+    alias: "stable"
+    deprecated: false
+    inDevelopment: false
+    allowedAPIVersions: [v0]
 ```
 
 To make 3.12 the new stable version, you need to set `alias` to `"stable"` for
@@ -1185,23 +1208,36 @@ changed. In this example, it is the 3.11 entry where you need to change `alias`
 to the version `name`, which is `"3.11"` in this case. Finally, you need to
 re-assign the `"devel"` alias to the version that comes after the new stable
 version. In this example, you need to adjust the `alias` of the 4.0 entry.
-The final configuration would then look lik this:
+
+The work-in-progress versions of the ArangoDB documentation need to have
+`inDevelopment` set to `true`. Make sure to change it to `false` for the former
+devel version when it becomes the new stable version.
+
+The final configuration would then look like this:
 
 ```yaml
-- name: "4.0"
-  version: "4.0.0"
-  alias: "devel"   # was "4.0"
-  deprecated: false
+/arangodb/:
 
-- name: "3.12"
-  version: "3.12.0"
-  alias: "stable"  # was "devel"
-  deprecated: false
+  - name: "4.0"
+    version: "4.0.0"
+    alias: "devel" # was "4.0"
+    deprecated: false
+    inDevelopment: true
+    allowedAPIVersions: [v1, experimental]
 
-- name: "3.11"
-  version: "3.11.4"
-  alias: "3.11"    # was "stable"
-  deprecated: false
+  - name: "3.12"
+    version: "3.12.9"
+    alias: "stable" # was "devel"
+    deprecated: false
+    inDevelopment: false # was true
+    allowedAPIVersions: [v0, experimental]
+
+  - name: "3.11"
+    version: "3.11.14"
+    alias: "3.11" # was "stable"
+    deprecated: false
+    inDevelopment: false
+    allowedAPIVersions: [v0]
 ```
 
 ### Add a new arangosh example
