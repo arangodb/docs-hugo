@@ -313,7 +313,7 @@ interfaces by pushing `FILTER`s out to the shards, as it is vital to the query
 performance to reduce that data amount to transfer over the network links.
 
 {{< info >}}
-Some hops between Coordinators and DB-Servers are unavoidable. An example are
+Some hops between Coordinators and DB-Servers are unavoidable. An example is
 graph traversals, which have to be executed on the Coordinator in most cases
 (exceptions are Disjoint SmartGraphs and SatelliteGraphs). Another example are
 the `CALL` and `APPLY` functions, which must run on the Coordinator.
