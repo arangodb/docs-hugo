@@ -1213,7 +1213,7 @@ The work-in-progress versions of the ArangoDB documentation need to have
 `inDevelopment` set to `true`. Make sure to change it to `false` for the former
 devel version when it becomes the new stable version.
 
-The final configuration would then look lik this:
+The final configuration would then look like this:
 
 ```yaml
 /arangodb/:
