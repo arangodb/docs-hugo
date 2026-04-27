@@ -320,4 +320,3 @@ unsuitable for the OneShard optimization:
   - `VERSION`
   - `WITHIN`
   - `WITHIN_RECTANGLE`
-  - User-defined AQL functions (UDFs)

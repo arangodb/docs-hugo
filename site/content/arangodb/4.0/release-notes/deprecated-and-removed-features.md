@@ -65,6 +65,12 @@ detailed information about breaking changes before upgrading.
   See the [Container Manager](../../../platform-suite/container-manager/_index.md)
   to learn how to bring your own code and containers.
 
+- **User-defined AQL functions (UDFs)**:\
+  The ability to register custom functions for the AQL query language written
+  in JavaScript has been removed.
+
+  <!-- TODO: Hygenic macros for some use cases (once supported) -->
+
 - **Emergency console**:\
   The ArangoDB server process could be started in an interactive command-line
   mode (JavaScript REPL) with the `--console` option. This was primarily used

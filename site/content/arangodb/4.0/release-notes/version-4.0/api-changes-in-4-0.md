@@ -114,6 +114,14 @@ of the Action and Foxx features. It was used to reload the routing information
 from the `_routing` system collection and make Foxx rebuild its local routing
 table on the next request.
 
+#### User-defined AQL functions API removed
+
+The following endpoints for managing UDFs have been removed:
+
+- `GET /_api/aqlfunction`
+- `POST /_api/aqlfunction`
+- `DELETE /_api/aqlfunction/{name}`
+
 #### Echo API removed
 
 The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
@@ -130,3 +138,7 @@ removed from the JavaScript API.
 
 Furthermore, the `global.fm` object has been removed. It provided various
 methods for managing Foxx services.
+
+### User-defined AQL functions module removed
+
+The `@arangodb/aql/functions` module has been removed from the JavaScript API.
