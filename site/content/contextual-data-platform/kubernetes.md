@@ -1,6 +1,6 @@
 ---
-title: Kubernetes-Native Architecture
-menuTitle: Kubernetes
+title: Architecture
+menuTitle: Architecture
 weight: 20
 description: >-
   The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging
@@ -10,6 +10,8 @@ The Arango Contextual Data Platform is **Kubernetes-native** by design, meaning 
 from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
 it to function. This is not an optional feature, Kubernetes is the foundation
 that powers the entire platform architecture.
+
+{{< embed-svg "Platform-Architecture" >}}
 
 {{< info >}}
 **Kubernetes Required**: The Arango Contextual Data Platform cannot operate without Kubernetes.
