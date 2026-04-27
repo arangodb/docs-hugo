@@ -100,8 +100,8 @@ you use only for license generation.
    ```sh
    arangodb_operator_platform license activate \
      --arango.endpoint http://localhost:8529 \
-     --license.client.id "your-corp" \
-     --license.client.secret "..."
+     --license.client.id "your-company" \
+     --license.client.secret "00000000-0000-0000-0000-000000000000"
    ```
 
    Unless authentication is disabled for the deployment, you need to additionally
@@ -243,8 +243,8 @@ configuration options that let you tune TTL and grace periods.
    arangodb_operator_platform license generate \
      --deployment.id "6172616e-676f-4000-0000-05c958168340" \
      --inventory inventory.json \
-     --license.client.id "your-corp" \
-     --license.client.secret "..." \
+     --license.client.id "your-company" \
+     --license.client.secret "00000000-0000-0000-0000-000000000000" \
      2> license_key.txt
    ```
 
