@@ -1235,7 +1235,7 @@ article > h6 > code {
 /* Defer until theme.js enables (after SPA replaces SSR markup); otherwise hard loads
    with a fragment animate twice — once on first paint, again after replaceArticle(). */
 html.docs-target-highlight-ready :target {
-    animation: target-highlight 0.5s ease-out forwards;
+    animation: target-highlight 0.5s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
