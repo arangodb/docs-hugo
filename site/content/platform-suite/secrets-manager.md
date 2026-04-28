@@ -122,3 +122,32 @@ You can list the existing secret objects (but without the sensitive secrets
 themselves):
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets" >}}
+
+To retrieve a specific secret object by its profile ID:
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To replace an existing secret with a new one, use the following endpoint.
+The request body must include all attributes of the secret:
+
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To update only specific attributes of an existing secret, use the following
+endpoint. The request body only needs to include the attributes you want to
+change:
+
+{{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To delete a single secret by its profile ID:
+
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To create multiple secrets in a single request, use the batch endpoint.
+The request body must be a JSON array of secret objects:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets_batch" >}}
+
+To delete multiple secrets in a single request, use the batch delete endpoint.
+The request body must include the list of profile IDs to delete:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets_batch/delete" >}}
