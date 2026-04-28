@@ -51,11 +51,11 @@ The meaning of the statistics attributes is as follows:
 - **scannedFull** (integer):
   The total number of documents iterated over when scanning a collection
   without an index. Documents scanned by subqueries are included in the result, but
-  operations triggered by built-in or user-defined AQL functions are not.
+  operations triggered by built-in AQL functions are not.
 - **scannedIndex** (integer):
   The total number of documents iterated over when scanning a collection using
   an index. Documents scanned by subqueries are included in the result, but operations
-  triggered by built-in or user-defined AQL functions are not.
+  triggered by built-in AQL functions are not.
 - **searchParallelism** (integer):
   The number of threads used by ArangoSearch for this
   query (introduced in v3.12.9).

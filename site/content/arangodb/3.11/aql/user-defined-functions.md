@@ -122,7 +122,8 @@ function (values) {
 ```
 
 The above function can be made free of side effects by using the `var`, `let`,
-or `const` keywords, so the variables become function-local variables:
+or `const` keywords, so the variables become function-local respectively
+scope-local variables:
 
 ```js
 function (values) {

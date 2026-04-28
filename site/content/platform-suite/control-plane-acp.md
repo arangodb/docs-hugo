@@ -411,4 +411,4 @@ For managing files via ACP, see the
 ## API reference
 
 For detailed API documentation, see the
-[Arango Control Plane API Reference](https://apiref.arango.ai/#genai-service).
+[Arango Control Plane service API Reference](https://apiref.arango.ai/#genai-service).

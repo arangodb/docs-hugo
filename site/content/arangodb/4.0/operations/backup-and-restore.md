@@ -13,8 +13,8 @@ ArangoDB supports three backup methods:
 3. Hot backups
 
 These backup methods save the data which is in the database system. In addition,
-make sure to backup things like configuration files, startup scripts, Foxx
-services, access tokens, secrets, certificates etc. and store them in a
+make sure to backup things like configuration files, startup scripts,
+access tokens, secrets, certificates etc. and store them in a
 different location securely.
 
 Performing frequent backups is important and a recommended best practices that
@@ -211,7 +211,7 @@ not be suited for.
 
   {{< danger >}}
   A restore to an earlier hot backup snapshot also reverts users, graphs,
-  Foxx apps - everything - back to that at the time of the hot backup!
+  custom Analyzers - everything - back to that at the time of the hot backup!
   {{< /danger >}}
 
 - **Cluster's Special Limitations**
@@ -288,17 +288,6 @@ not be suited for.
   that during index creation one cannot create a hot backup. We intend to lift
   this limitation in a future version.
   
-- **Services on Single Server**
-
-  On a single server, the installed Foxx microservices are not backed up and are
-  therefore also not restored. This is because in single server mode
-  the service installation is done locally in the file system and does not
-  track the information in the `_apps` collection.
-
-  In a cluster, the Coordinators eventually restore the state of the
-  services from the `_apps` and `_appbundles` collections after a backup is
-  restored.
-
 - **Encryption at Rest**
 
   The hot backup simply takes a snapshot of the database files.

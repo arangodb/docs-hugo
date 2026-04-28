@@ -623,7 +623,6 @@ functions cannot be used in the expression:
 - `WITHIN()`
 - `WITHIN_RECTANGLE()`
 - `FULLTEXT()`
-- [User-defined functions (UDFs)](../user-defined-functions.md)
 {{< /warning >}}
 
 ## Using filters

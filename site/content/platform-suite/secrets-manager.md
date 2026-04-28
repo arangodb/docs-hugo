@@ -36,18 +36,20 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 1. In the main navigation of the Arango Contextual Data Platform web interface, go to the
    **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets Manager** in the navigation.
-3. Click **Add Secret**.
-4. Enter a **Name** to later reference the secret.
-5. Select a **Type** from the provided list.
-5. Enter the **Secret Value** (API key, password, or similar).
-6. Optionally specify additional metadata.
-   You can enter a **Provider** and a **Description**.
+2. Click **Secrets** in the navigation.
+3. Click **Add secret** in the top-right corner.
+4. In the **Create Secret** dialog, enter a **Name** to later reference the secret.
+5. The **Type** is fixed to `API_KEY` (generic API keys and tokens) for secrets
+   created via the web interface. Other types can be created via the API.
+6. Enter the sensitive information (API key, password, or similar) into the
+   **Secret Data** field. Click the eye icon to show or hide the value.
+7. Optionally enter a **Description** to help identify the secret.
+8. Click **Create**.
 
 ### Edit a secret
 
 1. In the main navigation, go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets Manager** in the navigation.
+2. Click **Secrets** in the navigation.
 3. In the **Actions** column, click the edit icon ({{< icon "edit-square" >}}).
 4. Adjust the information. To edit the **Secret Value**, click the toggle next to
    the label and then enter the new value.
@@ -56,7 +58,7 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 ### Delete a secret
 
 1. Go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets Manager** in the navigation.
+2. Click **Secrets** in the navigation.
 3. Delete one or multiple secrets:
    - In the **Actions** column, click the remove icon ({{< icon "delete" >}})
      and confirm by clicking **Delete**.
@@ -67,11 +69,13 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 ### Import secrets
 
 1. Go to the **Control Panel** ({{< icon "settings" >}}).
-2. Click **Secrets Manager** in the navigation.
+2. Click **Secrets** in the navigation.
 3. Click the **Import** button in the top-right corner.
-4. You can **Paste JSON** from the clipboard or go to the **Upload File**
-   tab to select or drop a JSON file. You can inspect and edit the uploaded
-   data in the **Paste JSON** tab.
+4. In the **Import Secrets** dialog, you can **Paste JSON** from the clipboard
+   or go to the **Upload File** tab to select or drop a `.json` file. The file
+   must contain a JSON array of secret profiles. You can inspect and edit
+   uploaded data in the **Paste JSON** tab. Click **Load sample** to insert
+   an example payload.
 5. Click **Validate & Preview**. Fix missing fields or syntax errors if necessary.
 6. Verify the data. You can remove ({{< icon "delete" >}}) individual rows to
    exclude secrets from the import.
@@ -79,7 +83,10 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 
 ## API
 
-<!-- TODO: Link to reference docs -->
+The Secrets Manager endpoints are part of the
+[Arango Control Plane (ACP) API](https://apiref.arango.ai/#genai-service).
+See the reference for the full request and response schemas of the
+`/v1/secrets`, `/v1/secrets_batch`, and `/v1/secret_types` endpoints.
 
 ### How to use the secrets manager API
 
@@ -115,3 +122,32 @@ You can list the existing secret objects (but without the sensitive secrets
 themselves):
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets" >}}
+
+To retrieve a specific secret object by its profile ID:
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To replace an existing secret with a new one, use the following endpoint.
+The request body must include all attributes of the secret:
+
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To update only specific attributes of an existing secret, use the following
+endpoint. The request body only needs to include the attributes you want to
+change:
+
+{{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To delete a single secret by its profile ID:
+
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets/{profile_id}" >}}
+
+To create multiple secrets in a single request, use the batch endpoint.
+The request body must be a JSON array of secret objects:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets_batch" >}}
+
+To delete multiple secrets in a single request, use the batch delete endpoint.
+The request body must include the list of profile IDs to delete:
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/secrets_batch/delete" >}}
