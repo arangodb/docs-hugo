@@ -1,6 +1,6 @@
 ---
 title: The Arango Control Plane (ACP) service
-menuTitle: Control Plane
+menuTitle: Control Plane (ACP)
 weight: 30
 description: >-
   Orchestrate the Contextual Data Platform with the Arango Control Plane to
@@ -195,7 +195,7 @@ documentation.
 
 #### Step 2: Check the service status
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/<serviceId>" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId>}" >}}
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
@@ -217,7 +217,7 @@ curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-g
 
 #### Step 3: Uninstall the service
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/<serviceId>" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
 ```bash
 curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
@@ -267,7 +267,7 @@ An empty request body (`{}`) returns all installed services.
 
 To upgrade a service to the latest available version:
 
-{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/<serviceId>" >}}
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
 ```bash
 curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
