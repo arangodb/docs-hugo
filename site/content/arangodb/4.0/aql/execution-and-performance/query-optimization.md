@@ -28,7 +28,7 @@ about the optimizer's view of the query.
 
 The `explain` method of `ArangoStatement` as shown in the next chapters creates very verbose output.
 You can work on the output programmatically, or use this handsome tool that we created
-to generate a more human readable representation.
+to generate a more human-readable representation.
 
 You may use it like this: (we disable syntax highlighting here)
 
@@ -40,7 +40,7 @@ description: ''
 ~addIgnoreCollection("test")
 ~db._drop("test");
 var coll = db._create("test");
-for (i = 0; i < 100; ++i) { db.test.save({ value: i }); }
+for (var i = 0; i < 100; ++i) { db.test.save({ value: i }); }
 var idx = db.test.ensureIndex({ type: "persistent", fields: [ "value" ] });
 var explain = require("@arangodb/aql/explainer").explain;
 explain("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value", {colors:false});
@@ -313,12 +313,10 @@ interfaces by pushing `FILTER`s out to the shards, as it is vital to the query
 performance to reduce that data amount to transfer over the network links.
 
 {{< info >}}
-Some hops between Coordinators and DB-Servers are unavoidable. An example are
-[user-defined functions](../user-defined-functions.md) (UDFs), which have to be executed on
-the Coordinator. If you cannot modify your query to have a lower amount of
-back and forth between sites, then try to lower the amount of data that has
-to be transferred between them. In case of UDFs, use effective FILTERs before
-calling them.
+Some hops between Coordinators and DB-Servers are unavoidable. An example is
+graph traversals, which have to be executed on the Coordinator in most cases
+(exceptions are Disjoint SmartGraphs and SatelliteGraphs). Another example are
+the `CALL` and `APPLY` functions, which must run on the Coordinator.
 {{< /info >}}
 
 Using a cluster, there is a **Site** column if you explain a query.

@@ -6,6 +6,7 @@ description: >-
   Various detailed have changed, like the setup, transport, configuration,
   serialization, and some of the APIs
 aliases:
+  - ../../../../arangodb/3.11/develop/drivers/java/reference-version-7/changes-in-version-7
   - ../../../../arangodb/3.12/develop/drivers/java/reference-version-7/changes-in-version-7
   - ../../../../arangodb/stable/develop/drivers/java/reference-version-7/changes-in-version-7
   - ../../../../arangodb/4.0/develop/drivers/java/reference-version-7/changes-in-version-7
@@ -101,8 +102,9 @@ The main driver artifact `com.arangodb:arangodb-java-driver` has transitive depe
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
-Alternative module for user-data serde:
+Alternative modules:
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
+- `com.arangodb:vst-protocol`: `VST` communication protocol (only up to ArangoDB v3.11)
 
 The modules above are discovered and loaded using SPI (Service Provider Interface).
 
@@ -174,8 +176,9 @@ to use the [shaded version](#arangodb-java-driver-shaded) of this driver, which
 bundles all modules together with relocated external dependencies.
 
 The dependency on `com.arangodb:velocypack` has been removed from core module and
-is now only used as internal dependency by `com.arangodb:jackson-serde-vpack`,
-thus transitively imported only when using `VPACK` content type.
+is now only used as internal dependency by `com.arangodb:jackson-serde-vpack`
+(and `com.arangodb:vst-protocol`), thus transitively imported only when using
+`VPACK` content type (or `VST` protocol).
 
 ## User Data
 

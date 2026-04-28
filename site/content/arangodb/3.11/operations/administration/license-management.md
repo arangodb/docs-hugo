@@ -14,7 +14,7 @@ If you use the ArangoDB Kubernetes Operator, check the
 [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
 for more details on how to set a license key.
 
-## Active a license
+## Apply a license key
 
 On the first installation of any ArangoDB Enterprise Edition instance, you can
 immediately use it for testing without restrictions for three hours.
@@ -39,7 +39,7 @@ quotes as shown above.
 
 Your license has now been applied.
 
-## Check the current license
+## Check the license
 
 At any point, you may check the current state of your license in _arangosh_:
 

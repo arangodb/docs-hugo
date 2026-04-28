@@ -57,7 +57,7 @@ aliases:
   Run ArangoDB on Linux using the production-ready packages for the x86-64
   architecture and 64-bit ARM chips, on bare metal or in containers.
   Develop and test with ArangoDB on Windows, macOS, and Linux using the official
-  ArangoDB Docker images.
+  ArangoDB container images.
 
 ## Scalability & High Availability
 
@@ -304,16 +304,6 @@ aliases:
   Fast, memory-efficient processing of cluster queries by combining
   results in parallel.
 
-## Extensibility
-
-- [**Microservice Support with ArangoDB Foxx**](../develop/foxx-microservices/_index.md):
-  Use ArangoDB as an application server and fuse your application and database
-  together for maximal throughput.
-  With fault-tolerant cluster support.
-
-- [**Server-Side Functions**](../aql/user-defined-functions.md):
-  You can extend AQL with user-defined functions written in JavaScript.
-
 ## Security
 
 - [**Auditing**](../operations/security/audit-logging.md):
@@ -341,9 +331,7 @@ aliases:
   Built-in user management with password- and token-based authentication.
 
 - **Role-based Access Control**:
-  ArangoDB supports all basic security requirements. By using ArangoDB's Foxx
-  microservice framework users can achieve very high security standards
-  fitting individual needs.
+  ArangoDB supports all basic security requirements. <!-- TODO -->
 
 - [**TLS Encryption**](../components/arangodb-server/options.md#ssl):
   Internal and external communication over encrypted network connections with

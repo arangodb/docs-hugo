@@ -76,7 +76,6 @@ Broadly, ArangoDB uses significant amounts of RAM for the following subsystems:
 - HTTP server and queues
 - Edge caches and other caches
 - AQL queries
-- V8 (JavaScript features)
 - ArangoSearch
 - AgencyCache/ClusterInfo (cluster meta data)
 - Cluster-internal replication
@@ -138,10 +137,6 @@ It is possible to limit the memory usage of a single AQL query as well
 as the global usage for all AQL queries running concurrently. Obviously,
 if either of these limits is reached, an AQL query can fail due to a lack
 of RAM, which is then reported back to the user.
-
-Everything which executes JavaScript (only on Coordinators, user defined
-AQL functions and Foxx services), needs RAM, too. If JavaScript is not
-to be used, memory can be saved by reducing the number of V8 contexts.
 
 ArangoSearch uses memory in different ways:
 
@@ -506,71 +501,6 @@ APIs. To only turn off the statistics gathering, you can use
 ```
 That leaves all statistics APIs enabled but still disables all background work
 done by the statistics gathering.
-
-## JavaScript & Foxx
-
-[JavaScript](../../components/arangodb-server/options.md#javascript) is executed in the ArangoDB
-process using the embedded V8 engine:
-
-- Backend parts of the web interface
-- Foxx Apps
-- Foxx Queues
-- GraphQL
-- JavaScript-based transactions
-- User-defined AQL functions
-
-There are several *V8 contexts* for parallel execution. You can think of them as
-a thread pool. They are also called *isolates*. Each isolate has a heap of a few
-gigabytes by default. You can restrict V8 if you use no or very little
-JavaScript:
-
-``` 
---javascript.v8-contexts 2
---javascript.v8-max-heap 512
-```
-
-This will limit the number of V8 isolates to two. All JavaScript related
-requests will be queued up until one of the isolates becomes available for the
-new task. It also restricts the heap size to 512 MByte, so that both V8 contexts
-combined cannot use more than 1 GByte of memory in the worst case.
-
-### V8 for the Desperate
-
-You should not use the following settings unless there are very good reasons,
-like a local development system on which performance is not critical or an
-embedded system with very limited hardware resources!
-
-``` 
---javascript.v8-contexts 1
---javascript.v8-max-heap 256
-```
-
-Using the settings above, you can reduce the memory usage of V8 to 256 MB and just 
-one thread. There is a chance that some operations will be aborted because they run 
-out of memory in the web interface for instance. Also, JavaScript requests will be 
-executed one by one.
-
-If you are very tight on memory, and you are sure that you do not need V8, you
-can disable it completely:
-
-``` 
---javascript.enabled false
---foxx.queues false
-```
-
-In consequence, the following features will not be available:
-
-- Backend parts of the web interface
-- Foxx Apps
-- Foxx Queues
-- GraphQL
-- JavaScript-based transactions
-- User-defined AQL functions
-
-Note that JavaScript / V8 is automatically disabled for DB-Server and Agency 
-nodes in a cluster without these limitations. They apply only to single server 
-instances and Coordinator nodes. You should not disable V8 on Coordinators
-because certain cluster operations depend on it.
 
 ## Concurrent operations
 

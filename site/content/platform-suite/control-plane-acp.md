@@ -57,8 +57,8 @@ The following example shows a complete request body with all available options:
   they can be used.
 
 The parameters required for the deployment of each service are defined in the
-corresponding service documentation. See [Importer](../agentic-ai-suite/reference/importer/_index.md)
-and [Retriever](../agentic-ai-suite/reference/retriever/_index.md).
+corresponding service documentation. See [Importer](../agentic-ai-suite/importer/_index.md)
+and [Retriever](../agentic-ai-suite/retriever/_index.md).
 
 ## Projects
 
@@ -181,7 +181,7 @@ documentation.
 ## Complete Service lifecycle example
 
 The example below shows how to install, monitor, and uninstall the
-[Importer](../agentic-ai-suite/reference/importer/_index.md) service.
+[Importer](../agentic-ai-suite/importer/_index.md) service.
 
 ### Step 1: Installing the service
 
@@ -295,5 +295,5 @@ Bearer token, the request fails.
 
 ## API Reference
 
-For detailed API documentation, see the <!-- TODO: New API reference and link -->
-[Arango Control Plane service Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html).
+For detailed API documentation, see the
+[Arango Control Plane service API Reference](https://apiref.arango.ai/#genai-service).

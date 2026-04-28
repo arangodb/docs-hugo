@@ -68,9 +68,6 @@ The usage of non-deterministic functions leads to a query not being cacheable.
 This is intentional to avoid caching of function results which should rather
 be calculated on each invocation of the query (e.g. `RAND()` or `DATE_NOW()`).
 
-The query results cache considers all user-defined AQL functions to be non-deterministic
-as it has no insight into these functions.
-
 ## Cache invalidation
 
 The cached results are fully or partially invalidated automatically if
