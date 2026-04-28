@@ -296,4 +296,4 @@ Bearer token, the request fails.
 ## API Reference
 
 For detailed API documentation, see the
-[Arango Control Plane service API Reference](https://apiref.arango.ai/arango-control-plane/v0.0.18/html/index.html).
+[Arango Control Plane service API Reference](https://apiref.arango.ai/#genai-service).

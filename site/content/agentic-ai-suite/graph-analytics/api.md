@@ -510,7 +510,7 @@ You can submit jobs concurrently and they also run concurrently.
 
 You can find the API reference documentation with detailed descriptions of the
 request and response data structures at
-<https://apiref.arango.ai/arangodb-gral/v1.1.7/html/index.html>.
+<https://apiref.arango.ai/#gral>.
 
 Request and response payloads are JSON-encoded in the engine API.
 

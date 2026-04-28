@@ -84,7 +84,7 @@ sidecar container for metadata that runs in the pod of the service. <!-- TODO: D
 ## API
 
 The Secrets Manager endpoints are part of the
-[Arango Control Plane (ACP) API](https://apiref.arango.ai/arango-control-plane/v0.0.18/html/index.html).
+[Arango Control Plane (ACP) API](https://apiref.arango.ai/#genai-service).
 See the reference for the full request and response schemas of the
 `/v1/secrets`, `/v1/secrets_batch`, and `/v1/secret_types` endpoints.
 
