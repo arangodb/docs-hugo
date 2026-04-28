@@ -322,7 +322,9 @@ eventually see pods with the following names with a status of `Running`:
 {{< tag "Air-gapped system" >}}
 
 Before you can create a license key that you can apply on the air-gapped system,
-you need to get some information about the ArangoDB deployment.
+you need to get some information about the ArangoDB deployment. For an overview
+of how licensing works end-to-end in Kubernetes-managed deployments, including
+air-gapped environments, see [License Management](../license-management.md).
 
 Use the Platform CLI tool to create an inventory file. You need to specify the
 authentication method for ArangoDB (`Disabled`, `Basic`, `Token`), additional
