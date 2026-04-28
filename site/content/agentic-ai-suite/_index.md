@@ -14,7 +14,6 @@ aliases:
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
-{{< embed-svg "Agentic-AI-Suite-Architecture" >}}
 
 ## What's included
 

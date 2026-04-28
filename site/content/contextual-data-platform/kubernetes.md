@@ -5,6 +5,8 @@ weight: 20
 description: >-
   The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
+aliases:
+  - kubernetes
 ---
 The Arango Contextual Data Platform is **Kubernetes-native** by design, meaning it is built
 from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
@@ -12,6 +14,28 @@ it to function. This is not an optional feature, Kubernetes is the foundation
 that powers the entire platform architecture.
 
 {{< embed-svg "Platform-Architecture" >}}
+
+The diagram above shows the platform's high-level architecture. Everything runs
+inside a single Kubernetes cluster, with user traffic
+entering through Envoy, which acts as the API gateway and HTTP frontend for
+all services behind it. From there, requests are routed to the
+ArangoDB Platform Services, which group together the core building blocks:
+
+- **Platform Enablers** — the [File Manager](../platform-suite/file-manager/)
+  for object storage and the [Secret Manager](../platform-suite/secrets-manager/)
+  for credentials and other sensitive configuration.
+- **ArangoDB** — the distributed multi-model database at the heart of the platform,
+  deployed as Coordinators, DB-Servers, and Agents and managed by the
+  [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/).
+- **Agentic AI Suite** — the optional AI components (AutoGraph, GraphRAG,
+  GraphML, Graph Analytics, and others) that sit alongside ArangoDB and consume
+  its data.
+
+Alongside the built-in services, the cluster can also host
+[user-defined services (BYOC)](../platform-suite/container-manager/) — your
+own containers, deployed and routed through the same Envoy gateway so they
+share authentication, networking, and lifecycle management with the rest of
+the platform.
 
 {{< info >}}
 **Kubernetes Required**: The Arango Contextual Data Platform cannot operate without Kubernetes.
