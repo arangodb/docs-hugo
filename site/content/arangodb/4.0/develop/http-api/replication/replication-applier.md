@@ -380,7 +380,7 @@ var url = "/_api/replication/applier-config";
 var body = {
   endpoint: "tcp://127.0.0.1:8529",
   username: "replicationApplier",
-  password: "applier1234@foxx",
+  password: "applier1234",
   chunkSize: 4194304,
   autoStart: false,
   adaptivePolling: true
@@ -469,7 +469,7 @@ re.applier.stop();
 re.applier.properties({
   endpoint: "tcp://127.0.0.1:8529",
   username: "replicationApplier",
-  password: "applier1234@foxx",
+  password: "applier1234",
   autoStart: false,
   adaptivePolling: true
 });
@@ -536,7 +536,7 @@ re.applier.stop();
 re.applier.properties({
   endpoint: "tcp://127.0.0.1:8529",
   username: "replicationApplier",
-  password: "applier1234@foxx",
+  password: "applier1234",
   autoStart: false,
   adaptivePolling: true
 });

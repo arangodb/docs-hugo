@@ -380,30 +380,32 @@ state data on specific Coordinator nodes, and thus subsequent requests which
 require access to this state must be served by the Coordinator node which owns
 this state data. In order to support function behind a load-balancer, ArangoDB
 can transparently forward requests within the cluster to the correct node. If a
-request is forwarded, the response will contain the following custom HTTP header
-whose value will be the ID of the node which actually answered the request:
+request is forwarded, the response contains the following custom HTTP header
+whose value is the ID of the node which actually answered the request:
 
 - `x-arango-request-forwarded-to`
 
 The following APIs may use request forwarding:
 
 - `/_api/cursor`
-- `/_api/job`
 - `/_api/replication`
 - `/_api/query`
-- `/_api/tasks`
 - `/_api/transaction`
+- `/_api/tasks`
+- `/_api/job` (when requesting a specific job ID)
 
-Note: since forwarding such requests requires an additional cluster-internal HTTP
+Since forwarding such requests requires an additional cluster-internal HTTP
 request, they should be avoided when possible for best performance. Typically
 this is accomplished either by directing the requests to the correct Coordinator
 at a client-level or by enabling request "stickiness" on a load balancer. Since
 these approaches are not always possible in a given environment, we support the
 request forwarding as a fall-back solution.
 
-Note: some endpoints which return "global" data, such as `GET /_api/tasks` will
-only return data corresponding to the server on which the request is executed.
-These endpoints will generally not work well with load-balancers.
+Certain endpoints such as `GET /_api/job/pending` only return information
+corresponding to the server on which the request is executed. There is no
+cluster-wide aggregation of the information, such as a global list of all
+pending tasks. You only get the list of pending tasks from the node you query. 
+These endpoints generally don't work well with load-balancers.
 
 ## Overload control
 

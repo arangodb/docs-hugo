@@ -509,7 +509,8 @@ You can check the progress of operations and check if errors occurred.
 You can submit jobs concurrently and they also run concurrently.
 
 You can find the API reference documentation with detailed descriptions of the
-request and response data structures at <https://arangodb.github.io/graph-analytics>.
+request and response data structures at
+<https://apiref.arango.ai/#gral>.
 
 Request and response payloads are JSON-encoded in the engine API.
 

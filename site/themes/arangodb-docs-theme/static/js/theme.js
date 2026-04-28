@@ -1,15 +1,47 @@
 var theme = true;
 
-var _mermaid = null;
+let _mermaid = null;
+let _mermaidPanZoom = null;
 async function renderMermaidDiagrams() {
   var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
   if (!nodes.length) return;
-  if (!_mermaid) {
-    var mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
-    _mermaid = mermaidjs.default;
-    _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+  try {
+    if (!_mermaid) {
+      let mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
+      _mermaid = mermaidjs.default;
+      _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+    }
+    await _mermaid.run({ nodes });
+    if (!_mermaidPanZoom) {
+      try {
+        let svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
+        _mermaidPanZoom = svgPanZoom.default;
+      } catch (err) {
+        console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
+      }
+    }
+    nodes.forEach(attachMermaidPanZoom);
+  } catch (err) {
+    console.warn('Mermaid rendering failed', err);
   }
-  await _mermaid.run({ nodes });
+}
+
+function attachMermaidPanZoom(pre) {
+  if (pre.dataset.panzoomReady) return;
+  if (!_mermaidPanZoom) return;
+  let svg = pre.querySelector('svg');
+  if (!svg) return;
+
+  _mermaidPanZoom(svg, {
+    zoomEnabled: true,
+    controlIconsEnabled: true,
+    fit: true,
+    center: true,
+    minZoom: 0.5,
+    maxZoom: 10,
+  });
+
+  pre.dataset.panzoomReady = 'true';
 }
 
 function closeAllEntries() {
