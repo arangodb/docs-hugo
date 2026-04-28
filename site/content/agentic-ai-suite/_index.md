@@ -69,7 +69,8 @@ managed through the
 File Manager also holds the code packages uploaded through the Container
 Manager's
 [Bring Your Own Code](../platform-suite/container-manager/_index.md#bring-your-own-code)
-flow, so its contents are not exclusive to the Agentic AI Suite. Any structured data extracted from uploaded files
+flow, so its contents are not exclusive to the Agentic AI Suite.
+Any structured data extracted from uploaded files
 (entities, relationships, embeddings) is written back into ArangoDB.
 
 ## Sample datasets
