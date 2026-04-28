@@ -21,7 +21,7 @@ deployment has internet access:
 | Your deployment | How to license it | Run the Platform CLI tool? |
 |---|---|---|
 | **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool. | **Yes** — you run `arangodb_operator_platform` |
-| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the Web UI, or the HTTP API. | **Yes** — on the internet-connected machine only |
+| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh or the HTTP API. | **Yes** — on the internet-connected machine only |
 | **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (`kube-arangodb`)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
@@ -257,7 +257,7 @@ Use this walkthrough if you need to run
 `arangodb_operator_platform license generate` yourself — that is, you are:
 
 - Running **standalone ArangoDB** (no Kubernetes) and want a license key
-  file you can apply via arangosh or the Web UI, or
+  file you can apply via arangosh or the HTTP API, or
 - Preparing an **air-gapped Kubernetes** install and need to generate a key
   on an internet-connected machine to carry into the air-gapped cluster.
 
@@ -404,7 +404,7 @@ docker cp arangodb:/license_key.txt ./license_key.txt
 Copy the license string from `license_key.txt` and apply it to your ArangoDB
 deployment using any of the interfaces documented in the next section,
 [Apply a license key](#apply-a-license-key) — for example `arangosh` or
-the web interface.
+the HTTP API.
 
 ## Apply a license key
 
@@ -414,19 +414,6 @@ Apply a generated license key to a running ArangoDB deployment via one of
 the interfaces below.
 
 {{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. Click **Support** in the main navigation.
-2. Go to the **Rest API** tab.
-3. Expand the **Administration** panel.
-4. Expand the **PUT /_admin/license** sub-panel.
-5. Click the **Try it out** button.
-6. Paste the license key into the text area below the **Request body** label.
-   Make sure the key is wrapped in double quotes.
-7. Make sure the license key is surrounded by double quote marks.
-8. Click the **Execute** button.
-9. Scroll down to **Server response** to check the result.
-{{< /tab >}}
 
 {{< tab "arangosh" >}}
 ```js
@@ -554,16 +541,6 @@ for the full lifecycle, including how to choose between license credentials
 At any point, you may check the current state of your license like so:
 
 {{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. Click **Support** in the main navigation.
-2. Go to the **Rest API** tab.
-3. Expand the **Administration** panel.
-4. Expand the **GET /_admin/license** sub-panel.
-5. Click the **Try it out** button.
-6. Click the **Execute** button.
-7. Scroll down to **Server response** to check the result.
-{{< /tab >}}
 
 {{< tab "arangosh" >}}
 ```js
