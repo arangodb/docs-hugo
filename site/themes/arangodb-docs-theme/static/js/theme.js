@@ -225,10 +225,11 @@ function loadPage(target) {
         var resBase = new URL(response.url);
         if (reqBase.origin + reqBase.pathname + reqBase.search !== resBase.origin + resBase.pathname + resBase.search) {
           resBase.hash = reqBase.hash;
-          if (replaceHistory(resBase.pathname + resBase.search + resBase.hash)) {
-            loadPage(window.location.href);
+          if (!replaceHistory(resBase.pathname + resBase.search + resBase.hash)) {
+            return;
           }
-          return;
+          // fetch already followed the redirect; reuse the response body with the resolved URL.
+          href = resBase.href;
         }
       }
       return response.text();
