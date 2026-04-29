@@ -223,7 +223,7 @@ function loadNotFoundPage() {
       replaceArticle("", newDoc)
       initArticle("");
       docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
-      enableTargetHighlight();
+      flashTarget();
       return true;
     })
     .catch(error => console.error('Error loading not found page:', error));
@@ -241,9 +241,41 @@ function docKeyWithoutHash(urlString) {
   }
 }
 
-/** Enables :target highlight animation only after SPA content is injected (see theme.css). */
-function enableTargetHighlight() {
-  document.documentElement.classList.add("docs-target-highlight-ready");
+// CSS :target rule wouldn't wait for scrolling
+function flashTarget() {
+  const hash = location.hash;
+  if (!hash || hash.length < 2) return;
+  let el;
+  try {
+    el = document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch (e) {
+    return;
+  }
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const trigger = () => {
+    el.classList.remove("docs-target-flash");
+    void el.offsetWidth; // force reflow so re-adding the class restarts the animation
+    el.classList.add("docs-target-flash");
+    el.addEventListener("animationend", () => el.classList.remove("docs-target-flash"), { once: true });
+  };
+
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    trigger();
+    return;
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      trigger();
+      obs.disconnect();
+    }
+  });
+  obs.observe(el);
+  // Fallback if the element never becomes visible (removed, sticky-obscured, etc.).
+  setTimeout(() => obs.disconnect(), 2000);
 }
 
 function loadPage(target) {
@@ -305,7 +337,7 @@ function loadPage(target) {
       docsLastFetchedDocKey = docKeyWithoutHash(href);
       scrollToFragment();
       initArticle(href);
-      enableTargetHighlight();
+      flashTarget();
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
@@ -472,6 +504,7 @@ window.addEventListener('popstate', function (e) {
 window.addEventListener("hashchange", function () {
   // No pushState here, updateHistory() / the browser already recorded the URL.
   scrollToFragment();
+  flashTarget();
 });
 
 
