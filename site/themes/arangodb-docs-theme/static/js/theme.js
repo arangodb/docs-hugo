@@ -86,8 +86,19 @@ function replaceArticle(href, newDoc) {
     document.title = decodeHtmlEntities(match[1]);
   }
 
+  // Avoid `location.hash = ...` even when the value matches: Firefox runs the navigation
+  // algorithm and clears the current entry's history.state, breaking back/forward. The URL's
+  // fragment is already set by the prior pushState/replaceHistory; scrolling is handled by
+  // scrollToFragment() in loadPage. If the URL bar is somehow out of sync, replaceState
+  // updates it without creating a new (null-state) entry.
   if (matches = href.match(/.*?(#.*)$/)) {
-    location.hash = matches[1];
+    if (location.hash !== matches[1]) {
+      try {
+        window.history.replaceState(window.history.state, document.title, matches[0]);
+      } catch (e) {
+        location.hash = matches[1];
+      }
+    }
   }
 }
 
@@ -495,10 +506,10 @@ function initArticle(url) {
 
 
 window.addEventListener('popstate', function (e) {
-  var state = e.state;
-  if (state !== null) {
-    loadPage(window.location.href);
-  }
+  // Don't gate on e.state: the browser may clear state from inactive entries.
+  // Still need to load the destination page on back/forward.
+  // loadPage's docsLastFetchedDocKey guard short-circuits when the URL hasn't really changed.
+  loadPage(window.location.href);
 });
 
 window.addEventListener("hashchange", function () {
