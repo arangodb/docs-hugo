@@ -1148,7 +1148,7 @@ hgroup > h1 > code {
 article > h2,
 article > h2 > code {
     font-size: var(--TYPOGRAPHY-H2-SIZE);
-    padding-top: 32px;
+    margin-top: calc(var(--TYPOGRAPHY-H2-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H2-HEIGHT);
 }
 
@@ -1162,7 +1162,7 @@ article > h2 > code {
 article > h3,
 article > h3 > code {
     font-size: var(--TYPOGRAPHY-H3-SIZE);
-    padding-top: 24px;
+    margin-top: calc(var(--TYPOGRAPHY-H3-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H3-HEIGHT);
 }
 @media screen and (max-width: 768px) {
@@ -1175,7 +1175,7 @@ article > h3 > code {
 article > h4,
 article > h4 > code {
     font-size: var(--TYPOGRAPHY-H4-SIZE);
-    padding-top: 20px;
+    margin-top: calc(var(--TYPOGRAPHY-H4-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H4-HEIGHT);
 }
 
@@ -1189,7 +1189,7 @@ article > h4 > code {
 article > h5,
 article > h5 > code {
     font-size: var(--TYPOGRAPHY-H5-SIZE);
-    padding-top: 18px;
+    margin-top: calc(var(--TYPOGRAPHY-H5-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H5-HEIGHT);
 }
 
@@ -1203,7 +1203,7 @@ article > h5 > code {
 article > h6,
 article > h6 > code {
     font-size: var(--TYPOGRAPHY-H6-SIZE);
-    padding-top: 16px;
+    margin-top: calc(var(--TYPOGRAPHY-H6-SIZE) + 1rem);
     line-height: var(--TYPOGRAPHY-H6-HEIGHT);
 }
 
@@ -1219,8 +1219,26 @@ article > h3 > code,
 article > h4 > code,
 article > h5 > code,
 article > h6 > code {
-    padding-top: 0;
     white-space: normal;
+}
+
+@keyframes target-highlight {
+    from {
+        background-color: var(--color-electric-lime);
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+.docs-target-flash {
+    animation: target-highlight 0.5s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docs-target-flash {
+        animation: none;
+    }
 }
 
 article ul li {
