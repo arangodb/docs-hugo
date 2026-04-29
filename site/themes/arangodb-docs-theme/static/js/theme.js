@@ -797,6 +797,9 @@ function handleDocumentChange(event) {
       //console.log("handleDocumentChange: " + newPath);
       updateHistory(newPath);
       loadPage(newPath);
+    } else {
+      // Potentially update links to versioned content on unversioned page
+      linkToVersionedContent();
     }
   }
 }
