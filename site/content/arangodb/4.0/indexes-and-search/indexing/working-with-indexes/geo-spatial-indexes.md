@@ -185,9 +185,8 @@ slightly different location (like 1 inch or 1 cm off) would be unique again and
 not considered a duplicate, although it probably should. The desired threshold
 for detecting duplicates may vary for every project (including how to calculate
 the distance even) and needs to be implemented on the application layer as
-needed. You can write a [Foxx service](../../../develop/foxx-microservices/_index.md) for this purpose and
-make use of the [Geo-spatial functions in AQL](../../../aql/functions/geo.md) to find nearby
-locations supported by a geo index.
+needed. You can make use of the [Geo-spatial functions in AQL](../../../aql/functions/geo.md)
+to find nearby locations supported by a geo index.
 
 In case that the index was successfully created, an object with the index
 details, including the index-identifier, is returned.
@@ -246,8 +245,8 @@ description: ''
 ---
 ~db._create("geoSort");
 var idx = db.geoSort.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-for (i = -90;  i <= 90;  i += 10) {
-  for (j = -180; j <= 180; j += 10) {
+for (var i = -90;  i <= 90;  i += 10) {
+  for (var j = -180; j <= 180; j += 10) {
     db.geoSort.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
   }
 }
@@ -266,8 +265,8 @@ description: ''
 ---
 ~db._create("geoFilter");
 var idx = db.geoFilter.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-for (i = -90;  i <= 90;  i += 10) {
-  for (j = -180; j <= 180; j += 10) {
+for (var i = -90;  i <= 90;  i += 10) {
+  for (var j = -180; j <= 180; j += 10) {
     db.geoFilter.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
   }
 }

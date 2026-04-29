@@ -18,12 +18,15 @@ aliases:
 
 The Agentic AI Suite is composed of the following major components:
 
-- **Ada**: The AI digital assistant, for natural language interaction and development.
+- [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](autograph/_index.md): Organize enterprise data into contextual
   knowledge graph, using **AutoRAG** to optimize retrieval across graph, vector,
   and document data.
-- [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
-  your data and gain insights without having to learn the query language first.
+- [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
+  queries from natural language to explore your data and gain insights without having
+  to learn the query language first.
+- [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
+  using AI-powered reasoning, with validated performance improvements.
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
@@ -46,9 +49,8 @@ Alongside these components, you also get the following additional features:
 - [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
-  Agentic AI Suite and build your own integrations. See the <!-- TODO: New API reference and link -->
-  [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
-  for more details.
+  Agentic AI Suite and build your own integrations. See the
+  [API Reference](https://apiref.arango.ai/) for more details.
 
 ## Sample datasets
 

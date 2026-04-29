@@ -16,7 +16,11 @@ high-level features:
 - **Vector**: Vector embeddings and similarity search for AI applications
 - **Search**: Full-text search and complex query capabilities
 
-It runs standalone or in combination with the Platform Suite and Agentic AI Suite
-to form the Arango Contextual Data Platform.
 The [**ArangoDB Enterprise Edition**](../arangodb/_index.md) is the foundation
-of the Contextual Data Platform.
+of the Contextual Data Platform. You can also run ArangoDB standalone with or
+without Kubernetes.
+
+{{< tip >}}
+The minimum required ArangoDB version for the Arango Contextual Data Platform
+is the ArangoDB Enterprise Edition v3.12.9.
+{{< /tip >}}

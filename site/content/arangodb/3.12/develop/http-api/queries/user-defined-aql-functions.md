@@ -23,6 +23,9 @@ User-defined AQL functions are deprecated and the feature is removed in ArangoDB
 ## Create a user-defined AQL function
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction:
     post:
@@ -186,6 +189,9 @@ logJsonResponse(response);
 ## Remove a user-defined AQL function
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction/{name}:
     delete:
@@ -358,6 +364,9 @@ logJsonResponse(response);
 ## List the registered user-defined AQL functions
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/aqlfunction:
     get:

@@ -50,8 +50,9 @@ notable difference is probably the concept of loops in AQL, which makes it feel
 more like a programming language. It suits the schema-less model more natural
 and makes the query language very powerful while remaining easy to read and write.
 
-To get started with AQL, sign up for [ArangoDB University](https://university.arangodb.com/)
-and get access to interactive courses powered by the Arango Managed Platform (AMP). 
+<!-- TODO
+To get started with AQL, check out the AQL vs. SQL comparison.
+-->
 
 ## In the Cloud or On-premises
 

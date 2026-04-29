@@ -788,6 +788,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -823,13 +824,18 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |
@@ -855,7 +861,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -904,7 +910,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:
@@ -1545,6 +1551,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -1580,13 +1587,18 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1612,7 +1624,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -1661,7 +1673,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:
@@ -2047,6 +2059,7 @@ paths:
                           - seeks
                           - scannedFull
                           - scannedIndex
+                          - searchParallelism
                           - cursorsCreated
                           - cursorsRearmed
                           - cacheHits
@@ -2082,13 +2095,18 @@ paths:
                             description: |
                               The total number of documents iterated over when scanning a collection
                               without an index. Documents scanned by subqueries are included in the result, but
-                              operations triggered by built-in or user-defined AQL functions are not.
+                              operations triggered by built-in AQL functions are not.
                             type: integer
                           scannedIndex:
                             description: |
                               The total number of documents iterated over when scanning a collection using
                               an index. Documents scanned by subqueries are included in the result, but operations
-                              triggered by built-in or user-defined AQL functions are not.
+                              triggered by built-in AQL functions are not.
+                            type: integer
+                          searchParallelism:
+                            description: |
+                              The number of threads used by ArangoSearch for this
+                              query (introduced in v3.12.9).
                             type: integer
                           cursorsCreated:
                             description: |
@@ -2114,7 +2132,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -2163,7 +2181,7 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
+                              For a human-readable output, you can execute
                               `db._profileQuery(<query>, <bind-vars>)` in arangosh.
                             type: array
                             items:

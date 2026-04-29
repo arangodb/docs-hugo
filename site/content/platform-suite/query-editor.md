@@ -53,6 +53,10 @@ The Query Editor of the Arango Contextual Data Platform offers the following fea
   from the Query Editor. This feature is only available in the
   Arango Contextual Data Platform.
 
+- **Optimize queries with AI (Reasoner)**:
+  Analyze and optimize your AQL queries using AI-powered reasoning directly
+  from the Query Editor. This feature requires a license.
+
 ![Screenshot of the Query Editor with an AQL query for retrieving movie documents on the left and the results displayed on the right](../images/data-platform-query-editor.png)
 
 ## Work with queries
@@ -77,6 +81,8 @@ The following buttons are available at the bottom of a query tab:
   left-hand side under **Saved**, where you can also clone, rename, and delete them.
 - **AQLizer**: This button is only visible if you use the Arango Contextual Data Platform.
   See [Generate queries (AQLizer)](#generate-queries-aqlizer).
+- **Optimize**: This button is only visible if you have the required
+  license. See [Optimize queries (Reasoner)](#optimize-queries-reasoner).
 - **Explain**: Show the execution plan for the query.
 - **Profile**: Run the query with detailed tracking of its performance.
 - **Run query**: Execute the AQL query normally. You can also press
@@ -136,7 +142,7 @@ The sidebar on the left-hand side allows you to manage queries:
 {{< tag "Contextual Data Platform" >}}
 
 For an introduction to the AQLizer, see
-[The AQLizer feature of the Arango Agentic AI Suite](../agentic-ai-suite/aqlizer.md).
+[Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/_index.md).
 
 Before you can generate AQL queries, you need to set up the AQLizer feature.
 
@@ -162,6 +168,17 @@ AI can make mistakes or produce unexpected results.
 {{< /warning >}}
 
 ![Screenshot of the AQLizer UI with a prompt and the generated query](../images/data-platform-aqlizer.png)
+
+## Optimize queries (Reasoner)
+
+{{< tag "Agentic AI Suite" >}}
+
+The **Optimize** button opens the Reasoner panel, which uses AI to analyze your
+AQL queries and return a validated, faster version with a performance comparison
+report.
+
+For setup instructions and full usage details, see
+[Reasoner — Web Interface](../agentic-ai-suite/reasoner/web-interface.md).
 
 ## Adjust the viewport
 

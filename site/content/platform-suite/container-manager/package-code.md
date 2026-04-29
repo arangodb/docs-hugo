@@ -6,7 +6,16 @@ description: >-
   Package your application code for deployment in Container Manager
 ---
 
-Before deploying a service via the [Web Interface](web-interface/) or [API](deploy-api/), you need to package your application as a `.tar.gz` archive containing your code and dependencies.
+Before deploying a code-based service via the [Web Interface](web-interface/)
+or [API](deploy-api/), you need to package your application as a `.tar.gz`
+archive containing your code and dependencies.
+
+{{< tip >}}
+If you already have a Docker image, you can skip packaging and deploy it
+directly using a Docker image URL. See
+[Deploy via Web Interface](web-interface/) or [Deploy via API](deploy-api/)
+for details on image-based deployments.
+{{< /tip >}}
 
 ## Choose Your Packaging Method
 
@@ -25,7 +34,7 @@ artifacts.
 - Creates Dockerfile configurations tailored to your project.
 - Sets up virtual environments that match platform base images.
 - Enables local Docker image testing before deployment.
-- Optionally publishes Docker images to container registries.
+- Optionally publishes container images to container registries.
 - Processes standard project formats (`pyproject.toml`, `requirements.txt`, `package.json`).
 
 For installation and usage instructions, see the
@@ -49,7 +58,7 @@ follow the steps below.
    tar -czf myservice.tar.gz myproject/
    ```
 5. Test locally (optional but recommended):
-   - Install dependencies using `uv pip install -r pyproject.toml` or `npm install`.
+   - Install dependencies using `uv sync`.
    - Run your entry point script to verify it works before uploading.
 
 ## Example: Python Project
