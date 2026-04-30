@@ -20,7 +20,7 @@ any kind.
 For example, you can represent people by nodes and their friendships by
 relations. This lets you form a graph that is a social network in this case.
 
-![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.svg)
+![Mary - is friend of - John](../../../images/data-model-graph-relation-concrete.png)
 
 The specific terms to refer to nodes and relations in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
@@ -35,7 +35,7 @@ relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Mary - bought - Book, is friend of - John](../../../images/data-model-graph-relations.svg)
+![Mary - bought - Book, is friend of - John](../../../images/data-model-graph-relations.png)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one vertex to another vertex in a specific direction. This lets you model
