@@ -8,8 +8,6 @@ aliases:
   - ../reference/autograph/
 ---
 
-{{< embed-svg "Agentic-AI-Suite-Architecture" >}}
-
 ## What is AutoGraph?
 
 AutoGraph is an automation copilot that analyzes enterprise documents, discovers
