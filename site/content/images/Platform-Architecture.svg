@@ -5,11 +5,11 @@
   <style>
     .arch .card-link { cursor: pointer; }
     .arch .card-link .node { transition: fill 120ms, stroke 120ms; }
-    .arch .card-link:hover .node    { fill: #BEFE99; stroke: #044926; }
-    .arch .card-link:hover .node-db { fill: #B9FF38; stroke: #044926; }
+    .arch .card-link:hover .node    { fill: #1f5c38; stroke: #4ade80; }
+    .arch .card-link:hover .node-db { fill: #174d2e; stroke: #4ade80; }
     .arch .card-link:hover .node-ai { fill: #e9d8fb; stroke: #470878; }
     .arch .card-link:hover .node-byoc { fill: #FFFC4E; stroke: #5a3a1f; }
-    .arch .card-link:hover .node-op { fill: #BEFE99; stroke: #044926; }
+    .arch .card-link:hover .node-op { fill: #1f5c38; stroke: #4ade80; }
   </style>
   <defs>
     <marker id="arrow-g" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
@@ -21,16 +21,16 @@
   </defs>
 
   <g class="arch">
-    <rect width="900" height="600" fill="#F4FAF4" rx="6"/>
+    <rect width="900" height="600" fill="#f0fdf4" rx="6"/>
 
     <g>
       <circle cx="450" cy="40" r="18" fill="#dbe2eb" stroke="#4F6D8B" stroke-width="1.5"/>
       <circle cx="450" cy="35" r="5" fill="#4F6D8B"/>
       <path d="M 442 56 A 8 16 0 0 1 458 56 Z" fill="#4F6D8B"/>
-      <text x="450" y="82" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">USER</text>
+      <text x="450" y="82" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#166534">USER</text>
     </g>
 
-    <rect x="20" y="100" width="860" height="490" rx="12" fill="#F4FAF4" stroke="#02245F" stroke-width="2" stroke-dasharray="6 4"/>
+    <rect x="20" y="100" width="860" height="490" rx="12" fill="#f0fdf4" stroke="#02245F" stroke-width="2" stroke-dasharray="6 4"/>
     <a xlink:href="https://kubernetes.io/" target="_blank">
       <text x="35" y="129" font-family="sans-serif" font-size="11" font-weight="bold" fill="#02245F">KUBERNETES CLUSTER (k8s)</text>
     </a>
@@ -39,10 +39,10 @@
     <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#4F6D8B">HTTP/HTTPS (ingress)</text>
 
     <a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
-      <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#BEFE99" stroke="#044926" stroke-width="2"/>
-      <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#044926">Envoy</text>
-      <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#044926">(API Gateway &amp;</text>
-      <text x="450" y="206" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#044926">HTTP Frontend)</text>
+      <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#0f3726" stroke="#22c55e" stroke-width="2"/>
+      <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Envoy</text>
+      <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">(API Gateway &amp;</text>
+      <text x="450" y="206" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">HTTP Frontend)</text>
     </a>
 
     <a class="card-link" xlink:href="/platform-suite/container-manager/">
@@ -66,47 +66,43 @@
     <path d="M 560 181 L 620 181" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)"/>
     <text x="585" y="176" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#4F6D8B">/byoc-a/</text>
 
-    <a class="card-link" xlink:href="/platform-suite/">
-      <rect x="25" y="250" width="850" height="335" rx="10" fill="#ffffff" stroke="#4F6D8B" stroke-width="1.5"/>
-      <text x="411" y="270" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">ARANGODB PLATFORM SERVICES</text>
-    </a>
+    <rect x="25" y="250" width="850" height="335" rx="10" fill="#0b2218" stroke="#22c55e" stroke-width="1.5"/>
+    <text x="411" y="270" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">ARANGODB PLATFORM SERVICES</text>
 
-    <a class="card-link" xlink:href="/platform-suite/">
-      <rect x="195" y="288" width="430" height="95" rx="8" fill="#F4FAF4" stroke="#4F6D8B" stroke-width="1" stroke-dasharray="3 3"/>
-      <text x="410" y="305" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#044926">PLATFORM ENABLERS</text>
-    </a>
+    <rect x="195" y="288" width="430" height="95" rx="8" fill="#082016" stroke="#4ade80" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="410" y="305" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#86efac">PLATFORM ENABLERS</text>
 
     <a class="card-link" xlink:href="/platform-suite/file-manager/">
-      <rect x="215" y="315" width="190" height="55" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="310" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#044926">File Manager</text>
-      <text x="310" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Object Storage)</text>
+      <rect x="215" y="315" width="190" height="55" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="310" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">File Manager</text>
+      <text x="310" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#86efac">(Object Storage)</text>
     </a>
     <a class="card-link" xlink:href="/platform-suite/secrets-manager/">
-      <rect x="415" y="315" width="195" height="55" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="512" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#044926">Secret Manager</text>
-      <text x="512" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Secrets)</text>
+      <rect x="415" y="315" width="195" height="55" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="512" y="340" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">Secret Manager</text>
+      <text x="512" y="357" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#86efac">(Secrets)</text>
     </a>
 
     <a class="card-link" xlink:href="/arangodb/">
-      <rect x="200" y="405" width="420" height="175" rx="10" class="node-db" fill="#BEFE99" stroke="#044926" stroke-width="2"/>
-      <text x="410" y="428" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#044926">ARANGODB</text>
-      <text x="410" y="444" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#044926">(Distributed Multi-Model Database)</text>
+      <rect x="200" y="405" width="420" height="175" rx="10" class="node-db" fill="#0f3726" stroke="#22c55e" stroke-width="2"/>
+      <text x="410" y="428" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ARANGODB</text>
+      <text x="410" y="444" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#86efac">(Distributed Multi-Model Database)</text>
     </a>
 
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="215" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="275" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Coordinator</text>
-      <text x="275" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
+      <rect x="215" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="275" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Coordinator</text>
+      <text x="275" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="345" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="405" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">DB Server</text>
-      <text x="405" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
+      <rect x="345" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="405" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">DB Server</text>
+      <text x="405" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>
     </a>
     <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
-      <rect x="475" y="455" width="120" height="90" rx="8" class="node" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="535" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Agent</text>
-      <text x="535" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Nodes</text>
+      <rect x="475" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="535" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Agent</text>
+      <text x="535" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>
     </a>
 
     <path d="M 275 565 L 535 565" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
@@ -125,7 +121,7 @@
       <text x="765" y="320" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Graph Analytics</text>
       <text x="765" y="338" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Engine</text>
     </a>
-    <a class="card-link" xlink:href="/agentic-ai-suite/importer/">
+    <a class="card-link" xlink:href="/agentic-ai-suite/autograph/">
       <rect x="675" y="380" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
       <text x="765" y="405" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
       <text x="765" y="421" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Loader</text>
@@ -137,9 +133,9 @@
     </a>
 
     <a class="card-link" xlink:href="https://arangodb.github.io/kube-arangodb/" target="_blank">
-      <rect x="30" y="420" width="130" height="110" rx="10" class="node-op" fill="#ffffff" stroke="#007339" stroke-width="1.5"/>
-      <text x="95" y="471" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">ArangoDB</text>
-      <text x="95" y="487" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#044926">Operator</text>
+      <rect x="30" y="420" width="130" height="110" rx="10" class="node-op" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+      <text x="95" y="471" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="95" y="487" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Operator</text>
     </a>
 
     <path d="M 160 450 L 200 450" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)" marker-start="url(#arrow-g-start)"/>
