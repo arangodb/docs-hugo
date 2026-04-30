@@ -453,12 +453,12 @@ The UUID wrapped in quote marks is the deployment ID.
 
 Use your license credentials together with the inventory file and deployment ID
 from the previous step to obtain a license key. You can do this with the
-License Activation web UI or with the Platform CLI tool — both produce an
+License Activation portal or with the Platform CLI tool — both produce an
 equivalent license key.
 
 {{< tabs "offline-generate-license-key" >}}
 
-{{< tab "Web UI" >}}
+{{< tab "Activation portal" >}}
 1. Open <https://activate.license.arango.ai/> in a browser.
 2. Enter your **License Client ID** and **License Client Secret**.
 3. Choose how to identify the deployment:
@@ -466,16 +466,18 @@ equivalent license key.
      area, or click to select it. Captures the full deployment shape and is
      recommended for air-gapped deployments.
    - **Managed — Deployment ID only**: enter the deployment ID from the
-     previous step. The license server tracks the deployment state; no
-     inventory file is needed.
+     previous step. No inventory file is needed. Available only if
+     **Managed** activation is enabled for your license — check your
+     contract or with your Arango contact. If it is not enabled, use
+     **Inventory** mode instead.
 4. Optionally enable **Custom TTL** to override the default license duration.
    Accepts values like `24h`, `168h`, `7d`, or `3600s`.
 5. Click **Activate** and copy the generated license key (e.g. into a local
    `license.txt` file). You will use it in the next step to create the
    Kubernetes secret on the air-gapped system.
 
-The web UI is a convenient alternative for users who would otherwise run
-`arangodb_operator_platform license generate`. Inventory mode still requires
+The activation portal is a convenient alternative for users who would otherwise
+run `arangodb_operator_platform license generate`. Inventory mode still requires
 the Platform CLI tool to produce `inventory.json` in the previous step;
 Managed mode skips that step entirely.
 {{< /tab >}}

@@ -18,8 +18,8 @@ deployment has internet access:
 
 | Your deployment | How to license it | Run the Platform CLI tool? |
 |---|---|---|
-| **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or the [License Activation web UI](https://activate.license.arango.ai/) in **Managed** mode (one-off). | **Optional** — only if you use the Platform CLI tool |
-| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the Web UI, or the HTTP API. | **Yes** — on the internet-connected machine only |
+| **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or, if **Managed** activation is enabled for your license, with the [License Activation portal](https://activate.license.arango.ai/) (one-off). | **Optional** — only if you use the Platform CLI tool |
+| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the web interface, or the HTTP API. | **Yes** — on the internet-connected machine only |
 | **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (kube-arangodb)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
@@ -59,17 +59,26 @@ you use only for license generation.
 {{< /info >}}
 
 {{< tip >}}
-The [License Activation web UI](https://activate.license.arango.ai/) is a
-graphical alternative to the Platform CLI tool. It supports two modes:
+The [License Activation portal](https://activate.license.arango.ai/) is a
+browser-based alternative to the Platform CLI tool's `license activate` and
+`license generate` commands. It does not replace `license inventory` — the
+CLI is still required to produce an inventory file for the **Inventory**
+mode. The portal exposes two activation modes:
 
 - **Inventory** — upload an `inventory.json` file produced by
-  `arangodb_operator_platform license inventory`. Recommended for offline /
-  air-gapped flows.
-- **Managed** — provide just the deployment ID. Skips the inventory step;
-  suited to one-off activation of an online deployment.
+  `arangodb_operator_platform license inventory`. The standard mode and the
+  one to use for offline / air-gapped flows.
+- **Managed** — provide just the deployment ID. No inventory file is needed.
 
-See the **Web UI** entries in
-[Activate a deployment](#license-activation-web-ui-managed-mode),
+Which modes are available depends on the license configuration that Arango
+sets up for your account. **Managed** activation is not enabled for every
+customer. Check your contract or with your Arango contact for what was
+agreed. If you are unsure, you can try **Managed** first; if it is not
+enabled for your credentials, the portal rejects the request and you can
+fall back to **Inventory**.
+
+See the **Activation portal** entries in
+[Activate a deployment](#license-activation-portal-managed-mode),
 [Generate a license key](#generate-a-license-key), and the
 [container walkthrough](#walkthrough-generate-a-key-in-a-container).
 {{< /tip >}}
@@ -98,10 +107,12 @@ See the **Web UI** entries in
 
 ### Standalone deployment
 
-You can activate a standalone deployment with the Platform CLI tool or with
-the License Activation web UI. The CLI is the recommended option for ongoing
-operation because it can re-activate the deployment automatically on a fixed
-interval. The web UI is a quick, graphical alternative for one-off activation.
+You can activate a standalone deployment with the Platform CLI tool or, if
+**Managed** activation is enabled for your license, with the License
+Activation portal. The CLI is the recommended option for ongoing operation
+because it can re-activate the deployment automatically on a fixed interval.
+The activation portal is a quick, browser-based alternative for one-off
+activation.
 
 #### Platform CLI tool
 
@@ -165,9 +176,26 @@ interval. The web UI is a quick, graphical alternative for one-off activation.
    with a restart policy, or Kubernetes) so renewals resume automatically
    if the process exits unexpectedly.
 
-#### License Activation web UI (Managed mode)
+#### License Activation portal (Managed mode)
 
-The web UI generates a license key for a deployment without running the
+The portal supports two activation modes:
+
+- **Managed** identifies the deployment by its deployment ID alone. No
+  inventory file is needed. This is the mode used in this section, because
+  it applies to a running online standalone deployment.
+- **Inventory** identifies the deployment by an `inventory.json` file
+  produced by the Platform CLI tool. It is the mode used for offline /
+  air-gapped flows; see [Generate a license key](#generate-a-license-key)
+  below.
+
+{{< info >}}
+**Managed** activation is not enabled for every customer. Check your
+contract or with your Arango contact for what was agreed. If it is not
+enabled for your credentials, the portal rejects the request and you
+should use the [Platform CLI tool](#platform-cli-tool) instead.
+{{< /info >}}
+
+The portal generates a license key for a deployment without running the
 Platform CLI tool. It is suited to one-off activation; for unattended renewal,
 use the CLI's `--license.interval` instead.
 
@@ -188,7 +216,7 @@ use the CLI's `--license.interval` instead.
 6. Click **Activate** and copy the generated license key.
 7. Apply the license key to ArangoDB using one of the interfaces in
    [Apply a license key](#apply-a-license-key) — for example `arangosh` or
-   the Web interface.
+   the web interface.
 
 Repeat this procedure when the license is close to expiry. If you want
 unattended renewal, use the [Platform CLI tool](#platform-cli-tool) with
@@ -287,12 +315,12 @@ configuration options that let you tune TTL and grace periods.
    ```
 
 4. Generate the license key using the deployment ID, the inventory file, and
-   the license credentials. You can do this with the License Activation web UI
+   the license credentials. You can do this with the License Activation portal
    or with the Platform CLI tool — both produce an equivalent license key.
 
    {{< tabs "generate-license-key" >}}
 
-   {{< tab "Web UI" >}}
+   {{< tab "Activation portal" >}}
    1. Open <https://activate.license.arango.ai/>.
    2. Enter your **License Client ID** and **License Client Secret**.
    3. Choose how to identify the deployment:
@@ -300,14 +328,15 @@ configuration options that let you tune TTL and grace periods.
         area, or click to select it. Captures the full deployment shape and is
         recommended for offline / air-gapped environments.
       - **Managed — Deployment ID only**: enter the deployment ID directly.
-        The license server tracks the deployment state; no inventory file is
-        needed. Use this when you want a one-off key for a known online
-        deployment without running `license inventory`.
+        No inventory file is needed. Available only if **Managed** activation
+        is enabled for your license — check your contract or with your Arango
+        contact. If it is not enabled, the portal rejects the request and
+        you should use **Inventory** mode instead.
    4. Optionally enable **Custom TTL** to override the default license duration.
       Accepts values like `24h`, `168h`, `7d`, or `3600s`.
    5. Click **Activate** and copy the generated license key.
 
-   The web UI is a convenient alternative for users who would otherwise run
+   The activation portal is a convenient alternative for users who would otherwise run
    `arangodb_operator_platform license generate`. Inventory mode still requires
    the Platform CLI tool to produce the inventory file in the previous step;
    Managed mode skips that step entirely.
@@ -338,7 +367,7 @@ Use this walkthrough if you need to run
 `arangodb_operator_platform license generate` yourself — that is, you are:
 
 - Running **standalone ArangoDB** (no Kubernetes) and want a license key
-  file you can apply via arangosh or the Web UI, or
+  file you can apply via arangosh or the web interface, or
 - Preparing an **air-gapped Kubernetes** install and need to generate a key
   on an internet-connected machine to carry into the air-gapped cluster.
 
@@ -459,13 +488,13 @@ Copy the `id` value for the next step.
 
 Generate the license key using the deployment ID, the inventory file, and
 the license credentials you received from Arango (a client ID and a client
-secret). You can do this with the License Activation web UI (no extra tool
+secret). You can do this with the License Activation portal (no extra tool
 needed) or with the Platform CLI tool inside the container. Both options
 produce an equivalent license key.
 
 {{< tabs "walkthrough-generate-license-key" >}}
 
-{{< tab "Web UI" >}}
+{{< tab "Activation portal" >}}
 1. Open <https://activate.license.arango.ai/>.
 2. Enter your **License Client ID** and **License Client Secret**.
 3. Choose how to identify the deployment:
@@ -477,12 +506,14 @@ produce an equivalent license key.
      ```
 
    - **Managed — Deployment ID only**: enter the deployment ID from the
-     previous step. No inventory file is needed.
+     previous step. No inventory file is needed. Available only if
+     **Managed** activation is enabled for your license — check your
+     contract or with your Arango contact.
 4. Optionally enable **Custom TTL** to override the default license duration.
 5. Click **Activate** and copy the generated license key into a local
    `license_key.txt` file.
 
-The web UI is a convenient alternative for users who would otherwise run
+The activation portal is a convenient alternative for users who would otherwise run
 `arangodb_operator_platform license generate`.
 {{< /tab >}}
 

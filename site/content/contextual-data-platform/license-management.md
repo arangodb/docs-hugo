@@ -22,7 +22,7 @@ license service:
 | Your cluster | What you do | Platform CLI tool? |
 |---|---|---|
 | **Online** — can reach `*.license.arango.ai` | Create a Kubernetes secret with your **client ID** and **client secret**. The operator activates the deployment and renews the license automatically. | **No** |
-| **Air-gapped** — no internet access | Generate a **license key** on a separate internet-connected machine using the [License Activation web UI](https://activate.license.arango.ai/) or the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only — the Platform CLI is required to produce the inventory file |
+| **Air-gapped** — no internet access | Generate a **license key** on a separate internet-connected machine using the [License Activation portal](https://activate.license.arango.ai/) or the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only — the Platform CLI is required to produce the inventory file |
 
 The rest of this page describes how the operator manages the license and
 how to apply it for each flow.
@@ -44,7 +44,7 @@ the license.
 
 Air-gapped deployments do not need any outbound access from the Kubernetes cluster.
 License keys are generated on a separate internet-connected system using the
-[License Activation web UI](https://activate.license.arango.ai/) or the
+[License Activation portal](https://activate.license.arango.ai/) or the
 [Platform CLI tool](install-and-upgrade/offline-setup.md#step-7-generate-a-license-key)
 and then applied as a Kubernetes secret on the air-gapped cluster.
 
@@ -170,10 +170,12 @@ you generate a long-lived license key on an internet-connected system and
 apply it as a secret on the air-gapped cluster.
 
 1. On an internet-connected system, generate a license key for your deployment
-   using either the [License Activation web UI](https://activate.license.arango.ai/)
+   using either the [License Activation portal](https://activate.license.arango.ai/)
    or the Platform CLI tool. You need the deployment ID collected from the
-   air-gapped cluster, plus an inventory file (the web UI's **Managed** mode
-   accepts the deployment ID alone and skips the inventory file). See
+   air-gapped cluster, plus an inventory file. (If **Managed** activation is
+   enabled for your license, the portal accepts the deployment ID alone and
+   skips the inventory file — check your contract or with your Arango
+   contact.) See
    [Step 6: Collect information for the licensing](install-and-upgrade/offline-setup.md#step-6-collect-information-for-the-licensing)
    and [Step 7: Generate a license key](install-and-upgrade/offline-setup.md#step-7-generate-a-license-key)
    in the offline setup guide for the detailed procedure.
