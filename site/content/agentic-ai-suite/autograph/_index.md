@@ -10,10 +10,17 @@ aliases:
 
 ## What is AutoGraph?
 
-AutoGraph is an automation copilot that analyzes enterprise documents, discovers
-natural knowledge domains, and builds semantic infrastructure for intelligent
-retrieval at scale - importing documents, generating embeddings, building knowledge
-graphs, assigning RAG strategies per domain, and orchestrating downstream GraphRAG builds.
+AutoGraph is a large-scale RAG system that delivers strong accuracy at the
+quality-cost tradeoff you choose. It supports benchmarking, testset creation,
+automated ontologies, separation of concerns across tenants, and extensibility
+to new RAG methods - distilling lessons learned from running RAG at some of the
+world's largest enterprises.
+
+Under the hood, AutoGraph is an automation copilot that analyzes enterprise
+documents, discovers natural knowledge domains, and builds semantic infrastructure
+for intelligent retrieval at scale - importing documents, generating embeddings,
+building knowledge graphs, assigning RAG strategies per domain, and orchestrating
+downstream GraphRAG builds.
 
 Think of it as a **self-organizing knowledge system**. Instead of manually categorizing 
 documents or designing taxonomies, AutoGraph handles the following:
