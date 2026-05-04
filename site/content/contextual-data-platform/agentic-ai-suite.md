@@ -11,8 +11,8 @@ description: >-
 - [**Ada**](../agentic-ai-suite/ada.md):
   The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](../agentic-ai-suite/autograph/_index.md):
-  Organize enterprise data into contextual knowledge graph using
-  **AutoRAG** to optimize retrieval across graph, vector, and document data
+  Organize enterprise data into a contextual knowledge graph, with the
+  **RAG Strategizer** assigning each domain the right processing depth
 - [**AQLizer**](../agentic-ai-suite/natural-language-to-aql/_index.md):
   Generate AQL queries from natural language.
 - [**GraphRAG**](../agentic-ai-suite/graphrag/_index.md):

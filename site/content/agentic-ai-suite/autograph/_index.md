@@ -48,12 +48,13 @@ By organizing enterprise data into contextual knowledge graphs, AutoGraph create
 - Operate within governance policies
 - Produce explainable outputs with traceable lineage
 
-## AutoRAG: Automated Retrieval Strategy Selection
+## RAG Strategizer
 
-AutoRAG automatically selects the optimal retrieval strategy by combining:
-- GraphRAG
-- Vector search
-- Hybrid retrieval
-- Contextual summarization
-
-The system dynamically selects the retrieval approach based on the query, enabling AI systems to reason across connected enterprise context.
+Not all content is equally complex. The RAG Strategizer examines the domain
+clusters in the Corpus Graph and assigns each one a processing strategy:
+complex domains get a full knowledge graph with extracted entities and
+relationships (FullGraphRAG); simpler domains get a lighter partition that
+skips entity extraction (VectorRAG). For FullGraphRAG domains, it also
+generates a domain-specific ontology (the entity types to extract), so the
+resulting knowledge graph reflects the concepts that actually matter in
+that content.
