@@ -77,7 +77,7 @@ paths:
     post:
       operationId: createService
       description: |
-        Deploy an Cypher to AQL service with the Arango Control Plane (ACP).
+        Deploy a Cypher to AQL service with the Arango Control Plane (ACP).
       requestBody:
         content:
           application/json:
