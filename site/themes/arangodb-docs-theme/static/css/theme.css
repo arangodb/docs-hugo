@@ -2222,3 +2222,8 @@ pre.mermaid > svg {
     height: 100%;
     max-width: none;
 }
+
+pre.mermaid > svg .nodeLabel {
+    word-break: normal;
+    overflow-wrap: break-word;
+}
