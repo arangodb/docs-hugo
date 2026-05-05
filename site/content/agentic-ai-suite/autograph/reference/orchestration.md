@@ -4,8 +4,6 @@ menuTitle: Orchestration
 description: >-
   Automatically spawn importer workers and execute RAG pipeline builds
 weight: 50
-aliases:
-  - ../../../reference/autograph/orchestration/
 ---
 
 ## Trigger Orchestration

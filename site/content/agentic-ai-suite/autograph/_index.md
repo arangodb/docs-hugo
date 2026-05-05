@@ -4,8 +4,6 @@ menuTitle: AutoGraph
 weight: 4
 description: >-
   AutoGraph structures enterprise data into contextual knowledge shards with domain-aware retrieval strategies providing AI copilots and agents with production-grade context infrastructure
-aliases:
-  - ../reference/autograph/
 ---
 
 ## What is AutoGraph?
