@@ -32,9 +32,16 @@ AutoGraph can process a wide variety of document formats:
 - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
 - **Rich Text Format**: `.rtf`
 
+{{< tip >}}
+For large-scale PDF ingestion, GPU-accelerated nodes are recommended.
+PDF extraction on CPU-only clusters works for small document sets but
+introduces significant latency at scale.
+{{< /tip >}}
+
 ## Prerequisites
 
-- **ArangoDB** 3.12.9+
+- **Arango Contextual Data Platform 4.0+** or (which ships with
+  **ArangoDB 3.12.9** or later)
 - **LLM and embedding API access** (commonly OpenAI-compatible or Triton-compatible endpoints)
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
 - **Platform auth** reachable from the service (for token validation and
