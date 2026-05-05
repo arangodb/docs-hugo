@@ -1,8 +1,12 @@
 {{ $svgName := .Get 0 -}}
+{{ $caption := .Get 1 | default "Click a component to learn more." -}}
 {{ $svgPath := printf "content/images/%s.svg" $svgName -}}
 {{ $svgContent := readFile $svgPath -}}
 {{ if $svgContent -}}
-  {{ $svgContent | safeHTML -}}
+<figure style="margin: 2rem 0; text-align: center;">
+{{ $svgContent | safeHTML }}
+<figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;"><em>{{ $caption | markdownify }}</em></figcaption>
+</figure>
 {{ else -}}
   {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}
 {{ end -}}
