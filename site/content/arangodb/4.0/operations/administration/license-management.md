@@ -28,8 +28,9 @@ deployment has internet access:
 {{< info >}}
 **Legacy deployments (pre-v3.12.6):** Arango issued a ready-made license
 key directly to customers — there were no client ID and client secret
-credentials, and no Platform CLI tool. If you are on v3.12.5 or earlier,
-skip the activation and generation steps and go directly to
+credentials, and no Platform CLI tool. If Arango issued you a ready-made
+license key rather than license credentials (a client ID and client
+secret), skip the activation and generation steps and go directly to
 [Apply a license key](#apply-a-license-key).
 {{< /info >}}
 
@@ -271,12 +272,24 @@ configuration options that let you tune TTL and grace periods.
    `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
    the `PATH` environment variable to make it available as a command in the system.
 
-2. Create an inventory file using the Platform CLI tool. Point it to a running
-   ArangoDB deployment (running on `http://localhost:8529` in this example):
+2. Create an inventory file using the Platform CLI tool. Point it to the
+   running ArangoDB deployment that the license should apply to. Replace
+   `<arango-endpoint>` with the URL of that deployment — use
+   `http://localhost:8529` only if the Platform CLI tool runs on the same
+   host as the ArangoDB instance you want to license; otherwise use the
+   deployment's actual address (for example, `http://10.0.0.5:8529` or
+   `https://arangodb.example.com:8529`).
+
+   {{< warning >}}
+   The inventory file captures the deployment ID of whichever ArangoDB
+   instance you point the CLI at. The license key generated from it only
+   works for that instance. Make sure the endpoint is the deployment you
+   intend to license — not a local test or throwaway instance.
+   {{< /warning >}}
 
    ```sh
    arangodb_operator_platform license inventory \
-     --arango.endpoint="http://localhost:8529" \
+     --arango.endpoint="<arango-endpoint>" \
      inventory.json
    ```
 
