@@ -18,7 +18,7 @@ deployment. If the value of a secret changes, you only need to update it in
 a single place.
 
 {{< tip >}}
-Services that utilize the secret manager are, for example, the GraphRAG importer
+Services that utilize the secrets manager are, for example, the GraphRAG importer
 and retriever services of the Agentic AI Suite. They require a Large Language Model
 (LLM) and need to store an API key for the LLM like OpenAI.
 {{< /tip >}}
@@ -89,8 +89,6 @@ See the reference for the full request and response schemas of the
 `/v1/secrets`, `/v1/secrets_batch`, and `/v1/secret_types` endpoints.
 
 ### How to use the secrets manager API
-
-<!-- TODO: /ai prefix to be replaced -->
 
 Before you create a secret, take a look at the available types you can specify:
 
