@@ -7,10 +7,18 @@ description: >-
   feature of the Agentic AI Suite
 ---
 
-The Reasoner is an AI-powered query optimization service for ArangoDB that
-automatically improves the performance of AQL queries. It analyzes slow or
-inefficient queries, generates optimized versions, and validates them by
-comparing results with the original query to ensure correctness.
+The Reasoner is an AI-powered query optimization agent for ArangoDB that helps
+improve the performance of AQL queries. Once the service is set up and started,
+you can submit a query and the Reasoner agent inspects it by running **Explain**
+and **Profile**, calls tools to examine available indexes and collection
+statistics, then rewrites the query using what it has learned.
+
+The process is iterative: the agent tries alternative optimization strategies,
+measures the result of each attempt, and picks the best. If an attempt fails or
+does not produce a meaningful improvement, it retries with a different approach
+(up to 3 times). The final optimized query is validated to ensure it returns
+identical results to the original. The Reasoner is currently limited to
+read-only query execution.
 
 You can interact with the Reasoner directly from the **Query Editor** in the
 Arango Contextual Data Platform, or through its HTTP API for programmatic

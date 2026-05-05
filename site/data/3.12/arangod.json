@@ -942,7 +942,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "Each thread that is involved in the async-registry needs to garbage collect its finished async function calls regularly. This option controls how often this is done in seconds. This can possibly be performance relevant because each involved thread aquires a lock.",
+    "longDescription" : "Each thread that is involved in the async-registry needs to\ngarbage collect its finished async function calls regularly. This option\ncontrols how often this is done in seconds. This can possibly be performance\nrelevant because each involved thread acquires a lock.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -1249,7 +1249,7 @@
     "introducedIn" : [
       "v3.11.4"
     ],
-    "longDescription" : "This is to speed up the incremental upload process. Note that each instance needs approx. 7 to 10 MB of RAM in addition to `arangod`. The default should normally be OK for most situations.",
+    "longDescription" : "This is to speed up the incremental upload process. Note that\neach instance needs approx. 7 to 10 MB of RAM in addition to `arangod`.\nThe default should normally be OK for most situations.",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -1309,7 +1309,7 @@
     "introducedIn" : [
       "v3.12.0"
     ],
-    "longDescription" : "This value controls the cache's effective memory usage limit.\nThe user-defined memory limit (i.e. `--cache.size`) is multipled with this\nvalue to create the effective memory limit, from which on the cache will\ntry to free up memory by evicting the oldest entries.",
+    "longDescription" : "This value controls the cache's effective memory usage limit.\nThe user-defined memory limit (i.e. `--cache.size`) is multiplied with this\nvalue to create the effective memory limit, from which on the cache will\ntry to free up memory by evicting the oldest entries.",
     "maxInclusive" : true,
     "maxValue" : 1,
     "minInclusive" : true,
@@ -1509,7 +1509,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735558144,
+    "default" : 7735560192,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1726,7 +1726,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: Use the same value on all Coordinators and all DBServers!",
+    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: Use the same value on all Coordinators and all DB-Servers!",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -1960,7 +1960,7 @@
     "introducedIn" : [
       "v3.12.4"
     ],
-    "longDescription" : "Setting this option to a value greater than zero will\nlet a coordinator which cannot send a heartbeat to the agency for the specified time\nshut down. This is necessary to prevent that a coordinator survives longer than the\nagency supervision has patience before it removes the coordinator from the agency\nmeta data. Without this it would be possible that a coordinator is still running\ntransactions and committing them, which could, for example, render hotbackups\ninconsistent.",
+    "longDescription" : "Setting this option to a value greater than zero will\nlet a coordinator which cannot send a heartbeat to the agency for the specified time\nshut down. This is necessary to prevent that a coordinator survives longer than the\nagency supervision has patience before it removes the coordinator from the agency\nmeta data. Without this it would be possible that a coordinator is still running\ntransactions and committing them, which could, for example, render Hot Backups\ninconsistent.",
     "maxInclusive" : true,
     "maxValue" : 1.7976931348623157e+308,
     "minInclusive" : true,
@@ -2480,7 +2480,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "/var/lib/arangodb3",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -2946,7 +2946,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6188446515,
+    "default" : 6188448153,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3617,7 +3617,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js/apps",
+    "default" : "/var/lib/arangodb3-apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3881,7 +3881,6 @@
       "single"
     ],
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3954,7 +3953,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -4400,7 +4399,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "-",
     "deprecatedIn" : null,
     "description" : "Shortcut for `--log.output file://<filename>`",
     "dynamic" : false,
@@ -5175,7 +5174,7 @@
     "introducedIn" : [
       "v3.12.0"
     ],
-    "longDescription" : "Automatically compress outgoing HTTP requests in cluster-internal\ntraffic with the deflate, gzip or lz4 compression format.\nCompression will only happen if the size of the uncompressed request body exceeds\nthe threshold value controlled by this startup option,\nand if the request body size after compression is less than the original\nrequest body size.\nUsing the value 0 disables the automatic compression.\"",
+    "longDescription" : "Automatically compress outgoing HTTP requests in cluster-internal\ntraffic with the deflate, gzip or lz4 compression format.\nCompression will only happen if the size of the uncompressed request body\nexceeds the threshold value controlled by this startup option,\nand if the request body size after compression is less than the original\nrequest body size.\nUsing the value 0 disables the automatic compression.\"",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -5566,7 +5565,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "Toggles the AQL query results cache behavior.\nThe possible values are:\n\n- `off`: do not use query results cache\n- `on`: always use query results cache, except for queries that have their\n  `cache` attribute set to `false`\n- `demand`: use query results cache only for queries that have their `cache`\n  attribute set to `true`",
+    "longDescription" : "Toggles the AQL query results cache behavior.\nThe possible values are:\n\n- `off`: Don't use the query results cache.\n- `on`: Always use the query results cache, except for queries that have their\n  `cache` query option set to `false`.\n- `demand`: Use the query results cache only for queries that have their `cache`\n  query option set to `true`.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -5828,7 +5827,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "If set to `true`, AQL queries that produce\nwarnings are instantly aborted and throw an exception. This option can be set\nto catch obvious issues with AQL queries early.\n\nIf set to `false`, AQL queries that produce warnings are not aborted and return\nthe warnings along with the query results.\n\nYou can override the option for each individual AQL query via the\n`failOnWarning` attribute.",
+    "longDescription" : "If set to `true`, AQL queries that produce\nwarnings are instantly aborted and throw an exception. This option can be set\nto catch obvious issues with AQL queries early.\n\nIf set to `false`, AQL queries that produce warnings are not aborted and return\nthe warnings along with the query results.\n\nYou can override this setting for each individual AQL query via the\n`failOnWarning` query option.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -5839,7 +5838,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089716224,
+    "base" : 33089724416,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5847,7 +5846,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802670141,
+    "default" : 26802676777,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6174,7 +6173,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33089716224,
+    "base" : 33089724416,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6182,7 +6181,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853829735,
+    "default" : 19853834649,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6248,7 +6247,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "You can control how many different query execution\nplans the AQL query optimizer generates at most for any given AQL query with\nthis option. Normally, the AQL query optimizer generates a single execution plan\nper AQL query, but there are some cases in which it creates multiple competing\nplans.\n\nMore plans can lead to better optimized queries. However, plan creation has its\ncosts. The more plans are created and shipped through the optimization pipeline,\nthe more time is spent in the optimizer. You can lower the number to make the\noptimizer stop creating additional plans when it has already created enough\nplans.\n\nNote that this setting controls the default maximum number of plans to create.\nThe value can still be adjusted on a per-query basis by setting the\n`maxNumberOfPlans` attribute for individual queries.",
+    "longDescription" : "You can control how many different query execution\nplans the AQL query optimizer generates at most for any given AQL query with\nthis option. Normally, the AQL query optimizer generates a single execution plan\nper AQL query, but there are some cases in which it creates multiple competing\nplans.\n\nMore plans can lead to better optimized queries. However, plan creation has its\ncosts. The more plans are created and shipped through the optimization pipeline,\nthe more time is spent in the optimizer. You can lower the number to make the\noptimizer stop creating additional plans when it has already created enough\nplans.\n\nNote that this setting controls the default maximum number of plans to create.\nYou can still adjust the value on a per-query basis by setting the\n`maxNumberOfPlans` query option for individual queries.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -7392,7 +7391,7 @@
     "introducedIn" : [
       "v3.11.0"
     ],
-    "longDescription" : "The jemalloc-based memory allocator for the RocksDB block cache\nwill also exclude the block cache contents from coredumps, potentially making generated\ncoredumps a lot smaller.\nIn order to use this option, the executable needs to be compiled with jemalloc\nsupport (which is the default on Linux).",
+    "longDescription" : "The jemalloc-based memory allocator for the RocksDB block cache\nwill also exclude the block cache contents from coredumps, potentially making\ngenerated coredumps a lot smaller.\nIn order to use this option, the executable needs to be compiled with jemalloc\nsupport (which is the default on Linux).",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -7439,7 +7438,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282669772,
+    "default" : 9282672230,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -8170,7 +8169,7 @@
     "introducedIn" : [
       "v3.10.0"
     ],
-    "longDescription" : "Note that format version 6 can only be read by RocksDB versions\n>= 8.6.0. Thus switching to format version 6 will make the database files\nincompatible with ArangoDB versions with a lower RocksDB version in case of\ndowngrading.",
+    "longDescription" : "Note that format version 6 can only be read by RocksDB\nversions >= 8.6.0. Thus switching to format version 6 will make the database\nfiles incompatible with ArangoDB versions with a lower RocksDB version in case\nof downgrading.",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -10075,7 +10074,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376893030,
+    "default" : 12376896307,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -10954,7 +10953,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : null,
-    "longDescription" : "When set to a non-empty string, this must be the HTTP or HTTPS\nendpoint of an external RBAC authorization service for use by coordinators and single\nservers. In this case, all requests with use role-based-access-control (RBAC) via the\nspecified service for authorization decisions. When set to an empty string, RBAC is\ndisabled and instead the old permission system is used.",
+    "longDescription" : "When set to a non-empty string, this must be the HTTP or HTTPS\nendpoint of an external RBAC authorization service for use by Coordinators and\nsingle servers. In this case, all requests use role-based-access-control\n(RBAC) via the specified service for authorization decisions. When set to an\nempty string, RBAC is disabled and instead the old permission system is used.",
     "obsolete" : false,
     "os" : [
       "linux"
