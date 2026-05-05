@@ -630,8 +630,9 @@ function handleDocumentClick(event) {
 
     if (target.classList.contains("expand-nav")) return;
 
-    // Allow browser default for Ctrl/Cmd+click (new tab) or Shift+click (new window)
-    const openInNew = event.ctrlKey || event.metaKey || event.shiftKey;
+    // Allow browser default for non-primary buttons (middle/right) and modifier clicks
+    // (Ctrl/Cmd = new tab, Shift = new window, Alt = download/new tab depending on browser)
+    const openInNew = event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
   
     // Menu link clicks
     if (target.classList.contains("link-nav")) {
@@ -668,6 +669,7 @@ function handleDocumentClick(event) {
     // Card link clicks (including SVG links, getLinkHref supports xlink:href)
     const cardLinkEl = closest('.card-link');
     if (cardLinkEl) {
+        if (openInNew) return;
         event.preventDefault();
         const href = getLinkHref(cardLinkEl);
         if (href) {
