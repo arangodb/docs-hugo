@@ -207,8 +207,7 @@ available from v3.12.5 onward. See
   querying graphs.
 
 - [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
-  Hash-based sharding with automatic sharding key selection that keeps the edges
-  of graphs next to their connected nodes.
+  Hash-based sharding that keeps the edges of graphs next to their connected nodes.
 
 - [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md#smartgraphs-using-satellitecollections):
   Collections replicated on all cluster nodes can be combined with graphs

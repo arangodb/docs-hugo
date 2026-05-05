@@ -3,8 +3,8 @@ title: EnterpriseGraphs
 menuTitle: EnterpriseGraphs
 weight: 100
 description: >-
-  EnterpriseGraphs enable you to manage graphs at scale with automated sharding
-  key selection and co-location of edges with their connected nodes
+  EnterpriseGraphs enable you to manage graphs at scale by co-locating edges
+  with their connected nodes
 ---
 This chapter describes the `enterprise-graph` module, a specialized version of
 [SmartGraphs](../smartgraphs/_index.md).
@@ -34,7 +34,7 @@ EnterpriseGraphs use hash-based sharding similar to General Graphs that
 pseudo-randomly distribute nodes across shards, but EnterpriseGraphs ensure that
 the adjacent edges of nodes are co-located in the same shard. As a consequence,
 you **cannot** define `_key` values for edges. You can also **not modify** the
-`_from ` and `_to` edge attributes because they contain the sharding key which
+`_from` and `_to` edge attributes because they contain the sharding key which
 cannot be changed.
 
 While not as effective as the sharding of SmartGraphs, your data may not have a

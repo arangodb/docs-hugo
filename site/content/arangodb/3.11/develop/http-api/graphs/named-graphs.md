@@ -166,7 +166,7 @@ paths:
                             isSmart:
                               description: |
                                 Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                                or EnterpriseGraph (`smartGraphAttribute` is not set).
+                                or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                               type: boolean
                             isDisjoint:
                               description: |
@@ -287,8 +287,8 @@ paths:
                 isSmart:
                   description: |
                     Define if the created graph should be smart (Enterprise Edition only).
-                    - Setting the `smartGraphAttribute` options creates a SmartGraph.
-                    - Setting `isSmart` to `true` but no `smartGraphAttribute` creates an EnterpriseGraph.
+                    - Setting `options.smartGraphAttribute` creates a SmartGraph (`isSmart` is automatically `true`).
+                    - Setting `isSmart` to `true` but no `options.smartGraphAttribute` creates an EnterpriseGraph.
                   type: boolean
                   default: false
                 isDisjoint:
@@ -307,7 +307,7 @@ paths:
                       description: |
                         Setting this option creates a SmartGraph (Enterprise Edition only).
 
-                        The attribute name that is used to smartly shard the nodes of a graph.
+                        The attribute name that is used to smartly shard the vertices of a graph.
                         Every vertex in this SmartGraph has to have this attribute.
                         Cannot be modified later.
                       type: string
@@ -461,7 +461,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -589,7 +589,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1074,7 +1074,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1581,7 +1581,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1709,7 +1709,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2006,7 +2006,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2132,7 +2132,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2584,7 +2584,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2712,7 +2712,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3054,7 +3054,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3180,7 +3180,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3482,7 +3482,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3609,7 +3609,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |

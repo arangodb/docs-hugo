@@ -166,7 +166,7 @@ paths:
                             isSmart:
                               description: |
                                 Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                                or EnterpriseGraph (`smartGraphAttribute` is not set).
+                                or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                               type: boolean
                             isDisjoint:
                               description: |
@@ -262,7 +262,7 @@ paths:
                       from:
                         description: |
                           A list of node collection names.
-                          Edges you later insert into `collection` can only reference vertices
+                          Edges you later insert into `collection` can only reference nodes
                           from these collections in their `_from` attribute (if you use the
                           interface for named graphs).
                         type: array
@@ -271,7 +271,7 @@ paths:
                       to:
                         description: |
                           A list of node collection names.
-                          Edges you later insert into `collection` can only reference vertices
+                          Edges you later insert into `collection` can only reference nodes
                           from these collections in their `_to` attribute (if you use the
                           interface for named graphs).
                         type: array
@@ -287,8 +287,8 @@ paths:
                 isSmart:
                   description: |
                     Define if the created graph should be smart.
-                    - Setting the `smartGraphAttribute` options creates a SmartGraph.
-                    - Setting `isSmart` to `true` but no `smartGraphAttribute` creates an EnterpriseGraph.
+                    - Setting `options.smartGraphAttribute` creates a SmartGraph (`isSmart` is automatically `true`).
+                    - Setting `isSmart` to `true` but no `options.smartGraphAttribute` creates an EnterpriseGraph.
                   type: boolean
                   default: false
                 isDisjoint:
@@ -459,7 +459,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -587,7 +587,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1067,7 +1067,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1574,7 +1574,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1702,7 +1702,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1999,7 +1999,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2125,7 +2125,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2577,7 +2577,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2705,7 +2705,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3047,7 +3047,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3173,7 +3173,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3475,7 +3475,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3602,7 +3602,7 @@ paths:
                       isSmart:
                         description: |
                           Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
-                          or EnterpriseGraph (`smartGraphAttribute` is not set).
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
