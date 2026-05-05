@@ -40,7 +40,7 @@ introduces significant latency at scale.
 
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** or (which ships with
+- **Arango Contextual Data Platform 4.0+** (which ships with
   **ArangoDB 3.12.9** or later)
 - **LLM and embedding API access** (commonly OpenAI-compatible or Triton-compatible endpoints)
 - **Valid JWT** for the API (`Authorization: Bearer ...`)
