@@ -52,6 +52,25 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **Foxx microservices**:\
+  The Foxx microservice framework including tasks/queues, the related
+  startup options, JavaScript modules, and HTTP API endpoints have been removed.
+  The `foxx-cli` tool has been discontinued as well.
+
+  You may use Node.js together with the [arangojs driver](../../../ecosystem/drivers/javascript.md)
+  to work with ArangoDB from the outside using JavaScript as your language.
+
+  You can rewrite existing Foxx services or create new user-defined services for
+  the [Arango Contextual Data Platform](../../../contextual-data-platform/_index.md).
+  See the [Container Manager](../../../platform-suite/container-manager/_index.md)
+  to learn how to bring your own code and containers.
+
+- **User-defined AQL functions (UDFs)**:\
+  The ability to register custom functions for the AQL query language written
+  in JavaScript has been removed.
+
+  <!-- TODO: Hygenic macros for some use cases (once supported) -->
+
 - **Emergency console**:\
   The ArangoDB server process could be started in an interactive command-line
   mode (JavaScript REPL) with the `--console` option. This was primarily used
@@ -145,8 +164,6 @@ detailed information about breaking changes before upgrading.
   `graphql-sync`, `highlight.js`, `i` (inflect), `iconv-lite`, `joi`,
   `js-yaml`, `lodash`, `minimatch`, `qs`, `semver`, `sinon`, and `timezone`
   have been deprecated in 3.9 and will be removed in a future version of ArangoDB.
-  If you want to use NPM modules in your Foxx service, please refer to the
-  [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:\
   The batch request REST API with the `/_api/batch` endpoint was deprecated in
@@ -214,10 +231,10 @@ detailed information about breaking changes before upgrading.
 - **Actions**:\
   Snippets of JavaScript code on the server-side for minimal
   custom endpoints. Since the Foxx revamp in 3.0, it became really easy to
-  write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
+  write Foxx Microservices, which allowed you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.

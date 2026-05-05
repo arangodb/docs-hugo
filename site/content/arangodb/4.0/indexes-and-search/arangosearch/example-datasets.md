@@ -24,9 +24,6 @@ repository.
 ## Demo Geo S2 Dataset
 
 This is a New York restaurants and neighborhoods dataset taken from OpenData.city.
-Also see the
-[arangodb-foxx/demo-geo-s2](https://github.com/arangodb-foxx/demo-geo-s2)
-repository.
 
 1. Download [dump.zip](https://github.com/arangodb-foxx/demo-geo-s2/archive/refs/heads/dump.zip) (2.2 MB)
 2. Unpack the downloaded archive

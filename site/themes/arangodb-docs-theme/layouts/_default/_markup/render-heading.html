@@ -1,4 +1,4 @@
-{{- $ref := printf "%s#%s" page.RelPermalink .Anchor}}{{/* TODO: .Page instead of page? */}}
+{{- $ref := printf "%s#%s" .Page.RelPermalink .Anchor}}
 {{- $level := .Level }}
 {{- if eq .Level 1 }}
   {{- errorf "Found illegal level 1 Header in '%v' -> '%v'" .Page.RelPermalink .Text }}

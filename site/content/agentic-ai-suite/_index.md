@@ -49,9 +49,28 @@ Alongside these components, you also get the following additional features:
 - [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
-  Agentic AI Suite and build your own integrations. See the <!-- TODO: New API reference and link -->
-  [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
-  for more details.
+  Agentic AI Suite and build your own integrations. See the
+  [API Reference](https://apiref.arango.ai/) for more details.
+
+## Where your data lives
+
+The Arango Contextual Data Platform deploys and integrates multiple services,
+but the data itself lives in the ArangoDB core database system. Everything
+the Agentic AI Suite produces (knowledge graphs, embeddings, analytics
+results, query history) is persisted as collections and documents in
+ArangoDB databases, alongside your existing application data.
+
+The exception is raw files (PDFs, images, office documents, and other
+binaries) that you upload for Agentic AI processing, such as GraphRAG input.
+These are stored in object storage (S3, MinIO, or another blob store) and
+managed through the
+[File Manager](../platform-suite/file-manager/_index.md) service. The same
+File Manager also holds the code packages uploaded through the Container
+Manager's
+[Bring Your Own Code](../platform-suite/container-manager/_index.md#bring-your-own-code)
+flow, so its contents are not exclusive to the Agentic AI Suite.
+Any structured data extracted from uploaded files
+(entities, relationships, embeddings) is written back into ArangoDB.
 
 ## Sample datasets
 

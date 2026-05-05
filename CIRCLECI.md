@@ -240,3 +240,27 @@ via **Trigger Pipeline**.
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `create-docs-images-arm64` |
+
+## Troubleshooting
+
+### Expired Netlify access token
+
+If the `netlify deploy` command fails in CircleCI, it's possible that the
+Netlify Personal Access Token (PAT) expired. In this case, the error message
+in the CircleCI log looks like this:
+
+> Error: Site not found. Please rerun "netlify link"
+
+In Netlify, expired PATs automatically disappear (in the personal settings
+under Applications):
+
+<https://app.netlify.com/user/applications#personal-access-tokens>
+
+Create a new token, save it in 1Password, and update it in the CircleCI
+project settings:
+
+<https://app.circleci.com/settings/project/github/arangodb/docs-hugo/environment-variables>
+
+You don't have to delete the old one first. You can simply click **Add**, set
+the **Name** to `NETLIFY_ACCESS_TOKEN` and paste the token into the **Value**
+field. This updates the existing `NETLIFY_ACCESS_TOKEN` entry.
