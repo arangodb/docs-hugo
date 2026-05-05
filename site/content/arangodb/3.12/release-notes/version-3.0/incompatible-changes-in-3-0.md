@@ -204,15 +204,14 @@ The output of `TO_STRING()` has also changed for arrays and objects as follows:
 
 This change also affects other parts in AQL that used `TO_STRING()` to implicitly
 cast operands to strings. It also affects the AQL functions `CONCAT()` and 
-`CONCAT_SEPARATOR()` which treated array values differently. The old `TO_STRING()`
-was used, and when you passed multiple parameters, previous versions of ArangoDB
-automatically flattened array values in the first level of each passed array.
+`CONCAT_SEPARATOR()` which treated array values differently. Previous versions
+of ArangoDB used the old `TO_STRING()` behavior and automatically flattened
+array values in the first level of each passed array.
 
-Now, if you pass multiple parameters, there is no automatic flattening of arrays
-and arrays are cast using the new `TO_STRING()` behavior.
-
-What is unchanged is that if you pass an array as the sole parameter, its
-members get concatenated.
+Now, there is no automatic flattening of arrays and arrays are cast using the
+new `TO_STRING()` behavior. If you pass an array as the sole parameter, its
+members get concatenated - which seems the same as the previous flattening of
+one array level:
 
 | Expression | Result before v3.0 | Result from v3.0 onward |
 |------------|--------------------|-------------------------|
