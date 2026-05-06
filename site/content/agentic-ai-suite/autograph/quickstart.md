@@ -33,9 +33,8 @@ AutoGraph can process a wide variety of document formats:
 - **Rich Text Format**: `.rtf`
 
 {{< tip >}}
-For large-scale PDF ingestion, GPU-accelerated nodes are recommended.
-PDF extraction on CPU-only clusters works for small document sets but
-introduces significant latency at scale.
+For large-scale ingestion of PDF and Office documents, GPUs are recommended.
+Ingestion of those formats on CPU-only clusters might introduce significant latency even for small document sets.
 {{< /tip >}}
 
 ## Prerequisites
