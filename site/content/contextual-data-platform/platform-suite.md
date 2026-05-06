@@ -94,7 +94,7 @@ as well as the files used by service containers.
 
 ### Secrets manager
 
-The [Secrets manager](../platform-suite/secrets-manager.md) store secrets like
+The [Secrets manager](../platform-suite/secrets-manager.md) stores secrets like
 API keys for easy use across the Contextual Data Platform.
 
 ## Additional services
