@@ -54,8 +54,13 @@ current database.
    **Chat Settings** dialog.
 2. Select a **Provider** from the dropdown. Supported options are **Anthropic**,
    **OpenAI**, **OpenRouter**, and **Custom Endpoint**.
-3. Select a **Model**. The available models depend on the selected provider.
-   For OpenAI, the options include GPT-4o, GPT-4o Mini, and o3-mini.
+3. Select a **Model**. The available models depend on the selected provider:
+   - **OpenAI**: GPT-5.4, GPT-5.4 Mini, GPT-4.1 (default), GPT-4.1 Mini, o4-mini, and o3.
+   - **Anthropic**: Claude Sonnet 4.6, Claude Opus 4.6, and Claude Haiku 4.5.
+   - **OpenRouter**: A selection of models from providers such as Anthropic,
+     OpenAI, and Google Gemini.
+   - **Custom Endpoint**: Any model exposed by your OpenAI-compatible endpoint.
+
    You can also enter a custom identifier using the **Use custom model ID** link
    below the model dropdown.
 4. Select an **API Key** from the dropdown. Keys are managed in the

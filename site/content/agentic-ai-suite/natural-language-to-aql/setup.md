@@ -55,7 +55,7 @@ curl --request POST \
       "db_name": "<your_database_name>",
       "chat_api_provider": "openai",
       "chat_api_key": "<your-openai-api-key>",
-      "chat_model": "gpt-4o"
+      "chat_model": "gpt-5.4"
     }
   }'
 ```
@@ -93,7 +93,7 @@ All parameters are provided in the `env` object of your deployment request.
 
 | Parameter | Description |
 |---|---|
-| `chat_model` | Model name (default: `gpt-4o-mini`) |
+| `chat_model` | Model name (default: `gpt-5.4`) |
 | `chat_api_url` | Base URL for OpenAI-compatible endpoints (required for OpenRouter, self-hosted models, etc.) |
 | `openai_max_retries` | Maximum retry attempts for failed LLM requests |
 
@@ -117,7 +117,7 @@ curl --request POST \
       "db_name": "<your_database_name>",
       "chat_api_provider": "openai",
       "chat_secret_profile_id": "<secret-name>",
-      "chat_model": "gpt-4o"
+      "chat_model": "gpt-5.4"
     }
   }'
 ```
