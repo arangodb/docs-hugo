@@ -10,10 +10,16 @@ aliases:
 
 ## What is AutoGraph?
 
-AutoGraph is an automation copilot that analyzes enterprise documents, discovers
-natural knowledge domains, and builds semantic infrastructure for intelligent
-retrieval at scale - importing documents, generating embeddings, building knowledge
-graphs, assigning RAG strategies per domain, and orchestrating downstream GraphRAG builds.
+AutoGraph is a large-scale RAG system that delivers strong accuracy at the
+quality-cost tradeoff you choose. It supports benchmarking, testset creation,
+automated ontologies, and extensibility to new RAG methods - distilling lessons
+learned from running RAG at some of the world's largest enterprises.
+
+Under the hood, AutoGraph is an automation copilot that analyzes enterprise
+documents, discovers natural knowledge domains, and builds semantic infrastructure
+for intelligent retrieval at scale - importing documents, generating embeddings,
+building knowledge graphs, assigning RAG strategies per domain, and orchestrating
+downstream GraphRAG builds.
 
 Think of it as a **self-organizing knowledge system**. Instead of manually categorizing 
 documents or designing taxonomies, AutoGraph handles the following:
@@ -48,12 +54,13 @@ By organizing enterprise data into contextual knowledge graphs, AutoGraph create
 - Operate within governance policies
 - Produce explainable outputs with traceable lineage
 
-## AutoRAG: Automated Retrieval Strategy Selection
+## RAG Strategizer
 
-AutoRAG automatically selects the optimal retrieval strategy by combining:
-- GraphRAG
-- Vector search
-- Hybrid retrieval
-- Contextual summarization
-
-The system dynamically selects the retrieval approach based on the query, enabling AI systems to reason across connected enterprise context.
+Not all content is equally complex. The RAG Strategizer examines the domain
+clusters in the Corpus Graph and assigns each one a processing strategy:
+complex domains get a full knowledge graph with extracted entities and
+relationships (FullGraphRAG); simpler domains get a lighter partition that
+skips entity extraction (VectorRAG). For FullGraphRAG domains, it also
+generates a domain-specific ontology (the entity types to extract), so the
+resulting knowledge graph reflects the concepts that actually matter in
+that content.
