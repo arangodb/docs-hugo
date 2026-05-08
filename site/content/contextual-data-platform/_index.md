@@ -25,7 +25,7 @@ foundation for it all.
 
 {{< embed-svg "Arango-Contextual-Data-Platform-Overview" >}}
 
-The Contextual Data Platform is a [**Kubernetes-native**](kubernetes.md) technical infrastructure that
+The Contextual Data Platform is a [**Kubernetes-native**](architecture.md) technical infrastructure that
 acts as the umbrella for hosting the entire Arango offering of products.
 Built from the ground up for cloud-native orchestration, the platform leverages
 the power of Kubernetes to make it easy to deploy, scale, and operate the core
@@ -45,7 +45,7 @@ used for container orchestration, automated deployment, scaling, and
 management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
 leveraged to deliver enterprise-grade database management, automation,
 scalability, high availability, and operational excellence. Read more about
-the the platform's [Kubernetes-native architecture](kubernetes.md).
+the the platform's [Kubernetes-native architecture](architecture.md).
 
 The following list gives you a high-level overview of the Contextual Data Platform.
 Follow the links for a more details explanation of each component.

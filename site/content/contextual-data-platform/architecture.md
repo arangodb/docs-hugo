@@ -5,8 +5,6 @@ weight: 20
 description: >-
   The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
-aliases:
-  - kubernetes
 ---
 The Arango Contextual Data Platform is **Kubernetes-native** by design, meaning it is built
 from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
