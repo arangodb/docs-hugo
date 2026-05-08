@@ -165,6 +165,8 @@
 /data-platform/release-notes/                                                   /contextual-data-platform/release-notes/                        302
 /data-platform/*                                                                /platform-suite/:splat                                          302
 
+/contextual-data-platform/kubernetes/                                           /contextual-data-platform/architecture/                         302
+
 /ai-suite/release-notes/                                                        /contextual-data-platform/release-notes/                        302
 /ai-suite/reference/ai-orchestrator/                                            /platform-suite/control-plane-acp/                              302
 /ai-suite/*                                                                     /agentic-ai-suite/:splat                                        302

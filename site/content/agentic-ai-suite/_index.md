@@ -14,6 +14,7 @@ aliases:
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
+
 ## What's included
 
 The Agentic AI Suite is composed of the following major components:
