@@ -160,7 +160,7 @@ The semantic units feature supports:
 ### LLM Compatibility
 
 The semantic units processing works with all LLM providers:
-- **OpenAI**: GPT-5.4 Nano (default), GPT-5.4, GPT-4.1, GPT-4o (all models supported).
+- **OpenAI**: GPT-5.4 Nano (default), GPT-4.1, GPT-4o, o3 (all models supported).
 - **OpenRouter**: Gemini Flash, Claude Sonnet (all models supported).
 - **Triton**: Mistral-Nemo-Instruct (all models supported).
 
