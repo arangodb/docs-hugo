@@ -20,7 +20,7 @@ The Agentic AI Suite is composed of the following major components:
 
 - [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
-  contextual knowledge graph, with the **RAG Strategizer** assigning each
+  contextual knowledge graph, with the **AutoRAG** assigning each
   domain the right processing depth.
 - [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
   queries from natural language to explore your data and gain insights without having

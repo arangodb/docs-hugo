@@ -131,11 +131,11 @@ question, the large language model (LLM) is supplied with additional context
 from the knowledge graph, using lexical and semantic search. This enables
 accurate, context-aware intelligence grounded in enterprise data.
 
-### AutoGraph with the RAG Strategizer
+### AutoGraph with AutoRAG
 
 Arango [AutoGraph](agentic-ai-suite/autograph/_index.md) extends GraphRAG by
 automatically discovering knowledge domains in your organization's data and
-building a per-domain contextual knowledge graph. Its RAG Strategizer
+building a per-domain contextual knowledge graph. Its AutoRAG
 assigns each domain the right processing depth: full entity extraction for
 complex content, a lighter partition for simpler content.
 
