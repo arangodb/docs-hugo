@@ -164,6 +164,18 @@ The semantic units processing works with all LLM providers:
 - **OpenRouter**: Gemini Flash, Claude Sonnet (all models supported).
 - **Triton**: Mistral-Nemo-Instruct (all models supported).
 
+### Image description model
+
+The model used specifically for image description during semantic-unit
+processing is selected by the `MULTIMODAL_MODEL` environment variable (Helm
+value `multimodal_model`, also accepted on the server CLI as
+`--multimodal_model`). When unset, the Importer defaults to `gpt-4o-mini`.
+
+Image-description calls go through the same OpenAI-compatible chat path as the
+rest of the pipeline, so they honor the chat token-budget and Responses API
+settings described in the
+[LLM Configuration guide](llm-configuration.md#token-budget-for-chat-models).
+
 ## Next Steps
 
 - **[View all parameters](parameters.md)**: Explore other configuration options.
