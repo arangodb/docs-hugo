@@ -149,11 +149,18 @@ credentials for the remote site. Here is an example:
     "env_auth": "false",
     "access_key_id": "XXXXXXXXXXXXXXXXXXXX",
     "secret_access_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "region": "xx-xxxx-x",
-    "acl": "private"
+    "region": "xx-xxxx-x"
   }
 }
 ```
+
+{{< info >}}
+AWS buckets created since April 2023 default to _Bucket owner enforced_
+Object Ownership, which rejects requests that include an ACL header.
+Omit the `acl` key (or set it to `""`) in the configuration for such buckets.
+The `acl` key may still be required for some S3-compatible providers and for
+older AWS buckets that have ACLs explicitly re-enabled.
+{{< /info >}}
 
 This process may take as long as it needs to upload the data from the
 single server or all of the cluster's DB-Servers to the remote
@@ -306,7 +313,7 @@ The file `my-local.json` could look like this:
 {
   "my-local": {
     "type": "local",
-    "copy-links": "false",
+    "copy_links": "false",
     "links": "false",
     "one_file_system": "false"
   }
