@@ -189,7 +189,7 @@ paths:
                           The status of the transaction. Always `running` for a
                           successfully started transaction.
                         type: string
-                        example: running
+                        const: running
         '400':
           description: |
             The transaction specification is either missing or malformed.
@@ -544,7 +544,7 @@ paths:
                           The status of the transaction. Always `committed` for a
                           successfully committed transaction.
                         type: string
-                        example: committed
+                        const: committed
         '400':
           description: |
             The transaction identifier is malformed, or the transaction is in
@@ -718,7 +718,7 @@ paths:
                           The status of the transaction. Always `aborted` for a
                           successfully aborted transaction.
                         type: string
-                        example: aborted
+                        const: aborted
         '400':
           description: |
             The transaction identifier is malformed, or the transaction is in
@@ -861,9 +861,10 @@ paths:
                           type: string
                         state:
                           description: |
-                            The status of the transaction.
+                            The status of the transaction. Always `running`
+                            if it's in the list of running transactions.
                           type: string
-                          enum: [running, committed, aborted]
+                          const: running
       tags:
         - Transactions
 ```

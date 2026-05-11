@@ -799,7 +799,7 @@ can now be configured with the new `--transaction.streaming-max-transaction-size
 startup option. The default value remains 128 MiB.
 
 When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
-for that particular transactions. The default value as well as the maximum value
+for that particular transaction. The default value as well as the maximum value
 are defined by the `--transaction.streaming-max-transaction-size` startup option.
 See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
 
