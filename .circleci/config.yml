@@ -79,7 +79,7 @@ parameters:
 jobs:
   generate-config:
     docker:
-      - image: cimg/python:3.11.1
+      - image: cimg/python:3.14.3
     executor: continuation/default
     steps:
       - run:
