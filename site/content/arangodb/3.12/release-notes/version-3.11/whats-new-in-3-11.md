@@ -1416,6 +1416,19 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Adjustable Stream Transaction size
+
+<small>Introduced in: v3.11.14-4</small>
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
+When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
+for that particular transactions. The default value as well as the maximum value
+are defined by the `--transaction.streaming-max-transaction-size` startup option.
+See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+
 ## Client tools
 
 ### arangodump
