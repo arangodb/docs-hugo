@@ -28,11 +28,11 @@ aliases:
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.12
   - ../operations/installation/macos # 3.11 -> 3.12
   - ../operations/installation/windows # 3.11 -> 3.12
-  - ../operations/installation/compiling # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.12
-  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.12
-  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.12
-  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.12
+  - ../operations/installation/compiling # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-debian # 3.11 -> 3.11
+  - ../operations/installation/compiling/running-custom-build # 3.11 -> 3.11
+  - ../operations/installation/compiling/compile-on-windows # 3.11 -> 3.11
+  - ../operations/installation/compiling/recompiling-jemalloc # 3.11 -> 3.11
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
