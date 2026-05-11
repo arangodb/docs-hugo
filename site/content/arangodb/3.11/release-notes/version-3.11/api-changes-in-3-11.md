@@ -6,6 +6,12 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
 ## HTTP RESTful API
 
 ### Behavior changes

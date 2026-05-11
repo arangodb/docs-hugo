@@ -10,6 +10,12 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.11. ArangoDB 3.11 also contains several bug fixes that are not listed
 here.
 
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
 ## ArangoSearch
 
 ### Late materialization improvements

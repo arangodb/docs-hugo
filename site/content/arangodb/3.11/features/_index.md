@@ -6,6 +6,19 @@ description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
 ---
+## Long-term support
+
+{{< warning >}}
+ArangoDB version 3.11 reached End of Life (EOL) on May 30th, 2025.
+It is no longer supported for general users.
+{{< /warning >}}
+
+Long-term support (LTS) is available for OEM / embedded use cases on request.
+
+Customers with a contract for 3.11 (OEM LTS) receive hotfix updates for v3.11.14
+that include security vulnerability fixes, important bug fixes, and a few
+selected feature enhancements.
+
 ## On-premises versus Cloud
 
 ### Fully managed cloud service
