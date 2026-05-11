@@ -148,7 +148,15 @@ arangodb.spring.data.database=spring-demo
 arangodb.spring.data.user=root
 arangodb.spring.data.password=test
 arangodb.spring.data.hosts=localhost:8529
+
+# needed to use immutable entities (e.g. Java records)
+arangodb.spring.data.returnOriginalEntities=false
 ```
+
+The `returnOriginalEntities=false` setting is required to work with immutable
+entities such as Java records. With this option, save operations return a new
+entity instance with the database-generated identifier set, instead of mutating
+the original instance.
 
 ## Data modeling
 
@@ -163,52 +171,45 @@ Because many operations on documents require a document handle, it's recommended
 to add a field of type `String` annotated with `@Id` to every entity. The name
 doesn't matter. It's further recommended to **not set or change** the id by hand.
 
+The entity is defined as a Java record, which is immutable. The
+`@Id`-annotated component maps to the `_key` document field, and the
+`@ArangoId`-annotated component maps to the `_id` document field.
+A `withAlive()` helper is added to produce a modified copy when an update is
+needed, since records are immutable.
+
 ```java
 package com.arangodb.spring.demo.entity;
 
+import com.arangodb.springframework.annotation.ArangoId;
 import com.arangodb.springframework.annotation.Document;
+import com.arangodb.springframework.annotation.PersistentIndex;
+import com.arangodb.springframework.annotation.Relations;
 import org.springframework.data.annotation.Id;
 
+import java.util.Collection;
+
 @Document("characters")
-public class Character {
-
-    @Id // db document field: _key
-    private String id;
-
-    @ArangoId // db document field: _id
-    private String arangoId;
-
-    private String name;
-    private String surname;
-    private boolean alive;
-    private Integer age;
-
-    public Character() {
-        super();
-    }
-
+@PersistentIndex(fields = {"surname"})
+public record Character(
+        @Id String id,
+        @ArangoId String arangoId,
+        String name,
+        String surname,
+        boolean alive,
+        Integer age,
+        @Relations(edges = ChildOf.class, lazy = true) Collection<Character> children
+) {
     public Character(final String name, final String surname, final boolean alive) {
-        super();
-        this.name = name;
-        this.surname = surname;
-        this.alive = alive;
+        this(null, null, name, surname, alive, null, null);
     }
 
     public Character(final String name, final String surname, final boolean alive, final Integer age) {
-        super();
-        this.name = name;
-        this.surname = surname;
-        this.alive = alive;
-        this.age = age;
+        this(null, null, name, surname, alive, age, null);
     }
 
-    // getter & setter
-
-    @Override
-    public String toString() {
-        return "Character [id=" + id + ", name=" + name + ", surname=" + surname + ", alive=" + alive + ", age=" + age + "]";
+    public Character withAlive(final boolean alive) {
+        return new Character(this.id, this.arangoId, this.name, this.surname, alive, this.age, this.children);
     }
-
 }
 ```
 
@@ -306,13 +307,12 @@ public class CrudRunner implements CommandLineRunner {
 
         // save a single entity in the database
         // there is no need of creating the collection first. This happen automatically
-        final Character nedStark = new Character("Ned", "Stark", true, 41);
-        repository.save(nedStark);
-        // the generated id from the database is set in the original entity
-        System.out.println(String.format("Ned Stark saved in the database with id: '%s'", nedStark.getId()));
+        Character nedStark = repository.save(new Character("Ned", "Stark", true, 41));
+        // the generated id from the database is set in the returned entity
+        System.out.println(String.format("Ned Stark saved in the database with id: '%s'", nedStark.id()));
 
         // let us take a look whether we can find Ned Stark in the database
-        final Optional<Character> foundNed = repository.findById(nedStark.getId());
+        final Optional<Character> foundNed = repository.findById(nedStark.id());
         assert foundNed.isPresent();
         System.out.println(String.format("Found %s", foundNed.get()));
     }
@@ -334,31 +334,33 @@ your console output. The id will of course deviate.
 
 ```
 Ned Stark saved in the database with id: '346'
-Found Character [id=346, name=Ned, surname=Stark, alive=true, age=41]
+Found Character[id=346, arangoId=characters/346, name=Ned, surname=Stark, alive=true, age=41, children=null]
 ```
 
 ### Update an entity
 
 As everyone probably knows, Ned Stark died in the first season of Game of Thrones.
-So, you should to update his 'alive' flag. Thanks to the `id` field in the
-`Character` class, you can use the `save()` method of the repository to perform
+So, you should to update his 'alive' flag. Thanks to the `id` component in the
+`Character` record, you can use the `save()` method of the repository to perform
 an upsert with the variable `nedStark` in which `id` is already set.
+
+Because records are immutable, use the `withAlive()` helper to obtain a modified
+copy and reassign the result of `save()` to `nedStark`.
 
 Add the following lines of code to the end of our `run()` method in `CrudRunner`:
 
 ```java
-nedStark.setAlive(false);
-repository.save(nedStark);
-final Optional<Character> deadNed = repository.findById(nedStark.getId());
+nedStark = repository.save(nedStark.withAlive(false));
+final Optional<Character> deadNed = repository.findById(nedStark.id());
 assert deadNed.isPresent();
-System.out.println(String.format("The 'alive' flag of the persisted Ned Stark is now '%s'",deadNed.get().isAlive()));
+System.out.println(String.format("The 'alive' flag of the persisted Ned Stark is now '%s'", deadNed.get().alive()));
 ```
 
 If you run the demo a second time, the console output should look like this:
 
 ```
 Ned Stark saved in the database with id: '508'
-Found Character [id=508, name=Ned, surname=Stark, alive=true, age=41]
+Found Character[id=508, arangoId=characters/508, name=Ned, surname=Stark, alive=true, age=41, children=null]
 The 'alive' flag of the persisted Ned Stark is now 'false'
 ```
 
@@ -468,11 +470,11 @@ and Catelyn Stark.
 
 ```
 ## Return the first 5 characters sorted by name
-Character [id=1898, name=Arya, surname=Stark, alive=true, age=11]
-Character [id=1901, name=Bran, surname=Stark, alive=true, age=10]
-Character [id=1921, name=Brienne, surname=Tarth, alive=true, age=32]
-Character [id=1913, name=Bronn, surname=null, alive=true, age=null]
-Character [id=1890, name=Catelyn, surname=Stark, alive=false, age=40]
+Character[id=1898, arangoId=characters/1898, name=Arya, surname=Stark, alive=true, age=11, children=null]
+Character[id=1901, arangoId=characters/1901, name=Bran, surname=Stark, alive=true, age=10, children=null]
+Character[id=1921, arangoId=characters/1921, name=Brienne, surname=Tarth, alive=true, age=32, children=null]
+Character[id=1913, arangoId=characters/1913, name=Bronn, surname=null, alive=true, age=null, children=null]
+Character[id=1890, arangoId=characters/1890, name=Catelyn, surname=Stark, alive=false, age=40, children=null]
 ```
 
 ## Query by example
@@ -536,8 +538,8 @@ If you did everything right, the console output should be as follows:
 
 ```
 # Query by example
-## Find character which exactly match Character [id=null, name=Ned, surname=Stark, alive=false, age=41]
-Found Character [id=1880, name=Ned, surname=Stark, alive=false, age=41]
+## Find character which exactly match Character[id=null, arangoId=null, name=Ned, surname=Stark, alive=false, age=41, children=null]
+Found Character[id=1880, arangoId=characters/1880, name=Ned, surname=Stark, alive=false, age=41, children=null]
 ```
 
 ### Multiple entities
@@ -557,9 +559,9 @@ After executing the application, the console output should be as follows:
 
 ```
 ## Find all dead Starks
-Character [id=1887, name=Ned, surname=Stark, alive=false, age=41]
-Character [id=1890, name=Catelyn, surname=Stark, alive=false, age=40]
-Character [id=1899, name=Robb, surname=Stark, alive=false, age=null]
+Character[id=1887, arangoId=characters/1887, name=Ned, surname=Stark, alive=false, age=41, children=null]
+Character[id=1890, arangoId=characters/1890, name=Catelyn, surname=Stark, alive=false, age=40, children=null]
+Character[id=1899, arangoId=characters/1899, name=Robb, surname=Stark, alive=false, age=null, children=null]
 ```
 
 In addition to searching for specific values of the example entity, you can
@@ -585,7 +587,7 @@ The console output should only include Arya Stark.
 
 ```
 ## Find all Starks which are 30 years younger than Ned Stark
-Character [id=1898, name=Arya, surname=Stark, alive=true, age=11]
+Character[id=1898, arangoId=characters/1898, name=Arya, surname=Stark, alive=true, age=11, children=null]
 ```
 
 Aside from searching for exact and transformed values, you can – in case of type
@@ -677,23 +679,23 @@ your console output:
 ```
 # Derived queries
 ## Find all characters with surname 'Lannister'
-Character [id=238, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=240, name=Cersei, surname=Lannister, alive=true, age=36]
-Character [id=253, name=Tyrion, surname=Lannister, alive=true, age=32]
-Character [id=255, name=Tywin, surname=Lannister, alive=false, age=null]
+Character[id=238, arangoId=characters/238, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=240, arangoId=characters/240, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
+Character[id=253, arangoId=characters/253, name=Tyrion, surname=Lannister, alive=true, age=32, children=null]
+Character[id=255, arangoId=characters/255, name=Tywin, surname=Lannister, alive=false, age=null, children=null]
 ```
 
 ### Create an index
 
 Indexes allow fast access to documents, provided the indexed attribute(s) are
 used in a query. To make `findBySurname` queries faster, you can create an index
-on the `surname` field, adding the `@PersistentIndex` to the `Character` class:
+on the `surname` field, adding the `@PersistentIndex` to the `Character` record
+(this is already included in the record definition above):
 
 ```java
-
 @Document("characters")
 @PersistentIndex(fields = {"surname"})
-public class Character {
+public record Character(...) {
 ```
 
 Next time you run the demo, the related queries benefit from the index and
@@ -730,11 +732,11 @@ The new methods produce the following console output:
 
 ```
 ## Find top 2 Lannnisters ordered by age
-Character [id=444, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=446, name=Cersei, surname=Lannister, alive=true, age=36]
+Character[id=444, arangoId=characters/444, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=446, arangoId=characters/446, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
 ## Find all characters which name is 'Bran' or 'Sansa' and it's surname ends with 'ark' and are between 10 and 16 years old
-Character [id=452, name=Sansa, surname=Stark, alive=true, age=13]
-Character [id=456, name=Bran, surname=Stark, alive=true, age=10]
+Character[id=452, arangoId=characters/452, name=Sansa, surname=Stark, alive=true, age=13, children=null]
+Character[id=456, arangoId=characters/456, name=Bran, surname=Stark, alive=true, age=10, children=null]
 ```
 
 ### Single entity result
@@ -765,7 +767,7 @@ The console output should look like this:
 
 ```
 ## Find a single character by name & surname
-Found Character [id=974, name=Tyrion, surname=Lannister, alive=true, age=32]
+Found Character[id=974, arangoId=characters/974, name=Tyrion, surname=Lannister, alive=true, age=32, children=null]
 ```
 
 ### countBy
@@ -814,9 +816,9 @@ Only Arya, Bran, and Sansa are expected to be left.
 
 ```
 ## Remove all characters except of which surname is 'Stark' and which are still alive
-Character [id=1453, name=Sansa, surname=Stark, alive=true, age=13]
-Character [id=1454, name=Arya, surname=Stark, alive=true, age=11]
-Character [id=1457, name=Bran, surname=Stark, alive=true, age=10]
+Character[id=1453, arangoId=characters/1453, name=Sansa, surname=Stark, alive=true, age=13, children=null]
+Character[id=1454, arangoId=characters/1454, name=Arya, surname=Stark, alive=true, age=11, children=null]
+Character[id=1457, arangoId=characters/1457, name=Bran, surname=Stark, alive=true, age=10, children=null]
 ```
 
 ## Relations
@@ -831,37 +833,33 @@ To demonstrate this, use the previously created `Character` entity.
 Add a `children` field of type `Collection<Character>` annotated with
 `@Relations(edges = ChildOf.class, lazy = true)`.
 
+The `children` component is already part of the `Character` record shown
+earlier:
+
 ```java
 @Document("characters")
 @PersistentIndex(fields = {"surname"})
-public class Character {
-
-    @Id // db document field: _key
-    private String id;
-
-    @ArangoId // db document field: _id
-    private String arangoId;
-
-    private String name;
-    private String surname;
-    private boolean alive;
-    private Integer age;
-    @Relations(edges = ChildOf.class, lazy = true)
-    private Collection<Character> children;
-
-    // ...
-
+public record Character(
+        @Id String id,
+        @ArangoId String arangoId,
+        String name,
+        String surname,
+        boolean alive,
+        Integer age,
+        @Relations(edges = ChildOf.class, lazy = true) Collection<Character> children
+) {
+    // convenience constructors and withAlive() helper
 }
 ```
 
 Then create an entity for the edge you stated in `@Relations`. Other than a
 normal entity annotated with `@Document`, this entity is annotated with
 `@Edge`. This allows Spring Data ArangoDB to create an edge collection in
-the database. Just like `Character`, `ChildOf` also gets a field for its
-`id`. To connect two `Character` entities, it also gets a field of type
-`Character` annotated with `@From` and a field of type `Character` annotated
-with `@To`. `ChildOf` is persisted in the database with the ids of these
-two characters.
+the database. Just like `Character`, `ChildOf` also gets a component for its
+`id`. To connect two `Character` entities, it also gets a component of type
+`Character` annotated with `@From` and a component of type `Character`
+annotated with `@To`. `ChildOf` is persisted in the database with the ids of
+these two characters.
 
 ```java
 package com.arangodb.spring.demo.entity;
@@ -872,30 +870,14 @@ import com.arangodb.springframework.annotation.To;
 import org.springframework.data.annotation.Id;
 
 @Edge
-public class ChildOf {
-
-    @Id
-    private String id;
-
-    @From
-    private Character child;
-
-    @To
-    private Character parent;
-
+public record ChildOf(
+        @Id String id,
+        @From Character child,
+        @To Character parent
+) {
     public ChildOf(final Character child, final Character parent) {
-        super();
-        this.child = child;
-        this.parent = parent;
+        this(null, child, parent);
     }
-
-    // setter & getter
-
-    @Override
-    public String toString() {
-        return "ChildOf [id=" + id + ", child=" + child + ", parent=" + parent + "]";
-    }
-
 }
 ```
 
@@ -1000,18 +982,18 @@ Add the following lines of code to the `run()` method of `RelationsRunner`:
 ```java
 Character nedStark = characterRepo.findByNameAndSurname("Ned", "Stark").get();
 System.out.println(String.format("## These are the children of %s:", nedStark));
-nedStark.getChildren().forEach(System.out::println);
+nedStark.children().forEach(System.out::println);
 ```
 
 After executing the demo again, you can see the following console output:
 
 ```
-## These are the children of Character [id=2547, name=Ned, surname=Stark, alive=false, age=41]:
-Character [id=2488, name=Bran, surname=Stark, alive=true, age=10]
-Character [id=2485, name=Arya, surname=Stark, alive=true, age=11]
-Character [id=2559, name=Robb, surname=Stark, alive=false, age=null]
-Character [id=2556, name=Jon, surname=Snow, alive=true, age=16]
-Character [id=2484, name=Sansa, surname=Stark, alive=true, age=13]
+## These are the children of Character[id=2547, arangoId=characters/2547, name=Ned, surname=Stark, alive=false, age=41, children=[...]]:
+Character[id=2488, arangoId=characters/2488, name=Bran, surname=Stark, alive=true, age=10, children=null]
+Character[id=2485, arangoId=characters/2485, name=Arya, surname=Stark, alive=true, age=11, children=null]
+Character[id=2559, arangoId=characters/2559, name=Robb, surname=Stark, alive=false, age=null, children=null]
+Character[id=2556, arangoId=characters/2556, name=Jon, surname=Snow, alive=true, age=16, children=null]
+Character[id=2484, arangoId=characters/2484, name=Sansa, surname=Stark, alive=true, age=13, children=null]
 ```
 
 ### findBy including relations
@@ -1048,12 +1030,12 @@ that Ned, Jamie, and Cersei have at least one child in the age between 16 and
 
 ```
 ## These are the parents of 'Sansa'
-Character [id=2995, name=Ned, surname=Stark, alive=false, age=41]
-Character [id=2998, name=Catelyn, surname=Stark, alive=false, age=40]
+Character[id=2995, arangoId=characters/2995, name=Ned, surname=Stark, alive=false, age=41, children=null]
+Character[id=2998, arangoId=characters/2998, name=Catelyn, surname=Stark, alive=false, age=40, children=null]
 ## These parents have a child which is between 16 and 20 years old
-Character [id=2995, name=Ned, surname=Stark, alive=false, age=41]
-Character [id=2997, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=2999, name=Cersei, surname=Lannister, alive=true, age=36]
+Character[id=2995, arangoId=characters/2995, name=Ned, surname=Stark, alive=false, age=41, children=null]
+Character[id=2997, arangoId=characters/2997, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=2999, arangoId=characters/2999, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
 ```
 
 ## Query methods
@@ -1138,10 +1120,10 @@ The console output should give you all characters with `surname` Lannister.
 
 ```
 ## Find all characters with surname 'Lannister' (sort by age ascending)
-Character [id=7613, name=Tywin, surname=Lannister, alive=false, age=null]
-Character [id=7611, name=Tyrion, surname=Lannister, alive=true, age=32]
-Character [id=7596, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=7598, name=Cersei, surname=Lannister, alive=true, age=36]
+Character[id=7613, arangoId=characters/7613, name=Tywin, surname=Lannister, alive=false, age=null, children=null]
+Character[id=7611, arangoId=characters/7611, name=Tyrion, surname=Lannister, alive=true, age=32, children=null]
+Character[id=7596, arangoId=characters/7596, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=7598, arangoId=characters/7598, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
 ```
 
 ### BindVars annotation
@@ -1188,8 +1170,8 @@ The console output should be as follows:
 
 ```
 ## Find all characters with surname 'Lannister' which are older than 35
-Character [id=8294, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=8296, name=Cersei, surname=Lannister, alive=true, age=36]
+Character[id=8294, arangoId=characters/8294, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=8296, arangoId=characters/8296, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
 ```
 
 ### QueryOptions annotation
@@ -1228,8 +1210,8 @@ The new console output should look like this:
 ```
 ## Find all characters with surname 'Lannister' which are older than 35
 Found 2 documents
-Character [id=9012, name=Jaime, surname=Lannister, alive=true, age=36]
-Character [id=9014, name=Cersei, surname=Lannister, alive=true, age=36]
+Character[id=9012, arangoId=characters/9012, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
+Character[id=9014, arangoId=characters/9014, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
 ```
 
 ### Graph traversal
@@ -1259,7 +1241,7 @@ query method.
 ```java
 System.out.println("## Find all children and grantchildren of 'Tywin Lannister' (sort by age descending)");
 List<Character> children = repository.findByNameAndSurname("Tywin", "Lannister").map(tywin ->
-        repository.getAllChildrenAndGrandchildren(tywin.getArangoId(), ChildOf.class)).get();
+        repository.getAllChildrenAndGrandchildren(tywin.arangoId(), ChildOf.class)).get();
 children.forEach(System.out::println);
 ```
 
@@ -1267,10 +1249,10 @@ After executing the demo again, you can see the following console output:
 
 ```
 ## Find all children and grantchildren of 'Tywin Lannister' (sort by age descending)
-Character [id=11255, name=Tyrion, surname=Lannister, alive=true, age=32]
-Character [id=11242, name=Cersei, surname=Lannister, alive=true, age=36]
-Character [id=11253, name=Joffrey, surname=Baratheon, alive=false, age=19]
-Character [id=11240, name=Jaime, surname=Lannister, alive=true, age=36]
+Character[id=11255, arangoId=characters/11255, name=Tyrion, surname=Lannister, alive=true, age=32, children=null]
+Character[id=11242, arangoId=characters/11242, name=Cersei, surname=Lannister, alive=true, age=36, children=null]
+Character[id=11253, arangoId=characters/11253, name=Joffrey, surname=Baratheon, alive=false, age=19, children=null]
+Character[id=11240, arangoId=characters/11240, name=Jaime, surname=Lannister, alive=true, age=36, children=null]
 ```
 
 ## Geospatial queries
@@ -1310,34 +1292,15 @@ import com.arangodb.springframework.annotation.GeoIndexed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 
-import java.util.Arrays;
-
 @Document("locations")
-public class Location {
-
-    @Id
-    private String id;
-    private final String name;
-    @GeoIndexed(geoJson = true)
-    private final Point location;
-
+public record Location(
+        @Id String id,
+        String name,
+        @GeoIndexed(geoJson = true) Point location
+) {
     public Location(final String name, final Point location) {
-        super();
-        this.name = name;
-        this.location = location;
+        this(null, name, location);
     }
-
-    // getter & setter
-
-    @Override
-    public String toString() {
-      return "Location{" +
-              "id='" + id + '\'' +
-              ", name='" + name + '\'' +
-              ", location=" + location +
-              '}';
-    }
-
 }
 ```
 

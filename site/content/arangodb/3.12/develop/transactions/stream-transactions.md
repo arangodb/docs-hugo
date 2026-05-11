@@ -105,7 +105,7 @@ Additionally, `options` can have the following optional attributes:
   waiting on collection locks. This option is only meaningful when using
   `exclusive` locks. If not specified, a default value is used. Setting
   `lockTimeout` to `0` makes ArangoDB not time out waiting for a lock.
-- `maxTransactionSize`: Transaction size limit in bytes. Can be at most the
+- `maxTransactionSize`: Transaction size limit in bytes. It can be at most the
   value of the `--transaction.streaming-max-transaction-size` startup option.
 - `skipFastLockRound`: Whether to disable fast locking for write operations
   (default: `false`).
