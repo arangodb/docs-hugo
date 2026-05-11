@@ -155,6 +155,12 @@ paths:
                     waiting for a lock.
                   type: integer
                   default: 900
+                maxTransactionSize:
+                  description: |
+                    Transaction size limit in bytes.
+
+                    Default: Controlled by the [`--transaction.streaming-max-transaction-size` startup option](../../../components/arangodb-server/options.md#--transactionstreaming-max-transaction-size).
+                  type: integer
       responses:
         '201':
           description: |

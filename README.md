@@ -472,6 +472,63 @@ They are referenced by file name (without extension) in the shortcode.
 SVG icon files should not define the attributes `width`, `height`, `aria-hidden`,
 and `focusable` on the `<svg>` tag.
 
+#### Embedded SVGs
+
+To embed an SVG inline (so its text, shapes, and links remain part of the page
+DOM and stay clickable), use the `embed-svg` shortcode:
+
+```markdown
+{{< embed-svg "Platform-Architecture" >}}
+```
+
+```markdown
+{{< embed-svg "Platform-Architecture" "Click a component to learn more." >}}
+```
+
+Positional parameters:
+
+1. The SVG file name **without extension**, resolved against `site/content/images/`.
+   For `{{< embed-svg "Platform-Architecture" >}}`, the toolchain reads
+   `site/content/images/Platform-Architecture.svg`.
+2. An optional caption rendered below the figure. Markdown is supported.
+   Defaults to `Click a component to learn more.` Pass an empty string (`""`)
+   to suppress the default text.
+
+Unlike the `image` shortcode (which emits an `<img>` tag), `embed-svg` inlines
+the file contents with `readFile` and `safeHTML`, which means:
+
+- Links inside the SVG are clickable in the rendered page.
+- Text inside the SVG is selectable and indexable.
+- CSS classes set on SVG elements can be styled from the theme stylesheet.
+
+The build fails with an `errorf` if the named SVG cannot be found.
+
+##### Adding clickable links to an SVG
+
+Links live inside the SVG file itself, not in the shortcode call. To make a
+shape or label clickable, wrap it in an SVG `<a>` element with an `xlink:href`
+attribute:
+
+```xml
+<a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
+  <rect x="340" y="145" width="220" height="72" rx="10" class="node" .../>
+  <text x="450" y="174" ...>Envoy</text>
+</a>
+```
+
+To change where an existing block links to, open the SVG under
+`site/content/images/`, find the `<a ... xlink:href="...">` that wraps the
+block, and edit the `xlink:href` value.
+
+Conventions used in the existing diagrams:
+
+- Internal docs links use an absolute path, e.g. `/arangodb/4.0/deploy/cluster/`
+  or `/platform-suite/container-manager/`.
+- External links use a full URL and add `target="_blank"`, e.g.
+  `<a xlink:href="https://kubernetes.io/" target="_blank">`.
+- Use `class="card-link"` on the `<a>` tag so the link picks up the shared
+  hover styling defined in the theme.
+
 #### Keyboard shortcuts
 
 To document hotkeys and key combinations to press in a terminal or graphical
