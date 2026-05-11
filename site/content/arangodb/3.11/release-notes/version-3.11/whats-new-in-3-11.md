@@ -1507,3 +1507,14 @@ Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.13 and
 updated dependencies.
 
 Upgraded OpenSSL to version 3.5.5.
+
+---
+
+<small>Introduced in: v3.11.14-4</small>
+
+Upgraded ArangoDB Starter to version 0.18.24.
+
+Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.9 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.6.
