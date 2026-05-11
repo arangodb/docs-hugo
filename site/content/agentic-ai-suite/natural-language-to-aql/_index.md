@@ -9,6 +9,8 @@ aliases:
   - /agentic-ai-suite/aqlizer
 ---
 
+{{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow — click a component to learn more." >}}
+
 ## Introduction
 
 Natural Language to AQL (txt2aql) is a service of the Arango Contextual Data Platform
