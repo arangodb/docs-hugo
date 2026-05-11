@@ -118,6 +118,7 @@ jobs:
 
             pip install pyyaml requests
 
+            # The list of branches needs to be sorted by name (based on the `name` field in versions.yaml)!
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
               --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
