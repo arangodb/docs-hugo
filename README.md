@@ -190,6 +190,10 @@ $Env:ENV='static'  # PowerShell
 
 The output files will be written to `site/public/`.
 
+You can additionally set the `HUGO_URL` environment variable to
+`https://docs.arango.ai/` to create a production-like build that
+includes Google Analytics etc.
+
 #### Scheduled and example generation build
 
 **Configuration**
