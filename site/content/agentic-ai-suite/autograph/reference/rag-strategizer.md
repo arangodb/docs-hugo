@@ -4,8 +4,6 @@ menuTitle: RAG Strategizer
 description: >-
   Analyze document clusters and assign optimal RAG strategies
 weight: 45
-aliases:
-  - ../../../reference/autograph/rag-strategizer/
 ---
 
 ## Trigger RAG Strategizer
