@@ -10,6 +10,12 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.11. ArangoDB 3.11 also contains several bug fixes that are not listed
 here.
 
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
 ## ArangoSearch
 
 ### Late materialization improvements
@@ -631,8 +637,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming constraints
-for both datacenters to avoid incompatibilities.
+refused.
 
 Also see:
 - [Collection names](../../concepts/data-structure/collections.md#collection-names)
@@ -1158,12 +1163,8 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md#get-persisted-execution-statistics)
-for details.
-
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).
@@ -1520,3 +1521,14 @@ Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.13 and
 updated dependencies.
 
 Upgraded OpenSSL to version 3.5.5.
+
+---
+
+<small>Introduced in: v3.11.14-4</small>
+
+Upgraded ArangoDB Starter to version 0.18.24.
+
+Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.9 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.6.
