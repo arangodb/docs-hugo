@@ -161,6 +161,11 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
   }'
 ```
 
+{{< info >}}
+In Deep Search mode (`use_llm_planner=true`), citations are always disabled
+regardless of `show_citations`. The same applies to `GLOBAL` queries.
+{{< /info >}}
+
 **Global Search:**
 
 ```bash
@@ -172,6 +177,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
     "query_type": 1,
     "level": 1,
     "include_metadata": true,
+    "use_cache": true,
     "response_instructions": "Provide a high-level summary"
   }'
 ```
