@@ -15,7 +15,7 @@ aliases:
   - arangodb/devel/data-science # 3.10, 3.11
 ---
 
-{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance — click a component to learn more." >}}
+{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
 
 ## What's included
 

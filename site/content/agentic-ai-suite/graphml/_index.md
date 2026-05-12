@@ -11,7 +11,7 @@ aliases:
   - ../arangodb/devel/data-science/arangographml # 3.10, 3.11
 ---
 
-{{< embed-svg "GraphML-Flow" "GraphML end-to-end flow — click a component to learn more." >}}
+{{< embed-svg "GraphML-Flow" "GraphML end-to-end flow." >}}
 
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,

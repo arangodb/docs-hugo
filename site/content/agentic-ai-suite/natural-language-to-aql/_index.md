@@ -9,7 +9,7 @@ aliases:
   - /agentic-ai-suite/aqlizer
 ---
 
-{{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow — click a component to learn more." >}}
+{{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 
 ## Introduction
 

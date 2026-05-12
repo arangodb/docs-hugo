@@ -12,7 +12,7 @@ aliases:
   - ../arangodb/devel/data-science/llm-knowledge-graphs # 3.10, 3.11
 ---
 
-{{< embed-svg "GraphRAG-Flow" "GraphRAG end-to-end flow — click a component to learn more." >}}
+{{< embed-svg "GraphRAG-Flow" "GraphRAG end-to-end flow." >}}
 
 ## What are knowledge graphs?
 

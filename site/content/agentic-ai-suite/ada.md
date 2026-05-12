@@ -7,7 +7,7 @@ description: >-
   AI Digital Assistant integrated into the Arango Contextual Data Platform
 ---
 
-{{< embed-svg "Ada-Flow" "Ada end-to-end flow — click a component to learn more." >}}
+{{< embed-svg "Ada-Flow" "Ada end-to-end flow." >}}
 
 Ada is the ArangoDB AI Digital Assistant built into the Arango Contextual Data
 Platform. It lets you interact with your database using natural language instead
