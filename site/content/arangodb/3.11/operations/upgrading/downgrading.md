@@ -47,7 +47,7 @@ ArangoDB version, before you upgraded it.
 
 This procedure assumes that you have created a copy of your data directory (after having
 stopped the ArangoDB process running on it) before the upgrade. If you are running
-a Cluster, this procedure assumes that you have stopped them before
+a Cluster, this procedure assumes that you have stopped every ArangoDB process before
 the upgrade, and that you have taken a copy of their data directories, from all involved
 machines.
 
