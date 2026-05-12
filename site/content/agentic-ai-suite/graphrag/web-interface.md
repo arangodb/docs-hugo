@@ -58,8 +58,9 @@ configure and start a new importer service job. Follow the steps below.
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service is using **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon to select a secret
-   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Start importer service** button.
 {{< /tab >}}
 
@@ -67,10 +68,12 @@ configure and start a new importer service job. Follow the steps below.
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenAI API Key**, or click the key icon to select a secret
-   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
-4. Enter your **OpenRouter API Key**, or click the key icon to select a secret
-   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 5. Click the **Start importer service** button.
 
 {{< info >}}
@@ -109,8 +112,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
-   For the API key, you can type a new value or click the key icon to select a
-   secret stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
@@ -118,8 +122,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**, or **OpenRouter API Key** as needed.
-   For each API key, you can type a new value or click the key icon to select a
-   secret stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   For each API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
@@ -217,8 +222,9 @@ the generated Knowledge Graph. To configure the retriever service, open the
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon to select a secret
-   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Start retriever service** button.
 {{< /tab >}}
 
@@ -226,8 +232,9 @@ the generated Knowledge Graph. To configure the retriever service, open the
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenRouter API Key**, or click the key icon to select a secret
-   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+3. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Start retriever service** button.
 
 {{< info >}}
@@ -266,8 +273,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
-   For the API key, you can type a new value or click the key icon to select a
-   secret stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 
@@ -275,8 +283,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
-   For the API key, you can type a new value or click the key icon to select a
-   secret stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 

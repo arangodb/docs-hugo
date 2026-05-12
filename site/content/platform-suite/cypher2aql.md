@@ -77,7 +77,7 @@ paths:
     post:
       operationId: createService
       description: |
-        Deploy an `arango-cypher2aql` service with the Arango Control Plane (ACP)
+        Deploy a Cypher to AQL service with the Arango Control Plane (ACP).
       requestBody:
         content:
           application/json:
@@ -108,7 +108,8 @@ paths:
                     properties:
                       serviceId:
                         description: |
-                          The unique identifier assigned to the service.
+                          The service name followed by a hyphen and
+                          the unique identifier assigned to the service.
                         type: string
                         example: arango-cypher2aql-z8fue
                       description:
@@ -232,10 +233,11 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service that runs in the data platform.
+            The unique identifier of the Cypher to AQL service running in
+            the data platform.
           schema:
             type: string
-            example: arango-cypher2aql-z8fue
+            example: z8fue
       requestBody:
         content:
           application/json:
@@ -369,10 +371,11 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service that runs in the data platform.
+            The unique identifier of the Cypher to AQL service running in
+            the data platform.
           schema:
             type: string
-            example: arango-cypher2aql-z8fue
+            example: z8fue
       responses:
         '200':
           description: |
@@ -435,10 +438,11 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the Cypher to AQL service that runs in the data platform.
+            The unique identifier of the Cypher to AQL service running in
+            the data platform.
           schema:
             type: string
-            example: arango-cypher2aql-z8fue
+            example: z8fue
       responses:
         '200':
           description: |
@@ -503,8 +507,9 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the service to stop, here the ID of an
-            `arango-cypher2aql` service.
+            The identifier of the service to stop, here the name of the
+            Cypher to AQL service followed by a hyphen and the unique identifier
+            assigned to the service.
           schema:
             type: string
             example: arango-cypher2aql-z8fue
@@ -524,7 +529,7 @@ paths:
                     properties:
                       serviceId:
                         description: |
-                          The unique identifier of the service.
+                          The service name followed by a hyphen and the unique identifier.
                         type: string
                         example: arango-cypher2aql-z8fue
                       description:

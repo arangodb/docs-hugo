@@ -4,8 +4,6 @@ menuTitle: Import Files
 description: >-
   Upload multiple files into the corpus graph with module organization
 weight: 35
-aliases:
-  - ../../../reference/autograph/importing-files/
 ---
 
 ## Import multiple files
