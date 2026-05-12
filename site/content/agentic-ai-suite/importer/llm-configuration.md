@@ -201,6 +201,11 @@ The built-in context-window mapping covers:
 Prefix-matching is longest-match-wins, so for example `gpt-4-32k` matches before
 the generic `gpt-4` root.
 
+{{< warning >}}
+OpenAI has scheduled `gpt-4` for deprecation and shutdown on October 23, 2026.
+Use `gpt-4o` or `gpt-4-turbo` for new deployments.
+{{< /warning >}}
+
 {{< info >}}
 Independent of the static budget calculation, the Importer re-tokenizes the
 actual rendered prompt right before every chat-completion call. If the request
