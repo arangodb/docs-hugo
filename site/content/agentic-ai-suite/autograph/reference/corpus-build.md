@@ -4,8 +4,6 @@ menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
 weight: 40
-aliases:
-  - ../../../reference/autograph/corpus-build/
 ---
 
 ## Create Corpus Build

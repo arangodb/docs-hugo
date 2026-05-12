@@ -2,8 +2,6 @@
 title: The File Manager of the Arango Contextual Data Platform
 menuTitle: File Manager
 weight: 25
-aliases:
-  - file-manager
 description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform

@@ -4,8 +4,6 @@ menuTitle: Embeddings
 description: >-
   Add embeddings to documents in any ArangoDB collection
 weight: 55
-aliases:
-  - ../../../reference/autograph/embeddings/
 ---
 
 ## Embed field in collection

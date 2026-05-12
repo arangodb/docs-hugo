@@ -190,6 +190,10 @@ $Env:ENV='static'  # PowerShell
 
 The output files will be written to `site/public/`.
 
+You can additionally set the `HUGO_URL` environment variable to
+`https://docs.arango.ai/` to create a production-like build that
+includes Google Analytics etc.
+
 #### Scheduled and example generation build
 
 **Configuration**
@@ -924,18 +928,55 @@ weight: 42 # controls navigation position within the current section (low to hig
 
 Add the actual content formatted in Markdown syntax below the front matter.
 
-### Rename a page or section
+### Rename or move a page or section
+
+There are two options for setting up redirects when renaming or moving content:
+
+- **Netlify redirects**: Server-side, testable in Netlify deploy previews.
+  Use for unversioned content as well as when removing versioned content.
+- **Hugo aliases**: Client-side, can be tested locally. Use only when
+  renaming/moving versioned content to keep the version switcher working locally.
+
+Note that turning a page `topic.md` into a section `topic/_index.md` (in
+order to add child pages) does not affect the resulting URL (`/topic/`) and
+does therefore not require a redirect!
 
 Netlify supports server-side redirects configured with a text file
 ([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
 This is helpful when renaming folders with many subfolders and files because
 there is support for splatting and placeholders (but not regular expressions). See
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
-for details. The configuration file is `site/static/_redirects`.
+for details.
 
-Otherwise, the following steps are necessary for moving content:
+The configuration file is [`site/static/_redirects`](site/static/_redirects).
+The general format is `/old/url/ /new/url/ 301`, where `301` is for a permanent
+redirect and `302` for a temporary one. Use `302` until the redirects have been
+tested, then change them to `301` - this avoids caching issues (browser, CDN)
+should it be necessary to fix some of the redirects.
+
+Netlify redirects are preferable for SEO because search engines are more likely to
+update links in their indexes if they get a server-side `301 Permanent Redirect`
+HTTP status code, and it also works better when using e.g. cURL
+(`curl -L ...` to automatically follow redirects).
+
+Where Netlify redirects don't work is when you run the docs toolchain locally.
+This is generally not an issue because they can be tested using the automatic
+deploy previews, and you can only hit the redirects if you manually enter the
+old URLs. There is one exception, however: the **version selector**. If you
+switch between versions of a page, you can get a `404 Not Found` when running
+the docs toolchain locally, while in the Netlify deploy previews, you get
+redirected. This is because the version selector merely substitutes the version
+in the current URL and we hope that this page exists.
+
+To ensure a working version selector locally, which can be helpful when
+reviewing content, the rule is to use Hugo aliases instead of Netlify redirects
+when moving or renaming versioned pages (i.e. `/arangodb/<version>/...`).
+
+The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
-2. Set up `aliases` via the front matter as needed
+2. Set up `aliases` via the front matter as needed - consider all version
+   switcher actions, like switching from an older version to any of the newer,
+   renamed/moved versions, and possibly vice versa!
 3. Adjust `weight` of pages in the front matter if necessary
 4. Update cross-references in all of the content to use the new file path
 
@@ -956,6 +997,16 @@ aliases:
 
 Don't forget to update any references to the old file in the content to the new
 path.
+
+Also don't forget to check whether an alias needs to be added for the opposite
+direction so that you can switch between old and new versions without getting
+a `404` error:
+
+| File                           | Alias      |
+|--------------------------------|------------|
+| `/arangodb/3.11/old-name.md`   | `new-name` |
+| `/arangodb/3.12/new-name.md`   | `old-name` |
+| `/arangodb/stable/new-name.md` | `old-name` |
 
 If you move a file from one folder to another, from `old/file.md` to `new/file.md`
 for instance, use a relative path as shown below:
@@ -1073,6 +1124,25 @@ It makes a warning show at the top of every page for that version.
    +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
    ```
 
+   Note that the order of the branches is important because the version information
+   is looked up based on the index number. The branches need to be ordered according
+   to a sorted list of the `name` fields as defined in the `versions.yaml`.
+   
+   Code excerpt from `generate_config.py`:
+   
+   ```py
+   versions = yaml.safe_load(open("versions.yaml", "r"))
+   versions = sorted(versions["/arangodb/"], key=lambda d: d['name'])
+   
+   def workflow_generate(config):
+       # ...
+   
+       for i in range(len(versions)):
+           version = versions[i]["name"]
+           # ...
+           branch = args.arangodb_branches[i]
+   ```
+
 3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
    `services.toolchain.volumes` for the new version. Simply increment the value
    after `:-/tmp/`. Example:
@@ -1179,7 +1249,20 @@ It makes a warning show at the top of every page for that version.
 
    Add the new, untracked files to Git!
 
-8. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
+8. Check whether you need to add additional `aliases` in the front matter of
+   pages. This is necessary keep the switching using the version selector
+   working, from renamed/moved pages in older versions to the corresponding
+   pages in the newer versions.
+
+   ```diff
+    aliases:
+      - ../arangodb/3.12/data-science/arangographml
+      - ../arangodb/stable/data-science/arangographml
+   +  - ../arangodb/4.0/data-science/arangographml
+   +  - ../arangodb/devel/data-science/arangographml
+   ```
+
+9. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
    Example:
 
    ```diff
@@ -1195,33 +1278,33 @@ It makes a warning show at the top of every page for that version.
 
    Expect the plain build to fail for the time being because of missing data files.
 
-9. You can use CircleCI to initially generate the data files for the new version,
-   like the startup option dumps. You can also populate the example cache at the
-   same time.
+10. You can use CircleCI to initially generate the data files for the new version,
+    like the startup option dumps. You can also populate the example cache at the
+    same time.
 
-   Before you continue, make sure there are no conflicts in the PR with the
-   `main` branch. The CircleCI workflow will otherwise create a merge commit
-   favoring the `main` branch (in order to update the cache file but also
-   affecting other files), and this can cause e.g. the `versions.yaml` file to
-   get reverted in case of a conflict. The toolchain would then be unaware of
-   the newly added version.   
+    Before you continue, make sure there are no conflicts in the PR with the
+    `main` branch. The CircleCI workflow will otherwise create a merge commit
+    favoring the `main` branch (in order to update the cache file but also
+    affecting other files), and this can cause e.g. the `versions.yaml` file to
+    get reverted in case of a conflict. The toolchain would then be unaware of
+    the newly added version.   
    
-   In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
-   select the branch of your PR and click **Trigger Pipeline**.
-   Enter the parameters similar to this example:
+    In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
+    select the branch of your PR and click **Trigger Pipeline**.
+    Enter the parameters similar to this example:
 
-   | Type | Name | Value |
-   |:-----|:-----|:------|
-   | string | `workflow` | `generate` |
-   | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
-   | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
-   | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
-   | boolean | `commit-generated` | `true` |
+    | Type | Name | Value |
+    |:-----|:-----|:------|
+    | string | `workflow` | `generate` |
+    | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
+    | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
+    | boolean | `commit-generated` | `true` |
 
-   Approve the workflow in CircleCI. After a successful run, you should see a
-   commit in the docs PR with the updated data files, as well as an updated
-   example cache file. The plain build should no longer fail and provide you
-   with a Netlify preview.
+    Approve the workflow in CircleCI. After a successful run, you should see a
+    commit in the docs PR with the updated data files, as well as an updated
+    example cache file. The plain build should no longer fail and provide you
+    with a Netlify preview.
 
 ### Remove a version
 

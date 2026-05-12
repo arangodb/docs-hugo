@@ -4,8 +4,6 @@ menuTitle: Reference
 weight: 30
 description: >-
   AutoGraph HTTP REST API endpoints, authentication, call sequence, and workflow examples
-aliases:
-  - ../../reference/autograph/
 ---
 
 This section documents the AutoGraph HTTP REST API. All endpoints require
