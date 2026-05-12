@@ -67,17 +67,17 @@ Platform CLI tool is still required to produce an inventory file for the
 **Inventory** mode. The portal exposes three activation modes:
 
 - **Inventory** — license credentials plus an `inventory.json` file produced
-  by `arangodb_operator_platform license inventory`. The standard mode and
-  the right choice for most users; required for offline / air-gapped flows.
+  by `arangodb_operator_platform license inventory`. The default mode, and
+  the only option available for most customers.
 - **Managed** — license credentials plus the deployment ID only. No
   inventory file is needed.
 - **Generic** — license credentials only, with no deployment binding.
 
 The availability of **Managed** and **Generic** modes depends on the
-contractual agreement between Arango and the customer. **Inventory** is
-available to all customers and is the right choice for most users. If you
-try a mode that is not enabled for your credentials, the portal rejects
-the request — fall back to **Inventory**.
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers and, for most, is the only option. If
+a mode is not enabled for your credentials, the portal rejects the
+request — fall back to **Inventory**.
 
 See the **Activation portal** entries in
 [Activate a deployment](#license-activation-portal),
@@ -114,7 +114,9 @@ your contract enables it, with the License Activation portal in **Managed**
 or **Generic** mode. The Platform CLI tool is the recommended option for
 ongoing operation because it can re-activate the deployment automatically
 on a fixed interval. The activation portal is a quick, browser-based
-alternative for one-off activation.
+alternative for one-off activation. An activation is valid for ~2 weeks by
+default; the portal's **Custom TTL** lets you override it within the limits
+permitted by your contract.
 
 #### Platform CLI tool
 
@@ -183,9 +185,8 @@ alternative for one-off activation.
 The portal supports three activation modes:
 
 - **Inventory** identifies the deployment by an `inventory.json` file
-  produced by the Platform CLI tool. The standard mode and the right
-  choice for most users; required for offline / air-gapped flows
-  (see [Generate a license key](#generate-a-license-key) below).
+  produced by the Platform CLI tool. The default mode, and the only
+  option available for most customers.
 - **Managed** identifies the deployment by its deployment ID alone. No
   inventory file is needed. The mode covered in the procedure below,
   because it applies to a running online standalone deployment.
@@ -194,10 +195,10 @@ The portal supports three activation modes:
 
 {{< info >}}
 The availability of **Managed** and **Generic** modes depends on the
-contractual agreement between Arango and the customer. **Inventory** is
-available to all customers. If a mode is not enabled for your credentials,
-the portal rejects the request and you should use **Inventory** or the
-[Platform CLI tool](#platform-cli-tool) instead.
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers. If a mode is not enabled for your
+credentials, the portal rejects the request and you should use
+**Inventory** or the [Platform CLI tool](#platform-cli-tool) instead.
 {{< /info >}}
 
 The portal generates a license key for a deployment without running the
@@ -217,6 +218,10 @@ use the Platform CLI tool's `--license.interval` instead.
 2. Open <https://activate.license.arango.ai/>.
 3. Enter your **License Client ID** and **License Client Secret**.
 4. Select the activation mode:
+   - **Inventory** (default): drop the `inventory.json` file produced
+     by `arangodb_operator_platform license inventory`. See
+     [Generate a license key](#generate-a-license-key) for the
+     end-to-end flow that uses this mode.
    - **Managed — Deployment ID only**: paste the deployment ID from step 1.
    - **Generic** (if available): no further input is needed.
 5. Optionally enable **Custom TTL** to override the default license duration.
