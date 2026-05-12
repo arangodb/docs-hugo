@@ -18,6 +18,7 @@ aliases:
   - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -37,6 +38,10 @@ detailed information about breaking changes before upgrading.
   The Datacenter-to-Datacenter Replication for cluster deployments including the
   _arangosync_ tool is not supported in 3.11 OEM LTS (v3.11.14-1 or later)
   and from v3.12 onward.
+
+- **LDAP authentication**:\
+  ArangoDB user authentication with an LDAP server in the Enterprise Edition is
+  not supported in the 3.11 OEM LTS version and from v3.12.0 onward.
 
 - **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)
