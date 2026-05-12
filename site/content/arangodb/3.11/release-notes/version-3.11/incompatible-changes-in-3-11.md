@@ -622,6 +622,11 @@ support the VelocyPack format. The cluster replication has been changed to use
 VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
 risk of deviations due to the serialization.
 
+## Datacenter-to-Datacenter Replication (DC2DC) unsupported
+
+The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
+_arangosync_ tool is not supported in the 3.11 OEM LTS version.
+
 ## `PERCENTILE()` AQL function inclusive of lower end 
 
 <small>Introduced in: v3.11.14-1</small>
