@@ -302,7 +302,7 @@ What's included:
 - [**Query Editor**](../platform-suite/query-editor.md):
   Write, run, and analyze AQL queries using an IDE-like interface with tabs,
   result history, query management, and more.
-- [**Kubernetes orchestration**](kubernetes.md):
+- [**Kubernetes orchestration**](architecture.md):
   Powered by the official ArangoDB Kubernetes
   Operator for automated deployment, scaling, and management.
 - [**Operational features**](../platform-suite/_index.md):

@@ -48,7 +48,7 @@ be a write-write conflict, and one of the transactions will abort with error 120
 accept the failure.
 
 In order to guard long-running or complex transactions against concurrent operations
-on the same data, the RocksDB engine allows to access collections in exclusive mode.
+on the same data, the RocksDB engine allows you to access collections in exclusive mode.
 Exclusive accesses will internally acquire a write-lock on the collections, so they 
 are not executed in parallel with any other write operations. Read operations can still
 be carried out by other concurrent transactions.
@@ -208,7 +208,7 @@ db._executeTransaction({
 
 In the above example, a deadlock will occur if transaction T1 and T2 have both
 acquired their write locks (T1 for collection `c1` and T2 for collection `c2`) and
-are then trying to read from the other other (T1 will read from `c2`, T2 will read
+are then trying to read from the other (T1 will read from `c2`, T2 will read
 from `c1`). T1 will then try to acquire the read lock on collection `c2`, which
 is prevented by transaction T2. T2 however will wait for the read lock on 
 collection `c1`, which is prevented by transaction T1. 
