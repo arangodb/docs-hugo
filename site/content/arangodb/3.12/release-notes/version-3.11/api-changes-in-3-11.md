@@ -331,6 +331,15 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 }
 ```
 
+#### VelocyStream protocol unsupported
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is not
+supported in 3.11 OEM LTS.
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
+
 ### Endpoint return value changes
 
 <small>Introduced in: v3.8.8, v3.9.4, v3.10.1</small>

@@ -80,7 +80,7 @@ If you are affected, consider using Docker containers, `chroot`, or change
 ## VelocyStream protocol deprecation
 
 ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST) is
-deprecated in v3.11 and removed in v3.12.0.
+deprecated in v3.11, unsupported in 3.11 OEM LTS, and removed in v3.12.0.
 
 While VelocyStream support is still available in v3.11, it is highly recommended
 to already switch to the HTTP(S) protocol because of better performance and
@@ -638,6 +638,13 @@ In detail, the following functionalities are unsupported:
 - The `pregel` log topic
 - The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
   `--pregel.parallelism` startup options
+
+## LDAP authentication unsupported
+
+<small>Deprecated in: v3.11.14-1</small>
+
+ArangoDB user authentication with an LDAP server in the
+Enterprise Edition is not supported in 3.11 OEM LTS.
 
 ## `PERCENTILE()` AQL function inclusive of lower end 
 
