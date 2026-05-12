@@ -61,6 +61,7 @@ configure and start a new importer service job. Follow the steps below.
 3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start importer service** button.
 {{< /tab >}}
 
@@ -71,9 +72,11 @@ configure and start a new importer service job. Follow the steps below.
 3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for embeddings.
 4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
 5. Click the **Start importer service** button.
 
 {{< info >}}
@@ -225,6 +228,7 @@ the generated Knowledge Graph. To configure the retriever service, open the
 3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start retriever service** button.
 {{< /tab >}}
 
@@ -232,10 +236,15 @@ the generated Knowledge Graph. To configure the retriever service, open the
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
-4. Click the **Start retriever service** button.
+   The key is used for embeddings.
+4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
+5. Click the **Start retriever service** button.
 
 {{< info >}}
 When using OpenRouter, the LLM responses are served via OpenRouter while OpenAI
