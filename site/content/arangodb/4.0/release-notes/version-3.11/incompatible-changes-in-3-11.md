@@ -86,11 +86,11 @@ While VelocyStream support is still available in v3.11, it is highly recommended
 to already switch to the HTTP(S) protocol because of better performance and
 reliability. ArangoDB supports both VelocyPack and JSON over HTTP(S).
 
-## Active Failover deployment mode deprecation
+## Active Failover deployment mode unsupported
 
 Running a single server with asynchronous replication to one or more passive
-single servers for automatic failover is deprecated and will no longer be
-supported in the next minor version of ArangoDB, from v3.12 onward.
+single servers for automatic failover is deprecated and is not supported in
+3.11 OEM LTS and from v3.12 onward.
 
 ## Extended naming constraints for collections, Views, and indexes
 

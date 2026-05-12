@@ -11,6 +11,10 @@ aliases:
   - ../data-science/pregel # 3.11 -> 3.11
   - ../data-science/pregel/algorithms # 3.11 -> 3.11
   - ../develop/http-api/pregel # 3.11 -> 3.11
+  - ../deploy/active-failover # 3.11 -> 3.11
+  - ../deploy/active-failover/administration # 3.11 -> 3.11
+  - ../deploy/active-failover/manual-start # 3.11 -> 3.11
+  - ../deploy/active-failover/using-the-arangodb-starter # 3.11 -> 3.11
   - ../deploy/arangosync # 3.11 -> 3.11
   - ../deploy/arangosync/administration # 3.11 -> 3.11
   - ../deploy/arangosync/monitoring # 3.11 -> 3.11
@@ -101,8 +105,7 @@ detailed information about breaking changes before upgrading.
 
 - **Leader/Follower Deployment Mode**:\
   The Leader/Follower deployment mode is deprecated and already removed from
-  documentation. Active Failover and OneShard databases in clusters are better
-  alternatives.
+  documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 

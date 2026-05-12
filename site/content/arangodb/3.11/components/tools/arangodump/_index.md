@@ -12,8 +12,8 @@ If you want to export for external programs to formats like JSON or CSV, see
 [_arangoexport_](../arangoexport/_index.md) instead. For _Hot Backups_ see
 [_arangobackup_](../arangobackup/_index.md).
 
-_arangodump_ can be used for all ArangoDB deployments modes (Single Instance, 
-Active Failover, and Cluster) and it can backup selected collections
+_arangodump_ can be used for all ArangoDB deployments modes (Single Instance
+and Cluster) and it can backup selected collections
 or all collections of a database, optionally including _system_ collections. One
 can backup the structure, i.e. the collections with their configuration without
 any data, only the data stored in them, or both. If you are using the Enterprise
