@@ -893,7 +893,7 @@ redirect and `302` for a temporary one. Use `302` until the redirects have been
 tested, then change them to `301` - this avoids caching issues (browser, CDN)
 should it be necessary to fix some of the redirects.
 
-Netlify redirects are preferable SEO because search engines are more likely to
+Netlify redirects are preferable for SEO because search engines are more likely to
 update links in their indexes if they get a server-side `301 Permanent Redirect`
 HTTP status code, and it also works better when using e.g. cURL
 (`curl -L ...` to automatically follow redirects).

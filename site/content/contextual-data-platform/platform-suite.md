@@ -92,9 +92,9 @@ The [File manager](../platform-suite/file-manager/_index.md) lets you view and m
 the data of services, such as your uploaded content for AutoGraph and GraphRAG,
 as well as the files used by service containers.
 
-### Secrets manager
+### Secrets Manager
 
-The [Secrets manager](../platform-suite/secrets-manager.md) stores secrets like
+The [Secrets Manager](../platform-suite/secrets-manager.md) stores secrets like
 API keys for easy use across the Contextual Data Platform.
 
 ## Additional services

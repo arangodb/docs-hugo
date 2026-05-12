@@ -210,7 +210,7 @@ array values in the first level of each passed array.
 
 Now, there is no automatic flattening of arrays and arrays are cast using the
 new `TO_STRING()` behavior. If you pass an array as the sole parameter, its
-members get concatenated - which seems the same as the previous flattening of
+members get concatenated - which is equivalent to the previous flattening of
 one array level:
 
 | Expression | Result before v3.0 | Result from v3.0 onward |

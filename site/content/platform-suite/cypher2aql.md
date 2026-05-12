@@ -529,7 +529,7 @@ paths:
                     properties:
                       serviceId:
                         description: |
-                          The unique identifier of the service.
+                          The service name followed by a hyphen and the unique identifier.
                         type: string
                         example: arango-cypher2aql-z8fue
                       description:
