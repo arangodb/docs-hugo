@@ -5,8 +5,6 @@ weight: 20
 description: >-
   REST API reference for the Natural Language to AQL service, including
   endpoints for text processing, AQL generation, and query execution
-aliases:
-  - /agentic-ai-suite/reference/natural-language-to-aql
 ---
 
 This page documents the runtime REST endpoints of the Natural Language to AQL
