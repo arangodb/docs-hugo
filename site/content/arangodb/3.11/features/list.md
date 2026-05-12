@@ -3,8 +3,8 @@ title: Feature list of the ArangoDB core database system
 menuTitle: Core Database
 weight: 5
 description: >-
-  All features of the OEM / Embedded edition of ArangoDB, available in
-  the Enterprise Edition for Windows
+  All features of the 3.11 OEM LTS version of ArangoDB, available in
+  the Enterprise Edition for Linux and Windows
 aliases:
   - community-edition # 3.11 -> 3.11
   - enterprise-edition # 3.11 -> 3.11
@@ -52,8 +52,9 @@ aliases:
 - [**Multiple Environments**](../operations/installation/_index.md#supported-platforms-and-architectures):
   Run ArangoDB on Linux using the production-ready packages for the x86-64
   architecture, on bare metal or in containers.
-  Develop and test with ArangoDB on Windows, macOS, and Linux using the official
-  ArangoDB Docker images, available for the x86-64 architecture and 64-bit ARM chips.
+  Develop and test with ArangoDB on Windows and Linux using the official
+  ArangoDB Docker images (Linux packages and container images also
+  available for 64-bit ARM chips).
 
 ## Scalability & High Availability
 

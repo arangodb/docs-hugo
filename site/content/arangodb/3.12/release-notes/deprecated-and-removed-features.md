@@ -7,10 +7,10 @@ description: >-
 aliases:
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
   - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.12
-  - ../data-science/pregel # 3.11 -> 3.12
-  - ../data-science/pregel/algorithms # 3.11 -> 3.12
-  - ../develop/http-api/pregel # 3.11 -> 3.12
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/active-failover # 3.11 -> 3.12
   - ../deploy/active-failover/administration # 3.11 -> 3.12
   - ../deploy/active-failover/manual-start # 3.11 -> 3.12

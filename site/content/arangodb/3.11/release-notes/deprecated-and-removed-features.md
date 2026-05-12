@@ -5,8 +5,12 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 aliases:
-  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
   - ../components/tools/arangorestore/fast-cluster-restore # 3.10 -> 3.11
+  - ../develop/drivers/csharp-dotnet # 3.10 -> 3.11
+  - ../components/arangodb-server/ldap # 3.11 -> 3.11
+  - ../data-science/pregel # 3.11 -> 3.11
+  - ../data-science/pregel/algorithms # 3.11 -> 3.11
+  - ../develop/http-api/pregel # 3.11 -> 3.11
   - ../deploy/arangosync # 3.11 -> 3.11
   - ../deploy/arangosync/administration # 3.11 -> 3.11
   - ../deploy/arangosync/monitoring # 3.11 -> 3.11
@@ -18,7 +22,6 @@ aliases:
   - ../deploy/arangosync/deployment/arangosync-master # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/arangosync-workers # 3.11 -> 3.11
   - ../deploy/arangosync/deployment/prometheus-and-grafana # 3.11 -> 3.11
-  - ../components/arangodb-server/ldap # 3.11 -> 3.11
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -42,6 +45,14 @@ detailed information about breaking changes before upgrading.
 - **LDAP authentication**:\
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
   not supported in the 3.11 OEM LTS version and from v3.12.0 onward.
+
+- **Pregel**:\
+  The distributed iterative graph processing (Pregel) system is not supported
+  in the 3.11 OEM LTS version and not available from v3.12 onward.
+  All Pregel graph algorithms, the Pregel JavaScript API and
+  HTTP API, and everything else related to Pregel is out of support.
+  All other graph features including AQL graph traversals and path finding
+  algorithms are unaffected.
 
 - **VelocyStream protocol**:\
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)

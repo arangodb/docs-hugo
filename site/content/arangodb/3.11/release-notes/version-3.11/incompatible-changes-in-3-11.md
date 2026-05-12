@@ -53,14 +53,6 @@ deployment offline to perform the upgrade procedure in the safest possible manne
 | 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally (following the standard [Upgrade path](../../operations/upgrading/_index.md#upgrade-paths) all the way to the latest 3.11.x version), then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
 | 3.11.11 (or newer 3.11.x) | 3.12.4 (or newer) | **Do not upgrade to version 3.12.0, 3.12.1, 3.12.2, or 3.12.3**. Create a backup, check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them (if you haven't done so already or created the deployment with 3.11.11 or a later 3.11.x version), then upgrade to the latest 3.11.x version first, and finally upgrade to version 3.12.4 or later. |
 
-## Datacenter-to-Datacenter Replication (DC2DC) unsupported
-
-<small>Introduced in: v3.11.14-1</small>
-
-The Datacenter-to-Datacenter Replication for cluster deployments including the
-_arangosync_ tool is not supported in 3.11 OEM LTS (v3.11.14-1 or later)
-and from v3.12 onward.
-
 ## Incompatibilities due to switch to glibc
 
 From version 3.11.10 onward, ArangoDB uses the glibc C standard library
@@ -120,7 +112,7 @@ If the feature is enabled, then any endpoints that contain database, collection,
 View, or index names in the URL may contain special characters that were
 previously not allowed (percent-encoded). They are also to be expected in
 payloads that contain database, collection, View, or index names, as well as
-document identifiers (because they are comprised of the collection name and the
+document identifiers (because they are composed of the collection name and the
 document key). If client applications assemble URLs with extended names
 programmatically, they need to ensure that extended names are properly
 URL-encoded.
@@ -624,8 +616,28 @@ risk of deviations due to the serialization.
 
 ## Datacenter-to-Datacenter Replication (DC2DC) unsupported
 
-The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
-_arangosync_ tool is not supported in the 3.11 OEM LTS version.
+<small>Introduced in: v3.11.14-1</small>
+
+The Datacenter-to-Datacenter Replication for cluster deployments including the
+_arangosync_ tool is not supported in 3.11 OEM LTS (v3.11.14-1 or later)
+and from v3.12 onward.
+
+## Pregel unsupported
+
+<small>Deprecated in: v3.11.14-1</small>
+
+The distributed iterative graph processing (Pregel) system is not supported
+in the 3.11 OEM LTS version and unavailable from v3.12 onward.
+
+In detail, the following functionalities are unsupported:
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
+- All `arangodb_pregel_*` metrics
+- The `pregel` log topic
+- The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
+  `--pregel.parallelism` startup options
 
 ## `PERCENTILE()` AQL function inclusive of lower end 
 
@@ -705,7 +717,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 

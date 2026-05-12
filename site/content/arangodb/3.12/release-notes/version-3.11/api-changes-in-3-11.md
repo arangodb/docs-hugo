@@ -797,9 +797,18 @@ every optimizer rule that briefly explains what it does.
 
 ### Endpoints deprecated
 
+#### Target version endpoint
+
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
 The endpoint is removed in ArangoDB v4.0.
+
+#### Pregel API
+
+<small>Deprecated in: v3.11.14-1</small>
+
+The `/_api/control_pregel/*` endpoints are unsupported in the 3.11 OEM LTS version
+and removed in v3.12.0 as Pregel graph processing is no longer supported.
 
 ## JavaScript API
 
