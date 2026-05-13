@@ -53,9 +53,8 @@ For detailed instructions on creating and managing projects, see the
 [Projects](../../platform-suite/control-plane-acp.md#projects) section in
 the Arango Control Plane (ACP) documentation.
 
-To install and start the AutoGraph service, use the AI service endpoint
-`/v1/AutoGraph` in the
-[Arango Control Plane (ACP)](../../platform-suite/control-plane-acp.md).
+To install and start the AutoGraph service, use the `/_platform/acp/v1/autograph`
+endpoint of the [Arango Control Plane (ACP)](../../platform-suite/control-plane-acp.md).
 
 ## Get started
 
