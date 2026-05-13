@@ -108,8 +108,7 @@ paths:
                     properties:
                       serviceId:
                         description: |
-                          The service name followed by a hyphen and
-                          the unique identifier assigned to the service.
+                          The unique identifier assigned to the service.
                         type: string
                         example: arango-cypher2aql-z8fue
                       description:
@@ -223,18 +222,18 @@ curl -s "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service" \
 service: cypher2aql
 ---
 paths:
-  /cypher2aql/{serviceId}/v1/cypher2aql:
+  /cypher2aql/{serviceIdPostfix}/v1/cypher2aql:
     post:
       operationId: translateCypherToAql
       description: |
         Translates a query string from Cypher to AQL.
       parameters:
-        - name: serviceId
+        - name: serviceIdPostfix
           in: path
           required: true
           description: |
-            The unique identifier of the Cypher to AQL service running in
-            the data platform.
+            The trailing segment of the `arango-cypher2aql` service identifier
+            (after the last `-`).
           schema:
             type: string
             example: z8fue
@@ -361,18 +360,18 @@ curl -s -X POST "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/cyp
 service: cypher2aql
 ---
 paths:
-  /cypher2aql/{serviceId}/v1/version:
+  /cypher2aql/{serviceIdPostfix}/v1/version:
     get:
       operationId: getVersion
       description: |
         Returns the service version.
       parameters:
-        - name: serviceId
+        - name: serviceIdPostfix
           in: path
           required: true
           description: |
-            The unique identifier of the Cypher to AQL service running in
-            the data platform.
+            The trailing segment of the `arango-cypher2aql` service identifier
+            (after the last `-`).
           schema:
             type: string
             example: z8fue
@@ -428,18 +427,18 @@ curl -s "https://<EXTERNAL_ENDPOINT>:8529/cypher2aql/<SERVICE_ID>/v1/version" \
 service: cypher2aql
 ---
 paths:
-  /cypher2aql/{serviceId}/v1/health:
+  /cypher2aql/{serviceIdPostfix}/v1/health:
     get:
       operationId: getHealth
       description: |
         Returns a simple health status.
       parameters:
-        - name: serviceId
+        - name: serviceIdPostfix
           in: path
           required: true
           description: |
-            The unique identifier of the Cypher to AQL service running in
-            the data platform.
+            The trailing segment of the `arango-cypher2aql` service identifier
+            (after the last `-`).
           schema:
             type: string
             example: z8fue
@@ -507,8 +506,8 @@ paths:
           in: path
           required: true
           description: |
-            The identifier of the service to stop, here the name of the
-            Cypher to AQL service followed by a hyphen and the unique identifier
+            The identifier of the service to stop, here the ID of the
+            `arango-cypher2aql` service.
             assigned to the service.
           schema:
             type: string
@@ -529,7 +528,7 @@ paths:
                     properties:
                       serviceId:
                         description: |
-                          The service name followed by a hyphen and the unique identifier.
+                          The unique identifier assigned to the service.
                         type: string
                         example: arango-cypher2aql-z8fue
                       description:
