@@ -114,7 +114,7 @@ your contract enables it, with the License Activation portal in **Managed**
 or **Generic** mode. The Platform CLI tool is the recommended option for
 ongoing operation because it can re-activate the deployment automatically
 on a fixed interval. The activation portal is a quick, browser-based
-alternative for one-off activation. An activation is valid for ~2 weeks by
+alternative for one-off activation. An activation has a short validity by
 default; the portal's **Custom TTL** lets you override it within the limits
 permitted by your contract.
 
@@ -218,7 +218,7 @@ use the Platform CLI tool's `--license.interval` instead.
 2. Open <https://activate.license.arango.ai/>.
 3. Enter your **License Client ID** and **License Client Secret**.
 4. Select the activation mode:
-   - **Inventory** (default): drop the `inventory.json` file produced
+   - **Inventory** (default): upload the `inventory.json` file produced
      by `arangodb_operator_platform license inventory`. See
      [Generate a license key](#generate-a-license-key) for the
      end-to-end flow that uses this mode.
@@ -349,7 +349,7 @@ configuration options that let you tune TTL and grace periods.
    1. Open <https://activate.license.arango.ai/>.
    2. Enter your **License Client ID** and **License Client Secret**.
    3. Choose how to identify the deployment:
-      - **Inventory** (default): drop the `inventory.json` file into the upload
+      - **Inventory** (default): upload the `inventory.json` file into the upload
         area, or click to select it. Captures the full deployment shape and is
         recommended for offline / air-gapped environments.
       - **Managed — Deployment ID only**: enter the deployment ID directly.
