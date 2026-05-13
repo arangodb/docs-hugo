@@ -65,23 +65,24 @@ you use only for license generation.
 The [License Activation portal](https://activate.license.arango.ai/) is a
 browser-based alternative to the Platform CLI tool's `license activate` and
 `license generate` commands. It does not replace `license inventory` — the
-CLI is still required to produce an inventory file for the **Inventory**
-mode. The portal exposes two activation modes:
+Platform CLI tool is still required to produce an inventory file for the
+**Inventory** mode. The portal exposes three activation modes:
 
-- **Inventory** — upload an `inventory.json` file produced by
-  `arangodb_operator_platform license inventory`. The standard mode and the
-  one to use for offline / air-gapped flows.
-- **Managed** — provide just the deployment ID. No inventory file is needed.
+- **Inventory** — license credentials plus an `inventory.json` file produced
+  by `arangodb_operator_platform license inventory`. The default mode, and
+  the only option available for most customers.
+- **Managed** — license credentials plus the deployment ID only. No
+  inventory file is needed.
+- **Generic** — license credentials only, with no deployment binding.
 
-Which modes are available depends on the license configuration that Arango
-sets up for your account. **Managed** activation is not enabled for every
-customer. Check your contract or with your Arango contact for what was
-agreed. If you are unsure, you can try **Managed** first; if it is not
-enabled for your credentials, the portal rejects the request and you can
-fall back to **Inventory**.
+The availability of **Managed** and **Generic** modes depends on the
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers and, for most, is the only option. If
+a mode is not enabled for your credentials, the portal rejects the
+request — fall back to **Inventory**.
 
 See the **Activation portal** entries in
-[Activate a deployment](#license-activation-portal-managed-mode),
+[Activate a deployment](#license-activation-portal),
 [Generate a license key](#generate-a-license-key), and the
 [container walkthrough](#walkthrough-generate-a-key-in-a-container).
 {{< /tip >}}
@@ -111,11 +112,13 @@ See the **Activation portal** entries in
 ### Standalone deployment
 
 You can activate a standalone deployment with the Platform CLI tool or, if
-**Managed** activation is enabled for your license, with the License
-Activation portal. The CLI is the recommended option for ongoing operation
-because it can re-activate the deployment automatically on a fixed interval.
-The activation portal is a quick, browser-based alternative for one-off
-activation.
+your contract enables it, with the License Activation portal in **Managed**
+or **Generic** mode. The Platform CLI tool is the recommended option for
+ongoing operation because it can re-activate the deployment automatically
+on a fixed interval. The activation portal is a quick, browser-based
+alternative for one-off activation. An activation has a short validity by
+default; the portal's **Custom TTL** lets you override it within the limits
+permitted by your contract.
 
 #### Platform CLI tool
 
@@ -179,28 +182,30 @@ activation.
    with a restart policy, or Kubernetes) so renewals resume automatically
    if the process exits unexpectedly.
 
-#### License Activation portal (Managed mode)
+#### License Activation portal
 
-The portal supports two activation modes:
+The portal supports three activation modes:
 
-- **Managed** identifies the deployment by its deployment ID alone. No
-  inventory file is needed. This is the mode used in this section, because
-  it applies to a running online standalone deployment.
 - **Inventory** identifies the deployment by an `inventory.json` file
-  produced by the Platform CLI tool. It is the mode used for offline /
-  air-gapped flows; see [Generate a license key](#generate-a-license-key)
-  below.
+  produced by the Platform CLI tool. The default mode, and the only
+  option available for most customers.
+- **Managed** identifies the deployment by its deployment ID alone. No
+  inventory file is needed. The mode covered in the procedure below,
+  because it applies to a running online standalone deployment.
+- **Generic** uses the license credentials only, with no deployment
+  binding. The procedure below applies; just skip the deployment ID step.
 
 {{< info >}}
-**Managed** activation is not enabled for every customer. Check your
-contract or with your Arango contact for what was agreed. If it is not
-enabled for your credentials, the portal rejects the request and you
-should use the [Platform CLI tool](#platform-cli-tool) instead.
+The availability of **Managed** and **Generic** modes depends on the
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers. If a mode is not enabled for your
+credentials, the portal rejects the request and you should use
+**Inventory** or the [Platform CLI tool](#platform-cli-tool) instead.
 {{< /info >}}
 
 The portal generates a license key for a deployment without running the
 Platform CLI tool. It is suited to one-off activation; for unattended renewal,
-use the CLI's `--license.interval` instead.
+use the Platform CLI tool's `--license.interval` instead.
 
 1. Get the deployment ID from a running ArangoDB instance:
 
@@ -214,7 +219,13 @@ use the CLI's `--license.interval` instead.
 
 2. Open <https://activate.license.arango.ai/>.
 3. Enter your **License Client ID** and **License Client Secret**.
-4. Select **Managed — Deployment ID only** and paste the deployment ID.
+4. Select the activation mode:
+   - **Inventory** (default): upload the `inventory.json` file produced
+     by `arangodb_operator_platform license inventory`. See
+     [Generate a license key](#generate-a-license-key) for the
+     end-to-end flow that uses this mode.
+   - **Managed — Deployment ID only**: paste the deployment ID from step 1.
+   - **Generic** (if available): no further input is needed.
 5. Optionally enable **Custom TTL** to override the default license duration.
 6. Click **Activate** and copy the generated license key.
 7. Apply the license key to ArangoDB using one of the interfaces in
@@ -282,9 +293,10 @@ configuration options that let you tune TTL and grace periods.
 
    {{< warning >}}
    The inventory file captures the deployment ID of whichever ArangoDB
-   instance you point the CLI at. The license key generated from it only
-   works for that instance. Make sure the endpoint is the deployment you
-   intend to license — not a local test or throwaway instance.
+   instance you point the Platform CLI tool at. The license key generated
+   from it only works for that instance. Make sure the endpoint is the
+   deployment you intend to license — not a local test or throwaway
+   instance.
    {{< /warning >}}
 
    ```sh
@@ -339,7 +351,7 @@ configuration options that let you tune TTL and grace periods.
    1. Open <https://activate.license.arango.ai/>.
    2. Enter your **License Client ID** and **License Client Secret**.
    3. Choose how to identify the deployment:
-      - **Inventory** (default): drop the `inventory.json` file into the upload
+      - **Inventory** (default): upload the `inventory.json` file into the upload
         area, or click to select it. Captures the full deployment shape and is
         recommended for offline / air-gapped environments.
       - **Managed — Deployment ID only**: enter the deployment ID directly.
