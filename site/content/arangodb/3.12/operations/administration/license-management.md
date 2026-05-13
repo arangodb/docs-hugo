@@ -18,16 +18,17 @@ deployment has internet access:
 
 | Your deployment | How to license it | Run the Platform CLI tool? |
 |---|---|---|
-| **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool. | **Yes** — you run `arangodb_operator_platform` |
-| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the Web UI, or the HTTP API. | **Yes** — on the internet-connected machine only |
-| **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (kube-arangodb)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
+| **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or, if **Managed** activation is enabled for your license, with the [License Activation portal](https://activate.license.arango.ai/) (one-off). | **Optional** — only if you use the Platform CLI tool |
+| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the web interface, or the HTTP API. | **Yes** — on the internet-connected machine only |
+| **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (`kube-arangodb`)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
 {{< info >}}
 **Legacy deployments (pre-v3.12.6):** Arango issued a ready-made license
 key directly to customers — there were no client ID and client secret
-credentials, and no Platform CLI tool. If you are on v3.12.5 or earlier,
-skip the activation and generation steps and go directly to
+credentials, and no Platform CLI tool. If Arango issued you a ready-made
+license key rather than license credentials (a client ID and client
+secret), skip the activation and generation steps and go directly to
 [Apply a license key](#apply-a-license-key).
 {{< /info >}}
 
@@ -58,6 +59,32 @@ ArangoDB endpoint over the network, including from inside a container
 you use only for license generation.
 {{< /info >}}
 
+{{< tip >}}
+The [License Activation portal](https://activate.license.arango.ai/) is a
+browser-based alternative to the Platform CLI tool's `license activate` and
+`license generate` commands. It does not replace `license inventory` — the
+Platform CLI tool is still required to produce an inventory file for the
+**Inventory** mode. The portal exposes three activation modes:
+
+- **Inventory** — license credentials plus an `inventory.json` file produced
+  by `arangodb_operator_platform license inventory`. The default mode, and
+  the only option available for most customers.
+- **Managed** — license credentials plus the deployment ID only. No
+  inventory file is needed.
+- **Generic** — license credentials only, with no deployment binding.
+
+The availability of **Managed** and **Generic** modes depends on the
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers and, for most, is the only option. If
+a mode is not enabled for your credentials, the portal rejects the
+request — fall back to **Inventory**.
+
+See the **Activation portal** entries in
+[Activate a deployment](#license-activation-portal),
+[Generate a license key](#generate-a-license-key), and the
+[container walkthrough](#walkthrough-generate-a-key-in-a-container).
+{{< /tip >}}
+
 ## License methods summary
 
 - **Activate a deployment** (from v3.12.6 onward):\
@@ -80,7 +107,18 @@ you use only for license generation.
 
 ## Activate a deployment
 
-### Standalone deployment (Platform CLI)
+### Standalone deployment
+
+You can activate a standalone deployment with the Platform CLI tool or, if
+your contract enables it, with the License Activation portal in **Managed**
+or **Generic** mode. The Platform CLI tool is the recommended option for
+ongoing operation because it can re-activate the deployment automatically
+on a fixed interval. The activation portal is a quick, browser-based
+alternative for one-off activation. An activation has a short validity by
+default; the portal's **Custom TTL** lets you override it within the limits
+permitted by your contract.
+
+#### Platform CLI tool
 
 1. Download the Platform CLI tool `arangodb_operator_platform` from
    <https://github.com/arangodb/kube-arangodb/releases>.
@@ -142,6 +180,60 @@ you use only for license generation.
    with a restart policy, or Kubernetes) so renewals resume automatically
    if the process exits unexpectedly.
 
+#### License Activation portal
+
+The portal supports three activation modes:
+
+- **Inventory** identifies the deployment by an `inventory.json` file
+  produced by the Platform CLI tool. The default mode, and the only
+  option available for most customers.
+- **Managed** identifies the deployment by its deployment ID alone. No
+  inventory file is needed. The mode covered in the procedure below,
+  because it applies to a running online standalone deployment.
+- **Generic** uses the license credentials only, with no deployment
+  binding. The procedure below applies; just skip the deployment ID step.
+
+{{< info >}}
+The availability of **Managed** and **Generic** modes depends on the
+contractual agreement between Arango and the customer. The **Inventory**
+mode is available to all customers. If a mode is not enabled for your
+credentials, the portal rejects the request and you should use
+**Inventory** or the [Platform CLI tool](#platform-cli-tool) instead.
+{{< /info >}}
+
+The portal generates a license key for a deployment without running the
+Platform CLI tool. It is suited to one-off activation; for unattended renewal,
+use the Platform CLI tool's `--license.interval` instead.
+
+1. Get the deployment ID from a running ArangoDB instance:
+
+   ```sh
+   # User credentials (-u username:password)
+   curl -u root: http://localhost:8529/_admin/deployment/id
+
+   # Example result:
+   # {"id":"6172616e-676f-4000-0000-05c958168340"}
+   ```
+
+2. Open <https://activate.license.arango.ai/>.
+3. Enter your **License Client ID** and **License Client Secret**.
+4. Select the activation mode:
+   - **Inventory** (default): upload the `inventory.json` file produced
+     by `arangodb_operator_platform license inventory`. See
+     [Generate a license key](#generate-a-license-key) for the
+     end-to-end flow that uses this mode.
+   - **Managed — Deployment ID only**: paste the deployment ID from step 1.
+   - **Generic** (if available): no further input is needed.
+5. Optionally enable **Custom TTL** to override the default license duration.
+6. Click **Activate** and copy the generated license key.
+7. Apply the license key to ArangoDB using one of the interfaces in
+   [Apply a license key](#apply-a-license-key) — for example `arangosh` or
+   the web interface.
+
+Repeat this procedure when the license is close to expiry. If you want
+unattended renewal, use the [Platform CLI tool](#platform-cli-tool) with
+`--license.interval` instead.
+
 ### Kubernetes-managed deployment
 
 With a Kubernetes-managed deployment, the ArangoDB Kubernetes Operator activates
@@ -189,12 +281,25 @@ configuration options that let you tune TTL and grace periods.
    `arangodb_operator_platform` (with an `.exe` extension on Windows) and add it to
    the `PATH` environment variable to make it available as a command in the system.
 
-2. Create an inventory file using the Platform CLI tool. Point it to a running
-   ArangoDB deployment (running on `http://localhost:8529` in this example):
+2. Create an inventory file using the Platform CLI tool. Point it to the
+   running ArangoDB deployment that the license should apply to. Replace
+   `<arango-endpoint>` with the URL of that deployment — use
+   `http://localhost:8529` only if the Platform CLI tool runs on the same
+   host as the ArangoDB instance you want to license; otherwise use the
+   deployment's actual address (for example, `http://10.0.0.5:8529` or
+   `https://arangodb.example.com:8529`).
+
+   {{< warning >}}
+   The inventory file captures the deployment ID of whichever ArangoDB
+   instance you point the Platform CLI tool at. The license key generated
+   from it only works for that instance. Make sure the endpoint is the
+   deployment you intend to license — not a local test or throwaway
+   instance.
+   {{< /warning >}}
 
    ```sh
    arangodb_operator_platform license inventory \
-     --arango.endpoint="http://localhost:8529" \
+     --arango.endpoint="<arango-endpoint>" \
      inventory.json
    ```
 
@@ -234,8 +339,37 @@ configuration options that let you tune TTL and grace periods.
    # {"id":"6172616e-676f-4000-0000-05c958168340"}
    ```
 
-4. Generate the license key using the deployment ID, the inventory file, and the
-   license credentials, and write it to a file:
+4. Generate the license key using the deployment ID, the inventory file, and
+   the license credentials. You can do this with the License Activation portal
+   or with the Platform CLI tool — both produce an equivalent license key.
+
+   {{< tabs "generate-license-key" >}}
+
+   {{< tab "Activation portal" >}}
+   1. Open <https://activate.license.arango.ai/>.
+   2. Enter your **License Client ID** and **License Client Secret**.
+   3. Choose how to identify the deployment:
+      - **Inventory** (default): upload the `inventory.json` file into the upload
+        area, or click to select it. Captures the full deployment shape and is
+        recommended for offline / air-gapped environments.
+      - **Managed — Deployment ID only**: enter the deployment ID directly.
+        No inventory file is needed. Available only if **Managed** activation
+        is enabled for your license — check your contract or with your Arango
+        contact. If it is not enabled, the portal rejects the request and
+        you should use **Inventory** mode instead.
+   4. Optionally enable **Custom TTL** to override the default license duration.
+      Accepts values like `24h`, `168h`, `7d`, or `3600s`.
+   5. Click **Activate** and copy the generated license key.
+
+   The activation portal is a convenient alternative for users who would otherwise run
+   `arangodb_operator_platform license generate`. Inventory mode still requires
+   the Platform CLI tool to produce the inventory file in the previous step;
+   Managed mode skips that step entirely.
+   {{< /tab >}}
+
+   {{< tab "Platform CLI" >}}
+   Run the Platform CLI tool with the deployment ID, the inventory file, and
+   the license credentials, and write the key to a file:
 
    ```sh
    arangodb_operator_platform license generate \
@@ -245,6 +379,9 @@ configuration options that let you tune TTL and grace periods.
      --license.client.secret "00000000-0000-0000-0000-000000000000" \
      2> license_key.txt
    ```
+   {{< /tab >}}
+
+   {{< /tabs >}}
 
 ### Walkthrough: generate a key in a container
 
@@ -255,7 +392,7 @@ Use this walkthrough if you need to run
 `arangodb_operator_platform license generate` yourself — that is, you are:
 
 - Running **standalone ArangoDB** (no Kubernetes) and want a license key
-  file you can apply via arangosh or the Web UI, or
+  file you can apply via arangosh or the web interface, or
 - Preparing an **air-gapped Kubernetes** install and need to generate a key
   on an internet-connected machine to carry into the air-gapped cluster.
 
@@ -374,10 +511,42 @@ Copy the `id` value for the next step.
 
 #### 6. Generate the license key
 
-Call the Platform CLI tool with the deployment ID, the inventory file, and the
-license credentials you received from Arango (a client ID and a client
-secret). The command writes log output to standard output and writes the
-license key itself to standard error — redirect standard error to a file:
+Generate the license key using the deployment ID, the inventory file, and
+the license credentials you received from Arango (a client ID and a client
+secret). You can do this with the License Activation portal (no extra tool
+needed) or with the Platform CLI tool inside the container. Both options
+produce an equivalent license key.
+
+{{< tabs "walkthrough-generate-license-key" >}}
+
+{{< tab "Activation portal" >}}
+1. Open <https://activate.license.arango.ai/>.
+2. Enter your **License Client ID** and **License Client Secret**.
+3. Choose how to identify the deployment:
+   - **Inventory** (default): copy `inventory.json` out of the container so
+     you can upload it from your browser, then drop it into the upload area:
+
+     ```sh
+     docker cp arangodb:/inventory.json ./inventory.json
+     ```
+
+   - **Managed — Deployment ID only**: enter the deployment ID from the
+     previous step. No inventory file is needed. Available only if
+     **Managed** activation is enabled for your license — check your
+     contract or with your Arango contact.
+4. Optionally enable **Custom TTL** to override the default license duration.
+5. Click **Activate** and copy the generated license key into a local
+   `license_key.txt` file.
+
+The activation portal is a convenient alternative for users who would otherwise run
+`arangodb_operator_platform license generate`.
+{{< /tab >}}
+
+{{< tab "Platform CLI" >}}
+Call the Platform CLI tool with the deployment ID, the inventory file, and
+the license credentials. The command writes log output to standard output
+and writes the license key itself to standard error — redirect standard
+error to a file:
 
 ```sh
 arangodb_operator_platform license generate \
@@ -396,6 +565,9 @@ out of the container before you stop it:
 ```sh
 docker cp arangodb:/license_key.txt ./license_key.txt
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 #### 7. Apply the license key to ArangoDB
 

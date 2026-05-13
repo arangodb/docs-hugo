@@ -14151,6 +14151,37 @@
     "section" : "transaction",
     "type" : "double"
   },
+  "transaction.streaming-max-transaction-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "single"
+    ],
+    "default" : 134217728,
+    "deprecatedIn" : null,
+    "description" : "The maximum transaction size (in bytes) for Stream Transactions.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.11.14"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "transaction",
+    "type" : "uint64"
+  },
   "ttl.frequency" : {
     "base" : 1,
     "category" : "option",

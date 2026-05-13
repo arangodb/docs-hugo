@@ -524,7 +524,7 @@ Class<?>[]runner = new Class<?>[]{
 
 First, find Ned Stark again. But this time without knowing the id of the
 persisted entity. Start with creating a Character with the same property values
-as the searched one. Then create an `Example` instance of it with `Example.of(T)
+as the searched one. Then create an `Example` instance of it with `Example.of(T)`
 and search for it with `findOne(Example)` from your `CharacterRepository`:
 
 ```java
