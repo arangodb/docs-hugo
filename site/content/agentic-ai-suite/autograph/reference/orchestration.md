@@ -8,7 +8,7 @@ weight: 50
 
 ## Trigger Orchestration
 
-{{< endpoint "POST" "/v1/orchestrate" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
 Spawn GraphRAG importer workers for all strategy profiles. Called after RAG strategizer is completed.
 

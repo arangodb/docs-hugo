@@ -8,7 +8,7 @@ weight: 40
 
 ## Create Corpus Build
 
-{{< endpoint "POST" "/v1/corpus/builds" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 
 Trigger a corpus build from imported files or File Manager.
 
@@ -92,7 +92,7 @@ curl -X POST \
 
 ## Monitoring Build Status
 
-{{< endpoint "GET" "/v1/corpus/builds/{corpus_build_id}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/{corpus_build_id}" >}}
 
 Check the progress of a corpus build.
 

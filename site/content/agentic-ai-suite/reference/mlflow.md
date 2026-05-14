@@ -58,9 +58,7 @@ The ArangoDB MLflow service is **started by default**.
 
 It is automatically spawned and available at the following URL:
 
-```
-https://<EXTERNAL_ENDPOINT>:8529/mlflow/
-```
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/mlflow/" >}}
 
 You can interact with the ArangoDB MLflow service in two ways:
 - **Programmatically**: Using the official MLflow client

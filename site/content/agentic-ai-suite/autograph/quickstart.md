@@ -79,13 +79,13 @@ The AutoGraph service exposes HTTP REST endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 
 1. **Import files**
-   {{< endpoint "POST" "/v1/import-multiple" >}}
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
 2. **Build corpus**
-   {{< endpoint "POST" "/v1/corpus/builds" >}}
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 3. **Generate strategies**
-   {{< endpoint "POST" "/v1/rag-strategizer/analyze" >}}
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
 4. **Orchestrate import**
-   {{< endpoint "POST" "/v1/orchestrate" >}}
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
 Authentication uses JWT Bearer tokens. For full endpoint documentation,
 see the [API Reference](reference/_index.md).

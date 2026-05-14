@@ -8,7 +8,7 @@ weight: 35
 
 ## Import multiple files
 
-{{< endpoint "POST" "/v1/import-multiple" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
 
 Import documents into the corpus for later processing.
 

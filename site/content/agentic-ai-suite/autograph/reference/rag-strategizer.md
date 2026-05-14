@@ -8,7 +8,7 @@ weight: 45
 
 ## Trigger RAG Strategizer
 
-{{< endpoint "POST" "/v1/rag-strategizer/analyze" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
 
 Analyze existing clusters and assign optimal RAG strategies. Must be called **after** a corpus build is completed.
 
@@ -64,7 +64,7 @@ curl -X POST \
 
 ## Retrieve RAG Strategies
 
-{{< endpoint "GET" "/v1/rag-strategizer/strategy" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/strategy" >}}
 
 Retrieve all RAG strategies that have been created.
 

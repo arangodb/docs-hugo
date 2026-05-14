@@ -13,7 +13,7 @@ You provide configuration parameters in the request body, and the platform
 automatically provisions the service with those settings.
 
 {{< info >}}
-Replace `<ExternalEndpoint>` in all examples below with your Arango Contextual
+Replace `<EXTERNAL_ENDPOINT>` in all examples below with your Arango Contextual
 Data Platform deployment URL.
 {{< /info >}}
 

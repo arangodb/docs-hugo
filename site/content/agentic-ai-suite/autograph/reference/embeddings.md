@@ -8,7 +8,7 @@ weight: 55
 
 ## Embed field in collection
 
-{{< endpoint "POST" "/v1/embed-field-in-collection" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection" >}}
 
 Add embeddings to documents in **any** ArangoDB collection you already have. This path is **independent** of import, corpus build, clustering, and the `{project}_CorpusGraph` named graph.
 
