@@ -45,7 +45,7 @@ used for container orchestration, automated deployment, scaling, and
 management. The official ArangoDB Kubernetes Operator (`kube-arangodb`) is
 leveraged to deliver enterprise-grade database management, automation,
 scalability, high availability, and operational excellence. Read more about
-the the platform's [Kubernetes-native architecture](architecture.md).
+the platform's [Kubernetes-native architecture](architecture.md).
 
 The following list gives you a high-level overview of the Contextual Data Platform.
 Follow the links for a more details explanation of each component.
