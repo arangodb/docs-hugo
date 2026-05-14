@@ -121,13 +121,13 @@ Check the progress of a corpus build.
 | Field | Type | Description |
 |-------|------|-------------|
 | `corpus_build_id` | string | Build identifier |
-| `status` | string | **`pending`** → **`running`** → **`completed`** or **`failed`**. Only proceed to strategizer on **`completed`**. |
+| `status` | string | **`pending`** → **`running`** → **`completed`** or **`failed`**. Only proceed to Strategizer on **`completed`**. |
 | `message` | string | Human-readable stage (e.g. similarity or clustering). |
 | `progress` | integer | **0–100**; use together with `message` for UI. |
 | `error` | string | Non-empty when **`failed`**. Use for support tickets. |
 | `started_at` | double | Unix epoch seconds (float). |
 | `completed_at` | double | Set when finished; **0** while running. |
-| `error_code` | string (optional) | Machine-readable code populated when `status` is **`failed`** due to an LLM/embedding provider failure. Values: **`LLM_AUTHENTICATION_FAILED`**, **`LLM_PERMISSION_DENIED`**, **`LLM_QUOTA_EXCEEDED`**, **`LLM_RATE_LIMITED`**, **`LLM_API_KEY_MISSING`**. Absent for non-fatal failures. |
+| `error_code` | string (optional) | Machine-readable code populated when `status` is **`failed`** due to an LLM/embedding provider failure. Values: **`LLM_AUTHENTICATION_FAILED`**, **`LLM_PERMISSION_DENIED`**, **`LLM_QUOTA_EXCEEDED`**, **`LLM_RATE_LIMITED`**, **`LLM_API_KEY_MISSING`**. Omitted when the failure is not caused by an LLM or embedding provider error (for example, validation or internal errors), matching the cases where the service leaves the field unset. |
 
 ### HTTP Example
 
