@@ -1,6 +1,6 @@
 ---
-title: "End-to-End Tutorial: From PostgreSQL to a Graph-Powered Catalog"
-menuTitle: End-to-End Tutorial
+title: From PostgreSQL to a Graph-Powered Catalog
+menuTitle: From PostgreSQL to a Graph-Powered Catalog
 weight: 5
 description: >-
   A hands-on, end-to-end tutorial that follows a fictional clothing retailer,

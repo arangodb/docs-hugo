@@ -8,8 +8,8 @@ description: >-
   using arangoimport
 ---
 
-This is the first step of the [End-to-End Tutorial](_index.md). The goal
-here is concrete: get the v0.1 spine into ArangoDB.
+This is the first step of the [From PostgreSQL to a Graph-Powered Catalog](_index.md)
+tutorial. The goal here is concrete: get the v0.1 spine into ArangoDB.
 
 ArangoDB is a *unified* data platform: it doesn't care whether your data
 arrives as JSON, CSV, TSV, or - through the Importer service - even as
