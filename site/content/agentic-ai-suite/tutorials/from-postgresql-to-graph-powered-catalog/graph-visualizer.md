@@ -153,7 +153,29 @@ the shape of your graph is the prerequisite for asking good questions of it.
 A single Nordweave product sits at the center of a dense web of
 relationships. Take the Selvedge Straight Jean (`prod_00017`):
 
-![Product star pattern for the Selvedge Straight Jean](../../../images/nordweave-tutorial-product-star.png)
+```mermaid
+graph LR
+  ord["ord_003471"]
+  prod["prod_00017<br/>Selvedge Straight Jean"]
+  cat["cat_mens_bottoms_jeans"]
+  col["col_atelier_edit_ss24"]
+  brand["brand_nordweave_atelier"]
+  mat1["mat_cotton_elastane_blend"]
+  mat2["mat_elastane"]
+  sup["supplier_042"]
+  tags["Cozy, Earth Tones, Gym"]
+  emp["emp_00112<br/>Menswear designer"]
+
+  ord -->|CONTAINS| prod
+  prod -->|BELONGS_TO_CATEGORY| cat
+  prod -->|PART_OF_COLLECTION| col
+  prod -->|SOLD_AS_BRAND| brand
+  prod -->|MADE_OF 95%| mat1
+  prod -->|MADE_OF 5%| mat2
+  prod -->|MANUFACTURED_BY| sup
+  prod -->|TAGGED_AS| tags
+  prod -->|DESIGNED_BY| emp
+```
 
 Every one of those arrows is an edge document sitting in its own
 collection, with its own attributes. The `MADE_OF` edges carry a `pct`
@@ -170,7 +192,15 @@ color depending on which edge collection it belongs to.
 From a customer's perspective, the graph tells a story that reads left to
 right through time:
 
-![Customer journey through orders, products, and returns](../../../images/nordweave-tutorial-customer-journey.png)
+```mermaid
+graph LR
+  Customer -->|PLACED| Order
+  Order -->|CONTAINS| Product
+  Order -->|FULFILLED_AT| Store
+  Customer -->|REVIEWED| Product
+  Customer -->|RETURNED| Product
+  Customer -->|HAS_STYLE_PREF| StyleTag
+```
 
 Customer `cust_00289` - Christine Palmer, the return-fraud customer from
 the brief - has a pattern that jumps out visually: she has many `PLACED`
@@ -184,7 +214,13 @@ the story before you even read a single attribute.
 Following a product backward through the supply chain reveals a different
 set of relationships:
 
-![Supply chain spine from product to supplier](../../../images/nordweave-tutorial-supply-chain.png)
+```mermaid
+graph LR
+  Product -->|MANUFACTURED_BY| Supplier
+  Supplier -->|AUDITED_IN| SupplierAudit
+  Product -->|MADE_OF| Material
+  Product -->|AFFECTED_BY| Incident
+```
 
 This chain is how Nordweave answers questions like "which supplier has had
 the most SEV1 incidents, and which products did those incidents affect?"
@@ -194,10 +230,25 @@ In the graph, it is a traversal - follow the edges, collect what you find.
 ### The org chart (SatelliteGraph)
 
 Remember the SatelliteGraph from the [previous page](satellitegraphs.md)?
-It is a separate named graph
-(`org_chart`) but it connects to the catalog through shared collections:
+It is a separate named graph (`org_chart`) but it connects to the catalog
+through shared collections:
 
-![Org chart connecting designers, teams, and stores](../../../images/nordweave-tutorial-org-chart.png)
+```mermaid
+graph LR
+  Product["Product<br/>(catalog graph)"]:::external
+  Employee["Employee"]
+  Reports["Employee"]
+  Team["Team"]
+  Store["Store"]
+
+  Product -->|DESIGNED_BY| Employee
+  Employee -->|MEMBER_OF| Team
+  Employee -->|LEADS| Team
+  Employee -->|MANAGES| Reports
+  Employee -->|WORKS_AT| Store
+
+  classDef external stroke-dasharray: 5 5,fill:#eee;
+```
 
 When you expand a designer node, you see both their organizational context
 (team, manager, store) and their creative output (products they designed).
