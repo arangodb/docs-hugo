@@ -3,9 +3,13 @@ title: From PostgreSQL to a Graph-Powered Catalog
 menuTitle: From PostgreSQL to a Graph-Powered Catalog
 weight: 5
 description: >-
-  A hands-on, end-to-end tutorial that follows a fictional clothing retailer,
-  Nordweave, on its journey from a traditional relational backend to a
-  graph-native, AI-ready data platform
+  This is an end-to-end tutorial that follows a fictional retailer, Nordweave,
+  on its journey from a traditional relational backend to a graph-native,
+  AI-ready data platform. Every chapter solves one concrete pain point and
+  introduces one layer of the Arango Contextual Data Platform. By the final
+  chapter, Nordweave is running agentic AI workflows on top of the same data
+  you import in the very first chapter. We start with the database itself,
+  because everything agentic ultimately rests on it.
 ---
 
 This is an end-to-end tutorial that follows a fictional retailer, Nordweave,
