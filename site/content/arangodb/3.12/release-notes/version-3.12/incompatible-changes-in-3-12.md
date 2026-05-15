@@ -1020,14 +1020,14 @@ more data, less file descriptors are used.
 
 <small>Introduced in: v3.12.6</small>
 
-Enterprise Edition license keys are now longer issued directly. Customers receive
+Enterprise Edition license keys are no longer issued directly. Customers receive
 license credentials instead. You can use a command-line tool to either activate
 deployments or generate license keys using these credentials. An internet
 connection is required for both. A generated key can subsequently be applied to
 an air-gapped deployment without internet access.
 
 The activation and license keys are now typically short-lived and need to be
-renewed every two weeks. Old license keys remain valid until their regular
+renewed periodically. Old license keys remain valid until their regular
 expiration.
 
 See [Enterprise Edition License Management](../../operations/administration/license-management.md)

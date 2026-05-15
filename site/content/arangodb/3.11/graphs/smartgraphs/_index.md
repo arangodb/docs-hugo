@@ -3,14 +3,14 @@ title: SmartGraphs
 menuTitle: SmartGraphs
 weight: 95
 description: >-
-  SmartGraphs enable you to manage graphs at scale using value-based sharding
+  SmartGraphs enable you to manage graphs at scale, using value-based sharding
+  for excellent data locality
 ---
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 SmartGraphs are specifically targeted at graphs that need scalability and
-high performance. The way SmartGraphs use the ArangoDB cluster sharding makes it
-extremely useful for distributing data across multiple servers with minimal
-network latency.
+high performance. They let you intelligently shard large graph datasets for
+distributing data across multiple servers with minimal network latency.
 
 Most graphs have one feature - a value that is stored in every vertex - that
 divides the entire graph into several smaller subgraphs. These subgraphs have a
@@ -56,13 +56,13 @@ cluster for both scenarios. Let's take a closer look at it.
 ### Random data distribution
 
 The natural distribution of data for graphs that handle large datasets involves
-a series of highly interconnected nodes with many edges running between them.
+a series of highly interconnected vertices with many edges running between them.
 
 ![Random data distribution](../../../../images/SmartGraphs_random_distribution.png)
 
-_The orange line indicates an example graph traversal. Notice how it touches nodes on every server._
+_The orange line indicates an example graph traversal. Notice how it touches vertices on every server._
 
-Once you start connecting the nodes to each other, it becomes clear that the
+Once you start connecting the vertices to each other, it becomes clear that the
 graph traversal might need to travel across every server before returning
 results. This sort of distribution results in many network hops between
 DB-Servers and Coordinators.
@@ -90,12 +90,14 @@ _The outcome of moving the data like this is that you retain the scalability as 
 
 ## SmartGraphs using SatelliteCollections
 
-These SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
-within their graph definition. Therefore, edge definitions defined between
-SmartCollections and SatelliteCollections can be created. As SatelliteCollections
+SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
+to enable more local execution of graph queries.
+
+You can specify SatelliteCollections in graph definitions as vertex collections to
+create relations between SmartCollections and SatelliteCollections. As SatelliteCollections
 (and the edge collections between SmartGraph collections and SatelliteCollections)
-are globally replicated to each participating DB-Server, (weighted) graph traversal,
-and (k-)shortest path(s) query can partially be executed locally on each DB-Server.
+are globally replicated to each participating DB-Server, graph traversals
+and path search queries can partially be executed locally on each DB-Server.
 This means a larger part of the query can be executed fully local
 whenever data from the SatelliteCollections is required.
 
