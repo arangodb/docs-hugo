@@ -181,7 +181,7 @@ The Importer service requires the following configuration parameters:
 - `chat_api_url`: API endpoint URL for the chat/language model service.
 - `embedding_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
-- `chat_model`: Specific language model to use (e.g., `"gpt-4o"`).
+- `chat_model`: Specific language model to use (e.g., `"gpt-5.4-nano"`).
 - `embedding_model`: Specific embedding model to use (e.g., `"text-embedding-3-small"`).
 - `chat_api_key`: API key for the chat/language model service.
 - `embedding_api_key`: API key for the embedding model service.
@@ -207,7 +207,7 @@ importer_config = {
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "gpt-4o",
+    "chat_model": "gpt-5.4-nano",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": os.environ["OPENAI_API_KEY"],
     "embedding_api_key": os.environ["OPENAI_API_KEY"]
@@ -290,7 +290,7 @@ The Retriever service requires the following configuration parameters:
 - `chat_api_url`: API endpoint URL for the chat/language model service.
 - `embedding_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
-- `chat_model`: Specific language model to use (e.g., `"gpt-4o"`).
+- `chat_model`: Specific language model to use (e.g., `"gpt-5.4-nano"`).
 - `embedding_model`: Specific embedding model to use (e.g., `"text-embedding-3-small"`).
 - `chat_api_key`: API key for the chat/language model service.
 - `embedding_api_key`: API key for the embedding model service.
@@ -313,7 +313,7 @@ retriever_config = {
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "gpt-4o",
+    "chat_model": "gpt-5.4-nano",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": os.environ["OPENAI_API_KEY"],
     "embedding_api_key": os.environ["OPENAI_API_KEY"]

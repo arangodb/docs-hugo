@@ -142,7 +142,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter 
       "chat_api_url": "https://api.openai.com/v1",
       "embedding_api_provider": "openai",
       "embedding_api_url": "https://api.openai.com/v1",
-      "chat_model": "gpt-4o",
+      "chat_model": "gpt-5.4-nano",
       "embedding_model": "text-embedding-3-small",
       "chat_api_key": "your_openai_api_key",
       "embedding_api_key": "your_openai_api_key",

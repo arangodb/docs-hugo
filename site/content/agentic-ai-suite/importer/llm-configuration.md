@@ -37,7 +37,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "gpt-4o",
+    "chat_model": "gpt-5.4-nano",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": "your_openai_api_key",
     "embedding_api_key": "your_openai_api_key",
@@ -67,7 +67,7 @@ Where:
   embedding model's output dimension.
 
 {{< info >}}
-When using the official OpenAI API, the service defaults to `gpt-4o` and 
+When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and 
 `text-embedding-3-small` models. When an OpenRouter URL is detected, the
 chat model defaults to `mistralai/mistral-nemo`.
 {{< /info >}}
