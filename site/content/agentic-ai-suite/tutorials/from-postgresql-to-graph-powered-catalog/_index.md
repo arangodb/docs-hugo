@@ -147,9 +147,9 @@ Two things to notice:
 - Some edges carry payload (`pct`, `qty`, `unit_price_usd`). ArangoDB edges
   are first-class documents - properties on edges are perfectly normal.
 
-## How the series is organized
+## How the tutorial is organized
 
-### Chapter 1 - Foundations
+### Foundations
 
 Get the data in, decide how it is sharded, and decide how the small
 reference graphs are co-located.
@@ -158,7 +158,7 @@ reference graphs are co-located.
 - [OneShard databases for single-server query latency](oneshard-databases.md)
 - [SatelliteGraphs for hot reference data](satellitegraphs.md)
 
-### Chapter 2 - Exploring Nordweave visually and with Ada
+### Exploring Nordweave visually and with Ada
 
 Take the spine that was just imported and learn how to look at it,
 customize it, and ask it questions in plain English.
@@ -168,6 +168,7 @@ customize it, and ask it questions in plain English.
 - [Canvas Actions for interactive graph investigation](canvas-actions.md)
 - [Meeting Ada, your AI-powered database assistant](meeting-ada.md)
 
-Get these foundations right and every subsequent chapter - GraphRAG over
+Get these foundations right and every subsequent step - GraphRAG over
 review and audit text, AutoGraph for design briefs and incident
-post-mortems, an agentic merchandising assistant - gets dramatically simpler.
+post-mortems, an agentic merchandising assistant - gets dramatically
+simpler.
