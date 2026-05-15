@@ -1509,7 +1509,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735560192,
+    "default" : 7735559168,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2946,7 +2946,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6188448153,
+    "default" : 6188447334,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3082,7 +3082,7 @@
     ],
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Allow installing Foxx apps from remote URLs other than GitHub.",
+    "description" : "Allow installing Foxx apps from remote URLs other than Github.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -5838,7 +5838,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089724416,
+    "base" : 33089720320,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5846,7 +5846,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802676777,
+    "default" : 26802673459,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6173,7 +6173,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33089724416,
+    "base" : 33089720320,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6181,7 +6181,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853834649,
+    "default" : 19853832192,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7438,7 +7438,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282672230,
+    "default" : 9282671001,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -10074,7 +10074,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376896307,
+    "default" : 12376894668,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11788,32 +11788,6 @@
     "section" : "server",
     "type" : "boolean"
   },
-  "server.storage-engine" : {
-    "category" : "option",
-    "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
-    ],
-    "default" : "auto",
-    "deprecatedIn" : null,
-    "description" : "The storage engine type (note that the MMFiles engine is unavailable since v3.7.0 and cannot be used anymore).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "longDescription" : "ArangoDB's storage engine is based on RocksDB, see\nhttp://rocksdb.org. It is the only available engine from ArangoDB v3.7 onwards.\n\nThe storage engine type needs to be the same for an entire deployment.\nLive switching of storage engines on already installed systems isn't supported.\nConfiguring the wrong engine (not matching the previously used one) results\nin the server refusing to start. You may use `auto` to let ArangoDB choose the\npreviously used one.",
-    "obsolete" : false,
-    "os" : [
-      "linux"
-    ],
-    "requiresValue" : true,
-    "section" : "server",
-    "type" : "string",
-    "values" : "Possible values: \"auto\", \"rocksdb\""
-  },
   "server.support-info-api" : {
     "category" : "option",
     "component" : [
@@ -12762,7 +12736,7 @@
     "introducedIn" : [
       "v3.12.4"
     ],
-    "longDescription" : "This startup option should not be enabled for\nAgents in a cluster as it has no effect on them other than that you need to\nleave the option enabled.",
+    "longDescription" : "This startup option should not be enabled for\n  Agents in a cluster as it has no effect on them other than that you need to\n  leave the option enabled.",
     "obsolete" : false,
     "os" : [
       "linux"
