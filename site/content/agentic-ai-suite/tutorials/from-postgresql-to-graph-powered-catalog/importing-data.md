@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1.1 - Importing the Nordweave spine"
+title: Importing the Nordweave spine
 menuTitle: Importing the data
 weight: 5
 description: >-

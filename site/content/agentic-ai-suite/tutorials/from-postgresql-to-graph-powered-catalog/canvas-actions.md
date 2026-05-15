@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2.3 - Canvas Actions: interactive graph investigation"
+title: "Canvas Actions: interactive graph investigation"
 menuTitle: Canvas Actions
 weight: 30
 description: >-
@@ -176,6 +176,6 @@ cluster - without writing a single query from scratch.
 
 Visual investigation is powerful, but it still assumes you know the
 schema, know AQL, and know what question you are asking. The final page
-of Chapter 2 introduces [Ada](meeting-ada.md) - the conversational
+of this tutorial introduces [Ada](meeting-ada.md) - the conversational
 interface that lets anyone on the team ask Nordweave questions in plain
 English.

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2.2 - Custom themes for better data optics"
+title: Custom themes for better data optics
 menuTitle: Custom themes
 weight: 25
 description: >-

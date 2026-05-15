@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2.1 - Exploring Nordweave in the Graph Visualizer"
+title: Exploring Nordweave in the Graph Visualizer
 menuTitle: Graph Visualizer
 weight: 20
 description: >-
@@ -7,13 +7,13 @@ description: >-
   patterns, and try the first interactive moves on the canvas
 ---
 
-In Chapter 1 we loaded the Nordweave dataset - 57k vertices and 750k edges
-of catalog, customer, and supply-chain data - into ArangoDB. We set the
-database to OneShard for single-server query speed, and carved the org
-chart into a SatelliteGraph so employee lookups stay local on every
-DB-Server. The data is in. Now it is time to look at it.
+In the previous pages we loaded the Nordweave dataset - 57k vertices and
+750k edges of catalog, customer, and supply-chain data - into ArangoDB.
+We set the database to OneShard for single-server query speed, and carved
+the org chart into a SatelliteGraph so employee lookups stay local on
+every DB-Server. The data is in. Now it is time to look at it.
 
-Chapter 2 covers four things, one per page:
+This part of the tutorial covers four things, one per page:
 
 1. Opening the Nordweave graph in the Graph Visualizer and understanding
    what you see (this page).
@@ -39,13 +39,13 @@ Arango Contextual Data Platform. It gives you an interactive canvas where
 nodes appear as circles, edges appear as lines with arrows, and the whole
 thing responds to clicks, drags, and right-click context menus. Think of
 it as the visual layer on top of the data you imported with `arangoimport`
-in Chapter 1.
+earlier in this tutorial.
 
 Before you can visualize anything, the data needs to be registered as a
 named graph. The Graph Visualizer works with named graphs - a named graph
 is simply a declaration that says "these vertex collections and these edge
 collections form a graph, and here is which edge collection connects which
-vertex types." You created the data in Chapter 1, but we haven't yet told
+vertex types." You created the data earlier, but we haven't yet told
 ArangoDB to treat it as a single coherent graph.
 
 If you haven't already created a named graph for the Nordweave catalog,
@@ -143,7 +143,7 @@ The interface breaks down into a few key areas:
 ## Understanding the relationships
 
 The Graph Visualizer makes something tangible that was implicit in the
-JSONL files we loaded in Chapter 1: every `_from` and `_to` field in an
+JSONL files we loaded earlier: every `_from` and `_to` field in an
 edge file became a visible line on the canvas. Walk through what those
 relationships actually mean for Nordweave's business, because understanding
 the shape of your graph is the prerequisite for asking good questions of it.
@@ -193,7 +193,8 @@ In the graph, it is a traversal - follow the edges, collect what you find.
 
 ### The org chart (SatelliteGraph)
 
-Remember the SatelliteGraph from Chapter 1? It is a separate named graph
+Remember the SatelliteGraph from the [previous page](satellitegraphs.md)?
+It is a separate named graph
 (`org_chart`) but it connects to the catalog through shared collections:
 
 ![Org chart connecting designers, teams, and stores](../../../images/nordweave-tutorial-org-chart.png)

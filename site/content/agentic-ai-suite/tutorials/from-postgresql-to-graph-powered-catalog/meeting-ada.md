@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2.4 - Meeting Ada: your AI-powered database assistant"
+title: "Meeting Ada: your AI-powered database assistant"
 menuTitle: Meeting Ada
 weight: 35
 description: >-
@@ -100,7 +100,7 @@ in-store return rates appears inline, no dashboard setup required.
 
 This is the query that motivated Nordweave's move to a graph database in
 the first place - the one that was "deeply nested SQL joins that pegged
-the database CPU" in Chapter 1. In Ada, it is a single sentence. Ada
+the database CPU" earlier in this tutorial. In Ada, it is a single sentence. Ada
 builds the traversal (customer → order → product → collection, filtered
 by `return_rate_pct`), runs it, and returns the results.
 
@@ -176,10 +176,10 @@ foundation:
   product clusters, identify critical suppliers, and analyze customer
   cohorts.
 
-## What we built in Chapter 2
+## What we built in this part
 
-By the end of Chapter 2, Nordweave has moved from "data in a database"
-to "data you can see, style, and interact with":
+By this point, Nordweave has moved from "data in a database" to "data
+you can see, style, and interact with":
 
 - A named graph (`nordweave_catalog`) that registers the vertex and
   edge collections as a coherent, traversable structure in the Graph
@@ -199,8 +199,8 @@ to "data you can see, style, and interact with":
   into AQL queries and visual artifacts, making the Nordweave data
   accessible to anyone on the team.
 
-This is the bridge between the raw infrastructure of Chapter 1 and the
-agentic AI workflows that follow. You have the data, you can see it, you
+This is the bridge between the raw infrastructure earlier in this
+tutorial and the agentic AI workflows that follow. You have the data, you can see it, you
 can ask questions of it in English. The next step is to enrich it - with
 unstructured documents, knowledge graphs extracted from text, and
 ultimately a fully agentic merchandising assistant that plans multi-step

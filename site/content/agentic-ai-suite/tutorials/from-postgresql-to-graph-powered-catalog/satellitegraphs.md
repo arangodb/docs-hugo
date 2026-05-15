@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1.3 - SatelliteGraphs: hot reference data on every server"
+title: "SatelliteGraphs: hot reference data on every server"
 menuTitle: SatelliteGraphs
 weight: 15
 description: >-
@@ -120,9 +120,9 @@ Every insert, update, or delete is applied on every DB-Server. So:
   trivial; the catalog at 5,000 products and 100k orders would not be a
   sensible satellite.
 
-## What we built in Chapter 1
+## What we built so far
 
-By the end of Chapter 1, Nordweave has:
+By this point, Nordweave has:
 
 - A live ArangoDB database called `nordweave`, created with
   `{ sharding: "single" }` so every collection in it is OneShard. Their
@@ -144,6 +144,6 @@ an agentic merchandiser asking *"what should we restock for next winter?"*
 
 ## What's next
 
-In Chapter 2 we take the spine we just imported and start looking at it
+Next we take the spine we just imported and start looking at it
 visually with the Graph Visualizer, then ask real questions of it through
 Ada. Start with [opening the Graph Visualizer](graph-visualizer.md).

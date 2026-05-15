@@ -1,5 +1,5 @@
 ---
-title: "Chapter 1.2 - OneShard: single-server feel, cluster-grade safety"
+title: "OneShard: single-server feel, cluster-grade safety"
 menuTitle: OneShard databases
 weight: 10
 description: >-
