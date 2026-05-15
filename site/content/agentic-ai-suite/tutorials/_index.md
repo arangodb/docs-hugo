@@ -15,8 +15,8 @@ each piece is there.
 
 ## Available tutorials
 
-- [**The Nordweave Story**](nordweave/_index.md): Follow Nordweave, a
-  fictional mid-to-premium clothing retailer, on its journey from a
-  traditional PostgreSQL backend to a graph-native, AI-ready data platform.
-  Starts from raw data import and ends with an agentic merchandising
-  assistant grounded in catalog and review data.
+- [**End-to-End Tutorial**](end-to-end-tutorial/_index.md): Follow
+  Nordweave, a fictional mid-to-premium clothing retailer, on its
+  journey from a traditional PostgreSQL backend to a graph-native,
+  AI-ready data platform. Starts from raw data import and ends with an
+  agentic merchandising assistant grounded in catalog and review data.

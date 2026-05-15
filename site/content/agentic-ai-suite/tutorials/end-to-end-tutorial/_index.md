@@ -1,11 +1,11 @@
 ---
-title: "From PostgreSQL to a Graph-Powered Catalog: The Nordweave Story"
-menuTitle: Nordweave Tutorial
+title: "End-to-End Tutorial: From PostgreSQL to a Graph-Powered Catalog"
+menuTitle: End-to-End Tutorial
 weight: 5
 description: >-
-  An end-to-end tutorial that follows a fictional clothing retailer, Nordweave,
-  on its journey from a traditional relational backend to a graph-native,
-  AI-ready data platform
+  A hands-on, end-to-end tutorial that follows a fictional clothing retailer,
+  Nordweave, on its journey from a traditional relational backend to a
+  graph-native, AI-ready data platform
 ---
 
 This is an end-to-end tutorial that follows a fictional retailer, Nordweave,
@@ -50,10 +50,19 @@ reviews - distributed as a set of JSON Lines files, one per collection. For
 the early chapters we work with the structured ground-truth spine: vertex
 documents on one side, ready-to-load edges on the other.
 
-You can download the dataset files used throughout this tutorial from
-[here](../ordweave-dataset). The part that matters for the first chapter is
-the **spine/** folder - the structured ground-truth JSON Lines files that
-get loaded straight into ArangoDB.
+The dataset is organized into two folders:
+
+- **`spine/`** - structured ground-truth JSON Lines files, one per
+  collection. This is the part loaded in
+  [Chapter 1.1 - Importing the spine](importing-data.md).
+- **`unstructured/`** - long-form text (lookbooks, design briefs, trend
+  reports, style guides, supplier audits, incident post-mortems). Used by
+  later chapters with the
+  [GraphRAG Importer](../../graphrag/_index.md).
+
+The part that matters for the first chapter is the **`spine/`** folder -
+the structured ground-truth JSON Lines files that get loaded straight
+into ArangoDB.
 
 ### Vertex collections
 

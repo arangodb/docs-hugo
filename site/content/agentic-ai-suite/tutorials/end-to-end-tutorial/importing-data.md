@@ -8,16 +8,17 @@ description: >-
   using arangoimport
 ---
 
-This is the first step of [The Nordweave Story](_index.md) tutorial series.
-The goal here is concrete: get the v0.1 spine into ArangoDB.
+This is the first step of the [End-to-End Tutorial](_index.md). The goal
+here is concrete: get the v0.1 spine into ArangoDB.
 
 ArangoDB is a *unified* data platform: it doesn't care whether your data
 arrives as JSON, CSV, TSV, or - through the Importer service - even as
 unstructured PDFs, Markdown, or plain text. For now, the spine is structured
 JSONL, so this chapter uses the workhorse import tool: `arangoimport`.
 
-You can grab the dataset files from [here](../ordweave-dataset) before
-proceeding.
+Make sure you have the dataset files in hand before proceeding - see the
+[dataset overview](_index.md#the-dataset) on the section landing page for
+contents and folder layout.
 
 ## A quick mental model
 
