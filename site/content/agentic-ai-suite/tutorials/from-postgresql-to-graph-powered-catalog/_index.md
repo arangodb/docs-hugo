@@ -58,15 +58,14 @@ The dataset is organized into two folders:
 
 - **`spine/`** - structured ground-truth JSON Lines files, one per
   collection. This is the part loaded in
-  [Chapter 1.1 - Importing the spine](importing-data.md).
+  [Importing the Nordweave spine](importing-data.md).
 - **`unstructured/`** - long-form text (lookbooks, design briefs, trend
-  reports, style guides, supplier audits, incident post-mortems). Used by
-  later chapters with the
-  [GraphRAG Importer](../../graphrag/_index.md).
+  reports, style guides, supplier audits, incident post-mortems). Used
+  later with the [GraphRAG Importer](../../graphrag/_index.md).
 
-The part that matters for the first chapter is the **`spine/`** folder -
-the structured ground-truth JSON Lines files that get loaded straight
-into ArangoDB.
+The part that matters for the first part of the tutorial is the
+**`spine/`** folder - the structured ground-truth JSON Lines files that
+get loaded straight into ArangoDB.
 
 ### Vertex collections
 
