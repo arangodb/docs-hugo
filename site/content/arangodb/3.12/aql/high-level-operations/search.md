@@ -34,10 +34,12 @@ See [`arangosearch` Views](../../indexes-and-search/arangosearch/arangosearch-vi
 The `SEARCH` keyword is followed by an ArangoSearch filter expressions, which
 is mostly comprised of calls to ArangoSearch AQL functions.
 
-<pre><code>FOR <em>doc</em> IN <em>viewName</em>
-  SEARCH <em>expression</em>
-  OPTIONS { … }
-  ...</code></pre>
+```aql-syntax
+FOR <doc> IN <viewName>
+  SEARCH <expression>
+  [OPTIONS { … }]
+  …
+```
 
 ## Usage
 
@@ -74,11 +76,15 @@ into account and can be controlled with parentheses.
 
 Consider the following contrived expression:
 
-`doc.value < 0 OR doc.value > 5 AND doc.value IN [-10, 10]`
+```aql
+doc.value < 0 OR doc.value > 5 AND doc.value IN [-10, 10]
+```
 
 `AND` has a higher precedence than `OR`. The expression is equivalent to:
 
-`doc.value < 0 OR (doc.value > 5 AND doc.value IN [-10, 10])`
+```aql
+doc.value < 0 OR (doc.value > 5 AND doc.value IN [-10, 10])
+```
 
 The conditions are thus:
 - values less than 0
@@ -88,7 +94,9 @@ The conditions are thus:
 Parentheses can be used as follows to apply the `AND` condition to both of the
 `OR` conditions:
 
-`(doc.value < 0 OR doc.value > 5) AND doc.value IN [-10, 10]`
+```aql
+(doc.value < 0 OR doc.value > 5) AND doc.value IN [-10, 10]
+```
 
 The conditions are now:
 - values less than 0, but only if it is -10
@@ -132,14 +140,28 @@ Also see [Known Issues](../../release-notes/version-3.12/known-issues-in-3-12.md
 supported:
 
 ```aql
-LET tokens = TOKENS("some input", "text_en")                 // ["some", "input"]
-FOR doc IN myView SEARCH tokens  ALL IN doc.text RETURN doc // dynamic conjunction
-FOR doc IN myView SEARCH tokens  ANY IN doc.text RETURN doc // dynamic disjunction
-FOR doc IN myView SEARCH tokens NONE IN doc.text RETURN doc // dynamic negation
-FOR doc IN myView SEARCH tokens  ALL >  doc.text RETURN doc // dynamic conjunction with comparison
-FOR doc IN myView SEARCH tokens  ANY <= doc.text RETURN doc // dynamic disjunction with comparison
-FOR doc IN myView SEARCH tokens NONE <  doc.text RETURN doc // dynamic negation with comparison
-FOR doc IN myView SEARCH tokens AT LEAST (1+1) IN doc.text RETURN doc // dynamically test for a subset of elements
+LET tokens = TOKENS("some input", "text_en") // ["some", "input"]
+
+// Dynamic conjunction
+FOR doc IN myView  SEARCH tokens  ALL IN doc.text  RETURN doc
+
+// Dynamic disjunction
+FOR doc IN myView  SEARCH tokens  ANY IN doc.text  RETURN doc 
+  
+// Dynamic negation
+FOR doc IN myView  SEARCH tokens NONE IN doc.text  RETURN doc
+
+// Dynamic conjunction with comparison
+FOR doc IN myView  SEARCH tokens  ALL >  doc.text  RETURN doc 
+
+// Dynamic disjunction with comparison
+FOR doc IN myView  SEARCH tokens  ANY <= doc.text  RETURN doc
+
+// Dynamic negation with comparison
+FOR doc IN myView  SEARCH tokens NONE <  doc.text  RETURN doc
+
+// Dynamically test for a subset of elements
+FOR doc IN myView  SEARCH tokens AT LEAST (1+1) IN doc.text  RETURN doc 
 ```
 
 The following operators are equivalent in `SEARCH` expressions:
@@ -285,7 +307,9 @@ a score of `0` will be returned for all documents.
 The `SEARCH` operation supports an optional `OPTIONS` clause to modify the
 behavior. The general syntax is as follows:
 
-<pre><code>SEARCH <em>expression</em> OPTIONS { <em>option</em>: <em>value</em>, <em>...</em> }</code></pre>
+```aql-syntax
+SEARCH <expression> OPTIONS { <option>: <value> [… , <optionN>: <valueN>] }
+```
 
 ### `collections`
 

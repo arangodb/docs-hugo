@@ -1,0 +1,13 @@
+{{/* TODO: In Hugo v0.158+, use single call to strings.ReplacePairs */ -}}
+{{ $substitutedBrackets := replace (replace (replace (replace .Inner "<" " ⟨ ") ">" " ⟩ ") "[" " ⟦ ") "]" " ⟧ "  -}}
+{{ $options := merge .Options (dict "wrapperClass" "highlight no-collapse") }}
+{{ $html := transform.Highlight $substitutedBrackets "aql" $options -}}
+
+{{/* replaceRE is needed if angled brackets are involved! */ -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⟦</span> ` `<span class="aql-syntax-optional" title="Optional clause you may use">` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⟧</span> ` `</span>` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⟨</span> ` `<span class="aql-syntax-placeholder" title="Replace with actual name respectively expression">` -}}
+{{ $html = $html | replaceRE ` <span class="?err"?>⟩</span> ` `</span>` -}}
+{{ $html = $html | replaceRE `<span class="?err"?>…</span>` `<span title="Omitted or repeated part">…</span>` }}
+
+{{ $html | safeHTML -}}
