@@ -448,8 +448,12 @@ function generate_startup_options() {
   container_name="$1"
   version="$2"
   log "[generate_startup_options] Starting options dump for container " "$container_name"
-  declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
-
+  # arangobench removed in ArangoDB 4.0
+  if [[ "$version" =~ ^3\. ]]; then
+    declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
+  else
+    declare -a ALLPROGRAMS=("arangobackup" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
+  fi
 
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       log "[generate_startup_options] Dumping program options of ${HELPPROGRAM}"
@@ -634,28 +638,24 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps | grep docs_site)
     if [ "$siteContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Site exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     toolchainContainerStatus=$(docker ps | grep toolchain)
     if [ "$toolchainContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Toolchain exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     arangoproxyContainerStatus=$(docker ps | grep docs_arangoproxy)
     if [ "$arangoproxyContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Arangoproxy exited, shutting down all containers" >> toolchain.log
       terminate=true
     fi
     if [ "$ENV" == "local" ]; then
       errors=$(cat summary.md  | grep '<error')
       if [ "$errors" != "" ] ; then
-        docker stop docs_arangoproxy docs_site
         terminate=true
       fi
     fi
@@ -663,20 +663,51 @@ function trap_container_exit() {
 
   errors=$(cat summary.md  | grep '<error')
   if [ "$errors" != "" ] ; then
-    docker stop docs_arangoproxy docs_site
     log "[TERMINATE] Error during content generation:" >> toolchain.log
     log "[TERMINATE] ""$errors" >> toolchain.log
   fi
 
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1
+
+  # Inspect before docker stop; the poll loop only observes—stopping there records 137 for siblings still running.
+  arangoproxy_exit=0
+  site_exit=0
+  if docker inspect docs_arangoproxy &>/dev/null; then
+    arangoproxy_status=$(docker inspect docs_arangoproxy --format '{{.State.Status}}')
+    if [ "$arangoproxy_status" = "exited" ]; then
+      arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+    fi
+  fi
+  if docker inspect docs_site &>/dev/null; then
+    site_status=$(docker inspect docs_site --format '{{.State.Status}}')
+    if [ "$site_status" = "exited" ]; then
+      site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+    fi
+  fi
+  arangoproxy_exit=${arangoproxy_exit:-0}
+  site_exit=${site_exit:-0}
+
   docker stop docs_arangoproxy docs_site
+
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
-  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
-  log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
 
-  exit $exitStatus
+  summary_exit=$(grep -oE '<error code=[0-9]+' /home/summary.md 2>/dev/null | head -n 1 | cut -d '=' -f2)
+  if [ -n "$summary_exit" ]; then
+    log "[stop_all_containers] Toolchain Exit Status (summary) $summary_exit" >> /home/toolchain.log
+    exit "$summary_exit"
+  fi
+  if [ "${arangoproxy_exit:-0}" -ne 0 ]; then
+    log "[stop_all_containers] Toolchain Exit Status (docs_arangoproxy) $arangoproxy_exit" >> /home/toolchain.log
+    exit "$arangoproxy_exit"
+  fi
+  if [ "${site_exit:-0}" -ne 0 ]; then
+    log "[stop_all_containers] Toolchain Exit Status (docs_site) $site_exit" >> /home/toolchain.log
+    exit "$site_exit"
+  fi
+  log "[stop_all_containers] Toolchain Exit Status 0" >> /home/toolchain.log
+  exit 0
 }
 
 
