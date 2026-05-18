@@ -79,7 +79,7 @@ curl -X POST \
     ],
     "module": "default"
   }' \
-  http://localhost:8080/v1/import-multiple
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple
 ```
 
 ## Next Steps

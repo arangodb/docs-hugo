@@ -85,7 +85,7 @@ curl -X POST \
     "file_ids": ["id1", "id2"],
     "strategy": { "top_k": 10, "cluster_threshold": 2 }
   }' \
-  http://localhost:8080/v1/corpus/builds
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds
 ```
 
 ---
@@ -132,7 +132,7 @@ Check the progress of a corpus build.
 
 ```bash
 curl -H "Authorization: Bearer <token>" \
-  http://localhost:8080/v1/corpus/builds/cb_01ARZ3NDEKTSV4RRFFQ69G5FAV
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/cb_01ARZ3NDEKTSV4RRFFQ69G5FAV
 ```
 
 ---

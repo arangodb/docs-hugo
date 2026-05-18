@@ -77,7 +77,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"replicas": 2, "max_retries": 3}' \
-  http://localhost:8080/v1/orchestrate
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
 ## Next Steps

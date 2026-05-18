@@ -57,7 +57,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"full_graph_rag_strategy": "high"}' \
-  http://localhost:8080/v1/rag-strategizer/analyze
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze
 ```
 
 ---
@@ -122,7 +122,7 @@ No body or query parameters.
 
 ```bash
 curl -H "Authorization: Bearer <token>" \
-  http://localhost:8080/v1/rag-strategizer/strategy
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/strategy
 ```
 
 ## Next Steps
