@@ -73,7 +73,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"collection": "products", "field": "description"}' \
-  http://localhost:8080/v1/embed-field-in-collection
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection
 ```
 
 ## Next Steps
