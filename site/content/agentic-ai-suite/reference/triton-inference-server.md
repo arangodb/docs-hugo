@@ -84,7 +84,7 @@ You can also specify multiple models:
 ### Python Backend
 
 All models **must use the Python backend** to ensure compatibility with the
-Triton service. Each model requires the following two files:
+Triton service. Each model requires the following three files:
 
 1. **`model.py`**
    Implements the Python backend model. Triton uses this file to load and 
@@ -115,6 +115,22 @@ Triton service. Each model requires the following two files:
    output: [...]
    ```
 
+3. **`MLmodel`**
+   Required by MLflow 3.x at the root of the model bundle so that
+   `mlflow.register_model(...)` can locate the logged artifacts. The Triton LLM
+   Host service itself does not read this file; it exists solely to satisfy MLflow's
+   registration check. See an example below:
+
+   ```yaml
+   artifact_path: model
+   flavors:
+     python_function:
+       env: conda.yaml
+       loader_module: mlflow.pyfunc.loader
+       python_version: "3.11"
+   mlflow_version: "3.10.1"
+   ```
+
 ## Model management with MLflow
 
 {{< info >}}
@@ -126,10 +142,20 @@ and load models from the MLflow registry.
 ### How to register a model in MLflow
 
 Registering a Python backend model in MLflow involves packaging your
-`model.py` and `config.pbtxt` files and passing them as an artifact. The Triton
-service will look for a directory named after your model (e.g., `my-private-llm-model`)
-within the MLflow registry store and expects to find the `model.py` and `config.pbtxt`
-files inside it.
+`model.py`, `config.pbtxt`, and `MLmodel` files and passing them as an artifact.
+The Triton service will look for a directory named after your model
+(e.g., `my-private-llm-model`) within the MLflow registry store and expects to
+find the `MLmodel`, `config.pbtxt`, and `model.py` files inside it.
+
+The bundle directory must have the following layout:
+
+```text
+<model_name>/
+├── MLmodel          # required by MLflow 3.x
+├── config.pbtxt
+└── <version>/
+    └── model.py
+```
 
 ```py
 try:
