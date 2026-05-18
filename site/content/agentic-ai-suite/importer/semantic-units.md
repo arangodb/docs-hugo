@@ -123,7 +123,7 @@ In this example, the Importer extracts all image references and stores complete 
 Here's a complete import request with semantic units enabled alongside other import parameters:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
