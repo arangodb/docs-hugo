@@ -3,108 +3,144 @@ title: Use Cases
 menuTitle: Use Cases
 weight: 10
 description: >-
-  Real-world enterprise use cases for Arango's AutoGraph copilot and 
-  comparison with traditional RAG approaches, including business benefits 
-  and practical applications
+  Practical applications for AutoGraph: turning a corpus of uploaded
+  documents into a domain-partitioned knowledge graph that AI agents
+  and copilots can query through the Retriever service.
 ---
 
-AutoGraph enables AI agents and co-pilots across enterprise workflows where contextual 
-retrieval and domain-aware reasoning support human decisions.
+AutoGraph turns a body of documents you upload into a partitioned knowledge
+graph with retrieval strategies chosen per domain. The use cases below assume
+the standard workflow: documents are uploaded in a supported format
+(see [Supported file formats](quickstart.md#supported-file-formats)),
+AutoGraph discovers domains and builds the corpus, and the
+[Retriever service](../retriever/) answers questions against the
+resulting knowledge graph.
 
-## Enterprise Knowledge Assistants
+{{< info >}}
+AutoGraph does not include connectors to third-party systems such as
+SharePoint, Google Drive, Confluence, ticketing systems, or telemetry
+pipelines. To use content from those systems, export the documents in a
+[supported format](quickstart.md#supported-file-formats) and upload them
+through the web interface or the API.
+{{< /info >}}
 
-**Scenario**: 10,000+ documents across internal wikis and 
-documentation repositories. Employees waste hours searching for information, often finding 
-outdated or conflicting answers.
+## Customer support AI agents
 
-**AutoGraph Solution**: AutoGraph discovers 15-20 natural domains (HR policies, engineering docs, sales playbooks, etc.) and processes each domain with an appropriate strategy. Employees ask questions in natural language, and the two-stage retrieval system finds relevant partitions and answers. All answers include citations to actual policy documents or technical specs.
+**Scenario**: A support team wants an assistant that surfaces the right
+runbook, known-issue note, or resolution policy without forcing the agent
+to search across many documents by hand.
 
-**Business impact**: 
-- Search time reduced from hours to seconds
-- Consistent responses across teams
-- Faster onboarding for new employees
+**How AutoGraph fits**: Export your support documentation; runbooks,
+product docs, known-issue write-ups, escalation policies, into a
+[supported format](quickstart.md#supported-file-formats) and ingest it
+through AutoGraph. AutoGraph turns the corpus into a knowledge graph
+automatically, populating ArangoDB collections without any pre-modeling
+on your side.
+[Modules](design-guide.md#designing-modules) keep product lines or
+tiers separated, and [Deep Search](../retriever/search-methods/deep-search.md)
+can plan multi-step retrieval across the resulting graph.
 
-## Support Engineering Co-Pilots
+**What you bring**: The documentation files. AutoGraph has no connectors
+to ticketing systems, CRMs, or log pipelines and does not ingest live
+event streams. If the assistant needs to reason over data that is not in
+document form, such as current ticket state or product telemetry, that
+data has to reach ArangoDB through your own pipelines.
 
-**Scenario**: Connect runbooks, product docs, troubleshooting guides, knowledge articles 
-across multiple product lines. Support teams juggle multiple knowledge bases—product docs, 
-known issues, past tickets, configuration databases, and runbooks. Finding relevant context 
-requires extensive institutional knowledge.
+**What you get**:
+- A documentation-grounded assistant with citations to the originating runbook or policy
+- Per-product-line or per-tier partitions instead of a flat index
+- Multi-step Deep Search for issues that span several documents
 
-**AutoGraph Solution**: Domain discovery automatically separates product lines and document types, giving support agents relevant context for customer issues. Local search finds specific troubleshooting steps, while global search provides product overview context. Custom retrievers can query ticket history and logs to deliver comprehensive support assistance.
+## Enterprise knowledge assistants
 
-**Business impact**:
-- 40-60% reduction in resolution time and average handle time
-- 30% improvement in first-contact resolution
-- 25% fewer escalations to engineering
-- Agent confidence increased significantly
-- New agents productive in days, not months
+**Scenario**: An organization wants an assistant that reflects what the
+business actually knows across teams, surfaces, and content types,
+rather than returning the nearest chunk from a single document store.
 
-## Product Engineering & Technical Documentation
+**How AutoGraph fits**: AutoGraph ingests your documents and
+automatically builds a domain-partitioned knowledge graph,
+with per-domain ontologies and citations; you do not pre-model the
+graph. When the same assistant also needs to answer from data that is
+not in document form, pair AutoGraph with
+[AQLizer](../natural-language-to-aql/_index.md), which translates
+natural-language questions into AQL over collections you already keep
+in ArangoDB.
 
-**Scenario**: Engineering teams maintain massive repositories—design docs, specifications, 
-architecture diagrams, code, and defect history. Engineers spend significant time navigating 
-complexity to understand dependencies or trace historical decisions.
+**What you bring**: Documents in a
+[supported format](quickstart.md#supported-file-formats) for AutoGraph.
 
-**AutoGraph Solution**: AutoGraph automatically clusters documentation by product component and layer (frontend, backend, infrastructure). Engineers can query for dependencies, design decisions, or historical context. Deep Search connects documentation with code repositories, defect databases, and issue trackers, preserving institutional knowledge as documentation.
+**What you get**:
+- A domain-partitioned knowledge graph rather than a flat vector index
+- A path to combine document retrieval with AQL queries over structured data
+- Citations and graph context that make answers explainable
 
-**Business impact**:
-- Investigation time reduced from hours to minutes
-- 50% reduction in root cause analysis time
-- Better design reuse (find existing components)
-- Reduced defects from historical learning
-- New engineer onboarding accelerated 3x
+## Product and developer documentation
 
-## Compliance & Risk Management
+**Scenario**: A product team maintains design docs, architecture notes, API
+references, and release notes. New engineers and field teams need a faster
+way to find the right document and understand how concepts relate.
 
-**Scenario**: Organize policy documents, regulatory requirements, audit procedures across 
-multiple jurisdictions. Financial institutions must detect anomalies and ensure compliance 
-across vast transaction datasets and regulatory documents.
+**How AutoGraph fits**: Use [modules](design-guide.md#designing-modules)
+to keep different surfaces isolated (for example, `"docs"`, `"api"`,
+`"internal"`). Within each module, clustering separates topics so the
+Retriever can route queries to the relevant partition.
 
-**AutoGraph Solution**: AutoGraph discovers domains by jurisdiction and policy type, then imports compliance policies while connecting to transaction databases via custom retrievers. The AI retrieves relevant policies with full regulatory context and identifies suspicious patterns. Audit trails show reasoning for all decisions, and citations provide compliance evidence. When regulations update, only the affected partitions need to be updated.
+**What you get**:
+- Separation between public documentation and internal notes
+- Per-domain ontologies that capture product-specific entity types
+- A graph view of how documents relate, via the
+  [Graph Visualizer](../../platform-suite/graph-visualizer.md)
 
-**Business impact**:
-- Regulatory compliance verification time reduced 70%
-- 35% improvement in true positive detection
-- 50% reduction in false positives
-- Faster investigations with complete context
-- Complete audit trails for all decisions
+## Research and development
 
-## Research & Development
+**Scenario**: A research team works through a corpus of papers, reports,
+and white papers and wants to explore how concepts and findings relate
+across the corpus.
 
-**Scenario**: R&D teams analyze research papers, clinical trial data, and regulatory documents to identify 
-patterns and development pathways.
+**How AutoGraph fits**: With the FullGraphRAG strategy, AutoGraph extracts
+entities and communities and builds explicit relationships between them.
+Deep Search exposes those communities and lets the model reason
+over the corpus rather than retrieve a single passage.
 
-**AutoGraph Solution**: AutoGraph processes research documents, creating knowledge graphs that connect 
-related studies. Researchers can query complex relationships across the entire corpus to identify patterns and insights.
+**What you get**:
+- Entity and community-level views over the literature
+- Multi-step Deep Search for questions that span several documents
+- A queryable graph of concepts, not just a vector index
 
-**Business impact**:
-- Accelerates research insights
-- Reduces risk of missing critical connections
-- Improves decision-making speed
+## Legal and contract review
 
-## Legal Document Analysis
+**Scenario**: A team reviews contracts, agreements, and case material in
+PDF or Office formats and wants to surface clauses, parties, and
+precedents across the corpus.
 
-**Scenario**: Law firms analyze case law, legal precedents, and client documents to build comprehensive 
-legal strategies.
+**How AutoGraph fits**: Generates a domain-specific
+ontology (for example, `CONTRACT`, `PARTY`, `JURISDICTION`,
+`OBLIGATION`) and then extracts only entities matching that
+ontology, producing a graph aligned with the way legal teams reason
+about documents.
 
-**AutoGraph Solution**: AutoGraph processes legal documents, creating graphs that understand precedents, 
-case relationships, and argument patterns. For example, when asked "How have similar contract disputes been resolved in different jurisdictions?", AutoGraph maps precedent relationships and jurisdictions, showing actual legal reasoning chains.
+**What you get**:
+- Ontology tuned to the legal domain rather than a generic one
+- Cross-document relationships (parties, clauses, precedents)
+- Citations back to the originating clause
 
-**Business impact**:
-- Improves case preparation quality
-- Reduces research time
-- Enables more comprehensive strategies
+## Network, asset, and infrastructure operations
 
-## Infrastructure Management
+**Scenario**: An operations team wants an assistant that explains a
+degraded service or a change-related incident by tying the symptom back
+to the runbooks, design docs, and post-incident reports the team has
+written over time.
 
-**Scenario**: IT teams manage complex infrastructures—networks, servers, applications, dependencies. When 
-incidents occur, operators must correlate data from monitoring, asset databases, and runbooks.
+**How AutoGraph fits**: AutoGraph ingests the documentation layer of
+operations; runbooks, post-incident reports, design docs, network
+diagrams in PDF, change-management notes, and automatically builds a
+knowledge graph from the corpus, with citations back into the source
+documents. Modules can separate environments, regions, or product lines
+so retrieval stays scoped.
 
-**AutoGraph Solution**: AutoGraph unifies runbooks while enabling Deep Search across infrastructure 
-topology and real-time telemetry. The co-pilot provides context, impact analysis, and remediation steps to operators.
+**What you bring**: Operational documentation in a
+[supported format](quickstart.md#supported-file-formats).
 
-**Business impact**:
-- 70% reduction in mean time to resolution
-- Predict failures before user impact
-- Understand blast radius before changes
+**What you get**:
+- A citation-backed assistant over runbooks and post-incident knowledge
+- Per-environment or per-region partitioning via modules
