@@ -217,7 +217,7 @@ curl --request POST \
 
 Check whether the service is running and healthy.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/health" >}}
 
 **Example:**
 

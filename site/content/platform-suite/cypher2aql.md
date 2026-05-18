@@ -508,7 +508,6 @@ paths:
           description: |
             The identifier of the service to stop, here the ID of the
             `arango-cypher2aql` service.
-            assigned to the service.
           schema:
             type: string
             example: arango-cypher2aql-z8fue
