@@ -18,16 +18,16 @@ How to perform the steps is detailed in the subsequent sections.
 1. Determine the approximate size of the data that you will load into the GAE
    and ensure the machine to run the engine on has sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
-2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the AI service
+2. [Start a `graphanalytics` service](#start-a-graphanalytics-service) via the ACP service
    that manages various Platform components for graph intelligence and machine learning.
    It only takes a few seconds until the engine service can be used. The engine
-   runs adjacent to the pods of the ArangoDB Core.
-3. [Load graph data](#load-data) from the ArangoDB Core into the engine. You can load
+   runs adjacent to the pods of the ArangoDB core.
+3. [Load graph data](#load-data) from the ArangoDB core into the engine. You can load
    named graphs or sets of node and edge collections. This loads the edge
    information and a configurable subset of the node attributes.
 4. [Run graph algorithms](#run-algorithms) on the data. You only need to load the data once per
    engine and can then run various algorithms with different settings.
-5. [Write the computation results back](#store-job-results) to the ArangoDB Core.
+5. [Write the computation results back](#store-job-results) to the ArangoDB core.
 6. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
 {{< /tab >}}
 
@@ -64,7 +64,7 @@ Single server deployments using ArangoDB version 3.11 are not supported.
 
 {{< tab "Contextual Data Platform" >}}
 You can use any of the available authentication methods the Contextual Data Platform
-supports to start and stop `graphanalytics` services via the AI service as
+supports to start and stop `graphanalytics` services via the ACP service as
 well as to authenticate requests to the [Engine API](#engine-api).
 
 - HTTP Basic Authentication
@@ -109,10 +109,10 @@ Note that all cURL examples use placeholder values that you should replace with 
 
 The interface for managing the engines depends on the environment you use:
 
-- **Contextual Data Platform**: [AI service](#ai-service)
+- **Contextual Data Platform**: [ACP service](#acp-service)
 - **Arango Managed Platform (AMP)**: [Management API](#management-api)
 
-### AI service
+### ACP service
 
 {{< tag "Contextual Data Platform" >}}
 
@@ -133,7 +133,8 @@ if the Platform deployment uses a self-signed certificate (default).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
 
-Start a GAE via the AI service with an empty request body. This returns a **SERVICE_ID** that you will need to construct the Engine API URL in the next section.
+Start a GAE via the ACP service with an empty request body. This returns a
+`serviceId` that you need to construct the Engine API URL in the next section.
 
 ```bash
 # Set your Contextual Data Platform endpoint
@@ -145,44 +146,47 @@ ADB_TOKEN=$(curl -sSk -X POST \
   "https://$EXTERNAL_ENDPOINT:8529/_open/auth" | jq -r .jwt)
 
 # Start the Graph Analytics service
-Service=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" \
+SERVICE=$(curl -sSk -H "Authorization: bearer $ADB_TOKEN" \
   -X POST "https://$EXTERNAL_ENDPOINT:8529/_platform/acp/v1/graphanalytics")
 
-# Extract the service ID (needed for Engine API URL construction)
-ServiceID=$(echo "$Service" | jq -r ".serviceInfo.serviceId")
+# Extract the trailing segment of the serviceId (needed for Engine API URL construction)
+SERVICE_ID=$(echo "$SERVICE" | jq ".serviceInfo.serviceId")
 
-if [[ "$ServiceID" == "null" ]]; then 
+if [[ "$SERVICE_ID" == "null" ]]; then 
   echo "Error starting Graph Analytics Engine"
 else
+  SERVICE_ID_POSTFIX=$(echo "$SERVICE_ID" | jq -r 'split("-") | last')
   echo "Graph Analytics service started successfully"
-  echo "Service ID: $ServiceID"
-  echo "Save this Service ID for constructing the Engine API URL"
+  echo "serviceIdPostfix: $SERVICE_ID_POSTFIX"
+  echo "Save the postfix for constructing the Engine API URL"
 fi
 
-echo "$Service" | jq
+echo "$SERVICE" | jq
 ```
 
 **Example response:**
 ```json
 {
   "serviceInfo": {
-    "serviceId": "tqcge",
+    "serviceId": "arangodb-gral-tqcge",
     "description": "Install complete",
     "status": "DEPLOYED",
-    "namespace": "arangodb"
+    "namespace": "arango",
+    "managingEntity": "ACP"
   }
 }
 ```
 
 {{< info >}}
-Save the `serviceId` from the response. You will use it to construct the Engine API URL for running graph analytics operations.
+Save the trailing segment of the `serviceId` from the response (here: `tqcge`).
+You need it to construct the Engine API URL for running graph analytics operations.
 {{< /info >}}
 
 #### List the services
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
-You can list all running services managed by the AI service, including the
+You can list all running services managed by the ACP service, including the
 `graphanalytics` services:
 
 ```bash
@@ -192,13 +196,13 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
 
 #### Stop a `graphanalytics` service
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{SERVICE_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
-Delete the desired engine via the AI service using the service ID:
+Delete the desired engine via the ACP service using the `serviceId`:
 
 ```bash
 curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
-  -X DELETE "https://data-platform.example.org:8529/_platform/acp/v1/service/tqcge" | jq
+  -X DELETE "https://data-platform.example.org:8529/_platform/acp/v1/service/arangodb-gral-tqcge" | jq
 ```
 
 ### Management API
@@ -208,7 +212,7 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
 {{< info >}}
 This section covers managing Graph Analytics Engines on the **Arango Managed Platform (AMP)**.
 
-If you are using the **Contextual Data Platform**, use the [AI service](#ai-service) instead.
+If you are using the **Contextual Data Platform**, use the [ACP service](#acp-service) instead.
 {{< /info >}}
 
 GAEs are deployed and deleted with the Management API for graph analytics on the
@@ -346,11 +350,12 @@ The Engine API URL is constructed from multiple parts depending on your platform
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/" >}}
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/" >}}
 
 Where:
 - `<EXTERNAL_ENDPOINT>`: Your Contextual Data Platform endpoint (e.g., `data-platform.example.org`)
-- `<SERVICE_ID>`: From the [AI service response](#start-a-graphanalytics-service) when you started the service
+- `:serviceIdPostfix`: From the [ACP service response](#start-a-graphanalytics-service)
+   when you started the service (the `serviceId` segment after the last hyphen)
 
 **Example:**
 
@@ -373,10 +378,10 @@ For convenience, you can store the Engine API base URL in a variable:
 EXTERNAL_ENDPOINT="data-platform.example.org"
 
 # Service ID from when you started the service
-SERVICE_ID="tqcge"
+SERVICE_ID_POSTFIX="tqcge"
 
 # Construct the Engine API base URL
-ENGINE_URL="https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID"
+ENGINE_URL="https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID_POSTFIX"
 ```
 
 This makes subsequent requests shorter and easier to manage. Alternatively, you can use the full URL directly in each request.
@@ -460,8 +465,8 @@ Bash as the shell and that the `curl` and `jq` commands are available.
 # Platform endpoint (from previous section)
 EXTERNAL_ENDPOINT="data-platform.example.org"
 
-# Service ID from when you started the service
-SERVICE_ID="tqcge"
+# Trailing segment of the serviceId from when you started the service (after last hyphen)
+SERVICE_ID_POSTFIX="tqcge"
 
 # Get authentication token
 ADB_TOKEN=$(curl -sSk -X POST \
@@ -469,7 +474,7 @@ ADB_TOKEN=$(curl -sSk -X POST \
   "https://$EXTERNAL_ENDPOINT:8529/_open/auth" | jq -r '.jwt')
 
 # Example: Use token to verify connection
-curl -sSk -H "Authorization: bearer $ADB_TOKEN" "https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID/v1/jobs"
+curl -sSk -H "Authorization: bearer $ADB_TOKEN" "https://$EXTERNAL_ENDPOINT:8529/gral/$SERVICE_ID_POSTFIX/v1/jobs"
 ```
 
 {{< /tab >}}
@@ -524,7 +529,7 @@ named graphs as well as sets of node and edge collections (see
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/loaddata" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddata" >}}
 
 **Example:**
 
@@ -635,7 +640,7 @@ for example, when using AQL traversals.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/loaddataaql" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddataaql" >}}
 
 **Example:**
 
@@ -744,7 +749,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST \
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/pagerank" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/pagerank" >}}
 
 **Example:**
 
@@ -833,7 +838,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/wcc" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/wcc" >}}
 
 **Example:**
 
@@ -880,7 +885,7 @@ obtain different IDs.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/scc" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/scc" >}}
 
 **Example:**
 
@@ -944,7 +949,7 @@ available, which should be equally usable for most use cases.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/betweennesscentrality" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/betweennesscentrality" >}}
 
 **Example:**
 
@@ -1027,7 +1032,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/linerank" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/linerank" >}}
 
 **Example:**
 
@@ -1096,7 +1101,7 @@ based on common location, interests, occupation, etc.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/labelpropagation" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/labelpropagation" >}}
 
 **Example:**
 
@@ -1175,7 +1180,7 @@ The result is a community ID for each node.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/attributepropagation" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/attributepropagation" >}}
 
 **Example:**
 
@@ -1273,7 +1278,7 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/storeresults" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/storeresults" >}}
 
 **Example:**
 
@@ -1326,7 +1331,7 @@ Parameters:
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs" >}}
 
 **Example:**
 
@@ -1358,7 +1363,7 @@ List all active and finished jobs.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
 
 **Example:**
 
@@ -1392,7 +1397,7 @@ Get detailed information about a specific job.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/jobs/{JOB_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
 
 **Example:**
 
@@ -1426,7 +1431,7 @@ Delete a specific job.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs" >}}
 
 **Example:**
 
@@ -1458,7 +1463,7 @@ List all loaded sets of graph data that reside in the memory of the engine node.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
 
 **Example:**
 
@@ -1492,7 +1497,7 @@ Get detailed information about a specific set of graph data.
 
 {{< tab "Contextual Data Platform" >}}
 
-{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{SERVICE_ID}/v1/graphs/{GRAPH_ID}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/graphs/{GRAPH_ID}" >}}
 
 **Example:**
 

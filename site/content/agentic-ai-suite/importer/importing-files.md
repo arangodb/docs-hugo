@@ -51,7 +51,7 @@ Use single file import when you want to process one document at a time. This is
 ideal for testing, small documents, or when you need immediate feedback without 
 streaming progress updates.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import" >}}
 
 ### Basic example
 
@@ -60,7 +60,7 @@ streaming progress updates.
 base64_content=$(base64 -i your_document.txt)
 
 # Send to the Importer service
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -72,7 +72,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/
 ### Example with common parameters
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -103,12 +103,12 @@ Use multi-file import when you need to process multiple documents into a single
 Knowledge Graph. This API provides streaming progress updates, making it 
 ideal for batch processing and long-running imports where you need to track progress.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import-multiple" >}}
 
 ### Basic example
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -141,7 +141,7 @@ For detailed information about all available parameters, see the [Import Paramet
 For faster processing when you only need semantic search over document chunks:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -292,7 +292,7 @@ data: {"type": "IMPORT_PROGRESS_TYPE_COMPLETED", "message": "Import completed su
 Use curl to view the raw SSE stream as it arrives:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   --no-buffer \
@@ -319,7 +319,7 @@ When using Python, you must parse the SSE format and strip the `data: ` prefix:
 import requests
 import json
 
-url = "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple"
+url = "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple"
 payload = {
     "files": [
         {
@@ -384,19 +384,19 @@ and checking service health.
 
 ### Check job status
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs/{job_id}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs/{job_id}" >}}
 
 Returns the current status of a specific import job.
 
 ### List all jobs
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs" >}}
 
 Returns a list of all import jobs and their statuses.
 
 ### Health check
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/health" >}}
 
 Returns the health status of the Importer service.
 

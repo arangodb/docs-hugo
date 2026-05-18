@@ -37,7 +37,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "gpt-4o",
+    "chat_model": "gpt-5.4-nano",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": "your_openai_api_key",
     "embedding_api_key": "your_openai_api_key",
@@ -67,7 +67,7 @@ Where:
   embedding model's output dimension.
 
 {{< info >}}
-When using the official OpenAI API, the service defaults to `gpt-4o` and 
+When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and 
 `text-embedding-3-small` models. When an OpenRouter URL is detected, the
 chat model defaults to `mistralai/mistral-nemo`.
 {{< /info >}}
@@ -171,6 +171,83 @@ Where:
 - `embedding_api_url`: API endpoint URL for the embedding model service
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
+
+## Token budget for chat models
+
+The Importer maps a single completion cap to OpenAI-style chat calls
+(`max_completion_tokens` for newer models that require it, `max_tokens` otherwise)
+and derives an internal prompt-packing budget that GraphRAG uses when building
+community reports. The values are auto-detected from the chat model name, so
+common OpenAI models work without manual tuning. You can override them with the
+following environment variables (also accepted as lower-case JSON keys in the
+install request):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CHAT_MAX_COMPLETION_TOKENS` | model-aware (`8192` fallback) | Maximum completion tokens requested per chat call. When unset, the Importer picks a value that fits the chat model's known context window — for example `2048` for `gpt-4` (8k), `768` for `gpt-3.5-turbo` (4k), `4096` for the 16k variants, and `8192` for `gpt-4o` / `gpt-4-turbo` / `gpt-5.4-nano` / `o1` / `o3` and unknown models. Lower it explicitly to leave more room for the prompt. |
+| `CHAT_MODEL_CONTEXT_TOKENS` | model-aware | Approximate total context window for the chat model. When unset, the Importer falls back to a built-in mapping that covers the common OpenAI models (see below). Set this explicitly when using a model the Importer does not recognize, such as a private fine-tune. |
+| `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` | (unset) | Explicit prompt-packing description budget passed to GraphRAG as `best_model_max_token_size` and `cheap_model_max_token_size`. Overrides the value derived from `CHAT_MODEL_CONTEXT_TOKENS`. Useful for sparse graphs (short entity names, few relationships) where the conservative auto-derived budget is unnecessarily small. |
+
+The built-in context-window mapping covers:
+
+- `gpt-4o` / `gpt-4o-mini`, `gpt-4-turbo` / `gpt-4-1106` / `gpt-4-0125` / `gpt-4-vision`, `gpt-5.4-nano`, `o1-preview` / `o1-mini` → `128000`
+- `o1` / `o3` / `o3-mini` → `200000`
+- `gpt-4-32k` → `32768`
+- `gpt-3.5-turbo-1106` / `gpt-3.5-turbo-0125` → `16385`
+- `gpt-3.5-turbo-16k` → `16384`
+- `gpt-4` → `8192`
+- `gpt-3.5-turbo` → `4096`
+
+Prefix-matching is longest-match-wins, so for example `gpt-4-32k` matches before
+the generic `gpt-4` root.
+
+{{< warning >}}
+OpenAI has scheduled `gpt-4` for deprecation and shutdown on October 23, 2026.
+Use `gpt-4o` or `gpt-4-turbo` for new deployments.
+{{< /warning >}}
+
+{{< info >}}
+Independent of the static budget calculation, the Importer re-tokenizes the
+actual rendered prompt right before every chat-completion call. If the request
+would exceed the model's known context window, the user prompt is truncated with
+`tiktoken` so the request always fits, the Importer logs a warning, and the job
+continues rather than failing with `context_length_exceeded`. The guard is a
+no-op for chat models the Importer does not recognize, so historical behavior is
+preserved for custom or private fine-tunes.
+{{< /info >}}
+
+## OpenAI Responses API fallback
+
+Some newer OpenAI model identifiers (for example `gpt-5.4-pro`, `o3-pro`) reject
+`/v1/chat/completions` and require `/v1/responses`. The Importer detects these
+errors automatically — matching phrasings such as *"not supported in the
+v1/chat/completions"*, *"not a chat model"*, or an explicit `v1/responses` hint
+— retries the call against `client.responses.create`, and caches the model name
+so subsequent calls in the same process skip the failing chat-completion attempt.
+
+Chat-shaped fields are mapped to Responses fields automatically:
+
+- System prompts → `instructions`
+- User turns → `input_text`
+- Prior assistant turns → `output_text`
+- `max_completion_tokens` / `max_tokens` → `max_output_tokens`
+- `CHAT_REASONING_EFFORT` → `reasoning.effort`
+
+No configuration is required. The official chart pins a compatible `openai`
+Python package version, so the fallback is available out of the box.
+
+## Error messages on graph build failure
+
+When the OpenAI provider fails during graph build, the Importer maps common SDK
+exceptions into concise remediation messages and stores them on the service
+status and job metadata, so operators see actionable text instead of raw JSON
+error bodies. Mapped errors include insufficient quota or billing, invalid API
+key, rate limits, timeouts, 5xx server errors, and context-length exceeded.
+
+The context-length message points at `CHAT_MAX_COMPLETION_TOKENS`,
+`CHAT_MODEL_CONTEXT_TOKENS`, and `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` (and the
+equivalent lower-case install request keys) so you can adjust the budget without
+diving into raw logs.
 
 ## Choosing the right deployment option
 

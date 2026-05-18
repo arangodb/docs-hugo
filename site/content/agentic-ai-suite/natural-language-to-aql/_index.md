@@ -7,6 +7,8 @@ description: >-
   which automatically translates plain language into AQL queries using generative AI
 ---
 
+{{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
+
 ## Introduction
 
 Natural Language to AQL (txt2aql) is a service of the Arango Contextual Data Platform

@@ -34,7 +34,7 @@ Any other provider combinations will result in a configuration error. The system
 **Model Defaults**:
 The following default models are automatically applied when `chat_model` or `embedding_model` are not specified:
 
-- **OpenAI**: `gpt-4o` for chat, `text-embedding-3-small` for embeddings
+- **OpenAI**: `gpt-5.4-nano` for chat, `text-embedding-3-small` for embeddings
 - **OpenRouter**: `mistralai/mistral-nemo` for chat, `text-embedding-3-small` for embeddings (OpenRouter is detected via `chat_api_url` containing "openrouter.ai")
 - **Triton**: `mistral-nemo-instruct` for chat, `nomic-embed-text-v1` for embeddings
 
@@ -64,7 +64,7 @@ Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpo
     "chat_api_url": "https://api.openai.com/v1",
     "embedding_api_provider": "openai",
     "embedding_api_url": "https://api.openai.com/v1",
-    "chat_model": "gpt-4o",
+    "chat_model": "gpt-5.4-nano",
     "embedding_model": "text-embedding-3-small",
     "chat_api_key": "your_openai_api_key",
     "embedding_api_key": "your_openai_api_key",
@@ -171,9 +171,9 @@ Provider-specific defaults and requirements are noted where applicable.
 - `chat_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
   for authenticating with the chat/language model service.
 - `chat_model`: Specific language model to use for text generation and analysis.
-  - **OpenAI**: Defaults to `gpt-4o`.
+  - **OpenAI**: Defaults to `gpt-5.4-nano`.
   - **OpenRouter**: Defaults to `mistralai/mistral-nemo`.
-  - **Other OpenAI-compatible APIs**: Defaults to `gpt-4o`.
+  - **Other OpenAI-compatible APIs**: Defaults to `gpt-5.4-nano`.
   - **Triton**: Defaults to `mistral-nemo-instruct`.
 
 ### Embedding API parameters
@@ -202,9 +202,9 @@ for the Retriever install.
 
 ## Chat payload compatibility
 
-Set `chat_model` to the model your provider exposes (for example `gpt-4o`,
-`gpt-4o-mini`, `gpt-4.1`, or GPT-5 family names such as `gpt-5`, `gpt-5-mini`,
-`gpt-5.1`). Different model families accept different optional fields on chat
+Set `chat_model` to the model your provider exposes (for example `gpt-5.4-nano`,
+`gpt-5.4-mini`, `gpt-5.4`, `gpt-4.1`, `gpt-4o`, or other GPT-5 family names such
+as `gpt-5`, `gpt-5-mini`, `gpt-5.1`). Different model families accept different optional fields on chat
 completions. The Retriever builds the request from service environment variables
 and retries once if the API returns an unsupported-parameter error.
 

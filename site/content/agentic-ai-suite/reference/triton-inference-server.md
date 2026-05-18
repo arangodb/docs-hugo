@@ -35,10 +35,10 @@ the Arango Contextual Data Platform ecosystem. It integrates with the:
 - MLFlow model registry for model management.
 - Storage sidecar for artifact storage.
 
-## Installation via AI Service API
+## Installation via ACP Service API
 
 To install the Triton LLM Host service, send an API request to the
-**AI service** using the following parameters:
+**ACP service** using the following parameters:
 
 ### Required parameters
 
@@ -162,7 +162,7 @@ Triton Inference Server for more details.
 - **Internal access (within Arango Contextual Data Platform)**:
   `https://{SERVICE_ID}.{KUBERNETES_NAMESPACE}.svc:8000`
   - `KUBERNETES_NAMESPACE` is available as an environment variable.
-  - `SERVICE_ID` is returned by the AI service API.
+  - `SERVICE_ID` is returned by the ACP service API.
 
   **Example**:
   To check server health:
