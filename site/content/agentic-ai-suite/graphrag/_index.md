@@ -11,6 +11,9 @@ aliases:
   - ../arangodb/4.0/data-science/llm-knowledge-graphs # 3.10, 3.11
   - ../arangodb/devel/data-science/llm-knowledge-graphs # 3.10, 3.11
 ---
+
+{{< embed-svg "GraphRAG-Flow" "GraphRAG end-to-end flow." >}}
+
 ## What are knowledge graphs?
 
 A knowledge graph can be thought of as a dynamic and interconnected network of

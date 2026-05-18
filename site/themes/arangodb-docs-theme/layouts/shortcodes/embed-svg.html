@@ -2,7 +2,7 @@
 {{ if not $svgName -}}
   {{ errorf "Missing required SVG name argument in '%v'" .Page.File.Path -}}
 {{ else -}}
-  {{ $caption := .Get 1 | default "Click a component to learn more." -}}
+  {{ $caption := .Get 1 | default "" -}}
   {{ $ok := true -}}
   {{ range (split $svgName "/") -}}
     {{ if not (findRE "^[A-Za-z0-9_-]+$" .) -}}
@@ -16,7 +16,9 @@
     {{ if $svgContent -}}
     <figure style="margin: 2rem 0; text-align: center;">
     {{ $svgContent | safeHTML }}
-    <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;"><em>{{ $caption | markdownify }}</em></figcaption>
+    {{ with $caption -}}
+    <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;"><em>{{ . | markdownify }}</em></figcaption>
+    {{ end -}}
     </figure>
     {{ else -}}
       {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}
