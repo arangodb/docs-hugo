@@ -25,10 +25,24 @@ The service returns these HTTP status codes:
 Error responses are usually JSON with a `message` field (and sometimes a
 `code`) that you can log or show to operators.
 
-**Provider-failure error codes.** When a corpus build or RAG Strategizer run
-fails because of an LLM or embedding provider error,
-`GET /v1/corpus/builds/{id}` returns an `error_code` field that identifies
-the cause, so your client can react to each one differently:
+{{< info >}}
+**Async jobs**: Corpus build and RAG Strategizer jobs run in the background.
+The request that starts a job usually returns `200` even if the job later
+fails because of an LLM or embedding provider problem; the `200` only means
+the job was accepted, not that it finished. To check the real outcome, call
+`GET /v1/corpus/builds/{id}` and look for `status: "failed"` (and an optional
+`error_code`), or watch the status in the ArangoGraph web interface.
+{{< /info >}}
+
+### Provider-failure error codes
+
+When a corpus build fails because of an LLM
+or embedding provider error, `GET /v1/corpus/builds/{id}` returns an `error_code`
+field that identifies the cause, so your client can react to each one.
+
+The **HTTP equivalent** column below is a semantic category for client handling,
+not the HTTP status of the build status poll itself (which returns `200`
+along with the failed build record):
 
 | `error_code` | Meaning | HTTP equivalent |
 |--------------|---------|-----------------|
@@ -131,8 +145,18 @@ some query types need. This limits which queries you can run later.
   with a space between `Bearer` and the token value.
 - **Build appears stuck or fails.** Poll `GET /v1/corpus/builds/{id}` and
   inspect the `status`, `message`, and `error` fields for details.
+- **Only one module's files appear in the build.** Each
+  `POST /v1/import-multiple` call replaces files staged by previous
+  direct-upload calls. To import multiple modules in a single initial build,
+  upload to the File Manager and pass all `file_ids` to
+  `POST /v1/corpus/builds`. See [Import Files](importing-files.md) for the
+  staging model.
 - **RAG Strategizer fails.** Make sure a corpus build has finished and
   produced clusters before you run the Strategizer.
+- **RAG Strategizer provider error**. The Strategizer has no equivalent of
+  the corpus build status poll. If a run fails because of an LLM or embedding
+  provider issue, read the failure (and any `error_code`) from the AutoGraph UI
+  and not from the corpus build status API.
 - **Orchestration fails.** Confirm that the `rags` collection contains
   strategies, and that platform authentication and the GraphRAG Importer
   integration are configured for your environment.

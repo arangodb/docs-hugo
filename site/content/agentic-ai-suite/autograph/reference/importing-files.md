@@ -13,10 +13,31 @@ weight: 35
 Import documents into the corpus for later processing.
 
 Use this endpoint to upload files directly, instead of pointing to ones you have
-already uploaded to the File Manager (`file_ids`). Send a separate request for
-each module so the files in it share the same module label. Add all your files
-first, then start a [corpus build](corpus-build.md). Do not import new files
-while a build is in progress.
+already uploaded to the File Manager (`file_ids`). Each call attaches every
+file in the request to one module (the `module` field) and creates one new
+partition for that module. A new call to this endpoint replaces any files
+staged by previous direct-upload calls. Do not import new files while a
+build is in progress.
+
+Choose one of the following upload workflows:
+
+- **Direct upload**: Send one `import-multiple` call
+  containing every file for the module (set `module` on the request body),
+  then run a [corpus build](corpus-build.md). To add or update another
+  module later, import the next module's files and run an
+  [incremental build](corpus-build.md#incremental-builds) with
+  `incremental: true` and the target module listed in `modules`.
+- **File Manager**: Upload your files to the
+  [File Manager](../../../platform-suite/file-manager/_index.md), then call
+  [`POST /v1/corpus/builds`](corpus-build.md) with their `file_ids`.
+
+{{< warning >}}
+A new `import-multiple` call replaces the files staged by the previous
+one. Always complete a corpus build before staging the next module's files.
+{{< /warning >}}
+
+See [Designing modules](../design-guide.md#designing-modules) for guidance
+on how to work with modules.
 
 ## Request
 
@@ -92,6 +113,7 @@ On failure (for example, an empty `files` array):
 | `200` | Files imported successfully. |
 | `400` | Invalid request or empty `files` array. |
 | `401` | Authentication failed. |
+| `409` | Corpus build is already in progress. |
 | `500` | Server error. |
 
 ## HTTP Example

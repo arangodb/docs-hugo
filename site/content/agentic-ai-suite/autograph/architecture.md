@@ -117,7 +117,7 @@ carries a `partition_id` field so data from different partitions coexists in the
 The named graph `{project}_CorpusGraph` ties Layers 1 and 2 together.
 It contains two edge definitions:
 - `similarities` (connecting sources to sources),
-- `corpus_relations` (connecting sources, domains, and modules).
+- `corpus_relations` (connecting sources, domains, modules, and rags).
 
 ## Complete Pipeline
 

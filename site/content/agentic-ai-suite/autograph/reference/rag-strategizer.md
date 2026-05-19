@@ -105,7 +105,7 @@ No body or query parameters.
       "parameters": {
         "rag_mode": "VectorRAG",
         "module": "legal"
-      }  
+      }
     }
   ],
   "total_strategies": 2,

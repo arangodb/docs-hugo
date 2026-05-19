@@ -12,7 +12,7 @@ weight: 40
 
 Trigger a corpus build from imported files or File Manager.
 
-**Recommended path:** Call this after importing all documents for the modules you want to build. For a first build, omit `incremental` (it defaults to false - existing module data is wiped and rebuilt cleanly). To add or update specific modules without touching the rest of the corpus, set `incremental: true` and list the target modules in `modules`. Only one build may run at a time.
+**Recommended path:** Call this after importing all documents for the module you want to build. Each build processes one module at a time; for additional modules use an [incremental build](#incremental-builds). For a first build, omit `incremental` (it defaults to false - existing module data is wiped and rebuilt cleanly). To add or update specific modules without touching the rest of the corpus, set `incremental: true` and list the target modules in `modules`. Only one build may run at a time.
 
 ### Request (Option A - File Manager Integration)
 
@@ -127,7 +127,7 @@ Check the progress of a corpus build.
 | `error` | string | Non-empty when **`failed`**. Use for support tickets. |
 | `started_at` | double | Unix epoch seconds (float). |
 | `completed_at` | double | Set when finished; **0** while running. |
-| `error_code` | string (optional) | Machine-readable code populated when `status` is **`failed`** due to an LLM/embedding provider failure. Values: **`LLM_AUTHENTICATION_FAILED`**, **`LLM_PERMISSION_DENIED`**, **`LLM_QUOTA_EXCEEDED`**, **`LLM_RATE_LIMITED`**, **`LLM_API_KEY_MISSING`**. Omitted when the failure is not caused by an LLM or embedding provider error (for example, validation or internal errors), matching the cases where the service leaves the field unset. |
+| `error_code` | string (optional) | Machine-readable code populated when `status` is **`failed`** due to an LLM/embedding provider failure. Values: **`LLM_AUTHENTICATION_FAILED`**, **`LLM_PERMISSION_DENIED`**, **`LLM_RATE_LIMITED`**, **`LLM_QUOTA_EXCEEDED`**, **`LLM_API_KEY_MISSING`**. Omitted when the failure is not caused by an LLM or embedding provider error (for example, validation or internal errors), matching the cases where the service leaves the field unset. |
 
 ### HTTP Example
 
