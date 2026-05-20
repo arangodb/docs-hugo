@@ -105,7 +105,7 @@ deploy and manage custom services directly within the Arango Contextual Data Pla
 running your own applications alongside platform services.
 
 Deploy services by uploading source code packages (`.tar.gz`) or providing Docker
-image URLs, with support for Python 3.13 runtimes (including PyTorch and cuGraph
+image URLs, with support for Python 3.12 runtimes (including PyTorch and cuGraph
 variants). Services can be scoped globally or per-database, with version management
 and deployment via [web interface](../platform-suite/container-manager/web-interface.md)
 or [API](../platform-suite/container-manager/deploy-api/).
