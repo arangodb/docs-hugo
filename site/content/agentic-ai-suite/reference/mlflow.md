@@ -91,12 +91,13 @@ documentation.
 First, install the MLflow client:
 
 ```bash
-pip install mlflow=2.22.1
+pip install mlflow==3.10.1
 ```
-{{< warning >}}
-MLflow version 3 introduces a breaking change that affects this workflow, so it is
-important to use MLflow version 2.
-{{< /warning >}}
+{{< info >}}
+The ArangoDB MLflow service runs MLflow 3.x. When registering Triton model bundles,
+each bundle must include an `MLmodel` file at its root; see
+[Triton LLM Host](triton-inference-server.md#model-requirements) for details.
+{{< /info >}}
 
 There are two approaches for programmatic access to your ArangoDB MLflow service:
 - Configuration in Python
