@@ -89,31 +89,22 @@ On success:
 }
 ```
 
-On failure (for example, an empty `files` array):
-
-```json
-{
-  "success": false,
-  "message": "Files list cannot be empty"
-}
-```
-
 ### Response fields
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `success` | boolean | `true` when the import succeeded. |
 | `message` | string | Confirmation text, including how many files were imported. |
-| `error_message` | string | Present when `success` is false. |
+| `error_message` | string | Reserved for `success: false` responses from the underlying RPC. Validation failures (such as an empty `files` array) are not returned in this envelope; they surface as HTTP `400` with a gateway error body. |
 
 ### Status codes
 
 | Status code | Meaning |
 |-------------|---------|
 | `200` | Files imported successfully. |
-| `400` | Invalid request or empty `files` array. |
+| `400` | Validation failure (empty `files`, invalid `doc_name`, etc.). Returned as a JSON error body from the gateway, not the `success`/`message` shape. |
 | `401` | Authentication failed. |
-| `409` | Corpus build is already in progress. |
+| `409` | A corpus build is already in progress. |
 | `500` | Server error. |
 
 ## HTTP Example
