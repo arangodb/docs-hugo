@@ -177,7 +177,7 @@ option
 --rocksdb.max-total-wal-size
 ```
 
-to some value smaller than its default of 80MB can potentially help
+to some value smaller than its default of 256MB can potentially help
 to reduce RAM usage. However, the effect is rather indirect.
 
 ## Write Buffers
