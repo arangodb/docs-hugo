@@ -68,8 +68,9 @@ You may consider using AI tools for this.
   provide Docker image URLs to deploy running services.
 
 - **Multiple Runtimes**: For code-based deployments, supported runtime
-  environments include Python with optional CUDA/GPU support. For image-based
-  deployments, you can use any runtime packaged in your Docker image.
+  environments include Python (with optional CUDA/GPU support) and Node.js.
+  For image-based deployments, you can use any runtime packaged in your
+  Docker image.
 
 - **Version Management**: Maintain and deploy multiple versions of the same
   service with easy updates.
@@ -95,7 +96,8 @@ Control where your services are accessible and how they integrate with your data
 Deploy services using runtime environments and resources tailored to your needs.
 
 **Code-based deployments (Bring Your Own Code):**
-- **Python 3.13** (base, PyTorch, and cuGraph variants available)
+- **Python 3.12** (base, PyTorch, and cuGraph variants available)
+- **Node.js 22** (base runtime)
 
 **Container-based deployments (Bring Your Own Container):**
 - Any runtime or language packaged in your container image

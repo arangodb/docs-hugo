@@ -39,9 +39,10 @@ See [Package Your Code](package-code/) for instructions.
 4. Specify a **Version** using semantic versioning (e.g., `1.0.0`, `2.1.3`).
    This allows you to maintain multiple versions of the same service.
 5. Choose the **Base Image** from the dropdown:
-   - `py13base`: Python 3.13 base runtime
-   - `py13torch`: Python 3.13 with PyTorch
-   - `py13cugraph`: Python 3.13 with cuGraph
+   - `py12base`: Python 3.12 base runtime
+   - `py12torch`: Python 3.12 with PyTorch
+   - `py12cugraph`: Python 3.12 with cuGraph
+   - `node22base`: Node.js 22 base runtime
 6. Define the **Service URL Path** where your service will be accessible
    (e.g., `my-service`).
 7. Check **Make this a global URL service** to make the service accessible

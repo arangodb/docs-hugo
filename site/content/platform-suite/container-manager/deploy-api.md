@@ -41,7 +41,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 |-------|-------------|----------|
 | `name` | Application name identifier (alphanumeric, hyphens, underscores) | Yes |
 | `version` | Application version (e.g., `1.0.0`) | Yes |
-| `language` | Programming language: `python` | Yes |
+| `language` | Programming language: `python` or `javascript` | Yes |
 | `type` | Deployment type: `Service` | Yes |
 | `file` | The `.tar.gz` archive file | Yes |
 
@@ -73,7 +73,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
     "app_version": "<APP_VERSION>",
     "env": {
       "service_type": "base_type",
-      "base_image": "py13base",
+      "base_image": "py12base",
       "app_instance_name": "<APP_INSTANCE_NAME>",
       "db_name": "<DATABASE_NAME>"
     }
@@ -95,9 +95,10 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 
 | Image Name | Description |
 |------------|-------------|
-| `py13base` | Python 3.13 base runtime |
-| `py13torch` | Python 3.13 with PyTorch |
-| `py13cugraph` | Python 3.13 with cuGraph |
+| `py12base` | Python 3.12 base runtime |
+| `py12torch` | Python 3.12 with PyTorch |
+| `py12cugraph` | Python 3.12 with cuGraph |
+| `node22base` | Node.js 22 base runtime |
 
 ## Deploy an Image-Based Service
 
@@ -202,7 +203,7 @@ Get a list of all uploaded services:
 | Parameter | Description | Required |
 |-----------|-------------|----------|
 | `name` | Filter by service name | No |
-| `language` | Filter by language (`python`) | No |
+| `language` | Filter by language (`python` or `javascript`) | No |
 | `type` | Filter by type (`Service` or `Job`) | No |
 | `limit` | Maximum results to return (default: 100) | No |
 | `offset` | Pagination offset (default: 0) | No |
@@ -341,7 +342,7 @@ curl -X POST "$ENDPOINT/_platform/acp/v1/uds" \
     \"app_version\": \"$SERVICE_VERSION\",
     \"env\": {
       \"service_type\": \"base_type\",
-      \"base_image\": \"py13base\",
+      \"base_image\": \"py12base\",
       \"app_instance_name\": \"$INSTANCE_NAME\",
       \"db_name\": \"$DATABASE\"
     }

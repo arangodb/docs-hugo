@@ -48,17 +48,25 @@ follow the steps below.
 1. Create a project structure with your application code and entry point script.
 2. Add a dependency configuration file:
    - For Python: Create a `pyproject.toml` with your dependencies and Python version requirement.
-3. Use `uv` for Python projects (recommended):
+   - For Node.js: Create a `package.json` with your dependencies and the
+     `engines.node` field set to your target runtime.
+3. For Python projects, use `uv` (recommended):
    - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
-     (e.g., `">=3.11"` for Python 3.11 and newer runtimes).
+     (e.g., `">=3.12"` for the `py12*` base images).
    - List all dependencies in the `dependencies` array.
    - The platform uses `uv` to install dependencies during containerization.
-4. Create the archive:
+4. For Node.js projects:
+   - Set `"engines": { "node": ">=22" }` in `package.json` to match the
+     `node22base` runtime.
+   - List all dependencies under `dependencies` (and `devDependencies` as needed).
+   - The platform uses `npm` to install dependencies during containerization.
+5. Create the archive:
    ```bash
    tar -czf myservice.tar.gz myproject/
    ```
-5. Test locally (optional but recommended):
-   - Install dependencies using `uv sync`.
+6. Test locally (optional but recommended):
+   - For Python, install dependencies using `uv sync`.
+   - For Node.js, install dependencies using `npm install`.
    - Run your entry point script to verify it works before uploading.
 
 ## Example: Python Project
@@ -76,11 +84,41 @@ myproject/
 [project]
 name = "my-service"
 version = "1.0.0"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
 ]
+```
+
+**Create the archive:**
+```bash
+tar -czf myservice.tar.gz myproject/
+```
+
+## Example: Node.js Project
+
+**Project structure:**
+```
+myproject/
+├── package.json
+├── index.js
+└── config.json
+```
+
+**Example `package.json`:**
+```json
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "express": "^4.19.0"
+  }
+}
 ```
 
 **Create the archive:**
