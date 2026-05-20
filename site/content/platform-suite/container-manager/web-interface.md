@@ -42,7 +42,6 @@ See [Package Your Code](package-code/) for instructions.
    - `py12base`: Python 3.12 base runtime
    - `py12torch`: Python 3.12 with PyTorch
    - `py12cugraph`: Python 3.12 with cuGraph
-   - `node22base`: Node.js 22 base runtime
 6. Define the **Service URL Path** where your service will be accessible
    (e.g., `my-service`).
 7. Check **Make this a global URL service** to make the service accessible
