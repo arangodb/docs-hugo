@@ -26,13 +26,13 @@ token without renewing it.
 
 These status codes apply to the immediate HTTP response of an API call:
 
-| Condition | HTTP | gRPC code |
-|-----------|------|-----------|
-| Missing or malformed `Authorization` header | `401` | `UNAUTHENTICATED` |
-| Token rejected | `401` | `UNAUTHENTICATED` |
-| Database access denied after auth | `403` | `PERMISSION_DENIED` |
-| Invalid `rag_mode`, `partition_id`, vector params, or missing `file_name` | `400` | `INVALID_ARGUMENT` |
-| Unexpected server fault | `500` | `INTERNAL` |
+| Condition | HTTP |
+|-----------|------|
+| Missing or malformed `Authorization` header | `401` |
+| Token rejected | `401` |
+| Database access denied after auth | `403` |
+| Invalid `rag_mode`, `partition_id`, vector params, or missing `file_name` | `400` |
+| Unexpected server fault | `500` |
 
 Many **business** failures (busy importer, multi-file validation) return
 `HTTP 200` with `"success": false` in the JSON body. See
@@ -86,4 +86,4 @@ the platform service status. See
 - **[Error Handling](error-handling.md)**: Troubleshooting, known
   limitations, and error markers in job status messages.
 - **[API Reference](https://apiref.arango.ai/#graphrag_importer)**: Full
-  machine-readable OpenAPI / gRPC reference.
+  machine-readable API reference.

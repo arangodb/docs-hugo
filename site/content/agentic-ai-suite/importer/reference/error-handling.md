@@ -22,7 +22,7 @@ For the immediate response of an API call:
 
 | Symptom | Typical HTTP | Response body |
 |---------|--------------|---------------|
-| Bad or missing JWT | `401` | gRPC-gateway error or empty body |
+| Bad or missing JWT | `401` | Error detail or empty body |
 | Database access denied | `403` | Error detail |
 | Invalid `rag_mode`, `partition_id`, vector params | `400` | Error detail |
 | Importer busy (lock held) | `200` | `"success": false`, message about the lock |
@@ -51,10 +51,11 @@ the platform service status:
 
 ### Boot-time API key gate
 
-Before the gRPC port opens, the Importer probes the configured OpenAI key
-via `GET {chat_api_url}/models`. Definitive `401` / `403` responses cause a
-`SERVICE_FAILED` status with `[INVALID_API_KEY]` and the process exits.
-`429` / `5xx` / timeouts produce a warning only; the service still starts.
+Before the service starts accepting requests, the Importer probes the
+configured OpenAI key via `GET {chat_api_url}/models`. Definitive `401` /
+`403` responses cause a `SERVICE_FAILED` status with `[INVALID_API_KEY]`
+and the process exits. `429` / `5xx` / timeouts produce a warning only;
+the service still starts.
 
 ## Troubleshooting
 
