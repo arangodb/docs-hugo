@@ -67,7 +67,7 @@ See [Monitoring jobs](importing-files.md#monitoring-jobs) for details.
 
 Once collections are populated, you can:
 
-- Run [AQL queries](../../aql/) directly against the collections.
+- Run [AQL queries](../../arangodb/3.12/aql/) directly against the collections.
 - Traverse the graph using ArangoDB's graph functions.
 - Filter by `partition_id` to scope queries to a specific partition.
 - Use the [Retriever service](../retriever/) for question-answering with
