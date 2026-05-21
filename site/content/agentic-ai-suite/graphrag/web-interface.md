@@ -289,7 +289,8 @@ provider combination, or if your API key has changed or expired.
 {{< tab "OpenRouter" >}}
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
-3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
+3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**,
+   or **OpenRouter API Key** as needed.
    For the API key, you can type a new value or click the key icon
    ({{< icon "key" >}}) to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
