@@ -71,7 +71,7 @@ Filter results to specific data partitions.
 
 {{< info >}}
 Your knowledge graph data must include a `partition_id` field on documents for
-filtering to work. See the [Importer `partition_id` parameter](../importer/parameters.md#partition_id).
+filtering to work. See the [Importer `partition_id` parameter](../importer/reference/parameters.md#partition_id).
 {{< /info >}}
 
 ### `custom_tools`
@@ -130,7 +130,7 @@ Whether to show inline citations in the response.
 - **Description**:
   - When `true` (default): Citations appear inline as `[X]` in the response.
   - When `false`: All `[CITE:X]` patterns are stripped from the response.
-  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../importer/parameters.md#file-source-parameters) at import time.
+  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../importer/reference/parameters.md#file-source-parameters) at import time.
 - **Supported query types**: `LOCAL` (with `use_llm_planner=false`), `UNIFIED`, and `CUSTOM`.
 - **Not supported**: `GLOBAL` queries, and any query running in deep search mode (`use_llm_planner=true`); citations are always disabled in those cases regardless of this flag.
 
