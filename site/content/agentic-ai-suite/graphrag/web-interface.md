@@ -57,10 +57,9 @@ configure and start a new importer service job. Follow the steps below.
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service is using **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
-   to select a secret stored in the
-   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   the service is using **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
    The key is used for both embeddings and chat.
 4. Click the **Start importer service** button.
 {{< /tab >}}
@@ -224,10 +223,9 @@ the generated Knowledge Graph. To configure the retriever service, open the
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service uses **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
-   to select a secret stored in the
-   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   the service uses **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
    The key is used for both embeddings and chat.
 4. Click the **Start retriever service** button.
 {{< /tab >}}

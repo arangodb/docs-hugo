@@ -15,6 +15,8 @@ description: >-
   **AutoRAG** assigning each domain the right processing depth
 - [**AQLizer**](../agentic-ai-suite/natural-language-to-aql/_index.md):
   Generate AQL queries from natural language.
+- [**Reasoner**](../agentic-ai-suite/reasoner/_index.md):
+  Analyze and optimize AQL queries using AI-powered reasoning.
 - [**GraphRAG**](../agentic-ai-suite/graphrag/_index.md):
   Generate knowledge graphs from documents and enable conversational querying
   of your data.

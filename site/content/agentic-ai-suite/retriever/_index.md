@@ -68,7 +68,7 @@ Before using the Retriever service, you need:
 
 ## Installation
 
-To install and start the Retriever service, use the AI service endpoint:
+To install and start the Retriever service, use the following endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
