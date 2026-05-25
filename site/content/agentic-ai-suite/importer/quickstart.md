@@ -12,7 +12,7 @@ through two interfaces:
 - **Web interface**: A guided workflow for configuring and running the
   Importer step by step. See the
   [Contextual Data Platform web interface](../graphrag/web-interface.md).
-- **HTTP REST API**: Full programmatic control over the Importer pipeline.
+- **HTTP API**: Full programmatic control over the Importer pipeline.
 
 {{< tip >}}
 Both interfaces produce the same result: a knowledge graph in your ArangoDB
@@ -84,8 +84,8 @@ For the full walkthrough, see the
 [GraphRAG web interface](../graphrag/web-interface.md) guide.
 {{< /tab >}}
 
-{{< tab "HTTP REST API" >}}
-The Importer exposes HTTP REST endpoints on port `8080`. The recommended call
+{{< tab "HTTP API" >}}
+The Importer exposes HTTP API endpoints on port `8080`. The recommended call
 sequence is:
 
 1. **Configure your LLM provider** at install time.

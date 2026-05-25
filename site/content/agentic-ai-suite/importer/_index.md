@@ -24,7 +24,7 @@ The Importer fits three usage patterns:
 | Pattern | How you use it |
 |---------|----------------|
 | **Web interface** | The fastest path. Configure, run, and inspect imports through the [GraphRAG web interface](../graphrag/web-interface.md) without writing code. |
-| **Direct API** | Call the Importer over HTTP REST when you want full control - custom partitions, custom prompts, batch automation, or integration into an existing pipeline. |
+| **Direct API** | Call the Importer over HTTP API when you want full control - custom partitions, custom prompts, batch automation, or integration into an existing pipeline. |
 | **Driven by AutoGraph** | For large or heterogeneous corpora, [AutoGraph](../autograph/) discovers domains, assigns a RAG strategy per domain, and orchestrates Importer workers automatically. You don't call the Importer directly in this mode. See [AutoGraph Integration](autograph-integration.md). |
 
 ## RAG modes

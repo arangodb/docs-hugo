@@ -3,10 +3,10 @@ title: Importer Service Reference
 menuTitle: Reference
 weight: 100
 description: >-
-  Importer HTTP REST API endpoints, authentication, and recommended call sequence
+  Importer HTTP API endpoints, authentication, and recommended call sequence
 ---
 
-This section documents the Importer HTTP REST API. All endpoints require
+This section documents the Importer HTTP API. All endpoints require
 JWT authentication and are served on port `8080`. For the underlying
 collections and the async-job lifecycle, see [Architecture](../architecture.md).
 
