@@ -137,8 +137,8 @@ Where:
 The first step is to install the LLM Host service with the LLM and
 embedding models of your choice. The setup will use the 
 Triton Inference Server and MLflow at the backend. 
-For more details, please refer to the [Triton Inference Server](../reference/triton-inference-server.md)
-and [MLflow](../reference/mlflow.md) documentation.
+For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
+and [MLflow](../private-llms/mlflow.md) documentation.
 
 Once the `llmhost` service is up-and-running, then you can start the Importer
 service using the below configuration:

@@ -48,8 +48,8 @@ Alongside these components, you also get the following additional features:
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](reference/triton-inference-server.md).  
-- [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
+  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
+- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
