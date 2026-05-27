@@ -15,6 +15,14 @@ OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI
 OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
 OpenAI-compatible endpoint.
 
+## Supported models
+
+The following models are validated for use with the Importer service. For the full
+list across all services, see
+[Supported LLM Models](../supported-llm-models.md).
+
+{{% llm-models "importer" %}}
+
 ## Using OpenAI-compatible APIs
 
 The `openai` provider works with any OpenAI-compatible API, including:

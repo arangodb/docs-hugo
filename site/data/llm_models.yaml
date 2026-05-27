@@ -1,0 +1,59 @@
+# Single source of truth for the LLM and embedding models supported across the
+# Agentic AI Suite. Rendered into pages by the `llm-models` shortcode, so update
+# models HERE rather than editing the lists inline on individual pages.
+#
+# This file is intentionally NOT versioned (no 3.11/4.0 subfolder).
+#
+# Valid service ids (see the `services` map below for display names):
+#   importer, autograph, retriever, reasoner, nl2aql, graphrag
+#
+# Each model entry:
+#   name        model identifier as passed to the API / selected in the UI
+#   type        "chat" (LLM) or "embedding"
+#   services    list of service ids that support the model
+#   default_for (optional) list of service ids for which this is the default model
+#
+# NOTE: the seed values below are scaffolded from the models referenced in the
+# docs. Review and extend with the authoritative supported-model list.
+
+services:
+  importer: Importer
+  autograph: AutoGraph
+  retriever: Retriever
+  reasoner: Reasoner
+  nl2aql: Natural Language to AQL
+  graphrag: GraphRAG
+
+providers:
+  - name: OpenAI
+    id: openai
+    api: OpenAI-compatible
+    models:
+      - name: gpt-5.4-nano
+        type: chat
+        services: [importer, autograph, retriever, reasoner, nl2aql]
+        default_for: [importer]
+      - name: text-embedding-3-small
+        type: embedding
+        services: [importer, autograph, retriever]
+        default_for: [importer]
+
+  - name: OpenRouter
+    id: openrouter
+    api: OpenAI-compatible
+    models:
+      - name: mistralai/mistral-nemo
+        type: chat
+        services: [importer]
+        default_for: [importer]
+
+  - name: Triton Inference Server (self-hosted)
+    id: triton
+    api: Triton
+    models:
+      - name: mistral-nemo-instruct
+        type: chat
+        services: [importer]
+      - name: nomic-embed-text-v1
+        type: embedding
+        services: [importer]
