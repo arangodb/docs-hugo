@@ -17,9 +17,3 @@ service, see that service's own documentation (for example,
 [Importer LLM Configuration](importer/llm-configuration.md#supported-models)).
 
 {{% llm-models %}}
-
-{{< info >}}
-This list is the single source of truth for supported models. If a model is
-deprecated or added, it is updated here and reflected automatically across the
-documentation.
-{{< /info >}}
