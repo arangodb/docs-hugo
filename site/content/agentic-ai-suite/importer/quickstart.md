@@ -85,8 +85,10 @@ For the full walkthrough, see the
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
-The Importer exposes HTTP API endpoints on port `8080`. The recommended call
-sequence is:
+You reach the Importer through the platform's API gateway on port `8529`,
+which routes requests to the service (internally listening on port `8080`).
+Always call the public `:8529` endpoint shown in the examples below. The
+recommended call sequence is:
 
 1. **Configure your LLM provider** at install time.
    See [LLM Configuration](llm-configuration.md).
