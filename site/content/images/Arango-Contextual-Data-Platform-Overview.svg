@@ -57,7 +57,7 @@
       <text x="649" y="153" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">GraphML</text>
     </a>
 
-    <a class="card-link" xlink:href="/agentic-ai-suite/reference/triton-inference-server/">
+    <a class="card-link" xlink:href="/agentic-ai-suite/private-llms/triton-inference-server/">
       <rect x="102" y="180" width="145" height="36" rx="18" class="pill-aai"/>
       <text x="174" y="203" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">LLM Integrations</text>
     </a>
@@ -83,7 +83,7 @@
       <text x="615" y="253" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">Natural Language Support</text>
     </a>
 
-    <a class="card-link" xlink:href="/agentic-ai-suite/reference/mlflow/">
+    <a class="card-link" xlink:href="/agentic-ai-suite/private-llms/mlflow/">
       <rect x="82" y="280" width="150" height="36" rx="18" class="pill-aai"/>
       <text x="157" y="303" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">GPU Acceleration</text>
     </a>
@@ -95,7 +95,7 @@
       <rect x="547" y="280" width="75" height="36" rx="18" class="pill-aai"/>
       <text x="584" y="303" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">AIOps</text>
     </a>
-    <a class="card-link" xlink:href="/agentic-ai-suite/reference/mlflow/">
+    <a class="card-link" xlink:href="/agentic-ai-suite/private-llms/mlflow/">
       <rect x="632" y="280" width="85" height="36" rx="18" class="pill-aai"/>
       <text x="674" y="303" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#0b2e1e">MLOps</text>
     </a>
