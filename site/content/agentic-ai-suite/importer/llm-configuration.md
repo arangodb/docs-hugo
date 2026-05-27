@@ -22,6 +22,7 @@ The `openai` provider works with any OpenAI-compatible API, including:
 - OpenRouter
 - Google Gemini
 - Anthropic Claude
+- Azure (Azure OpenAI in Microsoft Foundry)
 - Corporate or self-hosted LLMs with OpenAI-compatible endpoints
 
 Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
@@ -131,6 +132,44 @@ Where:
   (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
   custom embedding model with a different dimension. It must match the
   embedding model's output dimension.
+
+### Using Azure as a chat and embedding provider
+
+Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
+OpenAI-compatible endpoint, so the Importer can use them through the same
+`openai` provider. Two things are specific to Azure:
+
+- Append `/openai/v1` to your Azure resource endpoint, for example
+  `https://your-resource.cognitiveservices.azure.com/openai/v1/`. This is
+  Azure's OpenAI-compatible v1 API, which removes the need for an
+  `api-version` query parameter. See the
+  [Azure v1 API documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle?view=foundry-classic&tabs=python#code-changes)
+  for details.
+- Keep `chat_api_provider` and `embedding_api_provider` set to `"openai"`.
+  Azure is addressed as an OpenAI-compatible endpoint, not as a separate
+  provider type.
+
+Use the model deployment names from your Azure resource as `chat_model` and
+`embedding_model`, and your Azure API keys as `chat_api_key` and
+`embedding_api_key`.
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "embedding_api_provider": "openai",
+    "chat_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
+    "embedding_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
+    "chat_model": "gpt-4.1-mini",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_azure_api_key",
+    "embedding_api_key": "your_azure_api_key",
+    "embedding_dim": "512"
+  }
+}
+```
 
 ## Using Triton Inference Server
 
