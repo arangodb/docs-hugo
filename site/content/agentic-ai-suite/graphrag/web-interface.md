@@ -93,7 +93,7 @@ via OpenRouter while OpenAI is used for the embedding model.
 The **Triton** option only appears in the **LLM API Provider** dropdown if a
 Triton Inference Server is deployed in your cluster.
 
-You must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}
@@ -259,7 +259,7 @@ is used for the embedding model.
 The **Triton** option only appears in the **LLM API Provider** dropdown if a
 Triton Inference Server is deployed in your cluster.
 
-You must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}

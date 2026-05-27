@@ -34,7 +34,7 @@ description: >-
   and machine learning workflows directly connected to ArangoDB databases. 
 - **Public and private LLM support**:
   Use public LLMs such as OpenAI or private LLMs with
-  [Triton Inference Server](../agentic-ai-suite/reference/triton-inference-server.md).
-- [**MLflow integration**](../agentic-ai-suite/reference/mlflow.md):
+  [Triton Inference Server](../agentic-ai-suite/private-llms/triton-inference-server.md).
+- [**MLflow integration**](../agentic-ai-suite/private-llms/mlflow.md):
   Use the popular MLflow as a model registry for private LLMs or to run
   machine learning experiments as part of the Arango Contextual Data Platform.
