@@ -5,7 +5,10 @@
 # This file is intentionally NOT versioned (no 3.11/4.0 subfolder).
 #
 # Valid service ids (see the `services` map below for display names):
-#   importer, autograph, retriever, reasoner, nl2aql, graphrag
+#   importer, retriever, autograph, nl2aql, graphrag, ada
+#
+# Models are grouped by provider/vendor. The `api` field records how the
+# provider is reached (OpenAI-compatible API vs. self-hosted Triton).
 #
 # Each model entry:
 #   name        model identifier as passed to the API / selected in the UI
@@ -13,16 +16,18 @@
 #   services    list of service ids that support the model
 #   default_for (optional) list of service ids for which this is the default model
 #
-# NOTE: the seed values below are scaffolded from the models referenced in the
-# docs. Review and extend with the authoritative supported-model list.
+# Scope: every model documented as supported across the suite. This includes
+# the legacy OpenAI models the Importer recognizes for token-budget auto-tuning
+# (gpt-4, gpt-4-32k, gpt-3.5-turbo*, o1*, etc.). Note that gpt-4 is scheduled for
+# OpenAI shutdown on 2026-10-23; gpt-4o or gpt-4-turbo are recommended instead.
 
 services:
   importer: Importer
-  autograph: AutoGraph
   retriever: Retriever
-  reasoner: Reasoner
+  autograph: AutoGraph
   nl2aql: Natural Language to AQL
   graphrag: GraphRAG
+  ada: Ada
 
 providers:
   - name: OpenAI
@@ -31,21 +36,123 @@ providers:
     models:
       - name: gpt-5.4-nano
         type: chat
-        services: [importer, autograph, retriever, reasoner, nl2aql]
-        default_for: [importer]
+        services: [importer, retriever, graphrag]
+        default_for: [importer, retriever]
+      - name: gpt-5.4
+        type: chat
+        services: [retriever, nl2aql, ada]
+        default_for: [nl2aql]
+      - name: gpt-5.4-mini
+        type: chat
+        services: [retriever, ada]
+      - name: gpt-4.1
+        type: chat
+        services: [importer, retriever, ada]
+        default_for: [ada]
+      - name: gpt-4.1-mini
+        type: chat
+        services: [ada]
+      - name: gpt-4o
+        type: chat
+        services: [importer, retriever]
+      - name: gpt-4o-mini
+        type: chat
+        services: [importer]
+      - name: gpt-4-turbo
+        type: chat
+        services: [importer]
+      - name: o4-mini
+        type: chat
+        services: [ada]
+      - name: o3
+        type: chat
+        services: [importer, ada]
+      # Legacy models recognized by the Importer for token-budget auto-tuning.
+      - name: gpt-4-1106
+        type: chat
+        services: [importer]
+      - name: gpt-4-0125
+        type: chat
+        services: [importer]
+      - name: gpt-4-vision
+        type: chat
+        services: [importer]
+      - name: gpt-4-32k
+        type: chat
+        services: [importer]
+      - name: gpt-4
+        type: chat
+        services: [importer]
+      - name: o1
+        type: chat
+        services: [importer]
+      - name: o1-preview
+        type: chat
+        services: [importer]
+      - name: o1-mini
+        type: chat
+        services: [importer]
+      - name: o3-mini
+        type: chat
+        services: [importer]
+      - name: gpt-3.5-turbo
+        type: chat
+        services: [importer]
+      - name: gpt-3.5-turbo-16k
+        type: chat
+        services: [importer]
+      - name: gpt-3.5-turbo-1106
+        type: chat
+        services: [importer]
+      - name: gpt-3.5-turbo-0125
+        type: chat
+        services: [importer]
       - name: text-embedding-3-small
         type: embedding
-        services: [importer, autograph, retriever]
-        default_for: [importer]
+        services: [importer, retriever, graphrag]
+        default_for: [importer, retriever]
+
+  - name: Anthropic
+    id: anthropic
+    api: OpenAI-compatible
+    models:
+      - name: claude-sonnet-4-6
+        type: chat
+        services: [importer, ada]
+      - name: claude-opus-4-6
+        type: chat
+        services: [ada]
+      - name: claude-haiku-4-5
+        type: chat
+        services: [ada]
+
+  - name: Google Gemini
+    id: google
+    api: OpenAI-compatible
+    models:
+      - name: gemini-3.1-pro
+        type: chat
+        services: [ada]
+      - name: gemini-2.5-pro
+        type: chat
+        services: [ada]
+      - name: gemini-2.5-flash
+        type: chat
+        services: [importer, ada]
+      - name: gemini-2.0-flash
+        type: chat
+        services: [autograph]
 
   - name: OpenRouter
     id: openrouter
     api: OpenAI-compatible
     models:
+      # OpenRouter also routes to many OpenAI, Anthropic, and Google models
+      # listed above; the entry below is the documented OpenRouter default.
       - name: mistralai/mistral-nemo
         type: chat
-        services: [importer]
-        default_for: [importer]
+        services: [importer, retriever]
+        default_for: [importer, retriever]
 
   - name: Triton Inference Server (self-hosted)
     id: triton
@@ -53,7 +160,9 @@ providers:
     models:
       - name: mistral-nemo-instruct
         type: chat
-        services: [importer]
+        services: [importer, retriever, autograph]
+        default_for: [importer, retriever]
       - name: nomic-embed-text-v1
         type: embedding
-        services: [importer]
+        services: [importer, retriever]
+        default_for: [importer, retriever]
