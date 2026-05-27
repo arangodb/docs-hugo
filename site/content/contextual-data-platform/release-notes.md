@@ -10,7 +10,7 @@ description: >-
 
 This is a maintenance release. The [Container Manager](../platform-suite/container-manager/_index.md)
 base images (base, PyTorch, and cuGraph variants) have been updated to Python 3.12;
-service packages must now target Python 3.12 or later. The release also includes
+service packages must now target Python 3.12. The release also includes
 security fixes.
 
 ## v4.0.1 (May 2026)
@@ -90,7 +90,7 @@ This release contains improvements and refinements to features introduced in v4.
   [License Activation portal](./license-management.md) is available for
   internet-connected deployments as an alternative to the Platform CLI, with Managed,
   Inventory, and Generic modes.
-- **MLflow**: The integrated [MLflow](../agentic-ai-suite/reference/mlflow.md) service
+- **MLflow**: The integrated [MLflow](../agentic-ai-suite/private-llms/mlflow.md) service
   has been upgraded to MLflow 3.x.
 
 ## v4.0.0 (April 2026, General Availability)
