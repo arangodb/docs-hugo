@@ -15,6 +15,8 @@ aliases:
   - arangodb/devel/data-science # 3.10, 3.11
 ---
 
+{{< image src="../images/data-science-background.png" alt="Agentic AI Suite" style="width: 100%; height: auto; border-radius: 8px; margin-bottom: 1.5rem;" >}}
+
 The Agentic AI Suite turns your data into a contextual knowledge layer that
 AI agents and copilots can reason over. It combines automated knowledge graph
 construction, GraphRAG retrieval, graph machine learning, and natural language
