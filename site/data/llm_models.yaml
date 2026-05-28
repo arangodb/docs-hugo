@@ -36,7 +36,7 @@ providers:
     models:
       - name: gpt-5.4-nano
         type: chat
-        services: [importer, retriever, graphrag]
+        services: [importer, retriever, autograph, graphrag]
         default_for: [importer, retriever]
       - name: gpt-5.4
         type: chat
@@ -47,14 +47,14 @@ providers:
         services: [retriever, ada]
       - name: gpt-4.1
         type: chat
-        services: [importer, retriever, ada]
+        services: [importer, retriever, autograph, ada]
         default_for: [ada]
       - name: gpt-4.1-mini
         type: chat
         services: [ada]
       - name: gpt-4o
         type: chat
-        services: [importer, retriever]
+        services: [importer, retriever, autograph]
       - name: gpt-4o-mini
         type: chat
         services: [importer]
@@ -109,7 +109,7 @@ providers:
         services: [importer]
       - name: text-embedding-3-small
         type: embedding
-        services: [importer, retriever, graphrag]
+        services: [importer, retriever, autograph, graphrag]
         default_for: [importer, retriever]
 
   - name: Anthropic
@@ -151,7 +151,7 @@ providers:
       # listed above; the entry below is the documented OpenRouter default.
       - name: mistralai/mistral-nemo
         type: chat
-        services: [importer, retriever]
+        services: [importer, retriever, autograph]
         default_for: [importer, retriever]
 
   - name: Triton Inference Server (self-hosted)
@@ -164,5 +164,5 @@ providers:
         default_for: [importer, retriever]
       - name: nomic-embed-text-v1
         type: embedding
-        services: [importer, retriever]
+        services: [importer, retriever, autograph]
         default_for: [importer, retriever]
