@@ -19,7 +19,7 @@ OpenAI-compatible endpoint.
 
 The following models are validated for use with the Importer service. For the full
 list across all services, see
-[Supported LLM Models](../supported-llm-models.md).
+[Supported LLM and embedding models](../overview.md#supported-llm-and-embedding-models).
 
 {{% llm-models "importer" %}}
 
