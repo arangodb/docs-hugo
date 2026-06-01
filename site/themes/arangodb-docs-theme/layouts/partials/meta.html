@@ -32,7 +32,8 @@
   <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
 {{- end }}
 {{- if (hasPrefix .Path "/arangodb/") }}
-  {{- if or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}<meta name="robots" content="noindex">{{ end }}
+  {{- $noindex := or (.Page.Store.Get "deprecated") (.Page.Store.Get "inDevelopment") }}
+  {{- if $noindex }}<meta name="robots" content="noindex">{{ end }}
   {{- if and (eq (.Page.Store.Get "alias") "stable") (not (hasPrefix .RelPermalink "/arangodb/stable/")) }}
     {{- $splitLink := split .RelPermalink "/" }}
     {{- $s := slice "/arangodb" "stable" }}
@@ -47,5 +48,9 @@
       {{- if gt $i 2 }}{{ $s = $s | append $e }}{{ end }}
     {{- end }}
     <link rel="canonical" href="{{ delimit $s "/" }}">
+  {{- else if not $noindex }}
+    <link rel="canonical" href="{{ .RelPermalink }}">
   {{- end }}
+{{- else }}
+  <link rel="canonical" href="{{ .RelPermalink }}">
 {{- end }}
