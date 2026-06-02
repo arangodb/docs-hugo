@@ -14,14 +14,17 @@ aliases:
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
+
+{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
+
 ## What's included
 
 The Agentic AI Suite is composed of the following major components:
 
 - [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph**](autograph/_index.md): Organize enterprise data into contextual
-  knowledge graph, using **AutoRAG** to optimize retrieval across graph, vector,
-  and document data.
+- [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
+  contextual knowledge graph, with the **AutoRAG** assigning each
+  domain the right processing depth.
 - [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
   queries from natural language to explore your data and gain insights without having
   to learn the query language first.
@@ -45,8 +48,8 @@ Alongside these components, you also get the following additional features:
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](reference/triton-inference-server.md).  
-- [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
+  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
+- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the

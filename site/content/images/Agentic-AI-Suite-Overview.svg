@@ -1,0 +1,102 @@
+<svg viewBox="0 0 900 680"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:900px;margin:0 auto">
+  <style>
+    .aai .pill-aai { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .aai .pill-ps  { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
+    .aai .pill-db  { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.5; }
+    .aai .card:hover .pill-aai { fill: #ffffff; stroke: #22c55e; }
+    .aai .card:hover .pill-ps  { fill: #dcfce7; stroke: #22c55e; }
+    .aai .card:hover .pill-db  { fill: #b9ff38; stroke: #22c55e; }
+  </style>
+  <defs>
+    <filter id="aai-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aai-arrow" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
+    </marker>
+  </defs>
+
+  <g class="aai">
+    <rect width="900" height="680" fill="#f3f4f6" rx="6"/>
+
+    <g class="card">
+      <rect x="365" y="18" width="170" height="44" rx="22" class="pill-ps"/>
+      <text x="450" y="45" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#14532d">User / Application</text>
+    </g>
+
+    <path d="M 450 64 L 450 92" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aai-arrow)"/>
+
+    <rect x="20" y="95" width="860" height="410" rx="14" fill="#0b2e1e" stroke="#22c55e" stroke-width="2" filter="url(#aai-glow)"/>
+    <rect x="20" y="95" width="860" height="40" rx="14" fill="#134d2e"/>
+    <rect x="20" y="115" width="860" height="20" fill="#134d2e"/>
+    <text x="450" y="121" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#ffffff">Agentic AI Suite</text>
+
+    <rect x="40" y="155" width="260" height="335" rx="12" fill="#082016" stroke="#4ade80" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="170" y="178" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#b9ff38">ASK — answers in natural language</text>
+
+    <g class="card">
+      <rect x="65" y="195" width="210" height="62" rx="14" class="pill-aai"/>
+      <text x="170" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">Ada</text>
+      <text x="170" y="240" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">AI digital assistant</text>
+    </g>
+
+    <g class="card">
+      <rect x="65" y="273" width="210" height="62" rx="14" class="pill-aai"/>
+      <text x="170" y="298" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">AQLizer</text>
+      <text x="170" y="318" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">English to database query</text>
+    </g>
+
+    <g class="card">
+      <rect x="65" y="351" width="210" height="62" rx="14" class="pill-aai"/>
+      <text x="170" y="376" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">Reasoner</text>
+      <text x="170" y="396" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">AI query optimizer</text>
+    </g>
+
+    <rect x="320" y="155" width="280" height="335" rx="12" fill="#082016" stroke="#4ade80" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="460" y="178" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#b9ff38">ANALYZE — patterns and predictions</text>
+
+    <g class="card">
+      <rect x="345" y="205" width="230" height="62" rx="14" class="pill-aai"/>
+      <text x="460" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">GraphML</text>
+      <text x="460" y="250" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">graph machine learning</text>
+    </g>
+
+    <g class="card">
+      <rect x="345" y="295" width="230" height="78" rx="14" class="pill-aai"/>
+      <text x="460" y="320" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">Graph Analytics</text>
+      <text x="460" y="340" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">page rank, communities,</text>
+      <text x="460" y="356" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">paths</text>
+    </g>
+
+    <rect x="620" y="155" width="240" height="335" rx="12" fill="#082016" stroke="#4ade80" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="740" y="178" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#b9ff38">BUILD — raw data into a graph</text>
+
+    <g class="card">
+      <rect x="645" y="250" width="190" height="78" rx="14" class="pill-aai"/>
+      <text x="740" y="277" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0b2e1e">AutoGraph + GraphRAG</text>
+      <text x="740" y="297" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">knowledge graph from</text>
+      <text x="740" y="313" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">documents</text>
+    </g>
+
+    <path d="M 270 505 L 270 547" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aai-arrow)"/>
+    <path d="M 605 505 L 605 540" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aai-arrow)"/>
+
+    <g class="card">
+      <ellipse cx="270" cy="565" rx="65" ry="13" fill="#0b2e1e" stroke="#22c55e" stroke-width="2"/>
+      <path d="M 205 565 L 205 620 A 65 13 0 0 0 335 620 L 335 565" fill="#0b2e1e" stroke="#22c55e" stroke-width="2"/>
+      <ellipse cx="270" cy="565" rx="65" ry="13" fill="#134d2e" stroke="#22c55e" stroke-width="2"/>
+      <text x="270" y="605" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="270" y="623" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">multi-model database</text>
+    </g>
+
+    <g class="card">
+      <rect x="510" y="545" width="190" height="90" rx="14" class="pill-db"/>
+      <text x="605" y="575" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111827">LLM provider</text>
+      <text x="605" y="598" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#374151">OpenAI · Anthropic ·</text>
+      <text x="605" y="614" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#374151">Custom</text>
+    </g>
+  </g>
+</svg>

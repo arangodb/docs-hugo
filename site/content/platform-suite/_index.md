@@ -5,8 +5,6 @@ weight: 3
 description: >-
   The Platform Suite is a set of services and features for operating ArangoDB
   with Kubernetes and includes a Graph Visualizer and advanced Query Editor
-aliases:
-  - data-platform/get-started
 ---
 ## What Makes Up the Arango Platform Suite
 

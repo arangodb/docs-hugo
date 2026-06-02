@@ -11,10 +11,12 @@ description: >-
 - [**Ada**](../agentic-ai-suite/ada.md):
   The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](../agentic-ai-suite/autograph/_index.md):
-  Organize enterprise data into contextual knowledge graph using
-  **AutoRAG** to optimize retrieval across graph, vector, and document data
+  Organize enterprise data into a contextual knowledge graph, with the
+  **AutoRAG** assigning each domain the right processing depth
 - [**AQLizer**](../agentic-ai-suite/natural-language-to-aql/_index.md):
   Generate AQL queries from natural language.
+- [**Reasoner**](../agentic-ai-suite/reasoner/_index.md):
+  Analyze and optimize AQL queries using AI-powered reasoning.
 - [**GraphRAG**](../agentic-ai-suite/graphrag/_index.md):
   Generate knowledge graphs from documents and enable conversational querying
   of your data.
@@ -32,7 +34,7 @@ description: >-
   and machine learning workflows directly connected to ArangoDB databases. 
 - **Public and private LLM support**:
   Use public LLMs such as OpenAI or private LLMs with
-  [Triton Inference Server](../agentic-ai-suite/reference/triton-inference-server.md).
-- [**MLflow integration**](../agentic-ai-suite/reference/mlflow.md):
+  [Triton Inference Server](../agentic-ai-suite/private-llms/triton-inference-server.md).
+- [**MLflow integration**](../agentic-ai-suite/private-llms/mlflow.md):
   Use the popular MLflow as a model registry for private LLMs or to run
   machine learning experiments as part of the Arango Contextual Data Platform.

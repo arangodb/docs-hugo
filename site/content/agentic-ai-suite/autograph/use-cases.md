@@ -13,7 +13,7 @@ retrieval and domain-aware reasoning support human decisions.
 
 ## Enterprise Knowledge Assistants
 
-**Scenario**: 10,000+ documents across internal wikis, SharePoint, Google Drive, and 
+**Scenario**: 10,000+ documents across internal wikis and 
 documentation repositories. Employees waste hours searching for information, often finding 
 outdated or conflicting answers.
 

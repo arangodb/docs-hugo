@@ -58,7 +58,7 @@ fail at runtime.
 
 ## Installation
 
-To install and start the Importer service, use the AI service endpoint:
+To install and start the Importer service, use the following endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
 

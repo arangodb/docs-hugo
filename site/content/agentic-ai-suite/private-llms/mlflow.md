@@ -58,9 +58,7 @@ The ArangoDB MLflow service is **started by default**.
 
 It is automatically spawned and available at the following URL:
 
-```
-https://<ExternalEndpoint>:8529/mlflow/
-```
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/mlflow/" >}}
 
 You can interact with the ArangoDB MLflow service in two ways:
 - **Programmatically**: Using the official MLflow client
@@ -79,7 +77,7 @@ Before you can authenticate with the MLflow service, you need to obtain a
 Bearer token. You can generate this token using the ArangoDB authentication API:
 
 ```bash
-curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth \
   -d '{"username": "your-username", "password": "your-password"}'
 ```
 
@@ -93,12 +91,13 @@ documentation.
 First, install the MLflow client:
 
 ```bash
-pip install mlflow=2.22.1
+pip install mlflow==3.10.1
 ```
-{{< warning >}}
-MLflow version 3 introduces a breaking change that affects this workflow, so it is
-important to use MLflow version 2.
-{{< /warning >}}
+{{< info >}}
+The ArangoDB MLflow service runs MLflow 3.x. When registering Triton model bundles,
+each bundle must include an `MLmodel` file at its root; see
+[Triton LLM Host](triton-inference-server.md#model-requirements) for details.
+{{< /info >}}
 
 There are two approaches for programmatic access to your ArangoDB MLflow service:
 - Configuration in Python
@@ -112,7 +111,7 @@ import os
 
 # Set authentication and tracking URI
 os.environ['MLFLOW_TRACKING_TOKEN'] = 'your-bearer-token-here'
-mlflow.set_tracking_uri("https://<ExternalEndpoint>:8529/mlflow/")
+mlflow.set_tracking_uri("https://<EXTERNAL_ENDPOINT>:8529/mlflow/")
 
 # Start logging your experiments
 with mlflow.start_run():
@@ -124,7 +123,7 @@ with mlflow.start_run():
 Set the environment variables in your shell:
 
 ```bash
-export MLFLOW_TRACKING_URI="https://<ExternalEndpoint>:8529/mlflow/"
+export MLFLOW_TRACKING_URI="https://<EXTERNAL_ENDPOINT>:8529/mlflow/"
 export MLFLOW_TRACKING_TOKEN="your-bearer-token-here"
 ```
 
@@ -143,7 +142,7 @@ with mlflow.start_run():
 To test whether the service is running, you can use the following snippet:
 
 ```bash
-curl -H "Authorization: Bearer your-bearer-token-here" https://<ExternalEndpoint>:8529/mlflow/health
+curl -H "Authorization: Bearer your-bearer-token-here" https://<EXTERNAL_ENDPOINT>:8529/mlflow/health
 ```
 
 Expected output on success: HTTP `200` status with response body `OK`.

@@ -1,0 +1,94 @@
+<svg viewBox="0 0 1300 360"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:1300px;margin:0 auto">
+  <style>
+    .aql .pill-aai { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .aql .pill-ps  { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
+    .aql .cyl-db   { fill: #0b2e1e; stroke: #22c55e; stroke-width: 2; }
+    .aql .cyl-db-top { fill: #134d2e; stroke: #22c55e; stroke-width: 2; }
+    .aql .cyl-llm  { fill: #e5e7eb; stroke: #9ca3af; stroke-width: 1.5; }
+    .aql .cyl-llm-top { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+    .aql .card:hover .pill-aai     { fill: #ffffff; stroke: #22c55e; }
+    .aql .card:hover .pill-ps      { fill: #dcfce7; stroke: #22c55e; }
+    .aql .card:hover .cyl-db       { fill: #134d2e; stroke: #b9ff38; }
+    .aql .card:hover .cyl-db-top   { fill: #1a5e38; stroke: #b9ff38; }
+    .aql .card:hover .cyl-llm      { fill: #b9ff38; stroke: #22c55e; }
+    .aql .card:hover .cyl-llm-top  { fill: #dcfce7; stroke: #22c55e; }
+  </style>
+  <defs>
+    <filter id="aql-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <marker id="aql-arrow" markerWidth="10" markerHeight="8" refX="10" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
+    </marker>
+  </defs>
+
+  <g class="aql">
+    <rect width="1300" height="360" fill="#f3f4f6" rx="6"/>
+
+    <g class="card">
+      <rect x="20" y="190" width="160" height="100" rx="14" class="pill-ps"/>
+      <text x="100" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#14532d">User</text>
+      <text x="100" y="255" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#14532d">asks in plain English</text>
+    </g>
+
+    <g class="card">
+      <rect x="260" y="190" width="180" height="100" rx="14" class="pill-aai" filter="url(#aql-glow)"/>
+      <text x="350" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">Query Editor</text>
+      <text x="350" y="255" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">or REST API</text>
+    </g>
+
+    <g class="card">
+      <rect x="520" y="190" width="180" height="100" rx="14" class="pill-aai" filter="url(#aql-glow)"/>
+      <text x="610" y="230" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">AI Translator</text>
+      <text x="610" y="255" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">question to AQL</text>
+    </g>
+
+    <g class="card">
+      <rect x="790" y="70" width="180" height="100" rx="14" class="pill-aai" filter="url(#aql-glow)"/>
+      <text x="880" y="110" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#0b2e1e">AQL Executor</text>
+      <text x="880" y="135" text-anchor="middle" font-family="sans-serif" font-size="11" font-style="italic" fill="#0b2e1e">runs the query</text>
+    </g>
+
+    <g class="card">
+      <path d="M 1070 86 L 1070 158 A 70 14 0 0 0 1210 158 L 1210 86" class="cyl-db"/>
+      <ellipse cx="1140" cy="86" rx="70" ry="14" class="cyl-db-top"/>
+      <text x="1140" y="122" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="1140" y="142" text-anchor="middle" font-family="sans-serif" font-size="10" font-style="italic" fill="#b9ff38">your data</text>
+    </g>
+
+    <g class="card">
+      <path d="M 810 206 L 810 270 A 70 14 0 0 0 950 270 L 950 206" class="cyl-llm"/>
+      <ellipse cx="880" cy="206" rx="70" ry="14" class="cyl-llm-top"/>
+      <text x="880" y="250" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111827">LLM provider</text>
+    </g>
+
+    <path d="M 180 240 L 258 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <rect x="190" y="218" width="68" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+    <text x="224" y="230" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">plain question</text>
+
+    <path d="M 440 240 L 518 240" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+
+    <path d="M 680 190 L 680 120 L 788 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+
+    <path d="M 700 230 L 808 230" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <rect x="725" y="214" width="48" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+    <text x="749" y="226" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">prompt</text>
+
+    <path d="M 810 258 L 702 258" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <rect x="720" y="264" width="78" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+    <text x="759" y="276" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">generated AQL</text>
+
+    <path d="M 970 120 L 1068 120" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+
+    <path d="M 820 70 L 820 40 L 100 40 L 100 188" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#aql-arrow)"/>
+    <rect x="395" y="32" width="130" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+    <text x="460" y="44" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">answer in plain English</text>
+
+    <path d="M 1140 172 L 1140 330 L 610 330 L 610 290" stroke="#4ade80" stroke-width="2" stroke-dasharray="4 4" fill="none" marker-end="url(#aql-arrow)"/>
+    <rect x="855" y="322" width="50" height="16" rx="4" fill="#dcfce7" stroke="#86efac" stroke-width="0.5"/>
+    <text x="880" y="334" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#14532d">schema</text>
+  </g>
+</svg>

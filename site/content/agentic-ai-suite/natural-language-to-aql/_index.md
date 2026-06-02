@@ -5,9 +5,9 @@ weight: 17
 description: >-
   Query your ArangoDB database using natural language with the AQLizer feature,
   which automatically translates plain language into AQL queries using generative AI
-aliases:
-  - /agentic-ai-suite/aqlizer
 ---
+
+{{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 
 ## Introduction
 
