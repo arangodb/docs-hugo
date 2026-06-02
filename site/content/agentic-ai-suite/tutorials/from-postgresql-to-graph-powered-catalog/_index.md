@@ -3,14 +3,17 @@ title: From PostgreSQL to a Graph-Powered Catalog
 menuTitle: From PostgreSQL to a Graph-Powered Catalog
 weight: 5
 description: >-
-  This is an end-to-end tutorial that follows a fictional retailer, Nordweave,
-  on its journey from a traditional relational backend to a graph-native,
-  AI-ready data platform. Every chapter solves one concrete pain point and
-  introduces one layer of the Arango Contextual Data Platform. By the final
-  chapter, Nordweave is running agentic AI workflows on top of the same data
-  you import in the very first chapter. We start with the database itself,
-  because everything agentic ultimately rests on it.
+  Follow a fictional retailer's journey from a relational PostgreSQL backend to
+  a graph-native, AI-ready data platform on the Arango Contextual Data Platform
 ---
+
+This end-to-end tutorial follows a fictional retailer, Nordweave, on its journey
+from a traditional relational backend to a graph-native, AI-ready data platform.
+Every chapter solves one concrete pain point and introduces one layer of the
+Arango Contextual Data Platform. By the final chapter, Nordweave is running
+agentic AI workflows on top of the same data you import in the very first
+chapter. We start with the database itself, because everything agentic
+ultimately rests on it.
 
 ## Meet Nordweave
 
@@ -104,7 +107,9 @@ get loaded straight into ArangoDB.
 
 About **57k nodes and ~750k edges** in total - small enough to fit on a
 single DB-Server, large enough to make sharding decisions matter. A few
-representative records, straight from the files:
+representative records from the files (these are JSON Lines files, so each
+record is a single line per object - they are pretty-printed across multiple
+lines here only for readability):
 
 ```json
 // spine/products.jsonl
@@ -164,3 +169,26 @@ Get these foundations right and every subsequent step - GraphRAG over
 review and audit text, AutoGraph for design briefs and incident
 post-mortems, an agentic merchandising assistant - gets dramatically
 simpler.
+
+### From documents to knowledge
+
+Take everything that was trapped in prose - reviews, supplier audits,
+incident post-mortems - and turn it into a queryable knowledge graph.
+
+- [GraphRAG: turning reviews and audits into a knowledge graph](graphrag-over-reviews.md)
+- [AutoGraph: one corpus, many knowledge domains](autograph-knowledge-domains.md)
+
+### Learning from the graph
+
+Stop retrieving from the graph and start learning from its structure -
+first with classic analytics, then with graph machine learning.
+
+- [Graph Analytics: PageRank, communities, and centrality](graph-analytics.md)
+- [GraphML: predicting the next purchase and catching return fraud](graphml-predictions.md)
+
+### Going agentic
+
+Hand the keys to an agent that plans multi-step retrievals across the
+whole platform.
+
+- [The agentic merchandiser: putting the whole platform to work](agentic-merchandiser.md)
