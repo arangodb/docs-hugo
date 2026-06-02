@@ -155,23 +155,26 @@
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods/    /ecosystem/integrations/spring-data-arangodb/repositories/queries/query-methods/    301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/template/                              /ecosystem/integrations/spring-data-arangodb/template/                              301
 
-/agentic-ai-suite/reference/autograph/                                          /agentic-ai-suite/autograph/reference/                          302
-/agentic-ai-suite/reference/autograph/corpus-build/                             /agentic-ai-suite/autograph/reference/corpus-build/             302
-/agentic-ai-suite/reference/autograph/embeddings/                               /agentic-ai-suite/autograph/reference/embeddings/               302
-/agentic-ai-suite/reference/autograph/importing-files/                          /agentic-ai-suite/autograph/reference/importing-files/          302
-/agentic-ai-suite/reference/autograph/orchestration/                            /agentic-ai-suite/autograph/reference/orchestration/            302
-/agentic-ai-suite/reference/autograph/rag-strategizer/                          /agentic-ai-suite/autograph/reference/rag-strategizer/          302
-/agentic-ai-suite/aqlizer/                                                      /agentic-ai-suite/natural-language-to-aql/                      302
-/agentic-ai-suite/reference/natural-language-to-aql/                            /agentic-ai-suite/natural-language-to-aql/api-reference/        302
+/agentic-ai-suite/reference/autograph/                                          /agentic-ai-suite/autograph/reference/                          301
+/agentic-ai-suite/reference/autograph/corpus-build/                             /agentic-ai-suite/autograph/reference/corpus-build/             301
+/agentic-ai-suite/reference/autograph/embeddings/                               /agentic-ai-suite/autograph/reference/embeddings/               301
+/agentic-ai-suite/reference/autograph/importing-files/                          /agentic-ai-suite/autograph/reference/importing-files/          301
+/agentic-ai-suite/reference/autograph/orchestration/                            /agentic-ai-suite/autograph/reference/orchestration/            301
+/agentic-ai-suite/reference/autograph/rag-strategizer/                          /agentic-ai-suite/autograph/reference/rag-strategizer/          301
+/agentic-ai-suite/aqlizer/                                                      /agentic-ai-suite/natural-language-to-aql/                      301
+/agentic-ai-suite/reference/natural-language-to-aql/                            /agentic-ai-suite/natural-language-to-aql/api-reference/        301
+/agentic-ai-suite/reference/mlflow/                                             /agentic-ai-suite/private-llms/mlflow/                          301
+/agentic-ai-suite/reference/triton-inference-server/                            /agentic-ai-suite/private-llms/triton-inference-server/         301
+/agentic-ai-suite/reference/                                                    /agentic-ai-suite/private-llms/                                 301
 
-/data-platform/get-started/                                                     /platform-suite/                                                302
-/data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  302
-/data-platform/features/                                                        /contextual-data-platform/                                      302
-/data-platform/release-notes/                                                   /contextual-data-platform/release-notes/                        302
-/data-platform/*                                                                /platform-suite/:splat                                          302
+/data-platform/get-started/                                                     /platform-suite/                                                301
+/data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
+/data-platform/features/                                                        /contextual-data-platform/                                      301
+/data-platform/release-notes/                                                   /contextual-data-platform/release-notes/                        301
+/data-platform/*                                                                /platform-suite/:splat                                          301
 
-/contextual-data-platform/kubernetes/                                           /contextual-data-platform/architecture/                         302
+/contextual-data-platform/kubernetes/                                           /contextual-data-platform/architecture/                         301
 
-/ai-suite/release-notes/                                                        /contextual-data-platform/release-notes/                        302
-/ai-suite/reference/ai-orchestrator/                                            /platform-suite/control-plane-acp/                              302
-/ai-suite/*                                                                     /agentic-ai-suite/:splat                                        302
+/ai-suite/release-notes/                                                        /contextual-data-platform/release-notes/                        301
+/ai-suite/reference/ai-orchestrator/                                            /platform-suite/control-plane-acp/                              301
+/ai-suite/*                                                                     /agentic-ai-suite/:splat                                        301

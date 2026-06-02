@@ -3,10 +3,12 @@ languageCode: "en-us"
 title: "Arango Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
+enableGitInfo: true
 
-disableKinds: # Switch off tags and categories
+disableKinds: # Switch off tags, categories, RSS/Atom feed
   - taxonomy
   - term
+  - rss
 
 module:
   mounts:

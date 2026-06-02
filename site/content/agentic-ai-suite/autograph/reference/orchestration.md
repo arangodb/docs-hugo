@@ -8,7 +8,7 @@ weight: 50
 
 ## Trigger Orchestration
 
-{{< endpoint "POST" "/v1/orchestrate" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
 Spawn GraphRAG importer workers for all strategy profiles. Called after RAG strategizer is completed.
 
@@ -77,7 +77,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"replicas": 2, "max_retries": 3}' \
-  http://localhost:8080/v1/orchestrate
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
 ## Next Steps

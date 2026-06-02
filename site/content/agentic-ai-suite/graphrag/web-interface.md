@@ -57,10 +57,10 @@ configure and start a new importer service job. Follow the steps below.
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service is using **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
-   to select a secret stored in the
-   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   the service is using **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start importer service** button.
 {{< /tab >}}
 
@@ -71,9 +71,11 @@ configure and start a new importer service job. Follow the steps below.
 3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for embeddings.
 4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
 5. Click the **Start importer service** button.
 
 {{< info >}}
@@ -91,7 +93,7 @@ via OpenRouter while OpenAI is used for the embedding model.
 The **Triton** option only appears in the **LLM API Provider** dropdown if a
 Triton Inference Server is deployed in your cluster.
 
-You must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}
@@ -221,10 +223,10 @@ the generated Knowledge Graph. To configure the retriever service, open the
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service uses **GPT-4o**.
-3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
-   to select a secret stored in the
-   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   the service uses **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start retriever service** button.
 {{< /tab >}}
 
@@ -232,10 +234,15 @@ the generated Knowledge Graph. To configure the retriever service, open the
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
    to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
-4. Click the **Start retriever service** button.
+   The key is used for embeddings.
+4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
+5. Click the **Start retriever service** button.
 
 {{< info >}}
 When using OpenRouter, the LLM responses are served via OpenRouter while OpenAI
@@ -252,7 +259,7 @@ is used for the embedding model.
 The **Triton** option only appears in the **LLM API Provider** dropdown if a
 Triton Inference Server is deployed in your cluster.
 
-You must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}
@@ -282,7 +289,8 @@ provider combination, or if your API key has changed or expired.
 {{< tab "OpenRouter" >}}
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
-3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
+3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**,
+   or **OpenRouter API Key** as needed.
    For the API key, you can type a new value or click the key icon
    ({{< icon "key" >}}) to select a secret stored in the
    [Secrets Manager](../../platform-suite/secrets-manager.md).
