@@ -6,6 +6,8 @@ description: >-
   AutoGraph structures enterprise data into contextual knowledge shards with domain-aware retrieval strategies providing AI copilots and agents with production-grade context infrastructure
 ---
 
+{{< embed-svg "GraphRAG-Flow" "AutoGraph end-to-end flow." >}}
+
 ## What is AutoGraph?
 
 AutoGraph is a large-scale RAG system that delivers strong accuracy at the
@@ -62,3 +64,12 @@ skips entity extraction (VectorRAG). For FullGraphRAG domains, it also
 generates a domain-specific ontology (the entity types to extract), so the
 resulting knowledge graph reflects the concepts that actually matter in
 that content.
+
+## What's next
+
+- **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
+- **[Quickstart](quickstart.md)**: Get started with AutoGraph using the web interface or the HTTP REST API.
+- **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
+- **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
+- **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
+- **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.
