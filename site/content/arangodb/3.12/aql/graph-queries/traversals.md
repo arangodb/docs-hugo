@@ -34,7 +34,7 @@ FOR node[, edge[, path]]
     the following attributes:
     - `vertices`: An array of all nodes on this path.
     - `edges`: An array of all edges on this path.
-    - `weights`: An array of the edge weights on this path.
+    - `weights`: An array of the edge weight sums at each depth of this path.
       See the `"weighted"` setting of the [`order`](#order) traversal option.
 - `IN` `min..max`: the minimal and maximal depth for the traversal:
   - **min** (number, *optional*): edges and nodes returned by this query
@@ -141,10 +141,17 @@ Specify which traversal algorithm to use (string):
   abort the query with an error.
 
   The path variable emitted by the traversal has a `weights` attribute with a
-  list of the determined edge weights. Note that the `weightAttribute` and
-  `defaultWeight` options are ignored for traversal orders other than
-  `"weighted"`, which means the `weights` attribute is like `[0, 1, 2, …]` for
-  e.g. `order: "dfs"` and therefore not useful.
+  list of the calculated edge weight sums at each depth:
+  - **Depth 0**: The first value is always `0`.
+  - **Depth 1**: The second value is the weight of the edge between the
+    start node and the direct neighbor node (depth 1).
+  - **Depth 2**: The third value is the sum of weights of the edges between the
+    start node, the direct neighbor node, and the neighbor's neighbor node.
+  - And so on.
+ 
+  Note that the `weightAttribute` and `defaultWeight` options are ignored for
+  traversal orders other than `"weighted"`, which means the `weights` attribute
+  is like `[0, 1, 2, 3, …]` for e.g. `order: "dfs"` and therefore not useful.
 
 #### `bfs`
 
@@ -300,8 +307,8 @@ Specifies the name of an attribute that is used to look up the weight of an edge
 (string). A `.` is interpreted as a literal dot, which means only top-level
 attributes are supported.
 
-If no attribute is specified, or if it is not present in the edge document or
-has a non-numeric value, then the `defaultWeight` is used.
+If no attribute is specified, or if it is not present in the edge document, or
+if it has a non-numeric value, then the `defaultWeight` is used.
 
 The attribute value must not be negative.
 
