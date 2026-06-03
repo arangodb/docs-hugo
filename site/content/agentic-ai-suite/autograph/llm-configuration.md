@@ -58,7 +58,10 @@ corresponding URL pointing to your endpoint.
 {{< info >}}
 For the `triton` chat provider, `chat_model` is required; there is no default.
 The embedding dimension defaults to `512` and must match your embedding
-model's output dimension.
+model's output dimension. The default Triton embedding model
+`nomic-embed-text-v1` produces 768-dimensional vectors, so set
+`embedding_dimensions` to `768` for that model. Always match the embedding
+dimension to your model's output when configuring Triton embeddings.
 {{< /info >}}
 
 ## Using OpenAI-compatible APIs
@@ -229,7 +232,10 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   - **Triton**: Defaults to `nomic-embed-text-v1`.
 - `embedding_dimensions`: Embedding dimension. Defaults to `512`. It must match
   the embedding model's output dimension; set it explicitly when using a model
-  with a different dimension.
+  with a different dimension. For example, the default Triton embedding model
+  `nomic-embed-text-v1` produces 768-dimensional vectors, so set this to `768`
+  for that model. Always match the embedding dimension to your model's output
+  when configuring Triton embeddings.
 - `embedding_api_keys`: Optional comma-separated list of OpenAI-compatible API
   keys. When more than one key is provided, AutoGraph rotates across them in a
   round-robin pool to increase the effective rate limit. Falls back to
