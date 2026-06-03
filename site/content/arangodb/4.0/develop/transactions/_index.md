@@ -14,6 +14,29 @@ ArangoDB offers different types of transactions:
 
 ### AQL Queries
 
+AQL queries are principally transactional. If you write 100 documents to a
+collection using AQL and the first 99 writes are successful but the last one
+fails, the query is aborted. Other operations typically don't see any of the
+99 writes.
+
+```aql
+FOR i IN 0..99
+  INSERT { _key: TO_STRING(i % 99)  } INTO coll
+  // Duplicate key ("0") on the 100th document write
+```
+
+The following conditions can make AQL queries non-transactional:
+
+- A query exceeds the specified size thresholds, causing the RocksDB
+  storage engine to perform intermediate commits. The query's operations carried
+  out so far are committed and not rolled back in case of a later abort/rollback.
+  See [Known limitations for AQL queries](../../aql/fundamentals/limitations.md#storage-engine-properties).
+
+- A query runs in a cluster deployment and involves different shards, DB-Servers,
+  or both. This can be a query using a collection with more than one shard or a
+  multi-collection query. It is possible that write operations get committed for
+  some shards but not others, in which case the client sees an error.
+
 <!-- TODO
 read own writes (UPSERT?), intermediate commits
 -->
@@ -278,7 +301,6 @@ trx.query(`FOR doc IN users RETURN doc`).toArray().forEach(function(doc) {
 trx.commit();
 ```
 
-<!-- TODO: does write access imply read access in RocksDB? -->
 *write* here means write access to the collection, and also includes any read accesses.
 
 *exclusive* means exclusive write access to the collection, and *write* means (shared)
@@ -297,7 +319,7 @@ For all collections that are used in write mode, the RocksDB engine internally
 acquires a (shared) read lock. This means that many writers can modify data in the same
 collection in parallel (and also run in parallel to ongoing reads). However, if two
 concurrent transactions attempt to modify the same document or index entry, there
-is a write-write conflict, and one of the transactions aborts with error `1200`
+is a **write-write conflict**, and one of the transactions aborts with error `1200`
 (conflict). It is then up to client applications to retry the failed transaction or
 accept the failure. <!-- TODO: Stream Transactions require explicitly abort! -->
 
