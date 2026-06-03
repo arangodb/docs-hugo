@@ -31,9 +31,11 @@ FOR vertex[, edge[, path]]
   - **vertex** (object): the current vertex in a traversal
   - **edge** (object, *optional*): the current edge in a traversal
   - **path** (object, *optional*): representation of the current path with
-    two members:
-    - `vertices`: an array of all vertices on this path
-    - `edges`: an array of all edges on this path
+    the following attributes:
+    - `vertices`: An array of all vertices on this path.
+    - `edges`: An array of all edges on this path.
+    - `weights`: An array of the edge weights on this path.
+      See the `"weighted"` setting of the [`order`](#order) traversal option.
 - `IN` `min..max`: the minimal and maximal depth for the traversal:
   - **min** (number, *optional*): edges and vertices returned by this query
     start at the traversal depth of *min* (thus edges and vertices below it are
@@ -121,17 +123,28 @@ graph traversal. If you specify unknown options, query warnings are raised.
 #### `order`
 
 Specify which traversal algorithm to use (string):
-- `"bfs"` – the traversal is executed breadth-first. The results
+
+- `"bfs"`: The traversal is executed breadth-first. The results
   first contain all vertices at depth 1, then all vertices at depth 2 and so on.
-- `"dfs"` (default) – the traversal is executed depth-first. It
+
+- `"dfs"` (default): The traversal is executed depth-first. It
   first returns all paths from *min* depth to *max* depth for one vertex at
   depth 1, then for the next vertex at depth 1 and so on.
-- `"weighted"` - the traversal is a weighted traversal
+
+- `"weighted"`: The traversal is a weighted traversal
   (introduced in v3.8.0). Paths are enumerated with increasing cost.
-  Also see `weightAttribute` and `defaultWeight`. A returned path has an
-  additional attribute `weight` containing the cost of the path after every
-  step. The order of paths having the same cost is non-deterministic.
-  Negative weights are not supported and abort the query with an error.
+  The order of paths having the same cost is non-deterministic.
+
+  You can define what attribute to use as the cost of an edge with the
+  [`weightAttribute`](#weightattribute) traversal option, as well as a fallback
+  with [`defaultWeight`](#defaultweight). Negative weights are not supported and
+  abort the query with an error.
+
+  The path variable emitted by the traversal has a `weights` attribute with a
+  list of the determined edge weights. Note that the `weightAttribute` and
+  `defaultWeight` options are ignored for traversal orders other than
+  `"weighted"`, which means the `weights` attribute is like `[0, 1, 2, …]` for
+  e.g. `order: "dfs"` and therefore not useful.
 
 #### `bfs`
 
@@ -213,11 +226,14 @@ projections (number). The default value is `5`.
 
 #### `weightAttribute`
 
-Specifies the name of an attribute that is used to look up the weight of an edge
-(string).
+This option is only used for traversals with `order: "weighted"`.
 
-If no attribute is specified or if it is not present in the edge document then
-the `defaultWeight` is used.
+Specifies the name of an attribute that is used to look up the weight of an edge
+(string). A `.` is interpreted as a literal dot, which means only top-level
+attributes are supported.
+
+If no attribute is specified, or if it is not present in the edge document or
+has a non-numeric value, then the `defaultWeight` is used.
 
 The attribute value must not be negative.
 
@@ -228,6 +244,8 @@ encountered during traversal, the query is aborted with an error.
 {{< /info >}}
 
 #### `defaultWeight`
+
+This option is only used for traversals with `order: "weighted"`.
 
 Specifies the default weight of an edge (number). The default value is `1`.
 
