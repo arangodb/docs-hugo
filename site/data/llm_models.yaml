@@ -16,10 +16,10 @@
 #   services    list of service ids that support the model
 #   default_for (optional) list of service ids for which this is the default model
 #
-# Scope: every model documented as supported across the suite. This includes
-# the legacy OpenAI models the Importer recognizes for token-budget auto-tuning
-# (gpt-4, gpt-4-32k, gpt-3.5-turbo*, o1*, etc.). Note that gpt-4 is scheduled for
-# OpenAI shutdown on 2026-10-23; gpt-4o or gpt-4-turbo are recommended instead.
+# Scope: every model documented as officially supported across the suite. The
+# Importer additionally recognizes a number of legacy OpenAI models (gpt-4,
+# gpt-3.5-turbo*, o1*, etc.) for token-budget auto-tuning; those are NOT listed
+# here as supported — see the Importer LLM Configuration page for that mapping.
 
 services:
   importer: Importer
@@ -34,79 +34,26 @@ providers:
     id: openai
     api: OpenAI-compatible
     models:
+      - name: gpt-5.4-mini
+        type: chat
+        services: [retriever, ada]
       - name: gpt-5.4-nano
         type: chat
         services: [importer, retriever, autograph, graphrag]
         default_for: [importer, retriever]
-      - name: gpt-5.4
-        type: chat
-        services: [retriever, nl2aql, ada]
-        default_for: [nl2aql]
-      - name: gpt-5.4-mini
-        type: chat
-        services: [retriever, ada]
-      - name: gpt-4.1
+      - name: gpt-5-mini
         type: chat
         services: [importer, retriever, autograph, ada]
-        default_for: [ada]
-      - name: gpt-4.1-mini
+      - name: gpt-5-nano
         type: chat
-        services: [ada]
-      - name: gpt-4o
+        services: [importer, retriever, autograph, ada]
+      - name: gpt-5
         type: chat
-        services: [importer, retriever, autograph]
-      - name: gpt-4o-mini
-        type: chat
-        services: [importer]
-      - name: gpt-4-turbo
-        type: chat
-        services: [importer]
-      - name: o4-mini
-        type: chat
-        services: [ada]
+        services: [importer, retriever, autograph, nl2aql, ada]
+        default_for: [nl2aql, ada]
       - name: o3
         type: chat
         services: [importer, ada]
-      # Legacy models recognized by the Importer for token-budget auto-tuning.
-      - name: gpt-4-1106
-        type: chat
-        services: [importer]
-      - name: gpt-4-0125
-        type: chat
-        services: [importer]
-      - name: gpt-4-vision
-        type: chat
-        services: [importer]
-      - name: gpt-4-32k
-        type: chat
-        services: [importer]
-      - name: gpt-4
-        type: chat
-        services: [importer]
-      - name: o1
-        type: chat
-        services: [importer]
-      - name: o1-preview
-        type: chat
-        services: [importer]
-      - name: o1-mini
-        type: chat
-        services: [importer]
-      - name: o3-mini
-        type: chat
-        services: [importer]
-      - name: gpt-3.5-turbo
-        type: chat
-        services: [importer]
-      - name: gpt-3.5-turbo-16k
-        type: chat
-        services: [importer]
-      - name: gpt-3.5-turbo-1106
-        type: chat
-        services: [importer]
-      - name: gpt-3.5-turbo-0125
-        type: chat
-        services: [importer]
       - name: text-embedding-3-small
         type: embedding
         services: [importer, retriever, autograph, graphrag]
