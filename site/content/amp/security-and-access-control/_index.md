@@ -661,13 +661,18 @@ To enable the audit log feature, get in touch with the AMP team via **Request He
 
 To have a better overview of the events happening in your AMP organization,
 you can set up an audit log, which will track and log auditing information for you.
-The audit log is created on the organization level, then you can use the log for
-projects belonging to that organization.
+
+Audit logs follow a three-step workflow:
+
+1. An audit log is created at the **organization** level.
+2. The audit log is then **attached to a project**.
+3. All **deployments** running within that project automatically inherit the
+   attached audit log.
 
 ***To create an audit log***
 
-1. In the main navigation menu, click **Access Control** in the **Organization** section.
-2. Open the **Audit logs** tab and click the **New audit log** button.
+1. In the main navigation menu, click the **Audit logs** tab in the **Access Control** part of the **Organization** section.
+2. Click the **New audit log** button.
 3. In the dialog, fill out the following settings:
    
    - **Name** - enter a name for your audit log.
@@ -693,5 +698,29 @@ projects belonging to that organization.
 
    ![Arango Managed Platform Audit Log](../../images/amp-audit-log.png)
 
-4. Click **Create** to add the audit log. You can now use it in the projects
+4. Click **Create** to add the audit log. You can now attach it to the projects
    belonging to your organization.
+
+Creating an audit log does not apply it to any deployments yet. To start
+collecting auditing information, you need to attach the audit log to a project.
+Each project can have a single audit log attached to it, and all deployments
+within that project automatically inherit it.
+
+***To attach an audit log to a project***
+
+1. Click a project name in the **Projects** section of the main navigation,
+   selecting the project where your deployment is running.
+2. In the **Audit log** section of the project page, click the **Edit** button
+   in the top-right corner.
+3. Select the audit log you want to attach to the project, then confirm your
+   selection.
+
+   {{< info >}}
+   A project can only have one audit log attached at a time. Selecting a
+   different audit log replaces the previously attached one.
+   {{< /info >}}
+
+Once attached, the audit log is listed in the **Audit log** section of the
+project, and all deployments running within that project are automatically
+associated with it. You can review the collected archives and events in the
+**Audit log archives** and **Audit log events** sections of the project.
