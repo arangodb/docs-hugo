@@ -83,7 +83,7 @@ endpoint.
 {
   "env": {
     "db_name": "your_database_name",
-    "project_name": "your_project_name",
+    "genai_project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "chat_model": "gpt-5.4-nano",
@@ -98,7 +98,7 @@ endpoint.
 ```
 
 For a full description of all parameters, see
-[Configuration Parameters Reference](#configuration-parameters-reference).
+[Chat and Embedding Parameters](#chat-and-embedding-parameters).
 
 ### Using different OpenAI-compatible services for chat and embedding
 
@@ -112,7 +112,7 @@ providers set to `openai` and differentiate them with different URLs in
 {
   "env": {
     "db_name": "your_database_name",
-    "project_name": "your_project_name",
+    "genai_project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://openrouter.ai/api/v1",
     "chat_model": "mistralai/mistral-nemo",
@@ -127,7 +127,7 @@ providers set to `openai` and differentiate them with different URLs in
 ```
 
 For a full description of all parameters, see
-[Configuration Parameters Reference](#configuration-parameters-reference).
+[Chat and Embedding Parameters](#chat-and-embedding-parameters).
 
 ## Using Triton Inference Server
 
@@ -145,7 +145,7 @@ required for Triton, and `chat_model` is required for the Triton chat provider.
 {
   "env": {
     "db_name": "your_database_name",
-    "project_name": "your_project_name",
+    "genai_project_name": "your_project_name",
     "chat_api_provider": "triton",
     "chat_api_url": "your-arangodb-llm-host-url",
     "chat_model": "mistral-nemo-instruct",
@@ -158,7 +158,7 @@ required for Triton, and `chat_model` is required for the Triton chat provider.
 ```
 
 For a full description of all parameters, see
-[Configuration Parameters Reference](#configuration-parameters-reference).
+[Chat and Embedding Parameters](#chat-and-embedding-parameters).
 
 ### Mixing providers
 
@@ -171,7 +171,7 @@ routinely tested, so verify it works in your environment before relying on it.
 {
   "env": {
     "db_name": "your_database_name",
-    "project_name": "your_project_name",
+    "genai_project_name": "your_project_name",
     "chat_api_provider": "openai",
     "chat_api_url": "https://api.openai.com/v1",
     "chat_model": "gpt-5.4-nano",
@@ -184,9 +184,9 @@ routinely tested, so verify it works in your environment before relying on it.
 }
 ```
 
-## Configuration Parameters Reference
+## Chat and Embedding Parameters
 
-The following parameters are available when configuring AutoGraph.
+This reference section covers the chat and embedding model parameters.
 Provider-specific defaults and requirements are noted where applicable.
 Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
 
@@ -194,10 +194,14 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
 
 - `db_name` (**required**): Name of the ArangoDB database where the corpus
   graph and knowledge graph are stored.
-- `project_name` (**required**): The project name. It is used as a prefix
-  for all ArangoDB collections (for example, a project named `docs` creates
-  `docs_sources`, `docs_domains`, `docs_CorpusGraph`, and so on). Create the
-  project via the [web interface](web-interface.md).
+- `genai_project_name` (**required**): The project name, used as a prefix for
+  all ArangoDB collections (for example, a project named `docs` creates
+  `docs_sources`, `docs_domains`, `docs_CorpusGraph`, and so on). Set it to the
+  same name you chose when creating the project via the
+  [web interface](web-interface.md) or the
+  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
+  The Project API names this field `project_name`; the AutoGraph install
+  request uses `genai_project_name` for the same value.
 
 ### Chat API parameters
 
