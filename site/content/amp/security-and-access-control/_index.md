@@ -715,6 +715,8 @@ within that project automatically inherit it.
 3. Select the audit log you want to attach to the project, then confirm your
    selection.
 
+   ![Arango Managed Platform attach audit log to a project](../../images/amp-audit-log-attach-project.png)
+
    {{< info >}}
    A project can only have one audit log attached at a time. Selecting a
    different audit log replaces the previously attached one.
@@ -724,3 +726,10 @@ Once attached, the audit log is listed in the **Audit log** section of the
 project, and all deployments running within that project are automatically
 associated with it. You can review the collected archives and events in the
 **Audit log archives** and **Audit log events** sections of the project.
+
+![Arango Managed Platform audit log attached to a project](../../images/amp-audit-log-project.png)
+
+Each deployment within the project also has an **Audit log archives** section
+that lists the archives associated with that deployment.
+
+![Arango Managed Platform deployment audit log archives](../../images/amp-audit-log-deployment-archives.png)
