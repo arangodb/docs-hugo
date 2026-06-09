@@ -252,6 +252,13 @@ ul ul, ul ol, ol ul, ol ol {
     margin-bottom: .5rem;
 }
 
+.anchor {
+    display: block;
+    height: 0;
+    position: relative;
+    top: -4rem;
+}
+
 .link,
 .link:visited {
     text-decoration: none;

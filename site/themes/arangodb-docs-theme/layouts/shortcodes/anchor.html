@@ -1,0 +1,11 @@
+{{ $headline := .Get 0 -}}
+{{ if not $headline -}}
+  {{ errorf "Old headline: Missing required parameter in '%v'" .Page.File.Path -}}
+{{ else -}}
+  {{ $fragment := $headline | urlize -}}
+  {{ if (.Page.Fragments.Identifiers.Contains $fragment) -}}
+    {{ errorf "Old headline: Fragment identifier '%v' already used in '%v'" $fragment .Page.File.Path -}}
+  {{ else -}}
+    <a name="{{ $fragment }}" id="{{ $fragment }}" class="anchor" area-hidden="true"></a>
+  {{ end -}}
+{{ end -}}

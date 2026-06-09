@@ -602,6 +602,10 @@ The following shortcodes also exist but are rarely used:
   {{< /details >}}
   ```
 
+- `{{< anchor "Former headline" >}}` adds an invisible anchor to the content,
+  turning the specified string into a fragment identifier. Useful to keep
+  anchor links working when changing headlines.
+
 - `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
   and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`
   for a YouTube playlist.
