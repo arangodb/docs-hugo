@@ -7,6 +7,9 @@ description: >-
   relationships using algorithms like PageRank for fraud detection,
   recommendations, and network analysis
 ---
+
+{{< embed-svg "Graph-Analytics-Flow" "Graph Analytics end-to-end flow." >}}
+
 Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
 It ranges from basic measures that characterize graphs, over PageRank, to complex

@@ -4,17 +4,15 @@ menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
 weight: 40
-aliases:
-  - ../../../reference/autograph/corpus-build/
 ---
 
 ## Create Corpus Build
 
-{{< endpoint "POST" "/v1/corpus/builds" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 
 Trigger a corpus build from imported files or File Manager.
 
-**Recommended path:** Call this after importing all documents for the modules you want to build. For a first build, omit `incremental` (it defaults to false - existing module data is wiped and rebuilt cleanly). To add or update specific modules without touching the rest of the corpus, set `incremental: true` and list the target modules in `modules`. Only one build may run at a time.
+**Recommended path:** Call this after importing all documents for the module you want to build. Each build processes one module at a time; for additional modules use an [incremental build](#incremental-builds). For a first build, omit `incremental` (it defaults to false - existing module data is wiped and rebuilt cleanly). To add or update specific modules without touching the rest of the corpus, set `incremental: true` and list the target modules in `modules`. Only one build may run at a time.
 
 ### Request (Option A - File Manager Integration)
 
@@ -87,14 +85,14 @@ curl -X POST \
     "file_ids": ["id1", "id2"],
     "strategy": { "top_k": 10, "cluster_threshold": 2 }
   }' \
-  http://localhost:8080/v1/corpus/builds
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds
 ```
 
 ---
 
 ## Monitoring Build Status
 
-{{< endpoint "GET" "/v1/corpus/builds/{corpus_build_id}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/{corpus_build_id}" >}}
 
 Check the progress of a corpus build.
 
@@ -123,18 +121,19 @@ Check the progress of a corpus build.
 | Field | Type | Description |
 |-------|------|-------------|
 | `corpus_build_id` | string | Build identifier |
-| `status` | string | **`pending`** → **`running`** → **`completed`** or **`failed`**. Only proceed to strategizer on **`completed`**. |
+| `status` | string | **`pending`** → **`running`** → **`completed`** or **`failed`**. Only proceed to Strategizer on **`completed`**. |
 | `message` | string | Human-readable stage (e.g. similarity or clustering). |
 | `progress` | integer | **0–100**; use together with `message` for UI. |
 | `error` | string | Non-empty when **`failed`**. Use for support tickets. |
 | `started_at` | double | Unix epoch seconds (float). |
 | `completed_at` | double | Set when finished; **0** while running. |
+| `error_code` | string (optional) | Machine-readable code populated when `status` is **`failed`** due to an LLM/embedding provider failure. Values: **`LLM_AUTHENTICATION_FAILED`**, **`LLM_PERMISSION_DENIED`**, **`LLM_RATE_LIMITED`**, **`LLM_QUOTA_EXCEEDED`**, **`LLM_API_KEY_MISSING`**. Omitted when the failure is not caused by an LLM or embedding provider error (for example, validation or internal errors), matching the cases where the service leaves the field unset. |
 
 ### HTTP Example
 
 ```bash
 curl -H "Authorization: Bearer <token>" \
-  http://localhost:8080/v1/corpus/builds/cb_01ARZ3NDEKTSV4RRFFQ69G5FAV
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/cb_01ARZ3NDEKTSV4RRFFQ69G5FAV
 ```
 
 ---

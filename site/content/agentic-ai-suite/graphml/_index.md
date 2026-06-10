@@ -10,6 +10,9 @@ aliases:
   - ../arangodb/4.0/data-science/arangographml # 3.10, 3.11
   - ../arangodb/devel/data-science/arangographml # 3.10, 3.11
 ---
+
+{{< embed-svg "GraphML-Flow" "GraphML end-to-end flow." >}}
+
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with
@@ -196,7 +199,8 @@ jobs, allowing you to track the entire ML pipeline without having to leave Arang
 ## Security
 
 Each deployment that uses GraphML has an `arangopipe` database created,
-which houses all ML Metadata information. Since this data lives within the deployment,
-it benefits from the Arango Managed Platform (AMP) security features and SOC 2 compliance.
-All GraphML services live alongside the AMP deployment and are only
-accessible within that organization.
+which houses all ML Metadata information. You need write access to this
+database to run GraphML, since metadata and metrics are recorded there
+throughout the ML pipeline. Because this data lives within your deployment, it benefits from the
+platform's security features and SOC 2 compliance. All GraphML services
+live alongside your deployment and are only accessible within your organization.

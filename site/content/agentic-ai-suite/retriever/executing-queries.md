@@ -14,11 +14,11 @@ weight: 40
 
 The Retriever service provides two main query endpoints and a health endpoint:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query" >}}
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query-stream" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query-stream" >}}
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
 
 {{< tip >}}
 The streaming endpoint (`/v1/graphrag-query-stream`) returns responses
@@ -47,7 +47,7 @@ it using the query endpoints.
 {{< tab "Global Search" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -63,7 +63,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 {{< tab "Local Search" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -79,7 +79,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 {{< tab "Deep Search" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -95,7 +95,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 {{< tab "Instant Search" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query-stream \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -110,7 +110,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 {{< tab "Custom Retriever" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -133,7 +133,7 @@ For detailed information about all available parameters, see the
 **Instant Search with response instructions:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query-stream \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query-stream \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -149,7 +149,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 **Deep Search:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -161,10 +161,15 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
   }'
 ```
 
+{{< info >}}
+In Deep Search mode (`use_llm_planner=true`), citations are always disabled
+regardless of `show_citations`. The same applies to `GLOBAL` queries.
+{{< /info >}}
+
 **Global Search:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -172,6 +177,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
     "query_type": 1,
     "level": 1,
     "include_metadata": true,
+    "use_cache": true,
     "response_instructions": "Provide a high-level summary"
   }'
 ```
@@ -179,7 +185,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1
 **Custom Retriever with partition filtering:**
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{

@@ -13,7 +13,7 @@ You provide configuration parameters in the request body, and the platform
 automatically provisions the service with those settings.
 
 {{< info >}}
-Replace `<ExternalEndpoint>` in all examples below with your Arango Contextual
+Replace `<EXTERNAL_ENDPOINT>` in all examples below with your Arango Contextual
 Data Platform deployment URL.
 {{< /info >}}
 
@@ -32,7 +32,7 @@ Before deploying, have ready:
 Generate a Bearer token using the ArangoDB authentication API:
 
 ```bash
-curl -X POST https://<ExternalEndpoint>:8529/_open/auth \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth \
   -d '{"username": "your-username", "password": "your-password"}'
 ```
 
@@ -47,7 +47,7 @@ Create the service instance with your configuration:
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/graphrag \
+  --url https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -55,7 +55,7 @@ curl --request POST \
       "db_name": "<your_database_name>",
       "chat_api_provider": "openai",
       "chat_api_key": "<your-openai-api-key>",
-      "chat_model": "gpt-4o"
+      "chat_model": "gpt-5.4"
     }
   }'
 ```
@@ -74,7 +74,8 @@ curl --request POST \
 ```
 
 {{< info >}}
-Save the `serviceId` from the response — you need it for all subsequent API calls.
+Save the trailing segment of the `serviceId` from the response (here: `xxxxx`).
+You need it to construct the endpoint URLs for all subsequent API calls.
 {{< /info >}}
 
 ## Configuration parameters
@@ -93,7 +94,7 @@ All parameters are provided in the `env` object of your deployment request.
 
 | Parameter | Description |
 |---|---|
-| `chat_model` | Model name (default: `gpt-4o-mini`) |
+| `chat_model` | Model name (default: `gpt-5.4`) |
 | `chat_api_url` | Base URL for OpenAI-compatible endpoints (required for OpenRouter, self-hosted models, etc.) |
 | `openai_max_retries` | Maximum retry attempts for failed LLM requests |
 
@@ -109,7 +110,7 @@ in the [Secrets Manager](../../platform-suite/secrets-manager.md):
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/graphrag \
+  --url https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphrag \
   --header 'Authorization: Bearer <your-bearer-token>' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -117,7 +118,7 @@ curl --request POST \
       "db_name": "<your_database_name>",
       "chat_api_provider": "openai",
       "chat_secret_profile_id": "<secret-name>",
-      "chat_model": "gpt-4o"
+      "chat_model": "gpt-5.4"
     }
   }'
 ```
@@ -150,7 +151,7 @@ Check that the service is properly deployed:
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>:8529/_platform/acp/v1/service/arangodb-graph-rag-<serviceID> \
+  --url https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/<SERVICE_ID> \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 
@@ -158,7 +159,7 @@ curl --request GET \
 ```json
 {
   "serviceInfo": {
-    "serviceId": "arangodb-graph-rag-<serviceID>",
+    "serviceId": "arangodb-graph-rag-xxxxx",
     "description": "Install complete",
     "status": "DEPLOYED",
     "namespace": "<arangodb>",
@@ -173,7 +174,7 @@ Verify that the service is running and healthy:
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>:8529/graph-rag/<serviceID>/v1/health \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/<SERVICE_ID_POSTFIX>/v1/health \
   --header 'Authorization: Bearer <your-bearer-token>'
 ```
 
@@ -185,8 +186,8 @@ curl --request GET \
 ```
 
 {{< info >}}
-The `serviceID` in the URL is typically the last part of the full service ID
-(for example, `xxxxx` from `arangodb-graph-rag-xxxxx`).
+The `serviceIdPostfix` in the URL is the trailing segment of the `serviceId`
+(after the last `-`), like `xxxxx` from `arangodb-graph-rag-xxxxx`.
 {{< /info >}}
 
 Once the service is running, see the [API Reference](api-reference.md) for endpoint
