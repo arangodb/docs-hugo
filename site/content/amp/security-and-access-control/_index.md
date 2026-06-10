@@ -201,6 +201,7 @@ The roles below are described following this pattern:
 **Billing Administrator** (`billing-admin`):
 - `billing.config.get`
 - `billing.config.set`
+- `billing.credits.get_available`
 - `billing.invoice.get`
 - `billing.invoice.get-preliminary`
 - `billing.invoice.get-statistics`
@@ -217,6 +218,7 @@ The roles below are described following this pattern:
 
 **Billing Viewer** (`billing-viewer`):
 - `billing.config.get`
+- `billing.credits.get_available`
 - `billing.invoice.get`
 - `billing.invoice.get-preliminary`
 - `billing.invoice.get-statistics`
@@ -238,6 +240,14 @@ The roles below are described following this pattern:
 **CA Certificate Viewer** (`cacertificate-viewer`):
 - `crypto.cacertificate.get`
 - `crypto.cacertificate.list`
+
+**Credits Viewer** (`credits-viewer`):
+- `credit.creditbundle.list`
+- `credit.creditbundleusage.list`
+- `credit.creditbundleusageprojection.get`
+- `credit.creditdebt.get`
+- `credit.creditusagereport.get`
+- `credit.creditusagereport.list`
 
 **Dataloader Administrator** (`dataloader-admin`):
 - `dataloader.deployment.import`
@@ -327,6 +337,27 @@ The roles below are described following this pattern:
 - `example.exampledatasetinstallation.get`
 - `example.exampledatasetinstallation.list`
 
+**Graph Analytics Administrator** (`graph-analytics-admin`):
+- `graphanalytics.engine.create`
+- `graphanalytics.engine.deleted`
+- `graphanalytics.engine.feature`
+- `graphanalytics.engine.get`
+- `graphanalytics.engine.list`
+- `graphanalytics.enginesize.list`
+- `graphanalytics.enginetype.list`
+
+**Graph Analytics Executor** (`graph-analytics-executor`):
+- `graphanalytics.engine.delete-graph`
+- `graphanalytics.engine.delete-job`
+- `graphanalytics.engine.get-graph`
+- `graphanalytics.engine.get-job`
+- `graphanalytics.engine.list-graphs`
+- `graphanalytics.engine.list-jobs`
+- `graphanalytics.engine.load-data`
+- `graphanalytics.engine.process`
+- `graphanalytics.engine.shutdown`
+- `graphanalytics.engine.store-results`
+
 **Group Administrator** (`group-admin`):
 - `iam.group.create`
 - `iam.group.delete`
@@ -377,6 +408,8 @@ The roles below are described following this pattern:
 
 **MLServices Admin** (`mlservices-admin`):
 - `ml.mlservices.get`
+- `ml.mlservices.update`
+- `ml.mlservicessize.list`
 
 **Notebook Administrator** (`notebook-admin`):
 - `notebook.model.list`
@@ -449,9 +482,6 @@ The roles below are described following this pattern:
 
 **Replication Administrator** (`replication-admin`):
 - `replication.deployment.clone-from-backup`
-- `replication.deploymentreplication.get`
-- `replication.deploymentreplication.update`
-- `replication.migration-forwarder.upgrade-connection`
 
 **Role Administrator** (`role-admin`):
 - `iam.role.create`
@@ -510,60 +540,67 @@ oasisctl list permissions
 Note that if the tier is "internal", there is an `internal-dashboard` API that should be excluded in below list!
 {{% /comment %}}
 
-| API                 | Kind                         | Verbs
-|:--------------------|:-----------------------------|:-------------------------------------------
-| `audit`             | `auditlogarchive`            | `delete`, `get`, `list`
-| `audit`             | `auditlogattachment`         | `create`, `delete`, `get`
-| `audit`             | `auditlogevents`             | `get`
-| `audit`             | `auditlogevent`              | `delete`
-| `audit`             | `auditlog`                   | `create`, `delete`, `get`, `list`, `set-default`, `test-https-post-destination`, `update`
-| `backup`            | `backuppolicy`               | `create`, `delete`, `get`, `list`, `update`
-| `backup`            | `backup`                     | `copy`, `create`, `delete`, `download`, `get`, `list`, `restore`, `update`
-| `backup`            | `feature`                    | `get`
-| `billing`           | `config`                     | `get`, `set`
-| `billing`           | `invoice`                    | `get`, `get-preliminary`, `get-statistics`, `list`
-| `billing`           | `organization`               | `get`
-| `billing`           | `paymentmethod`              | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
-| `billing`           | `paymentprovider`            | `list`
-| `crypto`            | `cacertificate`              | `create`, `delete`, `get`, `list`, `set-default`, `update`
-| `dataloader`        | `deployment`                 | `import`
-| `data`              | `cpusize`                    | `list`
-| `data`              | `deploymentcredentials`      | `get`
-| `data`              | `deploymentfeatures`         | `get`
-| `data`              | `deploymentmodel`            | `list`
-| `data`              | `deploymentprice`            | `calculate`
-| `data`              | `deployment`                 | `create`, `create-test-database`, `delete`, `full-access`, `get`, `list`, `pause`, `read-only-access`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
-| `data`              | `diskperformance`            | `list`
-| `data`              | `limits`                     | `get`
-| `data`              | `nodesize`                   | `list`
-| `data`              | `presets`                    | `list`
-| `deploymentprofile` | `deploymentprofile`          | `list`
-| `example`           | `exampledatasetinstallation` | `create`, `delete`, `get`, `list`, `update`
-| `example`           | `exampledataset`             | `get`, `list`
-| `iam`               | `group`                      | `create`, `delete`, `get`, `list`, `update`
-| `iam`               | `policy`                     | `get`, `update`
-| `iam`               | `role`                       | `create`, `delete`, `get`, `list`, `update`
-| `iam`               | `user`                       | `get-personal-data`, `update`
-| `metrics`           | `endpoint`                   | `get`
-| `metrics`           | `token`                      | `create`, `delete`, `get`, `list`, `revoke`, `update`
-| `ml`                | `mlservices`                 | `get`
-| `monitoring`        | `logs`                       | `get`
-| `monitoring`        | `metrics`                    | `get`
-| `network`           | `privateendpointservice`     | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
-| `notebook`          | `model`                      | `list`
-| `notebook`          | `notebook`                   | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
-| `notification`      | `deployment-notification`    | `list`, `mark-as-read`, `mark-as-unread`
-| `prepaid`           | `prepaiddeployment`          | `get`, `list`
-| `replication`       | `deploymentmigration`        | `create`, `delete`, `get`
-| `replication`       | `deploymentreplication`      | `get`, `update`
-| `replication`       | `deployment`                 | `clone-from-backup`
-| `replication`       | `migration-forwarder`        | `upgrade-connection`
-| `resourcemanager`   | `organization-invite`        | `create`, `delete`, `get`, `list`, `update`
-| `resourcemanager`   | `organization`               | `delete`, `get`, `update`
-| `resourcemanager`   | `project`                    | `create`, `delete`, `get`, `list`, `update`
-| `scim`              | `user`                       | `add`, `delete`, `get`, `list`, `update`
-| `security`          | `iamprovider`                | `create`, `delete`, `get`, `list`, `set-default`, `update`
-| `security`          | `ipallowlist`                | `create`, `delete`, `get`, `list`, `update`
+| API                 | Kind                          | Verbs
+|:--------------------|:------------------------------|:-------------------------------------------
+| `audit`             | `auditlogarchive`             | `delete`, `get`, `list`
+| `audit`             | `auditlogattachment`          | `create`, `delete`, `get`
+| `audit`             | `auditlogevents`              | `get`
+| `audit`             | `auditlogevent`               | `delete`
+| `audit`             | `auditlog`                    | `create`, `delete`, `get`, `list`, `set-default`, `test-https-post-destination`, `update`
+| `backup`            | `backuppolicy`                | `create`, `delete`, `get`, `list`, `update`
+| `backup`            | `backup`                      | `copy`, `create`, `delete`, `download`, `get`, `list`, `restore`, `update`
+| `backup`            | `feature`                     | `get`
+| `billing`           | `config`                      | `get`, `set`
+| `billing`           | `invoice`                     | `get`, `get-preliminary`, `get-statistics`, `list`
+| `billing`           | `organization`                | `get`
+| `billing`           | `paymentmethod`               | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
+| `billing`           | `paymentprovider`             | `list`
+| `credit`            | `creditbundleusageprojection` | `get`
+| `credit`            | `creditbundleusage`           | `list`
+| `credit`            | `creditbundle`                | `list`
+| `credit`            | `creditdebt`                  | `get`
+| `credit`            | `creditusagereport`           | `get`, `list`
+| `crypto`            | `cacertificate`               | `create`, `delete`, `get`, `list`, `set-default`, `update`
+| `dataloader`        | `deployment`                  | `import`
+| `data`              | `cpusize`                     | `list`
+| `data`              | `deploymentcredentials`       | `get`
+| `data`              | `deploymentfeatures`          | `get`
+| `data`              | `deploymentmodel`             | `list`
+| `data`              | `deploymentprice`             | `calculate`
+| `data`              | `deployment`                  | `create`, `create-test-database`, `delete`, `full-access`, `get`, `list`, `pause`, `read-only-access`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
+| `data`              | `diskperformance`             | `list`
+| `data`              | `limits`                      | `get`
+| `data`              | `nodesize`                    | `list`
+| `data`              | `presets`                     | `list`
+| `deploymentprofile` | `deploymentprofile`           | `list`
+| `example`           | `exampledatasetinstallation`  | `create`, `delete`, `get`, `list`, `update`
+| `example`           | `exampledataset`              | `get`, `list`
+| `graphanalytics`    | `enginesize`                  | `list`
+| `graphanalytics`    | `enginetype`                  | `list`
+| `graphanalytics`    | `engine`                      | `create`, `delete-graph`, `delete-job`, `deleted`, `feature`, `get`, `get-graph`, `get-job`, `list`, `list-graphs`, `list-jobs`, `load-data`, `process`, `shutdown`, `store-results`
+| `iam`               | `group`                       | `create`, `delete`, `get`, `list`, `update`
+| `iam`               | `policy`                      | `get`, `update`
+| `iam`               | `role`                        | `create`, `delete`, `get`, `list`, `update`
+| `iam`               | `user`                        | `get-personal-data`, `update`
+| `metrics`           | `endpoint`                    | `get`
+| `metrics`           | `token`                       | `create`, `delete`, `get`, `list`, `revoke`, `update`
+| `ml`                | `mlservicessize`              | `list`
+| `ml`                | `mlservices`                  | `get`, `update`
+| `monitoring`        | `logs`                        | `get`
+| `monitoring`        | `metrics`                     | `get`
+| `network`           | `privateendpointservice`      | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
+| `notebook`          | `model`                       | `list`
+| `notebook`          | `notebook`                    | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
+| `notification`      | `deployment-notification`     | `list`, `mark-as-read`, `mark-as-unread`
+| `prepaid`           | `prepaiddeployment`           | `get`, `list`
+| `replication`       | `deploymentmigration`         | `create`, `delete`, `get`
+| `replication`       | `deployment`                  | `clone-from-backup`
+| `resourcemanager`   | `organization-invite`         | `create`, `delete`, `get`, `list`, `update`
+| `resourcemanager`   | `organization`                | `delete`, `get`, `update`
+| `resourcemanager`   | `project`                     | `create`, `delete`, `get`, `list`, `update`
+| `scim`              | `user`                        | `add`, `delete`, `get`, `list`, `update`
+| `security`          | `iamprovider`                 | `create`, `delete`, `get`, `list`, `set-default`, `update`
+| `security`          | `ipallowlist`                 | `create`, `delete`, `get`, `list`, `update`
 
 ### Permission inheritance
 
