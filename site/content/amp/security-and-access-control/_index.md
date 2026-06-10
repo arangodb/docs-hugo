@@ -653,27 +653,36 @@ organization. The following commands are available to configure this option:
 - `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=` -
   allows you to reset a list and accept any domains for accessing a specific organization
 
-## Using an audit log
+## Audit logs
 
 {{< info >}} 
-To enable the audit log feature, get in touch with the AMP team via **Request Help**, available in the left sidebar menu of the AMP Dashboard. 
+To enable the audit log feature, get in touch with the AMP team via
+**Request Help**, available in the left sidebar menu of the AMP Dashboard. 
 {{< /info >}}
 
 To have a better overview of the events happening in your AMP organization,
 you can set up an audit log, which will track and log auditing information for you.
-The audit log is created on the organization level, then you can use the log for
-projects belonging to that organization.
 
-***To create an audit log***
+Setting up audit logs follows a three-step process:
 
-1. In the main navigation menu, click **Access Control** in the **Organization** section.
-2. Open the **Audit logs** tab and click the **New audit log** button.
-3. In the dialog, fill out the following settings:
+1. Create an audit log at the **organization** level.
+2. Attach the audit log to a **project**.
+3. All **deployments** within that project automatically inherit the
+   attached audit log and you can view the audit log archives at the
+   organization, project, and deployment level.
+
+### Create an audit log
+
+1. In the main navigation menu, go to the **Organization** section by clicking
+   the icon with a group of people ({{< icon "fa-users" >}}).
+2. Under **Access Control**, click **Audit logs**.
+3. Click the **New audit log** button.
+4. In the dialog, fill out the following settings:
    
-   - **Name** - enter a name for your audit log.
-   - **Description** - enter an optional description for your audit log.
-   - **Destinations** - specify one or several destinations to which you want to
-     upload the audit log. If you choose **Upload to cloud**, the log will be
+   - **Name**: Enter a name for your audit log.
+   - **Description**: Optionally enter a description for your audit log.
+   - **Destinations**: Specify one or several destinations to which you want to
+     upload the audit log to. If you choose **Upload to cloud**, the log will be
      available on the **Audit logs** tab of your organization. To send the log
      entries to your custom destination, specify a destination URL with
      authentication parameters (the **HTTP destination** option).
@@ -682,16 +691,55 @@ projects belonging to that organization.
      The **Upload to cloud** option is not available for the free-to-try tier.
      {{< /info >}}
 
-   - **Excluded topics** - select topics that will not be included in the log.
-     Please note, that some are excluded by default (for example, `audit-document`).
+   - **Excluded topics**: Select topics that you don't want to be included in the log.
+     Note that some may be excluded by default (for example, `audit-document`).
 
      {{< warning >}}
-     Enabling the audit log for all events will have a negative impact on performance.
+     Enabling the audit log for all events has a negative impact on performance.
      {{< /warning >}}
 
-   - **Confirmation** - confirm that logging auditing events increases the price of your deployments.
+   - **Confirmation**: Confirm that logging auditing events increases the price of your deployments.
 
-   ![Arango Managed Platform Audit Log](../../images/amp-audit-log.png)
-
-4. Click **Create** to add the audit log. You can now use it in the projects
+5. Click **Create** to add the audit log. You can now attach it to projects
    belonging to your organization.
+
+![Arango Managed Platform Audit Log](../../images/amp-audit-log.png)
+
+{{< info >}}
+Creating an audit log does not apply it to any deployments yet. To start
+collecting auditing information, you need to attach the audit log to a project.
+{{< /info >}}
+
+### Attach an audit log to a project
+
+Each project can have a single audit log attached to it, and all deployments
+within that project automatically inherit it.
+
+1. In the main navigation menu, go to the **Dashboard** section by clicking
+   the home icon ({{< icon "fa-home" >}}).
+2. Click **Projects** and then a project name to attach the audit log to.
+3. In the menu under **Project details**, click **Audit log**.
+4. Click the **Edit** button in the top-right corner ({{< icon "fa-edit" >}}).
+5. Select the audit log you want to attach to the project, then confirm your
+   selection.
+
+![Arango Managed Platform attach audit log to a project](../../images/amp-audit-log-attach-project.png)
+
+{{< info >}}
+A project can only have one audit log attached at a time. Selecting a
+different audit log replaces the previously attached one.
+{{< /info >}}
+
+Once attached, the audit log is listed in the **Audit log** section of the
+project, and all deployments running within that project are automatically
+associated with it.
+
+![Arango Managed Platform audit log attached to a project](../../images/amp-audit-log-project.png)
+
+The audit log is also listed in the **Audit log** section of each deployment.
+You can review the collected archives and events in the **Audit log archives**
+and **Audit log events** sections of the project and the deployments.
+
+In the **Audit logs** section of the organization, you can access the archives
+and events as well but additionally switch between different audit logs by
+clicking the names or radio buttons of the audit logs.
