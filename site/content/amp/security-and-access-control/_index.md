@@ -551,6 +551,7 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `backup`            | `backup`                      | `copy`, `create`, `delete`, `download`, `get`, `list`, `restore`, `update`
 | `backup`            | `feature`                     | `get`
 | `billing`           | `config`                      | `get`, `set`
+| `billing`           | `credits`                     | `get_available`
 | `billing`           | `invoice`                     | `get`, `get-preliminary`, `get-statistics`, `list`
 | `billing`           | `organization`                | `get`
 | `billing`           | `paymentmethod`               | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
