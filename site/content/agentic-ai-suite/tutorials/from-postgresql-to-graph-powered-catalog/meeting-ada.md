@@ -185,7 +185,7 @@ you can see, style, and interact with":
   edge collections as a coherent, traversable structure in the Graph
   Visualizer.
 - An understanding of the relationship patterns - the product star, the
-  customer journey, the supply chain spine, and the org chart bridge -
+  customer journey, the supply chain spine, and the standalone org chart -
   that give shape to the data.
 - Three custom themes - Supply Chain View, Customer Journey View, and
   Editorial View - that let different teams see different signals in

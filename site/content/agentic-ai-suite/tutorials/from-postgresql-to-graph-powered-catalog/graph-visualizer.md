@@ -7,11 +7,12 @@ description: >-
   patterns, and try the first interactive moves on the canvas
 ---
 
-In the previous pages we loaded the Nordweave dataset - 57k vertices and
-750k edges of catalog, customer, and supply-chain data - into ArangoDB.
-We set the database to OneShard for single-server query speed, and carved
-the org chart into a SatelliteGraph so employee lookups stay local on
-every DB-Server. The data is in. Now it is time to look at it.
+In the previous pages we loaded the Nordweave dataset - tens of thousands
+of vertices and hundreds of thousands of edges of catalog, customer, and
+supply-chain data - into ArangoDB. We set the `nordweave` database to
+OneShard for single-server query speed, and stood the org chart up as a
+SatelliteGraph in its own `nordweave_org` database so org-chart lookups
+stay local on every DB-Server. The data is in. Now it is time to look at it.
 
 This part of the tutorial covers four things, one per page:
 
@@ -67,7 +68,10 @@ collections together. For example:
 - `purchased`: `customers → products`
 - `has_style_pref`: `customers → style_tags`
 - `fulfilled_at`: `orders → stores`
-- `designed_by`: `products → employees`
+
+(The org chart - `employees`, `teams`, `stores` and their edges - is a
+separate SatelliteGraph in the `nordweave_org` database, so it is not part
+of this catalog graph. See [SatelliteGraphs](satellitegraphs.md).)
 
 You can also do this in `arangosh`:
 
@@ -87,8 +91,7 @@ graph_module._create("nordweave_catalog", [
   graph_module._relation("returned",            ["customers"],["products"]),
   graph_module._relation("purchased",           ["customers"],["products"]),
   graph_module._relation("has_style_pref",      ["customers"],["style_tags"]),
-  graph_module._relation("fulfilled_at",        ["orders"],   ["stores"]),
-  graph_module._relation("designed_by",         ["products"], ["employees"])
+  graph_module._relation("fulfilled_at",        ["orders"],   ["stores"])
 ]);
 ```
 
@@ -164,7 +167,6 @@ graph LR
   mat2["mat_elastane"]
   sup["supplier_042"]
   tags["Cozy, Earth Tones, Gym"]
-  emp["emp_00112<br/>Menswear designer"]
 
   ord -->|CONTAINS| prod
   prod -->|BELONGS_TO_CATEGORY| cat
@@ -174,7 +176,6 @@ graph LR
   prod -->|MADE_OF 5%| mat2
   prod -->|MANUFACTURED_BY| sup
   prod -->|TAGGED_AS| tags
-  prod -->|DESIGNED_BY| emp
 ```
 
 Every one of those arrows is an edge document sitting in its own
@@ -217,43 +218,41 @@ set of relationships:
 ```mermaid
 graph LR
   Product -->|MANUFACTURED_BY| Supplier
-  Supplier -->|AUDITED_IN| SupplierAudit
   Product -->|MADE_OF| Material
-  Product -->|AFFECTED_BY| Incident
 ```
 
-This chain is how Nordweave answers questions like "which supplier has had
-the most SEV1 incidents, and which products did those incidents affect?"
-In a relational database, that is a four-table join with careful indexing.
+This chain is how Nordweave answers questions like "which supplier
+manufactures this product, and what materials is it made of?" - or, going
+the other way, "which other products share this supplier or this material?"
+In a relational database, that is a multi-table join with careful indexing.
 In the graph, it is a traversal - follow the edges, collect what you find.
 
 ### The org chart (SatelliteGraph)
 
 Remember the SatelliteGraph from the [previous page](satellitegraphs.md)?
-It is a separate named graph (`org_chart`) but it connects to the catalog
-through shared collections:
+It is a separate named graph (`org_chart`) living in its own
+`nordweave_org` database. Because it is a SatelliteGraph - replicated to
+every DB-Server - it cannot share the OneShard `nordweave` database, so it
+stands on its own:
 
 ```mermaid
 graph LR
-  Product["Product<br/>(catalog graph)"]:::external
   Employee["Employee"]
   Reports["Employee"]
   Team["Team"]
   Store["Store"]
 
-  Product -->|DESIGNED_BY| Employee
   Employee -->|MEMBER_OF| Team
   Employee -->|LEADS| Team
   Employee -->|MANAGES| Reports
   Employee -->|WORKS_AT| Store
-
-  classDef external stroke-dasharray: 5 5,fill:#eee;
 ```
 
-When you expand a designer node, you see both their organizational context
-(team, manager, store) and their creative output (products they designed).
-The SatelliteGraph ensures these lookups are always local, no matter which
-DB-Server handles the query.
+To explore it in the Graph Visualizer, switch to the `nordweave_org`
+database and open the `org_chart` graph. When you expand an employee node,
+you see their organizational context - their team, their manager, the
+employees they manage, and their store. The SatelliteGraph ensures these
+lookups are always local, no matter which DB-Server handles the query.
 
 ### Why this matters for what comes next
 

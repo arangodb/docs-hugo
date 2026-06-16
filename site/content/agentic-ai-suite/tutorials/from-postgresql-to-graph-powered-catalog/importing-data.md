@@ -87,9 +87,20 @@ them directly without any transformation.
 
 ## Loading the whole spine in one go
 
-There are 33 JSONL files in `spine/`. A small Bash loop handles all of them
-- vertex files first, edge files second, so referenced vertices already
-exist when the edges land:
+The `spine/` directory holds the catalog collections plus a small set of
+org-chart files. Load the catalog into `nordweave` now; the org chart
+(`employees`, `teams`, `stores` and the `manages` / `member_of` / `leads` /
+`works_at` edges) is loaded separately into its own database in the
+[SatelliteGraphs](satellitegraphs.md) chapter, because it needs special
+collection properties that must be set *before* any data lands.
+
+One file is intentionally left out of both loads: `edges_designed_by.jsonl`
+(product → employee). Once the org chart moves to its own database, an edge
+can no longer span products in `nordweave` and employees in `nordweave_org`
+- the [SatelliteGraphs](satellitegraphs.md) chapter explains why.
+
+A small Bash loop handles the catalog - vertex files first, edge files
+second, so referenced vertices already exist when the edges land:
 
 ```bash
 #!/usr/bin/env bash
@@ -117,18 +128,18 @@ import_edge() {
     --server.username "${USER}" --threads 4 --progress true
 }
 
-# Vertex collections (15)
-for v in brands categories collections customers employees influencers \
-         materials orders products returns reviews stores style_tags \
-         suppliers teams; do
+# Catalog vertex collections (12)
+for v in brands categories collections customers influencers \
+         materials orders products returns reviews style_tags \
+         suppliers; do
   import_vertex "${v}.jsonl" "${v}"
 done
 
-# Edge collections (18) - file is "edges_<name>.jsonl", collection is "<name>"
-for e in belongs_to_category contains designed_by fulfilled_at \
-         has_style_pref leads made_of manages manufactured_by \
-         member_of part_of_collection placed purchased returned \
-         reviewed sold_as_brand tagged_as works_at; do
+# Catalog edge collections (13) - file is "edges_<name>.jsonl", collection is "<name>"
+for e in belongs_to_category contains fulfilled_at \
+         has_style_pref made_of manufactured_by \
+         part_of_collection placed purchased returned \
+         reviewed sold_as_brand tagged_as; do
   import_edge "edges_${e}.jsonl" "${e}"
 done
 ```

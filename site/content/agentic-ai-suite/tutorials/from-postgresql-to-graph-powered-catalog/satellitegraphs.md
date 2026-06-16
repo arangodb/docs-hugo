@@ -18,20 +18,22 @@ chart.
   `works_at` (154)
 
 This little graph is *small*, *read-heavy*, and *rarely modified* (a few
-hires per month, the occasional re-org). And it gets joined against
-constantly:
+hires per month, the occasional re-org). And it gets traversed constantly:
 
-- Every "who designed this product?" query traverses
-  `products → designed_by → employees → member_of → teams`.
-- Every "which store manager handled this incident?" query traverses
-  `stores.manager_employee_id → employees → manages*`.
-- Every audit, every incident attribution, every approval flow walks this
-  graph somewhere.
+- Every "who manages this employee, and who do they manage?" query walks
+  `employees → manages*`.
+- Every "which team is this person on, and who else is on it?" query walks
+  `employees → member_of → teams ← member_of ← employees`.
+- Every "which employees work at this store?" query walks
+  `stores ← works_at ← employees`.
+- Every org-wide rollup - headcount by team, span of control, store
+  staffing - walks this graph somewhere.
 
 If Nordweave ever scales beyond one DB-Server - and they will, once they
-ingest five years of clickstream data - every one of these queries has to
-fetch employee/team data from another node. Multiply by every page load
-that shows "designed by X" and the cost is real.
+ingest five years of clickstream data - every one of these queries would
+have to fetch employee/team data from whichever node holds the relevant
+shard. Multiply by every dashboard and approval flow that reads the org
+chart and the cost is real.
 
 This is exactly what SatelliteGraphs are for.
 
@@ -53,11 +55,38 @@ Compare:
 
 For the Nordweave org chart, SatelliteGraph is the obvious choice.
 
-## Creating one
+## Why it can't live in the OneShard database
 
-You create a SatelliteGraph through the `@arangodb/satellite-graph` module.
-You don't have to specify shard counts or replication factors - the module
-fills those in for you.
+Here is the constraint that drives everything below: **you cannot put a
+SatelliteGraph inside a OneShard database.** The two models are opposites.
+OneShard pins every collection's single shard to *one* DB-Server; a
+SatelliteGraph replicates its collections to *every* DB-Server. A OneShard
+database forces every collection to follow one shared sharding prototype
+(`distributeShardsLike`), which overrides the `replicationFactor:
+"satellite"` a SatelliteGraph depends on.
+
+Worse, the failure is silent. On a OneShard database the
+`replicationFactor: "satellite"` request is downgraded to an ordinary
+numeric factor with no error and no warning - you think you created a
+SatelliteGraph, but you actually have a regular graph that is *not*
+replicated to every DB-Server. (Run the identical create call in a
+non-OneShard database and `replicationFactor` correctly comes back as
+`"satellite"`.)
+
+So the org chart needs its own database - one created with default
+sharding, *not* `{ sharding: "single" }`:
+
+```js
+db._createDatabase("nordweave_org");   // default sharding, NOT OneShard
+db._useDatabase("nordweave_org");
+```
+
+## Creating the SatelliteGraph
+
+Inside `nordweave_org`, create the SatelliteGraph through the
+`@arangodb/satellite-graph` module. You don't have to specify shard counts
+or replication factors - the module fills those in for you, and because the
+database is not OneShard, the satellite properties actually take effect:
 
 ```js
 const sat = require("@arangodb/satellite-graph");
@@ -70,24 +99,47 @@ const orgChart = sat._create("org_chart", [
 ]);
 ```
 
-That's it. Behind the scenes, ArangoDB sets
-`replicationFactor: "satellite"` on the prototype collection and forces all
-sibling collections to follow it (`distributeShardsLike`). Every DB-Server
-now holds a complete, in-sync copy of `employees`, `teams`, `stores`, and
-the four edge collections.
+Behind the scenes, ArangoDB sets `replicationFactor: "satellite"` on the
+prototype collection and forces all sibling collections to follow it
+(`distributeShardsLike`). Every DB-Server now holds a complete, in-sync
+copy of `employees`, `teams`, `stores`, and the four edge collections.
+Confirm it stuck by checking
+`db.employees.properties().replicationFactor` - it should read
+`"satellite"`, not a number.
+
+With the collections in place, load the org-chart files into them. Because
+the collections already exist with their satellite properties, omit
+`--create-collection true` so `arangoimport` reuses them instead of
+creating plain collections:
+
+```bash
+for v in employees teams stores; do
+  arangoimport --file "spine/${v}.jsonl" --type jsonl \
+    --collection "${v}" --server.database nordweave_org \
+    --server.endpoint "http+ssl://<COORDINATOR>:8529" \
+    --server.username root --threads 4
+done
+for e in manages member_of leads works_at; do
+  arangoimport --file "spine/edges_${e}.jsonl" --type jsonl \
+    --collection "${e}" --server.database nordweave_org \
+    --server.endpoint "http+ssl://<COORDINATOR>:8529" \
+    --server.username root --threads 4
+done
+```
 
 {{< warning >}}
-Order of operations matters. Make the org-chart collections satellite
-*before* loading their data, or be prepared to dump and re-import them.
-SatelliteGraphs require special collection properties that are immutable
-after creation. The `arangoimport` script in the [importing the
-data](importing-data.md) page loads them as regular collections - fine for
-a fresh tutorial run, but in a real migration you would:
+Order of operations matters. The satellite properties are immutable after a
+collection is created, so the collections must exist *before* any data
+lands - load first and you are back to dumping and re-importing. That is
+why the [importing the data](importing-data.md) chapter deliberately skips
+the org chart: you create the SatelliteGraph here, then import into it.
 
-1. Create the `nordweave` database with `{ sharding: "single" }`.
-2. Create the org-chart collections via the satellite-graph module.
-3. *Then* run `arangoimport` against those existing collections (skip
-   `--create-collection true` for that subset).
+It is also why `designed_by` (the product → designer edge) is dropped
+entirely. An edge cannot span two databases, so once the org chart lives in
+`nordweave_org` and products live in `nordweave`, a direct
+product-to-employee link is no longer possible. If you need designer
+attribution on the catalog side, denormalize it - store the designer's
+employee ID as an attribute on the product document rather than as an edge.
 {{< /warning >}}
 
 ## Why this matches compute-resource locality
@@ -128,14 +180,16 @@ By this point, Nordweave has:
   `{ sharding: "single" }` so every collection in it is OneShard. Their
   graph queries run with single-server latency, replicated for safety
   across the cluster, with the Raft-backed Agency keeping everyone aligned.
-- The full v0.1 spine imported from JSON Lines via `arangoimport`: 15
-  vertex collections (~57k documents) and 18 edge collections (~750k
-  edges), including transactional edges that carry their own payload
-  (`contains.qty`, `made_of.pct`).
-- A small SatelliteGraph holding the org chart (`employees`, `teams`,
-  `stores` and the `manages` / `member_of` / `leads` / `works_at` edges),
-  replicated to every DB-Server so every attribution query walks it
-  locally.
+- The catalog spine imported into `nordweave` from JSON Lines via
+  `arangoimport`: 12 vertex collections and 13 edge collections, including
+  transactional edges that carry their own payload (`contains.qty`,
+  `made_of.pct`).
+- A second database, `nordweave_org`, created with default sharding, that
+  holds the org chart as a SatelliteGraph (`employees`, `teams`, `stores`
+  and the `manages` / `member_of` / `leads` / `works_at` edges), replicated
+  to every DB-Server so every org-chart traversal runs locally. The price
+  of making it a satellite is that it stands on its own, separate from the
+  OneShard catalog.
 
 That is the *foundation*. Everything else this series will build -
 GraphRAG over reviews and supplier audits, AutoGraph over design briefs,

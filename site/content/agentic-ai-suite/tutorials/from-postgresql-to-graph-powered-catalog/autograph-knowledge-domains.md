@@ -38,8 +38,8 @@ documents into buckets and hand-tuning a pipeline for each, it:
 2. **Discovers natural domain clusters** using graph algorithms - building a
    *Corpus Graph*, the map of your knowledge.
 3. **Assigns each domain a RAG strategy** via the RAG Strategizer.
-4. **Builds a specialized partition** per domain.
-5. **Routes queries** to the partitions that actually hold the answer.
+4. **Builds a specialized partition** per domain, so each domain becomes a
+   separately addressable knowledge graph you can target at query time.
 
 You do not tell it "these are the audits and these are the lookbooks." It finds
 those groupings itself, from how the documents cluster.
@@ -82,19 +82,19 @@ content complexity is the difference between a feasible bill and an absurd one.
 
 Because AutoGraph builds *partitioned* knowledge graphs, the
 [Retriever](../../retriever/_index.md) queries them a little differently than in
-the standalone GraphRAG case. It uses a **two-stage retrieval pattern**:
-
-1. **Identify the relevant partitions** for the question (which domains could
-   possibly hold the answer).
-2. **Deep-search within them**, using `partition_ids` to target only those
-   domains.
+the standalone GraphRAG case. Retrieval is **partition-scoped**: your agent (or
+calling application) decides which domains are relevant to a question and passes
+them as `partition_ids`, and the Retriever deep-searches only those partitions.
+If you omit `partition_ids`, the Retriever searches across all partitions -
+there is no automatic routing step that selects partitions for you, so choosing
+them is the caller's responsibility.
 
 A question like *"which suppliers had a fabric-defect incident that traces back
 to a material flagged in a design brief?"* spans two domains - post-mortems and
-briefs. AutoGraph routes to both, retrieves within each, and the model
-reconciles the result. A question like *"what's the mood of the SS24 lookbook?"*
-touches only the lookbook partition, and the Retriever never wastes a call on
-the audit graph.
+briefs - so your agent passes both partition IDs, the Retriever searches within
+each, and the model reconciles the result. For a question like *"what's the mood
+of the SS24 lookbook?"*, your agent passes just the lookbook partition, and the
+Retriever never wastes a call on the audit graph.
 
 ## Why this matters for Nordweave
 

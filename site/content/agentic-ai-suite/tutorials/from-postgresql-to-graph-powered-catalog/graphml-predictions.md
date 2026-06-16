@@ -104,8 +104,8 @@ auditable without shipping data anywhere.
 Step back and look at what `nordweave` is now, compared to the PostgreSQL
 database this tutorial started with:
 
-- a OneShard, Raft-backed graph database holding the structured spine, with the
-  org chart as a SatelliteGraph;
+- a OneShard, Raft-backed graph database holding the structured spine, plus a
+  companion `nordweave_org` database holding the org chart as a SatelliteGraph;
 - a visual and conversational surface - Graph Visualizer, themes, Canvas
   Actions, and Ada;
 - a knowledge graph extracted from reviews, audits, and post-mortems via

@@ -105,6 +105,14 @@ get loaded straight into ArangoDB.
 | works_at | 154 | Employee → Store |
 | leads | 30 | Employee → Team |
 
+{{< info >}}
+`designed_by` ships in the dataset but is **not** loaded in this tutorial. A
+product→employee edge can't span two databases, and the org chart lives in
+its own database separate from the OneShard catalog - see
+[SatelliteGraphs](satellitegraphs.md) for why. If you need designer
+attribution, denormalize it onto the product document instead.
+{{< /info >}}
+
 About **57k nodes and ~750k edges** in total - small enough to fit on a
 single DB-Server, large enough to make sharding decisions matter. A few
 representative records from the files (these are JSON Lines files, so each

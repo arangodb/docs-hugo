@@ -21,8 +21,9 @@ one DB-Server. Their queries are graph-heavy:
   season."*
 
 Each of these chains together 4-6 hops: customer → order → contains →
-product → category, or product → manufactured_by → supplier → audited_in.
-Graph traversals like these *hate* network hops.
+product → category, or customer → order → contains → product →
+manufactured_by → supplier. Graph traversals like these *hate* network
+hops.
 
 A naive cluster setup would shard the catalog across, say, five DB-Servers.
 A traversal that follows five edges would then bounce between servers five

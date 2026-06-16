@@ -9,8 +9,9 @@ description: >-
 
 Out of the box, the Graph Visualizer assigns default colors to each
 collection. Products might be blue, customers might be green, orders might
-be orange. That is fine for a first look, but Nordweave has 15 vertex
-collections and 18 edge collections on the canvas at any given time.
+be orange. That is fine for a first look, but Nordweave has a dozen vertex
+collections and just as many edge collections on the canvas at any given
+time.
 Default colors don't tell a story - they just prevent collisions.
 
 Themes let you tell a story. A theme is a saved set of visual
@@ -75,8 +76,6 @@ looking at.
 - `MADE_OF` edges: set the label to `pct` so you can see "75%" along the
   edge line. You will immediately spot which material dominates a
   product's composition.
-- `AFFECTED_BY` edges: color these red with increased thickness. If a
-  product is connected to an incident, you want that to scream.
 
 Save the theme (click the save icon in the drop-down menu).
 
@@ -128,12 +127,13 @@ tones for SS). Label: `name`.
 **Products** - Label: `name`. Hover info: `description` (so hovering gives
 a quick product summary).
 
-**Influencers** - size by `follower_count` using attribute-based rules
-(macro influencers get a prominent color, micro get a subtler one). Label:
-`handle`.
+**Style tags** - Color by aesthetic so you can see at a glance which look a
+product cluster leans into. Label: `name`.
 
-- `ENDORSED_BY` edges: Color: a standout pink or coral. Thickness: 3.
-- `FEATURED_IN` edges: Color: gold. These connect products to lookbooks.
+- `TAGGED_AS` edges: Color: a standout pink or coral. Thickness: 2. These
+  connect products to the style tags that define their aesthetic.
+- `PART_OF_COLLECTION` edges: Color: gold. These connect products to the
+  seasonal collections they belong to.
 
 ## Switching between themes
 
@@ -145,9 +145,8 @@ looking at the same graph, but through a different lens.
 
 This is what "better data optics" means in practice. A supply-chain
 manager glances at the canvas and sees red supplier nodes - problem. A
-merchandiser switches to the Editorial View and sees which products are
-getting influencer endorsements - opportunity. Same data, different
-signal.
+merchandiser switches to the Editorial View and sees how products cluster
+by collection and style tag - opportunity. Same data, different signal.
 
 {{< tip >}}
 Themes are stored per graph in your browser's local storage. If your team

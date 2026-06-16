@@ -61,52 +61,62 @@ Select a product. This action reveals its full material and supplier
 story.
 
 - **Name:** Supply Chain Trace
-- **Description:** Select a product to see its materials, suppliers, and
-  any incidents.
+- **Description:** Select a product to see its materials and suppliers.
 
 ```aql
+WITH products, materials, suppliers
 FOR prod IN @nodes
-  LET materials = (
+  LET productMaterials = (
     FOR v, e IN 1..1 OUTBOUND prod made_of
       RETURN { vertex: v, edge: e }
   )
-  LET supplier = (
+  LET productSupplier = (
     FOR v, e IN 1..1 OUTBOUND prod manufactured_by
       RETURN { vertex: v, edge: e }
   )
-  LET incidents = (
-    FOR v, e IN 1..1 OUTBOUND prod affected_by
-      RETURN { vertex: v, edge: e }
-  )
-  FOR item IN APPEND(materials, APPEND(supplier, incidents))
+  FOR item IN APPEND(productMaterials, productSupplier)
     RETURN item
 ```
 
-This fans out the product node to show every material (with percentage),
-the supplier, and any incidents - all in one click.
+This fans out the product node to show every material (with percentage)
+and the supplier - all in one click. The `WITH` clause is required on a
+cluster: a traversal over bare edge collections must declare the vertex
+collections it touches up front, or it fails with
+`ArangoError 1521: collection not known to traversal`.
 
 ## Action 3: "Similar products and their reviews"
 
-Select a product. Find products connected via the `similar_to`
-relationship and pull in their review data.
+Select a product. Find products that share a style tag with it, then pull
+in who reviewed those similar products.
 
 - **Name:** Similar Products + Reviews
-- **Description:** Select a product to find similar items and see who
-  reviewed them.
+- **Description:** Select a product to find items that share a style tag
+  and see who reviewed them.
 
 ```aql
+WITH products, style_tags, customers
 FOR prod IN @nodes
-  FOR similar, e IN 1..1 ANY prod similar_to
-    LIMIT 10
-    LET reviewPaths = (
-      FOR reviewer, re, rp IN 2..2 INBOUND similar
-        GRAPH "nordweave_catalog"
-        FILTER rp.edges[0]._id LIKE "reviewed/%"
-        LIMIT 5
-        RETURN rp
-    )
-    RETURN APPEND([{ vertices: [similar], edges: [e] }], reviewPaths)
+  FOR tag, prodTagEdge IN 1..1 OUTBOUND prod tagged_as
+    FOR similar, simTagEdge IN 1..1 INBOUND tag tagged_as
+      FILTER similar._id != prod
+      LIMIT 10
+      LET reviewers = (
+        FOR reviewer, reviewEdge IN 1..1 INBOUND similar reviewed
+          LIMIT 5
+          RETURN { vertices: [reviewer], edges: [reviewEdge] }
+      )
+      RETURN APPEND(
+        [{ vertices: [tag, similar], edges: [prodTagEdge, simTagEdge] }],
+        reviewers
+      )
 ```
+
+Nordweave has no explicit "similar product" edge, so this action defines
+similarity as *sharing a style tag*: it hops from the product out to its
+`style_tags` and back in to every other product carrying that tag, then
+walks `reviewed` inbound to surface the reviewers. As with Action 2, the
+`WITH` clause declares the vertex collections the bare-collection traversal
+touches.
 
 ## Action 4: "Show me this customer's return pattern"
 
@@ -118,10 +128,17 @@ products, making the return pattern visually obvious.
   affected products.
 
 ```aql
+WITH customers, products
 FOR cust IN @nodes
   FOR product, e, p IN 1..1 OUTBOUND cust returned
     RETURN p
 ```
+
+This traverses a bare edge collection (`returned`) rather than the named
+graph, so the `WITH customers, products` clause is required on a cluster -
+without it the query fails with `ArangoError 1521: collection not known to
+traversal: 'products'`. (Action 1 needs no `WITH` because it goes through
+the named `GRAPH`.)
 
 When you run this on Christine Palmer (`cust_00289`), the canvas fills
 with red `RETURNED` edges radiating outward. Combined with the Customer
@@ -141,7 +158,7 @@ between them to reveal every shortest connection.
 LET nodeList = @nodes
 LET startNode = nodeList[0]
 LET endNode = nodeList[1]
-FOR p IN ALL_SHORTEST_PATHS startNode TO endNode
+FOR p IN ANY ALL_SHORTEST_PATHS startNode TO endNode
   GRAPH "nordweave_catalog"
   LIMIT 20
   RETURN p
