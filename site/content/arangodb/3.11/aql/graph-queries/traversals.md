@@ -147,7 +147,7 @@ Specify which traversal algorithm to use (string):
     start vertex and the direct neighbor vertex (depth 1).
   - **Depth 2**: The third value is the sum of weights of the edges between the
     start vertex, the direct neighbor vertex, and the neighbor's neighbor vertex.
-  - And so on.
+  - And so on for greater depths, summing all edge weights along the path.
  
   Note that the `weightAttribute` and `defaultWeight` options are ignored for
   traversal orders other than `"weighted"`, which means the `weights` attribute
