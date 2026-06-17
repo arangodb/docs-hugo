@@ -3,12 +3,8 @@ title: Process Images and Semantic Units
 menuTitle: Semantic Units
 description: >-
   Extract and process images, web URLs, and multimedia content from your documents
-weight: 40
+weight: 70
 ---
-
-{{< info >}}
-**Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Import Files](importing-files.md) → **Semantic Units** → [Verify Results](verify-and-explore.md)
-{{< /info >}}
 
 ## Overview
 
@@ -178,6 +174,6 @@ settings described in the
 
 ## Next Steps
 
-- **[View all parameters](parameters.md)**: Explore other configuration options.
+- **[View all parameters](reference/parameters.md)**: Explore other configuration options.
 - **[Verify your import](verify-and-explore.md)**: Check the created SemanticUnits collection.
 - **[Import more files](importing-files.md)**: Start importing more documents with semantic units enabled.

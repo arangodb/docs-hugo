@@ -3,11 +3,11 @@ title: Import Parameter Reference
 menuTitle: Parameters
 description: >-
   Complete reference for all Importer service parameters
-weight: 60
+weight: 20
 ---
 
 {{< info >}}
-This page provides detailed parameter definitions. For import workflows and examples, see the [Import Files guide](importing-files.md).
+This page provides detailed parameter definitions. For import workflows and examples, see the [Import Files guide](../importing-files.md).
 {{< /info >}}
 
 ## Overview
@@ -25,7 +25,7 @@ Parameters differ between single file and multi-file import:
 - `file_content` (required, or use `file_url` / `file_id`): Direct file content as base64-encoded string.
 - `file_url` (required, or use `file_content` / `file_id`): URL to download the file from.
 - `file_id` (required, or use `file_content` / `file_url`): RAG file ID from
-  [File Manager](../../platform-suite/file-manager/). When provided, the file
+  [File Manager](../../../platform-suite/file-manager/). When provided, the file
   is fetched by ID and `file_content` / `file_url` are ignored.
 - `file_name` (required): Original filename with extension.
 
@@ -55,7 +55,7 @@ For single file import, provide exactly one of `file_content`, `file_url`, or
 ### Multi-File Import
 
 You can provide files inline using the `files` array, or reference files
-already uploaded to [File Manager](../../platform-suite/file-manager/) using
+already uploaded to [File Manager](../../../platform-suite/file-manager/) using
 `file_ids`. When `file_ids` is provided, files are fetched by ID and the
 `files` array is ignored.
 
@@ -67,7 +67,7 @@ Each file in the `files` array requires:
 - `content` (required): File content as base64-encoded bytes.
 - `citable_url` (optional): URL to be cited in inline citations. This URL is stored in
   the document metadata and used at retrieval. When querying your knowledge graph, whether
-  citations are displayed is controlled by the [`show_citations`](../retriever/parameters.md#show_citations) parameter.
+  citations are displayed is controlled by the [`show_citations`](../../retriever/parameters.md#show_citations) parameter.
 
 **Example:**
 
@@ -269,13 +269,13 @@ These parameters configure the vector indexes used for semantic search and simil
 ```
 
 {{< info >}}
-Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
+Vector index parameters apply to all embedding fields in your knowledge graph (chunks, edges, entities, and communities). For more details on ArangoDB vector indexes, see the [Vector Search](../../../arangodb/3.12/indexes-and-search/indexing/working-with-indexes/vector-indexes.md) documentation.
 {{< /info >}}
 
 ## Semantic Units and Image Processing
 
 These parameters enable extraction of images and multimedia references. For detailed 
-information, see the [Semantic Units guide](semantic-units.md).
+information, see the [Semantic Units guide](../semantic-units.md).
 
 - `enable_semantic_units`: Enable semantic unit processing (extracts web URLs and image references). Default: `false`.
 - `process_images`: Process storage-style URLs like base64/S3/FileManager artifact URLs (requires `enable_semantic_units=true`). Default: `false`.
@@ -300,17 +300,24 @@ The first three parameters are hierarchical; each requires the previous one to b
 
 These parameters configure ArangoDB graph features for distributed deployments.
 
-- `smart_graph_attribute`: SmartGraph attribute for graph sharding.
-- `shard_count`: Number of shards for the collections.
-- `is_disjoint`: Whether the graphs must be disjoint.
+- `smart_graph_attribute`: SmartGraph attribute for graph sharding. When
+  creating a new SmartGraph through the Importer, this must be set to
+  `"partition_id"`.
+- `shard_count`: Number of shards for the collections. **The current version
+  supports only `shard_count: 1`** when the Importer is creating a new
+  SmartGraph or a new sharded enterprise graph; other values are rejected
+  with a validation error. Omit the field (or set `0`) when the target
+  graph already exists.
+- `is_disjoint`: Whether the graphs must be disjoint. Must be `false` when
+  creating a new sharded enterprise graph with a positive `shard_count`.
 - `satellite_collections`: An array of collection names to create as Satellite Collections.
 
 **Example:**
 
 ```json
 {
-  "smart_graph_attribute": "region",
-  "shard_count": 3,
+  "smart_graph_attribute": "partition_id",
+  "shard_count": 1,
   "is_disjoint": false,
   "satellite_collections": ["entities"]
 }
@@ -318,15 +325,18 @@ These parameters configure ArangoDB graph features for distributed deployments.
 
 {{< info >}}
 These parameters are primarily used for distributed ArangoDB deployments. 
-Consult the [ArangoDB SmartGraphs documentation](../../arangodb/3.12/graphs/smartgraphs/_index.md) 
-for more details.
+Consult the [ArangoDB SmartGraphs documentation](../../../arangodb/3.12/graphs/smartgraphs/_index.md) 
+for more details. For the SmartGraph validation rules enforced by the
+Importer, see [Error Handling](error-handling.md#troubleshooting).
 {{< /info >}}
 
 ## Storage and Organization
 
 These parameters control data storage and organization.
 
-- `store_in_s3`: Whether to store processed data in S3.
+- `store_in_s3`: **Accepted but currently a no-op.** The field is present on
+  the request payload for proto compatibility but has no effect in the
+  current service version.
 - `partition_id`: Partition identifier for grouping related documents together.
 - `batch_size`: Number of documents, entities, and relationships to insert in a single batch. The default value is `1000`.
 

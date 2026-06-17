@@ -3,12 +3,8 @@ title: Configure LLMs and Embedding Models
 menuTitle: LLM Configuration
 description: >-
   Configure OpenAI-compatible APIs or Triton Inference Server for the Importer service
-weight: 20
+weight: 40
 ---
-
-{{< info >}}
-**Getting Started Path:** [Overview](./) → **Configure LLMs** → [Import Files](importing-files.md) → [Semantic Units](semantic-units.md) (optional) → [Verify Results](verify-and-explore.md)
-{{< /info >}}
 
 The Importer service can be configured to use either Triton Inference Server or any
 OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI,
@@ -26,6 +22,30 @@ The `openai` provider works with any OpenAI-compatible API, including:
 - Corporate or self-hosted LLMs with OpenAI-compatible endpoints
 
 Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+
+### Supported OpenAI chat models
+
+When `chat_api_provider` is `openai` and the chat endpoint is OpenAI (or an
+operator-configured OpenAI deployment), the Importer supports the following
+chat models:
+
+- `gpt-5.5`
+- `gpt-5.4`, `gpt-5.4-pro`, `gpt-5.4-mini`, `gpt-5.4-nano`
+- `gpt-5`, `gpt-5-pro`, `gpt-5-mini`, `gpt-5-nano`
+- `gpt-5.2`, `gpt-5.2-pro`
+- `gpt-5.1`
+- `gpt-4.1`, `gpt-4.1-mini`
+- `gpt-4o`, `gpt-4o-mini`
+- `o3`
+
+Older OpenAI model names may still work if your operator deploys them, but
+**full GraphRAG** community reports require JSON-mode chat models - avoid
+legacy `gpt-4` 8k.
+
+Some newer model identifiers (for example `gpt-5.4-pro`, `o3-pro`) require
+the OpenAI Responses API instead of `/v1/chat/completions`. The Importer
+detects this automatically; see
+[OpenAI Responses API fallback](#openai-responses-api-fallback) below.
 
 ### Example using OpenAI
 
@@ -302,7 +322,7 @@ diving into raw logs.
 
 - [**Import your first document**](importing-files.md):
   Learn how to import files to build your knowledge graph.
-- [**Explore all import parameters**](parameters.md):
+- [**Explore all import parameters**](reference/parameters.md):
   Customize your import process.
 - [**Enable semantic units**](semantic-units.md):
   Process images and multimedia content.
