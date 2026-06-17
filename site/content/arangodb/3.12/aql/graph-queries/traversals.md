@@ -144,7 +144,7 @@ Specify which traversal algorithm to use (string):
   list of the calculated edge weight sums at each depth:
   - **Depth 0**: The first value is always `0`.
   - **Depth 1**: The second value is the weight of the edge between the
-    start node and the direct neighbor node (depth 1).
+    start node and the direct neighbor node.
   - **Depth 2**: The third value is the sum of weights of the edges between the
     start node, the direct neighbor node, and the neighbor's neighbor node.
   - And so on for greater depths, summing all edge weights along the path.
