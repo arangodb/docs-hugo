@@ -635,9 +635,9 @@ a.section-link {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: var(--green-50);
-    color: var(--color-evergreen);
-    border: 2px solid var(--color-evergreen);
+    background-color: var(--neutral-white);
+    color: var(--gray-700);
+    border: 2px solid var(--gray-300);
     font-family: var(--font-headlines);
     font-weight: 700;
     font-size: 0.95rem;
