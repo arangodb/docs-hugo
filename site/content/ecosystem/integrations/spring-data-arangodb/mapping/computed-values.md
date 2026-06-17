@@ -3,7 +3,6 @@ title: Computed Values
 menuTitle: Computed Values
 weight: 27
 description: ''
-archetype: default
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/computed-values
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/computed-values
