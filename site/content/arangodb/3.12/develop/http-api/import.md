@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for data import
+title: Import HTTP API
 menuTitle: Import
 weight: 70
 description: >-
-  The Import HTTP API allows you to load JSON data in bulk into ArangoDB
+  The HTTP interface for data import allows you to load JSON data in bulk into ArangoDB
 ---
 ## Import JSON data as documents
 

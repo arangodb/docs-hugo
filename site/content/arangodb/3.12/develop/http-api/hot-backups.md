@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for Hot Backups
+title: Hot Backups HTTP API
 menuTitle: Hot Backups
 weight: 120
 description: >-

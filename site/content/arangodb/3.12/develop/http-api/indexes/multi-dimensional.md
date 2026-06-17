@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for multi-dimensional indexes
+title: Multi-dimensional index HTTP API
 menuTitle: Multi-dimensional
 weight: 20
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `mdi` and `mdi-prefixed`
 ---
 ## Create a multi-dimensional index
 

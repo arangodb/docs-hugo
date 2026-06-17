@@ -1,10 +1,10 @@
 ---
-title: HTTP interface for the query plan cache
+title: AQL query plan cache HTTP API
 menuTitle: AQL query plan cache
 weight: 9
 description: >-
-  The query plan cache HTTP API lets you list the AQL execution plans that
-  are in the cache as well as clear the cache
+  List the AQL execution plans that are in the cache as well as clear the cache
+  with the HTTP interface
 ---
 <small>Introduced in: v3.12.4</small>
 

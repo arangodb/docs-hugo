@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for Analyzers
+title: Analyzer HTTP API
 menuTitle: Analyzers
 weight: 65
 description: >-
-  The HTTP API for Analyzers lets you create and delete Analyzers, as well as
+  The HTTP interface for Analyzers lets you create and delete Analyzers, as well as
   list all or get specific Analyzers with all their settings
 ---
 The RESTful API for managing ArangoSearch Analyzers is accessible via the

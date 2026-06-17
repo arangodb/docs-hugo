@@ -2,7 +2,8 @@
 title: Foxx JWT Session Storage
 menuTitle: JWT storage
 weight: 10
-description: ''
+description: >-
+  The JWT session storage converts sessions to and from JSON Web Tokens
 ---
 `const jwtStorage = require('@arangodb/foxx/sessions/storages/jwt');`
 

@@ -1,10 +1,10 @@
 ---
-title: HTTP interfaces for security features
+title: Audit logging and encryption HTTP APIs
 menuTitle: Security
 weight: 105
 description: >-
-  The security-related endpoints let you can configure audit logging,
-  encryption at rest, and encryption in transit
+  The security-related endpoints in the HTTP interface let you configure
+  audit logging, encryption at rest, and encryption in transit
 ---
 ## Audit logging
 

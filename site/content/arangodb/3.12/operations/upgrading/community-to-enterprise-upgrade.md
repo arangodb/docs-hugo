@@ -2,7 +2,8 @@
 title: Community Edition to Enterprise Edition Upgrade Procedure
 menuTitle: Community to Enterprise Edition
 weight: 5
-description: ''
+description: >-
+  How to upgrade to the commercial ArangoDB edition
 ---
 {{< info >}}
 From version 3.12.5 onward, the prepackaged binaries and official container images

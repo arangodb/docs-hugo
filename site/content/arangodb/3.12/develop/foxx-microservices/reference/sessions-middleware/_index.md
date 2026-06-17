@@ -2,7 +2,9 @@
 title: Foxx Session Middleware
 menuTitle: Sessions middleware
 weight: 25
-description: ''
+description: >-
+  The session middleware adds the `session` and `sessionStorage` properties to the
+  request object and manages session identifiers
 ---
 `const sessionMiddleware = require('@arangodb/foxx/sessions');`
 

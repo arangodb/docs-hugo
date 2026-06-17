@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for authentication
+title: Authentication HTTP API
 menuTitle: Authentication
 weight: 10
 description: >-

@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for arangosearch Views
+title: arangosearch View HTTP API
 menuTitle: '`arangosearch` Views'
 weight: 10
 description: >-

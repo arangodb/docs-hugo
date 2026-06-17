@@ -2,7 +2,9 @@
 title: Exposing Foxx to the browser
 menuTitle: Access from the browser
 weight: 70
-description: ''
+description: >-
+  Expose a Foxx service to web applications using an application server, a
+  reverse proxy, or by exposing ArangoDB directly
 ---
 There are three ways to use Foxx in a web application:
 

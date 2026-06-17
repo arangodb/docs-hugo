@@ -2,7 +2,8 @@
 title: Start an ArangoDB cluster manually
 menuTitle: Manual Start
 weight: 5
-description: ''
+description: >-
+  How to start an ArangoDB cluster without the help of the ArangoDB Starter
 ---
 An ArangoDB Cluster consists of several running _tasks_ or _processes_ which
 form the Cluster. 

@@ -2,7 +2,9 @@
 title: Foxx Header Session Transport
 menuTitle: Header transport
 weight: 10
-description: ''
+description: >-
+  The header transport stores session identifiers in headers on the request
+  and response objects
 ---
 `const headerTransport = require('@arangodb/foxx/sessions/transports/header');`
 

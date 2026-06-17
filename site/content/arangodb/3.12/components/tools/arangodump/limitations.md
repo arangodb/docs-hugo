@@ -2,7 +2,8 @@
 title: _arangodump_ Limitations
 menuTitle: Limitations
 weight: 20
-description: ''
+description: >-
+  Things to keep in mind when creating database dumps
 ---
 _arangodump_ has the following limitations:
 
