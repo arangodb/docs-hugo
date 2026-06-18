@@ -768,7 +768,7 @@ function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
-    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
+    document.querySelectorAll(".link:not([target]), .card-link:not([target]), .header-link").forEach(el => {
       const originalUrl = getLinkHref(el);
       const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
