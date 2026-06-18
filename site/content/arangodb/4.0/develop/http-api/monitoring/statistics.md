@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for server statistics
+title: Statistics HTTP API
 menuTitle: Statistics
 weight: 10
 description: >-
@@ -18,7 +18,7 @@ paths:
         {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from
         version 3.8.0 onward and removed in ArangoDB v4.0.
-        Use `/GET _admin/metrics` instead, which provides the data exposed by
+        Use `GET /_admin/metrics` instead, which provides the data exposed by
         this API and a lot more.
         {{</* /warning */>}}
 

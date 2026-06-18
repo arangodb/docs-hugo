@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for persistent indexes
+title: Persistent index HTTP API
 menuTitle: Persistent
 weight: 5
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `persistent`
 ---
 {{< info >}}
 The index types `hash` and `skiplist` are aliases for the `persistent` index

@@ -2,7 +2,8 @@
 title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to connect to a server and use the ArangoDB Shell
 ---
 ## Connecting to a server
 
