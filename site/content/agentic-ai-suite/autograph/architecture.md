@@ -142,8 +142,9 @@ It contains two edge definitions:
 
 ## Node fields
 
-When you open a node in the ArangoDB graph viewer (right-click a node and choose
-**View node**), a Properties panel lists that node's fields. The tables below show
+When you open a node in the
+[Graph Visualizer](../../platform-suite/graph-visualizer.md#view-node-and-edge-properties)
+(right-click a node and choose **View node**), a Properties panel lists that node's fields. The tables below show
 the fields you can expect on one node of each type, with example values. The system
 fields `_id`, `_key`, and `_rev` exist on every node and are omitted. Collection
 names use the `{project}_` prefix (the examples below come from a project whose
@@ -159,7 +160,7 @@ prefix is `SG_`).
 | `content` | `"--- source: https://… Building the world's leading AI data…"` | The raw source text. |
 | `module` | `default` | Which module / corpus it belongs to. |
 | `partition_id` | (empty until assigned) | Filled once its domain becomes a partition. |
-| `embedding` | `[vector]` | Corpus-level vector used to cluster sources into domains. |
+| `embeddings` | `[vector]` | Corpus-level vector used to cluster sources into domains. |
 
 **`domains`** — a topic cluster of similar sources
 
@@ -242,7 +243,7 @@ the field name before writing AQL filters.
 
 | Edge collection | Relationship-type field | Other fields |
 |-----------------|-------------------------|--------------|
-| `corpus_relations` | `label` = `HAS_CLUSTER` / `IN_DOMAIN` / `INGESTED_AS` | `module`, `cluster_id`, `_from`, `_to` |
+| `corpus_relations` | `label` = `HAS_CLUSTER` / `IN_DOMAIN` / `INGESTED_AS` | `module`, `cluster_id` (IN_DOMAIN only), `_from`, `_to` |
 | `Relations` | `type` = `PART_OF` / `MENTIONED_IN` / `RELATED_TO` / `IN_COMMUNITY` / `SUB_COMMUNITY_OF` | `partition_id`, `import_number`, `type`, `_from`, `_to` |
 | `similarities` | `label` = `SIMILAR_TO` | `similarity_score`, `module`, `_from`, `_to` |
 
@@ -267,7 +268,8 @@ collections each edge connects:
 - **Arrow direction is not build order.** Arrows show ownership/provenance, not the
   sequence in which the pipeline created the nodes.
 - **`rags` → `Documents` is a property link, not a stored edge.** They are joined by
-  `partition_id`, not by an edge in any collection.
+  the `rags` side's `rag_partition_id` matching `Documents.partition_id`, not by an
+  edge in any collection.
 - **`module` is both a vertex and a property.** It is a node in the `modules`
   collection and also a field stored on `sources`, `domains`, and `rags`.
 - **The corpus embedding is not the retrieval index.** The `sources` embedding is a

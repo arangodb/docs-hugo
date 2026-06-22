@@ -29,7 +29,7 @@
     <g class="card">
       <rect class="vtx" x="55" y="270" width="195" height="72" rx="14"/>
       <text class="vtitle" x="152" y="300" text-anchor="middle">sources</text>
-      <text class="vsub" x="152" y="320" text-anchor="middle">text + embedding</text>
+      <text class="vsub" x="152" y="320" text-anchor="middle">text + embeddings</text>
     </g>
 
     <g class="card">
