@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from

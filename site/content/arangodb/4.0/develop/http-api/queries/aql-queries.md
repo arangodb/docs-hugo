@@ -1,9 +1,9 @@
 ---
-title: HTTP interfaces for AQL queries
+title: AQL query and cursor HTTP API
 menuTitle: AQL queries
 weight: 5
 description: >-
-  The HTTP API for AQL queries lets you to execute, track, kill, explain, and
+  The HTTP interface for AQL queries lets you to execute, track, kill, explain, and
   validate queries written in ArangoDB's query language
 # Undocumented on purpose:
 #   PUT /_db/{database-name}/_api/cursor/{cursor-identifier}  (deprecated)

@@ -2,7 +2,9 @@
 title: Related modules for Foxx
 menuTitle: Related modules
 weight: 30
-description: ''
+description: >-
+  Overview of the modules outside of Foxx that are useful when writing Foxx
+  services
 ---
 These are some of the modules outside of Foxx you will find useful when
 writing Foxx services.

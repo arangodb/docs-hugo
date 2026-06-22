@@ -2,7 +2,9 @@
 title: Foxx reference
 menuTitle: Reference
 weight: 20
-description: ''
+description: >-
+  Reference documentation for the Foxx manifest, service context, routers,
+  utility modules, and sessions middleware
 ---
 Each Foxx service is defined by a [JSON manifest](service-manifest.md)
 specifying the entry point, any scripts defined by the service,

@@ -2,7 +2,8 @@
 title: Indexes
 menuTitle: Indexes
 weight: 25
-description: ''
+description: >-
+  How to use indexes in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes

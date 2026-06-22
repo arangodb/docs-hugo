@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for databases
+title: Database HTTP API
 menuTitle: Databases
 weight: 20
 description: >-
-  The HTTP API for databases lets you create and delete databases, list
+  The HTTP interface for databases lets you create and delete databases, list
   available databases, and get information about specific databases
 ---
 The HTTP interface for databases provides operations to create and drop

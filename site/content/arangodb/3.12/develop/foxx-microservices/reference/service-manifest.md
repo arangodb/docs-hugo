@@ -2,7 +2,9 @@
 title: Service manifest
 menuTitle: Service manifest
 weight: 5
-description: ''
+description: >-
+  The `manifest.json` file provides the metadata that defines a Foxx service,
+  such as its entry point and scripts
 ---
 Every service comes with a `manifest.json` file providing metadata. Typically, a
 manifest should at least specify the version of ArangoDB the service supports and

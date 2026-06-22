@@ -2,7 +2,9 @@
 title: Configuration
 menuTitle: Configuration
 weight: 5
-description: ''
+description: >-
+  How to use startup options on the command-line and in configuration files for
+  ArangoDB and its client tools
 ---
 The [programs and tools](../../components/tools/_index.md) shipped in an
 ArangoDB package can be configured with various _startup options_.

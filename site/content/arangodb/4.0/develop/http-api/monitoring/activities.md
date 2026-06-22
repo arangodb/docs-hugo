@@ -1,10 +1,10 @@
 ---
-title: HTTP interface for server activities
+title: Activities HTTP API
 menuTitle: Activities
 weight: 8
 description: >-
-  The activities API is an observability feature that shows which high-level
-  processes are currently ongoing in the database system
+  The HTTP interface for server activities is an observability feature that
+  shows which high-level processes are currently ongoing in the database system
 ---
 The activities API lets you observe which high-level processes are currently
 running on the server, such as HTTP request handlers, AQL queries, transactions,

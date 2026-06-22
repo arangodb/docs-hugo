@@ -2,7 +2,9 @@
 title: Foxx GraphQL integration
 menuTitle: GraphQL
 weight: 20
-description: ''
+description: >-
+  The `graphql` module lets you create routers that serve GraphQL requests from
+  your Foxx service
 ---
 `const createGraphQLRouter = require('@arangodb/foxx/graphql');`
 

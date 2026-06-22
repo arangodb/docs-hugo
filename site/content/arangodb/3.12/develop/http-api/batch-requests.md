@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for batch requests
+title: Batch request HTTP API
 menuTitle: Batch Requests
 weight: 90
 description: >-
-  The HTTP API for batch requests lets you send multiple operations in a single
+  The HTTP interface for batch requests lets you send multiple operations in a single
   HTTP request
 ---
 {{< warning >}}

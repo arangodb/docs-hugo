@@ -2,7 +2,8 @@
 title: Auditing
 menuTitle: Auditing
 weight: 40
-description: ''
+description: >-
+  How to use the auditing feature of the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing

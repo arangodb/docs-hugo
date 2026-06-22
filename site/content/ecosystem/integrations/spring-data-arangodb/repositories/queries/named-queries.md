@@ -2,7 +2,8 @@
 title: Named queries
 menuTitle: Named queries
 weight: 15
-description: ''
+description: >-
+  How to use named queries in the Spring Data ArangoDB integration
 aliases:
   - ../../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
   - ../../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries/named-queries
