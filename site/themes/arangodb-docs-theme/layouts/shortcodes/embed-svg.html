@@ -11,17 +11,18 @@
     {{ end -}}
   {{ end -}}
   {{ if $ok -}}
-    {{ $svgPath := printf "content/images/%s.svg" $svgName -}}
-    {{ $svgContent := readFile $svgPath -}}
-    {{ if $svgContent -}}
-    <figure style="margin: 2rem 0; text-align: center;">
-    {{ $svgContent | safeHTML }}
-    {{ with $caption -}}
-    <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;"><em>{{ . | markdownify }}</em></figcaption>
-    {{ end -}}
-    </figure>
-    {{ else -}}
+    {{ $svgPath := printf "images/%s.svg" $svgName -}}
+    {{ $svg := resources.Get $svgPath -}}
+    {{ if $svg -}}
+      <figure style="margin: 2rem 0; text-align: center;">
+        {{- $svg.Content | safeHTML -}}
+        <figcaption style="font-size: 0.9em; color: #666; margin-top: 0.5rem;">
+        {{- with $caption }}<em>{{ . | markdownify }}</em>{{ end -}}
+        &nbsp;<a href="{{ $svg.Permalink }}" target="_blank" rel="noopener" class="link"><em>View file</em></a>{{/* Whitespace control */ -}}
+        </figcaption>
+      </figure>
+    {{- else -}}
       {{ errorf "File '%v' not found for '%v'" $svgPath .Page.File.Path -}}
-    {{ end -}}
+    {{- end }}
   {{ end -}}
 {{ end -}}
