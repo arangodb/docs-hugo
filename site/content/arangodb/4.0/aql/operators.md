@@ -354,6 +354,7 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
+- `...` for [spreading arrays](#array-spread) into array literals
 - `LET [ ] = [ ]` and `FOR [ ] IN [[ ], [ ]]` for [array destructuring](#array-destructuring)
 
 ### Indexed value access
@@ -731,6 +732,61 @@ The question mark operator can be used for nested search:
 - [Nested search with ArangoSearch](../indexes-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 
+### Array spread
+
+<small>Introduced in: v4.0.0</small>
+
+The spread operator `...` lets you insert the elements of an array into an
+array literal you are constructing. Prefix an expression that evaluates to an
+array with three dots (`...`), and each of its elements is added individually to
+the surrounding array, preserving their order. You can use it multiple times and
+freely mix it with regular elements:
+
+```aql
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN [1, ...arr1, 4, ...arr2, 7]
+```
+
+```json
+[
+  [ 1, 2, 3, 4, 5, 6, 7 ]
+]
+```
+
+The array spread offers a concise alternative to combining arrays with the
+[`PUSH()`](functions/array.md#push) and [`APPEND()`](functions/array.md#append)
+functions. The following query is equivalent to the previous one but harder to
+read and to extend:
+
+```aql
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN PUSH(APPEND(PUSH(APPEND([1], arr1), 4), arr2), 7) // hard to get right
+```
+
+You can spread the result of the [range operator](#range-operator) as well:
+
+```aql
+RETURN [0, ...(1..3), 4]
+```
+
+```json
+[
+  [ 0, 1, 2, 3, 4 ]
+]
+```
+
+If the operand of an array spread is `null`, a single `null` element is added to
+the array (it is not skipped). If the operand is neither an array nor `null`,
+such as a number, string, boolean, or object, then the value is skipped and the
+query raises a warning:
+
+```aql
+RETURN [1, ...null, 2]   // [1, null, 2]
+RETURN [1, ...42, 2]     // [1, 2] (with an 'array expected' warning)
+```
+
 ### Array destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -812,6 +868,7 @@ the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
+- `...` for [spreading objects](#object-spread) into object literals
 - `LET { } = { }` and `FOR { } IN [{ }, { }]` for [object destructuring](#object-destructuring)
 
 ### Attribute access
@@ -863,6 +920,63 @@ LET bindvar  = ob[@attr]
 If you try to access a non-existing attribute in one way or another, the result
 is a `null` value without raising an error or warning.
 {{< /info >}}
+
+### Object spread
+
+<small>Introduced in: v4.0.0</small>
+
+The spread operator `...` lets you copy the attributes of an object into an
+object literal you are constructing. Prefix an expression that evaluates to an
+object with three dots (`...`), and all of its top-level attributes are added to
+the surrounding object. You can use it multiple times and freely mix it with
+regular attributes:
+
+```aql
+LET defaults = { color: "red", size: "M" }
+LET overrides = { size: "L", price: 9.99 }
+RETURN { type: "shirt", ...defaults, ...overrides, currency: "USD" }
+```
+
+```json
+[
+  {
+    "type": "shirt",
+    "color": "red",
+    "size": "L",
+    "price": 9.99,
+    "currency": "USD"
+  }
+]
+```
+
+The object spread offers a concise alternative to the
+[`MERGE()`](functions/document-object.md#merge) function. The following query is
+equivalent to the previous one:
+
+```aql
+RETURN MERGE({ type: "shirt" }, defaults, overrides, { currency: "USD" })
+```
+
+If an attribute name occurs more than once, whether it comes from a spread or is
+written directly, the last occurrence wins and determines the value of the
+attribute. In the example above, the `size` attribute of `defaults` (`"M"`) is
+overwritten by the one of `overrides` (`"L"`).
+
+{{< info >}}
+The last occurrence of a duplicate attribute name wins in object literals since
+v4.0. In previous versions, the first occurrence determined the value. See
+[Incompatible changes in ArangoDB 4.0](../release-notes/version-4.0/incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
+{{< /info >}}
+
+If the operand of an object spread is `null`, it is ignored and nothing is added
+(no warning is raised). If the operand is neither an object nor `null`, such as a
+number, string, boolean, or array, then it is skipped and the query raises a
+warning:
+
+```aql
+RETURN { a: 1, ...null }   // { "a": 1 }
+RETURN { a: 1, ...42 }     // { "a": 1 } (with an 'object expected' warning)
+```
 
 ### Object destructuring
 

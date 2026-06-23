@@ -169,6 +169,20 @@ A trailing comma after the last element is allowed:
 ]
 ```
 
+You can insert the elements of another array into an array literal using the
+[spread operator](../operators.md#array-spread) `...` (introduced in v4.0):
+
+```aql
+LET nums = [2, 3]
+RETURN [1, ...nums, 4]
+```
+
+```json
+[
+  [ 1, 2, 3, 4 ]
+]
+```
+
 Individual array values can later be accessed by their positions using the `[]`
 accessor:
 
@@ -244,6 +258,33 @@ computed attribute names must be enclosed in square brackets `[ … ]`:
 ```aql
 { [ CONCAT("test/", "bar") ] : "someValue" }
 ```
+
+You can copy the attributes of another object into an object literal using the
+[spread operator](../operators.md#object-spread) `...` (introduced in v4.0):
+
+```aql
+LET base = { a: 1, b: 2 }
+RETURN { ...base, c: 3 }
+```
+
+```json
+[
+  { "a": 1, "b": 2, "c": 3 }
+]
+```
+
+If the same attribute name occurs more than once in an object literal, the last
+occurrence wins and determines the value of the attribute:
+
+```aql
+RETURN { foo: 1, foo: 2 } // { "foo": 2 }
+```
+
+{{< info >}}
+The last occurrence of a duplicate attribute name wins since v4.0. In previous
+versions, the first occurrence determined the value. See
+[Incompatible changes in ArangoDB 4.0](../../release-notes/version-4.0/incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
+{{< /info >}}
 
 There is also shorthand notation for attributes which is handy for
 returning existing variables easily:
