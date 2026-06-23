@@ -9,9 +9,9 @@ description: >-
 # Undocumented on purpose:
 #   db._path() // MMFiles legacy  
 ---
-The `db` object of the JavaScript API is available in [arangosh](../../../components/tools/arangodb-shell/_index.md)
-by default, and can also be imported and used in Foxx services and other
-server-side JavaScript contexts from the `@arangodb` module.
+The `db` object of the JavaScript API is automatically imported from the
+`@arangodb` module and is therefore available in
+[arangosh](../../../components/tools/arangodb-shell/_index.md) by default.
 
 ## Property access
 
@@ -82,6 +82,7 @@ require("@arangodb/users").remove(username);
 Alternatively, you can specify user data directly. For example:
 
 ```js
+db._useDatabase("_system");
 db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active: true}])
 ```
 
@@ -90,13 +91,10 @@ db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active
 Changes the current database to the specified database.
 Note that the database specified by `name` must already exist.
 
-Changing the database might be disallowed in some contexts, for example,
-in server-side actions (including Foxx).
-
 When performing this command from arangosh, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
-connect to the database specified by `name`. Additionally, the database
-only be accessed from certain endpoints only. In this case, switching the
+connect to the database specified by `name`. Additionally, the database can
+be accessed from certain endpoints only. In this case, switching the
 database might not work, and the connection / session should be closed and
 restarted with different username and password credentials and/or
 endpoint data.
@@ -677,7 +675,6 @@ description: ''
 ~db._create("example");
 var coll = db._collection("example");
 db._drop(coll);
-~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -1255,7 +1252,7 @@ require("@arangodb").db._version();
 
 {{< tag "arangosh" >}}
 
-Returns the current license.
+Returns information about the current license.
 
 Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
@@ -1270,3 +1267,4 @@ Sets a license.
   sooner than the current one. Default: `false`.
 
 Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
+

@@ -17,7 +17,6 @@ database backend from Python. It is maintained by ArangoDB and the community.
 
 - Repository: <https://github.com/arangodb/python-arango>
 - Reference: <https://docs.python-arango.com/>
-- [Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
 - [Releases](https://github.com/arangodb/python-arango/releases)
 
 There is also an asyncio counterpart called `python-arango-async`.
@@ -25,7 +24,7 @@ It has a similar API and features type wrappers.
 
 - Repository: <https://github.com/arangodb/python-arango-async>
 - Reference: <https://python-arango-async.readthedocs.io/>
-- [Tutorial](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
+- [Demo app](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
 - [Releases](https://github.com/arangodb/python-arango-async/releases)
 
 ## Installation

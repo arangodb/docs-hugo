@@ -135,8 +135,8 @@ and embedding models on your own machines. It handles all model operations, from
 processing text to generating embeddings, and provides both HTTP and gRPC interfaces 
 for communication.
 
-For setup instructions, see [Triton Inference Server](../reference/triton-inference-server.md) 
-and [MLflow](../reference/mlflow.md) documentation.
+For setup instructions, see [Triton Inference Server](../private-llms/triton-inference-server.md) 
+and [MLflow](../private-llms/mlflow.md) documentation.
 
 ### Using OpenAI-compatible endpoints
 
@@ -146,7 +146,7 @@ OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-h
 LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
-- [Importer - Deployment Options](../importer/#deployment-options)
+- [Importer - LLM Configuration](../importer/llm-configuration.md)
 - [Retriever - Installation](../retriever/)
 
 ## Limitations

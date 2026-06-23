@@ -28,7 +28,7 @@ Before you can generate queries, set up the AQLizer service. This is a one-time 
 2. The AQLizer panel opens. On first use, you are prompted to provide:
    - **OpenAI API Key**: Your API key for the LLM provider.
    - **OpenAI Model**: Select the model to use for query generation
-     (for example, `gpt-4o`).
+     (for example, `gpt-5.4`).
 3. Click **Start Service** to initialize the AQLizer.
 
 The service is now ready to use. You can check the service status or stop it at any

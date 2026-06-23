@@ -73,7 +73,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
     "app_version": "<APP_VERSION>",
     "env": {
       "service_type": "base_type",
-      "base_image": "py13base",
+      "base_image": "py12base",
       "app_instance_name": "<APP_INSTANCE_NAME>",
       "db_name": "<DATABASE_NAME>"
     }
@@ -95,9 +95,9 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 
 | Image Name | Description |
 |------------|-------------|
-| `py13base` | Python 3.13 base runtime |
-| `py13torch` | Python 3.13 with PyTorch |
-| `py13cugraph` | Python 3.13 with cuGraph |
+| `py12base` | Python 3.12 base runtime |
+| `py12torch` | Python 3.12 with PyTorch |
+| `py12cugraph` | Python 3.12 with cuGraph |
 
 ## Deploy an Image-Based Service
 
@@ -341,7 +341,7 @@ curl -X POST "$ENDPOINT/_platform/acp/v1/uds" \
     \"app_version\": \"$SERVICE_VERSION\",
     \"env\": {
       \"service_type\": \"base_type\",
-      \"base_image\": \"py13base\",
+      \"base_image\": \"py12base\",
       \"app_instance_name\": \"$INSTANCE_NAME\",
       \"db_name\": \"$DATABASE\"
     }

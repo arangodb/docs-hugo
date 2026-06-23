@@ -7,11 +7,6 @@ description: >-
   information and methods for executing collection-related operations
 # Undocumented on purpose:
 #   collection.count(true); // document count per shard (cluster only)
-#   collection.load()   // MMFiles legacy
-#   collection.unload() // MMFiles legacy
-#   collection.documents(keys)    // Simple Queries
-#   collection.removeByKeys(keys) // Simple Queries
-#   collection.iterate(iterator [, options]) // Deprecated
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`:
@@ -683,14 +678,6 @@ of the `_id` does not match the `collection`.
 An error is thrown if `_rev` is specified but the document found has a
 different revision already. An error is also thrown if no document exists
 with the given `_id` or `_key` value.
-
-Please note that if the method is executed on the arangod server (e.g. from
-inside a Foxx application), an immutable document object will be returned
-for performance reasons. It is not possible to change attributes of this
-immutable object. To update or patch the returned document, it needs to be
-cloned/copied into a regular JavaScript object first. This is not necessary
-if the `document` method is called from out of arangosh or from any other
-client.
 
 If you pass `options` as the second argument, it must be an object.
 

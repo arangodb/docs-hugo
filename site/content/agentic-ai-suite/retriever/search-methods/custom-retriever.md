@@ -123,7 +123,7 @@ Pass `"auto_create_indexes": true` in your request to create missing indexes
 automatically:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/graphrag-query \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{

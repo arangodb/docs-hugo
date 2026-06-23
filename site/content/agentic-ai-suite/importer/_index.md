@@ -2,123 +2,66 @@
 title: Importer Service
 menuTitle: Importer
 description: >-
-  The Importer service helps you transform your text documents into a knowledge graph,
-  making it easier to analyze and understand complex information
+  The Importer service transforms your text documents into a knowledge graph
+  stored in ArangoDB, ready for semantic search and Retriever-driven Q&A
 weight: 6
 ---
-## Overview
 
-The Importer service lets you turn documents into a knowledge graph.
-It supports the following formats with UTF-8 encoding:
-- `.txt` (Plain text)
-- `.md` (Markdown)
-- `.pdf` (PDF)
+## What is the Importer?
 
-Office files (e.g., `.docx`, `.pptx`) and images are converted to PDF
-first and then processed through the same pipeline.
+The Importer service turns documents into a **knowledge graph** stored in
+your ArangoDB database. It chunks text, calls configured chat and embedding
+models, extracts entities and communities (in full GraphRAG mode), writes the
+graph data, and creates vector indexes where embeddings exist.
 
-The Importer takes your text, analyzes it using the configured language model, and
-creates a structured knowledge graph. This graph is then imported into your
-ArangoDB database, where you can query and analyze the relationships between
-different concepts in your document with the Retriever service.
+The resulting knowledge graph is the data layer your applications query with
+the [Retriever service](../retriever/) or with AQL directly.
 
-The service supports two operational modes:
+## When to use it
 
-- **Full GraphRAG** (default): Extracts entities, relationships, and community structures to build a complete knowledge graph with rich semantic connections.
-- **Vector RAG**: Performs faster, simpler processing using only document chunks and embeddings for semantic search.
+The Importer fits three usage patterns:
 
-{{< tip >}}
-You can also use the GraphRAG Importer service via the
-[Contextual Data Platform web interface](../graphrag/web-interface.md).
-{{< /tip >}}
+| Pattern | How you use it |
+|---------|----------------|
+| **Web interface** | The fastest path. Configure, run, and inspect imports through the [GraphRAG web interface](../graphrag/web-interface.md) without writing code. |
+| **Direct API** | Call the Importer over HTTP API when you want full control - custom partitions, custom prompts, batch automation, or integration into an existing pipeline. |
+| **Driven by AutoGraph** | For large or heterogeneous corpora, [AutoGraph](../autograph/) discovers domains, assigns a RAG strategy per domain, and orchestrates Importer workers automatically. You don't call the Importer directly in this mode. See [AutoGraph Integration](autograph-integration.md). |
 
-## Prerequisites
+## RAG modes
 
-Before importing data, you need to create a GraphRAG project. Projects help you 
-organize your work and keep your data separate from other projects.
+The Importer supports two operational modes that determine how documents are
+processed and what knowledge-graph elements are created:
 
-For detailed instructions on creating and managing projects, see the 
-[Projects](../../platform-suite/control-plane-acp.md#projects) section in
-the Arango Control Plane (ACP) service documentation.
+- **Full GraphRAG** (`rag_mode: "full_graphrag"`, default): Extracts entities,
+  relationships, and community structures to build a complete knowledge
+  graph. Best for queries that require understanding relationships between
+  concepts.
+- **Vector RAG** (`rag_mode: "vector_rag"`): Faster processing using only
+  document chunks and embeddings. Best for straightforward semantic search
+  use cases that don't need the full graph structure.
 
-Once you have created a project, you can reference it when deploying the Importer 
-service using the `project_name` field in the service configuration.
+See [Architecture](architecture.md) for the collections each mode populates.
 
-{{< warning >}}
-Because `project_name` is used as an ArangoDB collection name prefix,
-it must conform to ArangoDB naming rules:
-- Must start with a letter or underscore.
-- May only contain letters, digits, underscores (`_`), or hyphens (`-`).
-- Must not exceed 256 characters (including suffixes such as `_Documents`).
+## Next steps
 
-If `project_name` is not set, the service falls back to `default_project`.
-An invalid name is not validated at startup and causes collection creation to
-fail at runtime.
-{{< /warning >}}
+- [**Quickstart**](quickstart.md): Prerequisites, installation, and your
+  first import call.
+- [**Architecture**](architecture.md): Knowledge-graph collections, vector
+  indexes, and the async-job lifecycle.
+- [**LLM Configuration**](llm-configuration.md): Configure your chat and
+  embedding providers (OpenAI-compatible APIs or Triton Inference Server).
+- [**Import Files**](importing-files.md): Single-file and multi-file import
+  workflows with examples.
+- [**Verify and explore**](verify-and-explore.md): Check that your import
+  succeeded and inspect the resulting collections.
+- [**Semantic Units**](semantic-units.md) *(optional)*: Process images and
+  multimedia content.
+- [**AutoGraph Integration**](autograph-integration.md) *(optional)*: How
+  the Importer is driven by AutoGraph for multi-partition builds.
+- [**Reference**](reference/_index.md): HTTP endpoints, full parameter
+  reference, and error handling.
 
-## Installation
+## API reference
 
-To install and start the Importer service, use the AI service endpoint:
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
-
-This endpoint is part of the Arango Control Plane (ACP) service, which manages
-the lifecycle of all AI services in the platform.
-
-For detailed instructions on installing, monitoring, and managing the Importer service, 
-see [The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
-documentation.
-
-## Deployment options
-
-You can choose between two deployment options based on your needs.
-
-### Triton Inference Server
-
-If you're working in an air-gapped environment or need to keep your data
-private, you can use Triton Inference Server.
-This option allows you to run the service completely within your own
-infrastructure. The Triton Inference Server is a crucial component when
-running with self-hosted models. It serves as the backbone for running your
-language (LLM) and embedding models on your own machines, ensuring your
-data never leaves your infrastructure. The server handles all the complex
-model operations, from processing text to generating embeddings, and provides
-both HTTP and gRPC interfaces for communication.
-
-### OpenAI-compatible APIs
-
-Arango's AI Services are fully compatible with OpenAI-compatible APIs, whether
-cloud-based or self-hosted.
-
-Thus, you can connect to cloud-based services like OpenAI's models via the
-OpenAI API or a large array of models (Gemini, Anthropic, publicly hosted
-open-source models, etc.) via the OpenRouter option, as well as private Azure
-endpoints.
-
-This option also works with private corporate LLMs that expose an
-OpenAI-compatible endpoint.
-
-## Getting Started
-
-To use the Importer service, follow these steps:
-
-1. [**Create a GraphRAG project**](../../platform-suite/control-plane-acp.md#creating-a-project):
-   Set up a project to organize your data.
-2. [**Configure your LLM provider**](llm-configuration.md):
-   Choose and configure either Triton or OpenAI-compatible APIs.
-3. [**Import your documents**](importing-files.md):
-   Upload single or multiple files to build your knowledge graph.
-4. [**Verify the results**](verify-and-explore.md):
-   Check that your data was imported successfully and what ArangoDB collections
-   look like after the import.
-
-**Additional resources:**
-
-- [**Semantic Units**](semantic-units.md): Process images and multimedia content.
-- [**AutoGraph Integration**](autograph-integration.md): How the Importer works with AutoGraph for automated pipeline builds.
-- [**Parameter Reference**](parameters.md): Complete list of import parameters.
-
-## API Reference
-
-For detailed API documentation, see the
+For the full machine-readable API, see the
 [GraphRAG Importer API Reference](https://apiref.arango.ai/#graphrag_importer).

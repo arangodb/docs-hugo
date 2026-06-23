@@ -7,6 +7,8 @@ description: >-
   AI Digital Assistant integrated into the Arango Contextual Data Platform
 ---
 
+{{< embed-svg "Ada-Flow" "Ada end-to-end flow." >}}
+
 Ada is the ArangoDB AI Digital Assistant built into the Arango Contextual Data
 Platform. It lets you interact with your database using natural language instead
 of writing AQL queries manually. You can explore collections, inspect data
@@ -54,10 +56,17 @@ current database.
    **Chat Settings** dialog.
 2. Select a **Provider** from the dropdown. Supported options are **Anthropic**,
    **OpenAI**, **OpenRouter**, and **Custom Endpoint**.
-3. Select a **Model**. The available models depend on the selected provider.
-   For OpenAI, the options include GPT-4o, GPT-4o Mini, and o3-mini.
-   You can also enter a custom identifier using the **Use custom model ID** link
-   below the model dropdown.
+3. Select a **Model**. The available options depend on the selected provider:
+   - **OpenAI**: GPT-5.4, GPT-5.4 Mini, GPT-4.1 (default), GPT-4.1 Mini, o4-mini, and o3.
+   - **Anthropic**: Claude Sonnet 4.6, Claude Opus 4.6, and Claude Haiku 4.5.
+   - **OpenRouter**: Claude Sonnet 4.6, GPT-5.4, Gemini 3.1 Pro, Gemini 2.5 Pro,
+     and Gemini 2.5 Flash.
+   - **Custom Endpoint**: Enter the **Model ID** (for example, `claude-sonnet-4-6`)
+     and a **Base URL** pointing to your OpenAI-compatible API endpoint.
+
+   For the OpenAI, Anthropic, and OpenRouter providers, you can also enter a
+   model identifier not listed in the dropdown using the **Use custom model ID**
+   link below the model dropdown.
 4. Select an **API Key** from the dropdown. Keys are managed in the
    [Secrets Manager](../platform-suite/secrets-manager.md).
 5. Click **Save**. The top bar updates to reflect the active configuration.
@@ -84,6 +93,61 @@ get started quickly:
 
 To start a fresh conversation, click **+ New Chat** in the top bar. To browse
 previous conversations, click **History**.
+
+## Artifacts
+
+When Ada responds to a query, it may produce artifacts. An artifacts is a rendered
+outputs that appear alongside the chat message. Ada currently supports two artifact
+types:
+
+### React artifact (type: `react`)
+
+A React artifact renders an interactive data visualization using Recharts
+components.
+
+- **Purpose**: Data visualizations using Recharts components (e.g., BarChart,
+  PieChart, LineChart, AreaChart, RadarChart, etc.).
+- **Features**: Interactive charts for dashboards and analytics. Highly
+  customizable for comparing categories, trends, or distributions.
+- **Example**:
+
+  ```jsx
+  const data = [
+    { name: 'Active', value: 12 },
+    { name: 'Inactive', value: 4 }
+  ];
+
+  function Chart() {
+    return (
+      <ResponsiveContainer width="100%" height={300}>
+        <PieChart>
+          <Pie data={data} dataKey="value" nameKey="name" />
+          <Tooltip />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  }
+  ```
+
+### HTML artifact (type: `html`)
+
+An HTML artifact renders custom HTML, CSS, or SVG directly in the chat panel.
+
+- **Purpose**: Diagrams, dashboards, tables, content panels, styled lists, and
+  other visual or interactive UI components outside of charting.
+- **Features**: Flexible — can be standard HTML for tables, interactive
+  diagrams (e.g., SVG), or explanatory layouts.
+- **Example**:
+  - An entity relationship diagram using SVG
+  - Custom styled information boxes
+  - HTML tables of data
+
+### When to use each artifact type
+
+- Use React artifacts for charts, graphs, and dashboards.
+- Use HTML artifacts for diagrams, tables, or infographics not covered by
+  charting.
 
 ## What's next
 

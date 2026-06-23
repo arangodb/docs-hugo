@@ -197,15 +197,15 @@ aliases:
 ## Performance
 
 - [**SmartGraphs**](../graphs/smartgraphs/_index.md):
-  Value-based sharding of large graph datasets for better data locality when
-  traversing graphs.
+  Value-based sharding of large graph datasets for excellent data locality when
+  querying graphs.
 
 - [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
-  A specialized version of SmartGraphs, with an automatic sharding key selection.
+  Hash-based sharding that keeps the edges of graphs next to their connected nodes.
 
-- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md):
+- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md#smartgraphs-using-satellitecollections):
   Collections replicated on all cluster nodes can be combined with graphs
-  sharded by document attributes to enable more local execution of graph queries.
+  sharded by values to enable more local execution of graph queries.
 
 - [**SatelliteGraphs**](../graphs/satellitegraphs/_index.md):
   Graphs replicated on all cluster nodes to execute graph traversals locally.
@@ -304,16 +304,6 @@ aliases:
   Fast, memory-efficient processing of cluster queries by combining
   results in parallel.
 
-## Extensibility
-
-- [**Microservice Support with ArangoDB Foxx**](../develop/foxx-microservices/_index.md):
-  Use ArangoDB as an application server and fuse your application and database
-  together for maximal throughput.
-  With fault-tolerant cluster support.
-
-- [**Server-Side Functions**](../aql/user-defined-functions.md):
-  You can extend AQL with user-defined functions written in JavaScript.
-
 ## Security
 
 - [**Auditing**](../operations/security/audit-logging.md):
@@ -341,9 +331,7 @@ aliases:
   Built-in user management with password- and token-based authentication.
 
 - **Role-based Access Control**:
-  ArangoDB supports all basic security requirements. By using ArangoDB's Foxx
-  microservice framework users can achieve very high security standards
-  fitting individual needs.
+  ArangoDB supports all basic security requirements. <!-- TODO -->
 
 - [**TLS Encryption**](../components/arangodb-server/options.md#ssl):
   Internal and external communication over encrypted network connections with

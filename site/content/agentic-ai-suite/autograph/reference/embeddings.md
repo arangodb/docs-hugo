@@ -4,13 +4,11 @@ menuTitle: Embeddings
 description: >-
   Add embeddings to documents in any ArangoDB collection
 weight: 55
-aliases:
-  - ../../../reference/autograph/embeddings/
 ---
 
 ## Embed field in collection
 
-{{< endpoint "POST" "/v1/embed-field-in-collection" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection" >}}
 
 Add embeddings to documents in **any** ArangoDB collection you already have. This path is **independent** of import, corpus build, clustering, and the `{project}_CorpusGraph` named graph.
 
@@ -75,7 +73,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"collection": "products", "field": "description"}' \
-  http://localhost:8080/v1/embed-field-in-collection
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection
 ```
 
 ## Next Steps

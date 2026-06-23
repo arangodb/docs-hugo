@@ -3,12 +3,8 @@ title: Process Images and Semantic Units
 menuTitle: Semantic Units
 description: >-
   Extract and process images, web URLs, and multimedia content from your documents
-weight: 40
+weight: 70
 ---
-
-{{< info >}}
-**Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Import Files](importing-files.md) → **Semantic Units** → [Verify Results](verify-and-explore.md)
-{{< /info >}}
 
 ## Overview
 
@@ -123,7 +119,7 @@ In this example, the Importer extracts all image references and stores complete 
 Here's a complete import request with semantic units enabled alongside other import parameters:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -160,12 +156,24 @@ The semantic units feature supports:
 ### LLM Compatibility
 
 The semantic units processing works with all LLM providers:
-- **OpenAI**: GPT-4o, GPT-4o-mini (all models supported).
+- **OpenAI**: GPT-5.4 Nano (default), GPT-4.1, GPT-4o, o3 (all models supported).
 - **OpenRouter**: Gemini Flash, Claude Sonnet (all models supported).
 - **Triton**: Mistral-Nemo-Instruct (all models supported).
 
+### Image description model
+
+The model used specifically for image description during semantic-unit
+processing is selected by the `MULTIMODAL_MODEL` environment variable (Helm
+value `multimodal_model`, also accepted on the server CLI as
+`--multimodal_model`). When unset, the Importer defaults to `gpt-4o-mini`.
+
+Image-description calls go through the same OpenAI-compatible chat path as the
+rest of the pipeline, so they honor the chat token-budget and Responses API
+settings described in the
+[LLM Configuration guide](llm-configuration.md#token-budget-for-chat-models).
+
 ## Next Steps
 
-- **[View all parameters](parameters.md)**: Explore other configuration options.
+- **[View all parameters](reference/parameters.md)**: Explore other configuration options.
 - **[Verify your import](verify-and-explore.md)**: Check the created SemanticUnits collection.
 - **[Import more files](importing-files.md)**: Start importing more documents with semantic units enabled.

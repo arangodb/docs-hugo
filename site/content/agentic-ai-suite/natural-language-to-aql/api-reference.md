@@ -5,10 +5,7 @@ weight: 20
 description: >-
   REST API reference for the Natural Language to AQL service, including
   endpoints for text processing, AQL generation, and query execution
-aliases:
-  - /agentic-ai-suite/reference/natural-language-to-aql
 ---
-
 This page documents the runtime REST endpoints of the Natural Language to AQL
 service. For deployment and configuration, see [Setup](setup.md).
 
@@ -20,11 +17,12 @@ All endpoints require a valid platform-issued JWT sent as a Bearer token:
 Authorization: Bearer YOUR_ACCESS_TOKEN
 ```
 
-Use your platform external endpoint and service ID in all request URLs:
+Use your data platform's external endpoint and the trailing segment of the
+`serviceId` in all request URLs:
 
-```
-https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/<endpoint>
-```
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/..." >}}
+
+Example: `https://localhost:8529/graph-rag/xqfnq/v1/process_text_stream`
 
 ## Endpoints
 
@@ -33,9 +31,7 @@ https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/<endpoint>
 Ask general questions to the LLM and receive natural language responses.
 This endpoint does not query your database.
 
-```
-POST /v1/process_text
-```
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text" >}}
 
 **Request body:**
 
@@ -47,7 +43,7 @@ POST /v1/process_text
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/process_text \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -68,9 +64,7 @@ curl --request POST \
 Stream responses in real-time as they are generated, rather than waiting for the
 complete response.
 
-```
-POST /v1/process_text_stream
-```
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text_stream" >}}
 
 **Request body:**
 
@@ -90,7 +84,7 @@ querying your database.
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/process_text_stream \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text_stream \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -99,6 +93,7 @@ curl --request POST \
 ```
 
 **Response:**
+
 ```
 Graph databases offer several key advantages: 1) Efficient relationship handling...
 ```
@@ -110,7 +105,7 @@ Use `response_instruction` to guide the output style.
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/process_text_stream \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text_stream \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -121,6 +116,7 @@ curl --request POST \
 ```
 
 **Response:**
+
 ```aql
 FOR user IN users
   FILTER user.purchases[*].date ANY >= DATE_SUBTRACT(DATE_NOW(), 1, 'month')
@@ -131,6 +127,7 @@ The generated AQL is based on your actual database schema, making it immediately
 usable.
 
 **Example prompts:**
+
 - "List all distinct surnames in the database sorted in descending order"
 - "How many persons are there with the surname 'Stark'?"
 - "Find the parents of 'Arya Stark'"
@@ -140,9 +137,7 @@ usable.
 Convert a natural language question into an AQL query and execute it against your
 database. Returns results in one or more formats.
 
-```
-POST /v1/translate_query
-```
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/translate_query" >}}
 
 **Request body:**
 
@@ -156,7 +151,7 @@ POST /v1/translate_query
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/translate_query \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/translate_query \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -206,7 +201,7 @@ Set `request_timeout` (in seconds) in the `options` object.
 
 ```bash
 curl --request POST \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/translate_query \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/translate_query \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
   --header 'Content-Type: application/json' \
   --data '{
@@ -222,15 +217,13 @@ curl --request POST \
 
 Check whether the service is running and healthy.
 
-```
-GET /v1/health
-```
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/health" >}}
 
 **Example:**
 
 ```bash
 curl --request GET \
-  --url https://<ExternalEndpoint>/graph-rag/<serviceID>/v1/health \
+  --url https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/health \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
