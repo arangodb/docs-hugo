@@ -186,6 +186,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `ensureSkiplist()`
 - `ensureUniqueConstraint()`
 - `ensureUniqueSkiplist()`
+- `ensureVertexCentricIndex()`
 - `fulltext()`
 - `geo()`
 - `iterate()`

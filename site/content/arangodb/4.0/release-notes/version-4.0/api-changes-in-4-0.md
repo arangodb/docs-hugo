@@ -183,6 +183,25 @@ as they are either obsolete or didn't provide much value and better alternatives
   Use `ensureIndex(description)` with a `persistent` index type and `unique`
   set to `true`.
 
+- `ensureVertexCentricIndex(...fields, options)`
+
+  Use `ensureIndex(description)` with a `persistent` index type over `_from` or
+  `_to` and at least one more edge attribute.
+
+  Before:
+  - `ensureVertexCentricIndex("type", { direction: "outbound" });`
+  - `ensureVertexCentricIndex("type", "subtype", { direction: "inbound" });`
+
+  After:
+  - `ensureIndex({ type: "persistent", fields: [ "_from", "type" ] });`
+  - `ensureIndex({ type: "persistent", fields: [ "_to", "type", "subtype" ] });`
+
+  You can also use an `mdi-prefixed` index type if you have multi-dimensional data
+  and one or more prefix attributes:
+
+  - `ensureIndex({ type: "mdi-prefixed", prefixFields: ["_from", "type"], fields: [ "x", "y" ], fieldValueTypes: "double" });`
+  - `ensureIndex({ type: "mdi-prefixed", prefixFields: ["_to", "type", "subtype"], fields: [ "x", "y" ], fieldValueTypes: "double" });`
+
 - `fulltext(attribute, query)`:
 
   The full-text index type has been removed. Use `inverted` indexes or
