@@ -1,0 +1,56 @@
+{{- /*
+  Structured data (JSON-LD) for rich snippets / Google rich results.
+
+  - Home page  -> WebSite
+  - Docs pages -> TechArticle (Google treats this as Article)
+
+  Opt a single page out with `schema: none` in the front matter.
+*/ -}}
+{{- $pageDescription := .Description | default .Site.Params.description | markdownify | plainify | htmlUnescape -}}
+{{- $publisher := dict
+    "@type" "Organization"
+    "name" "ArangoDB"
+    "url" "https://arango.ai/"
+    "logo" (dict "@type" "ImageObject" "url" (absURL "Arango_logo.png")) -}}
+{{- $schema := dict -}}
+
+{{- if .IsHome -}}
+  {{- $schema = dict
+      "@context" "https://schema.org"
+      "@type" "WebSite"
+      "name" .Site.Title
+      "url" .Site.BaseURL
+      "description" $pageDescription
+      "publisher" $publisher -}}
+{{- else if .IsPage -}}
+  {{- if ne (lower (.Params.schema | default "")) "none" -}}
+    {{- $author := $publisher -}}
+    {{- with .Params.author -}}
+      {{- $author = dict "@type" "Person" "name" . -}}
+    {{- end -}}
+
+    {{- $schema = dict
+        "@context" "https://schema.org"
+        "@type" "TechArticle"
+        "headline" (.Title | markdownify | plainify | htmlUnescape)
+        "description" $pageDescription
+        "url" .Permalink
+        "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+        "inLanguage" (.Language.Lang | default "en")
+        "author" $author
+        "publisher" $publisher -}}
+
+    {{- if not .Lastmod.IsZero -}}
+      {{- $schema = merge $schema (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05-07:00")) -}}
+    {{- end -}}
+    {{- if not .Date.IsZero -}}
+      {{- $schema = merge $schema (dict "datePublished" (.Date.Format "2006-01-02T15:04:05-07:00")) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if $schema }}
+<script type="application/ld+json">
+{{ jsonify (dict "indent" "  ") $schema | safeJS }}
+</script>
+{{- end -}}
