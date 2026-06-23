@@ -133,11 +133,12 @@ accurate, context-aware intelligence grounded in enterprise data.
 
 ### AutoGraph with AutoRAG
 
-Arango [AutoGraph](agentic-ai-suite/autograph/_index.md) turbocharges GraphRAG
-with AutoRAG to automatically create a knowledge graph out of your organization's
-data with per-domain RAG partitions. Queries are intelligently routed, selecting
-the optimal domain-aware retrieval strategy.
+Arango [AutoGraph](agentic-ai-suite/autograph/_index.md) extends GraphRAG by
+automatically discovering knowledge domains in your organization's data and
+building a per-domain contextual knowledge graph. Its AutoRAG
+assigns each domain the right processing depth: full entity extraction for
+complex content, a lighter partition for simpler content.
 
-It creates knowledge shards for AI agents and co-pilot that let you improve
+It creates knowledge shards for AI agents and co-pilots that let you improve
 response accuracy, consistency, and explainability across enterprise
 AI applications.

@@ -520,8 +520,6 @@ Dynamically call the function *funcName* with the arguments specified.
 Arguments are given as array and are passed as separate parameters to
 the called function.
 
-Both built-in and user-defined functions can be called. 
-
 - **funcName** (string): a function name
 - **arguments** (array, *optional*): an array with elements of arbitrary type
 - returns **retVal** (any): the return value of the called function
@@ -538,8 +536,6 @@ APPLY( "SUBSTRING", [ "this is a test", 0, 7 ] )
 Dynamically call the function *funcName* with the arguments specified.
 Arguments are given as multiple parameters and passed as separate
 parameters to the called function.
-
-Both built-in and user-defined functions can be called.
 
 - **funcName** (string): a function name
 - **args** (any, *repeatable*): an arbitrary number of elements as

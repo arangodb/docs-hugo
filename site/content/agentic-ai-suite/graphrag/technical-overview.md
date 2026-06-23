@@ -61,7 +61,7 @@ The web interface guides you through the process of the following:
 
 ### API and Services
 
-The [Importer](../reference/importer.md) and [Retriever](../reference/retriever/_index.md)
+The [Importer](../importer/) and [Retriever](../retriever/)
 services provide programmatic access to create and manage GraphRAG pipelines,
 and give you access to advanced search methods.
 
@@ -99,13 +99,13 @@ information in a structured graph format, allowing efficient querying and retrie
 3. Store the generated Knowledge Graph in the database for retrieval and reasoning.
 
 For detailed information about the service, see the
-[Importer](../reference/importer/) service documentation.
+[Importer](../importer/) service documentation.
 
 ### Query your Knowledge Graph
 
 The Retriever service enables intelligent search and retrieval using multiple 
 search methods optimized for different query types. For detailed information 
-about the service, see the [Retriever](../reference/retriever/_index.md) service documentation.
+about the service, see the [Retriever](../retriever/) service documentation.
 
 The Retriever provides different search methods, each optimized for specific query patterns:
 
@@ -117,7 +117,7 @@ The Retriever provides different search methods, each optimized for specific que
 {{< info >}}
 The Web Interface exposes **Instant Search** and **Deep Search** as the primary 
 methods for ease of use. For access to all search methods with advanced 
-parameters, use the API directly. See [Retriever - Search Methods](../reference/retriever/search-methods.md) 
+parameters, use the API directly. See [Retriever - Search Methods](../retriever/search-methods/_index.md) 
 for complete details.
 {{< /info >}}
 
@@ -135,8 +135,8 @@ and embedding models on your own machines. It handles all model operations, from
 processing text to generating embeddings, and provides both HTTP and gRPC interfaces 
 for communication.
 
-For setup instructions, see [Triton Inference Server](../reference/triton-inference-server.md) 
-and [MLflow](../reference/mlflow.md) documentation.
+For setup instructions, see [Triton Inference Server](../private-llms/triton-inference-server.md) 
+and [MLflow](../private-llms/mlflow.md) documentation.
 
 ### Using OpenAI-compatible endpoints
 
@@ -146,8 +146,8 @@ OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-h
 LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
-- [Importer - Deployment Options](../reference/importer.md#deployment-options)
-- [Retriever - Installation](../reference/retriever/_index.md)
+- [Importer - LLM Configuration](../importer/llm-configuration.md)
+- [Retriever - Installation](../retriever/)
 
 ## Limitations
 

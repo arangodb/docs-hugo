@@ -110,6 +110,9 @@ logJsonResponse(response);
 ## Get replication log entries (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/replication/logger-follow:
     get:
@@ -352,6 +355,9 @@ logJsonResponse(response);
 ## Get the first available replication tick value
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/replication/logger-first-tick:
     get:
@@ -420,6 +426,9 @@ logJsonResponse(response);
 ## Get the tick ranges available in the WAL logfiles
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/replication/logger-tick-ranges:
     get:

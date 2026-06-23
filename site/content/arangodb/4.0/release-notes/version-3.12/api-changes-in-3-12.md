@@ -632,6 +632,10 @@ Vector indexes now have two new attributes in success responses:
 - `errorMessage` (string):
   Only present if there is a problem with the index/training.
 
+Furthermore, a new error code `ERROR_QUERY_VECTOR_INDEX_NOT_READY` with the
+number `1555` has been added. It is thrown if a query tries to use a
+vector index that hasn't been trained yet.
+
 You can now create a vector index first and
 then populate the collection with vector data. However, it is still recommended
 to load the data first and then create the index to ensure that all documents

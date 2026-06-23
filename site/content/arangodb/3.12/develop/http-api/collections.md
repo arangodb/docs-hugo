@@ -413,7 +413,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -873,7 +873,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -1364,7 +1364,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2048,7 +2048,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2533,7 +2533,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -3574,7 +3574,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -4554,7 +4554,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -5164,7 +5164,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -5737,6 +5737,9 @@ db._drop(cn);
 ### Load a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
@@ -5929,6 +5932,9 @@ db._drop(cn);
 ### Unload a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:

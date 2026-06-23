@@ -30,6 +30,9 @@ refer to [Transactions](../../transactions/_index.md).
 ## Execute a JavaScript Transaction
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/transaction:
     post:

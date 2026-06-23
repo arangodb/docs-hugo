@@ -9,6 +9,9 @@ description: >-
 ## Get the statistics
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/statistics:
     get:
@@ -540,6 +543,9 @@ logJsonResponse(response);
 ## Get the statistics description
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_admin/statistics-description:
     get:
