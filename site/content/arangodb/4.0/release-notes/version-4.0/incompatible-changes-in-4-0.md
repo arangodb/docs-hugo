@@ -171,6 +171,37 @@ The following things have been removed:
 
 For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javascript-api).
 
+### Removed collection methods
+
+The following methods have been removed from
+[_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
+as they are either obsolete or didn't provide much value and better alternatives exist:
+
+- `closedRange()`
+- `documents()`
+- `ensureFulltextIndex()`
+- `ensureGeoConstraint()`
+- `ensureGeoIndex()`
+- `ensureHashIndex()`
+- `ensureSkiplist()`
+- `ensureUniqueConstraint()`
+- `ensureUniqueSkiplist()`
+- `ensureVertexCentricIndex()`
+- `fulltext()`
+- `geo()`
+- `iterate()`
+- `load()`
+- `lookupByKeys()`
+- `near()`
+- `range()`
+- `removeByKeys()`
+- `unload()`
+- `within()`
+- `withinRectangle()`
+
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-methods)
+for details like how you can replace this functionality.
+
 ## Startup options
 
 ### `--server.allow-use-database` removed
