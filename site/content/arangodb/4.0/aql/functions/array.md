@@ -982,6 +982,68 @@ RETURN UNION_DISTINCT(
 )
 ```
 
+If you need the distinct values in a deterministic order, use
+[`UNION_DISTINCT_STABLE()`](#union_distinct_stable) instead.
+
+## UNION_DISTINCT_STABLE()
+
+`UNION_DISTINCT_STABLE(array1, array2, ... arrayN) → newArray`
+
+Return the union of distinct values of all arrays specified, in the order in
+which the values first appear.
+
+This is like [`UNION_DISTINCT()`](#union_distinct), but the order of the
+elements in the result is stable: each distinct value appears at the position
+of its first occurrence across the arrays, processed from left to right.
+
+- **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
+  arguments (at least 2)
+- returns **newArray** (array): the elements of all given arrays in a single
+  array, without duplicates, in the order of their first occurrence
+
+**Example**
+
+```aql
+---
+name: aqlArrayUnionDistinctStable_1
+description: ''
+---
+RETURN UNION_DISTINCT_STABLE(
+    [ 1, 2, 3 ],
+    [ 3, 2, 1 ],
+    [ 4 ],
+    [ 5, 6, 1 ]
+)
+```
+
+In previous versions, you can achieve the same result with a nested
+[`FOR`](../high-level-operations/for.md) loop that flattens the arrays and a
+[`RETURN DISTINCT`](../high-level-operations/return.md#return-distinct), which
+keeps the elements in their original order:
+
+```aql
+---
+name: aqlArrayUnionDistinctStable_2
+description: ''
+---
+RETURN (
+  FOR arr IN [ [ 1, 2, 3 ], [ 3, 2, 1 ], [ 4 ], [ 5, 6, 1 ] ]
+    FOR elem IN arr
+      RETURN DISTINCT elem
+)
+```
+
+{{< info >}}
+To combine all values (including duplicates) of an arbitrary number of arrays
+while retaining the order, you can use the
+[array spread operator](../operators.md#array-spread) (also new in 4.0).
+The [`APPEND()`](#append) function can only combine two arrays at a time.
+
+Like `UNION_DISTINCT()`, the `UNION_DISTINCT_STABLE()` function cannot be used
+as an [aggregation function](../high-level-operations/collect.md#aggregation)
+in a `COLLECT` operation.
+{{< /info >}}
+
 ## UNIQUE()
 
 `UNIQUE(anyArray) → newArray`
