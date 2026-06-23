@@ -186,7 +186,7 @@ def workflow_generate_scheduled(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        if version in ["3.10", "3.11"]
+        if version in ["3.10", "3.11"]:
             continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         
         compileJob = {
