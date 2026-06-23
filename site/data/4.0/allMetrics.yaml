@@ -13,51 +13,6 @@
   description: |
     Number of currently existing activities.
 
-- name: arangodb_activities_existing_thread_registries
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activity thread registries.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activity thread registries. One thread registry is created when the first activity is created on a thread. The registry lives at least as long as long as the thread itself but also at least as long as the last activity inside it - therefore it can exist longer than the thread itself.
-
-- name: arangodb_activities_ready_for_deletion
-  introducedIn: "3.12.8"
-  help: |
-    Number of currently existing activities that wait for their garbage collection.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Number of currently existing activities that wait for their garbage collection.
-
-- name: arangodb_activities_thread_registries_total
-  introducedIn: "3.12.8"
-  help: |
-    Total number of threads that started activities since database process start.
-  unit: number
-  type: counter
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-    - coordinator
-    - agent
-  description: |
-    Total number of threads that started activities since database process start. It can be higher than the total number of threads if a thread was restarted at some point.
-
 - name: arangodb_activities_total
   introducedIn: "3.12.8"
   help: |
@@ -6711,6 +6666,74 @@
     This is the minimum number of concurrent V8 contexts. This is limited
     by a server option. V8 contexts are created and destroyed as needed
     but there are never fewer than the limit shown in this metric.
+
+- name: arangodb_vector_index_ingestion_duration
+  introducedIn: "3.12.9"
+  help: |
+    Duration of vector index ingestion in seconds.
+  unit: seconds
+  type: histogram
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Histogram of wall-clock durations in seconds of vector index ingestion
+    phases. During ingestion, existing documents are backfilled into the
+    newly trained vector index. Each completed ingestion phase contributes
+    one measurement. The histogram also exposes the number of events and
+    the total sum of all measurements.
+
+- name: arangodb_vector_index_training_duration
+  introducedIn: "3.12.9"
+  help: |
+    Duration of vector index training seconds.
+  unit: seconds
+  type: histogram
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Histogram of wall-clock durations in seconds of vector index training
+    phases. Each completed training phase contributes one measurement.
+    The histogram also exposes the number of events and the total sum of
+    all measurements.
+
+- name: arangodb_vector_index_training_ongoing
+  introducedIn: "3.12.9"
+  help: |
+    Number of vector index trainings currently ongoing.
+  unit: number
+  type: gauge
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Current number of vector index training operations in progress on
+    this DB-Server. The value increases when a training phase starts and
+    decreases when it completes or fails. Counts both leader and
+    follower shards.
+
+- name: arangodb_vector_index_unusable
+  introducedIn: "3.12.9"
+  help: |
+    Number of unusable vector indexes on this DBServer.
+  unit: number
+  type: gauge
+  category: VectorIndex
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+    Current number of vector indexes on this DB-Server that are not yet
+    usable, counting both leader and follower shards. An unusable index
+    has not accumulated enough documents to begin its training phase.
 
 - name: arangodb_vocbase_shards_read_only_by_write_concern
   introducedIn: "3.12.1"

@@ -5,6 +5,7 @@ weight: 10
 description: >-
   ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data
 aliases:
+  - ../../arangodb/3.11/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/3.12/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/stable/develop/integrations/arangodb-datasource-for-apache-spark
   - ../../arangodb/4.0/develop/integrations/arangodb-datasource-for-apache-spark
@@ -18,7 +19,7 @@ Filter predicates and column selections are pushed down to the DB by dynamically
 
 The connector is usable from all the Spark supported client languages: Scala, Python, Java, and R.
 
-This library works with all the non-EOLed [ArangoDB versions](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
+This library works with all the non-EoL [ArangoDB versions](https://arango.ai/arangodb-product-support-end-of-life-announcements/).
 
 ## Supported versions
 
@@ -142,7 +143,8 @@ configure the certificate to use. This can be achieved in one of the following w
 
 ### Supported deployment topologies
 
-The connector can work with a single server and cluster deployments of ArangoDB.
+The connector can work with a single server and cluster deployments of ArangoDB
+(and Active Failover deployments up to ArangoDB v3.11).
 
 ## Batch Read
 
