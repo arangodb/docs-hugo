@@ -102,6 +102,37 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Statistics features removed
+
+Server and cluster statistics are superseded by the
+[Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
+startup options and HTTP API endpoints related to the statistics features have
+been removed and no `_statistics*` system collections are used by _arangod_
+anymore.
+
+When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
+system collections are actively removed.
+
+The following startup options are now obsolete:
+- `--server.statistics`
+- `--server.statistics-history`
+- `--server.statistics-all-databases`
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+The follow metrics about the statistics feature itself have been removed:
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
+
 ## HTTP RESTful API
 
 ### Sub-attribute removed from the version API

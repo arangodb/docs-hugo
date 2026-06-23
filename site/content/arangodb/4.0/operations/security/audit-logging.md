@@ -198,10 +198,6 @@ successful, the status is `ok`, otherwise `failed`.
 
 ### Documents
 
-If statistics are enabled, the system will periodically perform several document
-operations on a few system collections. These low-priority operations are logged
-to the `audit-document` topic at the `DEBUG` level.
-
 #### Single document read
 
 ```

@@ -28,6 +28,14 @@ server-side:
 - `operationMode`
 - `foxxApi`
 
+#### Metrics API
+
+The following metrics have been removed from the `GET /_admin/metrics` endpoint
+due to feature removals:
+
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
 ### Privilege changes
 
 
@@ -121,6 +129,19 @@ The following endpoints for managing UDFs have been removed:
 - `GET /_api/aqlfunction`
 - `POST /_api/aqlfunction`
 - `DELETE /_api/aqlfunction/{name}`
+
+#### Statistics endpoints
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
 
 #### Echo API removed
 
