@@ -125,6 +125,10 @@ The following endpoints have been removed:
 - `/_admin/cluster/nodeStatistics`
 - `/_admin/cluster/statistics`
 
+The follow metrics about the statistics feature itself have been removed:
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
 You can get more detailed information for monitoring ArangoDB via the
 [`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
 in Prometheus format.

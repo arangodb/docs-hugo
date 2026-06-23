@@ -28,6 +28,14 @@ server-side:
 - `operationMode`
 - `foxxApi`
 
+#### Metrics API
+
+The following metrics have been removed from the `GET /_admin/metrics` endpoint
+due to feature removals:
+
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
 ### Privilege changes
 
 
