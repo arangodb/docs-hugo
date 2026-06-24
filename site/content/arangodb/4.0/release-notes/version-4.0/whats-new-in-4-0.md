@@ -23,7 +23,18 @@ here.
 
 ## AQL
 
+### PARTITION() string function
 
+The new [`PARTITION()` AQL function](../../aql/functions/string.md#partition)
+splits a string at a single occurrence of a separator and returns an array of
+exactly three strings: the part before the separator, the separator itself, and
+the part after the separator. An optional `occurrence` parameter lets you select
+which occurrence of the separator to split at, counted from the start (positive
+values) or from the end (negative values).
+
+```aql
+RETURN PARTITION("foo:bar:baz", ":", -1)
+```
 
 ## Indexing
 

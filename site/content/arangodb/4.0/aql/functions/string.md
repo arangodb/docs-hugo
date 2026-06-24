@@ -1029,6 +1029,137 @@ RETURN [
 ]
 ```
 
+## PARTITION()
+
+`PARTITION(value, separator) → strArray`
+
+Split the given string `value` at the first occurrence of the `separator` and
+return an array of exactly three strings: the part before the separator, the
+separator itself, and the part after the separator.
+
+Unlike [`SPLIT()`](#split), which can split a string at every occurrence of a
+separator, `PARTITION()` splits at a single occurrence only and always returns
+an array of three elements, which makes it convenient to use together with
+[array destructuring](../operators.md#array-destructuring).
+
+- **value** (string): the string to split
+- **separator** (string): a non-empty string to split the `value` at
+- returns **strArray** (array): an array of three strings (before, separator,
+  and after the matched occurrence of the `separator`). If the `separator` is
+  not found, the array is `[ value, "", "" ]`.
+
+**Examples**
+
+Split a string at the first occurrence of the separator:
+
+```aql
+---
+name: aqlPartition_1
+description: ''
+---
+RETURN PARTITION("foo:bar:baz", ":")
+```
+
+The `separator` can be a multi-character string:
+
+```aql
+---
+name: aqlPartition_2
+description: ''
+---
+RETURN PARTITION("before:delimiter:after", ":delimiter:")
+```
+
+If the `separator` is not found, the whole `value` is returned as the first
+element and the other two elements are empty strings:
+
+```aql
+---
+name: aqlPartition_3
+description: ''
+---
+RETURN PARTITION("foo-bar", ":")
+```
+
+---
+
+`PARTITION(value, separator, occurrence) → strArray`
+
+Split the given string `value` at the specified `occurrence` of the `separator`.
+
+- **value** (string): the string to split
+- **separator** (string): a non-empty string to split the `value` at
+- **occurrence** (number, *optional*): which occurrence of the `separator` to
+  split at. The default is `1`. A positive value selects the n-th occurrence
+  counted from the start of the string (`1` is the first match), and a negative
+  value selects from the end (`-1` is the last match).
+- returns **strArray** (array): an array of three strings. If the requested
+  occurrence of the `separator` does not exist, the result depends on the sign
+  of `occurrence`: for a positive `occurrence`, the array is `[ value, "", "" ]`,
+  and for a negative `occurrence`, the array is `[ "", "", value ]`.
+
+If any of the following conditions are met, the function returns `null` and
+raises a query warning:
+- The `value` or the `separator` is not a string.
+- The `separator` is an empty string.
+- The `occurrence` is `0` or not an integer.
+
+**Examples**
+
+Split at the first occurrence of the separator (the default):
+
+```aql
+---
+name: aqlPartitionOcc_1
+description: ''
+---
+RETURN PARTITION("foo:bar:baz", ":", 1)
+```
+
+Split at the last occurrence of the separator:
+
+```aql
+---
+name: aqlPartitionOcc_2
+description: ''
+---
+RETURN PARTITION("foo:bar:baz", ":", -1)
+```
+
+Combine `PARTITION()` with array destructuring to assign the three parts to
+individual variables:
+
+```aql
+---
+name: aqlPartitionOcc_3
+description: ''
+---
+LET [before, delim, after] = PARTITION("foo:bar:baz", ":", -1)
+RETURN after
+```
+
+A positive `occurrence` that exceeds the number of matches returns the whole
+`value` as the first element:
+
+```aql
+---
+name: aqlPartitionOcc_4
+description: ''
+---
+RETURN PARTITION("foo-bar", "-", 5)
+```
+
+A negative `occurrence` that exceeds the number of matches returns the whole
+`value` as the last element:
+
+```aql
+---
+name: aqlPartitionOcc_5
+description: ''
+---
+RETURN PARTITION("foo-bar", "-", -5)
+```
+
 ## RANDOM_TOKEN()
 
 `RANDOM_TOKEN(length) → randomString`
@@ -1464,6 +1595,10 @@ RETURN [
 `SPLIT(value, separator, limit) → strArray`
 
 Split the given string `value` into a list of strings, using the `separator`.
+
+To split a string at a single occurrence of a separator and always get an array
+of three elements (before, separator, and after the match), use the
+[`PARTITION()` function](#partition) instead.
 
 To split a document identifier (`_id`) into the collection name and document key
 (`_key`), you should use the more optimized
