@@ -97,11 +97,14 @@ expressions as specified in the documentation for the AQL function
 ## Array comparison operators
 
 Most comparison operators also exist as an *array variant*. In the array variant,
-a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, or `NOT IN` operator is prefixed with
-an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's behavior to
-compare the individual array elements of the left-hand argument to the right-hand
-argument. Depending on the quantifying keyword, all, any, or none of these
-comparisons need to be satisfied to evaluate to `true` overall.
+a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, `NOT IN`, `LIKE`, or `NOT LIKE` operator
+is prefixed with an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's
+behavior to compare the individual array elements of the left-hand argument to the
+right-hand argument. Depending on the quantifying keyword, all, any, or none of
+these comparisons need to be satisfied to evaluate to `true` overall.
+
+The only comparison operators that cannot be used as an array variant are the
+regular expression operators `=~` and `!~`.
 
 You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements
@@ -127,10 +130,20 @@ calculate it dynamically using an expression.
 ["foo", "bar"]  ALL !=  "moo"     // true
 ["foo", "bar"]  NONE ==  "bar"    // false
 ["foo", "bar"]  ANY ==  "foo"     // true
+["foo", "bar"]  ALL LIKE  "%o%"   // false
+["foo", "bar"]  ANY LIKE  "b%"    // true
+["foo", "bar"]  NONE LIKE  "%a%"  // false
+["foo", "bar"]  ANY NOT LIKE  "f%" // true
 
 [ 1, 2, 3 ]  AT LEAST (2) IN  [ 2, 3, 4 ]  // true
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
+["foo", "bar"]  AT LEAST (1) LIKE  "b%"    // true
 ```
+
+The `LIKE` and `NOT LIKE` array variants only execute if the left-hand operand
+is an array and the right-hand operand is a string. The pattern matching follows
+the same rules as the scalar [`LIKE` operator](#comparison-operators) including the
+supported wildcards and case-sensitivity.
 
 Note that these operators do not utilize indexes in regular queries.
 The operators are also supported in [SEARCH expressions](high-level-operations/search.md),

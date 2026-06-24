@@ -23,7 +23,21 @@ here.
 
 ## AQL
 
+### `LIKE` as an array comparison operator
 
+You can now combine the `LIKE` and `NOT LIKE` operators for wildcard matching
+with the [array comparison operators](../../aql/operators.md#array-comparison-operators)
+`ALL`, `ANY`, `NONE`, and `AT LEAST (<expression>)`. This lets you match the
+elements of an array against a pattern, for example:
+
+```aql
+["foo", "bar"]  ANY LIKE  "b%"           // true
+["foo", "bar"]  AT LEAST (2) LIKE  "b%"  // false
+```
+
+Previously, `LIKE` and `NOT LIKE` were among the few operators that could not be
+combined with the array comparison operators. The regular expression operators
+`=~` and `!~` remain unsupported as array variants.
 
 ## Indexing
 
