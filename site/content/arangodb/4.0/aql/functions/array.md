@@ -1036,7 +1036,7 @@ RETURN (
 {{< info >}}
 To combine all values (including duplicates) of an arbitrary number of arrays
 while retaining the order, you can use the
-[array spread operator](../operators.md#array-spread) (also new in 4.0).
+array spread operator (also new in 4.0).
 The [`APPEND()`](#append) function can only combine two arrays at a time.
 
 Like `UNION_DISTINCT()`, the `UNION_DISTINCT_STABLE()` function cannot be used
