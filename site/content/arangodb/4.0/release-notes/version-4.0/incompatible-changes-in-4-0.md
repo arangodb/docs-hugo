@@ -207,7 +207,7 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 ## JavaScript API
 
-### Removed modules and methods
+### Removed modules and globals
 
 The following things have been removed:
 
