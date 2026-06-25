@@ -33,7 +33,7 @@ which occurrence of the separator to split at, counted from the start (positive
 values) or from the end (negative values).
 
 ```aql
-RETURN PARTITION("foo:bar:baz", ":", -1)
+RETURN PARTITION("foo:bar:baz", ":", -1) // ["foo:bar", ":", "baz"]
 ```
 
 ## Indexing
