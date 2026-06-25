@@ -98,10 +98,11 @@ expressions as specified in the documentation for the AQL function
 
 Most comparison operators also exist as an *array variant*. In the array variant,
 a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, `NOT IN`, `LIKE`, or `NOT LIKE` operator
-is prefixed with an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's
-behavior to compare the individual array elements of the left-hand argument to the
-right-hand argument. Depending on the quantifying keyword, all, any, or none of
-these comparisons need to be satisfied to evaluate to `true` overall.
+is prefixed with an `ALL`, `ANY`, `NONE`, or `AT LEAST (<expression>)` keyword.
+This changes the operator's behavior to compare the individual array elements of
+the left-hand argument to the right-hand argument. Depending on the quantifying
+keyword, all, any, none, or at least the specified number of these comparisons
+need to be satisfied to evaluate to `true` overall.
 
 The only comparison operators that cannot be used as an array variant are the
 regular expression operators `=~` and `!~`.
@@ -132,18 +133,22 @@ calculate it dynamically using an expression.
 ["foo", "bar"]  ANY ==  "foo"     // true
 ["foo", "bar"]  ALL LIKE  "%o%"   // false
 ["foo", "bar"]  ANY LIKE  "b%"    // true
-["foo", "bar"]  NONE LIKE  "%a%"  // false
+["foo", "bar"]  NONE LIKE  "_a_"  // false
 ["foo", "bar"]  ANY NOT LIKE  "f%" // true
 
 [ 1, 2, 3 ]  AT LEAST (2) IN  [ 2, 3, 4 ]  // true
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
-["foo", "bar"]  AT LEAST (1) LIKE  "b%"    // true
+["foo", "bar"]  AT LEAST (3) LIKE  "_oo"   // false
 ```
 
-The `LIKE` and `NOT LIKE` array variants only execute if the left-hand operand
-is an array and the right-hand operand is a string. The pattern matching follows
-the same rules as the scalar [`LIKE` operator](#comparison-operators) including the
-supported wildcards and case-sensitivity.
+In the `LIKE` and `NOT LIKE` array variants, each element of the left-hand array
+is matched against the pattern of the right-hand operand. Non-string values are
+implicitly cast to their string representation before matching, so an element like
+the object `{ "a": 1 }` is matched as the string `{"a":1}` and the number `34` as
+`"34"`. The pattern matching otherwise follows the same rules as the scalar
+[`LIKE` operator](#comparison-operators), using the same wildcards. As with the
+scalar operator, the matching is always case-sensitive; the case-insensitivity
+option of the [`LIKE()` function](functions/string.md#like) is not available here.
 
 Note that these operators do not utilize indexes in regular queries.
 The operators are also supported in [SEARCH expressions](high-level-operations/search.md),

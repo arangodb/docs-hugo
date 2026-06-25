@@ -32,10 +32,10 @@ elements of an array against a pattern, for example:
 
 ```aql
 ["foo", "bar"]  ANY LIKE  "b%"           // true
-["foo", "bar"]  AT LEAST (2) LIKE  "b%"  // false
+["foo", "bar"]  AT LEAST (2) LIKE  "_oo" // false
 ```
 
-Previously, `LIKE` and `NOT LIKE` were among the few operators that could not be
+Previously, `LIKE` and `NOT LIKE` were among the few comparison operators that could not be
 combined with the array comparison operators. The regular expression operators
 `=~` and `!~` remain unsupported as array variants.
 
