@@ -962,7 +962,11 @@ RETURN UNIQUE(
 
 `UNION_DISTINCT(array1, array2, ... arrayN) → newArray`
 
-Return the union of distinct values of all arrays specified.
+Combine all given arrays into a single array, keeping only one copy of each
+value.
+
+If you need the values to preserve the order in which they first appear,
+use [`UNION_DISTINCT_STABLE()`](#union_distinct_stable) instead.
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)
@@ -982,31 +986,30 @@ RETURN UNION_DISTINCT(
 )
 ```
 
-If you need the distinct values in a deterministic order, use
-[`UNION_DISTINCT_STABLE()`](#union_distinct_stable) instead.
-
 ## UNION_DISTINCT_STABLE()
 
 `UNION_DISTINCT_STABLE(array1, array2, ... arrayN) → newArray`
 
-Return the union of distinct values of all arrays specified, in the order in
-which the values first appear.
+Combine all given arrays into a single array, keeping only one copy of each
+value, in the order in which the values first appear.
 
-This is like [`UNION_DISTINCT()`](#union_distinct), but the order of the
-elements in the result is stable: each distinct value appears at the position
-of its first occurrence across the arrays, processed from left to right.
+This works like [`UNION_DISTINCT()`](#union_distinct), but the order of the
+elements in the result is predictable: the arrays are processed from left to
+right, and each value appears at the position where it is first encountered.
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)
 - returns **newArray** (array): the elements of all given arrays in a single
   array, without duplicates, in the order of their first occurrence
 
-**Example**
+**Examples**
 
 ```aql
 ---
 name: aqlArrayUnionDistinctStable_1
-description: ''
+description: |
+  Combine the values of multiple arrays into one, keeping each value only once
+  and in the order in which it first appears:
 ---
 RETURN UNION_DISTINCT_STABLE(
     [ 1, 2, 3 ],
@@ -1017,14 +1020,15 @@ RETURN UNION_DISTINCT_STABLE(
 ```
 
 In previous versions, you can achieve the same result with a nested
-[`FOR`](../high-level-operations/for.md) loop that flattens the arrays and a
-[`RETURN DISTINCT`](../high-level-operations/return.md#return-distinct), which
-keeps the elements in their original order:
+[`FOR`](../high-level-operations/for.md) loop and a
+[`RETURN DISTINCT`](../high-level-operations/return.md#return-distinct):
 
 ```aql
 ---
 name: aqlArrayUnionDistinctStable_2
-description: ''
+description: |
+  Flatten the arrays with a nested `FOR` loop and keep each value only once with
+  `RETURN DISTINCT`, which preserves the original order:
 ---
 RETURN (
   FOR arr IN [ [ 1, 2, 3 ], [ 3, 2, 1 ], [ 4 ], [ 5, 6, 1 ] ]
@@ -1035,13 +1039,9 @@ RETURN (
 
 {{< info >}}
 To combine all values (including duplicates) of an arbitrary number of arrays
-while retaining the order, you can use the
-array spread operator (also new in 4.0).
-The [`APPEND()`](#append) function can only combine two arrays at a time.
-
-Like `UNION_DISTINCT()`, the `UNION_DISTINCT_STABLE()` function cannot be used
-as an [aggregation function](../high-level-operations/collect.md#aggregation)
-in a `COLLECT` operation.
+while retaining the order, you can use the [array spread operator](../fundamentals/data-types.md#array-spread).
+You can also use the [`APPEND()`](#append) function, but it can only combine
+two arrays at a time.
 {{< /info >}}
 
 ## UNIQUE()
