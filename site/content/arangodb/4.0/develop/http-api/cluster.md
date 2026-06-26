@@ -12,37 +12,6 @@ description: >-
 The permissions required to use the `/_admin/cluster/*` endpoints depends on the
 setting of the [`--cluster.api-jwt-policy` startup option](../../components/arangodb-server/options.md#--clusterapi-jwt-policy).
 
-### Get the statistics of a DB-Server
-
-```openapi
-paths:
-  /_admin/cluster/statistics:
-    get:
-      operationId: getClusterStatistics
-      description: |
-        Queries the statistics of the given DB-Server
-      parameters:
-        - name: DBserver
-          in: query
-          required: true
-          description: |
-            The ID of a DB-Server.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            is returned when everything went well.
-        '400':
-          description: |
-            The `DBserver` parameter was not specified or is not the ID of a DB-Server.
-        '403':
-          description: |
-            The specified server is not a DB-Server.
-      tags:
-        - Cluster
-```
-
 ### Get the cluster health
 
 ```openapi
