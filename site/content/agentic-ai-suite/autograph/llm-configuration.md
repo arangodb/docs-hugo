@@ -21,6 +21,14 @@ Inference Server. OpenAI-compatible APIs work with public providers (OpenAI,
 OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
 OpenAI-compatible endpoint.
 
+## Supported models
+
+The following models are validated for use with the AutoGraph service. For the full
+list across all services, see
+[Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+{{% llm-models "autograph" %}}
+
 ## Supported providers
 
 For both the chat model and the embedding model, AutoGraph supports two

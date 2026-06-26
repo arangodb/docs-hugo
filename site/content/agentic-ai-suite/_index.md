@@ -13,7 +13,6 @@ aliases:
   - arangodb/stable/data-science # 3.10, 3.11
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
-  - supported-llm-models
 ---
 
 {{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
