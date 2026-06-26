@@ -25,20 +25,20 @@ here.
 
 ### Spread operator for arrays and objects
 
-You can use the spread operator `...`, inspired by JavaScript, to insert the
+You can use the spread syntax `...`, inspired by JavaScript, to insert the
 elements of an array into an array literal and to copy the attributes of an
 object into an object literal:
 
 ```aql
 LET arr = [2, 3]
-LET obj = { b: 2 }
+LET obj = { b: 2, c: 9 }
 RETURN {
   array: [1, ...arr, 4],         // [1, 2, 3, 4]
-  object: { a: 1, ...obj, c: 3 } // { "a": 1, "b": 2, "c": 3 }
+  object: { a: 1, ...obj, c: 3 } // { "a": 1, "b": 2, "c": 3 } (last "c" wins)
 }
 ```
 
-The spread operator is a more concise and readable alternative to combining
+The spread syntax is a more concise and readable alternative to combining
 arrays with the [`PUSH()`](../../aql/functions/array.md#push) and
 [`APPEND()`](../../aql/functions/array.md#append) functions, and to merging
 objects with the [`MERGE()`](../../aql/functions/document-object.md#merge)

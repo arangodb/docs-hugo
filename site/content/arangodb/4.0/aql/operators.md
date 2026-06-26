@@ -734,24 +734,20 @@ The question mark operator can be used for nested search:
 
 ### Array spread
 
-<small>Introduced in: v4.0.0</small>
-
-The spread operator `...` lets you insert the elements of an array into an
+The spread syntax `...` lets you insert the elements of an array into an
 array literal you are constructing. Prefix an expression that evaluates to an
 array with three dots (`...`), and each of its elements is added individually to
 the surrounding array, preserving their order. You can use it multiple times and
 freely mix it with regular elements:
 
 ```aql
+---
+name: aqlArraySpread_2
+description: ''
+---
 LET arr1 = [2, 3]
 LET arr2 = [5, 6]
 RETURN [1, ...arr1, 4, ...arr2, 7]
-```
-
-```json
-[
-  [ 1, 2, 3, 4, 5, 6, 7 ]
-]
 ```
 
 The array spread offers a concise alternative to combining arrays with the
@@ -768,22 +764,20 @@ RETURN PUSH(APPEND(PUSH(APPEND([1], arr1), 4), arr2), 7) // hard to get right
 You can spread the result of the [range operator](#range-operator) as well:
 
 ```aql
+---
+name: aqlArraySpreadRange_1
+description: ''
+---
 RETURN [0, ...(1..3), 4]
 ```
 
-```json
-[
-  [ 0, 1, 2, 3, 4 ]
-]
-```
-
-If the operand of an array spread is `null`, a single `null` element is added to
-the array (it is not skipped). If the operand is neither an array nor `null`,
-such as a number, string, boolean, or object, then the value is skipped and the
-query raises a warning:
+If the operand of an array spread is `null`, it is ignored and nothing is added
+(no warning is raised). If the operand is neither an array nor `null`, such as a
+number, string, boolean, or object, then it is skipped and the query raises a
+warning:
 
 ```aql
-RETURN [1, ...null, 2]   // [1, null, 2]
+RETURN [1, ...null, 2]   // [1, 2]
 RETURN [1, ...42, 2]     // [1, 2] (with an 'array expected' warning)
 ```
 
@@ -923,30 +917,21 @@ is a `null` value without raising an error or warning.
 
 ### Object spread
 
-<small>Introduced in: v4.0.0</small>
-
-The spread operator `...` lets you copy the attributes of an object into an
+The spread syntax `...` lets you copy the attributes of an object into an
 object literal you are constructing. Prefix an expression that evaluates to an
 object with three dots (`...`), and all of its top-level attributes are added to
-the surrounding object. You can use it multiple times and freely mix it with
+the surrounding object. The value of each attribute is copied as-is, including
+any nested sub-objects. You can use it multiple times and freely mix it with
 regular attributes:
 
 ```aql
+---
+name: aqlObjectSpread_2
+description: ''
+---
 LET defaults = { color: "red", size: "M" }
 LET overrides = { size: "L", price: 9.99 }
-RETURN { type: "shirt", ...defaults, ...overrides, currency: "USD" }
-```
-
-```json
-[
-  {
-    "type": "shirt",
-    "color": "red",
-    "size": "L",
-    "price": 9.99,
-    "currency": "USD"
-  }
-]
+RETURN { ...defaults, type: "shirt", ...overrides, currency: "USD" }
 ```
 
 The object spread offers a concise alternative to the
@@ -954,7 +939,7 @@ The object spread offers a concise alternative to the
 equivalent to the previous one:
 
 ```aql
-RETURN MERGE({ type: "shirt" }, defaults, overrides, { currency: "USD" })
+RETURN MERGE(defaults, { type: "shirt" }, overrides, { currency: "USD" })
 ```
 
 If an attribute name occurs more than once, whether it comes from a spread or is
@@ -962,11 +947,19 @@ written directly, the last occurrence wins and determines the value of the
 attribute. In the example above, the `size` attribute of `defaults` (`"M"`) is
 overwritten by the one of `overrides` (`"L"`).
 
-{{< info >}}
-The last occurrence of a duplicate attribute name wins in object literals since
-v4.0. In previous versions, the first occurrence determined the value. See
-[Incompatible changes in ArangoDB 4.0](../release-notes/version-4.0/incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
-{{< /info >}}
+Colliding attributes are replaced as a whole and not merged recursively, even if
+their values are objects. In this regard, the object spread behaves like
+[`MERGE()`](functions/document-object.md#merge) and not like
+[`MERGE_RECURSIVE()`](functions/document-object.md#merge_recursive):
+
+```aql
+---
+name: aqlObjectSpreadShallow_1
+description: ''
+---
+LET base = { size: { width: 2, height: 3 } }
+RETURN { ...base, size: { width: 5 } }
+```
 
 If the operand of an object spread is `null`, it is ignored and nothing is added
 (no warning is raised). If the operand is neither an object nor `null`, such as a
