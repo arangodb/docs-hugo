@@ -34,6 +34,7 @@ similarly to the `+` operator in JavaScript.
 ```aql
 RETURN "foo" + "bar" // "foobar"
 RETURN "answer: " + 42 // "answer: 42"
+RETURN 123 + "200" // "123200"
 RETURN 1 + 2 // 3
 ```
 

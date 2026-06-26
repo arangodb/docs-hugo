@@ -60,8 +60,7 @@ Concatenate the values passed as `value1` to `valueN`.
 You can also use the [`+` operator](../operators.md#string-operators) for string
 concatenation if at least one of its two operands is a string, for example,
 `"foo" + "bar"` or `"answer: " + 42`. Unlike `CONCAT()`, the `+` operator
-performs arithmetic addition if both operands are non-string values, and it does
-not ignore `null` values.
+performs arithmetic addition if both operands are non-string values.
 {{< /tip >}}
 
 **Examples**

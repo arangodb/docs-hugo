@@ -35,7 +35,7 @@ In the last example, both operands are numbers, so they are added up arithmetica
 See [String operators](operators.md#string-operators) for details.
 
 {{< warning >}}
-The behavior of the `+` operator changed in v4.0. In previous versions, `+`
+The behavior of the `+` operator changed in v4.0.0. In previous versions, `+`
 always performed arithmetic addition and never concatenated strings. It cast
 string operands to numbers instead, so `"foo" + "bar"` evaluated to `0` and
 `"123" + 200` evaluated to `323`. See

@@ -291,8 +291,6 @@ up, for example, `1 + "99"` returns `"199"` and not `100`, see
 
 ## String operators
 
-<small>Introduced in: v4.0.0</small>
-
 The `+` operator is overloaded. In addition to performing
 [arithmetic addition](#arithmetic-operators), it concatenates values as strings
 if at least one of its two operands is a string. The other operand is implicitly
@@ -318,6 +316,7 @@ LET name = "Luna"
 
 "value: " + true   // "value: true"  (true is cast to the string "true")
 "empty: " + null   // "empty: "  (null is cast to an empty string)
+"data: " + { a: 1 } // "data: {\"a\":1}"  (the object is cast to its JSON representation)
 ```
 
 If **both** operands are non-string values, the `+` operator performs
