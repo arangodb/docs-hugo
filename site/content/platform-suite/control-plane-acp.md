@@ -406,7 +406,8 @@ The response includes:
 
 ### Deleting a project
 
-Remove a project's metadata from the AI service:
+Delete a project. The project record is removed entirely; only the external
+resources it referenced (services, collections, graphs) remain.
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/{project_db_name}/{project_name}" >}}
 
@@ -416,13 +417,14 @@ curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/<projec
 ```
 
 {{< warning >}}
-Deleting a project only removes the project metadata from the AI service.
-It does **not** delete:
-- Services associated with the project (must be deleted separately)
-- ArangoDB collections and data
-- Knowledge graphs
+Deleting a project removes the project record itself, but it does **not**
+delete the resources the project referenced:
+- Importer, Retriever, and AutoGraph services
+- ArangoDB collections created with the project name as prefix
+  (for example, `docs_Documents`, `docs_Chunks`)
+- Knowledge graphs stored in ArangoDB
 
-You must manually delete services and collections if needed.
+Delete those separately if you no longer need them.
 {{< /warning >}}
 
 ## Secrets

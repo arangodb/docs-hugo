@@ -11,7 +11,7 @@ pageToc:
 ---
 {{< tip >}}
 A similar feature is also available in the
-[Arango Managed Platform (AMP)](../../../../amp/security-and-access-control/_index.md#using-an-audit-log).
+[Arango Managed Platform (AMP)](../../../../amp/security-and-access-control/_index.md#audit-logs).
 {{< /tip >}}
 
 ## Configuration
@@ -197,10 +197,6 @@ This message occurs whenever a user attempts to drop an index. If
 successful, the status is `ok`, otherwise `failed`.
 
 ### Documents
-
-If statistics are enabled, the system will periodically perform several document
-operations on a few system collections. These low-priority operations are logged
-to the `audit-document` topic at the `DEBUG` level.
 
 #### Single document read
 

@@ -1302,7 +1302,7 @@ Content-Length: 353
         "query": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
         "database": "_system",
         "bindVars": {
-          "@collection": "_statistics",
+          "@collection": "events",
           "start": 1751470412.3836362
         }
       },

@@ -217,8 +217,8 @@ response = start_service("arangodb-graphrag-importer", importer_config)
 pprint(response)
 
 # Extract the service ID for future reference
-importer_service_id = response["serviceInfo"]["serviceId"].split("-")[-1]
-print(f"Importer Service ID: {importer_service_id}")
+importer_service_id_postfix = response["serviceInfo"]["serviceId"].split("-")[-1]
+print(f"Importer Service ID: {importer_service_id_postfix}")
 ```
 
 ### Submit your document
@@ -239,7 +239,7 @@ importer_payload = {
     "file_content": file_content,
 }
 
-importerResponse = send_request(f"/graphrag/importer/{importer_service_id}/v1/import", importer_payload, "POST")
+importerResponse = send_request(f"/graphrag/importer/{importer_service_id_postfix}/v1/import", importer_payload, "POST")
 pprint(importerResponse)
 ```
 
@@ -323,15 +323,14 @@ response = start_service("arangodb-graphrag-retriever", retriever_config)
 pprint(response)
 
 # Extract the service ID for future reference
-retriever_service_id = response["serviceInfo"]["serviceId"].split("-")[-1]
-print(f"Retriever Service ID: {retriever_service_id}")
+retriever_service_id_postfix = response["serviceInfo"]["serviceId"].split("-")[-1]
+print(f"Retriever Service ID: {retriever_service_id_postfix}")
 ```
 
 The Retriever service is available at the following endpoint, which allows you 
 to send queries to the Knowledge Graph:
-```
-/graphrag/retriever/{service_id}/v1/graphrag-query
-```
+
+{{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query" >}}
 
 ### Query parameters
 
@@ -373,7 +372,7 @@ global_query_body = {
 
 print("Executing Global Query...")
 retrieverResponse = send_request(
-    f"/graphrag/retriever/{retriever_service_id}/v1/graphrag-query",
+    f"/graphrag/retriever/{retriever_service_id_postfix}/v1/graphrag-query",
     global_query_body,
     "POST"
 )
@@ -404,7 +403,7 @@ local_query_body = {
 
 print("Executing Local Query...")
 retrieverResponse = send_request(
-    f"/graphrag/retriever/{retriever_service_id}/v1/graphrag-query",
+    f"/graphrag/retriever/{retriever_service_id_postfix}/v1/graphrag-query",
     local_query_body,
     "POST"
 )
@@ -437,7 +436,7 @@ def query_graph(query, query_type):
         "provider": 0
     }
 
-    retrieverResponse = send_request(f"/graphrag/retriever/{retriever_service_id}/v1/graphrag-query", body, "POST")
+    retrieverResponse = send_request(f"/graphrag/retriever/{retriever_service_id_postfix}/v1/graphrag-query", body, "POST")
     result = retrieverResponse["result"]
 
     response = ""

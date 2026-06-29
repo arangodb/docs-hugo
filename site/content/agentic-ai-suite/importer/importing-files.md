@@ -3,34 +3,18 @@ title: Import Files to build your Knowledge Graph
 menuTitle: Import Files
 description: >-
   Learn how to import single or multiple documents to build your knowledge graph
-weight: 30
+weight: 50
 ---
 
-{{< info >}}
-**Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → **Import Files** → [Semantic Units](semantic-units.md) (optional) → [Verify Results](verify-and-explore.md)
-{{< /info >}}
-
-## Before you start
-
-Before you can import files, make sure you've completed these steps:
-
-1. **Create a GraphRAG project**
-   Learn how to [create and manage projects](../../platform-suite/control-plane-acp.md#projects).
-
-2. **Install the Importer service**
-   Deploy the service using the `/v1/graphragimporter` endpoint. See
-   [The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md)
-   documentation for installation instructions.
-
-3. **Configure your LLM provider**
-   Choose between OpenAI-compatible APIs or Triton Inference Server. Follow the [LLM Configuration guide](llm-configuration.md) to set up your models.
-
-Once you've completed these steps, you're ready to import documents to build 
-your Knowledge Graph using either single file import or multi-file import.
+This page covers the import endpoints and how to monitor running imports.
+Before reading it, make sure you've finished the
+[Quickstart](quickstart.md) (project created, service installed) and
+[LLM Configuration](llm-configuration.md) (chat and embedding providers
+configured).
 
 {{< info >}}
 Platform routes require authentication. Include a standard `Authorization`
-header (e.g., `Bearer <token>`) on all import requests.
+header (e.g., `Bearer <token>`) on every request to the Importer.
 {{< /info >}}
 
 ## Choosing a RAG Mode
@@ -42,7 +26,7 @@ The Importer supports two operational modes:
 - **Vector RAG**: Performs simple vector-based retrieval using only document chunks. Faster processing but without the rich graph structure. Best for straightforward semantic search use cases.
 
 {{< tip >}}
-If you're unsure which mode to use, start with Full GraphRAG. You can always switch to Vector RAG later if you need faster processing and simpler retrieval. See the [Parameters Reference](parameters.md#rag-mode-configuration) for more details.
+If you're unsure which mode to use, start with Full GraphRAG. You can always switch to Vector RAG later if you need faster processing and simpler retrieval. See the [Parameters Reference](reference/parameters.md#rag-mode-configuration) for more details.
 {{< /tip >}}
 
 ## Single File Import
@@ -51,7 +35,7 @@ Use single file import when you want to process one document at a time. This is
 ideal for testing, small documents, or when you need immediate feedback without 
 streaming progress updates.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import" >}}
 
 ### Basic example
 
@@ -60,7 +44,7 @@ streaming progress updates.
 base64_content=$(base64 -i your_document.txt)
 
 # Send to the Importer service
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -72,7 +56,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/
 ### Example with common parameters
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -95,20 +79,38 @@ The service will:
 - Build a knowledge graph.
 - Import the graph into your ArangoDB database.
 
-For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
+For detailed information about all available parameters, see the [Import Parameters Reference](reference/parameters.md).
 
 ## Multi-File Import
 
-Use multi-file import when you need to process multiple documents into a single 
-Knowledge Graph. This API provides streaming progress updates, making it 
-ideal for batch processing and long-running imports where you need to track progress.
+Use multi-file import when you need to process multiple documents into a single
+Knowledge Graph. The request returns immediately with a `job_id` that you use
+to poll for progress via the [jobs API](#monitoring-jobs).
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import-multiple" >}}
+
+The response payload looks like this:
+
+```json
+{
+  "success": true,
+  "job_id": "550e8400-e29b-41d4-a716-446655440000",
+  "service_id": "arangodb-graphrag-importer-0",
+  "message": "Import started for 2 files. Use GET /v1/jobs/550e8400-e29b-41d4-a716-446655440000 to monitor progress."
+}
+```
+
+{{< tip >}}
+You can also reference files already uploaded to
+[File Manager](../../platform-suite/file-manager/) by passing
+`file_ids` instead of inline `files`. When `file_ids` is non-empty, the
+`files` array is ignored.
+{{< /tip >}}
 
 ### Basic example
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -134,14 +136,14 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/
   }'
 ```
 
-For detailed information about all available parameters, see the [Import Parameters Reference](parameters.md).
+For detailed information about all available parameters, see the [Import Parameters Reference](reference/parameters.md).
 
 ### Vector RAG example
 
 For faster processing when you only need semantic search over document chunks:
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/import-multiple \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{
@@ -227,8 +229,8 @@ This comprehensive example demonstrates all available import parameters for the 
   "vector_index_n_lists": 2048,
   "vector_index_metric": "cosine",
   "vector_index_use_hnsw": true,
-  "smart_graph_attribute": "region",
-  "shard_count": 3,
+  "smart_graph_attribute": "partition_id",
+  "shard_count": 1,
   "is_disjoint": false,
   "satellite_collections": [
     "sat_col_1",
@@ -238,170 +240,114 @@ This comprehensive example demonstrates all available import parameters for the 
 }
 ```
 
-### Streaming Progress Responses
+{{< warning >}}
+When creating a new SmartGraph through the Importer, `smart_graph_attribute`
+must be `"partition_id"` and `shard_count` must be `1`. See
+[SmartGraph and sharding](#smartgraph-and-sharding) below.
+{{< /warning >}}
 
-The multi-file import endpoint returns a stream of `ImportProgressResponse` messages.
-Each response contains:
+## Monitoring jobs
 
-- `type`: Type of progress update (see Progress Types below).
-- `message`: Human-readable progress message.
-- `current_file_index`: Index of the file currently being processed (0-based).
-- `total_files`: Total number of files in the batch.
-- `success`: Whether the operation succeeded.
-- `error_message`: Error details if `success` is false.
+Multi-file imports report progress through the **jobs API**. Single-file
+imports do not produce a `job_id`; use the platform service status feed for
+those instead. See [Architecture](architecture.md#asynchronous-import-lifecycle)
+for the full lifecycle.
 
-### Progress Types
+### Get job status
 
-The `type` field indicates the current stage of processing:
-
-- `IMPORT_PROGRESS_TYPE_FILES_RECEIVED` (value: `1`): All files received and validated.
-- `IMPORT_PROGRESS_TYPE_FILE_PROCESSING` (value: `2`): Currently processing a specific file.
-- `IMPORT_PROGRESS_TYPE_GRAPH_BUILDING` (value: `3`): Building the unified knowledge graph.
-- `IMPORT_PROGRESS_TYPE_DATABASE_IMPORT` (value: `4`): Importing to ArangoDB.
-- `IMPORT_PROGRESS_TYPE_COMPLETED` (value: `5`): All processing completed successfully.
-- `IMPORT_PROGRESS_TYPE_ERROR` (value: `6`): Error occurred during processing.
-
-### Response Stream Format
-
-The multi-file import endpoint uses **Server-Sent Events (SSE)**, a standard HTTP streaming protocol (part of HTML5). SSE allows the server to push real-time progress updates to clients over a single HTTP connection.
-
-**SSE Format:**
-
-The server returns an SSE stream with these characteristics:
-
-**HTTP Response Headers:**
-- `Content-Type: text/event-stream` (indicates SSE format)
-- Connection kept open for streaming
-
-**Stream Body Format** (identical for all clients):
-- Each event line starts with `data: ` followed by JSON
-- Empty lines separate individual events
-- Stream continues until completion or error
-
-**Raw stream example:**
-```
-data: {"type": "IMPORT_PROGRESS_TYPE_FILES_RECEIVED", "message": "Received 2 files for processing", "current_file_index": 0, "total_files": 2, "success": true}
-
-data: {"type": "IMPORT_PROGRESS_TYPE_FILE_PROCESSING", "message": "Processing file 1/2: doc1.txt", "current_file_index": 0, "total_files": 2, "success": true}
-
-data: {"type": "IMPORT_PROGRESS_TYPE_COMPLETED", "message": "Import completed successfully", "success": true}
-```
-
-### Example: Streaming with curl
-
-Use curl to view the raw SSE stream as it arrives:
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs/{job_id}" >}}
 
 ```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <your-jwt-token>" \
-  --no-buffer \
-  -d '{
-    "files": [
-      {
-        "name": "doc1.txt",
-        "content": "<base64-encoded-content>",
-        "citable_url": "https://example.com/doc1"
-      }
-    ],
-    "batch_size": 1000,
-    "enable_chunk_embeddings": true
-  }'
+curl -sS "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/jobs/<JOB_ID>" \
+  -H "Authorization: Bearer <your-jwt-token>"
 ```
 
-The `--no-buffer` flag ensures curl displays data immediately as it arrives.
+The response includes a `job` object with:
 
-### Example: Streaming with Python
+- `job_id`, `created_at`, `files`, `files_count`.
+- `is_terminal`: `true` once the job has reached a final state (success or failure).
+- `current_status`: latest status entry with `status`, `timestamp`,
+  `progress` (0-100), and `message`.
+- `status_history`: prior entries, oldest first.
 
-When using Python, you must parse the SSE format and strip the `data: ` prefix:
+Terminal `current_status.status` values: `service_completed`, `service_failed`,
+`openai_graph_build_failed`, `openai_embedding_failed`,
+`triton_graph_build_failed`, `triton_embedding_failed`,
+`import_graph_to_adb_failed`, `create_index_failed`.
+
+Non-terminal examples: `graph_builder_started`, `chunking_in_progress`,
+`import_entities_in_progress`, `openai_graph_build_in_progress`,
+`create_index_in_progress`.
+
+Status messages may include a `[rag_mode=...]` prefix or markers such as
+`[NO_ENTITIES_WRITTEN]` and `[KG_VERIFICATION_INCONCLUSIVE]`. See
+[Error Handling](reference/error-handling.md#asynchronous-failure-markers)
+for the full list.
+
+{{< info >}}
+Job history is held **in memory per pod** with a cap of 100 terminal jobs.
+Older jobs disappear from the API; query the platform service status feed
+for longer-term visibility.
+{{< /info >}}
+
+### Polling example
 
 ```python
 import requests
-import json
+import time
 
-url = "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/import-multiple"
-payload = {
-    "files": [
-        {
-            "name": "doc1.txt",
-            "content": base64_content_1,
-            "citable_url": "https://example.com/doc1"
-        },
-        {
-            "name": "doc2.txt", 
-            "content": base64_content_2,
-            "citable_url": "https://example.com/doc2"
-        }
-    ],
-    "batch_size": 1000,
-    "chunk_token_size": 1024,
-    "enable_chunk_embeddings": True,
-    "enable_community_embeddings": True,
-    "vector_index_metric": "cosine"
-}
+url = "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>"
+headers = {"Authorization": "Bearer <your-jwt-token>"}
 
-response = requests.post(url, json=payload, stream=True)
+# Submit
+resp = requests.post(f"{url}/v1/import-multiple", headers=headers, json=payload).json()
+job_id = resp["job_id"]
 
-for line in response.iter_lines():
-    if line:
-        # Decode bytes to string
-        line_str = line.decode('utf-8') if isinstance(line, bytes) else line
-        
-        # Strip SSE 'data: ' prefix if present
-        if line_str.startswith('data: '):
-            line_str = line_str[6:]
-        elif line_str.startswith('data:'):
-            line_str = line_str[5:].strip()
-        
-        # Skip empty lines
-        if not line_str.strip():
-            continue
-        
-        try:
-            progress = json.loads(line_str)
-            
-            # Display progress information
-            print(f"Progress: {progress['message']}")
-            if progress.get('current_file_index') is not None:
-                print(f"File: {progress['current_file_index'] + 1}/{progress['total_files']}")
-            
-            # Check completion status
-            if progress['type'] == 'IMPORT_PROGRESS_TYPE_COMPLETED':
-                print("Import completed successfully!")
-                break
-            elif progress['type'] == 'IMPORT_PROGRESS_TYPE_ERROR':
-                print(f"Error: {progress.get('error_message', 'Unknown error')}")
-                break
-        except json.JSONDecodeError:
-            # Skip malformed lines
-            continue
+# Poll
+while True:
+    status = requests.get(f"{url}/v1/jobs/{job_id}", headers=headers).json()
+    job = status["job"]
+    print(f"{job['current_status']['status']} - {job['current_status']['progress']}%")
+    if job["is_terminal"]:
+        break
+    time.sleep(15)
 ```
 
-## Job Management and Health
+### List recent jobs
 
-The Importer service provides additional endpoints for monitoring import jobs
-and checking service health.
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/jobs" >}}
 
-### Check job status
+Returns up to `limit` recent job summaries (default `50`), most recent first.
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs/{job_id}" >}}
+## Health check
 
-Returns the current status of a specific import job.
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/health" >}}
 
-### List all jobs
+Returns the readiness status of the Importer service. While an import is
+running on the replica, the response is still `success: true` but the
+`message` says **"Service is healthy but busy."** - a second import
+submitted in that state will fail with `success: false`.
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/jobs" >}}
+## SmartGraph and sharding
 
-Returns a list of all import jobs and their statuses.
+When the Importer creates ArangoDB graph collections, the following
+constraints apply:
 
-### Health check
+| Scenario | Rule |
+|----------|------|
+| **New SmartGraph** | `smart_graph_attribute` must be `"partition_id"`. `partition_id` must be non-empty. **`shard_count` must be `1`** (the protobuf default `0` is rejected). |
+| **Existing SmartGraph** | Send `smart_graph_attribute` + `partition_id`. `shard_count` is ignored with an info log. |
+| **New sharded enterprise graph** (no smart attribute) | Only `shard_count: 1` is supported when creating. |
+| **`is_disjoint`** | Must be `false` when creating a sharded enterprise graph with a positive `shard_count`. |
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{SERVICE_ID}/v1/health" >}}
+`partition_id` charset: 1-254 UTF-8 bytes; no whitespace or `:`; allowed
+`A-Z a-z 0-9 _ - . @ ( ) + , = ; $ ! * ' %`.
 
-Returns the health status of the Importer service.
+When SmartGraph + `partition_id` is active, vertex `_key` values are
+written as `{partition_id}:{logicalKey}`.
 
 ## Next Steps
 
-- **[Explore all parameters](parameters.md)**: Customize chunking, entity extraction, and more.
+- **[Explore all parameters](reference/parameters.md)**: Customize chunking, entity extraction, and more.
 - **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
 - **[Verify your import](verify-and-explore.md)**: Check import status and explore the created collections.

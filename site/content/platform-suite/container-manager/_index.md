@@ -95,7 +95,7 @@ Control where your services are accessible and how they integrate with your data
 Deploy services using runtime environments and resources tailored to your needs.
 
 **Code-based deployments (Bring Your Own Code):**
-- **Python 3.13** (base, PyTorch, and cuGraph variants available)
+- **Python 3.12** (base, PyTorch, and cuGraph variants available)
 
 **Container-based deployments (Bring Your Own Container):**
 - Any runtime or language packaged in your container image
