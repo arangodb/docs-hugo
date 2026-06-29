@@ -21,17 +21,10 @@
       "description" $pageDescription
       "publisher" $publisher -}}
 {{- else if or .IsPage .IsSection -}}
-  {{- /* Mirror the document <title>: append the site title for context,
-         matching head.html (e.g. "Edge :: ArangoDB Documentation"). */ -}}
-  {{- $title := .Title | markdownify | plainify | htmlUnescape -}}
-  {{- $headline := $title -}}
-  {{- if and $title (ne $title .Site.Title) -}}
-    {{- $headline = printf "%s %s %s" $title (.Site.Params.titleSeparator | default "::") .Site.Title -}}
-  {{- end -}}
   {{- $schema = dict
       "@context" "https://schema.org"
       "@type" "TechArticle"
-      "headline" $headline
+      "headline" (.Title | markdownify | plainify | htmlUnescape)
       "description" $pageDescription
       "url" .Permalink
       "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
