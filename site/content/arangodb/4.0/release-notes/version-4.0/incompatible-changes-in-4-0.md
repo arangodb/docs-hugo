@@ -102,6 +102,18 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Deprecated AQL options removed
+
+In AQL graph traversals, you can no longer specify the `bfs` attribute in the
+`OPTIONS` object to enable breadth-first search. Use `order: "bfs"` instead of
+`bfs: true`.
+
+The `INSERT` operation no longer supports the `overwrite` attribute in the
+`OPTIONS` object to replace a document if there is already one with the same
+document key. To specify the behavior for how to resolve collisions, use
+`overwriteMode` instead. A setting of `overwriteMode: "replace"` is the same
+as the former `overwrite: true`.
+
 ## Statistics features removed
 
 Server and cluster statistics are superseded by the
@@ -135,6 +147,21 @@ in Prometheus format.
 
 ## HTTP RESTful API
 
+### `overwrite` option removed from document API
+
+The `POST /_api/document/{collection}` endpoint for creating a single or multiple
+documents no longer supports the `overwrite` query parameter. If you want to
+replace documents if there are already some with the same document keys, specify
+the behavior for how to resolve collisions with the `overwriteMode`
+query parameter. You can set `overwriteMode` to `"replace"` to achieve the same
+as formerly setting `overwrite` to `true`.
+
+### `minReplicationFactor` removed from collections
+
+The deprecated alias for `writeConcern` has been removed. You can no longer set
+the write concern using `minReplicationFactor` for collections and
+collections also don't report this attribute anymore.
+
 ### Sub-attribute removed from the version API
 
 The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
@@ -152,6 +179,9 @@ server-side:
 - `mode`
 - `operationMode`
 - `foxxApi`
+
+Moreover, the following deprecated attribute has been removed from the endpoint:
+- `writeOpsEnabled`
 
 ### Upload API removed
 
