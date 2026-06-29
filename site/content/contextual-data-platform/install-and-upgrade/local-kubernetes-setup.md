@@ -78,12 +78,11 @@ launch may ask you to accept a license agreement and grant permissions.
 
 Give Docker enough resources for ArangoDB:
 
-1. Click the Docker whale icon in the menu bar and choose **Settings**.
-2. Go to **Resources**.
-3. Set **CPUs** to at least `4` and **Memory** to at least `8 GB`
+1. Click the cog wheel icon in the menu bar and choose **Resources**.
+2. Set **CPUs** to at least `4` and **Memory** to at least `8 GB`
    (use `8` CPUs and `16 GB` if you plan to install the full Contextual Data
    Platform).
-4. Click **Apply & restart**.
+3. Click **Apply**.
 
 Confirm Docker is running by checking its version in the Terminal:
 
@@ -231,15 +230,20 @@ Follow these steps instead of Steps 8.1 to 8.5:
    ```
 
 2. Install the **Community** Operator with Helm. Note that the download URL does
-   *not* contain `-enterprise`. You can use a newer version than `1.4.2` if one
+   *not* contain `-enterprise`. You can use a newer version than `1.4.3` if one
    is available on the [releases page](https://github.com/arangodb/kube-arangodb/releases/):
 
    ```sh
-   VERSION_OPERATOR='1.4.2'
+   VERSION_OPERATOR='1.4.3'
    helm upgrade --install operator \
      --namespace arango \
-     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-${VERSION_OPERATOR}.tgz"
+     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-${VERSION_OPERATOR}.tgz" \
+     --set "operator.architectures={amd64,arm64}"
    ```
+
+   The `operator.architectures` flag lets the Operator run on both Intel
+   (`amd64`) and Apple Silicon (`arm64`) Macs. Without it, the Operator pod stays
+   `Pending` forever on Apple Silicon because it defaults to `amd64` only.
 
    Wait for it to be ready:
 
@@ -260,8 +264,16 @@ Follow these steps instead of Steps 8.1 to 8.5:
      name: "deployment-example"
    spec:
      mode: Single
-     image: "arangodb/arangodb:3.12.9"
+     image: "arangodb/arangodb:3.12.4.3"
+     # On an Apple Silicon (arm64) Mac, uncomment the next two lines:
+     # architecture:
+     #   - arm64
    ```
+
+   On an Apple Silicon Mac, you must uncomment the `architecture` lines.
+   Otherwise the database pod defaults to `amd64` and stays `Pending`. You can
+   use a newer Community image than `3.12.4.3` if one is available on
+   [Docker Hub](https://hub.docker.com/r/arangodb/arangodb/tags).
 
 4. Apply it and watch the pod start:
 
@@ -343,18 +355,22 @@ The [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`) is the component that creates and manages ArangoDB for you.
 Install it with Helm:
 
-You can use a newer version than `1.4.2` if one is available on the
+You can use a newer version than `1.4.3` if one is available on the
 [releases page](https://github.com/arangodb/kube-arangodb/releases/):
 
 ```sh
-VERSION_OPERATOR='1.4.2'
+VERSION_OPERATOR='1.4.3'
 helm upgrade --install operator \
   --namespace arango \
   "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
   --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.architectures={amd64}"
+  --set "operator.architectures={amd64,arm64}"
 ```
+
+The `operator.architectures` value lets the Operator run on both Intel (`amd64`)
+and Apple Silicon (`arm64`) Macs. Without `arm64`, the Operator pod stays
+`Pending` forever on Apple Silicon.
 
 Wait for the Operator to be ready, then confirm it is running:
 
@@ -389,6 +405,9 @@ metadata:
 spec:
   mode: Single
   image: "arangodb/enterprise:3.12.9"
+  # On an Apple Silicon (arm64) Mac, uncomment the next two lines:
+  # architecture:
+  #   - arm64
   gateway:
     enabled: true
     dynamic: true
@@ -398,6 +417,9 @@ spec:
   license:
     secretName: arango-license-key
 ```
+
+On an Apple Silicon Mac, you must uncomment the `architecture` lines. Otherwise
+the database and gateway pods default to `amd64` and stay `Pending`.
 
 Apply the file and watch the pods start:
 
