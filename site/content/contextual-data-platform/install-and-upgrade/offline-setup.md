@@ -23,7 +23,7 @@ What needs to be done in which environment is indicated by each step:
 {{< tag "Internet-connected system" >}}
 
 In case of an installation on hardware without internet access, everything needed
-to install the services of the Platform Suite has to be downloaded on a system
+to install the services of the data platform has to be downloaded on a system
 with internet access and needs to be transferred to the offline or air-gapped
 system before the setup.
 
@@ -171,7 +171,7 @@ kubectl cluster-info
 kubectl get nodes
 ```
 
-Create a Kubernetes namespace for ArangoDB and the Platform Suite resources.
+Create a Kubernetes namespace for ArangoDB and the data platform resources.
 The namespace used throughout this guide is called `arango`, but you can use
 a different name.
 
@@ -560,7 +560,7 @@ continue with the next step. Otherwise, create a platform package yourself as
 described below.
 
 Use the Platform CLI tool to download the manifests and container images of the
-Platform Suite from Arango's public container registry. This requires
+data platform from Arango's public container registry. This requires
 license credentials and internet access to `*.license.arango.ai`.
 
 What to download is defined by the package configuration file that you received
