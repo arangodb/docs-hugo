@@ -11,6 +11,14 @@ OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI
 OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
 OpenAI-compatible endpoint.
 
+## Supported models
+
+The following models are validated for use with the Importer service. For the full
+list across all services, see
+[Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+{{% llm-models "importer" %}}
+
 ## Using OpenAI-compatible APIs
 
 The `openai` provider works with any OpenAI-compatible API, including:
@@ -22,30 +30,13 @@ The `openai` provider works with any OpenAI-compatible API, including:
 - Corporate or self-hosted LLMs with OpenAI-compatible endpoints
 
 Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+For the chat and embedding models validated for the Importer, see
+[Supported models](#supported-models) above.
 
-### Supported OpenAI chat models
-
-When `chat_api_provider` is `openai` and the chat endpoint is OpenAI (or an
-operator-configured OpenAI deployment), the Importer supports the following
-chat models:
-
-- `gpt-5.5`
-- `gpt-5.4`, `gpt-5.4-pro`, `gpt-5.4-mini`, `gpt-5.4-nano`
-- `gpt-5`, `gpt-5-pro`, `gpt-5-mini`, `gpt-5-nano`
-- `gpt-5.2`, `gpt-5.2-pro`
-- `gpt-5.1`
-- `gpt-4.1`, `gpt-4.1-mini`
-- `gpt-4o`, `gpt-4o-mini`
-- `o3`
-
-Older OpenAI model names may still work if your operator deploys them, but
-**full GraphRAG** community reports require JSON-mode chat models - avoid
-legacy `gpt-4` 8k.
-
-Some newer model identifiers (for example `gpt-5.4-pro`, `o3-pro`) require
-the OpenAI Responses API instead of `/v1/chat/completions`. The Importer
-detects this automatically; see
-[OpenAI Responses API fallback](#openai-responses-api-fallback) below.
+Some newer OpenAI model identifiers (for example `o3-pro`) require the OpenAI
+Responses API instead of `/v1/chat/completions`. The Importer detects this
+automatically; see [OpenAI Responses API fallback](#openai-responses-api-fallback)
+below.
 
 ### Example using OpenAI
 
@@ -133,25 +124,10 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 }
 ```
 
-Where:
-- `db_name`: Name of the ArangoDB database where the knowledge graph is stored
-- `project_name`: The project name created via the
-  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
-  This name is used as a prefix for all ArangoDB collections (for example, a
-  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `chat_api_url`: API endpoint URL for the chat/language model service (in this example, OpenRouter)
-- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `embedding_api_url`: API endpoint URL for the embedding model service (in this example, OpenAI)
-- `chat_model`: Specific language model to use for text generation and analysis
-- `embedding_model`: Specific model to use for generating text embeddings
-- `chat_api_key`: API key for authenticating with the chat/language model service
-- `embedding_api_key`: API key for authenticating with the embedding model service
-- `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension. It must match the
-  embedding model's output dimension.
+The fields are the same as in the [example using OpenAI](#example-using-openai).
+The difference is that `chat_api_url` and `embedding_api_url` point to different
+OpenAI-compatible services (here, OpenRouter for chat and OpenAI for embedding),
+each authenticated with its own API key.
 
 ### Using Azure as a chat and embedding provider
 
@@ -217,19 +193,12 @@ service using the below configuration:
 }
 ```
 
-Where:
-- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
-- `project_name`: The project name created via the
-  [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
-  This name is used as a prefix for all ArangoDB collections (for example, a
-  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Specifies which LLM provider to use for language model services
-- `embedding_api_provider`: API provider for embedding model services (e.g., "triton")
-- `chat_api_url`: API endpoint URL for the chat/language model service
-- `embedding_api_url`: API endpoint URL for the embedding model service
-- `chat_model`: Specific language model to use for text generation and analysis
-- `embedding_model`: Specific model to use for generating text embeddings
+The fields are the same as in the [example using OpenAI](#example-using-openai),
+with these differences:
+- `chat_api_provider` and `embedding_api_provider` are set to `"triton"` instead
+  of `"openai"`.
+- `chat_api_url` and `embedding_api_url` point to your ArangoDB LLM Host service.
+- No API keys or `embedding_dim` are required.
 
 ## Token budget for chat models
 

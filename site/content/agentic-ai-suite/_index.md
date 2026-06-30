@@ -80,3 +80,17 @@ Any structured data extracted from uploaded files
 If you want to try out ArangoDB's data science features, you may use the
 [`arango-datasets` Python package](../ecosystem/arango-datasets.md)
 to load sample datasets into a deployment.
+
+## Supported LLM and embedding models
+
+The services of the Agentic AI Suite work with OpenAI-compatible APIs (OpenAI,
+OpenRouter, and other compatible providers) as well as self-hosted models served
+through Triton Inference Server.
+
+A model is listed as supported by the suite only if it works seamlessly across
+the Importer, Retriever, and AutoGraph services. Individual services may also
+work with additional models — for the full list available to a specific
+service, see that service's own documentation (for example,
+[Importer LLM Configuration](importer/llm-configuration.md#supported-models)).
+
+{{% llm-models %}}
