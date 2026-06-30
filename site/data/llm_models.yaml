@@ -36,11 +36,11 @@ providers:
     models:
       - name: gpt-5.4-mini
         type: chat
-        services: [retriever, ada]
+        services: [importer, retriever, autograph, ada]
       - name: gpt-5.4-nano
         type: chat
         services: [importer, retriever, autograph, graphrag]
-        default_for: [importer, retriever]
+        default_for: [importer, retriever, autograph]
       - name: gpt-5-mini
         type: chat
         services: [importer, retriever, autograph, ada]
@@ -53,11 +53,14 @@ providers:
         default_for: [nl2aql, ada]
       - name: o3
         type: chat
-        services: [importer, ada]
+        services: [importer, retriever, autograph, ada]
       - name: text-embedding-3-small
         type: embedding
         services: [importer, retriever, autograph, graphrag]
-        default_for: [importer, retriever]
+        default_for: [importer, retriever, autograph]
+      - name: text-embedding-3-large
+        type: embedding
+        services: [importer, retriever, autograph]
 
   - name: Anthropic
     id: anthropic
@@ -112,4 +115,4 @@ providers:
       - name: nomic-embed-text-v1
         type: embedding
         services: [importer, retriever, autograph]
-        default_for: [importer, retriever]
+        default_for: [importer, retriever, autograph]
