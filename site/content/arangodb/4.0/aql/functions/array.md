@@ -962,7 +962,11 @@ RETURN UNIQUE(
 
 `UNION_DISTINCT(array1, array2, ... arrayN) → newArray`
 
-Return the union of distinct values of all arrays specified.
+Combine all given arrays into a single array, keeping only one copy of each
+value.
+
+If you need the values to preserve the order in which they first appear,
+use [`UNION_DISTINCT_STABLE()`](#union_distinct_stable) instead.
 
 - **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
   arguments (at least 2)
@@ -981,6 +985,64 @@ RETURN UNION_DISTINCT(
     [ 1, 2 ]
 )
 ```
+
+## UNION_DISTINCT_STABLE()
+
+`UNION_DISTINCT_STABLE(array1, array2, ... arrayN) → newArray`
+
+Combine all given arrays into a single array, keeping only one copy of each
+value, in the order in which the values first appear.
+
+This works like [`UNION_DISTINCT()`](#union_distinct), but the order of the
+elements in the result is predictable: the arrays are processed from left to
+right, and each value appears at the position where it is first encountered.
+
+- **arrays** (array, *repeatable*): an arbitrary number of arrays as multiple
+  arguments (at least 2)
+- returns **newArray** (array): the elements of all given arrays in a single
+  array, without duplicates, in the order of their first occurrence
+
+**Examples**
+
+```aql
+---
+name: aqlArrayUnionDistinctStable_1
+description: |
+  Combine the values of multiple arrays into one, keeping each value only once
+  and in the order in which it first appears:
+---
+RETURN UNION_DISTINCT_STABLE(
+    [ 1, 2, 3 ],
+    [ 3, 2, 1 ],
+    [ 4 ],
+    [ 5, 6, 1 ]
+)
+```
+
+In previous versions, you can achieve the same result with a nested
+[`FOR`](../high-level-operations/for.md) loop and a
+[`RETURN DISTINCT`](../high-level-operations/return.md#return-distinct):
+
+```aql
+---
+name: aqlArrayUnionDistinctStable_2
+description: |
+  Flatten the arrays with a nested `FOR` loop and keep each value only once with
+  `RETURN DISTINCT`, which preserves the original order:
+---
+RETURN (
+  FOR arr IN [ [ 1, 2, 3 ], [ 3, 2, 1 ], [ 4 ], [ 5, 6, 1 ] ]
+    FOR elem IN arr
+      RETURN DISTINCT elem
+)
+```
+
+{{< info >}}
+To combine all values (including duplicates) of an arbitrary number of arrays
+while retaining the order, you can use the [array spread operator](../fundamentals/data-types.md#array-spread).
+You can also use the [`APPEND()`](#append) function, but it can only combine
+two arrays at a time.
+{{< /info >}}
 
 ## UNIQUE()
 
