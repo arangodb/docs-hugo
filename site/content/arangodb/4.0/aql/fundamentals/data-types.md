@@ -137,6 +137,8 @@ The first supported compound type is the array type. Arrays are effectively
 sequences of (unnamed / anonymous) values. Individual array elements can be
 accessed by their positions. The order of elements in an array is important.
 
+#### Array declaration
+
 An *array declaration* starts with a left square bracket `[` and ends with
 a right square bracket `]`. The declaration contains zero, one or more
 *expression*s, separated from each other with the comma `,` symbol.
@@ -169,6 +171,22 @@ A trailing comma after the last element is allowed:
 ]
 ```
 
+#### Array spread
+
+You can insert the elements of another array into an array literal using the
+[spread syntax](../operators.md#array-spread) `...`:
+
+```aql
+---
+name: aqlArraySpread_1
+description: ''
+---
+LET nums = [2, 3]
+RETURN [1, ...nums, 4]
+```
+
+#### Indexed value access
+
 Individual array values can later be accessed by their positions using the `[]`
 accessor:
 
@@ -187,6 +205,8 @@ composition of zero to many attributes. Each attribute is a name/value pair.
 Object attributes can be accessed individually by their names. This data type is
 also known as dictionary, map, associative array and other names.
 
+#### Object declaration
+
 Object declarations start with a left curly bracket `{` and end with a
 right curly bracket `}`. An object contains zero to many attribute declarations,
 separated from each other with the `,` symbol. Whitespace around elements is ignored
@@ -197,6 +217,8 @@ In the simplest case, an object is empty. Its declaration would then be:
 ```json
 { }
 ```
+
+#### Attribute names
 
 Each attribute in an object is a name/value pair. Name and value of an
 attribute are separated using the colon `:` symbol. The name is always a string,
@@ -245,6 +267,41 @@ computed attribute names must be enclosed in square brackets `[ … ]`:
 { [ CONCAT("test/", "bar") ] : "someValue" }
 ```
 
+#### Object spread
+
+You can copy the attributes of another object into an object literal using the
+[spread syntax](../operators.md#object-spread) `...`:
+
+```aql
+---
+name: aqlObjectSpread_1
+description: ''
+---
+LET defaults = { color: "red", size: "M" }
+RETURN { ...defaults, size: "L" }
+```
+
+#### Duplicate attribute names
+
+If the same attribute name occurs more than once in an object literal, the last
+occurrence wins and determines the value of the attribute:
+
+```aql
+---
+name: aqlObjectDuplicateKey_1
+description: ''
+---
+RETURN { foo: 1, foo: 2 }
+```
+
+{{< info >}}
+The last occurrence of a duplicate attribute name wins since v4.0. In previous
+versions, the first occurrence determined the value. See
+[Incompatible changes in ArangoDB 4.0](../../release-notes/version-4.0/incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
+{{< /info >}}
+
+#### Attribute shorthand notation
+
 There is also shorthand notation for attributes which is handy for
 returning existing variables easily:
 
@@ -270,6 +327,8 @@ objects can be used as attribute values:
 { "name" : "Vanessa", "age" : 15 }
 { "name" : "John", likes : [ "Swimming", "Skiing" ], "address" : { "street" : "Cucumber lane", "zip" : "94242" } }
 ```
+
+#### Attribute access
 
 Individual object attributes can later be accessed by their names using the
 dot `.` accessor:

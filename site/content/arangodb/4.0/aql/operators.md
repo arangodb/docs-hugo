@@ -354,6 +354,7 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
+- `...` for [spreading arrays](#array-spread) into array literals
 - `LET [ ] = [ ]` and `FOR [ ] IN [[ ], [ ]]` for [array destructuring](#array-destructuring)
 
 ### Indexed value access
@@ -731,6 +732,55 @@ The question mark operator can be used for nested search:
 - [Nested search with ArangoSearch](../indexes-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 
+### Array spread
+
+The spread syntax `...` lets you insert the elements of an array into an
+array literal you are constructing. Prefix an expression that evaluates to an
+array with three dots (`...`), and each of its elements is added individually to
+the surrounding array, preserving their order. You can use it multiple times and
+freely mix it with regular elements:
+
+```aql
+---
+name: aqlArraySpread_2
+description: ''
+---
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN [1, ...arr1, 4, ...arr2, 7]
+```
+
+The array spread offers a concise alternative to combining arrays with the
+[`PUSH()`](functions/array.md#push) and [`APPEND()`](functions/array.md#append)
+functions. The following query is equivalent to the previous one but harder to
+read and to extend:
+
+```aql
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN PUSH(APPEND(PUSH(APPEND([1], arr1), 4), arr2), 7) // hard to get right
+```
+
+You can spread the result of the [range operator](#range-operator) as well:
+
+```aql
+---
+name: aqlArraySpreadRange_1
+description: ''
+---
+RETURN [0, ...(1..3), 4]
+```
+
+If the operand of an array spread is `null`, it is ignored and nothing is added
+(no warning is raised). If the operand is neither an array nor `null`, such as a
+number, string, boolean, or object, then it is skipped and the query raises a
+warning:
+
+```aql
+RETURN [1, ...null, 2]   // [1, 2]
+RETURN [1, ...42, 2]     // [1, 2] (with an 'array expected' warning)
+```
+
 ### Array destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -812,6 +862,7 @@ the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
+- `...` for [spreading objects](#object-spread) into object literals
 - `LET { } = { }` and `FOR { } IN [{ }, { }]` for [object destructuring](#object-destructuring)
 
 ### Attribute access
@@ -863,6 +914,62 @@ LET bindvar  = ob[@attr]
 If you try to access a non-existing attribute in one way or another, the result
 is a `null` value without raising an error or warning.
 {{< /info >}}
+
+### Object spread
+
+The spread syntax `...` lets you copy the attributes of an object into an
+object literal you are constructing. Prefix an expression that evaluates to an
+object with three dots (`...`), and all of its top-level attributes are added to
+the surrounding object. The value of each attribute is copied as-is, including
+any nested sub-objects. You can use it multiple times and freely mix it with
+regular attributes:
+
+```aql
+---
+name: aqlObjectSpread_2
+description: ''
+---
+LET defaults = { color: "red", size: "M" }
+LET overrides = { size: "L", price: 9.99 }
+RETURN { ...defaults, type: "shirt", ...overrides, currency: "USD" }
+```
+
+The object spread offers a concise alternative to the
+[`MERGE()`](functions/document-object.md#merge) function. The following query is
+equivalent to the previous one:
+
+```aql
+RETURN MERGE(defaults, { type: "shirt" }, overrides, { currency: "USD" })
+```
+
+If an attribute name occurs more than once, whether it comes from a spread or is
+written directly, the last occurrence wins and determines the value of the
+attribute. In the example above, the `size` attribute of `defaults` (`"M"`) is
+overwritten by the one of `overrides` (`"L"`).
+
+Colliding attributes are replaced as a whole and not merged recursively, even if
+their values are objects. In this regard, the object spread behaves like
+[`MERGE()`](functions/document-object.md#merge) and not like
+[`MERGE_RECURSIVE()`](functions/document-object.md#merge_recursive):
+
+```aql
+---
+name: aqlObjectSpreadShallow_1
+description: ''
+---
+LET base = { size: { width: 2, height: 3 } }
+RETURN { ...base, size: { width: 5 } }
+```
+
+If the operand of an object spread is `null`, it is ignored and nothing is added
+(no warning is raised). If the operand is neither an object nor `null`, such as a
+number, string, boolean, or array, then it is skipped and the query raises a
+warning:
+
+```aql
+RETURN { a: 1, ...null }   // { "a": 1 }
+RETURN { a: 1, ...42 }     // { "a": 1 } (with an 'object expected' warning)
+```
 
 ### Object destructuring
 
