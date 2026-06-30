@@ -25,13 +25,15 @@ A local cluster is meant for evaluation, development, and testing. It is not a
 substitute for a properly sized, highly available production cluster.
 {{< /info >}}
 
-{{< warning >}}
-The Contextual Data Platform and ArangoDB Enterprise Edition images target the
-**x86-64 (`amd64`)** architecture. On Apple Silicon Macs (M1, M2, M3, and
-later), these images run under emulation, which is slow and may be unreliable.
-For a smooth experience, use an Intel-based Mac or an x86-64 host. You can still
-follow this tutorial to set up the cluster itself.
-{{< /warning >}}
+{{< info >}}
+**Apple Silicon (arm64) Macs.** ArangoDB publishes native `arm64` images, so the
+database runs natively on Apple Silicon — you just need to tell the Operator and
+the deployment to use `arm64`. The [Online setup](online-setup.md) steps show
+how, and the [handoff at the end of this tutorial](#next-install-the-contextual-data-platform)
+points the settings out. Some individual Contextual Data Platform components
+(such as certain AI services) may only ship for `amd64`; if you plan to run the
+full Platform locally on Apple Silicon, check availability with the Arango team.
+{{< /info >}}
 
 ## Step 1: Install Homebrew
 
@@ -197,276 +199,29 @@ arrow keys to select one, press {{< kbd "Return" >}} to see its details, press
 {{< kbd "l" >}} to view its logs, and press {{< kbd "?" >}} for help. To quit,
 type `:quit` and press {{< kbd "Return" >}}.
 
-## Step 8: Install operator-managed ArangoDB on your cluster
+## Next: install the Contextual Data Platform
 
-Your cluster is ready. The following steps install the ArangoDB Kubernetes
-Operator and create a single ArangoDB instance on it. A single-server
-deployment (`spec.mode: Single`) is used to keep resource usage low, which is
-the right choice for local work.
+Your local Kubernetes cluster is now ready. It provides the Kubernetes
+environment that the Arango Contextual Data Platform needs. Installing the
+ArangoDB Kubernetes Operator, creating a deployment, and installing the Platform
+services is covered by the platform installation guide, so this tutorial does not
+repeat those steps.
 
-{{< info >}}
-The ArangoDB Enterprise Edition images and the Operator require **license
-credentials** (a client ID and a client secret) that you receive from the
-Arango team. You need them in Step 8.2.
-
-If you do not have a license, you can either stop after Step 7 (the cluster is
-already complete) or deploy the free Community Edition instead — see
-[*No license? Deploy the Community Edition*](#no-license-deploy-the-community-edition).
-{{< /info >}}
-
-### No license? Deploy the Community Edition
-
-If you do not have license credentials, you can still see the Operator manage a
-database by deploying the free **Community Edition**. It uses a different Helm
-chart (without `-enterprise`), needs no license secret, and does not include the
-gateway or vector indexes, which are Enterprise features.
-
-Follow these steps instead of Steps 8.1 to 8.5:
-
-1. Create the namespace:
-
-   ```sh
-   kubectl create namespace arango
-   ```
-
-2. Install the **Community** Operator with Helm. Note that the download URL does
-   *not* contain `-enterprise`. You can use a newer version than `1.4.3` if one
-   is available on the [releases page](https://github.com/arangodb/kube-arangodb/releases/):
-
-   ```sh
-   VERSION_OPERATOR='1.4.3'
-   helm upgrade --install operator \
-     --namespace arango \
-     "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-${VERSION_OPERATOR}.tgz" \
-     --set "operator.architectures={amd64,arm64}"
-   ```
-
-   The `operator.architectures` flag lets the Operator run on both Intel
-   (`amd64`) and Apple Silicon (`arm64`) Macs. Without it, the Operator pod stays
-   `Pending` forever on Apple Silicon because it defaults to `amd64` only.
-
-   Wait for it to be ready:
-
-   ```sh
-   kubectl wait --for=condition=ready pod \
-     --selector app.kubernetes.io/name=kube-arangodb \
-     --namespace arango --timeout=120s
-   ```
-
-3. Save the following as `deployment.yaml`. Note that the image is
-   `arangodb/arangodb` (Community), not `arangodb/enterprise`, and there is no
-   `license` field:
-
-   ```yaml
-   apiVersion: "database.arangodb.com/v1"
-   kind: "ArangoDeployment"
-   metadata:
-     name: "deployment-example"
-   spec:
-     mode: Single
-     image: "arangodb/arangodb:3.12.4.3"
-     # On an Apple Silicon (arm64) Mac, uncomment the next two lines:
-     # architecture:
-     #   - arm64
-   ```
-
-   On an Apple Silicon Mac, you must uncomment the `architecture` lines.
-   Otherwise the database pod defaults to `amd64` and stays `Pending`. You can
-   use a newer Community image than `3.12.4.3` if one is available on
-   [Docker Hub](https://hub.docker.com/r/arangodb/arangodb/tags).
-
-4. Apply it and watch the pod start:
-
-   ```sh
-   kubectl apply --namespace arango -f deployment.yaml
-
-   kubectl get pods --namespace arango --watch
-   ```
-
-   You should see one pod named `deployment-example-sngl-*` reach the status
-   `Running`. Press {{< kbd "Ctrl C" >}} to stop watching.
-
-5. Reach it from your Mac. Because there is no gateway, you forward the port of
-   the database service `deployment-example` directly (not `deployment-example-ea`):
-
-   ```sh
-   kubectl port-forward --namespace arango \
-     service/deployment-example 8529:8529
-   ```
-
-   Leave this running and open <https://127.0.0.1:8529/> in your browser. Accept
-   the self-signed certificate warning to continue.
-
-6. The Operator generates a random `root` password and stores it in a secret.
-   Read it with:
-
-   ```sh
-   kubectl get secret deployment-example-root-password --namespace arango \
-     -o jsonpath='{.data.password}' | base64 --decode
-   ```
-
-   If that secret does not exist, list the secrets with
-   `kubectl get secrets --namespace arango` and look for the one whose name ends
-   in `-root-password`. Log in to the web interface as user `root` with this
-   password.
-
-This gives you a working, operator-managed ArangoDB database without a license.
-The remaining sections below (Steps 8.1 onward) describe the Enterprise path and
-are not needed for the Community Edition.
-
-### Step 8.1: Create a namespace
-
-A *namespace* keeps all the ArangoDB resources grouped together. Create one
-called `arango`:
-
-```sh
-kubectl create namespace arango
-```
-
-### Step 8.2: Store your license credentials
-
-Create a secret that holds your license credentials so the Operator can
-activate the deployment. Replace `<license-client-id>` and
-`<license-client-secret>` with the actual values you received:
-
-```sh
-kubectl create secret generic arango-license-key \
-  --namespace arango \
-  --from-literal=license-client-id="<license-client-id>" \
-  --from-literal=license-client-secret="<license-client-secret>"
-```
-
-Check that it was created:
-
-```sh
-kubectl get secret arango-license-key --namespace arango
-```
-
-You should see:
-
-```
-NAME                 TYPE     DATA   AGE
-arango-license-key   Opaque   2      10s
-```
-
-### Step 8.3: Install the Operator with Helm
-
-The [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
-(`kube-arangodb`) is the component that creates and manages ArangoDB for you.
-Install it with Helm:
-
-You can use a newer version than `1.4.3` if one is available on the
-[releases page](https://github.com/arangodb/kube-arangodb/releases/):
-
-```sh
-VERSION_OPERATOR='1.4.3'
-helm upgrade --install operator \
-  --namespace arango \
-  "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
-  --set "webhooks.enabled=true" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.architectures={amd64,arm64}"
-```
-
-The `operator.architectures` value lets the Operator run on both Intel (`amd64`)
-and Apple Silicon (`arm64`) Macs. Without `arm64`, the Operator pod stays
-`Pending` forever on Apple Silicon.
-
-Wait for the Operator to be ready, then confirm it is running:
-
-```sh
-kubectl wait --for=condition=ready pod \
-  --selector app.kubernetes.io/name=kube-arangodb-enterprise \
-  --namespace arango --timeout=120s
-
-kubectl get pods --namespace arango \
-  --selector app.kubernetes.io/name=kube-arangodb-enterprise
-```
-
-You should see one pod with a status of `Running`:
-
-```
-NAME                                        READY   STATUS    RESTARTS   AGE
-arango-operator-operator-xxxxxxxxxx-xxxxx   2/2     Running   0          45s
-```
-
-### Step 8.4: Create an ArangoDB deployment
-
-Now tell the Operator to create an ArangoDB instance. Save the following as a
-file named `deployment.yaml`. It defines a single-server deployment with the
-gateway enabled and vector indexes turned on (needed by features such as
-GraphRAG):
-
-```yaml
-apiVersion: "database.arangodb.com/v1"
-kind: "ArangoDeployment"
-metadata:
-  name: "deployment-example"
-spec:
-  mode: Single
-  image: "arangodb/enterprise:3.12.9"
-  # On an Apple Silicon (arm64) Mac, uncomment the next two lines:
-  # architecture:
-  #   - arm64
-  gateway:
-    enabled: true
-    dynamic: true
-  single:
-    args:
-      - --vector-index
-  license:
-    secretName: arango-license-key
-```
-
-On an Apple Silicon Mac, you must uncomment the `architecture` lines. Otherwise
-the database and gateway pods default to `amd64` and stay `Pending`.
-
-Apply the file and watch the pods start:
-
-```sh
-kubectl apply --namespace arango -f deployment.yaml
-
-kubectl get pods --namespace arango --watch
-```
-
-After a minute or two, you should see two pods reach the status `Running`:
-
-- `deployment-example-sngl-*` (the ArangoDB single server)
-- `deployment-example-gway-*` (the gateway)
-
-Press {{< kbd "Ctrl C" >}} to stop watching once they are running.
-
-### Step 8.5: Access ArangoDB from your Mac
-
-The deployment is reachable on port `8529` *inside* the cluster. To reach it
-from your Mac, forward that port to your machine:
-
-```sh
-kubectl port-forward --namespace arango \
-  service/deployment-example-ea 8529:8529
-```
-
-Leave this command running. While it runs, open
-<https://127.0.0.1:8529/> in your browser to reach the ArangoDB web interface.
+Continue with the [Online setup](online-setup.md) guide. Your local cluster
+already satisfies the cluster requirement checked in
+[Step 2](online-setup.md#step-2-create-a-namespace) (`kubectl cluster-info` and
+`kubectl get nodes`), so you can run that check to confirm, then follow the guide
+through creating the namespace, installing the Operator, and deploying the
+Platform. You receive the package configuration file and license credentials that
+it references from the Arango team.
 
 {{< info >}}
-Your browser shows a security warning because the deployment uses a self-signed
-certificate. This is expected for a local setup. Click the advanced or
-"proceed anyway" option to continue.
+**On an Apple Silicon (arm64) Mac**, apply the `arm64` settings highlighted in
+the Online setup guide: include `arm64` in
+`--set "operator.architectures={amd64,arm64}"` when installing the Operator, and
+add `spec.architecture: [arm64]` to the `ArangoDeployment`. Without them, the
+pods stay `Pending`.
 {{< /info >}}
-
-To stop forwarding the port, return to the Terminal and press
-{{< kbd "Ctrl C" >}}.
-
-### Step 8.6 (optional): Install the full Contextual Data Platform
-
-The steps above give you operator-managed ArangoDB. To add the rest of the
-Arango Contextual Data Platform (the unified web interface, the AI services, and
-object storage), continue with the remaining steps of the
-[Online setup](online-setup.md) guide, starting from
-[*Get the Contextual Data Platform CLI tool*](online-setup.md#step-6-get-the-contextual-data-platform-cli-tool).
-Those steps require the package configuration file you receive from the Arango
-team.
 
 ## Stop, start, and delete the cluster
 
@@ -535,7 +290,9 @@ storage class, so you can continue from [Step 5](#step-5-check-that-the-cluster-
 {{< info >}}
 **Reaching services from your Mac.** Unlike minikube, kind does not expose an
 address that your Mac can reach directly. The simplest option is port
-forwarding, which works for any service without extra setup:
+forwarding, which works for any service without extra setup. For example, once
+you have installed the Platform via the [Online setup](online-setup.md) guide,
+you can forward its gateway service:
 
 ```sh
 kubectl port-forward --namespace arango service/deployment-example-ea 8529:8529
