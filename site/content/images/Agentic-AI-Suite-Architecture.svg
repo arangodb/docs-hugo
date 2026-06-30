@@ -1,0 +1,184 @@
+<svg viewBox="0 0 1320 820" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic AI Suite full architecture" style="display:block;width:100%;max-width:1200px;margin:0 auto">
+  <style>
+    .suite .node rect { transition: fill 120ms, stroke 120ms; }
+    .suite .node:hover rect { fill: #1f5c38; stroke: #4ade80; }
+    .suite .node.byoc:hover rect { fill: #FFFC4E; }
+  </style>
+  <defs>
+    <marker id="aw" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 4,0 8" fill="#4F6D8B"/>
+    </marker>
+    <marker id="aw-s" markerWidth="10" markerHeight="8" refX="1" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="10 0,0 4,10 8" fill="#4F6D8B"/>
+    </marker>
+  </defs>
+<g class="suite"><rect width="1320" height="820" fill="#f0fdf4" rx="6"/>
+<rect x="40" y="30" width="560" height="130" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="53" y="51" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">PRESENTATION LAYER</text>
+<rect x="640" y="30" width="300" height="130" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="653" y="51" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">OBSERVABILITY LAYER</text>
+<rect x="40" y="200" width="360" height="400" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="53" y="221" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">INGESTION LAYER</text>
+<rect x="420" y="200" width="220" height="400" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="433" y="221" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">RAG BUILDING LAYER</text>
+<rect x="670" y="200" width="360" height="380" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="683" y="221" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">CONTEXT HARNESS LAYER</text>
+<rect x="1060" y="200" width="220" height="400" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="1073" y="221" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">AGENTIC CONTEXT LAYER</text>
+<rect x="670" y="610" width="360" height="190" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="683" y="631" font-family="sans-serif" font-size="12" font-weight="bold" fill="#166534" letter-spacing="0.4">CONTEXTUAL MODEL LAYER</text>
+<rect x="980" y="40" width="300" height="110" rx="8" fill="#ffffff" stroke="#4F6D8B" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="996" y="62" font-family="sans-serif" font-size="11" font-weight="bold" fill="#4F6D8B">LEGEND</text>
+<path d="M 996 86 L 1052 86" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<text x="1062" y="90" font-family="sans-serif" font-size="11" fill="#4F6D8B">Data flow</text>
+<path d="M 996 116 L 1052 116" fill="none" stroke="#4F6D8B" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aw)"/>
+<text x="1062" y="120" font-family="sans-serif" font-size="11" fill="#4F6D8B">Optimization / control</text>
+<g class="node hub"><rect x="80" y="66" width="140" height="72" rx="8" fill="#15803d" stroke="#22c55e" stroke-width="2"/>
+<text x="150" y="97.7" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff">ADA</text>
+<text x="150" y="118.6" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#86efac">Digital Assistant</text>
+</g>
+<g class="node ai"><rect x="250" y="66" width="140" height="72" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="320" y="98.9" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">AQLizer</text>
+<text x="320" y="114.0" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">NL → AQL</text>
+</g>
+<g class="node ai"><rect x="420" y="66" width="150" height="72" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="495" y="99.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">Graph</text>
+<text x="495" y="113.0" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">Visualizer</text>
+</g>
+<g class="node ai"><rect x="740" y="66" width="120" height="72" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="800" y="99.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">AutoObserve</text>
+<text x="800" y="113.0" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#86efac">traces · registry</text>
+</g>
+<rect x="52" y="250" width="166" height="290" rx="8" fill="#bbf7d0" stroke="#4ade80" stroke-width="1.1" stroke-dasharray="3 3"/>
+<text x="135" y="531" text-anchor="middle" font-family="sans-serif" font-size="10.5" font-weight="bold" fill="#166534">AutoImport</text>
+<g class="node ai"><rect x="64" y="272" width="56" height="48" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="92" y="293.6" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff">Source</text>
+<text x="92" y="305.2" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff">Manager</text>
+</g>
+<g class="node ai"><rect x="64" y="364" width="56" height="46" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="92" y="390.2" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">ArangoLink</text>
+</g>
+<g class="node ai"><rect x="64" y="452" width="56" height="46" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="92" y="472.4" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">File</text>
+<text x="92" y="485.1" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Upload</text>
+</g>
+<g class="node ai"><rect x="146" y="351" width="64" height="72" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="178" y="384.4" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">File</text>
+<text x="178" y="397.1" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Manager</text>
+</g>
+<g class="node hub"><rect x="298" y="372" width="92" height="64" rx="8" fill="#15803d" stroke="#22c55e" stroke-width="2"/>
+<text x="344" y="408.4" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">AutoGraph</text>
+</g>
+<g class="node ai"><rect x="306" y="344" width="80" height="34" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="346" y="364.1" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="bold" fill="#ffffff">Virtual Graph</text>
+</g>
+<g class="node hub"><rect x="475" y="250" width="100" height="68" rx="8" fill="#15803d" stroke="#22c55e" stroke-width="2"/>
+<text x="525" y="288.8" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">AutoRAG</text>
+</g>
+<g class="node ai"><rect x="428" y="362" width="54" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="455" y="383.4" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">AutoRAG</text>
+<text x="455" y="392.7" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Partition</text>
+<text x="455" y="402.0" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Builder</text>
+</g>
+<g class="node ai"><rect x="498" y="362" width="54" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="525" y="383.4" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">AutoRAG</text>
+<text x="525" y="392.7" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Partition</text>
+<text x="525" y="402.0" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Builder</text>
+</g>
+<g class="node ai"><rect x="572" y="362" width="54" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="599" y="383.4" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">AutoRAG</text>
+<text x="599" y="392.7" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Partition</text>
+<text x="599" y="402.0" text-anchor="middle" font-family="sans-serif" font-size="8" font-weight="bold" fill="#ffffff">Builder</text>
+</g>
+<text x="558" y="394" font-family="sans-serif" font-size="16" fill="#166534">…</text>
+<g class="node ai"><rect x="428" y="470" width="72" height="52" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="464" y="499.7" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">FileParser</text>
+</g>
+<g class="node ai"><rect x="758" y="248" width="76" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="796" y="269.0" text-anchor="middle" font-family="sans-serif" font-size="8.5" font-weight="bold" fill="#ffffff">Entity</text>
+<text x="796" y="278.9" text-anchor="middle" font-family="sans-serif" font-size="8.5" font-weight="bold" fill="#ffffff">Resolution</text>
+<text x="796" y="288.8" text-anchor="middle" font-family="sans-serif" font-size="8.5" font-weight="bold" fill="#ffffff">Studio</text>
+</g>
+<g class="node ai"><rect x="844" y="248" width="72" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="880" y="273.7" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">Feature</text>
+<text x="880" y="284.7" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">Extraction</text>
+</g>
+<g class="node ai"><rect x="926" y="248" width="72" height="56" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="962" y="273.7" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">Ontology</text>
+<text x="962" y="284.7" text-anchor="middle" font-family="sans-serif" font-size="9.5" font-weight="bold" fill="#ffffff">Builder</text>
+</g>
+<g class="node ai"><rect x="686" y="302" width="76" height="58" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="724" y="328.4" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">AQL</text>
+<text x="724" y="341.1" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Optimizer</text>
+</g>
+<g class="node hub"><rect x="808" y="322" width="108" height="78" rx="8" fill="#15803d" stroke="#22c55e" stroke-width="2"/>
+<text x="862" y="357.9" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Context</text>
+<text x="862" y="373.0" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Optimizer</text>
+</g>
+<g class="node ai"><rect x="930" y="316" width="80" height="58" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="970" y="348.7" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">AutoEval</text>
+</g>
+<g class="node ai"><rect x="686" y="420" width="76" height="58" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="724" y="445.6" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">GAE</text>
+<text x="724" y="461.9" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#86efac">analytics</text>
+</g>
+<g class="node ai"><rect x="930" y="420" width="80" height="58" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="970" y="452.4" text-anchor="middle" font-family="sans-serif" font-size="10" font-weight="bold" fill="#ffffff">ToolBuilder</text>
+</g>
+<g class="node byoc"><rect x="1098" y="248" width="144" height="52" rx="8" fill="#FFFEE0" stroke="#FFFC4E" stroke-width="1.5"/>
+<text x="1170" y="277.7" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">External Agents</text>
+</g>
+<g class="node ai"><rect x="1090" y="322" width="150" height="58" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="1165" y="355.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">AutoRetrievers</text>
+</g>
+<g class="node ai"><rect x="1090" y="402" width="150" height="52" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="1165" y="432.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">AgentMemory</text>
+</g>
+<g class="node ai"><rect x="1090" y="478" width="150" height="52" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="1165" y="508.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">AgentBuilder</text>
+</g>
+<g class="node ai"><rect x="700" y="664" width="80" height="60" rx="8" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
+<text x="740" y="698.1" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#ffffff">GraphML</text>
+</g>
+<g class="node hub"><rect x="812" y="656" width="118" height="88" rx="8" fill="#15803d" stroke="#22c55e" stroke-width="2"/>
+<text x="871" y="704.8" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#ffffff">AutoTuner</text>
+</g>
+<g class="node byoc"><rect x="946" y="668" width="72" height="62" rx="8" fill="#FFFEE0" stroke="#FFFC4E" stroke-width="1.5"/>
+<text x="982" y="696.4" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">Model</text>
+<text x="982" y="709.1" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#5a3a1f">Host</text>
+</g>
+<path d="M 92 320 L 92 364" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 120 387 L 146 387" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 120 475 L 133 475 L 133 405 L 146 405" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 210 387 L 298 387" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<text x="254" y="381" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#4F6D8B">structured</text>
+<text x="254" y="403" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#4F6D8B">unstructured</text>
+<path d="M 390 384 L 410 384 L 410 284 L 475 284" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<text x="448" y="279" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#4F6D8B">Context graph</text>
+<path d="M 346 344 L 346 185 L 650 185 L 650 388 L 808 388" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 862 322 L 862 232 L 525 232 L 525 250" fill="none" stroke="#4F6D8B" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aw)"/>
+<path d="M 525 318 L 525 345" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 455 345 L 599 345" fill="none" stroke="#4F6D8B" stroke-width="1.6"/>
+<path d="M 455 345 L 455 362" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 525 345 L 525 362" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 599 345 L 599 362" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 448 418 L 448 470" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 470 470 L 470 418" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 845 322 L 845 312 L 796 312 L 796 304" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 880 322 L 880 304" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 885 322 L 962 312 L 962 304" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 808 338 L 786 338 L 786 331 L 762 331" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 916 342 L 930 342" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 808 382 L 788 382 L 788 449 L 762 449" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 916 384 L 925 384 L 925 449 L 930 449" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1010 345 L 1045 345 L 1045 351 L 1090 351" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 862 400 L 862 628 L 871 628 L 871 656" fill="none" stroke="#4F6D8B" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#aw)"/>
+<path d="M 724 478 L 724 640 L 740 640 L 740 664" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 930 700 L 946 700" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1158 380 L 1158 402" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1172 402 L 1172 380" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1165 454 L 1165 478" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1090 504 L 1078 504 L 1078 351 L 1090 351" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1158 300 L 1158 322" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+<path d="M 1175 322 L 1175 300" fill="none" stroke="#4F6D8B" stroke-width="1.6" marker-end="url(#aw)"/>
+</g></svg>
