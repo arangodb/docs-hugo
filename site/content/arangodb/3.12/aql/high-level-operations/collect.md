@@ -12,20 +12,34 @@ data. For aggregation using a sliding window, see the [`WINDOW` operation](windo
 
 ## Syntax
 
-There are several syntax variants for `COLLECT` operations:
+There are multiple syntax variants for `COLLECT` operations:
 
-<pre><code>COLLECT <em>variableName</em> = <em>expression</em>
-COLLECT <em>variableName</em> = <em>expression</em> INTO <em>groupsVariable</em>
-COLLECT <em>variableName</em> = <em>expression</em> INTO <em>groupsVariable</em> = <em>projectionExpression</em>
-COLLECT <em>variableName</em> = <em>expression</em> INTO <em>groupsVariable</em> KEEP <em>keepVariable</em>
-COLLECT <em>variableName</em> = <em>expression</em> WITH COUNT INTO <em>countVariable</em>
-COLLECT <em>variableName</em> = <em>expression</em> AGGREGATE variableName = <em>aggregateExpression</em>
-COLLECT <em>variableName</em> = <em>expression</em> AGGREGATE variableName = <em>aggregateExpression</em> INTO <em>groupsVariable</em>
-COLLECT AGGREGATE <em>variableName</em> = <em>aggregateExpression</em>
-COLLECT AGGREGATE <em>variableName</em> = <em>aggregateExpression</em> INTO <em>groupsVariable</em>
-COLLECT WITH COUNT INTO <em>countVariable</em></code></pre>
 
-All variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+COLLECT <var> = <expr> [… , <varN> = <exprN>]
+[AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]]
+[INTO <groupsVar> [= <projectionExpr>]]
+[OPTIONS { … }]
+```
+
+```aql-syntax
+COLLECT
+AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]
+[OPTIONS { … }]
+```
+
+```aql-syntax
+COLLECT [<var> = <expr> [… , <varN> = <exprN>]]
+WITH COUNT INTO <countVar>
+[OPTIONS { … }]
+```
+
+```aql-syntax
+COLLECT <var> = <expr> [… , <varN> = <exprN>]
+INTO <groupsVar>
+KEEP <keepVar> [… , <keepVarN>]
+[OPTIONS { … }]
+```
 
 {{< info >}}
 The `COLLECT` operation eliminates all local variables in the current scope.
@@ -51,8 +65,8 @@ FOR u IN users
 ```
 
 The second form does the same as the first form, but additionally introduces a
-variable (specified by *groupsVariable*) that contains all elements that fell into the
-group. This works as follows: The *groupsVariable* variable is an array containing 
+variable (specified by *groupsVar*) that contains all elements that fell into the
+group. This works as follows: The *groupsVar* variable is an array containing 
 as many elements as there are in the group. Each member of that array is
 a JSON object in which the value of every variable that is defined in the 
 AQL query is bound to the corresponding attribute. Note that this considers
@@ -95,7 +109,7 @@ will be returned.
 
 ## Discarding obsolete variables
 
-The third form of `COLLECT` allows rewriting the contents of the *groupsVariable* 
+The third form of `COLLECT` allows rewriting the contents of the *groupsVar* 
 using an arbitrary *projectionExpression*:
 
 ```aql
@@ -109,9 +123,9 @@ FOR u IN users
 ```
 
 In the above example, only the *projectionExpression* is `u.name`. Therefore,
-only this attribute is copied into the *groupsVariable* for each document. 
+only this attribute is copied into the *groupsVar* for each document. 
 This is probably much more efficient than copying all variables from the scope into 
-the *groupsVariable* as it would happen without a *projectionExpression*.
+the *groupsVar* as it would happen without a *projectionExpression*.
 
 {{< tip >}}
 You can also express such projections using an [Aggregation](#aggregation) with
@@ -146,13 +160,13 @@ FOR u IN users
 `COLLECT` also provides an optional `KEEP` clause that can be used to control
 which variables will be copied into the variable created by `INTO`. If no 
 `KEEP` clause is specified, all variables from the scope will be copied as 
-sub-attributes into the *groupsVariable*. 
+sub-attributes into the *groupsVar*. 
 This is safe but can have a negative impact on performance if there 
 are many variables in scope or the variables contain massive amounts of data. 
 
-The following example limits the variables that are copied into the *groupsVariable*
+The following example limits the variables that are copied into the *groupsVar*
 to just `name`. The variables `u` and `someCalculation` also present in the scope
-will not be copied into *groupsVariable* because they are not listed in the `KEEP` clause:
+will not be copied into *groupsVar* because they are not listed in the `KEEP` clause:
 
 ```aql
 FOR u IN users
