@@ -19,18 +19,18 @@ entering through Envoy, which acts as the API gateway and HTTP frontend for
 all services behind it. From there, requests are routed to the
 ArangoDB Platform Services, which group together the core building blocks:
 
-- **Platform Enablers** — the [File Manager](../platform-suite/file-manager/)
+- **Platform Enablers**: the [File Manager](../platform-suite/file-manager/)
   for object storage and the [Secret Manager](../platform-suite/secrets-manager/)
   for credentials and other sensitive configuration.
-- **ArangoDB** — the distributed multi-model database at the heart of the platform,
+- **ArangoDB**: the distributed multi-model database at the heart of the platform,
   deployed as Coordinators, DB-Servers, and Agents and managed by the
   [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/).
-- **Agentic AI Suite** — the optional AI components (AutoGraph, GraphRAG,
+- **Agentic AI Suite**: the optional AI components (AutoGraph, GraphRAG,
   GraphML, Graph Analytics, and others) that sit alongside ArangoDB and consume
   its data.
 
 Alongside the built-in services, the cluster can also host
-[user-defined services (BYOC)](../platform-suite/container-manager/) — your
+[user-defined services (BYOC)](../platform-suite/container-manager/): your
 own containers, deployed and routed through the same Envoy gateway so they
 share authentication, networking, and lifecycle management with the rest of
 the platform.
@@ -62,8 +62,8 @@ with traditional deployment approaches:
   controlled rolling updates and easy rollback capabilities.
 
 - **Cloud and On-Premises Flexibility**: Run on any Kubernetes-compatible
-  environment—public cloud providers (AWS, Azure, GCP), private cloud, or
-  on-premises infrastructure—with consistent deployment across all environments.
+  environment, with consistent deployment across public cloud providers
+  (AWS, Azure, GCP), private cloud, and on-premises infrastructure.
 
 ## The ArangoDB Kubernetes Operator
 

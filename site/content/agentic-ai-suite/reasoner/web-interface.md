@@ -54,7 +54,7 @@ requests.
    query tab, where you can verify and run it.
 
 {{< tip >}}
-The Reasoner operates in one-shot mode. Each question is independent — there is
+The Reasoner operates in one-shot mode. Each question is independent: there is
 no follow-up context between messages.
 {{< /tip >}}
 

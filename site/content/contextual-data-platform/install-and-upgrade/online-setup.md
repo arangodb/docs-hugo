@@ -96,15 +96,25 @@ Make sure set the the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
 ```sh
-VERSION_OPERATOR='1.4.2' # Use a newer version if available
+VERSION_OPERATOR='1.4.3' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
   "https://github.com/arangodb/kube-arangodb/releases/download/${VERSION_OPERATOR}/kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
   --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.architectures={amd64}"
+  --set "operator.architectures={amd64,arm64}"
 ```
+
+{{< warning >}}
+Do not use Operator version `1.4.2`. It has a regression that prevents it from
+creating the required JWT and CA secrets, so the deployment never starts. Use
+`1.4.3` or newer.
+{{< /warning >}}
+
+The `operator.architectures={amd64,arm64}` setting lets the Operator run on both
+`amd64` and Apple Silicon (`arm64`) nodes, such as a local minikube cluster on an
+Apple Silicon Mac. On an `amd64`-only cluster, you can use `{amd64}` instead.
 
 The output looks similar to the following on success:
 
@@ -118,13 +128,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.2
+You have installed Kubernetes ArangoDB Operator in version 1.4.3
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.2/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.3/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -186,6 +196,16 @@ spec:
   license:
     secretName: arango-license-key
   # ...
+```
+
+On Apple Silicon (`arm64`) nodes, such as a local minikube cluster on an Apple
+Silicon Mac, add `spec.architecture` to the deployment. Otherwise the pods
+default to `amd64` and stay `Pending`:
+
+```yaml
+spec:
+  architecture:
+    - arm64
 ```
 
 You can save the specification as a YAML file, e.g. `deployment.yaml`.

@@ -90,7 +90,7 @@ connection, allowing the client to display progress in real time.
 
 > **Note:** Streaming is only available via the API.
 
-**General query — request:**
+**General query, request:**
 
 ```json
 {
@@ -99,7 +99,7 @@ connection, allowing the client to display progress in real time.
 }
 ```
 
-**Example SSE stream — general query:**
+**Example SSE stream, general query:**
 
 ```
 event: phase
@@ -118,7 +118,7 @@ event: done
 data: {"synthesized": false}
 ```
 
-**Optimization query — request:**
+**Optimization query, request:**
 
 ```json
 {
@@ -127,7 +127,7 @@ data: {"synthesized": false}
 }
 ```
 
-**Example SSE stream — optimization query:**
+**Example SSE stream, optimization query:**
 
 ```
 event: phase
@@ -169,11 +169,11 @@ preferred.
 }
 ```
 
-## `POST /query` — request parameters
+## `POST /query` request parameters
 
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `request` | string | Yes | — | The user question or query to optimize |
+| `request` | string | Yes | (none) | The user question or query to optimize |
 | `stream` | boolean | No | `true` | `true` returns an SSE stream; `false` returns a JSON response after completion |
 
 ## HTTP status codes
@@ -181,7 +181,7 @@ preferred.
 | Code | Description |
 |---|---|
 | `200` | Request completed successfully |
-| `500` | Processing failed — the error detail includes the phase during which the failure occurred |
+| `500` | Processing failed: the error detail includes the phase during which the failure occurred |
 
 ## When validation does not pass
 
@@ -201,8 +201,8 @@ operational monitoring.
 
 | Endpoint | Purpose | Kubernetes Probe |
 |---|---|---|
-| `GET /health` | Liveness check — confirms the service process is running | Liveness probe |
-| `GET /health/ready` | Readiness check — verifies connectivity to the AI coder and the MCP server | Readiness probe |
+| `GET /health` | Liveness check: confirms the service process is running | Liveness probe |
+| `GET /health/ready` | Readiness check: verifies connectivity to the AI coder and the MCP server | Readiness probe |
 | `GET /health/mcp` | Detailed MCP server connectivity status | Diagnostic / monitoring |
 
 ### Liveness check

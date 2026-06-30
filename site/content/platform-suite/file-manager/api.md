@@ -261,7 +261,7 @@ which means the file is not referenced by any active service deployment.
 ## RAG Input Files
 
 RAG input files are binary files uploaded for GraphRAG processing. They are
-database-scoped and support automatic versioning — each upload of the same
+database-scoped and support automatic versioning: each upload of the same
 filename within the same database creates a new version. Supported file types
 include images, videos, audio, PDFs, and other binary media.
 

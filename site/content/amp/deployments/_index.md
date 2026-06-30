@@ -110,7 +110,7 @@ role bindings to regulate access control on a deployment level.
 7. Click the __Open database UI__ button or on the database UI link to open
    the dashboard of your new ArangoDB deployment.
 
-At this point your ArangoDB deployment is available for you to use — **Have fun!**
+At this point your ArangoDB deployment is available for you to use: **Have fun!**
 
 If you have disabled the [auto-login option](#auto-login-to-database-ui) to the
 database web interface, you need to follow the additional steps outlined below
