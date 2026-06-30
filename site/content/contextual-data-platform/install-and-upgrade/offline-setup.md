@@ -453,7 +453,7 @@ The UUID wrapped in quote marks is the deployment ID.
 
 Use your license credentials together with the inventory file and deployment ID
 from the previous step to obtain a license key. You can do this with the
-License Activation portal or with the Platform CLI tool — both produce an
+License Activation portal or with the Platform CLI tool: both produce an
 equivalent license key.
 
 {{< tabs "offline-generate-license-key" >}}
@@ -465,9 +465,9 @@ equivalent license key.
    - **Inventory** (default): drop the `inventory.json` file into the upload
      area, or click to select it. Captures the full deployment shape and is
      recommended for air-gapped deployments.
-   - **Managed — Deployment ID only**: enter the deployment ID from the
+   - **Managed (Deployment ID only)**: enter the deployment ID from the
      previous step. No inventory file is needed. Available only if
-     **Managed** activation is enabled for your license — check your
+     **Managed** activation is enabled for your license: check your
      contract or with your Arango contact. If it is not enabled, use
      **Inventory** mode instead.
 4. Optionally enable **Custom TTL** to override the default license duration.

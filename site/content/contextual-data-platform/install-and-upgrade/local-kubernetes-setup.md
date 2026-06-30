@@ -4,13 +4,14 @@ menuTitle: Local Kubernetes setup
 weight: 3
 description: >-
   A step-by-step walkthrough for setting up a local Kubernetes cluster on a Mac,
-  from installing the tools to a running cluster, ready for operator-managed
-  ArangoDB and the Arango Contextual Data Platform
+  from installing the tools to a running cluster, ready for the ArangoDB
+  Kubernetes Operator and the Arango Contextual Data Platform
 ---
 This tutorial walks you through setting up a local Kubernetes cluster on a Mac,
 one step at a time, starting from a machine with nothing installed. When you
-finish, you have a running cluster that you can use to install operator-managed
-ArangoDB and the Arango Contextual Data Platform for evaluation and development.
+finish, you have a running cluster that you can use to install the ArangoDB
+Kubernetes Operator and the Arango Contextual Data Platform for evaluation and
+development.
 
 You run every command in this tutorial in the **Terminal** app. To open it,
 press {{< kbd "Cmd Space" >}}, type `Terminal`, and press {{< kbd "Return" >}}.
@@ -26,9 +27,11 @@ substitute for a properly sized, highly available production cluster.
 {{< /info >}}
 
 {{< info >}}
-**Apple Silicon (arm64) Macs.** ArangoDB publishes native `arm64` images, so the
-database runs natively on Apple Silicon — you just need to tell the Operator and
-the deployment to use `arm64`. The [Online setup](online-setup.md) steps show
+**Apple Silicon (arm64) Macs.** ArangoDB publishes `linux/arm64` images. Like all
+containers on macOS, they run inside Docker's lightweight Linux VM rather than
+directly on macOS, but on Apple Silicon the `arm64` CPU instructions run as-is,
+without the translation or emulation that `amd64` images would need. You just
+need to tell the Operator and the deployment to use `arm64`. The [Online setup](online-setup.md) steps show
 how, and the [handoff at the end of this tutorial](#next-install-the-contextual-data-platform)
 points the settings out. Some individual Contextual Data Platform components
 (such as certain AI services) may only ship for `amd64`; if you plan to run the
@@ -65,8 +68,9 @@ brew --version
 
 ## Step 2: Install and start Docker Desktop
 
-minikube runs your Kubernetes cluster inside Docker, so you need Docker running
-first.
+minikube can run your Kubernetes cluster on several container or virtual machine
+tools. This guide uses minikube's Docker driver, so Docker is the one you install
+here and it must be running before you start the cluster.
 
 Install Docker Desktop:
 
@@ -78,12 +82,17 @@ Now start it: open **Launchpad**, click the **Docker** icon, and wait until the
 whale icon in the menu bar at the top of the screen stops animating. The first
 launch may ask you to accept a license agreement and grant permissions.
 
-Give Docker enough resources for ArangoDB:
+Give Docker enough resources for ArangoDB. On the Docker driver, minikube runs
+inside Docker and cannot use more CPU or memory than Docker itself is given, so
+set Docker higher than the values you pass to minikube in
+[Step 4](#step-4-start-the-cluster) and leave some headroom for the host:
 
 1. Click the cog wheel icon in the menu bar and choose **Resources**.
-2. Set **CPUs** to at least `4` and **Memory** to at least `8 GB`
-   (use `8` CPUs and `16 GB` if you plan to install the full Contextual Data
-   Platform).
+2. Set **CPUs** to at least `6` and **Memory** to at least `10 GB`. minikube
+   later requests `4` CPUs and `8 GB`, and requesting all of Docker's memory
+   leaves nothing for Docker or macOS. (For the full Contextual Data Platform,
+   set **CPUs** to at least `10` and **Memory** to at least `20 GB`, since
+   minikube then requests `8` CPUs and `16 GB`.)
 3. Click **Apply**.
 
 Confirm Docker is running by checking its version in the Terminal:
@@ -94,23 +103,21 @@ docker --version
 
 ## Step 3: Install the command-line tools
 
-Install the three tools you need with a single command:
+Install the two tools you need with a single command:
 
 ```sh
-brew install kubectl helm minikube
+brew install kubectl minikube
 ```
 
 These are:
 
-- `kubectl` — the command you use to talk to the Kubernetes cluster.
-- `helm` — the package manager used later to install the ArangoDB Operator.
-- `minikube` — the tool that creates and runs the local cluster.
+- `kubectl`: the command you use to talk to the Kubernetes cluster.
+- `minikube`: the tool that creates and runs the local cluster.
 
-Confirm they all installed correctly:
+Confirm they both installed correctly:
 
 ```sh
 kubectl version --client
-helm version
 minikube version
 ```
 
@@ -119,7 +126,10 @@ Each command should print a version number.
 ## Step 4: Start the cluster
 
 Create and start the cluster, telling minikube how many CPUs and how much
-memory to use. The `--memory` value is in megabytes, so `8192` means 8 GB:
+memory to use. The `--memory` value is in megabytes, so `8192` means 8 GB. These
+values stay below the resources you gave Docker in
+[Step 2](#step-2-install-and-start-docker-desktop), leaving headroom for Docker
+and macOS:
 
 ```sh
 minikube start --cpus=4 --memory=8192 --driver=docker
@@ -199,6 +209,12 @@ arrow keys to select one, press {{< kbd "Return" >}} to see its details, press
 {{< kbd "l" >}} to view its logs, and press {{< kbd "?" >}} for help. To quit,
 type `:quit` and press {{< kbd "Return" >}}.
 
+On a fresh cluster the `default` namespace is empty, so `:pods` shows nothing at
+first. Press {{< kbd "0" >}} to show all namespaces and see Kubernetes' own
+system pods in `kube-system`. Your ArangoDB pods appear here later, once you
+install the Operator and create a deployment by following the
+[Online setup](online-setup.md) guide.
+
 ## Next: install the Contextual Data Platform
 
 Your local Kubernetes cluster is now ready. It provides the Kubernetes
@@ -247,8 +263,7 @@ minikube delete
 
 [kind](https://kind.sigs.k8s.io/) (Kubernetes IN Docker) is another way to run a
 local cluster. Its advantage is that it can model a multi-node cluster, which is
-a closer approximation of a real production setup. The trade-off is that
-reaching services from your Mac takes a little more setup.
+a closer approximation of a real production setup.
 
 If you want to use kind instead of minikube, replace Steps 3 and 4 above with
 the following. Steps 1 and 2 (Homebrew and Docker) are the same.
@@ -256,7 +271,7 @@ the following. Steps 1 and 2 (Homebrew and Docker) are the same.
 1. Install the tools:
 
    ```sh
-   brew install kubectl helm kind
+   brew install kubectl kind
    ```
 
 2. Create a single-node cluster:
@@ -288,17 +303,11 @@ kind also configures `kubectl` automatically and provides a default `standard`
 storage class, so you can continue from [Step 5](#step-5-check-that-the-cluster-is-running).
 
 {{< info >}}
-**Reaching services from your Mac.** Unlike minikube, kind does not expose an
-address that your Mac can reach directly. The simplest option is port
-forwarding, which works for any service without extra setup. For example, once
-you have installed the Platform via the [Online setup](online-setup.md) guide,
-you can forward its gateway service:
-
-```sh
-kubectl port-forward --namespace arango service/deployment-example-ea 8529:8529
-```
-
-You stop port forwarding by pressing {{< kbd "Ctrl C" >}}.
+**Reaching services from your Mac.** With any local cluster, including minikube
+and kind, services running inside the cluster are not reachable from your Mac by
+default and need port forwarding. This applies once you have installed the
+Platform; see [Interfaces](_index.md#interfaces) for how to reach the web
+interface.
 {{< /info >}}
 
 To remove a kind cluster:

@@ -152,7 +152,7 @@ prefix is `SG_`).
 
 ### Corpus-graph nodes
 
-**`sources`** — one ingested source document
+**`sources`**: one ingested source document
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -162,7 +162,7 @@ prefix is `SG_`).
 | `partition_id` | (empty until assigned) | Filled once its domain becomes a partition. |
 | `embeddings` | `[vector]` | Corpus-level vector used to cluster sources into domains. |
 
-**`domains`** — a topic cluster of similar sources
+**`domains`**: a topic cluster of similar sources
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -170,7 +170,7 @@ prefix is `SG_`).
 | `members` | `[source ids]` | The sources grouped into this domain. |
 | `module` | `default` | Owning module. |
 
-**`rags`** — the RAG-partition configuration (written by the RAG Strategizer)
+**`rags`**: the RAG-partition configuration (written by the RAG Strategizer)
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -182,7 +182,7 @@ prefix is `SG_`).
 | `entity_types` | `[configured types]` | Entity types the extractor may produce (the per-cluster ontology; typically 8–12 types). |
 | `smart_graph_attribute` | `partition_id` | The SmartGraph sharding key. |
 
-**`modules`** — the top-level corpus container
+**`modules`**: the top-level corpus container
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -191,7 +191,7 @@ prefix is `SG_`).
 
 ### Knowledge-graph nodes
 
-**`Documents`** — a full document inside a partition (provenance)
+**`Documents`**: a full document inside a partition (provenance)
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -200,7 +200,7 @@ prefix is `SG_`).
 | `partition_id` | `default_0_a` | Which RAG partition it belongs to. |
 | `import_number` | `1` | Which import / build produced it. |
 
-**`Chunks`** — a token-sized passage, the retrieval unit
+**`Chunks`**: a token-sized passage, the retrieval unit
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -210,7 +210,7 @@ prefix is `SG_`).
 | `partition_id` | `default_0_a` | Owning partition. |
 | `embedding` | `[vector, when enabled]` | Per-chunk vector for search. |
 
-**`Entities`** — an extracted entity, a node in the graph
+**`Entities`**: an extracted entity, a node in the graph
 
 | Field | Example value | What it is |
 |-------|---------------|------------|
@@ -224,7 +224,7 @@ The set of `entity_type` values you see across a corpus is the union of every
 partition's ontology, so a multi-cluster corpus shows more distinct types than any
 single partition's 8–12.
 
-**`Communities`** — a cluster of related entities
+**`Communities`**: a cluster of related entities
 
 | Field | Example value | What it is |
 |-------|---------------|------------|

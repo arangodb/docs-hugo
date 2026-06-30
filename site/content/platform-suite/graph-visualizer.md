@@ -78,7 +78,7 @@ The Graph Visualizer interface is comprised of the following components:
   See [Add nodes to the canvas manually](#add-nodes-to-the-canvas-manually).
 - **Queries**:
   A button in the top bar, next to the search field. Opens a dialog
-  with two tabs — **Queries** for running or saving AQL queries, and
+  with two tabs: **Queries** for running or saving AQL queries, and
   **Canvas actions** for selection-based queries.
   See [Add nodes and edges using a query](#add-nodes-and-edges-using-a-query)
   and [Canvas Actions](#add-nodes-and-edges-using-a-query-based-on-a-selection-canvas-actions).

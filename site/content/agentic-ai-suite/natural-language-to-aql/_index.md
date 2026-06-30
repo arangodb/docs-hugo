@@ -50,7 +50,7 @@ to the database for execution.
 
 The service offers two main capabilities:
 
-**AQLizer — Natural language to AQL**\
+**AQLizer: Natural language to AQL**\
 Converts plain language questions into executable AQL queries and runs them against
 your database. Returns results in natural language, AQL, or JSON format. This is the
 primary capability for querying your data without knowing AQL.
@@ -66,7 +66,7 @@ Useful for general knowledge questions, text analysis, and AQL-related explanati
 - **Schema-aware query generation**: Uses your actual database schema to produce
   accurate, immediately usable queries.
 - **Flexible output formats**: Receive results as a natural language explanation,
-  the AQL query, or raw JSON — individually or combined.
+  the AQL query, or raw JSON: individually or combined.
 - **Streaming responses**: Get results incrementally as they are generated, for a
   faster, more interactive experience.
 - **Multiple LLM provider support**: Use OpenAI, OpenRouter, or any OpenAI-compatible

@@ -243,7 +243,7 @@ install request):
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `CHAT_MAX_COMPLETION_TOKENS` | model-aware (`8192` fallback) | Maximum completion tokens requested per chat call. When unset, the Importer picks a value that fits the chat model's known context window — for example `2048` for `gpt-4` (8k), `768` for `gpt-3.5-turbo` (4k), `4096` for the 16k variants, and `8192` for `gpt-4o` / `gpt-4-turbo` / `gpt-5.4-nano` / `o1` / `o3` and unknown models. Lower it explicitly to leave more room for the prompt. |
+| `CHAT_MAX_COMPLETION_TOKENS` | model-aware (`8192` fallback) | Maximum completion tokens requested per chat call. When unset, the Importer picks a value that fits the chat model's known context window: for example `2048` for `gpt-4` (8k), `768` for `gpt-3.5-turbo` (4k), `4096` for the 16k variants, and `8192` for `gpt-4o` / `gpt-4-turbo` / `gpt-5.4-nano` / `o1` / `o3` and unknown models. Lower it explicitly to leave more room for the prompt. |
 | `CHAT_MODEL_CONTEXT_TOKENS` | model-aware | Approximate total context window for the chat model. When unset, the Importer falls back to a built-in mapping that covers the common OpenAI models (see below). Set this explicitly when using a model the Importer does not recognize, such as a private fine-tune. |
 | `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` | (unset) | Explicit prompt-packing description budget passed to GraphRAG as `best_model_max_token_size` and `cheap_model_max_token_size`. Overrides the value derived from `CHAT_MODEL_CONTEXT_TOKENS`. Useful for sparse graphs (short entity names, few relationships) where the conservative auto-derived budget is unnecessarily small. |
 
@@ -279,9 +279,9 @@ preserved for custom or private fine-tunes.
 
 Some newer OpenAI model identifiers (for example `gpt-5.4-pro`, `o3-pro`) reject
 `/v1/chat/completions` and require `/v1/responses`. The Importer detects these
-errors automatically — matching phrasings such as *"not supported in the
-v1/chat/completions"*, *"not a chat model"*, or an explicit `v1/responses` hint
-— retries the call against `client.responses.create`, and caches the model name
+errors automatically, matching phrasings such as *"not supported in the
+v1/chat/completions"*, *"not a chat model"*, or an explicit `v1/responses` hint,
+retries the call against `client.responses.create`, and caches the model name
 so subsequent calls in the same process skip the failing chat-completion attempt.
 
 Chat-shaped fields are mapped to Responses fields automatically:

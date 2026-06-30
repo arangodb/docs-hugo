@@ -136,7 +136,7 @@ An HTML artifact renders custom HTML, CSS, or SVG directly in the chat panel.
 
 - **Purpose**: Diagrams, dashboards, tables, content panels, styled lists, and
   other visual or interactive UI components outside of charting.
-- **Features**: Flexible — can be standard HTML for tables, interactive
+- **Features**: Flexible, can be standard HTML for tables, interactive
   diagrams (e.g., SVG), or explanatory layouts.
 - **Example**:
   - An entity relationship diagram using SVG

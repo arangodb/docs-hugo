@@ -84,7 +84,7 @@ flowchart TD
 ## Architecture overview
 
 The Reasoner runs as a single self-contained service. It bundles an AI coder
-that communicates with the ArangoDB MCP Server — a dedicated bridge that
+that communicates with the ArangoDB MCP Server: a dedicated bridge that
 exposes ArangoDB operations as structured tools.
 
 ```mermaid
@@ -124,24 +124,24 @@ following terms: `optimize`, `slow`, `performance`, `speed up`, `faster`,
 
 The pipeline runs through the following stages automatically:
 
-1. **Baseline Profiling** — The original query is profiled to measure execution
+1. **Baseline Profiling**: The original query is profiled to measure execution
    time, memory usage, index utilization, and rows scanned. This establishes the
    benchmark.
-2. **Index Discovery** — All available indexes on the relevant collections are
+2. **Index Discovery**: All available indexes on the relevant collections are
    retrieved to inform the optimization strategy.
-3. **Query Rewriting** — A new query is produced using applicable optimization
+3. **Query Rewriting**: A new query is produced using applicable optimization
    techniques.
-4. **Syntax Validation** — The rewritten query is validated for correctness
+4. **Syntax Validation**: The rewritten query is validated for correctness
    before execution, at no additional query cost.
-5. **Side-by-Side Comparison** — Both the original and optimized queries are
+5. **Side-by-Side Comparison**: Both the original and optimized queries are
    executed and their performance metrics compared.
-6. **Result Verification** — The Reasoner confirms that the optimized query
+6. **Result Verification**: The Reasoner confirms that the optimized query
    returns identical results to the original, matching both row counts and data
    content, before accepting it.
-7. **Automatic Retry** — If the improvement does not meet the minimum threshold
+7. **Automatic Retry**: If the improvement does not meet the minimum threshold
    (5%) or the results do not match, a new optimization approach is attempted
    automatically, up to 3 attempts.
-8. **Optimization Report** — A structured markdown report is returned including
+8. **Optimization Report**: A structured markdown report is returned including
    a performance comparison table, a summary of what changed, the reason it is
    faster, and the final optimized query.
 
