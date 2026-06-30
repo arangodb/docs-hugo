@@ -153,10 +153,6 @@ Specify which traversal algorithm to use (string):
   traversal orders other than `"weighted"`, which means the `weights` attribute
   is like `[0, 1, 2, 3, …]` for e.g. `order: "dfs"` and therefore not useful.
 
-#### `bfs`
-
-Deprecated, use `order: "bfs"` instead.
-
 #### `uniqueVertices`
 
 Ensure node uniqueness (string):
