@@ -15,29 +15,115 @@ aliases:
   - arangodb/devel/data-science # 3.10, 3.11
 ---
 
-{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
+{{< embed-svg "Agentic-AI-Suite-Architecture" "The Agentic AI Suite, layer by layer." >}}
 
-## What's included
+## A layered architecture
 
-The Agentic AI Suite is composed of the following major components:
+The Agentic AI Suite is organized as a set of cooperating layers. Each layer
+owns one stage of the journey that turns raw enterprise data into context that
+your agents and your people can consume. Data flows from left to right: it is
+**ingested**, shaped into a **Context Graph**, turned into an optimal
+**RAG** system, **enriched and optimized**, backed by **purpose-built models**,
+and finally **served to agents** — all while being **presented** through
+interactive interfaces and kept fully **observable**.
 
-- [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
-  contextual knowledge graph, with the **AutoRAG** assigning each
-  domain the right processing depth.
-- [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
-  queries from natural language to explore your data and gain insights without having
-  to learn the query language first.
-- [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
+### Ingestion Layer — AutoImport
+
+[**AutoImport**](importer/_index.md) is intelligent data ingestion: any source,
+any format, automatically. It manages your data sources, links to external
+databases, imports files, and hands both structured and unstructured data to
+the next layer.
+
+- **ArangoLink** — a unified connector framework that covers 20+ source types
+  (and all major SQL databases through one SQLAlchemy-based connector) out of
+  the box, so no custom ETL code is required.
+- **Source Manager** — monitors freshness and triggers delta re-ingestion
+  automatically, so only changed documents are re-processed.
+- **File Manager** — maintains version history, content hashes, and a full
+  lineage graph for byte-0-to-vertex provenance and GDPR-compliant deletion.
+- **File Upload** — brings in unstructured sources (PDF, Office documents,
+  HTML, Markdown, images, and charts) alongside structured SQL data in the
+  same pipeline.
+
+### Context Graph Layer — AutoGraph
+
+[**AutoGraph**](autograph/_index.md) receives the structured and unstructured
+data and builds a usable **Context Graph** for your enterprise out of the box —
+no months of manual ontology design required. It provides entity resolution,
+feature extraction from documents, AI-aided ontology generation and curation,
+and **Virtual Graph** capabilities whose ontology can later be used for
+federated queries.
+
+### RAG Building Layer — AutoRAG
+
+[**AutoRAG**](autograph/reference/rag-strategizer.md) analyzes the Context Graph,
+decides how to build an optimal [**GraphRAG**](graphrag/_index.md) system, and
+builds it as a set of **RAG partitions**.
+
+- **PartitionBuilders** extract entities, relations, communities, and semantic
+  units in parallel, one strategy per auto-discovered domain — anything from
+  plain vector embeddings to full GraphRAG with custom ontologies and image
+  extraction, interpretation, and description.
+- **FileParser** exhaustively parses large volumes of multimodal sources.
+- A fractal, partitioned design means a new RAG partition is added simply by
+  writing documents with a new `partition_id`, with no schema change and no
+  full rebuild.
+
+### Context Harness Layer — Context Optimizer
+
+The **Context Optimizer** is the AI that measures and enhances your Context
+Graph and retrieval process. It orchestrates a harness of specialized tools so
+that quality and cost are optimized automatically, with no manual benchmarking
+and no need to study graph algorithms:
+
+- **AutoEval** — automatically produces test sets, benchmarks, metrics, and
+  experiments, suggesting configurations along the cost/accuracy frontier.
+- **GAE** — the [Graph Analytics Engine](graph-analytics/_index.md) enriches the
+  graph with PageRank and other graph-algorithmic insights.
+- [**AQL Optimizer**](reasoner/_index.md) — analyzes and optimizes AQL queries
   using AI-powered reasoning, with validated performance improvements.
-- [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
-  from text files to create a knowledge graph that you can then query with a
-  natural language interface.
-- [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
-  classification, and computing embeddings.
-- [**Graph Analytics**](graph-analytics/_index.md):
-  Run graph algorithms such as PageRank on dedicated compute resources to
-  discover influential nodes and patterns.
+- **ToolBuilder** — automates the creation of the tools consumed by the
+  Agentic Context Layer.
+- **Entity Resolution Studio**, **Feature Extraction**, and **Ontology Builder**
+  — refine the entities, features, and ontology of the Context Graph.
+
+### Contextual Model Layer
+
+This layer produces models tuned to your specific Context Graph and use case:
+
+- [**GraphML**](graphml/_index.md) — trains graph neural networks for use cases
+  such as fraud detection, link prediction, classification, and embeddings,
+  directly on your Context Graph.
+- **AutoTuner** — automatically produces fine-tuned models (such as embedding
+  models) optimal for your Context Graph.
+- **ModelHost** — Bring Your Own Model (BYOM), including
+  [private LLMs](private-llms/_index.md) and the models you just fine-tuned with
+  AutoTuner.
+
+### Agentic Context Layer
+
+This is where context gets served to your agents and your people:
+
+- **AutoRetrievers** — the [Retriever](retriever/_index.md) returns natural
+  language responses, with custom retrievers for every use case.
+- **AgentMemory** — persistent agentic memories.
+- **AgentBuilder** — no-code agentic workflows.
+- **ToolGraph** — clustered tools, so an agent can find exactly the tool it
+  needs, with support for custom tools and external agents through natural
+  language queries and an SDK.
+
+### Presentation Layer
+
+- [**ADA**](ada.md) — the Arango Digital Assistant, your chatbot to talk to the
+  database as an administrator.
+- [**AQLizer**](natural-language-to-aql/_index.md) — automatically translates
+  natural language into AQL.
+- **Graph Visualizer** — world-class graph visualization.
+
+### Observability Layer
+
+- **AutoObserve** — full observability, including LLM traces, a model registry,
+  and an experiment registry.
 
 Each component has an intuitive graphical user interface integrated into the
 Arango Contextual Data Platform web interface, guiding you through the process.
