@@ -44,7 +44,7 @@ Before upgrading, it is recommended to:
   - **Take a backup** of the old ArangoDB database using [_arangodump_](../../components/tools/arangodump/_index.md),
     as well as
   - Copy the entire "old" data directory to a safe place, after stopping the ArangoDB Server
-    running on it (if you run an Active Failover or Cluster deployment, you will need to take a copy of their
+    running on it (if you run a Cluster deployment, you will need to take a copy of their
     data directories, from all involved machines, after stopping all the running
     ArangoDB processes).
   - Keep a copy of all ArangoDB package files (executables, configuration files,

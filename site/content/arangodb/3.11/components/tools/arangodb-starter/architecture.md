@@ -11,7 +11,7 @@ description: >-
 The ArangoDB Starter is a program used to create ArangoDB database deployments
 on bare-metal (or virtual machines) with ease.
 It enables you to create everything from a simple Single server instance
-to a full blown Cluster with Datacenter-to-Datacenter Replication in under 5 minutes.
+to a full-blown Cluster in under 5 minutes.
 
 The Starter is intended to be used in environments where there is no higher
 level orchestration system (e.g. Kubernetes) available.
@@ -44,18 +44,15 @@ arangod --version
 
 ## Starter deployment modes
 
-The Starter supports 3 different modes of ArangoDB deployments:
+The Starter supports different modes of ArangoDB deployments:
 
-1. Single server
-1. Active failover
-1. Cluster
-
-Note: Datacenter replication is an option for the `cluster` deployment mode.
+- Single server
+- Cluster
 
 You select one of these modes using the `--starter.mode` command line option.
 
 Depending on the mode you've selected, the Starter launches one or more
-(`arangod` / `arangosync`) server processes.
+`arangod` server processes.
 
 No matter which mode you select, the Starter always provides you
 a common directory structure for storing the servers data, configuration & log files.
@@ -152,11 +149,10 @@ Running the Starter with the configuration example above and adding the
 
 ## Running on multiple machines
 
-For the `activefailover` and `cluster` mode, it is required to run multiple
-Starters, as every Starter only launches a subset of all servers needed
-to form the entire deployment.
-In the `cluster` mode, for example, a single Starter launches at most one Agent,
-one DB-Server, and one Coordinator.
+For the `cluster` mode, it is required to run multiple Starters, as every Starter
+only launches a subset of all servers needed to form the entire deployment.
+For example, a single Starter launches at most one Agent, one DB-Server, and one
+Coordinator.
 
 It is the responsibility of the user to run the Starter on multiple machines such
 that enough servers are started to form the entire deployment.
@@ -190,8 +186,8 @@ The `setup.json` config file must not be edited manually.
 
 ## Running on multiple machines (under the hood)
 
-As mentioned above, when the Starter is used to create an `activefailover`
-or `cluster` deployment, it first creates a "cluster" of Starters.
+As mentioned above, when the Starter is used to create
+a `cluster` deployment, it first creates a "cluster" of Starters.
 
 These are the steps taken by the Starters to bootstrap such a deployment
 from scratch.

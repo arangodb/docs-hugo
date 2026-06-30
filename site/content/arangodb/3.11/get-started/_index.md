@@ -56,12 +56,8 @@ To get started with AQL, check out the AQL vs. SQL comparison.
 
 ## In the Cloud or On-premises
 
-When you are ready for your own ArangoDB server, you can sign up for ArangoDB's
-cloud service called the Arango Managed Platform (AMP), which takes care of the setup and maintenance, so
-that you can focus on building amazing things on top of ArangoDB. See
-[Use ArangoDB in the Cloud](set-up-a-cloud-instance.md) to get started.
-
-You can also install ArangoDB locally or on your own server hardware.
+<!-- TODO public cloud? -->
+You can install ArangoDB locally or on your own server hardware.
 See [Install ArangoDB on-premises](on-premises-installation.md) for more details.
 
 ## Interactive Tutorials
