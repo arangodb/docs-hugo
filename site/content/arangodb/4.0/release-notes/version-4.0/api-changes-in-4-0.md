@@ -59,6 +59,14 @@ as well.
 
 ### Endpoints removed
 
+#### JavaScript Transactions API
+
+The `POST /_api/transaction` endpoint for executing a JavaScript Transaction
+has been removed. It was deprecated since v3.12.0.
+
+You may use [AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor) or
+[Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) instead.
+
 #### Metrics API v2
 
 Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
@@ -130,6 +138,11 @@ an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
 ## JavaScript API
+
+### `db._executeTransaction()` removed
+
+The `_executeTransaction` function has been removed from the `db` object due to
+the removal of JavaScript Transactions.
 
 ### Foxx-related removals
 
