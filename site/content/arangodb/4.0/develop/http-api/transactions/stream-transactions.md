@@ -101,12 +101,13 @@ paths:
               properties:
                 collections:
                   description: |
-                    Must be a JSON object that can have one or all sub-attributes
-                    `read`, `write` or `exclusive`, each being an array of collection names or a
+                    Must be a JSON object that can have the sub-attributes
+                    `read`, `write`, and `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
-                    transaction must be declared with the `write` or `exclusive` attribute or it
-                    will fail, whereas non-declared collections from which is solely read will be
-                    added lazily.
+                    transaction must be declared with the `write` or `exclusive` attribute or the
+                    respective write operations will fail (but not automatically abort the
+                    Stream Transaction), whereas non-declared collections from which is solely
+                    read will be added lazily.
                   type: object
                   properties:
                     read:

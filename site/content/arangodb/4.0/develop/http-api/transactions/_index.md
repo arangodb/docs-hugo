@@ -15,4 +15,5 @@ ArangoDB offers HTTP APIs for different types of transactions:
 
 For a more detailed description of the transaction types, how transactions work
 in ArangoDB, and what guarantees ArangoDB provide, please refer to
-[Transactions in ArangoDB](../../transactions/_index.md). 
+[Transactions](../../transactions/_index.md) in ArangoDB.
+
