@@ -1,0 +1,191 @@
+{{ define "main" -}}
+{{ $stable := "arangodb/stable/" -}}
+<article class="home home-landing">
+  <style>
+    .home-landing { --hl-avocado: var(--color-avocado, #044926); --hl-evergreen: var(--color-evergreen, #007339); --hl-lime: var(--color-leaf-green, #58df20); --hl-ink: #001E2B; --hl-muted: var(--gray-800, #5a5a5a); --hl-border: var(--gray-200, #e5e5e5); --hl-soft: var(--gray-50, #f8f8f8); }
+    .row-main:has(article.home-landing) { max-width: 1320px; }
+    article.home-landing { grid-column: article-start / toc-end; max-width: none; width: auto; margin: 0 60px 0 80px; padding-bottom: 72px; }
+    article.home-landing ~ .toc-container { display: none; }
+    @media screen and (max-width: 768px) { article.home-landing { margin: 0; padding: 10px 20px; } }
+    .home-hero { padding: 8px 0 4px; }
+    .home-hero h1 { font-family: var(--font-headlines); color: var(--hl-avocado); font-size: 2.9rem; line-height: 1.08; letter-spacing: -1px; margin: 0 0 14px; }
+    .home-lead { font-size: 1.35rem; line-height: 1.4; color: var(--hl-muted); font-weight: 500; max-width: 760px; margin: 0 0 26px; }
+    .home-cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 8px; }
+    .home-cta a { display: inline-flex; align-items: center; gap: 9px; border-radius: 999px; padding: 11px 20px; font-size: 1rem; font-weight: 600; font-family: var(--font-headlines); border: 1.5px solid var(--hl-border); color: var(--hl-evergreen); background: #fff; transition: .15s; }
+    .home-cta a:hover { border-color: var(--hl-evergreen); transform: translateY(-1px); text-decoration: none; }
+    .home-cta a.primary { background: var(--hl-avocado); color: #fff; border-color: var(--hl-avocado); }
+    .home-cta a.primary:hover { background: var(--hl-evergreen); }
+    .home-cta i { font-size: .95rem; }
+    article.home-landing > h2 { font-family: var(--font-headlines); color: var(--hl-avocado); font-size: 1.85rem; letter-spacing: -.5px; margin: 52px 0 6px; scroll-margin-top: 110px; }
+    .home-note { color: var(--hl-muted); font-size: 1.02rem; line-height: 1.45; max-width: 760px; margin: 0 0 22px; }
+    .home-grid { display: grid; gap: 16px; }
+    .home-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .home-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+    .home-grid.cols-4 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+    .qcard { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--hl-border); border-left: 4px solid var(--hl-evergreen); border-radius: 8px; padding: 22px 22px 20px; box-shadow: 0 1px 3px rgba(17,18,19,.06); transition: .15s; color: var(--hl-ink); }
+    .qcard:hover { box-shadow: 0 8px 22px rgba(4,73,38,.13); border-left-color: var(--hl-lime); transform: translateY(-2px); text-decoration: none; }
+    .qcard .badge { align-self: flex-start; font-size: .72rem; letter-spacing: .4px; text-transform: uppercase; font-weight: 700; color: var(--hl-evergreen); background: var(--green-50, #e3f2e0); border-radius: 999px; padding: 4px 10px; margin-bottom: 13px; }
+    .qcard h3 { font-family: var(--font-headlines); font-size: 1.2rem; color: var(--hl-avocado); margin: 0 0 8px; }
+    .qcard p { font-size: .97rem; line-height: 1.45; color: var(--hl-muted); margin: 0; }
+    .qcard .go { margin-top: 14px; font-weight: 600; color: var(--hl-evergreen); font-size: .95rem; }
+    .qcard .go::after { content: " \2192"; }
+    .pcard { background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 10px; padding: 22px 22px 18px; }
+    .pcard h3 { display: flex; align-items: center; gap: 10px; font-family: var(--font-headlines); font-size: 1.18rem; color: var(--hl-avocado); margin: 0 0 14px; }
+    .pcard h3 i { color: var(--hl-evergreen); font-size: 1.05rem; }
+    .pcard ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+    .pcard li a { display: flex; align-items: center; gap: 9px; padding: 7px 8px; border-radius: 6px; color: var(--hl-ink); font-size: .98rem; font-weight: 500; transition: .12s; }
+    .pcard li a::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--hl-lime); flex: 0 0 auto; }
+    .pcard li a:hover { background: #fff; color: var(--hl-evergreen); text-decoration: none; }
+    .tasks { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 10px; }
+    .tasks a { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: #fff; border: 1px solid var(--hl-border); border-radius: 7px; padding: 13px 16px; font-weight: 600; font-size: .98rem; color: var(--hl-ink); transition: .12s; }
+    .tasks a:hover { border-color: var(--hl-evergreen); color: var(--hl-evergreen); text-decoration: none; }
+    .tasks a::after { content: "\2192"; color: var(--hl-evergreen); font-weight: 700; }
+    .journey { display: grid; gap: 12px; margin-top: 4px; }
+    .jrow { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start; background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 9px; padding: 16px 18px; }
+    .jrow .num { width: 34px; height: 34px; border-radius: 50%; background: var(--hl-avocado); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-family: var(--font-headlines); }
+    .jrow strong { display: block; font-family: var(--font-headlines); font-size: 1.1rem; color: var(--hl-avocado); margin-bottom: 3px; }
+    .jrow p { margin: 0; font-size: .97rem; line-height: 1.45; color: var(--hl-muted); }
+    .jrow a { color: var(--hl-evergreen); font-weight: 600; }
+  </style>
+  <section class="home-hero">
+    <h1>{{ .Title | markdownify }}</h1>
+    {{ with .Description }}<p class="home-lead">{{ . | markdownify }}</p>{{ end }}
+    <nav class="home-cta" aria-label="Primary shortcuts">
+      <a class="primary" href="{{ (print $stable "get-started/") | relURL }}"><i class="fas fa-rocket"></i>Get started</a>
+      <a href="#choose-path"><i class="fas fa-directions"></i>Choose your path</a>
+      <a href="#popular-tasks"><i class="fas fa-tasks"></i>Find a task</a>
+      <a href="{{ (print $stable "release-notes/") | relURL }}"><i class="fas fa-code-branch"></i>Release notes</a>
+    </nav>
+  </section>
+
+  <h2 id="quick-starts">Quick start guides</h2>
+  <p class="home-note">New to Arango? Pick a starting point and get to a working result fast. The full product manuals live in the sidebar on the left.</p>
+  <section class="home-grid cols-2">
+    <a class="qcard" href="{{ (print $stable "get-started/") | relURL }}">
+      <span class="badge">Database basics</span>
+      <h3>Start with ArangoDB</h3>
+      <p>Learn collections, documents, graphs, and core terminology before writing your first query.</p>
+      <span class="go">Open Get started</span>
+    </a>
+    <a class="qcard" href="{{ (print $stable "get-started/set-up-a-cloud-instance/") | relURL }}">
+      <span class="badge">Cloud setup</span>
+      <h3>Create a cloud instance</h3>
+      <p>Spin up a managed Arango deployment to try the database without installing anything locally.</p>
+      <span class="go">Use Arango in the cloud</span>
+    </a>
+    <a class="qcard" href="{{ (print $stable "get-started/start-using-aql/") | relURL }}">
+      <span class="badge">Query language</span>
+      <h3>Run your first AQL tutorial</h3>
+      <p>Practice CRUD, joins, graph traversal, search, and geospatial queries in a guided walk-through.</p>
+      <span class="go">Start the AQL tutorial</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/graphrag/quick-start/" | relURL }}">
+      <span class="badge">AI applications</span>
+      <h3>Build a GraphRAG pipeline</h3>
+      <p>Turn a document into a knowledge graph and ask it a question, end to end, in the GraphRAG web interface.</p>
+      <span class="go">Start the GraphRAG quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/ada/quick-start/" | relURL }}">
+      <span class="badge">AI assistant</span>
+      <h3>Ask Ada about your data</h3>
+      <p>Configure Ada and get your first natural-language answer from your database in four steps.</p>
+      <span class="go">Start the Ada quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/autograph/quick-start/" | relURL }}">
+      <span class="badge">Knowledge graphs</span>
+      <h3>Organize documents with AutoGraph</h3>
+      <p>Go from a set of documents to a domain-aware, queryable knowledge base in a handful of steps.</p>
+      <span class="go">Start the AutoGraph quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/importer/quick-start/" | relURL }}">
+      <span class="badge">Knowledge graphs</span>
+      <h3>Ingest data with the Importer</h3>
+      <p>Install the Importer and turn your first document into a knowledge graph stored in ArangoDB.</p>
+      <span class="go">Start the Importer quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/retriever/quick-start/" | relURL }}">
+      <span class="badge">Retrieval</span>
+      <h3>Query with the Retriever</h3>
+      <p>Install the Retriever and run your first natural-language query against a knowledge graph.</p>
+      <span class="go">Start the Retriever quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/natural-language-to-aql/quick-start/" | relURL }}">
+      <span class="badge">Query language</span>
+      <h3>Generate AQL from plain language</h3>
+      <p>Ask a question in plain language and get an executable AQL query back, using AQLizer.</p>
+      <span class="go">Start the AQLizer quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/reasoner/quick-start/" | relURL }}">
+      <span class="badge">Query optimization</span>
+      <h3>Optimize queries with the Reasoner</h3>
+      <p>Optimize your first AQL query with the AI-powered Reasoner and apply the rewritten query.</p>
+      <span class="go">Start the Reasoner quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/graph-analytics/quick-start/" | relURL }}">
+      <span class="badge">Graph algorithms</span>
+      <h3>Run Graph Analytics</h3>
+      <p>Start a compute engine, load a graph, and run PageRank to find your most influential nodes.</p>
+      <span class="go">Start the Graph Analytics quick start</span>
+    </a>
+    <a class="qcard" href="{{ "agentic-ai-suite/graphml/quick-start/" | relURL }}">
+      <span class="badge">Machine learning</span>
+      <h3>Predict with GraphML</h3>
+      <p>Train your first graph machine-learning model and generate predictions on your graph.</p>
+      <span class="go">Start the GraphML quick start</span>
+    </a>
+  </section>
+
+  <h2 id="choose-path">Choose your path</h2>
+  <p class="home-note">Jump straight to the material for what you are trying to do. Each path links into the reference manuals.</p>
+  <section class="home-grid cols-3">
+    <div class="pcard">
+      <h3><i class="fas fa-code"></i>Build an application</h3>
+      <ul>
+        <li><a href="{{ "ecosystem/drivers/" | relURL }}">Connect with an official driver</a></li>
+        <li><a href="{{ (print $stable "aql/") | relURL }}">Query your data with AQL</a></li>
+        <li><a href="{{ (print $stable "develop/http-api/") | relURL }}">Call the HTTP API</a></li>
+        <li><a href="{{ "ecosystem/arangodb-mcp-server/" | relURL }}">Wire up the MCP server</a></li>
+      </ul>
+    </div>
+    <div class="pcard">
+      <h3><i class="fas fa-project-diagram"></i>Work with graph &amp; AI</h3>
+      <ul>
+        <li><a href="{{ (print $stable "graphs/") | relURL }}">Model connected data as graphs</a></li>
+        <li><a href="{{ (print $stable "aql/graph-queries/") | relURL }}">Run traversals and shortest paths</a></li>
+        <li><a href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Analyze with Graph Analytics &amp; GraphML</a></li>
+        <li><a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">Ground AI with GraphRAG</a></li>
+      </ul>
+    </div>
+    <div class="pcard">
+      <h3><i class="fas fa-server"></i>Deploy &amp; operate</h3>
+      <ul>
+        <li><a href="{{ (print $stable "deploy/") | relURL }}">Choose a deployment mode</a></li>
+        <li><a href="{{ (print $stable "operations/backup-and-restore/") | relURL }}">Plan backup and restore</a></li>
+        <li><a href="{{ (print $stable "operations/security/") | relURL }}">Configure security and access</a></li>
+        <li><a href="{{ (print $stable "operations/troubleshooting/") | relURL }}">Monitor and troubleshoot</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <h2 id="popular-tasks">Popular tasks</h2>
+  <section class="tasks">
+    <a href="{{ (print $stable "operations/installation/") | relURL }}">Install ArangoDB locally</a>
+    <a href="{{ (print $stable "concepts/data-structure/") | relURL }}">Create a database and collection</a>
+    <a href="{{ (print $stable "get-started/start-using-aql/crud/") | relURL }}">Write AQL CRUD queries</a>
+    <a href="{{ (print $stable "get-started/start-using-aql/graphs/") | relURL }}">Create and query a graph</a>
+    <a href="{{ (print $stable "indexes-and-search/") | relURL }}">Use full-text and vector search</a>
+    <a href="{{ "ecosystem/drivers/" | relURL }}">Connect with a driver</a>
+    <a href="{{ (print $stable "operations/backup-and-restore/") | relURL }}">Set up backup and restore</a>
+    <a href="{{ (print $stable "operations/troubleshooting/") | relURL }}">Troubleshoot deployment issues</a>
+  </section>
+
+  <h2 id="graph-to-ai">From graph to AI</h2>
+  <p class="home-note">Arango takes you from connected data all the way to explainable, context-aware AI, all in one platform.</p>
+  <section class="journey">
+    <div class="jrow"><div class="num">1</div><div><strong>Persist connected data</strong><p>Store <a href="{{ (print $stable "concepts/data-structure/documents/") | relURL }}">JSON documents</a>, <a href="{{ (print $stable "graphs/") | relURL }}">graphs</a>, and key-value data in one native multi-model database.</p></div></div>
+    <div class="jrow"><div class="num">2</div><div><strong>Retrieve context</strong><p>Query with <a href="{{ (print $stable "aql/") | relURL }}">AQL</a> across graph traversal, full-text, vector, geo-spatial, and aggregation, all in a single language.</p></div></div>
+    <div class="jrow"><div class="num">3</div><div><strong>Explore and analyze</strong><p>Discover patterns with visual graph exploration, <a href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Graph Analytics</a>, and <a href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML</a>.</p></div></div>
+    <div class="jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
+  </section>
+</article>
+{{ end -}}

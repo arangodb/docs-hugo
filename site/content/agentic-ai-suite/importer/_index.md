@@ -44,7 +44,7 @@ See [Architecture](architecture.md) for the collections each mode populates.
 
 ## Next steps
 
-- [**Quickstart**](quickstart.md): Prerequisites, installation, and your
+- [**Setup**](setup.md): Prerequisites, installation, and your
   first import call.
 - [**Architecture**](architecture.md): Knowledge-graph collections, vector
   indexes, and the async-job lifecycle.
