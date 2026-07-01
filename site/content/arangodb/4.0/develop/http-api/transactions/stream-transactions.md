@@ -44,33 +44,6 @@ paths:
         until the entire transaction times out.
 
         The transaction description must be passed in the body of the POST request.
-        If the transaction can be started on the server, *HTTP 201* is returned.
-
-        For successfully started transactions, the returned JSON object has the
-        following properties:
-
-        - `error`: boolean flag to indicate if an error occurred (`false`
-          in this case)
-
-        - `code`: the HTTP status code
-
-        - `result`: result containing
-            - `id`: the identifier of the transaction
-            - `status`: containing the string 'running'
-
-        If the transaction specification is either missing or malformed, the server
-        responds with *HTTP 400* or *HTTP 404*.
-
-        The body of the response then contains a JSON object with additional error
-        details. The object has the following attributes:
-
-        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
-
-        - `code`: the HTTP status code
-
-        - `errorNum`: the server error number
-
-        - `errorMessage`: a descriptive error message
       parameters:
         - name: database-name
           in: path
@@ -173,16 +146,106 @@ paths:
       responses:
         '201':
           description: |
-            If the transaction is running on the server,
-            *HTTP 201* will be returned.
+            The transaction has been started on the server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 201
+                  result:
+                    description: |
+                      An object describing the started transaction.
+                    type: object
+                    required:
+                      - id
+                      - status
+                    properties:
+                      id:
+                        description: |
+                          The identifier of the transaction.
+                        type: string
+                      status:
+                        description: |
+                          The status of the transaction. Always `running` for a
+                          successfully started transaction.
+                        type: string
+                        const: running
         '400':
           description: |
-            If the transaction specification is either missing or malformed, the server
-            will respond with *HTTP 400*.
+            The transaction specification is either missing or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the transaction specification contains an unknown collection, the server
-            will respond with *HTTP 404*.
+            The transaction specification contains an unknown collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Transactions
 ```
@@ -243,12 +306,13 @@ paths:
     get:
       operationId: getStreamTransaction
       description: |
-        The result is an object describing the status of the transaction.
-        It has at least the following attributes:
+        Retrieve the status of a Stream Transaction by its identifier.
 
-        - `id`: the identifier of the transaction
-
-        - `status`: the status of the transaction. One of "running", "committed" or "aborted".
+        After a transaction is committed or aborted, the server remembers its
+        final state for a limited time. During this window, querying the
+        transaction returns its final status (`committed` or `aborted`). Once
+        the server garbage-collects this record, the same identifier becomes
+        unknown and the endpoint returns `404`.
       parameters:
         - name: database-name
           in: path
@@ -268,16 +332,105 @@ paths:
       responses:
         '200':
           description: |
-            If the transaction is fully executed and committed on the server,
-            *HTTP 200* will be returned.
+            The transaction is found and its status returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      An object describing the status of the transaction.
+                    type: object
+                    required:
+                      - id
+                      - status
+                    properties:
+                      id:
+                        description: |
+                          The identifier of the transaction.
+                        type: string
+                      status:
+                        description: |
+                          The status of the transaction.
+                        type: string
+                        enum: [running, committed, aborted]
         '400':
           description: |
-            If the transaction identifier specified is either missing or malformed, the server
-            will respond with *HTTP 400*.
+            The transaction identifier is either missing or malformed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the transaction was not found with the specified identifier, the server
-            will respond with *HTTP 404*.
+            No transaction was found with the specified identifier.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Transactions
 ```
@@ -320,32 +473,15 @@ paths:
         Commit a running server-side transaction. Committing is an idempotent operation.
         It is not an error to commit a transaction more than once.
 
-        If the transaction can be committed, *HTTP 200* is returned.
-        The returned JSON object has the following properties:
+        The server remembers a transaction's final state for a limited time after
+        it ends. As a result, the response can vary depending on when you call
+        this endpoint:
 
-        - `error`: boolean flag to indicate if an error occurred (`false`
-          in this case)
-
-        - `code`: the HTTP status code
-
-        - `result`: result containing
-            - `id`: the identifier of the transaction
-            - `status`: containing the string 'committed'
-
-        If the transaction cannot be found, committing is not allowed or the
-        transaction was aborted, the server
-        responds with *HTTP 400*, *HTTP 404* or *HTTP 409*.
-
-        The body of the response then contains a JSON object with additional error
-        details. The object has the following attributes:
-
-        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
-
-        - `code`: the HTTP status code
-
-        - `errorNum`: the server error number
-
-        - `errorMessage`: a descriptive error message
+        - While the transaction is still tracked: committing an already-committed
+          transaction returns `200` (idempotent), and committing an already-aborted
+          transaction returns `400`.
+        - Once the server has garbage-collected the transaction's record, the
+          identifier is no longer known and the endpoint returns `404`.
       parameters:
         - name: database-name
           in: path
@@ -365,20 +501,108 @@ paths:
       responses:
         '200':
           description: |
-            If the transaction was committed,
-            *HTTP 200* will be returned.
+            The transaction has been committed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      An object describing the committed transaction.
+                    type: object
+                    required:
+                      - id
+                      - status
+                    properties:
+                      id:
+                        description: |
+                          The identifier of the transaction.
+                        type: string
+                      status:
+                        description: |
+                          The status of the transaction. Always `committed` for a
+                          successfully committed transaction.
+                        type: string
+                        const: committed
         '400':
           description: |
-            If the transaction cannot be committed, the server
-            will respond with *HTTP 400*.
+            The transaction identifier is malformed, or the transaction is in
+            a state that does not allow committing (for example, it was
+            already aborted).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the transaction was not found, the server
-            will respond with *HTTP 404*.
-        '409':
-          description: |
-            If the transaction was already aborted, the server
-            will respond with *HTTP 409*.
+            No transaction is known under the specified identifier.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Transactions
 ```
@@ -421,32 +645,17 @@ paths:
         Abort a running server-side transaction. Aborting is an idempotent operation.
         It is not an error to abort a transaction more than once.
 
-        If the transaction can be aborted, *HTTP 200* is returned.
-        The returned JSON object has the following properties:
+        The server remembers a transaction's final state for a limited time after
+        it ends. As a result, the response can vary depending on when you call
+        this endpoint:
 
-        - `error`: boolean flag to indicate if an error occurred (`false`
-          in this case)
-
-        - `code`: the HTTP status code
-
-        - `result`: result containing
-            - `id`: the identifier of the transaction
-            - `status`: containing the string 'aborted'
-
-        If the transaction cannot be found, aborting is not allowed or the
-        transaction was already committed, the server
-        responds with *HTTP 400*, *HTTP 404* or *HTTP 409*.
-
-        The body of the response then contains a JSON object with additional error
-        details. The object has the following attributes:
-
-        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
-
-        - `code`: the HTTP status code
-
-        - `errorNum`: the server error number
-
-        - `errorMessage`: a descriptive error message
+        - While the transaction is still tracked: aborting an already-aborted
+          transaction returns `200` (idempotent), and aborting an already-committed
+          transaction returns `400`.
+        - The first abort against an unknown identifier returns `404` and records
+          it as aborted. Subsequent aborts for the same identifier return `200`
+          until the record is garbage-collected, after which the identifier is
+          again unknown and the next abort once more returns `404`.
       parameters:
         - name: database-name
           in: path
@@ -466,20 +675,108 @@ paths:
       responses:
         '200':
           description: |
-            If the transaction was aborted,
-            *HTTP 200* will be returned.
+            The transaction has been aborted.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      An object describing the aborted transaction.
+                    type: object
+                    required:
+                      - id
+                      - status
+                    properties:
+                      id:
+                        description: |
+                          The identifier of the transaction.
+                        type: string
+                      status:
+                        description: |
+                          The status of the transaction. Always `aborted` for a
+                          successfully aborted transaction.
+                        type: string
+                        const: aborted
         '400':
           description: |
-            If the transaction cannot be aborted, the server
-            will respond with *HTTP 400*.
+            The transaction identifier is malformed, or the transaction is in
+            a state that does not allow aborting (for example, it was
+            already committed).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the transaction was not found, the server
-            will respond with *HTTP 404*.
-        '409':
-          description: |
-            If the transaction was already committed, the server
-            will respond with *HTTP 409*.
+            No transaction is known under the specified identifier.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Transactions
 ```
@@ -519,14 +816,8 @@ paths:
     get:
       operationId: listStreamTransactions
       description: |
-        The result is an object with the `transactions` attribute, which contains
-        an array of transactions.
-        In a cluster, the array contains the transactions from all Coordinators.
-
-        Each array entry contains an object with the following attributes:
-
-        - `id`: the transaction's id
-        - `state`: the transaction's status
+        List the currently running Stream Transactions.
+        In a cluster, the list contains the transactions from all Coordinators.
       parameters:
         - name: database-name
           in: path
@@ -539,7 +830,35 @@ paths:
       responses:
         '200':
           description: |
-            If the list of transactions can be retrieved successfully, *HTTP 200* will be returned.
+            The list of transactions can be retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - transactions
+                properties:
+                  transactions:
+                    description: |
+                      An array of currently running transactions. In a cluster, this
+                      contains the transactions from all Coordinators.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - state
+                      properties:
+                        id:
+                          description: |
+                            The identifier of the transaction.
+                          type: string
+                        state:
+                          description: |
+                            The status of the transaction. Always `running`
+                            if it's in the list of running transactions.
+                          type: string
+                          const: running
       tags:
         - Transactions
 ```

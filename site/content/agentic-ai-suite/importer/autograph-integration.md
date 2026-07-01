@@ -3,7 +3,7 @@ title: Integration with AutoGraph
 menuTitle: AutoGraph Integration
 description: >-
   How the Importer service integrates with AutoGraph for automated, partition-aware knowledge graph builds
-weight: 55
+weight: 80
 ---
 
 ## When to use the Importer standalone vs. with AutoGraph
@@ -116,7 +116,7 @@ the Importer yourself only for standalone imports or advanced scenarios
 When using the Importer **standalone** (without AutoGraph), you can set
 `partition_id` to any string to logically separate different import batches
 within the same collections. See the
-[`partition_id` parameter reference](parameters.md#partition_id) for details.
+[`partition_id` parameter reference](reference/parameters.md#partition_id) for details.
 
 ## Related resources
 

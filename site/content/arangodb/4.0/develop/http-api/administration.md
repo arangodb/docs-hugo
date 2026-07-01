@@ -721,7 +721,6 @@ paths:
                     required:
                       - progress
                       - role
-                      - writeOpsEnabled
                       - readOnly
                       - maintenance
                     properties:
@@ -765,10 +764,6 @@ paths:
                         description: |
                           Either `"SINGLE"`, `"COORDINATOR"`, `"PRIMARY"` (DB-Server), or `"AGENT"`.
                         type: string
-                      writeOpsEnabled:
-                        description: |
-                          Whether writes are enabled. **Deprecated**, use `readOnly` instead.
-                        type: boolean
                       readOnly:
                         description: |
                           Whether writes are disabled.

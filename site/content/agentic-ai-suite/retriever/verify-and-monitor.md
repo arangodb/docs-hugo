@@ -14,7 +14,7 @@ weight: 50
 
 You can monitor the Retriever service health using the health endpoint:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{SERVICE_ID}/v1/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
 
 ## Verify Service Status
 

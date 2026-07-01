@@ -124,7 +124,65 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Deprecated AQL options removed
+
+In AQL graph traversals, you can no longer specify the `bfs` attribute in the
+`OPTIONS` object. To enable breadth-first search, use `order: "bfs"` instead of
+`bfs: true`.
+
+The `INSERT` operation no longer supports the `overwrite` attribute in the
+`OPTIONS` object to replace a document if there is already one with the same
+document key. To specify the behavior for how to resolve collisions, use
+`overwriteMode` instead. A setting of `overwriteMode: "replace"` is the same
+as the former `overwrite: true`.
+
+## Statistics features removed
+
+Server and cluster statistics are superseded by the
+[Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
+startup options and HTTP API endpoints related to the statistics features have
+been removed and no `_statistics*` system collections are used by _arangod_
+anymore.
+
+When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
+system collections are actively removed.
+
+The following startup options are now obsolete:
+- `--server.statistics`
+- `--server.statistics-history`
+- `--server.statistics-all-databases`
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+The follow metrics about the statistics feature itself have been removed:
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
+
 ## HTTP RESTful API
+
+### `overwrite` option removed from document API
+
+The `POST /_api/document/{collection}` endpoint for creating a single document
+or multiple documents no longer supports the `overwrite` query parameter.
+If you want to replace existing documents that have the same document keys,
+specify how to resolve collisions with the `overwriteMode` query parameter.
+You can set `overwriteMode` to `"replace"` to achieve the same as formerly
+setting `overwrite` to `true`.
+
+### `minReplicationFactor` removed from collections
+
+The deprecated alias for `writeConcern` has been removed. You can no longer set
+the write concern using `minReplicationFactor` for collections and
+collections also don't report this attribute anymore. Use `writeConcern` instead.
 
 ### Sub-attribute removed from the version API
 
@@ -143,6 +201,9 @@ server-side:
 - `mode`
 - `operationMode`
 - `foxxApi`
+
+Moreover, the following deprecated sub-attribute has been removed from the endpoint:
+- `serverInfo.writeOpsEnabled`
 
 ### Upload API removed
 
@@ -180,9 +241,25 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
+### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ## JavaScript API
 
-### Removed modules and methods
+### Removed modules and globals
 
 The following things have been removed:
 
@@ -192,6 +269,38 @@ The following things have been removed:
 - `@arangodb/aql/functions` module
 
 For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javascript-api).
+
+### Removed collection methods
+
+The following methods have been removed from
+[_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
+as they are either obsolete or didn't provide much value and better alternatives exist:
+
+- `closedRange()`
+- `documents()`
+- `ensureFulltextIndex()`
+- `ensureGeoConstraint()`
+- `ensureGeoIndex()`
+- `ensureHashIndex()`
+- `ensureSkiplist()`
+- `ensureUniqueConstraint()`
+- `ensureUniqueSkiplist()`
+- `ensureVertexCentricIndex()`
+- `fulltext()`
+- `geo()`
+- `iterate()`
+- `load()`
+- `lookupByKeys()`
+- `near()`
+- `range()`
+- `removeByKeys()`
+- `status()`
+- `unload()`
+- `within()`
+- `withinRectangle()`
+
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-methods)
+for details like how you can replace this functionality.
 
 ## Startup options
 

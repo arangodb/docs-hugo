@@ -17,7 +17,7 @@ Authentication uses a Bearer token in the `Authorization` header.
 
 ## Health Check
 
-{{< endpoint "GET" "/_platform/filemanager/health" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/health" >}}
 
 Returns the current health status of the service.
 
@@ -42,7 +42,7 @@ file. The original filename is preserved in the `file_name` metadata field.
 
 ### Upload a BYOC File
 
-{{< endpoint "POST" "/_platform/filemanager/global/byoc/" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
 Uploads a code package for a BYOC container service deployment.
 
@@ -87,7 +87,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 
 ### List BYOC Services
 
-{{< endpoint "GET" "/_platform/filemanager/global/byoc/" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
 
 Lists all uploaded BYOC services with optional filtering and pagination.
 
@@ -127,7 +127,7 @@ Lists all uploaded BYOC services with optional filtering and pagination.
 
 ### List Versions of a BYOC Service
 
-{{< endpoint "GET" "/_platform/filemanager/global/byoc/{name}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}" >}}
 
 Lists all available versions of a specific BYOC service.
 
@@ -170,7 +170,7 @@ Lists all available versions of a specific BYOC service.
 
 ### Get BYOC File Info
 
-{{< endpoint "GET" "/_platform/filemanager/global/byoc/{name}/{version}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
 
 Retrieves metadata for a specific version of a BYOC service.
 
@@ -203,7 +203,7 @@ Retrieves metadata for a specific version of a BYOC service.
 
 ### Download a BYOC File
 
-{{< endpoint "GET" "/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
 
 Downloads the file content as a binary stream.
 
@@ -231,7 +231,7 @@ curl -X GET \
 
 ### Delete a BYOC File
 
-{{< endpoint "DELETE" "/_platform/filemanager/global/byoc/{name}/{version}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
 
 Deletes a specific version of a BYOC service file and its metadata.
 Deletion is only permitted when `safe_to_delete` is `true` in the file metadata,
@@ -267,7 +267,7 @@ include images, videos, audio, PDFs, and other binary media.
 
 ### Upload a RAG Input File
 
-{{< endpoint "POST" "/_platform/filemanager/_db/{database}/rag-input" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
 Uploads a file for RAG processing. Re-uploading a file with the same name
 within the same database automatically creates a new version.
@@ -308,7 +308,7 @@ within the same database automatically creates a new version.
 
 ### List RAG Input Files
 
-{{< endpoint "GET" "/_platform/filemanager/_db/{database}/rag-input" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
 Lists RAG input files for a specific database.
 
@@ -353,7 +353,7 @@ Lists RAG input files for a specific database.
 
 ### Get Version History
 
-{{< endpoint "GET" "/_platform/filemanager/_db/{database}/rag-input/versions" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/versions" >}}
 
 Returns the full version history for a file, looked up by name within the
 specified database.
@@ -396,7 +396,7 @@ specified database.
 
 ### Get RAG Input File Info
 
-{{< endpoint "GET" "/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
 Retrieves metadata for a stored RAG input file. Returns the latest version
 unless a specific version is requested.
@@ -436,7 +436,7 @@ unless a specific version is requested.
 
 ### Download a RAG Input File
 
-{{< endpoint "GET" "/_platform/filemanager/_db/{database}/rag-input/{id}/download" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}/download" >}}
 
 Downloads the file content as a binary stream. Returns the latest version
 unless a specific version is requested.
@@ -462,7 +462,7 @@ unless a specific version is requested.
 
 ### Delete a RAG Input File
 
-{{< endpoint "DELETE" "/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
 Deletes a RAG input file and its metadata. Defaults to the latest version
 unless a specific version is specified. Deletion is only permitted when the
@@ -503,7 +503,7 @@ with no path prefix.
 
 ### Upload an Artifact
 
-{{< endpoint "PUT" "/_platform/filemanager/{file_path}" >}}
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
 
 Uploads a file to the specified path in artifact storage.
 
@@ -529,7 +529,7 @@ Uploads a file to the specified path in artifact storage.
 
 ### List Artifacts
 
-{{< endpoint "GET" "/_platform/filemanager/mlflow-artifacts/artifacts" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/mlflow-artifacts/artifacts" >}}
 
 Lists MLflow artifacts at the specified directory path.
 
@@ -564,7 +564,7 @@ Lists MLflow artifacts at the specified directory path.
 
 ### Download an Artifact
 
-{{< endpoint "GET" "/_platform/filemanager/{file_path}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
 
 Downloads the content of the specified artifact file.
 
@@ -582,7 +582,7 @@ Downloads the content of the specified artifact file.
 
 ### Delete an Artifact
 
-{{< endpoint "DELETE" "/_platform/filemanager/{file_path}" >}}
+{{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/{file_path}" >}}
 
 Removes the specified file or directory and all its contents from artifact storage.
 

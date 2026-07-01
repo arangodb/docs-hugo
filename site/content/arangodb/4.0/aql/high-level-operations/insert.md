@@ -84,26 +84,6 @@ FOR i IN 1..1000
   } INTO users OPTIONS { waitForSync: true }
 ```
 
-### `overwrite`
-
-{{< info >}}
-The `overwrite` option is deprecated and superseded by
-[overwriteMode](#overwritemode).
-{{< /info >}}
-
-If you want to replace existing documents with documents having the same key
-there is the `overwrite` query option. This will let you safely replace the
-documents instead of raising a "unique constraint violated error":
-
-```aql
-FOR i IN 1..1000
-  INSERT {
-    _key: CONCAT('test', i),
-    name: "test",
-    foobar: true
-  } INTO users OPTIONS { overwrite: true }
-```
-
 ### `overwriteMode`
 
 To further control the behavior of INSERT on primary index unique constraint
@@ -118,15 +98,17 @@ modes:
   will only return the document in case it was inserted. In case the
   document already existed, `RETURN NEW` will return `null`.
 - `"replace"`: if a document with the specified `_key` value exists already,
-  it will be overwritten with the specified document value. This mode will
-  also be used when no overwrite mode is specified but the `overwrite`
-  flag is set to `true`.
+  it will be overwritten with the specified document value.
 - `"update"`: if a document with the specified `_key` value exists already,
   it will be patched (partially updated) with the specified document value.
 - `"conflict"`: if a document with the specified `_key` value exists already,
   return a unique constraint violation error so that the insert operation
   fails. This is also the default behavior in case the overwrite mode is
-  not set, and the `overwrite` flag is `false` or not set either.
+  not set.
+
+Note that operations with `overwriteMode` other than `"conflict"` require
+a `_key` attribute in the request payload, therefore they can only be
+performed on collections sharded by `_key`.
 
 The main use case of inserting documents with overwrite mode `ignore` is
 to make sure that certain documents exist in the cheapest possible way.
@@ -176,8 +158,7 @@ INSERT { _from: "vert/A", _to: "vert/B" } INTO coll
 
 ### `versionAttribute`
 
-Only applicable if `overwrite` is set to `true` or `overwriteMode`
-is set to `update` or `replace`.
+Only applicable if `overwriteMode` is set to `update` or `replace`.
 
 You can use the `versionAttribute` option for external versioning support.
 If set, the attribute with the name specified by the option is looked up in the
