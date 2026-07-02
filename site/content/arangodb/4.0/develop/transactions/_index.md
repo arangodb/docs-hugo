@@ -394,9 +394,8 @@ This automatic lazy addition of collections to a transaction also introduces the
 possibility of deadlocks. Deadlocks may occur if there are concurrent transactions
 that try to acquire locks on the same collections lazily.
 
-In order to make a transaction fail when a non-declared collection is used inside
-a transaction for reading, the optional `allowImplicit` sub-attribute of
-`collection` can be set to `false`:
+In order to make operations fail when a non-declared collection is used inside a
+Stream Transaction for reading, set the `allowImplicit` option to `false`:
 
 ```js
 var trx = db._createTransaction({

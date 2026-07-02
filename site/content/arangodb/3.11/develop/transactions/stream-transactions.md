@@ -123,7 +123,7 @@ db._createTransaction({
 **Note**: It is optional to specify collections for read-only access by default.
 Even without specifying them, it is still possible to read from such collections
 from within a transaction, but with relaxed isolation. Please read about
-[transactions locking](_index.md#locking-and-isolation-of-transactions) for more details.
+[transactions locking](locking-and-isolation.md) for more details.
 
 In order to make operations fail when a non-declared collection is used inside a
 Stream Transaction for reading, set the `allowImplicit` option to `false`:
