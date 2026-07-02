@@ -99,6 +99,24 @@ detailed information about breaking changes before upgrading.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
 
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is deprecated since v3.12.0 and no longer supported
+  from ArangoDB 4.0 onward.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
+
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.

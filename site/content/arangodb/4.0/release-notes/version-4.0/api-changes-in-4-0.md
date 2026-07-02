@@ -10,6 +10,31 @@ description: >-
 
 ### Behavior changes
 
+#### `overwrite` option removed from document API
+
+The `POST /_api/document/{collection}` endpoint for creating a single document
+or multiple documents no longer supports the `overwrite` query parameter.
+If you want to replace existing documents that have the same document keys,
+specify how to resolve collisions with the `overwriteMode` query parameter.
+You can set `overwriteMode` to `"replace"` to achieve the same as formerly
+setting `overwrite` to `true`.
+
+#### `minReplicationFactor` removed from collections
+
+The deprecated alias for `writeConcern` has been removed. You can no longer set
+the write concern using `minReplicationFactor` for collections and collections
+also don't report this attribute anymore. Use `writeConcern` instead.
+
+#### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
 #### Version API
 
 The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
@@ -27,6 +52,9 @@ server-side:
 - `mode`
 - `operationMode`
 - `foxxApi`
+
+Moreover, the following deprecated sub-attribute has been removed from the endpoint:
+- `serverInfo.writeOpsEnabled`
 
 #### Metrics API
 
@@ -49,6 +77,12 @@ The `GET /_admin/status` endpoint no longer includes the sub-attributes
 As the `coordinator` object doesn't have any other attributes, it is removed
 as well.
 
+#### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ### Endpoints added
 
 
@@ -66,6 +100,14 @@ as well.
 
 
 ### Endpoints removed
+
+#### JavaScript Transactions API
+
+The `POST /_api/transaction` endpoint for executing a JavaScript Transaction
+has been removed. It was deprecated since v3.12.0.
+
+You may use [AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor) or
+[Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) instead.
 
 #### Metrics API v2
 
@@ -152,6 +194,11 @@ both and were used for debugging purposes.
 
 ## JavaScript API
 
+### `db._executeTransaction()` removed
+
+The `_executeTransaction` function has been removed from the `db` object due to
+the removal of JavaScript Transactions.
+
 ### Removed collection methods
 
 The following methods have been removed from
@@ -199,12 +246,12 @@ as they are either obsolete or didn't provide much value and better alternatives
   Use `ensureIndex(description)` with a `persistent` index type and `unique`
   set to `true`.
 
-- `ensureUniqueSkiplist(description)`
+- `ensureUniqueSkiplist(description)`:
 
   Use `ensureIndex(description)` with a `persistent` index type and `unique`
   set to `true`.
 
-- `ensureVertexCentricIndex(...fields, options)`
+- `ensureVertexCentricIndex(...fields, options)`:
 
   Use `ensureIndex(description)` with a `persistent` index type over `_from` or
   `_to` and at least one more edge attribute.
@@ -261,7 +308,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 
   Obsolete, collections are always loaded.
 
-- `lookupByKeys(keys)`
+- `lookupByKeys(keys)`:
 
   Use `document(keys)`, which also returns a list of documents but without
   wrapping it with `{ "documents": ... }`.
@@ -302,11 +349,16 @@ as they are either obsolete or didn't provide much value and better alternatives
   ({ removed, ignored })
   ```
 
+- `status()`:
+
+  Obsolete, the server no longer reports a collection state (loaded, unloaded, etc.)
+  and collection statuses have no meaning with the RocksDB storage engine anyway.
+
 - `unload()`:
 
   Obsolete, collections are always loaded.
 
-- `within(lat, lon, radius)`
+- `within(lat, lon, radius)`:
 
   Use an AQL query like this:
 
@@ -318,7 +370,7 @@ as they are either obsolete or didn't provide much value and better alternatives
     RETURN doc`, { "@collection": "coll", latitude: 50.93, longitude: 6.93, radius: 250 });
   ```
 
-- `withinRectangle(lat1, lon1, lat2, lon2)`
+- `withinRectangle(lat1, lon1, lat2, lon2)`:
 
   Use an AQL query like this, but note that a GeoJSON polygon uses geodesic lines
   from version 3.10.0 onward (see [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)):

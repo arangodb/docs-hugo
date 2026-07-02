@@ -8,54 +8,60 @@ description: ''
 
 ## In General
 
-Transactions in ArangoDB have been designed with particular use cases 
-in mind. They will be mainly useful for *short and small* data retrieval 
-and/or modification operations.
+Transactions in ArangoDB have been designed with particular use cases
+in mind. They are mainly for **short and small** data retrieval operations
+modification operations, or both.
 
-The implementation is **not** optimized for *very long-running* or *very voluminous*
-operations, and may not be usable for these cases. 
+The implementation is **not** optimized for **very long-running** or
+**very voluminous** operations, and may not be usable for these cases.
 
-One limitation is that a transaction operation information must fit into main
-memory. The transaction information consists of record pointers, revision numbers
-and rollback information. The actual data modification operations of a transaction
-are written to the write-ahead log and do not need to fit entirely into main
-memory.
+One limitation is that transaction operations and transaction metadata must
+fit into main memory. The actual data modification operations of a transaction
+are only written to the write-ahead log on commit and therefore need to fit
+entirely into main memory.
 
-Ongoing transactions will also prevent the write-ahead logs from being fully
+Ongoing transactions also prevent the write-ahead logs from being fully
 garbage-collected. Information in the write-ahead log files cannot be written
 to collection data files or be discarded while transactions are ongoing.
 
-To ensure progress of the write-ahead log garbage collection, transactions should 
+To ensure progress of the write-ahead log garbage collection, transactions should
 be kept as small as possible, and big transactions should be split into multiple
 smaller transactions.
 
-Transactions in ArangoDB cannot be nested, i.e. a transaction must not start another 
-transaction. If an attempt is made to call a transaction from inside a running 
-transaction, the server will throw error *1651 (nested transactions detected)*.
+Transactions in ArangoDB cannot be nested, i.e. you cannot start another
+Stream Transaction inside of a Stream Transaction. It simply starts a separate
+Stream Transaction if you try to. A JavaScript Transaction must not start another 
+transaction either. If an attempt is made to call a transaction from inside a
+running JavaScript Transaction, the server throws error `1651`
+(nested transactions detected).
 
-It is also disallowed to execute user transaction on some of ArangoDB's own system
-collections. This shouldn't be a problem for regular usage as system collections will
-not contain user data and there is no need to access them from within a user
+It is disallowed to execute user transaction on some of ArangoDB's own system
+collections. This shouldn't be a problem for regular usage as system collections
+don't contain user data and there is no need to access them from within a user
 transaction.
 
 Some operations are not allowed inside transactions in general:
 
-- creation and deletion of databases (`db._createDatabase()`, `db._dropDatabase()`)
-- creation and deletion of collections (`db._create()`, `db._drop()`, `db.<collection>.rename()`)
-- creation and deletion of indexes (`db.<collection>.ensureIndex()`, `db.<collection>.dropIndex()`)
+- Creation and deletion of databases
+- Creation and deletion of collections and Views
+- Creation and deletion of indexes
+- Other data definition operations
 
-If an attempt is made to carry out any of these operations during a transaction,
-ArangoDB will abort the transaction with error code *1653 (disallowed operation inside
-transaction)*.
+If you try to run such operations as part of a Stream Transaction, ArangoDB
+executes them independent of the transaction without warning. In case of
+JavaScript Transactions, ArangoDB aborts the transaction with error code `1653`
+(disallowed operation inside transaction).
 
 Finally, all collections that may be modified during a transaction must be 
-declared beforehand, i.e. using the *collections* attribute of the object passed
-to the *_executeTransaction* function. If any attempt is made to carry out a data
-modification operation on a collection that was not declared in the *collections*
-attribute, the transaction will be aborted and ArangoDB will throw error *1652
-unregistered collection used in transaction*. 
-It is legal to not declare read-only collections, but this should be avoided if
-possible to reduce the probability of deadlocks and non-repeatable reads.
+declared beforehand, i.e. using the `collections` attribute of the object passed
+when starting a transaction. If any attempt is made to carry out a data
+modification operation on a collection that was not declared in the `collections`
+attribute, the transaction aborts and ArangoDB throws error `1652`
+(unregistered collection used in transaction).
+It is possible to not declare collections you only read from, but this should be
+avoided if possible to reduce the probability of deadlocks and non-repeatable reads.
+
+<!-- TODO: Update last sentence for RocksDB? -->
 
 ## In Clusters
 
@@ -84,7 +90,7 @@ on the storage-engines.
 
 ### Atomicity
 
-A transaction on *one DB-Server* is either committed completely or not at all.
+A transaction on **one DB-Server** is either committed completely or not at all.
 
 ArangoDB transactions do currently not require any form of global consensus. This makes
 them relatively fast, but also vulnerable to unexpected server outages.
@@ -93,36 +99,38 @@ Should a transaction involve [Leader Shards](../../deploy/cluster/_index.md#db-s
 on *multiple DB-Servers*, the atomicity of the distributed transaction *during the commit operation*
 cannot be guaranteed. Should one of the involved DB-Servers fail during the commit the transaction
 is not rolled-back globally, sub-transactions may have been committed on some DB-Servers, but not on others.
-Should this case occur the client application will see an error.
+Should this case occur, the client application sees an error.
 
 An improved failure handling issue might be introduced in future versions.
 
 ### Consistency
 
-We provide consistency even in the cluster, a transaction will never leave the data in 
-an incorrect or corrupt state. 
+ArangoDB provides consistency even in the cluster. A transaction never leaves
+the data in an incorrect or corrupt state.
 
-In ArangoDB there is always exactly one DB-Server responsible for a given shard. In both
-Storage-Engines the locking procedures ensure that dependent transactions (in the sense that
-the transactions modify the same documents or unique index entries) are ordered sequentially.
-Therefore we can provide [Causal-Consistency](https://en.wikipedia.org/wiki/Consistency_model#Causal_consistency) 
+In a cluster deployment, there is always exactly one DB-Server responsible for
+a given shard. The locking procedure in the RocksDB storage engine ensures that
+dependent transactions (in the sense that the transactions modify the same
+documents or unique index entries) are ordered sequentially.
+Therefore we can provide [Causal-Consistency](https://en.wikipedia.org/wiki/Consistency_model#Causal_consistency)
 for your transactions.
 
 From the applications point-of-view this also means that a given transaction can always
-[read it's own writes](https://en.wikipedia.org/wiki/Consistency_model#Read-your-writes_consistency).
-Other concurrent operations will not change the database state seen by a transaction.
+[read its own writes](https://en.wikipedia.org/wiki/Consistency_model#Read-your-writes_consistency).
+Other concurrent operations don't change the database state seen by a transaction.
 
 ### Isolation
 
-The ArangoDB Cluster provides *Local Snapshot Isolation*. This means that all operations 
-and queries in the transactions will see the same version, or snapshot, of the data on a given
-DB-Server. This snapshot is based on the state of the data at the moment in 
-time when the transaction begins *on that DB-Server*.
+The ArangoDB Cluster provides **Local Snapshot Isolation**. This means that all
+operations and queries in the transactions see the same version, or snapshot,
+of the data on a given DB-Server. This snapshot is based on the state of the
+data at the moment in time when the transaction begins **on that DB-Server**.
 
 ### Durability
 
 It is guaranteed that successfully committed transactions are persistent. Using
-replication and / or *waitForSync* increases the durability (Just as with the single-server).
+replication, `waitForSync`, or both, increases the durability
+(just as with the single server).
 
 ## Size and time limits
 

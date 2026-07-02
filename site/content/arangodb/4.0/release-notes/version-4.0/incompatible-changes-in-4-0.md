@@ -6,6 +6,28 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## JavaScript Transactions removed
+
+Submitting single-request transactions that leverage ArangoDB's JavaScript API
+to run complex operations is no longer supported.
+The feature was deprecated in v3.12.0.
+
+This removes the `db._executeTransaction()` function from the JavaScript API
+and the `POST /_api/transaction` endpoint from the HTTP API.
+
+For rather simple transactions, you might be able to use [AQL queries](../../aql/_index.md)
+instead. Subqueries and the ternary operator are useful tools for this.
+You can read from multiple collections as well as write to multiple collections,
+but you cannot perform reads after writes for a given collection.
+
+To port more complex transactions, you may use
+[Stream Transactions](../../develop/transactions/stream-transactions.md).
+The main operations they support are document CRUD and AQL queries. Unlike
+with JavaScript Transactions, you can start a Stream Transaction, then issue
+individual operations, and eventually decide whether to abort or commit the
+transaction with all its operations. You can therefore put logic on the
+client-side if it's too complex to port to AQL.
+
 ## Foxx removed
 
 The Foxx microservice framework including tasks/queues, the related
@@ -102,6 +124,18 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Deprecated AQL options removed
+
+In AQL graph traversals, you can no longer specify the `bfs` attribute in the
+`OPTIONS` object. To enable breadth-first search, use `order: "bfs"` instead of
+`bfs: true`.
+
+The `INSERT` operation no longer supports the `overwrite` attribute in the
+`OPTIONS` object to replace a document if there is already one with the same
+document key. To specify the behavior for how to resolve collisions, use
+`overwriteMode` instead. A setting of `overwriteMode: "replace"` is the same
+as the former `overwrite: true`.
+
 ## Statistics features removed
 
 Server and cluster statistics are superseded by the
@@ -135,6 +169,21 @@ in Prometheus format.
 
 ## HTTP RESTful API
 
+### `overwrite` option removed from document API
+
+The `POST /_api/document/{collection}` endpoint for creating a single document
+or multiple documents no longer supports the `overwrite` query parameter.
+If you want to replace existing documents that have the same document keys,
+specify how to resolve collisions with the `overwriteMode` query parameter.
+You can set `overwriteMode` to `"replace"` to achieve the same as formerly
+setting `overwrite` to `true`.
+
+### `minReplicationFactor` removed from collections
+
+The deprecated alias for `writeConcern` has been removed. You can no longer set
+the write concern using `minReplicationFactor` for collections and
+collections also don't report this attribute anymore. Use `writeConcern` instead.
+
 ### Sub-attribute removed from the version API
 
 The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
@@ -152,6 +201,9 @@ server-side:
 - `mode`
 - `operationMode`
 - `foxxApi`
+
+Moreover, the following deprecated sub-attribute has been removed from the endpoint:
+- `serverInfo.writeOpsEnabled`
 
 ### Upload API removed
 
@@ -189,9 +241,25 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
+### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ## JavaScript API
 
-### Removed modules and methods
+### Removed modules and globals
 
 The following things have been removed:
 
@@ -226,6 +294,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `near()`
 - `range()`
 - `removeByKeys()`
+- `status()`
 - `unload()`
 - `within()`
 - `withinRectangle()`
