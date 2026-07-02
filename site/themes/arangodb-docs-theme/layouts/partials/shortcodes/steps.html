@@ -1,0 +1,35 @@
+{{ $context := .context -}}
+{{ $steps := .steps | default slice -}}
+{{ $titleSize := .titleSize | default "p" -}}
+{{ with $context -}}
+<div class="steps">
+  {{ range $idx, $step := $steps -}}
+  <div class="step"{{ with $step.id }} id="{{ . }}"{{ end }}>
+    <div class="step-indicator">
+      {{ $icon := "" -}}
+      {{ with $step.icon -}}
+        {{ $iconPath := printf "content/images/icons/%s.svg" . -}}
+        {{ $icon = readFile $iconPath -}}
+      {{ end -}}
+      {{ if $icon -}}
+        <span class="step-icon" aria-hidden="true">{{ $icon | safeHTML }}</span>
+      {{ else -}}
+        <span class="step-number" aria-hidden="true">{{ add $idx 1 }}</span>
+      {{ end -}}
+    </div>
+    <div class="step-body">
+      {{ with $step.title -}}
+        {{ if eq $titleSize "p" -}}
+          <p class="step-title">{{ . | markdownify }}</p>
+        {{ else -}}
+          <{{ $titleSize }} class="step-title">{{ . | markdownify }}</{{ $titleSize }}>
+        {{ end -}}
+      {{ end -}}
+      <div class="step-content">
+        {{ $step.content | $context.Page.RenderString (dict "display" "block") -}}
+      </div>
+    </div>
+  </div>
+  {{ end -}}
+</div>
+{{ end -}}

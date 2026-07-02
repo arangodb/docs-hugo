@@ -1,0 +1,17 @@
+{{ $content := .Inner -}}
+{{ $title := or (.Get "title") (.Get 0) -}}
+{{ $icon := .Get "icon" -}}
+{{ $id := .Get "id" -}}
+{{ if .Parent -}}
+  {{ if not (.Parent.Scratch.Get "steps") -}}
+    {{ .Parent.Scratch.Set "steps" slice -}}
+  {{ end -}}
+  {{ $.Parent.Scratch.Add "steps" (dict
+    "title"   (trim ($title | default "") " ")
+    "content" $content
+    "icon"    $icon
+    "id"      $id
+  ) -}}
+{{ else -}}
+  {{ errorf "[%s] %q: step shortcode missing its parent (must be nested inside a steps shortcode)" site.Language.Lang .Page.Path -}}
+{{ end -}}

@@ -286,7 +286,7 @@ cannot be merged after the fact without a full rebuild of the affected modules.
 ## Next steps
 
 - [Architecture](architecture.md): Collections and named graphs per layer
-- [Quickstart](quickstart.md): End-to-end setup with the web interface or API
+- [Setup](setup.md): End-to-end setup with the web interface or API
 - [Import Files](reference/importing-files.md): Upload documents with module labels
 - [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
 - [RAG Strategizer](reference/rag-strategizer.md): Analyze clusters and assign strategies
