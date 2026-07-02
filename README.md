@@ -969,8 +969,16 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases instead of Netlify redirects
-when moving or renaming versioned pages (i.e. `/arangodb/<version>/...`).
+reviewing content, the rule is to use Hugo aliases when moving or renaming
+versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
+to or instead of Netlify redirects. Netlify's server-side `301` redirects are
+better for search engines, but it only redirects if there is no file for a given
+URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
+write an exclamation mark after the `301` in `_redirects`, like so:
+
+```
+/arangodb/4.0/old-feature/  /arangodb/4.0/deprecated-and-removed-features/  301!
+```
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder
