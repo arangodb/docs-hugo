@@ -3,8 +3,8 @@ title: Reasoner Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Optimize your first AQL query with the AI-powered Reasoner and apply the
-  rewritten query
+  Turn slow AQL queries into fast ones - let AI find the bottleneck and
+  rewrite the query, with results verified to match
 ---
 
 ## Prerequisites
@@ -53,7 +53,7 @@ request:
 {{< steps >}}
 
 {{< step "Send an optimization request" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>/query" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8080/query" >}}
 
 ```json
 {

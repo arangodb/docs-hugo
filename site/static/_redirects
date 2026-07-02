@@ -161,6 +161,8 @@
 /agentic-ai-suite/reference/autograph/importing-files/                          /agentic-ai-suite/autograph/reference/importing-files/          301
 /agentic-ai-suite/reference/autograph/orchestration/                            /agentic-ai-suite/autograph/reference/orchestration/            301
 /agentic-ai-suite/reference/autograph/rag-strategizer/                          /agentic-ai-suite/autograph/reference/rag-strategizer/          301
+/agentic-ai-suite/autograph/quickstart/                                         /agentic-ai-suite/autograph/setup/                              301
+/agentic-ai-suite/graphml/quickstart/                                           /agentic-ai-suite/graphml/setup/                                301
 /agentic-ai-suite/aqlizer/                                                      /agentic-ai-suite/natural-language-to-aql/                      301
 /agentic-ai-suite/reference/natural-language-to-aql/                            /agentic-ai-suite/natural-language-to-aql/api-reference/        301
 /agentic-ai-suite/reference/mlflow/                                             /agentic-ai-suite/private-llms/mlflow/                          301

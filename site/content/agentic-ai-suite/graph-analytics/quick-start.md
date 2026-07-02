@@ -3,8 +3,8 @@ title: Graph Analytics Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Start a compute engine, load a graph, and run PageRank to find your most
-  influential nodes
+  Reveal the structure hidden in your connected data - rank influential
+  entities, detect communities, and spot fraud
 ---
 
 ## Prerequisites
@@ -51,12 +51,12 @@ use the download icon to store the results into a collection.
 
 {{< step "Start an ephemeral engine" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
-Send an empty body, then save the `serviceId` postfix to build the engine
-URL (`https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/...`).
+Send an empty body. The response returns a `serviceId` whose postfix
+(`serviceIdPostfix`) you use in the engine URLs of the following calls.
 {{< /step >}}
 
 {{< step "Load your graph" >}}
-{{< endpoint "POST" "<ENGINE_URL>/v1/loaddata" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/loaddata" >}}
 
 ```json
 { "database": "_system", "graph_name": "yourGraphName" }
@@ -66,7 +66,7 @@ Returns a `job_id` and a `graph_id`.
 {{< /step >}}
 
 {{< step "Run PageRank" >}}
-{{< endpoint "POST" "<ENGINE_URL>/v1/pagerank" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/pagerank" >}}
 
 ```json
 { "graph_id": "234", "damping_factor": 0.85, "maximum_supersteps": 500 }
@@ -76,7 +76,7 @@ Returns a `job_id`.
 {{< /step >}}
 
 {{< step "Store the results" >}}
-{{< endpoint "POST" "<ENGINE_URL>/v1/storeresults" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/storeresults" >}}
 
 ```json
 {
@@ -98,7 +98,21 @@ Returns a `job_id`.
 ArangoDB collection - your most influential nodes are at the top.
 {{< /tip >}}
 
+PageRank is just one example. Graph Analytics supports a range of algorithms
+that you can combine to answer different questions about your data:
+
+- **Rank importance**: [PageRank](api.md#pagerank) for nodes and
+  [LineRank](api.md#linerank) for edges.
+- **Find communities**: [Label Propagation](api.md#label-propagation) and
+  [Attribute Propagation](api.md#attribute-propagation).
+- **Analyze connectivity**: [Weakly Connected Components](api.md#weakly-connected-components-wcc)
+  and [Strongly Connected Components](api.md#strongly-connected-components-scc).
+- **Measure centrality**: [Betweenness Centrality](api.md#betweenness-centrality)
+  to find the nodes that bridge your graph.
+
 ## Next steps
 
+- [Available Algorithms](_index.md#available-algorithms): The full list and
+  what each algorithm is for.
 - [Web Interface](web-interface.md): Engines, graphs, and jobs in detail.
 - [API](api.md): All algorithms, endpoints, and parameters.

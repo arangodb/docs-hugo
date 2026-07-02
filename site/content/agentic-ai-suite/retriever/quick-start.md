@@ -3,8 +3,8 @@ title: Retriever Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Install the Retriever and run your first natural language query against a
-  knowledge graph
+  Chat with your knowledge graph - ask questions in plain language and get
+  grounded, cited answers
 ---
 
 ## Prerequisites
@@ -42,7 +42,7 @@ Search** (`query_type: 2`) for specific entities, or **Instant Search**
 
 ```bash
 curl -X POST \
-  https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
+  https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <your-jwt-token>" \
   -d '{

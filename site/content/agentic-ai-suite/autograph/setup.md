@@ -5,8 +5,6 @@ weight: 5
 description: >-
   Set up AutoGraph using the web interface or the HTTP REST API
   to build knowledge graphs from your enterprise documents
-aliases:
-  - /agentic-ai-suite/autograph/quickstart/
 ---
 
 AutoGraph is available in the Arango Contextual Data Platform through two

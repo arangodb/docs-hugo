@@ -6,7 +6,6 @@ description: >-
   You can use GraphML straight within the Arango Contextual Data Platform,
   via the web interface or via Notebooks
 aliases:
-  - /agentic-ai-suite/graphml/quickstart/
   - ../../arangodb/3.12/data-science/arangographml/deploy # 3.10, 3.11
   - ../../arangodb/stable/data-science/arangographml/deploy # 3.10, 3.11
   - ../../arangodb/4.0/data-science/arangographml/deploy # 3.10, 3.11
