@@ -3,7 +3,12 @@ title: Transactions in ArangoDB
 menuTitle: Transactions
 weight: 260
 description: >-
-  ArangoDB provides support for user-definable transactions
+  AQL queries can be transactional and you can execute supported operations as
+  part of a client-controlled Stream Transaction
+aliases:
+  - transactions/locking-and-isolation # 3.12 -> 4.0
+  - transactions/durability # 3.12 -> 4.0
+  - transactions/limitations # 3.12 -> 4.0
 ---
 ## Transaction Types
 
@@ -14,8 +19,39 @@ ArangoDB offers different types of transactions:
 
 ### AQL Queries
 
+AQL queries are principally transactional. If you insert 100 documents into a
+collection using a single AQL query and the first 99 writes are successful but
+the last one fails, the query is aborted. None of the documents are typically
+persisted and are not even visible temporarily to other operations.
+
+```aql
+FOR i IN 0..99
+  INSERT { _key: TO_STRING(i % 99)  } INTO coll
+  // Duplicate key ("0") on the 100th document write
+```
+
+There are limitations to the transactionality, however. The following conditions
+can make AQL queries non-transactional:
+
+- A query exceeds the specified size thresholds, causing the RocksDB
+  storage engine to perform intermediate commits. The query's operations carried
+  out so far are committed and not rolled back in case of a later abort/rollback.
+  See [Known limitations for AQL queries](../../aql/fundamentals/limitations.md#storage-engine-properties).
+
+- A query runs in a cluster deployment and involves different shards, DB-Servers,
+  or both. This can be a query using a collection with more than one shard or a
+  multi-collection query. It is possible that write operations get committed for
+  some shards but not others, and the system cannot automatically resolve this
+  situation. The client sees some kind of error, but this can be a timeout or
+  connection loss.
+
 <!-- TODO
-read own writes (UPSERT?), intermediate commits
+No atomic distributed transactions. Really bad for smart edge collections, where an edge is written into multiple collections.
+Atomic commits only guaranteed for certain groups of shards:
+Same sharding via distributeShardsLike, but then also just for all the 1st shards, separately all the 2nd shards, etc.
+With numberOfShards: 1, it's all of them, and this is utilized for OneShard databases.
+
+read own writes (UPSERT?) is unrelated to transactionality but might be worth mentioning nonetheless
 -->
 
 ### Stream Transactions
@@ -25,23 +61,26 @@ multi-document transactions with individual begin and commit / abort commands.
 They work similar to the *BEGIN*, *COMMIT*, and *ROLLBACK* operations in
 relational database systems.
 
+Only certain operations like document CRUD and AQL queries can be run as part of
+a Stream Transactions.
+
 The client is responsible for making sure that transactions are committed or
 aborted when they are no longer needed, to avoid taking up resources.
 
 ## Transactional Properties
 
-Transactions in ArangoDB are atomic, consistent, isolated, and durable (*ACID*).
+Transactions in ArangoDB are atomic, consistent, isolated, and durable (**ACID**).
 
-These *ACID* properties provide the following guarantees:
+These ACID properties provide the following guarantees:
 
-- The *atomicity* principle makes transactions either complete in their
+- The **atomicity** principle makes transactions either complete in their
   entirety or have no effect at all.
-- The *consistency* principle ensures that no constraints or other invariants
+- The **consistency** principle ensures that no constraints or other invariants
   are violated during or after any transaction. A transaction never
   corrupts the database.
-- The *isolation* property hides the modifications of a transaction from
+- The **isolation** property hides the modifications of a transaction from
   other transactions until the transaction commits.
-- Finally, the *durability* proposition makes sure that operations from
+- Finally, the **durability** proposition makes sure that operations from
   transactions that have committed are made persistent. The amount of
   transaction durability is configurable in ArangoDB, as is the durability
   on collection level.
@@ -50,16 +89,16 @@ The descriptions in this section only provide a general overview. The actual
 transactional guarantees depend on the deployment mode and usage pattern.
 
 Also see:
-- [Operation Atomicity](../operational-factors.md#operation-atomicity) for more details on atomicity guarantees
-- [Transactional Isolation](../operational-factors.md#transactional-isolation) for more details on isolation guarantees in the single server
-  and OneShard database case
+- [Operation Atomicity](../operational-factors.md#operation-atomicity)
+  for more details on atomicity guarantees.
+- [Transactional Isolation](../operational-factors.md#transactional-isolation)
+  for more details on isolation guarantees in the single server
+  and OneShard database case.
 - [Cluster Transaction Limitations](#transactions-in-cluster-deployments)
-  for more details on the transactional behavior of multi-document transactions in
-  cluster deployments
+  for more details on the transactional behavior of multi-document transactions
+  in cluster deployments.
 
 ## Limitations of transactions
-
-<!-- TODO: Update for RocksDB -->
 
 ### In general
 
@@ -67,14 +106,13 @@ Transactions in ArangoDB have been designed with particular use cases
 in mind. They are mainly for **short and small** data retrieval operations,
 modification operations, or both.
 
-The implementation is **not optimized** for **very long-running** or
+The implementation is **not** optimized for **very long-running** or
 **very voluminous** operations, and may not be usable for these cases.
 
-One limitation is that a transaction operation information must fit into main
-memory. The transaction information consists of record pointers, revision numbers
-and rollback information. The actual data modification operations of a transaction
-are written to the write-ahead log and do not need to fit entirely into main
-memory.
+One limitation is that transaction operations and transaction metadata must
+fit into main memory. The actual data modification operations of a transaction
+are only written to the write-ahead log on commit and therefore need to fit
+entirely into main memory.
 
 Ongoing transactions also prevent the write-ahead logs from being fully
 garbage-collected. Information in the write-ahead log files cannot be written
@@ -84,33 +122,35 @@ To ensure progress of the write-ahead log garbage collection, transactions shoul
 be kept as small as possible, and big transactions should be split into multiple
 smaller transactions.
 
-Transactions in ArangoDB cannot be nested, i.e. a transaction must not start another
-transaction. If an attempt is made to create a transaction from inside a running
-transaction, the server throws error `1651` (nested transactions detected).
+Transactions in ArangoDB cannot be nested, i.e. you cannot start another
+Stream Transaction inside of a Stream Transaction. It simply starts a separate
+Stream Transaction if you try to.
 
-It is also disallowed to execute user transaction on some of ArangoDB's own system
+It is disallowed to execute user transaction on some of ArangoDB's own system
 collections. This shouldn't be a problem for regular usage as system collections
 don't contain user data and there is no need to access them from within a user
 transaction.
 
 Some operations are not allowed inside transactions in general:
 
-- creation and deletion of databases (`db._createDatabase()`, `db._dropDatabase()`)
-- creation and deletion of collections (`db._create()`, `db._drop()`, `db.<collection>.rename()`)
-- creation and deletion of indexes (`db.<collection>.ensureIndex()`, `db.<collection>.dropIndex()`)
+- Creation and deletion of databases
+- Creation and deletion of collections and Views
+- Creation and deletion of indexes
+- Other data definition operations
 
-If an attempt is made to carry out any of these operations during a transaction,
-ArangoDB aborts the transaction with error code `1653`
-(disallowed operation inside transaction).
+If you try to run such operations as part of a Stream Transaction, ArangoDB
+executes them independent of the transaction without warning.
 
 Finally, all collections that may be modified during a transaction must be
 declared beforehand, i.e. using the `collections` attribute of the object passed
-to the `db._createTransaction()` function when starting a Stream Transaction. If any attempt is made to carry out a data
+when starting a Stream Transaction. If any attempt is made to carry out a data
 modification operation on a collection that was not declared in the `collections`
 attribute, the transaction aborts and ArangoDB throws error `1652`
 (unregistered collection used in transaction).
-It is legal to not declare read-only collections, but this should be avoided if
-possible to reduce the probability of deadlocks and non-repeatable reads.
+It is possible to not declare collections you only read from, but this should be
+avoided if possible to reduce the probability of deadlocks and non-repeatable reads.
+
+<!-- TODO: Update last sentence for RocksDB? -->
 
 ### Transactions in cluster deployments
 
@@ -139,13 +179,13 @@ on the storage-engines.
 
 #### Atomicity
 
-A transaction on *one DB-Server* is either committed completely or not at all.
+A transaction on **one DB-Server** is either committed completely or not at all.
 
 ArangoDB transactions do currently not require any form of global consensus. This makes
 them relatively fast, but also vulnerable to unexpected server outages.
 
 Should a transaction involve [Leader Shards](../../deploy/cluster/_index.md#db-servers)
-on *multiple DB-Servers*, the atomicity of the distributed transaction *during the commit operation*
+on **multiple DB-Servers**, the atomicity of the distributed transaction **during the commit operation**
 cannot be guaranteed. Should one of the involved DB-Servers fail during the commit the transaction
 is not rolled-back globally, sub-transactions may have been committed on some DB-Servers, but not on others.
 Should this case occur, the client application sees an error.
@@ -188,7 +228,7 @@ replication, `waitForSync`, or both, increases the durability
 [Intermediate commits](../../aql/fundamentals/limitations.md#storage-engine-properties)
 that would automatically split and commit parts of big transactions are
 **disabled** for Stream Transactions in the RocksDB storage engine, including
-AQL queries that run inside of such transactions (but not for standalone AQL queries).
+AQL queries that run inside of such transactions.
 
 #### Limits for Stream Transactions
 
@@ -198,18 +238,17 @@ for details.
 
 ## Durability of transactions
 
-Transactions are executed until there is either a rollback
-or a commit. On rollback, the operations from the transaction are reversed.
+Transactions are executed until there is either an abort or a commit.
 
-The RocksDB storage engine applies operations of a transaction in main memory
-only until they are committed. In case of an a rollback the entire transaction
+The RocksDB storage engine applies operations of a transaction only in main memory
+until they are committed. In case of an an abort, the entire transaction
 is just cleared, no extra rollback steps are required.
 
 <!-- TODO: point out data loss (query accepted by server, but will be lost) -->
 <!-- TODO: intermediate commits?! -->
 
 In the event of a server crash, the storage engine scans the write-ahead log
-to restore certain meta-data like the number of documents in collection
+to restore certain metadata like the number of documents in collection
 or the selectivity estimates of secondary indexes.
 
 <!-- TODO: obsolete? -->
@@ -221,9 +260,9 @@ In case of a crash with `waitForSync` set to false, the operations performed in
 the transaction are either visible completely or not at all, depending on
 whether the delayed synchronization had kicked in or not.
 
-To ensure durability of transactions on a collection that have the `waitForSync`
-property set to `false`, you can set the `waitForSync` attribute of the object
-that is passed to `db._createTransaction()`. This forces a synchronization of the
+To ensure durability of transactions on collections that have the `waitForSync`
+property set to `false`, you can set the `waitForSync` option to `true` when
+creating the Stream Transaction. This forces a synchronization of the
 transaction to disk even for collections that have `waitForSync` set to `false`:
 
 ```js
@@ -259,10 +298,10 @@ consistency after a restart.
 
 ## Locking and isolation of transactions
 
-Transactions need to specify from which collections they will read data and
-which collections they intend to modify. This can be done by setting the
-`read`, `write`, or `exclusive` attributes in the `collections` attribute when
-starting a Stream Transaction:
+Transactions need to specify from which collections they will read data and which
+collections they intend to modify. This can be done by setting the `read`, `write`,
+or `exclusive` attributes in the `collections` attribute when starting a Stream
+Transaction:
 
 ```js
 var trx = db._createTransaction({
@@ -278,12 +317,15 @@ trx.query(`FOR doc IN users RETURN doc`).toArray().forEach(function(doc) {
 trx.commit();
 ```
 
-<!-- TODO: does write access imply read access in RocksDB? -->
-*write* here means write access to the collection, and also includes any read accesses.
+The meaning of the attributes is the following:
 
-*exclusive* means exclusive write access to the collection, and *write* means (shared)
-write access to the collection, which can be interleaved with write accesses by other
-concurrent transactions.
+- `read`: Read-only access to the specified collection(s).
+- `write`: Write access to the collection(s), including any read accesses. 
+  The write access is shared, which means it can be interleaved with write
+  accesses by other concurrent transactions.
+- `exclusive`: Exclusive write access to the collection(s). Write accesses of
+  concurrent transactions cannot be interleaved if they involve the same
+  collection(s).
 
 ### Storage engine
 
@@ -297,9 +339,12 @@ For all collections that are used in write mode, the RocksDB engine internally
 acquires a (shared) read lock. This means that many writers can modify data in the same
 collection in parallel (and also run in parallel to ongoing reads). However, if two
 concurrent transactions attempt to modify the same document or index entry, there
-is a write-write conflict, and one of the transactions aborts with error `1200`
+is a **write-write conflict**, and one of the transactions aborts with error `1200`
 (conflict). It is then up to client applications to retry the failed transaction or
-accept the failure. <!-- TODO: Stream Transactions require explicitly abort! -->
+accept the failure. Note that Stream Transactions are not aborted automatically
+if an operation fails that is part of the transaction. It is the client's
+responsibility to react to the outcome of the individual operations and abort
+the transaction if necessary.
 
 In order to guard long-running or complex transactions against concurrent operations
 on the same data, the RocksDB engine allows you to access collections in exclusive mode.
@@ -349,9 +394,8 @@ This automatic lazy addition of collections to a transaction also introduces the
 possibility of deadlocks. Deadlocks may occur if there are concurrent transactions
 that try to acquire locks on the same collections lazily.
 
-In order to make a transaction fail when a non-declared collection is used inside
-a transaction for reading, the optional `allowImplicit` sub-attribute of
-`collection` can be set to `false`:
+In order to make operations fail when a non-declared collection is used inside a
+Stream Transaction for reading, set the `allowImplicit` option to `false`:
 
 ```js
 var trx = db._createTransaction({
@@ -399,9 +443,12 @@ edges connected to it. `FOR v IN ANY DOCUMENT("users/not_linked") ...` fails
 even without edges, as it is always considered to be a read access to the `users`
 collection.
 
+{{< comment >}}
 ### Deadlocks and Deadlock detection
 
-<!-- TODO: Obsolete? -->
+<!-- TODO: Does not deadlock, even with exclusive locks. Does is work even with JavaScript Transactions?!
+We should rework the text to explain deadlocks as a concept but then that this doesn't deadlock, what snapshot isolation is, and what each query sees.
+-->
 
 A deadlock is a situation in which two or more concurrent operations
 (user transactions or AQL queries) try to access the same resources
@@ -473,3 +520,4 @@ The RocksDB storage engine uses document-level locks and therefore doesn't have 
 problem on collection level. However, if two concurrent transactions modify the same
 documents or index entries, the RocksDB engine signals a write-write conflict
 and aborts one of the transactions with error `1200` (conflict) automatically.
+{{< /comment >}}

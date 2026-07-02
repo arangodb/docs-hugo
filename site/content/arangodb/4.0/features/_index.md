@@ -20,8 +20,8 @@ description: >-
 See the full [Feature list of the ArangoDB database system](list.md).
 
 For a scalable architecture based on Kubernetes that supports the full offering
-of ArangoDB including graph-powered machine learning and AI features, see
-the [Feature list of the Arango Data Platform](../../../data-platform/features.md).
+of Arango including graph-powered machine learning and AI features, see
+the [The Arango Contextual Data Platform](../../../contextual-data-platform/_index.md).
 
 ## On-premises versus Cloud
 
@@ -86,7 +86,7 @@ From version 3.12.5 onward, the **Community Edition** includes all
 Enterprise Edition features without time restrictions. It is governed by the
 [ArangoDB Community License](https://arangodb.com/community-license/).
 You can download the extensively tested prepackaged binaries and official
-Docker images for free. The use for commercial purposes is prohibited for
+container images for free. The use for commercial purposes is prohibited for
 production. The Community Edition does not include the right to distribute, embed
 within other products, or combine with ArangoDB's Enterprise Edition of the software.
 The dataset size is limited to a 100 GiB. If you exceed the size limit, you get

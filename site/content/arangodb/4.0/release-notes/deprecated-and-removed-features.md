@@ -37,6 +37,9 @@ aliases:
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
   - ../develop/http-api/batch-requests # 3.12 -> 4.0
+  - ../develop/transactions/javascript-transactions # 3.12 -> 4.0
+  - ../develop/http-api/transactions/javascript-transactions # 3.12 -> 4.0
+  - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -52,6 +55,23 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is no longer supported.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
+
 - **Foxx microservices**:\
   The Foxx microservice framework including tasks/queues, the related
   startup options, JavaScript modules, and HTTP API endpoints have been removed.
@@ -60,13 +80,22 @@ detailed information about breaking changes before upgrading.
   You may use Node.js together with the [arangojs driver](../../../ecosystem/drivers/javascript.md)
   to work with ArangoDB from the outside using JavaScript as your language.
 
-  <!-- TODO: BYOC with node-foxx compatibility layer -->
+  You can rewrite existing Foxx services or create new user-defined services for
+  the [Arango Contextual Data Platform](../../../contextual-data-platform/_index.md).
+  See the [Container Manager](../../../platform-suite/container-manager/_index.md)
+  to learn how to bring your own code and containers.
 
 - **User-defined AQL functions (UDFs)**:\
   The ability to register custom functions for the AQL query language written
   in JavaScript has been removed.
 
   <!-- TODO: Hygenic macros for some use cases (once supported) -->
+
+- **Emergency console**:\
+  The ArangoDB server process could be started in an interactive command-line
+  mode (JavaScript REPL) with the `--console` option. This was primarily used
+  for debugging purposes in the development of _arangod_.
+  This option and feature have been removed.
 
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
@@ -195,15 +224,17 @@ detailed information about breaking changes before upgrading.
   guidelines for metrics.
 
 - **Statistics REST API**:\
-  The endpoints `/_admin/statistics` and `/_admin/statistics-description`
-  are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
-  The metrics API provides a lot more information than the statistics API, so
-  it is much more useful.
+  The endpoints `/_admin/statistics`, `/_admin/statistics-description`,
+  `/_admin/cluster/nodeStatistics`, and `/_admin/cluster/statistics`
+  are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
+  with the endpoint `GET /_admin/metrics`.
+  The metrics API provides a lot more information than the statistics endpoints,
+  so it is much more useful and uses the standard Prometheus format.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
-  more general version API with the endpoint `GET /_api/version`. The endpoint may be
-  removed in a future version of ArangoDB.
+  more general version API with the endpoint `GET /_api/version`. The endpoint
+  is removed in ArangoDB v4.0.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
@@ -242,23 +273,21 @@ detailed information about breaking changes before upgrading.
 
 - **`bfs` option** in AQL graph traversal:\
   Using the *bfs* attribute inside
-  traversal options is deprecated since v3.8.0. The preferred way to start a
+  traversal options is deprecated since v3.8.0
+  and it is removed in ArangoDB v4.0. The preferred way to start a
   breadth-first traversal is by using the new `order` attribute, and setting it
   to a value of `bfs`.
 
 - **`overwrite` option**:\
   The `overwrite` option for insert operations (either
-  single document operations or AQL `INSERT` operations) is deprecated in favor
-  of the `overwriteMode` option, which provides more flexibility.
+  single document operations or AQL `INSERT` operations) is deprecated and
+  removed in ArangoDB v4.0 in favor of the `overwriteMode` option, which
+  provides more flexibility.
 
 - **`minReplicationFactor` collection option**:\
-  The `minReplicationFactor`
-  option for collections has been renamed to `writeConcern`. If
-  `minReplicationFactor` is specified and no `writeConcern` is set, the
-  `minReplicationFactor` value will still be picked up and used as
-  `writeConcern` value. However, this compatibility mode will be removed
-  eventually, so changing applications from using `minReplicationFactor` to
-  `writeConcern` is advised.
+  The `minReplicationFactor` option for collections has been renamed to
+  `writeConcern`. You can no longer use `minReplicationFactor` as an alias for
+  `writeConcern` from ArangoDB v4.0 onward.
 
 - **Outdated startup options**:\
   The following _arangod_ startup options are deprecated and will be removed

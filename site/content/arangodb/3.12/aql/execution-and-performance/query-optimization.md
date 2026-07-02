@@ -28,7 +28,7 @@ about the optimizer's view of the query.
 
 The `explain` method of `ArangoStatement` as shown in the next chapters creates very verbose output.
 You can work on the output programmatically, or use this handsome tool that we created
-to generate a more human readable representation.
+to generate a more human-readable representation.
 
 You may use it like this: (we disable syntax highlighting here)
 
@@ -313,7 +313,7 @@ interfaces by pushing `FILTER`s out to the shards, as it is vital to the query
 performance to reduce that data amount to transfer over the network links.
 
 {{< info >}}
-Some hops between Coordinators and DB-Servers are unavoidable. An example are
+Some hops between Coordinators and DB-Servers are unavoidable. An example is
 [user-defined functions](../user-defined-functions.md) (UDFs), which have to be executed on
 the Coordinator. If you cannot modify your query to have a lower amount of
 back and forth between sites, then try to lower the amount of data that has

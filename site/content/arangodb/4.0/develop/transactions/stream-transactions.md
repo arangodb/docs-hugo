@@ -76,25 +76,28 @@ errors with code `28` (locked).
 All collections participating in a transaction need to be declared
 beforehand. This is necessary to ensure proper locking and isolation.
 
-Collections can be used in a transaction in write mode or in read-only mode.
-<!-- TODO: exclusive -->
+Collections can be used in a transaction in read-only mode or in write mode
+(either shared or exclusive write access at the collection level).
 
 If any data modification operations are to be executed, the collection must be
 declared for use in write mode. The write mode allows modifying and reading data
 from the collection during the transaction (i.e. the write mode includes the
 read mode).
 
-Contrary, using a collection in read-only mode will only allow performing
+Contrary, using a collection in read-only mode only allows you to perform
 read operations on a collection. Any attempt to write into a collection used
-in read-only mode will make the transaction fail.
+in read-only mode causes an error for that operation. A failed operation does
+not abort the Stream Transaction, however. You need to explicitly abort the
+transaction if the failure of an operation means that the transaction shouldn't
+continue.
 
 Collections for a transaction are declared by providing them in the `collections`
-attribute of the object passed to the `_executeTransaction()` function. The
+attribute of the object passed to the `_createTransaction()` function. The
 `collections` attribute can have the sub-attributes `read`, `write`, and
 `exclusive`:
 
 ```js
-db._executeTransaction({
+db._createTransaction({
   collections: {
     write: [ "users", "logins" ],
     read: [ "recommendations" ]
@@ -102,14 +105,14 @@ db._executeTransaction({
 });
 ```
 
-`read`, `write`, and `exclusive` are optional attributes, and only need to be
+The `read`, `write`, and `exclusive` attributes are optional, and only need to be
 specified if the operations inside the transactions demand for it.
 
 The attribute values can each be lists of collection names or a single
 collection name (as a string):
 
 ```js
-db._executeTransaction({
+db._createTransaction({
   collections: {
     write: "users",
     read: "recommendations"
@@ -122,23 +125,25 @@ Even without specifying them, it is still possible to read from such collections
 from within a transaction, but with relaxed isolation. Please read about
 [transactions locking](_index.md#locking-and-isolation-of-transactions) for more details.
 
-In order to make a transaction fail when a non-declared collection is used inside
-for reading, the optional `allowImplicit` sub-attribute of `collections` can be
-set to `false`:
+In order to make operations fail when a non-declared collection is used inside a
+Stream Transaction for reading, set the `allowImplicit` option to `false`:
 
 ```js
-db._executeTransaction({
+var trx = db._createTransaction({
   collections: {
-    read: "recommendations",
-    allowImplicit: false  /* this disallows read access to other collections
-                             than specified */
+    read: "recommendations"
   },
-  action: function () {
-    var db = require("@arangodb").db;
-    return db.foobar.toArray(); /* will fail because db.foobar must not be accessed
-                                   for reading inside this transaction */
-  }
+  allowImplicit: false  /* Disallow read access to other collections than specified */
 });
+
+try {
+  /* Fails because you cannot read from the "users" collection inside this transaction */
+  var users = trx.query(`FOR doc IN users RETURN doc`).toArray();
+  trx.commit();
+} catch (err) {
+  trx.abort(); /* Stop the transaction explicitly */
+  throw err;
+}
 ```
 
 The default value for `allowImplicit` is `true`. Write-accessing collections that
@@ -147,7 +152,8 @@ the value of `allowImplicit`.
 
 ## Handling errors
 
-If individual ops fail, either handle errors or abort transaction - no auto abort!
+If individual operations executed within a Stream Transaction fail, either
+handle errors or abort the transaction explicitly. There is no automatic abort!
 
 ## JavaScript API
 
@@ -169,7 +175,8 @@ Begin a Stream Transaction.
     exclusive write access for.
 
   Collections that will be written to in the transaction must be declared with
-  the `write` or `exclusive` attribute or it will fail, whereas non-declared
+  the `write` or `exclusive` attribute or the respective write operations will
+  fail (but not automatically abort the Stream Transaction), whereas non-declared
   collections from which is solely read will be added lazily. You can set the
   `allowImplicit` option to `false` to let transactions fail in case of
   undeclared collections for reading. Collections for reading should be fully
@@ -184,7 +191,7 @@ Additionally, `options` can have the following optional attributes:
   waiting on collection locks. This option is only meaningful when using
   `exclusive` locks. If not specified, a default value is used. Setting
   `lockTimeout` to `0` makes ArangoDB not time out waiting for a lock.
-- `maxTransactionSize`: Transaction size limit in bytes. Can be at most the
+- `maxTransactionSize`: Transaction size limit in bytes. It can be at most the
   value of the `--transaction.streaming-max-transaction-size` startup option.
 - `skipFastLockRound`: Whether to disable fast locking for write operations
   (default: `false`).
@@ -199,8 +206,9 @@ Additionally, `options` can have the following optional attributes:
   it degrades performance if there are no concurrent transactions that use
   exclusive locks on the same collection.
 
-The method returns an object that lets you run supported operations as part of
-the transactions, get the status information, and commit or abort the transaction.
+The `db._createTransaction()` method returns an object that lets you run
+supported operations as part of the Stream Transaction, get the status information,
+and commit or abort the transaction.
 
 The following example shows how you can remove a document from a collection and
 create a new document in the same collection using a Stream Transaction:
@@ -257,8 +265,8 @@ more than once.
 
 `trx.collection(collection-name) → coll`
 
-Return a collection object for the specified collection, or null if it does not
-exist.
+Return a collection object for the specified collection, or throw an error if it
+does not exist.
 
 The object lets you access the following methods to perform document and
 collection operations:

@@ -152,6 +152,7 @@ access token as the `password`. You can omit the `username`:
 {
   "password": "theAccessToken"
 }
+```
 
 If you specify the user name, it must match the name encoded in the token.
 

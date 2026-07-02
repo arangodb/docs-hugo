@@ -24,12 +24,15 @@ db._executeTransaction({
 });
 ```
 
-<!-- TODO: does write access imply read access in RocksDB? -->
-*write* here means write access to the collection, and also includes any read accesses.
+The meaning of the attributes is the following:
 
-*exclusive* means exclusive write access to the collection, and *write* means (shared)
-write access to the collection, which can be interleaved with write accesses by other
-concurrent transactions.
+- `read`: Read-only access to the specified collection(s).
+- `write`: Write access to the collection(s), including any read accesses. 
+  The write access is shared, which means it can be interleaved with write
+  accesses by other concurrent transactions.
+- `exclusive`: Exclusive write access to the collection(s). Write accesses of
+  concurrent transactions cannot be interleaved if they involve the same
+  collection(s).
 
 ## Storage engine
 
@@ -39,41 +42,44 @@ same collections.
 
 ### Locking
 
-For all collections that are used in write mode, the RocksDB engine will internally
-acquire a (shared) read lock. This means that many writers can modify data in the same
+For all collections that are used in write mode, the RocksDB engine internally
+acquires a (shared) read lock. This means that many writers can modify data in the same
 collection in parallel (and also run in parallel to ongoing reads). However, if two
-concurrent transactions attempt to modify the same document or index entry, there will
-be a write-write conflict, and one of the transactions will abort with error 1200
-("conflict"). It is then up to client applications to retry the failed transaction or 
-accept the failure.
+concurrent transactions attempt to modify the same document or index entry, there
+is a **write-write conflict**, and one of the transactions aborts with error `1200`
+(conflict). It is then up to client applications to retry the failed transaction or
+accept the failure. Note that Stream Transactions are not aborted automatically
+if an operation fails that is part of the transaction, unlike JavaScript Transactions.
+It is the client's responsibility to react to the outcome of the individual
+operations and abort the transaction if necessary.
 
 In order to guard long-running or complex transactions against concurrent operations
-on the same data, the RocksDB engine allows to access collections in exclusive mode.
-Exclusive accesses will internally acquire a write-lock on the collections, so they 
+on the same data, the RocksDB engine allows you to access collections in exclusive mode.
+Exclusive accesses internally acquire a write-lock on the collections, so that they 
 are not executed in parallel with any other write operations. Read operations can still
 be carried out by other concurrent transactions.
 
 ### Isolation
 
-The RocksDB storage-engine provides *snapshot isolation*. This means that all operations 
-and queries in the transactions will see the same version, or snapshot, of the database. 
-This snapshot is based on the state of the database at the moment in time when the transaction 
-begins. No locks are acquired on the underlying data to keep this snapshot, which permits 
-other transactions to execute without being blocked by an older uncompleted transaction 
+The RocksDB storage-engine provides **snapshot isolation**. This means that all operations
+and queries in the transactions see the same version, or snapshot, of the database.
+This snapshot is based on the state of the database at the moment in time when the transaction
+begins. No locks are acquired on the underlying data to keep this snapshot, which permits
+other transactions to execute without being blocked by an older uncompleted transaction
 (so long as they do not try to modify the same documents or unique index-entries concurrently).
-In the cluster a snapshot is acquired on each DB-Server individually. 
+In the cluster a snapshot is acquired on each DB-Server individually.
 
 ## Lazily adding collections
 
 There might be situations when declaring all collections a priori is not possible,
-for example, because further collections are determined by a dynamic AQL query 
+for example, because further collections are determined by a dynamic AQL query
 inside the transaction, for example a query using AQL graph traversal.
 
 In this case, it would be impossible to know beforehand which collection to lock, and
 thus it is legal to not declare collections that will be accessed in the transaction in
-read-only mode. Accessing a non-declared collection in read-only mode during a 
-transaction will add the collection to the transaction lazily, and fetch data 
-from the collection as usual. However, as the collection is added lazily, there is no 
+read-only mode. Accessing a non-declared collection in read-only mode during a
+transaction adds the collection to the transaction lazily, and fetches data
+from the collection as usual. However, as the collection is added lazily, there is no
 isolation from other concurrent operations or transactions. Reads from such
 collections are potentially non-repeatable.
 
@@ -101,9 +107,9 @@ This automatic lazy addition of collections to a transaction also introduces the
 possibility of deadlocks. Deadlocks may occur if there are concurrent transactions 
 that try to acquire locks on the same collections lazily.
 
-In order to make a transaction fail when a non-declared collection is used inside
-a transaction for reading, the optional *allowImplicit* sub-attribute of *collections* 
-can be set to *false*:
+In order to make a JavaScript Transaction fail when a non-declared collection is
+used inside the transaction for reading, set the optional `allowImplicit`
+attribute to `false`:
 
 ```js
 db._executeTransaction({
@@ -124,32 +130,39 @@ db._executeTransaction({
 });
 ```
 
-The default value for *allowImplicit* is *true*. Write-accessing collections that
-have not been declared in the *collections* array is never possible, regardless of
-the value of *allowImplicit*.
+In case of Stream Transactions, this setting makes operations fail when a
+non-declared collection is used inside the transaction for reading. It does
+not automatically abort the Stream Transaction, however.
 
-If *users/1234* has an edge in *connections*, linking it to another document in
-the *users* collection, then the following explicit declaration will work:
+
+The default value for `allowImplicit` is `true`. Write-accessing collections that
+have not been declared in the `collections` array is never possible, regardless of
+the value of `allowImplicit`.
+
+If `users/1234` has an edge in `connections`, linking it to another document in
+the `users` collection, then the following explicit declaration works:
 
 ```js
 db._executeTransaction({
-  collections: { 
+  collections: {
     read: ["users", "connections"],
     allowImplicit: false
   },
   /* ... */
+});
 ```
 
-If the edge points to a document in another collection however, then the query
-will fail, unless that other collection is added to the declaration as well.
+However, if the edge points to a document in another collection, then the query
+fails, unless that other collection is added to the declaration as well.
 
 Note that if a document handle is used as starting point for a traversal, e.g.
 `FOR v IN ANY "users/not_linked" ...` or `FOR v IN ANY {_id: "users/not_linked"} ...`,
 then no error is raised in the case of the start vertex not having any edges to
-follow, with `allowImplicit: false` and *users* not being declared for read access.
+follow, with `allowImplicit` set to `false` and the `users` collection not being
+declared for read access.
 AQL only sees a string and does not consider it a read access, unless there are
-edges connected to it. `FOR v IN ANY DOCUMENT("users/not_linked") ...` will fail
-even without edges, as it is always considered to be a read access to the *users*
+edges connected to it. `FOR v IN ANY DOCUMENT("users/not_linked") ...` fails
+even without edges, as it is always considered to be a read access to the `users`
 collection.
 
 ## Deadlocks and Deadlock detection
@@ -208,7 +221,7 @@ db._executeTransaction({
 
 In the above example, a deadlock will occur if transaction T1 and T2 have both
 acquired their write locks (T1 for collection `c1` and T2 for collection `c2`) and
-are then trying to read from the other other (T1 will read from `c2`, T2 will read
+are then trying to read from the other (T1 will read from `c2`, T2 will read
 from `c1`). T1 will then try to acquire the read lock on collection `c2`, which
 is prevented by transaction T2. T2 however will wait for the read lock on 
 collection `c1`, which is prevented by transaction T1. 

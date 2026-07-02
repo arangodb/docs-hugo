@@ -9,6 +9,7 @@ description: >-
 The JavaScript API is available on the server-side in the following contexts:
 
 - [Foxx microservices](../foxx-microservices/_index.md)
+- [Tasks](tasks.md) / [Queues](../foxx-microservices/reference/related-modules/queues.md)
 - [User-defined AQL functions](../../aql/user-defined-functions.md)
 - [JavaScript Transactions](../transactions/javascript-transactions.md)
 - [Emergency console](../../operations/troubleshooting/emergency-console.md) (`arangod --console`)

@@ -127,7 +127,7 @@ different usage scenarios:
   The index supports complete match queries (full words) and prefix queries.
   Fulltext indexes are invoked via special functions.
 
-  Please note that the fulltext index type is deprecated from version 3.10 onwards
+  Please note that the fulltext index type is deprecated from version 3.10 onward
   and is superseded by [ArangoSearch](../arangosearch/_index.md).
 
 - **View**: [ArangoSearch](../arangosearch/_index.md) is a sophisticated search engine

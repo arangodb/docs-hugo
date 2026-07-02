@@ -6,6 +6,10 @@ description: >-
   `arangobench` is a benchmark and test tool that can be used to issue test
   requests to the database system for performance and server function testing
 ---
+{{< warning >}}
+The _arangobench_ tool is deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 _arangobench_ is a client tool which makes network connections to an ArangoDB
 server in about the same way as a client application would do via an ArangoDB
 client driver. It thus often provides good enough throughput and performance

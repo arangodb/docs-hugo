@@ -99,6 +99,24 @@ detailed information about breaking changes before upgrading.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
 
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is deprecated since v3.12.0 and no longer supported
+  from ArangoDB 4.0 onward.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
+
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.
@@ -180,15 +198,17 @@ detailed information about breaking changes before upgrading.
   guidelines for metrics.
 
 - **Statistics REST API**:\
-  The endpoints `/_admin/statistics` and `/_admin/statistics-description`
-  are deprecated in favor of the new metrics API under `/_admin/metrics/v2`.
-  The metrics API provides a lot more information than the statistics API, so
-  it is much more useful.
+  The endpoints `/_admin/statistics`, `/_admin/statistics-description`,
+  `/_admin/cluster/nodeStatistics`, and `/_admin/cluster/statistics`
+  are deprecated and removed in ArangoDB 4.0 in favor of the new metrics API
+  with the endpoint `GET /_admin/metrics`.
+  The metrics API provides a lot more information than the statistics endpoints,
+  so it is much more useful and uses the standard Prometheus format.
 
 - **Database target version REST API**:\
   The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
-  more general version API with the endpoint `GET /_api/version`. The endpoint may be
-  removed in a future version of ArangoDB.
+  more general version API with the endpoint `GET /_api/version`. The endpoint
+  is removed in ArangoDB v4.0.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and

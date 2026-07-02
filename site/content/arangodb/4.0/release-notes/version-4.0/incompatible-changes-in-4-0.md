@@ -6,6 +6,28 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## JavaScript Transactions removed
+
+Submitting single-request transactions that leverage ArangoDB's JavaScript API
+to run complex operations is no longer supported.
+The feature was deprecated in v3.12.0.
+
+This removes the `db._executeTransaction()` function from the JavaScript API
+and the `POST /_api/transaction` endpoint from the HTTP API.
+
+For rather simple transactions, you might be able to use [AQL queries](../../aql/_index.md)
+instead. Subqueries and the ternary operator are useful tools for this.
+You can read from multiple collections as well as write to multiple collections,
+but you cannot perform reads after writes for a given collection.
+
+To port more complex transactions, you may use
+[Stream Transactions](../../develop/transactions/stream-transactions.md).
+The main operations they support are document CRUD and AQL queries. Unlike
+with JavaScript Transactions, you can start a Stream Transaction, then issue
+individual operations, and eventually decide whether to abort or commit the
+transaction with all its operations. You can therefore put logic on the
+client-side if it's too complex to port to AQL.
+
 ## Foxx removed
 
 The Foxx microservice framework including tasks/queues, the related
@@ -21,10 +43,63 @@ and the possibility of out-of-memory crashes forced Foxx onto Coordinators in
 cluster deployments in order to not put the DB-Servers with your valuable data
 at risk.
 
+The following startup options are now obsolete due to the removal of Foxx:
+
+- `--server.authentication-system-only`
+- `--foxx.allow-install-from-remote`
+- `--foxx.api`
+- `--foxx.enable`
+- `--foxx.force-update-on-startup`
+- `--foxx.queues`
+- `--foxx.queues-poll-interval`
+- `--foxx.store`
+
+You can still specify these startup options without causing a fatal error during
+startup. They are recognized, but they don't have any effect anymore.
+
+The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
+of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed).
+
+The `GET /_admin/status` no longer includes a `coordinator` object with the
+attributes `foxxmaster` and `isFoxxmaster`.
+
+The `@arangodb/foxx` module and the related `@arangodb/locals` module as well as
+`global.fm` have been removed from the JavaScript API.
+
+The `30xx` error codes used by Foxx have been removed.
+
+For new deployments, the following Foxx-related system collections are not
+created anymore:
+
+- `_appbundles`
+- `_apps`
+- `_jobs`
+- `_modules`
+- `_queues`
+- `_routing`
+
+When upgrading existing deployments, these collections are not actively removed
+in case they contain any data that is still relevant to you.
+
+**Alternatives and migration**
+
 You may use Node.js together with the [arangojs driver](../../../../ecosystem/drivers/javascript.md)
 to work with ArangoDB from the outside using JavaScript as your language.
 
-<!-- TODO: BYOC with node-foxx compatibility layer -->
+If you upgrade to the [Arango Contextual Data Platform](../../../../contextual-data-platform/_index.md),
+you can run custom services in the data platform with the
+[Container Manager](../../../../platform-suite/container-manager/_index.md)
+You can think of it as a more powerful incarnation of Foxx because it is a
+microservice architecture but with a clear separation of the core database system
+and the surrounding services. It is also not limited to (synchronous) JavaScript
+but you may use a standard Node.js runtime with its entire ecosystem including
+async libraries, or use different programming languages altogether.
+
+Any existing Foxx services you still require need to be rewritten for the
+data platform. You may consider using AI tools for this. You can use Node.js or
+other environments respectively programming languages. You can run the
+replacements inside the data platform in containers as user-defined services,
+using your preferred technology.
 
 ## User-defined AQL functions removed
 
@@ -38,12 +113,127 @@ that had to be transferred between cluster nodes.
 
 <!-- TODO: Hygenic macros for some use cases (once supported) -->
 
+The following startup option is now obsolete:
+
+- `--javascript.user-defined-functions`
+
+You can still specify this startup option without causing a fatal error during
+startup. It is recognized, but it doesn't have any effect anymore.
+
+The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
+
+The `@arangodb/aql/functions` module has been removed from the JavaScript API.
+
 ## Removed AQL functions
 
 - `V8()`: There is no longer a V8 JavaScript engine on the server-side to
   enforce for query expressions.
 
+## Deprecated AQL options removed
+
+In AQL graph traversals, you can no longer specify the `bfs` attribute in the
+`OPTIONS` object. To enable breadth-first search, use `order: "bfs"` instead of
+`bfs: true`.
+
+The `INSERT` operation no longer supports the `overwrite` attribute in the
+`OPTIONS` object to replace a document if there is already one with the same
+document key. To specify the behavior for how to resolve collisions, use
+`overwriteMode` instead. A setting of `overwriteMode: "replace"` is the same
+as the former `overwrite: true`.
+
+## Statistics features removed
+
+Server and cluster statistics are superseded by the
+[Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
+startup options and HTTP API endpoints related to the statistics features have
+been removed and no `_statistics*` system collections are used by _arangod_
+anymore.
+
+When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
+system collections are actively removed.
+
+The following startup options are now obsolete:
+- `--server.statistics`
+- `--server.statistics-history`
+- `--server.statistics-all-databases`
+
+The following endpoints have been removed:
+
+- `/_admin/statistics`
+- `/_admin/statistics-description`
+- `/_admin/cluster/nodeStatistics`
+- `/_admin/cluster/statistics`
+
+The follow metrics about the statistics feature itself have been removed:
+- `arangodb_request_statistics_memory_usage`
+- `arangodb_connection_statistics_memory_usage`
+
+You can get more detailed information for monitoring ArangoDB via the
+[`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
+in Prometheus format.
+
 ## HTTP RESTful API
+
+### `overwrite` option removed from document API
+
+The `POST /_api/document/{collection}` endpoint for creating a single document
+or multiple documents no longer supports the `overwrite` query parameter.
+If you want to replace existing documents that have the same document keys,
+specify how to resolve collisions with the `overwriteMode` query parameter.
+You can set `overwriteMode` to `"replace"` to achieve the same as formerly
+setting `overwrite` to `true`.
+
+### `minReplicationFactor` removed from collections
+
+The deprecated alias for `writeConcern` has been removed. You can no longer set
+the write concern using `minReplicationFactor` for collections and
+collections also don't report this attribute anymore. Use `writeConcern` instead.
+
+### Sub-attribute removed from the version API
+
+The `GET /_api/version` endpoint no longer includes the `mode` sub-attribute
+under `details` when requesting the detailed version information. This is
+due to the removal of the emergency console (`arangod --console`) and the
+V8 JavaScript engine in general from the server-side.
+
+### Attributes removed from the status API
+
+The `GET /_admin/status` endpoint no longer includes the following attributes
+due to the removal of Foxx microservices, the emergency console
+(`arangod --console`) and the V8 JavaScript engine in general from the
+server-side:
+
+- `mode`
+- `operationMode`
+- `foxxApi`
+
+Moreover, the following deprecated sub-attribute has been removed from the endpoint:
+- `serverInfo.writeOpsEnabled`
+
+### Upload API removed
+
+The `POST /_api/upload` endpoint has been removed due to the removal of Foxx.
+It was used for service bundle and file uploads.
+
+### Routing reload API removed
+
+The `POST /_admin/routing/reload` endpoint has been removed due to the removal
+of the Action and Foxx features. It was used to reload the routing information
+from the `_routing` system collection and make Foxx rebuild its local routing
+table on the next request.
+
+### Echo API removed
+
+The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, `DELETE`, and `OPTIONS` HTTP methods have been removed. They returned
+an object with the servers request information, the HTTP request headers, or
+both and were used for debugging purposes.
+
+### Metrics API v2 endpoint removed
+
+Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
+returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
+been removed.
 
 ### Batch request endpoint removed
 
@@ -64,7 +254,8 @@ for a detailed list.
 
 ### Metrics removed
 
-The following V8-related metrics have been removed:
+The following V8-related metrics have been removed from the
+`GET /_admin/metrics` endpoint:
 
 - `arangodb_v8_context_alive`
 - `arangodb_v8_context_busy`
@@ -73,15 +264,66 @@ The following V8-related metrics have been removed:
 - `arangodb_v8_context_max`
 - `arangodb_v8_context_min`
 
+### Collection statuses removed
+
+Collections used to have different states like being loaded or unloaded.
+This was relevant for the MMFiles storage engine that held the data in memory.
+RocksDB doesn't have or need such statuses and the endpoints to load or unload
+collections have no effect on it.
+
+The `status` and `statusString` attributes have now been removed from responses
+of the collections API (`/_api/collection*` endpoints).
+
+### Timestamp removed from cluster health API
+
+The `GET /_admin/cluster/health` endpoint no longer includes the previously
+deprecated `Timestamp` sub-attribute of the last heartbeat received under
+`Health.<nodeID>` for Coordinators.
+
 ## JavaScript API
 
-### Foxx and UDF modules removed
+### Removed modules and globals
 
-The `@arangodb/foxx` module and the related `@arangodb/locals` modules have been
-removed due to the removal of Foxx.
+The following things have been removed:
 
-The `@arangodb/aql/functions` module has been removed due to the removal of
-user-defined AQL functions.
+- `@arangodb/foxx` module
+- `@arangodb/locals` module
+- `global.fm` object
+- `@arangodb/aql/functions` module
+
+For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javascript-api).
+
+### Removed collection methods
+
+The following methods have been removed from
+[_collection_ objects](../../develop/javascript-api/@arangodb/collection-object.md)
+as they are either obsolete or didn't provide much value and better alternatives exist:
+
+- `closedRange()`
+- `documents()`
+- `ensureFulltextIndex()`
+- `ensureGeoConstraint()`
+- `ensureGeoIndex()`
+- `ensureHashIndex()`
+- `ensureSkiplist()`
+- `ensureUniqueConstraint()`
+- `ensureUniqueSkiplist()`
+- `ensureVertexCentricIndex()`
+- `fulltext()`
+- `geo()`
+- `iterate()`
+- `load()`
+- `lookupByKeys()`
+- `near()`
+- `range()`
+- `removeByKeys()`
+- `status()`
+- `unload()`
+- `within()`
+- `withinRectangle()`
+
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-methods)
+for details like how you can replace this functionality.
 
 ## Startup options
 
@@ -141,6 +383,21 @@ It has been changed to the `v8` log topic.
 The `security` log topic has been removed.
 Attempts to set the log level for this topic log a warning, for example, using
 a startup option like `--log.level security=debug`.
+
+### `--server.allow-use-database` removed
+
+The `--server.allow-use-database` startup option related to the long-deprecated
+and now removed Action feature has been removed. It was only used internally.
+
+### Emergency `--console` mode removed
+
+The ArangoDB server process could be started in an interactive command-line
+mode (JavaScript REPL) with the `--console` option. This was primarily used
+for debugging purposes in the development of _arangod_.
+
+This feature has been removed and the `--console` startup option is obsolete now.
+It no longer has an effect but it is still recognized to avoid causing a fatal
+error on startup if you specify it.
 
 ## Client tools
 

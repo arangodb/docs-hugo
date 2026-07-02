@@ -18,7 +18,7 @@ restart.
 
 To start an _ArangoSync Worker_ using a `systemd` service, use a unit like this:
 
-```conf
+```cfg
 [Unit]
 Description=Run ArangoSync in worker mode
 After=network.target

@@ -23,6 +23,10 @@ checkIPIsReachable "$arangoproxyUrl/health"
 
 cd /home/site
 
+# Hugo's enableGitInfo runs `git log` per file; mark the bind-mounted
+# repo as safe so Git doesn't refuse on uid mismatch between host and container.
+git config --global --add safe.directory /home
+
 hugoOptions=""
 if [ "$ENV" = "local" ]; then
     # Without --buildDrafts (rarely used) to match CI builds

@@ -40,7 +40,7 @@ paths:
                   type: string
                 type:
                   description: |
-                    The type of the View. Must be equal to `"arangosearch"`.
+                    The type of the View. Needs to be set to `"arangosearch"`.
                     This option is immutable.
                   type: string
                   example: arangosearch
@@ -308,7 +308,7 @@ paths:
                     The consolidation policy to apply for selecting which segments should be merged.
 
                     - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
