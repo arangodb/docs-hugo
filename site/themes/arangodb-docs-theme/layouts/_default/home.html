@@ -16,8 +16,8 @@
     .hx-hero > * { position: relative; z-index: 1; }
     .hx-eyebrow { text-transform: uppercase; letter-spacing: 1.5px; font-size: .78rem; font-weight: 700; color: var(--hl-meadow); margin: 0 0 12px; }
     .hx-hero h1 { font-family: var(--font-headlines); color: #fff; font-size: 2.7rem; line-height: 1.08; letter-spacing: -1px; margin: 0 0 14px; max-width: 17ch; text-wrap: balance; }
-    .hx-hero p.sub { font-size: 1.2rem; line-height: 1.45; color: rgba(255,255,255,.9); max-width: 62ch; margin: 0 0 26px; }
-    .hx-search { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 560px; background: #fff; border-radius: 12px; padding: 15px 18px; cursor: text; box-shadow: 0 10px 30px rgba(0,0,0,.18); border: none; text-align: left; }
+    .hx-hero p.sub { font-size: 1.2rem; line-height: 1.45; color: rgba(255,255,255,.9); max-width: 880px; margin: 0 0 26px; }
+    .hx-search { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 880px; background: #fff; border-radius: 12px; padding: 15px 18px; cursor: text; box-shadow: 0 10px 30px rgba(0,0,0,.18); border: none; text-align: left; }
     .hx-search:hover { box-shadow: 0 14px 34px rgba(0,0,0,.24); }
     .hx-search i { color: var(--hl-evergreen); font-size: 1.05rem; }
     .hx-search span { color: #8a8f93; font-size: 1.05rem; flex: 1; }
@@ -28,6 +28,20 @@
     .hx-herocta a.solid:hover { background: #fff; text-decoration: none; }
     .hx-herocta a.ghost { border: 1.5px solid rgba(255,255,255,.55); color: #fff; }
     .hx-herocta a.ghost:hover { border-color: #fff; background: rgba(255,255,255,.12); text-decoration: none; }
+
+    /* Row under the search: get-started paths + secondary CTAs beside them */
+    .hx-startrow { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 14px; width: 100%; max-width: 880px; }
+    .hx-startrow .hx-herocta { margin-top: 0; flex-direction: column; align-items: stretch; justify-content: center; gap: 10px; }
+    .hx-start2 { flex: 1 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 12px 16px; }
+    .hx-opts { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+    .hx-start2 .hx-lead { color: rgba(255,255,255,.88); font-size: .92rem; font-weight: 600; line-height: 1.3; margin: 0; }
+    .hx-start2 .orsep { color: rgba(255,255,255,.55); font-size: .88rem; }
+    .hx-start2 a { flex: 1 1 0; display: inline-flex; align-items: center; gap: 10px; color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); border-radius: 10px; padding: 8px 14px; transition: .15s; }
+    .hx-start2 a:hover { background: var(--hl-lime); color: var(--hl-avocado); border-color: var(--hl-lime); text-decoration: none; }
+    .hx-start2 a i { font-size: 1rem; color: var(--hl-meadow); }
+    .hx-start2 a:hover i { color: var(--hl-avocado); }
+    .hx-start2 a strong { display: block; font-weight: 700; font-size: .95rem; line-height: 1.2; }
+    .hx-start2 a .d { display: block; font-size: .78rem; font-weight: 500; opacity: .82; line-height: 1.2; margin-top: 1px; }
 
     /* Section heads */
     .hx-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 50px 0 4px; }
@@ -47,8 +61,8 @@
 
     /* Browse lanes */
     .hx-lanes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-    .hx-lane { display: grid; grid-template-columns: 46px 1fr; gap: 15px; align-items: start; background: #fff; border: 1px solid var(--hl-border); border-radius: 12px; padding: 20px; transition: .15s; color: var(--hl-ink); }
-    .hx-lane:hover { border-color: var(--hl-evergreen); box-shadow: 0 10px 24px rgba(4,73,38,.1); transform: translateY(-2px); text-decoration: none; }
+    .hx-lane { display: grid; grid-template-columns: 46px 1fr; gap: 15px; align-items: start; background: #fff; border: 1px solid var(--hl-border); border-top: 3px solid var(--hl-evergreen); border-radius: 12px; padding: 20px; transition: .15s; color: var(--hl-ink); }
+    .hx-lane:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(4,73,38,.14); border-top-color: var(--hl-lime); text-decoration: none; }
     .hx-lane .ic { width: 46px; height: 46px; border-radius: 11px; background: var(--hl-avocado); color: var(--hl-meadow); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
     .hx-lane.ai .ic { background: linear-gradient(135deg, var(--hl-evergreen), var(--hl-lime)); color: var(--hl-avocado); }
     .hx-lane h3 { font-family: var(--font-headlines); font-size: 1.16rem; color: var(--hl-avocado); margin: 2px 0 5px; }
@@ -57,14 +71,13 @@
     .hx-lane .tags span { font-size: .78rem; color: var(--hl-evergreen); background: var(--green-50, #e3f2e0); border-radius: 6px; padding: 2px 8px; font-weight: 600; }
 
     /* Personas + whats-new two-column */
-    .hx-split { display: grid; grid-template-columns: 1.3fr 1fr; grid-template-areas: "ha hb" "ba bb"; column-gap: 28px; row-gap: 6px; align-items: start; }
-    .hx-split > .hx-sec { margin: 0; }
-    .hx-split > .ha { grid-area: ha; } .hx-split > .hb { grid-area: hb; }
-    .hx-split > .ba { grid-area: ba; } .hx-split > .bb { grid-area: bb; }
-    @media screen and (max-width: 900px) { .hx-split { grid-template-columns: 1fr; grid-template-areas: "ha" "ba" "hb" "bb"; } }
-    .hx-roles { display: grid; gap: 10px; }
-    .hx-role { display: flex; align-items: center; gap: 14px; background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 10px; padding: 14px 16px; transition: .12s; color: var(--hl-ink); }
-    .hx-role:hover { background: #fff; border-color: var(--hl-evergreen); text-decoration: none; }
+    .hx-split { display: grid; grid-template-columns: 1.3fr 1fr; column-gap: 28px; align-items: start; }
+    .hx-split .hx-sec { margin: 0 0 4px; }
+    .hx-panel { background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 14px; padding: 6px 22px; }
+    @media screen and (max-width: 900px) { .hx-split { grid-template-columns: 1fr; row-gap: 22px; } }
+    .hx-roles { display: grid; gap: 16px; }
+    .hx-role { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--hl-border); border-top: 3px solid var(--hl-evergreen); border-radius: 10px; padding: 14px 16px; transition: .15s; color: var(--hl-ink); }
+    .hx-role:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(4,73,38,.14); border-top-color: var(--hl-lime); text-decoration: none; }
     .hx-role i { color: var(--hl-evergreen); font-size: 1.15rem; width: 1.4em; text-align: center; }
     .hx-role strong { font-family: var(--font-headlines); font-size: 1.02rem; color: var(--hl-avocado); display: block; }
     .hx-role span { font-size: .9rem; color: var(--hl-muted); }
@@ -85,6 +98,14 @@
     .hx-chips a { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--hl-border); border-radius: 999px; padding: 9px 16px; font-weight: 600; font-size: .93rem; color: var(--hl-ink); transition: .12s; }
     .hx-chips a:hover { border-color: var(--hl-evergreen); color: var(--hl-evergreen); text-decoration: none; }
     .hx-chips a i { color: var(--hl-evergreen); }
+
+    /* From graph to AI — journey */
+    .hx-journey { display: grid; gap: 0; position: relative; margin-top: 6px; }
+    .hx-jrow { display: grid; grid-template-columns: 46px 1fr; gap: 18px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--hl-border); }
+    .hx-jrow:last-child { border-bottom: none; }
+    .hx-jrow .num { width: 40px; height: 40px; border-radius: 50%; background: var(--hl-avocado); color: var(--hl-meadow); display: flex; align-items: center; justify-content: center; font-family: var(--font-headlines); font-weight: 700; font-size: 1.15rem; }
+    .hx-jrow strong { font-family: var(--font-headlines); font-size: 1.14rem; color: var(--hl-avocado); display: block; margin: 6px 0 4px; }
+    .hx-jrow p { margin: 0; font-size: .97rem; line-height: 1.5; color: var(--hl-muted); }
   </style>
 
   <section class="hx-hero">
@@ -94,10 +115,18 @@
     <button type="button" class="hx-search" id="hx-open-search" aria-label="Search the documentation">
       <i class="fas fa-search"></i><span>Search the documentation</span><kbd>Ctrl K</kbd>
     </button>
-    <div class="hx-herocta">
-      <a class="solid" href="{{ (print $stable "get-started/") | relURL }}"><i class="fas fa-rocket"></i>Get started</a>
-      <a class="ghost" href="{{ (print $stable "aql/") | relURL }}"><i class="fas fa-book"></i>Browse reference</a>
-      <a class="ghost" href="{{ "ecosystem/arangodb-mcp-server/" | relURL }}"><i class="fas fa-robot"></i>Connect an AI agent</a>
+    <div class="hx-startrow">
+      <div class="hx-start2">
+        <span class="hx-lead">Get started with</span>
+        <div class="hx-opts">
+          <a href="{{ "contextual-data-platform/" | relURL }}"><i class="fas fa-layer-group"></i><span><strong>Contextual Data Platform</strong><span class="d">Database + Agentic AI Suite</span></span></a>
+          <a href="{{ "arangodb/" | relURL }}"><i class="fas fa-database"></i><span><strong>ArangoDB database</strong><span class="d">Just the multi-model database</span></span></a>
+        </div>
+      </div>
+      <div class="hx-herocta">
+        <a class="ghost" href="{{ (print $stable "aql/") | relURL }}"><i class="fas fa-book"></i>Browse reference</a>
+        <a class="ghost" href="{{ "ecosystem/arangodb-mcp-server/" | relURL }}"><i class="fas fa-robot"></i>Connect an AI agent</a>
+      </div>
     </div>
   </section>
 
@@ -165,10 +194,18 @@
     </a>
   </section>
 
+  <div class="hx-sec"><h2 id="graph-to-ai">From graph to AI</h2></div>
+  <p class="hx-note">Arango takes you from connected data all the way to explainable, context-aware AI, all in one platform.</p>
+  <section class="hx-journey">
+    <div class="hx-jrow"><div class="num">1</div><div><strong>Persist connected data</strong><p>Store <a href="{{ (print $stable "concepts/data-structure/documents/") | relURL }}">JSON documents</a>, <a href="{{ (print $stable "graphs/") | relURL }}">graphs</a>, and key-value data in one native multi-model database.</p></div></div>
+    <div class="hx-jrow"><div class="num">2</div><div><strong>Retrieve context</strong><p>Query with <a href="{{ (print $stable "aql/") | relURL }}">AQL</a> across graph traversal, full-text, vector, geo-spatial, and aggregation, all in a single language.</p></div></div>
+    <div class="hx-jrow"><div class="num">3</div><div><strong>Explore and analyze</strong><p>Discover patterns with visual graph exploration, <a href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Graph Analytics</a>, and <a href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML</a>.</p></div></div>
+    <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
+  </section>
+
   <div class="hx-split" style="margin-top:50px;">
-    <div class="hx-sec ha"><h2 id="by-role">Start by role</h2></div>
-    <div class="hx-sec hb"><h2 id="whats-new">What's new</h2></div>
     <div class="ba">
+      <div class="hx-sec"><h2 id="by-role">Start by role</h2></div>
       <p class="hx-note">Jump to the material that matches what you do.</p>
       <div class="hx-roles">
         <a class="hx-role" href="{{ (print $stable "develop/") | relURL }}"><i class="fas fa-laptop-code"></i><span><strong>Application developer</strong><span>Build apps with AQL, drivers, and the HTTP API.</span></span><span class="go">&rarr;</span></a>
@@ -177,11 +214,14 @@
       </div>
     </div>
     <div class="bb">
+      <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
       <p class="hx-note">Latest releases and platform updates.</p>
-      <div class="hx-news">
-        <a href="{{ (print $stable "release-notes/") | relURL }}"><i class="fas fa-bolt"></i>ArangoDB release notes<span class="badge">Stable 3.12</span></a>
-        <a href="{{ "contextual-data-platform/release-notes/" | relURL }}"><i class="fas fa-bolt"></i>Contextual Data Platform release notes</a>
-        <a href="{{ "agentic-ai-suite/" | relURL }}"><i class="fas fa-bolt"></i>Agentic AI Suite quick starts<span class="badge">New</span></a>
+      <div class="hx-panel">
+        <div class="hx-news">
+          <a href="{{ (print $stable "release-notes/") | relURL }}"><i class="fas fa-bolt"></i>ArangoDB release notes<span class="badge">Stable 3.12</span></a>
+          <a href="{{ "contextual-data-platform/release-notes/" | relURL }}"><i class="fas fa-bolt"></i>Contextual Data Platform release notes</a>
+          <a href="{{ "agentic-ai-suite/" | relURL }}"><i class="fas fa-bolt"></i>Agentic AI Suite quick starts<span class="badge">New</span></a>
+        </div>
       </div>
     </div>
   </div>
