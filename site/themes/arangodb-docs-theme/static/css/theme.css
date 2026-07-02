@@ -892,6 +892,45 @@ header .logo {
     height: 2rem;
 }
 
+/* Labeled "Docs home" link next to the logo (overrides the icon-only .home-link) */
+.home-link.docs-home {
+    background: none;
+    width: auto;
+    height: auto;
+    margin: 0 0 0 16px;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    color: var(--color-avocado);
+    font-family: var(--font-headlines);
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    transition: background-color 0.12s;
+}
+
+.home-link.docs-home:hover {
+    background: var(--gray-100);
+    text-decoration: none;
+}
+
+.home-link.docs-home > i {
+    color: var(--color-evergreen);
+    font-size: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .home-link.docs-home > span {
+        display: none;
+    }
+    .home-link.docs-home {
+        padding: 7px 10px;
+    }
+}
+
 /* end Header */
 
 .main-nav.active {
