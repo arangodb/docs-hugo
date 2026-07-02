@@ -962,8 +962,7 @@ RETURN UNIQUE(
 
 `UNION_DISTINCT(array1, array2, ... arrayN) → newArray`
 
-Combine all given arrays into a single array, keeping only one copy of each
-value.
+Combine all given arrays into a single array, keeping each value only once.
 
 If you need the values to preserve the order in which they first appear,
 use [`UNION_DISTINCT_STABLE()`](#union_distinct_stable) instead.
@@ -990,8 +989,8 @@ RETURN UNION_DISTINCT(
 
 `UNION_DISTINCT_STABLE(array1, array2, ... arrayN) → newArray`
 
-Combine all given arrays into a single array, keeping only one copy of each
-value, in the order in which the values first appear.
+Combine all given arrays into a single array, keeping each value only once,
+in the order in which the values first appear.
 
 This works like [`UNION_DISTINCT()`](#union_distinct), but the order of the
 elements in the result is predictable: the arrays are processed from left to
