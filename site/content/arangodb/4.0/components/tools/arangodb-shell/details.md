@@ -313,11 +313,11 @@ Note that regular expression matching is case-sensitive. `PASSWORD` won't
 exclude environment variables that include `password`. You may use
 `[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]` for case-insensitive matching.
 
-You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 3.12
-Docker image:
+You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 4.0
+container image:
 
 ```sh
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:4.0 \
   arangosh --javascript.execute-string "print(process.env)"
 ```
 
@@ -327,26 +327,25 @@ docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
   "SHLVL" : "1",
   "HOME" : "/root",
   "ARANGO_ROOT_PASSWORD" : "secret",
-  "ARANGO_VERSION" : "3.12.8",
   "PATH" : "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
   "PWD" : "/",
-  "GLIBCXX_FORCE_NEW" : "1",
   "ICU_DATA_LEGACY" : "/usr/share/arangodb3/",
   "ICU_DATA" : "/usr/share/arangodb3/"
 }
 ```
 
 ```sh
-docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
+docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:4.0 \
   arangosh --javascript.execute-string "print(process.env)" \
-  --javascript.environment-variables-allowlist "^ARANGO_" \
+  --javascript.environment-variables-allowlist "^(ARANGO|ICU)_" \
   --javascript.environment-variables-denylist "PASSWORD"
 ```
 
 ```js
 ...
 [Object {
-  "ARANGO_VERSION" : "3.12.8"
+  "ICU_DATA_LEGACY" : "/usr/share/arangodb3/",
+  "ICU_DATA" : "/usr/share/arangodb3/"
 }]
 ```
 

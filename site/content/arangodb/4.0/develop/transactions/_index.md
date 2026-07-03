@@ -1,5 +1,5 @@
 ---
-title: Transactions in ArangoDB
+title: Transactions
 menuTitle: Transactions
 weight: 260
 description: >-

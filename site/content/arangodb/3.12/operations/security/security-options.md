@@ -175,7 +175,7 @@ exclude environment variables that include `password`. You may use
 `[Pp][Aa][Ss][Ss][Ww][Oo][Rr][Dd]` for case-insensitive matching.
 
 You can test the allow-/denylisting in _arangosh_, here using the ArangoDB 3.12
-Docker image:
+container image:
 
 ```sh
 docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
