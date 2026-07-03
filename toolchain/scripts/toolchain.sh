@@ -406,9 +406,33 @@ function run_arangodb_container() {
       arangodb --starter.local --starter.data-dir=./localdata
 
     log "[run_arangodb_container] Run single server"
+    # A hot-backup restore restarts arangod via execvp, bypassing the image
+    # entrypoint and NOT re-applying the config file (--config is not in effect
+    # on the restart). Any config-only setting is then unset on the restarted
+    # process, which either FATALs ("no startup-directory supplied") so the
+    # container dies, or silently defaults wrong (e.g. the data directory, in
+    # which case the server comes back WITHOUT the restored data). Command-line
+    # flags DO survive the re-exec, so pass everything the restart needs
+    # explicitly instead of relying on the config file.
+    #
+    # --database.directory applies to all versions and must match where the
+    # restore places data (the image's LOCALSTATEDIR, /var/lib/arangodb3).
+    # The V8/JS paths (startup-directory + Foxx app-path) apply only when the
+    # server has server-side V8: we detect the js dir from the image itself (not
+    # hardcoded) so it is correct for any layout and local/CI alike, and use its
+    # presence as the V8 test. 4.0+ has no server-side V8/Foxx, so the probe
+    # finds nothing and those flags are omitted.
+    v8_args=""
+    js_dir=$(docker run --rm --entrypoint sh "$image_id" -c 'for d in /usr/share/arangodb3/js /usr/share/arangodb/js; do [ -d "$d" ] && printf "%s" "$d" && break; done' 2>/dev/null)
+    if [ -n "$js_dir" ]; then
+      v8_args="--javascript.startup-directory=$js_dir --javascript.app-path=/var/lib/arangodb3-apps"
+      log "[run_arangodb_container] Single server V8 paths: startup-directory=$js_dir app-path=/var/lib/arangodb3-apps"
+    fi
     docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
       "$image_id" \
-      --server.endpoint http+tcp://0.0.0.0:8529
+      --server.endpoint http+tcp://0.0.0.0:8529 \
+      --database.directory=/var/lib/arangodb3 \
+      $v8_args
 
     wait_for_arangodb_ready "$container_name"
     wait_for_arangodb_ready "$container_name"_cluster
