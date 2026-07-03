@@ -358,7 +358,10 @@ paths:
                       v8-version:
                         description: |
                           The bundled V8 JavaScript engine version.
+                          V8 is not embedded in _arangod_ anymore since
+                          ArangoDB v4.0.
                         type: string
+                        const: none
                       vpack-version:
                         description: |
                           The version of the used VelocyPack implementation.

@@ -63,6 +63,18 @@ due to feature removals:
 
 - `arangodb_request_statistics_memory_usage`
 - `arangodb_connection_statistics_memory_usage`
+- `arangodb_v8_context_alive`
+- `arangodb_v8_context_busy`
+- `arangodb_v8_context_dirty`
+- `arangodb_v8_context_free`
+- `arangodb_v8_context_max`
+- `arangodb_v8_context_min`
+
+#### Log API
+
+The `security` log topic has been removed.
+The `/_admin/log/level` endpoints no longer include this log topic in responses
+and attempts to set the log level for this topic are ignored.
 
 ### Privilege changes
 
