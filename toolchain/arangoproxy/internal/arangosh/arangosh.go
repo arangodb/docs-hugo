@@ -3,6 +3,7 @@ package arangosh
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 
@@ -26,12 +27,19 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			// A single long-lived arangosh serves every example for a version.
 			// Some examples (e.g. RestBackupRestoreBackup) restart the arangod
 			// process, which drops this shared connection. If we see "not
-			// connected", reconnect and retry once so the failure doesn't
-			// cascade into every subsequent example. See reconnectSession.
+			// connected", reconnect once and retry the example. If the server
+			// does not come back, it is gone for good (e.g. a restore that left
+			// arangod unable to restart): every remaining example would block on
+			// the reconnect timeout and then fail anyway, so abort the whole run
+			// immediately instead of wasting CI time. See reconnectSession.
 			if isNotConnected(out) {
 				models.Logger.Printf("[%s] [WARN] arangosh lost its connection to arangod; reconnecting and retrying", name)
 				if reconnectSession(name, repository) {
 					out = Exec(name, code, filepath, repository)
+				} else {
+					models.Logger.Printf("[%s] [FATAL] arangod (%s) is unreachable and could not be recovered; aborting example generation to avoid a cascade of timeouts", name, repository.Url)
+					models.Logger.Summary("<li><error code=3><strong>%s</strong> - %s <strong>FATAL: arangod unreachable, aborting generation %s</strong></error>", repository.Version, name, filepath)
+					os.Exit(1)
 				}
 			}
 
@@ -57,26 +65,33 @@ func isNotConnected(out string) bool {
 // `output` global so no stale response leaks into the next example's rendering.
 // Returns true once arangod answers again (polling up to 60s), false otherwise.
 func reconnectSession(name string, repository models.Repository) bool {
-	recovery := `
-var __deadline = require("internal").time() + 60;
+	// Reconnect to the server's known URL rather than getEndpoint(), which can
+	// return empty once the connection is torn down. Report the last error so a
+	// dead server (connection refused) is distinguishable from a client issue.
+	recovery := fmt.Sprintf(`
+var __deadline = require("internal").time() + 30;
 var __ok = false;
+var __lastErr = "no attempt made";
 while (require("internal").time() < __deadline) {
   try {
-    internal.arango.reconnect(internal.arango.getEndpoint(), "_system", "root", "");
+    internal.arango.reconnect(%q, "_system", "root", "");
     var __r = internal.arango.GET("/_api/version");
     if (__r && __r.error !== true) { __ok = true; break; }
-  } catch (__e) {}
+    __lastErr = "GET /_api/version returned: " + JSON.stringify(__r);
+  } catch (__e) {
+    __lastErr = String(__e);
+  }
   require("internal").wait(0.5);
 }
 output = "";
-print(__ok ? "RECONNECTED" : "RECONNECT_FAILED");
-`
+print(__ok ? "RECONNECTED" : ("RECONNECT_FAILED: " + __lastErr));
+`, repository.Url)
 	out := Exec(name, recovery, "", repository)
 	if strings.Contains(out, "RECONNECTED") {
 		models.Logger.Printf("[%s] [INFO] arangosh reconnected to arangod", name)
 		return true
 	}
-	models.Logger.Printf("[%s] [ERROR] arangosh failed to reconnect to arangod within 60s", name)
+	models.Logger.Printf("[%s] [ERROR] arangosh could not reconnect to arangod within 30s (%s): %s", name, repository.Url, strings.TrimSpace(out))
 	return false
 }
 
