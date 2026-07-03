@@ -22,12 +22,62 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			repository := exampleData["repository"].(models.Repository)
 
 			out := Exec(name, code, filepath, repository)
+
+			// A single long-lived arangosh serves every example for a version.
+			// Some examples (e.g. RestBackupRestoreBackup) restart the arangod
+			// process, which drops this shared connection. If we see "not
+			// connected", reconnect and retry once so the failure doesn't
+			// cascade into every subsequent example. See reconnectSession.
+			if isNotConnected(out) {
+				models.Logger.Printf("[%s] [WARN] arangosh lost its connection to arangod; reconnecting and retrying", name)
+				if reconnectSession(name, repository) {
+					out = Exec(name, code, filepath, repository)
+				}
+			}
+
 			out = checkAssertionFailed(name, code, out, filepath, repository)
 			out = checkArangoError(name, code, out, filepath, repository)
 
 			outChannel <- out
 		}
 	}
+}
+
+// isNotConnected reports whether the arangosh output indicates the client lost
+// its connection to arangod (ArangoError 2001). This is never an expected
+// example error, so it always signals infrastructure trouble worth recovering.
+func isNotConnected(out string) bool {
+	return strings.Contains(out, "ArangoError: not connected") || strings.Contains(out, "ArangoError 2001: not connected")
+}
+
+// reconnectSession re-establishes the shared arangosh session's connection to
+// arangod after the server was restarted (e.g. by a hot-backup restore). The
+// arangosh process itself is still alive; only its socket to arangod is gone,
+// so a reconnect() on the existing session is enough. It also clears the shared
+// `output` global so no stale response leaks into the next example's rendering.
+// Returns true once arangod answers again (polling up to 60s), false otherwise.
+func reconnectSession(name string, repository models.Repository) bool {
+	recovery := `
+var __deadline = require("internal").time() + 60;
+var __ok = false;
+while (require("internal").time() < __deadline) {
+  try {
+    internal.arango.reconnect(internal.arango.getEndpoint(), "_system", "root", "");
+    var __r = internal.arango.GET("/_api/version");
+    if (__r && __r.error !== true) { __ok = true; break; }
+  } catch (__e) {}
+  require("internal").wait(0.5);
+}
+output = "";
+print(__ok ? "RECONNECTED" : "RECONNECT_FAILED");
+`
+	out := Exec(name, recovery, "", repository)
+	if strings.Contains(out, "RECONNECTED") {
+		models.Logger.Printf("[%s] [INFO] arangosh reconnected to arangod", name)
+		return true
+	}
+	models.Logger.Printf("[%s] [ERROR] arangosh failed to reconnect to arangod within 60s", name)
+	return false
 }
 
 func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {
