@@ -6,8 +6,7 @@ description: >-
   The analyzers module provides a JavaScript interface for managing ArangoSearch
   Analyzers
 ---
-The JavaScript API can be accessed via the `@arangodb/analyzers` module from
-both server-side and client-side code (arangosh, Foxx):
+The JavaScript API can be accessed via the `@arangodb/analyzers` module in _arangosh_.
 
 ```js
 var analyzers = require("@arangodb/analyzers");

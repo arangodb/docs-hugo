@@ -11,6 +11,7 @@ aliases:
   - ../arangodb/4.0/data-science/llm-knowledge-graphs # 3.10, 3.11
   - ../arangodb/devel/data-science/llm-knowledge-graphs # 3.10, 3.11
 ---
+
 ## What are knowledge graphs?
 
 A knowledge graph can be thought of as a dynamic and interconnected network of
@@ -73,5 +74,5 @@ conceptual understanding.
 - **[GraphRAG Tutorial using integrated Notebook servers](tutorial-notebook.md)**: Follow hands-on examples and implementation guidance via Jupyter Notebooks.
 
 For deeper implementation details, explore the individual services:
-- **[Importer Service](../reference/importer.md)**: Transform documents into knowledge graphs.
-- **[Retriever Service](../reference/retriever/_index.md)**: Query and extract insights from your knowledge graphs.
+- **[Importer Service](../importer/)**: Transform documents into knowledge graphs.
+- **[Retriever Service](../retriever/)**: Query and extract insights from your knowledge graphs.

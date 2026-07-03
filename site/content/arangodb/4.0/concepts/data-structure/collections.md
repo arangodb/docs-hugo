@@ -392,6 +392,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_list_collections
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 ~db._useDatabase("mydb");
 ~db._create("products");

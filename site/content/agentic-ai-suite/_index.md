@@ -14,16 +14,22 @@ aliases:
   - arangodb/4.0/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
+
+{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
+
 ## What's included
 
 The Agentic AI Suite is composed of the following major components:
 
-- **Ada**: The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph**](autograph/_index.md): Organize enterprise data into contextual
-  knowledge graph, using **AutoRAG** to optimize retrieval across graph, vector,
-  and document data.
-- [**AQLizer**](aqlizer.md): Generate AQL queries from natural language to explore
-  your data and gain insights without having to learn the query language first.
+- [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
+- [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
+  contextual knowledge graph, with the **AutoRAG** assigning each
+  domain the right processing depth.
+- [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
+  queries from natural language to explore your data and gain insights without having
+  to learn the query language first.
+- [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
+  using AI-powered reasoning, with validated performance improvements.
 - [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
   from text files to create a knowledge graph that you can then query with a
   natural language interface.
@@ -42,13 +48,32 @@ Alongside these components, you also get the following additional features:
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](reference/triton-inference-server.md).  
-- [**MLflow integration**](reference/mlflow.md): Use the popular MLflow as a
+  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
+- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
-  Agentic AI Suite and build your own integrations. See the <!-- TODO: New API reference and link -->
-  [Protocol Documentation](https://arangoml.github.io/platform-dss-api/GenAI-Service/proto/index.html)
-  for more details.
+  Agentic AI Suite and build your own integrations. See the
+  [API Reference](https://apiref.arango.ai/) for more details.
+
+## Where your data lives
+
+The Arango Contextual Data Platform deploys and integrates multiple services,
+but the data itself lives in the ArangoDB core database system. Everything
+the Agentic AI Suite produces (knowledge graphs, embeddings, analytics
+results, query history) is persisted as collections and documents in
+ArangoDB databases, alongside your existing application data.
+
+The exception is raw files (PDFs, images, office documents, and other
+binaries) that you upload for Agentic AI processing, such as GraphRAG input.
+These are stored in object storage (S3, MinIO, or another blob store) and
+managed through the
+[File Manager](../platform-suite/file-manager/_index.md) service. The same
+File Manager also holds the code packages uploaded through the Container
+Manager's
+[Bring Your Own Code](../platform-suite/container-manager/_index.md#bring-your-own-code)
+flow, so its contents are not exclusive to the Agentic AI Suite.
+Any structured data extracted from uploaded files
+(entities, relationships, embeddings) is written back into ArangoDB.
 
 ## Sample datasets
 

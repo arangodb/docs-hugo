@@ -7,6 +7,9 @@ description: ''
 ## Create a full-text index
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/index#fulltext:
     post:
@@ -48,7 +51,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"fulltext"`.
+                    Needs to be set to `"fulltext"`.
                   type: string
                   example: fulltext
                 name:

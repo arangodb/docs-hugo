@@ -631,7 +631,7 @@ The following APIs have been expanded / changed:
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
-- New [Metrics API](../../develop/http-api/monitoring/metrics.md#metrics-api),\
+- New [Metrics API](../../develop/http-api/monitoring/metrics.md#get-the-metrics),\
   HTTP route `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
@@ -780,7 +780,7 @@ may be shipped in a disabled-by-default state.
   because it will abort valid ongoing write operations, but it makes sure that
   backups can be acquired more quickly. The force flag currently only aborts
   [Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) but no
-  [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md).
+  JavaScript Transactions.
 
 - View Data
 

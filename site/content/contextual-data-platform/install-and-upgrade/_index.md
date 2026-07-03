@@ -8,6 +8,11 @@ description: >-
 ---
 ## Requirements for self-hosting
 
+- **ArangoDB Enterprise Edition**: The multi-model database system for graph,
+  document, key-value, search, and vector.
+  
+  The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
+
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Contextual Data Platform, running them in containers for safety and scalability.
 
@@ -18,7 +23,7 @@ description: >-
   control plane.
 
   Install [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for applying
-  specifications such as for creating the ArangoDB Core deployment, as well as
+  specifications such as for creating the ArangoDB core deployment, as well as
   for checking pods, logs, etc.
 
 - **Helm**: A package manager for Kubernetes.
@@ -36,6 +41,19 @@ description: >-
   In environments with internet access, you don't need your own container registry
   but you can optionally use one.
 
+- **x86-64 CPU**: The processor(s) must support the **x86-64** architecture.
+  See the [Supported platforms and architectures](../../arangodb/3.12/operations/installation/_index.md#supported-platforms-and-architectures)
+  of ArangoDB for details.
+
+  {{< tip >}}
+  Arango is fully committed to supporting the ARM architecture and infrastructure
+  for all products (ArangoDB, Arango Contextual Data Platform, and
+  Arango Agentic AI Suite) and tests them before each release. As Arango develops
+  new services and components for the data platform, some of them may be under
+  validation and QA. If you have a specific request for a new feature, especially
+  around AI services, please reach out to your sales/service/support team to confirm.
+  {{< /tip >}}
+
 {{< comment >}}
 - **Licenses**: If you want to use any paid features, you need to purchase the
   respective packages.
@@ -49,14 +67,14 @@ Follow the guide for deploying the Arango Contextual Data Platform that matches 
 - [**Offline on-prem setup**](offline-setup.md): Install without internet access,
   including fully air-gapped environments.
 
-<!-- TODO
 ## Upgrade the Contextual Data Platform
 
+<!-- TODO
 - [**Upgrade from ArangoDB**](upgrade-from-arangodb.md): Migrate your existing
   ArangoDB deployment to a Kubernetes-managed Contextual Data Platform deployment.
-- [**Upgrade version**](upgrade-version.md): Upgrade to a newer version of the
-  Contextual Data Platform.
 -->
+- [**Upgrade version**](upgrade-version.md): Upgrade to a newer version of the
+  Arango Contextual Data Platform.
 
 ## Interfaces
 

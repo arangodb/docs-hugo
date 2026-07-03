@@ -101,7 +101,7 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 |-------------------|--------------------|
 | Apache 2.0 License | Commercial License |
 | Sharding using consistent hashing on the default or custom shard keys | In addition, **smart sharding** for improved data locality |
-| Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** with an automatic sharding key selection |
+| Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** to co-locate edges with their connected vertices |
 | Only regular collection replication without data locality optimizations | **SatelliteCollections** to replicate collections on all cluster nodes and data locality optimizations for queries |
 | No optimizations when querying sharded graphs and replicated collections together | **SmartGraphs using SatelliteCollections** to enable more local execution of graph queries |
 | Only regular graph replication without local execution optimizations | **SatelliteGraphs** to execute graph traversals locally on a cluster node |

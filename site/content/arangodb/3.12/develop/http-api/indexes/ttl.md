@@ -42,7 +42,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"ttl"`.
+                    Needs to be set to `"ttl"`.
                   type: string
                 name:
                   description: |

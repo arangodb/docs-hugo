@@ -598,7 +598,7 @@ paths:
                 httpclient:
                   description: |
                     Logs the activity of the HTTP request subsystem that is used
-                    in replication, client tools, and V8.
+                    in replication and client tools.
                   type: string
                 libiresearch:
                   description: |
@@ -649,10 +649,6 @@ paths:
                     Information related to ArangoDB's use of the
                     RocksDB storage engine uses the `engines` log topic.
                   type: string
-                security:
-                  description: |
-                    Logs the security configuration for V8.
-                  type: string
                 ssl:
                   description: |
                     Logs information related to the in-transit encryption of
@@ -699,9 +695,8 @@ paths:
                   type: string
                 v8:
                   description: |
-                    Logs various information related to ArangoDB's use of the
-                    V8 JavaScript engine, like the initialization as well as
-                    entering and exiting contexts.
+                    Logs information related to the V8 JavaScript engine.
+                    Only used by _arangosh_, not _arangod_.
                   type: string
                 views:
                   description: |
@@ -1302,7 +1297,7 @@ Content-Length: 353
         "query": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
         "database": "_system",
         "bindVars": {
-          "@collection": "_statistics",
+          "@collection": "events",
           "start": 1751470412.3836362
         }
       },

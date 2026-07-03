@@ -61,7 +61,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"persistent"`.
+                    Needs to be set to `"persistent"`.
                   type: string
                   example: persistent
                 name:
