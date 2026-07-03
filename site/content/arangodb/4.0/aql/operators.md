@@ -732,7 +732,7 @@ The question mark operator can be used for nested search:
 - [Nested search with ArangoSearch](../indexes-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 
-### Array spread
+### Array spread syntax
 
 The spread syntax `...` lets you insert the elements of an array into an
 array literal you are constructing. Prefix an expression that evaluates to an
@@ -771,14 +771,12 @@ description: ''
 RETURN [0, ...(1..3), 4]
 ```
 
-If the operand of an array spread is `null`, it is ignored and nothing is added
-(no warning is raised). If the operand is neither an array nor `null`, such as a
-number, string, boolean, or object, then it is skipped and the query raises a
+If the operand of an array spread is something other than an array, such as a
+boolean, number, string, or object, then it is skipped and the query raises a
 warning:
 
 ```aql
-RETURN [1, ...null, 2]   // [1, 2]
-RETURN [1, ...42, 2]     // [1, 2] (with an 'array expected' warning)
+RETURN [1, ...null, ...42, 2]  // [1, 2] (with 'array expected' warnings)
 ```
 
 ### Array destructuring
@@ -915,7 +913,7 @@ If you try to access a non-existing attribute in one way or another, the result
 is a `null` value without raising an error or warning.
 {{< /info >}}
 
-### Object spread
+### Object spread syntax
 
 The spread syntax `...` lets you copy the attributes of an object into an
 object literal you are constructing. Prefix an expression that evaluates to an
@@ -943,7 +941,7 @@ RETURN MERGE(defaults, { type: "shirt" }, overrides, { currency: "USD" })
 ```
 
 If an attribute name occurs more than once, whether it comes from a spread or is
-written directly, the last occurrence wins and determines the value of the
+written directly, the **last occurrence** wins and determines the value of the
 attribute. In the example above, the `size` attribute of `defaults` (`"M"`) is
 overwritten by the one of `overrides` (`"L"`).
 
@@ -961,14 +959,12 @@ LET base = { size: { width: 2, height: 3 } }
 RETURN { ...base, size: { width: 5 } }
 ```
 
-If the operand of an object spread is `null`, it is ignored and nothing is added
-(no warning is raised). If the operand is neither an object nor `null`, such as a
-number, string, boolean, or array, then it is skipped and the query raises a
+If the operand of an object spread is something other than an object, such as a
+boolean, number, string, or array, then it is skipped and the query raises a
 warning:
 
 ```aql
-RETURN { a: 1, ...null }   // { "a": 1 }
-RETURN { a: 1, ...42 }     // { "a": 1 } (with an 'object expected' warning)
+RETURN { a: 1, ...null, ...42 }     // { "a": 1 } (with 'object expected' warnings)
 ```
 
 ### Object destructuring

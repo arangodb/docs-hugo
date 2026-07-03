@@ -171,20 +171,6 @@ A trailing comma after the last element is allowed:
 ]
 ```
 
-#### Array spread
-
-You can insert the elements of another array into an array literal using the
-[spread syntax](../operators.md#array-spread) `...`:
-
-```aql
----
-name: aqlArraySpread_1
-description: ''
----
-LET nums = [2, 3]
-RETURN [1, ...nums, 4]
-```
-
 #### Indexed value access
 
 Individual array values can later be accessed by their positions using the `[]`
@@ -197,6 +183,20 @@ u.friends[-1] // access last array element
 
 For more details about this array operator, see
 [Indexed value access](../operators.md#indexed-value-access).
+
+#### Array spread syntax
+
+You can insert the elements of another array into an array literal using the
+[spread syntax](../operators.md#array-spread) `...`:
+
+```aql
+---
+name: aqlArraySpread_1
+description: ''
+---
+LET nums = [2, 3]
+RETURN [1, ...nums, 4]
+```
 
 ### Objects / Documents
 
@@ -216,6 +216,16 @@ In the simplest case, an object is empty. Its declaration would then be:
 
 ```json
 { }
+```
+
+A trailing comma after the last element is allowed:
+
+```aql
+{
+  "a": 1,
+  "b": 2,
+  "c": 3, // trailing comma
+}
 ```
 
 #### Attribute names
@@ -249,16 +259,6 @@ then the attribute name must be quoted:
 { ´return´: … }  // quoted name (forward ticks)
 ```
 
-A trailing comma after the last element is allowed:
-
-```aql
-{
-  "a": 1,
-  "b": 2,
-  "c": 3, // trailing comma
-}
-```
-
 Attribute names can be computed using dynamic expressions, too.
 To disambiguate regular attribute names from attribute name expressions,
 computed attribute names must be enclosed in square brackets `[ … ]`:
@@ -267,29 +267,17 @@ computed attribute names must be enclosed in square brackets `[ … ]`:
 { [ CONCAT("test/", "bar") ] : "someValue" }
 ```
 
-#### Object spread
-
-You can copy the attributes of another object into an object literal using the
-[spread syntax](../operators.md#object-spread) `...`:
-
-```aql
----
-name: aqlObjectSpread_1
-description: ''
----
-LET defaults = { color: "red", size: "M" }
-RETURN { ...defaults, size: "L" }
-```
-
 #### Duplicate attribute names
 
-If the same attribute name occurs more than once in an object literal, the last
-occurrence wins and determines the value of the attribute:
+If the same attribute name occurs more than once in an object literal, the
+**last occurrence** wins and determines the value of the attribute:
 
 ```aql
 ---
 name: aqlObjectDuplicateKey_1
-description: ''
+description: |
+  With the attribute name `foo` twice in an object literal, the attribute value
+  will be that of the second occurrence, so `2`:
 ---
 RETURN { foo: 1, foo: 2 }
 ```
@@ -353,3 +341,17 @@ u[attr1][0][attr2][ CONCAT("fir", "st") ]
 
 For more details about these object operators, see
 [Attribute access](../operators.md#attribute-access).
+
+#### Object spread syntax
+
+You can copy the attributes of another object into an object literal using the
+[spread syntax](../operators.md#object-spread) `...`:
+
+```aql
+---
+name: aqlObjectSpread_1
+description: ''
+---
+LET defaults = { color: "red", size: "M" }
+RETURN { ...defaults, size: "L" }
+```
