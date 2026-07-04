@@ -742,7 +742,7 @@ name: job_getStatusById_02
 var url = "/_api/transaction";
 var body = {
   collections: {
-    read : [ "_aqlfunctions" ]
+    read : [ "_graphs" ]
   },
   action: "function () {require('internal').sleep(15.0);}"
 };
