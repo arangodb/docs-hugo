@@ -422,17 +422,18 @@ function run_arangodb_container() {
     # hardcoded) so it is correct for any layout and local/CI alike, and use its
     # presence as the V8 test. 4.0+ has no server-side V8/Foxx, so the probe
     # finds nothing and those flags are omitted.
-    v8_args=""
+    # Use an array expanded as "${single_args[@]}": this script sets IFS=""
+    # elsewhere, so relying on unquoted word-splitting would pass all flags as a
+    # single argument. An array keeps each flag a separate word regardless.
+    single_args=(--server.endpoint http+tcp://0.0.0.0:8529 --database.directory=/var/lib/arangodb3)
     js_dir=$(docker run --rm --entrypoint sh "$image_id" -c 'for d in /usr/share/arangodb3/js /usr/share/arangodb/js; do [ -d "$d" ] && printf "%s" "$d" && break; done' 2>/dev/null)
     if [ -n "$js_dir" ]; then
-      v8_args="--javascript.startup-directory=$js_dir --javascript.app-path=/var/lib/arangodb3-apps"
+      single_args+=("--javascript.startup-directory=$js_dir" --javascript.app-path=/var/lib/arangodb3-apps)
       log "[run_arangodb_container] Single server V8 paths: startup-directory=$js_dir app-path=/var/lib/arangodb3-apps"
     fi
     docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
       "$image_id" \
-      --server.endpoint http+tcp://0.0.0.0:8529 \
-      --database.directory=/var/lib/arangodb3 \
-      $v8_args
+      "${single_args[@]}"
 
     wait_for_arangodb_ready "$container_name"
     wait_for_arangodb_ready "$container_name"_cluster
