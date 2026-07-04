@@ -90,6 +90,9 @@ aliases:
   - ../aql/user-defined-functions # 3.12 -> 4.0
   - ../develop/http-api/queries/user-defined-aql-functions # 3.12 -> 4.0
   - ../operations/troubleshooting/emergency-console # 3.12 -> 4.0
+  - ../aql/functions/fulltext # 3.12 -> 4.0
+  - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
+  - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -250,8 +253,10 @@ detailed information about breaking changes before upgrading.
   prescribed by the [HTTP specification](https://tools.ietf.org/html/rfc7231#section-4.2).
 
 - **Fulltext indexes**:\
-  The fulltext index type is deprecated from version 3.10 onwards.
-  It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+  The fulltext index type was deprecated from version 3.10 onwards and is
+  removed in ArangoDB v4.0. It is recommended to use
+  [ArangoSearch](../indexes-and-search/arangosearch/_index.md)
+  for advanced full-text search capabilities.
 
 - **Simple Queries**:\
   Idiomatic interface in _arangosh_ to perform trivial queries, with

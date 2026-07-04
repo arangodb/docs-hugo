@@ -139,8 +139,24 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Legacy `fulltext` index type remvoed
+
+The old index type for full-text has been removed in ArangoDB v4.0. It was
+deprecated in v3.10.0. It offered basic search capabilities for full words
+and word prefixes in conjunction with the `FULLTEXT()` AQL function, which has
+been removed, too.
+
+When you upgrade to v4.0.0 or later, existing `fulltext` indexes are
+**automatically dropped**. You can use the more powerful but eventually consistent
+[ArangoSearch](../../indexes-and-search/arangosearch/_index.md) instead.
+It provides sophisticated search capabilities for full-text and other data.
+You need to manually create `inverted` indexes, Views, or both and rewrite
+AQL queries to use them.
+
 ## Removed AQL functions
 
+- `FULLTEXT()`: Removed because the legacy `fulltext` index type is gone.
+  thus this function served no purpose either.
 - `V8()`: There is no longer a V8 JavaScript engine on the server-side to
   enforce for query expressions.
 

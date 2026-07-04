@@ -10,6 +10,15 @@ description: >-
 
 ### Behavior changes
 
+#### `fulltext` indexes removed
+
+You can no longer create indexes of type `fulltext` via the `POST /_api/index`
+endpoint.
+
+Existing `fulltext` indexes are automatically dropped when upgrading to v4.0.0
+or later. Therefore, endpoints like `GET /_api/index` and `GET /_api/index/{index-id}`
+can no longer include respectively return information about `fulltext` indexes.
+
 #### Unsupported HTTP methods disallowed
 
 The following endpoints could previously be called using any HTTP method of
