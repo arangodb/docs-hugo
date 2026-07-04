@@ -636,8 +636,7 @@ print(result);
 ~db._drop("users")
 ```
 
-The following two alternatives both use a batch size and return the same
-result:
+The following example uses a batch size and returns the same result:
 
 ```js
 ---
@@ -649,15 +648,7 @@ description: ''
 ~db.users.save({ name: "Helmut" });
 ~db.users.save({ name: "Angela" });
 var result = [ ];
-var q = db.users.all();
-q.execute(1);
-while(q.hasNext()) {
-  result.push(q.next());
-}
-print(result);
-
-result = [ ];
-q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
+var q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
 while (q.hasNext()) {
   result.push(q.next());
 }

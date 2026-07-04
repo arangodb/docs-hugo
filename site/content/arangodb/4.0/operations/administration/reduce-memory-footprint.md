@@ -217,7 +217,6 @@ The other options to configure write buffer usage are:
 --rocksdb.max-write-buffer-number-definitions
 --rocksdb.max-write-buffer-number-documents
 --rocksdb.max-write-buffer-number-edge
---rocksdb.max-write-buffer-number-fulltext
 --rocksdb.max-write-buffer-number-geo
 --rocksdb.max-write-buffer-number-primary
 --rocksdb.max-write-buffer-number-replicated-logs

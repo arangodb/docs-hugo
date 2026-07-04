@@ -5,7 +5,6 @@ weight: 80
 description: >-
   The HTTP API for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
-# All /_api/job* endpoints are also available via /_admin/job*
 ---
 For an introduction to non-blocking execution of requests and how to create
 async jobs with the `x-arango-async` request header, see
@@ -166,7 +165,7 @@ name: job_fetch_result_03
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -507,7 +506,7 @@ name: job_delete_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -526,7 +525,7 @@ name: job_delete_02
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -555,7 +554,7 @@ name: job_delete_03
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -721,7 +720,7 @@ name: job_getStatusById_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -743,7 +742,7 @@ name: job_getStatusById_02
 var url = "/_api/transaction";
 var body = {
   collections: {
-    read : [ "_aqlfunctions" ]
+    read : [ "_graphs" ]
   },
   action: "function () {require('internal').sleep(15.0);}"
 };
@@ -768,7 +767,7 @@ name: job_getByType_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -787,7 +786,7 @@ name: job_getByType_02
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);

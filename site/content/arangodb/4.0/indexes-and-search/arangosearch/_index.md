@@ -8,8 +8,7 @@ description: >-
 ---
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
-primarily a full-text search engine, a much more powerful alternative to the
-[full-text index](../indexing/working-with-indexes/fulltext-indexes.md) type. It can index nested fields
+primarily a full-text search engine. It can index nested fields
 from multiple collections, optionally with transformations such as text
 normalization and tokenization applied, rank query results by relevance and
 more.
