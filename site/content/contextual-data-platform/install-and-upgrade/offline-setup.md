@@ -23,7 +23,7 @@ What needs to be done in which environment is indicated by each step:
 {{< tag "Internet-connected system" >}}
 
 In case of an installation on hardware without internet access, everything needed
-to install the services of the Platform Suite has to be downloaded on a system
+to install the services of the data platform has to be downloaded on a system
 with internet access and needs to be transferred to the offline or air-gapped
 system before the setup.
 
@@ -50,10 +50,9 @@ system before the setup.
 - Download the latest enterprise version of the ArangoDB Kubernetes Operator
   `kube-arangodb` from <https://github.com/arangodb/kube-arangodb/releases>.
 
-  Look for the files called `kube-arangodb-enterprise-x.x.x.tgz` and
-  `kube-arangodb-enterprise-arm64-x.x.x.tgz` (where `x.x.x` is the version number).
-  You may need to click **Show all # assets** to reveal all files.
-  The former is the operator for x86-64 CPUs and the latter for 64-bit ARM chips.
+  Look for the file called `kube-arangodb-enterprise-x.x.x.tgz` (where `x.x.x`
+  is the version number). It is the operator for x86-64 CPUs.
+  You may need to click **Show all # assets** to reveal all files. 
 
 - Download the Arango Contextual Data Platform CLI tool `arangodb_operator_platform` from
   <https://github.com/arangodb/kube-arangodb/releases>.
@@ -78,7 +77,7 @@ system before the setup.
   `chmod +x arangodb_operator_platform`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine arangodb_operator_platform`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
 - Pull the necessary images from the internet and save them to files in order to
@@ -97,8 +96,8 @@ system before the setup.
 
   {{< tab "Docker" >}}
   ```sh
-  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.1
-  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.1 -o kube-arangodb-enterprise.tar
+  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.2
+  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.2 -o kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -113,13 +112,13 @@ system before the setup.
   `chmod +x regctl`.
 
   On macOS, you may additionally need to run `xattr -r -d com.apple.quarantine regctl`
-  in a command-line to remove the flag that marks it as downloadead from the
+  in a command-line to remove the flag that marks it as downloaded from the
   internet to be able to run it.
 
   To pull the image and save it to a file as follows:
 
   ```sh
-  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.1 kube-arangodb-enterprise.tar
+  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.2 kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -139,10 +138,10 @@ image you may need from there without internet access.
 ```sh
 docker load -i kube-arangodb-enterprise.tar
 
-docker tag arangodb/kube-arangodb-enterprise:1.4.1 \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.1
+docker tag arangodb/kube-arangodb-enterprise:1.4.2 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
 
-docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.1
+docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
 ```
 {{< /tab >}}
 
@@ -152,7 +151,7 @@ opposed to HTTPS:
 
 ```sh
 regctl image import \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.1 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2 \
   kube-arangodb-enterprise.tar \
   --host "reg=<YOUR_REGISTRY_ADDRESS:5000>,tls=disabled"
 ```
@@ -172,7 +171,7 @@ kubectl cluster-info
 kubectl get nodes
 ```
 
-Create a Kubernetes namespace for ArangoDB and the Platform Suite resources.
+Create a Kubernetes namespace for ArangoDB and the data platform resources.
 The namespace used throughout this guide is called `arango`, but you can use
 a different name.
 
@@ -202,42 +201,17 @@ the necessary Kubernetes resources.
 
 Make sure set the the options as shown below to enable the gateway feature and
 machine learning feature:
-<!-- TODO:
---set "certificate.enabled=true" \
-Is this related to cert-manager that we no longer need with 1.4.0+?
--->
 
-{{< tabs "cpu-arch" >}}
-
-{{< tab "x86-64" >}}
 ```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
+VERSION_OPERATOR='1.4.2' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
   "kube-arangodb-enterprise-${VERSION_OPERATOR}.tgz" \
+  --set "webhooks.enabled=true" \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
   --set "operator.architectures={amd64}"
 ```
-{{< /tab >}}
-
-{{< tab "ARM" >}}
-```sh
-VERSION_OPERATOR='1.4.1' # Use a newer version if available
-
-helm upgrade --install operator \
-  --namespace arango \
-  "kube-arangodb-enterprise-arm64-${VERSION_OPERATOR}.tgz" \
-  --set "operator.args[0]=--deployment.feature.gateway=true" \
-  --set "operator.features.platform=true" \
-  --set "operator.features.ml=true" \
-  --set "operator.architectures={arm64}"
-```
-{{< /tab >}}
-
-{{< /tabs >}}
 
 The output looks similar to the following on success:
 
@@ -251,13 +225,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.1
+You have installed Kubernetes ArangoDB Operator in version 1.4.2
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.1/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.2/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -296,7 +270,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
 a secret that you will create later.
 
-Example for an ArangoDB cluster deployment using version 3.12.7 with three
+Example for an ArangoDB cluster deployment using version 3.12.9 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -306,7 +280,7 @@ metadata:
   name: "deployment-example"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.7"
+  image: "arangodb/enterprise:3.12.9"
   gateway:
     enabled: true
     dynamic: true
@@ -348,7 +322,9 @@ eventually see pods with the following names with a status of `Running`:
 {{< tag "Air-gapped system" >}}
 
 Before you can create a license key that you can apply on the air-gapped system,
-you need to get some information about the ArangoDB deployment.
+you need to get some information about the ArangoDB deployment. For an overview
+of how licensing works end-to-end in Kubernetes-managed deployments, including
+air-gapped environments, see [License Management](../license-management.md).
 
 Use the Platform CLI tool to create an inventory file. You need to specify the
 authentication method for ArangoDB (`Disabled`, `Basic`, `Token`), additional
@@ -412,7 +388,7 @@ Expected output:
 
 ```
 2026-02-05T17:03:07+01:00 INF Connecting to the server...
-2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.7-2 (enterprise)
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.9 (enterprise)
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0
@@ -475,13 +451,41 @@ The UUID wrapped in quote marks is the deployment ID.
 
 {{< tag "Internet-connected system" >}}
 
-Use your license credentials as well as the information from the previous step
-to create a license key.
+Use your license credentials together with the inventory file and deployment ID
+from the previous step to obtain a license key. You can do this with the
+License Activation portal or with the Platform CLI tool — both produce an
+equivalent license key.
 
-Substitute `<license-client-id>` and `<license-client-secret>`
-with the actual license credentials. Specify the path to the inventory file
-`inventory.json` and replace `<deployment-id>` with the deployment ID from
-the previous step.
+{{< tabs "offline-generate-license-key" >}}
+
+{{< tab "Activation portal" >}}
+1. Open <https://activate.license.arango.ai/> in a browser.
+2. Enter your **License Client ID** and **License Client Secret**.
+3. Choose how to identify the deployment:
+   - **Inventory** (default): drop the `inventory.json` file into the upload
+     area, or click to select it. Captures the full deployment shape and is
+     recommended for air-gapped deployments.
+   - **Managed — Deployment ID only**: enter the deployment ID from the
+     previous step. No inventory file is needed. Available only if
+     **Managed** activation is enabled for your license — check your
+     contract or with your Arango contact. If it is not enabled, use
+     **Inventory** mode instead.
+4. Optionally enable **Custom TTL** to override the default license duration.
+   Accepts values like `24h`, `168h`, `7d`, or `3600s`.
+5. Click **Activate** and copy the generated license key (e.g. into a local
+   `license.txt` file). You will use it in the next step to create the
+   Kubernetes secret on the air-gapped system.
+
+The activation portal is a convenient alternative for users who would otherwise
+run `arangodb_operator_platform license generate`. Inventory mode still requires
+the Platform CLI tool to produce `inventory.json` in the previous step;
+Managed mode skips that step entirely.
+{{< /tab >}}
+
+{{< tab "Platform CLI" >}}
+Substitute `<license-client-id>` and `<license-client-secret>` with the actual
+license credentials. Specify the path to the inventory file `inventory.json`
+and replace `<deployment-id>` with the deployment ID from the previous step.
 
 ```sh
 arangodb_operator_platform license generate \
@@ -518,6 +522,9 @@ Expected output (_stdout_, `x` stands for varying letter or digit):
 2026-02-05T17:27:28+01:00 INF Generating License ClusterID=<deployment-id> Inventory=true
 2026-02-05T17:27:28+01:00 INF License Generated and printed to STDERR ClusterID=<deployment-id> Inventory=true LicenseID=xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Step 8: Create a secret for the license
 
@@ -553,7 +560,7 @@ continue with the next step. Otherwise, create a platform package yourself as
 described below.
 
 Use the Platform CLI tool to download the manifests and container images of the
-Platform Suite from Arango's public container registry. This requires
+data platform from Arango's public container registry. This requires
 license credentials and internet access to `*.license.arango.ai`.
 
 What to download is defined by the package configuration file that you received

@@ -61,12 +61,16 @@ paths:
                     separate vector index.
 
                     Up to ArangoDB v3.12.8, the vector data needs to be populated before creating
-                    the index. From v3.12.9 onward, you can create the vector index first if you
-                    set `inBackground` to `true` and then populate the collection with vector data.
-                    However, it is still recommended to load the data first and then create the
-                    index to ensure that all documents participate in the training process as the
-                    training is only executed once (and starts automatically as soon as there are
-                    enough documents to index).
+                    the index. From v3.12.9 onward, you can create the vector index first and then
+                    populate the collection with vector data. However, it is still recommended to
+                    load the data first and then create the index to ensure that all documents
+                    participate in the training process as the training is only executed once.
+                    The training is triggered automatically if the vector index hasn't been
+                    trained yet and the number of documents to index exceeds the threshold of
+                    `nLists` documents. If `sparse` is set to `true`, documents without the
+                    vector embedding field are not counted toward this threshold.
+                    Check the `trainingState` to see if the index is
+                    `"ready"` and `errorMessage` for the reason if it's not.
                   type: array
                   minItems: 1
                   maxItems: 1
@@ -106,12 +110,6 @@ paths:
                     Set this option to `true` to keep the collection/shards available for
                     write operations by not using an exclusive write lock for the duration
                     of the index creation.
-
-                    From v3.12.9 onward, if you enable the option, the training is triggered
-                    automatically if the vector index hasn't been trained yet and the number
-                    of documents to index exceeds the threshold of `nLists` documents.
-                    Check the `trainingState` to see if the index is `"ready"`
-                    and `errorMessage` for the reason if it's not.
 
                     If the option is disabled, the call returns only after the index is
                     ready (but timeouts may occur), or if an error is encountered.

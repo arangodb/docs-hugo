@@ -63,7 +63,7 @@ available from v3.12.5 onward. See
   Run ArangoDB on Linux using the production-ready packages for the x86-64
   architecture and 64-bit ARM chips, on bare metal or in containers.
   Develop and test with ArangoDB on Windows, macOS, and Linux using the official
-  ArangoDB Docker images.
+  ArangoDB container images.
 
 ## Scalability & High Availability
 
@@ -203,15 +203,15 @@ available from v3.12.5 onward. See
 ## Performance
 
 - [**SmartGraphs**](../graphs/smartgraphs/_index.md):
-  Value-based sharding of large graph datasets for better data locality when
-  traversing graphs.
+  Value-based sharding of large graph datasets for excellent data locality when
+  querying graphs.
 
 - [**EnterpriseGraphs**](../graphs/enterprisegraphs/_index.md):
-  A specialized version of SmartGraphs, with an automatic sharding key selection.
+  Hash-based sharding that keeps the edges of graphs next to their connected nodes.
 
-- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md):
+- [**SmartGraphs using SatelliteCollections**](../graphs/smartgraphs/_index.md#smartgraphs-using-satellitecollections):
   Collections replicated on all cluster nodes can be combined with graphs
-  sharded by document attributes to enable more local execution of graph queries.
+  sharded by values to enable more local execution of graph queries.
 
 - [**SatelliteGraphs**](../graphs/satellitegraphs/_index.md):
   Graphs replicated on all cluster nodes to execute graph traversals locally.

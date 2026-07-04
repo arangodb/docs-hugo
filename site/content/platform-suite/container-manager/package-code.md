@@ -34,7 +34,7 @@ artifacts.
 - Creates Dockerfile configurations tailored to your project.
 - Sets up virtual environments that match platform base images.
 - Enables local Docker image testing before deployment.
-- Optionally publishes Docker images to container registries.
+- Optionally publishes container images to container registries.
 - Processes standard project formats (`pyproject.toml`, `requirements.txt`, `package.json`).
 
 For installation and usage instructions, see the
@@ -50,7 +50,7 @@ follow the steps below.
    - For Python: Create a `pyproject.toml` with your dependencies and Python version requirement.
 3. Use `uv` for Python projects (recommended):
    - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
-     (e.g., `">=3.11"` for Python 3.11 and newer runtimes).
+     (e.g., `">=3.12"` for the `py12*` base images).
    - List all dependencies in the `dependencies` array.
    - The platform uses `uv` to install dependencies during containerization.
 4. Create the archive:
@@ -76,7 +76,7 @@ myproject/
 [project]
 name = "my-service"
 version = "1.0.0"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",

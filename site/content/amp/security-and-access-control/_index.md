@@ -201,6 +201,7 @@ The roles below are described following this pattern:
 **Billing Administrator** (`billing-admin`):
 - `billing.config.get`
 - `billing.config.set`
+- `billing.credits.get_available`
 - `billing.invoice.get`
 - `billing.invoice.get-preliminary`
 - `billing.invoice.get-statistics`
@@ -217,6 +218,7 @@ The roles below are described following this pattern:
 
 **Billing Viewer** (`billing-viewer`):
 - `billing.config.get`
+- `billing.credits.get_available`
 - `billing.invoice.get`
 - `billing.invoice.get-preliminary`
 - `billing.invoice.get-statistics`
@@ -238,6 +240,14 @@ The roles below are described following this pattern:
 **CA Certificate Viewer** (`cacertificate-viewer`):
 - `crypto.cacertificate.get`
 - `crypto.cacertificate.list`
+
+**Credits Viewer** (`credits-viewer`):
+- `credit.creditbundle.list`
+- `credit.creditbundleusage.list`
+- `credit.creditbundleusageprojection.get`
+- `credit.creditdebt.get`
+- `credit.creditusagereport.get`
+- `credit.creditusagereport.list`
 
 **Dataloader Administrator** (`dataloader-admin`):
 - `dataloader.deployment.import`
@@ -327,6 +337,27 @@ The roles below are described following this pattern:
 - `example.exampledatasetinstallation.get`
 - `example.exampledatasetinstallation.list`
 
+**Graph Analytics Administrator** (`graph-analytics-admin`):
+- `graphanalytics.engine.create`
+- `graphanalytics.engine.deleted`
+- `graphanalytics.engine.feature`
+- `graphanalytics.engine.get`
+- `graphanalytics.engine.list`
+- `graphanalytics.enginesize.list`
+- `graphanalytics.enginetype.list`
+
+**Graph Analytics Executor** (`graph-analytics-executor`):
+- `graphanalytics.engine.delete-graph`
+- `graphanalytics.engine.delete-job`
+- `graphanalytics.engine.get-graph`
+- `graphanalytics.engine.get-job`
+- `graphanalytics.engine.list-graphs`
+- `graphanalytics.engine.list-jobs`
+- `graphanalytics.engine.load-data`
+- `graphanalytics.engine.process`
+- `graphanalytics.engine.shutdown`
+- `graphanalytics.engine.store-results`
+
 **Group Administrator** (`group-admin`):
 - `iam.group.create`
 - `iam.group.delete`
@@ -377,6 +408,8 @@ The roles below are described following this pattern:
 
 **MLServices Admin** (`mlservices-admin`):
 - `ml.mlservices.get`
+- `ml.mlservices.update`
+- `ml.mlservicessize.list`
 
 **Notebook Administrator** (`notebook-admin`):
 - `notebook.model.list`
@@ -449,9 +482,6 @@ The roles below are described following this pattern:
 
 **Replication Administrator** (`replication-admin`):
 - `replication.deployment.clone-from-backup`
-- `replication.deploymentreplication.get`
-- `replication.deploymentreplication.update`
-- `replication.migration-forwarder.upgrade-connection`
 
 **Role Administrator** (`role-admin`):
 - `iam.role.create`
@@ -510,60 +540,68 @@ oasisctl list permissions
 Note that if the tier is "internal", there is an `internal-dashboard` API that should be excluded in below list!
 {{% /comment %}}
 
-| API                 | Kind                         | Verbs
-|:--------------------|:-----------------------------|:-------------------------------------------
-| `audit`             | `auditlogarchive`            | `delete`, `get`, `list`
-| `audit`             | `auditlogattachment`         | `create`, `delete`, `get`
-| `audit`             | `auditlogevents`             | `get`
-| `audit`             | `auditlogevent`              | `delete`
-| `audit`             | `auditlog`                   | `create`, `delete`, `get`, `list`, `set-default`, `test-https-post-destination`, `update`
-| `backup`            | `backuppolicy`               | `create`, `delete`, `get`, `list`, `update`
-| `backup`            | `backup`                     | `copy`, `create`, `delete`, `download`, `get`, `list`, `restore`, `update`
-| `backup`            | `feature`                    | `get`
-| `billing`           | `config`                     | `get`, `set`
-| `billing`           | `invoice`                    | `get`, `get-preliminary`, `get-statistics`, `list`
-| `billing`           | `organization`               | `get`
-| `billing`           | `paymentmethod`              | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
-| `billing`           | `paymentprovider`            | `list`
-| `crypto`            | `cacertificate`              | `create`, `delete`, `get`, `list`, `set-default`, `update`
-| `dataloader`        | `deployment`                 | `import`
-| `data`              | `cpusize`                    | `list`
-| `data`              | `deploymentcredentials`      | `get`
-| `data`              | `deploymentfeatures`         | `get`
-| `data`              | `deploymentmodel`            | `list`
-| `data`              | `deploymentprice`            | `calculate`
-| `data`              | `deployment`                 | `create`, `create-test-database`, `delete`, `full-access`, `get`, `list`, `pause`, `read-only-access`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
-| `data`              | `diskperformance`            | `list`
-| `data`              | `limits`                     | `get`
-| `data`              | `nodesize`                   | `list`
-| `data`              | `presets`                    | `list`
-| `deploymentprofile` | `deploymentprofile`          | `list`
-| `example`           | `exampledatasetinstallation` | `create`, `delete`, `get`, `list`, `update`
-| `example`           | `exampledataset`             | `get`, `list`
-| `iam`               | `group`                      | `create`, `delete`, `get`, `list`, `update`
-| `iam`               | `policy`                     | `get`, `update`
-| `iam`               | `role`                       | `create`, `delete`, `get`, `list`, `update`
-| `iam`               | `user`                       | `get-personal-data`, `update`
-| `metrics`           | `endpoint`                   | `get`
-| `metrics`           | `token`                      | `create`, `delete`, `get`, `list`, `revoke`, `update`
-| `ml`                | `mlservices`                 | `get`
-| `monitoring`        | `logs`                       | `get`
-| `monitoring`        | `metrics`                    | `get`
-| `network`           | `privateendpointservice`     | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
-| `notebook`          | `model`                      | `list`
-| `notebook`          | `notebook`                   | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
-| `notification`      | `deployment-notification`    | `list`, `mark-as-read`, `mark-as-unread`
-| `prepaid`           | `prepaiddeployment`          | `get`, `list`
-| `replication`       | `deploymentmigration`        | `create`, `delete`, `get`
-| `replication`       | `deploymentreplication`      | `get`, `update`
-| `replication`       | `deployment`                 | `clone-from-backup`
-| `replication`       | `migration-forwarder`        | `upgrade-connection`
-| `resourcemanager`   | `organization-invite`        | `create`, `delete`, `get`, `list`, `update`
-| `resourcemanager`   | `organization`               | `delete`, `get`, `update`
-| `resourcemanager`   | `project`                    | `create`, `delete`, `get`, `list`, `update`
-| `scim`              | `user`                       | `add`, `delete`, `get`, `list`, `update`
-| `security`          | `iamprovider`                | `create`, `delete`, `get`, `list`, `set-default`, `update`
-| `security`          | `ipallowlist`                | `create`, `delete`, `get`, `list`, `update`
+| API                 | Kind                          | Verbs
+|:--------------------|:------------------------------|:-------------------------------------------
+| `audit`             | `auditlogarchive`             | `delete`, `get`, `list`
+| `audit`             | `auditlogattachment`          | `create`, `delete`, `get`
+| `audit`             | `auditlogevents`              | `get`
+| `audit`             | `auditlogevent`               | `delete`
+| `audit`             | `auditlog`                    | `create`, `delete`, `get`, `list`, `set-default`, `test-https-post-destination`, `update`
+| `backup`            | `backuppolicy`                | `create`, `delete`, `get`, `list`, `update`
+| `backup`            | `backup`                      | `copy`, `create`, `delete`, `download`, `get`, `list`, `restore`, `update`
+| `backup`            | `feature`                     | `get`
+| `billing`           | `config`                      | `get`, `set`
+| `billing`           | `credits`                     | `get_available`
+| `billing`           | `invoice`                     | `get`, `get-preliminary`, `get-statistics`, `list`
+| `billing`           | `organization`                | `get`
+| `billing`           | `paymentmethod`               | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
+| `billing`           | `paymentprovider`             | `list`
+| `credit`            | `creditbundleusageprojection` | `get`
+| `credit`            | `creditbundleusage`           | `list`
+| `credit`            | `creditbundle`                | `list`
+| `credit`            | `creditdebt`                  | `get`
+| `credit`            | `creditusagereport`           | `get`, `list`
+| `crypto`            | `cacertificate`               | `create`, `delete`, `get`, `list`, `set-default`, `update`
+| `dataloader`        | `deployment`                  | `import`
+| `data`              | `cpusize`                     | `list`
+| `data`              | `deploymentcredentials`       | `get`
+| `data`              | `deploymentfeatures`          | `get`
+| `data`              | `deploymentmodel`             | `list`
+| `data`              | `deploymentprice`             | `calculate`
+| `data`              | `deployment`                  | `create`, `create-test-database`, `delete`, `full-access`, `get`, `list`, `pause`, `read-only-access`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
+| `data`              | `diskperformance`             | `list`
+| `data`              | `limits`                      | `get`
+| `data`              | `nodesize`                    | `list`
+| `data`              | `presets`                     | `list`
+| `deploymentprofile` | `deploymentprofile`           | `list`
+| `example`           | `exampledatasetinstallation`  | `create`, `delete`, `get`, `list`, `update`
+| `example`           | `exampledataset`              | `get`, `list`
+| `graphanalytics`    | `enginesize`                  | `list`
+| `graphanalytics`    | `enginetype`                  | `list`
+| `graphanalytics`    | `engine`                      | `create`, `delete-graph`, `delete-job`, `deleted`, `feature`, `get`, `get-graph`, `get-job`, `list`, `list-graphs`, `list-jobs`, `load-data`, `process`, `shutdown`, `store-results`
+| `iam`               | `group`                       | `create`, `delete`, `get`, `list`, `update`
+| `iam`               | `policy`                      | `get`, `update`
+| `iam`               | `role`                        | `create`, `delete`, `get`, `list`, `update`
+| `iam`               | `user`                        | `get-personal-data`, `update`
+| `metrics`           | `endpoint`                    | `get`
+| `metrics`           | `token`                       | `create`, `delete`, `get`, `list`, `revoke`, `update`
+| `ml`                | `mlservicessize`              | `list`
+| `ml`                | `mlservices`                  | `get`, `update`
+| `monitoring`        | `logs`                        | `get`
+| `monitoring`        | `metrics`                     | `get`
+| `network`           | `privateendpointservice`      | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
+| `notebook`          | `model`                       | `list`
+| `notebook`          | `notebook`                    | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
+| `notification`      | `deployment-notification`     | `list`, `mark-as-read`, `mark-as-unread`
+| `prepaid`           | `prepaiddeployment`           | `get`, `list`
+| `replication`       | `deploymentmigration`         | `create`, `delete`, `get`
+| `replication`       | `deployment`                  | `clone-from-backup`
+| `resourcemanager`   | `organization-invite`         | `create`, `delete`, `get`, `list`, `update`
+| `resourcemanager`   | `organization`                | `delete`, `get`, `update`
+| `resourcemanager`   | `project`                     | `create`, `delete`, `get`, `list`, `update`
+| `scim`              | `user`                        | `add`, `delete`, `get`, `list`, `update`
+| `security`          | `iamprovider`                 | `create`, `delete`, `get`, `list`, `set-default`, `update`
+| `security`          | `ipallowlist`                 | `create`, `delete`, `get`, `list`, `update`
 
 ### Permission inheritance
 
@@ -653,27 +691,36 @@ organization. The following commands are available to configure this option:
 - `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=` -
   allows you to reset a list and accept any domains for accessing a specific organization
 
-## Using an audit log
+## Audit logs
 
 {{< info >}} 
-To enable the audit log feature, get in touch with the AMP team via **Request Help**, available in the left sidebar menu of the AMP Dashboard. 
+To enable the audit log feature, get in touch with the AMP team via
+**Request Help**, available in the left sidebar menu of the AMP Dashboard. 
 {{< /info >}}
 
 To have a better overview of the events happening in your AMP organization,
 you can set up an audit log, which will track and log auditing information for you.
-The audit log is created on the organization level, then you can use the log for
-projects belonging to that organization.
 
-***To create an audit log***
+Setting up audit logs follows a three-step process:
 
-1. In the main navigation menu, click **Access Control** in the **Organization** section.
-2. Open the **Audit logs** tab and click the **New audit log** button.
-3. In the dialog, fill out the following settings:
+1. Create an audit log at the **organization** level.
+2. Attach the audit log to a **project**.
+3. All **deployments** within that project automatically inherit the
+   attached audit log and you can view the audit log archives at the
+   organization, project, and deployment level.
+
+### Create an audit log
+
+1. In the main navigation menu, go to the **Organization** section by clicking
+   the icon with a group of people ({{< icon "fa-users" >}}).
+2. Under **Access Control**, click **Audit logs**.
+3. Click the **New audit log** button.
+4. In the dialog, fill out the following settings:
    
-   - **Name** - enter a name for your audit log.
-   - **Description** - enter an optional description for your audit log.
-   - **Destinations** - specify one or several destinations to which you want to
-     upload the audit log. If you choose **Upload to cloud**, the log will be
+   - **Name**: Enter a name for your audit log.
+   - **Description**: Optionally enter a description for your audit log.
+   - **Destinations**: Specify one or several destinations to which you want to
+     upload the audit log to. If you choose **Upload to cloud**, the log will be
      available on the **Audit logs** tab of your organization. To send the log
      entries to your custom destination, specify a destination URL with
      authentication parameters (the **HTTP destination** option).
@@ -682,16 +729,55 @@ projects belonging to that organization.
      The **Upload to cloud** option is not available for the free-to-try tier.
      {{< /info >}}
 
-   - **Excluded topics** - select topics that will not be included in the log.
-     Please note, that some are excluded by default (for example, `audit-document`).
+   - **Excluded topics**: Select topics that you don't want to be included in the log.
+     Note that some may be excluded by default (for example, `audit-document`).
 
      {{< warning >}}
-     Enabling the audit log for all events will have a negative impact on performance.
+     Enabling the audit log for all events has a negative impact on performance.
      {{< /warning >}}
 
-   - **Confirmation** - confirm that logging auditing events increases the price of your deployments.
+   - **Confirmation**: Confirm that logging auditing events increases the price of your deployments.
 
-   ![Arango Managed Platform Audit Log](../../images/amp-audit-log.png)
-
-4. Click **Create** to add the audit log. You can now use it in the projects
+5. Click **Create** to add the audit log. You can now attach it to projects
    belonging to your organization.
+
+![Arango Managed Platform Audit Log](../../images/amp-audit-log.png)
+
+{{< info >}}
+Creating an audit log does not apply it to any deployments yet. To start
+collecting auditing information, you need to attach the audit log to a project.
+{{< /info >}}
+
+### Attach an audit log to a project
+
+Each project can have a single audit log attached to it, and all deployments
+within that project automatically inherit it.
+
+1. In the main navigation menu, go to the **Dashboard** section by clicking
+   the home icon ({{< icon "fa-home" >}}).
+2. Click **Projects** and then a project name to attach the audit log to.
+3. In the menu under **Project details**, click **Audit log**.
+4. Click the **Edit** button in the top-right corner ({{< icon "fa-edit" >}}).
+5. Select the audit log you want to attach to the project, then confirm your
+   selection.
+
+![Arango Managed Platform attach audit log to a project](../../images/amp-audit-log-attach-project.png)
+
+{{< info >}}
+A project can only have one audit log attached at a time. Selecting a
+different audit log replaces the previously attached one.
+{{< /info >}}
+
+Once attached, the audit log is listed in the **Audit log** section of the
+project, and all deployments running within that project are automatically
+associated with it.
+
+![Arango Managed Platform audit log attached to a project](../../images/amp-audit-log-project.png)
+
+The audit log is also listed in the **Audit log** section of each deployment.
+You can review the collected archives and events in the **Audit log archives**
+and **Audit log events** sections of the project and the deployments.
+
+In the **Audit logs** section of the organization, you can access the archives
+and events as well but additionally switch between different audit logs by
+clicking the names or radio buttons of the audit logs.

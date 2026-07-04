@@ -57,8 +57,10 @@ configure and start a new importer service job. Follow the steps below.
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service is using **O4 Mini**.
-3. Enter your **OpenAI API Key**.
+   the service is using **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start importer service** button.
 {{< /tab >}}
 
@@ -66,8 +68,14 @@ configure and start a new importer service job. Follow the steps below.
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenAI API Key**.
-4. Enter your **OpenRouter API Key**.
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for embeddings.
+4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
 5. Click the **Start importer service** button.
 
 {{< info >}}
@@ -82,14 +90,17 @@ via OpenRouter while OpenAI is used for the embedding model.
 3. Click the **Start importer service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+The **Triton** option only appears in the **LLM API Provider** dropdown if a
+Triton Inference Server is deployed in your cluster.
+
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}
 
 {{< /tabs >}}
 
-See also the [Importer](../reference/importer/) service documentation.
+See also the [Importer](../importer/) service documentation.
 
 ## Update Importer service parameters
 
@@ -103,6 +114,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
@@ -110,6 +124,9 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**, or **OpenRouter API Key** as needed.
+   For each API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update importer service** button to apply the changes.
 {{< /tab >}}
 
@@ -118,6 +135,11 @@ provider combination, or if your API key has changed or expired.
 2. In the **Importer** section, click **Edit service**.
 3. Update the **LLM API Provider** or **Model** as needed.
 4. Click the **Update importer service** button to apply the changes.
+
+{{< info >}}
+The **Triton** option is only available when a Triton Inference Server is
+deployed in your cluster.
+{{< /info >}}
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -140,22 +162,26 @@ in the **Graph** section.
 
 ![Explore Knowledge Graph in GraphRAG web interface](../../images/graphrag-ui-explore-knowledge-graph.png)
 
-For a more detailed exploration, click the **Explore** button to open the Knowledge Graph in the dedicated Graph Visualizer.
+For a more detailed exploration, click the **Explore** button to open the
+Knowledge Graph in the dedicated Graph Visualizer.
 
 For more information, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md) documentation.
 
 ## Auto-refresh and Pause Controls
 
-The graph section automatically checks for changes to the data currently displayed
-on the graph. You can control this behavior using the refresh controls in the
+The **Graph** section automatically checks for changes to the data currently
+displayed. You can control this behavior using the refresh controls in the
 top-right corner.
 
 ### Auto-refresh
 
-The auto-refresh feature detects when any of those documents have been modified
+The auto-refresh feature detects when any of the displayed documents have been modified
 or deleted from the database. It does not detect new documents added to the knowledge
 graph, such as those created by the Importer. To see newly imported data, use the
-**Search Graph** button to find and add specific nodes to the canvas.
+**Search Graph** button in the top bar of the **Graph** section to open the
+**Search & add nodes to canvas** dialog. Select a **Node type** (collection),
+enter a document ID in the **Search** field (**Search by ID**), select the nodes
+you want to add, and click **Add nodes**.
 
 When auto-refresh is active, the graph checks the database at a configurable
 interval. You can choose the refresh frequency from the **Refresh every**
@@ -164,8 +190,8 @@ updates automatically without any action needed from you.
 
 ### Pausing Auto-refresh
 
-You can also stop automatic updates via the **Pause auto-fresh** button. While
-paused, the graph still checks for changes in the background. If changes are
+You can also stop automatic updates via the **Pause auto-fresh** button ({{< icon "pause" >}}).
+While paused, the graph still checks for changes in the background. If changes are
 detected, a banner appears at the top of the graph informing you that the graph
 data has changed. You can either apply the latest changes to the graph or dismiss
 without applying the changes.
@@ -197,8 +223,10 @@ the generated Knowledge Graph. To configure the retriever service, open the
 {{< tab "OpenAI" >}}
 1. Select **OpenAI** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
-   the service uses **O4 Mini**.
-3. Enter your **OpenAI API Key**.
+   the service uses **GPT-5.4 Nano**.
+3. Enter your **OpenAI API Key**, or click the key icon to select a secret
+   stored in the [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for both embeddings and chat.
 4. Click the **Start retriever service** button.
 {{< /tab >}}
 
@@ -206,8 +234,15 @@ the generated Knowledge Graph. To configure the retriever service, open the
 1. Select **OpenRouter** from the **LLM API Provider** dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu. By default,
    the service uses **Mistral AI - Mistral Nemo**.
-3. Enter your **OpenRouter API Key**.
-4. Click the **Start retriever service** button.
+3. Enter your **OpenAI API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for embeddings.
+4. Enter your **OpenRouter API Key**, or click the key icon ({{< icon "key" >}})
+   to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+   The key is used for chat.
+5. Click the **Start retriever service** button.
 
 {{< info >}}
 When using OpenRouter, the LLM responses are served via OpenRouter while OpenAI
@@ -221,14 +256,17 @@ is used for the embedding model.
 3. Click the **Start retriever service** button.
 
 {{< info >}}
-Note that you must first register your model in MLflow. The [Triton LLM Host](../reference/triton-inference-server.md)
+The **Triton** option only appears in the **LLM API Provider** dropdown if a
+Triton Inference Server is deployed in your cluster.
+
+You must first register your model in MLflow. The [Triton LLM Host](../private-llms/triton-inference-server.md)
 service automatically downloads and loads models from the MLflow registry.
 {{< /info >}}
 {{< /tab >}}
 
 {{< /tabs >}}
 
-See also the [Retriever](../reference/retriever/) documentation.
+See also the [Retriever](../retriever/) documentation.
 
 ## Update Retriever service parameters
 
@@ -242,13 +280,20 @@ provider combination, or if your API key has changed or expired.
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider**, **Model**, or **OpenAI API Key** as needed.
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 
 {{< tab "OpenRouter" >}}
 1. Open the **Project Settings** dialog.
 2. In the **Retriever** section, click **Edit service**.
-3. Update the **LLM API Provider**, **Model**, or **OpenRouter API Key** as needed.
+3. Update the **LLM API Provider**, **Model**, **OpenAI API Key**,
+   or **OpenRouter API Key** as needed.
+   For the API key, you can type a new value or click the key icon
+   ({{< icon "key" >}}) to select a secret stored in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click the **Update retriever service** button to apply the changes.
 {{< /tab >}}
 
@@ -257,6 +302,11 @@ provider combination, or if your API key has changed or expired.
 2. In the **Retriever** section, click **Edit service**.
 3. Update the **LLM API Provider** or **Model** as needed.
 4. Click the **Update retriever service** button to apply the changes.
+
+{{< info >}}
+The **Triton** option is only available when a Triton Inference Server is
+deployed in your cluster.
+{{< /info >}}
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -264,9 +314,9 @@ provider combination, or if your API key has changed or expired.
 ## Chat with your Knowledge Graph
 
 The Retriever service provides two search methods:
-- [Instant search](../reference/retriever/search-methods.md#instant-search): Instant
+- [Instant search](../retriever/search-methods/unified-search.md): Instant
   queries provide fast responses.
-- [Deep search](../reference/retriever/search-methods.md#deep-search): This option will take
+- [Deep search](../retriever/search-methods/deep-search.md): This option will take
   longer to return a response.
 
 In addition to querying the Knowledge Graph, the chat service allows you to do the following:
@@ -278,10 +328,33 @@ In addition to querying the Knowledge Graph, the chat service allows you to do t
   Enabling caching improves response times for repeated queries. Leave it disabled when you need fresh results or when testing changes to your knowledge graph.
 - Toggle **Citations** to show or hide inline citations in responses. For deep search queries, citations are always disabled.
 
+## Graph canvas integration
+
+When the Retriever returns a response, the graph canvas automatically fetches and
+displays the documents and edges that were used to answer your query. These
+retriever-sourced elements are highlighted in green on the canvas so you can
+immediately see which parts of your Knowledge Graph contributed to the answer.
+A loading overlay is shown on the canvas while the graph data is being fetched.
+
+Each assistant message in the chat includes two additional action buttons that appear
+when you hover over the message (alongside the copy button):
+
+| Button | Icon | Behavior |
+|--------|------|----------|
+| **Add to canvas** | Hub icon | Fetches the subgraph for that message and merges it into the existing canvas, preserving any nodes already displayed. |
+| **Clear canvas & display subgraph** | Focus icon | Clears the canvas and displays only the subgraph referenced by that message. |
+
+Use **Add to canvas** to build up context across multiple queries. Use **Clear
+canvas & display subgraph** to focus on a single response without the clutter of
+previous results.
+
+Starting a new query automatically clears the green highlights from the previous
+response before the new results are fetched.
+
 ## Integrate the Knowledge Graph chat service into your application
 
 To integrate any service into your own applications,
 go to **Project Settings** and use the copy button next to each service to
-copy its integration endpoint. You cam make `POST` requests to the endpoints
+copy its integration endpoint. You can make `POST` requests to the endpoints
 with your queries, the services accept `JSON` payloads and return structured
 responses for building custom interfaces.

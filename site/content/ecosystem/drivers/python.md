@@ -17,7 +17,6 @@ database backend from Python. It is maintained by ArangoDB and the community.
 
 - Repository: <https://github.com/arangodb/python-arango>
 - Reference: <https://docs.python-arango.com/>
-- [Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
 - [Releases](https://github.com/arangodb/python-arango/releases)
 
 There is also an asyncio counterpart called `python-arango-async`.
@@ -25,7 +24,7 @@ It has a similar API and features type wrappers.
 
 - Repository: <https://github.com/arangodb/python-arango-async>
 - Reference: <https://python-arango-async.readthedocs.io/>
-- [Tutorial](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
+- [Demo app](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
 - [Releases](https://github.com/arangodb/python-arango-async/releases)
 
 ## Installation
@@ -228,7 +227,7 @@ edges.insert({"_from": "students/03", "_to": "lectures/CSC101"})
 # Traverse the graph in outbound direction, breath-first.
 query = """
     FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-    OPTIONS { bfs: true, uniqueVertices: 'global' }
+    OPTIONS { order: 'bfs', uniqueVertices: 'global' }
     RETURN {node: v, edge: e, path: p}
     """
 cursor = db.aql.execute(query)
@@ -285,7 +284,7 @@ async with ArangoClient(hosts="http://localhost:8529") as client:
     # Traverse the graph in outbound direction, breath-first.
     query = """
         FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-        OPTIONS { bfs: true, uniqueVertices: 'global' }
+        OPTIONS { order: 'bfs', uniqueVertices: 'global' }
         RETURN {vertex: v, edge: e, path: p}
         """
 

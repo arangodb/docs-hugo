@@ -159,7 +159,7 @@ have been performed on your production system before you go live.
   - Consider enabling [`--server.export-shard-usage-metrics`](../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
     for detailed shard usage tracking.
   - Configure your monitoring system (Prometheus/Grafana) to scrape the
-    `/_admin/metrics` endpoint.
+    `GET /_admin/metrics` endpoint.
   - See [HTTP interface for server metrics](../develop/http-api/monitoring/metrics.md)
     for detailed information.
 

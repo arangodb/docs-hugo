@@ -632,13 +632,19 @@ Vector indexes now have two new attributes in success responses:
 - `errorMessage` (string):
   Only present if there is a problem with the index/training.
 
-You can now create a vector index first if you set `inBackground` to `true` and
+Furthermore, a new error code `ERROR_QUERY_VECTOR_INDEX_NOT_READY` with the
+number `1555` has been added. It is thrown if a query tries to use a
+vector index that hasn't been trained yet.
+
+You can now create a vector index first and
 then populate the collection with vector data. However, it is still recommended
 to load the data first and then create the index to ensure that all documents
 participate in the training process as the training is only executed once.
 The training is triggered automatically if the vector index hasn't been trained
 yet and the number of documents to index exceeds the threshold of
-`nLists` documents. Check the `trainingState` to see if the
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ##### Changed consolidation defaults for inverted indexes
@@ -974,12 +980,6 @@ The endpoints for Stream Transactions (`POST /_api/transaction/begin` etc.)
 are unaffected.
 
 ### Endpoints removed
-
-#### Database target version API
-
-The `GET /_admin/database/target-version` endpoint has been removed in favor of the
-more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3 and it is removed in ArangoDB v4.0.
 
 #### JavaScript-based traversal using `/_api/traversal`
 
