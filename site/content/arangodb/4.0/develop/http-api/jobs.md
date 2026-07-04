@@ -165,7 +165,7 @@ name: job_fetch_result_03
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -506,7 +506,7 @@ name: job_delete_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -525,7 +525,7 @@ name: job_delete_02
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -554,7 +554,7 @@ name: job_delete_03
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -720,7 +720,7 @@ name: job_getStatusById_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -767,7 +767,7 @@ name: job_getByType_01
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
@@ -786,7 +786,7 @@ name: job_getByType_02
 ---
 var url = "/_api/version";
 var headers = {'x-arango-async' : 'store'};
-var response = logCurlRequest('PUT', url, "", headers);
+var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 202);
 logRawResponse(response);
