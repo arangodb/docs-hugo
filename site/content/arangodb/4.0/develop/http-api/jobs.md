@@ -735,18 +735,14 @@ logRawResponse(response);
 ```curl
 ---
 description: |-
-  Querying the status of a pending job:
-  (therefore we create a long running job...)
+  Querying the status of a pending job while a long-running job is executing:
 name: job_getStatusById_02
 ---
-var url = "/_api/transaction";
+var url = '/_api/cursor';
 var body = {
-  collections: {
-    read : [ "_graphs" ]
-  },
-  action: "function () {require('internal').sleep(15.0);}"
+  query: "RETURN SLEEP(15)"
 };
-var headers = {'x-arango-async' : 'store'};
+var headers = { 'x-arango-async' : 'store' };
 var response = logCurlRequest('POST', url, body, headers);
 
 assert(response.code === 202);
@@ -754,9 +750,13 @@ logRawResponse(response);
 
 var queryId = response.headers['x-arango-async-id'];
 url = '/_api/job/' + queryId
-var response = logCurlRequest('GET', url);
+response = logCurlRequest('GET', url);
 assert(response.code === 204);
 logRawResponse(response);
+
+url = '/_api/job/' + queryId + '/cancel';
+response = arango.PUT_RAW(url, "");
+assert(response.code === 200);
 ```
 
 ```curl
@@ -799,17 +799,15 @@ logJsonResponse(response);
 
 ```curl
 ---
+# TODO: The job isn't cancelled, the not-yet-ready result is rather deleted... 
 description: |-
   Fetching the list of a `pending` jobs while a long-running job is executing
   (and aborting it):
 name: job_getByType_03
 ---
-var url = "/_api/transaction";
+var url = "/_api/cursor";
 var body = {
-  collections: {
-    read : [ "_frontend" ]
-  },
-  action: "function () {require('internal').sleep(15.0);}"
+  query: "RETURN SLEEP(15)"
 };
 var headers = {'x-arango-async' : 'store'};
 var response = logCurlRequest('POST', url, body, headers);
