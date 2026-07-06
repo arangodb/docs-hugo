@@ -1,6 +1,10 @@
 {{ $context := .context -}}
 {{ $steps := .steps | default slice -}}
 {{ $titleSize := .titleSize | default "p" -}}
+{{ $allowedTitleTags := slice "p" "h2" "h3" "h4" "h5" "h6" -}}
+{{ if not (in $allowedTitleTags $titleSize) -}}
+  {{ errorf "[%s] %q: invalid steps titleSize %q" site.Language.Lang $context.Page.Path $titleSize -}}
+{{ end -}}
 {{ with $context -}}
 <div class="steps">
   {{ range $idx, $step := $steps -}}
@@ -8,6 +12,9 @@
     <div class="step-indicator">
       {{ $icon := "" -}}
       {{ with $step.icon -}}
+        {{ if not (findRE "^[a-z0-9-]+$" .) -}}
+          {{ errorf "[%s] %q: invalid step icon %q" site.Language.Lang $context.Page.Path . -}}
+        {{ end -}}
         {{ $iconPath := printf "content/images/icons/%s.svg" . -}}
         {{ $icon = readFile $iconPath -}}
       {{ end -}}
@@ -19,11 +26,7 @@
     </div>
     <div class="step-body">
       {{ with $step.title -}}
-        {{ if eq $titleSize "p" -}}
-          <p class="step-title">{{ . | markdownify }}</p>
-        {{ else -}}
-          <{{ $titleSize }} class="step-title">{{ . | markdownify }}</{{ $titleSize }}>
-        {{ end -}}
+        {{ printf `<%s class="step-title">%s</%s>` $titleSize (. | markdownify) $titleSize | safeHTML -}}
       {{ end -}}
       <div class="step-content">
         {{ $step.content | $context.Page.RenderString (dict "display" "block") -}}
