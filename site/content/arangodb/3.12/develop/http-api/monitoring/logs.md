@@ -124,6 +124,9 @@ paths:
 ## Get the global server logs (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/log:
     get:

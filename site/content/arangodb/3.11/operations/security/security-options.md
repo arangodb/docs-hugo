@@ -58,6 +58,8 @@ components.
 
 The set theory for these lists works as follow:
 
+- **No allowlist or denylist is specified**:
+  Everything is allowed.
 - **Only a denylist is specified:**
   Everything is allowed except a set of items matching the denylist.
 - **Only an allowlist is specified:**

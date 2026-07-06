@@ -406,9 +406,34 @@ function run_arangodb_container() {
       arangodb --starter.local --starter.data-dir=./localdata
 
     log "[run_arangodb_container] Run single server"
+    # A hot-backup restore restarts arangod via execvp, bypassing the image
+    # entrypoint and NOT re-applying the config file (--config is not in effect
+    # on the restart). Any config-only setting is then unset on the restarted
+    # process, which either FATALs ("no startup-directory supplied") so the
+    # container dies, or silently defaults wrong (e.g. the data directory, in
+    # which case the server comes back WITHOUT the restored data). Command-line
+    # flags DO survive the re-exec, so pass everything the restart needs
+    # explicitly instead of relying on the config file.
+    #
+    # --database.directory applies to all versions and must match where the
+    # restore places data (the image's LOCALSTATEDIR, /var/lib/arangodb3).
+    # The V8/JS paths (startup-directory + Foxx app-path) apply only when the
+    # server has server-side V8: we detect the js dir from the image itself (not
+    # hardcoded) so it is correct for any layout and local/CI alike, and use its
+    # presence as the V8 test. 4.0+ has no server-side V8/Foxx, so the probe
+    # finds nothing and those flags are omitted.
+    # Use an array expanded as "${single_args[@]}": this script sets IFS=""
+    # elsewhere, so relying on unquoted word-splitting would pass all flags as a
+    # single argument. An array keeps each flag a separate word regardless.
+    single_args=(--server.endpoint http+tcp://0.0.0.0:8529 --database.directory=/var/lib/arangodb3)
+    js_dir=$(docker run --rm --entrypoint sh "$image_id" -c 'for d in /usr/share/arangodb3/js /usr/share/arangodb/js; do [ -d "$d" ] && printf "%s" "$d" && break; done' 2>/dev/null)
+    if [ -n "$js_dir" ]; then
+      single_args+=("--javascript.startup-directory=$js_dir" --javascript.app-path=/var/lib/arangodb3-apps)
+      log "[run_arangodb_container] Single server V8 paths: startup-directory=$js_dir app-path=/var/lib/arangodb3-apps"
+    fi
     docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
       "$image_id" \
-      --server.endpoint http+tcp://0.0.0.0:8529
+      "${single_args[@]}"
 
     wait_for_arangodb_ready "$container_name"
     wait_for_arangodb_ready "$container_name"_cluster
@@ -638,28 +663,24 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps | grep docs_site)
     if [ "$siteContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Site exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     toolchainContainerStatus=$(docker ps | grep toolchain)
     if [ "$toolchainContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Toolchain exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     arangoproxyContainerStatus=$(docker ps | grep docs_arangoproxy)
     if [ "$arangoproxyContainerStatus" == "" ] ; then
-      docker stop docs_arangoproxy docs_site
       log "[TERMINATE] Arangoproxy exited, shutting down all containers" >> toolchain.log
       terminate=true
     fi
     if [ "$ENV" == "local" ]; then
       errors=$(cat summary.md  | grep '<error')
       if [ "$errors" != "" ] ; then
-        docker stop docs_arangoproxy docs_site
         terminate=true
       fi
     fi
@@ -667,25 +688,32 @@ function trap_container_exit() {
 
   errors=$(cat summary.md  | grep '<error')
   if [ "$errors" != "" ] ; then
-    docker stop docs_arangoproxy docs_site
     log "[TERMINATE] Error during content generation:" >> toolchain.log
     log "[TERMINATE] ""$errors" >> toolchain.log
   fi
 
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1
-  docker stop docs_arangoproxy docs_site
 
+  # Inspect before docker stop; the poll loop only observes—stopping there records 137 for siblings still running.
   arangoproxy_exit=0
   site_exit=0
   if docker inspect docs_arangoproxy &>/dev/null; then
-    arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+    arangoproxy_status=$(docker inspect docs_arangoproxy --format '{{.State.Status}}')
+    if [ "$arangoproxy_status" = "exited" ]; then
+      arangoproxy_exit=$(docker inspect docs_arangoproxy --format '{{.State.ExitCode}}')
+    fi
   fi
   if docker inspect docs_site &>/dev/null; then
-    site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+    site_status=$(docker inspect docs_site --format '{{.State.Status}}')
+    if [ "$site_status" = "exited" ]; then
+      site_exit=$(docker inspect docs_site --format '{{.State.ExitCode}}')
+    fi
   fi
   arangoproxy_exit=${arangoproxy_exit:-0}
   site_exit=${site_exit:-0}
+
+  docker stop docs_arangoproxy docs_site
 
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log

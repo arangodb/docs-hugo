@@ -1,0 +1,16 @@
+{{- $versionNameOrAlias := . }}
+{{- $noindexMap := dict }}
+{{- $versions := index site.Data.versions "/arangodb/" }}
+{{- range $i, $version := $versions }}
+  {{- $noindex := or $version.deprecated $version.inDevelopment }}
+  {{- $noindexMap = merge $noindexMap (dict
+    $version.name $noindex
+    $version.alias $noindex
+  ) }}
+{{- end }}
+{{- if not (isset $noindexMap $versionNameOrAlias) }}
+  {{- errorf "Failed to look up noindex status from version name or alias '%v'" $versionNameOrAlias }}
+{{- end }}
+{{- $noindex := index $noindexMap $versionNameOrAlias }}
+{{- /* warnf "Looked up noindex status '%v' from version name or alias '%v', %v" $noindex $versionNameOrAlias $noindexMap */}}
+{{- return $noindex -}}

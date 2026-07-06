@@ -3,6 +3,7 @@ package arangosh
 import (
 	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 
@@ -22,12 +23,80 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			repository := exampleData["repository"].(models.Repository)
 
 			out := Exec(name, code, filepath, repository)
+
+			// A single long-lived arangosh serves every example for a version.
+			// Some examples (e.g. RestBackupRestoreBackup) restart the arangod
+			// process, which drops this shared connection. If we see "not
+			// connected", reconnect once and retry the example. If the server
+			// does not come back, it is gone for good (e.g. a restore that left
+			// arangod unable to restart): every remaining example would block on
+			// the reconnect timeout and then fail anyway, so abort the whole run
+			// immediately instead of wasting CI time. See reconnectSession.
+			if isNotConnected(out) {
+				models.Logger.Printf("[%s] [WARN] arangosh lost its connection to arangod; reconnecting and retrying", name)
+				if reconnectSession(name, repository) {
+					out = Exec(name, code, filepath, repository)
+				} else {
+					models.Logger.Printf("[%s] [FATAL] arangod (%s) is unreachable and could not be recovered; aborting example generation to avoid a cascade of timeouts", name, repository.Url)
+					models.Logger.Summary("<li><error code=3><strong>%s</strong> - %s <strong>FATAL: arangod unreachable, aborting generation %s</strong></error>", repository.Version, name, filepath)
+					os.Exit(1)
+				}
+			}
+
 			out = checkAssertionFailed(name, code, out, filepath, repository)
 			out = checkArangoError(name, code, out, filepath, repository)
 
 			outChannel <- out
 		}
 	}
+}
+
+// isNotConnected reports whether the arangosh output indicates the client lost
+// its connection to arangod (ArangoError 2001). This is never an expected
+// example error, so it always signals infrastructure trouble worth recovering.
+func isNotConnected(out string) bool {
+	return strings.Contains(out, "ArangoError: not connected") || strings.Contains(out, "ArangoError 2001: not connected")
+}
+
+// reconnectSession re-establishes the shared arangosh session's connection to
+// arangod after the server was restarted (e.g. by a hot-backup restore). The
+// arangosh process itself is still alive; only its socket to arangod is gone,
+// so a reconnect() on the existing session is enough. It also clears the shared
+// `output` global so no stale response leaks into the next example's rendering.
+// Returns true once arangod answers again (polling up to 60s), false otherwise.
+func reconnectSession(name string, repository models.Repository) bool {
+	// arangosh auto-reconnects to its configured endpoint on the next request
+	// (V8ClientConnection::acquireConnection re-creates a closed connection), so
+	// polling /_api/version until it answers re-establishes the shared session
+	// once the restarted arangod is back. No explicit reconnect() needed: there
+	// is no auth to redo (ARANGO_NO_AUTH) and the endpoint is unchanged. Also
+	// clear the shared `output` global so no stale response leaks into the next
+	// example, and report the last error so a server that never returns is
+	// distinguishable from a transient blip.
+	recovery := `
+var __deadline = require("internal").time() + 30;
+var __ok = false;
+var __lastErr = "no attempt made";
+while (require("internal").time() < __deadline) {
+  try {
+    var __r = internal.arango.GET("/_api/version");
+    if (__r && __r.error !== true) { __ok = true; break; }
+    __lastErr = "GET /_api/version returned: " + JSON.stringify(__r);
+  } catch (__e) {
+    __lastErr = String(__e);
+  }
+  require("internal").wait(0.5);
+}
+output = "";
+print(__ok ? "RECONNECTED" : ("RECONNECT_FAILED: " + __lastErr));
+`
+	out := Exec(name, recovery, "", repository)
+	if strings.Contains(out, "RECONNECTED") {
+		models.Logger.Printf("[%s] [INFO] arangosh reconnected to arangod", name)
+		return true
+	}
+	models.Logger.Printf("[%s] [ERROR] arangosh could not reconnect to arangod within 30s (%s): %s", name, repository.Url, strings.TrimSpace(out))
+	return false
 }
 
 func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {

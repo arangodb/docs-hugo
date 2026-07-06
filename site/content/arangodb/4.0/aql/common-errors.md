@@ -54,7 +54,7 @@ when applications build queries naively, without using security mechanisms often
 provided by database software or querying mechanisms.
 
 AQL is not vulnerable to parameter injection in itself, but queries might be
-constructed on the client-side, on an application server or in a Foxx service.
+constructed on the client-side or on an application server.
 Assembling query strings with simple **string concatenation** looks trivial,
 but is potentially **unsafe**. You should use
 [bind parameters](fundamentals/bind-parameters.md) instead whenever possible,
@@ -65,16 +65,14 @@ for example) or at least sanitize user input with great care.
 ### Parameter injection examples
 
 Below you find a simple query using the [JavaScript API](../develop/javascript-api/_index.md)
-that is fed with some dynamic input value, pretending it coming from a web form.
-This could be the case in a Foxx service. The route happily picks up the input
-value, and puts it into a query:
+that is fed with some dynamic input value, pretending it's coming from a web form.
+The route happily picks up the input value, and puts it into a query:
 
 ```js
-// evil!
-var what = req.params("searchValue");  // user input value from web form
-// ...
-var query = "FOR doc IN collection FILTER doc.value == " + what + " RETURN doc";
-db._query(query, params).toArray();
+var searchValue = ... // User input value from web form
+
+var query = "FOR doc IN collection FILTER doc.value == " + searchValue + " RETURN doc";
+db._query(query).toArray();
 ```
 
 The above will probably work fine for numeric input values.
@@ -96,11 +94,13 @@ This may work in some situations, but it is easy to overlook something or get
 it subtly wrong:
 
 ```js
+var searchValue = ... // User input value from web form
+
 // We are sanitizing now, but it is still evil!
-var value = req.params("searchValue").replace(/'/g, '');
-// ...
-var query = "FOR doc IN collection FILTER doc.value == '" + value + "' RETURN doc";
-db._query(query, params).toArray();
+var sanitizedValue = searchValue.replace(/'/g, '');
+
+var query = "FOR doc IN collection FILTER doc.value == '" + sanitizedValue + "' RETURN doc";
+db._query(query).toArray();
 ```
 
 The above example uses single quotes for enclosing the potentially unsafe user
@@ -153,15 +153,15 @@ actual values. Here's an example:
 
 ```aql
 FOR doc IN collection
-  FILTER doc.value == @what
+  FILTER doc.value == @searchValue
   RETURN doc
 ```
 
-In the above query, `@what` is a bind parameter. In order to execute this query,
-a value for bind parameter `@what` must be specified. Otherwise query execution will
+In the above query, `@searchValue` is a bind parameter. In order to execute this query,
+a value for this bind parameter must be specified. Otherwise query execution will
 fail with error 1551 (*no value specified for declared bind parameter*). If a value
-for `@what` gets specified, the query can be executed. However, the query string
-and the bind parameter values (i.e. the contents of the `@what` bind parameter) will
+gets specified, the query can be executed. However, the query string
+and the bind parameter values (i.e. the contents of the `@searchValue` bind parameter) will
 be handled separately. What's in the bind parameter will always be treated as a value,
 and it can't get out of its sandbox and change the semantic meaning of a query.
 
@@ -173,17 +173,17 @@ the bind parameter value is assigned, the prefix `@` needs to be omitted):
 
 ```js
 // query string with bind parameter
-var query = "FOR doc IN collection FILTER doc.value == @what RETURN doc";
+var query = "FOR doc IN collection FILTER doc.value == @searchValue RETURN doc";
 
 // actual value for bind parameter
-var params = { what: 42 };
+var params = { searchValue: 42 };
 
 // run query, specifying query string and bind parameter separately
 db._query(query, params).toArray();
 ```
 
-If a malicious user would set `@what` to a value of `1 || true`, this wouldn't do
-any harm. AQL would treat the contents of `@what` as a single string token, and
+If a malicious user would set `@searchValue` to a value of `1 || true`, this wouldn't do
+any harm. AQL would treat the contents of `@searchValue` as a single string token, and
 the meaning of the query would remain unchanged. The actually executed query would be:
 
 ```aql
@@ -202,7 +202,8 @@ There is also a template string generator function `aql` that can be used to saf
 can be invoked as follows:
 
 ```js
-const aql = require('@arangodb').aql; // not needed in arangosh
+// The aql query helper is available by default in arangosh
+//const aql = require('@arangodb').aql;
 
 var value = "some input value";
 var query = aql`FOR doc IN collection
@@ -246,8 +247,8 @@ var query = "FOR doc IN collection";
 var params = { };
 
 if (useFilter) {
-  query += " FILTER doc.value == @what";
-  params.what = req.params("searchValue");
+  query += " FILTER doc.value == @searchValue";
+  params.searchValue = ... // User input value from web form
 }
 
 if (useLimit) {
@@ -326,7 +327,7 @@ There are two types of bind parameters in AQL:
   without the prefix when they get their value assigned. These bind parameters
   can contain any valid JSON value.
 
-  Examples: `@what`, `@searchValue`
+  Examples: `@searchValue`, `@param`
 
 - Bind parameters for **collections**:\
   These are prefixed with `@@` in AQL queries, and are replaced with the name
@@ -344,7 +345,7 @@ use case, but normally it is extremely undesired).
 ## Unexpected long running queries
 
 Slow queries can have various reasons and be legitimate for queries with a high
-computational complexity or if they touch a lot of data. Use the *Explain*
+computational complexity or if they touch a lot of data. Use the **Explain**
 feature to inspect execution plans and verify that appropriate indexes are
 utilized. Also check for mistakes such as references to the wrong variables.
 
@@ -353,28 +354,30 @@ A literal collection name, which is not part of constructs like `FOR`,
 and can cause an entire collection to be materialized before further
 processing. It should thus be avoided.
 
-Check the execution plan for `/* all collection documents */` and verify that
-it is intended. You should also see a warning if you execute such a query:
+{{< tip >}}
+By default, using collection names in arbitrary places in AQL expressions is
+disallowed to prevent mistakes. However, you can allow it with the
+[`--query.allow-collections-in-expressions` startup option](../components/arangodb-server/options.md#--queryallow-collections-in-expressions).
+{{< /tip >}}
 
-> collection 'coll' used as expression operand
-
-For example, instead of:
+For example, you should avoid queries like the following:
 
 ```aql
 RETURN coll[* LIMIT 1]
 ```
 
-... with the execution plan ...
-
 ```aql
 Execution plan:
- Id   NodeType          Est.   Comment
-  1   SingletonNode        1   * ROOT
-  2   CalculationNode      1     - LET #2 = coll   /* all collection documents */[* LIMIT  0, 1]   /* v8 expression */
-  3   ReturnNode           1     - RETURN #2
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  8   SubqueryStartNode                  1     - LET #4 = ( /* subquery begin */
+  3   EnumerateCollectionNode           42       - FOR #3 IN coll   /* full collection scan  */
+  9   SubqueryEndNode                    1         - RETURN  #3 ) /* subquery end */
+  6   CalculationNode                    1     - LET #2 = #4[* LIMIT  0, 1]   /* simple expression */
+  7   ReturnNode     
 ```
 
-... you can use the following equivalent query:
+You can use the following equivalent query with a better execution plan:
 
 ```aql
 FOR doc IN coll
@@ -382,15 +385,13 @@ FOR doc IN coll
     RETURN doc
 ```
 
-... with the (better) execution plan:
-
 ```aql
 Execution plan:
- Id   NodeType                  Est.   Comment
-  1   SingletonNode                1   * ROOT
-  2   EnumerateCollectionNode     44     - FOR doc IN Characters   /* full collection scan */
-  3   LimitNode                    1       - LIMIT 0, 1
-  4   ReturnNode                   1       - RETURN doc
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode           42     - FOR doc IN coll   /* full collection scan  */
+  3   LimitNode                          1       - LIMIT 0, 1
+  4   ReturnNode                         1       - RETURN doc
 ```
 
 Similarly, make sure you have not confused any variable names with collection
@@ -402,11 +403,6 @@ LET names = ["John", "Mary", ...]
 FOR name IN Names
     ...
 ```
-
-You can set the startup option `--query.allow-collections-in-expressions` to
-*false* to disallow collection names in arbitrary places in AQL expressions
-to prevent such mistakes. Also see
-[ArangoDB Server Query Options](../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
 
 {{% comment %}}
 Rename to Error Sources?

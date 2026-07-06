@@ -6,6 +6,7 @@ description: >-
   ArangoDB drivers allow you to connect ArangoDB to your applications and manage
   the database system via a language-specific interface
 aliases:
+  - ../arangodb/3.11/develop/drivers
   - ../arangodb/3.12/develop/drivers
   - ../arangodb/stable/develop/drivers
   - ../arangodb/4.0/develop/drivers
@@ -54,5 +55,5 @@ the JavaScript scripting language. You can also use it in web browsers.
 The [**Python-Arango**](python.md) driver lets you work with ArangoDB in the
 Python scripting language.
 
-- Online course: [Python Driver Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
+- [Tutorial](python.md#get-started)
 - Repository: [github.com/arangodb/python-arango](https://github.com/arangodb/python-arango)
