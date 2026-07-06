@@ -65,16 +65,20 @@ func isNotConnected(out string) bool {
 // `output` global so no stale response leaks into the next example's rendering.
 // Returns true once arangod answers again (polling up to 60s), false otherwise.
 func reconnectSession(name string, repository models.Repository) bool {
-	// Reconnect to the server's known URL rather than getEndpoint(), which can
-	// return empty once the connection is torn down. Report the last error so a
-	// dead server (connection refused) is distinguishable from a client issue.
-	recovery := fmt.Sprintf(`
+	// arangosh auto-reconnects to its configured endpoint on the next request
+	// (V8ClientConnection::acquireConnection re-creates a closed connection), so
+	// polling /_api/version until it answers re-establishes the shared session
+	// once the restarted arangod is back. No explicit reconnect() needed: there
+	// is no auth to redo (ARANGO_NO_AUTH) and the endpoint is unchanged. Also
+	// clear the shared `output` global so no stale response leaks into the next
+	// example, and report the last error so a server that never returns is
+	// distinguishable from a transient blip.
+	recovery := `
 var __deadline = require("internal").time() + 30;
 var __ok = false;
 var __lastErr = "no attempt made";
 while (require("internal").time() < __deadline) {
   try {
-    internal.arango.reconnect(%q, "_system", "root", "");
     var __r = internal.arango.GET("/_api/version");
     if (__r && __r.error !== true) { __ok = true; break; }
     __lastErr = "GET /_api/version returned: " + JSON.stringify(__r);
@@ -85,7 +89,7 @@ while (require("internal").time() < __deadline) {
 }
 output = "";
 print(__ok ? "RECONNECTED" : ("RECONNECT_FAILED: " + __lastErr));
-`, repository.Url)
+`
 	out := Exec(name, recovery, "", repository)
 	if strings.Contains(out, "RECONNECTED") {
 		models.Logger.Printf("[%s] [INFO] arangosh reconnected to arangod", name)
