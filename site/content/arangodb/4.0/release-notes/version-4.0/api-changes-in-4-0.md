@@ -10,28 +10,6 @@ description: >-
 
 ### Behavior changes
 
-#### `fulltext` indexes removed
-
-You can no longer create indexes of type `fulltext` via the `POST /_api/index`
-endpoint.
-
-Existing `fulltext` indexes are automatically dropped when upgrading to v4.0.0
-or later. Therefore, endpoints like `GET /_api/index` and `GET /_api/index/{index-id}`
-can no longer include respectively return information about `fulltext` indexes.
-
-#### Unsupported HTTP methods disallowed
-
-The following endpoints could previously be called using any HTTP method of
-`HEAD`, `GET`, `POST`, `PATCH`, `PUT`, `DELETE`:
-
- - `/_api/version`
- - `/_admin/time`
- - `/_admin/status`
- - `/_admin/support-info`
- 
-The HTTP method is now checked and only `GET` requests are allowed for these
-endpoints. Only the `GET` variants were documented.
-
 #### `overwrite` option removed from document API
 
 The `POST /_api/document/{collection}` endpoint for creating a single document
@@ -135,28 +113,6 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 ### Endpoints removed
 
-#### Simple Queries endpoints removed
-
-The following endpoints that were deprecated since v3.4.0 have now been removed:
-
-- `PUT /_api/simple/lookup-by-keys`: Find documents by their keys
-- `PUT /_api/simple/remove-by-keys`: Remove documents by their keys
-- `PUT /_api/simple/all`: Return all documents
-- `PUT /_api/simple/all-keys`: Read all document keys
-- `PUT /_api/simple/any`: Return a random document
-- `PUT /_api/simple/by-example`: Simple query by-example
-- `PUT /_api/simple/first-example`: Find documents matching an example
-- `PUT /_api/simple/fulltext`: Fulltext index query
-- `PUT /_api/simple/near`: Return documents near coordinates
-- `PUT /_api/simple/range`: Simple range query
-- `PUT /_api/simple/remove-by-example`: Remove documents by example
-- `PUT /_api/simple/replace-by-example`: Replace documents by example
-- `PUT /_api/simple/update-by-example`: Update documents by example
-- `PUT /_api/simple/within`: Find documents within a radius around coordinates
-- `PUT /_api/simple/within-rectangle`: Find documents within a rectangular area
-
-You can use AQL queries instead.
-
 #### JavaScript Transactions API
 
 The `POST /_api/transaction` endpoint for executing a JavaScript Transaction
@@ -170,52 +126,6 @@ You may use [AQL queries](../../develop/http-api/queries/aql-queries.md#create-a
 Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints
 returned the same metrics. The redundant `/_admin/metrics/v2` endpoint has now
 been removed.
-
-#### Legacy log API
-
-The long-deprecated `GET /_admin/log` endpoint and the associated
-`DELETE /_admin/log` endpoint have been removed.
-
-The structure of this legacy log was parallel lists that required you to pick
-the elements with the same index from each array of the returned object to
-determine what belongs together for a given log entry.
-
-A more intuitive log format where each log entry is an object is available
-with the `GET /_admin/log/entries` endpoint. See
-[HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-the-global-server-logs)
-for details.
-
-#### Database target version API
-
-The `GET /_admin/database/target-version` endpoint has been removed in favor of
-the more general version API with the endpoint `GET /_api/version`.
-The endpoint was deprecated since v3.11.3.
-
-#### Obsolete replication APIs
-
-The following endpoints related to replication functionality that is no longer
-used have been removed:
-
-- `GET /_api/replication/logger-follow`
-- `GET /_api/replication/logger-first-tick`
-- `GET /_api/replication/logger-tick-ranges`
-- `GET /_api/wal/open-transactions`
-- `GET /_admin/wal/transactions`
-- `GET /_admin/wal/properties`
-- `PUT /_admin/wal/properties`
-
-#### Endpoint API
-
-The long-deprecated `GET /_api/endpoint` for retrieving all configured endpoints
-the server is listening on has been removed. For cluster deployments, you can
-use `GET /_api/cluster/endpoints` to find all current Coordinator endpoints.
-See [HTTP interface for clusters](../../develop/http-api/cluster.md#endpoints).
-
-#### Job and version admin APIs
-
-The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
-been removed. The identical functionality is now only available using the
-corresponding `/_api/job*` and `/_api/version` endpoints.
 
 #### Batch request API
 
@@ -286,20 +196,6 @@ The following endpoints have been removed:
 You can get more detailed information for monitoring ArangoDB via the
 [`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
 in Prometheus format.
-
-#### Deprecated `PUT` cursor endpoint removed
-
-The deprecated `PUT /_api/cursor/{cursor-identifier}` endpoint to
-read the next batch from a cursor has been removed.
-
-Use `POST /_api/cursor/{cursor-identifier}` instead.
-
-#### Endpoints to load and unload collections removed
-
-The deprecated `PUT /_api/collection/load` and `PUT /_api/collection/unload`
-endpoints to load and unload collections have been removed. There is no
-concept of loading status anymore and the endpoints didn't have any effect for
-a while.
 
 #### Echo API removed
 

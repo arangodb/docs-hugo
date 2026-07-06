@@ -311,6 +311,7 @@ unsuitable for the OneShard optimization:
   - `COLLECTIONS`
   - `CURRENT_DATABASE`
   - `CURRENT_USER`
+  - `FULLTEXT`
   - `NEAR`
   - `SCHEMA_GET`
   - `SCHEMA_VALIDATE`

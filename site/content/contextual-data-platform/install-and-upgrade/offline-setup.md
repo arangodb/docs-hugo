@@ -289,11 +289,11 @@ spec:
   dbservers:
     count: 3
     args:
-      - --vector-index  # For ArangoDB versions before 4.0.0
+      - --vector-index
   coordinators:
     count: 2
     args:
-      - --vector-index  # For ArangoDB versions before 4.0.0
+      - --vector-index
   license:
     secretName: arango-license-key
   # ...

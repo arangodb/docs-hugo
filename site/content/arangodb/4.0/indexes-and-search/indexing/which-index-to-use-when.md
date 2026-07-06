@@ -118,21 +118,38 @@ different usage scenarios:
 
   See [Vector indexes](working-with-indexes/vector-indexes.md) for details.
 
+- **fulltext index**: a fulltext index can be used to index all words contained in
+  a specific attribute of all documents in a collection. Only words with a 
+  (specifiable) minimum length are indexed. Word tokenization is done using 
+  the word boundary analysis provided by libicu, which is taking into account 
+  the selected language provided at server start.
+
+  The index supports complete match queries (full words) and prefix queries.
+  Fulltext indexes are invoked via special functions.
+
+  Please note that the fulltext index type is deprecated from version 3.10 onward
+  and is superseded by [ArangoSearch](../arangosearch/_index.md).
+
 - **View**: [ArangoSearch](../arangosearch/_index.md) is a sophisticated search engine
   for full-text, with text pre-processing, ranking capabilities and more.
+  It offers more features and configuration options than a fulltext index.
   It indexes documents near real-time, but not immediately as other indexes.
 
-  - Term search
-  - Prefix search
-  - Range search
-  - Phrase search
-  - Complex boolean expressions
-  - Relevance ranking
-  - Configurable Analyzers
-  - AQL composable language construct
-  - Unlimited indexed attributes per collection
-  - Unlimited indexed collections
-  - Eventual consistency (as opposed to the immediate consistency of other index types)
+  Comparison with the full-text Index:
+
+  Feature                           | ArangoSearch | Full-text Index
+  :---------------------------------|:-------------|:---------------
+  Term search                       | Yes          | Yes
+  Prefix search                     | Yes          | Yes
+  Boolean expressions               | Yes          | Restricted
+  Range search                      | Yes          | No
+  Phrase search                     | Yes          | No
+  Relevance ranking                 | Yes          | No
+  Configurable Analyzers            | Yes          | No
+  AQL composable language construct | Yes          | No
+  Indexed attributes per collection | Unlimited    | 1
+  Indexed collections               | Unlimited    | 1
+  Consistency                       | Eventual     | Immediate
 
 ## Sparse vs. non-sparse indexes
 

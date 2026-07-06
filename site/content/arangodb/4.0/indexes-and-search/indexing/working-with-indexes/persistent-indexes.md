@@ -253,7 +253,8 @@ Selects all documents from the collection that match the specified example
 and returns a cursor. A persistent index will be used if present.
 
 You can use `toArray()`, `next()`, or `hasNext()` to access the
-result.
+result. The result can be limited using the `skip()` and `limit()`
+operator.
 
 An attribute name of the form `a.b` is interpreted as attribute path,
 not as attribute. If you use

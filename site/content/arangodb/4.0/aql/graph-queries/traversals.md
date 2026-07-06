@@ -642,6 +642,7 @@ functions cannot be used in the expression:
 - `NEAR()`
 - `WITHIN()`
 - `WITHIN_RECTANGLE()`
+- `FULLTEXT()`
 {{< /warning >}}
 
 ## Using filters

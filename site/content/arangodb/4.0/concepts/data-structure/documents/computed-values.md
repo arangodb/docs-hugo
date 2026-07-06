@@ -291,6 +291,7 @@ Computed value expressions have the following properties:
   - `NEAR()`
   - `WITHIN()`
   - `WITHIN_RECTANGLE()`
+  - `FULLTEXT()`
 
 Expressions that do not meet the requirements or that are syntactically invalid
 are rejected immediately, when setting or modifying the computed value definitions

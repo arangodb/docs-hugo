@@ -500,7 +500,8 @@ See [`collection.dropIndex()`](../../../indexes-and-search/indexing/working-with
 ### `collection.all()`
 
 Fetches all documents from a collection and returns a cursor. You can use
-`toArray()`, `next()`, or `hasNext()` to access the result.
+`toArray()`, `next()`, or `hasNext()` to access the result. The result
+can be limited using the `skip()` and `limit()` operator.
 
 **Examples**
 
@@ -523,6 +524,25 @@ db.five.all().toArray();
 ~db._drop("five");
 ```
 
+Use `limit()` to restrict the documents:
+
+```js
+---
+name: 002_collectionAllNext
+description: ''
+---
+~db._create("five");
+var docs = db.five.insert([
+  { name : "one" },
+  { name : "two" },
+  { name : "three" },
+  { name : "four" },
+  { name : "five" }
+]);
+db.five.all().limit(2).toArray();
+~db._drop("five");
+```
+
 ### `collection.any()`
 
 Returns a random document from the collection or `null` if none exists.
@@ -536,7 +556,8 @@ Fetches all documents from a collection that match the specified
 example and returns a cursor.
 
 You can use `toArray()`, `next()`, or `hasNext()` to access the
-result.
+result. The result can be limited using the `skip()` and `limit()`
+operator.
 
 An attribute name of the form `a.b` is interpreted as attribute path,
 not as attribute. If you use

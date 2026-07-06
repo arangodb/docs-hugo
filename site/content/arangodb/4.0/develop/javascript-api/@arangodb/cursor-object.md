@@ -100,7 +100,6 @@ the total number of documents found.
 
 `cursor.count(true)`
 
-<!-- TODO: no skip/limit methods anymore, does it still do something (fullCount)? -->
 If the result set was limited by the `limit()` method or documents were
 skipped using the `skip()` method, the `count()` method with argument
 `true` uses the number of elements in the final result set - after

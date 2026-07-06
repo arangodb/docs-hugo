@@ -46,8 +46,8 @@ arangod --database.directory = "/path with spaces/to/datadir"
 ```
 
 See [Configuration](../../operations/administration/configuration.md)
-if you want to translate startup options set on the command-line to
-configuration files and to learn more about startup options in general.
+if you want to translate startup options set  to configuration files
+and to learn more about startup options in general.
 
 See
 [Fetch Current Configuration Options](../../operations/administration/configuration.md#fetch-current-configuration-options)
