@@ -124,6 +124,11 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Removed AQL functions
+
+- `V8()`: There is no longer a V8 JavaScript engine on the server-side to
+  enforce for query expressions.
+
 ## Deprecated AQL options removed
 
 In AQL graph traversals, you can no longer specify the `bfs` attribute in the
@@ -241,6 +246,24 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Foxx API removed
+
+All `/_api/foxx*` endpoints have been removed due to the removal of Foxx.
+See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#foxx-api-removed)
+for a detailed list.
+
+### Metrics removed
+
+The following V8-related metrics have been removed from the
+`GET /_admin/metrics` endpoint:
+
+- `arangodb_v8_context_alive`
+- `arangodb_v8_context_busy`
+- `arangodb_v8_context_dirty`
+- `arangodb_v8_context_free`
+- `arangodb_v8_context_max`
+- `arangodb_v8_context_min`
+
 ### Collection statuses removed
 
 Collections used to have different states like being loaded or unloaded.
@@ -303,6 +326,63 @@ See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-metho
 for details like how you can replace this functionality.
 
 ## Startup options
+
+### Startup options related to server-side JavaScript removed
+
+The following startup options are now obsolete for _arangod_ due to the removal
+of Foxx, user-defined AQL functions (UDFs), and all other server-side
+JavaScript contexts:
+
+- `--foxx.allow-install-from-remote`
+- `--foxx.api`
+- `--foxx.enable`
+- `--foxx.force-update-on-startup`
+- `--foxx.queues-poll-interval`
+- `--foxx.queues`
+- `--foxx.store`
+- `--javascript.allow-admin-execute`
+- `--javascript.allow-external-process-control`
+- `--javascript.allow-port-testing`
+- `--javascript.app-path`
+- `--javascript.copy-installation`
+- `--javascript.enabled`
+- `--javascript.endpoints-allowlist`
+- `--javascript.endpoints-denylist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.environment-variables-denylist`
+- `--javascript.files-allowlist`
+- `--javascript.gc-frequency`
+- `--javascript.gc-interval`
+- `--javascript.harden`
+- `--javascript.module-directory`
+- `--javascript.script-parameter`
+- `--javascript.script`
+- `--javascript.startup-directory`
+- `--javascript.startup-options-allowlist`
+- `--javascript.startup-options-denylist`
+- `--javascript.tasks`
+- `--javascript.transactions`
+- `--javascript.user-defined-functions`
+- `--javascript.v8-contexts-max-age`
+- `--javascript.v8-contexts-max-invocations`
+- `--javascript.v8-contexts-minimum`
+- `--javascript.v8-contexts`
+- `--javascript.v8-max-heap`
+- `--javascript.v8-options`
+- `--server.authentication-system-only`
+
+You can still specify these startup options without causing a fatal error during
+startup. They are recognized, but they don't have any effect anymore.
+
+### Log topic changes and removals
+
+The only remaining use of the `security` log topic was for the log message with
+ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
+It has been changed to the `v8` log topic.
+
+The `security` log topic has been removed.
+Attempts to set the log level for this topic log a warning, for example, using
+a startup option like `--log.level security=debug`.
 
 ### `--server.allow-use-database` removed
 

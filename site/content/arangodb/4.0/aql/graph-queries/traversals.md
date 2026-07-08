@@ -632,7 +632,6 @@ functions cannot be used in the expression:
 - `CALL()`
 - `APPLY()`
 - `DOCUMENT()`
-- `V8()`
 - `SCHEMA_GET()`
 - `SCHEMA_VALIDATE()`
 - `VERSION()`
