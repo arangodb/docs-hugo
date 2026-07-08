@@ -1,25 +1,40 @@
 ---
-title: Set up a local Kubernetes environment on macOS
+title: Set up a local Kubernetes environment
 menuTitle: Local Kubernetes setup
 weight: 3
 description: >-
-  A step-by-step walkthrough for setting up a local Kubernetes cluster on a Mac,
-  from installing the tools to a running cluster, ready for the ArangoDB
-  Kubernetes Operator and the Arango Contextual Data Platform
+  A step-by-step walkthrough for setting up a local Kubernetes cluster on macOS
+  or Windows, from installing the tools to a running cluster, ready for the
+  ArangoDB Kubernetes Operator and the Arango Contextual Data Platform
 ---
-This tutorial walks you through setting up a local Kubernetes cluster on a Mac,
-one step at a time, starting from a machine with nothing installed. When you
-finish, you have a running cluster that you can use to install the ArangoDB
-Kubernetes Operator and the Arango Contextual Data Platform for evaluation and
-development.
+This tutorial walks you through setting up a local Kubernetes cluster on your own
+machine, one step at a time, starting from a machine with nothing installed. It
+covers both macOS and Windows: use the tabs in each step to follow the commands
+for your operating system. When you finish, you have a running cluster that you
+can use to install the ArangoDB Kubernetes Operator and the Arango Contextual
+Data Platform for evaluation and development.
 
-You run every command in this tutorial in the **Terminal** app. To open it,
-press {{< kbd "Cmd Space" >}}, type `Terminal`, and press {{< kbd "Return" >}}.
+You run every command in this tutorial from a terminal:
+
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
+Use the **Terminal** app. To open it, press {{< kbd "Cmd Space" >}}, type
+`Terminal`, and press {{< kbd "Return" >}}.
+{{< /tab >}}
+
+{{< tab "Windows" >}}
+Use **PowerShell**. To open it, press {{< kbd "Win" >}}, type `PowerShell`, and
+press {{< kbd "Enter" >}}. On Windows 11 this opens inside **Windows Terminal**,
+which works the same way.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 The tutorial uses [minikube](https://minikube.sigs.k8s.io/), which is the
-simplest way to run Kubernetes on a single machine and works well on macOS.
-An [alternative using kind](#alternative-use-kind-instead-of-minikube) is
-described at the end.
+simplest way to run Kubernetes on a single machine and works well on both macOS
+and Windows. An [alternative using kind](#alternative-use-kind-instead-of-minikube)
+is described at the end.
 
 {{< info >}}
 A local cluster is meant for evaluation, development, and testing. It is not a
@@ -38,12 +53,16 @@ points the settings out. Some individual Contextual Data Platform components
 full Platform locally on Apple Silicon, check availability with the Arango team.
 {{< /info >}}
 
-## Step 1: Install Homebrew
+## Step 1: Install a package manager
 
-[Homebrew](https://brew.sh/) is a package manager for macOS. You use it to
-install all the other tools.
+You install all the other tools with a package manager. Pick the tab for your
+operating system.
 
-To check whether you already have it, run:
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
+[Homebrew](https://brew.sh/) is a package manager for macOS. To check whether you
+already have it, run:
 
 ```sh
 brew --version
@@ -65,6 +84,23 @@ becomes available in your current Terminal. Then confirm it works:
 ```sh
 brew --version
 ```
+{{< /tab >}}
+
+{{< tab "Windows" >}}
+[winget](https://learn.microsoft.com/windows/package-manager/), the Windows
+Package Manager, is built into Windows 10 and 11. To check whether you have it,
+run:
+
+```powershell
+winget --version
+```
+
+If you see a version number, skip to [Step 2](#step-2-install-and-start-docker-desktop).
+If the command is not found, install **App Installer** from the Microsoft Store,
+then close and reopen PowerShell and check again.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Step 2: Install and start Docker Desktop
 
@@ -74,19 +110,51 @@ here and it must be running before you start the cluster.
 
 Install Docker Desktop:
 
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
 ```sh
 brew install --cask docker
 ```
+{{< /tab >}}
 
-Now start it: open **Launchpad**, click the **Docker** icon, and wait until the
-whale icon in the menu bar at the top of the screen stops animating. The first
-launch may ask you to accept a license agreement and grant permissions.
+{{< tab "Windows" >}}
+```powershell
+winget install -e --id Docker.DockerDesktop
+```
+
+Docker Desktop on Windows uses the WSL 2 backend, so the installer enables WSL 2
+if it is not already set up. You may be prompted to restart your computer.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+Now start it:
+
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
+Open **Launchpad**, click the **Docker** icon, and wait until the whale icon in
+the menu bar at the top of the screen stops animating. The first launch may ask
+you to accept a license agreement and grant permissions.
+{{< /tab >}}
+
+{{< tab "Windows" >}}
+Open the **Start** menu, click **Docker Desktop**, and wait until the whale icon
+in the system tray (bottom-right of the taskbar) stops animating. The first
+launch may ask you to accept a license agreement.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Give Docker enough resources for ArangoDB. On the Docker driver, minikube runs
 inside Docker and cannot use more CPU or memory than Docker itself is given, so
 set Docker higher than the values you pass to minikube in
 [Step 4](#step-4-start-the-cluster) and leave some headroom for the host:
 
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
 1. Click the cog wheel icon in the menu bar and choose **Resources**.
 2. Set **CPUs** to at least `6` and **Memory** to at least `10 GB`. minikube
    later requests `4` CPUs and `8 GB`, and requesting all of Docker's memory
@@ -94,8 +162,29 @@ set Docker higher than the values you pass to minikube in
    set **CPUs** to at least `10` and **Memory** to at least `20 GB`, since
    minikube then requests `8` CPUs and `16 GB`.)
 3. Click **Apply**.
+{{< /tab >}}
 
-Confirm Docker is running by checking its version in the Terminal:
+{{< tab "Windows" >}}
+With the default WSL 2 backend, CPU and memory are controlled by WSL rather than
+the Docker Desktop **Resources** pane. Create or edit the file
+`%UserProfile%\.wslconfig` and add:
+
+```ini
+[wsl2]
+processors=6
+memory=10GB
+```
+
+minikube later requests `4` CPUs and `8 GB`, and giving WSL all of the host's
+memory leaves nothing for Windows. (For the full Contextual Data Platform, use
+`processors=10` and `memory=20GB`, since minikube then requests `8` CPUs and
+`16 GB`.) After saving the file, apply it by running `wsl --shutdown` in
+PowerShell and then restarting Docker Desktop.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+Confirm Docker is running by checking its version in the terminal:
 
 ```sh
 docker --version
@@ -103,11 +192,24 @@ docker --version
 
 ## Step 3: Install the command-line tools
 
-Install the two tools you need with a single command:
+Install the two tools you need:
 
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
 ```sh
 brew install kubectl minikube
 ```
+{{< /tab >}}
+
+{{< tab "Windows" >}}
+```powershell
+winget install -e --id Kubernetes.kubectl
+winget install -e --id Kubernetes.minikube
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 These are:
 
@@ -123,13 +225,18 @@ minikube version
 
 Each command should print a version number.
 
+{{< tip >}}
+On Windows, if a command is not recognized right after installation, close and
+reopen PowerShell (or Windows Terminal) so it picks up the updated `PATH`.
+{{< /tip >}}
+
 ## Step 4: Start the cluster
 
 Create and start the cluster, telling minikube how many CPUs and how much
 memory to use. The `--memory` value is in megabytes, so `8192` means 8 GB. These
 values stay below the resources you gave Docker in
 [Step 2](#step-2-install-and-start-docker-desktop), leaving headroom for Docker
-and macOS:
+and your operating system:
 
 ```sh
 minikube start --cpus=4 --memory=8192 --driver=docker
@@ -194,9 +301,21 @@ It is optional but handy.
 
 Install it:
 
+{{< tabs "os" >}}
+
+{{< tab "macOS" >}}
 ```sh
 brew install k9s
 ```
+{{< /tab >}}
+
+{{< tab "Windows" >}}
+```powershell
+winget install -e --id Derailed.k9s
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Start it:
 
@@ -266,46 +385,59 @@ local cluster. Its advantage is that it can model a multi-node cluster, which is
 a closer approximation of a real production setup.
 
 If you want to use kind instead of minikube, replace Steps 3 and 4 above with
-the following. Steps 1 and 2 (Homebrew and Docker) are the same.
+the following. Steps 1 and 2 (the package manager and Docker) are the same.
 
-1. Install the tools:
+First, install the tools:
 
-   ```sh
-   brew install kubectl kind
-   ```
+{{< tabs "os" >}}
 
-2. Create a single-node cluster:
+{{< tab "macOS" >}}
+```sh
+brew install kubectl kind
+```
+{{< /tab >}}
 
-   ```sh
-   kind create cluster --name arango
-   ```
+{{< tab "Windows" >}}
+```powershell
+winget install -e --id Kubernetes.kubectl
+winget install -e --id Kubernetes.kind
+```
+{{< /tab >}}
 
-   Or, to create a cluster with one control-plane node and three worker nodes,
-   first save the following as `kind-config.yaml`:
+{{< /tabs >}}
 
-   ```yaml
-   kind: Cluster
-   apiVersion: kind.x-k8s.io/v1alpha4
-   nodes:
-     - role: control-plane
-     - role: worker
-     - role: worker
-     - role: worker
-   ```
+Then create a single-node cluster:
 
-   Then create the cluster from that file:
+```sh
+kind create cluster --name arango
+```
 
-   ```sh
-   kind create cluster --name arango --config kind-config.yaml
-   ```
+Or, to create a cluster with one control-plane node and three worker nodes,
+first save the following as `kind-config.yaml`:
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+  - role: worker
+```
+
+Then create the cluster from that file:
+
+```sh
+kind create cluster --name arango --config kind-config.yaml
+```
 
 kind also configures `kubectl` automatically and provides a default `standard`
 storage class, so you can continue from [Step 5](#step-5-check-that-the-cluster-is-running).
 
 {{< info >}}
-**Reaching services from your Mac.** With any local cluster, including minikube
-and kind, services running inside the cluster are not reachable from your Mac by
-default and need port forwarding. This applies once you have installed the
+**Reaching services from your host.** With any local cluster, including minikube
+and kind, services running inside the cluster are not reachable from your machine
+by default and need port forwarding. This applies once you have installed the
 Platform; see [Interfaces](_index.md#interfaces) for how to reach the web
 interface.
 {{< /info >}}
