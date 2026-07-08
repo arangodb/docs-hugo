@@ -17,7 +17,8 @@ description: >-
   Arango Contextual Data Platform, running them in containers for safety and scalability.
 
   Set up a [Kubernetes](https://kubernetes.io/) cluster if you don't have one
-  available yet.
+  available yet. For evaluation and development on a single machine, see
+  [Set up a local Kubernetes environment](local-kubernetes-setup.md).
 
 - **kubectl**: A command line tool for communicating with a Kubernetes cluster's
   control plane.

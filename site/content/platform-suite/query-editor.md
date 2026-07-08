@@ -178,7 +178,7 @@ AQL queries and return a validated, faster version with a performance comparison
 report.
 
 For setup instructions and full usage details, see
-[Reasoner — Web Interface](../agentic-ai-suite/reasoner/web-interface.md).
+[Reasoner: Web Interface](../agentic-ai-suite/reasoner/web-interface.md).
 
 ## Adjust the viewport
 

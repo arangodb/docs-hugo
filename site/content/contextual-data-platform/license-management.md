@@ -14,15 +14,15 @@ a deployment with the [ArangoDB Kubernetes Operator](https://arangodb.github.io/
 activate and renew licenses automatically, so you don't need to manage license
 expiry yourself.
 
-## Two Kubernetes flows — online or air-gapped
+## Two Kubernetes flows: online or air-gapped
 
 Which steps you follow depends on whether your cluster can reach the Arango
 license service:
 
 | Your cluster | What you do | Platform CLI tool? |
 |---|---|---|
-| **Online** — can reach `*.license.arango.ai` | Create a Kubernetes secret with your **client ID** and **client secret**. The operator activates the deployment and renews the license automatically. | **No** |
-| **Air-gapped** — no internet access | Generate a **license key** on a separate internet-connected machine using the [License Activation portal](https://activate.license.arango.ai/) or the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only — the Platform CLI is required to produce the inventory file |
+| **Online**: can reach `*.license.arango.ai` | Create a Kubernetes secret with your **client ID** and **client secret**. The operator activates the deployment and renews the license automatically. | **No** |
+| **Air-gapped**: no internet access | Generate a **license key** on a separate internet-connected machine using the [License Activation portal](https://activate.license.arango.ai/) or the Platform CLI tool, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes**, on the internet-connected machine only: the Platform CLI is required to produce the inventory file |
 
 The rest of this page describes how the operator manages the license and
 how to apply it for each flow.
@@ -32,7 +32,7 @@ If you run a **standalone ArangoDB** deployment (not managed by Kubernetes),
 see the [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md)
 page instead. That page also hosts the
 [container walkthrough](../arangodb/4.0/operations/administration/license-management.md#walkthrough-generate-a-key-in-a-container)
-for generating a license key with the Platform CLI tool — which is also what
+for generating a license key with the Platform CLI tool, which is also what
 you use on the internet-connected machine in the air-gapped flow.
 {{< /info >}}
 
@@ -54,7 +54,7 @@ In an online Kubernetes-managed deployment (one that can reach
 `*.license.arango.ai`), the ArangoDB Kubernetes Operator handles the full
 license lifecycle. You provide license credentials (a client ID and client
 secret) as a Kubernetes secret once, and the operator keeps the deployment
-licensed automatically. Air-gapped deployments follow a different flow —
+licensed automatically. Air-gapped deployments follow a different flow:
 see [Offline / air-gapped: Apply a generated license key](#offline--air-gapped-apply-a-generated-license-key)
 below.
 
@@ -77,11 +77,11 @@ transparent to the running deployment.
 
 The 3-day grace period is the safety buffer for renewal failures (internet
 outage, license service unreachable, etc.). The operator doesn't try only
-once — it keeps retrying on every reconciliation cycle:
+once: it keeps retrying on every reconciliation cycle:
 
 1. At day 11, the regeneration time is reached. The operator tries to contact
    the license service. If the request fails, the action completes with an
-   error log and a Kubernetes warning event — but your existing license is
+   error log and a Kubernetes warning event, but your existing license is
    still valid for 3 more days.
 2. On the next reconciliation loop (which runs continuously, typically every
    few seconds), the operator sees that regeneration is still needed and
@@ -89,11 +89,11 @@ once — it keeps retrying on every reconciliation cycle:
 3. It keeps retrying on every reconciliation cycle until it succeeds or the
    license expires at day 14.
 
-As soon as connectivity to the license service is restored — even briefly —
+As soon as connectivity to the license service is restored, even briefly,
 the operator grabs a new license.
 
 If the full 3-day grace period passes without a successful renewal, the
-license expires and ArangoDB enters read-only mode — reads keep working,
+license expires and ArangoDB enters read-only mode: reads keep working,
 but no data or data-definition changes can be made. The database system
 keeps running, and there is no subsequent shutdown: it stays in read-only
 mode until a valid license is reapplied.
@@ -104,11 +104,11 @@ You don't need to change anything for the defaults to work. If you want to
 tune the renewal behavior, the following fields are available on the
 `ArangoDeployment` resource:
 
-- `spec.license.ttl` — how long each license lasts.
+- `spec.license.ttl`: how long each license lasts.
   Default: `336h` (14 days). The license server enforces a maximum, so
   values above the server-side cap are clamped; you cannot request an
   arbitrarily long TTL.
-- `spec.license.expirationGracePeriod` — how early before expiry the
+- `spec.license.expirationGracePeriod`: how early before expiry the
   operator starts trying to renew.
   Default: `72h` (3 days). Must be shorter than `spec.license.ttl`,
   since renewal is only meaningful within the current license's validity
@@ -174,7 +174,7 @@ apply it as a secret on the air-gapped cluster.
    or the Platform CLI tool. You need the deployment ID collected from the
    air-gapped cluster, plus an inventory file. (If **Managed** activation is
    enabled for your license, the portal accepts the deployment ID alone and
-   skips the inventory file — check your contract or with your Arango
+   skips the inventory file: check your contract or with your Arango
    contact.) See
    [Step 6: Collect information for the licensing](install-and-upgrade/offline-setup.md#step-6-collect-information-for-the-licensing)
    and [Step 7: Generate a license key](install-and-upgrade/offline-setup.md#step-7-generate-a-license-key)
@@ -211,11 +211,11 @@ See the [Metrics API](../arangodb/4.0/develop/http-api/monitoring/metrics.md).
 
 ## Further reading
 
-- [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md) —
+- [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md):
   command-line and API-based flows, including standalone (non-Kubernetes)
   deployments, and reference information about license status fields.
-- [`kube-arangodb` — Setting the License](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html) —
+- [`kube-arangodb`: Setting the License](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html):
   the operator's own reference for license secrets and the `spec.license` field.
 - [Online setup](install-and-upgrade/online-setup.md) and
-  [Offline setup](install-and-upgrade/offline-setup.md) — end-to-end
+  [Offline setup](install-and-upgrade/offline-setup.md): end-to-end
   installation guides that include the licensing steps in context.

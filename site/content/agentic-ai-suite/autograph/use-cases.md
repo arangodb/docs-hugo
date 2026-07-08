@@ -27,7 +27,7 @@ outdated or conflicting answers.
 ## Support Engineering Co-Pilots
 
 **Scenario**: Connect runbooks, product docs, troubleshooting guides, knowledge articles 
-across multiple product lines. Support teams juggle multiple knowledge bases—product docs, 
+across multiple product lines. Support teams juggle multiple knowledge bases: product docs, 
 known issues, past tickets, configuration databases, and runbooks. Finding relevant context 
 requires extensive institutional knowledge.
 
@@ -42,7 +42,7 @@ requires extensive institutional knowledge.
 
 ## Product Engineering & Technical Documentation
 
-**Scenario**: Engineering teams maintain massive repositories—design docs, specifications, 
+**Scenario**: Engineering teams maintain massive repositories: design docs, specifications, 
 architecture diagrams, code, and defect history. Engineers spend significant time navigating 
 complexity to understand dependencies or trace historical decisions.
 
@@ -98,7 +98,7 @@ case relationships, and argument patterns. For example, when asked "How have sim
 
 ## Infrastructure Management
 
-**Scenario**: IT teams manage complex infrastructures—networks, servers, applications, dependencies. When 
+**Scenario**: IT teams manage complex infrastructures: networks, servers, applications, dependencies. When 
 incidents occur, operators must correlate data from monitoring, asset databases, and runbooks.
 
 **AutoGraph Solution**: AutoGraph unifies runbooks while enabling Deep Search across infrastructure 
