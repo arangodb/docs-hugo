@@ -100,6 +100,17 @@ The set theory for these lists works as follow:
 Values for denylist and allowlist options need to be specified as ECMAScript 
 regular expressions.
 
+{{< security >}}
+A pattern matches if it is found anywhere in a value, so it can match more than
+you intend. To restrict a pattern to exact matches:
+
+- Anchor it with `^(...)$` to match the whole value.
+- Escape characters with a special meaning, such as the dot: use `\.` for a
+  literal dot, which otherwise matches any character.
+
+For example, use `^(example\.com)$` instead of `example.com`.
+{{< /security >}}
+
 Each option can be used multiple times. When specifying more than one 
 pattern, these patterns are combined with a _logical or_ to the actual pattern
 ArangoDB uses.
