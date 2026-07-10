@@ -1,5 +1,5 @@
 ---
-title: Get started with the Arango Contextual Data Platform (v4.0) locally
+title: Get started with the Arango Contextual Data Platform locally
 menuTitle: Evaluate locally
 weight: 5
 description: >-
@@ -21,11 +21,6 @@ By the end, you will have:
   reachable in a browser.
 - A running platform you can build on in the follow-up tutorials, plus a simple
   way to remove everything when you are done.
-
-This is a self-hosted evaluation setup meant for learning and experimentation on
-a single machine. It is not a production deployment. When you are ready to run
-the platform for real, follow the [Online setup](../install-and-upgrade/online-setup.md) or
-[Offline setup](../install-and-upgrade/offline-setup.md) how-to guides instead.
 
 ## Step 1: Check the system requirements
 
