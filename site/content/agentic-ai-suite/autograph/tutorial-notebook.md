@@ -53,10 +53,10 @@ all of it is in place.
 - **A folder of documents** to ingest, in one of the
   [supported file formats](quickstart.md#supported-file-formats). To reproduce
   this tutorial exactly, download the ready-made sample corpus
-  <a href="/notebooks/corpus.zip"><code>corpus.zip</code></a> (50 short tech
-  articles); unzipping it produces a `files/` folder.
+  [`corpus.zip`](/notebooks/corpus.zip) (50 short tech articles); unzipping it
+  produces a `files/` folder.
 - **The notebook file**: download
-  <a href="/notebooks/Autograph_DEMO.ipynb"><code>Autograph_DEMO.ipynb</code></a>.
+  [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb).
 
 {{< tip >}}
 For large-scale ingestion of PDF and Office documents, GPUs are recommended.
@@ -74,12 +74,12 @@ what each cell does, rather than something you copy from.
 2. Create a notebook server, or open an existing one, and click its ID to open
    the Jupyter interface. For details, see
    [Notebook servers](../notebook-servers.md).
-3. Download <a href="/notebooks/Autograph_DEMO.ipynb"><code>Autograph_DEMO.ipynb</code></a>,
-   upload it into the file browser, and open it.
+3. Download [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb), upload it
+   into the file browser, and open it.
 4. Put the documents you want to ingest in a `files/` folder next to the
    notebook. To use the sample corpus, download
-   <a href="/notebooks/corpus.zip"><code>corpus.zip</code></a> and unzip it here -
-   it expands to a ready-made `files/` folder of 50 articles.
+   [`corpus.zip`](/notebooks/corpus.zip) and unzip it here - it expands to a
+   ready-made `files/` folder of 50 articles.
 
 Run the cells **top to bottom**, one at a time. Do not use **Run All**: the
 corpus build, the RAG Strategizer, and the orchestration run in the background,
