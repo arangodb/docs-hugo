@@ -607,48 +607,56 @@ description: ''
 cursor = stmt.execute();
 ```
 
-You can pass a number to the `execute()` method to specify a batch size value.
-The server returns at most this many results in one roundtrip.
-The batch size cannot be adjusted after the query is first executed.
-
-**Note**: There is no need to explicitly call the execute method if another
-means of fetching the query results is chosen. The following two approaches
+**Note**: There is no need to explicitly call the execute method if you choose
+another means of fetching the query results. The following two approaches
 lead to the same result:
 
 ```js
 ---
 name: executeQueryNoBatchSize
-description: ''
+description: |
+  1. Use the `all()` helper method and get all documents with `toArray()`.
+  2. Use an AQL query and manually iterate the returned cursor to get all documents.
+  3. Use an AQL query and call `toArray()` to get all documents.
 ---
 ~db._create("users");
 ~db.users.save({ name: "Gerhard" });
 ~db.users.save({ name: "Helmut" });
 ~db.users.save({ name: "Angela" });
+
+/* Alternative 1 */
 var result = db.users.all().toArray();
 print(result);
 
+/* Alternative 2 */
 var q = db._query("FOR x IN users RETURN x");
 result = [ ];
 while (q.hasNext()) {
   result.push(q.next());
 }
 print(result);
+
+/* Alternative 3 */
+var result = db._query("FOR x IN users RETURN x").toArray();
+print(result);
+
 ~db._drop("users")
 ```
-
-The following example uses a batch size and returns the same result:
 
 ```js
 ---
 name: executeQueryBatchSize
-description: ''
+description: |
+  Use an AQL query to get all documents and set a batch size.
+  The server returns at most this many results in one roundtrip.
+  Manually iterate the returned cursor to get all documents.
 ---
 ~db._create("users");
 ~db.users.save({ name: "Gerhard" });
 ~db.users.save({ name: "Helmut" });
 ~db.users.save({ name: "Angela" });
 var result = [ ];
-var q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
+var q = db._query("FOR x IN users RETURN x", {}, { batchSize: 2 });
 while (q.hasNext()) {
   result.push(q.next());
 }
