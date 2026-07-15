@@ -19,6 +19,12 @@ Existing `fulltext` indexes are automatically dropped when upgrading to v4.0.0
 or later. Therefore, endpoints like `GET /_api/index` and `GET /_api/index/{index-id}`
 can no longer include respectively return information about `fulltext` indexes.
 
+The `replace-function-with-index` AQL optimizer rule has been removed as well,
+because it was only needed for the `fulltext` index usage.
+
+Furthermore, the error code `ERROR_QUERY_FULLTEXT_INDEX_MISSING` with number
+`1571` has been removed.
+
 #### Unsupported HTTP methods disallowed
 
 The following endpoints could previously be called using any HTTP method of
