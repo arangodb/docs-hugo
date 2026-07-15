@@ -6,6 +6,12 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
+{{< info >}}
+**Long-term support**: Changes that are marked as introduced in `3.11.14-x`
+(with `x` indicating a hotfix version) are only available to customers with a
+contract for 3.11 long-term support (LTS) for OEM / embedded use cases.
+{{< /info >}}
+
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -45,8 +51,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming
-constraints for both datacenters to avoid incompatibilities.
+refused.
 
 Also see:
 - [Collection names](../../concepts/data-structure/collections.md#collection-names)
@@ -325,6 +330,15 @@ for this reason if your deployment is at or above the configured maximum. Exampl
   "errorNum": 32
 }
 ```
+
+#### VelocyStream protocol unsupported
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is not
+supported in 3.11 OEM LTS.
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
 
 ### Endpoint return value changes
 
@@ -805,9 +819,18 @@ See [HTTP interface for Stream Transactions](../../develop/http-api/transactions
 
 ### Endpoints deprecated
 
+#### Target version endpoint
+
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
 The endpoint is removed in ArangoDB v4.0.
+
+#### Pregel API
+
+<small>Deprecated in: v3.11.14-1</small>
+
+The `/_api/control_pregel/*` endpoints are unsupported in the 3.11 OEM LTS version
+(v3.11.14-1 and later) and removed in v3.12.0 as Pregel graph processing is no longer supported.
 
 ## JavaScript API
 

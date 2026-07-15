@@ -80,17 +80,17 @@ If you are affected, consider using Docker containers, `chroot`, or change
 ## VelocyStream protocol deprecation
 
 ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST) is
-deprecated in v3.11 and removed in v3.12.0.
+deprecated in v3.11, unsupported in 3.11 OEM LTS, and removed in v3.12.0.
 
 While VelocyStream support is still available in v3.11, it is highly recommended
 to already switch to the HTTP(S) protocol because of better performance and
 reliability. ArangoDB supports both VelocyPack and JSON over HTTP(S).
 
-## Active Failover deployment mode deprecation
+## Active Failover deployment mode unsupported
 
 Running a single server with asynchronous replication to one or more passive
-single servers for automatic failover is deprecated and will no longer be
-supported in the next minor version of ArangoDB, from v3.12 onward.
+single servers for automatic failover is deprecated and is not supported in
+3.11 OEM LTS and from v3.12 onward.
 
 ## Extended naming constraints for collections, Views, and indexes
 
@@ -112,7 +112,7 @@ If the feature is enabled, then any endpoints that contain database, collection,
 View, or index names in the URL may contain special characters that were
 previously not allowed (percent-encoded). They are also to be expected in
 payloads that contain database, collection, View, or index names, as well as
-document identifiers (because they are comprised of the collection name and the
+document identifiers (because they are composed of the collection name and the
 document key). If client applications assemble URLs with extended names
 programmatically, they need to ensure that extended names are properly
 URL-encoded.
@@ -131,8 +131,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming
-constraints for both datacenters to avoid incompatibilities.
+refused.
 
 Also see:
 - [Collection names](../../concepts/data-structure/collections.md#collection-names)
@@ -615,6 +614,54 @@ support the VelocyPack format. The cluster replication has been changed to use
 VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
 risk of deviations due to the serialization.
 
+## Datacenter-to-Datacenter Replication (DC2DC) unsupported
+
+<small>Introduced in: v3.11.14-1</small>
+
+The Datacenter-to-Datacenter Replication for cluster deployments including the
+_arangosync_ tool is not supported in 3.11 OEM LTS (v3.11.14-1 or later)
+and from v3.12 onward.
+
+## Pregel unsupported
+
+<small>Deprecated in: v3.11.14-1</small>
+
+The distributed iterative graph processing (Pregel) system is not supported
+in the 3.11 OEM LTS version and unavailable from v3.12 onward.
+
+In detail, the following functionalities are unsupported:
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
+- All `arangodb_pregel_*` metrics
+- The `pregel` log topic
+- The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
+  `--pregel.parallelism` startup options
+
+## LDAP authentication unsupported
+
+<small>Deprecated in: v3.11.14-1</small>
+
+ArangoDB user authentication with an LDAP server in the
+Enterprise Edition is not supported in 3.11 OEM LTS.
+
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2</small>
@@ -677,7 +724,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 

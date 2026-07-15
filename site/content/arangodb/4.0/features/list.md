@@ -6,8 +6,8 @@ description: >-
   All features of the ArangoDB database system, available in both the
   Community Edition and Enterprise Edition
 aliases:
-  - community-edition # 3.11 -> 3.12
-  - enterprise-edition # 3.11 -> 3.12
+  - community-edition # 3.11 -> 3.11
+  - enterprise-edition # 3.11 -> 3.11
 ---
 ## General
 

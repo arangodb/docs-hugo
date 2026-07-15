@@ -17,7 +17,8 @@
   - name: "3.11"
     version: "3.11.14"
     alias: "3.11"
-    deprecated: true
+    label: "OEM LTS"
+    deprecated: false
     inDevelopment: false
     allowedAPIVersions: [v0]
 

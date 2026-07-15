@@ -6,6 +6,13 @@ layout: default
 ---
 {{< cloudbanner >}}
 
+{{< warning >}}
+ArangoDB version 3.11 reached End of Life (EOL) on May 30th, 2025.
+It is no longer supported for general users.
+
+Long-term support (LTS) is available for OEM / embedded use cases on request.
+{{< /warning >}}
+
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="about/" %}}

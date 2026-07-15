@@ -33,8 +33,7 @@ Cases 1. and 2. are more common, though cases 3. and 4. are also possible.
 ## Upgrade Procedure
 
 The following procedure has to be executed on every ArangoDB _Starter_ instance.
-It is assumed that a _Starter_ deployment with mode `single`, `activefailover` or
-`cluster` is running.
+It is assumed that a _Starter_ deployment with mode `single` or `cluster` is running.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
@@ -187,9 +186,9 @@ the following situation:
 - The ArangoDB Server processes are up and running, and they are still on the
   old version
 
-### Start the upgrade process of all *arangod* & *arangosync* servers
+### Start the upgrade process of all *arangod* servers
 
-Once you have carried out the above steps on all servers of the clusters, the
+Once you have carried out the above steps on all servers of the cluster, the
 actual upgrade procedure can be started.
 
 Run the following command on any of the cluster nodes for any of the starter 
@@ -198,9 +197,6 @@ endpoints (e.g. `http://localhost:8528`) to upgrade the entire cluster:
 ```bash
 arangodb upgrade --starter.endpoint=<endpoint-of-a-starter>
 ```
-
-If you have connected clusters across multiple datacenter
-(DC2DC deployment), then you need to update each of the clusters.
 
 If the upgrade command fails, please try again. If the upgrade command continues
 to fail, please contact the Arango support.
@@ -216,7 +212,7 @@ For deployment mode `single`, the `arangodb upgrade` command will:
 The `arangodb upgrade` command will complete right away.
 Inspect the log of the _Starter_ to know when the upgrade has finished.
 
-#### Deployment mode `activefailover` or `cluster`
+#### Deployment mode `cluster`
 
 The _Starters_ will now perform an initial check that upgrading is possible
 and when that all succeeds, create an upgrade _plan_. This _plan_ is then 
@@ -248,7 +244,7 @@ you are:
 
 ## Retrying a failed upgrade
 
-When an upgrade _plan_ (in deployment mode `activefailover` or `cluster`)
+When an upgrade _plan_ (in deployment mode `cluster`)
 has failed, it can be retried.
 
 To retry, run:
@@ -262,7 +258,7 @@ of the starters, e.g. `http://localhost:8528`.
 
 ## Aborting an upgrade
 
-When an upgrade _plan_ (in deployment mode `activefailover` or `cluster`)
+When an upgrade _plan_ (in deployment mode `cluster`)
 is in progress or has failed, it can be aborted.
 
 To abort, run:
@@ -275,7 +271,7 @@ The `--starter.endpoint` option can be set to the endpoint of any
 of the starters, e.g. `http://localhost:8528`.
 
 Note that an abort does not stop all upgrade processes immediately.
-If an _arangod_ or _arangosync_ server is being upgraded when the abort
+If an _arangod_ server is being upgraded when the abort
 was issued, this upgrade will be finished. Remaining servers will not be
 upgraded.
 
