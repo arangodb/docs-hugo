@@ -200,17 +200,17 @@ regarding the rclone configuration:
 You should check for the following things in particular:
 
 - If you use AWS S3 and a region other than `us-east-1`, you need to either specify the
-  region in the `location_constraint` (e.g. `location_constraint = "eu-central-1"`),
-  set `no_check_bucket = "true"`, or both.
+  region in the `location_constraint` (e.g. `"location_constraint": "eu-central-1"`),
+  set `"no_check_bucket": "true"`, or both.
 
   Otherwise, rclone makes a check with an unspecified location constraint which
   AWS rejects (IllegalLocationConstraintException). This is caused by an upgrade
   to the AWS SDK v2 in rclone v1.68.0.
 
 - If you use an S3-compatible provider like GCS, Ceph, MinIO, Wasabi, or older
-  gateways, uploads may fail unless you set `use_data_integrity_protections = false`.
+  gateways, uploads may fail unless you set `"use_data_integrity_protections": "false"`.
 
-  The upgrade to the AWS SDK v2 in rlcone v1.68.0 changed the default algorithm
+  The upgrade to the AWS SDK v2 in rclone v1.68.0 changed the default algorithm
   for data integrity checksums to CRC32/CRC64. While this is supported by AWS,
   other S3-compatible providers may still expect MD5 and therefore fail. Later
   rclone versions may automatically account for this quirk for certain providers.
@@ -221,7 +221,7 @@ You should check for the following things in particular:
   and `use_multipart_uploads`.
 
   You might need to force specific settings in case your provider is not known
-  to rlcone and therefore doesn't handle specific quirks on its own.
+  to rclone and therefore doesn't handle specific quirks on its own.
 
 ## HTTP RESTful API
 
