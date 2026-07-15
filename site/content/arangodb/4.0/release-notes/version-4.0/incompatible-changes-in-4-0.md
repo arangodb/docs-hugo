@@ -439,6 +439,24 @@ as they are either obsolete or didn't provide much value and better alternatives
 See [API Changes in ArangoDB 4.0](api-changes-in-4-0.md#removed-collection-methods)
 for details like how you can replace this functionality.
 
+### Reimplemented collection methods
+
+Some collection methods of the JavaScript API relied on the server-side
+Simple Queries interface. The methods of a
+[_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md)
+that are still available in version 4.0 have been re-implemented to use AQL on
+the client-side. Some of the methods now return a
+[_cursor_ object](../../develop/javascript-api/@arangodb/cursor-object.md)
+and therefore the methods you can call on it differ.
+
+- `all()` (returns a _cursor_ object)
+- `any()`
+- `byExample()` (returns a _cursor_ object)
+- `firstExample()`
+- `removeByExample()`
+- `replaceByExample()`
+- `updateByExample()`
+
 ## Startup options
 
 ### Vector index enabled by default
