@@ -394,6 +394,11 @@ The `/_admin/job*` endpoints as well as the `/_admin/version` endpoint have
 been removed. The identical functionality is now only available using the
 corresponding `/_api/job*` and `/_api/version` endpoints.
 
+#### Database `path` removed
+
+The `GET /_api/database/current` endpoint no longer includes a `path` attribute
+in responses. It always returned `"none"`.
+
 ## JavaScript API
 
 ### Removed modules and globals
@@ -406,6 +411,10 @@ The following things have been removed:
 - `@arangodb/aql/functions` module
 
 For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-0.md#javascript-api).
+
+### Removed database method
+
+The `db` object no longer has a `_path` method. It always returned `"none"`.
 
 ### Removed collection methods
 

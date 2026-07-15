@@ -308,12 +308,21 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
+#### Database `path` removed
+
+The `GET /_api/database/current` endpoint no longer includes a `path` attribute
+in responses. It always returned `"none"`.
+
 ## JavaScript API
 
 ### `db._executeTransaction()` removed
 
 The `_executeTransaction` function has been removed from the `db` object due to
 the removal of JavaScript Transactions.
+
+### `db._path()` removed
+
+The `db` object no longer has a `_path` method. It always returned `"none"`.
 
 ### Removed collection methods
 
