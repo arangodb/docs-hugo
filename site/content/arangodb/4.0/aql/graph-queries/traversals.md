@@ -639,9 +639,6 @@ functions cannot be used in the expression:
 - `CURRENT_USER()`
 - `CURRENT_DATABASE()`
 - `COLLECTION_COUNT()`
-- `NEAR()`
-- `WITHIN()`
-- `WITHIN_RECTANGLE()`
 {{< /warning >}}
 
 ## Using filters

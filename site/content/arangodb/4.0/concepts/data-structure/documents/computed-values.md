@@ -288,9 +288,6 @@ Computed value expressions have the following properties:
   - `CURRENT_USER()`
   - `CURRENT_DATABASE()`
   - `COLLECTION_COUNT()`
-  - `NEAR()`
-  - `WITHIN()`
-  - `WITHIN_RECTANGLE()`
 
 Expressions that do not meet the requirements or that are syntactically invalid
 are rejected immediately, when setting or modifying the computed value definitions
