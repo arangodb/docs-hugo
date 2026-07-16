@@ -7,9 +7,12 @@ description: >-
   streaming (SSE) and non-streaming response modes
 ---
 
-The Reasoner exposes an HTTP API for programmatic access. All requests are sent
-to `POST /query`. The service supports two response modes: streaming and
-non-streaming.
+The Reasoner exposes an HTTP API for programmatic access. The service listens on
+port `8080`, so the base URL is `https://<EXTERNAL_ENDPOINT>:8080` (or
+`http://localhost:8080` when accessed locally). All optimization requests are
+sent to `POST /query`, for example
+`POST https://<EXTERNAL_ENDPOINT>:8080/query`. The service supports two response
+modes: streaming and non-streaming.
 
 ## Optimization example
 
@@ -58,7 +61,7 @@ Send a `POST /query` request with the query in the `request` field:
 | Execution time | 0.842s   | 0.091s       |
 | Rows returned  | 1,247    | 1,247        |
 | Peak memory    | 8.2 MB   | 1.1 MB       |
-| Speedup        | —        | 9.25× faster |
+| Speedup        | -        | 9.25× faster |
 
 ### What Changed
 - Added a composite index hint on `status` and `created_at` to avoid a full
@@ -69,7 +72,7 @@ Send a `POST /query` request with the query in the `request` field:
 ### Why It's Faster
 - The original query performed a full scan of all documents in the `users`
   collection before filtering by status. With the composite index, only documents
-  matching `status == 'active'` are read, already in the correct sort order —
+  matching `status == 'active'` are read, already in the correct sort order -
   reducing both execution time and memory usage significantly.
 
 ### Final Optimized Query
@@ -90,7 +93,7 @@ connection, allowing the client to display progress in real time.
 
 > **Note:** Streaming is only available via the API.
 
-**General query — request:**
+**General query - request:**
 
 ```json
 {
@@ -99,7 +102,7 @@ connection, allowing the client to display progress in real time.
 }
 ```
 
-**Example SSE stream — general query:**
+**Example SSE stream - general query:**
 
 ```
 event: phase
@@ -118,7 +121,7 @@ event: done
 data: {"synthesized": false}
 ```
 
-**Optimization query — request:**
+**Optimization query - request:**
 
 ```json
 {
@@ -127,7 +130,7 @@ data: {"synthesized": false}
 }
 ```
 
-**Example SSE stream — optimization query:**
+**Example SSE stream - optimization query:**
 
 ```
 event: phase
@@ -165,15 +168,15 @@ preferred.
 
 ```json
 {
-  "result": "The database contains 2 named graphs:\n\n- **social_network** — vertices: `users`, edges: `friendships`\n- **supply_chain** — vertices: `products`, `warehouses`, edges: `shipments`"
+  "result": "The database contains 2 named graphs:\n\n- **social_network** - vertices: `users`, edges: `friendships`\n- **supply_chain** - vertices: `products`, `warehouses`, edges: `shipments`"
 }
 ```
 
-## `POST /query` — request parameters
+## `POST /query` - request parameters
 
 | Field | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `request` | string | Yes | — | The user question or query to optimize |
+| `request` | string | Yes | - | The user question or query to optimize |
 | `stream` | boolean | No | `true` | `true` returns an SSE stream; `false` returns a JSON response after completion |
 
 ## HTTP status codes
@@ -181,7 +184,7 @@ preferred.
 | Code | Description |
 |---|---|
 | `200` | Request completed successfully |
-| `500` | Processing failed — the error detail includes the phase during which the failure occurred |
+| `500` | Processing failed - the error detail includes the phase during which the failure occurred |
 
 ## When validation does not pass
 
@@ -201,8 +204,8 @@ operational monitoring.
 
 | Endpoint | Purpose | Kubernetes Probe |
 |---|---|---|
-| `GET /health` | Liveness check — confirms the service process is running | Liveness probe |
-| `GET /health/ready` | Readiness check — verifies connectivity to the AI coder and the MCP server | Readiness probe |
+| `GET /health` | Liveness check - confirms the service process is running | Liveness probe |
+| `GET /health/ready` | Readiness check - verifies connectivity to the AI coder and the MCP server | Readiness probe |
 | `GET /health/mcp` | Detailed MCP server connectivity status | Diagnostic / monitoring |
 
 ### Liveness check
