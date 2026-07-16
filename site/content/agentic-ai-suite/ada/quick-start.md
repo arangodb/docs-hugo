@@ -3,27 +3,23 @@ title: Ada Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Configure Ada and get your first natural language answer from your database
-  in four steps
+  Ask questions about your data in plain language and get answers back, no AQL
+  required
 ---
 
 {{< steps >}}
 
-{{< step "Add your LLM API key" >}}
-Store your provider API key (Anthropic, OpenAI, OpenRouter, or a custom
-endpoint) in the [Secrets Manager](../../platform-suite/secrets-manager.md)
-before configuring Ada.
-{{< /step >}}
-
 {{< step "Open Ada" >}}
-Select your database in the database selector, then open **Ada** from the
-left sidebar.
+In the Arango Contextual Data Platform web interface, select your database in
+the database selector, then open **Ada** from the left sidebar.
 {{< /step >}}
 
 {{< step "Configure the LLM provider" >}}
-Click the gear icon (⚙) in the top-right corner, choose your **Provider**,
-**Model**, and **API Key**, and click **Save**. The top bar updates to show
-the active configuration.
+Click the gear icon (⚙) in the top-right corner and choose your **Provider**
+and **Model**. For the **API Key**, either add your provider key (Anthropic,
+OpenAI, OpenRouter, or a custom endpoint) or pick an existing one from the
+[Secrets Manager](../../platform-suite/secrets-manager.md). Click **Save** and
+the top bar updates to show the active configuration.
 {{< /step >}}
 
 {{< step "Ask your first question" >}}

@@ -3,8 +3,8 @@ title: GraphML Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
-  Train your first graph machine learning model and generate predictions on
-  your graph
+  Predict missing labels and uncover hidden patterns in your graph with
+  machine learning, no data science pipeline required
 ---
 
 ## Prerequisites
@@ -22,7 +22,8 @@ description: >-
 {{< steps >}}
 
 {{< step "Create a project" >}}
-Go to the **AI Suite** > **Run GraphML** and click **Add new project**.
+In the Arango Contextual Data Platform, go to **Agentic AI Suite** > **Run
+GraphML** and click **Add new project**.
 {{< /step >}}
 
 {{< step "Featurize your graph" >}}

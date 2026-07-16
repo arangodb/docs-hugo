@@ -63,6 +63,18 @@ due to feature removals:
 
 - `arangodb_request_statistics_memory_usage`
 - `arangodb_connection_statistics_memory_usage`
+- `arangodb_v8_context_alive`
+- `arangodb_v8_context_busy`
+- `arangodb_v8_context_dirty`
+- `arangodb_v8_context_free`
+- `arangodb_v8_context_max`
+- `arangodb_v8_context_min`
+
+#### Log API
+
+The `security` log topic has been removed.
+The `/_admin/log/level` endpoints no longer include this log topic in responses
+and attempts to set the log level for this topic are ignored.
 
 ### Privilege changes
 
@@ -100,6 +112,14 @@ deprecated `Timestamp` sub-attribute of the last heartbeat received under
 
 
 ### Endpoints removed
+
+#### JavaScript Transactions API
+
+The `POST /_api/transaction` endpoint for executing a JavaScript Transaction
+has been removed. It was deprecated since v3.12.0.
+
+You may use [AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor) or
+[Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) instead.
 
 #### Metrics API v2
 
@@ -185,6 +205,11 @@ an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
 ## JavaScript API
+
+### `db._executeTransaction()` removed
+
+The `_executeTransaction` function has been removed from the `db` object due to
+the removal of JavaScript Transactions.
 
 ### Removed collection methods
 

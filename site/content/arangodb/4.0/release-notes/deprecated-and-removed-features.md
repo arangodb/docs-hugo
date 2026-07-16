@@ -37,7 +37,59 @@ aliases:
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
   - ../develop/http-api/batch-requests # 3.12 -> 4.0
+  - ../develop/transactions/javascript-transactions # 3.12 -> 4.0
+  - ../develop/http-api/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
+  - ../components/web-interface/services # 3.12 -> 4.0
+  - ../develop/http-api/foxx # 3.12 -> 4.0
+  - ../components/tools/foxx-cli # 3.12 -> 4.0
+  - ../components/tools/foxx-cli/details # 3.12 -> 4.0
+  - ../develop/foxx-microservices # 3.12 -> 4.0
+  - ../develop/foxx-microservices/deployment # 3.12 -> 4.0
+  - ../develop/foxx-microservices/getting-started # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/access-from-the-browser # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/authentication-and-sessions # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/development-mode # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/foxx-in-a-cluster # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/linking-services-together # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/making-requests # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/scripts-and-scheduling # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/testing-foxx-services # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/using-node-modules # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/using-webpack-with-foxx # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-collections # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-files # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-routers # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/writing-queries # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/configuration # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/authentication # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/graphql # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/oauth-1-0a # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/oauth-2-0 # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/queues # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/endpoints # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/middleware # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/request # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/response # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/service-context # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/service-manifest # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages/collection-storage # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages/jwt-storage # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports/header-transport # 3.12 -> 4.0
+  - ../develop/http-api/tasks # 3.12 -> 4.0
+  - ../develop/javascript-api/actions # 3.12 -> 4.0
+  - ../develop/javascript-api/tasks # 3.12 -> 4.0
+  - ../aql/user-defined-functions # 3.12 -> 4.0
+  - ../develop/http-api/queries/user-defined-aql-functions # 3.12 -> 4.0
+  - ../operations/troubleshooting/emergency-console # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -52,6 +104,23 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is no longer supported.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
 
 - **Foxx microservices**:\
   The Foxx microservice framework including tasks/queues, the related

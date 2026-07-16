@@ -315,7 +315,6 @@ unsuitable for the OneShard optimization:
   - `NEAR`
   - `SCHEMA_GET`
   - `SCHEMA_VALIDATE`
-  - `V8`
   - `VERSION`
   - `WITHIN`
   - `WITHIN_RECTANGLE`

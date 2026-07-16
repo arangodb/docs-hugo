@@ -647,7 +647,7 @@ a.section-link {
 .steps .step-icon svg {
     width: 16px;
     height: 16px;
-    fill: currentColor;
+    fill: currentcolor;
 }
 
 .steps .step-body {

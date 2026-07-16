@@ -110,25 +110,25 @@ Good candidates:
 The same module string flows through the entire pipeline, from files to
 Importer partitions:
 
-1. **Ingestion** —
+1. **Ingestion** -
    [`POST /v1/import-multiple`](reference/importing-files.md) accepts a `module`
    field for the batch. Files without a module receive the `default` label when
    the corpus build runs.
 
-2. **Corpus build** —
+2. **Corpus build** -
    Processing runs per module, sequentially. Within a module, similarity
    computation and Leiden clustering see only that module's documents.
 
-3. **Cluster key naming** —
+3. **Cluster key naming** -
    Cluster vertices use keys like `cluster_<module>_<n>` when a module label is
    present (for example, `cluster_legal_0`), or `cluster_<n>` when no module was
    assigned. This prevents collisions across modules.
 
-4. **Graph wiring** —
+4. **Graph wiring** -
    `modules` vertices link to their clusters via `HAS_CLUSTER` edges. Documents
    link into clusters via `corpus_relations` membership edges.
 
-5. **RAG strategizer** —
+5. **RAG strategizer** -
    The [strategizer](reference/rag-strategizer.md) reads clusters, ranks them by
    complexity, and assigns VectorRAG or FullGraphRAG. It writes profiles to the
    `rags` collection with a `rag_partition_id` derived from the cluster key.
@@ -136,7 +136,7 @@ Importer partitions:
    - Suffix `_b` indicates a VectorRAG partition
    - Example: cluster key `cluster_legal_0` produces partition ID `legal_0_a`
 
-6. **Orchestration** —
+6. **Orchestration** -
    [`POST /v1/orchestrate`](reference/orchestration.md) loads every matching
    profile from `rags` and runs one Importer job per `rag_partition_id`. This is
    how modules become parallel partitions in Layer 3; a partitioned knowledge

@@ -20,7 +20,8 @@ configure the provider and model once per database, and Ada uses the
 corresponding API key stored in the
 [Secrets Manager](../../platform-suite/secrets-manager.md).
 
-Ada is accessible from the left sidebar under **Ada**. It is scoped to the
+You access Ada from the Arango Contextual Data Platform web interface, using the
+**Ada** entry in the left sidebar. It is scoped to the
 database currently selected in the database selector at the top of the sidebar.
 The top bar shows the active database name alongside the LLM provider and model
 in use, for example `_system  openai/gpt-4.1`.
@@ -50,7 +51,7 @@ in use, for example `_system  openai/gpt-4.1`.
 ## What's next
 
 - **[Quick Start](quick-start.md)**: Configure Ada and get your first answer in
-  four steps.
+  three steps.
 - **[Configure the LLM provider](llm-configuration.md)**: Choose your provider,
   model, and API key.
 - **[Start a conversation](start-a-conversation.md)**: Ask questions and use the

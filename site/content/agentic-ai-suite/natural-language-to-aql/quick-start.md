@@ -65,20 +65,20 @@ Save the `serviceIdPostfix` (the trailing segment of `serviceId`) from the
 response.
 {{< /step >}}
 
-{{< step "Translate a question into AQL" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/translate_query" >}}
+{{< step "Generate an AQL query" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graph-rag/{serviceIdPostfix}/v1/process_text_stream" >}}
 
 ```json
 {
-  "input_text": "Find all users who are friends with John",
-  "options": {
-    "output_formats": ["NL", "AQL", "JSON"]
-  }
+  "input_text": "Find all users who made purchases in the last month",
+  "mode": "aqlizer",
+  "response_instruction": "Return concise, executable AQL."
 }
 ```
 
-The response returns the requested formats: a natural language explanation,
-the generated AQL, and/or the raw JSON results.
+With `"mode": "aqlizer"`, the endpoint streams back schema-aware AQL generated
+from your question. Copy the generated query into the **Query Editor** to run it
+against your database.
 {{< /step >}}
 
 {{< /steps >}}
