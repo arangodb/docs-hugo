@@ -22,17 +22,28 @@ description: >-
 {{< steps >}}
 
 {{< step "Install the Retriever service" >}}
-Install and start the service through the Arango Control Plane:
+Install and start the service through the Arango Control Plane. Configure your
+LLM and embedding providers at install time by passing them in the `env` object
+of the install request body. Streaming is supported with OpenAI,
+OpenAI-compatible APIs, and OpenRouter (not Triton).
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
-Note the `serviceIdPostfix` from the response.
-{{< /step >}}
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "chat_api_key": "your_openai_api_key",
+    "embedding_api_provider": "openai",
+    "embedding_api_key": "your_openai_api_key"
+  }
+}
+```
 
-{{< step "Configure your LLM provider" >}}
-Point the Retriever at your chat provider. Streaming is supported with
-OpenAI, OpenAI-compatible APIs, and OpenRouter (not Triton). See
-[LLM Configuration](llm-configuration.md).
+Note the `serviceIdPostfix` from the response. For all provider options and
+parameters, see [LLM Configuration](llm-configuration.md).
 {{< /step >}}
 
 {{< step "Send a query" >}}
