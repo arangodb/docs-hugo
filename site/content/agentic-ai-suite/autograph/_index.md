@@ -68,7 +68,7 @@ that content.
 ## What's next
 
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
-- **[Quickstart](quickstart.md)**: Get started with AutoGraph using the web interface or the HTTP REST API.
+- **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
 - **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
 - **[Notebook Tutorial](tutorial-notebook.md)**: Run the same end-to-end workflow from a Jupyter notebook using Python and the REST API.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.

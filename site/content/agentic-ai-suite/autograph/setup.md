@@ -1,9 +1,9 @@
 ---
-title: How to get started with AutoGraph
-menuTitle: Quickstart
+title: Set up AutoGraph
+menuTitle: Setup
 weight: 5
 description: >-
-  Get started with AutoGraph using the web interface or the HTTP REST API
+  Set up AutoGraph using the web interface or the HTTP REST API
   to build knowledge graphs from your enterprise documents
 ---
 
