@@ -83,7 +83,7 @@ This release contains improvements and refinements to features introduced in v4.
   and [Retriever](../agentic-ai-suite/retriever/llm-configuration.md) now default
   to `gpt-5.4-nano`; the
   [Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/setup.md)
-  service (AQLizer) defaults to `gpt-5.4`. [Ada](../agentic-ai-suite/ada.md) also
+  service (AQLizer) defaults to `gpt-5.4`. [Ada](../agentic-ai-suite/ada/_index.md) also
   adds **Anthropic**, **OpenRouter**, and **Custom Endpoint** as provider options
   alongside OpenAI.
 - **License activation**: A new web-based
@@ -127,7 +127,7 @@ Key features:
 
 {{< tag "Agentic AI Suite" >}}
 
-[Ada](../agentic-ai-suite/ada.md) is a new AI digital assistant integrated into the Arango
+[Ada](../agentic-ai-suite/ada/_index.md) is a new AI digital assistant integrated into the Arango
 Contextual Data Platform. It lets you interact with your database using natural language,
 generate and execute AQL queries, explore collections and data structures, and save reusable
 query artifacts through a conversational chat interface.
