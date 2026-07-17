@@ -170,7 +170,7 @@ object of the deploy request:
 
 | Parameter | Location | Description | Required |
 |-----------|----------|-------------|----------|
-| `has_ui` | env | Set to `"true"` to register the service as an App. Defaults to `"false"`. | No |
+| `has_ui` | env | Set to `true` to register the service as an App. Accepts a boolean (`true`) or a string (`"true"`). Defaults to `false`. | No |
 | `display_name` | env | Name shown for the app in the Apps catalog | Yes, when `has_ui` is `"true"` |
 | `description` | env | Description shown for the app in the Apps catalog | Yes, when `has_ui` is `"true"` |
 
