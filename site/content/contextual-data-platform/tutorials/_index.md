@@ -16,3 +16,7 @@ For task-focused instructions on running a real deployment, see the
 - [**Evaluate locally**](evaluate-locally.md): Go from an empty machine to a
   running Arango Contextual Data Platform on a local Kubernetes cluster, ready
   for the follow-up tutorials.
+- [**Build a knowledge graph with AutoGraph**](build-a-knowledge-graph-with-autograph.md):
+  Take the platform from the previous tutorial and turn a folder of documents
+  into a queryable knowledge graph, driving the full AutoGraph pipeline from a
+  Jupyter notebook.

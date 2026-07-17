@@ -1,7 +1,7 @@
 ---
 title: Build a knowledge graph with AutoGraph from a Jupyter notebook
-menuTitle: Notebook Tutorial
-weight: 18
+menuTitle: Build a knowledge graph
+weight: 10
 description: >-
   A hands-on tutorial that takes you from a folder of documents to a queryable
   knowledge graph, driving the full AutoGraph pipeline from a Jupyter notebook
@@ -16,8 +16,8 @@ build that clusters them, the RAG Strategizer that picks a retrieval strategy,
 and the Retriever we finally chat with.
 
 This is the same workflow you would run in the
-[web interface](web-interface.md), but here every step is a Python call against
-the [HTTP REST API](reference/_index.md) - so you can automate the pipeline,
+[web interface](../../agentic-ai-suite/autograph/web-interface.md), but here every step is a Python call against
+the [HTTP REST API](../../agentic-ai-suite/autograph/reference/_index.md) - so you can automate the pipeline,
 inspect intermediate results, and reuse the calls in your own scripts.
 
 By the end, you will have:
@@ -43,7 +43,7 @@ all of it is in place.
   or later) with the Agentic AI Suite enabled, reachable from where you run the
   notebook.
 - **A running Notebook server** in that platform. This tutorial is designed to
-  run in the platform's integrated [Notebook servers](../notebook-servers.md),
+  run in the platform's integrated [Notebook servers](../../agentic-ai-suite/notebook-servers.md),
   where network access and Python are already set up. You can also run it from
   any local Jupyter environment that can reach the platform endpoint.
 - **Platform credentials** - a username and password with permission to create
@@ -51,7 +51,7 @@ all of it is in place.
 - **LLM and embedding API access** - this tutorial uses OpenAI-compatible
   endpoints and an API key. Any OpenAI-compatible provider works.
 - **A folder of documents** to ingest, in one of the
-  [supported file formats](quickstart.md#supported-file-formats). To reproduce
+  [supported file formats](../../agentic-ai-suite/autograph/setup.md#supported-file-formats). To reproduce
   this tutorial exactly, download the ready-made sample corpus
   [`corpus.zip`](/notebooks/corpus.zip) (50 short tech articles); unzipping it
   produces a `files/` folder.
@@ -73,7 +73,7 @@ what each cell does, rather than something you copy from.
    the main navigation and click **Notebook servers**.
 2. Create a notebook server, or open an existing one, and click its ID to open
    the Jupyter interface. For details, see
-   [Notebook servers](../notebook-servers.md).
+   [Notebook servers](../../agentic-ai-suite/notebook-servers.md).
 3. Download [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb), upload it
    into the file browser, and open it.
 4. Put the documents you want to ingest in a `files/` folder next to the
@@ -307,7 +307,7 @@ uploaded; dotfiles are skipped.
 Start an asynchronous corpus build from the uploaded files. The build embeds each
 document, finds similarity relationships (vector plus lexical search fused with
 Reciprocal Rank Fusion), and clusters documents into domains with the Leiden
-algorithm. For the full pipeline, see [Corpus Build](reference/corpus-build.md).
+algorithm. For the full pipeline, see [Corpus Build](../../agentic-ai-suite/autograph/reference/corpus-build.md).
 
 ```py
 build_payload = {
@@ -355,7 +355,7 @@ Do not start Step 10 while the build is still running. The strategizer fails wit
 Run the RAG Strategizer. For each domain cluster it scores complexity, extracts
 entity types, and assigns either **VectorRAG** (simpler, faster) or
 **FullGraphRAG** (richer, more expensive), writing the results to the project's
-`rags` collection. See [RAG Strategizer](reference/rag-strategizer.md) for
+`rags` collection. See [RAG Strategizer](../../agentic-ai-suite/autograph/reference/rag-strategizer.md) for
 details.
 
 ```py
@@ -400,7 +400,7 @@ orchestration too early returns `400` or processes only part of the jobs.
 Orchestration spawns GraphRAG importer worker pods, loads the jobs the
 strategizer wrote to `rags`, and runs each domain through the appropriate import
 pipeline. This is the equivalent of **Start Import** in the web interface. See
-[Orchestration](reference/orchestration.md).
+[Orchestration](../../agentic-ai-suite/autograph/reference/orchestration.md).
 
 ```py
 orchestrate_payload = {
@@ -442,7 +442,7 @@ explore the resulting knowledge graph at any time in the
 
 ## Step 12: Deploy the Retriever and query the graph
 
-Deploy the [Retriever service](../retriever/) to query your knowledge graph. It
+Deploy the [Retriever service](../../agentic-ai-suite/retriever/) to query your knowledge graph. It
 starts the same way as AutoGraph, with the same LLM configuration:
 
 ```py
@@ -491,7 +491,7 @@ Pick the `query_type` that fits your question:
 
 Optional request fields include `include_metadata` (return citations and an
 execution log) and `use_cache` (reuse answers to similar questions). For the full
-list, see the [Retriever parameters](../retriever/parameters.md).
+list, see the [Retriever parameters](../../agentic-ai-suite/retriever/parameters.md).
 
 {{< tip >}}
 The service can report healthy a moment before `/v1/graphrag-query` is fully
@@ -508,12 +508,12 @@ moment: you are now asking your own documents questions and getting answers back
 You now have a full AutoGraph pipeline you can run from Python, ending in a
 knowledge graph you can query. From here:
 
-- Try the same workflow through the guided [Web Interface](web-interface.md).
-- Learn how the graph is organized in the [Architecture](architecture.md)
-  overview and the [Design Guide](design-guide.md).
-- Tune retrieval with the [Retriever parameters](../retriever/parameters.md) and
+- Try the same workflow through the guided [Web Interface](../../agentic-ai-suite/autograph/web-interface.md).
+- Learn how the graph is organized in the [Architecture](../../agentic-ai-suite/autograph/architecture.md)
+  overview and the [Design Guide](../../agentic-ai-suite/autograph/design-guide.md).
+- Tune retrieval with the [Retriever parameters](../../agentic-ai-suite/retriever/parameters.md) and
   search methods.
-- Dive into the endpoints in the [API Reference](reference/_index.md).
+- Dive into the endpoints in the [API Reference](../../agentic-ai-suite/autograph/reference/_index.md).
 
 ## Clean up
 

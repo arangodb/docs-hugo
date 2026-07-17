@@ -16,7 +16,8 @@ interfaces:
 - [**HTTP REST API**](./reference/_index.md): Full programmatic control
   over the AutoGraph pipeline for automation and integration into existing workflows.
   For a guided, cell-by-cell run of the API from Python, see the
-  [Notebook Tutorial](tutorial-notebook.md).
+  [Build a knowledge graph with AutoGraph](../../contextual-data-platform/tutorials/build-a-knowledge-graph-with-autograph.md)
+  tutorial.
 
 {{< tip >}}
 Both interfaces produce the same result: a fully operational
@@ -92,7 +93,8 @@ for programmatic access. The recommended call sequence is:
 Authentication uses JWT Bearer tokens. For full endpoint documentation,
 see the [API Reference](reference/_index.md). For a hands-on, cell-by-cell
 walkthrough of this sequence in Python, see the
-[Notebook Tutorial](tutorial-notebook.md).
+[Build a knowledge graph with AutoGraph](../../contextual-data-platform/tutorials/build-a-knowledge-graph-with-autograph.md)
+tutorial.
 {{< /tab >}}
 
 {{< /tabs >}}

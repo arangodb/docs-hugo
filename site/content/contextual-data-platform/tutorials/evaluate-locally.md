@@ -595,10 +595,11 @@ You now have a healthy Arango Contextual Data Platform running on your machine
 and reachable in the browser. This is the launch pad for the tutorials that
 follow, which pick up exactly where this one ends:
 
-- Explore the core database: load data and query it.
-- Build contextual retrieval with AutoGraph and AutoRAG.
+- [**Build a knowledge graph with AutoGraph**](build-a-knowledge-graph-with-autograph.md):
+  turn a folder of documents into a queryable knowledge graph, driving the full
+  AutoGraph pipeline from a Jupyter notebook.
 
-To continue with those, leave your cluster running.
+To continue with that, leave your cluster running.
 
 ## Clean up
 

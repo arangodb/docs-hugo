@@ -70,7 +70,7 @@ that content.
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
 - **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
 - **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
-- **[Notebook Tutorial](tutorial-notebook.md)**: Run the same end-to-end workflow from a Jupyter notebook using Python and the REST API.
+- **[Build a knowledge graph with AutoGraph](../../contextual-data-platform/tutorials/build-a-knowledge-graph-with-autograph.md)**: Follow the end-to-end tutorial that runs the full workflow from a Jupyter notebook using Python and the REST API.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.
