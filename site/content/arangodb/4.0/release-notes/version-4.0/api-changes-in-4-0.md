@@ -25,6 +25,16 @@ because it was only needed for the `fulltext` index usage.
 Furthermore, the error code `ERROR_QUERY_FULLTEXT_INDEX_MISSING` with number
 `1571` has been removed.
 
+#### `hash` and `skiplist` index type aliases removed
+
+ArangoDB supported `hash` and `skiplist` as aliases for the `persistent`
+index type. These aliases have now been removed. Affected endpoints:
+
+- `POST /_api/index`: Attempting to create a `hash` or `skiplist` index now
+  raises an error.
+- `GET /_api/engine`: The aliases are no longer listed in the `supports.indexes`
+  and `supports.aliases.indexes` arrays.
+
 #### Unsupported HTTP methods disallowed
 
 The following endpoints could previously be called using any HTTP method of

@@ -159,6 +159,17 @@ It provides sophisticated search capabilities for full-text and other data.
 You need to manually create `inverted` indexes, Views, or both and rewrite
 AQL queries to use them.
 
+## `hash` and `skiplist` index type aliases removed
+
+ArangoDB never supported true `hash` and `skiplist` indexes with the RocksDB
+storage engine. It merely allowed these index types to be used as aliases for
+the `persistent` index type. These aliases have now been removed.
+
+Existing `hash` and `skiplist` indexes are automatically changed to `persistent`
+indexes when upgrading. The suffix `_migrated` is appended to their name.
+When restoring dumps with _arangorestore_, the former aliases are replaced with
+the `persistent` index type.
+
 ## Removed AQL functions
 
 - `FULLTEXT()`: Removed because the legacy `fulltext` index type is gone.

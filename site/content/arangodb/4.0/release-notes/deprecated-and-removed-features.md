@@ -228,9 +228,10 @@ detailed information about breaking changes before upgrading.
   documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
-  Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
-  future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
+  Skiplist and hash indexes have been deprecated in 3.9 and are removed in
+  ArangoDB v4.0. They were merely aliases for the
+  [`persistent` index type](../indexes-and-search/indexing/basics.md#persistent-index)
+  with the RocksDB storage engine.
 
 - **Bundled NPM modules**:\
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
