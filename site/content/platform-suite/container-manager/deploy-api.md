@@ -158,6 +158,45 @@ Your Docker image must:
 - Handle requests at the root path (`/`). The platform routes traffic to
   your container's root.
 
+## Register a Service as an App
+
+If your service serves a user interface (HTML) at the root path (`/`), you can
+register it as an **App** so it becomes available in the platform's Apps catalog
+and its UI is rendered embedded in the web interface. This works for both
+code-based and image-based deployments.
+
+To register a service as an App, add the following properties to the `env`
+object of the deploy request:
+
+| Parameter | Location | Description | Required |
+|-----------|----------|-------------|----------|
+| `has_ui` | env | Set to `"true"` to register the service as an App. Defaults to `"false"`. | No |
+| `display_name` | env | Name shown for the app in the Apps catalog | Yes, when `has_ui` is `"true"` |
+| `description` | env | Description shown for the app in the Apps catalog | Yes, when `has_ui` is `"true"` |
+
+For example, to deploy a code-based service and register it as an App:
+
+```bash
+curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "app_name": "<APP_NAME>",
+    "app_version": "<APP_VERSION>",
+    "env": {
+      "service_type": "base_type",
+      "base_image": "py12base",
+      "app_instance_name": "<APP_INSTANCE_NAME>",
+      "has_ui": "true",
+      "display_name": "My App",
+      "description": "A short description of my app"
+    }
+  }'
+```
+
+For more about the App requirements and how to open an app from the catalog,
+see [Host a UI with Apps](apps/).
+
 ## Service Access
 
 Once deployed, your service is accessible via HTTP at a specific endpoint pattern which depends on whether your service is database-scoped or global.
@@ -183,6 +222,44 @@ If you did not provide `db_name`, your service is accessible at:
 {{< /tabs >}}
 
 All HTTP requests to these paths are routed to your container's service.
+
+## List Deployed Services
+
+Get a list of the deployed services, including services registered as Apps:
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
+
+```bash
+curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" \
+  -H "Authorization: Bearer <JWT_TOKEN>"
+```
+
+For services registered as Apps, the App metadata is available under each
+service's `serviceMeta.udsMeta` object:
+
+| Property | Description |
+|----------|-------------|
+| `hasUi` | Whether the service is registered as an App (serves a UI at `/`) |
+| `displayName` | Name shown for the app in the Apps catalog |
+| `description` | Description shown for the app in the Apps catalog |
+
+**Response (excerpt):**
+
+```json
+{
+  "services": [
+    {
+      "serviceMeta": {
+        "udsMeta": {
+          "hasUi": true,
+          "displayName": "My App",
+          "description": "A short description of my app"
+        }
+      }
+    }
+  ]
+}
+```
 
 ## Manage Uploaded Files
 
