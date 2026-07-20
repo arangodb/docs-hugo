@@ -123,74 +123,70 @@
           <a href="{{ "arangodb/" | relURL }}"><i class="fas fa-database"></i><span><strong>ArangoDB database</strong><span class="d">Just the multi-model database</span></span></a>
         </div>
       </div>
-      <div class="hx-herocta">
-        <a class="ghost" href="{{ (print $stable "aql/") | relURL }}"><i class="fas fa-book"></i>Browse reference</a>
-        <a class="ghost" href="{{ "ecosystem/arangodb-mcp-server/" | relURL }}"><i class="fas fa-robot"></i>Connect an AI agent</a>
-      </div>
     </div>
   </section>
 
-  <div class="hx-sec"><h2 id="get-started">Get started in minutes</h2></div>
-  <p class="hx-note">Pick the access path that fits how you want to work. Each one takes you from nothing to a running query fast.</p>
+  <div class="hx-sec"><h2 id="get-started">Get started in minutes</h2><a class="more" href="{{ "contextual-data-platform/tutorials/" | relURL }}">All tutorials</a></div>
+  <p class="hx-note">Follow the Contextual Data Platform tutorials in order, from a running platform to a knowledge graph you can query.</p>
   <section class="hx-qs">
-    <a href="{{ (print $stable "get-started/set-up-a-cloud-instance/") | relURL }}">
-      <span class="ic"><i class="fas fa-cloud"></i></span>
-      <strong>Start in the cloud</strong>
-      <span class="d">Spin up a managed deployment with no local install.</span>
-      <span class="t">~5 min</span>
+    <a href="{{ "contextual-data-platform/tutorials/evaluate-locally/" | relURL }}">
+      <span class="ic"><i class="fas fa-server"></i></span>
+      <strong>Evaluate locally</strong>
+      <span class="d">Go from an empty machine to a running platform on local Kubernetes.</span>
+      <span class="t">Setup</span>
     </a>
-    <a href="{{ (print $stable "operations/installation/") | relURL }}">
-      <span class="ic"><i class="fas fa-download"></i></span>
-      <strong>Install locally</strong>
-      <span class="d">Run ArangoDB on your own machine or server.</span>
-      <span class="t">~10 min</span>
+    <a href="{{ "contextual-data-platform/tutorials/dataset/" | relURL }}">
+      <span class="ic"><i class="fas fa-film"></i></span>
+      <strong>Example dataset</strong>
+      <span class="d">Import the movie graph and explore it in the Graph Visualizer.</span>
+      <span class="t">Dataset</span>
     </a>
-    <a href="{{ (print $stable "get-started/start-using-aql/") | relURL }}">
+    <a href="{{ "contextual-data-platform/tutorials/core/" | relURL }}">
       <span class="ic"><i class="fas fa-terminal"></i></span>
-      <strong>Query with AQL</strong>
-      <span class="d">Learn the query language with a guided tutorial.</span>
-      <span class="t">Tutorial</span>
+      <strong>Core database features</strong>
+      <span class="d">Learn documents, AQL, indexes, graph traversals, and vector search.</span>
+      <span class="t">AQL &amp; graph</span>
     </a>
-    <a href="{{ "ecosystem/drivers/" | relURL }}">
-      <span class="ic"><i class="fas fa-plug"></i></span>
-      <strong>Connect a driver</strong>
-      <span class="d">Talk to ArangoDB from Python, JS, Go, Java, and more.</span>
-      <span class="t">SDKs</span>
+    <a href="{{ "contextual-data-platform/tutorials/notebook-tutorial/" | relURL }}">
+      <span class="ic"><i class="fas fa-book"></i></span>
+      <strong>Notebook tutorial</strong>
+      <span class="d">Drive the full AutoGraph pipeline from a Jupyter notebook with Python.</span>
+      <span class="t">Python + API</span>
     </a>
   </section>
 
-  <div class="hx-sec"><h2 id="browse">Browse the documentation</h2></div>
-  <p class="hx-note">Six areas cover the whole platform, from the core database to the Agentic AI Suite.</p>
+  <div class="hx-sec"><h2 id="browse">Browse the documentation</h2><a class="more" href="{{ "agentic-ai-suite/" | relURL }}">Explore the AI Suite</a></div>
+  <p class="hx-note">The Agentic AI Suite is the heart of the platform. Start with the AI capabilities, then drop down to the platform and the multi-model database that ground them.</p>
   <section class="hx-lanes">
-    <a class="hx-lane" href="{{ (print $stable) | relURL }}">
-      <span class="ic"><i class="fas fa-database"></i></span>
-      <div><h3>Core database</h3><p>The native multi-model engine: documents, graphs, key-value, and search in one system.</p>
-      <div class="tags"><span>Data model</span><span>Indexes</span><span>Concepts</span></div></div>
-    </a>
-    <a class="hx-lane" href="{{ (print $stable "aql/") | relURL }}">
-      <span class="ic"><i class="fas fa-terminal"></i></span>
-      <div><h3>AQL &amp; search</h3><p>One query language for CRUD, joins, full-text, vector, and geo-spatial queries.</p>
-      <div class="tags"><span>AQL</span><span>ArangoSearch</span><span>Vector</span></div></div>
-    </a>
-    <a class="hx-lane" href="{{ (print $stable "graphs/") | relURL }}">
-      <span class="ic"><i class="fas fa-project-diagram"></i></span>
-      <div><h3>Graphs &amp; GraphRAG</h3><p>Model connected data, run traversals, and ground AI with graph-powered retrieval.</p>
-      <div class="tags"><span>Traversals</span><span>GraphRAG</span><span>Analytics</span></div></div>
-    </a>
     <a class="hx-lane ai" href="{{ "agentic-ai-suite/" | relURL }}">
       <span class="ic"><i class="fas fa-robot"></i></span>
-      <div><h3>Agentic AI Suite</h3><p>Ada, GraphRAG, AutoGraph, GraphML, and more for context-aware AI applications.</p>
-      <div class="tags"><span>Ada</span><span>AutoGraph</span><span>GraphML</span></div></div>
+      <div><h3>Agentic AI Suite</h3><p>The full agent stack that turns governed enterprise data into context-aware, explainable AI applications.</p>
+      <div class="tags"><span>Overview</span><span>Quick starts</span><span>Architecture</span></div></div>
     </a>
-    <a class="hx-lane" href="{{ (print $stable "deploy/") | relURL }}">
-      <span class="ic"><i class="fas fa-server"></i></span>
-      <div><h3>Deploy &amp; operate</h3><p>Cloud, single-instance, cluster, and Kubernetes deployments, plus backup and security.</p>
-      <div class="tags"><span>Kubernetes</span><span>Backup</span><span>Security</span></div></div>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/ada/" | relURL }}">
+      <span class="ic"><i class="fas fa-comment-dots"></i></span>
+      <div><h3>Ada &amp; natural language</h3><p>Ask questions in plain language and let the AI assistant translate them to AQL, query, and explain your data.</p>
+      <div class="tags"><span>Ada assistant</span><span>NL to AQL</span><span>Reasoner</span></div></div>
     </a>
-    <a class="hx-lane" href="{{ "ecosystem/" | relURL }}">
-      <span class="ic"><i class="fas fa-puzzle-piece"></i></span>
-      <div><h3>Drivers &amp; integrations</h3><p>Official drivers, framework integrations, data-science adapters, and the MCP server.</p>
-      <div class="tags"><span>Drivers</span><span>Integrations</span><span>MCP</span></div></div>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/autograph/" | relURL }}">
+      <span class="ic"><i class="fas fa-project-diagram"></i></span>
+      <div><h3>AutoGraph &amp; GraphRAG</h3><p>Build knowledge graphs from your documents and ground LLM answers with graph-powered retrieval.</p>
+      <div class="tags"><span>AutoGraph</span><span>GraphRAG</span><span>Retriever</span></div></div>
+    </a>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/graphml/" | relURL }}">
+      <span class="ic"><i class="fas fa-brain"></i></span>
+      <div><h3>GraphML &amp; analytics</h3><p>Run graph machine learning and large-scale graph analytics to surface patterns, embeddings, and predictions.</p>
+      <div class="tags"><span>GraphML</span><span>Graph Analytics</span><span>Embeddings</span></div></div>
+    </a>
+    <a class="hx-lane" href="{{ "contextual-data-platform/" | relURL }}">
+      <span class="ic"><i class="fas fa-layer-group"></i></span>
+      <div><h3>Contextual Data Platform</h3><p>Deploy, secure, and operate the Kubernetes-native platform and Platform Suite that host it all.</p>
+      <div class="tags"><span>Kubernetes</span><span>Platform Suite</span><span>Deploy</span></div></div>
+    </a>
+    <a class="hx-lane" href="{{ (print $stable) | relURL }}">
+      <span class="ic"><i class="fas fa-database"></i></span>
+      <div><h3>Core database &amp; AQL</h3><p>The multi-model foundation: documents, graphs, key-value, and search, all queried with AQL.</p>
+      <div class="tags"><span>AQL</span><span>Graphs</span><span>Vector</span></div></div>
     </a>
   </section>
 
@@ -203,17 +199,8 @@
     <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
   </section>
 
-  <div class="hx-split" style="margin-top:50px;">
-    <div class="ba">
-      <div class="hx-sec"><h2 id="by-role">Start by role</h2></div>
-      <p class="hx-note">Jump to the material that matches what you do.</p>
-      <div class="hx-roles">
-        <a class="hx-role" href="{{ (print $stable "develop/") | relURL }}"><i class="fas fa-laptop-code"></i><span><strong>Application developer</strong><span>Build apps with AQL, drivers, and the HTTP API.</span></span><span class="go">&rarr;</span></a>
-        <a class="hx-role" href="{{ "agentic-ai-suite/graphml/" | relURL }}"><i class="fas fa-chart-line"></i><span><strong>Data scientist</strong><span>Graph analytics, GraphML, and knowledge graphs.</span></span><span class="go">&rarr;</span></a>
-        <a class="hx-role" href="{{ (print $stable "operations/") | relURL }}"><i class="fas fa-cogs"></i><span><strong>Operator / DBA</strong><span>Deploy, scale, secure, back up, and monitor.</span></span><span class="go">&rarr;</span></a>
-      </div>
-    </div>
-    <div class="bb">
+  <div class="hx-split" style="margin-top:50px; grid-template-columns: 1.05fr 1fr;">
+    <div>
       <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
       <p class="hx-note">Latest releases and platform updates.</p>
       <div class="hx-panel">
@@ -224,18 +211,16 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="hx-strip">
     <div>
-      <h3>Build with the community &amp; AI agents</h3>
-      <p>Arango is agent-native: connect assistants over MCP, or get help from the community and source.</p>
-    </div>
-    <div class="hx-chips">
-      <a href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
-      <a href="{{ "ecosystem/arangodb-mcp-server/" | relURL }}"><i class="fas fa-robot"></i>MCP server</a>
-      <a href="{{ "ecosystem/drivers/" | relURL }}"><i class="fas fa-cube"></i>Drivers</a>
-      <a href="https://arangodb.com/community/" target="_blank" rel="noopener"><i class="fas fa-comments"></i>Community</a>
+      <div class="hx-sec"><h2 id="community">Build with the community</h2></div>
+      <p class="hx-note">Get help from the community and explore the source.</p>
+      <div class="hx-panel" style="display:flex; align-items:center; min-height:64px;">
+        <div class="hx-chips" style="width:100%; flex-wrap:nowrap;">
+          <a style="flex:1 1 0; justify-content:center;" href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
+          <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/lp/arango-academy/" target="_blank" rel="noopener"><i class="fas fa-graduation-cap"></i>Academy</a>
+          <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/resources/" target="_blank" rel="noopener"><i class="fas fa-book-open"></i>Resources</a>
+        </div>
+      </div>
     </div>
   </div>
 
