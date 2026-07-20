@@ -279,9 +279,9 @@ db._query(query).toArray();
 ## Indexed GeoSpatial Queries
 
 The geospatial index supports a variety of AQL queries, which can be built with the help
-of the [geo utility functions](../../../aql/functions/geo.md). There are three specific
+of the [geo utility functions](../../../aql/functions/geo.md). There are specific
 geo functions that can be optimized, provided they are used correctly:
-`GEO_DISTANCE()`, `GEO_CONTAINS()`, `GEO_INTERSECTS()`.
+`DISTANCE`, `GEO_DISTANCE()`, `GEO_CONTAINS()`, `GEO_INTERSECTS()`.
 
 When in doubt whether your query is being properly optimized, 
 check the [AQL explain](../../../aql/execution-and-performance/explaining-queries.md)

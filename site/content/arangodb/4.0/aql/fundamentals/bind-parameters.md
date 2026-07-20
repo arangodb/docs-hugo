@@ -68,7 +68,7 @@ FOR u IN users
 ### General
 
 The bind parameter values need to be passed along with the query when it is
-executed, but not as part of the query text itself. In the web interface,
+executed, but not as part of the query text itself. In the web interface, <!-- TODO: new description -->
 there is a pane next to the query editor where the bind parameters can be
 entered. For below query, two input fields will show up to enter values for
 the parameters `id` and `name`.

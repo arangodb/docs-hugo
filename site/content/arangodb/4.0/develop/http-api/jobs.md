@@ -227,6 +227,8 @@ paths:
       description: |
         Cancels the currently running job identified by `job-id`. Note that it still
         might take some time to actually cancel the running async job.
+
+        If you cancel an ongoing AQL query job, the query gets killed.
       parameters:
         - name: database-name
           in: path
@@ -375,6 +377,9 @@ paths:
         specific job.
         Clients can use this method to perform an eventual garbage collection of job
         results.
+
+        If you delete the result of an ongoing AQL query job, this does not kill
+        the query but leaves it running and discards the results when it finishes.
       parameters:
         - name: database-name
           in: path

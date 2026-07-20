@@ -319,10 +319,10 @@ Use `POST /_api/cursor/{cursor-identifier}` instead.
 
 #### Endpoints to load and unload collections removed
 
-The deprecated `PUT /_api/collection/load` and `PUT /_api/collection/unload`
-endpoints to load and unload collections have been removed. There is no
-concept of loading status anymore and the endpoints didn't have any effect for
-a while.
+The deprecated `PUT /_api/collection/{collection-name}/load` and
+`PUT /_api/collection/{collection-name}/unload` endpoints to load and unload
+collections have been removed. There is no concept of loading status anymore and
+the endpoints didn't have any effect for a while.
 
 #### Echo API removed
 
@@ -542,9 +542,14 @@ Some collection methods of the JavaScript API relied on the server-side
 Simple Queries interface. The methods of a
 [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md)
 that are still available in version 4.0 have been re-implemented to use AQL on
-the client-side. Some of the methods now return a
+the client-side.
+
+Some of the methods now return a
 [_cursor_ object](../../develop/javascript-api/@arangodb/cursor-object.md)
-and therefore the methods you can call on it differ.
+and therefore the methods you can call on it differ. If you need the
+functionality that was previously provided using the `limit()` and `skip()`
+methods, use AQL queries with the [`LIMIT` operation](../../aql/high-level-operations/limit.md).
+To set a batch size, use the `batchSize` query option instead of `execute(<batchSize>)`.
 
 - `all()` (returns a _cursor_ object)
 - `any()`

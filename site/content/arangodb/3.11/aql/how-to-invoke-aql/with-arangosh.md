@@ -605,7 +605,7 @@ cursor = stmt.execute();
 ```
 
 **Note**: There is no need to explicitly call the execute method if you choose
-another means of fetching the query results. The following two approaches
+another means of fetching the query results. The following approaches
 lead to the same result:
 
 ```js
