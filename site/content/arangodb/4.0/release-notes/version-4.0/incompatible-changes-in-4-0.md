@@ -32,6 +32,14 @@ built-in web interface.
 - If you use ArangoDB standalone, there is a new web interface you can run
   alongside the server also known as the core UI.
 
+The following startup options related to the old web interface have been removed:
+
+- `--http.permanently-redirect-root`
+- `--http.redirect-root-to`
+- `--web-interface.proxy-request-check`
+- `--web-interface.trusted-proxy`
+- `--web-interface.version-check`
+
 ## JavaScript Transactions removed
 
 Submitting single-request transactions that leverage ArangoDB's JavaScript API
@@ -695,6 +703,33 @@ for debugging purposes in the development of _arangod_.
 This feature has been removed and the `--console` startup option is obsolete now.
 It no longer has an effect but it is still recognized to avoid causing a fatal
 error on startup if you specify it.
+
+### Obsolete startup options
+
+The following startup options are now obsolete. They no longer have an effect
+but they are still recognized to avoid causing a fatal error on startup if you
+specify them:
+
+- `--server.storage-engine`: ArangoDB supports RocksDB as the only storage engine
+  since v3.7.0 and therefore this option is not useful.
+- `--server.rest-server`: Can no longer be disabled, respectively Coordinators
+  with `--database.auto-upgrade` enabled now disable the HTTP listener stack
+  automatically.
+
+### Deprecated startup options removed
+
+The following startup options have been removed. They are no longer recognized
+and throw errors if set:
+
+- `--agency.pool-size`
+- `--arangosearch.threads`
+- `--arangosearch.threads-limit`
+- `--log.performance`
+- `--log.use-local-time`
+- `--log.use-microtime`
+- `--network.protocol`
+- `--query.allow-collections-in-expressions`
+- `--rocksdb.exclusive-writes`
 
 ## Client tools
 
