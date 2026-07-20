@@ -447,9 +447,23 @@ for details.
 
 ### Obsolete replication APIs removed
 
-The following endpoints related to replication functionality that is no longer
-used have been removed:
+Various endpoints related to replication functionality that is no longer
+used have been removed.
 
+This includes endpoints related to asynchronous replication like the
+global applier that provided the low-level mechanisms for the user-managed
+Leader/Follower Replication and the Agency-managed Active Failover
+deployment modes, both for single servers.
+
+A few obsolete endpoints related to the write-ahead log have been removed, too.
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`

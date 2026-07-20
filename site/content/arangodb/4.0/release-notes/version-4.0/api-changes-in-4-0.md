@@ -212,6 +212,13 @@ The endpoint was deprecated since v3.11.3.
 The following endpoints related to replication functionality that is no longer
 used have been removed:
 
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`

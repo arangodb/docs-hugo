@@ -93,6 +93,7 @@ aliases:
   - ../aql/functions/fulltext # 3.12 -> 4.0
   - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
   - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -297,6 +298,17 @@ detailed information about breaking changes before upgrading.
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
   removed in ArangoDB v4.0. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
+
+- **Replication REST API**:\
+  Various endpoints related to asynchronous replication like the global applier
+  have been removed in ArangoDB v4.0. These endpoints provided the low-level
+  mechanisms for the user-managed Leader/Follower Replication and the
+  Agency-managed Active Failover deployment modes, both for single servers.
+
+  A few obsolete endpoints related to the write-ahead log have been removed, too.
+
+  See [API changes in ArangoDB 4.0](version-4.0/api-changes-in-4-0.md#obsolete-replication-apis)
+  for details.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
