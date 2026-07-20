@@ -804,7 +804,6 @@ logJsonResponse(response);
 
 ```curl
 ---
-# TODO: The job isn't cancelled, the not-yet-ready result is rather deleted... 
 description: |-
   Fetching the list of a `pending` jobs while a long-running job is executing
   (and aborting it):
@@ -826,8 +825,8 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 logJsonResponse(response);
 
-url = '/_api/job/' + queryId
-var response = logCurlRequest('DELETE', url, "");
+url = '/_api/job/' + queryId + '/cancel'
+var response = logCurlRequest('PUT', url, "");
 assert(response.code === 200);
 logJsonResponse(response);
 ```
