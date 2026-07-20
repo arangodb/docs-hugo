@@ -595,6 +595,17 @@ old startup options names.
 | `--ssl.server-name-indication`   | `--tls.server-name-indication`   |
 | `--ssl.session-cache`            | `--tls.session-cache`            |
 
+### Active Failover options removed
+
+Active Failover for single server deployments is unsupported since v3.12.0 and
+two related leftover startup options are now obsolete:
+
+- `--replication.active-failover`
+- `--replication.automatic-failover`
+
+You can still specify the options without causing errors about unknown options
+at startup but they don't have any effect.
+
 ### Vector index enabled by default
 
 The `vector` index type is now enabled by default and the `--vector-index`
