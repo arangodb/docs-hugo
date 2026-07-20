@@ -559,6 +559,32 @@ changed from version 5 to version 6 (`--rocksdb.format-version` startup option).
 New SST files are written in the newer format with this setting, while existing
 files remain unchanged.
 
+### SSL encryption options removed and renamed
+
+The following outdated SSL protocol settings for the in-flight encryption
+have been removed from the `--ssl.protocol` startup option:
+
+- `1`: SSLv2
+- `2`: SSLv2 or SSLv3 (negotiated)
+- `3`: SSLv3
+
+Moreover, all `--ssl.*` startup options have been renamed to `--tls.*` because
+the remaining encryption settings are all TLS versions. You can still use the
+old startup options names.
+
+| Old name                         | New name                         |
+|:---------------------------------|:---------------------------------|
+| `--ssl.cafile`                   | `--tls.cafile`                   |
+| `--ssl.cipher-list`              | `--tls.cipher-list`              |
+| `--ssl.ecdh-curve`               | `--tls.ecdh-curve`               |
+| `--ssl.keyfile`                  | `--tls.keyfile`                  |
+| `--ssl.options`                  | `--tls.options`                  |
+| `--ssl.prefer-http1-in-alpn`     | `--tls.prefer-http1-in-alpn`     |
+| `--ssl.protocol`                 | `--tls.protocol`                 |
+| `--ssl.require-peer-certificate` | `--tls.require-peer-certificate` |
+| `--ssl.server-name-indication`   | `--tls.server-name-indication`   |
+| `--ssl.session-cache`            | `--tls.session-cache`            |
+
 ### Vector index enabled by default
 
 The `vector` index type is now enabled by default and the `--vector-index`
