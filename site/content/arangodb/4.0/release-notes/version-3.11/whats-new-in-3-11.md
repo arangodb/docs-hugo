@@ -131,9 +131,6 @@ also search by.
 
 You can still switch to the old graph viewer if desired.
 
-See the [Graph Viewer](../../components/web-interface/graphs.md) documentation for
-details.
-
 ### `search-alias` Views
 
 The 3.11 release of ArangoDB introduces a new web interface for Views that lets

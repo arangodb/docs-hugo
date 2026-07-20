@@ -21,6 +21,17 @@ their instruction set extensions for improved performance:
 For more details about the necessary CPU features, see
 [Supported platforms and architectures](../../operations/installation/_index.md#supported-platforms-and-architectures).
 
+## Built-in web interface removed
+
+The web interface served by the ArangoDB server (_arangod_), also known as
+_Aardvark_, has been removed. The server executable no longer offers a
+built-in web interface.
+
+- If you use the Arango Contextual Data Platform, there is a new, integrated
+  web interface also known as the platform UI.
+- If you use ArangoDB standalone, there is a new web interface you can run
+  alongside the server also known as the core UI.
+
 ## JavaScript Transactions removed
 
 Submitting single-request transactions that leverage ArangoDB's JavaScript API

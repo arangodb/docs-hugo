@@ -156,7 +156,7 @@ collection *data* nor create new collections in the database *example*.
 
 ## Granting Access Levels
 
-Access levels can be managed via the [web interface](../../../components/web-interface/users.md)
+Access levels can be managed via the web interface <!-- TODO: new link/description -->
 in [arangosh](in-arangosh.md), or via the [HTTP API](../../../develop/http-api/users.md#manage-permissions).
 
 In order to grant an access level to a user, you can assign one of

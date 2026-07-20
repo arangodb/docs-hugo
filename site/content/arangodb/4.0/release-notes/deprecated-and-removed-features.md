@@ -40,6 +40,15 @@ aliases:
   - ../develop/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
+  - ../components/web-interface # 3.12 -> 4.0
+  - ../components/web-interface/cluster # 3.12 -> 4.0
+  - ../components/web-interface/collections # 3.12 -> 4.0
+  - ../components/web-interface/dashboard # 3.12 -> 4.0
+  - ../components/web-interface/document # 3.12 -> 4.0
+  - ../components/web-interface/graphs # 3.12 -> 4.0
+  - ../components/web-interface/logs # 3.12 -> 4.0
+  - ../components/web-interface/queries # 3.12 -> 4.0
+  - ../components/web-interface/users # 3.12 -> 4.0
   - ../components/web-interface/services # 3.12 -> 4.0
   - ../develop/http-api/foxx # 3.12 -> 4.0
   - ../components/tools/foxx-cli # 3.12 -> 4.0
@@ -108,6 +117,16 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Aardvark web interface**:\
+  The web interface served by the ArangoDB server (_arangod_), also known as
+  _Aardvark_, has been removed. The server executable no longer offers a
+  built-in web interface.
+
+  - If you use the Arango Contextual Data Platform, there is a new, integrated
+    web interface also known as the platform UI.
+  - If you use ArangoDB standalone, there is a new web interface you can run
+    alongside the server also known as the core UI.
 
 - **JavaScript Transactions**:\
   Submitting single-request transactions that leverage ArangoDB's JavaScript API
