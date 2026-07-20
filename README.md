@@ -173,7 +173,7 @@ Apple silicon like M1).
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```sh
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
 
 The site will be available at `http://localhost:1313`.
@@ -555,6 +555,52 @@ Read about ArangoDB's features for analytics.
 
 {{< /cards >}}
 ```
+
+#### Steps
+
+To lay out a sequence of instructions as a numbered, visually separated list,
+use the `steps` shortcode with a nested `step` shortcode for each step:
+
+````markdown
+{{< steps >}}
+
+{{< step title="Install the package" >}}
+Download and install the package for your platform.
+{{< /step >}}
+
+{{< step title="Start the server" >}}
+Run the following command:
+
+```sh
+arangod --server.endpoint tcp://0.0.0.0:8529
+```
+{{< /step >}}
+
+{{< /steps >}}
+````
+
+Each `step` is automatically numbered in the order it appears. The content
+between the `step` tags can be any Markdown, including code blocks, admonitions,
+and other shortcodes.
+
+Available parameters for the `step` shortcode:
+
+- `title`: the title of the step, which can also be passed as the first
+  positional parameter. Supports inline Markdown.
+- `icon`: an optional icon to display instead of the step number, referenced by
+  file name like the [`icon` shortcode](#icons) (e.g. `icon="download"`). The
+  name must consist of lowercase letters, digits, and hyphens only.
+- `id`: an optional `id` attribute for the step's HTML element so you can link to
+  a specific step with an anchor, e.g. `id="start-the-server"`.
+
+Available parameter for the `steps` shortcode:
+
+- `titleSize`: the HTML element to use for the step titles. Defaults to `p`
+  (a styled paragraph). Set it to a heading level from `h2` to `h6` if the step
+  titles should be semantic headings, e.g. `{{< steps titleSize="h3" >}}`.
+
+The build fails with an error if an invalid `titleSize` (anything other than
+`p` or `h2` to `h6`) or an invalid `icon` name is used.
 
 #### Comments
 
