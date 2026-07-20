@@ -179,9 +179,9 @@ the `persistent` index type.
   enforce for query expressions.
 
 - `IS_IN_POLYGON()`: Long deprecated and removed in favor of the
-  [`GEO_CONTAINS()` AQL function](#geo_contains), which works with
-  [GeoJSON](https://tools.ietf.org/html/rfc7946) Polygons and MultiPolygons.
-  Note that these use geodesic lines from version 3.10.0 onward
+  [`GEO_CONTAINS()` AQL function](../../aql/functions/geo.md#geo_contains),
+  which works with [GeoJSON](https://tools.ietf.org/html/rfc7946) Polygons and
+  MultiPolygons. Note that these use geodesic lines from version 3.10.0 onward
   (see [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)).
 
 - `NEAR()`: Long deprecated and now removed. Use [`DISTANCE()`](../../aql/functions/geo.md#distance)
@@ -210,7 +210,8 @@ the `persistent` index type.
   Assuming there exists a geo-type index on `latitude` and `longitude`, the
   optimizer recognizes it and accelerates the query.
 
-- `WITHIN_RECTANGLE()`: Long deprecated and now removed. Use [`GEO_CONTAINS()`](#geo_contains)
+- `WITHIN_RECTANGLE()`: Long deprecated and now removed. Use
+  [`GEO_CONTAINS()`](../../aql/functions/geo.md#geo_contains)
   and a GeoJSON polygon instead - but note that this uses geodesic lines from
   version 3.10.0 onward (see [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)):
 
