@@ -25,19 +25,23 @@ object literal and does not support arbitrary filter conditions.
 
 The syntax for an upsert operation:
 
-<pre><code>UPSERT <em>searchExpression</em>
-INSERT <em>insertExpression</em>
-UPDATE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
+```aql-syntax
+UPSERT <searchExpression>
+INSERT <insertExpression>
+UPDATE <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 The syntax for a repsert operation:
 
-<pre><code>UPSERT <em>searchExpression</em>
-INSERT <em>insertExpression</em>
-REPLACE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+UPSERT <searchExpression>
+INSERT <insertExpression>
+REPLACE <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 When using the `UPDATE` variant of the `UPSERT` operation, the found document
 is partially updated, meaning only the attributes specified in
@@ -81,19 +85,23 @@ filter conditions beyond equality matches to look up documents.
 
 The syntax for an upsert operation:
 
-<pre><code>UPSERT FILTER<em> filter-condition</em>
-INSERT <em>insertExpression</em>
-UPDATE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
+```aql-syntax
+UPSERT FILTER <filterCondition>
+INSERT <insertExpression>
+UPDATE <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 The syntax for a repsert operation:
 
-<pre><code>UPSERT FILTER<em> filter-condition</em>
-INSERT <em>insertExpression</em>
-REPLACE <em>updateExpression</em>
-IN <em>collection</em></code></pre>
-
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+UPSERT FILTER <filterCondition>
+INSERT <insertExpression>
+REPLACE <updateExpression>
+IN <collection>
+[OPTIONS { … }]
+```
 
 The filter condition for the lookup can make use of the `CURRENT` pseudo-variable
 to access the lookup document. Example:

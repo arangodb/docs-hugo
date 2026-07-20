@@ -1434,7 +1434,7 @@ The final configuration would then look like this:
     allowedAPIVersions: [v0]
 ```
 
-### Add a new arangosh example
+### Add an *arangosh* example
 
 A complete example:
 
@@ -1557,7 +1557,7 @@ This does not apply to backslashes in bind variables:
 db._query(`RETURN REGEX_SPLIT(@t, @r)`, {t: "foo\t bar\r baz\n foob", r: "\\s+|(?:b\\b)"}).toArray();
 ```
 
-### Add a new AQL example
+### Add an AQL example
 
 Complete example:
 
@@ -1627,7 +1627,29 @@ FOR doc IN @@coll
   RETURN doc.@attr
 ```
 
-### Add a new OpenAPI endpoint description
+### Add an AQL syntax description
+
+You can use a fenced codeblock with the `aql-syntax` language to describe an
+AQL language construct.
+
+It uses the normal AQL syntax highlighting but additionally lets you use:
+- `<placeholders>` in angled brackets for variable names and expressions
+- `[ square brackets ]` for optional clauses
+- `…` for omitted or repeated parts
+
+Note that `<` `>` and `[` `]` must not occur as part of the regular AQL syntax
+or it gets specially formatted by accident or even break the HTML.
+
+````markdown
+```aql-syntax
+COLLECT <var> = <expr> [… , <varN> = <exprN>]
+[AGGREGATE <aggVar> = <aggExpr> [… , <aggVarN> = <aggExprN>]]
+[INTO <groupsVar> [= <projectionExpr>]]
+[OPTIONS { … }]
+```
+````
+
+### Add an OpenAPI endpoint description
 
 Used to describe an HTTP REST API endpoint using the
 [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
@@ -1820,7 +1842,7 @@ and you also need to update `allowedAPIVersions` fields for affected versions in
 [`versions.yaml`](site/data/versions.yaml), as well as add a new file with the
 OpenAPI tags (`site/data/openapi_tags/arangodb_#.yaml`).
 
-### Add a new cURL example
+### Add a cURL example
 
 Complete example:
 
