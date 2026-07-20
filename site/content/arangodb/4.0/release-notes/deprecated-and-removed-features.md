@@ -40,6 +40,15 @@ aliases:
   - ../develop/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
+  - ../components/web-interface # 3.12 -> 4.0
+  - ../components/web-interface/cluster # 3.12 -> 4.0
+  - ../components/web-interface/collections # 3.12 -> 4.0
+  - ../components/web-interface/dashboard # 3.12 -> 4.0
+  - ../components/web-interface/document # 3.12 -> 4.0
+  - ../components/web-interface/graphs # 3.12 -> 4.0
+  - ../components/web-interface/logs # 3.12 -> 4.0
+  - ../components/web-interface/queries # 3.12 -> 4.0
+  - ../components/web-interface/users # 3.12 -> 4.0
   - ../components/web-interface/services # 3.12 -> 4.0
   - ../develop/http-api/foxx # 3.12 -> 4.0
   - ../components/tools/foxx-cli # 3.12 -> 4.0
@@ -90,6 +99,10 @@ aliases:
   - ../aql/user-defined-functions # 3.12 -> 4.0
   - ../develop/http-api/queries/user-defined-aql-functions # 3.12 -> 4.0
   - ../operations/troubleshooting/emergency-console # 3.12 -> 4.0
+  - ../aql/functions/fulltext # 3.12 -> 4.0
+  - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
+  - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -104,6 +117,16 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Aardvark web interface**:\
+  The web interface served by the ArangoDB server (_arangod_), also known as
+  _Aardvark_, has been removed. The server executable no longer offers a
+  built-in web interface.
+
+  - If you use the Arango Contextual Data Platform, there is a new, integrated
+    web interface also known as the platform UI.
+  - If you use ArangoDB standalone, there is a new web interface you can run
+    alongside the server also known as the core UI.
 
 - **JavaScript Transactions**:\
   Submitting single-request transactions that leverage ArangoDB's JavaScript API
@@ -225,9 +248,10 @@ detailed information about breaking changes before upgrading.
   documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
-  Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
-  future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
+  Skiplist and hash indexes have been deprecated in 3.9 and are removed in
+  ArangoDB v4.0. They were merely aliases for the
+  [`persistent` index type](../indexes-and-search/indexing/basics.md#persistent-index)
+  with the RocksDB storage engine.
 
 - **Bundled NPM modules**:\
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
@@ -250,17 +274,20 @@ detailed information about breaking changes before upgrading.
   prescribed by the [HTTP specification](https://tools.ietf.org/html/rfc7231#section-4.2).
 
 - **Fulltext indexes**:\
-  The fulltext index type is deprecated from version 3.10 onwards.
-  It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+  The fulltext index type was deprecated from version 3.10 onwards and is
+  removed in ArangoDB v4.0. It is recommended to use
+  [ArangoSearch](../indexes-and-search/arangosearch/_index.md)
+  for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries, with
+  corresponding endpoints on the server-side (`/_api/simple/*`).
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
-  *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
-  are translated internally to AQL, then the AQL query is optimized and run
-  against the database in recent versions, because of better performance and
-  reduced maintenance complexity.
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
+  Simple Queries could ever be. In fact, the still supported methods in the
+  JavaScript API use AQL internally because of better performance and reduced
+  maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
+  removed in ArangoDB v4.0.
 
 - **Accessing collections by ID instead of by name**:\
   Accessing collections by their internal ID instead of accessing them by name
@@ -288,16 +315,26 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  removed in ArangoDB v4.0. Client applications should use the REST 
+  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
+
+- **Replication REST API**:\
+  Various endpoints related to asynchronous replication like the global applier
+  have been removed in ArangoDB v4.0. These endpoints provided the low-level
+  mechanisms for the user-managed Leader/Follower Replication and the
+  Agency-managed Active Failover deployment modes, both for single servers.
+
+  A few obsolete endpoints related to the write-ahead log have been removed, too.
+
+  See [API changes in ArangoDB 4.0](version-4.0/api-changes-in-4-0.md#obsolete-replication-apis)
+  for details.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\
@@ -311,9 +348,9 @@ detailed information about breaking changes before upgrading.
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
 
-- **Outdated AQL functions**:\
-  The following AQL functions are deprecated and
-  their usage is discouraged:
+- **Legacy geo-spatial AQL functions**:\
+  The following AQL functions are deprecated since v3.4.0 and removed in
+  ArangoDB v4.0:
   - `IS_IN_POLYGON`
   - `NEAR`
   - `WITHIN`
@@ -376,14 +413,11 @@ detailed information about breaking changes before upgrading.
   prevent unknown startup option errors.
 
 - **arangoimp** executable:\
-  ArangoDB release packages install an executable named
-  _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
-  provide compatibility with older releases, in which _arangoimport_ did not
-  yet exist and was named _arangoimp_. The renaming was actually carried out in
-  the codebase in December 2017. Using the _arangoimp_ executable is deprecated,
-  and it is always favorable to use _arangoimport_ instead. 
-  While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
-  removed in a future version of ArangoDB.
+  The _arangoimport_ client tool was originally named _arangoimp_.
+  ArangoDB release packages and container images up to v3.12 include the
+  _arangoimp_ executable or symlink as an alias for _arangoimport_.
+  From ArangoDB v4.0, _arangoimp_ is no longer included and you need to use
+  _arangoimport_.
 
 - **HTTP and JavaScript traversal APIs**:\
   The HTTP traversal API as well as the

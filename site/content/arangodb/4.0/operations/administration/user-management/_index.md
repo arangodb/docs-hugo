@@ -25,7 +25,7 @@ When finished making changes, you need to restart ArangoDB, e.g.:
 service arangodb restart
 ```
 
-User management is possible in the [web interface](../../../components/web-interface/users.md)
+User management is possible in the web interface <!-- TODO: new link/description -->
 while logged on to the `_system` database and in
 [arangosh](in-arangosh.md), as well as via the
 [HTTP API](../../../develop/http-api/users.md).
@@ -156,8 +156,8 @@ collection *data* nor create new collections in the database *example*.
 
 ## Granting Access Levels
 
-Access levels can be managed via the [web interface](../../../components/web-interface/users.md)
-or in [arangosh](in-arangosh.md).
+Access levels can be managed via the web interface <!-- TODO: new link/description -->
+in [arangosh](in-arangosh.md), or via the [HTTP API](../../../develop/http-api/users.md#manage-permissions).
 
 In order to grant an access level to a user, you can assign one of
 three access levels for each database and one of three levels for each

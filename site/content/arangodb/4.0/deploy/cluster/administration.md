@@ -201,7 +201,8 @@ Rebalancing might occur, amongst other scenarios, when:
 - There are changes in the number or size of data collections.
 
 A _shard_ can be moved from a _DB-Server_ to another, and the entire shard distribution
-can be rebalanced using the corresponding buttons in the web [UI](../../components/web-interface/cluster.md).
+can be rebalanced using the corresponding buttons in the web interface.
+<!-- TODO: New link / description -->
 
 You can also do any of the following by using the API:
 - Calculate the current cluster imbalance.
