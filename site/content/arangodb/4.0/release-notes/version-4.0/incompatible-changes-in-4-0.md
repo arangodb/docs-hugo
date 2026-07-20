@@ -552,6 +552,13 @@ and therefore the methods you can call on it differ.
 
 ## Startup options
 
+### RocksDB format version 6
+
+The default format used by the RocksDB storage engine for its SST files has been
+changed from version 5 to version 6 (`--rocksdb.format-version` startup option).
+New SST files are written in the newer format with this setting, while existing
+files remain unchanged.
+
 ### Vector index enabled by default
 
 The `vector` index type is now enabled by default and the `--vector-index`
