@@ -10,12 +10,14 @@ description: >-
 
 Deployments of ArangoDB servers can be managed with the following tools:
 
+{{< comment >}} TODO: new link/description
 - [**Web interface**](../../components/web-interface/_index.md):
   [_arangod_](../../components/arangodb-server/_index.md) serves a graphical web interface to
   be accessed with a browser via the server port. It provides basic and advanced
   functionality to interact with the server and its data.
   
-  {{% comment %}}TODO: In case of a cluster, the web interface can be reached via any of the Coordinators. What about other deployment modes?{{% /comment %}}
+  TODO: In case of a cluster, the web interface can be reached via any of the Coordinators. What about other deployment modes?
+{{< /comment >}}
 
 - **ArangoShell**: [_arangosh_](../../components/tools/arangodb-shell/_index.md) is a V8 shell to
   interact with any local or remote ArangoDB server through a JavaScript

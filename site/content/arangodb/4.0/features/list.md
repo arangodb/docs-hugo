@@ -337,7 +337,7 @@ aliases:
 
 ## Administration
 
-- [**Web-based User Interface**](../components/web-interface/_index.md):
+- **Web-based User Interface**: <!-- TODO: new link/description -->
   Graphical UI for your browser to work with ArangoDB. It allows you to
   view, create, and modify databases, collections, documents, graphs, etc.
   You can also run, explain, and profile AQL queries. Includes a graph viewer

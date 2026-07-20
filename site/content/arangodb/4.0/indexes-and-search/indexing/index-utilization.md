@@ -84,9 +84,9 @@ If any of the explain methods shows that a query is not using indexes, the follo
   In these cases the queries should be rewritten so that only the index attribute is present on one side of 
   the operator, or additional filters and indexes should be used to restrict the amount of documents otherwise.
 
-- Certain AQL functions such as `WITHIN()` or `FULLTEXT()` do utilize indexes internally, but their use is
-  not mentioned in the query explanation for functions in general. These functions will raise query errors
-  (at runtime) if no suitable index is present for the collection in question.
+- Certain AQL functions may utilize indexes internally, but this isn't
+  necessarily reported in the query explain output under **Indexes used**.
+  <!-- TODO: There might be no functions left for which this is the case -->
 
 - The query optimizer will generally pick one index per collection in a query. It can pick more than
   one index per collection if the `FILTER` condition contains multiple branches combined with logical `OR`.
