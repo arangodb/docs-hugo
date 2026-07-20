@@ -559,6 +559,16 @@ changed from version 5 to version 6 (`--rocksdb.format-version` startup option).
 New SST files are written in the newer format with this setting, while existing
 files remain unchanged.
 
+### `--server.jwt-secret` removed
+
+ArangoDB supported a `--server.jwt-secret` startup option to pass the secret
+directly (without a file). However, this is discouraged for security reasons.
+This option has now been removed. It is no longer recognized and throws an error
+if set.
+
+You can use `--server.jwt-secret-file` to specify the path to a file that
+contains the JWT secret instead.
+
 ### SSL encryption options removed and renamed
 
 The following outdated SSL protocol settings for the in-flight encryption
