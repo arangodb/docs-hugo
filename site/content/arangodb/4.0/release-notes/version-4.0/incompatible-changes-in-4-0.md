@@ -158,6 +158,23 @@ The `/_api/aqlfunction*` endpoints have been removed from the HTTP API.
 
 The `@arangodb/aql/functions` module has been removed from the JavaScript API.
 
+## Legacy `geo1` and `geo2` indexes are dropped
+
+In ArangoDB v3.3 and older, there were two geo-spatial index types for either
+indexing a single attribute with a coordinate pair (`geo1`) or two separate
+attributes with the latitude and longitude (`geo2`). The upgrade to ArangoDB v3.4
+rewrote these locally to a new on-disk format for the RocksDB storage engine.
+
+- On single servers, this also changed the types to the unified `geo` index type.
+- In cluster deployments, the original `geo1` and `geo2` types were preserved
+  as-is in the Agency.
+
+Any geo-spatial indexes created in v3.4 or later have the `geo` type.
+Old cluster deployments may still have legacy geo-spatial indexes, however.
+
+When upgrading to ArangoDB v4.0, any `geo1` and `geo2` are dropped automatically.
+Create matching `geo` indexes manually if necessary.
+
 ## Legacy `fulltext` index type removed
 
 The old index type for full-text has been removed in ArangoDB v4.0. It was
