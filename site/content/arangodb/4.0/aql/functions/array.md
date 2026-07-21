@@ -1038,7 +1038,7 @@ RETURN (
 
 {{< info >}}
 To combine all values (including duplicates) of an arbitrary number of arrays
-while retaining the order, you can use the [array spread operator](../fundamentals/data-types.md#array-spread).
+while retaining the order, you can use the [array spread operator](../fundamentals/data-types.md#array-spread-syntax).
 You can also use the [`APPEND()`](#append) function, but it can only combine
 two arrays at a time.
 {{< /info >}}
