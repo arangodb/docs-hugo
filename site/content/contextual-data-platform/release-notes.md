@@ -4,11 +4,18 @@ menuTitle: Release notes
 weight: 100
 description: >-
   Features and improvements released for the Contextual Data Platform
+pageToc:
+  maxHeadlineLevel: 2
 ---
-
 ## v4.0.2 (May 2026)
 
-This is a maintenance release. The [Container Manager](../platform-suite/container-manager/_index.md)
+This is a maintenance release.
+
+### Container Manager
+
+{{< tag "Platform Suite" >}}
+
+The [Container Manager](../platform-suite/container-manager/_index.md)
 base images (base, PyTorch, and cuGraph variants) have been updated to Python 3.12;
 service packages must now target Python 3.12. The release also includes
 security fixes.
@@ -17,81 +24,104 @@ security fixes.
 
 This release contains improvements and refinements to features introduced in v4.0.0.
 
-- **AutoGraph**:
-  - Corpus build failures caused by the LLM or embedding provider now surface a
-    machine-readable [`error_code`](../agentic-ai-suite/autograph/reference/corpus-build.md)
-    on the build status response (authentication failed, permission denied,
-    rate limited, quota exceeded, or API key missing), so clients can react to
-    each case instead of parsing free-text messages. The
-    [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
-    also adds HTTP `429` (provider rate-limited or quota exhausted), expands
-    the meanings of `401` and `403` to cover LLM provider auth and permission
-    failures, and explains why an accepted (`200`) async job can still fail
-    later.
-  - The new Known Limitations section in the
-    [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
-    documents two important behaviors: citation extraction and `SemanticUnits`
-    linking are not yet automatic (you provide `citable_url` and run your own
-    post-processing); and VectorRAG partitions cannot serve Global or Local
-    queries because they skip entity and community extraction.
-  - The [RAG Strategizer](../agentic-ai-suite/autograph/reference/rag-strategizer.md)
-    response is documented more precisely: `rag_partition_id` suffixes
-    (`_a` = FullGraphRAG, `_b` = VectorRAG), the full list of FullGraphRAG
-    importer tunables returned in `parameters`, empty `entity_types` for
-    VectorRAG clusters, and an `entity_generation_error` field that appears
-    when LLM-driven entity-type generation fails for a cluster.
-- **Importer**:
-  - The Importer now auto-detects each chat model's context window and picks a
-    sensible completion-token cap, so common OpenAI models (GPT-4o, GPT-4 Turbo,
-    GPT-5.4 Nano, o1, o3) work without manual tuning. New environment variables
-    (`CHAT_MAX_COMPLETION_TOKENS`, `CHAT_MODEL_CONTEXT_TOKENS`,
-    `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET`) let you override the defaults for
-    private fine-tunes or sparse graphs. See
-    [LLM configuration](../agentic-ai-suite/importer/llm-configuration.md#token-budget-for-chat-models).
-  - Before each chat call, the Importer re-tokenizes the actual prompt and
-    truncates it if it would exceed the model's window, so jobs no longer fail
-    with `context_length_exceeded` on long prompts.
-  - The Importer now auto-detects newer OpenAI models that require
-    `/v1/responses` (for example `gpt-5.4-pro`, `o3-pro`), retries the call via
-    the [Responses API](../agentic-ai-suite/importer/llm-configuration.md#openai-responses-api-fallback),
-    and caches the result so subsequent calls skip the failing chat-completion
-    attempt.
-  - Provider errors during graph build are mapped to short remediation messages
-    (insufficient quota, invalid API key, rate limit, timeout, 5xx, context
-    length exceeded) and stored on the service status, so operators see
-    actionable text instead of raw SDK output.
-  - The model used for image description during semantic-unit processing is now
-    configurable via the
-    [`MULTIMODAL_MODEL`](../agentic-ai-suite/importer/semantic-units.md#image-description-model)
-    environment variable (default `gpt-4o-mini`), and it honors the same token
-    budget and Responses API settings as the rest of the pipeline.
-- **Retriever**:
-  - Response [caching](../agentic-ai-suite/retriever/parameters.md#use_cache)
-    (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
-    `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
-  - [`show_citations`](../agentic-ai-suite/retriever/parameters.md#show_citations)
-    is documented as a no-op in Deep Search (`use_llm_planner=true`) and
-    `GLOBAL` queries, because those modes always strip citations regardless of
-    the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
-    queries.
-  - For `CUSTOM` queries, an individual tool's own `show_citations: false`
-    configuration can suppress citations from that tool's results even when the
-    request-level flag is `true`, so you can mix citation behavior across the
-    components of a custom retriever.
-- **Default AI models**: Default OpenAI chat model upgraded from `gpt-4o` to the
-  GPT-5.4 family. The [Importer](../agentic-ai-suite/importer/llm-configuration.md)
-  and [Retriever](../agentic-ai-suite/retriever/llm-configuration.md) now default
-  to `gpt-5.4-nano`; the
-  [Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/setup.md)
-  service (AQLizer) defaults to `gpt-5.4`. [Ada](../agentic-ai-suite/ada/_index.md) also
-  adds **Anthropic**, **OpenRouter**, and **Custom Endpoint** as provider options
-  alongside OpenAI.
-- **License activation**: A new web-based
-  [License Activation portal](./license-management.md) is available for
-  internet-connected deployments as an alternative to the Platform CLI, with Managed,
-  Inventory, and Generic modes.
-- **MLflow**: The integrated [MLflow](../agentic-ai-suite/private-llms/mlflow.md) service
-  has been upgraded to MLflow 3.x.
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+- Corpus build failures caused by the LLM or embedding provider now surface a
+  machine-readable [`error_code`](../agentic-ai-suite/autograph/reference/corpus-build.md)
+  on the build status response (authentication failed, permission denied,
+  rate limited, quota exceeded, or API key missing), so clients can react to
+  each case instead of parsing free-text messages. The
+  [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
+  also adds HTTP `429` (provider rate-limited or quota exhausted), expands
+  the meanings of `401` and `403` to cover LLM provider auth and permission
+  failures, and explains why an accepted (`200`) async job can still fail
+  later.
+- The new Known Limitations section in the
+  [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
+  documents two important behaviors: citation extraction and `SemanticUnits`
+  linking are not yet automatic (you provide `citable_url` and run your own
+  post-processing); and VectorRAG partitions cannot serve Global or Local
+  queries because they skip entity and community extraction.
+- The [RAG Strategizer](../agentic-ai-suite/autograph/reference/rag-strategizer.md)
+  response is documented more precisely: `rag_partition_id` suffixes
+  (`_a` = FullGraphRAG, `_b` = VectorRAG), the full list of FullGraphRAG
+  importer tunables returned in `parameters`, empty `entity_types` for
+  VectorRAG clusters, and an `entity_generation_error` field that appears
+  when LLM-driven entity-type generation fails for a cluster.
+
+### Importer
+
+{{< tag "Agentic AI Suite" >}}
+
+- The Importer now auto-detects each chat model's context window and picks a
+  sensible completion-token cap, so common OpenAI models (GPT-4o, GPT-4 Turbo,
+  GPT-5.4 Nano, o1, o3) work without manual tuning. New environment variables
+  (`CHAT_MAX_COMPLETION_TOKENS`, `CHAT_MODEL_CONTEXT_TOKENS`,
+  `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET`) let you override the defaults for
+  private fine-tunes or sparse graphs. See
+  [LLM configuration](../agentic-ai-suite/importer/llm-configuration.md#token-budget-for-chat-models).
+- Before each chat call, the Importer re-tokenizes the actual prompt and
+  truncates it if it would exceed the model's window, so jobs no longer fail
+  with `context_length_exceeded` on long prompts.
+- The Importer now auto-detects newer OpenAI models that require
+  `/v1/responses` (for example `gpt-5.4-pro`, `o3-pro`), retries the call via
+  the [Responses API](../agentic-ai-suite/importer/llm-configuration.md#openai-responses-api-fallback),
+  and caches the result so subsequent calls skip the failing chat-completion
+  attempt.
+- Provider errors during graph build are mapped to short remediation messages
+  (insufficient quota, invalid API key, rate limit, timeout, 5xx, context
+  length exceeded) and stored on the service status, so operators see
+  actionable text instead of raw SDK output.
+- The model used for image description during semantic-unit processing is now
+  configurable via the
+  [`MULTIMODAL_MODEL`](../agentic-ai-suite/importer/semantic-units.md#image-description-model)
+  environment variable (default `gpt-4o-mini`), and it honors the same token
+  budget and Responses API settings as the rest of the pipeline.
+
+### Retriever
+
+{{< tag "Agentic AI Suite" >}}
+
+- Response [caching](../agentic-ai-suite/retriever/parameters.md#use_cache)
+  (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
+  `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
+- [`show_citations`](../agentic-ai-suite/retriever/parameters.md#show_citations)
+  is documented as a no-op in Deep Search (`use_llm_planner=true`) and
+  `GLOBAL` queries, because those modes always strip citations regardless of
+  the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
+  queries.
+- For `CUSTOM` queries, an individual tool's own `show_citations: false`
+  configuration can suppress citations from that tool's results even when the
+  request-level flag is `true`, so you can mix citation behavior across the
+  components of a custom retriever.
+
+### Default AI models
+
+{{< tag "Agentic AI Suite" >}}
+
+Default OpenAI chat model upgraded from `gpt-4o` to the
+GPT-5.4 family. The [Importer](../agentic-ai-suite/importer/llm-configuration.md)
+and [Retriever](../agentic-ai-suite/retriever/llm-configuration.md) now default
+to `gpt-5.4-nano`; the
+[Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/setup.md)
+service (AQLizer) defaults to `gpt-5.4`. [Ada](../agentic-ai-suite/ada/_index.md) also
+adds **Anthropic**, **OpenRouter**, and **Custom Endpoint** as provider options
+alongside OpenAI.
+
+### MLflow
+
+{{< tag "Agentic AI Suite" >}}
+
+The integrated [MLflow](../agentic-ai-suite/private-llms/mlflow.md) service
+has been upgraded to MLflow 3.x.
+
+### License activation
+
+A new web-based [License Activation portal](./license-management.md) is available for
+internet-connected deployments as an alternative to the Platform CLI, with Managed,
+Inventory, and Generic modes.
 
 ## v4.0.0 (April 2026, General Availability)
 
