@@ -330,6 +330,42 @@ This change of behavior comes with the introduction of the
 literals, which follows the same last-one-wins semantics, consistent with
 object spreading in JavaScript.
 
+### AQL `+` operator overloaded for string concatenation
+
+The behavior of the `+` operator in AQL has changed. It is now overloaded so that
+it performs string concatenation if at least one of its two operands is a string.
+It only performs arithmetic addition if **both** operands are non-string values.
+This makes it behave similarly to the `+` operator in JavaScript.
+
+In previous versions, the `+` operator always performed arithmetic addition. It
+cast any string operands to numbers using the
+[`TO_NUMBER()`](../../aql/functions/type-check-and-cast.md#to_number) rules, so
+non-numeric strings became `0` and numeric strings became their numeric value.
+
+The following table shows how the result of `+` changes when at least one operand
+is a string:
+
+| Expression      | Result before v4.0 | Result from v4.0 onward |
+|:----------------|:-------------------|:------------------------|
+| `"foo" + "bar"` | `0`                | `"foobar"`              |
+| `"foo" + 123`   | `123`              | `"foo123"`              |
+| `"123" + 200`   | `323`              | `"123200"`              |
+| `1 + "99"`      | `100`              | `"199"`                 |
+{.fixed}
+
+Expressions where both operands are non-string values are not affected and still
+perform arithmetic addition, for example, `1 + 2` still evaluates to `3`.
+
+This is a potentially breaking change because queries that relied on the previous
+implicit string-to-number casting of the `+` operator now return strings instead
+of numbers. Review your queries and use the
+[`TO_NUMBER()`](../../aql/functions/type-check-and-cast.md#to_number) function to
+explicitly cast string operands to numbers where you want arithmetic addition.
+For string concatenation, you can rely on the new `+` operator behavior or use
+the [`CONCAT()`](../../aql/functions/string.md#concat) function.
+
+For more information, see [String operators](../../aql/operators.md#string-operators).
+
 ## Rclone upgrades possibly requiring configuration changes
 
 <small>Introduced in: v3.12.9-2</small>

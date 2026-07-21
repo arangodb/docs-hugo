@@ -255,8 +255,11 @@ RETURN [-x, +y]
 For exponentiation, there is a [numeric function](functions/numeric.md#pow) `POW()`.
 The syntax `base ** exp` is not supported.
 
-For string concatenation, you must use the [`CONCAT()` string function](functions/string.md#concat).
-Combining two strings with a plus operator (`"foo" + "bar"`) does not work!
+The `+` operator is overloaded. It only performs arithmetic addition if both of
+its operands are non-string values. If at least one of the operands is a string,
+it concatenates the operands as strings instead, see
+[String operators](#string-operators). You can also use the
+[`CONCAT()` string function](functions/string.md#concat) to concatenate values.
 Also see [Common Errors](common-errors.md).
 
 ```aql
@@ -271,7 +274,11 @@ Also see [Common Errors](common-errors.md).
 
 The arithmetic operators accept operands of any type. Passing non-numeric values to an 
 arithmetic operator casts the operands to numbers using the type casting rules 
-applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function:
+applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function.
+These casting rules apply to the `-`, `*`, `/`, and `%` operators in all cases, but
+to the `+` operator only if **neither** operand is a string. If an operand of `+`
+is a string, the operation concatenates strings instead, see
+[String operators](#string-operators).
 
 - `null` is converted to `0`
 - `false` is converted to `0`, `true` is converted to `1`
@@ -289,8 +296,6 @@ An arithmetic operation that produces an invalid value, such as `1 / 0`
 aborted, but you may see a warning.
 
 ```aql
-   1 + "a"       // 1
-   1 + "99"      // 100
    1 + null      // 1
 null + 1         // 1
    3 + [ ]       // 3
@@ -303,6 +308,61 @@ null + 1         // 1
   24 / "12"      // 2
    1 / 0         // null (with a 'division by zero' warning)
 ```
+
+Note that none of the operands in the `+` examples above is a string. If an
+operand of `+` is a string, the operands are concatenated instead of being added
+up, for example, `1 + "99"` returns `"199"` and not `100`, see
+[String operators](#string-operators).
+
+## String operators
+
+The `+` operator is overloaded. In addition to performing
+[arithmetic addition](#arithmetic-operators), it concatenates values as strings
+if at least one of its two operands is a string. The other operand is implicitly
+cast to a string using the type casting rules applied by the
+[`TO_STRING()`](functions/type-check-and-cast.md#to_string) function before the
+two strings are joined together.
+
+This is similar to how the `+` operator behaves in JavaScript. Whether `+` adds
+numbers or concatenates strings is decided for each operation individually. The
+operator is left-associative, so a chain of `+` operations is evaluated from left
+to right, and as soon as one side of a `+` is a string, the result is a string.
+
+The following examples show the different cases where `+` concatenates strings:
+
+```aql
+"foo" + "bar"      // "foobar"  (both operands are string literals)
+
+LET name = "Luna"
+"Hello, " + name   // "Hello, Luna"  (one string literal, one string variable)
+
+42 + " apples"     // "42 apples"  (the left-hand operand is cast to a string)
+"answer: " + 42    // "answer: 42"  (the right-hand operand is cast to a string)
+
+"value: " + true   // "value: true"  (true is cast to the string "true")
+"empty: " + null   // "empty: "  (null is cast to an empty string)
+"obj: " + { a: 1 } // "obj: {\"a\":1}"  (the object is cast to its JSON representation)
+```
+
+If **both** operands are non-string values, the `+` operator performs
+[arithmetic addition](#arithmetic-operators) instead:
+
+```aql
+6 + 7              // 13  (numeric addition)
+```
+
+Because the operator is evaluated from left to right, you can force string
+concatenation of non-string values by prepending an empty string. The first `+`
+then has a string operand and produces a string, which makes every subsequent
+`+` concatenate as well:
+
+```aql
+"" + 6 + 7         // "67"  ("" + 6 yields "6", then "6" + 7 yields "67")
+6 + 7 + ""         // "13"  (6 + 7 is added up first, then "13" + "" yields "13")
+```
+
+To concatenate values as strings regardless of their types, you can also use the
+[`CONCAT()` string function](functions/string.md#concat).
 
 ## Ternary operator
 
@@ -1097,7 +1157,7 @@ The operator precedence in AQL is similar as in other familiar languages
 | `()`                 | function call
 | `!`, `NOT`, `+`, `-` | unary not (logical negation), unary plus, unary minus
 | `*`, `/`, `%`        | multiplication, division, modulus
-| `+`, `-`             | addition, subtraction
+| `+`, `-`             | addition or string concatenation, subtraction
 | `..`                 | range operator
 | `<`, `<=`, `>=`, `>` | less than, less equal, greater equal, greater than
 | `IN`, `NOT IN`       | in operator, not in operator

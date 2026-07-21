@@ -56,6 +56,13 @@ Concatenate the values passed as `value1` to `valueN`.
 - returns **str** (string): a concatenation of the elements. `null` values
   are ignored. Array and object values are JSON-encoded in their entirety.
 
+{{< tip >}}
+You can also use the [`+` operator](../operators.md#string-operators) for string
+concatenation if at least one of its two operands is a string, for example,
+`"foo" + "bar"` or `"answer: " + 42`. Unlike `CONCAT()`, the `+` operator
+performs arithmetic addition if both operands are non-string values.
+{{< /tip >}}
+
 **Examples**
 
 ```aql
