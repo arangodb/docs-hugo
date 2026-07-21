@@ -1335,8 +1335,9 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
 
 ## Client tools
 

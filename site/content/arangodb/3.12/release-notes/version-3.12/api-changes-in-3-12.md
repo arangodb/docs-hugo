@@ -1124,6 +1124,19 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### JavaScript files denylist
+
+<small>Introduced in: v3.12.10</small>
+
+A `--javascript.files-denylist` startup option has been added to complement the
+existing `--javascript.files-allowlist`. It lets you forbid access to specific
+filesystem paths from server-side JavaScript, mirroring the allow/deny pairs
+already available for endpoints, environment variables, and startup options.
+File access is now controlled by both lists: a path must match the allowlist and
+must not match the denylist. The denylist is empty by default, so existing
+configurations are unaffected.
 

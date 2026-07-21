@@ -100,6 +100,17 @@ The set theory for these lists works as follow:
 Values for denylist and allowlist options need to be specified as ECMAScript 
 regular expressions.
 
+{{< security >}}
+A pattern matches if it is found anywhere in a value, so it can match more than
+you intend. To restrict a pattern to exact matches:
+
+- Anchor it with `^(...)$` to match the whole value.
+- Escape characters with a special meaning, such as the dot: use `\.` for a
+  literal dot, which otherwise matches any character.
+
+For example, use `^(example\.com)$` instead of `example.com`.
+{{< /security >}}
+
 Each option can be used multiple times. When specifying more than one 
 pattern, these patterns are combined with a _logical or_ to the actual pattern
 ArangoDB uses.
@@ -119,9 +130,9 @@ to dedicated functionality for application code:
   These options control which environment variables are exposed to
   JavaScript code.
 
-- `--javascript.files-allowlist`:\
-  This option controls which filesystem paths can be accessed from JavaScript
-  code. There is only an allowlist option for file access.
+- `--javascript.files-[allowlist|denylist]`:\
+  These options control which filesystem paths can be accessed from JavaScript
+  code.
 
 - `--javascript.endpoints-[allowlist|denylist]`:\
   These options control which endpoints can be used from within the
@@ -213,22 +224,25 @@ docker run --rm -e ARANGO_ROOT_PASSWORD="secret" arangodb:3.12 \
 
 #### File access
 
-In contrast to other areas, access to directories and files from JavaScript
-operations is only controlled via an allowlist, which can be specified via the
-startup option `--javascript.files-allowlist`. Thus any files or directories
-not matching the allowlist are inaccessible from JavaScript filesystem
-functions. Example:
+Access to directories and files from JavaScript operations can be restricted
+using an allowlist via the `--javascript.files-allowlist` startup option and,
+from v3.12.10 onward, a denylist via the `--javascript.files-denylist` startup
+option. Any files or directories not matching the allowlist are inaccessible
+from JavaScript filesystem functions, and the denylist can forbid subsets of
+the allowed paths again. Example:
 
 ```sh
 --javascript.files-allowlist "^/etc/required/"
 --javascript.files-allowlist "^/etc/mtab/"
 --javascript.files-allowlist "^/etc/issue$"
+--javascript.files-denylist "^/etc/required/secrets/"
 ```
 
 The file `/etc/issue` can be accessed and all files in the directories
 `/etc/required` and `/etc/mtab` plus their subdirectories are accessible,
-while access to files in any other directories are disallowed from
-JavaScript operations, with the following exceptions:
+except the files in `/etc/required/secrets` which are denied again. Access to
+files in any other directories is disallowed from JavaScript operations, with
+the following exceptions:
 
 - **Temporary directory**:\
   JavaScript code is given access to this directory for storing temporary files.
