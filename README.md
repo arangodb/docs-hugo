@@ -173,7 +173,7 @@ Apple silicon like M1).
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```sh
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --exit-code-from site-frontend
 ```
 
 The site will be available at `http://localhost:1313`.
@@ -555,6 +555,52 @@ Read about ArangoDB's features for analytics.
 
 {{< /cards >}}
 ```
+
+#### Steps
+
+To lay out a sequence of instructions as a numbered, visually separated list,
+use the `steps` shortcode with a nested `step` shortcode for each step:
+
+````markdown
+{{< steps >}}
+
+{{< step title="Install the package" >}}
+Download and install the package for your platform.
+{{< /step >}}
+
+{{< step title="Start the server" >}}
+Run the following command:
+
+```sh
+arangod --server.endpoint tcp://0.0.0.0:8529
+```
+{{< /step >}}
+
+{{< /steps >}}
+````
+
+Each `step` is automatically numbered in the order it appears. The content
+between the `step` tags can be any Markdown, including code blocks, admonitions,
+and other shortcodes.
+
+Available parameters for the `step` shortcode:
+
+- `title`: the title of the step, which can also be passed as the first
+  positional parameter. Supports inline Markdown.
+- `icon`: an optional icon to display instead of the step number, referenced by
+  file name like the [`icon` shortcode](#icons) (e.g. `icon="download"`). The
+  name must consist of lowercase letters, digits, and hyphens only.
+- `id`: an optional `id` attribute for the step's HTML element so you can link to
+  a specific step with an anchor, e.g. `id="start-the-server"`.
+
+Available parameter for the `steps` shortcode:
+
+- `titleSize`: the HTML element to use for the step titles. Defaults to `p`
+  (a styled paragraph). Set it to a heading level from `h2` to `h6` if the step
+  titles should be semantic headings, e.g. `{{< steps titleSize="h3" >}}`.
+
+The build fails with an error if an invalid `titleSize` (anything other than
+`p` or `h2` to `h6`) or an invalid `icon` name is used.
 
 #### Comments
 
@@ -969,8 +1015,16 @@ redirected. This is because the version selector merely substitutes the version
 in the current URL and we hope that this page exists.
 
 To ensure a working version selector locally, which can be helpful when
-reviewing content, the rule is to use Hugo aliases instead of Netlify redirects
-when moving or renaming versioned pages (i.e. `/arangodb/<version>/...`).
+reviewing content, the rule is to use Hugo aliases when moving or renaming
+versioned pages (i.e. `/arangodb/<version>/...`). This is possible in addition
+to or instead of Netlify redirects. Netlify's server-side `301` redirects are
+better for search engines, but it only redirects if there is no file for a given
+URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
+write an exclamation mark after the `301` in `_redirects`, like so:
+
+```
+/arangodb/4.0/old-feature/  /arangodb/4.0/deprecated-and-removed-features/  301!
+```
 
 The following steps are necessary for moving/renaming versioned content:
 1. Rename file or folder

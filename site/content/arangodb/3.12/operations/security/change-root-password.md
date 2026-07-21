@@ -39,3 +39,4 @@ If you use an _ArangoDB Cluster_, you should disable and enable authentication
 in the `arangod.conf` file of each node. Changes to the `arangod.conf` file
 under the path `etc/arangodb3/arangod.conf` in _Cluster_ deployments will not
 work in this case.
+<!-- TODO: Conflicting statement, does it refer to Starter deployments?  -->

@@ -164,7 +164,7 @@ db._query(`FOR doc IN food_view
       name: offsetInfo.name,
       matches: offsetInfo.offsets[* RETURN {
         offset: CURRENT,
-        match: SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
+        "match": SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
       }]
     }`).toArray();
 ~db._dropView("food_view");
@@ -201,7 +201,7 @@ db._query(`FOR doc IN food_view
       name: offsetInfo.name,
       matches: offsetInfo.offsets[* RETURN {
         offset: CURRENT,
-        match: SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
+        "match": SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
       }]
     }`).toArray();
 ~db._dropView("food_view");

@@ -20,15 +20,15 @@ SQL transaction is finished with a *COMMIT* command, or rolled back with a
 *ROLLBACK* command. There may be client/server communication between the start
 and the commit/rollback of an SQL transaction.
 
-In ArangoDB, a transaction is always a server-side operation, and is executed
+In ArangoDB, a JavaScript Transaction is always a server-side operation, and is executed
 on the server in one go, without any client interaction. All operations to be
-executed inside a transaction need to be known by the server when the transaction
+executed inside a JavaScript Transaction need to be known by the server when the transaction
 is started.
 
-There are no individual *BEGIN*, *COMMIT* or *ROLLBACK* transaction commands
-in ArangoDB. Instead, a transaction in ArangoDB is started by providing a
-description of the transaction to the `db._executeTransaction()` JavaScript
-function:
+There are no individual *BEGIN*, *COMMIT*, or *ROLLBACK* transaction commands with
+ArangoDB's JavaScript Transactions. Instead, you start one by providing a
+description of the transaction to the `db._executeTransaction()` function in
+the JavaScript API:
 
 ```js
 db._executeTransaction(options);
@@ -45,7 +45,7 @@ transaction is automatically aborted, and all changes are rolled back.
 
 `db._executeTransaction(options)`
 
-Executes a server-side JavaScript transaction.
+Executes a server-side JavaScript Transaction.
 
 `options` must be an object and have the following attributes:
 
@@ -80,8 +80,8 @@ Additionally, `options` can have the following optional attributes:
 All collections participating in a transaction need to be declared
 beforehand. This is necessary to ensure proper locking and isolation.
 
-Collections can be used in a transaction in write mode or in read-only mode.
-<!-- TODO: exclusive -->
+Collections can be used in a transaction in read-only mode or in write mode
+(either shared or exclusive write access at the collection level).
 
 If any data modification operations are to be executed, the collection must be
 declared for use in write mode. The write mode allows modifying and reading data
@@ -106,7 +106,7 @@ db._executeTransaction({
 });
 ```
 
-`read`, `write`, and `exclusive` are optional attributes, and only need to be
+The `read`, `write`, and `exclusive` attributes are optional, and only need to be
 specified if the operations inside the transactions demand for it.
 
 The attribute values can each be lists of collection names or a single
@@ -126,21 +126,19 @@ Even without specifying them, it is still possible to read from such collections
 from within a transaction, but with relaxed isolation. Please refer to
 [Transactions Locking](locking-and-isolation.md) for more details.
 
-In order to make a transaction fail when a non-declared collection is used inside
-for reading, the optional `allowImplicit` sub-attribute of `collections` can be
-set to `false`:
+In order to make a JavaScript Transaction fail when a non-declared collection is
+used inside the transaction for reading, set the `allowImplicit` option to `false`:
 
 ```js
 db._executeTransaction({
   collections: {
-    read: "recommendations",
-    allowImplicit: false  /* this disallows read access to other collections
-                             than specified */
+    read: "recommendations"
   },
+  allowImplicit: false, /* Disallow read access to other collections than specified */
   action: function () {
     var db = require("@arangodb").db;
-    return db.foobar.toArray(); /* will fail because db.foobar must not be accessed
-                                   for reading inside this transaction */
+    /* Fails because you cannot read from the "users" collection inside this transaction */
+    return db.users.toArray();
   }
 });
 ```

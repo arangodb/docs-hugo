@@ -153,10 +153,6 @@ Specify which traversal algorithm to use (string):
   traversal orders other than `"weighted"`, which means the `weights` attribute
   is like `[0, 1, 2, 3, …]` for e.g. `order: "dfs"` and therefore not useful.
 
-#### `bfs`
-
-Deprecated, use `order: "bfs"` instead.
-
 #### `uniqueVertices`
 
 Ensure node uniqueness (string):
@@ -636,7 +632,6 @@ functions cannot be used in the expression:
 - `CALL()`
 - `APPLY()`
 - `DOCUMENT()`
-- `V8()`
 - `SCHEMA_GET()`
 - `SCHEMA_VALIDATE()`
 - `VERSION()`
@@ -644,10 +639,6 @@ functions cannot be used in the expression:
 - `CURRENT_USER()`
 - `CURRENT_DATABASE()`
 - `COLLECTION_COUNT()`
-- `NEAR()`
-- `WITHIN()`
-- `WITHIN_RECTANGLE()`
-- `FULLTEXT()`
 {{< /warning >}}
 
 ## Using filters

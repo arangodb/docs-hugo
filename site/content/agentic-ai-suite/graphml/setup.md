@@ -1,6 +1,6 @@
 ---
-title: How to get started with GraphML
-menuTitle: Quickstart
+title: Set up GraphML
+menuTitle: Setup
 weight: 5
 description: >-
   You can use GraphML straight within the Arango Contextual Data Platform,
