@@ -112,7 +112,7 @@ If the feature is enabled, then any endpoints that contain database, collection,
 View, or index names in the URL may contain special characters that were
 previously not allowed (percent-encoded). They are also to be expected in
 payloads that contain database, collection, View, or index names, as well as
-document identifiers (because they are comprised of the collection name and the
+document identifiers (because they are composed of the collection name and the
 document key). If client applications assemble URLs with extended names
 programmatically, they need to ensure that extended names are properly
 URL-encoded.
