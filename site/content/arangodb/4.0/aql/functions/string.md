@@ -1048,7 +1048,7 @@ separator in the last element. This makes it convenient to use together with
 [array destructuring](../operators.md#array-destructuring).
 
 - **value** (string): The string to split.
-- **separator** (string): A non-empty string to split the `value` at
+- **separator** (string): A non-empty string to split the `value` at.
 - **occurrence** (number, *optional*): which occurrence of the `separator` to
   split at. The default is `1`. A positive value selects the n-th occurrence
   counted from the start of the string (`1` is the first match), and a negative
