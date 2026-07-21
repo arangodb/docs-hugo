@@ -96,16 +96,13 @@ expressions as specified in the documentation for the AQL function
 
 ## Array comparison operators
 
-Most comparison operators also exist as an *array variant*. In the array variant,
-a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, `NOT IN`, `LIKE`, or `NOT LIKE` operator
+All comparison operators also exist as an *array variant*. In the array variant,
+a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, `NOT IN`, `LIKE`, `NOT LIKE`, `=~`, or `!~` operator
 is prefixed with an `ALL`, `ANY`, `NONE`, or `AT LEAST (<expression>)` keyword.
 This changes the operator's behavior to compare the individual array elements of
 the left-hand argument to the right-hand argument. Depending on the quantifying
 keyword, all, any, none, or at least the specified number of these comparisons
 need to be satisfied to evaluate to `true` overall.
-
-The only comparison operators that cannot be used as an array variant are the
-regular expression operators `=~` and `!~`.
 
 You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements
@@ -128,30 +125,40 @@ calculate it dynamically using an expression.
 [ 1, 2, 3 ]  ALL >  2             // false
 [ 1, 2, 3 ]  ALL >  0             // true
 [ 1, 2, 3 ]  ALL >=  3            // false
-["foo", "bar"]  ALL !=  "moo"     // true
-["foo", "bar"]  NONE ==  "bar"    // false
-["foo", "bar"]  ANY ==  "foo"     // true
-["foo", "bar"]  ALL LIKE  "%o%"   // false
-["foo", "bar"]  ANY LIKE  "b%"    // true
-["foo", "bar"]  NONE LIKE  "_a_"  // false
-["foo", "bar"]  ANY NOT LIKE  "f%" // true
+
+["foo", "bar"]  ALL !=  "moo"        // true
+["foo", "bar"]  NONE ==  "bar"       // false
+["foo", "bar"]  ANY ==  "foo"        // true
+["foo", "bar"]  ALL LIKE  "%o%"      // false
+["foo", "bar"]  ANY LIKE  "b%"       // true
+["foo", "bar"]  NONE LIKE  "_a_"     // false
+["foo", "bar"]  ANY NOT LIKE  "f__"  // true
 
 [ 1, 2, 3 ]  AT LEAST (2) IN  [ 2, 3, 4 ]  // true
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
 ["foo", "bar"]  AT LEAST (3) LIKE  "_oo"   // false
+
+["foo", "bar"]  ALL =~  "[a-fro]{3}"  // true
+["foo", "bar"]  ANY !~  "^mo+$"       // true
 ```
 
-In the `LIKE` and `NOT LIKE` array variants, each element of the left-hand array
-is matched against the pattern of the right-hand operand. Non-string values are
-implicitly cast to their string representation before matching, so an element like
-the object `{ "a": 1 }` is matched as the string `{"a":1}` and the number `34` as
-`"34"`. The pattern matching otherwise follows the same rules as the scalar
+The `LIKE`, `NOT LIKE`, `=~`, and `!~` operators work on strings including in
+the array variants. Non-string elements in the left-hand array operand as well
+as non-string values as the right-hand operand are implicitly cast to their
+string representation before matching, so an element like the object `{ "a": 1 }`
+is matched as the string `{"a":1}` and the number `34` as `"34"`.
+
+The pattern matching follows the same rules as the scalar
 [`LIKE` operator](#comparison-operators), using the same wildcards. As with the
 scalar operator, the matching is always case-sensitive; the case-insensitivity
 option of the [`LIKE()` function](functions/string.md#like) is not available here.
 
-Note that these operators do not utilize indexes in regular queries.
-The operators are also supported in [SEARCH expressions](high-level-operations/search.md),
+The regular expression matching follows the same rules as the scalar
+[`REGEX_TEST()`](functions/string.md#regex_test) AQL function, using the same
+regular expression syntax.
+
+Note that the array comparison operators do not utilize indexes in regular queries.
+The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
 
