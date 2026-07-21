@@ -1,0 +1,253 @@
+{{ define "main" -}}
+{{ $stable := "arangodb/stable/" -}}
+<article class="home home-landing hx">
+  <style>
+    .hx { --hl-avocado: var(--color-avocado, #044926); --hl-evergreen: var(--color-evergreen, #007339); --hl-lime: var(--color-leaf-green, #58df20); --hl-meadow: var(--color-meadow, #befe99); --hl-ink: #001E2B; --hl-muted: var(--gray-800, #5a5a5a); --hl-border: var(--gray-200, #e5e5e5); --hl-soft: var(--gray-50, #f8f8f8); }
+    .row-main:has(article.hx) { max-width: 1320px; }
+    article.hx { grid-column: article-start / toc-end; max-width: none; width: auto; margin: 0 60px 0 80px; padding-bottom: 80px; }
+    article.hx ~ .toc-container { display: none; }
+    /* Homepage has its own hero search, so hide the duplicate top-bar search (keep the Ask-AI widget). */
+    body:has(article.hx) .docsearch { display: none; }
+    @media screen and (max-width: 768px) { article.hx { margin: 0; padding: 10px 20px 60px; } }
+
+    /* Hero */
+    .hx-hero { position: relative; overflow: hidden; border-radius: 16px; padding: 46px 48px 44px; margin: 8px 0 8px; background: linear-gradient(135deg, var(--hl-avocado) 0%, var(--hl-evergreen) 78%); color: #fff; }
+    .hx-hero::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(185,255,56,.24) 1.4px, transparent 1.6px); background-size: 26px 26px; opacity: .5; pointer-events: none; -webkit-mask-image: linear-gradient(120deg, transparent 45%, #000 100%); mask-image: linear-gradient(120deg, transparent 45%, #000 100%); }
+    .hx-hero > * { position: relative; z-index: 1; }
+    .hx-eyebrow { text-transform: uppercase; letter-spacing: 1.5px; font-size: .78rem; font-weight: 700; color: var(--hl-meadow); margin: 0 0 12px; }
+    .hx-hero h1 { font-family: var(--font-headlines); color: #fff; font-size: 2.7rem; line-height: 1.08; letter-spacing: -1px; margin: 0 0 14px; max-width: 17ch; text-wrap: balance; }
+    .hx-hero p.sub { font-size: 1.2rem; line-height: 1.45; color: rgba(255,255,255,.9); max-width: 880px; margin: 0 0 26px; }
+    .hx-search { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 880px; background: #fff; border-radius: 12px; padding: 15px 18px; cursor: text; box-shadow: 0 10px 30px rgba(0,0,0,.18); border: none; text-align: left; }
+    .hx-search:hover { box-shadow: 0 14px 34px rgba(0,0,0,.24); }
+    .hx-search i { color: var(--hl-evergreen); font-size: 1.05rem; }
+    .hx-search span { color: #8a8f93; font-size: 1.05rem; flex: 1; }
+    .hx-search kbd { font-family: var(--font-content); font-size: .8rem; color: var(--hl-muted); background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 6px; padding: 3px 8px; }
+    .hx-herocta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    .hx-herocta a { display: inline-flex; align-items: center; gap: 9px; border-radius: 999px; padding: 11px 22px; font-family: var(--font-headlines); font-weight: 700; font-size: 1rem; transition: .15s; }
+    .hx-herocta a.solid { background: var(--hl-lime); color: var(--hl-avocado); }
+    .hx-herocta a.solid:hover { background: #fff; text-decoration: none; }
+    .hx-herocta a.ghost { border: 1.5px solid rgba(255,255,255,.55); color: #fff; }
+    .hx-herocta a.ghost:hover { border-color: #fff; background: rgba(255,255,255,.12); text-decoration: none; }
+
+    /* Row under the search: get-started paths + secondary CTAs beside them */
+    .hx-startrow { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 14px; width: 100%; max-width: 880px; }
+    .hx-startrow .hx-herocta { margin-top: 0; flex-direction: column; align-items: stretch; justify-content: center; gap: 10px; }
+    .hx-start2 { flex: 1 1 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.22); border-radius: 12px; padding: 12px 16px; }
+    .hx-opts { display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+    .hx-start2 .hx-lead { color: rgba(255,255,255,.88); font-size: .92rem; font-weight: 600; line-height: 1.3; margin: 0; }
+    .hx-start2 .orsep { color: rgba(255,255,255,.55); font-size: .88rem; }
+    .hx-start2 a { flex: 1 1 0; display: inline-flex; align-items: center; gap: 10px; color: #fff; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.28); border-radius: 10px; padding: 8px 14px; transition: .15s; }
+    .hx-start2 a:hover { background: var(--hl-lime); color: var(--hl-avocado); border-color: var(--hl-lime); text-decoration: none; }
+    .hx-start2 a i { font-size: 1rem; color: var(--hl-meadow); }
+    .hx-start2 a:hover i { color: var(--hl-avocado); }
+    .hx-start2 a strong { display: block; font-weight: 700; font-size: .95rem; line-height: 1.2; }
+    .hx-start2 a .d { display: block; font-size: .78rem; font-weight: 500; opacity: .82; line-height: 1.2; margin-top: 1px; }
+
+    /* Section heads */
+    .hx-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 50px 0 4px; }
+    .hx-sec h2 { font-family: var(--font-headlines); color: var(--hl-avocado); font-size: 1.7rem; letter-spacing: -.5px; margin: 0; scroll-margin-top: 110px; }
+    .hx-sec a.more { color: var(--hl-evergreen); font-weight: 600; font-size: .95rem; white-space: nowrap; }
+    .hx-sec a.more::after { content: " \2192"; }
+    .hx-note { color: var(--hl-muted); font-size: 1.02rem; line-height: 1.45; max-width: 70ch; margin: 0 0 20px; }
+
+    /* Quickstart picker */
+    .hx-qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .hx-qs a { position: relative; display: flex; flex-direction: column; gap: 8px; background: #fff; border: 1px solid var(--hl-border); border-top: 3px solid var(--hl-evergreen); border-radius: 10px; padding: 20px 18px 18px; transition: .15s; color: var(--hl-ink); }
+    .hx-qs a:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(4,73,38,.14); border-top-color: var(--hl-lime); text-decoration: none; }
+    .hx-qs .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--green-50, #e3f2e0); color: var(--hl-evergreen); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; margin-bottom: 4px; }
+    .hx-qs strong { font-family: var(--font-headlines); font-size: 1.1rem; color: var(--hl-avocado); }
+    .hx-qs span.d { font-size: .92rem; line-height: 1.4; color: var(--hl-muted); }
+    .hx-qs span.t { margin-top: auto; padding-top: 8px; font-size: .78rem; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; color: var(--hl-evergreen); }
+
+    /* Browse lanes */
+    .hx-lanes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .hx-lane { display: grid; grid-template-columns: 46px 1fr; gap: 15px; align-items: start; background: #fff; border: 1px solid var(--hl-border); border-top: 3px solid var(--hl-evergreen); border-radius: 12px; padding: 20px; transition: .15s; color: var(--hl-ink); }
+    .hx-lane:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(4,73,38,.14); border-top-color: var(--hl-lime); text-decoration: none; }
+    .hx-lane .ic { width: 46px; height: 46px; border-radius: 11px; background: var(--hl-avocado); color: var(--hl-meadow); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .hx-lane.ai .ic { background: linear-gradient(135deg, var(--hl-evergreen), var(--hl-lime)); color: var(--hl-avocado); }
+    .hx-lane h3 { font-family: var(--font-headlines); font-size: 1.16rem; color: var(--hl-avocado); margin: 2px 0 5px; }
+    .hx-lane p { margin: 0; font-size: .95rem; line-height: 1.42; color: var(--hl-muted); }
+    .hx-lane .tags { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .hx-lane .tags span { font-size: .78rem; color: var(--hl-evergreen); background: var(--green-50, #e3f2e0); border-radius: 6px; padding: 2px 8px; font-weight: 600; }
+
+    /* Personas + whats-new two-column */
+    .hx-split { display: grid; grid-template-columns: 1.3fr 1fr; column-gap: 28px; align-items: start; }
+    .hx-split .hx-sec { margin: 0 0 4px; }
+    .hx-panel { background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 14px; padding: 6px 22px; }
+    @media screen and (max-width: 900px) { .hx-split { grid-template-columns: 1fr; row-gap: 22px; } }
+    .hx-roles { display: grid; gap: 16px; }
+    .hx-role { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid var(--hl-border); border-top: 3px solid var(--hl-evergreen); border-radius: 10px; padding: 14px 16px; transition: .15s; color: var(--hl-ink); }
+    .hx-role:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(4,73,38,.14); border-top-color: var(--hl-lime); text-decoration: none; }
+    .hx-role i { color: var(--hl-evergreen); font-size: 1.15rem; width: 1.4em; text-align: center; }
+    .hx-role strong { font-family: var(--font-headlines); font-size: 1.02rem; color: var(--hl-avocado); display: block; }
+    .hx-role span { font-size: .9rem; color: var(--hl-muted); }
+    .hx-role .go { margin-left: auto; color: var(--hl-evergreen); font-weight: 700; }
+    .hx-news { display: grid; gap: 8px; }
+    .hx-news a { display: flex; align-items: center; gap: 11px; padding: 11px 4px; border-bottom: 1px solid var(--hl-border); color: var(--hl-ink); font-size: .98rem; font-weight: 500; transition: .12s; }
+    .hx-news a:last-child { border-bottom: none; }
+    .hx-news a:hover { color: var(--hl-evergreen); text-decoration: none; }
+    .hx-news a i { color: var(--hl-lime); }
+    .hx-news a .badge { margin-left: auto; font-size: .74rem; font-weight: 700; color: var(--hl-evergreen); background: var(--green-50, #e3f2e0); border-radius: 6px; padding: 2px 8px; }
+
+    /* Community strip */
+    .hx-strip { margin-top: 46px; background: var(--hl-soft); border: 1px solid var(--hl-border); border-radius: 14px; padding: 24px 26px; display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center; }
+    @media screen and (max-width: 700px) { .hx-strip { grid-template-columns: 1fr; } }
+    .hx-strip h3 { font-family: var(--font-headlines); color: var(--hl-avocado); font-size: 1.2rem; margin: 0 0 4px; }
+    .hx-strip p { margin: 0; color: var(--hl-muted); font-size: .96rem; }
+    .hx-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hx-chips a { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--hl-border); border-radius: 999px; padding: 9px 16px; font-weight: 600; font-size: .93rem; color: var(--hl-ink); transition: .12s; }
+    .hx-chips a:hover { border-color: var(--hl-evergreen); color: var(--hl-evergreen); text-decoration: none; }
+    .hx-chips a i { color: var(--hl-evergreen); }
+
+    /* From graph to AI — journey */
+    .hx-journey { display: grid; gap: 0; position: relative; margin-top: 6px; }
+    .hx-jrow { display: grid; grid-template-columns: 46px 1fr; gap: 18px; align-items: start; padding: 18px 0; border-bottom: 1px solid var(--hl-border); }
+    .hx-jrow:last-child { border-bottom: none; }
+    .hx-jrow .num { width: 40px; height: 40px; border-radius: 50%; background: var(--hl-avocado); color: var(--hl-meadow); display: flex; align-items: center; justify-content: center; font-family: var(--font-headlines); font-weight: 700; font-size: 1.15rem; }
+    .hx-jrow strong { font-family: var(--font-headlines); font-size: 1.14rem; color: var(--hl-avocado); display: block; margin: 6px 0 4px; }
+    .hx-jrow p { margin: 0; font-size: .97rem; line-height: 1.5; color: var(--hl-muted); }
+  </style>
+
+  <section class="hx-hero">
+    <p class="hx-eyebrow">Arango Documentation</p>
+    <h1>{{ .Title | markdownify }}</h1>
+    <p class="sub">{{ with .Description }}{{ . | markdownify }}{{ else }}A native multi-model graph database and an Agentic AI Suite for grounding AI in your business context.{{ end }}</p>
+    <button type="button" class="hx-search" id="hx-open-search" aria-label="Search the documentation">
+      <i class="fas fa-search"></i><span>Search the documentation</span><kbd>Ctrl K</kbd>
+    </button>
+    <div class="hx-startrow">
+      <div class="hx-start2">
+        <span class="hx-lead">Get started with</span>
+        <div class="hx-opts">
+          <a href="{{ "contextual-data-platform/" | relURL }}"><i class="fas fa-layer-group"></i><span><strong>Contextual Data Platform</strong><span class="d">Database + Agentic AI Suite</span></span></a>
+          <a href="{{ "arangodb/" | relURL }}"><i class="fas fa-database"></i><span><strong>ArangoDB database</strong><span class="d">Just the multi-model database</span></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="hx-sec"><h2 id="get-started">Get started in minutes</h2><a class="more" href="{{ "contextual-data-platform/tutorials/" | relURL }}">All tutorials</a></div>
+  <p class="hx-note">Follow the Contextual Data Platform tutorials in order, from a running platform to a knowledge graph you can query.</p>
+  <section class="hx-qs">
+    <a href="{{ "contextual-data-platform/tutorials/evaluate-locally/" | relURL }}">
+      <span class="ic"><i class="fas fa-server"></i></span>
+      <strong>Evaluate locally</strong>
+      <span class="d">Go from an empty machine to a running platform on local Kubernetes.</span>
+      <span class="t">Setup</span>
+    </a>
+    <a href="{{ "contextual-data-platform/tutorials/dataset/" | relURL }}">
+      <span class="ic"><i class="fas fa-film"></i></span>
+      <strong>Example dataset</strong>
+      <span class="d">Import the movie graph and explore it in the Graph Visualizer.</span>
+      <span class="t">Dataset</span>
+    </a>
+    <a href="{{ "contextual-data-platform/tutorials/core/" | relURL }}">
+      <span class="ic"><i class="fas fa-terminal"></i></span>
+      <strong>Core database features</strong>
+      <span class="d">Learn documents, AQL, indexes, graph traversals, and vector search.</span>
+      <span class="t">AQL &amp; graph</span>
+    </a>
+    <a href="{{ "contextual-data-platform/tutorials/notebook-tutorial/" | relURL }}">
+      <span class="ic"><i class="fas fa-book"></i></span>
+      <strong>Notebook tutorial</strong>
+      <span class="d">Drive the full AutoGraph pipeline from a Jupyter notebook with Python.</span>
+      <span class="t">Python + API</span>
+    </a>
+  </section>
+
+  <div class="hx-sec"><h2 id="browse">Browse the documentation</h2><a class="more" href="{{ "agentic-ai-suite/" | relURL }}">Explore the AI Suite</a></div>
+  <p class="hx-note">The Agentic AI Suite is the heart of the platform. Start with the AI capabilities, then drop down to the platform and the multi-model database that ground them.</p>
+  <section class="hx-lanes">
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/" | relURL }}">
+      <span class="ic"><i class="fas fa-robot"></i></span>
+      <div><h3>Agentic AI Suite</h3><p>The full agent stack that turns governed enterprise data into context-aware, explainable AI applications.</p>
+      <div class="tags"><span>Overview</span><span>Quick starts</span><span>Architecture</span></div></div>
+    </a>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/ada/" | relURL }}">
+      <span class="ic"><i class="fas fa-comment-dots"></i></span>
+      <div><h3>Ada &amp; natural language</h3><p>Ask questions in plain language and let the AI assistant translate them to AQL, query, and explain your data.</p>
+      <div class="tags"><span>Ada assistant</span><span>NL to AQL</span><span>Reasoner</span></div></div>
+    </a>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/autograph/" | relURL }}">
+      <span class="ic"><i class="fas fa-project-diagram"></i></span>
+      <div><h3>AutoGraph &amp; GraphRAG</h3><p>Build knowledge graphs from your documents and ground LLM answers with graph-powered retrieval.</p>
+      <div class="tags"><span>AutoGraph</span><span>GraphRAG</span><span>Retriever</span></div></div>
+    </a>
+    <a class="hx-lane ai" href="{{ "agentic-ai-suite/graphml/" | relURL }}">
+      <span class="ic"><i class="fas fa-brain"></i></span>
+      <div><h3>GraphML &amp; analytics</h3><p>Run graph machine learning and large-scale graph analytics to surface patterns, embeddings, and predictions.</p>
+      <div class="tags"><span>GraphML</span><span>Graph Analytics</span><span>Embeddings</span></div></div>
+    </a>
+    <a class="hx-lane" href="{{ "contextual-data-platform/" | relURL }}">
+      <span class="ic"><i class="fas fa-layer-group"></i></span>
+      <div><h3>Contextual Data Platform</h3><p>Deploy, secure, and operate the Kubernetes-native platform and Platform Suite that host it all.</p>
+      <div class="tags"><span>Kubernetes</span><span>Platform Suite</span><span>Deploy</span></div></div>
+    </a>
+    <a class="hx-lane" href="{{ (print $stable) | relURL }}">
+      <span class="ic"><i class="fas fa-database"></i></span>
+      <div><h3>Core database &amp; AQL</h3><p>The multi-model foundation: documents, graphs, key-value, and search, all queried with AQL.</p>
+      <div class="tags"><span>AQL</span><span>Graphs</span><span>Vector</span></div></div>
+    </a>
+  </section>
+
+  <div class="hx-sec"><h2 id="graph-to-ai">From graph to AI</h2></div>
+  <p class="hx-note">Arango takes you from connected data all the way to explainable, context-aware AI, all in one platform.</p>
+  <section class="hx-journey">
+    <div class="hx-jrow"><div class="num">1</div><div><strong>Persist connected data</strong><p>Store <a href="{{ (print $stable "concepts/data-structure/documents/") | relURL }}">JSON documents</a>, <a href="{{ (print $stable "graphs/") | relURL }}">graphs</a>, and key-value data in one native multi-model database.</p></div></div>
+    <div class="hx-jrow"><div class="num">2</div><div><strong>Retrieve context</strong><p>Query with <a href="{{ (print $stable "aql/") | relURL }}">AQL</a> across graph traversal, full-text, vector, geo-spatial, and aggregation, all in a single language.</p></div></div>
+    <div class="hx-jrow"><div class="num">3</div><div><strong>Explore and analyze</strong><p>Discover patterns with visual graph exploration, <a href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Graph Analytics</a>, and <a href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML</a>.</p></div></div>
+    <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
+  </section>
+
+  <div style="margin-top:50px;">
+    <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
+    <p class="hx-note">Latest releases and platform updates.</p>
+    <section class="hx-qs">
+      <a href="{{ (print $stable "release-notes/") | relURL }}">
+        <span class="ic"><i class="fas fa-bolt"></i></span>
+        <strong>ArangoDB release notes</strong>
+        <span class="d">What's new and fixed in the core database.</span>
+        <span class="t">Stable 3.12</span>
+      </a>
+      <a href="{{ "contextual-data-platform/release-notes/" | relURL }}">
+        <span class="ic"><i class="fas fa-bolt"></i></span>
+        <strong>Contextual Data Platform release notes</strong>
+        <span class="d">Latest platform updates and changes.</span>
+        <span class="t">Release notes</span>
+      </a>
+      <a href="{{ "agentic-ai-suite/" | relURL }}">
+        <span class="ic"><i class="fas fa-robot"></i></span>
+        <strong>Agentic AI Suite quick starts</strong>
+        <span class="d">Get started fast with Ada, GraphRAG, and more.</span>
+        <span class="t">New</span>
+      </a>
+    </section>
+  </div>
+
+  <div style="margin-top:50px;">
+    <div class="hx-sec"><h2 id="community">Build with the community</h2></div>
+    <p class="hx-note">Get help from the community and explore the source.</p>
+    <div class="hx-panel" style="display:flex; align-items:center; min-height:64px;">
+      <div class="hx-chips" style="width:100%; flex-wrap:nowrap;">
+        <a style="flex:1 1 0; justify-content:center;" href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
+        <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/lp/arango-academy/" target="_blank" rel="noopener"><i class="fas fa-graduation-cap"></i>Academy</a>
+        <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/resources/" target="_blank" rel="noopener"><i class="fas fa-book-open"></i>Resources</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var trigger = document.getElementById('hx-open-search');
+      if (!trigger) return;
+      trigger.addEventListener('click', function () {
+        var btn = document.querySelector('.DocSearch-Button');
+        if (btn) { btn.click(); return; }
+        // Fallback: dispatch Ctrl/Cmd+K so DocSearch's global shortcut opens the modal.
+        var isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', keyCode: 75, metaKey: isMac, ctrlKey: !isMac, bubbles: true }));
+      });
+    })();
+  </script>
+</article>
+{{ end -}}
