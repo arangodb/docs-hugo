@@ -310,6 +310,26 @@ You can get more detailed information for monitoring ArangoDB via the
 [`/_admin/metrics` endpoint](../../develop/http-api/monitoring/metrics.md)
 in Prometheus format.
 
+## AQL
+
+### Duplicate attribute names in object literals
+
+If an object literal contains the same attribute name more than once, the
+**last occurrence** now wins and determines the value of the attribute. In
+previous versions, the **first occurrence** determined the value.
+
+```aql
+RETURN { foo: 1, foo: 2 }
+```
+
+The query now returns `{ "foo": 2 }`, whereas it returned `{ "foo": 1 }` in
+v3.12 and older.
+
+This change of behavior comes with the introduction of the
+[spread syntax](../../aql/operators.md#object-spread-syntax) `...` for object
+literals, which follows the same last-one-wins semantics, consistent with
+object spreading in JavaScript.
+
 ## Rclone upgrades possibly requiring configuration changes
 
 <small>Introduced in: v3.12.9-2</small>
