@@ -49,6 +49,19 @@ This change also includes a change of behavior for duplicate attribute names in
 object literals. The last occurrence now wins instead of the first one. See
 [Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
 
+### PARTITION() string function
+
+The new [`PARTITION()` AQL function](../../aql/functions/string.md#partition)
+splits a string at a single occurrence of a separator and returns an array of
+exactly three strings: the part before the separator, the separator itself, and
+the part after the separator. An optional `occurrence` parameter lets you select
+which occurrence of the separator to split at, counted from the start (positive
+values) or from the end (negative values).
+
+```aql
+RETURN PARTITION("foo:bar:baz", ":", -1) // ["foo:bar", ":", "baz"]
+```
+
 ### `UNION_DISTINCT_STABLE()` function
 
 The new [`UNION_DISTINCT_STABLE()`](../../aql/functions/array.md#union_distinct_stable)
