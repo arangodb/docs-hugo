@@ -725,6 +725,7 @@ body .page-container {
 /* Header Left */
 .header-block-left {
     display: flex;
+    align-items: center;
 }
 
 
@@ -846,6 +847,15 @@ header .logo {
     }
     .arangodb-logo-small {
         display: block;
+    }
+    /* Keep the small logo in the flex flow so the "Docs home" link sits after
+       it instead of overlapping the absolutely-positioned icon. */
+    .version-logo-container > .arangodb-logo-small {
+        position: static;
+        transform: none;
+    }
+    .version-logo-container {
+        align-items: center;
     }
 }
 
