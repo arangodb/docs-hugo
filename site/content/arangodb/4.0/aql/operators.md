@@ -354,7 +354,7 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
-- `...` for [spreading arrays](#array-spread) into array literals
+- `...` for [spreading arrays](#array-spread-syntax) into array literals
 - `LET [ ] = [ ]` and `FOR [ ] IN [[ ], [ ]]` for [array destructuring](#array-destructuring)
 
 ### Indexed value access
@@ -860,7 +860,7 @@ the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
-- `...` for [spreading objects](#object-spread) into object literals
+- `...` for [spreading objects](#object-spread-syntax) into object literals
 - `LET { } = { }` and `FOR { } IN [{ }, { }]` for [object destructuring](#object-destructuring)
 
 ### Attribute access

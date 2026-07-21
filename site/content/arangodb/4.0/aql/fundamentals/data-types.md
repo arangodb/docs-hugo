@@ -187,7 +187,7 @@ For more details about this array operator, see
 #### Array spread syntax
 
 You can insert the elements of another array into an array literal using the
-[spread syntax](../operators.md#array-spread) `...`:
+[spread syntax](../operators.md#array-spread-syntax) `...`:
 
 ```aql
 ---
@@ -345,7 +345,7 @@ For more details about these object operators, see
 #### Object spread syntax
 
 You can copy the attributes of another object into an object literal using the
-[spread syntax](../operators.md#object-spread) `...`:
+[spread syntax](../operators.md#object-spread-syntax) `...`:
 
 ```aql
 ---

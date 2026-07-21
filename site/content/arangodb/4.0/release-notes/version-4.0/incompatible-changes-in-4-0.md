@@ -326,7 +326,7 @@ The query now returns `{ "foo": 2 }`, whereas it returned `{ "foo": 1 }` in
 v3.12 and older.
 
 This change of behavior comes with the introduction of the
-[spread syntax](../../aql/operators.md#object-spread) `...` for object
+[spread syntax](../../aql/operators.md#object-spread-syntax) `...` for object
 literals, which follows the same last-one-wins semantics, consistent with
 object spreading in JavaScript.
 

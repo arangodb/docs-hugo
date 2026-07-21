@@ -42,8 +42,8 @@ The spread syntax is a more concise and readable alternative to combining
 arrays with the [`PUSH()`](../../aql/functions/array.md#push) and
 [`APPEND()`](../../aql/functions/array.md#append) functions, and to merging
 objects with the [`MERGE()`](../../aql/functions/document-object.md#merge)
-function. For details, see [Array spread](../../aql/operators.md#array-spread)
-and [Object spread](../../aql/operators.md#object-spread).
+function. For details, see [Array spread](../../aql/operators.md#array-spread-syntax)
+and [Object spread](../../aql/operators.md#object-spread-syntax).
 
 This change also includes a change of behavior for duplicate attribute names in
 object literals. The last occurrence now wins instead of the first one. See
