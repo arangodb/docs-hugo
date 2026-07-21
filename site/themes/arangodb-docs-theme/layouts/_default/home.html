@@ -199,27 +199,39 @@
     <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
   </section>
 
-  <div class="hx-split" style="margin-top:50px; grid-template-columns: 1.05fr 1fr;">
-    <div>
-      <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
-      <p class="hx-note">Latest releases and platform updates.</p>
-      <div class="hx-panel">
-        <div class="hx-news">
-          <a href="{{ (print $stable "release-notes/") | relURL }}"><i class="fas fa-bolt"></i>ArangoDB release notes<span class="badge">Stable 3.12</span></a>
-          <a href="{{ "contextual-data-platform/release-notes/" | relURL }}"><i class="fas fa-bolt"></i>Contextual Data Platform release notes</a>
-          <a href="{{ "agentic-ai-suite/" | relURL }}"><i class="fas fa-bolt"></i>Agentic AI Suite quick starts<span class="badge">New</span></a>
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="hx-sec"><h2 id="community">Build with the community</h2></div>
-      <p class="hx-note">Get help from the community and explore the source.</p>
-      <div class="hx-panel" style="display:flex; align-items:center; min-height:64px;">
-        <div class="hx-chips" style="width:100%; flex-wrap:nowrap;">
-          <a style="flex:1 1 0; justify-content:center;" href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
-          <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/lp/arango-academy/" target="_blank" rel="noopener"><i class="fas fa-graduation-cap"></i>Academy</a>
-          <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/resources/" target="_blank" rel="noopener"><i class="fas fa-book-open"></i>Resources</a>
-        </div>
+  <div style="margin-top:50px;">
+    <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
+    <p class="hx-note">Latest releases and platform updates.</p>
+    <section class="hx-qs">
+      <a href="{{ (print $stable "release-notes/") | relURL }}">
+        <span class="ic"><i class="fas fa-bolt"></i></span>
+        <strong>ArangoDB release notes</strong>
+        <span class="d">What's new and fixed in the core database.</span>
+        <span class="t">Stable 3.12</span>
+      </a>
+      <a href="{{ "contextual-data-platform/release-notes/" | relURL }}">
+        <span class="ic"><i class="fas fa-bolt"></i></span>
+        <strong>Contextual Data Platform release notes</strong>
+        <span class="d">Latest platform updates and changes.</span>
+        <span class="t">Release notes</span>
+      </a>
+      <a href="{{ "agentic-ai-suite/" | relURL }}">
+        <span class="ic"><i class="fas fa-robot"></i></span>
+        <strong>Agentic AI Suite quick starts</strong>
+        <span class="d">Get started fast with Ada, GraphRAG, and more.</span>
+        <span class="t">New</span>
+      </a>
+    </section>
+  </div>
+
+  <div style="margin-top:50px;">
+    <div class="hx-sec"><h2 id="community">Build with the community</h2></div>
+    <p class="hx-note">Get help from the community and explore the source.</p>
+    <div class="hx-panel" style="display:flex; align-items:center; min-height:64px;">
+      <div class="hx-chips" style="width:100%; flex-wrap:nowrap;">
+        <a style="flex:1 1 0; justify-content:center;" href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
+        <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/lp/arango-academy/" target="_blank" rel="noopener"><i class="fas fa-graduation-cap"></i>Academy</a>
+        <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/resources/" target="_blank" rel="noopener"><i class="fas fa-book-open"></i>Resources</a>
       </div>
     </div>
   </div>
