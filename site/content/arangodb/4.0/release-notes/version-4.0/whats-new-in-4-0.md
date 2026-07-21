@@ -49,6 +49,23 @@ This change also includes a change of behavior for duplicate attribute names in
 object literals. The last occurrence now wins instead of the first one. See
 [Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
 
+### `UNION_DISTINCT_STABLE()` function
+
+The new [`UNION_DISTINCT_STABLE()`](../../aql/functions/array.md#union_distinct_stable)
+function combines the unique values of an arbitrary number of arrays into a
+single array, like the existing
+[`UNION_DISTINCT()`](../../aql/functions/array.md#union_distinct) function, but
+retains the order of the elements. Each value appears at the position
+of its first occurrence across the arrays, processed from left to right:
+
+```aql
+RETURN UNION_DISTINCT_STABLE([1, 2, 3], [3, 2, 1], [4], [5, 6, 1])
+// [1, 2, 3, 4, 5, 6]
+```
+
+Like `UNION_DISTINCT()`, the `UNION_DISTINCT_STABLE()` function cannot be used
+as an aggregation function in a `COLLECT` operation.
+
 ## Indexing
 
 
