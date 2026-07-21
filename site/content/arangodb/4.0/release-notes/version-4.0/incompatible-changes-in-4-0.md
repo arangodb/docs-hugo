@@ -765,8 +765,8 @@ startup. They are recognized, but they don't have any effect anymore.
 
 - The `bench` log topic has been removed.
 
-  Attempts to set the log level for this topic logs a warning, for example, using
-  a startup option like `--log.level bench=debug`.
+  Attempting to set the log level for this topic logs a warning, for example,
+  when using a startup option like `--log.level bench=debug`.
 
   The only remaining use of the `bench` log topic (due to the removal of
   _arangobench_) was for the log message with ID `bafc2`, used by _arangoexport_
