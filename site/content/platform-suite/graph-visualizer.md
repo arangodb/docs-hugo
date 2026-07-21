@@ -24,12 +24,14 @@ You can use the Graph Visualizer to do the following:
 - Rearrange nodes automatically or manually as well as assign colors and icons
   for better visual clarity.
 
+{{< comment >}} TODO: New link/description
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
 created in the **Management** section under **Graphs** of the second-level
 navigation in the [web interface](../arangodb/3.12/components/web-interface/graphs.md). Once
 created, you can select a graph from the list for exploration and visualization.
 {{< /info >}}
+{{< /comment >}}
 
 ## View a graph
 

@@ -174,10 +174,6 @@ aliases:
   Transactions with individual begin and commit / abort commands that can span
   multiple AQL queries and API calls of supported APIs.
 
-- [**JavaScript Transactions**](../develop/http-api/transactions/javascript-transactions.md):
-  Single-request transactions written in JavaScript that leverage ArangoDB's
-  JavaScript API.
-
 - **Multi-Document Transactions**:
   Transactions are not limited to single documents, but can involve many
   documents of a collection.
@@ -341,7 +337,7 @@ aliases:
 
 ## Administration
 
-- [**Web-based User Interface**](../components/web-interface/_index.md):
+- **Web-based User Interface**: <!-- TODO: new link/description -->
   Graphical UI for your browser to work with ArangoDB. It allows you to
   view, create, and modify databases, collections, documents, graphs, etc.
   You can also run, explain, and profile AQL queries. Includes a graph viewer

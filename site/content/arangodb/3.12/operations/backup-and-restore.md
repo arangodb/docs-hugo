@@ -29,8 +29,8 @@ and get up and running again in case of serious problems.
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
 {{< warning >}}
-Making use of a high availability deployment modes of ArangoDB
-does not remove the need of
+Using high-availability deployment modes of ArangoDB
+does not remove the need to
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 
