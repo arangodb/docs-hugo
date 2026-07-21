@@ -276,6 +276,18 @@
     }
   },
   {
+    "name": "replace-any-eq-with-in",
+    "description": "Replace `ANY ==` array comparison expressions with equivalent `IN`\nexpressions to enable further optimizations and index usage.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "remove-redundant-or",
     "description": "Combine multiple `OR` conditions for the same variable or\nattribute into a single condition.",
     "flags": {
@@ -320,6 +332,18 @@
       "canBeDisabled": false,
       "canCreateAdditionalPlans": false,
       "disabledByDefault": true,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "materialize-for-enumerate-near",
+    "description": "Choose how each EnumerateNearVectorNode emits its document.\nIf the vector index storedValues cover the downstream projections, or if a\npushed-down filter already loaded the document, the vector node produces the\noutput directly. Otherwise a MaterializeRocksDBNode is inserted after the\nvector node to translate the doc-id into the full document.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
       "enterpriseOnly": false
     }
   },
