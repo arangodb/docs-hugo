@@ -99,6 +99,8 @@ aliases:
   - ../aql/user-defined-functions # 3.12 -> 4.0
   - ../develop/http-api/queries/user-defined-aql-functions # 3.12 -> 4.0
   - ../operations/troubleshooting/emergency-console # 3.12 -> 4.0
+  - ../components/tools/arangobench # 3.12 -> 4.0
+  - ../components/tools/arangobench/options # 3.12 -> 4.0
   - ../aql/functions/fulltext # 3.12 -> 4.0
   - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
   - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
@@ -169,6 +171,10 @@ detailed information about breaking changes before upgrading.
   mode (JavaScript REPL) with the `--console` option. This was primarily used
   for debugging purposes in the development of _arangod_.
   This option and feature have been removed.
+
+- **arangobench**:\
+  The benchmark and test tool _arangobench_ has been removed. It was primarily
+  used internally in the development of ArangoDB.
 
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS

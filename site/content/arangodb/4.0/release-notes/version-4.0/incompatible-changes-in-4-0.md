@@ -754,13 +754,24 @@ startup. They are recognized, but they don't have any effect anymore.
 
 ### Log topic changes and removals
 
-The only remaining use of the `security` log topic was for the log message with
-ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
-It has been changed to the `v8` log topic.
+- The `security` log topic has been removed.
 
-The `security` log topic has been removed.
-Attempts to set the log level for this topic log a warning, for example, using
-a startup option like `--log.level security=debug`.
+  Attempts to set the log level for this topic log a warning, for example, using
+  a startup option like `--log.level security=debug`.
+
+  The only remaining use of the `security` log topic was for the log message with
+  ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
+  It has been changed to the `v8` log topic.
+
+- The `bench` log topic has been removed.
+
+  Attempting to set the log level for this topic logs a warning, for example,
+  when using a startup option like `--log.level bench=debug`.
+
+  The only remaining use of the `bench` log topic (due to the removal of
+  _arangobench_) was for the log message with ID `bafc2`, used by _arangoexport_
+  to report a JSON format error related to the `--custom-query-bindvars`
+  startup option. It has been changed to the `config` log topic.
 
 ### `--server.allow-use-database` removed
 
@@ -813,12 +824,10 @@ shipped (at least as a symlink) under the old name in packages and container
 images for backward compatibility. This is no longer the case and there is only
 the _arangoimport_ executable now.
 
-### arangobench
+### arangobench removed
 
-#### Batch size option removed
+The benchmark and test tool _arangobench_ has been removed.
 
-<small>Removed in: v3.12.3</small>
-
-The `--batch-size` startup option is now ignored by arangobench and no longer
-has an effect. It allowed you to specify the number of operations to issue in
-one batch but the batch request API has been removed on the server-side.
+It was originally used internally in the development of ArangoDB for performance
+and server function testing, but lost its relevance over time and became
+unmaintained.

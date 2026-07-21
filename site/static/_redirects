@@ -1,3 +1,8 @@
+/arangodb/4.0/components/tools/arangobench/                                     /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
+/arangodb/4.0/components/tools/arangobench/options/                             /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
+/arangodb/devel/components/tools/arangobench/                                   /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/tools/arangobench/options/                           /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+
 /arangodb/4.0/components/web-interface/                                         /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/components/web-interface/cluster/                                 /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/components/web-interface/collections/                             /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!

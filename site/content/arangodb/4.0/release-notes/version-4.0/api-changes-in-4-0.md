@@ -110,9 +110,10 @@ due to feature removals:
 
 #### Log API
 
-The `security` log topic has been removed.
-The `/_admin/log/level` endpoints no longer include this log topic in responses
-and attempts to set the log level for this topic are ignored.
+The `security` and `bench` log topics have been removed.
+
+The `/_admin/log/level` endpoints no longer include these log topics in
+responses and attempts to set the log levels for these topics are ignored.
 
 ### Privilege changes
 
