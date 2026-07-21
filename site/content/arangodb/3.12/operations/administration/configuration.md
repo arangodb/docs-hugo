@@ -34,9 +34,9 @@ ArangoDB package can be configured with various _startup options_.
 
 ## Available startup options
 
-Find the available options and commands in the _Options_ sub-chapters of the
-respective [Programs & Tools](../../components/tools/_index.md) sub-chapter, like the
-[ArangoDB Server Options](../../components/arangodb-server/options.md).
+Find the available options and commands in
+[ArangoDB Server Options](../../components/arangodb-server/options.md) and the
+_Options_ sub-pages of the [Tools](../../components/tools/_index.md).
 
 The [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) works differently
 to the other programs and tools. It uses `setup.json` files for its own

@@ -754,23 +754,6 @@ SLEEP(1)    // wait 1 second
 SLEEP(0.02) // wait 20 milliseconds
 ```
 
-### V8()
-
-`V8(expression) → retVal`
-
-No-operation that enforces the usage of the V8 JavaScript engine. There is
-no need to call this function explicitly, it is mainly used for internal
-testing.
-
-- **expression** (any): arbitrary expression
-- returns **retVal** (any): the return value of the *expression*
-
-```aql
-// differences in execution plan (explain)
-FOR i IN 1..3 RETURN (1 + 1)          // const assignment
-FOR i IN 1..3 RETURN V8(1 + 1)        // simple expression
-```
-
 ### VERSION()
 
 `VERSION() → serverVersion`

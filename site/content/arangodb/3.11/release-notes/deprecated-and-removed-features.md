@@ -159,9 +159,9 @@ detailed information about breaking changes before upgrading.
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
 
-- **Outdated AQL functions**:\
-  The following AQL functions are deprecated and
-  their usage is discouraged:
+- **Legacy geo-spatial AQL functions**:\
+  The following AQL functions are deprecated since v3.4.0 and removed in
+  ArangoDB v4.0:
   - `IS_IN_POLYGON`
   - `NEAR`
   - `WITHIN`

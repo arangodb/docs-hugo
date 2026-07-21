@@ -179,7 +179,7 @@ FOR doc IN collection OPTIONS { disableIndex: true }
   RETURN doc.other
 ```
 
-Using `disableIndex: false` has no effect on geo indexes or fulltext indexes.
+Using `disableIndex: false` has no effect on geo indexes.
 
 Note that setting `disableIndex: true` plus `indexHint` is ambiguous. In
 this case the optimizer will always prefer the `disableIndex` hint.

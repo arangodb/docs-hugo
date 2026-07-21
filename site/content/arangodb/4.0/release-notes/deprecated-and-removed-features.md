@@ -37,7 +37,74 @@ aliases:
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
   - ../develop/http-api/batch-requests # 3.12 -> 4.0
+  - ../develop/transactions/javascript-transactions # 3.12 -> 4.0
+  - ../develop/http-api/transactions/javascript-transactions # 3.12 -> 4.0
   - ../develop/http-api/monitoring/statistics # 3.12 -> 4.0
+  - ../components/web-interface # 3.12 -> 4.0
+  - ../components/web-interface/cluster # 3.12 -> 4.0
+  - ../components/web-interface/collections # 3.12 -> 4.0
+  - ../components/web-interface/dashboard # 3.12 -> 4.0
+  - ../components/web-interface/document # 3.12 -> 4.0
+  - ../components/web-interface/graphs # 3.12 -> 4.0
+  - ../components/web-interface/logs # 3.12 -> 4.0
+  - ../components/web-interface/queries # 3.12 -> 4.0
+  - ../components/web-interface/users # 3.12 -> 4.0
+  - ../components/web-interface/services # 3.12 -> 4.0
+  - ../develop/http-api/foxx # 3.12 -> 4.0
+  - ../components/tools/foxx-cli # 3.12 -> 4.0
+  - ../components/tools/foxx-cli/details # 3.12 -> 4.0
+  - ../develop/foxx-microservices # 3.12 -> 4.0
+  - ../develop/foxx-microservices/deployment # 3.12 -> 4.0
+  - ../develop/foxx-microservices/getting-started # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/access-from-the-browser # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/authentication-and-sessions # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/development-mode # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/foxx-in-a-cluster # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/linking-services-together # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/making-requests # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/scripts-and-scheduling # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/testing-foxx-services # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/using-node-modules # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/using-webpack-with-foxx # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-collections # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-files # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/working-with-routers # 3.12 -> 4.0
+  - ../develop/foxx-microservices/guides/writing-queries # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/configuration # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/authentication # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/graphql # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/oauth-1-0a # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/oauth-2-0 # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/related-modules/queues # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/endpoints # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/middleware # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/request # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/routers/response # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/service-context # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/service-manifest # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages/collection-storage # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-storages/jwt-storage # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport # 3.12 -> 4.0
+  - ../develop/foxx-microservices/reference/sessions-middleware/session-transports/header-transport # 3.12 -> 4.0
+  - ../develop/http-api/tasks # 3.12 -> 4.0
+  - ../develop/javascript-api/actions # 3.12 -> 4.0
+  - ../develop/javascript-api/tasks # 3.12 -> 4.0
+  - ../aql/user-defined-functions # 3.12 -> 4.0
+  - ../develop/http-api/queries/user-defined-aql-functions # 3.12 -> 4.0
+  - ../operations/troubleshooting/emergency-console # 3.12 -> 4.0
+  - ../components/tools/arangobench # 3.12 -> 4.0
+  - ../components/tools/arangobench/options # 3.12 -> 4.0
+  - ../aql/functions/fulltext # 3.12 -> 4.0
+  - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
+  - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 4.0
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -52,6 +119,33 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Aardvark web interface**:\
+  The web interface served by the ArangoDB server (_arangod_), also known as
+  _Aardvark_, has been removed. The server executable no longer offers a
+  built-in web interface.
+
+  - If you use the Arango Contextual Data Platform, there is a new, integrated
+    web interface also known as the platform UI.
+  - If you use ArangoDB standalone, there is a new web interface you can run
+    alongside the server also known as the core UI.
+
+- **JavaScript Transactions**:\
+  Submitting single-request transactions that leverage ArangoDB's JavaScript API
+  to run complex operations is no longer supported.
+
+  For rather simple transactions, you might be able to use [AQL queries](../aql/_index.md)
+  instead. Subqueries and the ternary operator are useful tools for this.
+  You can read from multiple collections as well as write to multiple collections,
+  but you cannot perform reads after writes for a given collection.
+  
+  To port more complex transactions, you may use
+  [Stream Transactions](../develop/transactions/stream-transactions.md).
+  The main operations they support are document CRUD and AQL queries. Unlike
+  with JavaScript Transactions, you can start a Stream Transaction, then issue
+  individual operations, and eventually decide whether to abort or commit the
+  transaction with all its operations. You can therefore put logic on the
+  client-side if it's too complex to port to AQL.
 
 - **Foxx microservices**:\
   The Foxx microservice framework including tasks/queues, the related
@@ -77,6 +171,10 @@ detailed information about breaking changes before upgrading.
   mode (JavaScript REPL) with the `--console` option. This was primarily used
   for debugging purposes in the development of _arangod_.
   This option and feature have been removed.
+
+- **arangobench**:\
+  The benchmark and test tool _arangobench_ has been removed. It was primarily
+  used internally in the development of ArangoDB.
 
 - **Native Windows and macOS support**:\
   Starting with v3.12, the native platform support for the Windows and macOS
@@ -156,9 +254,10 @@ detailed information about breaking changes before upgrading.
   documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:\
-  Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
-  future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../indexes-and-search/indexing/basics.md#persistent-index).
+  Skiplist and hash indexes have been deprecated in 3.9 and are removed in
+  ArangoDB v4.0. They were merely aliases for the
+  [`persistent` index type](../indexes-and-search/indexing/basics.md#persistent-index)
+  with the RocksDB storage engine.
 
 - **Bundled NPM modules**:\
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
@@ -181,17 +280,20 @@ detailed information about breaking changes before upgrading.
   prescribed by the [HTTP specification](https://tools.ietf.org/html/rfc7231#section-4.2).
 
 - **Fulltext indexes**:\
-  The fulltext index type is deprecated from version 3.10 onwards.
-  It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
+  The fulltext index type was deprecated from version 3.10 onwards and is
+  removed in ArangoDB v4.0. It is recommended to use
+  [ArangoSearch](../indexes-and-search/arangosearch/_index.md)
+  for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries, with
+  corresponding endpoints on the server-side (`/_api/simple/*`).
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
-  *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
-  are translated internally to AQL, then the AQL query is optimized and run
-  against the database in recent versions, because of better performance and
-  reduced maintenance complexity.
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
+  Simple Queries could ever be. In fact, the still supported methods in the
+  JavaScript API use AQL internally because of better performance and reduced
+  maintenance complexity. The `/_api/simple/*` HTTP API endpoints have been
+  removed in ArangoDB v4.0.
 
 - **Accessing collections by ID instead of by name**:\
   Accessing collections by their internal ID instead of accessing them by name
@@ -219,16 +321,26 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  removed in ArangoDB v4.0. Client applications should use the REST 
+  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
+
+- **Replication REST API**:\
+  Various endpoints related to asynchronous replication like the global applier
+  have been removed in ArangoDB v4.0. These endpoints provided the low-level
+  mechanisms for the user-managed Leader/Follower Replication and the
+  Agency-managed Active Failover deployment modes, both for single servers.
+
+  A few obsolete endpoints related to the write-ahead log have been removed, too.
+
+  See [API changes in ArangoDB 4.0](version-4.0/api-changes-in-4-0.md#obsolete-replication-apis)
+  for details.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
   `db.<collection-name>.load()` and `db.<collection-name>.unload()` and their
   REST API endpoints `PUT /_api/collection/<collection-name>/load` and
-  `PUT /_api/collection/<collection-name>/unload` are deprecated in 3.8.
-  There should be no need to explicitly load or unload a collection with the
-  RocksDB storage engine. The load/unload functionality was useful only with
+  `PUT /_api/collection/<collection-name>/unload` were deprecated in 3.8 and are
+  removed in ArangoDB v4.0. The load/unload functionality was only useful with
   the MMFiles storage engine, which is not available anymore since 3.7.
 
 - **Actions**:\
@@ -242,9 +354,9 @@ detailed information about breaking changes before upgrading.
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
 
-- **Outdated AQL functions**:\
-  The following AQL functions are deprecated and
-  their usage is discouraged:
+- **Legacy geo-spatial AQL functions**:\
+  The following AQL functions are deprecated since v3.4.0 and removed in
+  ArangoDB v4.0:
   - `IS_IN_POLYGON`
   - `NEAR`
   - `WITHIN`
@@ -254,23 +366,21 @@ detailed information about breaking changes before upgrading.
 
 - **`bfs` option** in AQL graph traversal:\
   Using the *bfs* attribute inside
-  traversal options is deprecated since v3.8.0. The preferred way to start a
+  traversal options is deprecated since v3.8.0
+  and it is removed in ArangoDB v4.0. The preferred way to start a
   breadth-first traversal is by using the new `order` attribute, and setting it
   to a value of `bfs`.
 
 - **`overwrite` option**:\
   The `overwrite` option for insert operations (either
-  single document operations or AQL `INSERT` operations) is deprecated in favor
-  of the `overwriteMode` option, which provides more flexibility.
+  single document operations or AQL `INSERT` operations) is deprecated and
+  removed in ArangoDB v4.0 in favor of the `overwriteMode` option, which
+  provides more flexibility.
 
 - **`minReplicationFactor` collection option**:\
-  The `minReplicationFactor`
-  option for collections has been renamed to `writeConcern`. If
-  `minReplicationFactor` is specified and no `writeConcern` is set, the
-  `minReplicationFactor` value will still be picked up and used as
-  `writeConcern` value. However, this compatibility mode will be removed
-  eventually, so changing applications from using `minReplicationFactor` to
-  `writeConcern` is advised.
+  The `minReplicationFactor` option for collections has been renamed to
+  `writeConcern`. You can no longer use `minReplicationFactor` as an alias for
+  `writeConcern` from ArangoDB v4.0 onward.
 
 - **Outdated startup options**:\
   The following _arangod_ startup options are deprecated and will be removed
@@ -309,14 +419,11 @@ detailed information about breaking changes before upgrading.
   prevent unknown startup option errors.
 
 - **arangoimp** executable:\
-  ArangoDB release packages install an executable named
-  _arangoimp_ as an alias for the _arangoimport_ executable. This is done to 
-  provide compatibility with older releases, in which _arangoimport_ did not
-  yet exist and was named _arangoimp_. The renaming was actually carried out in
-  the codebase in December 2017. Using the _arangoimp_ executable is deprecated,
-  and it is always favorable to use _arangoimport_ instead. 
-  While the _arangoimport_ executable will remain, the _arangoimp_ alias will be 
-  removed in a future version of ArangoDB.
+  The _arangoimport_ client tool was originally named _arangoimp_.
+  ArangoDB release packages and container images up to v3.12 include the
+  _arangoimp_ executable or symlink as an alias for _arangoimport_.
+  From ArangoDB v4.0, _arangoimp_ is no longer included and you need to use
+  _arangoimport_.
 
 - **HTTP and JavaScript traversal APIs**:\
   The HTTP traversal API as well as the
