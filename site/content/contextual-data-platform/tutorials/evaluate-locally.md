@@ -16,7 +16,7 @@ to it, and Helm to install the Operator and the platform itself.
 By the end, you will have:
 
 - A local Kubernetes cluster running on your machine.
-- The ArangoDB Kubernetes Operator and an ArangoDB deployment.
+- The Arango Kubernetes Operator and an Arango.ai deployment.
 - The Contextual Data Platform installed from the chart you downloaded and
   reachable in a browser.
 - A running platform you can build on in the follow-up tutorials, plus a simple
@@ -69,6 +69,9 @@ commands read it, so you choose your architecture only once.
 
 ## Step 2: Set up a local cluster
 
+If you already run a Kubernetes cluster and would rather use it, you can skip
+this step, but that path is outside the scope of this tutorial.
+
 Create a throwaway Kubernetes cluster on your own machine. The `--image` flag
 pins the Kubernetes version this tutorial was validated with, so your cluster
 matches the examples that follow:
@@ -77,8 +80,6 @@ matches the examples that follow:
 kind create cluster --name arango-platform --image kindest/node:v1.33.1
 ```
 
-If you already run a Kubernetes cluster and would rather use it, you can skip
-this step, but that path is outside the scope of this tutorial.
 
 kind automatically points kubectl at the new cluster, so you don't have to
 configure anything by hand. Confirm that a single-node cluster is up and that
@@ -148,7 +149,7 @@ architecture reads this variable, so you set it only once here. Then install the
 Operator with the options shown to enable webhooks and the gateway feature:
 
 ```sh
-ARCH=arm64 # Apple Silicon; use amd64 on x86-64
+ARCH=$([ "$(uname -m)" = x86_64 ] && echo amd64 || echo arm64)
 VERSION_OPERATOR='1.4.2' # Tested version for this tutorial
 
 helm upgrade --install operator \
