@@ -25,7 +25,7 @@ instead. This is similar to how the `+` operator behaves in JavaScript:
 ```aql
 RETURN "foo" + "bar" // [ "foobar" ]
 RETURN "foo" + 123   // [ "foo123" ]
-RETURN "123" + 200   // [ "123200" ]
+RETURN 123 + "200"   // [ "123200" ]
 RETURN 100 + 200     // [ 300 ]
 ```
 
@@ -38,7 +38,7 @@ See [String operators](operators.md#string-operators) for details.
 The behavior of the `+` operator changed in v4.0.0. In previous versions, `+`
 always performed arithmetic addition and never concatenated strings. It cast
 string operands to numbers instead, so `"foo" + "bar"` evaluated to `0` and
-`"123" + 200` evaluated to `323`. See
+`123 + "200"` evaluated to `323`. See
 [Incompatible changes in ArangoDB 4.0](../release-notes/version-4.0/incompatible-changes-in-4-0.md#aql--operator-overloaded-for-string-concatenation).
 {{< /warning >}}
 

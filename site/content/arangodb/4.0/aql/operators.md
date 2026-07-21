@@ -316,7 +316,7 @@ LET name = "Luna"
 
 "value: " + true   // "value: true"  (true is cast to the string "true")
 "empty: " + null   // "empty: "  (null is cast to an empty string)
-"data: " + { a: 1 } // "data: {\"a\":1}"  (the object is cast to its JSON representation)
+"obj: " + { a: 1 } // "obj: {\"a\":1}"  (the object is cast to its JSON representation)
 ```
 
 If **both** operands are non-string values, the `+` operator performs
