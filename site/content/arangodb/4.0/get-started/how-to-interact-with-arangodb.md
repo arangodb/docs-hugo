@@ -14,11 +14,8 @@ drivers, and the server's REST API.
 
 ### Web Interface
 
-The easiest way to get started with ArangoDB is to use the included
-[web interface](../components/web-interface/_index.md). The ArangoDB server serves this
-graphical user interface (GUI) and you can access it by pointing your browser to
-the server's endpoint, which is `http://localhost:8529` by default if you run a
-local server.
+The easiest way to get started with ArangoDB is to use the
+web interface. <!-- TODO: new link/description -->
 
 The web interface lets you perform all essential actions like creating
 collections, viewing documents, and running queries. You can also view graphs

@@ -1,3 +1,17 @@
+/arangodb/4.0/components/tools/arangobench/                                     /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
+/arangodb/4.0/components/tools/arangobench/options/                             /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
+/arangodb/devel/components/tools/arangobench/                                   /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/tools/arangobench/options/                           /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+
+/arangodb/4.0/components/web-interface/                                         /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/cluster/                                 /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/collections/                             /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/dashboard/                               /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/document/                                /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/graphs/                                  /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/logs/                                    /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/queries/                                 /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/components/web-interface/users/                                   /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/components/web-interface/services/                                /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/develop/http-api/foxx/                                            /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/components/tools/foxx-cli/                                        /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
@@ -45,6 +59,18 @@
 /arangodb/4.0/develop/http-api/tasks/                                           /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/develop/javascript-api/actions/                                   /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.0/develop/javascript-api/tasks/                                     /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/aql/functions/fulltext                                            /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/develop/http-api/indexes/fulltext                                 /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/4.0/indexes-and-search/indexing/working-with-indexes/fulltext-indexes /arangodb/4.0/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/                                       /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/cluster/                               /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/collections/                           /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/dashboard/                             /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/document/                              /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/graphs/                                /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/logs/                                  /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/queries/                               /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/components/web-interface/users/                                 /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 /arangodb/devel/components/web-interface/services/                              /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 /arangodb/devel/develop/http-api/foxx/                                          /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 /arangodb/devel/components/tools/foxx-cli/                                      /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
@@ -92,6 +118,9 @@
 /arangodb/devel/develop/http-api/tasks/                                         /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 /arangodb/devel/develop/javascript-api/actions/                                 /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 /arangodb/devel/develop/javascript-api/tasks/                                   /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/aql/functions/fulltext                                          /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/develop/http-api/indexes/fulltext                               /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
+/arangodb/devel/indexes-and-search/indexing/working-with-indexes/fulltext-indexes /arangodb/devel/release-notes/deprecated-and-removed-features/  301!
 
 /arangodb/4.0/aql/user-defined-functions/                                       /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
 /arangodb/4.0/develop/http-api/queries/user-defined-aql-functions/              /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
@@ -172,6 +201,8 @@
 /agentic-ai-suite/reference/autograph/importing-files/                          /agentic-ai-suite/autograph/reference/importing-files/          301
 /agentic-ai-suite/reference/autograph/orchestration/                            /agentic-ai-suite/autograph/reference/orchestration/            301
 /agentic-ai-suite/reference/autograph/rag-strategizer/                          /agentic-ai-suite/autograph/reference/rag-strategizer/          301
+/agentic-ai-suite/autograph/quickstart/                                         /agentic-ai-suite/autograph/setup/                              301
+/agentic-ai-suite/graphml/quickstart/                                           /agentic-ai-suite/graphml/setup/                                301
 /agentic-ai-suite/aqlizer/                                                      /agentic-ai-suite/natural-language-to-aql/                      301
 /agentic-ai-suite/reference/natural-language-to-aql/                            /agentic-ai-suite/natural-language-to-aql/api-reference/        301
 /agentic-ai-suite/reference/mlflow/                                             /agentic-ai-suite/private-llms/mlflow/                          301

@@ -35,7 +35,7 @@ such a case.
 
 The following exit codes are used by the ArangoDB server (_arangod_), the
 ArangoDB Shell (_arangosh_), _arangodump_, _arangorestore_, _arangoimport_,
-_arangoexport_, _arangobench_, _arangovpack_, and _arangoinspect_.
+_arangoexport_, _arangovpack_, and _arangoinspect_.
 
 They are grouped into a few categories. There is a headline for each exit code
 with the format `code - name`, and the exit code description as the text.
