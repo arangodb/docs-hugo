@@ -1,0 +1,4 @@
+# Agent-readiness: lets the `md` output format emit pages with a .md suffix.
+# Merged with the rest of the configuration (see config.yaml, outputFormats.yaml).
+text/markdown:
+  suffixes: ["md"]
