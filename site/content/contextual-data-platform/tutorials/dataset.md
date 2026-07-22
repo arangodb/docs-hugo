@@ -20,7 +20,7 @@ By the end, you will have:
 You are given two things to work with:
 
 - A `jsonl/` directory with one ready-to-import JSONL file per collection.
-- An import script, `imp.sh`, that loads everything in the right order.
+- An import script, `import.sh`, that loads everything in the right order.
 
 ## What the dataset is
 
@@ -28,7 +28,8 @@ You are given two things to work with:
   Kaggle "The Movies Dataset" by Rounak Banik (~45k movies, cast, crew,
   keywords, and ~26M user ratings).
 - Why a graph: movies, people, genres, and users are naturally connected;
-  modeling them as vertices and edges lets us traverse relationships directly.
+  modeling them as **nodes** and **edges** lets us traverse relationships directly.
+  Nodes are also referred to as vertices.
 - The data is provided as JSONL files, one per collection, plus embeddings —
   nothing needs to be generated, only imported.
 
@@ -39,47 +40,168 @@ You are given two things to work with:
     `budget`, `revenue`, `vote_average`, …); `_key` is the TMDb id.
   - `People` — actors and crew (deduplicated `cast` + `crew`).
   - `Genres`, `Keywords`, `ProductionCompanies`, `ProductionCountries`,
-    `SpokenLanguages`, `Collections` — lookup/facet vertices.
+    `SpokenLanguages`, `Collections` — lookup/facet nodes.
   - `Users` — anchors for rating edges (no attributes).
   - `MovieEmbeddings` — a 384-dim vector per movie, sharing the same `_key` as
     `Movies` (joined by primary key, not by an edge).
 - **Edge collections** (the relationships):
   - `ActedIn`, `WorkedOn` — People → Movies (with `character` / `job`).
   - `HasGenre`, `HasKeyword`, `ProducedBy`, `ProducedInCountry`,
-    `HasSpokenLanguage`, `PartOfCollection` — Movies → facet vertices.
+    `HasSpokenLanguage`, `PartOfCollection` — Movies → facet nodes.
   - `Rated` — Users → Movies (with `rating`, `timestamp`).
-- Show one sample vertex and one sample edge document to make `_key` /
-  `_from` / `_to` concrete.
-- Note why `MovieEmbeddings` is a separate collection (keeps `Movies` lean,
-  embeddings replaceable independently).
+To make `_key`, `_from`, and `_to` concrete, here is an abbreviated `Movies`
+node document. Its `_key` is the TMDb id, so its full document ID is
+`Movies/8961` (other attributes such as `overview`, `budget`, `revenue`, and
+`vote_average` are omitted here):
+
+```json
+{
+  "_key": "8961",
+  "_id": "Movies/8961",
+  "title": "Bad Boys II",
+  "release_date": "2003-07-18"
+}
+```
+
+An edge document adds `_from` and `_to`, which reference the two documents it
+connects by their IDs. This `ActedIn` edge links a person to the movie above
+(the attribute values are illustrative):
+
+```json
+{
+  "_from": "People/2888",
+  "_to": "Movies/8961",
+  "character": "Mike Lowrey"
+}
+```
+
+`MovieEmbeddings` is a separate collection rather than a field on `Movies` so
+that the movie documents stay lean and the embeddings can be regenerated or
+replaced independently, without touching the movie data.
 
 ## Step 2: Prerequisites
 
-- A running platform from [Evaluate locally](evaluate-locally.md) (or any
-  reachable ArangoDB endpoint).
-- The `arangoimport` and `arangosh` client tools installed.
-- The provided `jsonl/` directory and `imp.sh` script on disk.
-- Endpoint / credentials known; set `ARANGO_PASSWORD` for the script (the
-  script targets database `movies` as user `root`).
+- A running data platform from [Evaluate locally](evaluate-locally.md), reachable
+  on your machine. If you followed that tutorial, keep the `kubectl port-forward`
+  from its last step running so the platform is available on `localhost:8529`.
+- **Docker** or **Podman** installed. You do not install the ArangoDB client
+  tools (`arangoimport`, `arangosh`) directly — they ship inside the
+  `arangodb/enterprise` container image, and the script runs there. This also
+  avoids the fact that the client tools are only distributed for Linux.
+- The provided `jsonl/` directory and `import.sh` script on disk, in the same
+  directory.
+- The endpoint and credentials for your data platform (you pass these to the
+  script in Step 3; by default it targets `https://localhost:8529` as user
+  `root`).
 
 ## Step 3: Import the dataset
 
-- Run the provided script from the directory that contains `jsonl/`:
-  `ARANGO_PASSWORD=<pw> ./imp.sh` (adjust the endpoint at the top of the script
-  if needed).
-- What the script does, in order (so the reader understands, not just runs):
+{{< warning >}}
+Before you run the import, check that the target database (`movies` by default,
+or whatever you set `ARANGO_DB` to) does not already exist. The script creates
+it only if it is missing, but if a database of that name is already present, the
+import runs **into it**, adding the dataset's collections alongside your existing
+data and overwriting any documents that share a `_key`. On a fresh
+[Evaluate locally](evaluate-locally.md) platform there is nothing to lose, but on
+any deployment you care about, list the databases first (in the web interface, or
+with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
+`movies` is taken.
+{{< /warning >}}
+
+- The script is a POSIX shell script that calls only `arangoimport` and
+  `arangosh`, both of which are in the `arangodb/enterprise` image. Run it inside a
+  throwaway container, mounting the current directory (which holds `jsonl/` and
+  `import.sh`) so the tools can read the files:
+
+  ```sh
+  read -rs -p "ArangoDB password: " ARANGO_PASSWORD; echo; export ARANGO_PASSWORD
+
+  docker run --rm \
+    --add-host host.docker.internal:host-gateway \
+    -e ARANGO_ENDPOINT="https://host.docker.internal:8529" \
+    -e ARANGO_PASSWORD \
+    -v "$PWD:/import:Z" -w /import \
+    arangodb/enterprise:latest sh import.sh
+  ```
+
+  The password never appears on a command line: `read -rs` reads it without
+  echoing or storing it in your shell history, `-e ARANGO_PASSWORD` (no `=value`)
+  passes it into the container **by name** rather than by value, and inside the
+  container the script references it as the placeholder `@ARANGO_PASSWORD@`, which
+  the ArangoDB tools substitute from the environment at parse time. As a result it
+  shows up in neither the host nor the container process list.
+- From inside a container, `localhost` is the container itself, not your machine,
+  so the endpoint uses `host.docker.internal` to reach the `port-forward` running
+  on your host. With **Podman**, replace `docker` with `podman` and drop the
+  `--add-host` line (Podman resolves `host.docker.internal` on its own). The
+  endpoint uses `https://` because the platform serves HTTPS; the self-signed
+  certificate is accepted without extra flags.
+- On **SELinux**-enforcing hosts (Fedora, RHEL, CentOS), the container cannot read
+  a bind-mounted directory until it is relabeled, and the tools otherwise fail
+  with a permission error even though the files are readable on your host. The
+  `:Z` suffix on the `-v` mount above handles this by relabeling the directory for
+  container access; it is a harmless no-op on hosts without SELinux, so you can
+  leave it in either way. (Use lowercase `:z` instead if the directory is shared
+  with other containers, or `--security-opt label=disable` to skip relabeling
+  altogether.)
+- The script reads its connection settings from environment variables, each with
+  a default, so you can override any of them (with `-e` above) without editing
+  the script:
+  - `ARANGO_ENDPOINT` (default `https://localhost:8529`)
+  - `ARANGO_DB` (default `movies`)
+  - `ARANGO_USER` (default `root`)
+  - `ARANGO_PASSWORD` (default empty)
+  - `ARANGO_FORCE_REIMPORT` (default unset) — when set to any value, disables the
+    skip-if-already-complete check described below and reimports every collection.
+- The script performs the following steps, in order:
   1. Creates the `movies` database.
-  2. Imports every **vertex** collection first (so edge references resolve),
-     with `--create-collection-type document`.
+  2. Imports every **document** collection for the graph nodes with
+     `--create-collection-type document`.
   3. Imports `MovieEmbeddings`.
   4. Imports every **edge** collection with `--create-collection-type edge`.
   5. Registers the `MoviesGraph` as a **named graph**.
-- Mention it is safe to re-run (existing-database/collection errors are ignored).
+- Re-running the script is safe, so if the import is interrupted (for example, a
+  network timeout against a remote deployment), just run it again to continue.
+  The database and named graph are created only if missing. For each collection,
+  the script first compares its document count against the number of lines in the
+  source file: if they already match, the collection finished on an earlier run
+  and is skipped, so a re-run does not redo work that already succeeded. A
+  collection that is missing or only partially loaded is imported:
+  - Document collections use `--on-duplicate ignore`, so already-imported
+    documents are skipped and only the remainder is inserted — a partial load
+    resumes where it stopped.
+  - Edge collections have no `_key` to deduplicate on, so they use `--overwrite`
+    and are truncated and reloaded cleanly rather than duplicated.
+- The count check is a fast guard against unnecessary reloads, not an integrity
+  check — a matching count does not prove the stored documents are correct. If
+  you suspect a collection's data is wrong despite a matching count, set
+  `ARANGO_FORCE_REIMPORT=1` (with `-e` on the `docker run`) to reimport every
+  collection regardless.
 
 ## Step 4: Verify the import
 
-- Count documents per collection and compare against expected totals.
-- Run one test query to confirm, e.g. fetch `Movies/8961` ("Bad Boys II").
+With the import finished, confirm the data landed as expected before moving on.
+You do this in the web interface, working with the `movies` database you just
+created.
+
+- **Switch to the `movies` database.** Use the database selector in the web
+  interface to open `movies` (the platform starts you in `_system`).
+- **Check the collections and their document counts.** Click the **Database**
+  icon in the left sidebar, then go to **Management** > **Collections**. You see
+  every collection the script created — the document collections (`Movies`,
+  `People`, `Genres`, …, `MovieEmbeddings`) and the edge collections (`ActedIn`,
+  `Rated`, …). Each row shows its document count. A non-zero count for `Movies`
+  and the other collections confirms the import populated them, rather than only
+  creating empty collections.
+- **Open a document.** Click the `Movies` collection and open the document with
+  the key `8961` (Bad Boys II). You see the same fields introduced in Step 1 —
+  `title`, `release_date`, and the rest — which confirms the JSONL content
+  imported intact, not just that a document with the right count exists.
+- **Optionally, confirm it is reachable by AQL.** Open the **Queries** editor and
+  fetch the same document directly:
+  ```aql
+  RETURN DOCUMENT("Movies/8961")
+  ```
 
 ## Step 5: Explore the graph in the visualizer
 
@@ -89,16 +211,48 @@ walks through the most common things you do in the viewer. For the full
 reference, see the [Graph Visualizer](../../platform-suite/graph-visualizer.md)
 documentation.
 
+When it first opens, the visualizer seeds the canvas with a random node and its
+immediate neighborhood so it is not empty. That is just a starting sample, not
+part of this walkthrough, so clear it first for a clean slate: click **Clear
+graph** in the bottom-right toolbar. You then build the canvas up deliberately in
+the steps below.
+
+- **Set up readable labels and icons first.** By default every node is a grey
+  circle labeled with its document ID, which becomes unreadable as soon as you
+  expand one. Configure this once through the **Legend** panel on the right:
+  - For `Movies`, set the **Label** to `title` and give it a clapperboard icon
+    (open the icon picker and search for *movie*).
+  - For `People`, set the **Label** to `name` and give it a user-silhouette icon
+    (search for *account*); optionally choose a different color so people and
+    movies are easy to tell apart at a glance.
+  - For the `ActedIn` edge, set the **Label** to `character`.
+
+  If a collection is not listed in the Legend yet, it appears once nodes of that
+  type are on the canvas (after the expand below), so you can style it then. From
+  here on, anything you add is labeled by its title, name, or character instead of
+  an opaque ID.
 - **Add a node by its document ID.**
   - Click the **Search & add nodes to canvas** field in the top bar to open the
     add-nodes dialog.
-  - Choose the **Node type** `Movies`, search for the ID **`8961`** (Bad Boys II),
-    select it, and click **Add 1 node**.
-  - Right-click the node, click **Expand (#)**, then **All (#)** to pull in its
-    neighbors: its cast via `ActedIn` (Will Smith, Martin Lawrence, …), its
-    `Genres` via `HasGenre`, its `ProductionCompanies` via `ProducedBy`, and so on.
-  - Point out how one document fans out into the surrounding graph, and how
-    edge labels tell you the relationship type.
+  - Choose the **Node type** `People` and type the ID **`10980`** (Daniel
+    Radcliffe) into the search field. The search matches any key *containing* what
+    you type, so the list shows every person whose key includes `10980` (such as
+    `People/109802` and `People/1098026`), each labeled by its document ID and key.
+    The exact match `People/10980` is at the top of the list — select it and click
+    **Add 1 node**.
+  - The node appears as **Daniel Radcliffe** with the person icon, using the
+    `name` label you set. In case you don't see the node, click **Fit all nodes**
+    in the bottom-right toolbar to bring it into view.
+- **Expand the node to see its neighborhood.**
+  - Right-click the Daniel Radcliffe node, click **Expand (#)**, then **All (#)**.
+    This pulls in the 22 movies he acted in through `ActedIn` edges — each movie
+    node shows its `title`, and each edge shows the `character` he played.
+  - Notice how one person fans out into the surrounding graph, and how the edge
+    labels (character names) tell you what each relationship means.
+  - We start from a person rather than a movie on purpose. Expanding a popular
+    movie would also pull in a batch of `Users` (up to 100 at a time) through its
+    rating edges, and those `Users` nodes carry no attributes — they would clutter
+    the canvas without adding anything to read.
 - **Add nodes with an AQL query (a basic filter).**
   - Click **Queries** in the top bar, open the **Queries** tab, and click
     **New query**.
@@ -111,33 +265,31 @@ documentation.
     ```
   - The matching movie nodes appear on the canvas; right-click any of them to
     **Expand (#)** and explore from there.
-  - Emphasize the pattern: query returns documents → documents become nodes.
+  - This is the core pattern to remember: a query returns documents, and those
+    documents become nodes on the canvas.
 - **Find the shortest path between two actors (Daniel Radcliffe → Robert De Niro).**
-  - Add both actor nodes with the search field: **`People/10980`**
-    (Daniel Radcliffe) and **`People/380`** (Robert De Niro).
+  - Daniel Radcliffe (**`People/10980`**) is already on the canvas from the
+    earlier steps; add Robert De Niro (**`People/380`**) with the search field so
+    both actor nodes are present.
   - **Select exactly two nodes** (click one, then {{< kbd "Shift" >}}- or
     {{< kbd "Ctrl" >}}-click the other), right-click one of them, and click
     **Shortest Path**. The nodes and edges of one shortest path between them are
     added to the canvas — no AQL required.
   - Expected path: Daniel Radcliffe → *The Tailor of Panama* → Dylan Baker →
     *Hide and Seek* → Robert De Niro.
-  - Frame it as a classic "degrees of separation" question, and note the path
-    alternates person/movie hops because `ActedIn` connects People and Movies.
+  - This is the classic "degrees of separation" question. Notice how the path
+    alternates between person and movie hops, because `ActedIn` always connects a
+    person to a movie.
 - **Tidy up the canvas by removing nodes.**
   - The canvas gets busy fast. To focus, select the nodes you don't need,
     right-click one, and click **Dismiss # nodes** — or select the few you want
     to keep and click **Dismiss other nodes** to banish everyone else.
-  - Reassure the reader: dismissing only hides nodes on the canvas, it does
-    **not** delete the underlying documents, and they can be added back anytime.
-    Use **Clear graph** (bottom-right toolbar) to wipe the canvas and start over.
-- **Give the graph a movie-night makeover (styling).**
-  - A wall of identical grey circles is no fun. Open the **Legend** panel on the
-    right, pick the `Movies` collection, and give it a film icon; pick `People`
-    and give them a person icon and a different color.
-  - Switch the `Movies` **Label** to show `title` (and `People` to `name`) so you
-    can read the graph at a glance instead of hovering every node.
-  - Mention attribute-based rules as the fun next step — e.g. color every movie
-    with `vote_average >= 8` gold to make the crowd-pleasers pop.
+  - Dismissing only hides nodes on the canvas; it does **not** delete the
+    underlying documents, and you can add them back at any time. Use **Clear
+    graph** (bottom-right toolbar) to wipe the canvas and start over.
+- **Take the styling further.** You already set labels and icons at the start of
+  this step. As a fun next step, try attribute-based styling rules — for example,
+  color every movie with `vote_average >= 8` gold to make the crowd-pleasers pop.
 
 ## Next steps
 
