@@ -134,11 +134,12 @@ arango-license-key   Opaque   2      10s
 
 ## Step 4: Install the Operator
 
-Install the [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
-(`kube-arangodb`) with Helm. It watches your declarations and creates the
-matching Kubernetes resources; nothing database-related runs until you declare
-it in the next step. For how the pieces fit together, see the
-[architecture overview](../architecture.md).
+In this step, you install the ArangoDB Kubernetes Operator (`kube-arangodb`)
+with Helm using the command below. The Operator watches your declarations and
+creates the matching Kubernetes resources; nothing database-related runs until
+you declare it in the next step. For background on the Operator, see its
+[project page](https://arangodb.github.io/kube-arangodb/); for how the pieces
+fit together, see the [architecture overview](../architecture.md).
 
 This tutorial installs and was validated with ArangoDB Kubernetes Operator version `1.4.2`.
 Newer releases are listed on [GitHub](https://github.com/arangodb/kube-arangodb/releases/),
@@ -198,9 +199,17 @@ example, an `arm64` Operator on `amd64` machines). Check the deployment status:
 kubectl get deployment arango-operator-operator --namespace arango -o yaml
 ```
 
-The `status` section reports an error about unschedulable pods or a node
-affinity mismatch. If so, correct the `ARCH` value and rerun the `helm upgrade`
-command above.
+In the `status.conditions` section, look for a condition with
+`reason: MinimumReplicasUnavailable` and the message
+`Deployment does not have minimum availability`. This means the pod cannot be
+scheduled. To confirm the cause is the architecture, inspect the pod:
+
+```sh
+kubectl describe pods --namespace arango --selector app.kubernetes.io/name=kube-arangodb-enterprise
+```
+
+The `Events` section shows a node affinity or `nodeSelector` mismatch. If so,
+correct the `ARCH` value and rerun the `helm upgrade` command above.
 
 ## Step 5: Create a deployment
 
@@ -249,17 +258,19 @@ EOF
 Watch the pods start:
 
 ```sh
-kubectl get pods --namespace arango --watch  # Ctrl+C to stop watching
+# Refreshes in place; Ctrl+C to stop.
+# macOS: install with `brew install watch` (or use `kubectl get pods --namespace arango --watch`).
+watch -n 1 kubectl get pods --namespace arango
 ```
 
 After a few minutes, the Agent, DB-Server, and Coordinator pods
 (`deployment-agnt-*`, `deployment-prmr-*`, `deployment-crdn-*`) and a gateway
 pod (`deployment-gway-*`) reach the `Running` state. The first start is slow
 because container images are being pulled; this is expected and only happens
-once. Because `--watch` refreshes only when something changes, a long pause with
-no new output is normal while images download.
+once. The display refreshes every second, so a long stretch with no change is
+normal while images download.
 
-If the pods stay `Pending` and `--watch` never makes progress, the deployment
+If the pods stay `Pending` and never make progress, the deployment
 architecture most likely does not match your nodes (for example, an `arm64`
 deployment on `amd64` machines). List the pods and inspect the stuck one:
 
@@ -512,7 +523,9 @@ The Operator now downloads and starts each platform service. Watch the pods
 until they are all up:
 
 ```sh
-kubectl get pods --namespace arango --watch  # Ctrl+C to stop watching
+# Refreshes in place; Ctrl+C to stop.
+# macOS: install with `brew install watch` (or use `kubectl get pods --namespace arango --watch`).
+watch -n 1 kubectl get pods --namespace arango
 ```
 
 The first run takes several minutes because the service images are large and are
@@ -541,10 +554,9 @@ platform-monitoring-grafana-xxxxxxxxx-xxxxx             2/2     Running   0     
 platform-monitoring-prometheus-server-xxxxxxxxx-xxxxx   3/3     Running   0          16m
 ```
 
-Because `--watch` refreshes only when something changes, it never prints a clear
-"finished" line. The reliable way to confirm the platform is fully up is to
-check the higher-level platform services, which should all report `READY` as
-`True`:
+Watching the pod list shows readiness at a glance, but the reliable way to
+confirm the platform is fully up is to check the higher-level platform services,
+which should all report `READY` as `True`:
 
 ```sh
 kubectl get arangoplatformservices --namespace arango
