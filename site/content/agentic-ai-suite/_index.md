@@ -87,6 +87,14 @@ The services of the Agentic AI Suite work with OpenAI-compatible APIs (OpenAI,
 OpenRouter, and other compatible providers) as well as self-hosted models served
 through Triton Inference Server.
 
+"OpenAI-compatible" here has a specific meaning: the suite talks to providers
+through the OpenAI Chat Completions client, so an endpoint must implement the
+`/v1/chat/completions` contract that client expects (and `/v1/embeddings` for
+embedding models). An endpoint that exposes only a different API surface is not
+supported, even if it is marketed as OpenAI-compatible. Some newer OpenAI models
+require the Responses API (`/v1/responses`) instead; the Importer and AutoGraph
+detect this and fall back automatically.
+
 A model is listed as supported by the suite only if it works seamlessly across
 the Importer, Retriever, and AutoGraph services. Individual services may also
 work with additional models — for the full list available to a specific

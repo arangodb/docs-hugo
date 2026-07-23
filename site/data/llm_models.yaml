@@ -97,8 +97,35 @@ providers:
     id: openrouter
     api: OpenAI-compatible
     models:
-      # OpenRouter also routes to many OpenAI, Anthropic, and Google models
-      # listed above; the entry below is the documented OpenRouter default.
+      # OpenRouter also routes to many OpenAI, Anthropic, and Google models.
+      # The recommended Importer/Retriever/AutoGraph models below mirror the
+      # OpenAI list and are validated through OpenRouter as well;
+      # mistralai/mistral-nemo is the documented OpenRouter default.
+      - name: gpt-5.4-mini
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: gpt-5.4-nano
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: gpt-5-mini
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: gpt-5-nano
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: gpt-5
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: o3
+        type: chat
+        services: [importer, retriever, autograph]
+      - name: text-embedding-3-small
+        type: embedding
+        services: [importer, retriever, autograph]
+        default_for: [importer, retriever]
+      - name: text-embedding-3-large
+        type: embedding
+        services: [importer, retriever, autograph]
       - name: mistralai/mistral-nemo
         type: chat
         services: [importer, retriever, autograph]

@@ -11,6 +11,13 @@ OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI
 OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
 OpenAI-compatible endpoint.
 
+"OpenAI-compatible" means the endpoint must implement the contract used by the
+OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
+embedding models). An endpoint that exposes only a different API surface is not
+supported. Some newer OpenAI models require the Responses API (`/v1/responses`)
+instead; the Importer detects this and falls back automatically (see
+[OpenAI Responses API fallback](#openai-responses-api-fallback)).
+
 ## Supported models
 
 The following models are validated for use with the Importer service. For the full
