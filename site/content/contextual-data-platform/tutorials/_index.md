@@ -16,3 +16,9 @@ For task-focused instructions on running a real deployment, see the
 - [**Evaluate locally**](evaluate-locally.md): Go from an empty machine to a
   running Arango Contextual Data Platform on a local Kubernetes cluster, ready
   for the follow-up tutorials.
+
+- [**Example dataset**](dataset.md): Import an example dataset (a movie graph)
+  and explore the data with the Graph Visualizer.
+
+- [**Core database features**](core.md): Learn the basics of the database system
+  at the core of the data platform (ArangoDB) and its query language AQL.
