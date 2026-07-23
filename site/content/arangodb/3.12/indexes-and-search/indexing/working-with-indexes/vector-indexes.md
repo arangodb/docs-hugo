@@ -25,6 +25,11 @@ Once enabled for a deployment, it cannot be disabled anymore because it
 permanently changes how the data is managed by the RocksDB storage engine
 (it adds an additional column family).
 
+Enabling the feature has no impact on the performance of your deployment. It
+only adds an additional RocksDB column family that stays empty and idle until
+you actually create a vector index. Regular workloads that don't use vector
+indexes are unaffected.
+
 To restore a dump that contains vector indexes, the `--vector-index`
 startup option needs to be enabled on the deployment you want to restore to.
 {{< /warning >}}
