@@ -51,12 +51,6 @@ and `ActedIn` hold the relationships: every edge is a document that additionally
 has a `_from` and a `_to` attribute, each pointing at a document by its `_id`.
 Edges are what let us traverse the graph later in this tutorial.
 
-To see this concretely, open the web interface, browse to the `Movies`
-collection, and open the document with the key `8961` (Bad Boys II). Note its
-`_key`, `_id`, and `_rev`, and the plain JSON fields alongside them —
-`title`, `release_date`, `vote_average`, and the rest. This is the same document
-we now start querying.
-
 ## Step 2: Run your first AQL query
 
 **AQL** (the ArangoDB Query Language) is the single language you use for
@@ -103,7 +97,7 @@ rather than a black box.
 ## Step 3: Read documents
 
 The most direct read is a lookup by document ID with the `DOCUMENT()` function.
-This fetches exactly one document — the one you opened in Step 1:
+This fetches exactly one document (Bad Boys II):
 
 ```aql
 RETURN DOCUMENT("Movies/8961")
@@ -269,13 +263,19 @@ FOR m IN Movies
 Explain reports a scan over the whole `Movies` collection: ArangoDB has no faster
 way to find the matching title.
 
-Now create an index. In the web interface, open the `Movies` collection, go to
-its **Indexes** tab, and add a **persistent index** on the `title` field.
-Run **Explain** on the same query again: the plan now uses an index lookup
-instead of a collection scan, because ArangoDB can jump straight to the matching
-document. Indexes speed up filtering and sorting on the indexed attributes, at
-the cost of a little extra storage and slightly slower writes — so you index the
-fields you query on, not every field.
+Now create an index and check again:
+
+1. In the left sidebar of the web interface, go to
+  **Management** > **Collections** and open the `Movies` collection.
+2. Go to the **Indexes** tab.
+3. Add a **persistent index** on the `title` field.
+4. Run **Explain** on the same query once more: the plan now uses an index lookup
+   instead of a collection scan, because ArangoDB can jump straight to the matching
+   document.
+   
+Indexes speed up filtering and sorting on the indexed attributes, at the cost of
+a little extra storage and slightly slower writes — so you index the fields you
+query on, not every field.
 
 ## Step 9: Join collections
 
@@ -306,10 +306,12 @@ FOR m IN Movies
     RETURN { title: m.title, embedding_dimensions: LENGTH(e.embedding) }
 ```
 
-Both queries produce the same result; the `DOCUMENT()` form is preferred when you
-join on the key, because it is a direct lookup rather than a search. This kind of
-join follows a shared *value*. When relationships are modeled as edges instead,
-you follow them with a graph traversal — that is the next step.
+Both queries produce the same result. The `DOCUMENT()` function is typically a
+bit faster when looking up a few individual documents but the `FOR` loop
+is better when looking up many documents.
+
+This kind of join follows a shared *value*. When relationships are modeled as
+edges instead, you follow them with a graph traversal — that is the next step.
 
 ## Step 10: Traverse the graph
 
@@ -341,6 +343,16 @@ FOR person IN 1..1 INBOUND "Movies/862" ActedIn
   FOR other IN 1..1 OUTBOUND person ActedIn
     FILTER other._id != "Movies/862"
     RETURN DISTINCT other.title
+```
+
+Due to the topology of the example dataset (Movie → Person → Movie), this can be
+simplified to a single traversal with a depth of 2 and following inbound as well
+as outbound edges using `ANY` as the direction:
+
+```aql
+FOR movie IN 2..2 ANY "Movies/862" ActedIn
+    FILTER movie._id != "Movies/862"
+    RETURN DISTINCT movie.title
 ```
 
 You can vary the depth range (`1..2`), the direction (`INBOUND`, `OUTBOUND`, or

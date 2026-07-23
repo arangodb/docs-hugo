@@ -35,7 +35,7 @@ You are given two things to work with:
 
 ## Step 1: Understand the graph model
 
-- **Vertex collections** (the "things"):
+- **Document (node) collections** (the "things"):
   - `Movies` — one document per film (`title`, `overview`, `release_date`,
     `budget`, `revenue`, `vote_average`, …); `_key` is the TMDb id.
   - `People` — actors and crew (deduplicated `cast` + `crew`).
@@ -49,8 +49,12 @@ You are given two things to work with:
   - `HasGenre`, `HasKeyword`, `ProducedBy`, `ProducedInCountry`,
     `HasSpokenLanguage`, `PartOfCollection` — Movies → facet nodes.
   - `Rated` — Users → Movies (with `rating`, `timestamp`).
-To make `_key`, `_from`, and `_to` concrete, here is an abbreviated `Movies`
-node document. Its `_key` is the TMDb id, so its full document ID is
+
+Every document whether node or edge has a `_key`, which is a user-provided or
+automatically generated string that is unique within its collection.
+
+To make `_key`, `_id`, `_from`, and `_to` concrete, here is an abbreviated
+`Movies` node document. Its `_key` is the TMDb id, so its full document ID is
 `Movies/8961` (other attributes such as `overview`, `budget`, `revenue`, and
 `vote_average` are omitted here):
 
@@ -86,8 +90,8 @@ replaced independently, without touching the movie data.
   from its last step running so the platform is available on `localhost:8529`.
 - **Docker** or **Podman** installed. You do not install the ArangoDB client
   tools (`arangoimport`, `arangosh`) directly — they ship inside the
-  `arangodb/enterprise` container image, and the script runs there. This also
-  avoids the fact that the client tools are only distributed for Linux.
+  `arangodb/enterprise` container image, and the script runs there, independent
+  of your type of operating system.
 - The provided `jsonl/` directory and `import.sh` script on disk, in the same
   directory.
 - The endpoint and credentials for your data platform (you pass these to the
@@ -100,12 +104,8 @@ replaced independently, without touching the movie data.
 Before you run the import, check that the target database (`movies` by default,
 or whatever you set `ARANGO_DB` to) does not already exist. The script creates
 it only if it is missing, but if a database of that name is already present, the
-import runs **into it**, adding the dataset's collections alongside your existing
-data and overwriting any documents that share a `_key`. On a fresh
-[Evaluate locally](evaluate-locally.md) platform there is nothing to lose, but on
-any deployment you care about, list the databases first (in the web interface, or
-with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
-`movies` is taken.
+import adds the dataset's collections alongside your existing data or
+**overwrites** it.
 {{< /warning >}}
 
 - The script is a POSIX shell script that calls only `arangoimport` and
@@ -124,18 +124,13 @@ with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
     arangodb/enterprise:latest sh import.sh
   ```
 
-  The password never appears on a command line: `read -rs` reads it without
-  echoing or storing it in your shell history, `-e ARANGO_PASSWORD` (no `=value`)
-  passes it into the container **by name** rather than by value, and inside the
-  container the script references it as the placeholder `@ARANGO_PASSWORD@`, which
-  the ArangoDB tools substitute from the environment at parse time. As a result it
-  shows up in neither the host nor the container process list.
 - From inside a container, `localhost` is the container itself, not your machine,
   so the endpoint uses `host.docker.internal` to reach the `port-forward` running
   on your host. With **Podman**, replace `docker` with `podman` and drop the
   `--add-host` line (Podman resolves `host.docker.internal` on its own). The
-  endpoint uses `https://` because the platform serves HTTPS; the self-signed
+  endpoint uses `https://` because the data platform serves HTTPS; the self-signed
   certificate is accepted without extra flags.
+
 - On **SELinux**-enforcing hosts (Fedora, RHEL, CentOS), the container cannot read
   a bind-mounted directory until it is relabeled, and the tools otherwise fail
   with a permission error even though the files are readable on your host. The
@@ -144,6 +139,7 @@ with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
   leave it in either way. (Use lowercase `:z` instead if the directory is shared
   with other containers, or `--security-opt label=disable` to skip relabeling
   altogether.)
+
 - The script reads its connection settings from environment variables, each with
   a default, so you can override any of them (with `-e` above) without editing
   the script:
@@ -153,6 +149,7 @@ with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
   - `ARANGO_PASSWORD` (default empty)
   - `ARANGO_FORCE_REIMPORT` (default unset) — when set to any value, disables the
     skip-if-already-complete check described below and reimports every collection.
+
 - The script performs the following steps, in order:
   1. Creates the `movies` database.
   2. Imports every **document** collection for the graph nodes with
@@ -160,6 +157,7 @@ with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
   3. Imports `MovieEmbeddings`.
   4. Imports every **edge** collection with `--create-collection-type edge`.
   5. Registers the `MoviesGraph` as a **named graph**.
+
 - Re-running the script is safe, so if the import is interrupted (for example, a
   network timeout against a remote deployment), just run it again to continue.
   The database and named graph are created only if missing. For each collection,
@@ -172,6 +170,7 @@ with `db._databases()` in `arangosh`) and pick an unused `ARANGO_DB` name if
     resumes where it stopped.
   - Edge collections have no `_key` to deduplicate on, so they use `--overwrite`
     and are truncated and reloaded cleanly rather than duplicated.
+
 - The count check is a fast guard against unnecessary reloads, not an integrity
   check — a matching count does not prove the stored documents are correct. If
   you suspect a collection's data is wrong despite a matching count, set
@@ -193,15 +192,10 @@ created.
   `Rated`, …). Each row shows its document count. A non-zero count for `Movies`
   and the other collections confirms the import populated them, rather than only
   creating empty collections.
-- **Open a document.** Click the `Movies` collection and open the document with
-  the key `8961` (Bad Boys II). You see the same fields introduced in Step 1 —
+- **Open a document.** Click the `Movies` collection and open a document.
+  You see the same fields introduced in Step 1 —
   `title`, `release_date`, and the rest — which confirms the JSONL content
   imported intact, not just that a document with the right count exists.
-- **Optionally, confirm it is reachable by AQL.** Open the **Queries** editor and
-  fetch the same document directly:
-  ```aql
-  RETURN DOCUMENT("Movies/8961")
-  ```
 
 ## Step 5: Explore the graph in the visualizer
 
@@ -213,36 +207,35 @@ documentation.
 
 When it first opens, the visualizer seeds the canvas with a random node and its
 immediate neighborhood so it is not empty. That is just a starting sample, not
-part of this walkthrough, so clear it first for a clean slate: click **Clear
-graph** in the bottom-right toolbar. You then build the canvas up deliberately in
-the steps below.
+part of this walkthrough, so clear it first for a clean slate: click
+**Clear graph** in the bottom-right toolbar. You then build the canvas up
+deliberately in the steps below.
 
 - **Set up readable labels and icons first.** By default every node is a grey
   circle labeled with its document ID, which becomes unreadable as soon as you
   expand one. Configure this once through the **Legend** panel on the right:
   - For `Movies`, set the **Label** to `title` and give it a clapperboard icon
-    (open the icon picker and search for *movie*).
+    (open the icon picker and search for `movie`).
   - For `People`, set the **Label** to `name` and give it a user-silhouette icon
-    (search for *account*); optionally choose a different color so people and
+    (search for `account`); optionally choose a different color so people and
     movies are easy to tell apart at a glance.
   - For the `ActedIn` edge, set the **Label** to `character`.
 
-  If a collection is not listed in the Legend yet, it appears once nodes of that
-  type are on the canvas (after the expand below), so you can style it then. From
-  here on, anything you add is labeled by its title, name, or character instead of
-  an opaque ID.
+  From here on, anything you add is labeled by its title, name, or character
+  instead of an opaque ID.
+
 - **Add a node by its document ID.**
-  - Click the **Search & add nodes to canvas** field in the top bar to open the
-    add-nodes dialog.
-  - Choose the **Node type** `People` and type the ID **`10980`** (Daniel
-    Radcliffe) into the search field. The search matches any key *containing* what
-    you type, so the list shows every person whose key includes `10980` (such as
-    `People/109802` and `People/1098026`), each labeled by its document ID and key.
-    The exact match `People/10980` is at the top of the list — select it and click
-    **Add 1 node**.
-  - The node appears as **Daniel Radcliffe** with the person icon, using the
-    `name` label you set. In case you don't see the node, click **Fit all nodes**
-    in the bottom-right toolbar to bring it into view.
+  1. Click the **Search & add nodes to canvas** field in the top bar to open the
+     add-nodes dialog.
+  2. Choose the **Node type** `People` and type the ID **`10980`** (Daniel
+     Radcliffe) into the search field. The search matches any key *containing* what
+     you type, so the list shows every person whose key includes `10980` (such as
+     `People/109802` and `People/1098026`), each labeled by its document ID and key.
+     The exact match `People/10980` is at the top of the list — select it and click
+     **Add 1 node**.
+  3. The node appears as **Daniel Radcliffe** with the person icon, using the
+     `name` label you set. In case you don't see the node, click **Fit all nodes**
+     in the bottom-right toolbar to bring it into view.
 - **Expand the node to see its neighborhood.**
   - Right-click the Daniel Radcliffe node, click **Expand (#)**, then **All (#)**.
     This pulls in the 22 movies he acted in through `ActedIn` edges — each movie
@@ -254,32 +247,30 @@ the steps below.
     rating edges, and those `Users` nodes carry no attributes — they would clutter
     the canvas without adding anything to read.
 - **Add nodes with an AQL query (a basic filter).**
-  - Click **Queries** in the top bar, open the **Queries** tab, and click
-    **New query**.
-  - Enter a simple filter that returns whole documents — no traversal yet — and
-    click **Run query**:
-    ```aql
-    FOR m IN Movies
-      FILTER m.vote_average >= 8 AND m.vote_count >= 5000
-      RETURN m
-    ```
-  - The matching movie nodes appear on the canvas; right-click any of them to
-    **Expand (#)** and explore from there.
-  - This is the core pattern to remember: a query returns documents, and those
-    documents become nodes on the canvas.
+  1. Click **Queries** in the top bar, open the **Queries** tab, and click
+     **New query**.
+  2. Enter a simple filter that returns whole documents — no traversal yet — and
+     click **Run query**:
+     ```aql
+     FOR m IN Movies
+       FILTER m.vote_average >= 8 AND m.vote_count >= 5000
+       RETURN m
+     ```
+  3. The matching movie nodes appear on the canvas. This is the core pattern to
+     remember: a query returns documents, and those become nodes on the canvas.
 - **Find the shortest path between two actors (Daniel Radcliffe → Robert De Niro).**
-  - Daniel Radcliffe (**`People/10980`**) is already on the canvas from the
-    earlier steps; add Robert De Niro (**`People/380`**) with the search field so
-    both actor nodes are present.
-  - **Select exactly two nodes** (click one, then {{< kbd "Shift" >}}- or
-    {{< kbd "Ctrl" >}}-click the other), right-click one of them, and click
-    **Shortest Path**. The nodes and edges of one shortest path between them are
-    added to the canvas — no AQL required.
-  - Expected path: Daniel Radcliffe → *The Tailor of Panama* → Dylan Baker →
+  1. Daniel Radcliffe (**`People/10980`**) is already on the canvas from the
+     earlier steps; add Robert De Niro (**`People/380`**) with the search field so
+     both actor nodes are present.
+  2. **Select exactly two nodes** (click one, then {{< kbd "Shift" >}}- or
+     {{< kbd "Ctrl" >}}-click the other), right-click one of them, and click
+     **Shortest Path**. The nodes and edges of one shortest path between them are
+     added to the canvas — no AQL required.
+  3. Expected path: Daniel Radcliffe → *The Tailor of Panama* → Dylan Baker →
     *Hide and Seek* → Robert De Niro.
-  - This is the classic "degrees of separation" question. Notice how the path
-    alternates between person and movie hops, because `ActedIn` always connects a
-    person to a movie.
+  4. This is the classic "degrees of separation" question. Notice how the path
+     alternates between person and movie hops, because `ActedIn` always connects a
+     person to a movie.
 - **Tidy up the canvas by removing nodes.**
   - The canvas gets busy fast. To focus, select the nodes you don't need,
     right-click one, and click **Dismiss # nodes** — or select the few you want
