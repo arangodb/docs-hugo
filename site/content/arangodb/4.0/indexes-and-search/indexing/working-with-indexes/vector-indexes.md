@@ -118,6 +118,13 @@ centroids and the quality of vector search thus degrades.
   - **trainingIterations** (number, _optional_): The number of iterations in the
     training process. Default: `25`. Smaller values lead to a faster index
     creation but may yield worse search results. 
+  - **numberOfDocsPerCentroid** (number, _optional_): How many vectors per
+    centroid to include in the random sample used for training. Default: `100`.
+    The training does not use the full dataset but a sample bounded to
+    `nLists` × `numberOfDocsPerCentroid` vectors. A larger value can improve the
+    training quality but increases the memory and time required for training.
+    See [Resource usage during index creation](#resource-usage-during-index-creation)
+    for details. It must be `1` or greater.
   - **factory** (string, _optional_): You can specify an index factory string that is
     forwarded to the underlying Faiss library, allowing you to combine different
     advanced options. Examples:
@@ -130,6 +137,53 @@ centroids and the quality of vector search thus degrades.
     If you don't specify an index factory, the value is equivalent to
     `IVF<nLists>,Flat`. For more information on how to create these custom
     indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
+
+## Resource usage during index creation
+
+Building a vector index temporarily increases the CPU and memory usage of the
+server. Knowing what happens during the build lets you anticipate how much
+additional load to expect. The index is built in two phases.
+
+**1. Training**
+
+The index first learns how to partition the vector space into `nLists` groups,
+each represented by a centroid. To do so, it takes a random sample of your
+vectors and runs an iterative clustering algorithm over that sample. The full
+dataset is not loaded into memory. Instead, the number of vectors pulled into
+memory for training is bounded to at most `numberOfDocsPerCentroid` per group
+(`100` by default), so up to `nLists` × `numberOfDocsPerCentroid` vectors in
+total, but never more than the number of vectors that actually exist.
+
+The sample is held in memory as plain 32-bit floating-point numbers, so you can
+estimate its peak memory as:
+
+```
+nLists × numberOfDocsPerCentroid × dimension × 4 bytes
+```
+
+For example, with `nLists` set to `1000`, the default `numberOfDocsPerCentroid`
+of `100`, and a `dimension` of `768`, the sample occupies about 290 MB. The
+clustering computation needs some more memory on top of that. Training is
+CPU-bound, and a larger `nLists`, `numberOfDocsPerCentroid`, or `dimension`
+makes it take longer.
+
+Because the sample size does not depend on how many documents you have, the
+memory needed for training stays roughly the same whether the collection holds
+a hundred thousand or a hundred million vectors (as long as there are at least
+`nLists` × `numberOfDocsPerCentroid` of them).
+
+**2. Indexing**
+
+Once the centroids are known, every vector is read, assigned to its nearest
+centroid, and encoded into the index. This phase makes a full pass over all
+documents, so unlike training, its cost grows with the number of vectors. It is
+mostly CPU-bound and also determines the final on-disk size of the index.
+
+In short, the number of groups (`nLists`) and the vector `dimension` drive the
+training cost, while the number of documents drives the indexing cost. The index
+size grows with the number of documents and the vector `dimension`, and also
+depends on the encoding (the `factory` option). On a cluster, these counts apply
+per shard, as each shard trains and builds its own index.
 
 ## Interfaces
 
