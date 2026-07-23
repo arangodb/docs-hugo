@@ -71,7 +71,7 @@ You may consider using AI tools for this.
 - **Custom Service Deployment**: Upload code packages (`.tar.gz` files) or
   provide Docker image URLs to deploy running services.
 
-- **Apps (Custom UIs)**: Register a service that serves a UI as an App and use
+- **Apps**: Register a service that serves a UI as an App and use
   it embedded in the platform's Apps catalog.
 
 - **Multiple Runtimes**: For code-based deployments, supported runtime

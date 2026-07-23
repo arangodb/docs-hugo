@@ -50,23 +50,6 @@ See [Package Your Code](package-code/) for instructions.
 8. Click **Deploy Service**. The platform uploads your package, provisions
    the resources, and starts your service in the Kubernetes cluster.
 
-### Register a Service as an App
-
-If your service serves a user interface (HTML) at the root path (`/`), you can
-register it as an **App** so it becomes available in the platform's Apps catalog
-and its UI is rendered embedded in the web interface. This works for both code
-package and Docker image deployments.
-
-1. Deploy your service from a code package or a Docker image as described above.
-2. Before deploying, enable **Register as App**.
-3. Enter a **Display name** and a **Description**. These identify your app in
-   the Apps catalog.
-4. Click **Deploy Service** (or **Deploy Container**).
-
-Once deployed, the service appears in the **Packages** or **Containers** list
-with an **Apps** badge. You can then open it from the Apps catalog. For details,
-see [Host a UI with Apps](apps/).
-
 ### Update a Code Package Service
 
 To deploy a new version of an existing service:
@@ -99,6 +82,26 @@ unique identifiers.
 
 Your Docker image must expose an HTTP server (default port: `8000`) and handle
 requests at the root path (`/`).
+
+## Register a Service as an App
+
+If your service serves a user interface (HTML) at the root path (`/`), you can
+register it as an **App** so it becomes available in the platform's Apps catalog
+and its UI is rendered embedded in the web interface. This works for both code
+package and Docker image deployments.
+
+1. Deploy your service from a code package (see
+   [Deploy Service from a Code Package](#deploy-service-from-a-code-package)) or
+   a Docker image (see
+   [Deploy Service from a Docker Image](#deploy-service-from-a-docker-image)).
+2. Before deploying, enable **Register as App**.
+3. Enter a **Display name** and a **Description**. These identify your app in
+   the Apps catalog.
+4. Click **Deploy Service** (or **Deploy Container**).
+
+Once deployed, the service appears in the **Packages** or **Containers** list
+with an **Apps** badge. You can then open it from the Apps catalog. For details,
+see [Host a UI with Apps](apps/).
 
 ## Stop a Service
 

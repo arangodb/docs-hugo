@@ -8,13 +8,12 @@ description: >-
 ---
 In addition to running headless services and APIs, the Container Manager can
 host services that ship their own **user interface**. A service registered this
-way becomes an **App** (also referred to as a *Custom UI*): it appears in the
-platform's **Apps** catalog and its UI is rendered embedded in the Arango
-Platform web interface.
+way becomes an **App**: it appears in the platform's **Apps** catalog and its UI
+is rendered embedded in the Arango Platform web interface.
 
 Apps are useful for surfacing custom dashboards, admin panels, and interactive
-tools next to your data, as well as for showcasing prototypes and
-proof-of-concept demos that are not part of the core product.
+tools next to your data. This is also where you may find prototypes and
+proof-of-concept demos, when enabled for you by ArangoDB.
 
 An App is deployed exactly like any other code package or Docker image through
 the [Container Manager](web-interface/). The only differences are that you
@@ -38,9 +37,10 @@ The platform routes the embedded app's traffic to your service's root path, so
 no additional configuration is required beyond serving the page at `/`.
 
 {{< tip >}}
-Because the platform rewrites the app's entry point to `/` at your service,
-serve the UI at `/` and use relative paths for any assets and API calls your
-page makes.
+In the web interface, the embedded app is served under its own URL path, but
+the platform forwards these requests to the root path (`/`) of your service.
+To keep assets and API calls working under the app's URL path, serve the UI at
+`/` and reference any assets and API endpoints using relative paths.
 {{< /tip >}}
 
 ## Register a service as an App

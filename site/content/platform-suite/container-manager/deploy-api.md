@@ -25,10 +25,10 @@ To deploy services via the API, you need:
 
 Upload your application archive to the storage backend via the FileManager service:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/" >}}
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -F "name=<APP_NAME>" \
   -F "version=<APP_VERSION>" \
@@ -62,10 +62,10 @@ Save the `name` and `version` values as you will need them in the deployment ste
 
 After uploading your archive, deploy it as a running service:
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" >}}
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -104,10 +104,10 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 Provide your own Docker image URL to deploy a service directly, without
 uploading a code package.
 
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" >}}
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -138,7 +138,7 @@ with the names of [Kubernetes Secrets](https://kubernetes.io/docs/concepts/conta
 These secrets must exist in the target namespace before deployment.
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -177,7 +177,7 @@ object of the deploy request:
 For example, to deploy a code-based service and register it as an App:
 
 ```bash
-curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
+curl -X POST "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/uds" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -207,7 +207,7 @@ Once deployed, your service is accessible via HTTP at a specific endpoint patter
 
 If you provided `db_name` during deployment, your service is accessible at:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_service/uds/_db/{db_name}/{app_instance_name}/" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_service/uds/_db/{db_name}/{app_instance_name}/" >}}
 
 {{< /tab >}}
 
@@ -215,7 +215,7 @@ If you provided `db_name` during deployment, your service is accessible at:
 
 If you did not provide `db_name`, your service is accessible at:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_service/uds/_global/{app_instance_name}/" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_service/uds/_global/{app_instance_name}/" >}}
 
 {{< /tab >}}
 
@@ -227,10 +227,10 @@ All HTTP requests to these paths are routed to your container's service.
 
 Get a list of the deployed services, including services registered as Apps:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/list_services" >}}
 
 ```bash
-curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" \
+curl -X GET "https://<EXTERNAL_ENDPOINT>/_platform/acp/v1/list_services" \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
@@ -272,7 +272,7 @@ Container-based deployments do not use the FileManager service.
 
 Get a list of all uploaded services:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/" >}}
 
 **Query Parameters:**
 
@@ -310,7 +310,7 @@ Get a list of all uploaded services:
 
 Get all versions of a specific service:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/{name}" >}}
 
 **Query Parameters:**
 
@@ -350,7 +350,7 @@ Get all versions of a specific service:
 
 Get detailed information about a specific service version:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/{name}/{version}" >}}
 
 **Response:**
 
@@ -371,10 +371,10 @@ Get detailed information about a specific service version:
 
 Download the uploaded service file:
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/{name}/{version}/download" >}}
 
 ```bash
-curl -X GET "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc/<SERVICE_NAME>/<VERSION>/download" \
+curl -X GET "https://<EXTERNAL_ENDPOINT>/_platform/filemanager/global/byoc/<SERVICE_NAME>/<VERSION>/download" \
   -H "Authorization: Bearer <JWT_TOKEN>" \
   -o service.tar.gz
 ```
@@ -391,7 +391,7 @@ from a code package:
 ```bash
 #!/bin/bash
 
-ENDPOINT="https://your-platform.example.com:8529"
+ENDPOINT="https://your-platform.example.com"
 TOKEN="your_jwt_token"
 SERVICE_NAME="recommendation-engine"
 SERVICE_VERSION="1.0.0"
@@ -435,7 +435,7 @@ A complete workflow for deploying a service from a Docker image:
 ```bash
 #!/bin/bash
 
-ENDPOINT="https://your-platform.example.com:8529"
+ENDPOINT="https://your-platform.example.com"
 TOKEN="your_jwt_token"
 IMAGE_URL="docker.io/myorg/my-web-service:1.0.0"
 INSTANCE_NAME="my-web-service"
