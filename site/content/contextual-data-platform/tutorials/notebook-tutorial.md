@@ -56,10 +56,10 @@ all of it is in place.
 - **A folder of documents** to ingest, in one of the
   [supported file formats](../../agentic-ai-suite/autograph/setup.md#supported-file-formats).
   To reproduce this tutorial exactly, download the ready-made sample corpus
-  [`corpus.zip`](/notebooks/corpus.zip) (50 short tech articles); unzipping it
+  `corpus.zip` (50 short tech articles); unzipping it
   produces a `files/` folder.
 - **The notebook file**: download
-  [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb).
+  `Autograph_DEMO.ipynb`.
 
 {{< tip >}}
 For large-scale ingestion of PDF and Office documents, GPUs are recommended.
