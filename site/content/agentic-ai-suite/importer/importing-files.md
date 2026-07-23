@@ -8,7 +8,7 @@ weight: 50
 
 This page covers the import endpoints and how to monitor running imports.
 Before reading it, make sure you've finished the
-[Quickstart](quickstart.md) (project created, service installed) and
+[Setup](setup.md) (project created, service installed) and
 [LLM Configuration](llm-configuration.md) (chat and embedding providers
 configured).
 

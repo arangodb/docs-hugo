@@ -96,12 +96,13 @@ expressions as specified in the documentation for the AQL function
 
 ## Array comparison operators
 
-Most comparison operators also exist as an *array variant*. In the array variant,
-a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, or `NOT IN` operator is prefixed with
-an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's behavior to
-compare the individual array elements of the left-hand argument to the right-hand
-argument. Depending on the quantifying keyword, all, any, or none of these
-comparisons need to be satisfied to evaluate to `true` overall.
+All comparison operators also exist as an *array variant*. In the array variant,
+a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, `NOT IN`, `LIKE`, `NOT LIKE`, `=~`, or `!~` operator
+is prefixed with an `ALL`, `ANY`, `NONE`, or `AT LEAST (<expression>)` keyword.
+This changes the operator's behavior to compare the individual array elements of
+the left-hand argument to the right-hand argument. Depending on the quantifying
+keyword, all, any, none, or at least the specified number of these comparisons
+need to be satisfied to evaluate to `true` overall.
 
 You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements
@@ -124,16 +125,40 @@ calculate it dynamically using an expression.
 [ 1, 2, 3 ]  ALL >  2             // false
 [ 1, 2, 3 ]  ALL >  0             // true
 [ 1, 2, 3 ]  ALL >=  3            // false
-["foo", "bar"]  ALL !=  "moo"     // true
-["foo", "bar"]  NONE ==  "bar"    // false
-["foo", "bar"]  ANY ==  "foo"     // true
+
+["foo", "bar"]  ALL !=  "moo"        // true
+["foo", "bar"]  NONE ==  "bar"       // false
+["foo", "bar"]  ANY ==  "foo"        // true
+["foo", "bar"]  ALL LIKE  "%o%"      // false
+["foo", "bar"]  ANY LIKE  "b%"       // true
+["foo", "bar"]  NONE LIKE  "_a_"     // false
+["foo", "bar"]  ANY NOT LIKE  "f__"  // true
 
 [ 1, 2, 3 ]  AT LEAST (2) IN  [ 2, 3, 4 ]  // true
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
+["foo", "bar"]  AT LEAST (3) LIKE  "_oo"   // false
+
+["foo", "bar"]  ALL =~  "[a-fro]{3}"  // true
+["foo", "bar"]  ANY !~  "^mo+$"       // true
 ```
 
-Note that these operators do not utilize indexes in regular queries.
-The operators are also supported in [SEARCH expressions](high-level-operations/search.md),
+The `LIKE`, `NOT LIKE`, `=~`, and `!~` operators work on strings including in
+the array variants. Non-string elements in the left-hand array operand as well
+as non-string values as the right-hand operand are implicitly cast to their
+string representation before matching, so an element like the object `{ "a": 1 }`
+is matched as the string `{"a":1}` and the number `34` as `"34"`.
+
+The pattern matching follows the same rules as the scalar
+[`LIKE` operator](#comparison-operators), using the same wildcards. As with the
+scalar operator, the matching is always case-sensitive; the case-insensitivity
+option of the [`LIKE()` function](functions/string.md#like) is not available here.
+
+The regular expression matching follows the same rules as the scalar
+[`REGEX_TEST()`](functions/string.md#regex_test) AQL function, using the same
+regular expression syntax.
+
+Note that the array comparison operators do not utilize indexes in regular queries.
+The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
 
@@ -230,8 +255,11 @@ RETURN [-x, +y]
 For exponentiation, there is a [numeric function](functions/numeric.md#pow) `POW()`.
 The syntax `base ** exp` is not supported.
 
-For string concatenation, you must use the [`CONCAT()` string function](functions/string.md#concat).
-Combining two strings with a plus operator (`"foo" + "bar"`) does not work!
+The `+` operator is overloaded. It only performs arithmetic addition if both of
+its operands are non-string values. If at least one of the operands is a string,
+it concatenates the operands as strings instead, see
+[String operators](#string-operators). You can also use the
+[`CONCAT()` string function](functions/string.md#concat) to concatenate values.
 Also see [Common Errors](common-errors.md).
 
 ```aql
@@ -246,7 +274,11 @@ Also see [Common Errors](common-errors.md).
 
 The arithmetic operators accept operands of any type. Passing non-numeric values to an 
 arithmetic operator casts the operands to numbers using the type casting rules 
-applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function:
+applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function.
+These casting rules apply to the `-`, `*`, `/`, and `%` operators in all cases, but
+to the `+` operator only if **neither** operand is a string. If an operand of `+`
+is a string, the operation concatenates strings instead, see
+[String operators](#string-operators).
 
 - `null` is converted to `0`
 - `false` is converted to `0`, `true` is converted to `1`
@@ -264,8 +296,6 @@ An arithmetic operation that produces an invalid value, such as `1 / 0`
 aborted, but you may see a warning.
 
 ```aql
-   1 + "a"       // 1
-   1 + "99"      // 100
    1 + null      // 1
 null + 1         // 1
    3 + [ ]       // 3
@@ -278,6 +308,61 @@ null + 1         // 1
   24 / "12"      // 2
    1 / 0         // null (with a 'division by zero' warning)
 ```
+
+Note that none of the operands in the `+` examples above is a string. If an
+operand of `+` is a string, the operands are concatenated instead of being added
+up, for example, `1 + "99"` returns `"199"` and not `100`, see
+[String operators](#string-operators).
+
+## String operators
+
+The `+` operator is overloaded. In addition to performing
+[arithmetic addition](#arithmetic-operators), it concatenates values as strings
+if at least one of its two operands is a string. The other operand is implicitly
+cast to a string using the type casting rules applied by the
+[`TO_STRING()`](functions/type-check-and-cast.md#to_string) function before the
+two strings are joined together.
+
+This is similar to how the `+` operator behaves in JavaScript. Whether `+` adds
+numbers or concatenates strings is decided for each operation individually. The
+operator is left-associative, so a chain of `+` operations is evaluated from left
+to right, and as soon as one side of a `+` is a string, the result is a string.
+
+The following examples show the different cases where `+` concatenates strings:
+
+```aql
+"foo" + "bar"      // "foobar"  (both operands are string literals)
+
+LET name = "Luna"
+"Hello, " + name   // "Hello, Luna"  (one string literal, one string variable)
+
+42 + " apples"     // "42 apples"  (the left-hand operand is cast to a string)
+"answer: " + 42    // "answer: 42"  (the right-hand operand is cast to a string)
+
+"value: " + true   // "value: true"  (true is cast to the string "true")
+"empty: " + null   // "empty: "  (null is cast to an empty string)
+"obj: " + { a: 1 } // "obj: {\"a\":1}"  (the object is cast to its JSON representation)
+```
+
+If **both** operands are non-string values, the `+` operator performs
+[arithmetic addition](#arithmetic-operators) instead:
+
+```aql
+6 + 7              // 13  (numeric addition)
+```
+
+Because the operator is evaluated from left to right, you can force string
+concatenation of non-string values by prepending an empty string. The first `+`
+then has a string operand and produces a string, which makes every subsequent
+`+` concatenate as well:
+
+```aql
+"" + 6 + 7         // "67"  ("" + 6 yields "6", then "6" + 7 yields "67")
+6 + 7 + ""         // "13"  (6 + 7 is added up first, then "13" + "" yields "13")
+```
+
+To concatenate values as strings regardless of their types, you can also use the
+[`CONCAT()` string function](functions/string.md#concat).
 
 ## Ternary operator
 
@@ -354,6 +439,7 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
+- `...` for [spreading arrays](#array-spread-syntax) into array literals
 - `LET [ ] = [ ]` and `FOR [ ] IN [[ ], [ ]]` for [array destructuring](#array-destructuring)
 
 ### Indexed value access
@@ -731,6 +817,53 @@ The question mark operator can be used for nested search:
 - [Nested search with ArangoSearch](../indexes-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 
+### Array spread syntax
+
+The spread syntax `...` lets you insert the elements of an array into an
+array literal you are constructing. Prefix an expression that evaluates to an
+array with three dots (`...`), and each of its elements is added individually to
+the surrounding array, preserving their order. You can use it multiple times and
+freely mix it with regular elements:
+
+```aql
+---
+name: aqlArraySpread_2
+description: ''
+---
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN [1, ...arr1, 4, ...arr2, 7]
+```
+
+The array spread offers a concise alternative to combining arrays with the
+[`PUSH()`](functions/array.md#push) and [`APPEND()`](functions/array.md#append)
+functions. The following query is equivalent to the previous one but harder to
+read and to extend:
+
+```aql
+LET arr1 = [2, 3]
+LET arr2 = [5, 6]
+RETURN PUSH(APPEND(PUSH(APPEND([1], arr1), 4), arr2), 7) // hard to get right
+```
+
+You can spread the result of the [range operator](#range-operator) as well:
+
+```aql
+---
+name: aqlArraySpreadRange_1
+description: ''
+---
+RETURN [0, ...(1..3), 4]
+```
+
+If the operand of an array spread is something other than an array, such as a
+boolean, number, string, or object, then it is skipped and the query raises a
+warning:
+
+```aql
+RETURN [1, ...null, ...42, 2]  // [1, 2] (with 'array expected' warnings)
+```
+
 ### Array destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -812,6 +945,7 @@ the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
+- `...` for [spreading objects](#object-spread-syntax) into object literals
 - `LET { } = { }` and `FOR { } IN [{ }, { }]` for [object destructuring](#object-destructuring)
 
 ### Attribute access
@@ -863,6 +997,60 @@ LET bindvar  = ob[@attr]
 If you try to access a non-existing attribute in one way or another, the result
 is a `null` value without raising an error or warning.
 {{< /info >}}
+
+### Object spread syntax
+
+The spread syntax `...` lets you copy the attributes of an object into an
+object literal you are constructing. Prefix an expression that evaluates to an
+object with three dots (`...`), and all of its top-level attributes are added to
+the surrounding object. The value of each attribute is copied as-is, including
+any nested sub-objects. You can use it multiple times and freely mix it with
+regular attributes:
+
+```aql
+---
+name: aqlObjectSpread_2
+description: ''
+---
+LET defaults = { color: "red", size: "M" }
+LET overrides = { size: "L", price: 9.99 }
+RETURN { ...defaults, type: "shirt", ...overrides, currency: "USD" }
+```
+
+The object spread offers a concise alternative to the
+[`MERGE()`](functions/document-object.md#merge) function. The following query is
+equivalent to the previous one:
+
+```aql
+RETURN MERGE(defaults, { type: "shirt" }, overrides, { currency: "USD" })
+```
+
+If an attribute name occurs more than once, whether it comes from a spread or is
+written directly, the **last occurrence** wins and determines the value of the
+attribute. In the example above, the `size` attribute of `defaults` (`"M"`) is
+overwritten by the one of `overrides` (`"L"`).
+
+Colliding attributes are replaced as a whole and not merged recursively, even if
+their values are objects. In this regard, the object spread behaves like
+[`MERGE()`](functions/document-object.md#merge) and not like
+[`MERGE_RECURSIVE()`](functions/document-object.md#merge_recursive):
+
+```aql
+---
+name: aqlObjectSpreadShallow_1
+description: ''
+---
+LET base = { size: { width: 2, height: 3 } }
+RETURN { ...base, size: { width: 5 } }
+```
+
+If the operand of an object spread is something other than an object, such as a
+boolean, number, string, or array, then it is skipped and the query raises a
+warning:
+
+```aql
+RETURN { a: 1, ...null, ...42 }     // { "a": 1 } (with 'object expected' warnings)
+```
 
 ### Object destructuring
 
@@ -969,7 +1157,7 @@ The operator precedence in AQL is similar as in other familiar languages
 | `()`                 | function call
 | `!`, `NOT`, `+`, `-` | unary not (logical negation), unary plus, unary minus
 | `*`, `/`, `%`        | multiplication, division, modulus
-| `+`, `-`             | addition, subtraction
+| `+`, `-`             | addition or string concatenation, subtraction
 | `..`                 | range operator
 | `<`, `<=`, `>=`, `>` | less than, less equal, greater equal, greater than
 | `IN`, `NOT IN`       | in operator, not in operator

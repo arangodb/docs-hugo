@@ -500,8 +500,7 @@ See [`collection.dropIndex()`](../../../indexes-and-search/indexing/working-with
 ### `collection.all()`
 
 Fetches all documents from a collection and returns a cursor. You can use
-`toArray()`, `next()`, or `hasNext()` to access the result. The result
-can be limited using the `skip()` and `limit()` operator.
+`toArray()`, `next()`, or `hasNext()` to access the result.
 
 **Examples**
 
@@ -524,25 +523,6 @@ db.five.all().toArray();
 ~db._drop("five");
 ```
 
-Use `limit()` to restrict the documents:
-
-```js
----
-name: 002_collectionAllNext
-description: ''
----
-~db._create("five");
-var docs = db.five.insert([
-  { name : "one" },
-  { name : "two" },
-  { name : "three" },
-  { name : "four" },
-  { name : "five" }
-]);
-db.five.all().limit(2).toArray();
-~db._drop("five");
-```
-
 ### `collection.any()`
 
 Returns a random document from the collection or `null` if none exists.
@@ -556,8 +536,7 @@ Fetches all documents from a collection that match the specified
 example and returns a cursor.
 
 You can use `toArray()`, `next()`, or `hasNext()` to access the
-result. The result can be limited using the `skip()` and `limit()`
-operator.
+result.
 
 An attribute name of the form `a.b` is interpreted as attribute path,
 not as attribute. If you use
@@ -911,13 +890,7 @@ used to specify the following options:
   is returned in the output under the attribute `new`.
 - `returnOld`: If this flag is set to `true`, the complete old document
   is returned in the output under the attribute `old`. Only available 
-  in combination with the `overwrite` option
-- `overwrite`: If set to `true`, the insert becomes a replace-insert.
-  If a document with the same `_key` exists already the new document
-  is not rejected with unique constraint violated but will replace
-  the old document. Note that operations with `overwrite` parameter require
-  a `_key` attribute in the request payload, therefore they can only be
-  performed on collections sharded by `_key`.
+  in combination with the `overwriteMode` option set to `"update"` or `"replace"`.
 - `overwriteMode`: this optional flag can have one of the following values:
   - `ignore`: if a document with the specified `_key` value exists already,
     nothing will be done and no write operation will be carried out.
@@ -926,9 +899,7 @@ used to specify the following options:
     attribute. `returnNew` will only set the `new` attribute in the response
     if a new document was inserted.
   - `replace`: if a document with the specified `_key` value exists already,
-    it will be overwritten with the specified document value. This mode will
-    also be used when no overwrite mode is specified but the `overwrite`
-    flag is set to `true`.
+    it will be overwritten with the specified document value.
   - `update`: if a document with the specified `_key` value exists already,
     it will be patched (partially updated) with the specified document value.
     The overwrite mode can be further controlled via the `keepNull` and
@@ -936,7 +907,12 @@ used to specify the following options:
   - `conflict`: if a document with the specified `_key` value exists already,
     return a unique constraint violation error so that the insert operation
     fails. This is also the default behavior in case the overwrite mode is
-    not set, and the `overwrite` flag is `false` or not set either.
+    not set.
+
+  Note that operations with `overwriteMode` other than `"conflict"` require
+  a `_key` attribute in the request payload, therefore they can only be
+  performed on collections sharded by `_key`.
+
 - `keepNull`: The optional `keepNull` parameter can be used to modify
   the behavior when handling `null` values. Normally, `null` values
   are stored in the database. By setting the `keepNull` parameter to
@@ -950,8 +926,8 @@ used to specify the following options:
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
   This option controls the update-insert behavior only.
-- `versionAttribute`: Only applicable if `overwrite` is set to `true` or
-  `overwriteMode` is set to `update` or `replace`.
+- `versionAttribute`: Only applicable if `overwriteMode` is set to `"update"`
+  or `"replace"`.
 
   You can use the `versionAttribute` option for external versioning support.
   If set, the attribute with the name specified by the option is looked up in the
@@ -1014,7 +990,7 @@ description: ''
 ---
 ~db._create("example");
 db.example.insert({ _key : "666", Hello : "World" });
-db.example.insert({ _key : "666", Hello : "Universe" }, {overwrite: true, returnOld: true});
+db.example.insert({ _key : "666", Hello : "Universe" }, {overwriteMode: "replace", returnOld: true});
 ~db._drop("example");
 ```
 

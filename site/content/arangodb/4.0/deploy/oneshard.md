@@ -131,7 +131,6 @@ arangosh@oneShardDB> db.example1.properties()
     "type" : "traditional"
   },
   "replicationFactor" : 2,
-  "minReplicationFactor" : 1,
   "writeConcern" : 1,
   "distributeShardsLike" : "_graphs",
   "shardingStrategy" : "hash",
@@ -312,11 +311,9 @@ unsuitable for the OneShard optimization:
   - `COLLECTIONS`
   - `CURRENT_DATABASE`
   - `CURRENT_USER`
-  - `FULLTEXT`
   - `NEAR`
   - `SCHEMA_GET`
   - `SCHEMA_VALIDATE`
-  - `V8`
   - `VERSION`
   - `WITHIN`
   - `WITHIN_RECTANGLE`

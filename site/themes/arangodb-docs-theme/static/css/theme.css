@@ -592,6 +592,92 @@ a.section-link {
 
 /* Tabs end */
 
+/* Steps */
+
+.steps {
+    margin: 1.5rem 0;
+}
+
+.steps .step {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+}
+
+/* Vertical connector line running through the indicators */
+.steps .step::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--gray-300);
+}
+
+/* No line below the last step */
+.steps .step:last-child::before {
+    display: none;
+}
+
+.steps .step-indicator {
+    position: relative;
+    z-index: 1;
+    flex: 0 0 32px;
+}
+
+.steps .step-number,
+.steps .step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--neutral-white);
+    color: var(--gray-700);
+    border: 2px solid var(--gray-300);
+    font-family: var(--font-headlines);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.steps .step-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: currentcolor;
+}
+
+.steps .step-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-top: 3px;
+}
+
+.steps .step-title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-headlines);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--neutral-gray-darkest);
+}
+
+.steps .step-body > .step-title:first-child {
+    padding-top: 2px;
+}
+
+.steps .step-content > :first-child {
+    margin-top: 0;
+}
+
+.steps .step-content > :last-child {
+    margin-bottom: 0;
+}
+
+/* Steps end */
+
 /* Body */
 
 body .page-main {

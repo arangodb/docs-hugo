@@ -21,7 +21,7 @@ aliases:
 
 The Agentic AI Suite is composed of the following major components:
 
-- [**Ada**](ada.md): The AI digital assistant, for natural language interaction and development.
+- [**Ada**](ada/_index.md): The AI digital assistant, for natural language interaction and development.
 - [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
   contextual knowledge graph, with the **AutoRAG** assigning each
   domain the right processing depth.

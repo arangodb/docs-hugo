@@ -198,18 +198,20 @@ body = {
 // will work again:
 var startTime = require("internal").time();
 var failureSeen = false;
-while (require("internal").time() - startTime < 10) {
+while (require("internal").time() - startTime < 30) {
   try {
     // GET can throw exceptions
     var r = internal.arango.GET("/_api/version");
     if (r.error === true) {
       failureSeen = true;
-    } else {
-      if (failureSeen) {
-        break;
-      }
+    } else if (failureSeen) {
+      // Reconnected after the restart: stop as soon as a request succeeds.
+      break;
     }
   } catch(err) {
+    // An exception means the connection dropped, i.e. the restart is underway.
+    // Count it as the failure we must observe before accepting a later success.
+    failureSeen = true;
   }
   require("internal").wait(0.1);
 }
