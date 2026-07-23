@@ -180,9 +180,10 @@ documents, so unlike training, its cost grows with the number of vectors. It is
 mostly CPU-bound and also determines the final on-disk size of the index.
 
 In short, the number of groups (`nLists`) and the vector `dimension` drive the
-training cost, while the number of documents drives the indexing cost and the
-index size. On a cluster, these counts apply per shard, as each shard trains and
-builds its own index.
+training cost, while the number of documents drives the indexing cost. The index
+size grows with the number of documents and the vector `dimension`, and also
+depends on the encoding (the `factory` option). On a cluster, these counts apply
+per shard, as each shard trains and builds its own index.
 
 ## Interfaces
 
