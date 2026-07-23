@@ -77,11 +77,11 @@ what each cell does, rather than something you copy from.
 2. Create a notebook server, or open an existing one, and click its ID to open
    the Jupyter interface. For details, see
    [Notebook servers](../../agentic-ai-suite/notebook-servers.md).
-3. Download [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb), upload it
+3. Download `Autograph_DEMO.ipynb, upload it
    into the file browser, and open it.
 4. Put the documents you want to ingest in a `files/` folder next to the
    notebook. To use the sample corpus, download
-   [`corpus.zip`](/notebooks/corpus.zip) and unzip it here - it expands to a
+   `corpus.zip` and unzip it here - it expands to a
    ready-made `files/` folder of 50 articles.
 
 Run the cells **top to bottom**, one at a time. Do not use **Run All**: the
