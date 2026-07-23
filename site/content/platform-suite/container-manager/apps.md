@@ -21,10 +21,14 @@ register the service as an App and that your service serves a UI.
 
 ## Requirements
 
-A service can be registered as an App as long as it **returns a UI (HTML) at
-the root path (`/`)**. This is the only difference between a regular service and
-an App: instead of (or in addition to) serving an API, the service responds to
-requests at `/` with an HTML page.
+A service is eligible to be an App as long as it **returns a UI (HTML) at the
+root path (`/`)**: instead of (or in addition to) serving an API, the service
+responds to requests at `/` with an HTML page.
+
+Serving HTML at `/` is what makes a service eligible, but it is not the only
+requirement. To actually register the service as an App, you also provide the
+`has_ui`, `display_name`, and `description` metadata at deploy time (see
+[Register a service as an App](#register-a-service-as-an-app)).
 
 This applies to both deployment methods:
 

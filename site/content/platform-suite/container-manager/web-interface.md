@@ -90,11 +90,11 @@ register it as an **App** so it becomes available in the platform's Apps catalog
 and its UI is rendered embedded in the web interface. This works for both code
 package and Docker image deployments.
 
-1. Deploy your service from a code package (see
+1. Fill in the **Deploy new Service** panel for a code package (see
    [Deploy Service from a Code Package](#deploy-service-from-a-code-package)) or
    a Docker image (see
    [Deploy Service from a Docker Image](#deploy-service-from-a-docker-image)).
-2. Before deploying, enable **Register as App**.
+2. Enable **Register as App**.
 3. Enter a **Display name** and a **Description**. These identify your app in
    the Apps catalog.
 4. Click **Deploy Service** (or **Deploy Container**).
