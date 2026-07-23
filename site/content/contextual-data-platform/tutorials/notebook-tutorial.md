@@ -92,15 +92,16 @@ continuing to the next one.
 {{< info >}}
 The notebook defines its own HTTP helpers (`authenticate`, `send_request`,
 `start_service`, `stop_service`, and `ag_request`), so it runs from any Jupyter
-environment, including one outside the platform. You do not need to install
-anything beyond `python-dotenv`; the first cell installs it.
+environment, including one outside the platform. The only packages it needs are
+`python-dotenv` and `requests`; the first cell installs both.
 {{< /info >}}
 
 ## Step 3: Configure platform and LLM access
 
-The notebook reads all of its configuration from a file, so this is the only
-place you edit. You never change code cells to point the notebook at your
-platform, database, or files.
+The notebook reads your platform, database, credentials, and files from a file,
+so you point it at your environment in one place rather than by editing those
+values in code cells. The LLM provider and models are set separately, in the
+deployment cell in Step 7 (pre-filled for OpenAI).
 
 Create a file named `env` in the same directory as the notebook and fill in your
 own values:
@@ -130,7 +131,9 @@ Run the first two code cells. They install `python-dotenv`, import the
 libraries, and load the `env` file with
 `load_dotenv(dotenv_path="./env", override=True)`. Every later cell reads these
 values through `os.environ`, so once the `env` file is correct you can run the
-rest of the notebook without editing code.
+rest of the notebook without editing code, as long as you keep the OpenAI
+defaults in Step 7. To use a different OpenAI-compatible provider or models, edit
+the provider, model, and API URL fields in that deployment cell.
 
 {{< warning >}}
 `VERIFY_TLS` is set to `False` in the notebook so it works against a platform
@@ -352,7 +355,9 @@ Expected output (once finished):
 {{< warning >}}
 Do not start Step 10 while the build is still running. The strategizer fails with
 `409` if a corpus build is in progress. If the status becomes `failed`, check the
-`message` or `error` field in the response.
+`message` and `error` fields in the response; for provider failures, `error_code`
+carries a machine-readable value such as `LLM_AUTHENTICATION_FAILED`,
+`LLM_RATE_LIMITED`, or `LLM_QUOTA_EXCEEDED`.
 {{< /warning >}}
 
 ## Step 10: Generate strategies
@@ -438,11 +443,36 @@ Expected output:
 {'orchestration_id': '...'}
 ```
 
+The import runs asynchronously, so you must wait for it to finish before
+deploying the Retriever. Poll the project metadata endpoint
+(`GET /gen-ai/v1/project_by_name/{db}/{project}`) and re-run it until every
+importer service reports `service_completed`:
+
+```py
+project = send_request(
+    f"/gen-ai/v1/project_by_name/{os.environ['DB_NAME']}/{os.environ['PROJECT_NAME']}",
+    method="GET",
+)
+statuses = [
+    svc.get("status", {}).get("status")
+    for svc in project.get("projectMetadata", {}).get("importerServices", [])
+]
+print(statuses)
+```
+
+{{< warning >}}
+Do not deploy the Retriever until the import is complete: a Retriever started
+against a partial graph returns incomplete answers. Re-run the poll every
+10 - 30 seconds until every importer service reports `service_completed`. A
+terminal `*_failed` status (for example, `service_failed` or
+`import_graph_to_adb_failed`) means the import failed; see
+[Error handling](../../agentic-ai-suite/importer/reference/error-handling.md)
+before retrying.
+{{< /warning >}}
+
 {{< tip >}}
-While the import runs, re-run the optional project metadata cell
-(`GET /gen-ai/v1/project_by_name/{db}/{project}`) to check the status of the
-corpus build, strategizer, and importer orchestration in one place. You can also
-explore the resulting knowledge graph at any time in the
+You can explore the resulting knowledge graph at any time, including while the
+import is still running, in the
 [Graph Visualizer](../../platform-suite/graph-visualizer.md).
 {{< /tip >}}
 
