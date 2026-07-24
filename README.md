@@ -1414,7 +1414,7 @@ The final configuration would then look like this:
 
   - name: "4.x"
     version: "4.0.0"
-    alias: "devel" # was "4.0"
+    alias: "devel" # was "4.x"
     deprecated: false
     inDevelopment: true
     allowedAPIVersions: [v1, experimental]

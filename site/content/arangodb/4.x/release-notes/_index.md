@@ -11,7 +11,7 @@ description: >-
 For a high level list of changes, please refer to one of the following sections:
 
 - What's New in 4.x:
-  [4.0](version-4.x/whats-new-in-4-x.md)
+  [4.x](version-4.x/whats-new-in-4-x.md)
 
 - What's New in 3.x:
   [3.12](version-3.12/whats-new-in-3-12.md),
@@ -34,7 +34,7 @@ For a detailed list of changes to the ArangoDB core programs and tools,
 please refer to the version specific changelogs:
 
 - Changelogs 4.x:
-  [4.0](https://raw.githubusercontent.com/arangodb/arangodb/devel/CHANGELOG)
+  [4.0](https://raw.githubusercontent.com/arangodb/arangodb/4.0/CHANGELOG)
 
 - Changelogs 3.x:
   [3.12](https://raw.githubusercontent.com/arangodb/arangodb/{{< full-version "3.12" >}}/CHANGELOG),
@@ -61,7 +61,7 @@ Additional changelogs for tools not included in the main repository:
 For a list of incompatible changes, please refer to one of the following sections.
 
 - Incompatible changes in 4.x:
-  [4.0](version-4.x/incompatible-changes-in-4-x.md)
+  [4.x](version-4.x/incompatible-changes-in-4-x.md)
 
 - Incompatible changes in 3.x:
   [3.12](version-3.12/incompatible-changes-in-3-12.md),
@@ -84,7 +84,7 @@ For an overview of changes to ArangoDB's interfaces, have a look at below
 sections. The HTTP API part is especially relevant for driver maintainers.
 
 - API Changes in 4.x:
-  [4.0](version-4.x/api-changes-in-4-x.md)
+  [4.x](version-4.x/api-changes-in-4-x.md)
 
 - API Changes in 3.x:
   [3.12](version-3.12/api-changes-in-3-12.md),
@@ -99,7 +99,7 @@ sections. The HTTP API part is especially relevant for driver maintainers.
 For a list of known issues, please refer to one of the following sections:
 
 - Known Issues in 4.x:
-  [4.0](version-4.x/known-issues-in-4-x.md)
+  [4.x](version-4.x/known-issues-in-4-x.md)
 
 - Known Issues in 3.x:
   [3.12](version-3.12/known-issues-in-3-12.md),

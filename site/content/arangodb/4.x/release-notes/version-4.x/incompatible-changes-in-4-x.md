@@ -92,7 +92,7 @@ You can still specify these startup options without causing a fatal error during
 startup. They are recognized, but they don't have any effect anymore.
 
 The Foxx management HTTP API (`/_api/foxx*`) has been removed. For a detailed list
-of endpoints, see [API Changes in ArangoDB 4.0](api-changes-in-4-x.md#foxx-api-removed).
+of endpoints, see [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#foxx-api-removed).
 
 The `GET /_admin/status` no longer includes a `coordinator` object with the
 attributes `foxxmaster` and `isFoxxmaster`.
@@ -433,7 +433,7 @@ re-implemented to use AQL instead of relying on the server-side Simple Queries
 interface (which already used AQL internally).
 
 For a detailed list of the removed endpoints, see
-[API Changes in ArangoDB 4.0](api-changes-in-4-x.md#simple-queries-endpoints-removed).
+[API Changes in ArangoDB 4.x](api-changes-in-4-x.md#simple-queries-endpoints-removed).
 
 ### Unsupported HTTP methods disallowed
 
@@ -530,7 +530,7 @@ that can insert, update, replace, or remove arrays of documents.
 ### Foxx API removed
 
 All `/_api/foxx*` endpoints have been removed due to the removal of Foxx.
-See [API Changes in ArangoDB 4.0](api-changes-in-4-x.md#foxx-api-removed)
+See [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#foxx-api-removed)
 for a detailed list.
 
 ### Deprecated `PUT` cursor endpoint removed
@@ -638,7 +638,7 @@ The following things have been removed:
 - `global.fm` object
 - `@arangodb/aql/functions` module
 
-For more details, see [API changes in ArangoDB 4.0](api-changes-in-4-x.md#javascript-api).
+For more details, see [API changes in ArangoDB 4.x](api-changes-in-4-x.md#javascript-api).
 
 ### Removed database method
 
@@ -673,7 +673,7 @@ as they are either obsolete or didn't provide much value and better alternatives
 - `within()`
 - `withinRectangle()`
 
-See [API Changes in ArangoDB 4.0](api-changes-in-4-x.md#removed-collection-methods)
+See [API Changes in ArangoDB 4.x](api-changes-in-4-x.md#removed-collection-methods)
 for details like how you can replace this functionality.
 
 ### Reimplemented collection methods

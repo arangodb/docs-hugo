@@ -5,11 +5,11 @@ weight: 15
 description: >-
   The most notable features of the ArangoDB core database system, grouped by version
 ---
-## Version 4.0
+## Version 4.x
 
 - 
 
-Also see [What's New in 4.0](../release-notes/version-4.x/whats-new-in-4-x.md).
+Also see [What's New in 4.x](../release-notes/version-4.x/whats-new-in-4-x.md).
 
 ## Version 3.12
 

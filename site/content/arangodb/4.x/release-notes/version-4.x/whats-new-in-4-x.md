@@ -47,7 +47,7 @@ and [Object spread](../../aql/operators.md#object-spread-syntax).
 
 This change also includes a change of behavior for duplicate attribute names in
 object literals. The last occurrence now wins instead of the first one. See
-[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-x.md#duplicate-attribute-names-in-object-literals).
+[Incompatible changes in ArangoDB 4.x](incompatible-changes-in-4-x.md#duplicate-attribute-names-in-object-literals).
 
 ### String concatenation with the `+` operator
 
@@ -68,7 +68,7 @@ Previously, you had to use the [`CONCAT()`](../../aql/functions/string.md#concat
 function for string concatenation and the `+` operator always performed arithmetic
 addition. Note that this is a potentially breaking change for queries that relied
 on the previous behavior, see
-[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-x.md#aql--operator-overloaded-for-string-concatenation).
+[Incompatible changes in ArangoDB 4.x](incompatible-changes-in-4-x.md#aql--operator-overloaded-for-string-concatenation).
 
 For more information, see [String operators](../../aql/operators.md#string-operators).
 

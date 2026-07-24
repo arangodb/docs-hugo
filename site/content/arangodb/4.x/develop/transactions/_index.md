@@ -6,9 +6,9 @@ description: >-
   AQL queries can be transactional and you can execute supported operations as
   part of a client-controlled Stream Transaction
 aliases:
-  - transactions/locking-and-isolation # 3.12 -> 4.0
-  - transactions/durability # 3.12 -> 4.0
-  - transactions/limitations # 3.12 -> 4.0
+  - transactions/locking-and-isolation # 3.12 -> 4.x
+  - transactions/durability # 3.12 -> 4.x
+  - transactions/limitations # 3.12 -> 4.x
 ---
 ## Transaction Types
 

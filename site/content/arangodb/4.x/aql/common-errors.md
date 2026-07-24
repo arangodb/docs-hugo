@@ -39,7 +39,7 @@ The behavior of the `+` operator changed in v4.0.0. In previous versions, `+`
 always performed arithmetic addition and never concatenated strings. It cast
 string operands to numbers instead, so `"foo" + "bar"` evaluated to `0` and
 `123 + "200"` evaluated to `323`. See
-[Incompatible changes in ArangoDB 4.0](../release-notes/version-4.x/incompatible-changes-in-4-x.md#aql--operator-overloaded-for-string-concatenation).
+[Incompatible changes in ArangoDB 4.x](../release-notes/version-4.x/incompatible-changes-in-4-x.md#aql--operator-overloaded-for-string-concatenation).
 {{< /warning >}}
 
 To always concatenate values as strings regardless of their types, you can also
