@@ -135,7 +135,7 @@ commands:
                 # The OpenSSL dir that CMake discovers needs to be adjacent to where ldap.h is located, here: /opt
                 cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
             else
-              cmake --preset enterprise-pr-non-maintainer -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
+              cmake --preset enterprise-pr-non-maintainer-x86_64 -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
             fi
             if [ "$?" != "0" ]; then
               echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
