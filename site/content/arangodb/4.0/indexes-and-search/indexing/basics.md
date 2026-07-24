@@ -379,29 +379,6 @@ vector space.
 
 See [Vector Indexes](working-with-indexes/vector-indexes.md) for details.
 
-## Fulltext Index
-
-{{< warning >}}
-The fulltext index type is deprecated from version 3.10 onward and removed in ArangoDB v4.0.
-It is recommended to use [ArangoSearch](../arangosearch/_index.md) for advanced full-text search capabilities.
-{{< /warning >}}
-
-A fulltext index can be used to find words, or prefixes of words inside documents. 
-A fulltext index can be created on a single attribute only, and will index all words 
-contained in documents that have a textual value in that attribute. Only words with a (specifiable) 
-minimum length are indexed. Word tokenization is done using the word boundary analysis 
-provided by libicu, which is taking into account the selected language provided at 
-server start. Words are indexed in their lower-cased form. The index supports complete 
-match queries (full words) and prefix queries, plus basic logical operations such as 
-`and`, `or` and `not` for combining partial results.
-
-The fulltext index is sparse, meaning it will only index documents for which the index
-attribute is set and contains a string value. Additionally, only words with a configurable
-minimum length will be included in the index.
-
-The fulltext index is used via dedicated functions in AQL, but will
-not be enabled for other types of queries or conditions.
-
 ## Indexes and non-ASCII texts
 
 Before strings are inserted into an index, they are
@@ -636,10 +613,10 @@ like in the following examples:
 db.collection.ensureIndex({ type: "persistent", fields: [ "value" ], unique: false, inBackground: true });
 db.collection.ensureIndex({ type: "persistent", fields: [ "email" ], unique: true, inBackground: true });
 
-// also supported for geo and fulltext indexes
+// also supported for geo and other index types
 db.collection.ensureIndex({ type: "geo", fields: [ "location"], inBackground: true });
 db.collection.ensureIndex({ type: "geo", fields: [ "latitude", "longitude"], inBackground: true });
-db.collection.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 4, inBackground: true })
+db.collection.ensureIndex({ type: "inverted", fields: [ { name: "text", analyzer: "text_en" } ], inBackground: true});
 ```
 
 ### Behavior

@@ -58,9 +58,9 @@ guidance on choosing the right method.
 Before using the Retriever service, you need:
 
 1. **A GraphRAG project** with imported data. If you are using the Importer
-   standalone, follow the [Importer Quickstart](../importer/quickstart.md).
+   standalone, follow the [Importer Setup](../importer/setup.md).
    If you are using AutoGraph, follow the
-   [AutoGraph Quickstart](../autograph/quickstart.md).
+   [AutoGraph Setup](../autograph/setup.md).
 
 2. **An LLM provider** configured for the Retriever. See
    [LLM Configuration](llm-configuration.md) to set up Triton Inference Server

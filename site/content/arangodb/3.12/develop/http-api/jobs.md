@@ -824,8 +824,8 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 logJsonResponse(response);
 
-url = '/_api/job/' + queryId
-var response = logCurlRequest('DELETE', url, "");
+url = '/_api/job/' + queryId + '/cancel'
+var response = logCurlRequest('PUT', url, "");
 assert(response.code === 200);
 logJsonResponse(response);
 ```

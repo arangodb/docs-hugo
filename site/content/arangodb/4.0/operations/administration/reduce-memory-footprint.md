@@ -220,7 +220,6 @@ The other options to configure write buffer usage are:
 --rocksdb.max-write-buffer-number-definitions
 --rocksdb.max-write-buffer-number-documents
 --rocksdb.max-write-buffer-number-edge
---rocksdb.max-write-buffer-number-fulltext
 --rocksdb.max-write-buffer-number-geo
 --rocksdb.max-write-buffer-number-primary
 --rocksdb.max-write-buffer-number-replicated-logs
@@ -485,25 +484,6 @@ You can also use *LIMIT* operations in AQL queries to reduce the number of docum
 that need to be inspected and processed. This is not always what happens under
 the hood, as some operations may lead to an intermediate result being computed before 
 any limit is applied.
-
-## Statistics
-
-The server collects
-[statistics](../../components/arangodb-server/options.md#--serverstatistics) regularly,
-which is displayed in the web interface. You will have a light query load every
-few seconds, even if your application is idle, because of the statistics. If required, you can 
-turn it off via:
-
-```
---server.statistics false
-```
-This setting will disable both the background statistics gathering and the statistics
-APIs. To only turn off the statistics gathering, you can use
-```
---server.statistics-history false
-```
-That leaves all statistics APIs enabled but still disables all background work
-done by the statistics gathering.
 
 ## Concurrent operations
 

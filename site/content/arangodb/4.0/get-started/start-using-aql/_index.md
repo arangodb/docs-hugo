@@ -21,6 +21,7 @@ but you may also use a different interface.
 
 {{< tabs "interfaces" >}}
 
+{{< comment >}}
 {{< tab "Web interface" >}}
 ArangoDB's web interface has a **Queries** section for
 [executing AQL queries](../../aql/how-to-invoke-aql/with-the-web-interface.md).
@@ -34,6 +35,7 @@ ArangoDB's web interface has a **Queries** section for
 5. Optionally set query options on the **Options** tab.
 6. Click the **Execute** button or press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}}.
 {{< /tab >}}
+{{< /comment >}}
 
 {{< tab "arangosh" >}}
 You can run AQL queries from the ArangoDB Shell ([arangosh](../../components/tools/arangodb-shell/_index.md))

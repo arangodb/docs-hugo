@@ -17,7 +17,7 @@ more common way of communicating with the server is via a [database driver](../.
 A driver abstracts the complexity of the API away by providing a simple
 interface for your programming language or environment and handling things like
 authentication, connection pooling, asynchronous requests, and multi-part replies
-in the background. You can also use ArangoDB's [web interface](../../components/web-interface/_index.md),
+in the background. You can also use ArangoDB's web interface, <!-- TODO: new link/description -->
 the [_arangosh_](../../components/tools/arangodb-shell/_index.md) shell, or other tools.
 
 The API documentation is relevant for you in the following cases:
@@ -98,6 +98,8 @@ Content-Length: 160
 
 ArangoDB's RESTful HTTP API is documented using the industry-standard
 **OpenAPI Specification**, more specifically [OpenAPI version 3.1](https://swagger.io/specification/).
+
+{{< comment >}} TODO: Swagger UI in new core UI?
 You can explore the API with the interactive **Swagger UI** using the
 [ArangoDB web interface](../../components/web-interface/_index.md).
 
@@ -106,3 +108,4 @@ You can explore the API with the interactive **Swagger UI** using the
 3. Click a section and endpoint to view the description and parameters.
 
 ![The web interface with the navigation on the left and the tabs at the top](../../../../images/swagger_serverapi_overview312.png)
+{{< /comment >}}

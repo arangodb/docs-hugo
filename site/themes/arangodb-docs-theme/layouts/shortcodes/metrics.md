@@ -17,7 +17,7 @@
 
 {{ range $metric := $metricGroup }}
 
-#### {{ strings.TrimRight ".\r\n" $metric.help }}
+#### {{ strings.TrimRight " ." (replaceRE "[\\s]*?[\\r\\n]+" " " $metric.help) }} {#{{ $metric.name }}}
 
 {{ if eq $metric.type "histogram" -}}
 `{{ $metric.name }}` (basename)<br>

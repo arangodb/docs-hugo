@@ -1,0 +1,109 @@
+<svg viewBox="0 0 920 540"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:920px;margin:0 auto">
+  <style>
+    .agov text { font-family: sans-serif; }
+    .agov .vtx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .agov .card:hover .vtx { fill: #ffffff; stroke: #22c55e; }
+    .agov .vtitle { font-size: 14px; font-weight: bold; fill: #0b2e1e; }
+    .agov .panel { fill: #ffffff; stroke: #22c55e; stroke-width: 1.5; }
+    .agov .phead { font-size: 13px; font-weight: bold; fill: #14532d; }
+    .agov .elabel { font-size: 10px; font-weight: bold; fill: #0b2e1e; }
+    .agov .ebadge { fill: #ecfccb; stroke: #4ade80; stroke-width: 1; }
+    .agov .note { font-size: 11px; fill: #666; }
+  </style>
+  <defs>
+    <marker id="agov-arrow" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,9 3.5,0 7" fill="#4ade80"/>
+    </marker>
+  </defs>
+  <g class="agov">
+    <rect width="920" height="540" fill="#f3f4f6" rx="6"/>
+    <text x="460" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#0b2e1e">AutoGraph data model — two graphs, one pipeline</text>
+
+    <rect class="panel" x="20" y="55" width="410" height="400" rx="12"/>
+    <text class="phead" x="225" y="78" text-anchor="middle">Corpus graph — {project}_CorpusGraph</text>
+
+    <g class="card">
+      <rect class="vtx" x="170" y="95" width="130" height="44" rx="12"/>
+      <text class="vtitle" x="235" y="122" text-anchor="middle">modules</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="40" y="205" width="110" height="46" rx="12"/>
+      <text class="vtitle" x="95" y="233" text-anchor="middle">sources</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="180" y="205" width="110" height="46" rx="12"/>
+      <text class="vtitle" x="235" y="233" text-anchor="middle">domains</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="265" y="330" width="110" height="46" rx="12"/>
+      <text class="vtitle" x="320" y="358" text-anchor="middle">rags</text>
+    </g>
+
+    <path d="M 235 139 L 235 205" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="237" y="161" width="92" height="20" rx="10"/>
+    <text class="elabel" x="283" y="175" text-anchor="middle">HAS_CLUSTER</text>
+
+    <path d="M 150 228 L 180 228" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="120" y="258" width="80" height="20" rx="10"/>
+    <text class="elabel" x="160" y="272" text-anchor="middle">IN_DOMAIN</text>
+
+    <path d="M 248 251 L 305 330" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="300" y="280" width="92" height="20" rx="10"/>
+    <text class="elabel" x="346" y="294" text-anchor="middle">INGESTED_AS</text>
+
+    <path d="M 60 205 C 50 160, 140 160, 130 203" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="48" y="155" width="86" height="20" rx="10"/>
+    <text class="elabel" x="91" y="169" text-anchor="middle">SIMILAR_TO</text>
+
+    <rect class="panel" x="490" y="55" width="410" height="400" rx="12"/>
+    <text class="phead" x="695" y="78" text-anchor="middle">Knowledge graph — {project}_kg</text>
+
+    <g class="card">
+      <rect class="vtx" x="510" y="95" width="120" height="46" rx="12"/>
+      <text class="vtitle" x="570" y="123" text-anchor="middle">Documents</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="665" y="95" width="120" height="46" rx="12"/>
+      <text class="vtitle" x="725" y="123" text-anchor="middle">Chunks</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="755" y="215" width="120" height="46" rx="12"/>
+      <text class="vtitle" x="815" y="243" text-anchor="middle">Entities</text>
+    </g>
+    <g class="card">
+      <rect class="vtx" x="615" y="335" width="150" height="46" rx="12"/>
+      <text class="vtitle" x="690" y="363" text-anchor="middle">Communities</text>
+    </g>
+
+    <path d="M 665 118 L 630 118" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="595" y="148" width="74" height="20" rx="10"/>
+    <text class="elabel" x="632" y="162" text-anchor="middle">PART_OF</text>
+
+    <path d="M 800 215 L 740 141" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="700" y="168" width="100" height="20" rx="10"/>
+    <text class="elabel" x="750" y="182" text-anchor="middle">MENTIONED_IN</text>
+
+    <path d="M 845 215 C 885 175, 905 250, 870 258" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="818" y="186" width="86" height="20" rx="10"/>
+    <text class="elabel" x="861" y="200" text-anchor="middle">RELATED_TO</text>
+
+    <path d="M 800 261 L 730 335" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="760" y="290" width="104" height="20" rx="10"/>
+    <text class="elabel" x="812" y="304" text-anchor="middle">IN_COMMUNITY</text>
+
+    <path d="M 635 381 C 605 425, 745 425, 715 383" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agov-arrow)"/>
+    <rect class="ebadge" x="618" y="408" width="116" height="20" rx="10"/>
+    <text class="elabel" x="676" y="422" text-anchor="middle">SUB_COMMUNITY_OF</text>
+
+    <path d="M 375 353 C 445 353, 445 118, 510 118" stroke="#9ca3af" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+    <rect x="398" y="220" width="114" height="20" rx="10" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1"/>
+    <text x="455" y="234" text-anchor="middle" font-size="10" font-weight="bold" fill="#6b7280">partition_id</text>
+
+    <line x1="40" y1="490" x2="80" y2="490" stroke="#4ade80" stroke-width="2" marker-end="url(#agov-arrow)"/>
+    <text class="note" x="92" y="494">stored edge (relationship type in a label or type field)</text>
+    <line x1="470" y1="490" x2="510" y2="490" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5 4"/>
+    <text class="note" x="522" y="494">shared-property link (joined by partition_id), not an edge</text>
+  </g>
+</svg>

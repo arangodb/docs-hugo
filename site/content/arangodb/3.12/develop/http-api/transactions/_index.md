@@ -6,12 +6,16 @@ description: >-
   The HTTP APIs for transactions support Stream Transactions and
   JavaScript Transactions
 ---
-Transactions are executed on the server-side.
-Clients can run different types of transactions that involve different interfaces:
+ArangoDB offers HTTP APIs for different types of transactions:
 
-- Via the [Stream Transaction](stream-transactions.md) API
-- Via the [JavaScript Transaction](javascript-transactions.md) API
+- AQL queries via the [Cursor API](../queries/aql-queries.md#execute-aql-queries)
+  (transactional with exceptions)
+- Transactions with separately submitted operations and explicit commit or abort
+  via the [Stream Transactions API](stream-transactions.md)
+- Transactions submitted as a single request and leveraging ArangoDB's
+  JavaScript API via the [JavaScript Transaction API](javascript-transactions.md).
 
 For a more detailed description of the transaction types, how transactions work
 in ArangoDB, and what guarantees ArangoDB provide, please refer to
-[Transactions](../../transactions/_index.md). 
+[Transactions](../../transactions/_index.md) in ArangoDB.
+

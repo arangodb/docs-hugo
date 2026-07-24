@@ -84,7 +84,6 @@ paths:
                       required:
                         - id
                         - name
-                        - status
                         - type
                         - isSystem
                         - globallyUniqueId
@@ -98,15 +97,6 @@ paths:
                             The name of the collection.
                           type: string
                           example: coll
-                        status:
-                          description: |
-                            The status of the collection.
-                            - `3`: loaded
-                            - `5`: deleted
-
-                            Every other status indicates a corrupted collection.
-                          type: integer
-                          example: 3
                         type:
                           description: |
                             The type of the collection:
@@ -169,11 +159,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -189,7 +174,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -213,15 +197,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -239,6 +214,38 @@ paths:
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
         '404':
           description: |
@@ -299,11 +306,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -319,8 +321,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -333,11 +333,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -603,7 +600,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `name` attribute is missing or has an invalid value.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -672,25 +670,6 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier:
-name: RestCollectionGetCollectionIdentifier
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id + "/properties";
-
-var response = logCurlRequest('GET', url);
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-```curl
----
-description: |-
   Using a name:
 name: RestCollectionGetCollectionName
 ---
@@ -730,11 +709,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: x-arango-trx-id
@@ -759,8 +733,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -773,11 +745,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -1047,7 +1016,36 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
             The collection cannot be found.
@@ -1111,11 +1109,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: details
@@ -1148,8 +1141,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1162,11 +1153,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -1522,16 +1510,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -1703,8 +1692,9 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing or not all of the
+            The `collection-name` is missing or invalid, or not all of the
             collection's shard key attributes are present in the input document.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -1877,8 +1867,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1891,11 +1879,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   shards:
                     description: |
@@ -2190,16 +2175,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -2350,11 +2336,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -2371,8 +2352,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -2385,11 +2364,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   revision:
                     description: |
@@ -2659,16 +2635,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -2788,11 +2765,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: withRevisions
@@ -2827,7 +2799,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -2857,15 +2828,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -2886,8 +2848,36 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
             If the collection is unknown, then a *HTTP 404*
@@ -3400,8 +3390,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -3414,11 +3402,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -3797,11 +3782,6 @@ paths:
           required: true
           description: |
             The name of the collection to drop.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: isSystem
@@ -3842,16 +3822,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -3907,24 +3888,6 @@ paths:
 ```
 
 **Examples**
-
-```curl
----
-description: |-
-  Using an identifier:
-name: RestCollectionDeleteCollectionIdentifier
----
-var cn = "products1";
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id;
-
-var response = logCurlRequest('DELETE', url);
-db[cn] = undefined;
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-```
 
 ```curl
 ---
@@ -3987,11 +3950,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: waitForSync
@@ -4051,16 +4009,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4199,11 +4158,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       requestBody:
@@ -4364,8 +4318,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -4378,11 +4330,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -4648,16 +4597,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4775,11 +4725,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -4812,16 +4757,17 @@ paths:
                     example: true
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4926,11 +4872,6 @@ paths:
           required: true
           description: |
             The name of the collection to rename.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       requestBody:
@@ -4958,8 +4899,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -4972,11 +4911,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -5245,7 +5181,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter or the `name` attribute is missing.
+            The `collection-name` is missing or invalid, or the `name` attribute
+            is missing. You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -5390,16 +5327,17 @@ paths:
                     type: integer
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -5501,7 +5439,6 @@ paths:
                   - name
                   - type
                   - isSystem
-                  - status
                   - id
                   - globallyUniqueId
                 properties:
@@ -5534,15 +5471,6 @@ paths:
                       an underscore are usually system collections.
                     type: boolean
                     example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   id:
                     description: |
                       A unique identifier of the collection (deprecated).
@@ -5550,6 +5478,38 @@ paths:
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
         '401':
           description: |

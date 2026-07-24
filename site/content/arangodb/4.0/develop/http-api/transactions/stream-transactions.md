@@ -12,13 +12,6 @@ For an introduction to this transaction type, see
 To use a Stream Transaction, a client first sends the [configuration](#begin-a-stream-transaction)
 of the transaction to the ArangoDB server.
 
-{{< info >}}
-Contrary to [JavaScript Transactions](javascript-transactions.md),
-the definition of Stream Transaction must only contain the collections that are
-going to be used and (optionally) the various transaction options supported by
-ArangoDB. No `action` attribute is supported.
-{{< /info >}}
-
 The Stream Transaction API works in *conjunction* with other APIs in ArangoDB.
 To use the transaction for a supported operation a client needs to specify
 the transaction identifier in the `x-arango-trx-id` HTTP header on each request.
@@ -81,12 +74,13 @@ paths:
               properties:
                 collections:
                   description: |
-                    Must be a JSON object that can have one or all sub-attributes
-                    `read`, `write` or `exclusive`, each being an array of collection names or a
+                    Must be a JSON object that can have the sub-attributes
+                    `read`, `write`, and `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
-                    transaction must be declared with the `write` or `exclusive` attribute or it
-                    will fail, whereas non-declared collections from which is solely read will be
-                    added lazily.
+                    transaction must be declared with the `write` or `exclusive` attribute or the
+                    respective write operations will fail (but not automatically abort the
+                    Stream Transaction), whereas non-declared collections from which is solely
+                    read will be added lazily.
                   type: object
                   properties:
                     read:

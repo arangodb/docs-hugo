@@ -1,9 +1,11 @@
 ---
-title: How to get started with the Importer
-menuTitle: Quickstart
+title: Set up the Importer
+menuTitle: Setup
 weight: 10
 description: >-
   Prerequisites, installation, and first import call for the Importer service
+aliases:
+  - /agentic-ai-suite/importer/quickstart/
 ---
 
 The Importer service is available in the Arango Contextual Data Platform

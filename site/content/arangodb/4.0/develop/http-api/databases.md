@@ -72,7 +72,6 @@ paths:
 
         - `name`: the name of the current database
         - `id`: the id of the current database
-        - `path`: the filesystem path of the current database
         - `isSystem`: whether or not the current database is the `_system` database
         - `sharding`: the default sharding method for collections created in this database
         - `replicationFactor`: the default replication factor for collections in this database

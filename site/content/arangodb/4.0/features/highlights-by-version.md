@@ -488,6 +488,6 @@ Also see [What's New in 3.1](../release-notes/version-3.1/whats-new-in-3-1.md).
 - **Foxx 3.0**: overhauled JS framework for data-centric
   microservices
 
-- Significantly improved [**Web Interface**](../components/web-interface/_index.md)
+- Significantly improved Web Interface
 
 Also see [What's New in 3.0](../release-notes/version-3.0/whats-new-in-3-0.md).

@@ -1191,12 +1191,6 @@ Starts a Stream Transaction.
 
 See [`db._createTransaction()`](../../transactions/stream-transactions.md#create-transaction).
 
-### `db._executeTransaction()`
-
-Executes a JavaScript Transaction.
-
-See [`db._executeTransaction()`](../../transactions/javascript-transactions.md#execute-transaction).
-
 ## Global
 
 ### `db._compact([options])`

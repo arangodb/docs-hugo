@@ -5,12 +5,6 @@ weight: 5
 description: >-
   HTTP interface reference for creating indexes of type `persistent`
 ---
-{{< info >}}
-The index types `hash` and `skiplist` are aliases for the `persistent` index
-type and should no longer be used to create new indexes. The aliases are
-removed in ArangoDB v4.0.
-{{< /info >}}
-
 ## Create a persistent index
 
 ```openapi

@@ -17,29 +17,39 @@ of an AQL query string.
 
 ## String concatenation
 
-In AQL, strings must be concatenated using the [`CONCAT()`](functions/string.md#concat)
-function. Joining them together with the `+` operator is not supported. Especially
-as JavaScript programmer it is easy to walk into this trap:
+The `+` operator in AQL is overloaded. If at least one of its operands is a
+string, it concatenates the operands as strings. If both operands are non-string
+values, it performs [arithmetic addition](operators.md#arithmetic-operators)
+instead. This is similar to how the `+` operator behaves in JavaScript:
 
 ```aql
-RETURN "foo" + "bar" // [ 0 ]
-RETURN "foo" + 123   // [ 123 ]
-RETURN "123" + 200   // [ 323 ]
+RETURN "foo" + "bar" // [ "foobar" ]
+RETURN "foo" + 123   // [ "foo123" ]
+RETURN 123 + "200"   // [ "123200" ]
+RETURN 100 + 200     // [ 300 ]
 ```
 
-The arithmetic plus operator expects numbers as operands, and will try to implicitly
-cast them to numbers if they are of different type. `"foo"` and `"bar"` are casted
-to `0` and then added to together (still zero). If an actual number is added, that
-number will be returned (adding zero doesn't change the result). If the string is a
-valid string representation of a number, then it is casted to a number. Thus, adding
-`"123"` and `200` results in two numbers being added up to `323`.
+In the first three examples, at least one operand is a string, so the operands
+are concatenated as strings (any non-string operand is cast to a string first).
+In the last example, both operands are numbers, so they are added up arithmetically.
+See [String operators](operators.md#string-operators) for details.
 
-To concatenate elements (with implicit casting to string for non-string values), do:
+{{< warning >}}
+The behavior of the `+` operator changed in v4.0.0. In previous versions, `+`
+always performed arithmetic addition and never concatenated strings. It cast
+string operands to numbers instead, so `"foo" + "bar"` evaluated to `0` and
+`123 + "200"` evaluated to `323`. See
+[Incompatible changes in ArangoDB 4.0](../release-notes/version-4.0/incompatible-changes-in-4-0.md#aql--operator-overloaded-for-string-concatenation).
+{{< /warning >}}
+
+To always concatenate values as strings regardless of their types, you can also
+use the [`CONCAT()`](functions/string.md#concat) function. This is in particular
+useful if none of the operands is a string but you still want string concatenation:
 
 ```aql
 RETURN CONCAT("foo", "bar") // [ "foobar" ]
 RETURN CONCAT("foo", 123)   // [ "foo123" ]
-RETURN CONCAT("123", 200)   // [ "123200" ]
+RETURN CONCAT(123, 456)     // [ "123456" ]
 ```
 
 ## Parameter injection vulnerability
@@ -345,7 +355,7 @@ use case, but normally it is extremely undesired).
 ## Unexpected long running queries
 
 Slow queries can have various reasons and be legitimate for queries with a high
-computational complexity or if they touch a lot of data. Use the *Explain*
+computational complexity or if they touch a lot of data. Use the **Explain**
 feature to inspect execution plans and verify that appropriate indexes are
 utilized. Also check for mistakes such as references to the wrong variables.
 
@@ -354,28 +364,30 @@ A literal collection name, which is not part of constructs like `FOR`,
 and can cause an entire collection to be materialized before further
 processing. It should thus be avoided.
 
-Check the execution plan for `/* all collection documents */` and verify that
-it is intended. You should also see a warning if you execute such a query:
+{{< tip >}}
+By default, using collection names in arbitrary places in AQL expressions is
+disallowed to prevent mistakes. However, you can allow it with the
+[`--query.allow-collections-in-expressions` startup option](../components/arangodb-server/options.md#--queryallow-collections-in-expressions).
+{{< /tip >}}
 
-> collection 'coll' used as expression operand
-
-For example, instead of:
+For example, you should avoid queries like the following:
 
 ```aql
 RETURN coll[* LIMIT 1]
 ```
 
-... with the execution plan ...
-
 ```aql
 Execution plan:
- Id   NodeType          Est.   Comment
-  1   SingletonNode        1   * ROOT
-  2   CalculationNode      1     - LET #2 = coll   /* all collection documents */[* LIMIT  0, 1]   /* v8 expression */
-  3   ReturnNode           1     - RETURN #2
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  8   SubqueryStartNode                  1     - LET #4 = ( /* subquery begin */
+  3   EnumerateCollectionNode           42       - FOR #3 IN coll   /* full collection scan  */
+  9   SubqueryEndNode                    1         - RETURN  #3 ) /* subquery end */
+  6   CalculationNode                    1     - LET #2 = #4[* LIMIT  0, 1]   /* simple expression */
+  7   ReturnNode     
 ```
 
-... you can use the following equivalent query:
+You can use the following equivalent query with a better execution plan:
 
 ```aql
 FOR doc IN coll
@@ -383,15 +395,13 @@ FOR doc IN coll
     RETURN doc
 ```
 
-... with the (better) execution plan:
-
 ```aql
 Execution plan:
- Id   NodeType                  Est.   Comment
-  1   SingletonNode                1   * ROOT
-  2   EnumerateCollectionNode     44     - FOR doc IN Characters   /* full collection scan */
-  3   LimitNode                    1       - LIMIT 0, 1
-  4   ReturnNode                   1       - RETURN doc
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode           42     - FOR doc IN coll   /* full collection scan  */
+  3   LimitNode                          1       - LIMIT 0, 1
+  4   ReturnNode                         1       - RETURN doc
 ```
 
 Similarly, make sure you have not confused any variable names with collection
@@ -403,11 +413,6 @@ LET names = ["John", "Mary", ...]
 FOR name IN Names
     ...
 ```
-
-You can set the startup option `--query.allow-collections-in-expressions` to
-*false* to disallow collection names in arbitrary places in AQL expressions
-to prevent such mistakes. Also see
-[ArangoDB Server Query Options](../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
 
 {{% comment %}}
 Rename to Error Sources?

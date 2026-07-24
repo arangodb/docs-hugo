@@ -96,8 +96,8 @@ def workflow_generate(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
-            continue # compilation can be skipped, 3.10 nightly images no longer available
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
+            continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         branch = args.arangodb_branches[i]
         if branch == "undefined":
             continue
@@ -143,9 +143,9 @@ def workflow_generate(config):
                 elif openssl.startswith("1.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
                 else:
-                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:7" # clang-16
-            else: # build image for 3.12.8 and devel as of 2026-03-02
-                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:19" # clang-19
+                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
+            else: # build image for 3.12.9 and devel as of 2026-06-29
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
 
         print(f"compileJob = {compileJob}")
 
@@ -186,6 +186,8 @@ def workflow_generate_scheduled(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+        if version in ["3.10", "3.11"]:
+            continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         
         compileJob = {
             "compile-linux": {
@@ -249,9 +251,9 @@ def workflow_release_arangodb(config):
         elif openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
         else:
-            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:7" # clang-16
-    else: # build image for 3.12.8 and devel as of 2026-03-02
-        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:19" # clang-19
+            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
+    else: # build image for 3.12.9 and devel as of 2026-06-29
+        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
 
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
@@ -302,8 +304,8 @@ export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
-            continue # 3.10 nightly images no longer available
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
+            continue # Skip generation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
