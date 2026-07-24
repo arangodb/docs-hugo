@@ -1,23 +1,23 @@
 ---
-title: Build a knowledge graph with AutoGraph from a Jupyter notebook
+title: Build a Context Graph with AutoGraph from a Jupyter notebook
 menuTitle: Notebook Tutorial
 weight: 18
 description: >-
   A hands-on tutorial that takes you from a folder of documents to a queryable
-  knowledge graph, driving the full AutoGraph pipeline from a Jupyter notebook
+  Context Graph, driving the full AutoGraph pipeline from a Jupyter notebook
   with Python and the HTTP REST API
 ---
-In this tutorial, we go from a folder of raw documents to a queryable knowledge
-graph using AutoGraph, driving every step from a Jupyter notebook. We run the
+In this tutorial, we go from a folder of raw documents to a queryable **Context
+Graph** using AutoGraph, driving every step from a Jupyter notebook. We run the
 ready-made `Autograph_DEMO.ipynb` notebook cell by cell in a platform Notebook
 server, meeting each service that AutoGraph orchestrates along the way: the
 Secrets Manager for the LLM key, the File Manager for the documents, the corpus
 build that clusters them, the RAG Strategizer that picks a retrieval strategy,
-and the Retriever we finally chat with.
+and the retriever we deploy with AutoRAG and finally chat with.
 
-This is the same workflow you would run in the
-[web interface](../../agentic-ai-suite/autograph/web-interface.md), but here
-every step is a Python call against the
+This is the same workflow you would run in
+[AutoGraph Studio](../../agentic-ai-suite/autograph/web-interface.md), the
+unified web interface, but here every step is a Python call against the
 [HTTP REST API](../../agentic-ai-suite/autograph/reference/_index.md) - so you
 can automate the pipeline, inspect intermediate results, and reuse the calls in
 your own scripts.
@@ -27,14 +27,23 @@ By the end, you will have:
 - An AutoGraph service deployed on the platform, configured with your LLM.
 - Your documents uploaded through the File Manager and embedded into a Corpus Graph.
 - A per-domain RAG strategy chosen automatically for your content.
-- A knowledge graph built by the orchestrated GraphRAG importers.
-- A running Retriever service you can query in natural language.
+- A Knowledge Graph built by the orchestrated GraphRAG importers - together with
+  the Corpus Graph, this is your **Context Graph**.
+- A running retriever, deployed with AutoRAG, that you can query in natural language.
 - A simple way to remove everything when you are done.
 
 The **Expected output** blocks in this tutorial are illustrative - IDs, counts,
 and generated text will differ on your run.
 
 {{< embed-svg "GraphRAG-Flow" "AutoGraph end-to-end flow." >}}
+
+{{< info >}}
+The **Context Graph** is everything AutoGraph builds for a project. It is made
+of two graphs that keep their names: the **Corpus Graph** (how your documents
+are organized into clusters and modules) and the **Knowledge Graph** (the
+entities, relations, and communities extracted inside each partition). AutoGraph
+builds the Context Graph; you then use **AutoRAG** to deploy retrievers over it.
+{{< /info >}}
 
 ## Step 1: Check the prerequisites
 
@@ -122,7 +131,7 @@ Each value is used as follows:
 |---|---|
 | `SERVER_URL` | Base URL of your platform gateway (port `8529`). |
 | `USERNAME` / `PASSWORD` | Platform credentials used to obtain the access token. |
-| `DB_NAME` | The ArangoDB database that holds the project, documents, and knowledge graph. |
+| `DB_NAME` | The ArangoDB database that holds the project, documents, and Context Graph. |
 | `PROJECT_NAME` | The GenAI project name. It becomes the prefix for all collections AutoGraph creates (for example, `your-project_sources`, `your-project_domains`). |
 | `LLM_API_KEY` | Your chat and embedding API key. It is stored in the Secrets Manager, not hard-coded into requests. |
 | `FILES_PATH` | Path to the folder of documents to ingest (top-level files only). |
@@ -167,7 +176,7 @@ step. If you ever get an authentication error partway through, re-run the neares
 
 Create a GenAI project. It keeps your datasets and configuration isolated, and
 its name prefixes every collection AutoGraph creates. This is the notebook
-equivalent of creating a project in the web interface.
+equivalent of creating a project in AutoGraph Studio.
 
 ```py
 project_payload = {
@@ -226,7 +235,7 @@ a1b2c3d4-....
 
 Deploy the AutoGraph service as a pod, using the secret profile from Step 6 for
 both the chat and embedding models. This is the equivalent of **Deploy
-AutoGraph** in the web interface.
+AutoGraph** in AutoGraph Studio.
 
 ```py
 myDict = {
@@ -305,13 +314,14 @@ Expected output (each file as it uploads, then the list of IDs):
 
 {{< info >}}
 Files uploaded to the File Manager are shared across all projects in the same
-database, exactly as in the web interface. Only top-level files in the folder are
+database, exactly as in AutoGraph Studio. Only top-level files in the folder are
 uploaded; dotfiles are skipped.
 {{< /info >}}
 
 ## Step 9: Build the corpus
 
-Start an asynchronous corpus build from the uploaded files. The build embeds each
+Start an asynchronous corpus build from the uploaded files. This builds the
+**Corpus Graph**, the first part of your Context Graph. The build embeds each
 document, finds similarity relationships (vector plus lexical search fused with
 Reciprocal Rank Fusion), and clusters documents into domains with the Leiden
 algorithm. For the full pipeline, see
@@ -406,11 +416,13 @@ Wait until the strategies appear before running orchestration. Running
 orchestration too early returns `400` or processes only part of the jobs.
 {{< /warning >}}
 
-## Step 11: Import into the knowledge graph
+## Step 11: Import into the Knowledge Graph
 
 Orchestration spawns GraphRAG importer worker pods, loads the jobs the
 strategizer wrote to `rags`, and runs each domain through the appropriate import
-pipeline. This is the equivalent of **Start Import** in the web interface. See
+pipeline. The result is the **Knowledge Graph**, which together with the Corpus
+Graph completes your Context Graph. This is the equivalent of **Start Import** in
+AutoGraph Studio. See
 [Orchestration](../../agentic-ai-suite/autograph/reference/orchestration.md).
 
 ```py
@@ -471,16 +483,16 @@ before retrying.
 {{< /warning >}}
 
 {{< tip >}}
-You can explore the resulting knowledge graph at any time, including while the
+You can explore the resulting Knowledge Graph at any time, including while the
 import is still running, in the
 [Graph Visualizer](../../platform-suite/graph-visualizer.md).
 {{< /tip >}}
 
-## Step 12: Deploy the Retriever and query the graph
+## Step 12: Deploy a retriever with AutoRAG and query the graph
 
-Deploy the [Retriever service](../../agentic-ai-suite/retriever/) to query your
-knowledge graph. It starts the same way as AutoGraph, with the same LLM
-configuration:
+This is the **AutoRAG** stage: deploy a retriever over your Context Graph so you
+can query it. Deploy the [Retriever service](../../agentic-ai-suite/retriever/),
+which starts the same way as AutoGraph, with the same LLM configuration:
 
 ```py
 retriever_response = start_service("arangodb-graphrag-retriever", myDict)
@@ -511,7 +523,7 @@ retrieverResponse = send_request(
 pprint(retrieverResponse)
 ```
 
-Expected output (the answer drawn from your knowledge graph):
+Expected output (the answer drawn from your Context Graph):
 
 ```
 {'result': 'The documents center on ...'}
@@ -538,16 +550,16 @@ ready. If a query fails right after deployment, wait a few seconds and retry.
 
 The notebook includes a query cell for each search mode - Global, Local,
 Unified, and Deep - so you can run whichever fits your question and see the
-answer come straight from the knowledge graph you built. This is the payoff
+answer come straight from the Context Graph you built. This is the payoff
 moment: you are now asking your own documents questions and getting answers back.
 
 ## What's next
 
 You now have a full AutoGraph pipeline you can run from Python, ending in a
-knowledge graph you can query. From here:
+Context Graph you can query. From here:
 
 - Try the same workflow through the guided
-  [Web Interface](../../agentic-ai-suite/autograph/web-interface.md).
+  [AutoGraph Studio web interface](../../agentic-ai-suite/autograph/web-interface.md).
 - Learn how the graph is organized in the
   [Architecture](../../agentic-ai-suite/autograph/architecture.md) overview and
   the [Design Guide](../../agentic-ai-suite/autograph/design-guide.md).
@@ -559,7 +571,7 @@ knowledge graph you can query. From here:
 
 ## Clean up
 
-The knowledge graph persists in ArangoDB, but the service pods keep consuming
+The Context Graph persists in ArangoDB, but the service pods keep consuming
 cluster resources. When you are finished, stop them:
 
 ```py
@@ -568,7 +580,7 @@ stop_service(f"arangodb-graphrag-retriever-{retriever_service_id}")
 ```
 
 Your ArangoDB data - collections, graphs, and documents - persists after the
-pods are stopped. Stopping a service does not delete your corpus graph or
-knowledge graph; you can redeploy a service later and keep querying. If an
+pods are stopped. Stopping a service does not delete your Corpus Graph or
+Knowledge Graph; you can redeploy a service later and keep querying. If an
 orchestration run was interrupted, stop any leftover importer services through
 the Gen-AI service API.

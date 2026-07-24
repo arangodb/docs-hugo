@@ -17,5 +17,5 @@ For task-focused instructions on running a real deployment, see the
   running Arango Contextual Data Platform on a local Kubernetes cluster, ready
   for the follow-up tutorials.
 - [**Notebook Tutorial**](notebook-tutorial.md): Go from a folder of documents
-  to a queryable knowledge graph, driving the full AutoGraph pipeline from a
+  to a queryable Context Graph, driving the full AutoGraph pipeline from a
   Jupyter notebook with Python and the HTTP REST API.
