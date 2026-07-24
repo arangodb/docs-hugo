@@ -109,7 +109,7 @@
     "introducedIn" : [
       "v3.12.0"
     ],
-    "longDescription" : "Automatically compress outgoing HTTP requests\nwith the deflate compression format. Compression will only happen for\nHTTP/1.1 and HTTP/2 connections, if the size of the uncompressed request\nbody exceeds the threshold value controlled by this startup option,\nand if the request body size after compression is less than the original\nrequest body size.\nUsing the value 0 disables the automatic request compression.\"",
+    "longDescription" : "Automatically compress outgoing HTTP requests\nwith the deflate compression format. Compression will only happen for\nHTTP/1.1 and HTTP/2 connections, if the size of the uncompressed request\nbody exceeds the threshold value controlled by this startup option,\nand if the request body size after compression is less than the original\nrequest body size.\nUsing the value 0 disables the automatic request compression.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -659,7 +659,7 @@
     "introducedIn" : [
       "v3.9.0"
     ],
-    "longDescription" : "If you set this option to `false`, Unicode\ncharacters are retained and written to the log as-is. For example, `犬` is\nlogged as `犬`.\n\nIf you set this options to `true`, any Unicode characters are escaped, and the\nhex codes for all Unicode characters are logged instead. For example, `犬` is\nlogged as `\\u72AC`.\n\nThe default value for this option is set to `false` for compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
+    "longDescription" : "If you set this option to `false`, Unicode\ncharacters are retained and written to the log as-is. For example, `犬` is\nlogged as `犬`.\n\nIf you set this options to `true`, any Unicode characters are escaped, and the\nhex codes for all Unicode characters are logged instead. For example, `犬` is\nlogged as `犬`.\n\nThe default value for this option is set to `false` for compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
     "obsolete" : false,
     "os" : [
       "linux"
