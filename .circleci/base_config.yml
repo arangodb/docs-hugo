@@ -151,7 +151,14 @@ commands:
             if [[ "<< parameters.version >>" =~ ^3\. ]]; then
               BUILD_TARGETS="$BUILD_TARGETS arangobench"
             fi
-            cmake --build --preset enterprise-pr --parallel 8 --target $BUILD_TARGETS
+
+            # No enterprise-pr CMake preset in 3.12.10-devel anymore
+            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
+              BUILD_PRESET="enterprise-pr"
+            else
+              BUILD_PRESET="enterprise-pr-x86_64"
+            fi
+            cmake --build --preset $BUILD_PRESET --parallel 8 --target $BUILD_TARGETS
 
             if [ "$?" != "0" ]; then
               echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
