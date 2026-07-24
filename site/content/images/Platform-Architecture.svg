@@ -38,7 +38,7 @@
     <path d="M 450 90 L 450 145" stroke="#4F6D8B" stroke-width="1.8" fill="none" marker-end="url(#arrow-g)"/>
     <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#4F6D8B">HTTP/HTTPS (ingress)</text>
 
-    <a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
+    <a class="card-link" xlink:href="/arangodb/4.x/develop/http-api/">
       <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#0f3726" stroke="#22c55e" stroke-width="2"/>
       <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Envoy</text>
       <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">(API Gateway &amp;</text>
@@ -89,17 +89,17 @@
       <text x="410" y="444" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#86efac">(Distributed Multi-Model Database)</text>
     </a>
 
-    <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
+    <a class="card-link" xlink:href="/arangodb/4.x/deploy/cluster/">
       <rect x="215" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
       <text x="275" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Coordinator</text>
       <text x="275" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>
     </a>
-    <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
+    <a class="card-link" xlink:href="/arangodb/4.x/deploy/cluster/">
       <rect x="345" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
       <text x="405" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">DB Server</text>
       <text x="405" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>
     </a>
-    <a class="card-link" xlink:href="/arangodb/4.0/deploy/cluster/">
+    <a class="card-link" xlink:href="/arangodb/4.x/deploy/cluster/">
       <rect x="475" y="455" width="120" height="90" rx="8" class="node" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
       <text x="535" y="497" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Agent</text>
       <text x="535" y="513" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Nodes</text>

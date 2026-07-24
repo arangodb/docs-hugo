@@ -9,7 +9,7 @@ aliases:
   - ../../arangodb/3.11/develop/drivers/javascript
   - ../../arangodb/3.12/develop/drivers/javascript
   - ../../arangodb/stable/develop/drivers/javascript
-  - ../../arangodb/4.0/develop/drivers/javascript
+  - ../../arangodb/4.x/develop/drivers/javascript
   - ../../arangodb/devel/develop/drivers/javascript
 ---
 The official ArangoDB low-level JavaScript client.

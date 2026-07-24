@@ -7,12 +7,12 @@ aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries
 ---
 Spring Data ArangoDB supports three kinds of queries:

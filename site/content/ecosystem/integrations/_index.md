@@ -9,7 +9,7 @@ aliases:
   - ../arangodb/3.11/develop/integrations
   - ../arangodb/3.12/develop/integrations
   - ../arangodb/stable/develop/integrations
-  - ../arangodb/4.0/develop/integrations
+  - ../arangodb/4.x/develop/integrations
   - ../arangodb/devel/develop/integrations
 ---
 Database integrations allow applications to work with different database systems

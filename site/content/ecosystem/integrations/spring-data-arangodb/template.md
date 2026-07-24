@@ -9,12 +9,12 @@ aliases:
   - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/template
   - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/template
   - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/template
-  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/template
+  - ../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/template
   - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/template
   - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/template
   - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/template
   - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/template
-  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/template
+  - ../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/template
   - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/template
 ---
 `ArangoTemplate` mostly offers the features from the ArangoDB Java driver with

@@ -7,7 +7,7 @@ description: >-
 aliases:
   - ../../arangodb/3.12/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/stable/data-science/arangographml/getting-started # 3.10, 3.11
-  - ../../arangodb/4.0/data-science/arangographml/getting-started # 3.10, 3.11
+  - ../../arangodb/4.x/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/devel/data-science/arangographml/getting-started # 3.10, 3.11
 ---
 The Arango Contextual Data Platform provides an easy-to-use & scalable interface
