@@ -431,13 +431,26 @@ docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$versi
     return pullImage
 
 def findOpensslVersion(branch):
-    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
+    url = f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS'
     print(f"Find OpenSSL Version for branch {branch}")
+    r = requests.get(url)
+    if r.status_code != 200:
+        raise RuntimeError(
+            f"Could not fetch VERSIONS for arangodb/arangodb branch '{branch}' "
+            f"(HTTP {r.status_code} from {url}). Does that branch exist upstream? "
+            f"Note: the docs version name (e.g. '4.x') is NOT necessarily the upstream "
+            f"arangodb/arangodb branch name (e.g. '4.0' or 'devel')."
+        )
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
-            return version
+            if version:
+                return version
+    raise RuntimeError(
+        f"No non-empty OPENSSL_LINUX entry found in VERSIONS for arangodb/arangodb "
+        f"branch '{branch}' ({url}); cannot determine which OpenSSL version to compile."
+    )
 
 
 ## MAIN
@@ -453,8 +466,8 @@ def main():
             config = generate_workflow(config)
             with open("generated_config.yml", "w", encoding="utf-8") as outstream:
                 yaml.dump(config, outstream)
-    except Exception as exc:
-        traceback.print_exc(exc, file=sys.stderr)
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
 if __name__ == "__main__":
