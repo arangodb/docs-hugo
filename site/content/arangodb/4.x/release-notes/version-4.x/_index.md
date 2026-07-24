@@ -1,6 +1,6 @@
 ---
-title: Version 4.0
-menuTitle: Version 4.0
+title: Version 4.x
+menuTitle: Version 4.x
 weight: 86
 description: ''
 ---

@@ -9,7 +9,7 @@ description: >-
 
 - 
 
-Also see [What's New in 4.0](../release-notes/version-4.0/whats-new-in-4-0.md).
+Also see [What's New in 4.0](../release-notes/version-4.x/whats-new-in-4-x.md).
 
 ## Version 3.12
 

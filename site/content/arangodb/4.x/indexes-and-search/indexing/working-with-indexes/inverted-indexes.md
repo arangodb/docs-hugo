@@ -390,7 +390,7 @@ i.e. range queries backed by inverted indexes do not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../../analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
-Also see [Known Issues](../../../release-notes/version-4.0/known-issues-in-4-0.md#arangosearch).
+Also see [Known Issues](../../../release-notes/version-4.x/known-issues-in-4-x.md#arangosearch).
 {{< /warning >}}
 
 ### Case-insensitive search

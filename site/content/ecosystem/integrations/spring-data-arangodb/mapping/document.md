@@ -7,12 +7,12 @@ aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/document
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/document
 ---
 ## Annotation @Document

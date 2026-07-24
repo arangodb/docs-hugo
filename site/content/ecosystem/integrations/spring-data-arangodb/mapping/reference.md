@@ -7,12 +7,12 @@ aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/reference
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/reference
 ---
 With the annotation `@Ref` applied on a field the nested object isn't stored as

@@ -285,7 +285,7 @@ RETURN { foo: 1, foo: 2 }
 {{< info >}}
 The last occurrence of a duplicate attribute name wins since v4.0. In previous
 versions, the first occurrence determined the value. See
-[Incompatible changes in ArangoDB 4.0](../../release-notes/version-4.0/incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
+[Incompatible changes in ArangoDB 4.0](../../release-notes/version-4.x/incompatible-changes-in-4-x.md#duplicate-attribute-names-in-object-literals).
 {{< /info >}}
 
 #### Attribute shorthand notation

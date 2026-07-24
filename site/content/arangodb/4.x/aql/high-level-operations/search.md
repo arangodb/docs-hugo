@@ -123,7 +123,7 @@ i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../../indexes-and-search/analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
-Also see [Known Issues](../../release-notes/version-4.0/known-issues-in-4-0.md#arangosearch).
+Also see [Known Issues](../../release-notes/version-4.x/known-issues-in-4-x.md#arangosearch).
 {{< /warning >}}
 
 ### Array comparison operators

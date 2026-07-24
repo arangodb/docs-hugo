@@ -332,7 +332,7 @@ detailed information about breaking changes before upgrading.
 
   A few obsolete endpoints related to the write-ahead log have been removed, too.
 
-  See [API changes in ArangoDB 4.0](version-4.0/api-changes-in-4-0.md#obsolete-replication-apis)
+  See [API changes in ArangoDB 4.0](version-4.x/api-changes-in-4-x.md#obsolete-replication-apis)
   for details.
 
 - **Loading and unloading of collections**:\

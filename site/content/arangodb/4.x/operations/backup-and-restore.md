@@ -300,4 +300,4 @@ not be suited for.
 
 - **Known Issues**
 
-  See the list of [Known Issues](../release-notes/version-4.0/known-issues-in-4-0.md#hot-backup).
+  See the list of [Known Issues](../release-notes/version-4.x/known-issues-in-4-x.md#hot-backup).

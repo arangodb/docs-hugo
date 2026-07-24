@@ -1,12 +1,12 @@
 ---
-title: Features and Improvements in ArangoDB 4.0
-menuTitle: What's New in 4.0
+title: Features and Improvements in ArangoDB 4.x
+menuTitle: What's New in 4.x
 weight: 5
 description: >-
   TODO
 ---
 The following list shows in detail which features have been added or improved in
-ArangoDB 4.0. ArangoDB 4.0 also contains several bug fixes that are not listed
+ArangoDB 4.x. ArangoDB 4.x also contains several bug fixes that are not listed
 here.
 
 ## ArangoSearch
@@ -47,7 +47,7 @@ and [Object spread](../../aql/operators.md#object-spread-syntax).
 
 This change also includes a change of behavior for duplicate attribute names in
 object literals. The last occurrence now wins instead of the first one. See
-[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-0.md#duplicate-attribute-names-in-object-literals).
+[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-x.md#duplicate-attribute-names-in-object-literals).
 
 ### String concatenation with the `+` operator
 
@@ -68,7 +68,7 @@ Previously, you had to use the [`CONCAT()`](../../aql/functions/string.md#concat
 function for string concatenation and the `+` operator always performed arithmetic
 addition. Note that this is a potentially breaking change for queries that relied
 on the previous behavior, see
-[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-0.md#aql--operator-overloaded-for-string-concatenation).
+[Incompatible changes in ArangoDB 4.0](incompatible-changes-in-4-x.md#aql--operator-overloaded-for-string-concatenation).
 
 For more information, see [String operators](../../aql/operators.md#string-operators).
 

@@ -9,7 +9,7 @@ aliases:
   - ../../arangodb/3.11/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/3.12/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/stable/develop/integrations/kafka-connect-arangodb-sink-connector
-  - ../../arangodb/4.0/develop/integrations/kafka-connect-arangodb-sink-connector
+  - ../../arangodb/4.x/develop/integrations/kafka-connect-arangodb-sink-connector
   - ../../arangodb/devel/develop/integrations/kafka-connect-arangodb-sink-connector
 ---
 {{< info >}}

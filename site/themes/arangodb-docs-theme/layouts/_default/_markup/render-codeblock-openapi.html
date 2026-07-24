@@ -22,13 +22,13 @@
   {{- end }}
 {{- else }}
   {{- $body = .Inner }}
-  {{- /* $service defaults to "arangodb"; apiVersions depend on ArangoDB version (3.10/3.11→v0, 3.12→v0+v1, 4.0→v1) */}}
+  {{- /* $service defaults to "arangodb"; apiVersions depend on ArangoDB version (3.10/3.11→v0, 3.12→v0+v1, 4.x→v1) */}}
   {{- if eq $service "arangodb" }}
     {{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}
       {{- $apiVersions = slice "v0" }}
     {{- else if eq $pageVersion "3.12" }}
       {{- $apiVersions = slice "v0" }}{{/* TODO: Add "v1" again for 3.12.10 */}}
-    {{- else if eq $pageVersion "4.0" }}
+    {{- else if eq $pageVersion "4.x" }}
       {{- $apiVersions = slice "v1" }}
     {{- else }}
       {{- errorf "OpenAPI front matter: Unsupported ArangoDB page version %q — add an apiVersions mapping for this version" $pageVersion }}

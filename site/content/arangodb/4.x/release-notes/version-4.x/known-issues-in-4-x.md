@@ -1,9 +1,9 @@
 ---
-title: Known Issues in ArangoDB 4.0
-menuTitle: Known Issues in 4.0
+title: Known Issues in ArangoDB 4.x
+menuTitle: Known Issues in 4.x
 weight: 10
 description: >-
-  Important issues affecting the 4.0.x versions of the ArangoDB suite of products
+  Important issues affecting the 4.x.x versions of the ArangoDB suite of products
 ---
 Note that this page does not list all open issues.
 

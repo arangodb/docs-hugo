@@ -146,7 +146,7 @@ commands:
           name: Build
           command: |
             set +e
-            # arangobench removed in ArangoDB 4.0
+            # arangobench removed in ArangoDB 4.0.0
             BUILD_TARGETS="arangod arangosh arangoimport arangoexport arangodump arangorestore arangobackup arangovpack"
             if [[ "<< parameters.version >>" =~ ^3\. ]]; then
               BUILD_TARGETS="$BUILD_TARGETS arangobench"
