@@ -1,9 +1,6 @@
 <head>
   <title>
-    {{ .Title | markdownify | plainify | safeHTML }} | {{/* Whitespace control */ -}}
-    {{ default "Arango" (index .Ancestors.Reverse 1).Params.menuTitle }} {{/* Whitespace control */ -}}
-    {{ $pageVersion := .Page.Store.Get "versionShort" -}}
-    {{ with $pageVersion }} {{ . }}{{ end -}}{{/* TODO: Fallback if versionShort isn't set? */ -}}
+    {{- partial "title.html" . -}}
   </title>
   {{ $isProduction := eq site.BaseURL "https://docs.arango.ai/" -}}
   {{ if $isProduction -}}
