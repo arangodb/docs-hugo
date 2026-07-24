@@ -113,7 +113,7 @@
     <h1>{{ .Title | markdownify }}</h1>
     <p class="sub">{{ with .Description }}{{ . | markdownify }}{{ else }}A native multi-model graph database and an Agentic AI Suite for grounding AI in your business context.{{ end }}</p>
     <button type="button" class="hx-search" id="hx-open-search" aria-label="Search the documentation">
-      <i class="fas fa-search"></i><span>Search the documentation</span><kbd>Ctrl K</kbd>
+      <i class="fas fa-search"></i><span>Search the documentation</span><kbd id="hx-search-kbd">Ctrl K</kbd>
     </button>
     <div class="hx-startrow">
       <div class="hx-start2">
@@ -228,7 +228,7 @@
     <div class="hx-sec"><h2 id="community">Build with the community</h2></div>
     <p class="hx-note">Get help from the community and explore the source.</p>
     <div class="hx-panel" style="display:flex; align-items:center; min-height:64px;">
-      <div class="hx-chips" style="width:100%; flex-wrap:nowrap;">
+      <div class="hx-chips" style="width:100%;">
         <a style="flex:1 1 0; justify-content:center;" href="https://github.com/arangodb/arangodb" target="_blank" rel="noopener"><i class="fab fa-github"></i>GitHub</a>
         <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/lp/arango-academy/" target="_blank" rel="noopener"><i class="fas fa-graduation-cap"></i>Academy</a>
         <a style="flex:1 1 0; justify-content:center;" href="https://arango.ai/resources/" target="_blank" rel="noopener"><i class="fas fa-book-open"></i>Resources</a>
@@ -240,11 +240,16 @@
     (function () {
       var trigger = document.getElementById('hx-open-search');
       if (!trigger) return;
+      var isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+      // Show the platform-appropriate shortcut (the HTML default "Ctrl K" covers non-Mac).
+      if (isMac) {
+        var kbd = document.getElementById('hx-search-kbd');
+        if (kbd) kbd.textContent = '⌘ K';
+      }
       trigger.addEventListener('click', function () {
         var btn = document.querySelector('.DocSearch-Button');
         if (btn) { btn.click(); return; }
         // Fallback: dispatch Ctrl/Cmd+K so DocSearch's global shortcut opens the modal.
-        var isMac = /Mac|iPhone|iPad/.test(navigator.platform);
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', code: 'KeyK', keyCode: 75, metaKey: isMac, ctrlKey: !isMac, bubbles: true }));
       });
     })();

@@ -29,7 +29,8 @@ By the end, you will have:
 - A per-domain RAG strategy chosen automatically for your content.
 - A knowledge graph built by the orchestrated GraphRAG importers.
 - A running Retriever service you can query in natural language.
-- A simple way to remove everything when you are done.
+- A simple way to stop the services when you are done. Your ArangoDB data
+  (documents, corpus graph, and knowledge graph) persists until you delete it.
 
 The **Expected output** blocks in this tutorial are illustrative - IDs, counts,
 and generated text will differ on your run.
@@ -94,9 +95,12 @@ anything beyond `python-dotenv`; the first cell installs it.
 
 ## Step 3: Configure platform and LLM access
 
-The notebook reads all of its configuration from a file, so this is the only
-place you edit. You never change code cells to point the notebook at your
-platform, database, or files.
+The notebook reads its connection, credential, and data settings from a file, so
+for those this is the only place you edit: you never change code cells to point
+the notebook at your platform, database, or files. This tutorial uses OpenAI for
+both chat and embeddings; if you want a different provider, models, or API URLs,
+you set them in the deployment cell in
+[Step 7](#step-7-deploy-the-autograph-service).
 
 Create a file named `env` in the same directory as the notebook and fill in your
 own values:
@@ -126,7 +130,8 @@ Run the first two code cells. They install `python-dotenv`, import the
 libraries, and load the `env` file with
 `load_dotenv(dotenv_path="./env", override=True)`. Every later cell reads these
 values through `os.environ`, so once the `env` file is correct you can run the
-rest of the notebook without editing code.
+rest of the notebook without editing connection or credential settings. The only
+values set directly in code are the LLM provider and model choices in Step 7.
 
 {{< warning >}}
 `VERIFY_TLS` is set to `False` in the notebook so it works against a platform

@@ -90,10 +90,26 @@ By the end, you will be able to:
 
 ## Step 9: Join collections
 
-- Movies and embeddings share a `_key`: join by primary key with `DOCUMENT()`.
-- Join via a query variable:
-  `FOR m IN Movies FOR g IN ... RETURN ...` (reference-based join).
-- Contrast document-reference joins with graph edges (next step).
+- `Movies` and `MovieEmbeddings` share the same `_key`, so you can join them by
+  primary key with `DOCUMENT()`:
+  ```aql
+  FOR m IN Movies
+    LIMIT 5
+    RETURN {
+      title: m.title,
+      dimensions: LENGTH(DOCUMENT("MovieEmbeddings", m._key).embedding)
+    }
+  ```
+- The same join written as a reference-based join with a second `FOR` loop:
+  ```aql
+  FOR m IN Movies
+    LIMIT 5
+    FOR e IN MovieEmbeddings
+      FILTER e._key == m._key
+      RETURN { title: m.title, dimensions: LENGTH(e.embedding) }
+  ```
+- Contrast these document-reference joins with graph edges (next step): here you
+  join on a shared key, whereas edges store the relationship explicitly.
 
 ## Step 10: Traverse the graph
 
