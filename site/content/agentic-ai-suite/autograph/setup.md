@@ -46,7 +46,7 @@ Ingestion of those formats on CPU-only clusters might introduce significant late
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it
 
-Before importing data, you need to create a GraphRAG project. Projects keep
+Before importing data, you need to create an AutoGraph Studio project. Projects keep
 datasets and configurations isolated from each other.
 
 For detailed instructions on creating and managing projects, see the
@@ -65,7 +65,7 @@ The web interface of the Arango Contextual Data Platform lets you create,
 configure, and run a complete AutoGraph workflow through a streamlined
 web interface.
 
-1. Navigate to **Agentic AI Suite** > **AutoGraph** in the sidebar.
+1. Navigate to **Agentic AI Suite** > **AutoGraph Studio** in the sidebar.
 2. Create a new project and upload your documents.
 3. Configure your LLM provider and import settings.
 4. Deploy the AutoGraph service and build your corpus.

@@ -10,7 +10,7 @@ description: >-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
-- A **GraphRAG project** in your target database (keeps datasets isolated).
+- An **AutoGraph Studio project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** for the API (`Authorization: Bearer ...`).
@@ -23,7 +23,7 @@ description: >-
 {{< steps >}}
 
 {{< step "Create a project" >}}
-In the sidebar, open **Agentic AI Suite** > **AutoGraph** and create a
+In the sidebar, open **Agentic AI Suite** > **AutoGraph Studio** and create a
 project. A project is an isolated workspace: you keep one set of related
 documents per project and their data stays separate from everything else.
 {{< /step >}}
@@ -50,8 +50,8 @@ on its own; wait for it to finish.
 
 {{< step "Build the knowledge base" >}}
 Start the import. AutoGraph turns each topic group into a part of a searchable
-knowledge base and deploys a retriever to query it. Wait for the
-"knowledge graph built successfully" confirmation.
+**Context Graph**. Wait for the "knowledge graph built successfully"
+confirmation, then deploy a retriever with **AutoRAG** to query it.
 {{< /step >}}
 
 {{< step "Ask your first question" >}}

@@ -31,6 +31,22 @@ documents or designing taxonomies, AutoGraph handles the following:
 
 The result is a domain-aware knowledge base that scales horizontally across machines.
 
+## AutoGraph, AutoRAG, and the Context Graph
+
+The end-to-end workflow is called **AutoGraph Studio**. It has two stages:
+
+- **AutoGraph** is the building layer. It produces the **Context Graph**: the
+  complete output of the workflow, made up of the **Corpus Graph** (how your
+  documents are organized into clusters) and the **Knowledge Graph**
+  (`{project}_kg`: the entities, relations, and communities extracted per
+  partition), along with the RAG partitions built over them.
+- **AutoRAG** is the retrieval layer. Once the Context Graph is built, you
+  deploy retrievers with AutoRAG so your agents and applications can answer
+  questions from it.
+
+AutoGraph can be your finish line on its own if all you need is the Context
+Graph, or you can continue into AutoRAG to deploy retrievers over it.
+
 ## Why AutoGraph?
 
 AutoGraph automatically discovers that enterprise data naturally divides into **knowledge domains**, with each domain deserving its own optimized processing and retrieval strategy. By building a **Corpus Graph** (the map of your knowledge) and importing each domain into **specialized RAG partitions**, AutoGraph enables:
@@ -69,7 +85,7 @@ that content.
 
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
 - **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
-- **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
+- **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph Studio workflow in the web interface, from building the Context Graph to deploying retrievers with AutoRAG.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

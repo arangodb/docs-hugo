@@ -14,10 +14,12 @@ owner, a set of collections, and a specific purpose.
 All collection names are prefixed with your project name. For example, if the
 project is `myapp`, collections will be `myapp_sources`, `myapp_domains`, and so on.
 
-An AutoGraph project is made of two graphs that work as a pipeline: the **corpus
-graph** (`{project}_CorpusGraph`) organizes the documents you feed in, and the
-**knowledge graph** (`{project}_kg`) is the GraphRAG graph built inside each
-partition. They meet only at the `partition_id` link.
+An AutoGraph project is made of two graphs that work as a pipeline: the **Corpus
+Graph** (`{project}_CorpusGraph`) organizes the documents you feed in, and the
+**Knowledge Graph** (`{project}_kg`) is the graph of entities, relations, and
+communities built inside each partition. They meet only at the `partition_id`
+link. Together, along with the RAG partitions built over them, they form the
+**Context Graph**: the complete output of AutoGraph.
 
 {{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the corpus graph. Right: the knowledge graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
 

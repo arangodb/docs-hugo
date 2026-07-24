@@ -6,23 +6,24 @@ description: >-
   Learn how to create, configure, and run a complete AutoGraph workflow in the web interface
 ---
 
-Learn how to use AutoGraph's web interface to build an intelligent knowledge
-graph from your documents. AutoGraph analyzes your content, automatically
-discovers knowledge domains, generates optimized import strategies,
-and deploys retrieval services, all through a streamlined, step-by-step workflow.
-In just a few steps, your fully operational knowledge graph is ready to answer
-questions about your documents.
+Learn how to use the **AutoGraph Studio** web interface to build a
+**Context Graph** from your documents and then answer questions from it.
+The workflow has two stages: **AutoGraph** analyzes your content, discovers
+knowledge domains, generates optimized import strategies, and builds the
+Context Graph; then **AutoRAG** deploys retrievers over that Context Graph.
+AutoGraph can be your finish line on its own, or you can continue into AutoRAG
+so your agents and applications can answer questions from the Context Graph.
 
-## Create an AutoGraph project
+## Create an AutoGraph Studio project
 
-To create a new AutoGraph project using the Arango Contextual Data Platform
+To create a new AutoGraph Studio project using the Arango Contextual Data Platform
 web interface, follow these steps:
 
 1. From the left-hand sidebar, select the database where you want to create the project.
    You can also switch to a different database if you wish to create your project
    elsewhere.
-2. In the left-hand sidebar, click **Agentic AI Suite**, then click **AutoGraph**.
-3. In the **AutoGraph** view, click **+ New Project**.
+2. In the left-hand sidebar, click **Agentic AI Suite**, then click **AutoGraph Studio**.
+3. In the **AutoGraph Studio** view, click **+ New Project**.
 4. The **New Project** dialog opens. Enter a **Project Name** and optionally
    a description for your project.
 5. Click the **Create & Continue** button to finalize the creation.
@@ -135,26 +136,33 @@ After reviewing the strategy:
 3. Wait for the import process to complete.
    You will see **Import complete! Knowledge graph built successfully**.
 
+With the import complete, AutoGraph has produced the full **Context Graph**:
+the **Corpus Graph** and the **Knowledge Graph** (`{project}_kg`), together with
+the RAG partitions built over them. From here you can stop, or continue into
+AutoRAG to deploy retrievers over the Context Graph.
+
 {{< tip >}}
-You can explore the generated knowledge graph in the [Graph Visualizer](../../platform-suite/graph-visualizer.md) at any time.
+You can explore the generated graphs in the [Graph Visualizer](../../platform-suite/graph-visualizer.md) at any time.
 {{< /tip >}}
 
-## Deploy the Retriever service
+## Deploy retrievers with AutoRAG
 
-The [Retriever service](../retriever/) enables intelligent
-search and retrieval of information from your knowledge graph.
+Once the Context Graph is built, AutoGraph has produced its output. The next
+stage is **AutoRAG**: deploy one or as many
+[retrievers](../retriever/) as you wish so your agents and applications can
+answer questions from the Context Graph.
 
-1. The interface automatically shows the retriever deployment section with your previously configured LLM provider.
+1. The interface shows the AutoRAG deployment section with your previously configured LLM provider.
 2. Click **Deploy Retriever**.
-3. Wait for the confirmation message **Retriever service deployed** with the service name (e.g., `arangodb-graphrag-retriever-gqmwd`).
-4. Click the **New Chat** button to start chatting with your knowledge graph.
+3. Wait for the confirmation that the retriever is deployed, with the service name (e.g., `arangodb-graphrag-retriever-gqmwd`).
+4. Click the **New Chat** button to start chatting with your Context Graph.
 
-## Chat with your knowledge graph
+## Chat with your Context Graph
 
 After the retriever is deployed, the chat interface opens automatically.
 
 {{< info >}}
-You can deploy multiple retriever services with different configurations for the same knowledge graph.
+You can deploy multiple retriever services with different configurations for the same Context Graph.
 {{< /info >}}
 
 1. The chat interface provides three
