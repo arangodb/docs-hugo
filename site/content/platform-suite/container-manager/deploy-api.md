@@ -91,6 +91,10 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 | `app_instance_name` | env | Service instance name (alphanumeric with a 32-character length limit, used in routing) | Yes |
 | `db_name` | env | Database name (optional) | No |
 
+The `env` object also accepts arbitrary additional key-value pairs beyond the
+keys documented here. Any extra keys you provide are passed through to your
+service as environment variables.
+
 ### Available Base Images
 
 | Image Name | Description |
@@ -170,9 +174,9 @@ object of the deploy request:
 
 | Parameter | Location | Description | Required |
 |-----------|----------|-------------|----------|
-| `has_ui` | env | Set to `true` to register the service as an App. Accepts a boolean (`true`) or a string (`"true"`). Defaults to `false`. | No |
-| `display_name` | env | Name shown for the app in the Apps catalog | Yes, when `has_ui` is enabled |
-| `description` | env | Description shown for the app in the Apps catalog | Yes, when `has_ui` is enabled |
+| `has_ui` | env | Set to `"true"` to register the service as an App. Pass as a string (`"true"` / `"false"`); the value is compared case-insensitively. Defaults to `"false"`. | No |
+| `display_name` | env | Name shown for the app in the Apps catalog. Recommended when `has_ui` is enabled. | No |
+| `description` | env | Description shown for the app in the Apps catalog. Recommended when `has_ui` is enabled. | No |
 
 For example, to deploy a code-based service and register it as an App:
 
