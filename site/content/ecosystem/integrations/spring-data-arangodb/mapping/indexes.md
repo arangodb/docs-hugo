@@ -1,5 +1,5 @@
 ---
-title: Indexes
+title: Indexes in Spring Data ArangoDB
 menuTitle: Indexes
 weight: 25
 description: >-

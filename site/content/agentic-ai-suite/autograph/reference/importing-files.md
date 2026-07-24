@@ -1,11 +1,10 @@
 ---
-title: Import Files
+title: AutoGraph Import Files Reference
 menuTitle: Import Files
 description: >-
   Upload multiple files into the corpus graph with module organization
 weight: 35
 ---
-
 ## Import multiple files
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}

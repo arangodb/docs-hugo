@@ -1,5 +1,5 @@
 ---
-title: Named queries
+title: Named queries in Spring Data ArangoDB
 menuTitle: Named queries
 weight: 15
 description: >-

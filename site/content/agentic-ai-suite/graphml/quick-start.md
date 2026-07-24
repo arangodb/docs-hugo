@@ -6,7 +6,6 @@ description: >-
   Predict missing labels and uncover hidden patterns in your graph with
   machine learning, no data science pipeline required
 ---
-
 ## Prerequisites
 
 - Access to the platform with **GraphML** services enabled.

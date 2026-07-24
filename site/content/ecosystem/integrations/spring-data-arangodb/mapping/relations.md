@@ -1,5 +1,5 @@
 ---
-title: Relations
+title: Relations in Spring Data ArangoDB
 menuTitle: Relations
 weight: 20
 description: >-

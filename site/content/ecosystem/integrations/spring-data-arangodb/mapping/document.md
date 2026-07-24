@@ -1,5 +1,5 @@
 ---
-title: Document
+title: Document in Spring Data ArangoDB
 menuTitle: Document
 weight: 5
 description: >-

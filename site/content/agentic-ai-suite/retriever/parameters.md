@@ -5,7 +5,6 @@ description: >-
   Complete reference for all Retriever service query parameters
 weight: 60
 ---
-
 {{< info >}}
 This page provides detailed parameter definitions. For query workflows and examples, 
 see the [Execute Queries guide](executing-queries.md).

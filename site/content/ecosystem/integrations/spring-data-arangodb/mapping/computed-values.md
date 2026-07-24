@@ -1,5 +1,5 @@
 ---
-title: Computed Values
+title: Computed Values in Spring Data ArangoDB
 menuTitle: Computed Values
 weight: 27
 description: >-

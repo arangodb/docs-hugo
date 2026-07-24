@@ -1,5 +1,5 @@
 ---
-title: Auditing
+title: Auditing in Spring Data ArangoDB
 menuTitle: Auditing
 weight: 40
 description: >-

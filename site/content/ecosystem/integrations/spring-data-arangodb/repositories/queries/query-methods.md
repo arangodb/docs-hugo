@@ -1,5 +1,5 @@
 ---
-title: Query methods
+title: Query methods in Spring Data ArangoDB
 menuTitle: Query methods
 weight: 10
 description: >-

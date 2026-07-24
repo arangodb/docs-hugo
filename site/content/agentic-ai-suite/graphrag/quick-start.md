@@ -6,7 +6,6 @@ description: >-
   Turn a document into a knowledge graph and ask it a question, end to end,
   using the GraphRAG web interface
 ---
-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).

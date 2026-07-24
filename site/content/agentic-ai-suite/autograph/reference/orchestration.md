@@ -1,11 +1,10 @@
 ---
-title: Orchestration
+title: AutoGraph Orchestration
 menuTitle: Orchestration
 description: >-
   Automatically spawn importer workers and execute RAG pipeline builds
 weight: 50
 ---
-
 ## Trigger Orchestration
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}

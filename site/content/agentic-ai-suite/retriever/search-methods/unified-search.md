@@ -1,11 +1,10 @@
 ---
-title: Unified Search (Instant Search)
+title: Retriever Unified Search (Instant Search)
 menuTitle: Unified Search
 description: >-
   Fast unified retrieval combining chunk and entity search for quick answers
 weight: 30
 ---
-
 ## Overview
 
 Unified Search combines chunk and entity search to provide comprehensive

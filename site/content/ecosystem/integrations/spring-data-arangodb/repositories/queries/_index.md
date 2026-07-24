@@ -1,5 +1,5 @@
 ---
-title: Queries
+title: Queries in Spring Data ArangoDB
 menuTitle: Queries
 weight: 5
 description: >-

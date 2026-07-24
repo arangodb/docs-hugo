@@ -1,5 +1,5 @@
 ---
-title: Converter
+title: Converter in Spring Data ArangoDB
 menuTitle: Converter
 weight: 30
 description: >-

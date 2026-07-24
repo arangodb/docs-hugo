@@ -1,5 +1,5 @@
 ---
-title: Reference
+title: Spring Data ArangoDB Reference
 menuTitle: Reference
 weight: 15
 description: >-

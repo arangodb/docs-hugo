@@ -1,5 +1,5 @@
 ---
-title: Events
+title: Events in Spring Data ArangoDB
 menuTitle: Events
 weight: 35
 description: >-

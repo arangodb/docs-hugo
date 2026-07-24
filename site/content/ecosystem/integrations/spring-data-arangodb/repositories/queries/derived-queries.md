@@ -1,5 +1,5 @@
 ---
-title: Derived queries
+title: Derived queries in Spring Data ArangoDB
 menuTitle: Derived queries
 weight: 5
 description: >-

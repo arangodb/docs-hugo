@@ -1,12 +1,11 @@
 ---
-title: Artifacts
+title: Ada Artifacts
 menuTitle: Artifacts
 weight: 15
 description: >-
   The interactive charts and custom HTML that Ada renders alongside its chat
   answers
 ---
-
 When Ada responds to a query, it may produce artifacts. An artifact is a
 rendered output that appears alongside the chat message. Ada currently supports
 two artifact types:

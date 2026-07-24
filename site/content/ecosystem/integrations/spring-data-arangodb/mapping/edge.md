@@ -1,5 +1,5 @@
 ---
-title: Edge
+title: Edge in Spring Data ArangoDB
 menuTitle: Edge
 weight: 10
 description: >-
