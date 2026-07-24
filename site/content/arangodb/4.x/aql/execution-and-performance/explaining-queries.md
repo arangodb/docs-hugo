@@ -33,7 +33,7 @@ highlighting with `{ colors: false }`):
 name: 01_workWithAQL_databaseExplain
 description: ''
 ---
-db._explain("LET s = SLEEP(0.25) LET t = SLEEP(0.5) RETURN 1", {}, {colors: false});
+db._explain("LET s = SLEEP(0.25) LET t = SLEEP(0.75) RETURN 1", {}, {colors: false});
 ```
 
 The plan contains all execution nodes that are used during a query. These nodes represent different
