@@ -15,9 +15,10 @@ collection, by traversal operations, or AQL functions that can read documents.
 
 The syntax for an insert operation is:
 
-<pre><code>INSERT <em>document</em> INTO <em>collection</em></code></pre>
-
-It can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+INSERT <document> INTO <collection>
+[OPTIONS { … }]
+```
 
 {{< tip >}}
 The `IN` keyword is allowed in place of `INTO` and has the same meaning.

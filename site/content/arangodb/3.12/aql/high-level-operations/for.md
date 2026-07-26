@@ -10,15 +10,25 @@ description: >-
 
 The general syntax for iterating over collections and arrays is:
 
-<pre><code>FOR <em>variableName</em> IN <em>expression</em></code></pre>
+```aql-syntax
+FOR <variableName> IN <expression>
+[OPTIONS { … }]
+```
 
 There is also a special variant for [graph traversals](../graph-queries/traversals.md):
 
-<pre><code>FOR <em>nodeVariableName</em> [, <em>edgeVariableName</em> [, <em>pathVariableName</em> ] ] IN <em>traversalExpression</em></code></pre>
+```aql-syntax
+FOR <nodeVar> [, <edgeVar> [, <pathVar> ] ] IN <traversalExpression>
+[OPTIONS { … }]
+```
 
 For Views, there is a special (optional) [`SEARCH` keyword](search.md):
 
-<pre><code>FOR <em>variableName</em> IN <em>viewName</em> SEARCH <em>searchExpression</em></code></pre>
+```aql-syntax
+FOR <variableName> IN <viewName>
+  SEARCH <searchExpression>
+  [OPTIONS { … }]
+```
 
 {{< info >}}
 Views cannot be used as edge collections in traversals:
@@ -27,8 +37,6 @@ Views cannot be used as edge collections in traversals:
 FOR v IN 1..3 ANY startNode viewName /* invalid! */
 ```
 {{< /info >}}
-
-All variants can optionally end with an `OPTIONS { … }` clause.
 
 ## Usage
 
@@ -106,7 +114,10 @@ Also see [Combining queries with subqueries](../fundamentals/subqueries.md).
 For collections and Views, the `FOR` construct supports an optional `OPTIONS`
 clause to modify the behavior. The general syntax is as follows:
 
-<pre><code>FOR <em>variableName</em> IN <em>expression</em> OPTIONS { <em>option</em>: <em>value</em>, <em>...</em> }</code></pre>
+```aql-syntax
+FOR <variableName> IN <expression>
+OPTIONS { <option>: <value> [… , <optionN>: <valueN>] }
+```
 
 ### `indexHint`
 

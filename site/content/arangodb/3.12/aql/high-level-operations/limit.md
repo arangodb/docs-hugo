@@ -8,14 +8,12 @@ description: >-
 ---
 ## Syntax
 
-Two general forms of `LIMIT` are:
+```aql-syntax
+LIMIT [<offset>,] <count>
+```
 
-<pre><code>LIMIT <em>count</em>
-LIMIT <em>offset</em>, <em>count</em></code></pre>
-
-The first form allows specifying only the `count` value whereas the second form
-allows specifying both `offset` and `count`. The first form is identical using
-the second form with an `offset` value of `0`.
+You can either specify only the `count` value or both `offset` and `count`.
+Using `LIMIT <count>` is identical to `LIMIT 0, <count>`.
 
 ## Usage
 

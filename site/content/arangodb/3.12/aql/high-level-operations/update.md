@@ -22,10 +22,15 @@ with a server-generated value.
 
 The two syntaxes for an update operation are:
 
-<pre><code>UPDATE <em>document</em> IN <em>collection</em>
-UPDATE <em>keyExpression</em> WITH <em>document</em> IN <em>collection</em></code></pre>
+```aql-syntax
+UPDATE <document> IN <collection>
+[OPTIONS { … }]
+```
 
-Both variants can optionally end with an `OPTIONS { … }` clause.
+```aql-syntax
+UPDATE <keyExpression> WITH <document> IN <collection>
+[OPTIONS { … }]
+```
 
 `collection` must contain the name of the collection in which the document
 should be updated.

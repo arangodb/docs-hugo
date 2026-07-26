@@ -16,15 +16,14 @@ There are two slightly different syntaxes for traversals in AQL, one for
 ### Working with named graphs
 
 The syntax for AQL graph traversals using named graphs is as follows
-(square brackets denote optional parts and `|` denotes alternatives):
+(the pipe character `|` denotes alternatives):
 
-```aql
-FOR node[, edge[, path]]
-  IN [min[..max]]
-  OUTBOUND|INBOUND|ANY startNode
-  GRAPH graphName
-  [PRUNE [pruneVariable = ]pruneCondition]
-  [OPTIONS options]
+```aql-syntax
+FOR <node> [, <edge> [, <path>]] IN [<min>[..<max>]]
+  OUTBOUND|INBOUND|ANY <startNode>
+  GRAPH <graphName>
+  [PRUNE [<pruneVariable> = ]<pruneConditions>]
+  [OPTIONS { … }]
 ```
 
 - `FOR`: emits up to three variables:
@@ -55,7 +54,7 @@ FOR node[, edge[, path]]
   Its node and edge collections are looked up. Note that the graph name
   is like a regular string, hence it must be enclosed by quote marks, like
   `GRAPH "graphName"`.
-- `PRUNE` **expression** (AQL expression, *optional*):
+- `PRUNE` **conditions** (AQL expression, *optional*):
   An expression, like in a `FILTER` statement, which is evaluated in every step of
   the traversal, as early as possible. The semantics of this expression are as follows:
   - If the expression evaluates to `false`, the traversal continues on the current path.
@@ -77,21 +76,22 @@ FOR node[, edge[, path]]
   typically in a `FILTER` expression.
 
   See [Pruning](#pruning) for details.
-- `OPTIONS` **options** (object, *optional*): See the [traversal options](#traversal-options).
+- `OPTIONS` (object, *optional*): See the [traversal options](#traversal-options).
 
 ### Working with collection sets
 
 The syntax for AQL graph traversals using collection sets is as follows
-(square brackets denote optional parts and `|` denotes alternatives):
+(the pipe character `|` denotes alternatives):
 
-```aql
-[WITH nodeCollection1[, nodeCollection2[, nodeCollectionN]]]
-FOR node[, edge[, path]]
-  IN [min[..max]]
-  OUTBOUND|INBOUND|ANY startNode
-  edgeCollection1[, edgeCollection2[, edgeCollectionN]]
-  [PRUNE [pruneVariable = ]pruneCondition]
-  [OPTIONS options]
+```aql-syntax
+[WITH <nodeCollection1> [… , <nodeCollectionN>]]
+
+FOR <node> [, <edge> [, <path>]] IN [<min>[..<max>]]
+  OUTBOUND|INBOUND|ANY <startNode>
+  [OUTBOUND|INBOUND|ANY] <edgeCollection1>
+  [… , [OUTBOUND|INBOUND|ANY] <edgeCollectionN>]
+  [PRUNE [<pruneVariable> = ]<pruneConditions>]
+  [OPTIONS { … }]
 ```
 
 - `WITH`: Declaration of collections. Optional for single server instances, but
@@ -283,8 +283,8 @@ OPTIONS {
   }
 }
 FILTER p.edges[1].foo == "bar" AND
-        p.edges[2].foo == "bar" AND
-        p.edges[2].baz == "qux"
+       p.edges[2].foo == "bar" AND
+       p.edges[2].baz == "qux"
 ```
 
 Index hints for levels other than `base` are only considered if the
@@ -495,7 +495,11 @@ to **Edinburgh**.
 
 If your graph is comprised of multiple node or edge collections, you can
 also prune as soon as you reach a certain collection, using a condition like
-`PRUNE IS_SAME_COLLECTION("stopCollection", v)`.
+the following:
+
+```aql
+PRUNE IS_SAME_COLLECTION("stopCollection", v)
+```
 
 If you want to only return the results of the depth at which the traversal
 stopped due to the prune expression, you can use a `FILTER` in addition. You can
