@@ -1,0 +1,21 @@
+# Agent-readiness output formats. Merged with the formats in config.yaml
+# (navigation, notfound). See also outputs.yaml and mediaTypes.yaml.
+#
+#   llms     -> /llms.txt        (curated index; layouts/index.llms.txt)
+#   llmsfull -> /llms-full.txt   (full corpus;  layouts/index.llmsfull.txt)
+#   md       -> /<page>/index.md (per-page markdown; layouts/_default/{single,list}.md)
+llms:
+  baseName: llms
+  isPlainText: true
+  mediaType: text/plain
+  rel: alternate
+llmsfull:
+  baseName: llms-full
+  isPlainText: true
+  mediaType: text/plain
+  rel: alternate
+md:
+  baseName: index
+  isPlainText: true
+  mediaType: text/markdown
+  rel: alternate
