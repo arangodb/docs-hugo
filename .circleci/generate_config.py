@@ -193,7 +193,7 @@ def workflow_generate_scheduled(config):
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
+                "arangodb-branch": nightlyImage(version),
                 "version": version
             }
         }
@@ -309,14 +309,17 @@ export GENERATORS='<< parameters.generators >>'\n"
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
+            branch = nightlyImage(version)
 
         if branch == "undefined":
             continue
 
         pullImage = pullImageCmd(branch, version)
 
-        version_underscore = version.replace(".", "_")
+        # Uppercase so a version name with letters (e.g. "4.x" -> "4_X") matches
+        # the ARANGODB_BRANCH_4_X/ARANGODB_SRC_4_X vars that docker-compose.yml,
+        # config.yaml and toolchain.sh reference.
+        version_underscore = version.replace(".", "_").upper()
         branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
@@ -397,7 +400,7 @@ export GENERATORS=''\n"
 
     pullImage = pullImageCmd(args.arangodb_branch, args.docs_version)
 
-    version_underscore = args.docs_version.replace(".", "_")
+    version_underscore = args.docs_version.replace(".", "_").upper()  # see note in workflow_generate_launch_command
     branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={args.arangodb_branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_version}"
@@ -414,6 +417,33 @@ exit $?"
 
 
 ## UTILS
+
+
+# Map a docs version to its upstream enterprise-preview nightly image tag.
+# The docs version name does NOT equal the upstream branch/tag one-to-one:
+#   - "3.12" tracks the upstream "devel" branch -> devel-nightly
+#   - "4.x"  tracks the upstream "4.0" branch   -> 4.0-nightly
+#   - "3.10"/"3.11" use their own same-named nightlies (currently skipped anyway)
+# Only used by the scheduled/oasisctl workflows, which run against prebuilt
+# nightlies instead of compiling from source. Keep this in sync with the
+# upstream branch mapping in base_config.yml's clone-arangodb (4.x -> 4.0).
+NIGHTLY_IMAGE = {
+    "3.10": "arangodb/enterprise-preview:3.10-nightly",
+    "3.11": "arangodb/enterprise-preview:3.11-nightly",
+    "3.12": "arangodb/enterprise-preview:devel-nightly",
+    "4.x": "arangodb/enterprise-preview:4.0-nightly",
+}
+
+
+def nightlyImage(version):
+    try:
+        return NIGHTLY_IMAGE[version]
+    except KeyError:
+        raise RuntimeError(
+            f"No nightly image mapping for docs version '{version}'. "
+            f"Add it to NIGHTLY_IMAGE in generate_config.py (the docs version "
+            f"name is not necessarily the upstream nightly tag, e.g. '4.x' -> '4.0-nightly')."
+        )
 
 
 def pullImageCmd(branch, version):
