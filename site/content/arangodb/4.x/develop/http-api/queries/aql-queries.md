@@ -1131,7 +1131,7 @@ var cn = "products";
 db._drop(cn);
 db._create(cn);
 
-db.products.save({"hello1":"bello3"});
+db.products.save({"hello1":"bello1"});
 db.products.save({"hello2":"world1"});
 
 var url = "/_api/cursor";
