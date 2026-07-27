@@ -214,7 +214,7 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  may be removed in a future version. Client applications should use the REST 
+  removed in 3.12.10. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
 
 - **Replication REST API**:\

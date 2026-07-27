@@ -1208,6 +1208,9 @@ deployment modes, both for single servers.
 - `GET /_api/replication/applier-state`
 - `GET /_api/replication/applier-state-all`
 - `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
 
 ## JavaScript API
 
