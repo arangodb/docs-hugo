@@ -1193,10 +1193,13 @@ that can insert, update, replace, or remove arrays of documents.
 
 <small>Removed in: v3.12.10</small>
 
-Multiple endpoints related to asynchronous replication have been removed.
-This affects the no longer supported per-database and global applier that
-provided the low-level mechanisms for the user-managed Leader/Follower Replication
-for single servers.
+Various endpoints related to replication functionality that is no longer
+used have been removed.
+
+This includes endpoints related to asynchronous replication like the
+global applier that provided the low-level mechanisms for the user-managed
+Leader/Follower Replication and the Agency-managed Active Failover
+deployment modes, both for single servers.
 
 - `GET /_api/replication/applier-config`
 - `PUT /_api/replication/applier-config`

@@ -217,11 +217,14 @@ detailed information about breaking changes before upgrading.
   may be removed in a future version. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
 
-- **Asynchronous Replication REST API**:\
-  Multiple endpoints related to asynchronous replication have been removed in v3.12.10.
-  This affects the no longer supported per-database and global applier that
-  provided the low-level mechanisms for the user-managed Leader/Follower Replication
-  for single servers.
+- **Replication REST API**:\
+  Various endpoints related to replication functionality that is no longer
+  used have been removed in v3.12.10.
+
+  This includes endpoints related to asynchronous replication like the
+  global applier that provided the low-level mechanisms for the user-managed
+  Leader/Follower Replication and the Agency-managed Active Failover
+  deployment modes, both for single servers.
 
   See [API changes in ArangoDB 3.12](version-3.12/api-changes-in-3-12.md#obsolete-replication-apis)
   for details.
