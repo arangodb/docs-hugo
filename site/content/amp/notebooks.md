@@ -1,5 +1,5 @@
 ---
-title: Notebooks in the Arango Managed Platform (AMP)
+title: Notebooks in AMP
 menuTitle: Notebooks
 weight: 25
 description: >-

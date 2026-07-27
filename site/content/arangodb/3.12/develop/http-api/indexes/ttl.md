@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for TTL (time-to-live) indexes
+title: TTL (time-to-live) index HTTP API
 menuTitle: TTL
 weight: 15
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `ttl`
 ---
 ## Create a TTL index
 

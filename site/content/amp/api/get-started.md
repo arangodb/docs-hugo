@@ -1,5 +1,5 @@
 ---
-title: Get started with the Arango Managed Platform (AMP) API and oasisctl
+title: Get started with the AMP API and oasisctl
 menuTitle: Get started with oasisctl
 weight: 10
 description: >-

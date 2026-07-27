@@ -1,5 +1,5 @@
 ---
-title: How to use GraphML in the Arango Contextual Data Platform web interface
+title: How to use GraphML in the web interface
 menuTitle: Web Interface
 weight: 10
 description: >-

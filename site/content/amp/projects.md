@@ -1,5 +1,5 @@
 ---
-title: Projects in the Arango Managed Platform (AMP)
+title: Projects in AMP
 menuTitle: Projects
 weight: 15
 description: >-

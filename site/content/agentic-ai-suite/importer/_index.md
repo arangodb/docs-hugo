@@ -6,7 +6,6 @@ description: >-
   stored in ArangoDB, ready for semantic search and Retriever-driven Q&A
 weight: 6
 ---
-
 ## What is the Importer?
 
 The Importer service turns documents into a **knowledge graph** stored in

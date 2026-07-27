@@ -1,11 +1,10 @@
 ---
-title: Process Images and Semantic Units
+title: Process Images and Semantic Units with the importer
 menuTitle: Semantic Units
 description: >-
   Extract and process images, web URLs, and multimedia content from your documents
 weight: 70
 ---
-
 ## Overview
 
 The Importer service includes advanced capabilities for processing multimedia

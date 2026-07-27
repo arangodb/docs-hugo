@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for collections
+title: Collection HTTP API
 menuTitle: Collections
 weight: 25
 description: >-
-  The HTTP API for collections lets you create and delete collections, get
+  The HTTP interface for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
 ---

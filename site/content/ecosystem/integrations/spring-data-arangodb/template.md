@@ -1,5 +1,5 @@
 ---
-title: Template
+title: Template in Spring Data ArangoDB
 menuTitle: Template
 weight: 10
 description: >-

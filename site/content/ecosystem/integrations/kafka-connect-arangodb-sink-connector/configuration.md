@@ -2,7 +2,8 @@
 title: ArangoDB Sink Connector Configuration Properties
 menuTitle: Configuration
 weight: 5
-description: ''
+description: >-
+  A list of the available configuration options for the ArangoDB Kafka integration
 aliases:
   - ../../../arangodb/3.11/develop/integrations/kafka-connect-arangodb-sink-connector/configuration
   - ../../../arangodb/3.12/develop/integrations/kafka-connect-arangodb-sink-connector/configuration

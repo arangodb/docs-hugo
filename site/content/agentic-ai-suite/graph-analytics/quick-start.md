@@ -6,7 +6,6 @@ description: >-
   Reveal the structure hidden in your connected data - rank influential
   entities, detect communities, and spot fraud
 ---
-
 ## Prerequisites
 
 - Access to an ArangoDB deployment (Contextual Data Platform or Arango
