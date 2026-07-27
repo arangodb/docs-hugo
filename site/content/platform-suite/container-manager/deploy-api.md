@@ -98,6 +98,7 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 | `py12base` | Python 3.12 base runtime |
 | `py12torch` | Python 3.12 with PyTorch |
 | `py12cugraph` | Python 3.12 with cuGraph |
+| `node22base` | Node.js 22 base runtime |
 
 ## Deploy an Image-Based Service
 
