@@ -82,6 +82,13 @@ caches:
     dir: :cacheDir/modules
     maxAge: -1
 
+security:
+  http:
+    methods:
+      - (?i)POST
+    urls:
+      - ^http://192\.168\.(?:129|130)\.129:8080/
+
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
   description: >-
