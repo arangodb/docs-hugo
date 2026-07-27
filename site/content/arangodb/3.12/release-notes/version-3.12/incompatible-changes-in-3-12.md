@@ -1189,6 +1189,23 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Obsolete replication APIs removed
+
+<small>Removed in: v3.12.10</small>
+
+Multiple endpoints related to asynchronous replication have been removed.
+This affects the no longer supported per-database and global applier that
+provided the low-level mechanisms for the user-managed Leader/Follower Replication
+for single servers.
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+
 ## JavaScript API
 
 ### `@arangodb/graph/traversal` module removed

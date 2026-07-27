@@ -36,6 +36,7 @@ aliases:
   - ../operations/upgrading/manual-deployments/active-failover # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -215,6 +216,15 @@ detailed information about breaking changes before upgrading.
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
   may be removed in a future version. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+
+- **Asynchronous Replication REST API**:\
+  Multiple endpoints related to asynchronous replication have been removed in v3.12.10.
+  This affects the no longer supported per-database and global applier that
+  provided the low-level mechanisms for the user-managed Leader/Follower Replication
+  for single servers.
+
+  See [API changes in ArangoDB 3.12](version-3.12/api-changes-in-3-12.md#obsolete-replication-apis)
+  for details.
 
 - **Loading and unloading of collections**:\
   The JavaScript functions for explicitly loading and unloading collections,
