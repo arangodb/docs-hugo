@@ -214,17 +214,14 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  removed in 3.12.10. Client applications should use the REST 
-  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB 3.3.
+  removed in ArangoDB v3.12.10. Client applications should use the REST 
+  API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
 
 - **Replication REST API**:\
-  Various endpoints related to replication functionality that is no longer
-  used have been removed in v3.12.10.
-
-  This includes endpoints related to asynchronous replication like the
-  global applier that provided the low-level mechanisms for the user-managed
-  Leader/Follower Replication and the Agency-managed Active Failover
-  deployment modes, both for single servers.
+  Various endpoints related to asynchronous replication like the global applier
+  have been removed in ArangoDB v3.12.10. These endpoints provided the low-level
+  mechanisms for the user-managed Leader/Follower Replication and the
+  Agency-managed Active Failover deployment modes, both for single servers.
 
   See [API changes in ArangoDB 3.12](version-3.12/api-changes-in-3-12.md#obsolete-replication-apis)
   for details.
@@ -243,7 +240,7 @@ detailed information about breaking changes before upgrading.
   write [Foxx Microservices](../develop/foxx-microservices/_index.md), which allow you to define
   custom endpoints even with complex business logic.
 
-  From v3.5.0 on, the system collections `_routing` and `_modules` are not
+  From v3.5.0 onward, the system collections `_routing` and `_modules` are not
   created anymore when the `_system` database is first created (blank new data
   folder). They are not actively removed, they remain on upgrade or backup
   restoration from previous versions.
