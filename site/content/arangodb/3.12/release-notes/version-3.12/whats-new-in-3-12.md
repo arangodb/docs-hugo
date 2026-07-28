@@ -2050,6 +2050,15 @@ database files after an upgrade.
 The server process terminates with the new exit code 30
 (`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
 
+### Vector index retry backoff
+
+<small>Introduced in: v3.12.10</small>
+
+A new `--vector-index-build-retry-backoff` startup option has been added.
+
+If training a vector index fails, wait this many seconds before retrying.
+The default is `60` seconds.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
