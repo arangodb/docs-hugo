@@ -1,5 +1,5 @@
 ---
-title: Get Started
+title: Get Started with ArangoDB
 menuTitle: Get Started
 weight: 25
 description: >-

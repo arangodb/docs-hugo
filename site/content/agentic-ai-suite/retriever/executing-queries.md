@@ -1,11 +1,10 @@
 ---
-title: Execute Queries
+title: Execute Queries using the Retriever
 menuTitle: Execute Queries
 description: >-
   Learn how to execute different types of queries against your knowledge graph
 weight: 40
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → **Execute Queries** → [Verify](verify-and-monitor.md)
 {{< /info >}}

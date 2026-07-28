@@ -7,7 +7,6 @@ description: >-
 aliases:
   - /agentic-ai-suite/importer/quickstart/
 ---
-
 The Importer service is available in the Arango Contextual Data Platform
 through two interfaces:
 

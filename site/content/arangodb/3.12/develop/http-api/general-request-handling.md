@@ -1,5 +1,5 @@
 ---
-title: HTTP request handling in ArangoDB
+title: HTTP request handling
 menuTitle: General request handling
 weight: 5
 description: >-

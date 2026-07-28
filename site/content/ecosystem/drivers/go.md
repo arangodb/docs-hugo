@@ -2,7 +2,8 @@
 title: ArangoDB Go driver
 menuTitle: Go driver
 weight: 15
-description: ''
+description: >-
+  Get started with the official ArangoDB Go driver
 aliases:
   - ../../arangodb/3.11/develop/drivers/go
   - ../../arangodb/3.12/develop/drivers/go

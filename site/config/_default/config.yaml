@@ -90,9 +90,4 @@ caches:
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
-  description: >-
-    ArangoDB is a scalable graph database system with native support for other
-    data models and a built-in search engine, for the cloud and on-premises
-  collapsibleMenu: true
-  titleSeparator: "|"
   themeVariant: [ "relearn-light" ]

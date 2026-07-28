@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for server administration
+title: Administration HTTP API
 menuTitle: Administration
 weight: 110
 description: >-

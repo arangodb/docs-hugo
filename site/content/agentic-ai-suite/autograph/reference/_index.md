@@ -5,7 +5,6 @@ weight: 30
 description: >-
   AutoGraph HTTP REST API endpoints, authentication, call sequence, and workflow examples
 ---
-
 This section documents the AutoGraph HTTP REST API. All endpoints require
 JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).

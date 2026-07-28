@@ -1,5 +1,5 @@
 ---
-title: Repositories
+title: Repositories in Spring Data ArangoDB
 menuTitle: Repositories
 weight: 15
 description: >-

@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for inverted indexes
+title: Inverted index HTTP API
 menuTitle: Inverted
 weight: 10
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `inverted`
 ---
 ## Create an inverted index
 

@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Deploy and manage services through the Container Manager web interface
 ---
-
 The Container Manager web interface provides a visual way to deploy and manage
 services. You can deploy services using a code package with drag-and-drop upload
 or by providing a Docker image URL.

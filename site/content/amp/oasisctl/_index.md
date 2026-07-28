@@ -1,5 +1,5 @@
 ---
-title: The `oasisctl` tool for the Arango Managed Platform (AMP)
+title: The `oasisctl` tool for AMP
 menuTitle: oasisctl
 weight: 65
 description: >-

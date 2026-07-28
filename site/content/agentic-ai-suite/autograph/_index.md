@@ -5,7 +5,6 @@ weight: 4
 description: >-
   AutoGraph structures enterprise data into contextual knowledge shards with domain-aware retrieval strategies providing AI copilots and agents with production-grade context infrastructure
 ---
-
 {{< embed-svg "GraphRAG-Flow" "AutoGraph end-to-end flow." >}}
 
 ## What is AutoGraph?

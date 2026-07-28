@@ -1,5 +1,5 @@
 ---
-title: Changes in version 7
+title: Changes in Java Driver version 7
 menuTitle: Changes in version 7
 weight: 15
 description: >-

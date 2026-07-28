@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for jobs
+title: Job HTTP API
 menuTitle: Jobs
 weight: 80
 description: >-
-  The HTTP API for jobs lets you access the results of asynchronously executed
+  The HTTP interface for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
 ---
 For an introduction to non-blocking execution of requests and how to create

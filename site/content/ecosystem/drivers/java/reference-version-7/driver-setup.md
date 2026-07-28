@@ -1,5 +1,5 @@
 ---
-title: Driver setup
+title: Java Driver Setup
 menuTitle: Driver Setup
 weight: 5
 description: >-

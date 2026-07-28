@@ -1,5 +1,5 @@
 ---
-title: Integrations
+title: ArangoDB Integrations
 menuTitle: Integrations
 weight: 20
 description: >-
