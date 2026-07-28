@@ -487,11 +487,11 @@ FILTER doc.tags == 'foobar'
 FILTER 'foobar' == doc.tags
 ```
 
-From version 3.12.8 onward, the following `FILTER` condition is automatically
+From version 3.12.10 onward, the following `FILTER` condition is automatically
 transformed and can use the array index:
 
 ```aql
-FILTER doc.tags ANY == 'foobar'  # Transformed into FILTER 'foobar' IN doc.tags
+FILTER doc.tags ANY == 'foobar'  // Transformed into FILTER 'foobar' IN doc.tags
 ```
 
 It is also possible to create an index on sub-attributes of array values. This makes sense
@@ -595,7 +595,7 @@ db.posts.insert({tags: [null], name: "bob"})
 
 Please note that filtering using array indexes only works from within AQL queries and
 only if the query filters on the indexed attribute using the `IN` operator.
-From 3.12.8 onward, the `ANY ==` operator can be transformed to an equivalent
+From 3.12.10 onward, the `ANY ==` operator can be transformed to an equivalent
 expressions using the `IN` operator and can thus the array index, too. The other
 comparison operators (`==`, `!=`, `>`, `>=`, `<`, `<=`, `ANY`, `ALL`, `NONE`, `AT LEAST`)
 cannot use array indexes.
