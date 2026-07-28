@@ -1,8 +1,11 @@
-
 /arangodb/3.12/develop/http-api/replication/replication-applier                 /arangodb/3.12/release-notes/deprecated-and-removed-features/    301!
+/arangodb/3.12/develop/http-api/replication/other-replication-commands          /arangodb/3.12/release-notes/deprecated-and-removed-features/    301!
 /arangodb/stable/develop/http-api/replication/replication-applier               /arangodb/stable/release-notes/deprecated-and-removed-features/  301!
+/arangodb/stable/develop/http-api/replication/other-replication-commands        /arangodb/stable/release-notes/deprecated-and-removed-features/  301!
 /arangodb/4.x/develop/http-api/replication/replication-applier                  /arangodb/4.x/release-notes/deprecated-and-removed-features/     301!
+/arangodb/4.x/develop/http-api/replication/other-replication-commands           /arangodb/4.x/release-notes/deprecated-and-removed-features/     301!
 /arangodb/devel/develop/http-api/replication/replication-applier                /arangodb/devel/release-notes/deprecated-and-removed-features/   301!
+/arangodb/devel/develop/http-api/replication/other-replication-commands         /arangodb/devel/release-notes/deprecated-and-removed-features/   301!
 
 /arangodb/4.0/components/tools/arangobench/                                     /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!
 /arangodb/4.0/components/tools/arangobench/options/                             /arangodb/4.0/release-notes/deprecated-and-removed-features/    301!

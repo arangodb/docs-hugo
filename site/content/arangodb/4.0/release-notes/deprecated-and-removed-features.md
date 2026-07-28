@@ -105,6 +105,7 @@ aliases:
   - ../develop/http-api/indexes/fulltext # 3.12 -> 4.0
   - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.0
   - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
+  - ../develop/http-api/replication/other-replication-commands # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already

@@ -37,6 +37,7 @@ aliases:
   - ../operations/upgrading/os-specific-information/macos # 3.11 -> 3.12
   - ../operations/upgrading/os-specific-information/windows # 3.11 -> 3.12
   - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
+  - ../develop/http-api/replication/other-replication-commands # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
