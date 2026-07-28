@@ -1713,6 +1713,22 @@ vector embedding field are not counted toward this threshold.
 Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+A new option to let you configure how many vectors per centroid to include in
+the random sample used for training the index has been added. You can set
+`numberOfDocsPerCentroid` in the `params` object to change the default of `100`.
+
+Up to v3.12.9, this is not configurable and a fixed value of `256` per centroid
+is used instead.
+
+A larger value can improve the training quality but increases the memory and
+time required for training. See
+[Resource usage during index creation](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
+for details.
+
 ## Server options
 
 ### Effective and available startup options
