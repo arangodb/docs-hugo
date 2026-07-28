@@ -184,6 +184,7 @@ paths:
                         for details.
                       type: integer
                       default: 100
+                      minimum: 1
                     factory:
                       description: |
                         You can specify an index factory string that is
