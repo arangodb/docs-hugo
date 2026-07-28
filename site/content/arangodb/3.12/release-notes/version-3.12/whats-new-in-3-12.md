@@ -1447,6 +1447,22 @@ Execution plan:
   6   ReturnNode              4000       - RETURN #3
 ```
 
+### Utilize indexes for `ANY ==` comparisons
+
+<small>Introduced in: v3.12.10</small>
+
+Array comparison operators like `ALL IN`, `NONE >=`, and `ANY <` can generally
+not utilize indexes. However, a new `replace-any-eq-with-in` optimizer rule has
+now been added that substitutes expressions using `ANY ==`
+array comparison operators in `FILTER` operations with equivalent expressions
+using `IN` operators. The lookup may then benefit from an index if a suitable
+one is available.
+
+For example, `FILTER doc.arr ANY == "foo"` could previously not utilize a
+`persistent` array index over `arr[*]`. With the new optimization, the
+expression is automatically changed to `FILTER "foo" IN doc.arr`, which can
+utilize such an index.
+
 ## Indexing
 
 ### Multi-dimensional indexes
