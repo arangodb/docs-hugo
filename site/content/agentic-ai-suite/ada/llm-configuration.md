@@ -1,5 +1,5 @@
 ---
-title: Configure the LLM provider
+title: Configure the LLM provider for Ada
 menuTitle: LLM Configuration
 weight: 5
 description: >-
@@ -7,12 +7,11 @@ description: >-
 aliases:
   - /agentic-ai-suite/ada/configure-the-llm-provider/
 ---
-
 Before using Ada you need to configure the LLM provider and model for the
 current database.
 
-1. Click the gear icon (⚙) in the top-right corner of the Ada panel to open the
-   **Chat Settings** dialog.
+1. Click the gear icon ({{< icon "settings" >}}) in the top-right corner of the
+   Ada panel to open the **Chat Settings** dialog.
 2. Select a **Provider** from the dropdown. Supported options are **Anthropic**,
    **OpenAI**, **OpenRouter**, and **Custom Endpoint**.
 3. Select a **Model**. The available options depend on the selected provider:

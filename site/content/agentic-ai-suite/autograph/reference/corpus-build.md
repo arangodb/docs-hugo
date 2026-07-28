@@ -1,11 +1,10 @@
 ---
-title: Corpus Build
+title: AutoGraph Corpus Build Reference
 menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
 weight: 40
 ---
-
 ## Create Corpus Build
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}

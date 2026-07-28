@@ -1,11 +1,10 @@
 ---
-title: Deep Search
+title: Retriever Deep Search
 menuTitle: Deep Search
 description: >-
   LLM-orchestrated multi-step research for complex queries requiring thorough analysis
 weight: 25
 ---
-
 ## Overview
 
 Deep Search uses an LLM planner to break complex queries into multiple steps

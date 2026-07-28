@@ -1,8 +1,9 @@
 ---
-title: Edge
+title: Edge in Spring Data ArangoDB
 menuTitle: Edge
 weight: 10
-description: ''
+description: >-
+  How to use edges in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/edge

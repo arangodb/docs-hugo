@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for replication
+title: Replication HTTP API
 menuTitle: Replication
 weight: 95
 description: >-

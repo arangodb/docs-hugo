@@ -1,11 +1,10 @@
 ---
-title: Design Guide
+title: AutoGraph Design Guide
 menuTitle: Design Guide
 weight: 25
 description: >-
   How to structure your data with modules, layers, and components when building knowledge graphs with AutoGraph
 ---
-
 This guide explains how to structure your data when building knowledge graphs
 with AutoGraph. It covers module design, the three processing layers, and when
 to use each component.

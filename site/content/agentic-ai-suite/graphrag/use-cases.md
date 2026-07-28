@@ -7,7 +7,6 @@ description: >-
   comparison with traditional RAG approaches, including business benefits 
   and practical applications
 ---
-
 ## GraphRAG Enterprise Use Cases
 
 Whether you are evaluating GraphRAG for your organization or looking to understand 

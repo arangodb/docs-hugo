@@ -6,7 +6,6 @@ description: >-
   graphs created by the Importer service
 weight: 8
 ---
-
 ## Overview
 
 The Retriever service provides intelligent search and retrieval from knowledge

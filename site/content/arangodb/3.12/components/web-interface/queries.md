@@ -2,7 +2,8 @@
 title: Query View
 menuTitle: Queries
 weight: 25
-description: ''
+description: >-
+  The query editor in the ArangoDB web interface
 ---
 The query view offers you three different subviews:
 

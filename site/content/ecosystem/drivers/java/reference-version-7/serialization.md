@@ -1,5 +1,5 @@
 ---
-title: Serialization
+title: Java Driver Serialization
 menuTitle: Serialization
 weight: 10
 description: >-
