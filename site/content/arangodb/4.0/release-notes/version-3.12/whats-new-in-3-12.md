@@ -1713,6 +1713,18 @@ vector embedding field are not counted toward this threshold.
 Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+Newly created vector indexes use a new format version for writing data into
+RocksDB as well as a new format for the vector index metadata (the trained data
+produced by faiss). 
+
+To take advantage of the optimizations, you need to recreate the vector indexes
+after upgrading to v3.12.10 or later. Existing vector indexes are not
+automatically rewritten to the new format.
+
 ## Server options
 
 ### Effective and available startup options

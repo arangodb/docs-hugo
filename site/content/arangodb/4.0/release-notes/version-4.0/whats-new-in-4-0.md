@@ -133,7 +133,17 @@ question mark operator:
 
 ## Indexing
 
+### Upgrading vector indexes
 
+<small>Introduced in: v3.12.10</small>
+
+Newly created vector indexes use a new format version for writing data into
+RocksDB as well as a new format for the vector index metadata (the trained data
+produced by faiss) since v3.12.10. 
+
+To take advantage of the optimizations, you need to recreate the vector indexes
+after upgrading to v3.12.10 or later. Existing vector indexes are not
+automatically rewritten to the new format.
 
 ## Server options
 
