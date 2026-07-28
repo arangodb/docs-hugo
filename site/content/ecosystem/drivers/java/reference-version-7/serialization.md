@@ -9,12 +9,12 @@ aliases:
   - ../../../../arangodb/3.11/develop/drivers/java/reference-version-6/serialization
   - ../../../../arangodb/3.12/develop/drivers/java/reference-version-6/serialization
   - ../../../../arangodb/stable/develop/drivers/java/reference-version-6/serialization
-  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-6/serialization
+  - ../../../../arangodb/4.x/develop/drivers/java/reference-version-6/serialization
   - ../../../../arangodb/devel/develop/drivers/java/reference-version-6/serialization
   - ../../../../arangodb/3.11/develop/drivers/java/reference-version-7/serialization
   - ../../../../arangodb/3.12/develop/drivers/java/reference-version-7/serialization
   - ../../../../arangodb/stable/develop/drivers/java/reference-version-7/serialization
-  - ../../../../arangodb/4.0/develop/drivers/java/reference-version-7/serialization
+  - ../../../../arangodb/4.x/develop/drivers/java/reference-version-7/serialization
   - ../../../../arangodb/devel/develop/drivers/java/reference-version-7/serialization
 ---
 The driver functionalities related to serialization and deserialization (serde)

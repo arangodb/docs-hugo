@@ -246,8 +246,8 @@ variables to configure the build:
 export GENERATORS="examples options optimizer"
 export ARANGODB_BRANCH_3_12="arangodb/enterprise:3.12.9"
 export ARANGODB_SRC_3_12="path/to/arangodb"
-export ARANGODB_BRANCH_4_0="arangodb/enterprise-preview:4.0-nightly"
-export ARANGODB_SRC_4_0="path/to/arangodb2"
+export ARANGODB_BRANCH_4_X="arangodb/enterprise-preview:4.0-nightly"
+export ARANGODB_SRC_4_X="path/to/arangodb2"
 ```
 
 **Configuration example**
@@ -258,7 +258,7 @@ servers:
   - image: arangodb/enterprise:3.12.9
     version: "3.12"
   - image: arangodb/enterprise-preview:4.0-nightly
-    version: "4.0"
+    version: "4.x"
 ```
 
 **Run the toolchain**
@@ -282,7 +282,7 @@ The site will be available at `http://localhost:1313`
 In the `site/content` directory, the directories `3.10`, `3.11` etc. represent
 the individual ArangoDB versions and their documentation. There is only one
 maintained version of the documentation for every minor and major version (3.12,
-4.0, etc.) but not for every patch release (e.g. 3.12.1).
+4.x, etc.) but not for every patch release (e.g. 3.12.1).
 
 Having a folder per version has the advantage that all versions can be built at
 once, but the drawback of Git cherry-picking not being available and therefore
@@ -510,7 +510,7 @@ shape or label clickable, wrap it in an SVG `<a>` element with an `xlink:href`
 attribute:
 
 ```xml
-<a class="card-link" xlink:href="/arangodb/4.0/develop/http-api/">
+<a class="card-link" xlink:href="/arangodb/4.x/develop/http-api/">
   <rect x="340" y="145" width="220" height="72" rx="10" class="node" .../>
   <text x="450" y="174" ...>Envoy</text>
 </a>
@@ -522,7 +522,7 @@ block, and edit the `xlink:href` value.
 
 Conventions used in the existing diagrams:
 
-- Internal docs links use an absolute path, e.g. `/arangodb/4.0/deploy/cluster/`
+- Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
   or `/platform-suite/container-manager/`.
 - External links use a full URL and add `target="_blank"`, e.g.
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
@@ -823,7 +823,7 @@ added to 3.11.5 and 3.12.2, then write the following in the 3.12 documentation:
 ```
 
 All later documentation versions should use a copy of the content, as thus the
-4.0 documentation would contain the same.
+4.x documentation would contain the same.
 
 In the 3.11 documentation, only mention versions up to this documentation version
 (excluding 3.12 and later in this example), pretending no later version exists
@@ -1023,7 +1023,7 @@ URL. Hugo aliases create client-redirect files. To make Netlify redirect anyway,
 write an exclamation mark after the `301` in `_redirects`, like so:
 
 ```
-/arangodb/4.0/old-feature/  /arangodb/4.0/deprecated-and-removed-features/  301!
+/arangodb/4.x/old-feature/  /arangodb/4.x/deprecated-and-removed-features/  301!
 ```
 
 The following steps are necessary for moving/renaming versioned content:
@@ -1140,9 +1140,9 @@ It makes a warning show at the top of every page for that version.
    want to add. Example:
 
    ```diff
-   +- name: "4.0"
+   +- name: "4.x"
    +  version: "4.0.0"
-   +  alias: "4.0"
+   +  alias: "4.x"
    +  deprecated: false
    +
     - name: "3.12"
@@ -1161,7 +1161,7 @@ It makes a warning show at the top of every page for that version.
         type: string
         default: "undefined"
    +
-   +  arangodb-4_0:
+   +  arangodb-4_x:
    +    type: string
    +    default: "undefined"
    ```
@@ -1175,7 +1175,7 @@ It makes a warning show at the top of every page for that version.
                 python3 generate_config.py \
                   --workflow << pipeline.parameters.workflow >> \
    -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
-   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_x >> \
    ```
 
    Note that the order of the branches is important because the version information
@@ -1203,7 +1203,7 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
           - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
-   +      - ${ARANGODB_SRC_4_0:-/tmp/3}:/tmp/4.0
+   +      - ${ARANGODB_SRC_4_X:-/tmp/3}:/tmp/4.x
    ```
 
    Under `services.toolchain.environment`, you need to add two different entries
@@ -1212,10 +1212,10 @@ It makes a warning show at the top of every page for that version.
    ```diff
           ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
           ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-   +      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
+   +      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X}
           ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
           ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-   +      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
+   +      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X}
    ```
 
    The same changes are required in the
@@ -1228,8 +1228,8 @@ It makes a warning show at the top of every page for that version.
       - image: ${ARANGODB_BRANCH_3_12_IMAGE}
         version: ${ARANGODB_BRANCH_3_12_VERSION}
    +
-   +  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
-   +    version: ${ARANGODB_BRANCH_4_0_VERSION}
+   +  - image: ${ARANGODB_BRANCH_4_X_IMAGE}
+   +    version: ${ARANGODB_BRANCH_4_X_VERSION}
    ```
 
 5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
@@ -1244,14 +1244,14 @@ It makes a warning show at the top of every page for that version.
           export ARANGODB_BRANCH_3_12_VERSION="3.12"
     fi
     
-   +if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
-   +      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
-   +      export ARANGODB_BRANCH_4_0_VERSION="4.0"
+   +if [ "$ARANGODB_BRANCH_4_X" != "" ] ; then
+   +      export ARANGODB_BRANCH_4_X_IMAGE="$ARANGODB_BRANCH_4_X"
+   +      export ARANGODB_BRANCH_4_X_VERSION="4.x"
    +fi
    ```
 
 6. In the `site/data` folder, create a new folder with the short version number
-   as the name, e.g. `4.0`. In the new `site/data/4.0` folder, create a
+   as the name, e.g. `4.x`. In the new `site/data/4.x` folder, create a
    `cache.json` file with the following content:
 
    ```json
@@ -1261,20 +1261,20 @@ It makes a warning show at the top of every page for that version.
    Add this untracked file to Git!
 
 7. Duplicate the folder of the most recent version in `site/content`, e.g.
-   the `3.12` folder, and rename the copy to the new version, e.g. `4.0`.
+   the `3.12` folder, and rename the copy to the new version, e.g. `4.x`.
 
    The `menuTitle` in the front matter of the version homepage, e.g.
-   `site/content/4.0/_index.md`, needs to adjusted to the new version,
-   like `menuTitle: '4.0'`.
+   `site/content/4.x/_index.md`, needs to adjusted to the new version,
+   like `menuTitle: '4.x'`.
 
-   In the folder for release notes, e.g. `site/content/4.0/release-notes/`,
+   In the folder for release notes, e.g. `site/content/4.x/release-notes/`,
    duplicate the folder of the most recent version, e.g. `version-3.12`, and
-   rename it, e.g. to `version-4.0`. In this folder, rename the files to replace
+   rename it, e.g. to `version-4.x`. In this folder, rename the files to replace
    the old with the new version number, e.g. `api-changes-in-3-12.md` to
-   `api-changes-in-4-0.md` and so on.
+   `api-changes-in-4-x.md` and so on.
    
    In the `_index.md` file in the folder, e.g.
-   `site/content/4.0/release-notes/version-4.0/_index.md`, you need to replace
+   `site/content/4.x/release-notes/version-4.x/_index.md`, you need to replace
    the version numbers in the front matter and links. You also need to adjust
    the `weight` in the front matter. Decrement the value by one to make the new
    version appear before the existing versions, but make sure that it is greater
@@ -1285,20 +1285,20 @@ It makes a warning show at the top of every page for that version.
    commonly used across different versions in the release notes. Adjust the
    version numbers in the front matter and content.
 
-   Search the entire version folder, e.g. `site/content/4.0/`, for links that
+   Search the entire version folder, e.g. `site/content/4.x/`, for links that
    are meant to point to the release notes of the own version, but which are
    still pointing to the version the content has been copied from. For example,
-   if you duplicated the `3.12` folder, search the `4.0` folder for
+   if you duplicated the `3.12` folder, search the `4.x` folder for
    `version-3.12/`. You should find links to `version-3.12/known-issues-in-3-12.md`
-   that need to be updated to `version-4.0/known-issues-in-4-0.md`.
+   that need to be updated to `version-4.x/known-issues-in-4-x.md`.
 
-   In the release notes root file, e.g. `site/content/4.0/release-notes/_index.md`,
+   In the release notes root file, e.g. `site/content/4.x/release-notes/_index.md`,
    add the links for the new version following the existing pattern. Do this
    after updating the links to the known issues so that you don't accidentally
    change the 3.12 link in the release notes root file.
 
    In the _Highlights by Version_ page, e.g.
-   `site/content/4.0/introduction/features/highlights-by-version.md`, add a
+   `site/content/4.x/introduction/features/highlights-by-version.md`, add a
    section for the new version including a link to the release notes.
 
    Add the new, untracked files to Git!
@@ -1312,7 +1312,7 @@ It makes a warning show at the top of every page for that version.
     aliases:
       - ../arangodb/3.12/data-science/arangographml
       - ../arangodb/stable/data-science/arangographml
-   +  - ../arangodb/4.0/data-science/arangographml
+   +  - ../arangodb/4.x/data-science/arangographml
    +  - ../arangodb/devel/data-science/arangographml
    ```
 
@@ -1321,11 +1321,11 @@ It makes a warning show at the top of every page for that version.
 
    ```diff
     - 3.12: 
-   +- 4.0: 
+   +- 4.x: 
    ```
 
    Stage all changes and commit them. Open a pull request (PR) on GitHub. You only
-   need to specify a Docker image or PR link for `- 4.0: ` if you plan to use
+   need to specify a Docker image or PR link for `- 4.x: ` if you plan to use
    the `/generate` or `/generate-commit` command to re-generate the examples.
    If you follow the next step, the example generation is run manually along
    with some other generators, so using the commands shouldn't be necessary.
@@ -1350,7 +1350,7 @@ It makes a warning show at the top of every page for that version.
     | Type | Name | Value |
     |:-----|:-----|:------|
     | string | `workflow` | `generate` |
-    | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+    | string | `arangodb-4_x` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
     | string | `generators` | `examples metrics error-codes exit-codes optimizer options` |
     | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
     | boolean | `commit-generated` | `true` |
@@ -1373,9 +1373,9 @@ the `site/data/versions.yaml` file may look like this:
 ```yaml
 /arangodb/:
 
-  - name: "4.0"
+  - name: "4.x"
     version: "4.0.0"
-    alias: "4.0"
+    alias: "4.x"
     deprecated: false
     inDevelopment: true
     allowedAPIVersions: [v1, experimental]
@@ -1401,7 +1401,7 @@ documentation sense), the `alias` value of the former stable version needs to be
 changed. In this example, it is the 3.11 entry where you need to change `alias`
 to the version `name`, which is `"3.11"` in this case. Finally, you need to
 re-assign the `"devel"` alias to the version that comes after the new stable
-version. In this example, you need to adjust the `alias` of the 4.0 entry.
+version. In this example, you need to adjust the `alias` of the 4.x entry.
 
 The work-in-progress versions of the ArangoDB documentation need to have
 `inDevelopment` set to `true`. Make sure to change it to `false` for the former
@@ -1412,9 +1412,9 @@ The final configuration would then look like this:
 ```yaml
 /arangodb/:
 
-  - name: "4.0"
+  - name: "4.x"
     version: "4.0.0"
-    alias: "devel" # was "4.0"
+    alias: "devel" # was "4.x"
     deprecated: false
     inDevelopment: true
     allowedAPIVersions: [v1, experimental]
@@ -1753,7 +1753,7 @@ entirely in many cases. The defaults are:
 - `apiVersions: [v0]` for ArangoDB 3.10
 - `apiVersions: [v0]` for ArangoDB 3.11
 - `apiVersions: [v0, v1]` for ArangoDB 3.12
-- `apiVersions: [v1]` for ArangoDB 4.0
+- `apiVersions: [v1]` for ArangoDB 4.x
 
 ### Configure the OpenAPI metadata and API versions
 
@@ -1766,7 +1766,7 @@ _arangoproxy_ uses this to know which OpenAPI files to expect per version
 `site/data/<version>/`). Example:
 
 ```yaml
-- name: "4.0"
+- name: "4.x"
   version: "4.0.0"
   allowedAPIVersions: [v1, experimental]
 - name: "3.12"
