@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for documents
+title: Document HTTP API
 menuTitle: Documents
 weight: 30
 description: >-
-  The HTTP API for documents lets you create, read, update, and delete documents
+  The HTTP interface for documents lets you create, read, update, and delete documents
   in collections, either one or multiple at a time
 ---
 The basic operations for documents are mapped to the standard HTTP methods:
@@ -442,7 +442,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -2009,7 +2009,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false

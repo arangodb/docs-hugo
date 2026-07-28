@@ -30,7 +30,7 @@ Invoke Args:
 ### Deploy a plain build to production
 
 To update the live documentation independently of an ArangoDB release, for
-example, because of changes to the Data Platform docs or to publish documentation
+example, because of changes to the Contextual Data Platform docs or to publish documentation
 improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -149,7 +149,7 @@ use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
-[Docker Hub](https://hub.docker.com/) is specified. Using Docker images has the
+[Docker Hub](https://hub.docker.com/) is specified. Using container images has the
 advantage that the compilation of ArangoDB can be skipped, making the example
 generation faster. Of course, this requires that an image containing relevant
 changes to ArangoDB exists.
@@ -240,3 +240,27 @@ via **Trigger Pipeline**.
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `create-docs-images-arm64` |
+
+## Troubleshooting
+
+### Expired Netlify access token
+
+If the `netlify deploy` command fails in CircleCI, it's possible that the
+Netlify Personal Access Token (PAT) expired. In this case, the error message
+in the CircleCI log looks like this:
+
+> Error: Site not found. Please rerun "netlify link"
+
+In Netlify, expired PATs automatically disappear (in the personal settings
+under Applications):
+
+<https://app.netlify.com/user/applications#personal-access-tokens>
+
+Create a new token, save it in 1Password, and update it in the CircleCI
+project settings:
+
+<https://app.circleci.com/settings/project/github/arangodb/docs-hugo/environment-variables>
+
+You don't have to delete the old one first. You can simply click **Add**, set
+the **Name** to `NETLIFY_ACCESS_TOKEN` and paste the token into the **Value**
+field. This updates the existing `NETLIFY_ACCESS_TOKEN` entry.

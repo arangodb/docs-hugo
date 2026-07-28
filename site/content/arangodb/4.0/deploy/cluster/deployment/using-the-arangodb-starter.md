@@ -2,7 +2,8 @@
 title: Create an ArangoDB cluster Using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
-description: ''
+description: >-
+  How to start an ArangoDB cluster in a convenient and managed fashion
 ---
 This section describes how to start a Cluster using the [_Starter_](../../../components/tools/arangodb-starter/_index.md)
 tool (the `arangodb` executable).
@@ -185,7 +186,7 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     --docker.net-mode=default
 ```
 
-If you have a license for the Enterprise Edition, set the license key
+If you have a license key for the Enterprise Edition, set the license key
 in an environment variable by adding this option to the above `docker` command
 (replace `<the-key>` with the actual license key):
 

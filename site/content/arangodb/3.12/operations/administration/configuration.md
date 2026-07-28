@@ -2,7 +2,9 @@
 title: Configuration
 menuTitle: Configuration
 weight: 5
-description: ''
+description: >-
+  How to use startup options on the command-line and in configuration files for
+  ArangoDB and its client tools
 ---
 The [programs and tools](../../components/tools/_index.md) shipped in an
 ArangoDB package can be configured with various _startup options_.
@@ -16,14 +18,14 @@ ArangoDB package can be configured with various _startup options_.
   [configuration files](#configuration-file-format),
   using a slightly different syntax:
 
-  ```conf
+  ```cfg
   server.database = myDB
   server.username = Jay
   ```
 
   Or more compact like this:
 
-  ```conf
+  ```cfg
   [server]
   database = myDB
   username = Jay
@@ -34,9 +36,9 @@ ArangoDB package can be configured with various _startup options_.
 
 ## Available startup options
 
-Find the available options and commands in the _Options_ sub-chapters of the
-respective [Programs & Tools](../../components/tools/_index.md) sub-chapter, like the
-[ArangoDB Server Options](../../components/arangodb-server/options.md).
+Find the available options and commands in
+[ArangoDB Server Options](../../components/arangodb-server/options.md) and the
+_Options_ sub-pages of the [Tools](../../components/tools/_index.md).
 
 The [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) works differently
 to the other programs and tools. It uses `setup.json` files for its own
@@ -93,13 +95,13 @@ like `‑‑help‑server`. To list all options including hidden ones use
 `.conf` files for ArangoDB binaries are in a simple key-value pair format.
 Each option is specified on a separate line in the form:
 
-```conf
+```cfg
 key = value
 ```
 
 It may look like this:
 
-```conf
+```cfg
 server.endpoint = tcp://127.0.0.1:8529
 server.authentication = true
 ```
@@ -107,7 +109,7 @@ server.authentication = true
 Alternatively, a header section can be specified and options pertaining to
 that section can be specified in a shorter form:
 
-```conf
+```cfg
 [server]
 endpoint = tcp://127.0.0.1:8529
 authentication = true
@@ -116,7 +118,7 @@ authentication = true
 So you see, a command line option `‑‑section.param value` can be easily
 translated to an option in a configuration file:
 
-```conf
+```cfg
 [section]
 param = value
 ```
@@ -125,13 +127,13 @@ param = value
 Whitespace around `=` is ignored in configuration files.
 This includes whitespace around equality signs in the parameter value:
 
-```conf
+```cfg
 log.level = startup = trace
 ```
 
 It is the same as without whitespace:
 
-```conf
+```cfg
 log.level=startup=trace
 ```
 {{< /tip >}}
@@ -208,7 +210,7 @@ in megabytes, gigabytes, or terabytes.
 
 You can also use suffixes in configuration files like this:
 
-```conf
+```cfg
 [rocksdb]
 write-buffer-size=512KiB
 block-cache-size=512MiB
@@ -234,7 +236,7 @@ arangod --temp.path @TEMP@/arango_tmp
 
 In a configuration file:
 
-```conf
+```cfg
 [temp]
 path = @TEMP@/arango_tmp
 ```
@@ -273,7 +275,7 @@ does not set a log level globally for all existing topics, but only the
 
 The same in a configuration file:
 
-```conf
+```cfg
 [log]
 level = all=warning
 level = queries=trace
@@ -296,7 +298,7 @@ If the same option is set multiple times, but only supports a single value,
 then the last occurrence of the option becomes the final value.
 For example, if you edit `arangosh.conf` as follows:
 
-```conf
+```cfg
 server.database = myDB1
 server.database = myDB2
 ```

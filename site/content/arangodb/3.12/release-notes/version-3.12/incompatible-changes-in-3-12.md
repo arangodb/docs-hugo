@@ -22,6 +22,15 @@ only internal business purposes.
 
 For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
 
+## Downgrading vector indexes
+
+ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
+replication. You can upgrade normally, but any vector indexes created with
+v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
+
+If you need to downgrade, drop the vector indexes first and recreate them after
+the downgrade.
+
 ## Upgrading 3.12 Kubernetes deployments
 
 To avoid potential issues when upgrading Kubernetes-managed ArangoDB deployments
@@ -936,6 +945,22 @@ It is recommended to disable the feature explicitly with
 again disabled by default.
 {{< /warning >}}
 
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1, v3.12.6</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
@@ -1007,6 +1032,23 @@ more data, less file descriptors are used.
   - `segmentsBytesMax` increased from `5368709120` (5 GiB) to `8589934592` (8 GiB)
   - `segmentsBytesFloor` increased from `2097152` (2 MiB) to `25165824` (24 MiB)
 
+## License management changes
+
+<small>Introduced in: v3.12.6</small>
+
+Enterprise Edition license keys are no longer issued directly. Customers receive
+license credentials instead. You can use a command-line tool to either activate
+deployments or generate license keys using these credentials. An internet
+connection is required for both. A generated key can subsequently be applied to
+an air-gapped deployment without internet access.
+
+The activation and license keys are now typically short-lived and need to be
+renewed periodically. Old license keys remain valid until their regular
+expiration.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
 ## Added and removed consolidation options for inverted indexs and `arangosearch` Views
 
 <small>Introduced in: v3.12.7</small>
@@ -1029,6 +1071,57 @@ your workload.
 For details, see:
 - [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
 - [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+
+## Rclone upgrades possibly requiring configuration changes
+
+<small>Introduced in: v3.12.9-2</small>
+
+Rclone is used by ArangoDB for uploading and downloading Hot Backups to and from
+object storage, often using cloud provider services like AWS's S3 or S3-compatible
+offerings.
+
+To transfer Hot Backups this way, rclone requires a configuration file to
+specify the provider, region, and so on. The configuration is typically
+backwards compatible, but behavioral changes on the provider side or of
+technical nature may require that you modify the configuration.
+
+The version of the bundled rclone has been updated in the ArangoDB hotfix releases
+3.12.9-2 and 3.12.9-4. These and later versions may therefore require action
+regarding the rclone configuration:
+
+| ArangoDB version | Rclone version    |
+|:-----------------|:------------------|
+| v3.12.9          | v1.65.2           |
+| v3.12.9-1        | v1.65.2           |
+| v3.12.9-2        | v1.73.5 (updated) |
+| v3.12.9-3        | v1.73.5           |
+| v3.12.9-4        | v1.74.3 (updated) |
+
+You should check for the following things in particular:
+
+- If you use AWS S3 and a region other than `us-east-1`, you need to either specify the
+  region in the `location_constraint` (e.g. `"location_constraint": "eu-central-1"`),
+  set `"no_check_bucket": "true"`, or both.
+
+  Otherwise, rclone makes a check with an unspecified location constraint which
+  AWS rejects (IllegalLocationConstraintException). This is caused by an upgrade
+  to the AWS SDK v2 in rclone v1.68.0.
+
+- If you use an S3-compatible provider like GCS, Ceph, MinIO, Wasabi, or older
+  gateways, uploads may fail unless you set `"use_data_integrity_protections": "false"`.
+
+  The upgrade to the AWS SDK v2 in rclone v1.68.0 changed the default algorithm
+  for data integrity checksums to CRC32/CRC64. While this is supported by AWS,
+  other S3-compatible providers may still expect MD5 and therefore fail. Later
+  rclone versions may automatically account for this quirk for certain providers.
+
+- If you use an S3-compatible provider, there may be quirks that rclone should
+  automatically handle for known providers. For example, `use_x_id` is disabled
+  for GCS. Other options that are auto-set per provider are `sign_accept_encoding`
+  and `use_multipart_uploads`.
+
+  You might need to force specific settings in case your provider is not known
+  to rclone and therefore doesn't handle specific quirks on its own.
 
 ## HTTP RESTful API
 
@@ -1214,6 +1307,36 @@ It was supposed to let you configure the wait timeout in milliseconds for
 locking a document in a transaction. However, the lock timeout is actually set
 to differnet values internally, depending on what is a meaningful timeout for
 a given case.
+
+### Stricter JavaScript security defaults
+
+<small>Introduced in: v3.12.9</small>
+
+Up to v3.12.8, the default access for server-side JavaScript code like Foxx,
+user-defined AQL functions (UDFs), and JavaScript Transactions was to **allow**
+everything. This included reading and writing arbitrary files, accessing
+environment variables, reading startup configuration values, and making outbound
+HTTP requests from within the server process.
+
+From v3.12.9 onward, each of the following _arangod_ startup options now
+defaults to **disallow** access to the respective resource unless configured
+otherwise, as if the given allowlist was set to `'^$'`:
+
+- `--javascript.files-allowlist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
+
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
+
+- `--javascript.environment-variables-denylist`
+- `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Note that file access is exclusively controlled by `--javascript.files-allowlist`
+with no corresponding `--javascript.files-denylist` option.
 
 ## Client tools
 

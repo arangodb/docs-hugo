@@ -1,5 +1,5 @@
 ---
-title: HTTP request handling in ArangoDB
+title: HTTP request handling
 menuTitle: General request handling
 weight: 5
 description: >-
@@ -192,10 +192,10 @@ they are lost in case of a crash.
 A running async query can internally be executed by C++ code or by JavaScript
 code. For example, CRUD operations are executed directly in C++, whereas AQL
 queries and transactions may be executed by JavaScript code, depending on the
-AQL functions and the transaction type you use. The job cancelation only works
+AQL functions and the transaction type you use. The job cancellation only works
 for JavaScript code, since the mechanism used is simply to trigger an uncatchable
 exception in the JavaScript thread, which is caught on the C++ level, which in
-turn leads to the cancelation of the job. No result can be retrieved later
+turn leads to the cancellation of the job. No result can be retrieved later
 because all data about the request is discarded.
 
 If you cancel a job running on a Coordinator of a cluster, then only the code
@@ -318,12 +318,6 @@ ArangoDB will add the following headers to the response:
 - `access-control-expose-headers`: will be set to a list of response headers used
   by the ArangoDB HTTP API.
 
-When making CORS requests to endpoints of Foxx services, the value of the
-`access-control-expose-headers` header will instead be set to a list of
-response headers used in the response itself (but not including the
-`access-control-` headers). Note that
-[Foxx services may override this behavior](../foxx-microservices/guides/access-from-the-browser.md#cross-origin-resource-sharing-cors).
-
 ### Cookies and authentication
 
 In order for the client to be allowed to correctly provide authentication
@@ -380,30 +374,31 @@ state data on specific Coordinator nodes, and thus subsequent requests which
 require access to this state must be served by the Coordinator node which owns
 this state data. In order to support function behind a load-balancer, ArangoDB
 can transparently forward requests within the cluster to the correct node. If a
-request is forwarded, the response will contain the following custom HTTP header
-whose value will be the ID of the node which actually answered the request:
+request is forwarded, the response contains the following custom HTTP header
+whose value is the ID of the node which actually answered the request:
 
 - `x-arango-request-forwarded-to`
 
 The following APIs may use request forwarding:
 
 - `/_api/cursor`
-- `/_api/job`
 - `/_api/replication`
 - `/_api/query`
-- `/_api/tasks`
 - `/_api/transaction`
+- `/_api/job` (when requesting a specific job ID)
 
-Note: since forwarding such requests requires an additional cluster-internal HTTP
+Since forwarding such requests requires an additional cluster-internal HTTP
 request, they should be avoided when possible for best performance. Typically
 this is accomplished either by directing the requests to the correct Coordinator
 at a client-level or by enabling request "stickiness" on a load balancer. Since
 these approaches are not always possible in a given environment, we support the
 request forwarding as a fall-back solution.
 
-Note: some endpoints which return "global" data, such as `GET /_api/tasks` will
-only return data corresponding to the server on which the request is executed.
-These endpoints will generally not work well with load-balancers.
+Certain endpoints such as `GET /_api/job/pending` only return information
+corresponding to the server on which the request is executed. There is no
+cluster-wide aggregation of the information, such as a global list of all
+pending tasks. You only get the list of pending tasks from the node you query. 
+These endpoints generally don't work well with load-balancers.
 
 ## Overload control
 
@@ -468,11 +463,11 @@ to be recovered.
 
 The following APIs can reply early with an HTTP 200 status:
 
-- `GET /_api/version` and `GET /_admin/version`:
-  These APIs return the server version number, but can also be used as a
+- `GET /_api/version`:
+  This endpoint returns the server version number, but can also be used as a
   liveliness probe, to check if the instance is responding to incoming HTTP requests.
 - `GET /_admin/status`:
-  This API returns information about the instance's status, including the recovery
+  This endpoint returns information about the instance's status, including the recovery
   progress and information about which server feature is currently starting.
 
 During the early startup phase, all APIs other than the ones listed above are

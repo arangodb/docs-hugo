@@ -16,17 +16,8 @@ following line in the `[server]` section:
 authentication = true
 ```
 
-This will make ArangoDB require authentication for every request (including
-requests to Foxx apps depending on the option below). If you want to run Foxx
-apps without HTTP authentication, but activate HTTP authentication for the built-in
-server APIs, you can add the following line in the `[server]` section of the 
-configuration:
-
-```
-authentication-system-only = true
-```
-
-The above will bypass authentication for requests to Foxx apps.
+This makes ArangoDB require authentication for every request, except for
+endpoints with the `/_open` prefix that never require authentication.
 
 When finished making changes, you need to restart ArangoDB, e.g.:
 
@@ -34,7 +25,7 @@ When finished making changes, you need to restart ArangoDB, e.g.:
 service arangodb restart
 ```
 
-User management is possible in the [web interface](../../../components/web-interface/users.md)
+User management is possible in the web interface <!-- TODO: new link/description -->
 while logged on to the `_system` database and in
 [arangosh](in-arangosh.md), as well as via the
 [HTTP API](../../../develop/http-api/users.md).
@@ -165,8 +156,8 @@ collection *data* nor create new collections in the database *example*.
 
 ## Granting Access Levels
 
-Access levels can be managed via the [web interface](../../../components/web-interface/users.md)
-or in [arangosh](in-arangosh.md).
+Access levels can be managed via the web interface <!-- TODO: new link/description -->
+in [arangosh](in-arangosh.md), or via the [HTTP API](../../../develop/http-api/users.md#manage-permissions).
 
 In order to grant an access level to a user, you can assign one of
 three access levels for each database and one of three levels for each
@@ -390,7 +381,6 @@ notice. The system collections follow these rules:
 | Collection                           | Access level |
 |--------------------------------------|--------------|
 | `_users` (in the `_system` database) | No Access    |
-| `_queues`                            | Read-Only    |
 | `_frontend`                          | Read/Write   |
 | `*` (default)                        | *based on the current database* |
 

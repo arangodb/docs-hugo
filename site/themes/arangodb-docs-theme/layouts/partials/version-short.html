@@ -1,0 +1,17 @@
+{{- $path := . }}
+{{- $pageVersion := "" }}
+{{- if strings.HasPrefix $path "/arangodb/" }}
+  {{- $coreVersion := index (split $path "/") 2 }}
+  {{- if not $coreVersion }}
+    {{- errorf "Failed to determine version, unversioned content? %v" $path }}
+  {{- else }}
+    {{- $pageVersion = partialCached "version-short-map.html" $coreVersion $coreVersion }}
+  {{- end }}
+{{- else }}
+  {{- errorf "Specified path is not versioned content: %v" $path }}
+{{- end }}
+{{- if not $pageVersion }}
+  {{- errorf "Failed to determine page version for: %v" $path }}
+{{- end }}
+{{- /* warnf "Path: %v | Version: %v" $path $pageVersion */}}
+{{- return $pageVersion -}}

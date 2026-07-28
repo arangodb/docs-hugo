@@ -15,8 +15,7 @@ purposes.
   with `<name>` substituted by the name of an example graph listed below.
 
 You can visually explore the created graphs in the
-[Graph viewer](../components/web-interface/graphs.md#graph-viewer)
-of the web interface.
+Graph viewer of the web interface. <!-- TODO: new link/description -->
 
 You can take a look at the script that creates the example graphs on
 [GitHub](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/%40arangodb/graph-examples/example-graph.js)

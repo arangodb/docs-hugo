@@ -1,0 +1,67 @@
+<svg viewBox="0 0 820 460"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:820px;margin:0 auto">
+  <style>
+    .agcorp text { font-family: sans-serif; }
+    .agcorp .vtx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .agcorp .card:hover .vtx { fill: #ffffff; stroke: #22c55e; }
+    .agcorp .vtitle { font-size: 16px; font-weight: bold; fill: #0b2e1e; }
+    .agcorp .vsub { font-size: 11px; font-style: italic; fill: #14532d; }
+    .agcorp .elabel { font-size: 11px; font-weight: bold; fill: #0b2e1e; }
+    .agcorp .ebadge { fill: #ecfccb; stroke: #4ade80; stroke-width: 1; }
+    .agcorp .note { font-size: 11px; fill: #666; }
+  </style>
+  <defs>
+    <marker id="agc-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <polygon points="0 0,10 4,0 8" fill="#4ade80"/>
+    </marker>
+  </defs>
+  <g class="agcorp">
+    <rect width="820" height="460" fill="#f3f4f6" rx="6"/>
+    <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="bold" fill="#0b2e1e">Corpus graph — {project}_CorpusGraph</text>
+
+    <g class="card">
+      <rect class="vtx" x="325" y="55" width="170" height="58" rx="14"/>
+      <text class="vtitle" x="410" y="80" text-anchor="middle">modules</text>
+      <text class="vsub" x="410" y="98" text-anchor="middle">name, clusters</text>
+    </g>
+
+    <g class="card">
+      <rect class="vtx" x="55" y="270" width="195" height="72" rx="14"/>
+      <text class="vtitle" x="152" y="300" text-anchor="middle">sources</text>
+      <text class="vsub" x="152" y="320" text-anchor="middle">text + embeddings</text>
+    </g>
+
+    <g class="card">
+      <rect class="vtx" x="312" y="270" width="195" height="72" rx="14"/>
+      <text class="vtitle" x="409" y="300" text-anchor="middle">domains</text>
+      <text class="vsub" x="409" y="320" text-anchor="middle">members, size</text>
+    </g>
+
+    <g class="card">
+      <rect class="vtx" x="570" y="270" width="195" height="72" rx="14"/>
+      <text class="vtitle" x="667" y="300" text-anchor="middle">rags</text>
+      <text class="vsub" x="667" y="320" text-anchor="middle">RAG config</text>
+    </g>
+
+    <path d="M 410 113 L 409 270" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <rect class="ebadge" x="358" y="178" width="104" height="22" rx="11"/>
+    <text class="elabel" x="410" y="193" text-anchor="middle">HAS_CLUSTER</text>
+
+    <path d="M 250 306 L 312 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <rect class="ebadge" x="237" y="246" width="88" height="22" rx="11"/>
+    <text class="elabel" x="281" y="261" text-anchor="middle">IN_DOMAIN</text>
+
+    <path d="M 507 306 L 570 306" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <rect class="ebadge" x="491" y="246" width="96" height="22" rx="11"/>
+    <text class="elabel" x="539" y="261" text-anchor="middle">INGESTED_AS</text>
+
+    <path d="M 110 270 C 100 218, 204 218, 196 268" stroke="#4ade80" stroke-width="2" fill="none" marker-end="url(#agc-arrow)"/>
+    <rect class="ebadge" x="107" y="210" width="92" height="22" rx="11"/>
+    <text class="elabel" x="153" y="225" text-anchor="middle">SIMILAR_TO</text>
+
+    <text class="note" x="410" y="392" text-anchor="middle">Stored in edge collection corpus_relations (HAS_CLUSTER / IN_DOMAIN / INGESTED_AS), with the type in a label field.</text>
+    <text class="note" x="410" y="410" text-anchor="middle">SIMILAR_TO is a source-to-source self relationship in the separate similarities collection (carries similarity_score).</text>
+    <text class="note" x="410" y="428" text-anchor="middle">module is also stored as a property on sources, domains, and rags.</text>
+  </g>
+</svg>

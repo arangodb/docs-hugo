@@ -131,9 +131,6 @@ also search by.
 
 You can still switch to the old graph viewer if desired.
 
-See the [Graph Viewer](../../components/web-interface/graphs.md) documentation for
-details.
-
 ### `search-alias` Views
 
 The 3.11 release of ArangoDB introduces a new web interface for Views that lets
@@ -860,7 +857,7 @@ hard-coded value.
 
 The new `--javascript.user-defined-functions` startup option lets you disable
 user-defined AQL functions so that no user-defined JavaScript code of
-[UDFs](../../aql/user-defined-functions.md) runs on the server. This can be useful to close off
+UDFs runs on the server. This can be useful to close off
 a potential attack vector in case no user-defined AQL functions are used.
 Also see [Server security options](../../operations/security/security-options.md).
 
@@ -1416,6 +1413,19 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
+### Adjustable Stream Transaction size
+
+<small>Introduced in: v3.11.14-4</small>
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
+When beginning a Stream Transaction, you can now specify a `maxTransactionSize`
+for that particular transaction. The default value as well as the maximum value
+are defined by the `--transaction.streaming-max-transaction-size` startup option.
+See [HTTP interface for Stream Transactions](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction).
+
 ## Client tools
 
 ### arangodump
@@ -1449,6 +1459,15 @@ with large shards.
   is disabled by default because dumps created with this option enabled cannot
   be restored into previous versions of ArangoDB.
 
+- You can tune the dumping performance with the following new experimental
+  _arangodump_ startup options:
+
+  - `--dbserver-prefetch-batches`: Number of batches to prefetch on each DB-Server.
+  - `--dbserver-worker-threads`: Number of worker threads on each DB-Server.
+  - `--local-network-threads`: Number of local writer threads.
+  - `--local-writer-threads`: Number of local network threads, i.e. how many
+    requests are sent in parallel.
+
 ## Internal changes
 
 ### Upgraded bundled library versions
@@ -1470,3 +1489,38 @@ rclone configuration files require changes.
 From version 3.11.10 onward, ArangoDB uses the glibc C standard library
 implementation with an LGPL-3.0 license instead of libmusl. Notably, it features
 string functions that are better optimized for common CPUs.
+
+---
+
+<small>Introduced in: v3.11.14-2</small>
+
+Upgraded ArangoDB Starter to version 0.18.19.
+
+Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.11 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.4.
+
+Updated the timezone data (tzdata) to the version as of 2025-11-05.
+
+---
+
+<small>Introduced in: v3.11.14-3</small>
+
+Upgraded ArangoDB Starter to version 0.18.21.
+
+Upgraded Rclone to version 1.62.2, compiled with Go version 1.24.13 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.5.
+
+---
+
+<small>Introduced in: v3.11.14-4</small>
+
+Upgraded ArangoDB Starter to version 0.18.24.
+
+Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.9 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.6.

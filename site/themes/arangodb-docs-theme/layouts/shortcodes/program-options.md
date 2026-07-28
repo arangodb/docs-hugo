@@ -1,6 +1,9 @@
 {{- $context := . }}
 {{- $program := .Get "name" }}
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- if not $pageVersion }}
+  {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
+{{- end }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $options := index $dataFolderByVersion $program }}
 {{- if not $options }}{{ errorf "Could not find %q in %q data folder" $program $pageVersion }}{{ end }}
@@ -82,13 +85,12 @@ This option can be specified without a value to enable it.
 This is a command, no value needs to be specified. The process terminates after executing the command.
 {{ end }}
 
-{{ with $option.default }}
-  {{ if ne $option.category "command"}}
-    {{ if $option.dynamic }}
-Default: _dynamic_ (e.g. `{{ string . }}`)
-    {{ else }}{{/* if $option.type is a vector, don't print e.g. [info info] as that is not how it would be set by users */}}
-Default: `{{ string (index (slice | append .) 0) }}`
-    {{ end }}
+{{/* Commands have no "default" attribute and empty strings/arrays should be omitted */}}
+{{ if and (ne $option.category "command") (ne $option.default "") (ne $option.default slice) }}
+  {{ if $option.dynamic }}
+Default: _dynamic_ (e.g. `{{ string $option.default }}`)
+  {{ else }}{{/* if $option.type is a vector, don't print e.g. [info info] as that is not how it would be set by users */}}
+Default: `{{ string (index (slice | append $option.default) 0) }}`
   {{ end }}
 {{ end }}
 

@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for databases
+title: Database HTTP API
 menuTitle: Databases
 weight: 20
 description: >-
-  The HTTP API for databases lets you create and delete databases, list
+  The HTTP interface for databases lets you create and delete databases, list
   available databases, and get information about specific databases
 ---
 The HTTP interface for databases provides operations to create and drop
@@ -72,7 +72,6 @@ paths:
 
         - `name`: the name of the current database
         - `id`: the id of the current database
-        - `path`: the filesystem path of the current database
         - `isSystem`: whether or not the current database is the `_system` database
         - `sharding`: the default sharding method for collections created in this database
         - `replicationFactor`: the default replication factor for collections in this database
@@ -450,6 +449,7 @@ name: RestDatabaseDrop
 var url = "/_db/_system/_api/database";
 var name = "example";
 
+db._useDatabase("_system");
 db._createDatabase(name);
 var response = logCurlRequest('DELETE', url + '/' + name);
 

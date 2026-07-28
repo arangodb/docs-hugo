@@ -222,7 +222,7 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
-The endpoint will be removed in ArangoDB v3.12.
+The endpoint is removed in ArangoDB v4.0.
 
 ### Endpoints added
 

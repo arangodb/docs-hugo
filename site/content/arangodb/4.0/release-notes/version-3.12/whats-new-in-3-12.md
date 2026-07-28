@@ -1373,9 +1373,83 @@ means you may find more results than before.
 
 Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
 
-### Utilize indexes for `ANY ==` comparisons
+### Batched neighbor retrieval for traversals
 
 <small>Introduced in: v3.12.8</small>
+
+Graph traversals using depth-first search (`dfs`) or breadth-first search (`bfs`)
+now internally batch the fetching of neighbor nodes. Additionally, some unnecessary
+waiting for responses is avoided in clusters. This improves the performance of
+traversal queries, especially in cluster deployments and if there is a `LIMIT`
+operation that caps the traversal results.
+
+Batching is not supported for `weighted` traversals, SmartGraphs, EnterpriseGraphs,
+and SatelliteGraphs.
+
+### Cancellation of graph queries
+
+<small>Introduced in: v3.12.8</small>
+
+AQL queries can now be killed during the execution of graph traversals and
+paths searches. These operations previously lacked cancellation points to stop
+the execution quickly.
+
+### New `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+AQL queries now return an additional statistic under `extra.stats` in
+the HTTP API:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
+### Support projections when different indexes are utilized for OR conditions
+
+<small>Introduced in: v3.12.9</small>
+
+Queries with `OR` conditions in `FILTER` operations can utilize indexes for both
+sides of the `OR`. If these are different indexes, the AQL optimizer used to
+ignore whether projections could be used to improve the query performance.
+
+```aql
+ FOR doc IN coll
+   FILTER doc.price < 5 OR doc.name == "avocado"
+   RETURN doc.description
+```
+
+For example, if the collection `coll` has persistent indexes on `price`  and
+`name`, the above query would utilize both indexes but not use projections,
+neither for the `FILTER` nor the downstream attribute access for the `RETURN`:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    
+  3   CalculationNode     ✓   4000       - LET #1 = ((doc.`price` < 5) || (doc.`name` == "avocado"))   /* simple expression */   /* collections used: doc : coll */
+  4   FilterNode          ✓   4000       - FILTER #1
+  5   CalculationNode     ✓   4000       - LET #2 = doc.`description`   /* attribute expression */   /* collections used: doc : coll */
+  6   ReturnNode              4000       - RETURN #2
+```
+
+From v3.12.9 onward, the query can utilize both the two indexes as well as
+projections, `price` and `name` as filter projections and `description` as
+projection downstream:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  7   IndexNode           ✓   4000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup (projections: `description`, `name`, `price`) */    LET #3 = doc.`description`, #4 = doc.`name`, #5 = doc.`price`   
+  3   CalculationNode     ✓   4000       - LET #1 = ((#5 < 5) || (#4 == "avocado"))   /* simple expression */
+  4   FilterNode          ✓   4000       - FILTER #1
+  6   ReturnNode              4000       - RETURN #3
+```
+
+### Utilize indexes for `ANY ==` comparisons
+
+<small>Introduced in: v3.12.10</small>
 
 Array comparison operators like `ALL IN`, `NONE >=`, and `ANY <` can generally
 not utilize indexes. However, a new `replace-any-eq-with-in` optimizer rule has
@@ -1623,6 +1697,37 @@ FOR doc IN c OPTIONS { indexHint: ["vec_idx_1", "vec_idx_2"], forceIndexHint: tr
    LIMIT 3
    RETURN doc
 ```
+
+---
+
+<small>Introduced in: v3.12.9</small>
+
+The AQL optimizer now prefers a vector index whose `storedValues` cover the
+`FILTER` operation of a query if there are multiple suitable vector indexes.
+This is implemented in the `push-filter-into-enumerate-near` optimizer rule.
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): The current training state of the vector index:
+  - `"unusable"`: The index is not yet trained or cannot be
+    trained, for example, because of insufficient training data.
+  - `"training"`: The index is currently being trained.
+  - `"ingesting"`: The index has been trained and data is being
+    ingested.
+  - `"ready"`: The index is fully trained and ready for queries.
+- `errorMessage` (string): An optional message with details about the
+  training state, for example, `"not enough training data for vector index"`.
+  Only present if there is a problem with the index.
+
+You can now create a vector index first and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ## Server options
 
@@ -2525,6 +2630,27 @@ environment variable `NAME`. If there is an environment variable called `PID` or
 `TEMP_BASE_DIR`, then `@PID@` or `@TEMP_BASE_DIR@` is substituted with the
 value of the respective environment variable.
 
+### License management changes
+
+<small>Introduced: v3.12.6</small>
+
+The Enterprise Edition requires a license and customers used to receive a
+license key directly. Going forward, customers receive license credentials
+instead. You can use a command-line tool to either activate deployments or
+generate license keys using these credentials.
+
+The activation and license keys are now typically short-lived and need to be
+renewed every two weeks. Old license keys remain valid until their regular
+expiration.
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
+See [Enterprise Edition License Management](../../operations/administration/license-management.md)
+for details.
+
 ### New consolidation algorithm for inverted indexes and `arangosearch` Views
 
 <small>Introduced in: v3.12.7</small>
@@ -2591,6 +2717,127 @@ _arangod_ process into account:
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.
 
+### Shard monitoring and replication metrics
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster. You can monitor
+the total number of shards (leaders and followers), track the replication status,
+and identify shards that are out of sync or not properly replicated.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_metadata_total_number_of_shards` | Total number of leader and follower shards in the deployment. In a cluster, this is the number of shards across collections of all databases. |
+| `arangodb_metadata_number_follower_shards` | Number of follower shards that exist across collections of all databases. |
+| `arangodb_metadata_number_out_of_sync_shards` | Number of shards that are out of sync across collections of all databases. Indicates where the Plan (expected state) differs from Current (actual state). |
+| `arangodb_metadata_number_not_replicated_shards` | Number of shards that are not replicated across collections of all databases. Represents potential single points of failure where shards lack follower redundancy. |
+| `arangodb_metadata_shard_followers_out_of_sync_number` | Number of follower shards across the cluster that are out of sync with their leader. Computed by the coordinator by comparing the Plan (expected state) with Current state (actual state). |
+
+### Endpoint to get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added to the HTTP API for retrieving a small, curated subset of the
+configured server startup options that are safe to expose to any authenticated user.
+
+Administrative tools like the Arango Contextual Data Platform web interface can use this
+endpoint to adapt their behavior to the server configuration.
+
+### Crash dumps
+
+<small>Introduced in: v3.12.8</small>
+
+On crash, the server can now write diagnostic data such as recent API calls and
+AQL queries, a backtrace, and system info into separate files on disk. The most
+recent 10 of these crash dumps are kept. Older ones are removed at startup.
+
+An HTTP API for viewing and managing crash dumps has been added as well.
+
+You can disable the creation of crash dumps and the management API by setting
+the new `--crash-handler.enable-dumps` startup option to `false`.
+
+The management API has the following endpoints:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [HTTP interface for server administration](../../develop/http-api/administration.md#crash-dump-management)
+as well as [The crash dumps feature of the ArangoDB server](../../operations/troubleshooting/crash-dumps.md)
+for details.
+
+### New server activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature, allowing you to
+see which high-level processes are currently running on the server (HTTP handlers,
+AQL queries, and so on).
+
+```json
+{
+  "activities": [
+    {
+      "id": "0x7ec9c067a040",
+      "type": "RestHandler",
+      "parent": {
+        "id": "0x0"
+      },
+      "metadata": {
+        "method": "POST",
+        "url": "/_api/cursor",
+        "handler": "RestCursorHandler"
+      }
+    },
+    {
+      "id": "0x7ec9c022f3c0",
+      "type": "AQLQuery",
+      "parent": {
+        "id": "0x7ec9c067a040"
+      },
+      "metadata": {
+        "query": "RETURN SLEEP(@seconds)"
+      }
+    },
+    ...
+  ]
+}
+```
+
+See the [`GET /_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md)
+for details.
+
+The new [`--activities.only-superuser-enabled` startup option](../../components/arangodb-server/options.md#--activitiesonly-superuser-enabled)
+lets you restrict the access from admin users to only the superuser.
+
+The new [`--activities.registry-cleanup-timeout`](../../components/arangodb-server/options.md#--activitiesregistry-cleanup-timeout)
+option controls the interval (in seconds) at which the activity registry is
+garbage-collected by a background cleanup thread.
+
+The following metrics related to activities have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_activities_total` | Total number of created activities since database process start |
+| `arangodb_activities_existing` | Number of currently existing activities |
+
+### Vector index metrics
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vector_index_ingestion_duration` | Duration of vector index ingestion in seconds. |
+| `arangodb_vector_index_training_duration` | Duration of vector index training in seconds. |
+| `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing. |
+| `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server. |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
@@ -2641,6 +2888,18 @@ with large shards.
   dump data on the server for a faster transfer. This is helpful especially if
   the network is slow or its capacity is maxed out. The data is decompressed on
   the client side and recompressed if you enable the  `--compress-output` option.
+
+- You can tune the dumping performance with the following new _arangodump_
+  startup options:
+
+  - `--dbserver-prefetch-batches`: Number of batches to prefetch on each DB-Server.
+  - `--dbserver-worker-threads`: Number of worker threads on each DB-Server.
+  - `--local-network-threads`: Number of local writer threads.
+  - `--local-writer-threads`: Number of local network threads, i.e. how many
+    requests are sent in parallel.
+  - `--docs-per-batch`: The maximum number of documents to be returned per batch.
+    You can limit this on the server-side with the `--dump.max-docs-per-batch`
+  _arangod_ startup option.
 
 #### Server-side resource usage limits and metrics
 
@@ -2735,6 +2994,26 @@ Startup options to enable transparent compression of the data that is sent
 between a client tool and the ArangoDB server have been added. See the
 [Server options](#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
 section above that includes a description of the added client tool options.
+
+### arangosh
+
+#### New activities module
+
+<small>Introduced in: v3.12.8</small>
+
+The new [`@arangodb/activities` module](../../develop/javascript-api/activities.md)
+lets you pretty-print the high-level server activities in the ArangoDB Shell:
+
+```js
+const activities = require("@arangodb/activities");
+activities.get_snapshot();
+```
+
+```
+ ── RestHandler: {"method":"POST","url":"/_api/cursor","handler":"RestCursorHandler"}
+    └── AQLQuery: {"query":"RETURN SLEEP(@seconds)"}
+ ── RestHandler: {"method":"GET","url":"/_admin/activities","handler":"ActivityRegistryRestHandler"}
+```
 
 ## Internal changes
 

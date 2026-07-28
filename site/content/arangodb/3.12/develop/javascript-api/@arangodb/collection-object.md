@@ -170,8 +170,8 @@ Cluster collections are loaded at all times.
 {{< /info >}}
 
 {{< warning >}}
-The `load()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
+The `load()` function is **deprecated** as of ArangoDB 3.8.0
+and removed in ArangoDB v4.0. There should not be
 any need to load a collection with the RocksDB storage engine.
 {{< /warning >}}
 
@@ -489,8 +489,8 @@ In cluster deployments, collections cannot be unloaded.
 {{< /info >}}
 
 {{< warning >}}
-The `unload()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
+The `unload()` function is **deprecated** as of ArangoDB 3.8.0
+and removed in ArangoDB v4.0. There should not be
 any need to unload a collection with the RocksDB storage engine.
 {{< /warning >}}
 

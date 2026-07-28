@@ -6,6 +6,7 @@ description: >-
   Python-Arango is the official ArangoDB driver that provides Python
   applications with the complete range of features exposed by the server API
 aliases:
+  - ../../arangodb/3.11/develop/drivers/python
   - ../../arangodb/3.12/develop/drivers/python
   - ../../arangodb/stable/develop/drivers/python
   - ../../arangodb/4.0/develop/drivers/python
@@ -16,7 +17,6 @@ database backend from Python. It is maintained by ArangoDB and the community.
 
 - Repository: <https://github.com/arangodb/python-arango>
 - Reference: <https://docs.python-arango.com/>
-- [Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
 - [Releases](https://github.com/arangodb/python-arango/releases)
 
 There is also an asyncio counterpart called `python-arango-async`.
@@ -24,7 +24,7 @@ It has a similar API and features type wrappers.
 
 - Repository: <https://github.com/arangodb/python-arango-async>
 - Reference: <https://python-arango-async.readthedocs.io/>
-- [Tutorial](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
+- [Demo app](https://github.com/arangodb/python-arango-async/wiki/Tutorial)
 - [Releases](https://github.com/arangodb/python-arango-async/releases)
 
 ## Installation
@@ -66,8 +66,6 @@ from arangoasync import ArangoClient
 {{< /tab >}}
 
 {{< /tabs >}}
-
-
 
 ## Get started
 
@@ -229,7 +227,7 @@ edges.insert({"_from": "students/03", "_to": "lectures/CSC101"})
 # Traverse the graph in outbound direction, breath-first.
 query = """
     FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-    OPTIONS { bfs: true, uniqueVertices: 'global' }
+    OPTIONS { order: 'bfs', uniqueVertices: 'global' }
     RETURN {node: v, edge: e, path: p}
     """
 cursor = db.aql.execute(query)
@@ -286,7 +284,7 @@ async with ArangoClient(hosts="http://localhost:8529") as client:
     # Traverse the graph in outbound direction, breath-first.
     query = """
         FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-        OPTIONS { bfs: true, uniqueVertices: 'global' }
+        OPTIONS { order: 'bfs', uniqueVertices: 'global' }
         RETURN {vertex: v, edge: e, path: p}
         """
 
@@ -352,6 +350,9 @@ db_list = sys_db.databases()
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Retrieve the names of all databases on the server as list of strings
     db_list = await sys_db.databases()
 ```
@@ -379,6 +380,9 @@ test_db = client.db("test", username="root", password="passwd")
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Create a new database named "test".
     ok = await sys_db.create_database("test")
 
@@ -407,6 +411,9 @@ sys_db.delete_database("test")
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Delete the 'test' database
     ok = await sys_db.delete_database("test")
 ```
@@ -435,6 +442,9 @@ collection_list = db.collections()
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Connect to the database
     db = await client.db(db_name, auth=Auth(username=user_name, password=pass_word))
 
@@ -463,6 +473,9 @@ patients_col = db.create_collection(name="patients")
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Create a new collection for doctors
     doctors_col = await db.create_collection(name="doctors")
 
@@ -490,6 +503,9 @@ db.delete_collection(name="doctors")
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Delete the 'doctors' collection
     ok = await db.delete_collection(name="doctors")
 ```
@@ -520,6 +536,9 @@ meta2 = patients_col.insert({"name": "John", "age": 18})
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Get a reference to the 'patients' collection
     patients_col = db.collection(name="patients")
 
@@ -560,6 +579,9 @@ meta = patients_col.update({ "_key": "741603", "city": "Cleveland" })
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Patch John's patient record by adding a city property to the document
     meta = await patients_col.update({ "_key": "741603", "city": "Cleveland" })
 ```
@@ -601,6 +623,9 @@ meta = patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 1
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Replace John's document
     meta = await patients_col.replace({ "_key": "741603", "fullname": "John Doe", "age": 18, "city": "Cleveland" })
 ```
@@ -640,6 +665,9 @@ patients_col.delete({ "_key": "741603" })
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Delete John's document
     meta = await patients_col.delete({ "_key": "741603" })
 ```
@@ -670,6 +698,9 @@ for doc in cursor:
 
 {{< tab "python-arango-async" >}}
 ```python
+# Inside async context manager
+    # ...
+
     # Run a query
     cursor = await db.aql.execute('FOR i IN 1..@value RETURN i', bind_vars={'value': 3})
 

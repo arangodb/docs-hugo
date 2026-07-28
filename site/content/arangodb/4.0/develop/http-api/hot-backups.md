@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for Hot Backups
+title: Hot Backups HTTP API
 menuTitle: Hot Backups
 weight: 120
 description: >-
@@ -27,7 +27,7 @@ before using the API.
 {{< /warning >}}
 
 The permissions required to use the `/_admin/backup/*` endpoints depends on the
-setting of the [`--backup.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+setting of the [`--backup.api-enabled` startup option](../../components/arangodb-server/options.md#--backupapi-enabled).
 
 ## Create a backup
 
@@ -201,18 +201,20 @@ body = {
 // will work again:
 var startTime = require("internal").time();
 var failureSeen = false;
-while (require("internal").time() - startTime < 10) {
+while (require("internal").time() - startTime < 30) {
   try {
     // GET can throw exceptions
     var r = internal.arango.GET("/_api/version");
     if (r.error === true) {
       failureSeen = true;
-    } else {
-      if (failureSeen) {
-        break;
-      }
+    } else if (failureSeen) {
+      // Reconnected after the restart: stop as soon as a request succeeds.
+      break;
     }
   } catch(err) {
+    // An exception means the connection dropped, i.e. the restart is underway.
+    // Count it as the failure we must observe before accepting a later success.
+    failureSeen = true;
   }
   require("internal").wait(0.1);
 }

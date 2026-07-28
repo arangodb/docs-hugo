@@ -13,7 +13,7 @@ offers.
 ArangoDB uses **synchronous** replication between the _DB-Servers_ of an
 ArangoDB Cluster.
 
-Synchronous replication is typically used for mission critical data which must be
+Synchronous replication is typically used for mission-critical data which must be
 accessible at all times. Synchronous replication generally stores a copy of a shard's
 data on another DB-Server and keeps it in sync. Essentially, when storing
 data after enabling synchronous replication, the Cluster waits for

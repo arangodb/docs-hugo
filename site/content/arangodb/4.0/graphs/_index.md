@@ -54,11 +54,6 @@ automatically make _John_ a subscriber of _Mary_'s posts. It is an asymmetrical
 relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
 
-{{< info >}}
-New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
-and get from zero knowledge to advanced query techniques.
-{{< /info >}}
-
 ## Graph model
 
 Graph database systems like ArangoDB can store graphs and provide means to query
@@ -196,8 +191,7 @@ could be dangling edges after all. The graph modules guarantee to not introduce
 new inconsistencies only.
 
 You can create and manage named graphs in the following ways:
-- With the [web interface](../components/web-interface/graphs.md)
-  in the **Graphs** section
+- With the web interface <!-- TODO: new link/description -->
 - In _arangosh_ using the respective graph-related modules of the
   JavaScript API (see the above links of the named graph types)
 - Using the [Gharial HTTP API](../develop/http-api/graphs/named-graphs.md)

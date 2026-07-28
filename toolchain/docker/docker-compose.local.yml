@@ -2,6 +2,9 @@ services:
   toolchain:
     container_name: toolchain
     image: toolchain
+    # Run in super-privileged container domain to use Docker socket
+    security_opt:
+      - label=type:spc_t
     build:
       context: .
       target: toolchain

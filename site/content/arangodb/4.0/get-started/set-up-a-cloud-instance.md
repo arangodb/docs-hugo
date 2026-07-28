@@ -139,8 +139,5 @@ available to you, but there are a few key differences:
 
 - Encryption (both at rest & network traffic) is always on and cannot be
   disabled for security reasons.
-- Foxx services are not allowed to call out to the internet by default for
-  security reasons, but can be enabled on request.
-  Incoming calls to Foxx services are fully supported.
 
 For more information, see the [comparison between on-premises editions and the managed cloud service](https://arango.ai/pricing/).

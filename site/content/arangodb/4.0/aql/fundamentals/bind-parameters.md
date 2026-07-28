@@ -68,7 +68,7 @@ FOR u IN users
 ### General
 
 The bind parameter values need to be passed along with the query when it is
-executed, but not as part of the query text itself. In the web interface,
+executed, but not as part of the query text itself. In the web interface, <!-- TODO: new description -->
 there is a pane next to the query editor where the bind parameters can be
 entered. For below query, two input fields will show up to enter values for
 the parameters `id` and `name`.
@@ -100,7 +100,7 @@ the query will result in an error too.
 
 Specific information about parameters binding can also be found in:
 
-- [AQL with Web Interface](../how-to-invoke-aql/with-the-web-interface.md)
+<!-- TODO: new link/description - [AQL with Web Interface](../how-to-invoke-aql/with-the-web-interface.md) -->
 - [AQL with _arangosh_](../how-to-invoke-aql/with-arangosh.md)
 - [HTTP interface for AQL queries](../../develop/http-api/queries/aql-queries.md)
 

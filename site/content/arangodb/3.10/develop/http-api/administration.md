@@ -579,7 +579,13 @@ paths:
   /_admin/database/target-version:
     get:
       operationId: getDatabaseVersion
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and should no longer be used.
+        It is removed in ArangoDB v4.0. Use `GET /_api/version` instead.
+        {{</* /warning */>}}
+
         Returns the database version that this server requires.
         The version is returned in the `version` attribute of the result.
       responses:

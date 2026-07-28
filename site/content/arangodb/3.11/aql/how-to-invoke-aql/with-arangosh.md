@@ -97,6 +97,34 @@ Note: data-modification AQL queries normally do not return a result unless the
 AQL query contains a `RETURN` operation at the top-level. Without a `RETURN`
 operation, the `toArray()` method returns an empty array.
 
+{{< security >}}
+When using plain strings as queries, ArangoDB provides no safeguards to prevent
+accidental AQL injections:
+
+```js
+// Malicious user input where you might expect a number
+const evil = "1 FOR doc IN mycollection REMOVE doc IN mycollection";
+
+// DO NOT DO THIS
+const numbers = db._query(`
+  FOR i IN 1..${evil}
+  RETURN i
+`).toArray();
+```
+
+The actual query executed by the above code:
+
+```aql
+FOR i IN 1..1
+  FOR doc IN mycollection
+    REMOVE doc IN mycollection
+    RETURN i
+```
+
+If possible, you should always use the `aql` or `query` template tags rather
+than passing raw query strings to `db._query()` directly.
+{{< /security >}}
+
 ### Statistics and extra Information
 
 `cursor.getExtra() → queryInfo`
@@ -126,6 +154,24 @@ be sure to check for warnings.
 
 You can pass the main options as the third argument to `db._query()` if you
 also pass a fourth argument with the sub options (can be an empty object `{}`).
+
+```js
+db._query("RETURN @val", { val: 42 }, { count: true }, { /* sub options */ });
+```
+
+---
+
+`db._query(<queryObject>, <mainOptions>, <subOptions>) → cursor`
+
+If you pass an object as the first argument (including using an `aql`
+tagged template), you can pass the main options as the second argument to 
+`db._query()` if you also pass a third argument with the sub options
+(can be an empty object `{}`).
+
+```js
+var val = 42;
+db._query(aql`RETURN ${val}`, { count: true }, { /* sub options */ });
+```
 
 #### `count`
 
@@ -195,9 +241,39 @@ db._query(
 ).toArray(); // Each batch needs to be fetched within 5 seconds
 ```
 
+### Query sub options
+
+`db._query(<queryString>, <bindVars>, <subOptions>) → cursor`
+
+`db._query(<queryString>, <bindVars>, <mainOptions>, <subOptions>) → cursor`
+
+You can pass the sub options as the third argument to `db._query()` if you don't
+provide main options, or as fourth argument if you do.
+
+```js
+db._query("RETURN @val", { val: 42 }, { fullCount: true });
+db._query("RETURN @val", { val: 42 }, { /* main options */ }, { fullCount: true });
+```
+
+---
+
+`db._query(<queryObject>, <subOptions>) → cursor`
+
+`db._query(<queryObject>, <mainOptions>, <subOptions>) → cursor`
+
+If you pass an object as the first argument (including using an `aql`
+tagged template), you can pass the sub options as the second argument to `db._query()`
+if you don't provide main options, or as third argument if you do.
+
+```js
+var val = 42;
+db._query(aql`RETURN ${val}`, { fullCount: true });
+db._query(aql`RETURN ${val}`, { /* main options */ }, { fullCount: true });
+```
+
 #### `memoryLimit`
 
-To set a memory limit for the query, pass `options` to the `_query()` method.
+Set a memory limit for the query.
 The memory limit specifies the maximum number of bytes that the query is
 allowed to use. When a single AQL query reaches the specified limit value, 
 the query will be aborted with a *resource limit exceeded* exception. In a 
@@ -219,16 +295,7 @@ db._query(
 If no memory limit is specified, then the server default value (controlled by
 the `--query.memory-limit` startup option) is used for restricting the maximum amount 
 of memory the query can use. A memory limit value of `0` means that the maximum
-amount of memory for the query is not restricted. 
-
-### Query sub options
-
-`db._query(<queryString>, <bindVars>, <subOptions>) → cursor`
-
-`db._query(<queryString>, <bindVars>, <mainOptions>, <subOptions>) → cursor`
-
-You can pass the sub options as the third argument to `db._query()` if you don't
-provide main options, or as fourth argument if you do.
+amount of memory for the query is not restricted.
 
 #### `fullCount`
 
@@ -245,6 +312,7 @@ result if the query has a top-level `LIMIT` operation and the `LIMIT` operation
 is actually used in the query.
 
 #### `failOnWarning`
+
 If you set `failOnWarning` to `true`, this makes the query throw an exception and
 abort in case a warning occurs. You should use this option in development to catch
 errors early. If set to `false`, warnings don't propagate to exceptions and are
@@ -536,57 +604,70 @@ description: ''
 cursor = stmt.execute();
 ```
 
-You can pass a number to the `execute()` method to specify a batch size value.
-The server returns at most this many results in one roundtrip.
-The batch size cannot be adjusted after the query is first executed.
-
-**Note**: There is no need to explicitly call the execute method if another
-means of fetching the query results is chosen. The following two approaches
+**Note**: There is no need to explicitly call the execute method if you choose
+another means of fetching the query results. The following approaches
 lead to the same result:
 
 ```js
 ---
 name: executeQueryNoBatchSize
-description: ''
+description: |
+  1. Use the `all()` helper method and get all documents with `toArray()`.
+  2. Use an AQL query and manually iterate the returned cursor to get all documents.
+  3. Use an AQL query and call `toArray()` to get all documents.
 ---
 ~db._create("users");
 ~db.users.save({ name: "Gerhard" });
 ~db.users.save({ name: "Helmut" });
 ~db.users.save({ name: "Angela" });
+
+/* Alternative 1 */
 var result = db.users.all().toArray();
 print(result);
 
+/* Alternative 2 */
 var q = db._query("FOR x IN users RETURN x");
 result = [ ];
 while (q.hasNext()) {
   result.push(q.next());
 }
 print(result);
+
+/* Alternative 3 */
+var result = db._query("FOR x IN users RETURN x").toArray();
+print(result);
+
 ~db._drop("users")
 ```
-
-The following two alternatives both use a batch size and return the same
-result:
 
 ```js
 ---
 name: executeQueryBatchSize
-description: ''
+description: |
+  Get all documents and set a batch size. The server returns at most this
+  many results in one roundtrip.
+  1. Use the `all()` collection method and pass a batch size when calling the
+  `execute()` method on the returned Simple Queries object. Note that the
+  `execute()` method of an `ArangoStatement` object does not accept a
+  batch size.
+  2. Use an AQL query and manually iterate the returned cursor to get all documents.
 ---
 ~db._create("users");
 ~db.users.save({ name: "Gerhard" });
 ~db.users.save({ name: "Helmut" });
 ~db.users.save({ name: "Angela" });
+/* Alternative 1 */
 var result = [ ];
 var q = db.users.all();
-q.execute(1);
+q.execute(2); /* Set batch size */
 while(q.hasNext()) {
   result.push(q.next());
 }
 print(result);
 
-result = [ ];
-q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
+/* Alternative 2 */
+var result = [ ];
+var q = db._query("FOR x IN users RETURN x", {}, { batchSize: 2 });
 while (q.hasNext()) {
   result.push(q.next());
 }

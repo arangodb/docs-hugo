@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for server administration
+title: Administration HTTP API
 menuTitle: Administration
 weight: 110
 description: >-
@@ -17,9 +17,7 @@ description: >-
 ```openapi
 paths:
   /_db/{database-name}/_api/version:
-  # /_admin/version is an (undocumented) alias
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number.
@@ -56,18 +54,59 @@ paths:
                 type: object
                 required:
                   - server
+                  - license
                   - version
+                  - apiVersions
+                  - deprecatedApiVersions
+                  - requestedApiVersion
                 properties:
                   server:
-                    description: |
-                      will always contain `arango`
+                    description: ''
                     type: string
+                    const: arango
+                  license:
+                    description: |
+                      Whether this build of ArangoDB includes the non-public
+                      enterprise code. Reports `"enterprise"` for both the
+                      Community Edition and Enterprise Edition if you use the
+                      prepackaged binaries or official container images.
+                    type: string
+                    enum:
+                      - community # Only custom builds
+                      - enterprise
                   version:
                     description: |
-                      the server version string. The string has the format
-                      `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
-                      may contain a number or a textual version.
+                      The server version string in the format `major.minor.sub`.
+                      The `major` and `minor` parts are numeric, and `sub` is a
+                      number that may have a version suffix starting with
+                      a hyphen minus (e.g. `3.12.7-2` or `4.0.0-devel`).
                     type: string
+                  apiVersions:
+                    description: |
+                     The available versions of the HTTP API.
+                    type: array
+                    minItems: 1
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [v1]
+                  deprecatedApiVersions:
+                    description: |
+                      The versions of the HTTP API that are still supported by
+                      this ArangoDB server version but should no longer be used
+                      because of their pending removal in the next major version.
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum: [] # Currently no deprecated versions
+                  requestedApiVersion:
+                    description: |
+                      The HTTP API version specified for this request via the
+                      `/_arango/{api-version}` prefix, or the default API version
+                      if not specified.
+                    type: string
+                    enum: [v1]
                   details:
                     description: |
                       an optional JSON object with additional details. This is
@@ -77,132 +116,270 @@ paths:
                     properties:
                       architecture:
                         description: |
-                          The CPU architecture, i.e. `64bit`
+                          The CPU architecture in terms of bitness.
                         type: string
+                        const: 64bit
                       arm:
                         description: |
-                          `false` - this is not running on an ARM cpu
+                          Whether the server binary has been compiled for an ARM CPU.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       asan:
                         description: |
-                          has this been compiled with the asan address sanitizer turned on? (should be false)
+                          Whether the server has been compiled with the
+                          ASAN address sanitizer enabled.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       assertions:
                         description: |
-                          do we have assertions compiled in (=> developer version)
+                          Whether the server has assertions compiled in
+                          (only in development builds).
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx2:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX2 instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       boost-version:
                         description: |
-                          which boost version do we bind
+                          Which version of the Boost library is used.
                         type: string
                       build-date:
                         description: |
-                          the date when this binary was created
+                          The date when this binary was created.
+                        type: string
+                      build-id:
+                        description: |
+                          The Git commit hash this was compiled from.
                         type: string
                       build-repository:
                         description: |
-                          reference to the git-ID this was compiled from
+                          Reference to the Git ID this was compiled from.
                         type: string
                       compiler:
                         description: |
-                          which compiler did we use
+                          The compiler that has been used.
                         type: string
+                      coverage:
+                        description: |
+                          Whether this build has code coverage instrumentation.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       cplusplus:
                         description: |
-                          C++ standards version
+                          The C++ standards version.
+                        type: string
+                      curl-version:
+                        description: |
+                          The linked cURL version, or `"none"` if not linked.
                         type: string
                       debug:
                         description: |
-                          `false` for production binaries
+                          Whether this is a debug build, `"false"` for
+                          production binaries.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       endianness:
                         description: |
-                          currently only `little` is supported
+                          The byte order of the system, detected at runtime.
                         type: string
+                        const: little
+                      enterprise-build-repository:
+                        description: |
+                          Reference to the enterprise Git ID this was compiled from.
+                        type: string
+                      enterprise-version:
+                        description: |
+                          Only present if this is a build that includes the
+                          non-public enterprise code.
+                        type: string
+                        const: enterprise
                       failure-tests:
                         description: |
-                          `false` for production binaries (the facility to invoke fatal errors is disabled)
+                          Whether the facility to invoke fatal errors is compiled
+                          in, `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      faiss:
+                        description: |
+                          The FAISS library version, if linked.
                         type: string
                       fd-client-event-handler:
                         description: |
-                          which method do we use to handle fd-sets, `poll` should be here on linux.
+                          Which method is used to handle fd-sets, typically `poll`
+                          on Linux.
                         type: string
                       fd-setsize:
                         description: |
-                          if not `poll` the fd setsize is valid for the maximum number of file descriptors
+                          If not `poll`, the fd setsize is valid for the maximum
+                          number of file descriptors.
                         type: string
                       full-version-string:
                         description: |
-                          The full version string
+                          The full version string including the build ID and
+                          the versions of major dependencies.
                         type: string
                       icu-version:
                         description: |
-                          Which version of ICU do we bundle
+                          The version of the bundled ICU library.
+                        type: string
+                      ipo:
+                        description: |
+                          Whether interprocedural optimization was enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      iresearch-version:
+                        description: |
+                          The ArangoSearch/IResearch library version.
                         type: string
                       jemalloc:
                         description: |
-                          `true` if we use jemalloc
+                          Whether the jemalloc memory allocator is used,
+                          typically `"true"`
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      license:
+                        description: |
+                          Whether this build of ArangoDB includes the non-public
+                          enterprise code. Reports `"enterprise"` for both the
+                          Community Edition and Enterprise Edition if you use the
+                          prepackaged binaries or official container images.
+                        type: string
+                        enum:
+                          - community # Only custom builds
+                          - enterprise
+                      libunwind:
+                        description: |
+                          Whether libunwind is linked for stack unwinding.
                         type: string
                       maintainer-mode:
                         description: |
-                          `false` if this is a production binary
+                          Whether the server has been compiled in maintainer mode,
+                          `"false"` for production binaries.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      memory-profiler:
+                        description: |
+                          Whether the memory profiler is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      ndebug:
+                        description: |
+                          Whether NDEBUG was defined for the build.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      openmp:
+                        description: |
+                          The OpenMP version used for parallelization.
                         type: string
                       openssl-version:
                         description: |
-                          which openssl version do we link?
+                          The OpenSSL version that is linked.
+                        type: string
+                      openssl-version-compile-time:
+                        description: |
+                          The OpenSSL version at compile time.
+                        type: string
+                      openssl-version-run-time:
+                        description: |
+                          The OpenSSL version at run time.
+                        type: string
+                      optimization-flags:
+                        description: |
+                          The compiler optimization flags used for this build.
+                        type: string
+                      pic:
+                        description: |
+                          The position-independent code setting.
+                        type: string
+                      pie:
+                        description: |
+                          The position-independent executable setting.
                         type: string
                       platform:
                         description: |
-                          the host operating system, always `linux`
+                          The operating system the server has been compiled for.
                         type: string
+                        const: linux
                       reactor-type:
-                        description: |
-                          `epoll`
+                        description: ''
                         type: string
+                        const: epoll
+                      replication2-enabled:
+                        description: |
+                          Whether replication2 is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       rocksdb-version:
                         description: |
-                          the rocksdb version this release bundles
+                          The rocksdb version this release bundles.
                         type: string
                       server-version:
                         description: |
-                          the ArangoDB release version
+                          The ArangoDB release version.
                         type: string
                       sizeof int:
                         description: |
-                          number of bytes for integers
+                          Number of bytes for integers.
+                        type: string
+                      sizeof long:
+                        description: |
+                          Number of bytes for long integers.
                         type: string
                       sizeof void*:
                         description: |
-                          number of bytes for void pointers
+                          Number of bytes for void pointers.
                         type: string
                       sse42:
                         description: |
-                          do we have a SSE 4.2 enabled cpu?
+                          Whether the server binary has been compiled with
+                          SSE 4.2 instruction support.
                         type: string
+                      tsan:
+                        description: |
+                          Whether this was compiled with the thread sanitizer.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       unaligned-access:
                         description: |
-                          does this system support unaligned memory access?
+                          Whether this system supports unaligned memory accesses.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       v8-version:
                         description: |
-                          the bundled V8 javascript engine version
+                          The bundled V8 JavaScript engine version.
+                          V8 is not embedded in _arangod_ anymore since
+                          ArangoDB v4.0.
                         type: string
+                        const: none
                       vpack-version:
                         description: |
-                          the version of the used velocypack implementation
+                          The version of the used VelocyPack implementation.
                         type: string
                       zlib-version:
                         description: |
-                          the version of the bundled zlib
+                          The version of the bundled zlib compression library.
                         type: string
-                      mode:
+                      role:
                         description: |
-                          The mode arangod runs in.
+                          The server role.
+                          - `"SINGLE"`: Standalone single server
+                          - `"PRIMARY"`: DB-Server of a cluster
+                          - `"COORDINATOR"`: Coordinator of a cluster
+                          - `"AGENT"`: Part of the cluster's Agency
                         type: string
-                        enum: [server, console, script]
+                        enum: [SINGLE, PRIMARY, COORDINATOR, AGENT]
                       host:
                         description: |
-                          the host ID
+                          The host ID.
                         type: string
       tags:
         - Administration
@@ -259,7 +436,7 @@ paths:
       responses:
         '200':
           description: |
-            is returned in all cases.
+            Successfully retrieved storage engine name.
           content:
             application/json:
               schema:
@@ -269,7 +446,38 @@ paths:
                 properties:
                   name:
                     description: |
-                      will be `rocksdb`
+                      Always `rocksdb`.
+                    type: string
+        '401':
+          description: |
+            Missing read access to the given database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
       tags:
         - Administration
@@ -290,13 +498,113 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
+### Get the storage engine statistics
+
+```openapi
+paths:
+  /_db/{database-name}/_api/engine/stats:
+    get:
+      operationId: getEngineStats
+      description: |
+        Returns detailed statistics related to the RocksDB storage engine activity,
+        including figures about data size, cache usage, individual column families, etc.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Successfully retrieved the storage engine statistics.
+          content:
+            application/json:
+              schema:
+                description: |
+                  A plethora of information about RocksDB.
+                type: object
+        '401':
+          description: |
+            The user account you authenticated with lacks read access to the
+            specified database, the credentials are wrong, or the user account
+            is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            The `--server.harden` startup option is enabled but the user account
+            you authenticated with lacks write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
 ### Get the system time
 
 ```openapi
 paths:
   /_db/{database-name}/_admin/time:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
@@ -349,7 +657,6 @@ paths:
 paths:
   /_db/{database-name}/_admin/status:
     get:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
         Returns status information about the server.
@@ -377,9 +684,6 @@ paths:
                   - server
                   - license
                   - version
-                  - mode
-                  - operationMode
-                  - foxxApi
                   - host
                   - pid
                   - serverInfo
@@ -396,18 +700,6 @@ paths:
                     description: |
                       The server version as a string.
                     type: string
-                  mode:
-                    description: |
-                      Either `"server"` or `"console"`. **Deprecated**, use `operationMode` instead.
-                    type: string
-                  operationMode:
-                    description: |
-                      Either `"server"` or `"console"`.
-                    type: string
-                  foxxApi:
-                    description: |
-                      Whether the Foxx API is enabled.
-                    type: boolean
                   host:
                     description: |
                       A host identifier defined by the `HOST` or `NODE_NAME` environment variable,
@@ -428,7 +720,6 @@ paths:
                     required:
                       - progress
                       - role
-                      - writeOpsEnabled
                       - readOnly
                       - maintenance
                     properties:
@@ -472,10 +763,6 @@ paths:
                         description: |
                           Either `"SINGLE"`, `"COORDINATOR"`, `"PRIMARY"` (DB-Server), or `"AGENT"`.
                         type: string
-                      writeOpsEnabled:
-                        description: |
-                          Whether writes are enabled. **Deprecated**, use `readOnly` instead.
-                        type: boolean
                       readOnly:
                         description: |
                           Whether writes are disabled.
@@ -532,19 +819,6 @@ paths:
                       Information about the Coordinators.
                       *Cluster only* (Coordinators)
                     type: object
-                    properties:
-                      foxxmaster:
-                        description: |
-                          The server ID of the Coordinator that is the Foxx master.
-                        type: array
-                        items:
-                          type: string
-                      isFoxxmaster:
-                        description: |
-                          Whether the queried Coordinator is the Foxx master.
-                        type: array
-                        items:
-                          type: string
                   agent:
                     description: |
                       Information about the Agents.
@@ -633,7 +907,6 @@ paths:
 paths:
   /_db/_system/_admin/support-info:
     get:
-      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getSupportInfo
       description: |
         Retrieves deployment information for support purposes. The endpoint returns data
@@ -716,8 +989,11 @@ logJsonResponse(response);
 
 ## Startup options
 
-The permissions required to use the `/_admin/options*` endpoints depends on the
-setting of the [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+The permissions required to use the `/_admin/options` and `/_admin/options-description`
+endpoints depend on the setting of the
+[`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+The `/_admin/options-public` endpoint is always available to any authenticated user
+with read access to a database and is not affected by that setting.
 
 ### Get the startup option configuration
 
@@ -734,16 +1010,16 @@ paths:
         This endpoint may reveal sensitive information about the deployment!
         {{</* /security */>}}
 
-        The endpoint can only be accessed via the `_system` database.
-        In addition, the `--server.options-api` startup option controls the
-        required privileges to access the option endpoints and allows you to
-        disable them entirely. The option can have the following values:
-        - `disabled`: the option endpoints are disabled
-        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
-        - `admin`: the option endpoints can only be accessed by users with
-          *Administrate* access level for the `_system` database
-        - `public`: every user with access to the `_system` database can access
-          the option endpoints
+        The endpoint can only be accessed via the `_system` database. In addition, the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        controls the required privileges to access the option endpoints and allows
+        you to disable them entirely. The option can have the following values:
+        - `disabled`: This endpoint is disabled.
+        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `admin`: This endpoint can only be accessed by users with
+          write access to the `_system` database.
+        - `public`: Every user with read access to the `_system` database can
+          access this endpoint.
       responses:
         '200':
           description: |
@@ -754,6 +1030,105 @@ paths:
             application/json:
               schema:
                 type: object
+        '401':
+          description: |
+            You tried to authenticate with user credentials but a superuser token
+            created from the JWT secret is required (`--server.options-api` set
+            to `jwt`), you lack read access to the `_system` database
+            (`--server.options-api` set to `public`), the credentials are wrong,
+            or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            You don't have write access to the `_system` database
+            (`--server.options-api` set to `admin`) or you tried to access the
+            endpoint using a database other than `_system`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
@@ -769,16 +1144,16 @@ paths:
         Return the startup options available to configure the queried _arangod_
         instance, similar to the `--dump-options` startup option.
 
-        The endpoint can only be accessed via the `_system` database.
-        In addition, the `--server.options-api` startup option controls the
-        required privileges to access the option endpoints and allows you to
-        disable them entirely. The option can have the following values:
-        - `disabled`: the option endpoints are disabled
-        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
-        - `admin`: the option endpoints can be accessed by admin users in the `_system`
-          database only.
-        - `public`: every user with access to the `_system` database can access
-          the option endpoints.
+        The endpoint can only be accessed via the `_system` database. In addition, the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        controls the required privileges to access the option endpoints and allows
+        you to disable them entirely. The option can have the following values:
+        - `disabled`: This endpoint is disabled.
+        - `jwt`: This endpoint can only be accessed using a superuser JWT (default).
+        - `admin`: This endpoint can only be accessed by users with
+          write access to the `_system` database.
+        - `public`: Every user with read access to the `_system` database can
+          access this endpoint.
       responses:
         '200':
           description: |
@@ -838,6 +1213,236 @@ paths:
             application/json:
               schema:
                 type: object
+        '401':
+          description: |
+            You tried to authenticate with user credentials but a superuser token
+            is required, the credentials are wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            You don't have write access to the `_system` database or you tried
+            to access the endpoint using a database other than `_system`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+### Get the public startup option configuration
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/options-public:
+    get:
+      operationId: getPublicStartupOptions
+      description: |
+        Return a small, curated subset of the configured server startup options
+        that are safe to expose to any authenticated user with read access to the
+        requested database.
+
+        Administrative tools can use this endpoint to adapt their behavior to the server
+        configuration. For example, they can show the valid range for `replicationFactor`
+        when creating a collection, or respect `--database.extended-names` when
+        validating names on the client-side.
+
+        This endpoint is available regardless of the
+        [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
+        setting, so that the Arango Contextual Data Platform web interface for instance can always
+        access the public options.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            An object with public startup option names as keys and their
+            effective values.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  database.extended-names:
+                    description: |
+                      Whether the traditional or extended naming constraints
+                      apply for collections, Views, etc.
+                    type: boolean
+                  cluster.min-replication-factor:
+                    description: |
+                      Minimum replication factor for collections.
+                    type: integer
+                  cluster.max-replication-factor:
+                    description: |
+                      Maximum replication factor for collections.
+                    type: integer
+                  cluster.max-number-of-shards:
+                    description: |
+                      Maximum number of shards per collection.
+                    type: integer
+                  cluster.api-jwt-policy:
+                    description: |
+                      The permissions required for accessing `/_admin/cluster/*` endpoints.
+                    type: string
+                  server.session-timeout:
+                    description: |
+                      The timeout for JWT session tokens in seconds.
+                    type: number
+        '401':
+          description: |
+            Authentication is enabled and the user account you authenticated with
+            doesn't have at least read access to the specified database, the
+            credentials are wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '405':
+          description: |
+            Returned if the HTTP method is not `GET`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 405
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
@@ -940,7 +1545,8 @@ paths:
     get:
       operationId: getLicense
       description: |
-        View the license information and status of an Enterprise Edition instance.
+        View the license information and status of the ArangoDB deployment.
+
         Can be called on single servers, Coordinators, and DB-Servers.
       parameters:
         - name: database-name
@@ -1006,16 +1612,18 @@ paths:
                       The `status` attribute allows you to confirm the state of the
                       applied license at a glance.
 
-                      - `good`: The license is valid for more than 2 weeks.
-                      - `expiring`: The license is valid for less than 2 weeks.
-                      - `expired`: The license has expired. In this situation, no new
-                        Enterprise Edition features can be utilized.
-                      - `read-only`: The license is expired over 2 weeks. The instance is now
+                      - `good`: The license is still valid for more than a week.
+                      - `expiring`: The license is valid for less than a week.
+                        This status is not applicable if you use license activation
+                        (managed license, from v3.12.6 onward) rather than a license key,
+                        in which case the transition is directly from `good` to
+                        `read-only` when the activation expires.
+                      - `read-only`: The license has expired. The instance is now
                         restricted to read-only mode.
 
                       This attribute is only present if an Enterprise Edition license is applied.
                     type: string
-                    enum: [good, expiring, expired, read-only]
+                    enum: [good, expiring, read-only]
                     example: good
                   upgrading:
                     description: |
@@ -1257,6 +1865,674 @@ x-content-type-options: nosniff
 ```
 {{< /details >}}
 
+### Get the deployment ID
+
+<small>Introduced in: v3.12.6</small>
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/deployment/id:
+    get:
+      operationId: getDeploymentId
+      description: |
+        Get the unique identifier of this ArangoDB deployment.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The deployment ID has been retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    description: |
+                      The UUID that uniquely identifies the deployment.
+                    type: string
+                    format: uuid
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+**Examples**
+
+{{< comment >}}
+Example not generated because it the deployment ID would change on every run.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/deployment/id
+```
+
+{{< details summary="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 45
+
+{"id":"6172616e-676f-4000-0000-9396df268f7f"}
+```
+{{< /details >}}
+
+## Crash dump management
+
+### List crash dumps
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes:
+    get:
+      operationId: listCrashDumps
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Return the list of crash dump directory identifiers (UUIDs).
+
+        When the server crashes, the crash handler writes diagnostic data into
+        a per-crash directory under `<database-directory>/crashes/<uuid>/`.
+        Each dump includes information such as recent API calls and AQL queries,
+        a backtrace, and system information.
+
+        The server keeps the most recent 10 crash dumps. Older ones are removed
+        during startup.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns a list of crash dump identifiers (UUIDs).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      Array of crash dump identifiers (UUIDs).
+                    type: array
+                    items:
+                      type: string
+                      format: uuid
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+### Get a crash dump
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes/{crashId}:
+    get:
+      operationId: getCrashDump
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Return the contents of a specific crash dump. The response includes all
+        files from the crash directory (e.g. `backtrace.txt`, `system_info.txt`,
+        `ApiRecording.json`, `AsyncRegistry.json`) as an object mapping filenames
+        to their contents. Crash dumps are stored under
+        `<database-directory>/crashes/<uuid>/`.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+        - name: crashId
+          in: path
+          required: true
+          description: |
+            The UUID of the crash dump directory.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: |
+            Returns the crash dump contents.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    type: object
+                    required:
+                      - crashId
+                      - files
+                    properties:
+                      crashId:
+                        description: |
+                          The crash dump identifier (UUID).
+                        type: string
+                        format: uuid
+                      files:
+                        description: |
+                          Object mapping file names to their contents (e.g.
+                          `backtrace.txt`, `system_info.txt`, `ApiRecording.json`,
+                          `Activities.json`, `AsyncRegistry.json`).
+                        type: object
+                        additionalProperties:
+                          type: string
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
+### Delete a crash dump
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/crashes/{crashId}:
+    delete:
+      operationId: deleteCrashDump
+      description: |
+        <small>Introduced in: v3.12.8</small>
+
+        Delete a specific crash dump directory and its contents. Crash dumps are
+        stored under `<database-directory>/crashes/<uuid>/`. The server keeps the
+        most recent 10 crash dumps. Older ones are removed during startup.
+
+        This endpoint requires *administrate* access to the `_system` database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and write access to the `_system` database.
+          schema:
+            type: string
+        - name: crashId
+          in: path
+          required: true
+          description: |
+            The UUID of the crash dump directory to delete.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: |
+            The crash dump was deleted successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 200
+                  result:
+                    type: object
+                    required:
+                      - deleted
+                      - crashId
+                    properties:
+                      deleted:
+                        type: boolean
+                        example: true
+                      crashId:
+                        type: string
+                        format: uuid
+        '401':
+          description: |
+            Returned if authentication is enabled and the user does not have at
+            least read access to the specified database, the credentials are
+            wrong, or the user account is inactive.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '403':
+          description: |
+            Returned if authentication is enabled and the user does not have
+            write access to the `_system` database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            Returned if the crash dump folder based on the specified `crashId`
+            cannot be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '503':
+          description: |
+            The crash handler feature is not ready or has been disabled via the
+            [`--crash-handler.enable-dumps` startup option](../../components/arangodb-server/options.md#--crash-handlerenable-dumps).
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 503
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Administration
+```
+
 ## Shutdown
 
 ### Start the shutdown sequence
@@ -1470,216 +2746,6 @@ assert(response.code === 200);
 logJsonResponse(response);
 ```
 
-### Reload the routing table
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/routing/reload:
-    post:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
-      operationId: reloadRouting
-      description: |
-        Reloads the routing information from the `_routing` system collection if it
-        exists, and makes Foxx rebuild its local routing table on the next request.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            The routing information has been reloaded successfully.
-      tags:
-        - Administration
-```
-
-### Echo a request
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/echo:
-    post:
-      operationId: echoRequest
-      description: |
-        The call returns an object with the servers request information
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              description: |
-                The request body can be of any type and is simply forwarded.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of a database. Which database you use doesn't matter as long
-            as the user account you authenticate with has at least read access
-            to this database.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Echo was returned successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - authorized
-                  - user
-                  - isAdminUser
-                  - database
-                  - url
-                  - protocol
-                  - portType
-                  - server
-                  - client
-                  - internals
-                  - prefix
-                  - headers
-                  - requestType
-                  - requestBody
-                  - rawRequestBody
-                  - parameters
-                  - cookies
-                  - suffix
-                  - rawSuffix
-                  - path
-                properties:
-                  authorized:
-                    description: |
-                      Whether the session is authorized
-                    type: boolean
-                  user:
-                    description: |
-                      The name of the current user that sent this request
-                    type: string
-                  isAdminUser:
-                    description: |
-                      Whether the current user is an administrator
-                    type: boolean
-                  database:
-                    description: |
-                      The name of the database this request was executed on
-                    type: string
-                  url:
-                    description: |
-                      The raw request URL
-                    type: string
-                  protocol:
-                    description: |
-                      The transport protocol, one of `"http"`, `"https"`
-                    type: string
-                  portType:
-                    description: |
-                      The type of the socket, one of `"tcp/ip"`, `"unix"`, `"unknown"`
-                    type: string
-                  server:
-                    description: |
-                      Attributes of the server connection
-                    type: object
-                    required:
-                      - address
-                      - port
-                      - endpoint
-                    properties:
-                      address:
-                        description: |
-                          The bind address of the endpoint this request was sent to
-                        type: string
-                      port:
-                        description: |
-                          The port this request was sent to
-                        type: integer
-                      endpoint:
-                        description: |
-                          The endpoint this request was sent to
-                        type: string
-                  client:
-                    description: |
-                      Attributes of the client connection
-                    type: object
-                    required:
-                      - address
-                      - port
-                      - id
-                    properties:
-                      address:
-                        description: |
-                          The IP address of the client
-                        type: integer
-                      port:
-                        description: |
-                          The port of the TCP connection on the client-side
-                        type: integer
-                      id:
-                        description: |
-                          A server generated ID
-                        type: string
-                  internals:
-                    description: |
-                      Contents of the server internals struct
-                    type: object
-                  prefix:
-                    description: |
-                      The prefix of the database
-                    type: object
-                  headers:
-                    description: |
-                      The list of the HTTP headers you sent
-                    type: object
-                  requestType:
-                    description: |
-                      The HTTP method that was used for the request (`"POST"`). The endpoint can be
-                      queried using other verbs, too (`"GET"`, `"PUT"`, `"PATCH"`, `"DELETE"`).
-                    type: string
-                  requestBody:
-                    description: |
-                      Stringified version of the request body you sent
-                    type: string
-                  rawRequestBody:
-                    description: |
-                      The sent payload as a JSON-encoded Buffer object
-                    type: object
-                  parameters:
-                    description: |
-                      An object containing the query parameters
-                    type: object
-                  cookies:
-                    description: |
-                      A list of the cookies you sent
-                    type: object
-                  suffix:
-                    description: |
-                      A list of the decoded URL path suffixes. You can query the endpoint with
-                      arbitrary suffixes, e.g. `/_admin/echo/foo/123`
-                    type: array
-                    items:
-                      type: string
-                  rawSuffix:
-                    description: |
-                      A list of the percent-encoded URL path suffixes
-                    type: array
-                    items:
-                      type: string
-                  path:
-                    description: |
-                      The relative path of this request (decoded, excluding `/_admin/echo`)
-                    type: string
-      tags:
-        - Administration
-```
-
 ### Execute a script
 
 ```openapi
@@ -1688,7 +2754,12 @@ paths:
     post:
     # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
+        {{</* /warning */>}}
+
         Executes the JavaScript code in the body on the server as the body
         of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type
@@ -1733,73 +2804,4 @@ paths:
             is returned if ArangoDB was not compiled for cluster operation.
       tags:
         - Administration
-```
-
-## Endpoints
-
-{{< warning >}}
-The `/_api/endpoint` endpoint is deprecated. For cluster deployments, you can
-use `/_api/cluster/endpoints` instead to find all current Coordinator endpoints.
-See [Cluster](cluster.md#endpoints).
-{{< /warning >}}
-
-An ArangoDB server can listen for incoming requests on multiple _endpoints_.
-
-The endpoints are normally specified either in the _arangod_ configuration
-file or on the command-line, using the `--server.endpoint` startup option.
-The default endpoint for ArangoDB is `tcp://127.0.0.1:8529` (IPv4 localhost on
-port 8529 over the HTTP protocol).
-
-Note that all endpoint management operations can only be accessed via
-the default `_system` database and none of the other databases.
-
-### List the endpoints of a single server (deprecated)
-
-```openapi
-paths:
-  /_db/_system/_api/endpoint:
-    get:
-      operationId: listEndpoints
-      description: |
-        {{</* warning */>}}
-        This route should no longer be used.
-        It is considered as deprecated from version 3.4.0 on.
-        {{</* /warning */>}}
-
-        Returns an array of all configured endpoints the server is listening on.
-
-        The result is a JSON array of JSON objects, each with `"entrypoint"` as
-        the only attribute, and with the value being a string describing the
-        endpoint.
-
-        {{</* info */>}}
-        Retrieving the array of all endpoints is allowed in the system database
-        only. Calling this action in any other database will make the server return
-        an error.
-        {{</* /info */>}}
-      responses:
-        '200':
-          description: |
-            is returned when the array of endpoints can be determined successfully.
-        '400':
-          description: |
-            is returned if the action is not carried out in the system database.
-        '405':
-          description: |
-            The server will respond with *HTTP 405* if an unsupported HTTP method is used.
-      tags:
-        - Administration
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestEndpointGet
----
-var url = "/_db/_system/_api/endpoint";
-var response = logCurlRequest('GET', url);
-assert(response.code === 200);
-logJsonResponse(response);
 ```

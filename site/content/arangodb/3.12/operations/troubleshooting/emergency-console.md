@@ -5,6 +5,10 @@ weight: 15
 description: >-
   You can start an `arangod` process in an emergency mode with a console
 ---
+{{< warning >}}
+The emergency console mode is deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 The ArangoDB database server has two modes of operation: As a server, where it
 will answer to client requests and as an emergency console, in which you can
 access the database directly. The latter - as the name suggests - should

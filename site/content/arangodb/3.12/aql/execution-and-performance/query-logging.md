@@ -16,14 +16,22 @@ with a configurable sampling probability and retention period. This allows you
 to analyze the metadata such as run time, memory usage, and failure reasons
 directly in the database system.
 
+{{< tip >}}
 ArangoDB also supports event logging to a file, syslog, or the attached terminal.
 See [`--log.level`](../../components/arangodb-server/options.md#--loglevel) for
 details. The relevant log topics are `aql` and `queries`.
 
+For in-memory tracking of currently running and slow queries, see the
+[`@arangodb/aql/queries`](../../develop/javascript-api/aql-queries.md) module
+of the JavaScript API for _arangosh_ as well as the query tracking endpoints of the
+[HTTP API](../../develop/http-api/queries/aql-queries.md#track-queries).
+{{< /tip >}}
+
 ## Enable query logging
 
-To activate the logging of AQL queries to the `_queries` collection, you need to
-enable the `--query.collection-logger-enabled` startup option for _arangod_.
+To activate the logging of AQL queries to the `_queries` collection in the
+`_system` database, you need to enable the `--query.collection-logger-enabled`
+startup option for _arangod_.
 
 If you want queries that run in the `_system` database to be logged, you
 additionally need to enable the `--query.collection-logger-include-system-database`
@@ -38,8 +46,11 @@ and ignores the rest. Which queries are logged is based on randomness.
 You can enable the `--query.collection-logger-all-slow-queries` startup option
 to always log slow queries regardless of whether they are selected for sampling
 or not. You can configure the time threshold for what is considered a slow query
+(AQL queries with a duration greater than or equal to the slow query threshold)
 with the `--query.slow-threshold` and `--query.slow-streaming-threshold`
-startup options.
+startup options or the `slowQueryThreshold` and `slowStreamingQueryThreshold`
+properties of the [`PUT /_db/{database-name}/_api/query/properties` endpoint](../../develop/http-api/queries/aql-queries.md#update-the-aql-query-tracking-configuration)
+at runtime.
 
 ## Use the logged metadata
 
@@ -58,30 +69,60 @@ considered finished when they have executed completely or failed with an error.
 In-flight queries are not logged but should eventually become finished queries.
 
 Each document in the `_queries` collection represents a past query that has been
-sampled and includes the following attributes:
+sampled. The document structure is as follows:
 
-- `id`: The internal ID of the query.
-- `database`: The name of the database the query ran in.
-- `user`: The name of the user that executed the query.
-- `query`: The query string, if the `--query.tracking-with-querystring`
-  startup option is enabled (the default is `true`). Otherwise, the value is
-  `"<hidden>"`. The query string is cut off after
-  `--query.max-artifact-log-length` characters.
-- `bindVars`: The bind parameter values used by the query, if the
-  `--query.tracking-with-bindvars` startup option is enabled (the default is
-  `true`). If it is disabled or no bind parameters were used, the value is `{}`.
-- `dataSources`: An array of collection and View names that were used in the
-  query. Only present if `--query.tracking-with-datasources` startup option is
-  enabled (the default is `false`).
-- `started`: An ISO 8601 date time strings with the point in time the query
-  started executing.
-- `runTime`: The total duration of the query in seconds.
-- `state`: The state of the query (always `"finished"`).
-- `stream`:  Whether the query was a streaming AQL query (`stream` option).
-- `modificationQuery`: Whether the query created, modified, or deleted any documents.
-- `warnings`: The number of warnings issued by the query.
-- `exitCode`: The exit code of the query (`0` = success, any other exit code
-  indicates a specific [error](../../develop/error-codes.md)).
+- `id` (string): The internal identifier of the query.
+
+- `database` (string): The name of the database the query ran in.
+
+- `user` (string): The name of the user who started the query.
+
+- `query` (string): The query string (potentially truncated).
+
+  The cutoff is controlled by the
+  [`--query.max-artifact-log-length` startup option](../../components/arangodb-server/options.md#--querymax-artifact-log-length)
+  or the `maxQueryStringLength` query tracking property
+  that you can change via the
+  `PUT /_db/{database-name}/_api/query/properties` endpoint
+  at runtime.
+
+  Whether the actual query string is tracked or only a
+  value of `"<hidden>"` is returned depends on the
+  [`--query.tracking-with-querystring` startup option](../../components/arangodb-server/options.md#--querytracking-with-querystring).
+
+- `bindVars`: The bind parameter values used by the query.
+
+  Whether the actual bind variables or an empty object is
+  returned is controlled by the
+  [`--query.tracking-with-bindvars` startup option](../../components/arangodb-server/options.md#--querytracking-with-bindvars)
+  or the `trackBindVars` query tracking property that you can
+  change via the `PUT /_db/{database-name}/_api/query/properties`
+  endpoint at runtime.
+
+- `dataSources` (array of strings): The collections and Views involved in the query.
+  
+  Only present if the
+  [`--query.tracking-with-datasources` startup option](../../components/arangodb-server/options.md#--querytracking-with-datasources)
+  is enabled.
+
+- `started` (string): The date and time when the query was started (in ISO 8601 format).
+
+- `runTime` (number): The total query duration (in seconds).
+
+- `peakMemoryUsage` (integer): The query's peak memory usage in bytes (in increments of 32KB).
+
+- `state` (string): The query's last execution state. Possible values:
+  `"finished"`, `"killed"`, `"invalid"`
+
+- `stream` (boolean):  Whether the query used a streaming cursor (`stream` query option).
+
+- `modificationQuery` (boolean): Whether the query created, updated, replaced, or deleted
+  any documents (`true`) or only read data (`false`).
+
+- `warnings` (integer): The number of query warnings that occurred.
+
+- `exitCode` (integer): An error code (`errorNum`) that indicates why the query
+  failed, or `0` on success. See the [error codes](../../develop/error-codes.md) documentation.
 
 You can retrieve and analyze the stored query metadata by running AQL queries on
 the `_queries` collection in the `_system` database. You can use arbitrary

@@ -1,0 +1,14 @@
+{{ $validMethods := slice "GET" "HEAD" "POST" "PATCH" "PUT" "DELETE" -}}
+{{ if or (in $validMethods .Method) (eq .Method "") -}}
+  <div class="endpoint-group copy-ancestor">
+    {{ if .Method }}<span class="endpoint-method endpoint-method-{{ .Method | lower }}" title="HTTP method">{{ .Method }}</span> {{ end -}}
+    <span class="endpoint-url copy-this">{{
+      ((htmlEscape .Url |
+      replaceRE `(&lt;.+?&gt;)` `<span class="endpoint-placeholder" title="Replace with actual value">$1</span>`) |
+      replaceRE `\{(.+?)\}` `<span class="endpoint-param" title="Replace with actual value">:$1</span>`) | safeHTML
+    }}</span>
+    <button class="clipboard-copy" title="Copy to clipboard"></button>
+  </div>
+{{- else -}}
+  {{ errorf "'%s' is not a valid HTTP method for an endpoint" .Method -}}
+{{ end -}}

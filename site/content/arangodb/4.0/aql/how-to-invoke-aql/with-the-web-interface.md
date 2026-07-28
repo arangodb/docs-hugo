@@ -4,6 +4,7 @@ menuTitle: with the Web Interface
 weight: 10
 description: >-
   You can run ad-hoc AQL queries using the query editor in the web interface
+draft: true
 ---
 In the **Queries** section of the web interface, type in a query in the main box
 and execute it by clicking the **Execute** button. The query result is displayed
@@ -29,14 +30,14 @@ Bind parameters (table view mode):
 
 | Key         | Value  |
 |-------------|--------|
-| @collection | _apps  |
+| @collection | apps  |
 | search      | arango |
 
 Bind parameters (JSON view mode):
 
 ```json
 {
-    "@collection": "_apps",
+    "@collection": "apps",
     "search": "arango"
 }
 ```

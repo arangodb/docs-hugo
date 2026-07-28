@@ -80,6 +80,7 @@ require("@arangodb/users").remove(username);
 Alternatively, you can specify user data directly. For example:
 
 ```js
+db._useDatabase("_system");
 db._createDatabase("newDB", {}, [{ username: "newUser", passwd: "123456", active: true}])
 ```
 
@@ -93,8 +94,8 @@ in server-side actions (including Foxx).
 
 When performing this command from arangosh, the current credentials (username
 and password) will be re-used. These credentials might not be valid to
-connect to the database specified by `name`. Additionally, the database
-only be accessed from certain endpoints only. In this case, switching the
+connect to the database specified by `name`. Additionally, the database can
+be accessed from certain endpoints only. In this case, switching the
 database might not work, and the connection / session should be closed and
 restarted with different username and password credentials and/or
 endpoint data.
@@ -343,7 +344,7 @@ error is thrown. For information about the naming constraints for collections, s
   reported.
 
   When using the *Enterprise Edition* of ArangoDB, the `replicationFactor`
-  may be set to `"satellite"` making the collection locally joinable
+  may be set to `"satellite"`, making the collection locally joinable
   on every DB-Server. This reduces the number of network hops
   dramatically when using joins in AQL at the costs of reduced write
   performance on these collections.
@@ -392,8 +393,8 @@ error is thrown. For information about the naming constraints for collections, s
 
 - `distributeShardsLike` (string, _optional_, default: `""`):
   The name of another collection. If this property is set in a cluster, the
-  collection copies the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
-  properties from the specified collection (referred to as the _prototype collection_)
+  collection follows the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
+  properties of the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
   the other collection. In an Enterprise Edition cluster, this data co-location is
   utilized to optimize queries.
@@ -697,7 +698,6 @@ description: ''
 ~db._create("example");
 var coll = db._collection("example");
 db._drop(coll);
-~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -1174,6 +1174,10 @@ See [`db._createStatement()`](../../../aql/how-to-invoke-aql/with-arangosh.md#wi
 
 See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
 
+### `db._query(queryObject [, mainOptions] [, subOptions]])`
+
+See [`db._query()`](../../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query).
+
 ### `db._explain(queryString)`
 
 See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.md).
@@ -1271,14 +1275,19 @@ require("@arangodb").db._version();
 
 {{< tag "arangosh" >}}
 
-Returns the current license.
+Returns information about the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-current-license).
+Also see [Check the license](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(licenseString)`
+### `db._setLicense(licenseString[, force])`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense()`](../../../operations/administration/license-management.md#active-a-license).
+- `licenseString` (string): The Base64-encoded license string.
+- `force` (boolean, _optional_): Whether to change the license even if it expires
+  sooner than the current one. Default: `false`.
+
+Also see [Apply a license key](../../../operations/administration/license-management.md#apply-a-license-key).
+

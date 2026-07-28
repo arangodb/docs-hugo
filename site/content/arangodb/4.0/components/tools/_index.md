@@ -18,7 +18,6 @@ A full ArangoDB installation package contains the [ArangoDB server](../arangodb-
 | `arangobackup`  | Tool to [perform hot backup operations](arangobackup/_index.md) on an ArangoDB installation.
 | `arangoimport`  | [Bulk importer](arangoimport/_index.md) for the ArangoDB server. It supports JSON and CSV.
 | `arangoexport`  | [Bulk exporter](arangoexport/_index.md) for the ArangoDB server. It supports JSON, CSV and XML.
-| `arangobench`   | [Benchmark and test tool](arangobench/_index.md). It can be used for performance and server function testing.
 | `arangovpack`   | Utility to validate and [convert VelocyPack](arangovpack/_index.md) and JSON data.
 | `arangoinspect` | [Inspection tool](arangoinspect/_index.md) that gathers server setup information.
 
@@ -29,7 +28,6 @@ Additional tools which are available separately:
 
 | Name            | Brief description |
 |-----------------|-------------------|
-| [Foxx CLI](foxx-cli/_index.md) | Command line tool for managing and developing Foxx services
 | [kube-arangodb](../../deploy/kubernetes.md) | Operators to manage Kubernetes deployments
 | [oasisctl](../../../../amp/oasisctl/_index.md) | Command-line tool for managing the Arango Managed Platform (AMP)
 | [ArangoDB Datasets](../../../../ecosystem/arango-datasets.md) | A Python package for loading sample datasets into ArangoDB

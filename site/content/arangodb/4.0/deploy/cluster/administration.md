@@ -2,7 +2,8 @@
 title: Administrate ArangoDB cluster deployments
 menuTitle: Administration
 weight: 10
-description: ''
+description: >-
+  Learn about replication, sharding, rebalancing, and managing ArangoDB cluster nodes
 ---
 This section includes information related to the administration of an ArangoDB Cluster.
 
@@ -201,7 +202,8 @@ Rebalancing might occur, amongst other scenarios, when:
 - There are changes in the number or size of data collections.
 
 A _shard_ can be moved from a _DB-Server_ to another, and the entire shard distribution
-can be rebalanced using the corresponding buttons in the web [UI](../../components/web-interface/cluster.md).
+can be rebalanced using the corresponding buttons in the web interface.
+<!-- TODO: New link / description -->
 
 You can also do any of the following by using the API:
 - Calculate the current cluster imbalance.
@@ -288,12 +290,12 @@ console.log("Checking shard distribution every %d seconds...", sleep);
 var count;
 do {
   count = 0;
-  for (dbase in dblist) {
+  for (var dbase in dblist) {
     var sd = arango.GET("/_db/" + dblist[dbase] + "/_admin/cluster/shardDistribution");
     var collections = sd.results;
-    for (collection in collections) {
+    for (var collection in collections) {
       var current = collections[collection].Current;
-      for (shard in current) {
+      for (var shard in current) {
         if (current[shard].leader == server) {
           ++count;
         }

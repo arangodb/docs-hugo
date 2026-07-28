@@ -2,7 +2,8 @@
 title: Cluster Deployment
 menuTitle: Deployment
 weight: 5
-description: ''
+description: >-
+  Overview of the cluster deployment options for ArangoDB
 ---
 You can deploy an ArangoDB cluster in different ways:
 
@@ -27,7 +28,7 @@ somewhere else and pass it to your `arangod` cluster instance via
 
 The data directory is configured in `arangod.conf`:
 
-```conf
+```cfg
 [database]
 directory = /var/lib/arangodb3
 ```
@@ -37,7 +38,7 @@ as the standalone instance. If that is not already the case, change the
 `database.directory` entry in `arangod.conf` as seen above to a different
 directory
 
-```conf
+```cfg
 # in arangod.conf:
 [database]
 directory = /var/lib/arangodb3.standalone
@@ -57,14 +58,14 @@ The standalone instance must use a different socket, i.e. it cannot use the
 same port on the same network interface than the Cluster. For that, change the
 standalone instance's port in `/etc/arangodb3/arangod.conf`
 
-```conf
+```cfg
 [server]
 endpoint = tcp://127.0.0.1:8529
 ```
 
 to something unused, e.g.
 
-```conf
+```cfg
 [server]
 endpoint = tcp://127.1.2.3:45678
 ```

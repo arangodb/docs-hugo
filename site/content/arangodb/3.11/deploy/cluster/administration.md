@@ -288,12 +288,12 @@ console.log("Checking shard distribution every %d seconds...", sleep);
 var count;
 do {
   count = 0;
-  for (dbase in dblist) {
+  for (var dbase in dblist) {
     var sd = arango.GET("/_db/" + dblist[dbase] + "/_admin/cluster/shardDistribution");
     var collections = sd.results;
-    for (collection in collections) {
+    for (var collection in collections) {
       var current = collections[collection].Current;
-      for (shard in current) {
+      for (var shard in current) {
         if (current[shard].leader == server) {
           ++count;
         }

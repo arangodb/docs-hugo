@@ -103,7 +103,7 @@ A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12
 
 A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
 
-A `replace-any-eq-with-in` rule has been added in v3.12.8.
+A `replace-any-eq-with-in` rule has been added in v3.12.10.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
@@ -241,6 +241,58 @@ for this topic are ignored.
   returns an `endianness` attribute. Currently, only Little Endian is supported
   as an architecture by ArangoDB. The value is therefore `"little"`.
 
+#### Storage engine statistics API
+
+<small>Introduced in: v3.12.8</small>
+
+The [`GET /_api/engine/stats` endpoint](../../develop/http-api/administration.md#get-the-storage-engine-statistics)
+previously returned hard-to-read strings under `columnFamilies.*.dbstats`:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "dbstats" : "\n** Compaction Stats [default] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 15673
+    },
+    "documents" : {
+      "dbstats" : "\n** Compaction Stats [Documents] **\nLevel    Files   Size     Score Read(GB) ...",
+      "memory" : 135430
+    },
+    ...
+  }
+}
+```
+
+It now returns all information in a structured way:
+
+```json
+{
+  ...
+  "columnFamilies" : {
+    "definitions" : {
+      "compactionStats" : {
+        "sum" : {
+          "numFiles" : 2,
+          "sizeBytes" : 230164,
+          "readGB" : 0.000015,
+          "writeGB" : 0.000015,
+          "readMBps" : 0.797984,
+          "writeMBps" : 0.80012,
+          "compSec" : 0.01919,
+          "compCount" : 4,
+          "keyIn" : 176,
+          "keyDrop" : 88
+        },
+        "levels" : [ ... ],
+      },
+    ...
+    }
+  }
+}
+```
+
 ### Endpoints added
 
 #### Effective and available startup options
@@ -273,7 +325,7 @@ startup option to `enabled-per-shard` to make DB-Servers collect per-shard
 usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
 usage metrics per shard and per user whenever a shard is accessed.
 
-For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-the-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 #### Reset log levels
@@ -339,6 +391,45 @@ documentation.
 
 Also see [Authentication with access tokens](#authentication-with-access-tokens)
 for related API changes.
+
+#### Deployment ID
+
+<small>Introduced in: v3.12.6</small>
+
+Licenses are now bound to specific deployments. Each deployment has a unique
+identifier that you can retrieve via a new
+[`GET /_admin/deployment/id` endpoint](../../develop/http-api/administration.md#get-the-deployment-id)
+in the HTTP API.
+
+#### Get public options configuration
+
+<small>Introduced in: v3.12.8</small>
+
+A new [`/_admin/options-public` endpoint](../../develop/http-api/administration.md#get-the-public-startup-option-configuration)
+has been added for retrieving a small, curated subset of the configured server
+startup options that are safe to expose to any authenticated user.
+
+#### Crash dump management
+
+<small>Introduced in: v3.12.8</small>
+
+New endpoints for viewing and managing crash dumps have been added to the HTTP API:
+
+- `GET /_admin/crashes`: List all crash dump directory identifiers (UUIDs).
+- `GET /_admin/crashes/{id}`: Get the contents of a specific crash dump as stored
+  in `<database-directory>/crashes/<uuid>/`.
+- `DELETE /_admin/crashes/{id}`: Delete a specific crash dump.
+
+See [Crash dump management](../../develop/http-api/administration.md#crash-dump-management)
+for details.
+
+#### Activities API (experimental)
+
+<small>Introduced in: v3.12.8</small>
+
+A new activities API has been added as an observability feature.
+See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
+for details.
 
 ### Endpoints augmented
 
@@ -433,6 +524,26 @@ Two new statistics are included in the response when you execute an AQL query:
 }
 ```
 
+##### `searchParallelism` statistic
+
+<small>Introduced in: v3.12.9</small>
+
+The cursor API now returns an additional statistic under `extra.stats`:
+
+- `searchParallelism` (integer):
+  The number of threads used by ArangoSearch for this query.
+
+#### Query API
+
+<small>Introduced in: v3.12.2</small>
+
+The endpoints for the lists of currently running queries and slow queries
+(`/_api/query/current` and `/_api/query/slow`) now include the following
+attributes:
+- `dataSources` (array of strings), only present if tracking of data sources is enabled
+- `modificationQuery` (boolean)
+- `warnings` (integer)
+
 #### Query plan cache attributes
 
 <small>Introduced in: v3.12.4</small>
@@ -509,6 +620,34 @@ curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 A new `vector` index type has been added.
 See [HTTP interface for vector indexes](../../develop/http-api/indexes/vector.md)
 for details.
+
+---
+
+<small>Introduced in: v3.12.9</small>
+
+Vector indexes now have two new attributes in success responses:
+- `trainingState` (string): Possible values:
+  - `"unusable"`
+  - `"training"`
+  - `"ingesting"`
+  - `"ready"`
+- `errorMessage` (string):
+  Only present if there is a problem with the index/training.
+
+Furthermore, a new error code `ERROR_QUERY_VECTOR_INDEX_NOT_READY` with the
+number `1555` has been added. It is thrown if a query tries to use a
+vector index that hasn't been trained yet.
+
+You can now create a vector index first and
+then populate the collection with vector data. However, it is still recommended
+to load the data first and then create the index to ensure that all documents
+participate in the training process as the training is only executed once.
+The training is triggered automatically if the vector index hasn't been trained
+yet and the number of documents to index exceeds the threshold of
+`nLists` documents. If `sparse` is set to `true`, documents without the
+vector embedding field are not counted toward this threshold.
+Check the `trainingState` to see if the
+index is `"ready"` and `errorMessage` for the reason if it's not.
 
 ##### Changed consolidation defaults for inverted indexes
 
@@ -704,6 +843,37 @@ and physical memory:
 - `arangodb_server_statistics_effective_cpu_cores`
 - `arangodb_server_statistics_effective_physical_memory`
 
+---
+
+<small>Introduced in: v3.12.8</small>
+
+The following new metrics have been introduced to provide visibility into
+shard distribution and replication health across your cluster:
+
+- `arangodb_metadata_total_number_of_shards`
+- `arangodb_metadata_number_follower_shards`
+- `arangodb_metadata_number_out_of_sync_shards`
+- `arangodb_metadata_number_not_replicated_shards`
+- `arangodb_metadata_shard_followers_out_of_sync_number`
+
+Furthermore, the following metrics have been added as part of the experimental
+activities feature:
+
+- `arangodb_activities_total`
+- `arangodb_activities_existing`
+
+---
+
+<small>Introduced in: v3.12.9</small>
+
+The following new metrics have been added for better visibility of the current
+state of the vector indexes:
+
+- `arangodb_vector_index_ingestion_duration`
+- `arangodb_vector_index_training_duration`
+- `arangodb_vector_index_training_ongoing`
+- `arangodb_vector_index_unusable`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -813,12 +983,6 @@ are unaffected.
 
 ### Endpoints removed
 
-#### Database target version API
-
-The `GET /_admin/database/target-version` endpoint has been removed in favor of the
-more general version API with the endpoint `GET /_api/version`. 
-The endpoint was deprecated since v3.11.3.
-
 #### JavaScript-based traversal using `/_api/traversal`
 
 The long-deprecated JavaScript-based traversal functionality has been removed
@@ -925,7 +1089,7 @@ The option defaults to `false` so that fast locking is tried.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 for details.
 
-#### Query plan cache module
+### Query plan cache module
 
 <small>Introduced in: v3.12.4</small>
 
@@ -934,3 +1098,34 @@ and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
 
 See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
 for details.
+
+### Stricter JavaScript security defaults
+
+<small>Introduced in: v3.12.9</small>
+
+Up to v3.12.8, the default access for server-side JavaScript code like Foxx,
+user-defined AQL functions (UDFs), and JavaScript Transactions was to **allow**
+everything. This included reading and writing arbitrary files, accessing
+environment variables, reading startup configuration values, and making outbound
+HTTP requests from within the server process.
+
+From v3.12.9 onward, each of the following _arangod_ startup options now
+defaults to **disallow** access to the respective resource unless configured
+otherwise, as if the given allowlist was set to `'^$'`:
+
+- `--javascript.files-allowlist`
+- `--javascript.environment-variables-allowlist`
+- `--javascript.startup-options-allowlist`
+- `--javascript.endpoints-allowlist`
+
+If you set denylist startup options, access is granted for everything except
+what matches the denylist of the respective resource, overwriting the default
+of disallowing everything:
+
+- `--javascript.environment-variables-denylist`
+- `--javascript.startup-options-denylist`
+- `--javascript.endpoints-denylist`
+
+Note that file access is exclusively controlled by `--javascript.files-allowlist`
+with no corresponding `--javascript.files-denylist` option.
+

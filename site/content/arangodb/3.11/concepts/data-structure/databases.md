@@ -7,11 +7,15 @@ description: >-
   applications
 ---
 ArangoDB can handle multiple databases in the same server instance. Databases
-can be used to logically group and separate data. An ArangoDB database consists
-of collections and dedicated database-specific worker processes. A database
-contains its own collections (which cannot be accessed from other databases),
-Foxx applications, and replication loggers and appliers. Each ArangoDB database
-contains its own system collections (e.g. `_users`, `_graphs`, ...).
+can be used to logically group and separate data, such as for multi-tenancy
+(e.g. one database per customer).
+
+An ArangoDB database contains a set of collections, similar to how a file cabinet
+contains folders.
+
+The collections of one database cannot be accessed from another database.
+Queries always run in the context of a single database and can only access the
+data stored in the collections of this database.
 
 There is always at least one database in ArangoDB. This is the default
 database named `_system`. This database cannot be dropped and provides special
@@ -20,6 +24,16 @@ operations for creating, dropping, and enumerating databases.
 You can create additional databases and give them unique names to access them
 later. You need to be in the `_system` database for executing database management
 operations. They cannot be initiated while in a user-defined database.
+
+Foxx applications are only available in the context of the database they have
+been installed in. A new database only provides access to the system
+applications shipped with ArangoDB (mainly the web interface). You need to
+explicitly install other Foxx applications.
+
+Alongside user-created collections, each ArangoDB database contains its own
+system collections (e.g. `_analyzers`, `_graphs`, ...). The `_system` database
+contains additional system collections that only exist in this database
+(e.g. `_users`). You can create your own collections in the `_system` database, too.
 
 ## Database names
 
@@ -88,18 +102,6 @@ refused. In DC2DC setups it is also required to use the same naming
 constraints for both datacenters to avoid incompatibilities.
 {{< /warning >}}
 
-## Notes
-
-- Each database contains its own system collections, which ArangoDB has to set
-  up when a database is created. This makes the creation of a database take a while.
-- Replication can be configured globally or on a per-database level. In the
-  latter case, you need to configure any replication logging or applying for new
-  databases explicitly after they have been created.
-- Foxx applications are only available in the context of the database they have
-  been installed in. A new database only provides access to the system
-  applications shipped with ArangoDB (mainly the web interface). You need to
-  explicitly install other Foxx applications.
-
 ## Database organization on disk
 
 Data is physically stored in `.sst` files in a sub-directory `engine-rocksdb`
@@ -110,7 +112,7 @@ ArangoSearch stores data in database-specific directories underneath the
 `databases` folder.
 
 Foxx applications are also organized in database-specific directories but inside
-the application path. The filesystem layout could look like this:
+the application path (here: `apps`). The filesystem layout could look like this:
 
 ```
 apps/                   # the instance's application directory
@@ -175,6 +177,7 @@ specified database, unless specified otherwise.
 name: arangosh_use_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 db._useDatabase("mydb");
 ~db._useDatabase("_system");
@@ -363,6 +366,7 @@ To switch to the desired database, see [Set the database context](#set-the-datab
 name: arangosh_get_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("mydb");
 db._properties();
@@ -451,6 +455,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_list_databases
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("_system"); // _system database context required
 db._databases();
@@ -536,6 +541,7 @@ in the _python-arango_ documentation for details.
 name: arangosh_delete_database
 description: ''
 ---
+~db._useDatabase("_system");
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("_system"); // _system database context required
 db._dropDatabase("mydb");

@@ -1,11 +1,14 @@
 ---
-title: HTTP interface for server logs
+title: Logging HTTP API
 menuTitle: Logs
 weight: 5
 description: >-
-  Server events and errors are logged depending on the defined log levels for
-  the available log topics
+  The HTTP interface of the logging subsystem lets you fetch log entries as
+  well as configure the log levels per log topic
 ---
+Server events and errors are logged depending on the defined log levels for
+the available log topics.
+
 Whether events are logged to a file, syslog, or only an attached terminal depends
 on the [log startup options](../../../components/arangodb-server/options.md#log).
 
@@ -111,157 +114,6 @@ paths:
         '200':
           description: |
             is returned if the request is valid.
-        '400':
-          description: |
-            is returned if invalid values are specified for `upto` or `level`.
-        '403':
-          description: |
-            is returned if there are insufficient privileges to access the logs.
-      tags:
-        - Monitoring
-```
-
-## Get the global server logs (deprecated)
-
-```openapi
-paths:
-  /_admin/log:
-    get:
-      operationId: getLog
-      description: |
-        {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
-        Use `/_admin/log/entries` instead, which provides the same data in a more
-        intuitive and easier to process format.
-        {{</* /warning */>}}
-
-        Returns fatal, error, warning or info log messages from the server's global log.
-        The result is a JSON object with the attributes described below.
-
-        This API can be turned off via the startup option `--log.api-enabled`. In case
-        the API is disabled, all requests will be responded to with HTTP 403. If the
-        API is enabled, accessing it requires admin privileges, or even superuser
-        privileges, depending on the value of the `--log.api-enabled` startup option.
-      parameters:
-        - name: upto
-          in: query
-          required: false
-          description: |
-            Returns all log entries up to log level `upto`. Note that `upto` must be:
-            - `fatal` or `0`
-            - `error` or `1`
-            - `warning` or `2`
-            - `info` or `3`
-            - `debug` or `4`
-            - `trace` or `5`
-          schema:
-            #type: [string, integer]
-            default: info
-        - name: level
-          in: query
-          required: false
-          description: |
-            Returns all log entries of log level `level`. Note that the query parameters
-            `upto` and `level` are mutually exclusive.
-          schema:
-            type: string
-        - name: start
-          in: query
-          required: false
-          description: |
-            Returns all log entries such that their log entry identifier (`lid` value)
-            is greater or equal to `start`.
-          schema:
-            type: number
-            default: 0
-        - name: size
-          in: query
-          required: false
-          description: |
-            Restricts the result to at most `size` log entries.
-          schema:
-            type: number
-        - name: offset
-          in: query
-          required: false
-          description: |
-            Starts to return log entries skipping the first `offset` log entries. `offset`
-            and `size` can be used for pagination.
-          schema:
-            type: number
-            default: 0
-        - name: search
-          in: query
-          required: false
-          description: |
-            Only return the log entries containing the text specified in `search`.
-          schema:
-            type: string
-        - name: sort
-          in: query
-          required: false
-          description: |
-            Sort the log entries either ascending (if `sort` is `asc`) or descending
-            (if `sort` is `desc`) according to their `lid` values. Note that the `lid`
-            imposes a chronological order.
-          schema:
-            type: string
-            default: asc
-        - name: serverId
-          in: query
-          required: false
-          description: |
-            Returns all log entries of the specified server. All other query parameters
-            remain valid. If no serverId is given, the asked server
-            will reply. This parameter is only meaningful on Coordinators.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - lid
-                  - level
-                  - timestamp
-                  - text
-                  - topic
-                  - totalAmount
-                properties:
-                  lid:
-                    description: |
-                      a list of log entry identifiers. Each log message is uniquely
-                      identified by its @LIT{lid} and the identifiers are in ascending
-                      order.
-                    type: array
-                    items:
-                      type: string
-                  level:
-                    description: |
-                      A list of the log levels for all log entries.
-                    type: string
-                  timestamp:
-                    description: |
-                      a list of the timestamps as seconds since 1970-01-01 for all log
-                      entries.
-                    type: array
-                    items:
-                      type: string
-                  text:
-                    description: |
-                      a list of the texts of all log entries
-                    type: string
-                  topic:
-                    description: |
-                      a list of the topics of all log entries
-                    type: string
-                  totalAmount:
-                    description: |
-                      the total amount of log entries before pagination.
-                    type: integer
         '400':
           description: |
             is returned if invalid values are specified for `upto` or `level`.
@@ -520,10 +372,6 @@ paths:
                   description: |
                     Logs events related to Hot Backup.
                   type: string
-                bench:
-                  description: |
-                    Logs events related to benchmarking with _arangobench_.
-                  type: string
                 cache:
                   description: |
                     Logs events related to caching documents and index entries
@@ -596,7 +444,7 @@ paths:
                 httpclient:
                   description: |
                     Logs the activity of the HTTP request subsystem that is used
-                    in replication, client tools, and V8.
+                    in replication and client tools.
                   type: string
                 libiresearch:
                   description: |
@@ -647,10 +495,6 @@ paths:
                     Information related to ArangoDB's use of the
                     RocksDB storage engine uses the `engines` log topic.
                   type: string
-                security:
-                  description: |
-                    Logs the security configuration for V8.
-                  type: string
                 ssl:
                   description: |
                     Logs information related to the in-transit encryption of
@@ -697,9 +541,8 @@ paths:
                   type: string
                 v8:
                   description: |
-                    Logs various information related to ArangoDB's use of the
-                    V8 JavaScript engine, like the initialization as well as
-                    entering and exiting contexts.
+                    Logs information related to the V8 JavaScript engine.
+                    Only used by _arangosh_, not _arangod_.
                   type: string
                 views:
                   description: |
@@ -1300,7 +1143,7 @@ Content-Length: 353
         "query": "FOR s in @@collection FILTER s.time < @start RETURN s._key",
         "database": "_system",
         "bindVars": {
-          "@collection": "_statistics",
+          "@collection": "events",
           "start": 1751470412.3836362
         }
       },

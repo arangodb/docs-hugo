@@ -16,7 +16,6 @@ ArangoSearch is a sophisticated, integrated full-text search solution over
 a user-defined set of attributes and collections. It is the first type of
 view in ArangoDB.
 
-- [ArangoSearch tutorial](https://www.arangodb.com/learn/search/tutorial/)
 - [ArangoSearch overview](../../indexes-and-search/arangosearch/_index.md)
 - ArangoSearch in AQL:
   - [SEARCH operation](../../aql/high-level-operations/search.md)

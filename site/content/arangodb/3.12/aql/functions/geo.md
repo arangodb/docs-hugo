@@ -635,8 +635,9 @@ each shape.
 Determine whether a point is inside a polygon.
 
 {{< warning >}}
-The `IS_IN_POLYGON()` AQL function is **deprecated** as of ArangoDB 3.4.0 in
-favor of the new [`GEO_CONTAINS()` AQL function](#geo_contains), which works with
+The `IS_IN_POLYGON()` AQL function is **deprecated** as of ArangoDB 3.4.0
+and removed in ArangoDB v4.0 in favor of the new
+[`GEO_CONTAINS()` AQL function](#geo_contains), which works with
 [GeoJSON](https://tools.ietf.org/html/rfc7946) Polygons and MultiPolygons.
 {{< /warning >}}
 
@@ -857,7 +858,7 @@ RETURN GEO_MULTIPOLYGON([
 
 {{< warning >}}
 The AQL functions `NEAR()`, `WITHIN()` and `WITHIN_RECTANGLE()` are
-deprecated starting from version 3.4.0.
+deprecated starting from version 3.4.0 and removed in ArangoDB v4.0.
 Please use the [Geo utility functions](#geo-utility-functions) instead.
 {{< /warning >}}
 
@@ -908,7 +909,8 @@ contains the distance value in an attribute of that name.
 ### WITHIN()
 
 {{< warning >}}
-`WITHIN()` is a deprecated AQL function from version 3.4.0 on.
+`WITHIN()` is a deprecated AQL function from version 3.4.0 onward
+and removed in ArangoDB v4.0.
 Use [`DISTANCE()`](#distance) in a query like this instead:
 
 ```aql
@@ -947,7 +949,8 @@ value in an attribute of that name.
 ### WITHIN_RECTANGLE()
 
 {{< warning >}}
-`WITHIN_RECTANGLE()` is a deprecated AQL function from version 3.4.0 on. Use
+`WITHIN_RECTANGLE()` is a deprecated AQL function from version 3.4.0 onward
+and removed in ArangoDB v4.0. Use
 [`GEO_CONTAINS()`](#geo_contains) and a GeoJSON polygon instead - but note that
 this uses geodesic lines from version 3.10.0 onward
 (see [GeoJSON interpretation](#geojson-interpretation)):

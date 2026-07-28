@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for collections
+title: Collection HTTP API
 menuTitle: Collections
 weight: 25
 description: >-
-  The HTTP API for collections lets you create and delete collections, get
+  The HTTP interface for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
 ---
@@ -84,7 +84,6 @@ paths:
                       required:
                         - id
                         - name
-                        - status
                         - type
                         - isSystem
                         - globallyUniqueId
@@ -98,15 +97,6 @@ paths:
                             The name of the collection.
                           type: string
                           example: coll
-                        status:
-                          description: |
-                            The status of the collection.
-                            - `3`: loaded
-                            - `5`: deleted
-
-                            Every other status indicates a corrupted collection.
-                          type: integer
-                          example: 3
                         type:
                           description: |
                             The type of the collection:
@@ -169,11 +159,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -189,7 +174,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -213,15 +197,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -239,6 +214,38 @@ paths:
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
         '404':
           description: |
@@ -299,11 +306,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -319,8 +321,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -333,11 +333,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -397,7 +394,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -504,6 +501,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -513,8 +518,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -592,7 +600,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `name` attribute is missing or has an invalid value.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -661,25 +670,6 @@ paths:
 ```curl
 ---
 description: |-
-  Using an identifier:
-name: RestCollectionGetCollectionIdentifier
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id + "/properties";
-
-var response = logCurlRequest('GET', url);
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-```curl
----
-description: |-
   Using a name:
 name: RestCollectionGetCollectionName
 ---
@@ -719,11 +709,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: x-arango-trx-id
@@ -748,8 +733,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -762,11 +745,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -830,7 +810,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -937,6 +917,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -946,8 +934,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -1025,7 +1016,36 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
             The collection cannot be found.
@@ -1089,11 +1109,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: details
@@ -1126,8 +1141,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1140,11 +1153,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   count:
                     description: |
@@ -1294,7 +1304,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -1401,6 +1411,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1410,8 +1428,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -1489,16 +1510,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -1670,8 +1692,9 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing or not all of the
+            The `collection-name` is missing or invalid, or not all of the
             collection's shard key attributes are present in the input document.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -1844,8 +1867,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -1858,11 +1879,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   shards:
                     description: |
@@ -1951,7 +1969,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2058,6 +2076,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2067,8 +2093,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -2146,16 +2175,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -2306,11 +2336,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -2327,8 +2352,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -2341,11 +2364,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   revision:
                     description: |
@@ -2409,7 +2429,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -2516,6 +2536,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2525,8 +2553,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -2604,16 +2635,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -2733,11 +2765,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: withRevisions
@@ -2772,7 +2799,6 @@ paths:
                   - code
                   - id
                   - name
-                  - status
                   - type
                   - isSystem
                   - globallyUniqueId
@@ -2802,15 +2828,6 @@ paths:
                       The name of the collection.
                     type: string
                     example: coll
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   type:
                     description: |
                       The type of the collection:
@@ -2831,8 +2848,36 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
             If the collection is unknown, then a *HTTP 404*
@@ -3186,6 +3231,10 @@ paths:
                   description: |
                     In a cluster, this value determines the
                     number of shards to create for the collection.
+
+                    Default:
+                    If `distributeShardsLike` is set, the `numberOfShards`
+                    is that of the indicated prototype collection.
                   type: integer
                   default: 1
                 shardKeys:
@@ -3216,7 +3265,10 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
 
-                    Default: The `replicationFactor` defined by the database.
+                    Default:
+                    If `distributeShardsLike` is set, the default `replicationFactor`
+                    is that of the indicated prototype collection. Otherwise,
+                    the default `replicationFactor` is defined by the database.
                   type: integer
                 writeConcern:
                   description: |
@@ -3226,8 +3278,11 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    Default: If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the prototype collection.
+                    Default: If `distributeShardsLike` is set when the collection is created,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
+
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
                     Otherwise, the default value is controlled by the current database's
@@ -3258,7 +3313,10 @@ paths:
                     - `enterprise-hex-smart-vertex`: sharding used for node collections of
                       EnterpriseGraphs
 
-                    If no sharding strategy is specified, the default is `hash` for
+                    Default:
+                    If `distributeShardsLike` is set, the `shardingStrategy`
+                    is that of the indicated prototype collection. Otherwise,
+                    if no sharding strategy is specified, the default is `hash` for
                     all normal collections, `enterprise-hash-smart-edge` for all smart edge
                     collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
                     node collections.
@@ -3268,8 +3326,9 @@ paths:
                 distributeShardsLike:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
-                    collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-                    properties from the specified collection (referred to as the _prototype collection_)
+                    collection follows the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+                    properties of the specified collection (referred to as the
+                    _prototype collection_ or sometimes _initial collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. This data co-location is utilized to optimize queries.
 
@@ -3331,8 +3390,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -3345,11 +3402,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -3409,7 +3463,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -3516,6 +3570,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -3525,8 +3587,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -3717,11 +3782,6 @@ paths:
           required: true
           description: |
             The name of the collection to drop.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: isSystem
@@ -3762,16 +3822,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -3827,24 +3888,6 @@ paths:
 ```
 
 **Examples**
-
-```curl
----
-description: |-
-  Using an identifier:
-name: RestCollectionDeleteCollectionIdentifier
----
-var cn = "products1";
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll._id;
-
-var response = logCurlRequest('DELETE', url);
-db[cn] = undefined;
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-```
 
 ```curl
 ---
@@ -3907,11 +3950,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
         - name: waitForSync
@@ -3971,16 +4009,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4119,11 +4158,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       requestBody:
@@ -4245,6 +4279,12 @@ paths:
 
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
+
+                    If `distributeShardsLike` is set, the `replicationFactor`
+                    is that of the indicated prototype collection. You can only
+                    change the `replicationFactor` of the prototype collection
+                    to change the `replicationFactor` for this collection (and for
+                    all other collections that follow this prototype collection).
                   type: integer
                 writeConcern:
                   description: |
@@ -4254,8 +4294,11 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the prototype collection.
+                    If `distributeShardsLike` is set,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
+
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
                     Otherwise, the default value is controlled by the current database's
@@ -4275,8 +4318,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -4289,11 +4330,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -4353,7 +4391,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -4460,6 +4498,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -4469,8 +4515,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -4548,16 +4597,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4675,11 +4725,6 @@ paths:
           required: true
           description: |
             The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       responses:
@@ -4712,16 +4757,17 @@ paths:
                     example: true
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -4826,11 +4872,6 @@ paths:
           required: true
           description: |
             The name of the collection to rename.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
           schema:
             type: string
       requestBody:
@@ -4858,8 +4899,6 @@ paths:
                   - code
                   - name
                   - type
-                  - status
-                  - statusString
                   - isSystem
                   - id
                   - globallyUniqueId
@@ -4872,11 +4911,8 @@ paths:
                   # Purposefully undocumented:
                   #   internalValidatorType (internal)
                   #   isSmartChild (internal)
-                  #   minReplicationFactor (now writeConcern)
                   #   shadowCollections (internal)
                   #   usesRevisionsAsDocumentIds (internal)
-                  #   status (legacy)
-                  #   statusString (legacy)
                 properties:
                   error:
                     description: |
@@ -4936,7 +4972,7 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
@@ -5043,6 +5079,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -5052,8 +5096,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -5134,7 +5181,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter or the `name` attribute is missing.
+            The `collection-name` is missing or invalid, or the `name` attribute
+            is missing. You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
@@ -5279,16 +5327,17 @@ paths:
                     type: integer
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - error
                   - code
-                  - errorNum
+                  - error
                   - errorMessage
+                  - errorNum
                 properties:
                   error:
                     description: |
@@ -5390,7 +5439,6 @@ paths:
                   - name
                   - type
                   - isSystem
-                  - status
                   - id
                   - globallyUniqueId
                 properties:
@@ -5423,15 +5471,6 @@ paths:
                       an underscore are usually system collections.
                     type: boolean
                     example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
                   id:
                     description: |
                       A unique identifier of the collection (deprecated).
@@ -5439,6 +5478,38 @@ paths:
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` is missing or has an invalid value.
+            You cannot use a numeric ID to reference the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
         '401':
           description: |

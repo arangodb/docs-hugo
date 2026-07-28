@@ -3,7 +3,7 @@ title: Server security options
 menuTitle: Security Options
 weight: 5
 description: >-
-  You can harden an ArangoDB server by restricting APIs, limiting what can be 
+  You can harden an ArangoDB server by restricting APIs, limit what can be 
   accessed in JavaScript contexts, and disable unused features
 ---
 _arangod_ provides a variety of options to make a setup more secure. 
@@ -58,6 +58,8 @@ components.
 
 The set theory for these lists works as follow:
 
+- **No allowlist or denylist is specified**:
+  Everything is allowed.
 - **Only a denylist is specified:**
   Everything is allowed except a set of items matching the denylist.
 - **Only an allowlist is specified:**

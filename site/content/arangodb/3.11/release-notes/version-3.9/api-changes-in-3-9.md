@@ -222,11 +222,9 @@ single servers, Coordinators and DB-Servers:
   - `license`: Encrypted and base64-encoded license key
   - `version`: License version number
   - `status`:
-    - `good`: The license is valid for more than 2 weeks.
-    - `expiring`: The license is valid for less than 2 weeks.
-    - `expired`: The license has expired. In this situation, no new
-      Enterprise Edition features can be utilized.
-    - `read-only`: The license is expired over 2 weeks. The instance is now
+    - `good`: The license is still valid for more than a week.
+    - `expiring`: The license is valid for less than a week.
+    - `read-only`: The license has expired. The instance is now
       restricted to read-only mode.
 
 - `PUT /_admin/license`: Set a new license key. Expects the key as string in the

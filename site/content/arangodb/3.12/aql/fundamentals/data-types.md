@@ -71,11 +71,18 @@ double-precision floating point values internally. The internal floating-point
 format used is IEEE 754.
 
 {{< warning >}}
-When exposing any numeric integer values to JavaScript via
-[user-defined AQL functions](../user-defined-functions.md), numbers that exceed 32 bit
-precision are converted to floating-point values, so large integers can lose
-some bits of precision. The same is true when converting AQL numeric results to
-JavaScript (e.g. returning them to Foxx).
+In _arangosh_ and server-side JavaScript contexts like Foxx and user-defined
+AQL functions, when returning numeric integer values to JavaScript that leave
+the int32/uint32 range, they are converted to floating-point values. That is,
+numbers less than -2<sup>31</sup> or greater than 2<sup>32</sup>-1 become
+IEEE 754 doubles. This is done by ArangoDB when converting from the internal
+VelocyPack format to the V8 Number format.
+
+Integers with an absolute value up to 2<sup>53</sup>−1 (JavaScript's
+`Number.MAX_SAFE_INTEGER`) are still represented exactly by the resulting
+doubles. Larger magnitudes may round to a nearby representable value.
+This limit applies to JavaScript in general, including the _arangojs_ driver
+and browsers, unless you use the `BigInt` type (e.g. in JSON parsing).
 {{< /warning >}}
 
 Numeric integer literals can also be expressed as binary

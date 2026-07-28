@@ -8,8 +8,7 @@ description: >-
 ---
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
-primarily a full-text search engine, a much more powerful alternative to the
-[full-text index](../indexing/working-with-indexes/fulltext-indexes.md) type. It can index nested fields
+primarily a full-text search engine. It can index nested fields
 from multiple collections, optionally with transformations such as text
 normalization and tokenization applied, rank query results by relevance and
 more.
@@ -998,11 +997,10 @@ For relevance and performance tuning, as well as the reference documentation, se
 
 If you are interested in more technical details, have a look at:
 
-- [**ArangoSearch Tutorial**](https://www.arangodb.com/learn/search/tutorial/#:~:text=Ranking%20in%20ArangoSearch):
-  The tutorial includes sections about the View concept, Analysis, and the
-  ranking model.
-- [**ArangoSearch architecture overview**](https://www.arangodb.com/2018/04/arangosearch-architecture-overview/):
+<!-- TODO: Incorporate information
+- [**ArangoSearch architecture overview**](architecture.md):
   A description of ArangoSearch's design, its inverted index and some
   implementation details.
+-->
 - The [**IResearch library**](https://github.com/iresearch-toolkit/iresearch)
   that provides the searching and ranking capabilities.

@@ -11,7 +11,7 @@ pageToc:
 ---
 {{< tip >}}
 A similar feature is also available in the
-[Arango Managed Platform (AMP)](../../../../amp/security-and-access-control/_index.md#using-an-audit-log).
+[Arango Managed Platform (AMP)](../../../../amp/security-and-access-control/_index.md#audit-logs).
 {{< /tip >}}
 
 ## Configuration

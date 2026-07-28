@@ -1,11 +1,14 @@
 ---
-title: HTTP interface for server logs
+title: Logging HTTP API
 menuTitle: Logs
 weight: 5
 description: >-
-  Server events and errors are logged depending on the defined log levels for
-  the available log topics
+  The HTTP interface of the logging subsystem lets you fetch log entries as
+  well as configure the log levels per log topic
 ---
+Server events and errors are logged depending on the defined log levels for
+the available log topics.
+
 Whether events are logged to a file, syslog, or only an attached terminal depends
 on the [log startup options](../../../components/arangodb-server/options.md#log).
 
@@ -124,13 +127,18 @@ paths:
 ## Get the global server logs (deprecated)
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/log:
     get:
       operationId: getLog
+      deprecated: true
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
+        This endpoint should no longer be used. It is deprecated from version
+        3.8.0 onward and removed in ArangoDB 4.0.
         Use `/_admin/log/entries` instead, which provides the same data in a more
         intuitive and easier to process format.
         {{</* /warning */>}}

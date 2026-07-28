@@ -11,7 +11,7 @@ description: >-
 The ArangoDB Starter is a program used to create ArangoDB database deployments
 on bare-metal (or virtual machines) with ease.
 It enables you to create everything from a simple Single server instance
-to a full blown Cluster in under 5 minutes.
+to a full-blown Cluster in under 5 minutes.
 
 The Starter is intended to be used in environments where there is no higher
 level orchestration system (e.g. Kubernetes) available.
@@ -85,7 +85,6 @@ It contains the following files & sub-directories.
 - `arangodb.log` The log file of the Starter
 - `single<port>`, `agent<port>`, `coordinator<port>`, `dbserver<port>`: directories for
   launched servers. These directories contain among others the following files:
-  - `apps`: A directory with Foxx applications
   - `data`: A directory with database data
   - `arangod.conf`: The configuration file for the server. Editing this file is possible, but not recommended.
   - `arangod.log`: The log file of the server
@@ -113,7 +112,7 @@ Using the `arangod` configuration file as input for `arangodb` binary is not sup
 The configuration file also supports setting pass-through options. Options with
 same prefixes can be split into sections.
 
-```conf
+```cfg
 # passthrough-example.conf
 
 args.all.log.level = startup=trace

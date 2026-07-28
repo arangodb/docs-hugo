@@ -142,12 +142,6 @@ attributes. Essentially, the `_key` attribute values for nodes must
 be prefixed with the string value of the SmartGraph attribute and a
 colon. A similar restriction applies for the edges.
 
-## Foxx
-
-Foxx apps run on the Coordinators of a cluster. Since Coordinators are
-stateless, one must not use regular file accesses in Foxx apps in a
-cluster.
-
 ## Agency
 
 A cluster deployment needs a central, RAFT-based key/value store called
