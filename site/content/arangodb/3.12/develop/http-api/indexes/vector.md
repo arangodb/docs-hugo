@@ -332,6 +332,7 @@ paths:
                         description: |
                           How many vectors per centroid are included in the random
                           sample used for training (introduced in v3.12.10).
+                        type: integer
                       factory:
                         description: |
                           The Faiss index factory string, if one was specified
@@ -470,6 +471,7 @@ paths:
                         description: |
                           How many vectors per centroid are included in the random
                           sample used for training (introduced in v3.12.10).
+                        type: integer
                       factory:
                         description: |
                           The Faiss index factory string, if one was specified
