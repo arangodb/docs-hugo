@@ -6,7 +6,6 @@ description: >-
   Knowledge graph collections, vector indexes, async-job lifecycle, and
   operational guidance for the Importer service
 ---
-
 The Importer builds the **Layer 3 knowledge graph** in your ArangoDB database:
 the documents, chunks, entities, communities, and relationships that the
 Retriever (and downstream applications) query at runtime. This page describes

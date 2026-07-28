@@ -1,5 +1,5 @@
 ---
-title: Mapping
+title: Mapping in Spring Data ArangoDB
 menuTitle: Mapping
 weight: 20
 description: >-

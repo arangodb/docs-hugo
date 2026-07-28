@@ -2,7 +2,9 @@
 title: _arangoimport_ Examples JSON
 menuTitle: Examples JSON
 weight: 5
-description: ''
+description: >-
+  How to import JSON and JSONL data into ArangoDB on the command-line with
+  `arangoimport`
 ---
 Using JSON as data format, records are represented as JSON objects and called
 documents in ArangoDB. They are self-contained. Therefore, there is no need

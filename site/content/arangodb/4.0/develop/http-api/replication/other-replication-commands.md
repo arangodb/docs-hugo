@@ -1,8 +1,10 @@
 ---
-title: Other Replication Commands
+title: Other replication commands of the HTTP API
 menuTitle: Other Replication Commands
 weight: 20
-description: ''
+description: >-
+  Additional replication HTTP interface endpoints, such as retrieving the
+  replication server ID
 ---
 ## Get the replication server ID
 

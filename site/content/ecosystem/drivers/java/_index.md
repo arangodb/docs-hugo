@@ -2,7 +2,8 @@
 title: ArangoDB Java driver
 menuTitle: Java driver
 weight: 10
-description: ''
+description: >-
+  Get started with the official ArangoDB Java Driver
 aliases:
   - ../../arangodb/3.11/develop/drivers/java
   - ../../arangodb/3.12/develop/drivers/java
@@ -10,8 +11,6 @@ aliases:
   - ../../arangodb/4.0/develop/drivers/java
   - ../../arangodb/devel/develop/drivers/java
 ---
-The official ArangoDB Java Driver.
-
 - Repository: <https://github.com/arangodb/arangodb-java-driver>
 - [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/test-non-functional/src/test/java/example)
 - [Reference](reference-version-7/_index.md) (driver setup, serialization, changes)

@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Deploy and manage services programmatically using the Container Manager APIs
 ---
-
 The Container Manager API enables programmatic deployment and management of
 services, ideal for automation, CI/CD pipelines, and infrastructure-as-code
 workflows.
