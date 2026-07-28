@@ -169,6 +169,22 @@ paths:
                         creation but may yield worse search results.
                       type: integer
                       default: 25
+                    numberOfDocsPerCentroid:
+                      description: |
+                        How many vectors per centroid to include in the random sample used for
+                        training. It must be `1` or greater.
+
+                        Up to v3.12.9, this is not configurable and a fixed value of `256` per
+                        centroid is used instead.
+
+                        The training does not use the full dataset but a sample bounded to
+                        `nLists` × `numberOfDocsPerCentroid` vectors. A larger value can improve the
+                        training quality but increases the memory and time required for training.
+                        See [Resource usage during index creation](../../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
+                        for details.
+                      type: integer
+                      default: 100
+                      minimum: 1
                     factory:
                       description: |
                         You can specify an index factory string that is
@@ -290,6 +306,7 @@ paths:
                       - nLists
                       - trainingIterations
                       - defaultNProbe
+                      - numberOfDocsPerCentroid
                     properties:
                       metric:
                         description: |
@@ -312,6 +329,11 @@ paths:
                         description: |
                           The default number of neighboring centroids to consider
                           in search queries.
+                        type: integer
+                      numberOfDocsPerCentroid:
+                        description: |
+                          How many vectors per centroid are included in the random
+                          sample used for training (introduced in v3.12.10).
                         type: integer
                       factory:
                         description: |
@@ -423,6 +445,7 @@ paths:
                       - nLists
                       - trainingIterations
                       - defaultNProbe
+                      - numberOfDocsPerCentroid
                     properties:
                       metric:
                         description: |
@@ -445,6 +468,11 @@ paths:
                         description: |
                           The default number of neighboring centroids to consider
                           in search queries.
+                        type: integer
+                      numberOfDocsPerCentroid:
+                        description: |
+                          How many vectors per centroid are included in the random
+                          sample used for training (introduced in v3.12.10).
                         type: integer
                       factory:
                         description: |

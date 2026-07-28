@@ -9,12 +9,12 @@ aliases:
   - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping
   - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping
   - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping
-  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping
+  - ../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping
   - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping
   - ../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping
   - ../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping
   - ../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping
-  - ../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping
+  - ../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping
   - ../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping
 ---
 ## Conventions

@@ -7,7 +7,7 @@ description: >-
 aliases:
   - ../arangodb/3.12/data-science/arangograph-notebooks # 3.10, 3.11
   - ../arangodb/stable/data-science/arangograph-notebooks # 3.10, 3.11
-  - ../arangodb/4.0/data-science/arangograph-notebooks # 3.10, 3.11
+  - ../arangodb/4.x/data-science/arangograph-notebooks # 3.10, 3.11
   - ../arangodb/devel/data-science/arangograph-notebooks # 3.10, 3.11
 ---
 {{< info >}}
