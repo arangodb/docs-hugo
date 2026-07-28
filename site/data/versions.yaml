@@ -1,6 +1,6 @@
 /arangodb/:
 
-  - name: "4.0"
+  - name: "4.x"
     version: "4.0.0"
     alias: "devel"
     deprecated: false

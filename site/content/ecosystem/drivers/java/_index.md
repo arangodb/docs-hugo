@@ -8,7 +8,7 @@ aliases:
   - ../../arangodb/3.11/develop/drivers/java
   - ../../arangodb/3.12/develop/drivers/java
   - ../../arangodb/stable/develop/drivers/java
-  - ../../arangodb/4.0/develop/drivers/java
+  - ../../arangodb/4.x/develop/drivers/java
   - ../../arangodb/devel/develop/drivers/java
 ---
 - Repository: <https://github.com/arangodb/arangodb-java-driver>

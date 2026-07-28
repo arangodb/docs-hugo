@@ -8,11 +8,11 @@ aliases:
   - ../../../arangodb/3.11/develop/drivers/java/reference-version-6
   - ../../../arangodb/3.12/develop/drivers/java/reference-version-6
   - ../../../arangodb/stable/develop/drivers/java/reference-version-6
-  - ../../../arangodb/4.0/develop/drivers/java/reference-version-6
+  - ../../../arangodb/4.x/develop/drivers/java/reference-version-6
   - ../../../arangodb/devel/develop/drivers/java/reference-version-6
   - ../../../arangodb/3.11/develop/drivers/java/reference-version-7
   - ../../../arangodb/3.12/develop/drivers/java/reference-version-7
   - ../../../arangodb/stable/develop/drivers/java/reference-version-7
-  - ../../../arangodb/4.0/develop/drivers/java/reference-version-7
+  - ../../../arangodb/4.x/develop/drivers/java/reference-version-7
   - ../../../arangodb/devel/develop/drivers/java/reference-version-7
 ---
