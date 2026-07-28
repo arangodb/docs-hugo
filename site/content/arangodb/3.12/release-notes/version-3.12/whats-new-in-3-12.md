@@ -1764,6 +1764,104 @@ time required for training. See
 [Resource usage during index creation](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
 for details.
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+How the sample of vectors that a vector index is trained on gets selected has
+been improved. Up to v3.12.9, the vectors that the storage engine encounters
+first are used until the sample is full, and the remaining documents are skipped.
+If the documents are stored in a non-random order, for example because they were
+imported sorted by a label, then the sample may not be representative of the data
+as a whole, degrading the quality of the clustering and thus the search results.
+
+From v3.12.10 onward, the sample is drawn uniformly at random from all vectors
+using reservoir sampling. Every vector has the same chance of ending up in the
+sample, independent of where it is stored. This requires reading all documents
+of the collection respectively shard once, but only the sampled vectors are kept
+in memory, so the memory required for training is unchanged. See
+[Resource usage during index creation](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
+for details.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The number of Voronoi cells respectively centroids of a vector index doesn't
+have to be a fixed number anymore. In addition to setting `nLists` in the
+`params` object to a number, you can now set it to a scaling specification that
+lets ArangoDB compute the number from the document count at training time.
+In cluster deployments, the computation is done per shard using the document
+count of the respective shard, which is especially useful if the data
+distribution across shards is unequal.
+
+The `nLists` attribute is optional now. If you don't specify it, the following
+scaling specification is used:
+
+```json
+{
+  "nLists": {
+    "strategy": "autoSqrt",
+    "multiplier": 4,
+    "minNLists": 2,
+    "tiers": [
+      { "threshold": 1000000,   "fixedValue": 16384 },
+      { "threshold": 10000000,  "fixedValue": 65536 },
+      { "threshold": 300000000, "fixedValue": 131072 }
+    ]
+  }
+}
+```
+
+The `autoSqrt` strategy computes `max(minNLists, multiplier * sqrt(N))` where
+`N` is the number of documents. The tiers take precedence over the strategy for
+large document counts. The specification above thus resolves to the following
+numbers of centroids:
+
+- `N` < 1,000,000: `max(2, 4 * sqrt(N))`
+- 1,000,000 ≤ `N` < 10,000,000: `16384`
+- 10,000,000 ≤ `N` < 300,000,000: `65536`
+- `N` ≥ 300,000,000: `131072`
+
+Vector indexes now also report the number of centroids they have actually been
+trained with as `resolvedNLists`. The value is available per shard in the
+`shards` attribute if you list the indexes of a collection with the hidden
+indexes included, like `collection.indexes(false, true)` in _arangosh_ or
+`GET /_api/index?collection=<collection-name>&withHidden=true` in the HTTP API.
+In single server deployments, the collection name is used as the shard key,
+mirroring the cluster format.
+
+See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+and [Check the number of centroids of a trained index](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#check-the-number-of-centroids-of-a-trained-index)
+for details.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `factory` string of vector indexes can now contain a `{}` placeholder in
+place of the number of centroids, like `"IVF{}_HNSW32,SQ8"`. It is substituted
+with the number of centroids that `nLists` resolves to, per shard in cluster
+deployments. This lets you combine an index factory string with the new scaling
+mode of `nLists`:
+
+```js
+db.coll.ensureIndex({
+  name: "vector_l2",
+  type: "vector",
+  fields: ["embedding"],
+  params: {
+    metric: "l2",
+    dimension: 544,
+    factory: "IVF{}_HNSW32,SQ8"
+  }
+});
+```
+
+Factory strings with a fixed number of centroids remain supported. The number
+needs to match the number of centroids that `nLists` resolves to, otherwise
+the training fails and the index stays `"unusable"`.
+
 ## Server options
 
 ### Effective and available startup options
