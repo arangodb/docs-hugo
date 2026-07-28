@@ -100,13 +100,16 @@ centroids and the quality of vector search thus degrades.
   If the option is disabled, the call returns only after the index is
   ready (but timeouts may occur), or if an error is encountered.
 - **storedValues** (array of strings, introduced in v3.12.7):
-  Store additional attributes in the index. Unlike with other index types, this
-  is not for covering projections with the index but for adding attributes that
-  you filter on. This lets you make the lookup in the vector index more efficient
-  because it avoids materializing documents twice, once for the filtering and
-  once for the matches.
+  Store additional attributes in the index.
 
   The maximum number of attributes that you can use in `storedValues` is 32.
+  
+  - Up to v3.12.9, these are not for covering projections with the index but for
+    adding attributes that you filter on. This lets you make the lookup in the
+    vector index more efficient because it avoids materializing documents twice,
+    once for the filtering and once for the matches.
+  - From v3.12.10 onward, these are also used to cover projections. This lets
+    you return the attributes directly from the index without materialization.
 - **params**: The parameters as used by the Faiss library.
   - **metric** (string): The measure for calculating the vector similarity:
     - `"cosine"`: Angular similarity. Vectors are automatically
@@ -225,7 +228,7 @@ counts apply per shard, as each shard trains and builds its own index.
 4. Select **Vector** as the **Type**.
 5. Enter the name of the attribute that holds the vector embeddings into **Field**.
 6. Optionally give the index a user-defined **Name**.
-7. Optionally define **Extra stored values** you want to filter on.
+7. Optionally define **Extra stored values** you want to filter on or use to cover projections.
 8. Set the parameters for the vector index. See [Vector index properties](#vector-index-properties)
    under `params`. Optionally adjust the index options such as **Sparse**.
 9. Click **Create**.

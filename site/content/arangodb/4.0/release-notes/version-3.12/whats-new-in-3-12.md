@@ -1717,6 +1717,29 @@ index is `"ready"` and `errorMessage` for the reason if it's not.
 
 <small>Introduced in: v3.12.10</small>
 
+Attributes you can additionally store in vector indexes using `storedValues`
+could previously only used to make the vector index filtering more efficient.
+Now, they are also used to cover projections. This lets you return the
+attributes directly from the index without materialization.
+
+For example, if you have a vector index over the `embedding` field and
+`storedValues` set to `["attr1", "attr2"]`, the following query can read the
+attribute values from the index and doesn't need to fetch documents at all:
+
+```aql
+FOR doc IN @@coll
+  LET dist = APPROX_NEAR_L2(doc.embedding, @q)
+  SORT dist LIMIT 10
+  RETURN { attr1: doc.attr1, attr2: doc.attr2, dist }
+```
+
+This is handled by the new `materialize-for-enumerate-near` optimizer rule,
+which cannot be disabled.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
 Newly created vector indexes use a new format version for writing data into
 RocksDB as well as a new format for the vector index metadata (the trained data
 produced by faiss). 
