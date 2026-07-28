@@ -157,7 +157,8 @@ The regular expression matching follows the same rules as the scalar
 [`REGEX_TEST()`](functions/string.md#regex_test) AQL function, using the same
 regular expression syntax.
 
-Note that the array comparison operators do not utilize indexes in regular queries.
+Array comparison operators do not utilize indexes in regular queries, except `ANY ==`
+from v3.12.10 onward because it gets transformed into an equivalent `IN` operator.
 The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
