@@ -6,7 +6,6 @@ description: >-
   Use the HTTP APIs to programmatically manage Graph Analytics Engines,
   load data, run algorithms, and store results
 ---
-
 ## Workflow
 
 The following list outlines how you can use Graph Analytics Engines (GAEs).

@@ -1,5 +1,5 @@
 ---
-title: What's new in the Arango Contextual Data Platform
+title: What's new in the data platform
 menuTitle: Release notes
 weight: 100
 description: >-

@@ -1,8 +1,9 @@
 ---
-title: Queries
+title: Queries in Spring Data ArangoDB
 menuTitle: Queries
 weight: 5
-description: ''
+description: >-
+  How to use queries in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/repositories/queries

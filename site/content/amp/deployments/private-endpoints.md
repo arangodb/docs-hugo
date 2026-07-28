@@ -1,5 +1,5 @@
 ---
-title: Private endpoint deployments in the Arango Managed Platform (AMP)
+title: Private endpoint deployments in AMP
 menuTitle: Private endpoints
 weight: 5
 description: >-

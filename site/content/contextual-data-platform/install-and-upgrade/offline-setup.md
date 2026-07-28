@@ -1,5 +1,5 @@
 ---
-title: Install the Arango Contextual Data Platform (v4.0) on-premises offline
+title: Install the data platform on-premises offline
 menuTitle: Offline setup
 weight: 10
 description: >-

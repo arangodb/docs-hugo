@@ -1,5 +1,5 @@
 ---
-title: HTTP interfaces for transactions
+title: Transaction HTTP APIs
 menuTitle: Transactions
 weight: 50
 description: >-

@@ -2,7 +2,10 @@
 title: Reducing the Memory Footprint of ArangoDB servers
 menuTitle: Reduce Memory Footprint
 weight: 40
-description: ''
+description: >-
+  Learn how to fine-tune the memory and CPU usage of ArangoDB by configuring
+  subsystems such as RocksDB buffers and caches, index caches, and
+  AQL queries
 ---
 {{< warning >}}
 The changes suggested here can be useful to reduce the memory usage of 

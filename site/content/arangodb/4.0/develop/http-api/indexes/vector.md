@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for vector indexes
+title: Vector index HTTP API
 menuTitle: Vector
 weight: 35
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `vector`
 ---
 <small>Introduced in: v3.12.4</small>
 

@@ -6,7 +6,6 @@ description: >-
   HTTP API reference for the File Manager service, covering BYOC container files,
   RAG input files, and MLflow artifact storage
 ---
-
 The File Manager service provides an HTTP API for managing files across three
 storage categories: BYOC (Bring Your Own Container) service files, RAG input
 files, and MLflow artifacts.
