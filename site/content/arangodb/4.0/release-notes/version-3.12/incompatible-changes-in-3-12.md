@@ -28,6 +28,10 @@ ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
 replication. You can upgrade normally, but any vector indexes created with
 v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
 
+Similarly, you cannot downgrade vector indexes created with v3.12.10 or later
+to v3.12.9 or older versions because of a new format version that is not
+backward compatible.
+
 If you need to downgrade, drop the vector indexes first and recreate them after
 the downgrade.
 
