@@ -7,9 +7,9 @@ weight: 40
 ---
 
 The Importer service can be configured to use either Triton Inference Server or any
-OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI,
-OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
-OpenAI-compatible endpoint.
+OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
+setup, as well as any other endpoint implementing the same contract — OpenRouter,
+Gemini, Anthropic, Azure, or a private corporate LLM.
 
 "OpenAI-compatible" means the endpoint must implement the contract used by the
 OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
@@ -23,6 +23,13 @@ instead; the Importer detects this and falls back automatically (see
 The following models are validated for use with the Importer service. For the full
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+The recommended provider is `openai`, with the OpenAI models below. OpenRouter,
+Google Gemini, Anthropic and Azure are not providers of their own: they are
+[OpenAI-compatible endpoints](#using-openai-compatible-apis) that you set up
+yourself, and no models beyond the ones below are officially recommended for
+them. For the models served through Triton, see
+[Using Triton Inference Server](#using-triton-inference-server).
 
 {{% llm-models "importer" %}}
 
@@ -86,9 +93,8 @@ Where:
   embedding model's output dimension.
 
 {{< info >}}
-When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and 
-`text-embedding-3-small` models. When an OpenRouter URL is detected, the
-chat model defaults to `mistralai/mistral-nemo`.
+When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and
+`text-embedding-3-small` models.
 {{< /info >}}
 
 {{< tip >}}

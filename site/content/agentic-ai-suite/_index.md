@@ -83,9 +83,14 @@ to load sample datasets into a deployment.
 
 ## Supported LLM and embedding models
 
-The services of the Agentic AI Suite work with OpenAI-compatible APIs (OpenAI,
-OpenRouter, and other compatible providers) as well as self-hosted models served
-through Triton Inference Server.
+The services of the Agentic AI Suite work with OpenAI-compatible APIs as well as
+self-hosted models served through Triton Inference Server. The recommended setup
+is the `openai` provider with the OpenAI models listed below.
+
+Other OpenAI-compatible endpoints — OpenRouter, Google Gemini, Anthropic, Azure,
+or a corporate LLM — are not providers of their own. You set them up yourself by
+pointing the OpenAI client at a different `chat_api_url` / `embedding_api_url`,
+and no models beyond the ones listed below are officially recommended for them.
 
 "OpenAI-compatible" here has a specific meaning: the suite talks to providers
 through the OpenAI Chat Completions client, so an endpoint must implement the

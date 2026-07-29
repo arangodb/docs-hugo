@@ -17,9 +17,9 @@ AutoGraph uses two kinds of models:
   and clustering, and by the [embed-field endpoint](reference/embeddings.md).
 
 Each model can be backed by either any OpenAI-compatible API or a Triton
-Inference Server. OpenAI-compatible APIs work with public providers (OpenAI,
-OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an
-OpenAI-compatible endpoint.
+Inference Server. That covers the OpenAI API itself, which is the recommended
+setup, as well as any other endpoint implementing the same contract — OpenRouter,
+Gemini, Anthropic, or a private corporate LLM.
 
 "OpenAI-compatible" means the endpoint must implement the contract used by the
 OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
@@ -33,6 +33,13 @@ instead; AutoGraph detects this and falls back automatically (see
 The following models are validated for use with the AutoGraph service. For the full
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+The recommended provider is `openai`, with the OpenAI models below. OpenRouter,
+Google Gemini and Anthropic are not providers of their own: they are
+[OpenAI-compatible endpoints](#using-openai-compatible-apis) that you set up
+yourself, and no models beyond the ones below are officially recommended for
+them. For the models served through Triton, see
+[Using Triton Inference Server](#using-triton-inference-server).
 
 {{% llm-models "autograph" %}}
 
@@ -225,8 +232,7 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   Server.
 - `chat_api_url`: API endpoint URL for the chat model.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
-  - **OpenRouter and other OpenAI-compatible APIs**: Must be provided
-    explicitly.
+  - **Other OpenAI-compatible APIs**: Must be provided explicitly.
   - **Triton**: Must be provided explicitly.
 - `chat_api_key` (**required for the `openai` provider**): API key for
   authenticating with the chat model. Alternatively, use

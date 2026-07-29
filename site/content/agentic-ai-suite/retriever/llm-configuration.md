@@ -10,10 +10,10 @@ weight: 20
 **Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}
 
-The Retriever service can be configured to use either Triton Inference Server or any 
-OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI, 
-OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an 
-OpenAI-compatible endpoint.
+The Retriever service can be configured to use either Triton Inference Server or any
+OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
+setup, as well as any other endpoint implementing the same contract — OpenRouter,
+Gemini, Anthropic, Azure, or a private corporate LLM.
 
 "OpenAI-compatible" means the endpoint must implement the contract used by the
 OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
@@ -26,15 +26,21 @@ The following models are validated for use with the Retriever service. For the f
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
 
+The recommended provider is `openai`, with the OpenAI models below. OpenRouter,
+Google Gemini, Anthropic and Azure are not providers of their own: they are
+[OpenAI-compatible endpoints](#using-openai-compatible-apis) that you set up
+yourself, and no models beyond the ones below are officially recommended for
+them. For the models served through Triton, see
+[Using Triton Inference Server for chat and embedding](#using-triton-inference-server-for-chat-and-embedding).
+
 {{% llm-models "retriever" %}}
 
 ## Supported Provider Combinations
 
 The Retriever service supports the following provider configurations:
 
-1. **OpenAI/OpenAI-Compatible for Chat, OpenAI for Embeddings**: Use OpenAI API, OpenAI-compatible (such as OpenRouter) for chat, and OpenAI for embeddings:
+1. **OpenAI/OpenAI-Compatible for Chat, OpenAI for Embeddings**: Use the OpenAI API, or any OpenAI-compatible endpoint, for chat, and OpenAI for embeddings:
    - OpenAI is detected when `chat_api_url` is `"https://api.openai.com/v1"` or not provided (defaults to OpenAI).
-   - OpenRouter is detected when `chat_api_url` contains `"openrouter.ai"`.
    - Other OpenAI-compatible APIs are used when `chat_api_url` points to a compatible endpoint.
 2. **Triton for Chat, Triton for Embeddings**: Use Triton for both chat and embeddings.
 
@@ -48,7 +54,6 @@ Any other provider combinations will result in a configuration error. The system
 The following default models are automatically applied when `chat_model` or `embedding_model` are not specified:
 
 - **OpenAI**: `gpt-5.4-nano` for chat, `text-embedding-3-small` for embeddings
-- **OpenRouter**: `mistralai/mistral-nemo` for chat, `text-embedding-3-small` for embeddings (OpenRouter is detected via `chat_api_url` containing "openrouter.ai")
 - **Triton**: `mistral-nemo-instruct` for chat, `nomic-embed-text-v1` for embeddings
 
 {{< info >}}
@@ -220,14 +225,12 @@ Provider-specific defaults and requirements are noted where applicable.
   Inference Server.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
-  - **OpenRouter and other OpenAI-compatible APIs**: Must be explicitly provided.
-    The service detects OpenRouter when this URL contains `openrouter.ai`.
+  - **Other OpenAI-compatible APIs**: Must be explicitly provided.
   - **Triton**: Must be explicitly provided.
 - `chat_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
   for authenticating with the chat/language model service.
 - `chat_model`: Specific language model to use for text generation and analysis.
   - **OpenAI**: Defaults to `gpt-5.4-nano`.
-  - **OpenRouter**: Defaults to `mistralai/mistral-nemo`.
   - **Other OpenAI-compatible APIs**: Defaults to `gpt-5.4-nano`.
   - **Triton**: Defaults to `mistral-nemo-instruct`.
 
@@ -242,7 +245,7 @@ Provider-specific defaults and requirements are noted where applicable.
 - `embedding_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
   for authenticating with the embedding model service.
 - `embedding_model`: Specific model to use for generating text embeddings.
-  - **OpenAI and OpenRouter**: Defaults to `text-embedding-3-small`.
+  - **OpenAI and other OpenAI-compatible APIs**: Defaults to `text-embedding-3-small`.
   - **Triton**: Defaults to `nomic-embed-text-v1`.
 - `embedding_dim`: Optional embedding dimension. The default value is `512`
   (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
