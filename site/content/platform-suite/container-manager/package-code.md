@@ -64,7 +64,7 @@ follow the steps below.
 ## Example: Python Project
 
 **Project structure:**
-```
+```text
 myproject/
 ├── pyproject.toml
 ├── main.py
@@ -91,7 +91,7 @@ tar -czf myservice.tar.gz myproject/
 ## Example: Node.js Project
 
 **Project structure:**
-```
+```text
 myproject/
 ├── package.json
 ├── index.js
