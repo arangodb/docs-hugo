@@ -85,12 +85,16 @@ to load sample datasets into a deployment.
 
 The services of the Agentic AI Suite work with OpenAI-compatible APIs as well as
 self-hosted models served through Triton Inference Server. The recommended setup
-is the `openai` provider with the OpenAI models listed below.
+is the `openai` provider with the OpenAI models listed below: that is the
+combination ArangoDB tests, and other endpoints can differ in behavior such as
+latency.
 
-Other OpenAI-compatible endpoints — OpenRouter, Google Gemini, Anthropic, Azure,
-or a corporate LLM — are not providers of their own. You set them up yourself by
-pointing the OpenAI client at a different `chat_api_url` / `embedding_api_url`,
-and no models beyond the ones listed below are officially recommended for them.
+You can still use any other OpenAI-compatible endpoint — OpenRouter, Google
+Gemini, Anthropic, Azure, or a corporate LLM — and run a model that is not on the
+list. These are not providers of their own: you set them up yourself by pointing
+the OpenAI client at a different `chat_api_url` / `embedding_api_url`. Models
+beyond the ones listed below are outside ArangoDB's testing, so validate them in
+your own environment.
 
 "OpenAI-compatible" here has a specific meaning: the suite talks to providers
 through the OpenAI Chat Completions client, so an endpoint must implement the

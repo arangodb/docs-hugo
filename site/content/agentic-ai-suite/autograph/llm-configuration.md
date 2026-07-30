@@ -34,11 +34,17 @@ The following models are validated for use with the AutoGraph service. For the f
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
 
-The recommended provider is `openai`, with the OpenAI models below. OpenRouter,
-Google Gemini and Anthropic are not providers of their own: they are
-[OpenAI-compatible endpoints](#using-openai-compatible-apis) that you set up
-yourself, and no models beyond the ones below are officially recommended for
-them. For the models served through Triton, see
+The recommended provider is `openai` with the OpenAI models below. That is the
+combination ArangoDB tests, so prefer it where you can; other endpoints can
+differ in behavior such as latency.
+
+You can still point AutoGraph at any other OpenAI-compatible endpoint —
+OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
+that is not on the list. These are not providers of their own: you configure them
+with the `openai` provider and a different `chat_api_url` / `embedding_api_url`,
+as described in [Using OpenAI-compatible APIs](#using-openai-compatible-apis).
+Models beyond the list below are outside ArangoDB's testing, so validate them in
+your own environment. For the models served through Triton, see
 [Using Triton Inference Server](#using-triton-inference-server).
 
 {{% llm-models "autograph" %}}

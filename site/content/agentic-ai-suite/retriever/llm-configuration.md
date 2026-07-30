@@ -26,11 +26,17 @@ The following models are validated for use with the Retriever service. For the f
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
 
-The recommended provider is `openai`, with the OpenAI models below. OpenRouter,
-Google Gemini, Anthropic and Azure are not providers of their own: they are
-[OpenAI-compatible endpoints](#using-openai-compatible-apis) that you set up
-yourself, and no models beyond the ones below are officially recommended for
-them. For the models served through Triton, see
+The recommended provider is `openai` with the OpenAI models below. That is the
+combination ArangoDB tests, so prefer it where you can; other endpoints can
+differ in behavior such as latency.
+
+You can still point the Retriever at any other OpenAI-compatible endpoint —
+OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
+that is not on the list. These are not providers of their own: you configure them
+with the `openai` provider and a different `chat_api_url` / `embedding_api_url`,
+as described in [Using OpenAI-compatible APIs](#using-openai-compatible-apis).
+Models beyond the list below are outside ArangoDB's testing, so validate them in
+your own environment. For the models served through Triton, see
 [Using Triton Inference Server for chat and embedding](#using-triton-inference-server-for-chat-and-embedding).
 
 {{% llm-models "retriever" %}}
@@ -137,8 +143,12 @@ For a full description of all parameters, see
 
 Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
 OpenAI-compatible endpoint, so the Retriever can use them through the same
-`openai` provider. Two things are specific to Azure:
+`openai` provider. Three things are specific to Azure:
 
+- Provision the models yourself before you start. An Azure resource serves only
+  the models you have explicitly deployed into it, so deploy both a chat model
+  and an embedding model first. This is unlike an aggregator such as OpenRouter,
+  which exposes a large catalog of models without you provisioning anything.
 - Append `/openai/v1` to your Azure resource endpoint, for example
   `https://your-resource.cognitiveservices.azure.com/openai/v1/`. This is
   Azure's OpenAI-compatible v1 API, which removes the need for an
