@@ -15,7 +15,7 @@ If you are building a single knowledge graph from your documents and do not
 need multiple partitions or automated domain discovery, use the Importer
 directly. You can call it through:
 
-- The [Contextual Data Platform web interface](../autograph/web-interface.md),
+- The [AutoGraph web interface](../autograph/web-interface.md),
   which guides you through configuring and running the Importer step by step.
 - The [Import API](importing-files.md) (`POST /v1/import` or
   `POST /v1/import-multiple`), which gives you full control over all parameters.

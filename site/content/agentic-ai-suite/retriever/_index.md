@@ -23,7 +23,7 @@ was built.
 When using the [Importer](../importer/) directly to build a single knowledge
 graph, you query it with the Retriever. You can use the Retriever through:
 
-- The [Contextual Data Platform web interface](../autograph/web-interface.md),
+- The [AutoGraph web interface](../autograph/web-interface.md),
   which provides Instant Search and Deep Search.
 - The [query API](executing-queries.md), which gives access to all search
   methods and parameters.

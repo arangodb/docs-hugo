@@ -12,7 +12,7 @@ through two interfaces:
 
 - **Web interface**: A guided workflow for configuring and running the
   Importer step by step. See the
-  [Contextual Data Platform web interface](../autograph/web-interface.md).
+  [AutoGraph web interface](../autograph/web-interface.md).
 - **HTTP API**: Full programmatic control over the Importer pipeline.
 
 {{< tip >}}
@@ -76,10 +76,10 @@ documentation.
 The web interface lets you configure and run the Importer through a guided
 workflow.
 
-1. Navigate to **Agentic AI Suite** > **GraphRAG** in the sidebar.
-2. Create a new project and upload your documents.
-3. Configure your LLM provider and import settings.
-4. Run the import and inspect the resulting knowledge graph.
+1. Navigate to **Agentic AI Suite** > **AutoGraph Studio** in the sidebar.
+2. Create a new project and upload your documents into categories.
+3. Configure your LLM provider, embedding, and multimodal models.
+4. Start the build and inspect the resulting graph.
 
 For the full walkthrough, see the
 [AutoGraph web interface](../autograph/web-interface.md) guide.
