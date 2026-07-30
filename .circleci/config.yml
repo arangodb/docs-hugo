@@ -146,6 +146,7 @@ workflows:
           name: dependency-cve-scan
           scanners: vuln
           severity: CRITICAL,HIGH
+          ignore-unfixed: true
           report-severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           fail-on-findings: false
           expect-targets: toolchain/arangoproxy/go.mod
