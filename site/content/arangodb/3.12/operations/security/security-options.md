@@ -104,11 +104,11 @@ regular expressions.
 A pattern matches if it is found anywhere in a value, so it can match more than
 you intend. To restrict a pattern to exact matches:
 
-- Anchor it with `^(...)$` to match the whole value.
+- Anchor it with `^(...)` to only match the prefix, or `^(...)$` to match the whole value.
 - Escape characters with a special meaning, such as the dot: use `\.` for a
   literal dot, which otherwise matches any character.
 
-For example, use `^(example\.com)$` instead of `example.com`.
+For example, use `^(http://example\.com)$` instead of `http://example.com`.
 {{< /security >}}
 
 Each option can be used multiple times. When specifying more than one 
