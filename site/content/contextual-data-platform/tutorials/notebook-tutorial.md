@@ -95,8 +95,8 @@ ingesting those formats on CPU can be slow even for small document sets.
 
 Download both files:
 
-- [`Autograph_DEMO.ipynb`](/notebooks/Autograph_DEMO.ipynb) - the tutorial itself.
-- [`corpus.zip`](/notebooks/corpus.zip) - the 50 sample articles. Unzipping it
+- `Autograph_DEMO.ipynb` - the tutorial itself.
+- `corpus.zip` - the 50 sample articles. Unzipping it
   produces a `files/` folder.
 
 ## Step 2: Start a Notebook server
