@@ -24,7 +24,7 @@ There are two Deep Search modes depending on the query type:
 
 {{< info >}}
 Deep Search is also available via the
-[web interface](../../graphrag/web-interface.md).
+[web interface](../../autograph/web-interface.md).
 {{< /info >}}
 
 ## Standard Deep Search

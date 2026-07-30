@@ -12,7 +12,7 @@ through two interfaces:
 
 - **Web interface**: A guided workflow for configuring and running the
   Importer step by step. See the
-  [Contextual Data Platform web interface](../graphrag/web-interface.md).
+  [Contextual Data Platform web interface](../autograph/web-interface.md).
 - **HTTP API**: Full programmatic control over the Importer pipeline.
 
 {{< tip >}}
@@ -82,7 +82,7 @@ workflow.
 4. Run the import and inspect the resulting knowledge graph.
 
 For the full walkthrough, see the
-[GraphRAG web interface](../graphrag/web-interface.md) guide.
+[AutoGraph web interface](../autograph/web-interface.md) guide.
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}

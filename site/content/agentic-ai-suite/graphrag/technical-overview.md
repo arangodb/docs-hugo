@@ -43,21 +43,13 @@ For detailed business scenarios, see [GraphRAG Use Cases](../autograph/use-cases
 
 ## Ways to use GraphRAG
 
-You can interact with Arango's GraphRAG solution via a web interface or an API,
-depending on your needs.
+The standalone GraphRAG workflow is no longer available in the web interface.
+To run it, use the [Importer](../importer/) and [Retriever](../retriever/)
+APIs directly.
 
-### Web Interface
-
-The [Web Interface](web-interface.md) provides a user-friendly, no-code way to work 
-with GraphRAG.
-
-The web interface guides you through the process of the following:
-
-1. Creating projects.
-2. Configuring Importer and Retriever services.
-3. Uploading documents to build knowledge graphs.
-4. Querying your knowledge graph with natural language.
-5. Exploring the graph structure visually.
+For a guided, no-code experience, use
+[AutoGraph Studio](../autograph/web-interface.md), which builds your Context
+Graph and deploys AutoRAG retrievers against it.
 
 ### API and Services
 
