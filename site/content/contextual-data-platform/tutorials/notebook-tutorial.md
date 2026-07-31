@@ -106,8 +106,8 @@ The notebook runs in the platform's integrated
 access, Python, and the platform endpoint are already set up for you.
 
 1. In the Arango Contextual Data Platform web interface, expand **AI Tools** in
-   the main navigation and click **Notebook servers**.
-2. Create a notebook server, or open an existing one, and click its ID to open
+   the main navigation. **Notebook servers** should now be selected.
+2. Create a notebook server and click its ID to open
    the Jupyter interface.
 3. Upload `Autograph_DEMO.ipynb` into the file browser.
 4. Upload and unzip `corpus.zip` next to the notebook, so that a `files/` folder
