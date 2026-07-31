@@ -187,10 +187,10 @@ formats of the affected category and try again.
 
 ## Generate strategies and build the Knowledge Graph
 
-The **Knowledge Graph** card shows whether the Knowledge Graph is built. The
-RAG Strategizer analyzes the Corpus Graph and generates the import strategies
-per domain. For details on how strategies are determined, see
-[RAG Strategizer](reference/rag-strategizer.md).
+The **Knowledge Graph** card shows the graph name (for example `<project>_kg`)
+and whether the Knowledge Graph is built. The RAG Strategizer analyzes the
+Corpus Graph and generates the import strategies per domain. For details on how
+strategies are determined, see [RAG Strategizer](reference/rag-strategizer.md).
 
 Click **Generate strategies** on the **Knowledge Graph** card.
 

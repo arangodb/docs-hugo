@@ -13,12 +13,13 @@ owner, a set of collections, and a specific purpose.
 All collection names are prefixed with your project name. For example, if the
 project is `myapp`, collections will be `myapp_sources`, `myapp_domains`, and so on.
 
-An AutoGraph project is made of two graphs that work as a pipeline: the **corpus
-graph** (`{project}_CorpusGraph`) organizes the documents you feed in, and the
-**knowledge graph** (`{project}_kg`) is the GraphRAG graph built inside each
-partition. They meet only at the `partition_id` link.
+An AutoGraph project is made of two graphs that work as a pipeline: the
+**Corpus Graph** (`{project}_CorpusGraph`) organizes the documents you feed in,
+and the **Knowledge Graph** (`{project}_kg`) is the GraphRAG graph built inside
+each partition. They meet only at the `partition_id` link. Together they make up
+the **Context Graph**, the complete output of AutoGraph for the project.
 
-{{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the corpus graph. Right: the knowledge graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
+{{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the Corpus Graph. Right: the Knowledge Graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
 
 ## Collections per layer
 
@@ -59,7 +60,7 @@ graph TD
 AutoGraph builds the corpus by creating collections in Layers 1 and 2. These
 collections are organized into a named graph called `{project}_CorpusGraph`.
 
-{{< embed-svg "AutoGraph-Corpus-Graph" "The corpus graph groups ingested sources into topic domains; each domain becomes a retrievable RAG partition." >}}
+{{< embed-svg "AutoGraph-Corpus-Graph" "The Corpus Graph groups ingested sources into topic domains; each domain becomes a retrievable RAG partition." >}}
 
 | Collection | Type | Built by |
 |------------|------|----------|
@@ -75,9 +76,9 @@ The `rags` collection is populated by the RAG Strategizer,
 and not during the initial corpus build.
 {{< /info >}}
 
-**Edge labels in the corpus graph**
+**Edge labels in the Corpus Graph**
 
-AutoGraph assigns semantic labels to edges in the corpus graph to distinguish
+AutoGraph assigns semantic labels to edges in the Corpus Graph to distinguish
 different relationship types:
 
 - `SIMILAR_TO`: Applied to edges in the `similarities` collection connecting
@@ -126,8 +127,8 @@ carries a `partition_id` field so data from different partitions coexists in the
 
 {{< info >}}
 **Where the relationship type is stored differs between the two graphs.** In the
-corpus graph, `corpus_relations` and `similarities` store the relationship name in
-a **`label`** field. In the knowledge graph, `{project}_Relations` stores it in a
+Corpus Graph, `corpus_relations` and `similarities` store the relationship name in
+a **`label`** field. In the Knowledge Graph, `{project}_Relations` stores it in a
 **`type`** field instead (`PART_OF`, `MENTIONED_IN`, `RELATED_TO`, `IN_COMMUNITY`,
 `SUB_COMMUNITY_OF`). In both cases the value also lines up one-to-one with the
 `_from`/`_to` collection pair, so you can filter either way. See
@@ -259,7 +260,7 @@ collections each edge connects:
 
 ## Things people misread
 
-- **Two graphs, not one.** The corpus graph and the knowledge graph are separate;
+- **Two graphs, not one.** The Corpus Graph and the Knowledge Graph are separate;
   they meet only at the partition.
 - **The relationship type lives in different fields.** `corpus_relations` and
   `similarities` use a `label` field; `Relations` uses a `type` field. Both also
@@ -273,7 +274,7 @@ collections each edge connects:
   collection and also a field stored on `sources`, `domains`, and `rags`.
 - **The corpus embedding is not the retrieval index.** The `sources` embedding is a
   single-vector clustering signature (from the first chunk); the full text is
-  chunked and indexed separately in the knowledge graph.
+  chunked and indexed separately in the Knowledge Graph.
 
 ## Complete Pipeline
 

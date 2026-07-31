@@ -2,7 +2,7 @@
 title: AutoGraph Import Files Reference
 menuTitle: Import Files
 description: >-
-  Upload multiple files into the corpus graph with module organization
+  Upload multiple files into the Corpus Graph with module organization
 weight: 35
 ---
 ## Import multiple files
