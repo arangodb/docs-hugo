@@ -260,16 +260,103 @@ which means the file is not referenced by any active service deployment.
 ## RAG Input Files
 
 RAG input files are binary files uploaded for GraphRAG processing. They are
-database-scoped and support automatic versioning — each upload of the same
-filename within the same database creates a new version. Supported file types
-include images, videos, audio, PDFs, and other binary media.
+database-scoped and support automatic versioning. Supported file types include
+images, videos, audio, PDFs, and other binary media.
+
+Every RAG input operation is addressed either by **file** (an opaque file
+identifier) or by **scope** (a subtree of the scope hierarchy).
+
+### Scopes
+
+A scope is an ordered list of labels that addresses a file within a database,
+for example `["marketing", "campaigns", "q3"]`. The model is deliberately
+generic: the same mechanism represents a project, a module, or any deeper
+folder level. Consumers map their own concepts onto scope levels —
+[AutoGraph](../../agentic-ai-suite/autograph/design-guide.md#designing-modules)
+calls its first level a *module*, for instance.
+
+The following rules apply:
+
+| Rule | Value |
+|------|-------|
+| Maximum number of levels | 5 |
+| Allowed characters per label | `A`–`Z`, `a`–`z`, `0`–`9`, `_`, `-` |
+| Maximum length per label | 128 characters |
+| Maximum combined length | 256 characters |
+
+Additional behavior:
+
+- A file belongs to **exactly one** scope. Multi-scope membership is not
+  supported.
+- Scopes are **derived from files**. A scope level exists only while at least
+  one file is stored under it, and it disappears when the last file is removed.
+  You cannot create an empty scope.
+- An **empty scope** (`[]`) is valid and addresses the database's default,
+  unscoped files. Files uploaded before scope support was introduced have an
+  empty scope.
+
+Scopes are expressed differently depending on the request type:
+
+| Request type | How to pass a scope |
+|--------------|---------------------|
+| `multipart/form-data` | Repeat the `scope` form field once per label, in order. |
+| Query string | Repeat the `scope` query parameter once per label, in order. |
+| JSON body | A JSON array of strings, in order. |
+
+### File identity and versioning
+
+A file lineage is identified by the combination of **database**, **scope**, and
+**name**. Uploading a file with the same name into the same scope of the same
+database creates a new version of that lineage. The same name in a *different*
+scope is a separate, independent file.
+
+Each stored file has an opaque `id` that addresses the whole lineage. Operations
+that accept a `version` query parameter default to the latest version. Version
+numbers start at `1`; a `version` of `0` or lower is rejected with `422`.
+
+### Safe-to-delete
+
+Every lineage carries a `safe_to_delete` flag:
+
+- `true` — the file can be deleted.
+- `false` — the file is **locked**. Delete requests skip it and report it as
+  locked rather than removing it.
+
+Consumers set this flag to protect files that are in use. The flag applies to
+the whole lineage (all versions), not to an individual version.
+
+### Partial results
+
+Operations that act on more than one file — the bulk and scope variants of
+delete and safe-to-delete, and batch upload — can partially succeed. They
+return:
+
+- `200` when every item succeeded.
+- `207` (Multi-Status) when at least one item failed, was locked, or was not
+  found. The response body has the same shape in both cases; inspect the
+  per-item lists to see what happened.
+
+### Error responses
+
+Errors use a common body:
+
+```json
+{
+  "detail": "Error message"
+}
+```
+
+`422` responses additionally carry the standard request-validation body listing
+the offending fields.
+
+---
 
 ### Upload a RAG Input File
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
-Uploads a file for RAG processing. Re-uploading a file with the same name
-within the same database automatically creates a new version.
+Uploads a single file for RAG processing. Re-uploading a file with the same name
+into the same scope automatically creates a new version.
 
 **Path parameters:**
 
@@ -284,7 +371,20 @@ within the same database automatically creates a new version.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `name` | string | Yes | File name identifier (1–255 characters). |
+| `scope` | string | No | One scope label. Repeat the field once per level, in order. Omit for an unscoped file. |
 | `file` | file | Yes | File content to upload. Must not be empty. |
+
+**Example:**
+
+```bash
+curl -X POST \
+  "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/my-database/rag-input" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -F "name=my-file.pdf" \
+  -F "scope=marketing" \
+  -F "scope=campaigns" \
+  -F "file=@my-file.pdf"
+```
 
 **Response (200):**
 
@@ -293,6 +393,7 @@ within the same database automatically creates a new version.
   "id": "cmFnLWlucHV0LmRiLW5hbWUubXktZmlsZQ",
   "name": "my-file.pdf",
   "database": "my-database",
+  "scope": ["marketing", "campaigns"],
   "content_type": "application/pdf",
   "size": 102400,
   "uploaded_at": "2026-01-15T10:30:00Z",
@@ -301,7 +402,69 @@ within the same database automatically creates a new version.
 }
 ```
 
-**Errors:** `400` (validation error), `413` (file too large), `500` (server error)
+**Errors:** `400` (validation error, including an invalid scope), `422` (request
+validation error), `500` (server error)
+
+There is no application-level size limit on single-file upload.
+
+---
+
+### Upload a Batch of RAG Input Files
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/batch" >}}
+
+Uploads up to 100 files in one request. The combined request body must not
+exceed 2 GiB.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Content-Type:** `multipart/form-data`
+
+**Form fields:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `files` | file | Yes | File content. Repeat the field once per file. |
+| `scope` | string | No | Base scope applied to every file. Repeat once per level, in order. |
+| `mapping` | string | No | How to derive each file's scope from its path: `flatten` (default) puts every file directly under the base scope; `preserve_paths` appends the file's directory segments as deeper scope levels. |
+| `manifest` | string (JSON) | No | Per-file overrides, letting you set an individual name or scope for a file instead of deriving it. |
+
+Each file's resolved scope must still satisfy the
+[scope rules](#scopes) — with `preserve_paths`, a deep source directory can push
+a file past the 5-level limit, and that file fails while the rest succeed.
+
+**Response (200):** every file stored.
+
+**Response (207):** at least one file failed. Per-file results report `status`
+as `ok` or `error`; error entries carry the submitted scope rather than a
+resolved one.
+
+```json
+{
+  "results": [
+    {
+      "name": "guide.pdf",
+      "scope": ["marketing", "campaigns"],
+      "status": "ok",
+      "id": "cmFnLWlucHV0LmRiLW5hbWUuZ3VpZGU"
+    },
+    {
+      "name": "notes.txt",
+      "scope": ["marketing", "campaigns"],
+      "status": "error",
+      "id": null
+    }
+  ]
+}
+```
+
+**Errors:** `400` (validation error, including an unsupported `mapping` value),
+`413` (request exceeds the 2 GiB limit), `422` (request validation error),
+`500` (server error)
 
 ---
 
@@ -309,7 +472,7 @@ within the same database automatically creates a new version.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 
-Lists RAG input files for a specific database.
+Lists the latest version of each RAG input file in a database.
 
 **Path parameters:**
 
@@ -321,9 +484,19 @@ Lists RAG input files for a specific database.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `name` | string | — | Filter by file name. |
+| `scope` | string | — | Subtree filter: returns files at this scope **and below**. Repeat once per level, in order. Omit to list files across all scopes. |
+| `search` | string | — | Case-insensitive substring match on the file name. |
+| `name` | string | — | Exact file name match. Can be combined with `scope`. |
 | `limit` | integer | `100` | Maximum results (1–1000). |
 | `offset` | integer | `0` | Pagination offset. |
+
+**Example:**
+
+```bash
+curl -X GET \
+  "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/my-database/rag-input?scope=marketing&search=report" \
+  -H "Authorization: Bearer <JWT_TOKEN>"
+```
 
 **Response (200):**
 
@@ -334,6 +507,7 @@ Lists RAG input files for a specific database.
       "id": "cmFnLWlucHV0LmRiLW5hbWUubXktZmlsZQ",
       "name": "my-file.pdf",
       "database": "my-database",
+      "scope": ["marketing", "campaigns"],
       "content_type": "application/pdf",
       "size": 102400,
       "uploaded_at": "2026-01-15T10:30:00Z",
@@ -354,8 +528,8 @@ Lists RAG input files for a specific database.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/versions" >}}
 
-Returns the full version history for a file, looked up by name within the
-specified database.
+Returns the full version history for a lineage, looked up by scope and name
+within the specified database.
 
 **Path parameters:**
 
@@ -368,6 +542,7 @@ specified database.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `name` | string | Yes | The file name to look up. |
+| `scope` | string | No | One scope label of the lineage. Repeat once per level, in order. Omit for an unscoped file. |
 
 **Response (200):**
 
@@ -375,6 +550,7 @@ specified database.
 {
   "name": "my-file.pdf",
   "database": "my-database",
+  "scope": ["marketing", "campaigns"],
   "versions": [
     {
       "version": 2,
@@ -389,7 +565,52 @@ specified database.
 }
 ```
 
-**Errors:** `404` (no version history found), `500` (server error)
+**Errors:** `404` (no version history found), `422` (request validation error),
+`500` (server error)
+
+---
+
+### Browse Scopes
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/scopes" >}}
+
+Lists the immediate child scopes under a given scope path, with per-scope file
+counts. Use it to build a folder-style browser: start with no `scope` parameter
+to see the top level, then pass the path of the child you want to descend into.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Query parameters:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `scope` | string | — | The scope path to browse. Repeat once per level, in order. Omit to browse the top level. |
+
+**Response (200):**
+
+```json
+{
+  "database": "my-database",
+  "scope": ["marketing"],
+  "children": [
+    {
+      "name": "campaigns",
+      "file_count": 12
+    },
+    {
+      "name": "briefs",
+      "file_count": 3
+    }
+  ],
+  "file_count": 15
+}
+```
+
+Only scopes that currently contain at least one file are listed.
 
 ---
 
@@ -411,7 +632,7 @@ unless a specific version is requested.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `version` | integer | latest | Specific version number to retrieve. |
+| `version` | integer | latest | Specific version number to retrieve. Must be `1` or greater. |
 
 **Response (200):**
 
@@ -420,6 +641,7 @@ unless a specific version is requested.
   "id": "cmFnLWlucHV0LmRiLW5hbWUubXktZmlsZQ",
   "name": "my-file.pdf",
   "database": "my-database",
+  "scope": ["marketing", "campaigns"],
   "content_type": "application/pdf",
   "storage_location": "file_manager:rag_inputs:my-database:...",
   "size": 102400,
@@ -429,7 +651,7 @@ unless a specific version is requested.
 }
 ```
 
-**Errors:** `404` (not found), `500` (server error)
+**Errors:** `404` (not found), `422` (invalid `version`), `500` (server error)
 
 ---
 
@@ -437,8 +659,8 @@ unless a specific version is requested.
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}/download" >}}
 
-Downloads the file content as a binary stream. Returns the latest version
-unless a specific version is requested.
+Downloads the file content as a streaming binary response. Returns the latest
+version unless a specific version is requested.
 
 **Path parameters:**
 
@@ -451,21 +673,137 @@ unless a specific version is requested.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `version` | integer | latest | Specific version number to download. |
+| `version` | integer | latest | Specific version number to download. Must be `1` or greater. |
 
-**Response (200):** Binary file stream with the original content type.
+**Response (200):** Binary file stream. The response uses the file's detected
+content type when one is known, and `application/octet-stream` otherwise.
 
-**Errors:** `404` (not found), `500` (server error)
+**Errors:** `404` (not found), `422` (invalid `version`), `500` (server error)
 
 ---
 
-### Delete a RAG Input File
+### Lock or Unlock a File
+
+{{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
+
+Sets the `safe_to_delete` flag on a whole lineage (all versions).
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+| `id` | The file identifier. |
+
+**Request body:**
+
+```json
+{
+  "safe_to_delete": false
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `safe_to_delete` | boolean | Yes | `false` locks the file, `true` unlocks it. |
+
+**Errors:** `404` (not found), `422` (request validation error),
+`500` (server error)
+
+---
+
+### Lock or Unlock Multiple Files
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete" >}}
+
+Sets the `safe_to_delete` flag on up to 100 lineages in one request. Each id
+affects the whole lineage.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Request body:**
+
+```json
+{
+  "ids": ["cmFnLWlucHV0LmRiLW5hbWUuYQ", "cmFnLWlucHV0LmRiLW5hbWUuYg"],
+  "safe_to_delete": false
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `ids` | array of strings | Yes | File ids. Between 1 and 100 entries. |
+| `safe_to_delete` | boolean | Yes | `false` locks the files, `true` unlocks them. |
+
+**Response (200):** every id updated. **Response (207):** at least one id was
+not found.
+
+```json
+{
+  "database": "my-database",
+  "updated": ["cmFnLWlucHV0LmRiLW5hbWUuYQ"],
+  "not_found": ["cmFnLWlucHV0LmRiLW5hbWUuYg"]
+}
+```
+
+**Errors:** `422` (empty `ids`, more than 100 ids, or other request validation
+error), `500` (server error)
+
+---
+
+### Lock or Unlock a Scope
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete-scope" >}}
+
+Sets the `safe_to_delete` flag on every file at a scope **and below it**.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Request body:**
+
+```json
+{
+  "scope": ["marketing", "campaigns"],
+  "safe_to_delete": false
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `scope` | array of strings | Yes | The scope subtree to update. Must not be empty. |
+| `safe_to_delete` | boolean | Yes | `false` locks the files, `true` unlocks them. |
+
+**Response (200):** every file in the subtree updated. **Response (207):**
+partial success.
+
+```json
+{
+  "database": "my-database",
+  "scope": ["marketing", "campaigns"],
+  "updated": ["cmFnLWlucHV0LmRiLW5hbWUuYQ"]
+}
+```
+
+**Errors:** `400` (invalid scope), `422` (request validation error),
+`500` (server error)
+
+---
+
+### Delete a RAG Input File Version
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
-Deletes a RAG input file and its metadata. Defaults to the latest version
-unless a specific version is specified. Deletion is only permitted when the
-file's `safe_to_delete` field is `true`.
+Deletes a RAG input file version and its metadata. Defaults to the latest
+version unless a specific version is given. Deletion is only permitted when the
+lineage's `safe_to_delete` field is `true`.
 
 **Path parameters:**
 
@@ -478,7 +816,7 @@ file's `safe_to_delete` field is `true`.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `version` | integer | latest | Specific version number to delete. |
+| `version` | integer | latest | Specific version number to delete. Must be `1` or greater. |
 
 **Response (200):**
 
@@ -490,7 +828,95 @@ file's `safe_to_delete` field is `true`.
 }
 ```
 
-**Errors:** `404` (not found), `423` (file in use, not safe to delete), `500` (server error)
+**Errors:** `404` (not found), `422` (invalid `version`), `423` (file locked,
+not safe to delete), `500` (server error)
+
+---
+
+### Delete Multiple Files
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/delete" >}}
+
+Deletes up to 100 lineages in one request. Each id removes the **whole** file,
+including all of its versions. Locked files are left untouched and reported as
+locked; unknown ids are reported as not found.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Request body:**
+
+```json
+{
+  "ids": ["cmFnLWlucHV0LmRiLW5hbWUuYQ", "cmFnLWlucHV0LmRiLW5hbWUuYg"]
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `ids` | array of strings | Yes | File ids. Between 1 and 100 entries. |
+
+**Response (200):** every id deleted. **Response (207):** at least one id was
+locked or not found.
+
+```json
+{
+  "database": "my-database",
+  "deleted": ["cmFnLWlucHV0LmRiLW5hbWUuYQ"],
+  "locked": [],
+  "not_found": ["cmFnLWlucHV0LmRiLW5hbWUuYg"]
+}
+```
+
+**Errors:** `422` (empty `ids`, more than 100 ids, or other request validation
+error), `500` (server error)
+
+---
+
+### Delete a Scope
+
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/delete-scope" >}}
+
+Deletes every file at a scope **and below it**. Locked files are skipped and
+reported. Because scopes are derived from files, a scope level that ends up
+with no files left disappears from
+[Browse Scopes](#browse-scopes).
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `database` | The database name. |
+
+**Request body:**
+
+```json
+{
+  "scope": ["marketing", "campaigns"]
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `scope` | array of strings | Yes | The scope subtree to delete. Must not be empty. |
+
+**Response (200):** every file in the subtree deleted. **Response (207):** at
+least one file was locked.
+
+```json
+{
+  "database": "my-database",
+  "scope": ["marketing", "campaigns"],
+  "deleted": ["cmFnLWlucHV0LmRiLW5hbWUuYQ"],
+  "locked": ["cmFnLWlucHV0LmRiLW5hbWUuYg"]
+}
+```
+
+**Errors:** `400` (invalid scope), `422` (request validation error),
+`500` (server error)
 
 ---
 

@@ -74,7 +74,10 @@ on how to work with modules.
 {{< info >}}
 If the same `doc_name` appears more than once in a single request, only the last
 one is kept. This matches how the [File Manager](../../../platform-suite/file-manager/_index.md)
-handles versions: a newer upload replaces an older one with the same name.
+handles versions: a newer upload creates a new version of the file with the same
+name, within the same [scope](../../../platform-suite/file-manager/_index.md#organizing-files-with-scopes).
+The `module` label of a request maps onto the first scope level, so the same
+`doc_name` under two different modules refers to two separate files.
 {{< /info >}}
 
 ## Response
