@@ -4,10 +4,14 @@
        service id (e.g. "importer") to show that one service's list.
        Use the percent-delimited form so the markdown table is rendered.
 
-       The "Default" column names the services a model is a recommended default
-       for, taken from the model's `services` list. The whole list is recommended
-       for all three core services, so every row names all three — on the
-       individual service pages too, not just the suite-wide list.
+       The suite-wide table has a "Services" column naming every service that
+       supports the model, taken from the model's `services` list. The
+       per-service tables omit it: they are already filtered to one service, so
+       the column would repeat the same value on every row.
+
+       The "Default" column marks the model the service applies when the model
+       name is not set, from the model's `default` field. Only the `openai`
+       provider has defaults; the `custom` provider has none.
 
        The data file lists a single provider, so its name is carried by the
        surrounding prose instead of a heading; headings come back automatically
@@ -15,8 +19,10 @@
 {{- $service := .Get 0 -}}
 {{- $data := index site.Data "llm_models" -}}
 {{- $typeLabels := dict "chat" "Chat (LLM)" "embedding" "Embedding" -}}
-{{- /* Order here is the order the service names appear in the column. */ -}}
+{{- /* Models must be supported by all of these to appear in the suite-wide list. */ -}}
 {{- $core := slice "importer" "autograph" "retriever" -}}
+{{- /* Order here is the order the service names appear in the Services column. */ -}}
+{{- $order := slice "importer" "autograph" "retriever" "graphrag" "nl2aql" "ada" -}}
 {{- $showHeadings := gt (len $data.providers) 1 -}}
 {{- range $data.providers -}}
 {{- $models := .models -}}
@@ -32,16 +38,27 @@
 ### {{ .name }}{{ with .api }} ({{ . }}){{ end }}
 
 {{ end -}}
+{{- if $service -}}
 | Model | Type | Default |
 |---|---|---|
 {{ range $m := $models -}}
+| `{{ $m.name }}` | {{ index $typeLabels $m.type | default $m.type }} | {{ if $m.default }}Yes{{ else }}—{{ end }} |
+{{ end -}}
+{{- else -}}
+| Model | Type | Services | Default |
+|---|---|---|---|
+{{ range $m := $models -}}
 {{- $for := slice -}}
-{{- range $core -}}
+{{- range $order -}}
 {{- if in $m.services . -}}
 {{- $for = $for | append (index $data.services .) -}}
 {{- end -}}
 {{- end -}}
-| `{{ $m.name }}` | {{ index $typeLabels $m.type | default $m.type }} | {{ delimit $for ", " }} |
+| `{{ $m.name }}` | {{ index $typeLabels $m.type | default $m.type }} | {{ delimit $for ", " }} | {{ if $m.default }}Yes{{ else }}—{{ end }} |
 {{ end -}}
-{{- end -}}
+{{- end }}
+A model marked **Yes** under Default is the one applied automatically when the
+model name is not set, and only with the `openai` provider. The `custom`
+provider has no defaults: supply the model name yourself.
+{{ end -}}
 {{- end -}}

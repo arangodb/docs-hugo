@@ -91,10 +91,11 @@ latency.
 
 You can still use any other OpenAI-compatible endpoint — OpenRouter, Google
 Gemini, Anthropic, Azure, or a corporate LLM — and run a model that is not on the
-list. These are not providers of their own: you set them up yourself by pointing
-the OpenAI client at a different `chat_api_url` / `embedding_api_url`. Models
-beyond the ones listed below are outside ArangoDB's testing, so validate them in
-your own environment.
+list. Use the `custom` provider for these: it is the intended way to point a
+service at an OpenAI-compatible endpoint that is not the OpenAI API itself, and
+unlike `openai` it requires you to set `chat_api_url` / `embedding_api_url`
+explicitly. Models beyond the ones listed below are outside ArangoDB's testing,
+so validate them in your own environment.
 
 "OpenAI-compatible" here has a specific meaning: the suite talks to providers
 through the OpenAI Chat Completions client, so an endpoint must implement the

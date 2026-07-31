@@ -30,33 +30,39 @@ differ in behavior such as latency.
 
 You can still point the Importer at any other OpenAI-compatible endpoint —
 OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
-that is not on the list. These are not providers of their own: you configure them
-with the `openai` provider and a different `chat_api_url` / `embedding_api_url`,
-as described in [Using OpenAI-compatible APIs](#using-openai-compatible-apis).
-Models beyond the list below are outside ArangoDB's testing, so validate them in
-your own environment. For the models served through Triton, see
+that is not on the list. Configure these with the `custom` provider and the
+`chat_api_url` / `embedding_api_url` of your endpoint, as described in
+[Using OpenAI-compatible APIs](#using-openai-compatible-apis). Models beyond the
+list below are outside ArangoDB's testing, so validate them in your own
+environment. For the models served through Triton, see
 [Using Triton Inference Server](#using-triton-inference-server).
 
 {{% llm-models "importer" %}}
 
+The chat models above apply when `chat_api_provider` is `openai` and the chat
+endpoint is OpenAI (or an operator-configured OpenAI deployment). Older OpenAI
+model names may still work if your operator deploys them, but **full GraphRAG**
+community reports require JSON-mode chat models — avoid the legacy `gpt-4` 8k
+model.
+
+Some newer model identifiers (for example `gpt-5.4-pro`, `gpt-5.2-pro`, and
+`o3-pro`) require the OpenAI Responses API instead of `/v1/chat/completions`.
+The Importer detects this automatically; see
+[OpenAI Responses API fallback](#openai-responses-api-fallback) below.
+
 ## Using OpenAI-compatible APIs
 
-The `openai` provider works with any OpenAI-compatible API, including:
-- OpenAI (official API)
-- OpenRouter
-- Google Gemini
-- Anthropic Claude
-- Azure (Azure OpenAI in Microsoft Foundry)
-- Corporate or self-hosted LLMs with OpenAI-compatible endpoints
+The Importer reaches OpenAI-compatible APIs through two provider values:
 
-Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+- `openai` for the official OpenAI API. The URLs default to
+  `https://api.openai.com/v1`, so you can omit them.
+- `custom` for every other OpenAI-compatible endpoint, including OpenRouter,
+  Google Gemini, Anthropic Claude, Azure (Azure OpenAI in Microsoft Foundry),
+  and corporate or self-hosted LLMs. Set `chat_api_url` and `embedding_api_url`
+  to your endpoint; they have no defaults under `custom`.
+
 For the chat and embedding models validated for the Importer, see
 [Supported models](#supported-models) above.
-
-Some newer OpenAI model identifiers (for example `o3-pro`) require the OpenAI
-Responses API instead of `/v1/chat/completions`. The Importer detects this
-automatically; see [OpenAI Responses API fallback](#openai-responses-api-fallback)
-below.
 
 ### Example using OpenAI
 
@@ -85,10 +91,14 @@ Where:
   [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `chat_api_url`: API endpoint URL for the chat/language model service
-- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"` for
+  any other OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service. Required
+  for `"custom"`; defaults to the OpenAI URL for `"openai"`
+- `embedding_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"`
+  for any other OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Required for `"custom"`; defaults to the OpenAI URL for `"openai"`
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
@@ -100,7 +110,8 @@ Where:
 
 {{< info >}}
 When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and
-`text-embedding-3-small` models.
+`text-embedding-3-small` models. The `custom` provider has no model defaults:
+supply `chat_model` and `embedding_model` yourself.
 {{< /info >}}
 
 {{< tip >}}
@@ -116,11 +127,10 @@ you might use OpenRouter for chat and OpenAI for embeddings, depending
 on your needs for performance, cost, or model availability.
 
 {{< info >}}
-Both `chat_api_provider` and `embedding_api_provider` must be set to the same value 
-(either both `"openai"` or both `"triton"`). You cannot mix Triton and OpenAI-compatible 
-APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
-Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
-different URLs in `chat_api_url` and `embedding_api_url`.
+You cannot mix Triton with OpenAI-compatible APIs: if one of
+`chat_api_provider` and `embedding_api_provider` is `"triton"`, both must be.
+You can, however, combine `"openai"` and `"custom"` freely, which is how you
+serve chat and embeddings from two different OpenAI-compatible services.
 {{< /info >}}
 
 **Example using OpenRouter for chat and OpenAI for embedding:**
@@ -130,7 +140,7 @@ different URLs in `chat_api_url` and `embedding_api_url`.
   "env": {
     "db_name": "your_database_name",
     "project_name": "your_project_name",
-    "chat_api_provider": "openai",
+    "chat_api_provider": "custom",
     "embedding_api_provider": "openai",
     "chat_api_url": "https://openrouter.ai/api/v1",
     "embedding_api_url": "https://api.openai.com/v1",
@@ -144,15 +154,15 @@ different URLs in `chat_api_url` and `embedding_api_url`.
 ```
 
 The fields are the same as in the [example using OpenAI](#example-using-openai).
-The difference is that `chat_api_url` and `embedding_api_url` point to different
-OpenAI-compatible services (here, OpenRouter for chat and OpenAI for embedding),
-each authenticated with its own API key.
+The differences are that chat uses the `custom` provider with the OpenRouter
+URL while embedding stays on `openai`, and each is authenticated with its own
+API key.
 
 ### Using Azure as a chat and embedding provider
 
 Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
-OpenAI-compatible endpoint, so the Importer can use them through the same
-`openai` provider. Three things are specific to Azure:
+OpenAI-compatible endpoint, so the Importer reaches them through the `custom`
+provider. Three things are specific to Azure:
 
 - Provision the models yourself before you start. An Azure resource serves only
   the models you have explicitly deployed into it, so deploy both a chat model
@@ -164,9 +174,8 @@ OpenAI-compatible endpoint, so the Importer can use them through the same
   `api-version` query parameter. See the
   [Azure v1 API documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle?view=foundry-classic&tabs=python#code-changes)
   for details.
-- Keep `chat_api_provider` and `embedding_api_provider` set to `"openai"`.
-  Azure is addressed as an OpenAI-compatible endpoint, not as a separate
-  provider type.
+- Set `chat_api_provider` and `embedding_api_provider` to `"custom"`. Azure is
+  addressed as an OpenAI-compatible endpoint, not as a separate provider type.
 
 Use the model deployment names from your Azure resource as `chat_model` and
 `embedding_model`, and your Azure API keys as `chat_api_key` and
@@ -177,8 +186,8 @@ Use the model deployment names from your Azure resource as `chat_model` and
   "env": {
     "db_name": "your_database_name",
     "project_name": "your_project_name",
-    "chat_api_provider": "openai",
-    "embedding_api_provider": "openai",
+    "chat_api_provider": "custom",
+    "embedding_api_provider": "custom",
     "chat_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
     "embedding_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
     "chat_model": "gpt-4.1-mini",

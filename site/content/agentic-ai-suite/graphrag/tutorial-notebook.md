@@ -177,9 +177,9 @@ The Importer service requires the following configuration parameters:
 
 - `project_name`: Name of the GraphRAG project you created.
 - `db_name`: The name of the ArangoDB database where your Knowledge Graph will be stored.
-- `chat_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
+- `chat_api_provider`: Set to `"openai"` for the OpenAI API, `"custom"` for any other OpenAI-compatible API, or `"triton"` for self-hosted models via Triton Inference Server.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
-- `embedding_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
+- `embedding_api_provider`: Set to `"openai"` for the OpenAI API, `"custom"` for any other OpenAI-compatible API, or `"triton"` for self-hosted models via Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
 - `chat_model`: Specific language model to use (e.g., `"gpt-5.4-nano"`).
 - `embedding_model`: Specific embedding model to use (e.g., `"text-embedding-3-small"`).
@@ -187,8 +187,8 @@ The Importer service requires the following configuration parameters:
 - `embedding_api_key`: API key for the embedding model service.
 
 {{< info >}}
-Both `chat_api_provider` and `embedding_api_provider` must be set to the same value. 
-You cannot mix Triton and OpenAI-compatible APIs.
+You cannot mix Triton with OpenAI-compatible APIs: if one of `chat_api_provider`
+and `embedding_api_provider` is `"triton"`, both must be.
 {{< /info >}}
 
 ### Start the Importer service
@@ -286,9 +286,9 @@ The Retriever service requires the following configuration parameters:
 
 - `project_name`: Name of the GraphRAG project you created.
 - `db_name`: The name of the ArangoDB database where your Knowledge Graph is stored.
-- `chat_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
+- `chat_api_provider`: Set to `"openai"` for the OpenAI API, `"custom"` for any other OpenAI-compatible API, or `"triton"` for self-hosted models via Triton Inference Server.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
-- `embedding_api_provider`: Set to `"openai"` for OpenAI-compatible APIs or `"triton"` for self-hosted models via Triton Inference Server.
+- `embedding_api_provider`: Set to `"openai"` for the OpenAI API, `"custom"` for any other OpenAI-compatible API, or `"triton"` for self-hosted models via Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
 - `chat_model`: Specific language model to use (e.g., `"gpt-5.4-nano"`).
 - `embedding_model`: Specific embedding model to use (e.g., `"text-embedding-3-small"`).
@@ -296,8 +296,8 @@ The Retriever service requires the following configuration parameters:
 - `embedding_api_key`: API key for the embedding model service.
 
 {{< info >}}
-Both `chat_api_provider` and `embedding_api_provider` must be set to the same value. 
-You cannot mix Triton and OpenAI-compatible APIs.
+You cannot mix Triton with OpenAI-compatible APIs: if one of `chat_api_provider`
+and `embedding_api_provider` is `"triton"`, both must be.
 {{< /info >}}
 
 ### Start the Retriever service
