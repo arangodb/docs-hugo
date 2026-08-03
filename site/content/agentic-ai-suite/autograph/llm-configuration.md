@@ -73,8 +73,7 @@ Any value other than `openai`, `custom`, or `triton` for `chat_api_provider` or
 
 **URL defaults**: When a provider is set to `openai`, `chat_api_url` and
 `embedding_api_url` default to `https://api.openai.com/v1` if not specified.
-For `custom` and `triton`, these URLs are required and must be provided
-explicitly.
+For `triton`, these URLs are required and must be provided explicitly.
 
 **Model defaults**: The following default models are applied automatically when
 `chat_model` or `embedding_model_name` are not specified:
@@ -82,12 +81,19 @@ explicitly.
 | Provider | Chat model (`chat_model`) | Embedding model (`embedding_model_name`) |
 |----------|---------------------------|------------------------------------------|
 | `openai` | `gpt-5.4-nano` | `text-embedding-3-small` |
-| `custom` | required, no default | required, no default |
+| `custom` | `gpt-5.4-nano` | `text-embedding-3-small` |
 | `triton` | required, no default | `nomic-embed-text-v1` |
 
-With the `custom` provider, set `chat_model` and `embedding_model_name`
-explicitly to model names your endpoint exposes. The service does not fall back
-to an OpenAI model name for a third-party endpoint.
+{{< warning >}}
+AutoGraph applies the OpenAI defaults to the `custom` provider as well: if you
+set `chat_api_provider` or `embedding_api_provider` to `custom` and leave the
+model or the URL unset, AutoGraph falls back to `gpt-5.4-nano`,
+`text-embedding-3-small`, and `https://api.openai.com/v1` — sending your
+requests to OpenAI rather than to your own endpoint. Always set
+`chat_api_url` / `embedding_api_url` and the model names explicitly with
+`custom`. Note that the Importer behaves differently and has no model default
+for `custom`.
+{{< /warning >}}
 
 {{< info >}}
 For the `triton` chat provider, `chat_model` is required; there is no default.
@@ -106,8 +112,11 @@ AutoGraph reaches OpenAI-compatible APIs through two provider values:
   `https://api.openai.com/v1`, so you can omit them.
 - `custom` for every other OpenAI-compatible endpoint, including OpenRouter,
   Google Gemini, Anthropic Claude, Azure, and corporate or self-hosted LLMs.
-  Set `chat_api_url` and `embedding_api_url` to your endpoint; they have no
-  defaults under `custom`.
+  Always set `chat_api_url` and `embedding_api_url` to your endpoint: AutoGraph
+  otherwise falls back to the OpenAI URL, silently sending requests to OpenAI.
+
+Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Use
+`custom` for those endpoints.
 
 ### Example using OpenAI
 
@@ -242,14 +251,17 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   or `triton` for Triton Inference Server.
 - `chat_api_url`: API endpoint URL for the chat model.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
-  - **Custom**: Must be provided explicitly.
+  - **Custom**: Set it explicitly. AutoGraph falls back to
+    `https://api.openai.com/v1` when it is omitted, which sends requests to
+    OpenAI instead of your endpoint.
   - **Triton**: Must be provided explicitly.
 - `chat_api_key` (**required for the `openai` and `custom` providers**): API key
   for authenticating with the chat model. Alternatively, use
   `chat_secret_profile_id`.
 - `chat_model`: Language model used for ontology generation and analysis.
   - **OpenAI**: Defaults to `gpt-5.4-nano`.
-  - **Custom**: Required; there is no default.
+  - **Custom**: Also defaults to `gpt-5.4-nano`; set it explicitly to a model
+    your endpoint exposes.
   - **Triton**: Required; there is no default.
 
 ### Embedding API parameters
@@ -259,14 +271,17 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   OpenAI-compatible API, or `triton` for Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
-  - **Custom**: Must be provided explicitly.
+  - **Custom**: Set it explicitly. AutoGraph falls back to
+    `https://api.openai.com/v1` when it is omitted, which sends requests to
+    OpenAI instead of your endpoint.
   - **Triton**: Must be provided explicitly.
 - `embedding_api_key` (**required for the `openai` and `custom` providers**):
   API key for authenticating with the embedding model. Alternatively, use
   `embedding_secret_profile_id`.
 - `embedding_model_name`: Model used to generate text embeddings.
   - **OpenAI**: Defaults to `text-embedding-3-small`.
-  - **Custom**: Required; there is no default.
+  - **Custom**: Also defaults to `text-embedding-3-small`; set it explicitly to
+    a model your endpoint exposes.
   - **Triton**: Defaults to `nomic-embed-text-v1`.
 - `embedding_dimensions`: Embedding dimension. Defaults to `512`. It must match
   the embedding model's output dimension; set it explicitly when using a model
@@ -297,6 +312,12 @@ Instead of inline API keys, you can use `chat_secret_profile_id` and
 keys at startup and held in memory only; they are never written to environment
 variables, files, or logs.
 {{< /tip >}}
+
+{{< info >}}
+An API key is required for both `openai` and `custom`. If your endpoint does
+not authenticate — a self-hosted model, for example — supply a placeholder
+value rather than omitting the key.
+{{< /info >}}
 
 ## Chat payload compatibility
 
@@ -347,12 +368,15 @@ When configuring AutoGraph, ensure you:
    - `chat_api_provider` and `embedding_api_provider` (both required).
    - `chat_api_key` and `embedding_api_key` (required for the `openai` and
      `custom` providers, or supply the corresponding secret profile ID).
-   - `chat_api_url` and `embedding_api_url` (optional for `openai` with
-     defaults, required for `custom` and `triton`).
+   - `chat_api_url` and `embedding_api_url` (optional for `openai` and
+     `custom`, which both fall back to the OpenAI URL, but always set them for
+     `custom`; required for `triton`).
    - `chat_model` (required for the `triton` chat provider).
 3. **Follow provider-specific requirements**:
    - The `openai` provider requires valid API keys.
-   - The `custom` provider requires valid API keys and explicit endpoint URLs.
+   - The `custom` provider requires valid API keys, and you should always set
+     the endpoint URLs and model names rather than rely on the OpenAI
+     fallbacks.
    - The `triton` provider requires valid server URLs.
 
 AutoGraph validates your configuration at startup and rejects an unsupported

@@ -27,9 +27,10 @@
 #               "Services" column of the suite-wide table, and used to filter
 #               the per-service tables
 #   default     optional; true if the service applies this model automatically
-#               when chat_model / the embedding model name is not set. Only the
-#               `openai` provider has defaults — the `custom` provider has none
-#               and the caller must supply the model name.
+#               when chat_model / the embedding model name is not set with the
+#               `openai` provider. Whether `custom` shares that fallback differs
+#               per service (AutoGraph does, the Importer does not), so it is
+#               documented on each service's page rather than here.
 #
 # Scope: every model documented as officially supported across the suite. The
 # Importer additionally recognizes a number of legacy OpenAI models (gpt-4,

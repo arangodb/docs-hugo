@@ -10,8 +10,9 @@
        the column would repeat the same value on every row.
 
        The "Default" column marks the model the service applies when the model
-       name is not set, from the model's `default` field. Only the `openai`
-       provider has defaults; the `custom` provider has none.
+       name is not set with the `openai` provider, from the model's `default`
+       field. Whether the `custom` provider shares that fallback differs per
+       service, so it is documented on each service's page instead.
 
        The data file lists a single provider, so its name is carried by the
        surrounding prose instead of a heading; headings come back automatically
@@ -58,7 +59,8 @@
 {{ end -}}
 {{- end }}
 A model marked **Yes** under Default is the one applied automatically when the
-model name is not set, and only with the `openai` provider. The `custom`
-provider has no defaults: supply the model name yourself.
+model name is not set with the `openai` provider. Whether the `custom` provider
+falls back to the same model varies by service — check the parameter reference
+for the service you are configuring.
 {{ end -}}
 {{- end -}}

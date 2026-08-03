@@ -87,6 +87,9 @@ The Retriever reaches OpenAI-compatible APIs through two provider values:
   and corporate or self-hosted LLMs. Set `chat_api_url` and `embedding_api_url`
   to your endpoint; they have no defaults under `custom`.
 
+Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Use
+`custom` for those endpoints.
+
 ### Example using OpenAI
 
 ```json
@@ -278,6 +281,12 @@ Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id` when your platform supports secret profiles
 for the Retriever install.
 {{< /tip >}}
+
+{{< info >}}
+An API key is required for both `openai` and `custom`. If your endpoint does
+not authenticate — a self-hosted model, for example — supply a placeholder
+value rather than omitting the key.
+{{< /info >}}
 
 ## Chat payload compatibility
 
