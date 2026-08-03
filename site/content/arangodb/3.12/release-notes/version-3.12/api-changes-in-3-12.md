@@ -103,6 +103,8 @@ A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12
 
 A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
 
+A `materialize-for-enumerate-near` rule has been added in v3.12.10.
+
 A `replace-any-eq-with-in` rule has been added in v3.12.10.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
@@ -659,6 +661,57 @@ the random sample used for training the index has been added. You can set
 
 Up to v3.12.9, this is not configurable and a fixed value of `256` per centroid
 is used instead.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `nLists` attribute of the `params` object is optional now and it accepts an
+object with a scaling specification in addition to a number. The scaling
+specification lets ArangoDB compute the number of Voronoi cells respectively
+centroids from the document count at training time, per shard in cluster
+deployments. It has the following attributes:
+
+- `strategy` (string): The only available value is `"autoSqrt"`, which computes
+  `max(minNLists, multiplier * sqrt(N))` where `N` is the number of documents.
+- `multiplier` (number): The factor for the `autoSqrt` strategy.
+- `minNLists` (number): The lower bound for the computed number of centroids.
+- `tiers` (array of objects, _optional_): Fixed numbers of centroids for large
+  document counts, each with a `threshold` and a `fixedValue` attribute.
+
+If you specify `nLists` as an object, you need to set `strategy`, `multiplier`,
+and `minNLists`. If you don't specify `nLists` at all, a scaling specification
+with the `autoSqrt` strategy, a `multiplier` of `4`, a `minNLists` of `2`, and
+three tiers (`1000000` → `16384`, `10000000` → `65536`, `300000000` → `131072`)
+is used.
+
+Success responses report `nLists` the same way it was specified, that is, either
+as a number or as an object.
+
+Furthermore, the `factory` attribute of the `params` object accepts a `{}`
+placeholder in place of the number of centroids now, like `"IVF{}_HNSW32,SQ8"`.
+It is substituted with the number of centroids that `nLists` resolves to.
+Success responses report the factory string as specified, including the
+placeholder.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `GET /_api/index?collection=<collection-name>&withHidden=true` endpoint now
+reports per-shard details for vector indexes in a `shards` attribute. The keys
+are the shard names, and every value is an object with the following attributes:
+
+- `trainingState` (string): The training state of this shard's index.
+- `error` (string): The training error of this shard's index, or an empty string.
+- `resolvedNLists` (number): The number of centroids this shard's index has
+  actually been trained with. If a fixed `nLists` value is configured, it
+  matches this value. If a scaling specification is configured, it is the value
+  computed from the document count at training time.
+
+In single server deployments, the collection name is used as the shard key,
+mirroring the cluster format. The top-level `trainingState` is the
+least-progressed state across all shards.
 
 ##### Changed consolidation defaults for inverted indexes
 
