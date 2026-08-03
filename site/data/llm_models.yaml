@@ -12,9 +12,11 @@
 # provider is reached.
 #
 # OpenRouter, Google Gemini, Anthropic, Azure and corporate LLMs are reached
-# through the `custom` provider value, with an explicit chat_api_url /
-# embedding_api_url; no models beyond the list below are officially recommended
-# for them. So do not add provider blocks for them.
+# through the `custom` provider value in the Importer, AutoGraph and Retriever,
+# with an explicit chat_api_url / embedding_api_url. NL2AQL has no `custom`
+# provider and uses `openai` plus a chat_api_url instead. No models beyond the
+# list below are officially recommended for any of them, so do not add provider
+# blocks for them.
 #
 # The `triton` provider value also exists in the services' configuration, but
 # its models are documented in the "Using Triton Inference Server" section of

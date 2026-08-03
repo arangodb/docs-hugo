@@ -91,10 +91,14 @@ latency.
 
 You can still use any other OpenAI-compatible endpoint — OpenRouter, Google
 Gemini, Anthropic, Azure, or a corporate LLM — and run a model that is not on the
-list. Use the `custom` provider for these: it is the intended way to point a
-service at an OpenAI-compatible endpoint that is not the OpenAI API itself, and
-you should always set `chat_api_url` / `embedding_api_url` explicitly with it.
-Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Models
+list. In the Importer, AutoGraph, and Retriever, use the `custom` provider for
+these: it is the intended way to point a service at an OpenAI-compatible
+endpoint that is not the OpenAI API itself, and you should always set
+`chat_api_url` / `embedding_api_url` explicitly with it. In those three
+services, pointing the `openai` provider at a non-OpenAI URL is **not
+supported**. Natural Language to AQL has no `custom` provider and reaches such
+endpoints with `openai` plus a `chat_api_url` — see
+[Natural Language to AQL setup](natural-language-to-aql/setup.md). Models
 beyond the ones listed below are outside ArangoDB's testing, so validate them in
 your own environment.
 
