@@ -236,8 +236,8 @@ Deletes a specific version of a BYOC service file and its metadata.
 Deletion is only permitted when `safe_to_delete` is `true` in the file metadata.
 
 {{< info >}}
-BYOC files currently always report `safe_to_delete` as `false`, so this endpoint
-returns `423` for every request.
+BYOC files currently always report `safe_to_delete` as `false`, so deleting an
+existing file returns `423`.
 {{< /info >}}
 
 **Path parameters:**
@@ -257,7 +257,7 @@ returns `423` for every request.
 }
 ```
 
-**Errors:** `404` (not found), `423` (file in use, not safe to delete), `500` (server error)
+**Errors:** `404` (not found), `423` (not safe to delete), `500` (server error)
 
 ---
 
