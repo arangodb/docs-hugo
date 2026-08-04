@@ -21,12 +21,13 @@ was built.
 ### With GraphRAG (standalone)
 
 When using the [Importer](../importer/) directly to build a single knowledge
-graph, you query it with the Retriever. You can use the Retriever through:
+graph, you query it with the
+[query API](executing-queries.md), which gives access to all search methods and
+parameters.
 
-- The [AutoGraph web interface](../autograph/web-interface.md),
-  which provides Instant Search and Deep Search.
-- The [query API](executing-queries.md), which gives access to all search
-  methods and parameters.
+The standalone GraphRAG workflow is not available in the web interface.
+[AutoGraph Studio](../autograph/web-interface.md) can only query Context Graphs
+that belong to an AutoGraph project.
 
 ### With AutoGraph (partitioned)
 

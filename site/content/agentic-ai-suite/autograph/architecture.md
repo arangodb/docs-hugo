@@ -16,8 +16,10 @@ project is `myapp`, collections will be `myapp_sources`, `myapp_domains`, and so
 An AutoGraph project is made of two graphs that work as a pipeline: the
 **Corpus Graph** (`{project}_CorpusGraph`) organizes the documents you feed in,
 and the **Knowledge Graph** (`{project}_kg`) is the GraphRAG graph built inside
-each partition. They meet only at the `partition_id` link. Together they make up
-the **Context Graph**, the complete output of AutoGraph for the project.
+each partition. They meet only at the partition, through a shared-property join
+between `rags.rag_partition_id` and `Documents.partition_id` — not a stored edge,
+so you cannot traverse from one graph to the other. Together they make up the
+**Context Graph**, the complete output of AutoGraph for the project.
 
 {{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the Corpus Graph. Right: the Knowledge Graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
 

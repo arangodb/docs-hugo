@@ -11,8 +11,8 @@ The Importer service is available in the Arango Contextual Data Platform
 through two interfaces:
 
 - **Web interface**: A guided workflow for configuring and running the
-  Importer step by step. See the
-  [AutoGraph web interface](../autograph/web-interface.md).
+  Importer step by step. See
+  [AutoGraph Studio](../autograph/web-interface.md).
 - **HTTP API**: Full programmatic control over the Importer pipeline.
 
 {{< tip >}}
@@ -82,7 +82,7 @@ workflow.
 4. Start the build and inspect the resulting graph.
 
 For the full walkthrough, see the
-[AutoGraph web interface](../autograph/web-interface.md) guide.
+[AutoGraph Studio](../autograph/web-interface.md) guide.
 {{< /tab >}}
 
 {{< tab "HTTP API" >}}
