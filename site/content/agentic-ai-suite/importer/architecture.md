@@ -54,6 +54,13 @@ different partitions coexists in the same collections. Filter by
   - `file_name` (multi-file imports only): Original filename.
   - `citable_url` (multi-file imports only): URL used for inline citations at retrieval.
   - `partition_id`: Partition the document belongs to.
+  - `file_id`: File Manager id stamped at import time, when the source is a File
+    Manager file. Empty for inline or `file_url` imports without one.
+    [Layer 3 deletes](incremental-updates.md#deleting-a-document) resolve
+    documents primarily by this field.
+  - `import_number`: The import batch that produced the document. Repeated
+    imports into the same partition add further batches, which
+    [reclustering](incremental-updates.md#reclustering) consolidates.
 
 ### Chunks
 
@@ -110,6 +117,11 @@ The Importer creates the following relationship types:
 4. **IN_COMMUNITY**: Associates entities with their community groups.
 5. **SUB_COMMUNITY_OF**: Relates a sub-community to its parent community.
 
+The community membership edges (`IN_COMMUNITY`, `SUB_COMMUNITY_OF`) are the ones
+rebuilt when a partition is
+[reclustered](incremental-updates.md#reclustering) after incremental updates.
+The other relationship types are preserved.
+
 ### Semantic Units
 
 - **Purpose**: Image references and web URLs extracted from documents. Only
@@ -164,6 +176,12 @@ flowchart LR
 | **Single file** (`POST /v1/import`) | Returns immediately with `success: true` | **No `job_id`**. Use the platform service status (the same status feed AutoGraph reads) |
 | **Multiple files** (`POST /v1/import-multiple`) | Returns a `job_id` | Poll `GET /v1/jobs/{job_id}` until `job.is_terminal` is `true` |
 | **Concurrency** | Only **one** import per replica at a time | A second submit while one is running gets `success: false` (busy), not an HTTP conflict |
+
+The same lock covers `POST /v1/delete` and `POST /v1/recluster`: import, delete,
+and recluster are single-flight per replica, and a concurrent call to any of them
+returns `UNAVAILABLE`. See
+[Incremental Updates](incremental-updates.md) for both endpoints and their job
+polling.
 
 Terminal statuses include `service_completed`, `service_failed`,
 `openai_graph_build_failed`, `triton_graph_build_failed`,

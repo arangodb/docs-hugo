@@ -13,6 +13,13 @@ Spawn GraphRAG importer workers for all strategy profiles. Called after RAG stra
 
 **Recommended path:** Call after a successful corpus build and strategizer run, when `rags` is non-empty. This is the final step of the standard workflow. Omit `partition_ids` to process all profiles; supply specific ids from `GET /v1/rag-strategizer/strategy` to retry or target individual partitions. Do not overlap with an active build (`409`).
 
+{{< tip >}}
+**Targeted orchestration.** Combining `partition_ids` with `file_ids` limits the
+Importer to specific documents inside specific partitions. This is how an
+[incremental graph update](../incremental-graph-updates.md) materializes a newly
+inserted or replaced document in Layer 3 without reprocessing the partition.
+{{< /tip >}}
+
 ### Request
 
 ```json
@@ -38,6 +45,7 @@ Spawn GraphRAG importer workers for all strategy profiles. Called after RAG stra
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `partition_ids` | string[] | No | If **non-empty**, only strategies whose **`rag_partition_id`** is listed are orchestrated. | **Omit or `[]`** for full corpus. Use **exact ids** from **`GET /v1/rag-strategizer/strategy`** for targeted reruns. |
+| `file_ids` | string[] | No | If **non-empty**, the Importer job for each listed partition processes only these files instead of the whole partition. | **Omit** for a normal build. Use together with `partition_ids` after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
 
 ### Response
 

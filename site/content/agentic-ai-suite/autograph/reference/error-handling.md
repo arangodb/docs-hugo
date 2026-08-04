@@ -16,7 +16,7 @@ The service returns these HTTP status codes:
 | `401` | Missing or invalid token, or the LLM provider rejected authentication. |
 | `403` | Not allowed to use the database, or the LLM provider denied access. |
 | `404` | Unknown build ID, or the collection in an embed request does not exist. |
-| `409` | Another build or orchestration run is already in progress. |
+| `409` | Another build, orchestration run, or graph mutation is already in progress. |
 | `429` | The LLM provider rate-limited the request or its quota is exhausted. |
 | `500` | Server or configuration error. |
 | `503` | Service not ready. |
@@ -53,10 +53,17 @@ along with the failed build record):
 
 **Common causes of validation or configuration errors:**
 
-- The `files` array is empty on import.
+- The `files` array is empty on import, insert, or update.
 - The `embedding_strategy` is set to a value other than `"first_chunk"`.
 - The `cluster_threshold` is set to a value other than `1` or `2`.
 - The RAG Strategizer was called before a corpus build finished successfully.
+- An [incremental graph update](../incremental-graph-updates.md) was called
+  before the initial corpus build completed.
+- The `module` in an incremental graph update is unknown, or was omitted in a
+  project that has more than one module.
+- A delete or update target is not in the graph, or belongs to another module.
+- A batch contains duplicate `doc_name` or `file_id` values.
+- The `partition_ids` array is empty on a recluster request.
 - An embed request is missing `collection` or `field`, or `field` ends in
   `_embedding`.
 - The server has no embedding provider or no authentication configured.
@@ -159,6 +166,13 @@ some query types need. This limits which queries you can run later.
 - **Orchestration fails.** Confirm that the `rags` collection contains
   strategies, and that platform authentication and the GraphRAG Importer
   integration are configured for your environment.
+- **An incremental graph update returns `409`.** Corpus builds, orchestration,
+  and the `/v1/graph/*` mutations share one service-wide slot. Wait for the
+  active operation to finish and retry.
+- **A document is missing from Layer 3 after an insert.** Insert only updates
+  Layers 1 and 2. Run targeted orchestration with the returned
+  `rag_partition_id` and `file_id`. For the other IGU failure modes, see
+  [Incremental Graph Updates](../incremental-graph-updates.md#troubleshooting).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must
   be configured on the service.

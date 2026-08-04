@@ -71,4 +71,5 @@ that content.
 - **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
+- **[Incremental Graph Updates](incremental-graph-updates.md)**: Insert, delete, and update individual documents in a graph that is already built.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

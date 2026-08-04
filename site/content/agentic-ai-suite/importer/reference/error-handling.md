@@ -61,6 +61,8 @@ the service still starts.
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
 | `success: false` with a "busy" message | Import lock held by another in-flight import | Wait for completion; check `GET /v1/health` for the busy message |
+| `UNAVAILABLE` on an import, delete, or recluster call | The three operations are single-flight per replica and one of them holds the lock | Poll the running job until `is_terminal`, then retry (see [Incremental Updates](../incremental-updates.md)) |
+| Delete job failed and nothing was removed | The existence check is atomic and at least one requested file is missing from the partition | Read `job.deleteResult.results` for `FILE_NOT_FOUND`, fix or drop those entries, and retry |
 | Single-file import reports `success: true` but the DB is empty | Background work still running, or failed asynchronously | Check the platform service status (single-file imports have no `job_id`) |
 | Multi-file job never reaches a terminal status | Long graph build or vector-index training | Continue polling; index training can take up to an hour on large corpora. Read `current_status.message` for hints. |
 | `[NO_ENTITIES_WRITTEN]` in a `full_graphrag` job | Extraction returned nothing, or wrong mode | Inspect the source content; confirm `rag_mode: "full_graphrag"`; check the chat model is producing structured output |
@@ -99,6 +101,8 @@ the service still starts.
 ## Related references
 
 - **[Reference index](_index.md)**: Endpoints and recommended call sequence.
+- **[Incremental Updates](../incremental-updates.md)**: Layer 3 deletes,
+  reclustering, and their job statuses.
 - **[Parameters](parameters.md)**: Request parameter reference.
 - **[Architecture](../architecture.md)**: Async-job lifecycle diagram and
   terminal status names.
