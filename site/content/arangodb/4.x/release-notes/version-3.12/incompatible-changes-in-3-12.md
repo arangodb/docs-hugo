@@ -1390,6 +1390,9 @@ to match request URLs, for instance `^tcp://example\.com:80$` to
 until you upgrade to v3.12.10 or later, to work around the issue of having to
 match both the normalized endpoint and full request URL.
 
+See [JavaScript security options](../../components/tools/arangodb-shell/details.md#url-access)
+for details examples.
+
 ## Client tools
 
 ### arangodump
