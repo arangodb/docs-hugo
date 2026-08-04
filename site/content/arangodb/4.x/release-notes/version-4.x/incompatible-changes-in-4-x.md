@@ -699,6 +699,23 @@ To set a batch size, use the `batchSize` query option instead of `execute(<batch
 - `replaceByExample()`
 - `updateByExample()`
 
+### JavaScript endpoint access validated against request URLs only
+
+<small>Introduced in: v3.12.10</small>
+
+The `--javascript.endpoints-allowlist` and `--javascript.endpoints-denylist`
+startup options are now exclusively matched against the full request URL as
+used in the JavaScript code, like `http://example.com:8000/path?query=1`.
+
+Up to v3.12.8, a request was also permitted if the normalized endpoint of the
+request matched instead, using a `tcp://host:port` respectively
+`ssl://host:port` notation with the default port added if not specified in the
+URL. This was supported for backward compatibility.
+
+If your patterns are written for the endpoint notation, you need to change them
+to match request URLs, for instance `^tcp://example\.com:80$` to
+`^http://example\.com(:80)?/`.
+
 ## Startup options
 
 ### RocksDB format version 6
