@@ -18,7 +18,7 @@ use of the file manager for application code, too.
 
 RAG input files are organized into **scopes**. A scope is an ordered list of
 labels that addresses a file within a database, for example
-`marketing / campaigns / q3`. The model is deliberately generic: the same
+`acme / legal / q3`. The model is deliberately generic: the same
 mechanism represents a project, a module, or any deeper folder level, and each
 service that uses the File Manager maps its own concepts onto scope levels.
 

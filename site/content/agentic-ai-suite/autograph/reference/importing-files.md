@@ -84,9 +84,10 @@ To build up a version history for a document, upload it in separate requests —
 sending several revisions of the same `doc_name` in one request yields a single
 version, not one per entry.
 
-The `module` label of a request maps onto the first scope level, so the same
-`doc_name` under two different modules refers to two separate files with
-independent version histories.
+The `module` label of a request maps onto the *category*, which is the second
+scope level. The first scope level is the project. The same `doc_name` under two
+different modules therefore refers to two separate files with independent
+version histories.
 {{< /info >}}
 
 ## Response
