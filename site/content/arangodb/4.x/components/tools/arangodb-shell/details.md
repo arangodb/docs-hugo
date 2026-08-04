@@ -519,7 +519,7 @@ after the port (`:80`). Don't forget the `/` as this prevents URLs like
 `http://arangodb.org.evil.domain` from accidentally matching the regular expression.
 
 You may restrict access to specific subpaths with a regular expression like
-`^http://arangodb.org(:80)?/(folder/|api)`. It matches request URLs like
+`^http://arangodb\.org(:80)?/(folder/|api)`. It matches request URLs like
 `http://arangodb.org/folder/file.html` and `http://arangodb.org:80/api?query=1&arg=2`
 but not `http://arangodb.org/foldError/` or `http://arangodb.org:80/admin/api`.
 
