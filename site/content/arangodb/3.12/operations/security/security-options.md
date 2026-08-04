@@ -89,6 +89,9 @@ The set theory for these lists works as follow:
 - **No allowlist or denylist is specified**:
   Everything is allowed in versions up to ArangoDB v3.12.8. From v3.12.9 onward,
   access to the respective resources is disallowed by default in _arangod_.
+  In _arangosh_, everything remains allowed by default. The shell runs
+  client-side and is under the control of the user who starts it, so it doesn't
+  need to be as restrictive as the server.
 - **Only a denylist is specified:**
   Everything is allowed except a set of items matching the denylist.
 - **Only an allowlist is specified:**\
