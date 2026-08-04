@@ -28,6 +28,10 @@ ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
 replication. You can upgrade normally, but any vector indexes created with
 v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
 
+Similarly, you cannot downgrade vector indexes created with v3.12.10 or later
+to v3.12.9 or older versions because of a new format version that is not
+backward compatible.
+
 If you need to downgrade, drop the vector indexes first and recreate them after
 the downgrade.
 
@@ -1189,6 +1193,32 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Obsolete replication APIs removed
+
+<small>Removed in: v3.12.10</small>
+
+Various endpoints related to replication functionality that is no longer
+used have been removed.
+
+This includes endpoints related to asynchronous replication like the
+global applier that provided the low-level mechanisms for the user-managed
+Leader/Follower Replication and the Agency-managed Active Failover
+deployment modes, both for single servers.
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
+
 ## JavaScript API
 
 ### `@arangodb/graph/traversal` module removed
@@ -1335,8 +1365,9 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
 
 ## Client tools
 

@@ -5,7 +5,6 @@ description: >-
   How the Importer service integrates with AutoGraph for automated, partition-aware knowledge graph builds
 weight: 80
 ---
-
 ## When to use the Importer standalone vs. with AutoGraph
 
 The Importer supports two distinct usage patterns depending on your needs.

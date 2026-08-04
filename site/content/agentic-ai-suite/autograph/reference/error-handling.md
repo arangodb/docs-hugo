@@ -1,11 +1,10 @@
 ---
-title: Error Handling and Troubleshooting
+title: AutoGraph Error Handling and Troubleshooting
 menuTitle: Error Handling
 description: >-
   HTTP error codes, common issues, and troubleshooting for the AutoGraph service
 weight: 60
 ---
-
 ## Error Handling
 
 The service returns these HTTP status codes:

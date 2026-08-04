@@ -1,5 +1,5 @@
 ---
-title: The Arango Platform Suite (v4.0)
+title: Arango Platform Suite
 menuTitle: Platform Suite
 weight: 3
 description: >-

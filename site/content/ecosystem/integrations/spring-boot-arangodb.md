@@ -9,7 +9,7 @@ aliases:
   - ../../arangodb/3.11/develop/integrations/spring-boot-arangodb
   - ../../arangodb/3.12/develop/integrations/spring-boot-arangodb
   - ../../arangodb/stable/develop/integrations/spring-boot-arangodb
-  - ../../arangodb/4.0/develop/integrations/spring-boot-arangodb
+  - ../../arangodb/4.x/develop/integrations/spring-boot-arangodb
   - ../../arangodb/devel/develop/integrations/spring-boot-arangodb
 ---
 - [Repository](https://github.com/arangodb/spring-boot-starter)

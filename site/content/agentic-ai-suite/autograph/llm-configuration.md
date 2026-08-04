@@ -6,7 +6,6 @@ description: >-
   embedding models AutoGraph uses
 weight: 28
 ---
-
 AutoGraph uses two kinds of models:
 
 - A **chat (LLM) model**, used by the

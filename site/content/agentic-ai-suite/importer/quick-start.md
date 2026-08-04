@@ -6,7 +6,6 @@ description: >-
   Install the Importer and turn your first document into a knowledge graph
   stored in ArangoDB
 ---
-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).

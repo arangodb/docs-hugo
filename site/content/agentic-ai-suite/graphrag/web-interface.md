@@ -1,5 +1,5 @@
 ---
-title: How to use GraphRAG in the Arango Contextual Data Platform web interface
+title: How to use GraphRAG in the web interface
 menuTitle: Web Interface
 weight: 20
 description: >-

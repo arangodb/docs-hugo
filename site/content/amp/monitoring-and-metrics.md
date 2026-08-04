@@ -1,5 +1,5 @@
 ---
-title: Monitoring & Metrics in the Arango Managed Platform (AMP)
+title: Monitoring and Metrics in AMP
 menuTitle: Monitoring & Metrics
 weight: 40
 description: >-

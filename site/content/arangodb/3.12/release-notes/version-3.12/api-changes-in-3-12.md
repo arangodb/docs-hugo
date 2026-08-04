@@ -103,6 +103,10 @@ A `use-index-for-collect` and a `use-vector-index` rule have been added in v3.12
 
 A `push-filter-into-enumerate-near` rule has been added in v3.12.7.
 
+A `materialize-for-enumerate-near` rule has been added in v3.12.10.
+
+A `replace-any-eq-with-in` rule has been added in v3.12.10.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
@@ -647,6 +651,68 @@ vector embedding field are not counted toward this threshold.
 Check the `trainingState` to see if the
 index is `"ready"` and `errorMessage` for the reason if it's not.
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+A new option to let you configure how many vectors per centroid to include in
+the random sample used for training the index has been added. You can set
+`numberOfDocsPerCentroid` in the `params` object to change the default of `100`.
+
+Up to v3.12.9, this is not configurable and a fixed value of `256` per centroid
+is used instead.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `nLists` attribute of the `params` object is optional now and it accepts an
+object with a scaling specification in addition to a number. The scaling
+specification lets ArangoDB compute the number of Voronoi cells respectively
+centroids from the document count at training time, per shard in cluster
+deployments. It has the following attributes:
+
+- `strategy` (string): The only available value is `"autoSqrt"`, which computes
+  `max(minNLists, multiplier * sqrt(N))` where `N` is the number of documents.
+- `multiplier` (number): The factor for the `autoSqrt` strategy.
+- `minNLists` (number): The lower bound for the computed number of centroids.
+- `tiers` (array of objects, _optional_): Fixed numbers of centroids for large
+  document counts, each with a `threshold` and a `fixedValue` attribute.
+
+If you specify `nLists` as an object, you need to set `strategy`, `multiplier`,
+and `minNLists`. If you don't specify `nLists` at all, a scaling specification
+with the `autoSqrt` strategy, a `multiplier` of `4`, a `minNLists` of `2`, and
+three tiers (`1000000` → `16384`, `10000000` → `65536`, `300000000` → `131072`)
+is used.
+
+Success responses report `nLists` the same way it was specified, that is, either
+as a number or as an object.
+
+Furthermore, the `factory` attribute of the `params` object accepts a `{}`
+placeholder in place of the number of centroids now, like `"IVF{}_HNSW32,SQ8"`.
+It is substituted with the number of centroids that `nLists` resolves to.
+Success responses report the factory string as specified, including the
+placeholder.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `GET /_api/index?collection=<collection-name>&withHidden=true` endpoint now
+reports per-shard details for vector indexes in a `shards` attribute. The keys
+are the shard names, and every value is an object with the following attributes:
+
+- `trainingState` (string): The training state of this shard's index.
+- `error` (string): The training error of this shard's index, or an empty string.
+- `resolvedNLists` (number): The number of centroids this shard's index has
+  actually been trained with. If a fixed `nLists` value is configured, it
+  matches this value. If a scaling specification is configured, it is the value
+  computed from the document count at training time.
+
+In single server deployments, the collection name is used as the shard key,
+mirroring the cluster format. The top-level `trainingState` is the
+least-progressed state across all shards.
+
 ##### Changed consolidation defaults for inverted indexes
 
 <small>Introduced in: v3.12.6</small>
@@ -1011,6 +1077,27 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+#### Obsolete replication APIs
+
+<small>Removed in: v3.12.10</small>
+
+The following endpoints related to replication functionality that is no longer
+used have been removed:
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
+
 ## JavaScript API
 
 ### Collection creation
@@ -1124,6 +1211,19 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### JavaScript files denylist
+
+<small>Introduced in: v3.12.10</small>
+
+A `--javascript.files-denylist` startup option has been added to complement the
+existing `--javascript.files-allowlist`. It lets you forbid access to specific
+filesystem paths from server-side JavaScript, mirroring the allow/deny pairs
+already available for endpoints, environment variables, and startup options.
+File access is now controlled by both lists: a path must match the allowlist and
+must not match the denylist. The denylist is empty by default, so existing
+configurations are unaffected.
 

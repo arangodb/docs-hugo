@@ -1,5 +1,5 @@
 ---
-title: Architecture
+title: Data Platform Architecture
 menuTitle: Architecture
 weight: 20
 description: >-

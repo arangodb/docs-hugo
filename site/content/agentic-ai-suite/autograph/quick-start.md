@@ -6,7 +6,6 @@ description: >-
   Turn a pile of documents into a knowledge base you can chat with, with
   answers cited back to the source
 ---
-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
