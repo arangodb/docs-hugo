@@ -431,11 +431,61 @@ exceed 2 GiB.
 | `files` | file | Yes | File content. Repeat the field once per file. |
 | `scope` | string | No | Base scope applied to every file. Repeat once per level, in order. |
 | `mapping` | string | No | How to derive each file's scope from its path: `flatten` (default) puts every file directly under the base scope; `preserve_paths` appends the file's directory segments as deeper scope levels. |
-| `manifest` | string (JSON) | No | Per-file overrides, letting you set an individual name or scope for a file instead of deriving it. |
+| `manifest` | string (JSON) | No | Per-file overrides, letting you set an individual name or scope for a file instead of deriving it. See [Overriding names and scopes](#overriding-names-and-scopes-with-a-manifest). |
 
 Each file's resolved scope must still satisfy the
 [scope rules](#scopes) — with `preserve_paths`, a deep source directory can push
 a file past the 5-level limit, and that file fails while the rest succeed.
+
+#### Overriding names and scopes with a manifest
+
+The `manifest` field carries a JSON object with a `files` array. Each entry
+matches one uploaded part by its submitted filename and overrides what would
+otherwise be derived from `scope` and `mapping`:
+
+```json
+{
+  "files": [
+    {
+      "filename": "docs/emea/q3-report.pdf",
+      "name": "Q3 Report (EMEA).pdf",
+      "scope": ["marketing", "reports", "2026"]
+    },
+    {
+      "filename": "notes.txt",
+      "name": "campaign-notes.txt"
+    }
+  ]
+}
+```
+
+| Entry field | Type | Required | Description |
+|-------------|------|----------|-------------|
+| `filename` | string | Yes | The filename of the multipart part this entry applies to, exactly as submitted. |
+| `name` | string | No | Stored file name. Defaults to the basename of `filename`. |
+| `scope` | array of strings | No | Full scope for this file, ordered from the top level down. |
+
+Resolution follows these rules, in order:
+
+1. A file with no matching manifest entry is unaffected: its scope comes from
+   the base `scope` plus whatever `mapping` derives.
+2. A manifest `scope` **replaces** the entire resolved scope rather than
+   extending it. The base `scope` is not prepended and `mapping` is not applied
+   to that file, so the array you provide is the complete scope path.
+3. Omitting `scope` in an entry leaves the derivation from rule 1 in place, so
+   an entry can override only the `name`.
+4. A manifest `scope` is validated like any other, so it must satisfy the
+   [scope rules](#scopes) — including the 5-level limit.
+
+Because rule 2 replaces the whole path, mixing a base `scope` with manifest
+scopes puts the two sets of files in unrelated subtrees. Repeat the base levels
+in each manifest `scope` when you want the overrides to stay under it.
+
+{{< info >}}
+Batch requests are easiest to reason about when the manifest is authoritative:
+list every file with an explicit `scope` and omit `mapping` entirely. Derivation
+and overrides in the same request are valid but harder to predict.
+{{< /info >}}
 
 **Response (200):** every file stored.
 
@@ -486,7 +536,7 @@ Lists the latest version of each RAG input file in a database.
 |-----------|------|---------|-------------|
 | `scope` | string | — | Subtree filter: returns files at this scope **and below**. Repeat once per level, in order. Omit to list files across all scopes. |
 | `search` | string | — | Case-insensitive substring match on the file name. |
-| `name` | string | — | Exact file name match. Can be combined with `scope`. |
+| `name` | string | — | Filters by an exact file name. Can be combined with `scope`. |
 | `limit` | integer | `100` | Maximum results (1–1000). |
 | `offset` | integer | `0` | Pagination offset. |
 
