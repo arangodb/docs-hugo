@@ -159,7 +159,7 @@ Use AutoGraph for everything up to and including Layer 2.
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |
 | Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
 | Add, remove, or replace individual documents in an existing module | [`POST /v1/graph/insert`, `/delete`, `/update`](incremental-graph-updates.md) |
-| Refresh Layer 3 communities after document churn | [`POST /v1/graph/recluster`](incremental-graph-updates.md#trigger-reclustering) |
+| Refresh Layer 3 communities of a FullGraphRAG partition after document churn | [`POST /v1/graph/recluster`](incremental-graph-updates.md#trigger-reclustering) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds

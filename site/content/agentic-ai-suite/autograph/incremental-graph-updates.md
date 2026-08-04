@@ -29,9 +29,17 @@ For routine document churn this is substantially cheaper and faster than a
 rebuild, because the work is scoped to the documents that actually changed.
 
 {{< info >}}
+**IGU is API-only in Arango Contextual Data Platform 4.1.0.** Insert, delete,
+update, and recluster are available through the HTTP endpoints on this page.
+The [web interface](web-interface.md) does not expose them, so document-level
+changes have to be driven with API calls in this release.
+{{< /info >}}
+
+{{< info >}}
 Reclustering is never automatic. AutoGraph measures how far a partition has
 drifted from its last clustering and flags it, but you decide whether to pay
-for a refresh. See [Partition divergence and
+for a refresh. It applies to **FullGraphRAG** partitions only. See
+[Partition divergence and
 reclustering](#partition-divergence-and-reclustering).
 {{< /info >}}
 
@@ -42,7 +50,7 @@ reclustering](#partition-divergence-and-reclustering).
 | Insert | [`POST /v1/graph/insert`](#insert-documents) | Add a document that is not already in the graph |
 | Delete | [`POST /v1/graph/delete`](#delete-documents) | Remove a document and its artifacts |
 | Update | [`POST /v1/graph/update`](#update-documents) | Replace the content of a document that already exists |
-| Recluster | [`POST /v1/graph/recluster`](#trigger-reclustering) | Refresh Layer 3 communities after a partition has drifted |
+| Recluster | [`POST /v1/graph/recluster`](#trigger-reclustering) | Refresh Layer 3 communities after a FullGraphRAG partition has drifted |
 
 Every IGU operation starts in Layers 1 and 2 (AutoGraph) and reaches Layer 3
 through the Importer.
@@ -74,6 +82,8 @@ goes through a corpus build.
 
 ## Prerequisites
 
+- **Arango Contextual Data Platform 4.1.0**, where IGU is driven through the
+  HTTP API only - there is no web-interface equivalent.
 - An AutoGraph project already exists and its corpus graph has been built.
   Typically the RAG Strategizer and orchestration have also run.
 - The project was built through the
@@ -132,6 +142,40 @@ flowchart TD
    cost is worthwhile, call [recluster](#trigger-reclustering) with the
    affected `rag_partition_id`s.
 
+### Identifying documents for Layer 3
+
+Step 2 identifies documents by `file_id`, and that is the only identifier
+targeted orchestration accepts - `doc_name` is not an option there. This
+constrains how you should submit an insert or an update:
+
+| Input used for insert/update | `file_id` available afterwards | Can you target it in Layer 3? |
+|------------------------------|:-:|---|
+| File Manager `file_id` | Yes, echoed back on the per-file result | Yes - pass it in `file_ids` |
+| Inline base64 `content` | No | No - nothing to put in `file_ids` |
+
+{{< warning >}}
+**Use File Manager `file_id` input for any document you intend to materialize in
+Layer 3.** Inline `content` is accepted by insert and update, but no File
+Manager id is created for such a document and none is returned, so it cannot be
+named in the `file_ids` of a targeted orchestration. Ids have the derived form
+`rag-input-{base64url(db:path)}` and refer to a File Manager path, so one cannot
+be constructed for content that was never staged there.
+{{< /warning >}}
+
+This is why the [prerequisites](#prerequisites) call for a project built through
+the File Manager path: it keeps every document in the project resolvable by
+`file_id`. Upload the document with
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md)
+first, then pass the resulting id to insert or update.
+
+If a document was already inserted with inline `content`, the alternative is to
+orchestrate the whole partition (supply `partition_ids` and omit `file_ids`),
+which reprocesses everything in it rather than just the new document. Weigh that
+against deleting the document and re-inserting it from the File Manager, because
+re-importing documents that are already in the partition adds a further import
+batch - see [Updating a
+document](../importer/incremental-updates.md#updating-a-document).
+
 ## Partition divergence and reclustering
 
 After every insert, delete, or update, AutoGraph measures how far each affected
@@ -143,6 +187,18 @@ when available.
 Divergence is a **signal, not an action**. AutoGraph never reclusters on its
 own. When the score crosses the partition's threshold, it sets
 **`needs_reclustering: true`** and leaves the decision to you.
+
+{{< info >}}
+**Divergence and reclustering apply to FullGraphRAG partitions only.** Both
+signals below are computed from a partition's `Entities`, and reclustering
+rebuilds its `Communities` and community edges. **VectorRAG** partitions
+(`rag_mode: vector_rag`, `rag_partition_id` suffix `_b`) contain neither
+collection - see the [Layer 3
+collections](architecture.md#layer-3) - so they carry no meaningful divergence
+score, are never flagged for reclustering, and have nothing for a recluster to
+rebuild. IGU insert, delete, and update themselves work on both kinds of
+partition.
+{{< /info >}}
 
 ### How the score is computed
 
@@ -265,8 +321,8 @@ To fetch the file from the File Manager instead, omit `content` and provide
 |-----------|------|----------|-------------|
 | `files` | object[] | Yes | Documents to insert. Must be non-empty, with no duplicate `doc_name` or `file_id` values. |
 | `files[].doc_name` | string | Yes | File name of the document. Must match the File Manager file name when `file_id` is used. |
-| `files[].content` | string | No | File bytes, base64-encoded. Provide either `content` or `file_id`. |
-| `files[].file_id` | string | No | File Manager id to fetch the document from. Preferred over inline content. |
+| `files[].content` | string | No | File bytes, base64-encoded. Provide either `content` or `file_id`. No `file_id` is generated for inline content, so the document cannot be named in a targeted orchestration - see [Identifying documents for Layer 3](#identifying-documents-for-layer-3). |
+| `files[].file_id` | string | No | File Manager id to fetch the document from. Preferred over inline content, and required if you intend to materialize the document in Layer 3. |
 | `files[].citable_url` | string | No | Canonical URL for citations, carried through the pipeline. |
 | `module` | string | Conditional | Target module. Required unless the project has exactly one module. |
 
@@ -294,14 +350,16 @@ To fetch the file from the File Manager instead, omit `content` and provide
 | `error_message` | Set when this file failed. Other files in the batch can still succeed. |
 | `cluster_key` | Existing cluster selected for the document. Can be empty when no suitable clustered neighbor exists. |
 | `rag_partition_id` | Layer 3 partition linked to the selected cluster. Can be empty when no strategy profile exists yet. |
-| `file_id` | Echoed when File Manager input was used. |
+| `file_id` | Echoed when File Manager input was used. Absent for inline-content inserts, which have no File Manager id. Pass this value in the `file_ids` of your targeted orchestration. |
 | `divergence_score` | Partition divergence after this insert. Can understate churn until targeted orchestration creates the Layer 3 entities. See [Partition divergence and reclustering](#partition-divergence-and-reclustering). |
 | `needs_reclustering` | `true` when `divergence_score` strictly exceeds the partition's threshold. Nothing is reclustered automatically. |
 
 Insert extracts the text, generates an embedding, stores the source, assigns
 the closest existing cluster, and adds membership and similarity edges. It
 updates **Layers 1 and 2 only**. To materialize the document in Layer 3, run
-targeted orchestration with its `file_id` and the returned `rag_partition_id`.
+targeted orchestration with its `file_id` and the returned `rag_partition_id`,
+which requires that the insert used File Manager `file_id` input (see
+[Identifying documents for Layer 3](#identifying-documents-for-layer-3)).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -459,7 +517,10 @@ invalid target rejects the whole batch before anything is mutated.
 }
 ```
 
-As with insert, supply either base64 `content` or a File Manager `file_id`.
+As with insert, supply either base64 `content` or a File Manager `file_id`. Use
+`file_id` if you intend to materialize the replacement in Layer 3, because
+targeted orchestration can only name documents that have one (see
+[Identifying documents for Layer 3](#identifying-documents-for-layer-3)).
 
 ### Immediate response
 
@@ -554,12 +615,19 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
 
-Schedule Layer 3 reclustering for one or more RAG partitions. Returns a
-scheduling status immediately; the work itself runs **asynchronously**.
+Schedule Layer 3 reclustering for one or more **FullGraphRAG** partitions.
+Returns a scheduling status immediately; the work itself runs
+**asynchronously**.
 
 Call this when an insert, delete, or update outcome - or the partition's `rags`
 profile - reports `needs_reclustering: true` and you decide that refreshing the
 communities is worth the cost. AutoGraph never starts a recluster on its own.
+
+Only FullGraphRAG partitions have a community layer to rebuild. A VectorRAG
+partition holds no `Entities` or `Communities`, so there is nothing for a
+recluster to rebuild, and such a partition is never flagged for reclustering in
+the first place. See [Partition divergence and
+reclustering](#partition-divergence-and-reclustering).
 
 ### Request
 
@@ -714,6 +782,10 @@ finishes. On success, the partition's `divergence_score` resets to `0` and
 - **Insert succeeded but the document is missing from Layer 3.** Insert only
   updates Layers 1 and 2. Run targeted orchestration with the returned
   `rag_partition_id` and the new `file_id`.
+- **The insert or update result has no `file_id`.** The call used inline
+  `content`, which produces no File Manager id, so there is nothing to name in
+  the `file_ids` of a targeted orchestration. See [Identifying documents for
+  Layer 3](#identifying-documents-for-layer-3).
 - **Delete returned `LAYER3_DELETE_STATUS_PENDING`.** Expected. Layers 1 and 2
   are complete and the Layer 3 cleanup is running in the background. Poll
   `importerOrchestration` in your project metadata.

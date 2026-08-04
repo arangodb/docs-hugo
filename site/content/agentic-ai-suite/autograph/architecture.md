@@ -180,9 +180,14 @@ prefix is `SG_`).
 | `enable_chunk_embeddings` | `true` | Whether chunks get their own embeddings. |
 | `entity_types` | `[configured types]` | Entity types the extractor may produce (the per-cluster ontology; typically 8–12 types). |
 | `smart_graph_attribute` | `partition_id` | The SmartGraph sharding key. |
-| `divergence_score` | `0.20` | How far the partition has drifted from its last clustering, recomputed after each [incremental graph update](incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `divergence_threshold` | `0.25` | Score above which the partition is flagged for reclustering. Configurable per partition. |
-| `needs_reclustering` | `false` | Set to `true` when `divergence_score` exceeds the threshold. Reclustering stays manual. |
+| `divergence_score` | `0.20` | FullGraphRAG only. How far the partition has drifted from its last clustering, recomputed after each [incremental graph update](incremental-graph-updates.md#partition-divergence-and-reclustering). |
+| `divergence_threshold` | `0.25` | FullGraphRAG only. Score above which the partition is flagged for reclustering. Configurable per partition. |
+| `needs_reclustering` | `false` | FullGraphRAG only. Set to `true` when `divergence_score` exceeds the threshold. Reclustering stays manual. |
+
+The three divergence fields are only meaningful on **FullGraphRAG** partitions.
+Divergence is measured from a partition's entities, and reclustering rebuilds its
+communities - a VectorRAG partition has neither collection (see
+[Layer 3](#layer-3)), so it is never flagged for reclustering.
 
 **`modules`** — the top-level corpus container
 

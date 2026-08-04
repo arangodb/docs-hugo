@@ -20,6 +20,10 @@ drives them as part of
 [Incremental Graph Updates](../autograph/incremental-graph-updates.md), which
 also maintains Layers 1 and 2. Call the Importer yourself only for standalone
 or advanced scenarios.
+
+In Arango Contextual Data Platform 4.1.0 this is an **API-only** feature on both
+sides: neither these Importer endpoints nor AutoGraph's IGU endpoints have a
+web-interface equivalent.
 {{< /info >}}
 
 There is **no** dedicated update endpoint. Insert and delete are first-class
@@ -28,9 +32,13 @@ operations; an update is composed from them. See
 
 {{< warning >}}
 Import, delete, and recluster jobs on a given Importer replica are
-**single-flight**. While one of them holds the import lock, a concurrent
-import, delete, or recluster returns `UNAVAILABLE`. Retry once the running job
-has reached a terminal state.
+**single-flight**. While one of them holds the import lock, a concurrent call is
+rejected, and the rejection shape depends on the endpoint you called: `/v1/delete`
+and `/v1/recluster` return `UNAVAILABLE`, while the import endpoints return
+`HTTP 200` with `"success": false` and a busy message. Retry once the running job
+has reached a terminal state - or, when a single-file import holds the lock and
+there is no job to poll, once the platform service status shows it finished. See
+[Concurrency](architecture.md#asynchronous-import-lifecycle).
 {{< /warning >}}
 
 ## Inserting a document
@@ -60,8 +68,7 @@ The call is **asynchronous**: it returns a `job_id` immediately and the delete
 runs in the background. Poll
 [`GET /v1/jobs/{job_id}`](importing-files.md#monitoring-jobs) until
 `is_terminal` is `true`. For delete jobs the outcome lives in
-**`job.deleteResult`** (`delete_result` in the protobuf), not in the immediate
-acknowledgement.
+**`job.delete_result`**, not in the immediate acknowledgement.
 
 ### Request
 
@@ -133,56 +140,57 @@ The immediate response only acknowledges the job:
 }
 ```
 
-Poll until `isTerminal` is `true`:
+Poll until `is_terminal` is `true`:
 
 ```bash
 curl -sS "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/jobs/<uuid>" \
   -H "Authorization: Bearer <your-jwt-token>"
 ```
 
-The terminal response carries the outcome in `job.deleteResult` (the
-gRPC-gateway JSON uses camelCase):
+The terminal response carries the outcome in `job.delete_result`:
 
 ```json
 {
   "success": true,
   "job": {
-    "jobId": "<uuid>",
-    "createdAt": "...",
+    "job_id": "<uuid>",
+    "created_at": "...",
     "files": ["rag-input-..."],
-    "filesCount": 1,
-    "isTerminal": true,
-    "currentStatus": {
+    "files_count": 1,
+    "is_terminal": true,
+    "current_status": {
       "status": "service_completed",
       "progress": 100,
       "message": "Deleted N document(s), ..."
     },
-    "statusHistory": [],
-    "deleteResult": {
-      "jobId": "<uuid>",
+    "status_history": [],
+    "delete_result": {
+      "job_id": "<uuid>",
       "success": true,
       "results": [
         {
-          "fileId": "rag-input-...",
+          "file_id": "rag-input-...",
           "status": "SUCCESS",
-          "documentsRemoved": 1
+          "documents_removed": 1
         }
       ],
-      "documentsRemoved": 1,
-      "chunksRemoved": 12
+      "documents_removed": 1,
+      "chunks_removed": 12
     }
   }
 }
 ```
 
-`deleteResult` holds the per-file receipts and the batch aggregates
-`documentsRemoved`, `chunksRemoved`, `entitiesRemoved`, `communitiesRemoved`,
-`semanticUnitsRemoved`, and `edgesRemoved`.
+`delete_result` holds the per-file receipts and the batch aggregates
+`documents_removed`, `chunks_removed`, `entities_removed`,
+`communities_removed`, `semantic_units_removed`, and `edges_removed`.
 
 {{< warning >}}
-Do not treat the `POST /v1/delete` acknowledgement as the final outcome. Its
-`results` array is empty; the populated result is only available from the job
-status once the job is terminal.
+Do not treat the `POST /v1/delete` acknowledgement as the final outcome. It
+carries no per-file results at all - only `job_id`, `success`, and `message` -
+and its `success: true` means the job was **accepted**, not that anything was
+deleted. The per-file receipts arrive only in `job.delete_result.results`, once
+the job is terminal.
 {{< /warning >}}
 
 ## Updating a document
@@ -199,7 +207,8 @@ document's content in Layer 3:
 
 That delete-then-import sequence is the supported update path. Because the
 delete holds the import lock until it finishes, calling import before the
-delete job is terminal returns `UNAVAILABLE`.
+delete job is terminal is rejected as busy - `HTTP 200` with
+`"success": false`, the import endpoints' rejection shape.
 
 {{< warning >}}
 Importing a revised file **without** deleting the old one first creates another
@@ -209,24 +218,33 @@ the graph. Always delete first when you intend to replace.
 
 ## Divergence
 
-**Divergence** measures how far a partition's community layer has drifted from
-its current entity and relationship graph after inserts, deletes, and updates.
-It is computed and interpreted by **AutoGraph**, not by the Importer - no
-Importer endpoint returns a divergence score.
+**Divergence** measures how far a `full_graphrag` partition's community layer
+has drifted from its current entity and relationship graph after inserts,
+deletes, and updates. It is computed and interpreted by **AutoGraph**, not by
+the Importer - no Importer endpoint returns a divergence score.
 
-When AutoGraph determines that divergence is high enough for community reports
-and memberships to be stale, it triggers a recluster of the affected
-`partition_id` on the Importer. For the formula, the threshold, and the
-lifecycle, see
+When divergence crosses the partition's threshold, AutoGraph flags the partition
+as needing reclustering. It does **not** start a recluster on its own: you
+decide whether to pay for the refresh and then trigger it, which in turn calls
+`POST /v1/recluster` for the affected `partition_id`. For the formula, the
+threshold, and the lifecycle, see
 [Partition divergence and reclustering](../autograph/incremental-graph-updates.md#partition-divergence-and-reclustering).
+
+Divergence does not apply to `vector_rag` partitions, which hold no `Entities`
+or `Communities`.
 
 ## Reclustering
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/recluster" >}}
 
-Rebuilds the **community layer** of a single partition without re-ingesting
-documents. The call is **asynchronous**: it returns a `job_id` immediately;
-poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`.
+Rebuilds the **community layer** of a single `full_graphrag` partition without
+re-ingesting documents. The call is **asynchronous**: it returns a `job_id`
+immediately; poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`.
+
+Only `full_graphrag` partitions have a community layer. A `vector_rag` partition
+holds no `Entities` or `Communities`
+(see [Knowledge graph collections](architecture.md#knowledge-graph-collections)),
+so there is nothing for a recluster to consolidate, cluster, or swap in.
 
 ### Request
 
@@ -276,7 +294,8 @@ full import, plus the optional consolidation pass and Leiden clustering.
   communities.
 - Multi-batch partitions pay for a consolidation pass first.
 - While a recluster runs it holds the single-flight import lock, so concurrent
-  import, delete, and recluster calls return `UNAVAILABLE` until it finishes.
+  delete and recluster calls return `UNAVAILABLE`, and concurrent import calls
+  return `"success": false`, until it finishes.
 - Old communities are removed only after the new ones are ready, so a mid-job
   failure leaves the previous community layer intact.
 
@@ -303,12 +322,12 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 
 | Symptom | Likely cause | What to do |
 |---------|--------------|------------|
-| Import, delete, or recluster returns `UNAVAILABLE` | Another import, delete, or recluster holds the single-flight lock on this replica | Retry after the running job reaches a terminal state (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`) |
+| Delete or recluster returns `UNAVAILABLE`, or an import returns `"success": false` | Another import, delete, or recluster holds the single-flight lock on this replica | Retry after the running job reaches a terminal state (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`). If the holder is a **single-file** import (`POST /v1/import`), there is no `job_id` to poll - watch the platform service status feed, or `GET /v1/health` for the busy message, until it clears |
 | A delete job failed and nothing was removed | At least one requested file was missing from the partition | Check `delete_result.results` for `FILE_NOT_FOUND`, then fix the ids or names, or drop the missing entries, and retry |
 | `FILE_NOT_FOUND` when deleting by `file_id` | The document was imported before `file_id` stamping, or the id does not match | Pass `doc_names` as a fallback, or confirm `Documents.file_id` (see [Documents](architecture.md#documents)) |
 | An update left duplicate content in the graph | The import ran without a prior successful delete, or started before the delete finished | Delete, poll to terminal success, then import into the same `partition_id` |
-| An import during an in-flight delete returns `UNAVAILABLE` | The delete holds the import lock until its background task completes | Poll the delete `job_id` until `is_terminal`, then retry the import |
-| Communities look stale after inserts or deletes | The community layer has not been rebuilt yet | Let AutoGraph trigger a recluster when divergence is high, or call `POST /v1/recluster` for that `partition_id` |
+| An import during an in-flight delete is rejected as busy | The delete holds the import lock until its background task completes | Poll the delete `job_id` until `is_terminal`, then retry the import |
+| Communities look stale after inserts or deletes | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Trigger it through AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
 | A recluster takes a long time and blocks other work | LLM community reports, with the lock held for the whole job | Expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is terminal |
 
 ## Next steps

@@ -53,7 +53,11 @@ Endpoints are served at **`http://<host>:8080`**.
 
 {{< info >}}
 Import, delete, and recluster are **single-flight** per replica: while one holds
-the import lock, a concurrent call to any of the three returns `UNAVAILABLE`.
+the import lock, a concurrent call to any of the three is rejected. The
+rejection shape depends on the endpoint you called - the import endpoints return
+`HTTP 200` with `"success": false`, while `/v1/delete` and `/v1/recluster`
+return `UNAVAILABLE`. See
+[Concurrency](../architecture.md#asynchronous-import-lifecycle).
 There is no in-place update endpoint - see
 [Updating a document](../incremental-updates.md#updating-a-document).
 {{< /info >}}
@@ -92,7 +96,7 @@ the platform service status. See
 
 1. `POST /v1/delete` or `POST /v1/recluster` - save the returned `job_id`.
 2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`. For deletes, read
-   the outcome from `job.deleteResult`, not from the immediate response.
+   the outcome from `job.delete_result`, not from the immediate response.
 
 See [Incremental Updates](../incremental-updates.md) for request fields, what
 each operation removes or rebuilds, and troubleshooting.
