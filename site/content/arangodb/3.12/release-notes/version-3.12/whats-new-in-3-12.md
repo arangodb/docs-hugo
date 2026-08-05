@@ -1463,6 +1463,33 @@ For example, `FILTER doc.arr ANY == "foo"` could previously not utilize a
 expression is automatically changed to `FILTER "foo" IN doc.arr`, which can
 utilize such an index.
 
+### Constant folding of empty array comparisons
+
+<small>Introduced in: v3.12.10</small>
+
+Comparisons against empty arrays always have the same outcome, and the AQL
+query optimizer can now determine it at query compile time:
+
+- `x IN []` as well as `[] ANY <op> x` are always `false`
+- `x NOT IN []` as well as `[] ALL <op> x` and `[] NONE <op> x` are always `true`
+
+`<op>` can be `==`, `!=`, `<`, `<=`, `>`, `>=`, `IN`, or `NOT IN`.
+
+The `remove-unnecessary-filters` optimizer rule removes `FILTER` operations
+with conditions that are always true. If a condition is always false, the
+optimizer now replaces the affected part of the execution plan with a
+`NoResultsNode` because the query cannot produce any results there.
+
+For example, the following query no longer enumerates the collection at all,
+as the `FILTER` condition can never be satisfied:
+
+```aql
+FOR doc IN coll
+  LET cond = ([] ANY == doc.value)
+  FILTER cond
+  RETURN doc
+```
+
 ## Indexing
 
 ### Multi-dimensional indexes
