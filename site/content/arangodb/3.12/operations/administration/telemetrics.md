@@ -6,6 +6,10 @@ description: >-
   ArangoDB automatically gathers information on how it is used and the features
   being utilized, but you can disable this data collection
 ---
+{{< info >}}
+Telemetrics have been removed in v3.12.10.
+{{< /info >}}
+
 ArangoDB gathers metrics by default, to identify the primary usage patterns and
 features, and to measure their adoption rate.
 

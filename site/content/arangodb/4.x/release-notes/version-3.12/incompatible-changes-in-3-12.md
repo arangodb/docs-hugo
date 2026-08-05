@@ -1127,6 +1127,14 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
+### Telemetrics removed
+
+<small>Removed in: v3.12.10</small>
+
+ArangoDB gathered anonymous information on its usage and feature utilization
+since v3.11.0 unless disabled. These telemetrics have now been removed,
+including the `--server.telemetrics-api` startup option.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
