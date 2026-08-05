@@ -95,12 +95,59 @@ ones worth revisiting; the rest are safe to leave alone.
 | `FPS_IMAGE_CAP` | 200 images per document | Raise it for image-heavy documents such as scanned catalogs. |
 | `FPS_MAX_ATTEMPTS` | 3 | Retries per job on transient failures. |
 
-These are Helm values on the `arangodb-file-parser` platform service and belong
-in your installer package so that they survive upgrades. For the full list of
-settings, how to apply and inspect them, and how to verify a tuned deployment,
-see
-[File Parser Service](https://arangodb.github.io/kube-arangodb/docs/platform/file-parser.html)
-in the ArangoDB Kubernetes Operator documentation.
+The worker resource limits are Helm values; everything prefixed with `FPS_` is a
+service setting, and values for those must be quoted strings.
+
+#### Applying values
+
+The File Parser is installed once per environment as the
+`arangodb-file-parser` platform service. Put your values in that service's
+`overrides` block in the platform package (`platform.yaml`), the same file you
+install with
+[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md):
+
+```yaml
+  arangodb-file-parser:
+    package: arangodb-file-parser
+    overrides:
+      config:
+        FPS_RETENTION_WINDOW_S: "7200"
+        FPS_MAX_REPLICAS__PDF: "6"
+      workerPdf:
+        resources:
+          limits:
+            memory: 8Gi
+```
+
+The package is the right place for anything you want to keep: it is re-applied
+on every install and survives upgrades. Editing the running service directly
+with `kubectl edit arangoplatformservice arangodb-file-parser` takes effect
+immediately and is fine while you experiment, but the next package install
+replaces it. Changing a value restarts the pods, and workers finish the job
+they are on before stopping.
+
+#### Checking what is applied
+
+The pods log their effective non-default settings on startup, which is the
+quickest way to confirm a change landed:
+
+```sh
+kubectl logs -n <namespace> -l app.kubernetes.io/instance=arangodb-file-parser --tail=20
+```
+
+A setting name that does not exist is reported as a warning there rather than
+failing silently, so a typo is visible in the first log after a restart. To see
+the full applied set instead, read the service's rendered configuration:
+
+```sh
+kubectl get cm arangodb-file-parser-config -n <namespace> -o yaml
+```
+
+If jobs queue for a long time, the fleet is too small: raise
+`FPS_MAX_REPLICAS__*`, or give the pool more CPU. If jobs fail with resource or
+timeout errors, the per-job limits are too tight for your documents. The
+[Monitoring](../../platform-suite/monitoring.md) dashboards surface both
+patterns.
 
 ## Prerequisites
 
