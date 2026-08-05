@@ -111,14 +111,56 @@ graph path search. If you specify unknown options, query warnings are raised.
 
 #### `weightAttribute`
 
-A top-level edge attribute that should be used to read the edge weight (string).
+The edge attribute to use as the weight (string\|array).
 
 If you set this option, the returned path is the one with the lowest total
 weight, which may comprise more edges than a path of shorter length but with a
 higher total weight.
 
-If the attribute does not exist or is not numeric, the `defaultWeight` is used
-instead.
+You can specify the attribute in two ways:
+
+- A **string** refers to a top-level attribute of exactly this name. A `.` is
+  interpreted as a literal dot and not as a separator for an attribute path.
+  For example, `"attr.sub"` reads the weight from an edge document like
+  `{ "attr.sub": 5 }`.
+- An **array of strings** describes an attribute path, letting you use a
+  sub-attribute as the edge weight. Each element is one level of nesting, for
+  example `["attr", "sub"]` to read the weight from an edge document like
+  `{ "attr": { "sub": 3 } }`.
+
+  An array with a single element is equivalent to passing that element as a
+  string. `["attr.sub"]` therefore refers to the top-level attribute `attr.sub`
+  just like `"attr.sub"` does.
+
+If the value is neither a string nor an array of strings, a query warning is
+raised and the option is ignored, which means the `defaultWeight` is used as the
+weight of every edge. An empty string or an empty array has the same effect but
+raises no warning.
+
+For example, consider edge documents with both a nested `sub` attribute and a
+top-level attribute whose name contains a dot:
+
+```json
+{
+  "attr": { "sub": 3 },
+  "attr.sub": 5
+}
+```
+
+| `weightAttribute` | Resulting edge weight |
+|:------------------|----------------------:|
+| `["attr", "sub"]` | `3` |
+| `["attr.sub"]`    | `5` |
+| `"attr.sub"`      | `5` |
+
+```aql
+FOR v, e IN OUTBOUND SHORTEST_PATH startNode TO endNode GRAPH "graphName"
+  OPTIONS { weightAttribute: ["attr", "sub"] }
+  RETURN v
+```
+
+If the attribute path cannot be resolved in the edge document or the value it
+refers to is not numeric, the `defaultWeight` is used instead.
 
 The attribute value must not be negative.
 
