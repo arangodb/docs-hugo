@@ -105,6 +105,8 @@ aliases:
   - ../develop/http-api/indexes/fulltext # 3.12 -> 4.x
   - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 3.12
   - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
+  - ../develop/http-api/replication/other-replication-commands # 3.12 -> 3.12
+  - ../operations/administration/telemetrics # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -223,6 +225,10 @@ detailed information about breaking changes before upgrading.
   HTTP API, and everything else related to Pregel has been removed.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
+
+- **Telemetrics**:\
+  ArangoDB gathered anonymous information on its usage and feature utilization
+  since v3.11.0 unless disabled. Telemetrics have been removed in v3.12.10.
 
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
