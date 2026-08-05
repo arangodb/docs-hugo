@@ -938,6 +938,15 @@ state of the vector indexes:
 - `arangodb_vector_index_training_ongoing`
 - `arangodb_vector_index_unusable`
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+- `arangodb_http_response_code_total`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
