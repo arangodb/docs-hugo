@@ -1,5 +1,5 @@
 ---
-title: X.509 Certificates in the Arango Managed Platform (AMP)
+title: X.509 Certificates in AMP
 menuTitle: X.509 Certificates
 weight: 5
 description: >-

@@ -1,11 +1,10 @@
 ---
-title: Custom Prompts Reference
+title: Retriever Custom Prompts Reference
 menuTitle: Custom Prompts
 description: >-
   Customize LLM prompts used during query processing for domain-specific behavior
 weight: 55
 ---
-
 ## Overview
 
 The Retriever service allows you to customize the LLM prompts used during query

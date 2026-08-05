@@ -1,5 +1,5 @@
 ---
-title: Credits & Usage in the Arango Managed Platform (AMP)
+title: Credits & Usage in AMP
 menuTitle: Credits & Usage
 weight: 15
 description: >-

@@ -5,7 +5,6 @@ description: >-
   Domain-specific search using configurable tools with flexible search strategies and custom graph traversal
 weight: 40
 ---
-
 ## Overview
 
 Custom Retriever enables domain-specific search and retrieval using

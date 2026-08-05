@@ -6,7 +6,6 @@ description: >-
   Chat with your knowledge graph - ask questions in plain language and get
   grounded, cited answers
 ---
-
 ## Prerequisites
 
 - A **GraphRAG project with imported data**. If you haven't built a graph

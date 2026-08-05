@@ -1,5 +1,5 @@
 ---
-title: The Agentic AI Suite of the Arango Contextual Data Platform (v4.0)
+title: Agentic AI Suite
 menuTitle: Agentic AI Suite
 weight: 2
 description: >-
@@ -11,10 +11,9 @@ description: >-
 aliases:
   - arangodb/3.12/data-science # 3.10, 3.11
   - arangodb/stable/data-science # 3.10, 3.11
-  - arangodb/4.0/data-science # 3.10, 3.11
+  - arangodb/4.x/data-science # 3.10, 3.11
   - arangodb/devel/data-science # 3.10, 3.11
 ---
-
 {{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
 
 ## What's included

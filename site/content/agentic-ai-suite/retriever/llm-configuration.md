@@ -1,11 +1,10 @@
 ---
-title: Configure LLMs and Embedding Models
+title: Configure LLMs and Embedding Models for the Retriever
 menuTitle: LLM Configuration
 description: >-
   Configure OpenAI-compatible APIs or Triton Inference Server for the Retriever service
 weight: 20
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}

@@ -1,11 +1,10 @@
 ---
-title: Configure LLMs and Embedding Models
+title: Configure LLMs and Embedding Models for the Importer
 menuTitle: LLM Configuration
 description: >-
   Configure OpenAI-compatible APIs or Triton Inference Server for the Importer service
 weight: 40
 ---
-
 The Importer service can be configured to use either Triton Inference Server or any
 OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI,
 OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an

@@ -6,7 +6,6 @@ description: >-
   Generate AQL queries from natural language using the AQLizer feature in the
   Query Editor of the Arango Contextual Data Platform web interface
 ---
-
 The AQLizer feature is integrated into the **Query Editor** of the Arango Contextual
 Data Platform. It uses generative AI to translate your plain language descriptions into
 AQL queries, so you can explore your data and gain insights without having to learn

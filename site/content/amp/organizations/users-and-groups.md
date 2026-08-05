@@ -1,5 +1,5 @@
 ---
-title: Users and Groups in the Arango Managed Platform (AMP)
+title: Users and Groups in AMP
 menuTitle: Users & Groups
 weight: 5
 description: >-

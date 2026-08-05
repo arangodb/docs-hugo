@@ -1,11 +1,14 @@
 ---
-title: HTTP interface for server logs
+title: Logging HTTP API
 menuTitle: Logs
 weight: 5
 description: >-
-  Server events and errors are logged depending on the defined log levels for
-  the available log topics
+  The HTTP interface of the logging subsystem lets you fetch log entries as
+  well as configure the log levels per log topic
 ---
+Server events and errors are logged depending on the defined log levels for
+the available log topics.
+
 Whether events are logged to a file, syslog, or only an attached terminal depends
 on the [log startup options](../../../components/arangodb-server/options.md#log).
 
