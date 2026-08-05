@@ -283,8 +283,8 @@ OPTIONS {
   }
 }
 FILTER p.edges[1].foo == "bar" AND
-        p.edges[2].foo == "bar" AND
-        p.edges[2].baz == "qux"
+       p.edges[2].foo == "bar" AND
+       p.edges[2].baz == "qux"
 ```
 
 Index hints for levels other than `base` are only considered if the
