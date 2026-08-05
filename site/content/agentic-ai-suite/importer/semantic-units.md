@@ -16,6 +16,23 @@ Semantic units are optional and disabled by default. Enable them when you need t
 extract and process multimedia references from your documents.
 {{< /tip >}}
 
+{{< info >}}
+Semantic units work on the image references present in the Markdown the
+Importer processes. For PDF, Office, and OpenDocument documents, those
+references are produced by the
+[File Parser service](setup.md#document-conversion-and-supported-formats),
+which extracts each embedded image as a separate artifact and places a
+reference to it at the image's position in the Markdown. Set
+`process_images: true` to have the Importer follow those storage references.
+
+Not every format yields images. EPUB images and email attachments are not
+extracted at all, and for HTML only images embedded as data URIs are, so
+semantic units stay empty for the images in those documents no matter how these
+parameters are set. Vector graphics in Office documents, charts and SmartArt
+among them, may also be missing. See
+[Format support](setup.md#format-support) for the per-format detail.
+{{< /info >}}
+
 ## Configuration
 
 The semantic units functionality is controlled by three related parameters that work 

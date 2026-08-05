@@ -142,6 +142,13 @@ Both `POST /v1/import` and `POST /v1/import-multiple` start work in the
 background and return immediately. The diagram below shows how a client
 submits an import and monitors progress.
 
+An import begins by converting its inputs: every document that is not already
+plain text or Markdown is submitted to the File Parser service, and the
+Importer chunks the Markdown it gets back. This stage is not reported as a
+separate job status. A document that cannot be parsed fails the import with the
+File Parser's verdict in the status message. See
+[Document conversion and supported formats](setup.md#document-conversion-and-supported-formats).
+
 ```mermaid
 flowchart LR
   Client["Client / orchestrator"]
@@ -196,3 +203,8 @@ AutoGraph orchestration.
 8. **SmartGraph constraints**: use `smart_graph_attribute="partition_id"`, a
    valid `partition_id`, and `shard_count=1` when creating a new SmartGraph.
    See [Import Files](importing-files.md#smartgraph-and-sharding) for details.
+9. **Account for the shared File Parser**. It is installed once per environment
+   and every consumer in it competes for the same worker pods, so a large
+   AutoGraph corpus build and a large import running at the same time queue
+   behind each other. Scanned PDFs dominate that queue. See
+   [Tuning the File Parser](setup.md#tuning-the-file-parser-for-self-hosted-deployments).
