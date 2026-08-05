@@ -1133,7 +1133,8 @@ You should check for the following things in particular:
 
 ArangoDB gathered anonymous information on its usage and feature utilization
 since v3.11.0 unless disabled. These telemetrics have now been removed,
-including the `--server.telemetrics-api` startup option.
+including the `--server.telemetrics-api` startup option. The option is still
+recognized but doesn't have any effect anymore.
 
 ## HTTP RESTful API
 
