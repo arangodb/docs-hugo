@@ -1230,8 +1230,8 @@ Up to v3.12.9, file access is exclusively controlled by
 
 A `--javascript.files-denylist` startup option has been added to complement the
 existing `--javascript.files-allowlist`. It lets you forbid access to specific
-filesystem paths from server-side JavaScript, mirroring the allow/deny pairs
-already available for endpoints, environment variables, and startup options.
+filesystem paths from client-side and server-side JavaScript, mirroring the allow/deny
+pairs already available for endpoints, environment variables, and startup options.
 File access is now controlled by both lists: a path must match the allowlist and
 must not match the denylist. The denylist is empty by default, so existing
 configurations are unaffected.
