@@ -1490,6 +1490,24 @@ FOR doc IN coll
   RETURN doc
 ```
 
+### Improved filter condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The AQL query optimizer now performs additional simplifications when it
+normalizes the conditions of `FILTER` operations:
+
+- `x IN [a]` with a constant, single-element array is rewritten to `x == a`,
+  which the index selection can then treat like any other equality comparison.
+- `OR` branches that contain an always-false condition are dropped, and
+  always-true conditions are removed from `AND` combinations.
+- Duplicate conditions within an `AND` combination as well as duplicate `OR`
+  branches are detected and removed. This is limited to deterministic
+  conditions.
+
+A related correctness fix for the string comparison in these optimizations is
+described in [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#string-comparison-in-filter-condition-optimizations).
+
 ## Indexing
 
 ### Multi-dimensional indexes

@@ -1138,6 +1138,25 @@ The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
 startup options are obsolete. They are still recognized but don't have any
 effect anymore.
 
+## String comparison in `FILTER` condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The `==` and `!=` operators as well as their array comparison variants compare
+strings byte-wise. However, the AQL query optimizer used a Unicode-aware
+comparison when it compared such conditions with each other while optimizing
+`FILTER` operations. It could therefore treat two strings that are
+Unicode-equivalent but encoded differently – like the NFC and NFD normalization
+forms of the same text – as the same value, and remove a condition it considered
+a duplicate. The optimizer now uses a byte-wise comparison as well, in line with
+how the query evaluates these operators.
+
+This can change the results of queries that compare equality against strings
+which are Unicode-equivalent but differently encoded. Such queries now return
+what the unoptimized comparison would return. If you rely on comparing strings
+in a Unicode-aware manner, normalize them to the same form, either before
+storing them or in the query.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
