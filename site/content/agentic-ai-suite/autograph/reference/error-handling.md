@@ -172,7 +172,7 @@ some query types need. This limits which queries you can run later.
 - **A document is missing from Layer 3 after an insert.** Insert only updates
   Layers 1 and 2. Run targeted orchestration with the returned
   `rag_partition_id` and `file_id`. For the other IGU failure modes, see
-  [Incremental Graph Updates](../incremental-graph-updates.md#troubleshooting).
+  [Graph Operations](orchestration.md#troubleshooting).
 - **The insert result has no `file_id` to orchestrate with.** The document was
   inserted with inline base64 `content`, which produces no File Manager id, and
   targeted orchestration can only name documents by `file_id`. Insert documents

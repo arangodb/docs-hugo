@@ -32,11 +32,11 @@ Endpoints are served at **`http://<host>:8080`**.
 | `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Orchestration](orchestration.md) |
-| `POST` | `/v1/graph/insert` | Add a document to a graph that is already built | [Incremental Graph Updates](../incremental-graph-updates.md#insert-documents) |
-| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Incremental Graph Updates](../incremental-graph-updates.md#delete-documents) |
-| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Incremental Graph Updates](../incremental-graph-updates.md#update-documents) |
-| `POST` | `/v1/graph/recluster` | Refresh Layer 3 communities for a partition | [Incremental Graph Updates](../incremental-graph-updates.md#trigger-reclustering) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `POST` | `/v1/graph/insert` | Add a document to a graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
+| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
+| `POST` | `/v1/graph/recluster` | Refresh Layer 3 communities for a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
 | `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](embeddings.md) |
 
 For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md).
@@ -60,7 +60,7 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 6. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
    See [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies).
 7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   See [Orchestration](orchestration.md).
+   See [Graph Operations](orchestration.md).
 
 ### Embed-only workflow
 
