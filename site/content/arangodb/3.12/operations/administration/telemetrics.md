@@ -7,7 +7,8 @@ description: >-
   being utilized, but you can disable this data collection
 ---
 {{< info >}}
-Telemetrics have been removed in v3.12.10.
+Telemetrics have been removed in v3.12.10. The information on this page only
+applies to earlier versions.
 {{< /info >}}
 
 ArangoDB gathers metrics by default, to identify the primary usage patterns and

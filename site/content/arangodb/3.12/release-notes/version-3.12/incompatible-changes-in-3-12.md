@@ -1132,9 +1132,11 @@ You should check for the following things in particular:
 <small>Removed in: v3.12.10</small>
 
 ArangoDB gathered anonymous information on its usage and feature utilization
-since v3.11.0 unless disabled. These telemetrics have now been removed,
-including the `--server.telemetrics-api` startup option. The option is still
-recognized but doesn't have any effect anymore.
+since v3.11.0 unless disabled. These telemetrics have now been removed.
+
+The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
+startup options are obsolete. They are still recognized but don't have any
+effect anymore.
 
 ## HTTP RESTful API
 
