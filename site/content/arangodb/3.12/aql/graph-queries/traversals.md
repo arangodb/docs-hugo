@@ -303,9 +303,8 @@ and the index hints for traversals cannot be forced.
 
 This option is only used for traversals with `order: "weighted"`.
 
-Specifies the name of an attribute that is used to look up the weight of an edge
-(string). A `.` is interpreted as a literal dot, which means only top-level
-attributes are supported.
+The edge attribute to use as the weight (string). A `.` is interpreted as a
+literal dot, which means only top-level attributes are supported.
 
 If no attribute is specified, or if it is not present in the edge document, or
 if it has a non-numeric value, then the `defaultWeight` is used.
