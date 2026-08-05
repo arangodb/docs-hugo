@@ -4,6 +4,7 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.4.0
+  trivy: arangodb/trivy-scan@1.1.2
 
 parameters:
   workflow:
@@ -137,3 +138,15 @@ workflows:
   setup:
     jobs:
       - generate-config
+      # Reports fixable CRITICAL/HIGH CVEs in the toolchain's dependency
+      # manifests. Warn-only: findings do not fail the job. The job does fail
+      # when the manifest it expects is no longer scanned, so the dependency
+      # surface cannot silently drop out of scope.
+      - trivy/scan-fs:
+          name: dependency-cve-scan
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          report-severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          fail-on-findings: false
+          expect-targets: toolchain/arangoproxy/go.mod

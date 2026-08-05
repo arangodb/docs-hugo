@@ -1,5 +1,5 @@
 baseURL: "https://docs.arango.ai/"
-languageCode: "en-us"
+locale: "en-us"
 title: "Arango Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
@@ -72,12 +72,6 @@ caches:
   assets:
     dir: :resourceDir/_gen
     maxAge: -1
-  getcsv:
-    dir: :cacheDir/:project
-    maxAge: 0
-  getjson:
-    dir: :cacheDir/:project
-    maxAge: -1
   getresource:
     dir: :cacheDir/:project
     maxAge: 0
@@ -87,6 +81,13 @@ caches:
   modules:
     dir: :cacheDir/modules
     maxAge: -1
+
+security:
+  http:
+    methods:
+      - (?i)POST
+    urls:
+      - ^http://192\.168\.(?:129|130)\.129:8080/
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
