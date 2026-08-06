@@ -1432,6 +1432,17 @@ Up to v3.12.9, file access is exclusively controlled by
 `--javascript.files-allowlist` with no corresponding denylist. A
 `--javascript.files-denylist` option was added in v3.12.10.
 
+### No storage engine selection
+
+<small>Introduced in: v3.12.10</small>
+
+The `--server.storage-engine` startup option is now obsolete. ArangoDB supports
+RocksDB as the only storage engine since v3.7.0 and therefore this option is not
+useful.
+
+The option no longer has an effect but it's still recognized to avoid causing a
+fatal error on startup if you specify it.
+
 ### JavaScript endpoint access validated against request URLs only
 
 <small>Introduced in: v3.12.10</small>
@@ -1454,7 +1465,7 @@ until you upgrade to v3.12.10 or later, to work around the issue of having to
 match both the normalized endpoint and full request URL.
 
 See [JavaScript security options](../../components/tools/arangodb-shell/details.md#url-access)
-for details examples.
+for detailed examples.
 
 ## Client tools
 
