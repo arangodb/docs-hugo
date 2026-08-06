@@ -1127,6 +1127,17 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
+### Telemetrics removed
+
+<small>Removed in: v3.12.10</small>
+
+ArangoDB gathered anonymous information on its usage and feature utilization
+since v3.11.0 unless disabled. These telemetrics have now been removed.
+
+The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
+startup options are obsolete. They are still recognized but don't have any
+effect anymore.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1368,6 +1379,30 @@ of disallowing everything:
 Up to v3.12.9, file access is exclusively controlled by
 `--javascript.files-allowlist` with no corresponding denylist. A
 `--javascript.files-denylist` option was added in v3.12.10.
+
+### JavaScript endpoint access validated against request URLs only
+
+<small>Introduced in: v3.12.10</small>
+
+The `--javascript.endpoints-allowlist` and `--javascript.endpoints-denylist`
+startup options are now exclusively matched against the full request URL as
+used in the JavaScript code, like `http://example.com:8000/path?query=1`.
+
+Up to v3.12.8, a request was also permitted if the normalized endpoint of the
+request matched instead, using a `tcp://host:port` respectively
+`ssl://host:port` notation with the default port added if not specified in the
+URL. This was supported for backward compatibility. In v3.12.9, the request URL
+**and** the normalized endpoint had to match, which could unexpectedly deny
+requests.
+
+If your patterns are written for the endpoint notation, you need to change them
+to match request URLs, for instance `^tcp://example\.com:80$` to
+`^http://example\.com(:80)?/`. If you use v3.12.9, you can specify both patterns
+until you upgrade to v3.12.10 or later, to work around the issue of having to
+match both the normalized endpoint and full request URL.
+
+See [Security options](../../operations/security/security-options.md#url-access)
+for detailed examples.
 
 ## Client tools
 

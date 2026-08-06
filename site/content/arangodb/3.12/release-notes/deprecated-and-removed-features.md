@@ -119,6 +119,10 @@ detailed information about breaking changes before upgrading.
   transaction with all its operations. You can therefore put logic on the
   client-side if it's too complex to port to AQL.
 
+- **Telemetrics**:\
+  ArangoDB gathered anonymous information on its usage and feature utilization
+  since v3.11.0 unless disabled. Telemetrics have been removed in v3.12.10.
+
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.

@@ -7,6 +7,7 @@ node_modules/
 /.vs
 *.log
 
+/site/.hugo_build.lock
 /site/data/*/api-docs.json
 /site/data/*/*openapi.json
 /site/public/

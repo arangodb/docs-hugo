@@ -2996,6 +2996,17 @@ state of the vector indexes.
 | `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing. |
 | `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server. |
 
+### HTTP status code metric
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
