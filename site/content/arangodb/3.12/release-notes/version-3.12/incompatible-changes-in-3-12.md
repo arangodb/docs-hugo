@@ -1151,8 +1151,9 @@ forms of the same text – as the same value, and remove a condition it consider
 a duplicate. The optimizer now uses a byte-wise comparison as well, in line with
 how the query evaluates these operators.
 
-This can change the results of queries that compare equality against strings
-which are Unicode-equivalent but differently encoded. Such queries now return
+This can change the results of queries that use the `==` or `!=` operator, or
+one of their array comparison variants, against strings which are
+Unicode-equivalent but differently encoded. Such queries now return
 what the unoptimized comparison would return. If you rely on comparing strings
 in a Unicode-aware manner, normalize them to the same form, either before
 storing them or in the query.
