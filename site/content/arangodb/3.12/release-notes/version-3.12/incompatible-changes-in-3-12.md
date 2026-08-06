@@ -1151,11 +1151,10 @@ nevertheless but cannot be used for queries.
 Up to v3.12.9, the index creation reports an error in this case, like
 `ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such as
 `ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the index creation is
-reported as successful. The response respectively return value has the
-`trainingState` set to `"unusable"` and the reason for the failed training in
-the `errorMessage` attribute. This affects the `POST /_api/index` endpoint as
-well as `db.<collection>.ensureIndex()` in _arangosh_ and the equivalent driver
-methods.
+reported as successful. The response has the `trainingState` set to `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute. This
+affects the `POST /_api/index` endpoint as well as `db.<collection>.ensureIndex()`
+in _arangosh_ and the equivalent driver methods.
 
 If your application relies on an exception or an error response to detect that
 the training of a synchronously created vector index failed, you need to check
