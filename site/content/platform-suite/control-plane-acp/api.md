@@ -240,7 +240,11 @@ curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-g
   -H "Authorization: Bearer <your-bearer-token>" \
   -H "Content-Type: application/json" \
   -d '{
-    "env": { "model_name": "<new-model-name>" },
+    "env": {
+      "db_name": "your_database_name",
+      "project_name": "your_project_name",
+      "chat_model": "<new-chat-model>"
+    },
     "labels": { "key1": "value1" }
   }'
 ```
@@ -248,10 +252,19 @@ curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-g
 The request body is optional. Omitting it (or sending `{}`) triggers an upgrade
 to the latest chart version with no configuration changes.
 
-- **env** (optional): Updated service-specific environment variables (for
-  example, `model_name` for an LLM Host service). Replaces the current values.
+- **env** (optional): Updated service-specific environment variables. The object
+  **replaces** the current `env` rather than merging into it, so send every
+  value the service needs, not only the ones you are changing. The example above
+  resends `db_name` and `project_name` for that reason, changing only
+  `chat_model`.
 - **labels** (optional): Updated key-value pairs used to filter and identify
   the service in the platform.
+
+{{< warning >}}
+Because `env` is replaced wholesale, any installation value you leave out of the
+request is dropped. Retrieve the service's current configuration before you
+upgrade it, and send the full set of values it was installed with.
+{{< /warning >}}
 
 ---
 

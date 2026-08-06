@@ -53,8 +53,10 @@ reclustering](#partition-divergence-and-reclustering).
 | Update | [`POST /v1/graph/update`](reference/orchestration.md#update-documents) | Replace the content of a document that already exists |
 | Recluster | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) | Refresh Layer 3 communities after a FullGraphRAG partition has drifted |
 
-Every IGU operation starts in Layers 1 and 2 (AutoGraph) and reaches Layer 3
-through the Importer.
+Insert, delete, and update start in Layers 1 and 2 (AutoGraph) and reach Layer 3
+through the Importer. Recluster skips that first leg: it names Layer 3
+partitions directly and only schedules Importer work, writing the reset
+divergence state back on success.
 
 This page covers the concepts: when to use IGU, how it compares with a rebuild,
 and how partition divergence is measured. The request and response details of
@@ -142,10 +144,17 @@ flowchart TD
 2. **Materialize Layer 3.** After an insert or a successful update, run
    [targeted orchestration](reference/orchestration.md) with the returned
    `rag_partition_id` and `file_id` so the knowledge graph reflects the new
-   content. A delete schedules its own Layer 3 cleanup in the background.
-3. **Check divergence.** Each operation recomputes a `divergence_score` for
-   the affected partition and sets `needs_reclustering` when the score exceeds
-   the partition's threshold.
+   content. This assumes File Manager input: a document submitted as inline
+   `content` gets no `file_id`, so it cannot be targeted and has to be
+   materialized by orchestrating the whole partition instead - see
+   [Identifying documents for Layer 3](#identifying-documents-for-layer-3).
+   A delete schedules its own Layer 3 cleanup in the background.
+3. **Check divergence.** On a **FullGraphRAG** partition, each operation
+   recomputes a `divergence_score` and sets `needs_reclustering` when the score
+   exceeds the partition's threshold. **VectorRAG** partitions have nothing to
+   measure and are never flagged, so this step and the next one do not apply to
+   them - see [Partition divergence and
+   reclustering](#partition-divergence-and-reclustering).
 4. **Recluster if you want to.** When the flag is `true` and you decide the
    cost is worthwhile, call
    [recluster](reference/orchestration.md#trigger-reclustering) with the
@@ -188,10 +197,13 @@ document](../importer/incremental-updates.md#updating-a-document).
 ## Partition divergence and reclustering
 
 After every insert, delete, or update, AutoGraph measures how far each affected
-Layer 3 partition has drifted from the state it was in at its last Leiden
-clustering. The result is a **`divergence_score`**, persisted on the
+**FullGraphRAG** Layer 3 partition has drifted from the state it was in at its
+last Leiden clustering. The result is a **`divergence_score`**, persisted on the
 partition's `rags` strategy profile and returned on the per-file IGU outcome
 when available.
+
+Everything in this section - the score, the threshold, the flag, and
+reclustering - applies to FullGraphRAG partitions only.
 
 Divergence is a **signal, not an action**. AutoGraph never reclusters on its
 own. When the score crosses the partition's threshold, it sets

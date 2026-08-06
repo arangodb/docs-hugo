@@ -340,10 +340,15 @@ invalid target rejects the whole batch before anything is mutated.
 }
 ```
 
-As with insert, supply either base64 `content` or a File Manager `file_id`. Use
-`file_id` if you intend to materialize the replacement in Layer 3, because
-targeted orchestration can only name documents that have one (see
-[Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3)).
+### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `files` | object[] | Yes | Documents to replace. Must be non-empty, with no duplicate `doc_name` or `file_id` values. |
+| `files[].doc_name` | string | Yes | File name of the document to replace. Must match the File Manager file name when `file_id` is used. |
+| `files[].content` | string | No | Replacement bytes, base64-encoded. Provide either `content` or `file_id`. No `file_id` is generated for inline content, so the replacement cannot be named in a targeted orchestration - see [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
+| `files[].file_id` | string | No | File Manager id to fetch the replacement from. Preferred over inline content, and required if you intend to materialize the replacement in Layer 3. |
+| `module` | string | Conditional | Module the targets belong to. Required unless the project has exactly one module. When omitted in a single-module project, the `doc_name`s resolve inside that module before anything is mutated. |
 
 ### Immediate response
 
