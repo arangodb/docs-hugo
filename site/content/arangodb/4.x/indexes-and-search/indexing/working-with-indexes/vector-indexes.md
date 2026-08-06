@@ -82,8 +82,15 @@ centroids and the quality of vector search thus degrades.
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
 
-  If the option is disabled, the call returns only after the index is
-  ready (but timeouts may occur), or if an error is encountered.
+  If the option is disabled, the call returns only after the index training has
+  finished (but timeouts may occur).
+
+  - Up to v3.12.9, the call returns an error if the training fails, for example,
+    because there is not enough training data. The index is created nevertheless
+    but stays `"unusable"`.
+  - From v3.12.10 onward, the call succeeds and the reported `trainingState` is
+    `"unusable"`, with the reason for the failed training in the `errorMessage`
+    attribute.
 - **storedValues** (array of strings, introduced in v3.12.7):
   Store additional attributes in the index.
 
