@@ -70,7 +70,7 @@ Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `project_name`: The project name created via the
    [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
+  [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -136,7 +136,7 @@ Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph is stored
 - `project_name`: The project name created via the
   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
+  [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
@@ -220,7 +220,7 @@ Where:
 - `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
 - `project_name`: The project name created via the
   [web interface](../graphrag/web-interface.md#create-a-graphrag-project) or
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
+  [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
   This name is used as a prefix for all ArangoDB collections (for example, a
   project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
 - `chat_api_provider`: Specifies which LLM provider to use for language model services
