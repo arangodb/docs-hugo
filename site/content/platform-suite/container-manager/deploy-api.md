@@ -40,9 +40,13 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/global/byoc
 |-------|-------------|----------|
 | `name` | Application name identifier (alphanumeric, hyphens, underscores) | Yes |
 | `version` | Application version (e.g., `1.0.0`) | Yes |
-| `language` | Programming language: `python` | Yes |
+| `language` | Programming language: `python` or `nodejs` | Yes |
 | `type` | Deployment type: `Service` | Yes |
 | `file` | The `.tar.gz` archive file | Yes |
+
+The `language` value must match the runtime of the base image you deploy with:
+use `python` with the `py12*` images and `nodejs` with the `node22base` image
+(see [Available Base Images](#available-base-images)).
 
 **Success Response:**
 
@@ -92,11 +96,12 @@ curl -X POST "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/uds" \
 
 ### Available Base Images
 
-| Image Name | Description |
-|------------|-------------|
-| `py12base` | Python 3.12 base runtime |
-| `py12torch` | Python 3.12 with PyTorch |
-| `py12cugraph` | Python 3.12 with cuGraph |
+| Image Name | Description | Upload `language` |
+|------------|-------------|-------------------|
+| `py12base` | Python 3.12 base runtime | `python` |
+| `py12torch` | Python 3.12 with PyTorch | `python` |
+| `py12cugraph` | Python 3.12 with cuGraph | `python` |
+| `node22base` | Node.js 22 base runtime | `nodejs` |
 
 ## Deploy an Image-Based Service
 
@@ -201,7 +206,7 @@ Get a list of all uploaded services:
 | Parameter | Description | Required |
 |-----------|-------------|----------|
 | `name` | Filter by service name | No |
-| `language` | Filter by language (`python`) | No |
+| `language` | Filter by language (`python` or `nodejs`) | No |
 | `type` | Filter by type (`Service` or `Job`) | No |
 | `limit` | Maximum results to return (default: 100) | No |
 | `offset` | Pagination offset (default: 0) | No |
@@ -308,7 +313,8 @@ The file content is streamed back with `Content-Type: application/octet-stream`.
 ### Code-Based Deployment
 
 A complete workflow for uploading and deploying a database-scoped service
-from a code package:
+from a code package. The example uses a Python service. For a Node.js service,
+upload with `language=nodejs` and deploy with `"base_image": "node22base"`:
 
 ```bash
 #!/bin/bash
