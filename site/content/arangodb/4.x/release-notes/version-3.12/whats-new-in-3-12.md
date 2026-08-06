@@ -1662,8 +1662,8 @@ has been added.
 
 <small>Introduced in: v3.12.6</small>
 
-Vector indexes now support filtering. You can add `FILTER` operations between
-`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Vector indexes now support filtering. You can add a single `FILTER` operation
+between `FOR` and `SORT` that is then applied during the lookup in the vector index.
 Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
 as many neighboring Voronoi cells as necessary, but it rather considers only as
 many as configured via the `nProbes` parameter. Example:
