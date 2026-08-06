@@ -26,9 +26,9 @@ interactive interfaces.
 {{< /tip >}}
 
 {{< warning >}}
-Streaming is not compatible with Triton Inference Server. Streaming is only
-supported when using OpenAI, OpenAI-compatible APIs (including corporate LLMs),
-or OpenRouter providers.
+Streaming is not compatible with Triton Inference Server. It is only supported
+with the OpenAI-compatible providers, `openai` and `custom` — the latter
+covering OpenRouter, corporate LLMs, and any other compatible endpoint.
 {{< /warning >}}
 
 {{< info >}}

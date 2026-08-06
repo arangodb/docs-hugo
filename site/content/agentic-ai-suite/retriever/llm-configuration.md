@@ -44,13 +44,18 @@ environment. For the models served through Triton, see
 
 The Retriever service supports the following provider configurations:
 
-1. **OpenAI-compatible for Chat, OpenAI for Embeddings**: Use the OpenAI API
-   (`openai`), or any other OpenAI-compatible endpoint (`custom`), for chat, and
-   OpenAI for embeddings.
-2. **Triton for Chat, Triton for Embeddings**: Use Triton for both chat and embeddings.
+1. **OpenAI-compatible for chat and embeddings**: Use the OpenAI API (`openai`)
+   or any other OpenAI-compatible endpoint (`custom`) for chat and for
+   embeddings. The two values can be mixed, for example `custom` chat on
+   OpenRouter with `openai` embeddings, or `custom` for both when chat and
+   embeddings come from the same third-party endpoint such as Azure.
+2. **Triton for chat and embeddings**: Use Triton for both chat and embeddings.
 
 {{< warning >}}
-Any other provider combinations will result in a configuration error. The system will reject invalid combinations.
+Triton cannot be combined with an OpenAI-compatible provider: if one of
+`chat_api_provider` and `embedding_api_provider` is `"triton"`, the other must
+be as well. The service rejects any other combination with a configuration
+error.
 {{< /warning >}}
 
 **URL Defaults**: When using the `openai` provider, `chat_api_url` and `embedding_api_url` default to `"https://api.openai.com/v1"` if not specified. For the `custom` and `triton` providers, these URLs are required and must be explicitly provided.
