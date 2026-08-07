@@ -19,10 +19,12 @@
         </a>
       </div>
     </div>
+    <a href="{{ .Site.Home.RelPermalink }}" class="home-link docs-home is-current" aria-label="Docs home">
+      <i class="fas fa-home" aria-hidden="true"></i><span>Docs home</span>
+    </a>
   </div>
   <div class="container-right" style="display: hidden;"></div>
   <div class="search-and-version-container" >
-    <a href="{{ .Site.Home.RelPermalink }}" class="home-link is-current" aria-label="Go to home page"></a>
     <div class="docsearch"></div>
     {{ partialCached "inkeep-widget.html" . -}}
   </div>
