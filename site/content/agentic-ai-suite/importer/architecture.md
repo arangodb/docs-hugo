@@ -185,9 +185,12 @@ AutoGraph orchestration.
    terminal job status before submitting again.
 4. **Match `embedding_dim` to the deployed embedding model**. Mismatches
    cause vector-index creation to fail at runtime.
-5. **Keep chat and embedding providers aligned** - both `openai` or both
-   `triton` on one instance. OpenAI-compatible vendors (OpenRouter, Azure,
-   private endpoints) use `openai` with a custom URL.
+5. **Don't mix Triton with OpenAI-compatible APIs** - if one of
+   `chat_api_provider` and `embedding_api_provider` is `triton`, both must be.
+   `openai` and `custom` can be combined freely. Reach OpenAI-compatible
+   vendors (OpenRouter, Azure, private endpoints) with the `custom` provider;
+   pointing `openai` at a non-OpenAI URL is not supported. See
+   [LLM Configuration](llm-configuration.md#using-openai-compatible-apis).
 6. **Prefer File Manager `file_id`s** for large files already on the platform
    instead of inline base64 payloads.
 7. **Plan for long-running jobs**. Graph build and vector-index training can
