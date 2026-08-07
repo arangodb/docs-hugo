@@ -1,11 +1,10 @@
 ---
-title: Embed Field in Collection
+title: AutoGraph Embed Field in Collection
 menuTitle: Embeddings
 description: >-
   Add embeddings to documents in any ArangoDB collection
 weight: 55
 ---
-
 ## Embed field in collection
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection" >}}

@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for jobs
+title: Job HTTP API
 menuTitle: Jobs
 weight: 80
 description: >-
-  The HTTP API for jobs lets you access the results of asynchronously executed
+  The HTTP interface for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
 # All /_api/job* endpoints are also available via /_admin/job*
 ---
@@ -824,8 +824,8 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 logJsonResponse(response);
 
-url = '/_api/job/' + queryId
-var response = logCurlRequest('DELETE', url, "");
+url = '/_api/job/' + queryId + '/cancel'
+var response = logCurlRequest('PUT', url, "");
 assert(response.code === 200);
 logJsonResponse(response);
 ```

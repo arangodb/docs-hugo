@@ -28,6 +28,10 @@ ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
 replication. You can upgrade normally, but any vector indexes created with
 v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
 
+Similarly, you cannot downgrade vector indexes created with v3.12.10 or later
+to v3.12.9 or older versions because of a new format version that is not
+backward compatible.
+
 If you need to downgrade, drop the vector indexes first and recreate them after
 the downgrade.
 
@@ -945,6 +949,22 @@ It is recommended to disable the feature explicitly with
 again disabled by default.
 {{< /warning >}}
 
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1, v3.12.6</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
 ## Optional elevation for GeoJSON Points
 
 <small>Introduced in: v3.11.14-2, v3.12.6</small>
@@ -1056,6 +1076,120 @@ For details, see:
 - [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
 - [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 
+## Rclone upgrades possibly requiring configuration changes
+
+<small>Introduced in: v3.12.9-2</small>
+
+Rclone is used by ArangoDB for uploading and downloading Hot Backups to and from
+object storage, often using cloud provider services like AWS's S3 or S3-compatible
+offerings.
+
+To transfer Hot Backups this way, rclone requires a configuration file to
+specify the provider, region, and so on. The configuration is typically
+backwards compatible, but behavioral changes on the provider side or of
+technical nature may require that you modify the configuration.
+
+The version of the bundled rclone has been updated in the ArangoDB hotfix releases
+3.12.9-2 and 3.12.9-4. These and later versions may therefore require action
+regarding the rclone configuration:
+
+| ArangoDB version | Rclone version    |
+|:-----------------|:------------------|
+| v3.12.9          | v1.65.2           |
+| v3.12.9-1        | v1.65.2           |
+| v3.12.9-2        | v1.73.5 (updated) |
+| v3.12.9-3        | v1.73.5           |
+| v3.12.9-4        | v1.74.3 (updated) |
+
+You should check for the following things in particular:
+
+- If you use AWS S3 and a region other than `us-east-1`, you need to either specify the
+  region in the `location_constraint` (e.g. `"location_constraint": "eu-central-1"`),
+  set `"no_check_bucket": "true"`, or both.
+
+  Otherwise, rclone makes a check with an unspecified location constraint which
+  AWS rejects (IllegalLocationConstraintException). This is caused by an upgrade
+  to the AWS SDK v2 in rclone v1.68.0.
+
+- If you use an S3-compatible provider like GCS, Ceph, MinIO, Wasabi, or older
+  gateways, uploads may fail unless you set `"use_data_integrity_protections": "false"`.
+
+  The upgrade to the AWS SDK v2 in rclone v1.68.0 changed the default algorithm
+  for data integrity checksums to CRC32/CRC64. While this is supported by AWS,
+  other S3-compatible providers may still expect MD5 and therefore fail. Later
+  rclone versions may automatically account for this quirk for certain providers.
+
+- If you use an S3-compatible provider, there may be quirks that rclone should
+  automatically handle for known providers. For example, `use_x_id` is disabled
+  for GCS. Other options that are auto-set per provider are `sign_accept_encoding`
+  and `use_multipart_uploads`.
+
+  You might need to force specific settings in case your provider is not known
+  to rclone and therefore doesn't handle specific quirks on its own.
+
+### Telemetrics removed
+
+<small>Removed in: v3.12.10</small>
+
+ArangoDB gathered anonymous information on its usage and feature utilization
+since v3.11.0 unless disabled. These telemetrics have now been removed.
+
+The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
+startup options are obsolete. They are still recognized but don't have any
+effect anymore.
+
+## String comparison in `FILTER` condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The `==` and `!=` operators as well as their array comparison variants compare
+strings byte-wise. However, the AQL query optimizer used a Unicode-aware
+comparison when it compared such conditions with each other while optimizing
+`FILTER` operations. It could therefore treat two strings that are
+Unicode-equivalent but encoded differently – like the NFC and NFD normalization
+forms of the same text – as the same value, and remove a condition it considered
+a duplicate. The optimizer now uses a byte-wise comparison as well, in line with
+how the query evaluates these operators.
+
+This can change the results of queries that use the `==` or `!=` operator, or
+one of their array comparison variants, against strings which are
+Unicode-equivalent but differently encoded. Such queries now return
+what the unoptimized comparison would return. If you rely on comparing strings
+in a Unicode-aware manner, normalize them to the same form, either before
+storing them or in the query.
+
+## Changed response for vector indexes that cannot be trained
+
+<small>Introduced in: v3.12.10</small>
+
+If you create a vector index with the `inBackground` option set to `false`, the
+call blocks until the index training has finished. If the training fails
+permanently, for example, because there is not enough training data or because
+the training would exceed the memory limit, then the index is created
+nevertheless but cannot be used for queries.
+
+Up to v3.12.9, the index creation reports an error in this case, like
+`ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such as
+`ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the index creation is
+reported as successful. The response has the `trainingState` set to `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute. This
+affects the `POST /_api/index` endpoint as well as `db.<collection>.ensureIndex()`
+in _arangosh_ and the equivalent driver methods.
+
+If your application relies on an exception or an error response to detect that
+the training of a synchronously created vector index failed, you need to check
+the `trainingState` attribute of the successful response instead. Errors that
+are not related to the training outcome, like a timeout while waiting for the
+index or a server shutdown, are still reported as errors.
+
+In cluster deployments, this can also affect index creation with `inBackground`
+set to `true`. Up to v3.12.9, the request can fail if the training of a shard's
+index fails while the Coordinator is still waiting for all shards to report the
+new index. From v3.12.10 onward, it succeeds in this case, too.
+
+See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+for details.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1121,6 +1255,32 @@ HTTP request was deprecated in v3.8.0 and has now been removed.
 To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
+
+### Obsolete replication APIs removed
+
+<small>Removed in: v3.12.10</small>
+
+Various endpoints related to replication functionality that is no longer
+used have been removed.
+
+This includes endpoints related to asynchronous replication like the
+global applier that provided the low-level mechanisms for the user-managed
+Leader/Follower Replication and the Agency-managed Active Failover
+deployment modes, both for single servers.
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
 
 ## JavaScript API
 
@@ -1268,8 +1428,44 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### No storage engine selection
+
+<small>Introduced in: v3.12.10</small>
+
+The `--server.storage-engine` startup option is now obsolete. ArangoDB supports
+RocksDB as the only storage engine since v3.7.0 and therefore this option is not
+useful.
+
+The option no longer has an effect but it's still recognized to avoid causing a
+fatal error on startup if you specify it.
+
+### JavaScript endpoint access validated against request URLs only
+
+<small>Introduced in: v3.12.10</small>
+
+The `--javascript.endpoints-allowlist` and `--javascript.endpoints-denylist`
+startup options are now exclusively matched against the full request URL as
+used in the JavaScript code, like `http://example.com:8000/path?query=1`.
+
+Up to v3.12.8, a request was also permitted if the normalized endpoint of the
+request matched instead, using a `tcp://host:port` respectively
+`ssl://host:port` notation with the default port added if not specified in the
+URL. This was supported for backward compatibility. In v3.12.9, the request URL
+**and** the normalized endpoint had to match, which could unexpectedly deny
+requests.
+
+If your patterns are written for the endpoint notation, you need to change them
+to match request URLs, for instance `^tcp://example\.com:80$` to
+`^http://example\.com(:80)?/`. If you use v3.12.9, you can specify both patterns
+until you upgrade to v3.12.10 or later, to work around the issue of having to
+match both the normalized endpoint and full request URL.
+
+See [Security options](../../operations/security/security-options.md#url-access)
+for detailed examples.
 
 ## Client tools
 

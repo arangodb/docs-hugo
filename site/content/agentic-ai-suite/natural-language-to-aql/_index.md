@@ -6,7 +6,6 @@ description: >-
   Query your ArangoDB database using natural language with the AQLizer feature,
   which automatically translates plain language into AQL queries using generative AI
 ---
-
 {{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 
 ## Introduction

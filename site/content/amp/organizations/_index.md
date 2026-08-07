@@ -1,5 +1,5 @@
 ---
-title: Organizations in the Arango Managed Platform (AMP)
+title: Organizations in AMP
 menuTitle: Organizations
 weight: 10
 description: >-

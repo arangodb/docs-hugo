@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for server statistics
+title: Statistics HTTP API
 menuTitle: Statistics
 weight: 10
 description: >-

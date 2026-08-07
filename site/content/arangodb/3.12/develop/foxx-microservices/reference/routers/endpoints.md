@@ -2,7 +2,9 @@
 title: Foxx Endpoints
 menuTitle: Endpoints
 weight: 5
-description: ''
+description: >-
+  Endpoints let you attach metadata and validation to mounted routes,
+  middleware, and child routers
 ---
 Endpoints are returned by the `use`, `all`
 and HTTP verb (e.g. `get`, `post`) methods of [routers](_index.md)

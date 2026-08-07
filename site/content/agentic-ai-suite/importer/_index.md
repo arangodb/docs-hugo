@@ -6,7 +6,6 @@ description: >-
   stored in ArangoDB, ready for semantic search and Retriever-driven Q&A
 weight: 6
 ---
-
 ## What is the Importer?
 
 The Importer service turns documents into a **knowledge graph** stored in
@@ -44,7 +43,7 @@ See [Architecture](architecture.md) for the collections each mode populates.
 
 ## Next steps
 
-- [**Quickstart**](quickstart.md): Prerequisites, installation, and your
+- [**Setup**](setup.md): Prerequisites, installation, and your
   first import call.
 - [**Architecture**](architecture.md): Knowledge-graph collections, vector
   indexes, and the async-job lifecycle.

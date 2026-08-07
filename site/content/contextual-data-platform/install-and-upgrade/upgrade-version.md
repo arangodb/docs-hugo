@@ -1,5 +1,5 @@
 ---
-title: Upgrade the version of the Arango Contextual Data Platform (v4.0)
+title: Upgrade the version of the data platform
 menuTitle: Upgrade version
 weight: 20
 description: >-
