@@ -18,7 +18,7 @@
        surrounding prose instead of a heading; headings come back automatically
        if a second provider is ever added. */ -}}
 {{- $service := .Get 0 -}}
-{{- $data := index site.Data "llm_models" -}}
+{{- $data := index hugo.Data "llm_models" -}}
 {{- $typeLabels := dict "chat" "Chat (LLM)" "embedding" "Embedding" -}}
 {{- /* Models must be supported by all of these to appear in the suite-wide list. */ -}}
 {{- $core := slice "importer" "autograph" "retriever" -}}
