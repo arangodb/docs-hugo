@@ -29,9 +29,9 @@ how to apply it for each flow.
 
 {{< info >}}
 If you run a **standalone ArangoDB** deployment (not managed by Kubernetes),
-see the [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md)
+see the [ArangoDB License Management](../arangodb/4.x/operations/administration/license-management.md)
 page instead. That page also hosts the
-[container walkthrough](../arangodb/4.0/operations/administration/license-management.md#walkthrough-generate-a-key-in-a-container)
+[container walkthrough](../arangodb/4.x/operations/administration/license-management.md#walkthrough-generate-a-key-in-a-container)
 for generating a license key with the Platform CLI tool — which is also what
 you use on the internet-connected machine in the air-gapped flow.
 {{< /info >}}
@@ -199,7 +199,7 @@ applies the updated key on its next reconciliation cycle.
 ## Verify the license
 
 To check the current license status of a running deployment, use any of the
-interfaces described in [Check the license](../arangodb/4.0/operations/administration/license-management.md#check-the-license)
+interfaces described in [Check the license](../arangodb/4.x/operations/administration/license-management.md#check-the-license)
 on the ArangoDB License Management page (HTTP API, arangosh, or a driver).
 The Contextual Data Platform does not provide a dedicated license view or
 Swagger UI, so use one of those interfaces directly against the ArangoDB
@@ -207,11 +207,11 @@ endpoint.
 
 For monitoring the remaining validity automatically, the
 `arangodb_license_expires` metric is exposed by Coordinators and DB-Servers.
-See the [Metrics API](../arangodb/4.0/develop/http-api/monitoring/metrics.md).
+See the [Metrics API](../arangodb/4.x/develop/http-api/monitoring/metrics.md).
 
 ## Further reading
 
-- [ArangoDB License Management](../arangodb/4.0/operations/administration/license-management.md) —
+- [ArangoDB License Management](../arangodb/4.x/operations/administration/license-management.md) —
   command-line and API-based flows, including standalone (non-Kubernetes)
   deployments, and reference information about license status fields.
 - [`kube-arangodb` — Setting the License](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html) —

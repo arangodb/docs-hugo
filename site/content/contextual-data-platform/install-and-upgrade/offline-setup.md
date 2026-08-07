@@ -1,5 +1,5 @@
 ---
-title: Install the Arango Contextual Data Platform (v4.0) on-premises offline
+title: Install the data platform on-premises offline
 menuTitle: Offline setup
 weight: 10
 description: >-
@@ -289,11 +289,11 @@ spec:
   dbservers:
     count: 3
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   coordinators:
     count: 2
     args:
-      - --vector-index
+      - --vector-index  # For ArangoDB versions before 4.0.0
   license:
     secretName: arango-license-key
   # ...

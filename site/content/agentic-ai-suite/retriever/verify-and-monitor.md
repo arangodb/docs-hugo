@@ -1,11 +1,10 @@
 ---
-title: Verify and Monitor
+title: Verify and Monitor the Retriever
 menuTitle: Verify and Monitor
 description: >-
   Check service health and verify the status of your Retriever service
 weight: 50
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → **Verify**
 {{< /info >}}

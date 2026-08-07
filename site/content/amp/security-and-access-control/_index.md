@@ -1,5 +1,5 @@
 ---
-title: Security and access control in the Arango Managed Platform (AMP)
+title: Security and access control in AMP
 menuTitle: Security and Access Control
 weight: 45
 description: >-

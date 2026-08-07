@@ -1,11 +1,10 @@
 ---
-title: Execute Queries
+title: Execute Queries using the Retriever
 menuTitle: Execute Queries
 description: >-
   Learn how to execute different types of queries against your knowledge graph
 weight: 40
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → **Execute Queries** → [Verify](verify-and-monitor.md)
 {{< /info >}}
@@ -27,9 +26,9 @@ interactive interfaces.
 {{< /tip >}}
 
 {{< warning >}}
-Streaming is not compatible with Triton Inference Server. Streaming is only
-supported when using OpenAI, OpenAI-compatible APIs (including corporate LLMs),
-or OpenRouter providers.
+Streaming is not compatible with Triton Inference Server. It is only supported
+with the OpenAI-compatible providers, `openai` and `custom` — the latter
+covering OpenRouter, corporate LLMs, and any other compatible endpoint.
 {{< /warning >}}
 
 {{< info >}}

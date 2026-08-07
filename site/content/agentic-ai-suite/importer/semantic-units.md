@@ -1,11 +1,10 @@
 ---
-title: Process Images and Semantic Units
+title: Process Images and Semantic Units with the importer
 menuTitle: Semantic Units
 description: >-
   Extract and process images, web URLs, and multimedia content from your documents
 weight: 70
 ---
-
 ## Overview
 
 The Importer service includes advanced capabilities for processing multimedia
@@ -156,9 +155,10 @@ The semantic units feature supports:
 ### LLM Compatibility
 
 The semantic units processing works with all LLM providers:
-- **OpenAI**: GPT-5.4 Nano (default), GPT-4.1, GPT-4o, o3 (all models supported).
-- **OpenRouter**: Gemini Flash, Claude Sonnet (all models supported).
-- **Triton**: Mistral-Nemo-Instruct (all models supported).
+- **`openai`**: GPT-5.4 Nano (default), GPT-4.1, GPT-4o, o3 (all models supported).
+- **`custom`**: any OpenAI-compatible endpoint, for example Gemini Flash or
+  Claude Sonnet served through OpenRouter (all models supported).
+- **`triton`**: Mistral-Nemo-Instruct (all models supported).
 
 ### Image description model
 

@@ -9,22 +9,22 @@ aliases:
   - ../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3
   - ../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3
   - ../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3
-  - ../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3
+  - ../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3
   - ../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3
   - ../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4
   - ../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4
   - ../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4
-  - ../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4
+  - ../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4
   - ../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4
   - ../../arangodb/3.11/develop/integrations/spring-data-arangodb/migration
   - ../../arangodb/3.12/develop/integrations/spring-data-arangodb/migration
   - ../../arangodb/stable/develop/integrations/spring-data-arangodb/migration
-  - ../../arangodb/4.0/develop/integrations/spring-data-arangodb/migration
+  - ../../arangodb/4.x/develop/integrations/spring-data-arangodb/migration
   - ../../arangodb/devel/develop/integrations/spring-data-arangodb/migration
   - ../../arangodb/3.11/develop/integrations/spring-data-arangodb
   - ../../arangodb/3.12/develop/integrations/spring-data-arangodb
   - ../../arangodb/stable/develop/integrations/spring-data-arangodb
-  - ../../arangodb/4.0/develop/integrations/spring-data-arangodb
+  - ../../arangodb/4.x/develop/integrations/spring-data-arangodb
   - ../../arangodb/devel/develop/integrations/spring-data-arangodb
 ---
 Spring Data provides a consistent interface for

@@ -6,7 +6,6 @@ description: >-
   Ask questions about your database in natural language with Ada, the ArangoDB
   AI Digital Assistant integrated into the Arango Contextual Data Platform
 ---
-
 {{< embed-svg "Ada-Flow" "Ada end-to-end flow." >}}
 
 Ada is the ArangoDB AI Digital Assistant built into the Arango Contextual Data

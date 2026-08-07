@@ -2,7 +2,8 @@
 title: Services
 menuTitle: Services
 weight: 35
-description: ''
+description: >-
+  The screen for Foxx apps in the ArangoDB web interface
 ---
 The services section displays all installed Foxx applications. You can create new services
 or go into a detailed view of a chosen service.

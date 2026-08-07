@@ -1,12 +1,11 @@
 ---
-title: How to use the Reasoner in the Arango Contextual Data Platform web interface
+title: How to use the Reasoner in the web interface
 menuTitle: Web Interface
 weight: 10
 description: >-
   Step-by-step instructions for accessing, setting up, and using the Reasoner
-  from the Query Editor in the Arango Contextual Data Platform web interface
+  from the Query Editor in the Arango Contextual Data Platform UI
 ---
-
 The Reasoner is accessible directly from the **Query Editor** in the Arango
 Contextual Data Platform. It requires the Agentic AI Suite license.
 

@@ -1,12 +1,11 @@
 ---
-title: The File Manager of the Arango Contextual Data Platform
+title: File Manager
 menuTitle: File Manager
 weight: 25
 description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform
 ---
-
 The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
 the Agentic AI Suite for instance, such as for storing AI models and training-related

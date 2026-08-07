@@ -5,7 +5,6 @@ description: >-
   Learn how to import single or multiple documents to build your knowledge graph
 weight: 50
 ---
-
 This page covers the import endpoints and how to monitor running imports.
 Before reading it, make sure you've finished the
 [Setup](setup.md) (project created, service installed) and

@@ -1,5 +1,5 @@
 ---
-title: Use Cases
+title: Use Cases for AutoGraph
 menuTitle: Use Cases
 weight: 10
 description: >-
@@ -7,7 +7,6 @@ description: >-
   comparison with traditional RAG approaches, including business benefits 
   and practical applications
 ---
-
 AutoGraph enables AI agents and co-pilots across enterprise workflows where contextual 
 retrieval and domain-aware reasoning support human decisions.
 

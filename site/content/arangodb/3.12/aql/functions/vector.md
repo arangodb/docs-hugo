@@ -58,8 +58,8 @@ be found depends on the data as well as the search effort (see the `nProbe` opti
   undefined which one is selected.
 
 - In v3.12.4 and v3.12.5, you cannot have any `FILTER` operation between `FOR`
-  and `LIMIT` for pre-filtering. From v3.12.6 onward, you can add `FILTER`
-  operations between `FOR` and `SORT` that are then applied during the lookup in
+  and `LIMIT` for pre-filtering. From v3.12.6 onward, you can add a single `FILTER`
+  operations between `FOR` and `SORT` that is then applied during the lookup in
   the vector index. Example:
 
   ```aql

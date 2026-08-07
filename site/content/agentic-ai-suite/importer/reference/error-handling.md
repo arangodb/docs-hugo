@@ -6,7 +6,6 @@ description: >-
   Synchronous error codes, asynchronous failure markers, troubleshooting, and
   known limitations of the Importer service
 ---
-
 The Importer reports failures in two places:
 
 1. **Synchronous HTTP response** of the API call itself (status code + JSON body).

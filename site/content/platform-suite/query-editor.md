@@ -1,5 +1,5 @@
 ---
-title: The Query Editor of the Arango Contextual Data Platform
+title: Query Editor of the data platform
 menuTitle: Query Editor
 weight: 10
 description: >-
