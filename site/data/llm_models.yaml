@@ -1,0 +1,113 @@
+# Single source of truth for the LLM and embedding models supported across the
+# Agentic AI Suite. Rendered into pages by the `llm-models` shortcode, so update
+# models HERE rather than editing the lists inline on individual pages.
+#
+# This file is intentionally NOT versioned (no 3.11/4.0 subfolder).
+#
+# Valid service ids (see the `services` map below for display names):
+#   importer, retriever, autograph, nl2aql, graphrag, ada
+#
+# One provider is listed: `openai`, holding the recommended model list for the
+# Importer, Retriever, and AutoGraph services. The `api` field records how the
+# provider is reached.
+#
+# OpenRouter, Google Gemini, Anthropic, Azure and corporate LLMs are reached
+# through the `custom` provider value in the Importer, AutoGraph and Retriever,
+# with an explicit chat_api_url / embedding_api_url. NL2AQL has no `custom`
+# provider and uses `openai` plus a chat_api_url instead. No models beyond the
+# list below are officially recommended for any of them, so do not add provider
+# blocks for them.
+#
+# The `triton` provider value also exists in the services' configuration, but
+# its models are documented in the "Using Triton Inference Server" section of
+# each service's LLM Configuration page rather than here.
+#
+# Each model entry:
+#   name        model identifier as passed to the API / selected in the UI
+#   type        "chat" (LLM) or "embedding"
+#   services    list of service ids that support the model; rendered as the
+#               "Services" column of the suite-wide table, and used to filter
+#               the per-service tables
+#   default     optional; true if the service applies this model automatically
+#               when chat_model / the embedding model name is not set with the
+#               `openai` provider. Whether `custom` shares that fallback differs
+#               per service (AutoGraph does, the Importer does not), so it is
+#               documented on each service's page rather than here.
+#
+# Scope: every model documented as officially supported across the suite. The
+# Importer additionally recognizes a number of legacy OpenAI models (gpt-4,
+# gpt-3.5-turbo*, o1*, etc.) for token-budget auto-tuning; those are NOT listed
+# here as supported — see the Importer LLM Configuration page for that mapping.
+
+services:
+  importer: Importer
+  retriever: Retriever
+  autograph: AutoGraph
+  nl2aql: Natural Language to AQL
+  graphrag: GraphRAG
+  ada: Ada
+
+providers:
+  - name: OpenAI
+    id: openai
+    api: OpenAI-compatible
+    models:
+      - name: gpt-5.5
+        type: chat
+        services: [importer]
+      - name: gpt-5.4
+        type: chat
+        services: [importer]
+      - name: gpt-5.4-pro
+        type: chat
+        services: [importer]
+      - name: gpt-5.4-mini
+        type: chat
+        services: [importer, retriever, autograph, ada]
+      - name: gpt-5.4-nano
+        type: chat
+        services: [importer, retriever, autograph, graphrag]
+        default: true
+      - name: gpt-5
+        type: chat
+        services: [importer, retriever, autograph, nl2aql, ada]
+      - name: gpt-5-pro
+        type: chat
+        services: [importer]
+      - name: gpt-5-mini
+        type: chat
+        services: [importer, retriever, autograph, ada]
+      - name: gpt-5-nano
+        type: chat
+        services: [importer, retriever, autograph, ada]
+      - name: gpt-5.2
+        type: chat
+        services: [importer]
+      - name: gpt-5.2-pro
+        type: chat
+        services: [importer]
+      - name: gpt-5.1
+        type: chat
+        services: [importer]
+      - name: gpt-4.1
+        type: chat
+        services: [importer]
+      - name: gpt-4.1-mini
+        type: chat
+        services: [importer]
+      - name: gpt-4o
+        type: chat
+        services: [importer]
+      - name: gpt-4o-mini
+        type: chat
+        services: [importer]
+      - name: o3
+        type: chat
+        services: [importer, retriever, autograph, ada]
+      - name: text-embedding-3-small
+        type: embedding
+        services: [importer, retriever, autograph, graphrag]
+        default: true
+      - name: text-embedding-3-large
+        type: embedding
+        services: [importer, retriever, autograph]

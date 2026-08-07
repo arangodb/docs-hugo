@@ -116,8 +116,15 @@ paths:
                     write operations by not using an exclusive write lock for the duration
                     of the index creation.
 
-                    If the option is disabled, the call returns only after the index is
-                    ready (but timeouts may occur), or if an error is encountered.
+                    If the option is disabled, the call returns only after the index
+                    training has finished (but timeouts may occur).
+
+                    - Up to v3.12.9, the call returns an error if the training fails,
+                      for example, because there is not enough training data. The index
+                      is created nevertheless but stays `"unusable"`.
+                    - From v3.12.10 onward, the call returns a success response with the
+                      `trainingState` set to `"unusable"` and the reason for the failed
+                      training in the `errorMessage` attribute.
                   type: boolean
                   default: false
                 params:
@@ -488,6 +495,12 @@ paths:
                       An optional message with details about the
                       training state, for example, `"not enough training data for vector index"`.
                       Only present if there is a problem with the index.
+
+                      From v3.12.10 onward, if you create the index with
+                      `inBackground` set to `false` and the training fails, the index is
+                      still created and the response reports the reason for the failed
+                      training here, with the `trainingState` set to `"unusable"`.
+                      Up to v3.12.9, such a request fails with an error instead.
                     type: string
                   id:
                     description: |

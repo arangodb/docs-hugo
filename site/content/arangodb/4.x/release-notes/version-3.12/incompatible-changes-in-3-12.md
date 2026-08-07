@@ -1138,6 +1138,58 @@ The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
 startup options are obsolete. They are still recognized but don't have any
 effect anymore.
 
+## String comparison in `FILTER` condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The `==` and `!=` operators as well as their array comparison variants compare
+strings byte-wise. However, the AQL query optimizer used a Unicode-aware
+comparison when it compared such conditions with each other while optimizing
+`FILTER` operations. It could therefore treat two strings that are
+Unicode-equivalent but encoded differently – like the NFC and NFD normalization
+forms of the same text – as the same value, and remove a condition it considered
+a duplicate. The optimizer now uses a byte-wise comparison as well, in line with
+how the query evaluates these operators.
+
+This can change the results of queries that use the `==` or `!=` operator, or
+one of their array comparison variants, against strings which are
+Unicode-equivalent but differently encoded. Such queries now return
+what the unoptimized comparison would return. If you rely on comparing strings
+in a Unicode-aware manner, normalize them to the same form, either before
+storing them or in the query.
+
+## Changed response for vector indexes that cannot be trained
+
+<small>Introduced in: v3.12.10</small>
+
+If you create a vector index with the `inBackground` option set to `false`, the
+call blocks until the index training has finished. If the training fails
+permanently, for example, because there is not enough training data or because
+the training would exceed the memory limit, then the index is created
+nevertheless but cannot be used for queries.
+
+Up to v3.12.9, the index creation reports an error in this case, like
+`ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such as
+`ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the index creation is
+reported as successful. The response has the `trainingState` set to `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute. This
+affects the `POST /_api/index` endpoint as well as `db.<collection>.ensureIndex()`
+in _arangosh_ and the equivalent driver methods.
+
+If your application relies on an exception or an error response to detect that
+the training of a synchronously created vector index failed, you need to check
+the `trainingState` attribute of the successful response instead. Errors that
+are not related to the training outcome, like a timeout while waiting for the
+index or a server shutdown, are still reported as errors.
+
+In cluster deployments, this can also affect index creation with `inBackground`
+set to `true`. Up to v3.12.9, the request can fail if the training of a shard's
+index fails while the Coordinator is still waiting for all shards to report the
+new index. From v3.12.10 onward, it succeeds in this case, too.
+
+See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+for details.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1380,6 +1432,17 @@ Up to v3.12.9, file access is exclusively controlled by
 `--javascript.files-allowlist` with no corresponding denylist. A
 `--javascript.files-denylist` option was added in v3.12.10.
 
+### No storage engine selection
+
+<small>Introduced in: v3.12.10</small>
+
+The `--server.storage-engine` startup option is now obsolete. ArangoDB supports
+RocksDB as the only storage engine since v3.7.0 and therefore this option is not
+useful.
+
+The option no longer has an effect but it's still recognized to avoid causing a
+fatal error on startup if you specify it.
+
 ### JavaScript endpoint access validated against request URLs only
 
 <small>Introduced in: v3.12.10</small>
@@ -1402,7 +1465,7 @@ until you upgrade to v3.12.10 or later, to work around the issue of having to
 match both the normalized endpoint and full request URL.
 
 See [JavaScript security options](../../components/tools/arangodb-shell/details.md#url-access)
-for details examples.
+for detailed examples.
 
 ## Client tools
 
