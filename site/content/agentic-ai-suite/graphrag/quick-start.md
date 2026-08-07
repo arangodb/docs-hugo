@@ -2,6 +2,7 @@
 title: GraphRAG Quick Start
 menuTitle: Quick Start
 weight: 2
+draft: true
 description: >-
   Turn a document into a knowledge graph and ask it a question, end to end,
   using the GraphRAG web interface
@@ -60,5 +61,5 @@ Drive the same loop programmatically:
 ## Next steps
 
 - [Technical Overview](technical-overview.md): Architecture and services.
-- [Web Interface](web-interface.md): The full guided workflow.
+- [AutoGraph Studio](../autograph/web-interface.md): The full guided workflow.
 - [Tutorial Notebook](tutorial-notebook.md): Hands-on examples in Jupyter.

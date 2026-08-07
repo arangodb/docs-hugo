@@ -69,7 +69,10 @@ conceptual understanding.
 
 - **[GraphRAG Enterprise Use Cases](../autograph/use-cases.md)**: Understand the business value through real-world scenarios.
 - **[GraphRAG Technical Overview](technical-overview.md)**: Dive into the architecture, services, and implementation details.
-- **[GraphRAG Web Interface](web-interface.md)**: Try GraphRAG using the interactive web interface.
+- **[AutoGraph Studio](../autograph/web-interface.md)**: The guided web interface
+  for building a Context Graph and deploying retrievers. The standalone GraphRAG
+  workflow is no longer available in the web interface. To run it, use the
+  [Importer](../importer/) and [Retriever](../retriever/) APIs.
 - **[GraphRAG Tutorial using integrated Notebook servers](tutorial-notebook.md)**: Follow hands-on examples and implementation guidance via Jupyter Notebooks.
 
 For deeper implementation details, explore the individual services:

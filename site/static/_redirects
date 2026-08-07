@@ -220,6 +220,7 @@
 /agentic-ai-suite/reference/mlflow/                                             /agentic-ai-suite/private-llms/mlflow/                          301
 /agentic-ai-suite/reference/triton-inference-server/                            /agentic-ai-suite/private-llms/triton-inference-server/         301
 /agentic-ai-suite/reference/                                                    /agentic-ai-suite/private-llms/                                 301
+/agentic-ai-suite/graphrag/web-interface/                                       /agentic-ai-suite/autograph/web-interface/                      301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
