@@ -67,9 +67,11 @@ paths:
                     load the data first and then create the index to ensure that all documents
                     participate in the training process as the training is only executed once.
                     The training is triggered automatically if the vector index hasn't been
-                    trained yet and the number of documents to index exceeds the threshold of
-                    `nLists` documents. If `sparse` is set to `true`, documents without the
-                    vector embedding field are not counted toward this threshold.
+                    trained yet and the number of documents to index exceeds a threshold.
+                    The threshold is the `nLists` value if you set a fixed number of
+                    centroids, and the `minNLists` value if you use the scaling mode of
+                    `nLists` (from v3.12.10 onward). If `sparse` is set to `true`, documents
+                    without the vector embedding field are not counted toward this threshold.
                     Check the `trainingState` to see if the index is
                     `"ready"` and `errorMessage` for the reason if it's not.
                   type: array
@@ -80,13 +82,15 @@ paths:
                 storedValues:
                   description: |
                     Store additional attributes in the index (introduced in v3.12.7).
-                    Unlike with other index types, this is not for covering projections
-                    with the index but for adding attributes that you filter on.
-                    This lets you make the lookup in the vector index more efficient
-                    because it avoids materializing documents twice, once for the
-                    filtering and once for the matches.
 
                     The maximum number of attributes that you can use in `storedValues` is 32.
+
+                    - Up to v3.12.9, these are not for covering projections with the index but for
+                      adding attributes that you filter on. This lets you make the lookup in the
+                      vector index more efficient because it avoids materializing documents twice,
+                      once for the filtering and once for the matches.
+                    - From v3.12.10 onward, these are also used to cover projections. This lets
+                      you return the attributes directly from the index without materialization.
                   type: array
                   uniqueItems: true
                   items:
@@ -112,8 +116,15 @@ paths:
                     write operations by not using an exclusive write lock for the duration
                     of the index creation.
 
-                    If the option is disabled, the call returns only after the index is
-                    ready (but timeouts may occur), or if an error is encountered.
+                    If the option is disabled, the call returns only after the index
+                    training has finished (but timeouts may occur).
+
+                    - Up to v3.12.9, the call returns an error if the training fails,
+                      for example, because there is not enough training data. The index
+                      is created nevertheless but stays `"unusable"`.
+                    - From v3.12.10 onward, the call returns a success response with the
+                      `trainingState` set to `"unusable"` and the reason for the failed
+                      training in the `errorMessage` attribute.
                   type: boolean
                   default: false
                 params:
@@ -123,7 +134,6 @@ paths:
                   required:
                     - metric
                     - dimension
-                    - nLists
                   properties:
                     metric:
                       description: |
@@ -146,13 +156,101 @@ paths:
                         into, respectively the number of centroids in the index. What value to choose
                         depends on the data distribution and chosen metric. According to
                         [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should scale
-                        sublinearly with the document count. The recommendation for ArangoDB is to use
-                        approximately `15 * sqrt(N)` where `N` is the number of documents in the collection,
-                        respectively the number of documents in the shard for cluster deployments.
+                        sublinearly with the document count.
                         A bigger value produces more correct results but increases the training time
                         and thus how long it takes to build the index. It cannot be bigger than the
                         number of documents.
-                      type: integer
+
+                        Up to v3.12.9, you need to set this attribute to a number and it is
+                        required. From v3.12.10 onward, it is optional and you can either set a
+                        fixed number of centroids or let ArangoDB compute the number from the
+                        document count:
+
+                        - **Fixed mode** (number): Use exactly this number of centroids, for
+                          example `100`. The recommendation for ArangoDB is to use approximately
+                          `15 * sqrt(N)` where `N` is the number of documents in the collection,
+                          respectively the number of documents in the shard for cluster deployments.
+                        - **Scaling mode** (object, introduced in v3.12.10): Compute the number of
+                          centroids from the number of documents at training time. In cluster
+                          deployments, the computation is done per shard using the document count
+                          of the respective shard. This is especially useful if the data
+                          distribution across shards is unequal. The attributes of the object are
+                          the following:
+                          - `strategy` (string): How to compute the number of centroids if no tier
+                            applies. The only available value is `"autoSqrt"`, which computes
+                            `max(minNLists, multiplier * sqrt(N))` where `N` is the number of
+                            documents of the shard.
+                          - `multiplier` (number): The factor to use in the `autoSqrt` strategy.
+                            It must be `1` or greater.
+                          - `minNLists` (number): The lower bound for the number of centroids
+                            computed by the `autoSqrt` strategy. It must be `1` or greater.
+                            It is also the number of documents required to trigger the training.
+                          - `tiers` (array of objects, _optional_): Fixed numbers of centroids for
+                            large document counts. The tier with the highest `threshold` that is
+                            less than or equal to the number of documents wins and its `fixedValue`
+                            is used instead of computing a value with the `strategy`. Each tier has
+                            a `threshold` and a `fixedValue` attribute, both of which must be `1`
+                            or greater.
+
+                          If you specify `nLists` as an object, you need to set `strategy`,
+                          `multiplier`, and `minNLists`. Only `tiers` is optional.
+
+                        If you don't specify `nLists` at all, the following scaling specification
+                        is used:
+
+                        ```json
+                        {
+                          "nLists": {
+                            "strategy": "autoSqrt",
+                            "multiplier": 4,
+                            "minNLists": 2,
+                            "tiers": [
+                              { "threshold": 1000000,   "fixedValue": 16384 },
+                              { "threshold": 10000000,  "fixedValue": 65536 },
+                              { "threshold": 300000000, "fixedValue": 131072 }
+                            ]
+                          }
+                        }
+                        ```
+
+                        It resolves to the following numbers of centroids for `N` documents:
+
+                        - `N` < 1,000,000: `max(2, 4 * sqrt(N))`
+                        - 1,000,000 ≤ `N` < 10,000,000: `16384`
+                        - 10,000,000 ≤ `N` < 300,000,000: `65536`
+                        - `N` ≥ 300,000,000: `131072`
+
+                        Note that the scaling mode cannot resolve a number of centroids for an
+                        empty collection respectively shard. The index stays `"unusable"` in
+                        this case.
+                      # TODO: polymorphic structural description? Complex to render
+                      #oneOf:
+                      #  - type: integer
+                      #    minimum: 1
+                      #  - type: object
+                      #    required: [strategy, multiplier, minNLists]
+                      #    properties:
+                      #      strategy:
+                      #        type: string
+                      #        enum: [autoSqrt]
+                      #      multiplier:
+                      #        type: integer
+                      #        minimum: 1
+                      #      minNLists:
+                      #        type: integer
+                      #        minimum: 1
+                      #      tiers:
+                      #        type: array
+                      #        items:
+                      #          type: object
+                      #          required: [threshold, fixedValue]
+                      #          properties:
+                      #            threshold:
+                      #              type: integer
+                      #              minimum: 1
+                      #            fixedValue:
+                      #              type: integer
+                      #              minimum: 1
                     defaultNProbe:
                       description: |
                         How many neighboring centroids to
@@ -199,7 +297,17 @@ paths:
                         If you don't specify an index factory, the value is equivalent to
                         `IVF<nLists>,Flat`. For more information on how to create these custom
                         indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
+
+                        The number of centroids that the factory string specifies needs to match
+                        the `nLists` value, otherwise the training fails and the index stays
+                        `"unusable"`. From v3.12.10 onward, you can use a `{}` placeholder in
+                        place of the number to avoid this problem, like `"IVF{},SQ4"`. It is
+                        substituted with the number of centroids that `nLists` resolves to, per
+                        shard in cluster deployments. A factory string with a fixed number of
+                        centroids can be combined with the scaling mode of `nLists`, but only if
+                        the resolved value happens to match the number in the factory string.
                       type: string
+                      example: IVF{}_HNSW32,SQ8
       responses:
         '200':
           description: |
@@ -319,8 +427,19 @@ paths:
                         type: integer
                       nLists:
                         description: |
-                          The number of Voronoi cells.
-                        type: integer
+                          The number of Voronoi cells, respectively centroids.
+
+                          It is a number if a fixed number of centroids is configured.
+                          From v3.12.10 onward, it can also be an object with the
+                          scaling specification that the number of centroids is
+                          computed from at training time. In this case, the
+                          `resolvedNLists` attribute of the per-shard details tells you
+                          what number the index has been trained with. See
+                          [Check the number of centroids of a trained index](../../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#check-the-number-of-centroids-of-a-trained-index).
+                        # TODO: polymorphic structural description? Complex to render
+                        #oneOf:
+                        #  - type: integer
+                        #  - type: object
                       trainingIterations:
                         description: |
                           The number of iterations used in the training process.
@@ -338,7 +457,8 @@ paths:
                       factory:
                         description: |
                           The Faiss index factory string, if one was specified
-                          during index creation.
+                          during index creation. It is reported as specified,
+                          including a `{}` placeholder if you used one.
                         type: string
         '201':
           description: |
@@ -375,6 +495,12 @@ paths:
                       An optional message with details about the
                       training state, for example, `"not enough training data for vector index"`.
                       Only present if there is a problem with the index.
+
+                      From v3.12.10 onward, if you create the index with
+                      `inBackground` set to `false` and the training fails, the index is
+                      still created and the response reports the reason for the failed
+                      training here, with the `trainingState` set to `"unusable"`.
+                      Up to v3.12.9, such a request fails with an error instead.
                     type: string
                   id:
                     description: |
@@ -458,8 +584,19 @@ paths:
                         type: integer
                       nLists:
                         description: |
-                          The number of Voronoi cells.
-                        type: integer
+                          The number of Voronoi cells, respectively centroids.
+
+                          It is a number if a fixed number of centroids is configured.
+                          From v3.12.10 onward, it can also be an object with the
+                          scaling specification that the number of centroids is
+                          computed from at training time. In this case, the
+                          `resolvedNLists` attribute of the per-shard details tells you
+                          what number the index has been trained with. See
+                          [Check the number of centroids of a trained index](../../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#check-the-number-of-centroids-of-a-trained-index).
+                        # TODO: polymorphic structural description? Complex to render
+                        #oneOf:
+                        #  - type: integer
+                        #  - type: object
                       trainingIterations:
                         description: |
                           The number of iterations used in the training process.
@@ -477,7 +614,8 @@ paths:
                       factory:
                         description: |
                           The Faiss index factory string, if one was specified
-                          during index creation.
+                          during index creation. It is reported as specified,
+                          including a `{}` placeholder if you used one.
                         type: string
         '400':
           description: |

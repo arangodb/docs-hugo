@@ -24,7 +24,7 @@
   <meta name="docsearch:version" content="{{ $coreVersion }}">
 {{- else }}
   {{- $shortVersions := slice }}
-  {{- $versions := index site.Data.versions "/arangodb/" }}
+  {{- $versions := index hugo.Data.versions "/arangodb/" }}
   {{- range $version := $versions }}
     {{- $shortVersions = $shortVersions | append $version.name }}
     {{- if ne $version.name $version.alias }}

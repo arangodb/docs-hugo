@@ -1463,6 +1463,51 @@ For example, `FILTER doc.arr ANY == "foo"` could previously not utilize a
 expression is automatically changed to `FILTER "foo" IN doc.arr`, which can
 utilize such an index.
 
+### Constant folding of empty array comparisons
+
+<small>Introduced in: v3.12.10</small>
+
+Comparisons against empty arrays always have the same outcome, and the AQL
+query optimizer can now determine it at query compile time:
+
+- `x IN []` as well as `[] ANY <op> x` are always `false`
+- `x NOT IN []` as well as `[] ALL <op> x` and `[] NONE <op> x` are always `true`
+
+`<op>` can be `==`, `!=`, `<`, `<=`, `>`, `>=`, `IN`, or `NOT IN`.
+
+The `remove-unnecessary-filters` optimizer rule removes `FILTER` operations
+with conditions that are always true. If a condition is always false, the
+optimizer now replaces the affected part of the execution plan with a
+`NoResultsNode` because the query cannot produce any results there.
+
+For example, the following query no longer enumerates the collection at all,
+as the `FILTER` condition can never be satisfied:
+
+```aql
+FOR doc IN coll
+  LET cond = ([] ANY == doc.value)
+  FILTER cond
+  RETURN doc
+```
+
+### Improved filter condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The AQL query optimizer now performs additional simplifications when it
+normalizes the conditions of `FILTER` operations:
+
+- `x IN [a]` with a constant, single-element array is rewritten to `x == a`,
+  which the index selection can then treat like any other equality comparison.
+- `OR` branches that contain an always-false condition are dropped, and
+  always-true conditions are removed from `AND` combinations.
+- Duplicate conditions within an `AND` combination as well as duplicate `OR`
+  branches are detected and removed. This is limited to deterministic
+  conditions.
+
+A related correctness fix for the string comparison in these optimizations is
+described in [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#string-comparison-in-filter-condition-optimizations).
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1617,8 +1662,8 @@ has been added.
 
 <small>Introduced in: v3.12.6</small>
 
-Vector indexes now support filtering. You can add `FILTER` operations between
-`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Vector indexes now support filtering. You can add a single `FILTER` operation
+between `FOR` and `SORT` that is then applied during the lookup in the vector index.
 Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
 as many neighboring Voronoi cells as necessary, but it rather considers only as
 many as configured via the `nProbes` parameter. Example:
@@ -1733,6 +1778,41 @@ index is `"ready"` and `errorMessage` for the reason if it's not.
 
 <small>Introduced in: v3.12.10</small>
 
+Attributes you can additionally store in vector indexes using `storedValues`
+could previously only used to make the vector index filtering more efficient.
+Now, they are also used to cover projections. This lets you return the
+attributes directly from the index without materialization.
+
+For example, if you have a vector index over the `embedding` field and
+`storedValues` set to `["attr1", "attr2"]`, the following query can read the
+attribute values from the index and doesn't need to fetch documents at all:
+
+```aql
+FOR doc IN @@coll
+  LET dist = APPROX_NEAR_L2(doc.embedding, @q)
+  SORT dist LIMIT 10
+  RETURN { attr1: doc.attr1, attr2: doc.attr2, dist }
+```
+
+This is handled by the new `materialize-for-enumerate-near` optimizer rule,
+which cannot be disabled.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+Newly created vector indexes use a new format version for writing data into
+RocksDB as well as a new format for the vector index metadata (the trained data
+produced by faiss). 
+
+To take advantage of the optimizations, you need to recreate the vector indexes
+after upgrading to v3.12.10 or later. Existing vector indexes are not
+automatically rewritten to the new format.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
 A new option to let you configure how many vectors per centroid to include in
 the random sample used for training the index has been added. You can set
 `numberOfDocsPerCentroid` in the `params` object to change the default of `100`.
@@ -1744,6 +1824,104 @@ A larger value can improve the training quality but increases the memory and
 time required for training. See
 [Resource usage during index creation](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
 for details.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+How the sample of vectors that a vector index is trained on gets selected has
+been improved. Up to v3.12.9, the vectors that the storage engine encounters
+first are used until the sample is full, and the remaining documents are skipped.
+If the documents are stored in a non-random order, for example because they were
+imported sorted by a label, then the sample may not be representative of the data
+as a whole, degrading the quality of the clustering and thus the search results.
+
+From v3.12.10 onward, the sample is drawn uniformly at random from all vectors
+using reservoir sampling. Every vector has the same chance of ending up in the
+sample, independent of where it is stored. This requires reading all documents
+of the collection respectively shard once, but only the sampled vectors are kept
+in memory, so the memory required for training is unchanged. See
+[Resource usage during index creation](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#resource-usage-during-index-creation)
+for details.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The number of Voronoi cells respectively centroids of a vector index doesn't
+have to be a fixed number anymore. In addition to setting `nLists` in the
+`params` object to a number, you can now set it to a scaling specification that
+lets ArangoDB compute the number from the document count at training time.
+In cluster deployments, the computation is done per shard using the document
+count of the respective shard, which is especially useful if the data
+distribution across shards is unequal.
+
+The `nLists` attribute is optional now. If you don't specify it, the following
+scaling specification is used:
+
+```json
+{
+  "nLists": {
+    "strategy": "autoSqrt",
+    "multiplier": 4,
+    "minNLists": 2,
+    "tiers": [
+      { "threshold": 1000000,   "fixedValue": 16384 },
+      { "threshold": 10000000,  "fixedValue": 65536 },
+      { "threshold": 300000000, "fixedValue": 131072 }
+    ]
+  }
+}
+```
+
+The `autoSqrt` strategy computes `max(minNLists, multiplier * sqrt(N))` where
+`N` is the number of documents. The tiers take precedence over the strategy for
+large document counts. The specification above thus resolves to the following
+numbers of centroids:
+
+- `N` < 1,000,000: `max(2, 4 * sqrt(N))`
+- 1,000,000 ≤ `N` < 10,000,000: `16384`
+- 10,000,000 ≤ `N` < 300,000,000: `65536`
+- `N` ≥ 300,000,000: `131072`
+
+Vector indexes now also report the number of centroids they have actually been
+trained with as `resolvedNLists`. The value is available per shard in the
+`shards` attribute if you list the indexes of a collection with the hidden
+indexes included, like `collection.indexes(false, true)` in _arangosh_ or
+`GET /_api/index?collection=<collection-name>&withHidden=true` in the HTTP API.
+In single server deployments, the collection name is used as the shard key,
+mirroring the cluster format.
+
+See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+and [Check the number of centroids of a trained index](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#check-the-number-of-centroids-of-a-trained-index)
+for details.
+
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The `factory` string of vector indexes can now contain a `{}` placeholder in
+place of the number of centroids, like `"IVF{}_HNSW32,SQ8"`. It is substituted
+with the number of centroids that `nLists` resolves to, per shard in cluster
+deployments. This lets you combine an index factory string with the new scaling
+mode of `nLists`:
+
+```js
+db.coll.ensureIndex({
+  name: "vector_l2",
+  type: "vector",
+  fields: ["embedding"],
+  params: {
+    metric: "l2",
+    dimension: 544,
+    factory: "IVF{}_HNSW32,SQ8"
+  }
+});
+```
+
+Factory strings with a fixed number of centroids remain supported. The number
+needs to match the number of centroids that `nLists` resolves to, otherwise
+the training fails and the index stays `"unusable"`.
 
 ## Server options
 
@@ -2053,6 +2231,15 @@ database files after an upgrade.
 
 The server process terminates with the new exit code 30
 (`EXIT_FULL_COMPACTION_FAILED`) if the compaction fails.
+
+### Vector index retry backoff
+
+<small>Introduced in: v3.12.10</small>
+
+A new `--vector-index-build-retry-backoff` startup option has been added.
+
+If training a vector index fails, wait this many seconds before retrying.
+The default is `60` seconds.
 
 ## Miscellaneous changes
 
@@ -2853,6 +3040,17 @@ state of the vector indexes.
 | `arangodb_vector_index_training_duration` | Duration of vector index training in seconds. |
 | `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing. |
 | `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server. |
+
+### HTTP status code metric
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
 
 ## Client tools
 

@@ -131,9 +131,60 @@ question mark operator:
 ["foo", "bar"][? ANY FILTER ! REGEX_TEST(CURRENT, "^mo+$")]
 ```
 
+### Sub-attributes as edge weights in graph queries
+
+The `weightAttribute` option of graph queries is no longer limited to top-level
+edge attributes. In addition to a string, you can now specify an array of
+strings that describes the path to the attribute to read the edge weight from.
+This is supported by the following graph query types:
+
+- [Traversals](../../aql/graph-queries/traversals.md#weightattribute) with
+  `order: "weighted"`
+- [`SHORTEST_PATH`](../../aql/graph-queries/shortest-path.md#weightattribute)
+- [`K_SHORTEST_PATHS`](../../aql/graph-queries/k-shortest-paths.md#weightattribute)
+
+For example, you can use the value of the nested `sub` attribute of the
+following edge document as the edge weight:
+
+```json
+{ "attr": { "sub": 3 } }
+```
+
+```aql
+FOR v IN OUTBOUND SHORTEST_PATH "nodes/A" TO "nodes/D" GRAPH "weightGraph"
+  OPTIONS { weightAttribute: ["attr", "sub"] }
+  RETURN v._key
+```
+
+A `.` in a string is still interpreted as a literal dot and thus selects a
+top-level attribute, for instance `attr.sub` of the following edge document:
+
+```json
+{ "attr.sub": 5 }
+```
+
+```aql
+FOR v IN OUTBOUND SHORTEST_PATH "nodes/A" TO "nodes/D" GRAPH "weightGraph"
+  OPTIONS { weightAttribute: "attr.sub" }
+  RETURN v._key
+```
+
+This change is backward compatible. Passing a string works like before and
+accesses a top-level attribute with exactly the specified name.
+
 ## Indexing
 
+### Upgrading vector indexes
 
+<small>Introduced in: v3.12.10</small>
+
+Newly created vector indexes use a new format version for writing data into
+RocksDB as well as a new format for the vector index metadata (the trained data
+produced by faiss) since v3.12.10. 
+
+To take advantage of the optimizations, you need to recreate the vector indexes
+after upgrading to v3.12.10 or later. Existing vector indexes are not
+automatically rewritten to the new format.
 
 ## Server options
 

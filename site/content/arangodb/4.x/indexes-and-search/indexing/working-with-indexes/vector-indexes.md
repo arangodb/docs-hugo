@@ -65,8 +65,10 @@ centroids and the quality of vector search thus degrades.
   load the data first and then create the index to ensure that all documents
   participate in the training process as the training is only executed once.
   The training is triggered automatically if the vector index hasn't been
-  trained yet and the number of documents to index exceeds the threshold of
-  `nLists` documents. If `sparse` is set to `true`, documents without the
+  trained yet and the number of documents to index exceeds a threshold. The
+  threshold is the `nLists` value if you set a fixed number of centroids,
+  and the `minNLists` value if you use the scaling mode of `nLists`
+  (from v3.12.10 onward). If `sparse` is set to `true`, documents without the
   vector embedding field are not counted toward this threshold.
   Check the `trainingState` to see if the index is
   `"ready"` and `errorMessage` for the reason if it's not.
@@ -80,16 +82,26 @@ centroids and the quality of vector search thus degrades.
   write operations by not using an exclusive write lock for the duration
   of the index creation. Default: `false`.
 
-  If the option is disabled, the call returns only after the index is
-  ready (but timeouts may occur), or if an error is encountered.
+  If the option is disabled, the call returns only after the index training has
+  finished (but timeouts may occur).
+
+  - Up to v3.12.9, the call returns an error if the training fails, for example,
+    because there is not enough training data. The index is created nevertheless
+    but stays `"unusable"`.
+  - From v3.12.10 onward, the call succeeds and the reported `trainingState` is
+    `"unusable"`, with the reason for the failed training in the `errorMessage`
+    attribute.
 - **storedValues** (array of strings, introduced in v3.12.7):
-  Store additional attributes in the index. Unlike with other index types, this
-  is not for covering projections with the index but for adding attributes that
-  you filter on. This lets you make the lookup in the vector index more efficient
-  because it avoids materializing documents twice, once for the filtering and
-  once for the matches.
+  Store additional attributes in the index.
 
   The maximum number of attributes that you can use in `storedValues` is 32.
+  
+  - Up to v3.12.9, these are not for covering projections with the index but for
+    adding attributes that you filter on. This lets you make the lookup in the
+    vector index more efficient because it avoids materializing documents twice,
+    once for the filtering and once for the matches.
+  - From v3.12.10 onward, these are also used to cover projections. This lets
+    you return the attributes directly from the index without materialization.
 - **params**: The parameters as used by the Faiss library.
   - **metric** (string): The measure for calculating the vector similarity:
     - `"cosine"`: Angular similarity. Vectors are automatically
@@ -100,16 +112,81 @@ centroids and the quality of vector search thus degrades.
     - `"l2":` Euclidean distance.
   - **dimension** (number): The vector dimension. The attribute to index needs to
     have this many elements in the array that stores the vector embedding.
-  - **nLists** (number): The number of Voronoi cells to partition the vector space
-    into, respectively the number of centroids in the index. What value to choose
-    depends on the data distribution and chosen metric. According to
-    [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should scale
-    sublinearly with the document count. The recommendation for ArangoDB is to use
-    approximately `15 * sqrt(N)` where `N` is the number of documents in the collection,
-    respectively the number of documents in the shard for cluster deployments.
+  - **nLists** (number\|object): The number of Voronoi cells to partition the
+    vector space into, respectively the number of centroids in the index. What
+    value to choose depends on the data distribution and chosen metric.
+    According to [The Faiss library paper](https://arxiv.org/abs/2401.08281),
+    it should scale sublinearly with the document count.
     A bigger value produces more correct results but increases the training time
     and thus how long it takes to build the index. It cannot be bigger than the
     number of documents.
+
+    Up to v3.12.9, you need to set this option to a number. From v3.12.10 onward,
+    the option is optional and you can either set a fixed number of centroids or
+    let ArangoDB compute the number from the document count:
+
+    - **Fixed mode** (number): Use exactly this number of centroids, for example
+      `100`. The recommendation for ArangoDB is to use approximately
+      `15 * sqrt(N)` where `N` is the number of documents in the collection,
+      respectively the number of documents in the shard for cluster deployments.
+    - **Scaling mode** (object, introduced in v3.12.10): Compute the number of
+      centroids from the number of documents at training time. In cluster
+      deployments, the computation is done per shard using the document count of
+      the respective shard. This is especially useful if the data distribution
+      across shards is unequal. The attributes of the object are the following:
+      - **strategy** (string): How to compute the number of centroids if no tier
+        applies. The only available value is `"autoSqrt"`, which computes
+        `max(minNLists, multiplier * sqrt(N))` where `N` is the number of
+        documents of the shard.
+      - **multiplier** (number): The factor to use in the `autoSqrt` strategy.
+        It must be `1` or greater.
+      - **minNLists** (number): The lower bound for the number of centroids
+        computed by the `autoSqrt` strategy. It must be `1` or greater.
+        It is also the number of documents required to trigger the training.
+      - **tiers** (array of objects, _optional_): Fixed numbers of centroids for
+        large document counts. The tier with the highest `threshold` that is less
+        than or equal to the number of documents wins and its `fixedValue` is
+        used instead of computing a value with the `strategy`.
+        Each tier has the following attributes:
+        - **threshold** (number): The minimum number of documents for the tier to
+          apply. It must be `1` or greater.
+        - **fixedValue** (number): The number of centroids to use.
+          It must be `1` or greater.
+
+      If you specify `nLists` as an object, you need to set `strategy`,
+      `multiplier`, and `minNLists`. Only `tiers` is optional.
+
+    If you don't specify `nLists` at all, the following scaling specification is
+    used (the values are taken from the
+    [autofaiss](https://github.com/criteo/autofaiss) library):
+
+    ```json
+    {
+      "nLists": {
+        "strategy": "autoSqrt",
+        "multiplier": 4,
+        "minNLists": 2,
+        "tiers": [
+          { "threshold": 1000000,   "fixedValue": 16384 },
+          { "threshold": 10000000,  "fixedValue": 65536 },
+          { "threshold": 300000000, "fixedValue": 131072 }
+        ]
+      }
+    }
+    ```
+
+    It resolves to the following numbers of centroids for `N` documents:
+
+    - `N` < 1,000,000: `max(2, 4 * sqrt(N))`
+    - 1,000,000 ≤ `N` < 10,000,000: `16384`
+    - 10,000,000 ≤ `N` < 300,000,000: `65536`
+    - `N` ≥ 300,000,000: `131072`
+
+    Note that the scaling mode cannot resolve a number of centroids for an empty
+    collection respectively shard. The index stays `"unusable"` in this case.
+
+    To find out what number of centroids an index has actually been trained
+    with, see [Check the number of centroids of a trained index](#check-the-number-of-centroids-of-a-trained-index).
   - **defaultNProbe** (number, _optional_): How many neighboring centroids to
     consider for the search results by default. The larger the number, the slower
     the search but the better the search results. Default: `1`. You should
@@ -143,6 +220,30 @@ centroids and the quality of vector search thus degrades.
     `IVF<nLists>,Flat`. For more information on how to create these custom
     indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
 
+    The number of centroids that the factory string specifies needs to match the
+    `nLists` value, otherwise the training fails and the index stays
+    `"unusable"`. From v3.12.10 onward, you can use a `{}` placeholder in place
+    of the number to avoid this problem, like `"IVF{},SQ4"`. It is substituted
+    with the number of centroids that `nLists` resolves to, per shard in cluster
+    deployments:
+
+    ```js
+    db.coll.ensureIndex({
+      name: "vector_l2",
+      type: "vector",
+      fields: ["embedding"],
+      params: {
+        metric: "l2",
+        dimension: 544,
+        factory: "IVF{}_HNSW32,SQ8"
+      }
+    });
+    ```
+
+    A factory string with a fixed number of centroids can be combined with the
+    scaling mode of `nLists`, but only if the resolved value happens to match the
+    number in the factory string.
+
 ## Resource usage during index creation
 
 Building a vector index temporarily increases the CPU and memory usage of the
@@ -163,6 +264,19 @@ The index is built in two phases:
    `nLists` × `numberOfDocsPerCentroid` vectors in total. Up to v3.12.9, a fixed
    value of `256` per group is used instead.
 
+   How the sample is picked depends on the version:
+
+   - Up to v3.12.9, the vectors that the storage engine encounters first are used
+     until the sample is full, and the remaining documents are skipped. If the
+     documents are stored in a non-random order, for example because they were
+     imported sorted by a label, then the sample may not be representative of the
+     data as a whole, degrading the quality of the clustering.
+   - From v3.12.10 onward, the sample is drawn uniformly at random from all
+     vectors using reservoir sampling. Every vector has the same chance of ending
+     up in the sample, independent of where it is stored. This requires reading
+     all documents once, but only the sampled vectors are kept in memory, so the
+     memory bound is unchanged.
+
    The sample is held in memory as plain 32-bit floating-point numbers, so you can
    estimate its peak memory as:
 
@@ -182,18 +296,78 @@ The index is built in two phases:
    a hundred thousand or a hundred million vectors (as long as there are at least
    `nLists` × `numberOfDocsPerCentroid` of them).
 
+   If you use the scaling mode of `nLists` (from v3.12.10 onward), then the
+   number of groups is not known upfront. The estimates above apply to the
+   number of centroids that `nLists` resolves to at training time. Keep the
+   tiers in mind when sizing your deployment, as they define the upper bounds
+   for how large the sample can get.
+
 2. **Indexing**
 
    Once the centroids are known, every vector is read, assigned to its nearest
    centroid, and encoded into the index. This phase makes a full pass over all
-   documents, so unlike training, its cost grows with the number of vectors. It is
+   documents, and its cost thus grows with the number of vectors. It is
    mostly CPU-bound and also determines the final on-disk size of the index.
 
 In short, the number of groups (`nLists`) and the vector `dimension` drive the
-training cost, while the number of documents drives the indexing cost. The index
+clustering cost, while the number of documents drives the indexing cost as well
+as, from v3.12.10 onward, the cost of collecting the training sample. The index
 size grows with the number of documents and the vector `dimension`, and also
 depends on the encoding (the `factory` option). In cluster deployments, these
 counts apply per shard, as each shard trains and builds its own index.
+
+## Check the number of centroids of a trained index
+
+<small>Introduced in: v3.12.10</small>
+
+Vector indexes report the number of centroids they have actually been trained
+with as `resolvedNLists`. If you set a fixed `nLists` value, it matches this
+value. If you use the scaling mode of `nLists`, it is the value that has been
+computed from the document count at training time.
+
+The value is reported per shard. To retrieve it, list the indexes of the
+collection with the hidden indexes included. Example using _arangosh_:
+
+```js
+db.coll.indexes(false, true);
+```
+
+The first argument is `withStats`, which only controls whether the index figures
+are included and can be left disabled. In the HTTP API, this corresponds to
+[`GET /_api/index`](../../../develop/http-api/indexes/_index.md#list-all-indexes-of-a-collection)
+with the `withHidden` query parameter set to `true`.
+
+Every vector index of the result has a `shards` attribute with the per-shard
+`trainingState`, `error`, and `resolvedNLists`. The keys are the shard names.
+Note how the two shards below resolve to a different number of centroids
+because they hold a different number of documents:
+
+```json
+{
+  "id": "coll/68",
+  "name": "vector_l2",
+  "type": "vector",
+  "trainingState": "ready",
+  "shards": {
+    "s10042": {
+      "trainingState": "ready",
+      "error": "",
+      "resolvedNLists": 400
+    },
+    "s10043": {
+      "trainingState": "ready",
+      "error": "",
+      "resolvedNLists": 388
+    }
+  }
+}
+```
+
+In single server deployments, the collection name is used as the key instead,
+mirroring the cluster format.
+
+The top-level `trainingState` is the least-progressed state across all shards,
+with `"unusable"` being the lowest and `"ready"` the highest.
 
 ## Interfaces
 
@@ -208,7 +382,7 @@ counts apply per shard, as each shard trains and builds its own index.
 4. Select **Vector** as the **Type**.
 5. Enter the name of the attribute that holds the vector embeddings into **Field**.
 6. Optionally give the index a user-defined **Name**.
-7. Optionally define **Extra stored values** you want to filter on.
+7. Optionally define **Extra stored values** you want to filter on or use to cover projections.
 8. Set the parameters for the vector index. See [Vector index properties](#vector-index-properties)
    under `params`. Optionally adjust the index options such as **Sparse**.
 9. Click **Create**.

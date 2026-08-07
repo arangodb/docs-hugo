@@ -3,8 +3,8 @@ title: Replication HTTP API
 menuTitle: Replication
 weight: 95
 description: >-
-  The replication HTTP API is used internally for synchronizing the nodes of an
-  ArangoDB cluster, and lets you read data and the logged write operations
+  The replication HTTP interface is used internally for synchronizing the nodes
+  of an ArangoDB cluster, and lets you read data and the logged write operations
 ---
 ArangoDB uses **synchronous** replication between the DB-Servers of a cluster to
 keep the data of a shard consistent across its leader and followers and to allow
