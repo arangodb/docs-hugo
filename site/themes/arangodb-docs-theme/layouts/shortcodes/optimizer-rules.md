@@ -3,7 +3,7 @@
   {{ $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) -}}
 {{ end -}}
 
-{{ $dataFolderByVersion := index site.Data $pageVersion -}}
+{{ $dataFolderByVersion := index hugo.Data $pageVersion -}}
 {{ $rules := index $dataFolderByVersion "optimizer-rules" }}
 
 {{ with $rules -}}

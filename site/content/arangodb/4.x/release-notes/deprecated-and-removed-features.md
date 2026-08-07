@@ -103,8 +103,10 @@ aliases:
   - ../components/tools/arangobench/options # 3.12 -> 4.x
   - ../aql/functions/fulltext # 3.12 -> 4.x
   - ../develop/http-api/indexes/fulltext # 3.12 -> 4.x
-  - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 4.x
-  - ../develop/http-api/replication/replication-applier # 3.12 -> 4.x
+  - ../indexes-and-search/indexing/working-with-indexes/fulltext-indexes # 3.12 -> 3.12
+  - ../develop/http-api/replication/replication-applier # 3.12 -> 3.12
+  - ../develop/http-api/replication/other-replication-commands # 3.12 -> 3.12
+  - ../operations/administration/telemetrics # 3.12 -> 3.12
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -224,6 +226,10 @@ detailed information about breaking changes before upgrading.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
 
+- **Telemetrics**:\
+  ArangoDB gathered anonymous information on its usage and feature utilization
+  since v3.11.0 unless disabled. Telemetrics have been removed in v3.12.10.
+
 - **Cloud Migration Tool**:\
   The `arangosync-migration` tool to move from on-premises to the cloud is not
   available anymore.
@@ -321,12 +327,12 @@ detailed information about breaking changes before upgrading.
 
 - **Replication logger-follow REST API**:\
   The endpoint `/_api/replication/logger-follow` is deprecated since 3.4.0 and
-  removed in ArangoDB v4.0. Client applications should use the REST 
+  removed in ArangoDB v3.12.10. Client applications should use the REST 
   API endpoint `/_api/wal/tail` instead, which is available since ArangoDB v3.3.
 
 - **Replication REST API**:\
   Various endpoints related to asynchronous replication like the global applier
-  have been removed in ArangoDB v4.0. These endpoints provided the low-level
+  have been removed in ArangoDB v3.12.10. These endpoints provided the low-level
   mechanisms for the user-managed Leader/Follower Replication and the
   Agency-managed Active Failover deployment modes, both for single servers.
 

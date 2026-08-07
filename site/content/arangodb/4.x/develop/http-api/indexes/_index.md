@@ -68,6 +68,11 @@ paths:
             Whether to include hidden indexes in the result. Internal indexes
             (such as `arangosearch`) and ones that are currently built in the
             background are hidden.
+
+            From v3.12.10 onward, this option additionally makes vector indexes
+            report a `shards` attribute with the per-shard `trainingState`,
+            `error`, and `resolvedNLists`. See
+            [Check the number of centroids of a trained index](../../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#check-the-number-of-centroids-of-a-trained-index).
           schema:
             type: boolean
             default: false

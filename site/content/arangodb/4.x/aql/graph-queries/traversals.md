@@ -279,8 +279,8 @@ OPTIONS {
   }
 }
 FILTER p.edges[1].foo == "bar" AND
-        p.edges[2].foo == "bar" AND
-        p.edges[2].baz == "qux"
+       p.edges[2].foo == "bar" AND
+       p.edges[2].baz == "qux"
 ```
 
 Index hints for levels other than `base` are only considered if the
@@ -299,12 +299,51 @@ and the index hints for traversals cannot be forced.
 
 This option is only used for traversals with `order: "weighted"`.
 
-Specifies the name of an attribute that is used to look up the weight of an edge
-(string). A `.` is interpreted as a literal dot, which means only top-level
-attributes are supported.
+The edge attribute to use as the weight (string\|array):
 
-If no attribute is specified, or if it is not present in the edge document, or
-if it has a non-numeric value, then the `defaultWeight` is used.
+- A **string** refers to a top-level attribute of exactly this name. A `.` is
+  interpreted as a literal dot and not as a separator for an attribute path.
+  For example, `"attr.sub"` reads the weight from an edge document like
+  `{ "attr.sub": 5 }`.
+- An **array of strings** describes an attribute path, letting you use a
+  sub-attribute as the edge weight. Each element is one level of nesting, for
+  example `["attr", "sub"]` to read the weight from an edge document like
+  `{ "attr": { "sub": 3 } }`.
+
+  An array with a single element is equivalent to passing that element as a
+  string. `["attr.sub"]` therefore refers to the top-level attribute `attr.sub`
+  just like `"attr.sub"` does.
+
+If the value is neither a string nor an array of strings, a query warning is
+raised and the option is ignored, which means the `defaultWeight` is used as the
+weight of every edge. An empty string or an empty array has the same effect but
+raises no warning.
+
+For example, consider edge documents with both a nested `sub` attribute and a
+top-level attribute whose name contains a dot:
+
+```json
+{
+  "attr": { "sub": 3 },
+  "attr.sub": 5
+}
+```
+
+| `weightAttribute` | Resulting edge weight |
+|:------------------|----------------------:|
+| `["attr", "sub"]` | `3` |
+| `["attr.sub"]`    | `5` |
+| `"attr.sub"`      | `5` |
+
+```aql
+FOR v, e, p IN 1..3 OUTBOUND startNode edgeCollection
+  OPTIONS { order: "weighted", weightAttribute: ["attr", "sub"] }
+  RETURN p.weights
+```
+
+If no attribute is specified, or if the attribute path cannot be resolved in the
+edge document, or if the value it refers to is non-numeric, then the
+`defaultWeight` is used.
 
 The attribute value must not be negative.
 

@@ -1,6 +1,6 @@
 {{- $page := .page }}
 {{- if hasPrefix $page.Path "/arangodb/" }}
-  {{- $versions := index site.Data.versions "/arangodb/" }}
+  {{- $versions := index hugo.Data.versions "/arangodb/" }}
   {{- $coreVersion := index (split $page.Path "/") 2 }}
   {{- range $i, $version := $versions }}
     {{- if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) }}
