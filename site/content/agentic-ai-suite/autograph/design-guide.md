@@ -14,7 +14,7 @@ to use each component.
 AutoGraph and the Importer are separate services with distinct responsibilities:
 
 **AutoGraph** (this service) is the primary control plane for ingestion and
-corpus graph construction. It handles importing files, building the corpus graph
+Corpus Graph construction. It handles importing files, building the Corpus Graph
 (similarity edges and Leiden clusters), running the RAG strategizer, and
 orchestrating Importer workers. It writes Layer 1 and Layer 2 data to ArangoDB
 and strategy profiles to the `rags` collection.
@@ -94,7 +94,7 @@ All Layer 3 data lives in the `{project}_kg` named graph, partitioned by the
 
 A module is any stable string identifier that groups documents that should share
 similarity and clustering with each other, but not with other groups. Treat it
-as a shard key for the corpus graph, not a display name.
+as a shard key for the Corpus Graph, not a display name.
 
 Good candidates:
 
@@ -153,7 +153,7 @@ Use AutoGraph for everything up to and including Layer 2.
 | Goal | Endpoint |
 |------|----------|
 | Import documents and assign them to a module | [`POST /v1/import-multiple`](reference/importing-files.md) |
-| Build the corpus graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
+| Build the Corpus Graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
 | Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](reference/corpus-build.md#monitoring-build-status) |
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |

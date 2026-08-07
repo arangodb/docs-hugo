@@ -113,10 +113,9 @@ rebuild of the Corpus Graph.
 
 {{< /tabs >}}
 
-Clicking **Start build** does two things:
-
-1. Deploys the AutoGraph service with these settings.
-2. Builds the Corpus Graph from your uploaded documents.
+Clicking **Start build** moves the wizard to the **Build** step and deploys the
+AutoGraph service with these settings. The Corpus Graph itself is built in the
+next step, once the service is up and you click **Build Corpus Graph**.
 
 For more details, see [LLM Configuration](llm-configuration.md).
 
@@ -149,7 +148,9 @@ The project overview is the home of your project. It has the following sections:
 - **Model & credentials**: The provider and models used by the build.
 - **AutoRAG**: Deploy retrievers against your Context Graph.
 
-Everything AutoGraph generates here is part of your Context Graph.
+Your Context Graph is the Corpus Graph together with the Knowledge Graph. The
+credentials and retriever services shown alongside them configure and serve the
+Context Graph, but are not part of it.
 
 ## Explore the Corpus Graph
 
@@ -187,17 +188,30 @@ formats of the affected category and try again.
 
 ## Generate strategies and build the Knowledge Graph
 
-The **Knowledge Graph** card shows whether the Knowledge Graph is built. The
-RAG Strategizer analyzes the Corpus Graph and generates the import strategies
-per domain. For details on how strategies are determined, see
-[RAG Strategizer](reference/rag-strategizer.md).
+The **Knowledge Graph** card shows the graph name (for example `<project>_kg`)
+and whether the Knowledge Graph is built. The RAG Strategizer analyzes the
+Corpus Graph and generates the import strategies per domain. For details on how
+strategies are determined, see [RAG Strategizer](reference/rag-strategizer.md).
 
-Click **Generate strategies** on the **Knowledge Graph** card.
+1. Click **Generate strategies** on the **Knowledge Graph** card. This assigns
+   each domain a strategy (`FullGraphRAG` or `VectorRAG`) and writes one strategy
+   profile per domain. It does not build the Knowledge Graph yet.
+2. Click **Start Import** to run orchestration. Importer workers process each
+   strategy profile and write the Knowledge Graph collections. For details, see
+   [Orchestration](reference/orchestration.md).
+3. Wait for the import to complete. You will see
+   **Import complete! Knowledge graph built successfully**, and the
+   **Knowledge Graph** card shows the graph as built.
 
 {{< info >}}
 **Generate strategies** is disabled while there are unbuilt changes. Update the
 Corpus Graph first so that the strategies cover your latest documents.
 {{< /info >}}
+
+{{< tip >}}
+You can explore the Knowledge Graph in the
+[Graph Visualizer](../../platform-suite/graph-visualizer.md) at any time.
+{{< /tip >}}
 
 ## Change the provider or key
 

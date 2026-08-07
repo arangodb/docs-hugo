@@ -25,7 +25,7 @@ ArangoDB Platform Services, which group together the core building blocks:
 - **ArangoDB** — the distributed multi-model database at the heart of the platform,
   deployed as Coordinators, DB-Servers, and Agents and managed by the
   [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/).
-- **Agentic AI Suite** — the optional AI components (AutoGraph, GraphRAG,
+- **Agentic AI Suite** — the optional AI components (AutoGraph and AutoRAG,
   GraphML, Graph Analytics, and others) that sit alongside ArangoDB and consume
   its data.
 
