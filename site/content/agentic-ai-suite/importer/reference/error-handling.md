@@ -24,7 +24,8 @@ For the immediate response of an API call:
 | Bad or missing JWT | `401` | Error detail or empty body |
 | Database access denied | `403` | Error detail |
 | Invalid `rag_mode`, `partition_id`, vector params | `400` | Error detail |
-| Importer busy (lock held) | `200` | `"success": false`, message about the lock |
+| Importer busy (lock held), on `/v1/import` or `/v1/import-multiple` | `200` | `"success": false`, message about the lock |
+| Importer busy (lock held), on `/v1/delete` or `/v1/recluster` | n/a | `UNAVAILABLE` |
 | Multi-file request validation failure | `200` | `"success": false`, `error_message` set |
 | Unexpected server fault | `500` | Internal error |
 
@@ -60,7 +61,9 @@ the service still starts.
 
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
-| `success: false` with a "busy" message | Import lock held by another in-flight import | Wait for completion; check `GET /v1/health` for the busy message |
+| `success: false` with a "busy" message on an import call | The single-flight lock is held by an in-flight import, delete, or recluster | Wait for completion; check `GET /v1/health` for the busy message |
+| `UNAVAILABLE` on a delete or recluster call | The single-flight lock is held by an in-flight import, delete, or recluster | Poll the running job until `is_terminal`, then retry (see [Incremental Updates](../incremental-updates.md)). A **single-file** import holding the lock has no `job_id`: watch the platform service status, or `GET /v1/health`, instead |
+| Delete job failed and nothing was removed | The existence check is atomic and at least one requested file is missing from the partition | Read `job.delete_result.results` for `FILE_NOT_FOUND`, fix or drop those entries, and retry |
 | Single-file import reports `success: true` but the DB is empty | Background work still running, or failed asynchronously | Check the platform service status (single-file imports have no `job_id`) |
 | Multi-file job never reaches a terminal status | Long graph build or vector-index training | Continue polling; index training can take up to an hour on large corpora. Read `current_status.message` for hints. |
 | `[NO_ENTITIES_WRITTEN]` in a `full_graphrag` job | Extraction returned nothing, or wrong mode | Inspect the source content; confirm `rag_mode: "full_graphrag"`; check the chat model is producing structured output |
@@ -99,6 +102,8 @@ the service still starts.
 ## Related references
 
 - **[Reference index](_index.md)**: Endpoints and recommended call sequence.
+- **[Incremental Updates](../incremental-updates.md)**: Layer 3 deletes,
+  reclustering, and their job statuses.
 - **[Parameters](parameters.md)**: Request parameter reference.
 - **[Architecture](../architecture.md)**: Async-job lifecycle diagram and
   terminal status names.

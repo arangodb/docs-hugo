@@ -44,6 +44,7 @@ This approach solves the compounding challenges modern enterprises face:
 - **Heterogeneity**: Processes simple FAQs differently from complex technical specs
 - **Cost**: Matches processing intensity to content complexity, avoiding expensive LLM waste
 - **Performance**: Searches only relevant domain partitions instead of the entire corpus
+- **Change**: Keeps a built graph current at document level, instead of rebuilding a corpus every time a few files change
 
 Traditional RAG solutions treat all documents the same way, leading to either inadequate processing of complex content or wasteful over-processing of simple content. AutoGraph adapts to your data.
 
@@ -64,6 +65,23 @@ generates a domain-specific ontology (the entity types to extract), so the
 resulting knowledge graph reflects the concepts that actually matter in
 that content.
 
+## Incremental Graph Updates
+
+Enterprise document sets are not static. Contracts get amended, specifications
+are revised, and obsolete files have to disappear. Rebuilding a corpus for a
+handful of changed documents means paying again for extraction, embedding,
+clustering, and a full Importer pass.
+
+Incremental Graph Updates keep a built graph current at document level. You
+insert, delete, or replace individual documents, and the work is scoped to what
+actually changed: existing clusters and strategy profiles are preserved, and a
+new document joins the nearest existing cluster instead of triggering a
+re-clustering of the whole domain. AutoGraph measures how far each partition
+has drifted since its last clustering and flags the ones worth refreshing, but
+never reclusters on its own - that call, and its cost, stays with you.
+
+See [Incremental Graph Updates](incremental-graph-updates.md).
+
 ## What's next
 
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
@@ -71,4 +89,5 @@ that content.
 - **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
+- **[Incremental Graph Updates](incremental-graph-updates.md)**: Insert, delete, and update individual documents in a graph that is already built.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

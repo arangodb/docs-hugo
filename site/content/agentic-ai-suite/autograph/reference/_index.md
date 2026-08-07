@@ -32,7 +32,11 @@ Endpoints are served at **`http://<host>:8080`**.
 | `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Orchestration](orchestration.md) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `POST` | `/v1/graph/insert` | Add a document to a graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
+| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
+| `POST` | `/v1/graph/recluster` | Refresh Layer 3 communities for a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
 | `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](embeddings.md) |
 
 For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md).
@@ -56,7 +60,7 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 6. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
    See [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies).
 7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   See [Orchestration](orchestration.md).
+   See [Graph Operations](orchestration.md).
 
 ### Embed-only workflow
 
@@ -76,6 +80,22 @@ only the new module in `modules`. Existing modules are preserved; only the
 listed modules are updated. See
 [Incremental Builds](corpus-build.md#incremental-builds).
 
+### Document-level changes to an existing graph
+
+Use this path once the corpus graph has been built and you only need to change
+individual documents. See
+[Incremental Graph Updates](../incremental-graph-updates.md) for prerequisites,
+comparisons with a rebuild, and the full endpoint reference.
+
+1. `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update` -
+   depending on what changed. Insert and update cover Layers 1 and 2; delete
+   also schedules the Layer 3 cleanup.
+2. `POST /v1/orchestrate` with `partition_ids` and `file_ids` - after an insert
+   or a successful update, so Layer 3 includes the new content.
+3. Inspect `divergence_score` and `needs_reclustering` on the per-file outcome.
+4. *(Optional)* `POST /v1/graph/recluster` - when the flag is `true` and you
+   want the communities refreshed. Reclustering is never automatic.
+
 ### Ordering rules
 
 {{< warning >}}
@@ -83,8 +103,10 @@ listed modules are updated. See
   reaches `status: completed`.
 - Do not call `POST /v1/orchestrate` until the strategizer has finished
   after a successful build.
-- Only one corpus build and one orchestration run may be active at a time
-  (`409` if you collide).
+- Do not call the `/v1/graph/*` endpoints before the initial corpus build has
+  completed.
+- Only one corpus build, orchestration run, or graph mutation may be active at
+  a time (`409` if you collide).
 {{< /warning >}}
 
 For guidance on structuring your data with modules, see the

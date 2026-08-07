@@ -54,6 +54,13 @@ different partitions coexists in the same collections. Filter by
   - `file_name` (multi-file imports only): Original filename.
   - `citable_url` (multi-file imports only): URL used for inline citations at retrieval.
   - `partition_id`: Partition the document belongs to.
+  - `file_id`: File Manager id stamped at import time, when the source is a File
+    Manager file. Empty for inline or `file_url` imports without one.
+    [Layer 3 deletes](incremental-updates.md#deleting-a-document) resolve
+    documents primarily by this field.
+  - `import_number`: The import batch that produced the document. Repeated
+    imports into the same partition add further batches, which
+    [reclustering](incremental-updates.md#reclustering) consolidates.
 
 ### Chunks
 
@@ -110,6 +117,13 @@ The Importer creates the following relationship types:
 4. **IN_COMMUNITY**: Associates entities with their community groups.
 5. **SUB_COMMUNITY_OF**: Relates a sub-community to its parent community.
 
+The community membership edges (`IN_COMMUNITY`, `SUB_COMMUNITY_OF`) exist only
+in `full_graphrag` partitions, and they are the ones rebuilt when such a
+partition is [reclustered](incremental-updates.md#reclustering) after
+incremental updates. The other relationship types are preserved. A `vector_rag`
+partition has no `Entities` or `Communities`, so it has no community layer to
+rebuild.
+
 ### Semantic Units
 
 - **Purpose**: Image references and web URLs extracted from documents. Only
@@ -164,6 +178,26 @@ flowchart LR
 | **Single file** (`POST /v1/import`) | Returns immediately with `success: true` | **No `job_id`**. Use the platform service status (the same status feed AutoGraph reads) |
 | **Multiple files** (`POST /v1/import-multiple`) | Returns a `job_id` | Poll `GET /v1/jobs/{job_id}` until `job.is_terminal` is `true` |
 | **Concurrency** | Only **one** import per replica at a time | A second submit while one is running gets `success: false` (busy), not an HTTP conflict |
+
+The same lock covers `POST /v1/delete` and `POST /v1/recluster`: import, delete,
+and recluster are single-flight per replica. **The way a rejection is reported
+differs by the endpoint you call**, so clients need both paths:
+
+| Endpoint you call while the lock is held | Rejection you get |
+|------------------------------------------|-------------------|
+| `POST /v1/import`, `POST /v1/import-multiple` | `HTTP 200` with `success: false` and a busy message in the body - not an HTTP conflict and not a gRPC status |
+| `POST /v1/delete`, `POST /v1/recluster` | `UNAVAILABLE` |
+
+This holds regardless of which operation currently owns the lock: a blocked
+import reports `success: false` even when a delete or recluster is the one
+running, and a blocked delete or recluster reports `UNAVAILABLE` even when an
+import is running. Either way, wait for the running job to reach a terminal
+state and retry - except when the holder is a single-file import, which has no
+`job_id`, so you watch the platform service status feed instead. See
+[Incremental Updates](incremental-updates.md) for the delete and recluster
+endpoints and their job polling, and
+[Error handling](reference/error-handling.md#synchronous-http-errors) for the
+response-shape table.
 
 Terminal statuses include `service_completed`, `service_failed`,
 `openai_graph_build_failed`, `triton_graph_build_failed`,

@@ -158,6 +158,8 @@ Use AutoGraph for everything up to and including Layer 2.
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |
 | Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| Add, remove, or replace individual documents in an existing module | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
+| Refresh Layer 3 communities of a FullGraphRAG partition after document churn | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds
@@ -173,6 +175,20 @@ Do not use incremental mode for a first-time build; there is no existing data
 to preserve. See [Incremental Builds](reference/corpus-build.md#incremental-builds)
 for details.
 {{< /warning >}}
+
+### Document-level changes
+
+Neither build mode is the right tool for routine document churn: both wipe and
+rebuild an entire module. To add, remove, or replace individual documents in a
+module that is already built - keeping its clusters, strategy profiles, and
+knowledge graph consistent - use
+[Incremental Graph Updates](incremental-graph-updates.md) instead.
+
+| Change | Path |
+|--------|------|
+| A few documents added, removed, or replaced | [Incremental Graph Updates](incremental-graph-updates.md) |
+| Many documents appended to an existing module | Corpus build with `incremental: true` |
+| A new module, or a clean rebuild of one module | Corpus build with the module in `modules` |
 
 ---
 
@@ -285,9 +301,12 @@ cannot be merged after the fact without a full rebuild of the affected modules.
 ## Next steps
 
 - [Architecture](architecture.md): Collections and named graphs per layer
+- [Incremental Graph Updates](incremental-graph-updates.md): Insert, delete, and
+  update documents in a graph that is already built
 - [Setup](setup.md): End-to-end setup with the web interface or API
 - [Import Files](reference/importing-files.md): Upload documents with module labels
 - [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
 - [RAG Strategizer](reference/rag-strategizer.md): Analyze clusters and assign strategies
-- [Orchestration](reference/orchestration.md): Spawn Importer workers
+- [Graph Operations](reference/orchestration.md): Spawn Importer workers and
+  apply document-level graph updates
 - [Error Handling](reference/error-handling.md): Troubleshooting common issues

@@ -1,69 +1,52 @@
 ---
-title: The Arango Control Plane (ACP) service
-menuTitle: Control Plane (ACP)
-weight: 30
+title: Arango Control Plane HTTP API
+menuTitle: API Reference
+weight: 10
 description: >-
-  Orchestrate the Contextual Data Platform with the Arango Control Plane to
-  install, manage, and run services in your Kubernetes cluster
+  HTTP API reference for the Arango Control Plane (ACP) service, covering the
+  service lifecycle and AI projects
 ---
-## Overview
+The Arango Control Plane (ACP) service provides an HTTP API for installing,
+inspecting, upgrading, and removing platform services, as well as for managing
+the projects that group AutoGraph and GraphRAG work.
 
-The Arango Control Plane (ACP) is the main entry point for installing, running, and
-managing services in the Contextual Data Platform. You can deploy services,
-group AutoGraph and GraphRAG work into projects, and manage the secrets
-profiles used by services:
+**Base URL:** `https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`
 
-- **Services**: install, upgrade, uninstall, get status, and list installed
-  services. Each service type has its own URL path prefix but shares a
-  common request and response structure.
-- **Projects**: organize AutoGraph and GraphRAG work by grouping related services and
-  keeping data separate. See [Projects](#projects).
-- **Secrets**: create and manage secret profiles used by services (for
-  example, LLM API keys). See [Secrets Manager](secrets-manager.md).
+Authentication uses a Bearer token in the `Authorization` header. See
+[Obtaining a Bearer token](_index.md#obtaining-a-bearer-token) for how to
+generate one.
 
-The ACP service is **started by default** and is available at
-`https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service`.
-
-## Getting started
-
-### Obtaining a Bearer token
-
-Before you can authenticate with the ACP service, you need to obtain a Bearer
-token. You can generate this token using the ArangoDB authentication API:
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_open/auth" >}}
-
-```bash
-curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_open/auth \
-  -d '{"username": "your-username", "password": "your-password"}'
-```
-
-This returns a user JWT token (not a superuser token) that you can use as
-your Bearer token. For more details about ArangoDB authentication and JWT
-tokens, see the
-[ArangoDB Authentication](../../arangodb/3.12/develop/http-api/authentication.md#jwt-user-tokens)
-documentation.
-
-### Health check
-
-To verify the ACP service is running:
+## Health Check
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
+
+Returns the current health status of the service.
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health
 ```
 
-Expected output on success: `{"status":"OK"}`
+**Response (200):**
+
+```json
+{
+  "status": "OK"
+}
+```
 
 {{< info >}}
 This request requires a valid Bearer token. Without a valid Bearer token, the
 request fails.
 {{< /info >}}
 
+---
+
 ## Services
 
-All endpoints are prefixed with `https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`.
+Each service type has its own URL path prefix for deployment, but all types
+share a common request and response structure. Once a service is installed, it
+is identified by the `serviceId` returned in the response, which you use for all
+subsequent status, upgrade, and uninstall operations.
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
@@ -74,7 +57,7 @@ All endpoints are prefixed with `https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`
 | POST | `/v1/autograph` | Deploy an AutoGraph service |
 | POST | `/v1/llmhost` | Deploy an LLM Host service |
 | POST | `/v1/notebook` | Deploy a Notebook service |
-| POST | `/v1/uds` | Deploy a User-Defined Service (UDS). See [Deploy a new service via API](container-manager/deploy-api.md) |
+| POST | `/v1/uds` | Deploy a User-Defined Service (UDS). See [Deploy a new service via API](../container-manager/deploy-api.md) |
 | POST | `/v1/service` | Deploy a generic service (any Helm chart) |
 | GET | `/v1/service/{service_id}` | Check the status of a service |
 | PUT | `/v1/service/{service_id}` | Update a service's configuration (env vars and labels) and upgrade it to the latest available chart version |
@@ -82,18 +65,7 @@ All endpoints are prefixed with `https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`
 | POST | `/v1/list_services` | List all installed services (supports label filtering) |
 | GET | `/v1/health` | Health check |
 
-The `/v1/service` endpoint accepts a generic body for deploying any Helm
-chart:
-
-```json
-{
-    "service_name": "<helm-chart-service-name>",
-    "env": { "<key>": "<value>" },
-    "labels": { "<key>": "<value>" }
-}
-```
-
-### Service creation request body
+### Service Creation Request Body
 
 All service creation endpoints share the same `env` and `labels` fields:
 
@@ -112,8 +84,8 @@ All service creation endpoints share the same `env` and `labels` fields:
 
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
-  as [Importer](../agentic-ai-suite/importer/_index.md) and
-  [Retriever](../agentic-ai-suite/retriever/_index.md).
+  as [Importer](../../agentic-ai-suite/importer/_index.md) and
+  [Retriever](../../agentic-ai-suite/retriever/_index.md).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining
@@ -121,14 +93,25 @@ All service creation endpoints share the same `env` and `labels` fields:
   set, the service uses the default profile. Profiles must already exist in
   the platform.
 
-### Complete service lifecycle example
+The `/v1/service` endpoint additionally takes a `service_name` field, which lets
+you deploy any Helm chart:
 
-The example below shows how to install, monitor, and uninstall the
-[Importer](../agentic-ai-suite/importer/_index.md) service.
+```json
+{
+    "service_name": "<helm-chart-service-name>",
+    "env": { "<key>": "<value>" },
+    "labels": { "<key>": "<value>" }
+}
+```
 
-#### Step 1: Install the service
+---
+
+### Deploy a Service
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
+
+Installs a service of the given type. The example below deploys the
+[Importer](../../agentic-ai-suite/importer/_index.md) service.
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter \
@@ -177,11 +160,11 @@ Where:
 Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id` when your platform supports secret profiles for
 the Importer install. For Triton Inference Server and other deployment
-options, see the [LLM Configuration](../agentic-ai-suite/importer/llm-configuration.md)
+options, see the [LLM Configuration](../../agentic-ai-suite/importer/llm-configuration.md)
 documentation.
 {{< /tip >}}
 
-**Response:**
+**Response (200):**
 
 ```json
 {
@@ -194,16 +177,26 @@ documentation.
 }
 ```
 
-#### Step 2: Check the service status
+---
 
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId>}" >}}
+### Check the Status of a Service
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
+
+Returns the current state of an installed service.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `serviceId` | The service identifier returned when the service was installed. |
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
-**Response:**
+**Response (200):**
 
 ```json
 {
@@ -222,16 +215,81 @@ moment to start up and become ready to accept requests. Refer to each service's
 documentation for its specific readiness or health check endpoint.
 {{< /info >}}
 
-#### Step 3: Uninstall the service
+---
+
+### Upgrade a Service
+
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
+
+Use this endpoint to update a running service's environment variables or labels,
+or to upgrade it to the latest available chart version. Calling this endpoint
+always performs a Helm chart upgrade to the latest version - you cannot pin a
+specific target version.
+
+{{< info >}}
+This endpoint only affects the configuration and chart version of an individual
+running service. It does not modify platform-level configuration (Helm values
+files, operator settings) or ArangoDB cluster versioning, which are managed
+separately via your deployment YAML and Helm operator.
+{{< /info >}}
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `serviceId` | The service identifier returned when the service was installed. |
+
+```bash
+curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
+  -H "Authorization: Bearer <your-bearer-token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "env": {
+      "db_name": "your_database_name",
+      "project_name": "your_project_name",
+      "chat_model": "<new-chat-model>"
+    },
+    "labels": { "key1": "value1" }
+  }'
+```
+
+The request body is optional. Omitting it (or sending `{}`) triggers an upgrade
+to the latest chart version with no configuration changes.
+
+- **env** (optional): Updated service-specific environment variables. The object
+  **replaces** the current `env` rather than merging into it, so send every
+  value the service needs, not only the ones you are changing. The example above
+  resends `db_name` and `project_name` for that reason, changing only
+  `chat_model`.
+- **labels** (optional): Updated key-value pairs used to filter and identify
+  the service in the platform.
+
+{{< warning >}}
+Because `env` is replaced wholesale, any installation value you leave out of the
+request is dropped. Retrieve the service's current configuration before you
+upgrade it, and send the full set of values it was installed with.
+{{< /warning >}}
+
+---
+
+### Uninstall a Service
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
+
+Removes an installed service from the platform.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `serviceId` | The service identifier returned when the service was installed. |
 
 ```bash
 curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
-**Response:**
+**Response (200):**
 
 ```json
 {
@@ -244,18 +302,13 @@ curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangod
 }
 ```
 
-{{< info >}}
-- **Service ID**: The `serviceId` from Step 1's response
-  (`arangodb-graphrag-importer-of1ml`) is used in Steps 2 and 3.
-- **Authentication**: All requests use the same Bearer token in the
-  `Authorization` header.
-{{< /info >}}
+---
 
-### Listing services
-
-To list all installed services, optionally filtered by labels:
+### List Services
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
+
+Lists all installed services, optionally filtered by labels.
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services \
@@ -270,53 +323,14 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services \
 
 An empty request body (`{}`) returns all installed services.
 
-### Upgrading a service
-
-Use this endpoint to update a running service's environment variables or labels,
-or to upgrade it to the latest available chart version. Calling this endpoint
-always performs a Helm chart upgrade to the latest version - you cannot pin a
-specific target version.
-
-{{< info >}}
-This endpoint only affects the configuration and chart version of an individual
-running service. It does not modify platform-level configuration (Helm values
-files, operator settings) or ArangoDB cluster versioning, which are managed
-separately via your deployment YAML and Helm operator.
-{{< /info >}}
-
-{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
-
-```bash
-curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-graphrag-importer-of1ml \
-  -H "Authorization: Bearer <your-bearer-token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "env": { "model_name": "<new-model-name>" },
-    "labels": { "key1": "value1" }
-  }'
-```
-
-The request body is optional. Omitting it (or sending `{}`) triggers an upgrade
-to the latest chart version with no configuration changes.
-
-- **env** (optional): Updated service-specific environment variables (for
-  example, `model_name` for an LLM Host service). Replaces the current values.
-- **labels** (optional): Updated key-value pairs used to filter and identify
-  the service in the platform.
+---
 
 ## Projects
 
-Projects help you organize AutoGraph and GraphRAG deployments by grouping related
-services and keeping your data separate. When the Importer service creates ArangoDB
-collections (such as documents, chunks, entities, relationships, and
-communities), it uses your project name as a prefix. For example, a project
-named `docs` will have collections like `docs_Documents`, `docs_Chunks`, and
-so on.
-
-Projects are required for the following services:
-- Importer
-- Retriever
-- AutoGraph
+Projects group related AutoGraph and GraphRAG services and keep their data
+separate. They are required for the Importer, Retriever, and AutoGraph
+services. For a conceptual overview, see
+[Projects](_index.md#projects).
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
@@ -326,12 +340,12 @@ Projects are required for the following services:
 | GET | `/v1/all_project_names/{project_db_name}` | Get all project names in a database |
 | GET | `/v1/all_projects/{project_db_name}` | Get all projects in a database |
 
-### Creating a project
-
-Projects are required for AutoGraph and GraphRAG. The examples below shows how
-to create a new GraphRAG project:
+### Create a Project
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project" >}}
+
+Creates a project in the specified database. The example below creates a
+GraphRAG project:
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project \
@@ -365,36 +379,61 @@ Once created, you can reference your project in service deployments using the
 }
 ```
 
-### Listing projects
+---
 
-**List all project names in a database:**
+### List Project Names
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_project_names/{project_db_name}" >}}
+
+Lists all project names in a database. This returns only the project names for
+quick reference.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `project_db_name` | The ArangoDB database name that holds the projects. |
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_project_names/<project_db_name> \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
-This returns only the project names for quick reference.
+---
 
-**List all projects with full metadata in a database:**
+### List Projects
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_projects/{project_db_name}" >}}
+
+Lists all projects with full metadata in a database. This returns complete
+project objects including metadata, associated services, and knowledge graph
+information.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `project_db_name` | The ArangoDB database name that holds the projects. |
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/all_projects/<project_db_name> \
   -H "Authorization: Bearer <your-bearer-token>"
 ```
 
-This returns complete project objects including metadata, associated services,
-and knowledge graph information.
+---
 
-### Getting project details
-
-Retrieve comprehensive metadata for a specific project:
+### Get Project Details
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_db_name}/{project_name}" >}}
+
+Retrieves comprehensive metadata for a specific project.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `project_db_name` | The ArangoDB database name that holds the project. |
+| `project_name` | The project name. |
 
 ```bash
 curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/<project_db_name>/<project_name> \
@@ -408,12 +447,21 @@ The response includes:
 - Service status information
 - Last modification timestamp
 
-### Deleting a project
+---
 
-Delete a project. The project record is removed entirely; only the external
-resources it referenced (services, collections, graphs) remain.
+### Delete a Project
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/{project_db_name}/{project_name}" >}}
+
+Deletes a project. The project record is removed entirely; only the external
+resources it referenced (services, collections, graphs) remain.
+
+**Path parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `project_db_name` | The ArangoDB database name that holds the project. |
+| `project_name` | The project name. |
 
 ```bash
 curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/<project_db_name>/<project_name> \
@@ -430,18 +478,3 @@ delete the resources the project referenced:
 
 Delete those separately if you no longer need them.
 {{< /warning >}}
-
-## Secrets
-
-For managing secret profiles via ACP, see the
-[Secrets Manager](secrets-manager.md) documentation.
-
-## Files
-
-For managing files via ACP, see the
-[File Manager](file-manager/_index.md) documentation.
-
-## API reference
-
-For detailed API documentation, see the
-[Arango Control Plane service API Reference](https://apiref.arango.ai/#genai-service).

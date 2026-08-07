@@ -10,7 +10,7 @@ description: >-
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
 - A **GraphRAG project** in your target database (keeps datasets isolated).
-  See [Projects](../../platform-suite/control-plane-acp.md#projects).
+  See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** for the API (`Authorization: Bearer ...`).
 
@@ -59,6 +59,13 @@ citations linking to the source documents they came from.
 {{< /step >}}
 
 {{< /steps >}}
+
+{{< info >}}
+To add, remove, or replace individual documents later, switch to the API. The
+web interface does not expose document-level updates in Arango Contextual Data
+Platform 4.1.0 - see
+[Incremental Graph Updates](incremental-graph-updates.md).
+{{< /info >}}
 {{< /tab >}}
 
 {{< tab "HTTP REST API" >}}
@@ -101,7 +108,25 @@ Spawns the per-domain Importer workers to build the knowledge graph. Run this
 only after the strategizer has finished.
 {{< /step >}}
 
+{{< step "Keep the graph current (optional)" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
+Once the graph is built, add, remove, or replace individual documents with
+`/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
+rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
+with `partition_ids` and `file_ids` so the change reaches the knowledge graph.
+See [Incremental Graph Updates](incremental-graph-updates.md).
+{{< /step >}}
+
 {{< /steps >}}
+
+{{< info >}}
+Insert and update can only target a document in the knowledge graph if it has a
+File Manager `file_id`. Documents uploaded with `/v1/import-multiple`, as in
+step 2, do not get one - build through the
+[File Manager](../../platform-suite/file-manager/) path when you expect to
+update documents later. See [Identifying documents for Layer
+3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+{{< /info >}}
 
 Next, query your knowledge base with the
 [Retriever service](../retriever/quick-start.md).
@@ -119,6 +144,8 @@ source. To query it programmatically, see the
 ## Next steps
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
+- [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
+  replace documents in a graph that is already built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
 - [Design Guide](design-guide.md): Structure data with modules, layers, and
