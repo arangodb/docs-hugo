@@ -43,6 +43,7 @@ FOR u IN users
 
 Above query returns five documents of the `users` collection.
 It could also be written as `LIMIT 0, 5` for the same result.
+
 Which documents it returns is rather arbitrary because collections have no
 defined order for the documents they contain. A `LIMIT` operation should usually
 be accompanied with a `SORT` operation to explicitly specify a sorting order
@@ -68,7 +69,7 @@ get skipped, and the query returns the next five user documents.
 ### Skip results without limiting their number
 
 If you want to skip results but return all of the remaining ones, use `null` as
-the `count` value:
+the `count` value (instead of an arbitrary large number):
 
 ```aql
 FOR u IN users
@@ -79,10 +80,6 @@ FOR u IN users
 
 In above example, the documents of `users` are sorted, the first ten results
 get skipped, and the query returns all remaining user documents.
-
-You can use this form instead of specifying an arbitrarily high `count` value,
-which is necessary because you cannot calculate the `count` value dynamically,
-for instance from the total number of documents.
 
 Note that `LIMIT 0, null` neither skips nor limits any results, making the
 operation effectively a no-op.
@@ -116,7 +113,7 @@ FOR u IN users
 Where a `LIMIT` is used in relation to other operations in a query has meaning.
 `LIMIT` operations before `FILTER`s in particular can change the result
 significantly, because the operations are executed in the order in which they
-are written in the query. See [FILTER](filter.md#order-of-operations)
+are written in the query. See [`FILTER`](filter.md#order-of-operations)
 for a detailed example.
 
 ### Limit the results of write operations
