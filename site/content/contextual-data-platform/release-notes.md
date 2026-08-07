@@ -7,6 +7,34 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.0 (August 2026)
+
+### File Parser Service
+
+{{< tag "Agentic AI Suite" >}}
+
+A new internal service for converting documents has been added. Both
+[AutoGraph](../agentic-ai-suite/autograph/setup.md#supported-file-formats) and
+the [Importer](../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats)
+now delegate the conversion of documents into Markdown to the new File Parser
+service.
+
+PDF files, including scanned documents that are read using OCR, and modern
+Office documents (`.docx`, `.xlsx`, `.pptx`) are officially supported. Text is
+also extracted from legacy Office files, Rich Text Format, OpenDocument files,
+HTML, EPUB, email messages, and plain text and data files. The service additionally extracts
+embedded images together with their surrounding text, so that the Importer can
+pick them up as
+[semantic units](../agentic-ai-suite/importer/semantic-units.md). For what each
+format guarantees, see
+[Document conversion and supported formats](../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats).
+
+The new service scales horizontally, using two worker tiers, one for PDF
+documents and one for everything else, each scaling up to 10 worker pods by
+default. Deployments in AMP run these defaults unchanged. For self-hosted
+clusters, see
+[Tuning the File Parser](../agentic-ai-suite/importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments).
+
 ## v4.0.2 (May 2026)
 
 This is a maintenance release.

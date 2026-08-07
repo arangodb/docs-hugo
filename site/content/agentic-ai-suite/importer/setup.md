@@ -21,16 +21,133 @@ database. Choose the web interface for a guided experience or the API for
 automation.
 {{< /tip >}}
 
-## Supported file formats
+## Document conversion and supported formats
 
-The Importer accepts the following formats with UTF-8 encoding:
+The Importer does not parse documents itself. Every input that is not already
+plain text or Markdown is handed to the internal **File Parser service**, which
+converts it to Markdown and, where applicable, extracts the embedded images
+together with the text surrounding each one. The Importer then chunks that
+Markdown and builds the knowledge graph from it.
 
-- **Plain text**: `.txt`
-- **Markdown**: `.md`
-- **PDF**: `.pdf`
+The File Parser is a platform service installed once per environment. It has no
+web interface and you do not call it directly.
+[AutoGraph](../autograph/setup.md#supported-file-formats) uses the same service
+for its corpus build, so both paths accept the same inputs and produce the same
+Markdown.
 
-Office files (`.docx`, `.pptx`, etc.) and images are converted to PDF first
-and then processed through the same pipeline.
+### Format support
+
+Text extraction is what the knowledge graph is built from, and it is reliable
+for everything below. What varies between formats is image extraction, so check
+the last column before you rely on [semantic units](semantic-units.md) for a
+given document type.
+
+| Format | Support | Text | Images and media |
+|--------|---------|------|------------------|
+| PDF (digital, scanned, mixed) | **Officially supported** | Full, including OCR for scanned pages | Embedded images extracted with position and surrounding text |
+| DOCX, PPTX, XLSX | **Officially supported** | Full | Embedded raster images extracted with position. Vector graphics vary, see the note below |
+| DOC, PPT, XLS, RTF | Supported | Full. Converted internally to the modern Office format first | Same as modern Office |
+| ODS, ODP | Supported | Full | Raster images extracted. Charts extracted natively, including their data as tables |
+| ODT | Supported, with caveat | Best-effort, because of a known limitation in the upstream parser | As ODS and ODP |
+| Markdown, TXT, CSV, JSON | Supported | Full | Not applicable |
+| HTML | Supported | Full | Only images embedded as data URIs. External references are never fetched, by design |
+| EPUB, EML | Supported | Full. For EML, the message body | Images and attachments not extracted |
+| Standalone images | Supported | Not applicable | The image itself becomes the artifact. It is not read using OCR |
+| Unrecognized text | Handled | Parsed as plain text. Recognized source code renders as a fenced, language-labeled block | Not applicable |
+| Unrecognized binary, `.msg`, password-protected, empty | Rejected | Rejected within seconds with an explicit error code, rather than partial or garbled content | — |
+
+Where images are extracted, each one is stored as a separate artifact and
+referenced at its position in the Markdown, together with the text surrounding
+it. That is what the Importer turns into semantic units.
+
+{{< info >}}
+**Vector graphics in Office documents.** Word drawing objects are generally
+rasterized during conversion and therefore survive as images, but treat that as
+measured behavior rather than a guarantee: charts and SmartArt in particular may
+be dropped. In PowerPoint, native charts, drawn shapes, and SmartArt are not
+extracted, and neither are Excel charts. Text, slide titles, and native tables
+are never affected.
+{{< /info >}}
+
+{{< tip >}}
+If you need the images out of an EPUB or an email, or the externally hosted
+images of an HTML page, convert the document to PDF first. Image extraction is
+fully supported there.
+{{< /tip >}}
+
+Documents that legitimately contain no extractable text, such as a blank page,
+succeed with empty content and a warning rather than failing.
+
+### Tuning the File Parser for self-hosted deployments
+
+The File Parser ships with defaults sized for a reference data platform deployment.
+Deployments on the [Arango Managed Platform (AMP)](../../amp/_index.md) run
+these defaults unchanged. For self-hosted clusters, the settings below are the
+ones worth revisiting; the rest are safe to leave alone.
+
+| Setting | Default | When to change it |
+|---------|---------|-------------------|
+| `FPS_MAX_REPLICAS__PDF`, `FPS_MAX_REPLICAS__DEFAULT` | 10 worker pods per tier | Lower it if the node pool has fewer CPUs than the fleet would claim; raise it for large ingestion batches on a bigger pool. |
+| `workerPdf.resources.limits.memory` | 6Gi | The memory limit is the parse memory envelope. Raise it if large or image-dense PDFs fail with a resource error. |
+| `FPS_T_PAGE_OCR_S` | 15 seconds per OCR'd page | Raise it on slower CPUs so that scanned PDFs are not cut off by their attempt budget. Parsing is CPU-based; no GPU is used. |
+| `FPS_RETENTION_WINDOW_S` | 259200 (3 days) | The main storage-cost lever. It only needs to outlast an import, so it can be shortened considerably. |
+| `FPS_MAX_FILE_SIZE_BYTES` | 104857600 (100 MB) | Raise it if your corpus contains larger single documents. |
+| `FPS_IMAGE_CAP` | 200 images per document | Raise it for image-heavy documents such as scanned catalogs. |
+| `FPS_MAX_ATTEMPTS` | 3 | Retries per job on transient failures. |
+
+The worker resource limits are Helm values; everything prefixed with `FPS_` is a
+service setting, and values for those must be quoted strings.
+
+#### Applying values
+
+The File Parser is installed once per environment as the
+`arangodb-file-parser` platform service. Put your values in that service's
+`overrides` block in the platform package (`platform.yaml`), the same file you
+install with
+[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md):
+
+```yaml
+  arangodb-file-parser:
+    package: arangodb-file-parser
+    overrides:
+      config:
+        FPS_RETENTION_WINDOW_S: "7200"
+        FPS_MAX_REPLICAS__PDF: "6"
+      workerPdf:
+        resources:
+          limits:
+            memory: 8Gi
+```
+
+The package is the right place for anything you want to keep: it is re-applied
+on every install and survives upgrades. Editing the running service directly
+with `kubectl edit arangoplatformservice arangodb-file-parser` takes effect
+immediately and is fine while you experiment, but the next package install
+replaces it. Changing a value restarts the pods, and workers finish the job
+they are on before stopping.
+
+#### Checking what is applied
+
+The pods log their effective non-default settings on startup, which is the
+quickest way to confirm a change landed:
+
+```sh
+kubectl logs -n <namespace> -l app.kubernetes.io/instance=arangodb-file-parser --tail=20
+```
+
+A setting name that does not exist is reported as a warning there rather than
+failing silently, so a typo is visible in the first log after a restart. To see
+the full applied set instead, read the service's rendered configuration:
+
+```sh
+kubectl get cm arangodb-file-parser-config -n <namespace> -o yaml
+```
+
+If jobs queue for a long time, the fleet is too small: raise
+`FPS_MAX_REPLICAS__*`, or give the pool more CPU. If jobs fail with resource or
+timeout errors, the per-job limits are too tight for your documents. The
+[Monitoring](../../platform-suite/monitoring.md) dashboards surface both
+patterns.
 
 ## Prerequisites
 
