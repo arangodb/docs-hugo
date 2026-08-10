@@ -395,15 +395,25 @@ for how the Importer resolves the key.
 
 ### Safe-to-delete
 
-Every lineage carries a `safe_to_delete` flag:
+Every *version* carries its own `safe_to_delete` flag in its own metadata
+document:
 
-- `true` — the file can be deleted. **Newly uploaded files start out as `true`.**
-- `false` — the file is **locked**. Delete requests skip it and report it as
+- `true` — the version can be deleted.
+- `false` — the version is **locked**. Delete requests skip it and report it as
   locked rather than removing it.
 
-Consumers set this flag to protect files that are in use. The flag applies to
-the whole lineage (all versions), not to an individual version — setting it
-writes through to every version.
+Consumers set this flag to protect files that are in use. Although the flag is
+stored per version, the endpoints that write it
+([single](#lock-or-unlock-a-file), [bulk](#lock-or-unlock-multiple-files), and
+[scope](#lock-or-unlock-a-scope)) always write it to **every** version of a
+lineage in one call, so the versions of a lineage stay in sync. Deleting a
+single version, on the other hand, only checks the flag of the version being
+deleted.
+
+Every newly uploaded version starts out **unlocked** (`safe_to_delete` is
+`true`), whether it is the first version of a new file or another version added
+to an existing lineage. Uploading does not inherit the lock state of the
+previous versions.
 
 ### Partial results
 
@@ -468,6 +478,18 @@ curl -X POST \
   -F 'custom_metadata={"author":"Ada","citable_url":"https://example.com/doc"}'
 ```
 
+**Example:**
+
+```bash
+curl -X POST \
+  "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/my-database/rag-input" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -F "name=my-file.pdf" \
+  -F "scope=acme" \
+  -F "scope=legal" \
+  -F "file=@my-file.pdf"
+```
+
 **Response (200):**
 
 ```json
@@ -492,7 +514,7 @@ curl -X POST \
 **Errors:** `400` (invalid scope, including a violation of the level or
 combined-length limits, or invalid `custom_metadata`), `422` (a required form
 field is missing or a typed field is invalid), `500` (storage, metadata, or
-another internal operation failed)
+another internal operation failed),
 
 There is no application-level size limit on single-file upload, although an
 ingress or proxy in front of the service may impose one.
@@ -529,6 +551,10 @@ The two ways of placing files are alternatives: supply a `manifest`, or supply
 `scope` and `mapping`. When a `manifest` is present, `scope` and `mapping` do
 not apply. The shared `custom_metadata` field applies either way.
 
+The two ways of placing files are alternatives: supply a `manifest`, or supply
+`scope` and `mapping`. When a `manifest` is present, `scope` and `mapping` do
+not apply.
+
 In shared-scope mode, `flatten` stores every uploaded basename directly in the
 shared scope. `preserve_paths` appends the directory segments of each multipart
 filename to that scope and uses the final segment as the name.
@@ -552,10 +578,7 @@ file by the zero-based `file` index, or by its own position in the array when
   },
   {
     "file": 1,
-    "name": "legal-notes.txt",
-    "custom_metadata": {
-      "citable_url": "https://example.com/docs/legal-notes"
-    }
+    "name": "legal-notes.txt"
   }
 ]
 ```
@@ -637,6 +660,7 @@ message.
       "id": "rag-input-OjI6bXktZGF0YWJhc2U6YWNtZTpyZXBvcnRzOnExLnBkZg",
       "version": 1,
       "custom_metadata": {}
+      "version": 1
     },
     {
       "name": "bad.pdf",
@@ -658,7 +682,7 @@ file it belongs to and is reported in the `207` body.
 unsupported `mapping` value, or an invalid shared `custom_metadata`),
 `413` (combined size exceeds the 2 GiB limit), `422` (a required form field is
 missing or a typed field is invalid), `500` (every file failed because of an
-internal or storage error)
+internal or storage error).
 
 ---
 
@@ -711,6 +735,7 @@ curl -X GET \
       "custom_metadata": {
         "citable_url": "https://example.com/doc"
       }
+      "safe_to_delete": true
     }
   ],
   "total": 1,
@@ -825,6 +850,7 @@ of the child you want to descend into.
       "version": 1,
       "safe_to_delete": true,
       "custom_metadata": {}
+      "safe_to_delete": true
     }
   ]
 }
@@ -878,6 +904,7 @@ unless a specific version is requested.
     "author": "Ada",
     "citable_url": "https://example.com/doc"
   }
+  "safe_to_delete": true
 }
 ```
 
@@ -886,7 +913,7 @@ Requesting an explicit `version` returns that version's own `custom_metadata`,
 which may differ from the latest version's map.
 
 **Errors:** `404` (the id cannot be resolved or the selected version does not
-exist), `422` (invalid `version`), `500` (metadata lookup failed)
+exist), `422` (invalid `version`), `500` (metadata lookup failed).
 
 ---
 
@@ -923,7 +950,8 @@ stored/original MIME type, such as `application/pdf`. The generic OpenAPI
 
 {{< endpoint "PATCH" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
-Sets the `safe_to_delete` flag on a whole lineage (all versions).
+Sets the `safe_to_delete` flag of a file. The flag is stored per version, and
+this endpoint writes the given value to every version of the lineage.
 
 **Path parameters:**
 
@@ -962,6 +990,7 @@ version's metadata is returned.
   "custom_metadata": {
     "citable_url": "https://example.com/doc"
   }
+  "safe_to_delete": false
 }
 ```
 
@@ -975,8 +1004,8 @@ version's metadata is returned.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete" >}}
 
-Sets the `safe_to_delete` flag on up to 100 lineages in one request. Each id
-affects the whole lineage.
+Sets the `safe_to_delete` flag of up to 100 files in one request. Each id
+writes the given value to every version of that lineage.
 
 **Path parameters:**
 
@@ -1041,7 +1070,8 @@ Each result reports a `status` of `updated`, `not_found`, or `error`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/safe-to-delete-scope" >}}
 
-Sets the `safe_to_delete` flag on every file at a scope **and below it**.
+Sets the `safe_to_delete` flag of every file at a scope **and below it**,
+including every version of each of these files.
 
 **Path parameters:**
 
@@ -1099,8 +1129,9 @@ limit), `422` (the body or an individual scope label violates its schema),
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input/{id}" >}}
 
 Deletes a single RAG input file version and its metadata. Defaults to the latest
-version unless a specific version is given. Deletion is only permitted when
-`safe_to_delete` is `true`.
+version unless a specific version is given. Deletion is only permitted when the
+`safe_to_delete` flag **of the selected version** is `true`. The flags of the
+other versions of the lineage are not considered.
 
 This differs from [Delete Multiple Files](#delete-multiple-files) and
 [Delete a Scope](#delete-a-scope), which remove entire lineages. The scope is
@@ -1129,8 +1160,8 @@ decoded from the `id`.
 }
 ```
 
-**Errors:** `404` (not found), `422` (invalid `version`), `423` (file locked,
-not safe to delete), `500` (server error)
+**Errors:** `404` (not found), `422` (invalid `version`), `423` (the selected
+version is locked, not safe to delete), `500` (server error)
 
 ---
 
