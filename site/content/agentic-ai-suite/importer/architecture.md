@@ -51,8 +51,11 @@ different partitions coexists in the same collections. Filter by
 - **Key fields**:
   - `_key`: Unique identifier.
   - `content`: Full text content.
-  - `file_name` (multi-file imports only): Original filename.
-  - `citable_url` (multi-file imports only): URL used for inline citations at retrieval.
+  - `file_name`: Original filename.
+  - `citable_url`: URL used for inline citations at retrieval. Taken from the
+    inline `files[].citable_url` field, or from the file's File Manager custom
+    metadata on the `file_id` and `file_ids` paths. See
+    [Citation URLs](reference/parameters.md#citation-urls).
   - `partition_id`: Partition the document belongs to.
 
 ### Chunks
