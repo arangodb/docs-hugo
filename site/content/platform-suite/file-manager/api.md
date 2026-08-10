@@ -660,7 +660,6 @@ message.
       "id": "rag-input-OjI6bXktZGF0YWJhc2U6YWNtZTpyZXBvcnRzOnExLnBkZg",
       "version": 1,
       "custom_metadata": {}
-      "version": 1
     },
     {
       "name": "bad.pdf",
@@ -735,7 +734,6 @@ curl -X GET \
       "custom_metadata": {
         "citable_url": "https://example.com/doc"
       }
-      "safe_to_delete": true
     }
   ],
   "total": 1,
@@ -850,7 +848,6 @@ of the child you want to descend into.
       "version": 1,
       "safe_to_delete": true,
       "custom_metadata": {}
-      "safe_to_delete": true
     }
   ]
 }
@@ -904,7 +901,6 @@ unless a specific version is requested.
     "author": "Ada",
     "citable_url": "https://example.com/doc"
   }
-  "safe_to_delete": true
 }
 ```
 
@@ -990,7 +986,6 @@ version's metadata is returned.
   "custom_metadata": {
     "citable_url": "https://example.com/doc"
   }
-  "safe_to_delete": false
 }
 ```
 
