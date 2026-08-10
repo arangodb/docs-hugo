@@ -60,7 +60,7 @@ The following features are now available in the Community Edition:
 - [Enhanced Data Masking](../../components/tools/arangodump/maskings.md#masking-functions)
 - Key rotation for [JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
   and [on-disk encryption](../../develop/http-api/security.md#encryption-at-rest)
-- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--sslserver-name-indication)
+- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--tlsserver-name-indication)
 
 ## ArangoSearch
 
