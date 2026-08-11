@@ -1,6 +1,6 @@
 ---
 title: Build and query a Context Graph with AutoGraph and AutoRAG
-menuTitle: Notebook Tutorial
+menuTitle: AutoGraph Tutorial
 weight: 18
 description: >-
   Turn 50 documents into a Context Graph and deploy a retriever that answers
@@ -24,7 +24,7 @@ connections between them.
 
 **The notebook is the tutorial.** This page gets you to the starting line -
 prerequisites, the files, a running Notebook server - and then hands over. Every
-step, every API call, and every explanation lives in `Autograph_DEMO.ipynb`, so
+step, every API call, and every explanation lives in `AutoGraph-Tutorial.ipynb`, so
 you follow one story in one place instead of reading here and clicking there.
 
 By the end, you will have:
