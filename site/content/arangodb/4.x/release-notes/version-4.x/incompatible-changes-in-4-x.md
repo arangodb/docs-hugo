@@ -891,3 +891,20 @@ The benchmark and test tool _arangobench_ has been removed.
 It was originally used internally in the development of ArangoDB for performance
 and server function testing, but lost its relevance over time and became
 unmaintained.
+
+### Obsolete startup options removed
+
+The following startup options have been removed from all client-tools.
+They are no longer recognized and throw errors if set:
+
+- `--log.performance`
+- `--log.use-local-time`
+- `--log.use-microtime`
+
+### `--tls.protocol` renamed
+
+The `--ssl.protocol` startup option has been renamed to `--tls.protocol` for
+all client-tools because the legacy SLL encryption settings are not supported
+by _arangod_  anymore and the remaining ones are all TLS versions.
+
+You can still use the old startup options name.
