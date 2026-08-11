@@ -115,6 +115,13 @@ The `security` and `bench` log topics have been removed.
 The `/_admin/log/level` endpoints no longer include these log topics in
 responses and attempts to set the log levels for these topics are ignored.
 
+#### Optimizer rule changes
+
+An `upgrade-scatter-to-distribute` rule has been added.
+
+The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
+`GET /_api/query/rules`.
+
 ### Privilege changes
 
 

@@ -172,6 +172,29 @@ FOR v IN OUTBOUND SHORTEST_PATH "nodes/A" TO "nodes/D" GRAPH "weightGraph"
 This change is backward compatible. Passing a string works like before and
 accesses a top-level attribute with exactly the specified name.
 
+### Improved joins in sharded clusters
+
+A new `upgrade-scatter-to-distribute` optimizer rule has been added to utilize
+sharding information for join queries in cluster deployments.
+
+In the execution plan, the optimization upgrades a `ScatterNode` to a
+`DistributeNode` where a join filter already determines the distribution.
+Only the respective DB-Server is involved if it's known to have the documents
+when using a filter for a join like this:
+
+```aql
+FOR doc1 IN coll1
+   FOR doc2 IN coll2
+      FILTER doc2._key == doc1.attr
+      RETURN [doc1, doc2]
+```
+
+If `coll2` uses `_key` as sharding attribute, the only matching documents with
+`doc1.attr == doc2._key` reside on the DB-Server that serves the shard for
+`doc2._key`. Therefore, only `doc1` / `doc1.attr` has to be distributed to that
+server, not scattered to all of them. This equally works for custom `shardKeys`
+if you filter by them in the join.
+
 ## Indexing
 
 ### Upgrading vector indexes
