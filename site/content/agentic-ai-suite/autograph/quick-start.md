@@ -48,14 +48,21 @@ on its own; wait for it to finish.
 {{< /step >}}
 
 {{< step "Build the knowledge base" >}}
-Start the import. AutoGraph turns each topic group into a part of a searchable
-knowledge base and deploys a retriever to query it. Wait for the
-"knowledge graph built successfully" confirmation.
+Click **Generate strategies**. Pick how much of the corpus should lean on graph
+extraction with the **Complexity** slider — the balanced default is a good first
+run — then review the strategies AutoGraph picked per topic group and click
+**Build Knowledge Graph**. AutoGraph turns each topic group into a part of a
+searchable knowledge base. Wait for the **Knowledge Graph built** confirmation.
+{{< /step >}}
+
+{{< step "Deploy a retriever" >}}
+Deploy a retriever against your Context Graph. It is what your questions,
+agents, and applications talk to. Wait for it to go **live**.
 {{< /step >}}
 
 {{< step "Ask your first question" >}}
-Open the chat and ask a question in plain language. Answers come back with
-citations linking to the source documents they came from.
+Ask a question in plain language. Answers come back with citations linking to the
+source documents they came from.
 {{< /step >}}
 
 {{< /steps >}}
