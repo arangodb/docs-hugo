@@ -329,8 +329,8 @@ Changing the *order* of the scope labels addresses a different lineage:
 
 ### Custom metadata
 
-When you upload a RAG input file, you can attach your own notes to it as a set
-of name-value pairs, called `custom_metadata`:
+When you upload a RAG input file, you can attach information of your own to it,
+as a set of name-value pairs called `custom_metadata`:
 
 ```json
 {
@@ -360,12 +360,12 @@ plain text, is rejected with `400`.
 A file uploaded without custom metadata simply has none, and every response
 shows it as `{}`.
 
-Custom metadata belongs to **one version** of a file. Uploading the file again
-with different notes does not add to the previous set; it replaces it. Older
-versions keep the notes they were uploaded with. To read those, add a `version`
-query parameter to
-[Get RAG Input File Info](#get-rag-input-file-info), as in `?version=1`. The
-numbers you can ask for come from
+Custom metadata belongs to **one version** of a file. Uploading the same file
+again creates a new version, and that version carries only the custom metadata
+sent with it. Nothing is merged into or removed from earlier versions, which
+keep their own. To read what an earlier version carries, add a `version` query
+parameter to [Get RAG Input File Info](#get-rag-input-file-info), as in
+`?version=1`. The numbers you can ask for come from
 [Get Version History](#get-version-history).
 
 #### The `citable_url` key
@@ -386,10 +386,10 @@ curl -X POST \
   -F 'custom_metadata={"citable_url":"https://example.com/docs/my-file"}'
 ```
 
-The link has to start with `http://` or `https://` and must not contain spaces
-or unmatched parentheses. File Manager does not check this; it only applies the
-size limits above. Anything that is not a usable link is quietly skipped, which
-leaves the citation unlinked. See
+The link has to start with `http://` or `https://` and must not contain
+whitespace or unmatched parentheses. File Manager does not check this; it only
+applies the size limits above. Anything that is not a usable link is quietly
+skipped, which leaves the citation unlinked. See
 [Import parameters](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
 for how the Importer resolves the key.
 
@@ -478,18 +478,6 @@ curl -X POST \
   -F 'custom_metadata={"author":"Ada","citable_url":"https://example.com/doc"}'
 ```
 
-**Example:**
-
-```bash
-curl -X POST \
-  "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/my-database/rag-input" \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -F "name=my-file.pdf" \
-  -F "scope=acme" \
-  -F "scope=legal" \
-  -F "file=@my-file.pdf"
-```
-
 **Response (200):**
 
 ```json
@@ -514,7 +502,7 @@ curl -X POST \
 **Errors:** `400` (invalid scope, including a violation of the level or
 combined-length limits, or invalid `custom_metadata`), `422` (a required form
 field is missing or a typed field is invalid), `500` (storage, metadata, or
-another internal operation failed),
+another internal operation failed).
 
 There is no application-level size limit on single-file upload, although an
 ingress or proxy in front of the service may impose one.
@@ -550,10 +538,6 @@ exceed 2 GiB. Files are processed sequentially and independently, and the
 The two ways of placing files are alternatives: supply a `manifest`, or supply
 `scope` and `mapping`. When a `manifest` is present, `scope` and `mapping` do
 not apply. The shared `custom_metadata` field applies either way.
-
-The two ways of placing files are alternatives: supply a `manifest`, or supply
-`scope` and `mapping`. When a `manifest` is present, `scope` and `mapping` do
-not apply.
 
 In shared-scope mode, `flatten` stores every uploaded basename directly in the
 shared scope. `preserve_paths` appends the directory segments of each multipart

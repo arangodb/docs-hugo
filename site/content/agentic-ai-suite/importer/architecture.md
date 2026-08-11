@@ -54,7 +54,8 @@ different partitions coexists in the same collections. Filter by
   - `file_name`: Original filename.
   - `citable_url`: URL used for inline citations at retrieval. Taken from the
     inline `files[].citable_url` field, or from the file's File Manager custom
-    metadata on the `file_id` and `file_ids` paths. See
+    metadata on the `file_id` and `file_ids` paths. Empty for `file_content`
+    and `file_url` imports, which have no way to supply one. See
     [Citation URLs](reference/parameters.md#citation-urls).
   - `partition_id`: Partition the document belongs to.
 

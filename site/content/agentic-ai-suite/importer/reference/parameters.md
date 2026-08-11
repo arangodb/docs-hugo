@@ -115,8 +115,8 @@ Two things are worth knowing:
 
 - Custom metadata belongs to one version of a file, so uploading a new version
   to File Manager drops the old `citable_url`. Set it again on the new upload.
-- The Importer keeps only `http` and `https` links that contain no spaces and
-  no unmatched parentheses. It discards anything else, and the import still
+- The Importer keeps only `http` and `https` links that contain no whitespace
+  and no unmatched parentheses. It discards anything else, and the import still
   succeeds, so a bad link shows up as a plain citation number rather than an
   error. The reason is written to the Importer's log. Values you set inline on
   `files[].citable_url` are not checked at all.

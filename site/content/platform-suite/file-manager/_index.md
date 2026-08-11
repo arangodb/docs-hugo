@@ -41,16 +41,16 @@ file.
 
 ## Attaching custom metadata
 
-Besides its scope, a RAG input file can carry your own notes, attached when you
-upload it as a set of name-value pairs called `custom_metadata`. File Manager
-only keeps these and hands them back unchanged, so you can use whatever names
-suit your own applications.
+Besides its scope, a RAG input file can carry information of your own, attached
+when you upload it as a set of name-value pairs called `custom_metadata`. File
+Manager only keeps these and hands them back unchanged, so you can use whatever
+names suit your own applications.
 
 A few names are picked up by other services. Setting `citable_url` to a
 document's public web address, for example, lets the AutoGraph service show
 clickable links on the citations for that document. See
-[Custom metadata](api.md#custom-metadata) for the size limits and how the notes
-relate to file versions.
+[Custom metadata](api.md#custom-metadata) for the size limits and how custom
+metadata relates to file versions.
 
 ## Web interface
 
