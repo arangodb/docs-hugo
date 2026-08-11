@@ -1327,6 +1327,10 @@ the JavaScript graph modules.
 
 ## Startup options
 
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
+
 ### `--database.extended-names` enabled by default
 
 The `--database.extended-names` startup option is now enabled by default.

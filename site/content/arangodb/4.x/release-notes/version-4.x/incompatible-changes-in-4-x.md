@@ -701,6 +701,10 @@ To set a batch size, use the `batchSize` query option instead of `execute(<batch
 
 ## Startup options
 
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
+
 ### RocksDB format version 6
 
 The default format used by the RocksDB storage engine for its SST files has been
