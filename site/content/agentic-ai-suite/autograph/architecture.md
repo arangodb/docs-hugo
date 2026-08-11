@@ -1,11 +1,10 @@
 ---
-title: Architecture
+title: AutoGraph Architecture
 menuTitle: Architecture
 weight: 20
 description: >-
   AutoGraph's three-layer knowledge graph architecture, ArangoDB collections, and named graphs
 ---
-
 ## Three-Layer Knowledge Graph
 
 AutoGraph organizes data in ArangoDB across three layers. Each layer has a clear

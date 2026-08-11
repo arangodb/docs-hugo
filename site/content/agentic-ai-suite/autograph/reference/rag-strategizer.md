@@ -1,11 +1,10 @@
 ---
-title: RAG Strategizer
+title: AutoGraph RAG Strategizer Reference
 menuTitle: RAG Strategizer
 description: >-
   Analyze document clusters and assign optimal RAG strategies
 weight: 45
 ---
-
 ## Trigger RAG Strategizer
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}

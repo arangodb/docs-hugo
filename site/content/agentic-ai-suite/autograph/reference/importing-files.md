@@ -1,11 +1,10 @@
 ---
-title: Import Files
+title: AutoGraph Import Files Reference
 menuTitle: Import Files
 description: >-
   Upload multiple files into the corpus graph with module organization
 weight: 35
 ---
-
 ## Import multiple files
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
@@ -73,9 +72,22 @@ on how to work with modules.
 | `module` | string | No | Module label applied to **every** file in this request. See [Designing modules](../design-guide.md#designing-modules) for naming guidance. | Use a **stable** module label (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
 
 {{< info >}}
-If the same `doc_name` appears more than once in a single request, only the last
-one is kept. This matches how the [File Manager](../../../platform-suite/file-manager/_index.md)
-handles versions: a newer upload replaces an older one with the same name.
+Duplicate `doc_name` values within a single request are deduplicated before
+upload: only the last entry is kept, and the discarded entries do not produce
+versions of their own.
+
+Versioning happens across requests. Each accepted upload of a `doc_name` that
+already exists creates a new version of that file in the
+[File Manager](../../../platform-suite/file-manager/_index.md), within the same
+[scope](../../../platform-suite/file-manager/_index.md#organizing-files-with-scopes).
+To build up a version history for a document, upload it in separate requests —
+sending several revisions of the same `doc_name` in one request yields a single
+version, not one per entry.
+
+The `module` label of a request maps onto the *category*, which is the second
+scope level. The first scope level is the project. The same `doc_name` under two
+different modules therefore refers to two separate files with independent
+version histories.
 {{< /info >}}
 
 ## Response
