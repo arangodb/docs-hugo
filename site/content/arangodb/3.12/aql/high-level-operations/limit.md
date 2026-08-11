@@ -25,10 +25,10 @@ elements should be at most included in the result. It must be `0` or greater,
 or `null` to not restrict the number of results.
 
 {{< info >}}
-Variables, expressions, and subqueries cannot be used for `offset` and `count`.
-The values for `offset` and `count` must be known at query compile time,
-which means that you can only use number literals, bind parameters or
-expressions that can be resolved at query compile time.
+Subqueries as well as non-constant variables and expressions cannot be used for
+`offset` and `count`. The values for `offset` and `count` must be known at
+query compile time, which means that you can only use number literals,
+bind parameters, or expressions that can be resolved at query compile time.
 {{< /info >}}
 
 ## Usage
@@ -108,10 +108,10 @@ FOR u IN users
   RETURN u
 ```
 
-### Mind the position of a `LIMIT` operation
+### How the position of `LIMIT` affects query results
 
-Where a `LIMIT` is used in relation to other operations in a query has meaning.
-`LIMIT` operations before `FILTER`s in particular can change the result
+Where a `LIMIT` is used in relation to other operations in a query matters.
+A `LIMIT` before `FILTER` operations in particular can change the result
 significantly, because the operations are executed in the order in which they
 are written in the query. See [`FILTER`](filter.md#order-of-operations)
 for a detailed example.
