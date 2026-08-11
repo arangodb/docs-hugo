@@ -285,7 +285,7 @@ Server and cluster statistics are superseded by the
 [Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
 startup options and HTTP API endpoints related to the statistics features have
 been removed and no `_statistics*` system collections are used by _arangod_
-anymore.
+anymore. The `statistics` log topic has been removed as well.
 
 When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
 system collections are actively removed.
