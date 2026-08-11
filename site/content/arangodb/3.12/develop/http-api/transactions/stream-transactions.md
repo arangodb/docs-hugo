@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for Stream Transactions
+title: Stream Transaction HTTP API
 menuTitle: Stream Transactions
 weight: 5
 description: >-

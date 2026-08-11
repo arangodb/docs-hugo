@@ -1,18 +1,19 @@
 ---
-title: Indexes
+title: Indexes in Spring Data ArangoDB
 menuTitle: Indexes
 weight: 25
-description: ''
+description: >-
+  How to use indexes in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/indexes
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/indexes
 ---
 Indexes can be ensured using the following annotations. For reference see the

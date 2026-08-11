@@ -144,7 +144,7 @@ graph path search. If you specify unknown options, query warnings are raised.
 
 #### `weightAttribute`
 
-A top-level edge attribute that should be used to read the edge weight (string).
+A top-level edge attribute to use as the weight (string).
 
 If the attribute does not exist or is not numeric, the `defaultWeight` is used
 instead.

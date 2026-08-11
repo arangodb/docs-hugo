@@ -6,6 +6,11 @@ description: >-
   ArangoDB automatically gathers information on how it is used and the features
   being utilized, but you can disable this data collection
 ---
+{{< info >}}
+Telemetrics have been removed in v3.12.10. The information on this page only
+applies to earlier versions.
+{{< /info >}}
+
 ArangoDB gathers metrics by default, to identify the primary usage patterns and
 features, and to measure their adoption rate.
 
@@ -116,11 +121,14 @@ as well as configuration details in terms of sharding and replication.
     - The number of skiplist indexes
     - The number of persistent indexes
     - The number of geo indexes
+    - The number of ttl indexes
     - The number of fulltext indexes
     - The number of iresearch indexes
     - The number of inverted indexes
     - The number of mdi indexes
     - The number of mdi-prefixed indexes
+    - The number of vector indexes
+    - The number of unknown indexes
     - A list of detailed information per index
       - The index type
       - Is it a unique index?

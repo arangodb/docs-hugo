@@ -1,11 +1,10 @@
 ---
-title: Search Methods
+title: Retriever Search Methods
 menuTitle: Search Methods
 description: >-
   Understand the different search methods available in the Retriever service
 weight: 30
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](../) → [Configure LLMs](../llm-configuration.md) → **Search Methods** → [Execute Queries](../executing-queries.md) → [Verify](../verify-and-monitor.md)
 {{< /info >}}

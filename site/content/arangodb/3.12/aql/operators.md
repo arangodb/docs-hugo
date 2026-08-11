@@ -98,10 +98,11 @@ expressions as specified in the documentation for the AQL function
 
 Most comparison operators also exist as an *array variant*. In the array variant,
 a `==`, `!=`, `>`, `>=`, `<`, `<=`, `IN`, or `NOT IN` operator is prefixed with
-an `ALL`, `ANY`, or `NONE` keyword. This changes the operator's behavior to
-compare the individual array elements of the left-hand argument to the right-hand
-argument. Depending on the quantifying keyword, all, any, or none of these
-comparisons need to be satisfied to evaluate to `true` overall.
+an `ALL`, `ANY`, `NONE`, or `AT LEAST (<expression>)` keyword. This changes the
+operator's behavior to compare the individual array elements of the left-hand
+argument to the right-hand argument. Depending on the quantifying keyword, all,
+any, none, or at least the specified number of these comparisons need to be
+satisfied to evaluate to `true` overall.
 
 You can also combine one of the supported comparison operators with the special
 `AT LEAST (<expression>)` operator to require an arbitrary number of elements
@@ -132,8 +133,9 @@ calculate it dynamically using an expression.
 ["foo", "bar"]  AT LEAST (1+1) ==  "foo"   // false
 ```
 
-Note that these operators do not utilize indexes in regular queries.
-The operators are also supported in [SEARCH expressions](high-level-operations/search.md),
+Array comparison operators do not utilize indexes in regular queries, except `ANY ==`
+from v3.12.10 onward because it gets transformed into an equivalent `IN` operator.
+The operators are also supported in [`SEARCH` expressions](high-level-operations/search.md),
 where ArangoSearch's indexes can be utilized. The semantics differ however, see
 [AQL `SEARCH` operation](high-level-operations/search.md#array-comparison-operators).
 

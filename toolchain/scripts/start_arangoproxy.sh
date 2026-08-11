@@ -39,7 +39,7 @@ if [ "$HUGO_ENV" != "prod" ] && [ "$HUGO_ENV" != "frontend" ]; then
   for server in "${servers[@]}"; do
       url=$(echo "$server" | yq e '.url' -)
       printf -v val "%s/_api/version" $url
-      checkIPIsReachable $val
+      checkIPIsReachable "$val"
   done
 fi
 

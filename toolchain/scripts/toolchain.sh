@@ -53,9 +53,9 @@ if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
       export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
 
-if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
-      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
-      export ARANGODB_BRANCH_4_0_VERSION="4.0"
+if [ "$ARANGODB_BRANCH_4_X" != "" ] ; then
+      export ARANGODB_BRANCH_4_X_IMAGE="$ARANGODB_BRANCH_4_X"
+      export ARANGODB_BRANCH_4_X_VERSION="4.x"
 fi
 
 start_servers=false
@@ -173,7 +173,7 @@ function pull_from_docs_repo() {
 
   docker_tag="arangodb/docs-hugo:$image_name-$version-$main_hash"
 
-  image_id=$(docker images --filter=reference=$docker_tag | awk 'NR==2' | awk '{print $3}')
+  image_id=$(docker images --filter="reference=$docker_tag" --format '{{.ID}}' | head -n1)
   if [ "$image_id" == "" ]; then
   log "[pull_from_docs_repo] Try from Private arangodb/docs-hugo Dockerhub repository - Image: $docker_tag"
     docker pull $docker_tag
@@ -189,9 +189,9 @@ function get_docker_imageid() {
   version="$3"
 
   ## Get the docker image id to run of the server
-  image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
+  image_id=$(docker images --filter="reference=$image_name-$version" --format '{{.ID}}' | head -n1)
   if [ "$image_id" == "" ]; then
-    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/enterprise:tag
+    image_id=$(docker images --filter="reference=$branch_name" --format '{{.ID}}' | head -n1) ## this is used for official arangodb images, arangodb/enterprise:tag
   fi
   echo "$image_id"
 }
@@ -345,7 +345,7 @@ function process_server() {
     if [ "$image_id" == "" ]; then
       if [ "$ENV" == "local" ]; then
         pull_image "$image" "$version"
-        image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
+        image_id=$(docker images --filter="reference=$image_name-$version" --format '{{.ID}}' | head -n1)
       else
         echo "[START_SERVER] No Image ID find to run"
         echo "[ERROR] Aborting"

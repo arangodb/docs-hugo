@@ -1,58 +1,98 @@
 ---
-title: Configure LLMs and Embedding Models
+title: Configure LLMs and Embedding Models for the Retriever
 menuTitle: LLM Configuration
 description: >-
   Configure OpenAI-compatible APIs or Triton Inference Server for the Retriever service
 weight: 20
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}
 
-The Retriever service can be configured to use either Triton Inference Server or any 
-OpenAI-compatible API. OpenAI-compatible APIs work with public providers (OpenAI, 
-OpenRouter, Gemini, Anthropic) as well as private corporate LLMs that expose an 
-OpenAI-compatible endpoint.
+The Retriever service can be configured to use either Triton Inference Server or any
+OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
+setup, as well as any other endpoint implementing the same contract — OpenRouter,
+Gemini, Anthropic, Azure, or a private corporate LLM.
+
+"OpenAI-compatible" means the endpoint must implement the contract used by the
+OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
+embedding models). An endpoint that exposes only a different API surface is not
+supported.
+
+## Supported models
+
+The following models are validated for use with the Retriever service. For the full
+list across all services, see
+[Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+The recommended provider is `openai` with the OpenAI models below. That is the
+combination ArangoDB tests, so prefer it where you can; other endpoints can
+differ in behavior such as latency.
+
+You can still point the Retriever at any other OpenAI-compatible endpoint —
+OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
+that is not on the list. Configure these with the `custom` provider and the
+`chat_api_url` / `embedding_api_url` of your endpoint, as described in
+[Using OpenAI-compatible APIs](#using-openai-compatible-apis). Models beyond the
+list below are outside ArangoDB's testing, so validate them in your own
+environment. For the models served through Triton, see
+[Using Triton Inference Server for chat and embedding](#using-triton-inference-server-for-chat-and-embedding).
+
+{{% llm-models "retriever" %}}
 
 ## Supported Provider Combinations
 
 The Retriever service supports the following provider configurations:
 
-1. **OpenAI/OpenAI-Compatible for Chat, OpenAI for Embeddings**: Use OpenAI API, OpenAI-compatible (such as OpenRouter) for chat, and OpenAI for embeddings:
-   - OpenAI is detected when `chat_api_url` is `"https://api.openai.com/v1"` or not provided (defaults to OpenAI).
-   - OpenRouter is detected when `chat_api_url` contains `"openrouter.ai"`.
-   - Other OpenAI-compatible APIs are used when `chat_api_url` points to a compatible endpoint.
-2. **Triton for Chat, Triton for Embeddings**: Use Triton for both chat and embeddings.
+1. **OpenAI-compatible for chat and embeddings**: Use the OpenAI API (`openai`)
+   or any other OpenAI-compatible endpoint (`custom`) for chat and for
+   embeddings. The two values can be mixed, for example `custom` chat on
+   OpenRouter with `openai` embeddings, or `custom` for both when chat and
+   embeddings come from the same third-party endpoint such as Azure.
+2. **Triton for chat and embeddings**: Use Triton for both chat and embeddings.
 
 {{< warning >}}
-Any other provider combinations will result in a configuration error. The system will reject invalid combinations.
+Triton cannot be combined with an OpenAI-compatible provider: if one of
+`chat_api_provider` and `embedding_api_provider` is `"triton"`, the other must
+be as well. The service rejects any other combination with a configuration
+error.
 {{< /warning >}}
 
-**URL Defaults**: When using OpenAI provider, `chat_api_url` and `embedding_api_url` default to `"https://api.openai.com/v1"` if not specified. For Triton provider, these URLs are required and must be explicitly provided. For OpenAI-compatible APIs, you must explicitly provide the `chat_api_url` pointing to your compatible endpoint.
+**URL Defaults**: When using the `openai` provider, `chat_api_url` and `embedding_api_url` default to `"https://api.openai.com/v1"` if not specified. For the `custom` and `triton` providers, these URLs are required and must be explicitly provided.
 
 **Model Defaults**:
 The following default models are automatically applied when `chat_model` or `embedding_model` are not specified:
 
 - **OpenAI**: `gpt-5.4-nano` for chat, `text-embedding-3-small` for embeddings
-- **OpenRouter**: `mistralai/mistral-nemo` for chat, `text-embedding-3-small` for embeddings (OpenRouter is detected via `chat_api_url` containing "openrouter.ai")
 - **Triton**: `mistral-nemo-instruct` for chat, `nomic-embed-text-v1` for embeddings
+- **Custom**: no defaults. Supply `chat_model` and `embedding_model` yourself;
+  the service does not fall back to an OpenAI model name for a third-party
+  endpoint.
 
 {{< info >}}
 These defaults are applied automatically by the service when the corresponding model parameters are not provided.
 {{< /info >}}
 
+{{< warning >}}
+One URL-based special case survives in the Retriever: when `chat_api_url`
+contains `openrouter.ai` and `chat_model` is not set, the service resolves the
+chat model to `mistralai/mistral-nemo` rather than leaving it unset. Do not
+rely on this — always set `chat_model` explicitly with the `custom` provider.
+{{< /warning >}}
+
 ## Using OpenAI-compatible APIs
 
-The `openai` provider works with any OpenAI-compatible API, including:
-- OpenAI (official API)
-- OpenRouter
-- Google Gemini
-- Anthropic Claude
-- Azure (Azure OpenAI in Microsoft Foundry)
-- Corporate or self-hosted LLMs with OpenAI-compatible endpoints
+The Retriever reaches OpenAI-compatible APIs through two provider values:
 
-Set the `chat_api_url` and `embedding_api_url` to point to your provider's endpoint.
+- `openai` for the official OpenAI API. The URLs default to
+  `https://api.openai.com/v1`, so you can omit them.
+- `custom` for every other OpenAI-compatible endpoint, including OpenRouter,
+  Google Gemini, Anthropic Claude, Azure (Azure OpenAI in Microsoft Foundry),
+  and corporate or self-hosted LLMs. Set `chat_api_url` and `embedding_api_url`
+  to your endpoint; they have no defaults under `custom`.
+
+Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Use
+`custom` for those endpoints.
 
 ### Example using OpenAI
 
@@ -84,11 +124,10 @@ you might use OpenRouter for chat and OpenAI for embeddings, depending
 on your needs for performance, cost, or model availability.
 
 {{< info >}}
-Both `chat_api_provider` and `embedding_api_provider` must be set to the same value 
-(either both `"openai"` or both `"triton"`). You cannot mix Triton and OpenAI-compatible 
-APIs. However, you can use different OpenAI-compatible services (like OpenRouter, OpenAI, 
-Gemini, etc.) by setting both providers to `"openai"` and differentiating them with 
-different URLs in `chat_api_url` and `embedding_api_url`.
+You cannot mix Triton with OpenAI-compatible APIs: if one of
+`chat_api_provider` and `embedding_api_provider` is `"triton"`, both must be.
+You can, however, combine `"openai"` and `"custom"`, which is how you serve
+chat and embeddings from two different OpenAI-compatible services.
 See [Supported Provider Combinations](#supported-provider-combinations) for details.
 {{< /info >}}
 
@@ -99,7 +138,7 @@ See [Supported Provider Combinations](#supported-provider-combinations) for deta
   "env": {
     "db_name": "your_database_name",
     "project_name": "your_project_name",
-    "chat_api_provider": "openai",
+    "chat_api_provider": "custom",
     "embedding_api_provider": "openai",
     "chat_api_url": "https://openrouter.ai/api/v1",
     "embedding_api_url": "https://api.openai.com/v1",
@@ -118,18 +157,21 @@ For a full description of all parameters, see
 ### Using Azure as a chat and embedding provider
 
 Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
-OpenAI-compatible endpoint, so the Retriever can use them through the same
-`openai` provider. Two things are specific to Azure:
+OpenAI-compatible endpoint, so the Retriever reaches them through the `custom`
+provider. Three things are specific to Azure:
 
+- Provision the models yourself before you start. An Azure resource serves only
+  the models you have explicitly deployed into it, so deploy both a chat model
+  and an embedding model first. This is unlike an aggregator such as OpenRouter,
+  which exposes a large catalog of models without you provisioning anything.
 - Append `/openai/v1` to your Azure resource endpoint, for example
   `https://your-resource.cognitiveservices.azure.com/openai/v1/`. This is
   Azure's OpenAI-compatible v1 API, which removes the need for an
   `api-version` query parameter. See the
   [Azure v1 API documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle?view=foundry-classic&tabs=python#code-changes)
   for details.
-- Keep `chat_api_provider` and `embedding_api_provider` set to `"openai"`.
-  Azure is addressed as an OpenAI-compatible endpoint, not as a separate
-  provider type.
+- Set `chat_api_provider` and `embedding_api_provider` to `"custom"`. Azure is
+  addressed as an OpenAI-compatible endpoint, not as a separate provider type.
 
 Use the model deployment names from your Azure resource as `chat_model` and
 `embedding_model`, and your Azure API keys as `chat_api_key` and
@@ -140,8 +182,8 @@ Use the model deployment names from your Azure resource as `chat_model` and
   "env": {
     "db_name": "your_database_name",
     "project_name": "your_project_name",
-    "chat_api_provider": "openai",
-    "embedding_api_provider": "openai",
+    "chat_api_provider": "custom",
+    "embedding_api_provider": "custom",
     "chat_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
     "embedding_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
     "chat_model": "gpt-4.1-mini",
@@ -203,33 +245,35 @@ Provider-specific defaults and requirements are noted where applicable.
 ### Chat API parameters
 
 - `chat_api_provider` (**required**): The provider for chat/LLM services.
-  Set to `"openai"` for any OpenAI-compatible API, or `"triton"` for Triton
-  Inference Server.
+  Set to `"openai"` for the OpenAI API, `"custom"` for any other
+  OpenAI-compatible API, or `"triton"` for Triton Inference Server.
 - `chat_api_url`: API endpoint URL for the chat/language model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
-  - **OpenRouter and other OpenAI-compatible APIs**: Must be explicitly provided.
-    The service detects OpenRouter when this URL contains `openrouter.ai`.
+  - **Custom**: Must be explicitly provided.
   - **Triton**: Must be explicitly provided.
-- `chat_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
+- `chat_api_key` (**required for the `openai` and `custom` providers**): API key
   for authenticating with the chat/language model service.
 - `chat_model`: Specific language model to use for text generation and analysis.
   - **OpenAI**: Defaults to `gpt-5.4-nano`.
-  - **OpenRouter**: Defaults to `mistralai/mistral-nemo`.
-  - **Other OpenAI-compatible APIs**: Defaults to `gpt-5.4-nano`.
+  - **Custom**: Required; there is no default. The one exception is a
+    `chat_api_url` containing `openrouter.ai`, which still resolves to
+    `mistralai/mistral-nemo` when `chat_model` is unset — do not rely on it.
   - **Triton**: Defaults to `mistral-nemo-instruct`.
 
 ### Embedding API parameters
 
 - `embedding_api_provider` (**required**): The provider for embedding services.
-  Set to `"openai"` for any OpenAI-compatible API, or `"triton"` for Triton
-  Inference Server.
+  Set to `"openai"` for the OpenAI API, `"custom"` for any other
+  OpenAI-compatible API, or `"triton"` for Triton Inference Server.
 - `embedding_api_url`: API endpoint URL for the embedding model service.
   - **OpenAI**: Defaults to `https://api.openai.com/v1` if not provided.
+  - **Custom**: Must be explicitly provided.
   - **Triton**: Must be explicitly provided.
-- `embedding_api_key` (**required for OpenAI and OpenAI-compatible providers**): API key
+- `embedding_api_key` (**required for the `openai` and `custom` providers**): API key
   for authenticating with the embedding model service.
 - `embedding_model`: Specific model to use for generating text embeddings.
-  - **OpenAI and OpenRouter**: Defaults to `text-embedding-3-small`.
+  - **OpenAI**: Defaults to `text-embedding-3-small`.
+  - **Custom**: Required; there is no default.
   - **Triton**: Defaults to `nomic-embed-text-v1`.
 - `embedding_dim`: Optional embedding dimension. The default value is `512`
   (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
@@ -242,13 +286,22 @@ Instead of inline API keys, you can use `chat_secret_profile_id` and
 for the Retriever install.
 {{< /tip >}}
 
+{{< info >}}
+An API key is required for both `openai` and `custom`. If your endpoint does
+not authenticate — a self-hosted model, for example — supply a placeholder
+value rather than omitting the key.
+{{< /info >}}
+
 ## Chat payload compatibility
 
-Set `chat_model` to the model your provider exposes (for example `gpt-5.4-nano`,
-`gpt-5.4-mini`, `gpt-5.4`, `gpt-4.1`, `gpt-4o`, or other GPT-5 family names such
-as `gpt-5`, `gpt-5-mini`, `gpt-5.1`). Different model families accept different optional fields on chat
-completions. The Retriever builds the request from service environment variables
-and retries once if the API returns an unsupported-parameter error.
+Set `chat_model` to the model your provider exposes. With the `openai` provider,
+use one of the chat models in [Supported models](#supported-models) above, such
+as `gpt-5.4-nano`, `gpt-5.4-mini`, or `gpt-5`. With the `custom` provider, your
+endpoint may serve model families that are not in that table, including older
+ones such as the GPT-4 series; the options below exist so you can match their
+payload requirements. Different model families accept different optional fields
+on chat completions. The Retriever builds the request from service environment
+variables and retries once if the API returns an unsupported-parameter error.
 
 Optional environment variables (also accepted in lowercase, e.g. `chat_parameter_policy`):
 
@@ -279,11 +332,12 @@ When configuring the service, ensure you:
 1. **Use only supported provider combinations** listed above.
 2. **Provide all required parameters**:
    - `chat_api_provider` and `embedding_api_provider` (both required)
-   - `chat_api_url` and `embedding_api_url` (optional for OpenAI with defaults, required for Triton)
-   - `chat_api_key` and `embedding_api_key` (required for OpenAI and OpenAI-compatible providers)
+   - `chat_api_url` and `embedding_api_url` (optional for `openai` with defaults, required for `custom` and `triton`)
+   - `chat_api_key` and `embedding_api_key` (required for the `openai` and `custom` providers)
 3. **Follow provider-specific requirements**:
-   - OpenAI provider requires valid API keys
-   - Triton provider requires valid server URLs
+   - The `openai` provider requires valid API keys
+   - The `custom` provider requires valid API keys and explicit endpoint URLs
+   - The `triton` provider requires valid server URLs
 
 The service will validate your configuration and reject any unsupported combinations or missing required parameters with an error message.
 

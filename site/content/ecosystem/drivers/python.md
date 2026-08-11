@@ -9,7 +9,7 @@ aliases:
   - ../../arangodb/3.11/develop/drivers/python
   - ../../arangodb/3.12/develop/drivers/python
   - ../../arangodb/stable/develop/drivers/python
-  - ../../arangodb/4.0/develop/drivers/python
+  - ../../arangodb/4.x/develop/drivers/python
   - ../../arangodb/devel/develop/drivers/python
 ---
 The Python-Arango driver is the recommended driver for using ArangoDB as the

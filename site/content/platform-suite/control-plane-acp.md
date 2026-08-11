@@ -156,10 +156,14 @@ Where:
 - `project_name`: Name of an existing project (see [Projects](#projects)). Used
   as a prefix for all ArangoDB collections (for example, a project named
   `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
-- `chat_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `chat_api_url`: API endpoint URL for the chat/language model service
-- `embedding_api_provider`: Set to `"openai"` for any OpenAI-compatible API
-- `embedding_api_url`: API endpoint URL for the embedding model service
+- `chat_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"` for
+  any other OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service. Required
+  for `"custom"`; defaults to the OpenAI URL for `"openai"`
+- `embedding_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"`
+  for any other OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Required for `"custom"`; defaults to the OpenAI URL for `"openai"`
 - `chat_model`: Specific language model to use for text generation and analysis
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
