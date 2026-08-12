@@ -119,8 +119,8 @@
       <div class="hx-start2">
         <span class="hx-lead">Get started with</span>
         <div class="hx-opts">
-          <a href="{{ "contextual-data-platform/" | relURL }}"><i class="fas fa-layer-group"></i><span><strong>Contextual Data Platform</strong><span class="d">Database + Agentic AI Suite</span></span></a>
-          <a href="{{ "arangodb/" | relURL }}"><i class="fas fa-database"></i><span><strong>ArangoDB database</strong><span class="d">Just the multi-model database</span></span></a>
+          <a class="link" href="{{ "contextual-data-platform/" | relURL }}"><i class="fas fa-layer-group"></i><span><strong>Contextual Data Platform</strong><span class="d">Database + Agentic AI Suite</span></span></a>
+          <a class="link" href="{{ "arangodb/" | relURL }}"><i class="fas fa-database"></i><span><strong>ArangoDB database</strong><span class="d">Just the multi-model database</span></span></a>
         </div>
       </div>
     </div>
@@ -129,25 +129,25 @@
   <div class="hx-sec"><h2 id="get-started">Get started in minutes</h2><a class="more" href="{{ "contextual-data-platform/tutorials/" | relURL }}">All tutorials</a></div>
   <p class="hx-note">Follow the Contextual Data Platform tutorials in order, from a running platform to a knowledge graph you can query.</p>
   <section class="hx-qs">
-    <a href="{{ "contextual-data-platform/tutorials/evaluate-locally/" | relURL }}">
+    <a class="link" href="{{ "contextual-data-platform/tutorials/evaluate-locally/" | relURL }}">
       <span class="ic"><i class="fas fa-server"></i></span>
       <strong>Evaluate locally</strong>
       <span class="d">Go from an empty machine to a running platform on local Kubernetes.</span>
       <span class="t">Setup</span>
     </a>
-    <a href="{{ "contextual-data-platform/tutorials/dataset/" | relURL }}">
+    <a class="link" href="{{ "contextual-data-platform/tutorials/dataset/" | relURL }}">
       <span class="ic"><i class="fas fa-film"></i></span>
       <strong>Example dataset</strong>
       <span class="d">Import the movie graph and explore it in the Graph Visualizer.</span>
       <span class="t">Dataset</span>
     </a>
-    <a href="{{ "contextual-data-platform/tutorials/core/" | relURL }}">
+    <a class="link" href="{{ "contextual-data-platform/tutorials/core/" | relURL }}">
       <span class="ic"><i class="fas fa-terminal"></i></span>
       <strong>Core database features</strong>
       <span class="d">Learn documents, AQL, indexes, graph traversals, and vector search.</span>
       <span class="t">AQL &amp; graph</span>
     </a>
-    <a href="{{ "contextual-data-platform/tutorials/notebook-tutorial/" | relURL }}">
+    <a class="link" href="{{ "contextual-data-platform/tutorials/notebook-tutorial/" | relURL }}">
       <span class="ic"><i class="fas fa-book"></i></span>
       <strong>Notebook tutorial</strong>
       <span class="d">Drive the full AutoGraph pipeline from a Jupyter notebook with Python.</span>
@@ -193,29 +193,29 @@
   <div class="hx-sec"><h2 id="graph-to-ai">From graph to AI</h2></div>
   <p class="hx-note">Arango takes you from connected data all the way to explainable, context-aware AI, all in one platform.</p>
   <section class="hx-journey">
-    <div class="hx-jrow"><div class="num">1</div><div><strong>Persist connected data</strong><p>Store <a href="{{ (print $stable "concepts/data-structure/documents/") | relURL }}">JSON documents</a>, <a href="{{ (print $stable "graphs/") | relURL }}">graphs</a>, and key-value data in one native multi-model database.</p></div></div>
-    <div class="hx-jrow"><div class="num">2</div><div><strong>Retrieve context</strong><p>Query with <a href="{{ (print $stable "aql/") | relURL }}">AQL</a> across graph traversal, full-text, vector, geo-spatial, and aggregation, all in a single language.</p></div></div>
-    <div class="hx-jrow"><div class="num">3</div><div><strong>Explore and analyze</strong><p>Discover patterns with visual graph exploration, <a href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Graph Analytics</a>, and <a href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML</a>.</p></div></div>
-    <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
+    <div class="hx-jrow"><div class="num">1</div><div><strong>Persist connected data</strong><p>Store <a class="link" href="{{ (print $stable "concepts/data-structure/documents/") | relURL }}">JSON documents</a>, <a class="link" href="{{ (print $stable "graphs/") | relURL }}">graphs</a>, and key-value data in one native multi-model database.</p></div></div>
+    <div class="hx-jrow"><div class="num">2</div><div><strong>Retrieve context</strong><p>Query with <a class="link" href="{{ (print $stable "aql/") | relURL }}">AQL</a> across graph traversal, full-text, vector, geo-spatial, and aggregation, all in a single language.</p></div></div>
+    <div class="hx-jrow"><div class="num">3</div><div><strong>Explore and analyze</strong><p>Discover patterns with visual graph exploration, <a class="link" href="{{ "agentic-ai-suite/graph-analytics/" | relURL }}">Graph Analytics</a>, and <a class="link" href="{{ "agentic-ai-suite/graphml/" | relURL }}">GraphML</a>.</p></div></div>
+    <div class="hx-jrow"><div class="num">4</div><div><strong>Ground AI systems</strong><p>Apply <a class="link" href="{{ "agentic-ai-suite/graphrag/" | relURL }}">GraphRAG</a> and <a class="link" href="{{ "agentic-ai-suite/autograph/" | relURL }}">AutoGraph</a> to build explainable, context-aware AI applications.</p></div></div>
   </section>
 
   <div style="margin-top:50px;">
     <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
     <p class="hx-note">Latest releases and platform updates.</p>
     <section class="hx-qs">
-      <a href="{{ (print $stable "release-notes/") | relURL }}">
+      <a class="link" href="{{ (print $stable "release-notes/") | relURL }}">
         <span class="ic"><i class="fas fa-bolt"></i></span>
         <strong>ArangoDB release notes</strong>
         <span class="d">What's new and fixed in the core database.</span>
         <span class="t">Stable 3.12</span>
       </a>
-      <a href="{{ "contextual-data-platform/release-notes/" | relURL }}">
+      <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}">
         <span class="ic"><i class="fas fa-bolt"></i></span>
         <strong>Contextual Data Platform release notes</strong>
         <span class="d">Latest platform updates and changes.</span>
         <span class="t">Release notes</span>
       </a>
-      <a href="{{ "agentic-ai-suite/" | relURL }}">
+      <a class="link" href="{{ "agentic-ai-suite/" | relURL }}">
         <span class="ic"><i class="fas fa-robot"></i></span>
         <strong>Agentic AI Suite quick starts</strong>
         <span class="d">Get started fast with Ada, GraphRAG, and more.</span>
