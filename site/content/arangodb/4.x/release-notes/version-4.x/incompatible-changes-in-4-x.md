@@ -366,6 +366,38 @@ the [`CONCAT()`](../../aql/functions/string.md#concat) function.
 
 For more information, see [String operators](../../aql/operators.md#string-operators).
 
+### New reserved keywords
+
+The following keywords are now reserved for future use:
+
+- `INNER_JOIN`
+- `LEFT_JOIN`
+- `RIGHT_JOIN`
+- `OUTER_JOIN`
+- `MATCH`
+- `WHILE`
+- `UNTIL`
+- `SCAN`
+- `FOLD`
+
+Note that keywords are case-insensitive.
+
+If you want to use them as variable names or collection names in AQL queries,
+wrap them in backticks or forward ticks. To use them as attribute names in
+object literals, wrap them in single or double quote marks, backticks, or
+forward ticks:
+
+```aql
+FOR doc IN `match`
+  LET ´Inner_Join´ = 1
+  RETURN {
+    `Inner_Join`,
+    `LEFT_JOIN`: 2,
+    'scan': 3,
+    "fold": 4
+  }
+```
+
 ## Rclone upgrades possibly requiring configuration changes
 
 <small>Introduced in: v3.12.9-2</small>
