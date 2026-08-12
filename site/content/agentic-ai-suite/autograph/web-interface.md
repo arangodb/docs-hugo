@@ -39,12 +39,9 @@ these existing files or upload new ones.
 
 1. The interface displays a drag-and-drop area for uploading documents.
 2. Drag and drop files, or click to browse. Supported file formats are:
-   - **Text and data files**: `.txt`, `.md`, `.csv`, `.json`
+   - **Text files**: `.txt`, `.md`
    - **PDF files**: `.pdf`, including scanned documents
-   - **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
-   - **Rich Text Format**: `.rtf`
-   - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
-   - **Other**: HTML, EPUB, and email messages (`.eml`)
+   - **Office documents**: `.docx`, `.pptx`, `.doc`, `.ppt`
 
    For which of these carry a quality guarantee and which are best-effort, see
    [Format support](../importer/setup.md#format-support).

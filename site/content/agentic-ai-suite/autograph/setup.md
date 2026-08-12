@@ -34,18 +34,9 @@ web interface of its own. The GraphRAG [Importer](../importer/_index.md) uses
 the same service when it builds the knowledge graph, so the whole AutoGraph
 pipeline accepts one consistent set of inputs:
 
-- **Officially supported**: PDF (`.pdf`), including scanned documents read using
-  OCR, and Office documents (`.docx`, `.pptx`, `.xlsx`), plus plain text and
-  data files (`.txt`, `.md`, `.csv`, `.json`).
-- **Also supported**: legacy Office documents (`.doc`, `.ppt`, `.xls`), Rich
-  Text Format (`.rtf`), OpenDocument files (`.odt`, `.ods`, `.odp`), HTML, EPUB,
-  email messages (`.eml`), and standalone images.
-
-Text extraction is reliable for the second group too, which is why the corpus
-build handles them: clustering only ever looks at text. What varies is image
-support, and for EPUB and email there is none. That difference surfaces later,
-when the [Importer](../importer/_index.md) turns the same documents into a
-knowledge graph.
+- **PDF**: `.pdf` files including scanned documents, read using OCR
+- **Office documents**: `.doc`, `.docx`, `.ppt`, and `.pptx` files
+- **Plain text**: `.txt` and `.md` files
 
 For the per-format detail, see
 [Format support](../importer/setup.md#format-support).

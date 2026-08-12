@@ -25,11 +25,8 @@ which extracts each embedded image as a separate artifact and places a
 reference to it at the image's position in the Markdown. Set
 `process_images: true` to have the Importer follow those storage references.
 
-Not every format yields images. EPUB images and email attachments are not
-extracted at all, and for HTML only images embedded as data URIs are, so
-semantic units stay empty for the images in those documents no matter how these
-parameters are set. Vector graphics in Office documents, charts and SmartArt
-among them, may also be missing. See
+Not every format yields images. Vector graphics in Office documents, charts and
+SmartArt among them, may also be missing. See
 [Format support](setup.md#format-support) for the per-format detail.
 {{< /info >}}
 

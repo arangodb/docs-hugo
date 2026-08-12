@@ -42,19 +42,12 @@ for everything below. What varies between formats is image extraction, so check
 the last column before you rely on [semantic units](semantic-units.md) for a
 given document type.
 
-| Format | Support | Text | Images and media |
-|--------|---------|------|------------------|
-| PDF (digital, scanned, mixed) | **Officially supported** | Full, including OCR for scanned pages | Embedded images extracted with position and surrounding text |
-| DOCX, PPTX, XLSX | **Officially supported** | Full | Embedded raster images extracted with position. Vector graphics vary, see the note below |
-| DOC, PPT, XLS, RTF | Supported | Full. Converted internally to the modern Office format first | Same as modern Office |
-| ODS, ODP | Supported | Full | Raster images extracted. Charts extracted natively, including their data as tables |
-| ODT | Supported, with caveat | Best-effort, because of a known limitation in the upstream parser | As ODS and ODP |
-| Markdown, TXT, CSV, JSON | Supported | Full | Not applicable |
-| HTML | Supported | Full | Only images embedded as data URIs. External references are never fetched, by design |
-| EPUB, EML | Supported | Full. For EML, the message body | Images and attachments not extracted |
-| Standalone images | Supported | Not applicable | The image itself becomes the artifact. It is not read using OCR |
-| Unrecognized text | Handled | Parsed as plain text. Recognized source code renders as a fenced, language-labeled block | Not applicable |
-| Unrecognized binary, `.msg`, password-protected, empty | Rejected | Rejected within seconds with an explicit error code, rather than partial or garbled content | — |
+| Format | Text | Images and media |
+|--------|------|------------------|
+| PDF (digital, scanned, mixed) | Full, including OCR for scanned pages | Embedded images extracted with position and surrounding text |
+| DOCX, PPTX | Full | Embedded raster images extracted with position. Vector graphics vary, see the note below |
+| DOC, PPT | Full. Converted internally to the modern Office format first | Same as DOCX, PPTX |
+| Markdown, TXT | Full | Not applicable |
 
 Where images are extracted, each one is stored as a separate artifact and
 referenced at its position in the Markdown, together with the text surrounding
@@ -62,18 +55,11 @@ it. That is what the Importer turns into semantic units.
 
 {{< info >}}
 **Vector graphics in Office documents.** Word drawing objects are generally
-rasterized during conversion and therefore survive as images, but treat that as
-measured behavior rather than a guarantee: charts and SmartArt in particular may
-be dropped. In PowerPoint, native charts, drawn shapes, and SmartArt are not
-extracted, and neither are Excel charts. Text, slide titles, and native tables
-are never affected.
+rasterized during conversion and may therefore get extracted as images.
+Charts and SmartArt in particular may be dropped. In PowerPoint, native charts,
+drawn shapes, and SmartArt are not extracted, and neither are Excel charts.
+Text, slide titles, and native tables are never affected.
 {{< /info >}}
-
-{{< tip >}}
-If you need the images out of an EPUB or an email, or the externally hosted
-images of an HTML page, convert the document to PDF first. Image extraction is
-fully supported there.
-{{< /tip >}}
 
 Documents that legitimately contain no extractable text, such as a blank page,
 succeed with empty content and a warning rather than failing.
