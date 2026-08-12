@@ -816,22 +816,25 @@ startup. They are recognized, but they don't have any effect anymore.
 
 - The `security` log topic has been removed.
 
-  Attempts to set the log level for this topic log a warning, for example, using
-  a startup option like `--log.level security=debug`.
-
   The only remaining use of the `security` log topic was for the log message with
   ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
   It has been changed to the `v8` log topic.
 
 - The `bench` log topic has been removed.
 
-  Attempting to set the log level for this topic logs a warning, for example,
-  when using a startup option like `--log.level bench=debug`.
-
   The only remaining use of the `bench` log topic (due to the removal of
   _arangobench_) was for the log message with ID `bafc2`, used by _arangoexport_
   to report a JSON format error related to the `--custom-query-bindvars`
   startup option. It has been changed to the `config` log topic.
+
+- The `statistics` log topic has been removed.
+
+  See [Statistics features removed](#statistics-features-removed).
+
+If you try to set a log level for these topics using startup options, like
+`--log.level security=debug`, the server logs a warning. If you try to change
+their log levels at runtime using the `PUT /_admin/log/level` HTTP API endpoint,
+the server returns an error.
 
 ### `--server.allow-use-database` removed
 
@@ -904,7 +907,7 @@ They are no longer recognized and throw errors if set:
 ### `--tls.protocol` renamed
 
 The `--ssl.protocol` startup option has been renamed to `--tls.protocol` for
-all client-tools because the legacy SLL encryption settings are not supported
+all client-tools because the legacy SSL encryption settings are not supported
 by _arangod_  anymore and the remaining ones are all TLS versions.
 
-You can still use the old startup options name.
+You can still use the old startup option name.
