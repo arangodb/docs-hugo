@@ -203,11 +203,15 @@
     <div class="hx-sec"><h2 id="whats-new">What's new</h2></div>
     <p class="hx-note">Latest releases and platform updates.</p>
     <section class="hx-qs">
-      <a class="link" href="{{ (print $stable "release-notes/") | relURL }}">
+      <a class="link" data-unversioned href="{{ (print $stable "release-notes/") | relURL }}">
         <span class="ic"><i class="fas fa-bolt"></i></span>
         <strong>ArangoDB release notes</strong>
         <span class="d">What's new and fixed in the core database.</span>
-        <span class="t">Stable 3.12</span>
+        <span class="t">Stable
+          {{- $versions := index hugo.Data.versions "/arangodb/" }}
+          {{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
+          {{- /* Whitespace control */}} {{ $stableVersion -}}
+        </span>
       </a>
       <a class="link" href="{{ "contextual-data-platform/release-notes/" | relURL }}">
         <span class="ic"><i class="fas fa-bolt"></i></span>
