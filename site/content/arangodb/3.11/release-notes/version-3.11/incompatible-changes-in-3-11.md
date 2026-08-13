@@ -719,6 +719,10 @@ for example, in _arangosh_ or in Foxx services.
 
 ## Startup options
 
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
+
 ### `--server.disable-authentication` and `--server.disable-authentication-unix-sockets` obsoleted
 
 The `--server.disable-authentication` and `--server.disable-authentication-unix-sockets`
