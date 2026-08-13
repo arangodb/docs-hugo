@@ -611,6 +611,10 @@ A few obsolete endpoints related to the write-ahead log have been removed, too.
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
 - `GET /_api/wal/open-transactions`
 - `GET /_admin/wal/transactions`
 - `GET /_admin/wal/properties`
