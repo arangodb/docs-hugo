@@ -119,6 +119,8 @@ responses and attempts to set the log levels for these topics are ignored.
 
 An `upgrade-scatter-to-distribute` rule has been added.
 
+A `smart-join-smart-edge` rule has been added.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 

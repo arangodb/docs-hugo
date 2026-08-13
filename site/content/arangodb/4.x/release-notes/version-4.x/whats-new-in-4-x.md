@@ -195,6 +195,16 @@ If `coll2` uses `_key` as sharding attribute, the only matching documents with
 server, not scattered to all of them. This equally works for custom `shardKeys`
 if you filter by them in the join.
 
+### Improved joins for SmartGraphs
+
+A new `smart-join-smart-edge` optimizer rule has been added to perform joins
+locally when joining edges on nodes that are part of a SmartGraph.
+
+All incident edges are available locally for the join. For repeated joins, where
+the adjacent node might not reside on the same DB-Server, the query plan can
+still be optimized to only involve the DB-Server that has the node, using the
+SmartGraph attribute value that is encoded in the edge.
+
 ## Indexing
 
 ### Upgrading vector indexes
