@@ -288,7 +288,7 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
-  [AutoGraph web interface](../agentic-ai-suite/autograph/web-interface.md#chat-with-your-context-graph).
+  [AutoGraph web interface](../agentic-ai-suite/autograph/web-interface.md#ask-questions-against-your-context-graph).
 
 - **Update Knowledge Graphs**: [Add additional data sources](../agentic-ai-suite/autograph/web-interface.md#add-more-documents)
   to existing Knowledge Graphs through the web interface. Upload new files to
