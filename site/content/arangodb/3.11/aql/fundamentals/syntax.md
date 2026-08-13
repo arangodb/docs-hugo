@@ -214,12 +214,14 @@ In general, names are used to identify the following things in AQL queries:
 - variables
 - functions
 
-Names in AQL are always case-sensitive.
+Names in AQL are always **case-sensitive**.
+
 The maximum supported length for collection/View names is 256 bytes.
 Variable names can be longer, but are discouraged.
 
 Keywords should not be used as names. If you want to use a reserved keyword as
-name anyway, the name must be enclosed in backticks or forward ticks. This is referred to as _quoting_.
+name anyway, the name must be enclosed in backticks or forward ticks. This is
+referred to as **quoting**.
 
 ```aql
 FOR doc IN `filter`
@@ -229,29 +231,45 @@ FOR doc IN `filter`
 Due to the backticks, `filter` and `sort` are interpreted as names and not as
 keywords here.
 
-You can also use forward ticks:
+You can also use forward ticks. This is a useful alternative if you work with
+AQL queries in programming languages that use backticks for raw strings or
+string interpolation.
 
 ```aql
 FOR f IN ´filter´
   RETURN f.´sort´
 ```
 
-Instead of ticks, you may use the bracket notation for the attribute access:
+Instead of using the dot notation for attribute access together with backticks
+or forward ticks, you may use the bracket notation for the attribute access.
+The bracket notation expects an expression, and you can therefore pass the
+attribute name as a string in single or double quote marks:
 
 ```aql
 FOR f IN `filter`
   RETURN f["sort"]
 ```
 
-`sort` is a string literal in quote marks in this alternative and does thus not
+In this alternative, `sort` is a string literal in quote marks and does thus not
 conflict with the reserved keyword.
 
-Quoting with ticks is also required if certain characters such as
-hyphen minus (`-`) are contained in a name, namely if they are used for
-[operators](../operators.md) in AQL:
+Quoting with backticks or forward ticks is also required if certain characters
+such as the plus sign (`+`) are contained in a name. Check the list of AQL
+[operators](../operators.md) for such characters.
 
 ```aql
-LET `my-var` = 42
+LET `cast+crew` = [...]
+```
+
+Bind variables don't conflict with keywords. Quoting is therefore not required,
+but also not supported. You can't use characters like the hyphen minus (`-`) in
+their name.
+
+```aql
+FOR doc IN @@collect
+  RETURN doc.@filter
+
+// @bind-var is a bind variable called "bind" and a subtraction
 ```
 
 ### Collection names
@@ -260,17 +278,17 @@ You can typically use collection names in queries as they are. If a collection
 happens to have the same name as a keyword, the name must be enclosed in
 backticks or forward ticks.
 
-Quoting with ticks is also required if special characters such as
-hyphen minus (`-`) are contained in a collection name:
+Quoting with backticks or forward ticks is also required if special characters
+such as the hyphen minus (`-`) are contained in a collection name:
 
 ```aql
-FOR doc IN `my-coll`
+FOR doc IN ´my-coll´
   RETURN doc
 ```
 
-The collection `my-coll` has a dash in its name, but `-` is an arithmetic
-operator for subtraction in AQL. The backticks quote the collection name to
-refer to the collection correctly.
+The collection `my-coll` has a dash in its name, but `-` is the arithmetic
+[operator](../operators.md#arithmetic-operators) for subtraction in AQL.
+The forward ticks quote the collection name to refer to the collection correctly.
 
 If you use extended collection and View names
 ([`--database.extended-names` startup option](../../components/arangodb-server/options.md#--databaseextended-names)),
