@@ -254,8 +254,8 @@ In this alternative, `sort` is a string literal in quote marks and does thus not
 conflict with the reserved keyword.
 
 Quoting with backticks or forward ticks is also required if certain characters
-such as the plus sign (`+`) are contained in a name. Check the list of AQL
-[operators](../operators.md) for such characters.
+such as the plus sign (`+`) are contained in a name. Check the list of
+[AQL operators](../operators.md) for such characters.
 
 ```aql
 LET `cast+crew` = [...]
