@@ -80,8 +80,10 @@ clicking **Start build** does: it deploys the AutoGraph service with these
 settings and builds the Corpus Graph from your uploaded documents.
 
 {{< warning >}}
-The provider configuration is baked into the build. Changing it later requires a
-rebuild of the Corpus Graph.
+The Corpus Graph is built with the provider configuration you set here. You can
+[change it later](#change-the-provider-or-key), but the change only applies to
+future builds and queries — to re-process what you already built, rebuild the
+Corpus Graph.
 {{< /warning >}}
 
 {{< tabs "llm-provider" >}}
@@ -303,9 +305,16 @@ You can explore the Knowledge Graph in the
 The **Model & credentials** card lists the **Provider**, **Chat model**,
 **Embedding model**, and **Multimodal model** of your project.
 
-To change them, click **Change provider or key**. Because the provider is baked
-into the build, rebuild the Corpus Graph afterwards to apply the new
-configuration.
+1. In the **Model & credentials** section of the project overview, click
+   **Change provider or key**.
+2. In the dialog, select a different chat **Provider** or **Model**, or pick
+   another saved **API key** to rotate the key in use. Keys are managed in the
+   [Secrets Manager](../../platform-suite/secrets-manager.md).
+3. Confirm the change.
+
+Changes apply to the running service right away and only affect future builds
+and queries, as the dialog states. Your existing Corpus Graph and Knowledge Graph
+are kept as they were built.
 
 ## Deploy an AutoRAG retriever
 
@@ -352,17 +361,62 @@ service is ready to answer.
      with graph expansion. Lower latency, narrower coverage.
    - **Deep Search**: Multi-hop, LLM-planned retrieval. Higher latency, broader
      coverage.
-2. Optionally, use the buttons next to the mode chips to shape the request:
-   **Add to query** (`+`) to attach extra context, the document icon to
-   **Include metadata**, and the book icon to include citations. Active toggles
-   show a cross that clears them again. For the underlying settings, see the
-   [retriever parameters](../retriever/parameters.md).
+2. Optionally, use the buttons next to the mode chips to shape the request.
+   Active toggles show a cross that clears them again. For the underlying
+   settings, see the [retriever parameters](../retriever/parameters.md).
+   - **Add to query** (`+`): Attach extra context to the question you are asking.
+   - **Include metadata** (document icon): Return the retrieval metadata
+     alongside the answer.
+   - **Citations** (book icon): Include inline citations in the answer.
+   - **Use cache**: Answer from the retriever's cache when a similar question has
+     been asked before, and store this answer for later questions. This saves an
+     LLM round trip on repeated questions, but a cached answer reflects your
+     Context Graph as it was when the answer was first generated. It is off by
+     default.
+   - **Response instruction**: Tell the model how to shape the answer, for
+     example `Concise answer in 2-3 sentences` or
+     `Provide detailed analysis with examples`. Without one, the default
+     instruction for the search mode applies — Instant Search, for instance, aims
+     for 60 words.
 3. Select the chat model for the answer from the model dropdown menu, for example
    **GPT-5.4 Nano**.
 4. Enter your question in the **Ask anything about your Context Graph** field and
    submit it, or click one of the **Suggested questions**.
 
 Every claim in the answer links back to the exact source chunk it came from.
+
+### See where an answer came from
+
+Next to the answer itself, the **Provenance** tab shows the evidence the
+retriever used to produce it, so you can verify a claim instead of taking it on
+trust. It has the following views:
+
+- **Citations**: The source passages the answer is built from, numbered to match
+  the inline `[1]`, `[2]` markers in the text. Each entry names the document the
+  passage comes from and shows the retrieved chunk itself, so you can compare a
+  claim against the original wording. Documents imported with a canonical URL
+  link out to it — see
+  [`citable_url`](../importer/reference/parameters.md#file-source-parameters).
+- **Graph**: The part of your Context Graph the answer was drawn from — the
+  entities and relationships the retriever traversed to assemble it. This is
+  where a GraphRAG answer differs from a plain vector search: you see the
+  connections that produced the answer, not just the matching text.
+- **Trace**: Only shown for **Deep Search** answers. Deep Search splits your
+  question into sub-questions and runs each step with the tool it selected for
+  it, and the trace reports that work, including how many tools were used.
+
+{{< info >}}
+Deep Search picks its tools from the Tools collection in your database. Adding
+your own tools is a manual step — see
+[Tool configuration](../retriever/search-methods/custom-retriever.md#tool-configuration)
+for how to define them. When no custom tool matches, Deep Search falls back to
+the built-in `local`, `global`, and `unified` retrievers.
+{{< /info >}}
+
+{{< tip >}}
+Provenance is per question. Open a past question from the list to review the
+citations and graph context of the answer it produced at the time.
+{{< /tip >}}
 
 ## Manage retriever services
 
