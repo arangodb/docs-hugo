@@ -58,12 +58,13 @@ along with the failed build record):
 - The `cluster_threshold` is set to a value other than `1` or `2`.
 - The RAG Strategizer was called before a corpus build finished successfully.
 - An [incremental graph update](../incremental-graph-updates.md) was called
-  before the initial corpus build completed.
-- The `module` in an incremental graph update is unknown, or was omitted in a
+  before the initial corpus build had finished.
+- The `module` of an incremental graph update is unknown, or it was omitted in a
   project that has more than one module.
-- A delete or update target is not in the graph, or belongs to another module.
+- A document that you want to delete or update is not in the graph, or it
+  belongs to another module.
 - A batch contains duplicate `doc_name` or `file_id` values.
-- The `partition_ids` array is empty on a recluster request.
+- The `partition_ids` array is empty in a recluster request.
 - An embed request is missing `collection` or `field`, or `field` ends in
   `_embedding`.
 - The server has no embedding provider or no authentication configured.
@@ -166,18 +167,18 @@ some query types need. This limits which queries you can run later.
 - **Orchestration fails.** Confirm that the `rags` collection contains
   strategies, and that platform authentication and the GraphRAG Importer
   integration are configured for your environment.
-- **An incremental graph update returns `409`.** Corpus builds, orchestration,
-  and the `/v1/graph/*` mutations share one service-wide slot. Wait for the
-  active operation to finish and retry.
-- **A document is missing from Layer 3 after an insert.** Insert only updates
-  Layers 1 and 2. Run targeted orchestration with the returned
-  `rag_partition_id` and `file_id`. For the other IGU failure modes, see
-  [Graph Operations](orchestration.md#troubleshooting).
-- **The insert result has no `file_id` to orchestrate with.** The document was
-  inserted with inline base64 `content`, which produces no File Manager id, and
-  targeted orchestration can only name documents by `file_id`. Insert documents
-  from the File Manager when you intend to materialize them in Layer 3. See
-  [Identifying documents for Layer
+- **An incremental graph update returns `409`.** Corpus builds, orchestration
+  runs, and the `/v1/graph/*` endpoints share one service-wide slot. Wait for
+  the active operation to finish and try again.
+- **A document is missing from Layer 3 after an insert.** An insert only updates
+  Layers 1 and 2. Run a targeted orchestration with the returned
+  `rag_partition_id` and `file_id`. For other problems with incremental graph
+  updates, see [Graph Operations](orchestration.md#troubleshooting).
+- **The insert result has no `file_id` for the orchestration.** The document was
+  inserted with inline base64 `content`, for which no File Manager ID is
+  created, and a targeted orchestration can only identify documents by
+  `file_id`. Insert documents from the File Manager if you want to add them to
+  Layer 3. See [Identifying documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must

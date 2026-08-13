@@ -61,10 +61,9 @@ citations linking to the source documents they came from.
 {{< /steps >}}
 
 {{< info >}}
-To add, remove, or replace individual documents later, switch to the API. The
-web interface does not expose document-level updates in Arango Contextual Data
-Platform 4.1.0 - see
-[Incremental Graph Updates](incremental-graph-updates.md).
+To add, remove, or replace individual documents later, use the API. The web
+interface does not offer these operations in Arango Contextual Data Platform
+4.1.0. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /info >}}
 {{< /tab >}}
 
@@ -108,23 +107,23 @@ Spawns the per-domain Importer workers to build the knowledge graph. Run this
 only after the strategizer has finished.
 {{< /step >}}
 
-{{< step "Keep the graph current (optional)" >}}
+{{< step "Keep the graph up-to-date (optional)" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
-Once the graph is built, add, remove, or replace individual documents with
-`/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
+Once the graph is built, you can add, remove, or replace individual documents
+with `/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
 rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
-with `partition_ids` and `file_ids` so the change reaches the knowledge graph.
-See [Incremental Graph Updates](incremental-graph-updates.md).
+with `partition_ids` and `file_ids` so that the change reaches the knowledge
+graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /step >}}
 
 {{< /steps >}}
 
 {{< info >}}
-Insert and update can only target a document in the knowledge graph if it has a
-File Manager `file_id`. Documents uploaded with `/v1/import-multiple`, as in
-step 2, do not get one - build through the
-[File Manager](../../platform-suite/file-manager/) path when you expect to
-update documents later. See [Identifying documents for Layer
+Insert and update can only add a document to the knowledge graph if it has a
+File Manager `file_id`. Documents that you upload with `/v1/import-multiple`, as
+in step 2, do not get one. Use the
+[File Manager](../../platform-suite/file-manager/) if you expect to update
+documents later. See [Identifying documents for Layer
 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
 
@@ -145,7 +144,7 @@ source. To query it programmatically, see the
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
 - [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
-  replace documents in a graph that is already built.
+  replace documents in a knowledge graph that has already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
 - [Design Guide](design-guide.md): Structure data with modules, layers, and

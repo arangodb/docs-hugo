@@ -13,10 +13,10 @@ In just a few steps, your fully operational knowledge graph is ready to answer
 questions about your documents.
 
 {{< info >}}
-This walkthrough covers building a knowledge graph from scratch. Keeping one
-current at document level - inserting, deleting, or replacing individual
-documents afterwards - is **API-only** in Arango Contextual Data Platform 4.1.0
-and has no web-interface equivalent. See
+This page describes how to build a knowledge graph from scratch. To keep it
+up-to-date afterwards by inserting, deleting, or replacing individual documents,
+you need to use the API. These operations are not available in the web interface
+in Arango Contextual Data Platform 4.1.0. See
 [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /info >}}
 

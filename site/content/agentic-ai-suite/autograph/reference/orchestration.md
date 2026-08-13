@@ -6,13 +6,13 @@ description: >-
   updates to a knowledge graph that is already built
 weight: 50
 ---
-This page documents the endpoints that build and maintain the Layer 3 knowledge
-graph: `POST /v1/orchestrate`, which spawns Importer workers for the strategy
-profiles, and the `POST /v1/graph/*` endpoints, which insert, delete, update,
-and recluster individual documents in a graph that has already been built.
+This page describes the endpoints that build and maintain the Layer 3 knowledge
+graph. `POST /v1/orchestrate` starts the Importer workers for the strategy
+profiles. The `POST /v1/graph/*` endpoints insert, delete, update, and recluster
+individual documents in a graph that has already been built.
 
-For the concepts behind the `/v1/graph/*` endpoints - when to use them, how they
-compare with a full rebuild, and how partition divergence is measured - see
+To learn when to use the `/v1/graph/*` endpoints, how they compare to a full
+rebuild, and how the partition divergence is measured, see
 [Incremental Graph Updates](../incremental-graph-updates.md).
 
 ## Trigger Orchestration
@@ -24,10 +24,11 @@ Spawn GraphRAG importer workers for all strategy profiles. Called after RAG stra
 **Recommended path:** Call after a successful corpus build and strategizer run, when `rags` is non-empty. This is the final step of the standard workflow. Omit `partition_ids` to process all profiles; supply specific ids from `GET /v1/rag-strategizer/strategy` to retry or target individual partitions. Do not overlap with an active build (`409`).
 
 {{< tip >}}
-**Targeted orchestration.** Combining `partition_ids` with `file_ids` limits the
-Importer to specific documents inside specific partitions. This is how an
-[incremental graph update](../incremental-graph-updates.md) materializes a newly
-inserted or replaced document in Layer 3 without reprocessing the partition.
+**Targeted orchestration.** If you combine `partition_ids` with `file_ids`, the
+Importer only processes the listed documents in the listed partitions. This is
+how an [incremental graph update](../incremental-graph-updates.md) adds a newly
+inserted or replaced document to Layer 3 without processing the whole partition
+again.
 {{< /tip >}}
 
 ### Request
@@ -55,7 +56,7 @@ inserted or replaced document in Layer 3 without reprocessing the partition.
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `partition_ids` | string[] | No | If **non-empty**, only strategies whose **`rag_partition_id`** is listed are orchestrated. | **Omit or `[]`** for full corpus. Use **exact ids** from **`GET /v1/rag-strategizer/strategy`** for targeted reruns. |
-| `file_ids` | string[] | No | If **non-empty**, the Importer job for each listed partition processes only these files instead of the whole partition. | **Omit** for a normal build. Use together with `partition_ids` after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
+| `file_ids` | string[] | No | If **non-empty**, the Importer job of each listed partition only processes these files instead of the whole partition. | **Omit** for a normal build. Use it together with `partition_ids` after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
 
 ### Response
 
@@ -101,10 +102,10 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert" >}}
 
-Add documents that are not already in the graph. Runs **synchronously**.
+Adds documents that are not in the graph yet. The call is **synchronous**.
 
-The corpus and the target module must already exist. If the project has
-exactly one module, `module` can be omitted; otherwise it is required.
+The corpus and the target module have to exist already. If the project has
+exactly one module, you can omit `module`. Otherwise, it is required.
 
 ### Request
 
@@ -123,7 +124,7 @@ Inline content, base64-encoded:
 }
 ```
 
-To fetch the file from the File Manager instead, omit `content` and provide
+To get the file from the File Manager instead, omit `content` and provide a
 `file_id`:
 
 ```json
@@ -142,12 +143,12 @@ To fetch the file from the File Manager instead, omit `content` and provide
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `files` | object[] | Yes | Documents to insert. Must be non-empty, with no duplicate `doc_name` or `file_id` values. |
-| `files[].doc_name` | string | Yes | File name of the document. Must match the File Manager file name when `file_id` is used. |
-| `files[].content` | string | No | File bytes, base64-encoded. Provide either `content` or `file_id`. No `file_id` is generated for inline content, so the document cannot be named in a targeted orchestration - see [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
-| `files[].file_id` | string | No | File Manager id to fetch the document from. Preferred over inline content, and required if you intend to materialize the document in Layer 3. |
-| `files[].citable_url` | string | No | Canonical URL for citations, carried through the pipeline. |
-| `module` | string | Conditional | Target module. Required unless the project has exactly one module. |
+| `files` | object[] | Yes | The documents to insert. The list cannot be empty and cannot contain duplicate `doc_name` or `file_id` values. |
+| `files[].doc_name` | string | Yes | The file name of the document. It has to match the File Manager file name if you use `file_id`. |
+| `files[].content` | string | No | The file content, base64-encoded. Provide either `content` or `file_id`. No `file_id` is created for inline content, so you cannot use the document in a targeted orchestration. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
+| `files[].file_id` | string | No | The File Manager ID to get the document from. Preferred over inline content, and required if you want to add the document to Layer 3 later. |
+| `files[].citable_url` | string | No | The canonical URL for citations. It is passed through the pipeline. |
+| `module` | string | Conditional | The target module. Required unless the project has exactly one module. |
 
 ### Response
 
@@ -169,28 +170,28 @@ To fetch the file from the File Manager instead, omit `content` and provide
 | Field | Meaning |
 |-------|---------|
 | `doc_name` | The document this result refers to. |
-| `success` | Whether the source document was inserted. |
-| `error_message` | Set when this file failed. Other files in the batch can still succeed. |
-| `cluster_key` | Existing cluster selected for the document. Can be empty when no suitable clustered neighbor exists. |
-| `rag_partition_id` | Layer 3 partition linked to the selected cluster. Can be empty when no strategy profile exists yet. |
-| `file_id` | Echoed when File Manager input was used. Absent for inline-content inserts, which have no File Manager id. Pass this value in the `file_ids` of your targeted orchestration. |
-| `divergence_score` | Partition divergence after this insert. Can understate churn until targeted orchestration creates the Layer 3 entities. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `needs_reclustering` | `true` when `divergence_score` strictly exceeds the partition's threshold. Nothing is reclustered automatically. |
+| `success` | Whether the source document has been inserted. |
+| `error_message` | Set if this file failed. The other files of the batch can still succeed. |
+| `cluster_key` | The existing cluster that has been selected for the document. Can be empty if there is no suitable neighbor in a cluster. |
+| `rag_partition_id` | The Layer 3 partition of the selected cluster. Can be empty if there is no strategy profile yet. |
+| `file_id` | Returned if you provided File Manager input. Not set for inserts with inline content because they have no File Manager ID. Use this value in the `file_ids` of your targeted orchestration. |
+| `divergence_score` | The partition divergence after this insert. It can be lower than the actual churn until a targeted orchestration has created the Layer 3 entities. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
+| `needs_reclustering` | `true` if the `divergence_score` is above the threshold of the partition. Nothing is reclustered automatically. |
 
-Insert extracts the text, generates an embedding, stores the source, assigns
-the closest existing cluster, and adds membership and similarity edges. It
-updates **Layers 1 and 2 only**. To materialize the document in Layer 3, run
-targeted orchestration with its `file_id` and the returned `rag_partition_id`,
-which requires that the insert used File Manager `file_id` input (see
-[Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3)).
+Insert extracts the text, creates an embedding, stores the source, assigns the
+closest existing cluster, and adds the membership and similarity edges. It only
+updates **Layers 1 and 2**. To add the document to Layer 3, run a targeted
+orchestration with its `file_id` and the returned `rag_partition_id`. This is
+only possible if the insert used a File Manager `file_id`, see
+[Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Request processed. Inspect each `results[].success`. |
-| `400` | Empty or invalid batch, corpus not built, invalid module, duplicate names or ids, file name mismatch, or File Manager fetch failure. |
+| `200` | The request has been processed. Check the `success` of every entry in `results`. |
+| `400` | Empty or invalid batch, corpus not built, invalid module, duplicate names or IDs, file name mismatch, or the file could not be retrieved from the File Manager. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
-| `409` | Another corpus mutation is running. |
+| `409` | Another operation is currently changing the corpus. |
 | `500` | Server error. |
 | `503` | A required dependency is temporarily unavailable. |
 
@@ -214,12 +215,12 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
 
-Remove documents from an existing corpus graph. Layers 1 and 2 are updated
-**synchronously**; Layer 3 cleanup runs **asynchronously** in the Importer.
+Removes documents from an existing corpus graph. Layers 1 and 2 are updated
+**synchronously**. The Layer 3 cleanup runs **asynchronously** in the Importer.
 
-Prefer stable File Manager `file_ids`. Alternatively, provide `doc_names`,
-which are resolved inside the requested module. At least one of the two lists
-is required.
+Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
+provide `doc_names`, which are looked up in the requested module. You need to
+provide at least one of the two lists.
 
 ### Request
 
@@ -229,8 +230,7 @@ is required.
     "<file-manager-file-id-1>",
     "<file-manager-file-id-2>"
   ],
-  "module": "legal",
-  "replicas": 2
+  "module": "legal"
 }
 ```
 
@@ -247,14 +247,19 @@ By file name instead:
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `file_ids` | string[] | Conditional | File Manager ids of the documents to delete. Required unless `doc_names` is given. |
-| `doc_names` | string[] | Conditional | File names to resolve inside `module`. Required unless `file_ids` is given. |
-| `module` | string | Conditional | Module the targets belong to. Required unless the project has exactly one module. |
-| `replicas` | integer | No | Importer worker replicas to use for the background Layer 3 cleanup. Omit to use the service default. |
+| `file_ids` | string[] | Conditional | The File Manager IDs of the documents to delete. Required unless you provide `doc_names`. |
+| `doc_names` | string[] | Conditional | The file names to look up in `module`. Required unless you provide `file_ids`. |
+| `module` | string | Conditional | The module the documents belong to. Required unless the project has exactly one module. |
 
 {{< info >}}
-The batch is validated before anything is removed. If any target is invalid,
-the request returns `400` and nothing is deleted.
+The batch is validated before anything is removed. If one of the documents is
+invalid, the request returns `400` and nothing is deleted.
+{{< /info >}}
+
+{{< info >}}
+**Delete has no replica setting.** The Layer 3 cleanup in the background always
+runs on a single Importer worker. Unlike an
+[orchestration](#trigger-orchestration), it cannot run in parallel.
 {{< /info >}}
 
 ### Response
@@ -279,27 +284,28 @@ the request returns `400` and nothing is deleted.
 }
 ```
 
-The response confirms the Layer 1 and Layer 2 changes.
-`LAYER3_DELETE_STATUS_PENDING` means the Importer is still removing the
-Layer 3 documents, chunks, entities, and edges. Poll the
-`importerOrchestration` status in your platform project metadata until it
+The response confirms the changes in Layer 1 and Layer 2.
+`LAYER3_DELETE_STATUS_PENDING` means that the Importer is still removing the
+documents, chunks, entities, and edges of Layer 3. Poll the
+`importerOrchestration` status in the metadata of your platform project until it
 reports `completed` or `failed`.
 
 {{< warning >}}
-Layer 1 and Layer 2 deletion is not rolled back if the Layer 3 cleanup fails.
+The deletion in Layer 1 and Layer 2 is not rolled back if the Layer 3 cleanup
+fails.
 {{< /warning >}}
 
-After Layer 3 cleanup finishes, AutoGraph recomputes divergence for each
-affected partition and stamps `divergence_score` and `needs_reclustering` onto
-the per-file outcome in that pollable status.
+Once the Layer 3 cleanup is done, AutoGraph calculates the divergence of every
+affected partition again and adds `divergence_score` and `needs_reclustering` to
+the result of each file in that status.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Layer 1 and Layer 2 results returned. Inspect `layer3_overall_status`. |
-| `400` | Missing or duplicate identifiers, invalid module, target missing, or target belongs to another module. Nothing is deleted. |
+| `200` | The Layer 1 and Layer 2 results are returned. Check `layer3_overall_status`. |
+| `400` | Missing or duplicate identifiers, invalid module, a document does not exist, or it belongs to another module. Nothing is deleted. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
-| `409` | Another corpus mutation is running. |
+| `409` | Another operation is currently changing the corpus. |
 | `500` | Server error. |
 | `503` | A required dependency is temporarily unavailable. |
 
@@ -320,11 +326,11 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 
-Replace the content of documents that are already in the graph. Runs
-**asynchronously**.
+Replaces the content of documents that are already in the graph. The call is
+**asynchronous**.
 
-Every target must already exist and belong to the requested module. A single
-invalid target rejects the whole batch before anything is mutated.
+Every document has to exist and belong to the requested module. A single invalid
+document makes the whole batch fail before anything is changed.
 
 ### Request
 
@@ -344,11 +350,11 @@ invalid target rejects the whole batch before anything is mutated.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `files` | object[] | Yes | Documents to replace. Must be non-empty, with no duplicate `doc_name` or `file_id` values. |
-| `files[].doc_name` | string | Yes | File name of the document to replace. Must match the File Manager file name when `file_id` is used. |
-| `files[].content` | string | No | Replacement bytes, base64-encoded. Provide either `content` or `file_id`. No `file_id` is generated for inline content, so the replacement cannot be named in a targeted orchestration - see [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
-| `files[].file_id` | string | No | File Manager id to fetch the replacement from. Preferred over inline content, and required if you intend to materialize the replacement in Layer 3. |
-| `module` | string | Conditional | Module the targets belong to. Required unless the project has exactly one module. When omitted in a single-module project, the `doc_name`s resolve inside that module before anything is mutated. |
+| `files` | object[] | Yes | The documents to replace. The list cannot be empty and cannot contain duplicate `doc_name` or `file_id` values. |
+| `files[].doc_name` | string | Yes | The file name of the document to replace. It has to match the File Manager file name if you use `file_id`. |
+| `files[].content` | string | No | The new content, base64-encoded. Provide either `content` or `file_id`. No `file_id` is created for inline content, so you cannot use the new version in a targeted orchestration. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
+| `files[].file_id` | string | No | The File Manager ID to get the new version from. Preferred over inline content, and required if you want to add the new version to Layer 3 later. |
+| `module` | string | Conditional | The module the documents belong to. Required unless the project has exactly one module. If you omit it in a project with a single module, the `doc_name` values are looked up in that module before anything is changed. |
 
 ### Immediate response
 
@@ -361,16 +367,16 @@ invalid target rejects the whole batch before anything is mutated.
 }
 ```
 
-`accepted: true` means the update was validated and dispatched, not that it
-finished. Poll the `importerOrchestration` slot in your platform project
-metadata. The phases are:
+`accepted: true` means that the update has been validated and started, not that
+it is done. Poll the `importerOrchestration` entry in the metadata of your
+platform project. The update goes through the following phases:
 
-1. `DELETE_L12` - remove the old source and corpus-graph data.
-2. `DELETE_L3` - wait for the Importer to remove the old knowledge-graph data.
-3. `INSERT_L12` - insert the replacement and reassign its cluster.
-4. `DONE` - terminal success or failure.
+1. `DELETE_L12`: Removes the old source and the corpus graph data.
+2. `DELETE_L3`: Waits for the Importer to remove the old knowledge graph data.
+3. `INSERT_L12`: Inserts the new version and assigns a cluster to it.
+4. `DONE`: The update has succeeded or failed.
 
-A terminal status message looks like this:
+A final status message looks like this:
 
 ```json
 {
@@ -393,33 +399,32 @@ A terminal status message looks like this:
 
 | Field in `files[]` | Meaning |
 |--------------------|---------|
-| `file` | The document this outcome refers to. |
-| `result` | Per-file outcome, for example `updated`. |
-| `cluster` / `previous_cluster` | Cluster assigned to the replacement, and the cluster the old version belonged to. |
-| `partition` | Layer 3 partition of the new cluster. |
-| `divergence_score` | Partition divergence after the delete and insert legs (gross churn). See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `needs_reclustering` | `true` when the score exceeds the partition threshold. AutoGraph does not recluster automatically. |
+| `file` | The document this result refers to. |
+| `result` | The result for this file, for example `updated`. |
+| `cluster` / `previous_cluster` | The cluster that is assigned to the new version, and the cluster the old version belonged to. |
+| `partition` | The Layer 3 partition of the new cluster. |
+| `divergence_score` | The partition divergence after the deletion and the insertion, as gross churn. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
+| `needs_reclustering` | `true` if the score is above the threshold of the partition. AutoGraph does not recluster automatically. |
 
-Update waits for the old Layer 3 data to be cleaned up before re-inserting,
-which avoids old and new knowledge-graph data coexisting. It is still not a
-database transaction.
+An update waits for the old Layer 3 data to be removed before it inserts the new
+version, so that old and new knowledge graph data do not exist side by side. It
+is still not a database transaction.
 
 {{< warning >}}
-If the delete leg succeeds but the insert leg fails, the document stays
-removed. Fix the underlying problem and restore it with
-`POST /v1/graph/insert`.
+If the deletion succeeds but the insertion fails, the document stays removed.
+Fix the underlying problem and add it again with `POST /v1/graph/insert`.
 {{< /warning >}}
 
-After a successful update, run targeted orchestration to import the
-replacement into Layer 3.
+After a successful update, run a targeted orchestration to import the new
+version into Layer 3.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Update validated and dispatched. Poll for completion. |
-| `400` | Empty or invalid batch, invalid module, or a target that is not already in the graph. |
+| `200` | The update has been validated and started. Poll for the result. |
+| `400` | Empty or invalid batch, invalid module, or a document that is not in the graph. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
-| `409` | Another corpus mutation is running. |
+| `409` | Another operation is currently changing the corpus. |
 | `500` | Server error. |
 | `503` | A required dependency is temporarily unavailable. |
 
@@ -443,18 +448,19 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
 
-Schedule Layer 3 reclustering for one or more **FullGraphRAG** partitions.
-Returns a scheduling status immediately; the work itself runs
-**asynchronously**.
+Schedules a Layer 3 reclustering for one or more **FullGraphRAG** partitions.
+The call returns right away and tells you whether the work has been scheduled.
+The reclustering itself runs **asynchronously**.
 
-Call this when an insert, delete, or update outcome - or the partition's `rags`
-profile - reports `needs_reclustering: true` and you decide that refreshing the
-communities is worth the cost. AutoGraph never starts a recluster on its own.
+Call this endpoint if the result of an insert, delete, or update, or the `rags`
+profile of the partition, reports `needs_reclustering: true` and you decide that
+refreshing the communities is worth the cost. AutoGraph never starts a
+reclustering on its own.
 
-Only FullGraphRAG partitions have a community layer to rebuild. A VectorRAG
-partition holds no `Entities` or `Communities`, so there is nothing for a
-recluster to rebuild, and such a partition is never flagged for reclustering in
-the first place. See [Partition divergence and
+Only FullGraphRAG partitions have a community layer that can be rebuilt. A
+VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
+rebuild, and such a partition is never flagged for reclustering in the first
+place. See [Partition divergence and
 reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering).
 
 ### Request
@@ -467,7 +473,7 @@ reclustering](../incremental-graph-updates.md#partition-divergence-and-recluster
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from an IGU response. At least one non-blank id is required; duplicates are ignored. |
+| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from the response of an insert, delete, or update. At least one non-empty ID is required. Duplicates are ignored. |
 
 ### Response
 
@@ -488,35 +494,35 @@ reclustering](../incremental-graph-updates.md#partition-divergence-and-recluster
 
 | Field | Meaning |
 |-------|---------|
-| `results[].rag_partition_id` | Partition this scheduling result refers to. |
-| `results[].accepted` | `true` when a recluster was scheduled, or coalesced into a recluster already in flight for the same partition. |
-| `results[].error_message` | Set when that partition could not be scheduled, for example because the id was blank. |
+| `results[].rag_partition_id` | The partition this result refers to. |
+| `results[].accepted` | `true` if a reclustering has been scheduled, or if it has been merged into a reclustering that is already running for this partition. |
+| `results[].error_message` | Set if the reclustering could not be scheduled for this partition, for example because the ID is empty. |
 
-`accepted: true` means the work was **queued**, not that reclustering finished.
-Poll the `importerOrchestration` slot in your platform project metadata for
-running, completed, or failed progress. On success, AutoGraph resets the
-partition's divergence: `divergence_score` becomes `0`,
-`needs_reclustering` becomes `false`, and a new baseline is adopted. On
-failure, the score and the flag are left unchanged so you can retry.
+`accepted: true` means that the work is **queued**, not that the reclustering is
+done. Poll the `importerOrchestration` entry in the metadata of your platform
+project to see whether it is running, completed, or failed. If it succeeds,
+AutoGraph resets the divergence of the partition. The `divergence_score` becomes
+`0`, `needs_reclustering` becomes `false`, and a new baseline is taken. If it
+fails, the score and the flag stay as they are so that you can try again.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Request processed. Inspect each `results[].accepted`. |
-| `400` | Missing or empty `partition_ids`. |
+| `200` | The request has been processed. Check the `accepted` value of every entry in `results`. |
+| `400` | `partition_ids` is missing or empty. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `500` | Server error. |
 
 **Notes:**
 
-- A recluster for a partition that is already in flight **coalesces** - a
-  second request does not spawn a second Importer job for that partition.
-- Reclustering claims the same service-wide mutation slot as build, insert,
-  update, and delete, so it does not run concurrently with those operations.
-- A failed or skipped recluster does not clear `needs_reclustering`. Trigger it
-  again when the slot is free.
-- For what the Importer actually does during a recluster, and how long it
-  takes, see
+- If a reclustering is already running for a partition, a second request is
+  **merged** into it and does not start another Importer job.
+- Reclustering uses the same service-wide slot as build, insert, update, and
+  delete, so it cannot run at the same time as these operations.
+- A reclustering that fails or is skipped does not clear `needs_reclustering`.
+  Start it again once the slot is free.
+- To learn what the Importer does during a reclustering and how long it takes,
+  see
   [Importer Incremental Updates](../../importer/incremental-updates.md#reclustering).
 
 ### HTTP example
@@ -533,7 +539,7 @@ curl -X POST \
 
 ## End-to-end example of an incremental update
 
-The calls below assume the corpus graph has already been built.
+The following calls assume that the corpus graph has already been built.
 
 ```bash
 # 1. Add a new document to Layers 1 and 2
@@ -573,8 +579,8 @@ curl -X POST \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update
 ```
 
-After an insert or a successful update, run targeted orchestration so Layer 3
-includes the new content:
+After an insert or a successful update, run a targeted orchestration so that
+Layer 3 contains the new content:
 
 ```bash
 curl -X POST \
@@ -588,8 +594,8 @@ curl -X POST \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
-If an outcome reports `needs_reclustering: true` for a partition, reclustering
-is optional and manual:
+If a result reports `needs_reclustering: true` for a partition, you can start a
+reclustering. It is optional and never automatic:
 
 ```bash
 curl -X POST \
@@ -601,47 +607,49 @@ curl -X POST \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster
 ```
 
-Poll `importerOrchestration` in your project metadata until the recluster
-finishes. On success, the partition's `divergence_score` resets to `0` and
-`needs_reclustering` clears.
+Poll `importerOrchestration` in your project metadata until the reclustering is
+done. If it succeeds, the `divergence_score` of the partition is reset to `0`
+and `needs_reclustering` is cleared.
 
 ## Troubleshooting
 
-- **Insert succeeded but the document is missing from Layer 3.** Insert only
-  updates Layers 1 and 2. Run targeted orchestration with the returned
+- **The insert succeeded but the document is not in Layer 3.** An insert only
+  updates Layers 1 and 2. Run a targeted orchestration with the returned
   `rag_partition_id` and the new `file_id`.
 - **The insert or update result has no `file_id`.** The call used inline
-  `content`, which produces no File Manager id, so there is nothing to name in
-  the `file_ids` of a targeted orchestration. See [Identifying documents for
-  Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
-- **Delete returned `LAYER3_DELETE_STATUS_PENDING`.** Expected. Layers 1 and 2
-  are complete and the Layer 3 cleanup is running in the background. Poll
+  `content`, for which no File Manager ID is created, so there is nothing you
+  can use in the `file_ids` of a targeted orchestration. See [Identifying
+  documents for Layer
+  3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
+- **The delete returned `LAYER3_DELETE_STATUS_PENDING`.** This is expected.
+  Layers 1 and 2 are done and the Layer 3 cleanup runs in the background. Poll
   `importerOrchestration` in your project metadata.
-- **Update returned `accepted: true` but the document has not changed yet.**
-  Update is asynchronous. Poll `importerOrchestration` until the JSON message
+- **The update returned `accepted: true` but the document has not changed.**
+  Updates are asynchronous. Poll `importerOrchestration` until the JSON message
   reports `phase: "DONE"`.
-- **Update failed and the source is gone.** The delete leg committed but the
-  insert leg failed. Fix the input or the dependency problem and restore the
-  document with `POST /v1/graph/insert`.
-- **An IGU call returns `409`.** Another corpus mutation (build, insert,
-  update, delete, or recluster) holds the service-wide mutation slot. Wait for
-  it to finish and retry.
-- **`needs_reclustering: true` after an insert, delete, or update.** The
-  partition's divergence score exceeded its threshold (25% by default).
-  Nothing is reclustered automatically - call `POST /v1/graph/recluster` with
-  the `rag_partition_id` when you want the communities refreshed.
-- **An insert showed a low `divergence_score`, then the flag flipped later.**
-  Expected. The insert response can be computed before the Layer 3 entities
-  exist; the authoritative score is written after targeted orchestration.
-- **Recluster was accepted but `needs_reclustering` is still `true`.** The
-  scheduling succeeded, but the background job may still be running or may have
-  failed. Poll `importerOrchestration`. A failed recluster does not clear the
-  flag, so you can retry.
+- **The update failed and the source document is gone.** The deletion succeeded
+  but the insertion failed. Fix the input or the underlying problem and add the
+  document again with `POST /v1/graph/insert`.
+- **A call returns `409`.** Another operation, such as a build, insert, update,
+  delete, or reclustering, is using the service-wide slot. Wait for it to finish
+  and try again.
+- **`needs_reclustering` is `true` after an insert, delete, or update.** The
+  divergence score of the partition is above its threshold, which is 25% by
+  default. Nothing is reclustered automatically. Call
+  `POST /v1/graph/recluster` with the `rag_partition_id` if you want to refresh
+  the communities.
+- **An insert showed a low `divergence_score` but the flag was set later.** This
+  is expected. The insert response can be calculated before the Layer 3 entities
+  exist. The final score is written after the targeted orchestration.
+- **The reclustering was accepted but `needs_reclustering` is still `true`.**
+  The scheduling succeeded, but the background job may still be running or it
+  may have failed. Poll `importerOrchestration`. A failed reclustering does not
+  clear the flag, so you can try again.
 
 ## Next Steps
 
 - **[Retriever Setup](../../retriever/)**: Query your built knowledge graphs
 - **[Monitor Results](../../importer/verify-and-explore.md)**: Verify import success
-- **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints, and how partition divergence is measured
+- **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
 - **[Design Guide - Modules to partitions](../design-guide.md#how-modules-become-a-partitioned-knowledge-graph)**: How module names flow into partition IDs
 - **[Error Handling](error-handling.md)**: HTTP codes and general troubleshooting

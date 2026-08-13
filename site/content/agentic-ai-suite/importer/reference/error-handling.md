@@ -61,9 +61,9 @@ the service still starts.
 
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
-| `success: false` with a "busy" message on an import call | The single-flight lock is held by an in-flight import, delete, or recluster | Wait for completion; check `GET /v1/health` for the busy message |
-| `UNAVAILABLE` on a delete or recluster call | The single-flight lock is held by an in-flight import, delete, or recluster | Poll the running job until `is_terminal`, then retry (see [Incremental Updates](../incremental-updates.md)). A **single-file** import holding the lock has no `job_id`: watch the platform service status, or `GET /v1/health`, instead |
-| Delete job failed and nothing was removed | The existence check is atomic and at least one requested file is missing from the partition | Read `job.delete_result.results` for `FILE_NOT_FOUND`, fix or drop those entries, and retry |
+| `success: false` with a "busy" message on an import call | A running import, delete, or recluster job holds the lock | Wait until it is done and check `GET /v1/health` for the busy message |
+| `UNAVAILABLE` on a delete or recluster call | A running import, delete, or recluster job holds the lock | Poll the running job until `is_terminal`, then try again (see [Incremental Updates](../incremental-updates.md)). A **single-file** import that holds the lock has no `job_id`. In this case, watch the platform service status or `GET /v1/health` instead |
+| A delete job failed and nothing was removed | Either all files are deleted or none, and at least one of the requested files is not in the partition | Look for `FILE_NOT_FOUND` in `job.delete_result.results`, correct or remove those entries, and try again |
 | Single-file import reports `success: true` but the DB is empty | Background work still running, or failed asynchronously | Check the platform service status (single-file imports have no `job_id`) |
 | Multi-file job never reaches a terminal status | Long graph build or vector-index training | Continue polling; index training can take up to an hour on large corpora. Read `current_status.message` for hints. |
 | `[NO_ENTITIES_WRITTEN]` in a `full_graphrag` job | Extraction returned nothing, or wrong mode | Inspect the source content; confirm `rag_mode: "full_graphrag"`; check the chat model is producing structured output |

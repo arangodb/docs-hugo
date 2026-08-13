@@ -101,13 +101,12 @@ handles replica creation, job submission, status polling, and teardown. Call
 the Importer yourself only for standalone imports or advanced scenarios
 (e.g., re-running a single partition with custom settings).
 
-After the initial build, AutoGraph also drives
-[Incremental Graph Updates](../autograph/incremental-graph-updates.md) against
-Layer 3: inserting new files, deleting removed files, replacing changed files
-(a delete followed by an insert), and reclustering a partition whose community
-structure has drifted - the last one only when you ask for it, since AutoGraph
-flags drift but never reclusters on its own. For the Importer endpoints
-involved, see
+After the initial build, AutoGraph also uses the Importer for
+[Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
+Layer 3. It inserts new files, deletes removed files, and replaces changed files
+by deleting and then inserting them. It can also recluster a partition whose
+communities have drifted, but only if you ask for it. AutoGraph flags the drift
+and never reclusters on its own. For the Importer endpoints that are used, see
 [Incremental Updates](incremental-updates.md).
 
 ## How `partition_id` maps to the Corpus Graph

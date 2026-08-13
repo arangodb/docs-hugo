@@ -348,6 +348,6 @@ written as `{partition_id}:{logicalKey}`.
 ## Next Steps
 
 - **[Explore all parameters](reference/parameters.md)**: Customize chunking, entity extraction, and more.
-- **[Incremental updates](incremental-updates.md)**: Delete a file's graph data, replace a document, or recluster a partition after the initial import.
+- **[Incremental updates](incremental-updates.md)**: Delete the graph data of a file, replace a document, or recluster a partition after the initial import.
 - **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
 - **[Verify your import](verify-and-explore.md)**: Check import status and explore the created collections.

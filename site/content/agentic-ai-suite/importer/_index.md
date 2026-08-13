@@ -51,8 +51,9 @@ See [Architecture](architecture.md) for the collections each mode populates.
   embedding providers (OpenAI-compatible APIs or Triton Inference Server).
 - [**Import Files**](importing-files.md): Single-file and multi-file import
   workflows with examples.
-- [**Incremental Updates**](incremental-updates.md): Delete a file's graph data
-  and rebuild a partition's community layer without re-ingesting documents.
+- [**Incremental Updates**](incremental-updates.md): Delete the graph data of a
+  file and rebuild the community layer of a partition without importing the
+  documents again.
 - [**Verify and explore**](verify-and-explore.md): Check that your import
   succeeded and inspect the resulting collections.
 - [**Semantic Units**](semantic-units.md) *(optional)*: Process images and

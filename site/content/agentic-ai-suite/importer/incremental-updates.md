@@ -7,38 +7,38 @@ description: >-
 weight: 55
 ---
 After the initial build, the [Layer 3 knowledge
-graph](architecture.md#knowledge-graph-collections) - the documents, chunks,
-entities, communities, and relationships the Importer owns - has to keep up with
-documents that are added, removed, or replaced. The Importer provides two
-endpoints for this beyond the import calls: **delete** removes a file's
-knowledge-graph artifacts, and **recluster** rebuilds the community layer of a
-single partition without re-ingesting anything.
+graph](architecture.md#knowledge-graph-collections) has to keep up with
+documents that are added, removed, or replaced. It contains the documents,
+chunks, entities, communities, and relationships that the Importer owns. Apart
+from the import calls, the Importer offers two endpoints for this. **Delete**
+removes the knowledge graph data of a file, and **recluster** rebuilds the
+community layer of a single partition without importing anything again.
 
 {{< info >}}
-Under normal operation you do not call these endpoints directly. AutoGraph
-drives them as part of
-[Incremental Graph Updates](../autograph/incremental-graph-updates.md), which
-also maintains Layers 1 and 2. Call the Importer yourself only for standalone
-or advanced scenarios.
+You normally do not call these endpoints yourself. AutoGraph calls them as part
+of [Incremental Graph
+Updates](../autograph/incremental-graph-updates.md), which also maintains
+Layers 1 and 2. Only call the Importer directly for standalone or advanced use
+cases.
 
-In Arango Contextual Data Platform 4.1.0 this is an **API-only** feature on both
-sides: neither these Importer endpoints nor AutoGraph's IGU endpoints have a
-web-interface equivalent.
+In Arango Contextual Data Platform 4.1.0, this is an **API-only** feature on
+both sides. Neither these Importer endpoints nor AutoGraph's IGU endpoints are
+available in the web interface.
 {{< /info >}}
 
-There is **no** dedicated update endpoint. Insert and delete are first-class
-operations; an update is composed from them. See
+There is **no** dedicated update endpoint. Insert and delete are available as
+operations, and an update is a combination of the two. See
 [Updating a document](#updating-a-document).
 
 {{< warning >}}
-Import, delete, and recluster jobs on a given Importer replica are
-**single-flight**. While one of them holds the import lock, a concurrent call is
-rejected, and the rejection shape depends on the endpoint you called: `/v1/delete`
-and `/v1/recluster` return `UNAVAILABLE`, while the import endpoints return
-`HTTP 200` with `"success": false` and a busy message. Retry once the running job
-has reached a terminal state - or, when a single-file import holds the lock and
-there is no job to poll, once the platform service status shows it finished. See
-[Concurrency](architecture.md#asynchronous-import-lifecycle).
+An Importer replica can only run one import, delete, or recluster job at a time.
+While one of them holds the import lock, other calls are rejected, and how they
+are rejected depends on the endpoint. `/v1/delete` and `/v1/recluster` return
+`UNAVAILABLE`, whereas the import endpoints return `HTTP 200` with
+`"success": false` and a message that the service is busy. Try again once the
+running job has finished. If a single-file import holds the lock, there is no
+job to poll, so wait until the platform service status shows that it is done.
+See [Concurrency](architecture.md#asynchronous-import-lifecycle).
 {{< /warning >}}
 
 ## Inserting a document
@@ -47,28 +47,28 @@ Inserting is a normal import into an existing `partition_id`:
 
 - [`POST /v1/import`](importing-files.md#single-file-import) for a single file.
 - [`POST /v1/import-multiple`](importing-files.md#multi-file-import) for one or
-  more files. Returns a `job_id` you poll through
+  more files. It returns a `job_id` that you can poll with
   [`GET /v1/jobs/{job_id}`](importing-files.md#monitoring-jobs).
 
-The Importer builds the graph artifacts for the files and writes `Documents`,
-`Chunks`, `Entities`, `Communities`, and `Relations` (depending on `rag_mode`)
-into `{project}_kg`, stamped with the request's `partition_id` and an
-`import_number` that identifies the batch. Repeated imports into the same
-partition create additional batches; reclustering consolidates those batches
-before rebuilding the communities.
+The Importer builds the graph data for the files and writes `Documents`,
+`Chunks`, `Entities`, `Communities`, and `Relations` to `{project}_kg`,
+depending on the `rag_mode`. Every record gets the `partition_id` of the request
+and an `import_number` that identifies the batch. If you import into the same
+partition again, additional batches are created. Reclustering consolidates these
+batches before it rebuilds the communities.
 
 ## Deleting a document
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/delete" >}}
 
-Removes a file's Layer 3 artifacts from `{project}_kg`. AutoGraph's delete
-orchestration calls this after its own Layer 1 and Layer 2 cleanup.
+Removes the Layer 3 data of a file from `{project}_kg`. AutoGraph calls this
+after it has cleaned up Layer 1 and Layer 2.
 
-The call is **asynchronous**: it returns a `job_id` immediately and the delete
+The call is **asynchronous**. It returns a `job_id` right away and the deletion
 runs in the background. Poll
 [`GET /v1/jobs/{job_id}`](importing-files.md#monitoring-jobs) until
-`is_terminal` is `true`. For delete jobs the outcome lives in
-**`job.delete_result`**, not in the immediate acknowledgement.
+`is_terminal` is `true`. For delete jobs, the result is in
+**`job.delete_result`**, not in the immediate response.
 
 ### Request
 
@@ -82,42 +82,43 @@ runs in the background. Poll
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `partition_id` | string | Yes | Layer 3 partition to scope the delete to. Must exist; matched against the `partition_id` field on vertices and edges. |
-| `file_ids` | string[] | Yes | File Manager ids to delete, matched against `Documents.file_id`. |
-| `doc_names` | string[] | No | File-name fallback, parallel to `file_ids`. When `file_ids[i]` matches no document, `doc_names[i]` is matched against `Documents.file_name`. Either side of a pair may be empty, but not both. |
+| `partition_id` | string | Yes | The Layer 3 partition to delete from. It has to exist and is matched against the `partition_id` field of the vertices and edges. |
+| `file_ids` | string[] | Yes | The File Manager IDs to delete, matched against the `Documents.file_ids` list. |
+| `doc_names` | string[] | No | A fallback based on file names, parallel to `file_ids`. If `file_ids[i]` matches no document, then `doc_names[i]` is matched against `Documents.file_name`. One of the two can be empty, but not both. |
 
-**Resolution order:** each file is resolved by `file_id` first, then by
-`file_name` if needed. The fallback is useful for documents imported before
-`file_id` stamping was introduced. See
-[Documents](architecture.md#documents) for the fields involved.
+**Resolution order:** Each file is looked up by ID first and by `file_name`
+only if that fails. `Documents.file_ids` is a **list** with a persistent array
+index, so a document matches if the requested ID is anywhere in that list. The
+fallback to the name is useful for documents that were imported before file IDs
+were stored. See [Documents](architecture.md#documents) for the fields involved.
 
 {{< warning >}}
-**The existence check is atomic.** If any requested file is missing from the
-partition, the job fails and **nothing** is deleted. Missing files are reported
-as `FILE_NOT_FOUND`; the remaining files in that batch report `ERROR`
+**Either all files are deleted or none.** If one of the requested files is not
+in the partition, the job fails and **nothing** is deleted. Missing files are
+reported as `FILE_NOT_FOUND` and the other files of the batch report `ERROR`
 ("not deleted").
 {{< /warning >}}
 
 ### What is removed
 
-Per file, the Importer removes:
+For every file, the Importer removes the following:
 
-- The `Documents` vertices for that file.
-- Orphaned `Chunks`.
-- Orphaned `Entities` - those left without a surviving `MENTIONED_IN` chunk.
-- Orphaned `Communities`, including parent communities left empty through
-  `SUB_COMMUNITY_OF`.
-- Orphaned `SemanticUnits`.
-- The related `Relations` edges.
+- The `Documents` vertices of the file
+- `Chunks` that are left without a document
+- `Entities` that are left without a `MENTIONED_IN` chunk
+- `Communities` that are left empty, including parent communities that become
+  empty through `SUB_COMMUNITY_OF`
+- `SemanticUnits` that are left without a document
+- The related `Relations` edges
 
-Entities and communities that are still used by other files are kept.
+Entities and communities that other files still use are kept.
 
-Per-file status values: `SUCCESS`, `PARTITION_NOT_FOUND`, `FILE_NOT_FOUND`,
-`ERROR`.
+The status of each file is `SUCCESS`, `PARTITION_NOT_FOUND`, `FILE_NOT_FOUND`,
+or `ERROR`.
 
 ### Polling a delete job
 
-Start the delete and capture the `job_id`:
+Start the deletion and note down the `job_id`:
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX>/v1/delete \
@@ -130,7 +131,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
   }'
 ```
 
-The immediate response only acknowledges the job:
+The immediate response only confirms that the job has started:
 
 ```json
 {
@@ -147,7 +148,7 @@ curl -sS "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POSTFIX
   -H "Authorization: Bearer <your-jwt-token>"
 ```
 
-The terminal response carries the outcome in `job.delete_result`:
+The final response contains the result in `job.delete_result`:
 
 ```json
 {
@@ -181,70 +182,71 @@ The terminal response carries the outcome in `job.delete_result`:
 }
 ```
 
-`delete_result` holds the per-file receipts and the batch aggregates
-`documents_removed`, `chunks_removed`, `entities_removed`,
+`delete_result` contains the result for each file as well as the totals for the
+batch in `documents_removed`, `chunks_removed`, `entities_removed`,
 `communities_removed`, `semantic_units_removed`, and `edges_removed`.
 
 {{< warning >}}
-Do not treat the `POST /v1/delete` acknowledgement as the final outcome. It
-carries no per-file results at all - only `job_id`, `success`, and `message` -
-and its `success: true` means the job was **accepted**, not that anything was
-deleted. The per-file receipts arrive only in `job.delete_result.results`, once
-the job is terminal.
+Do not treat the response of `POST /v1/delete` as the final result. It contains
+no results for the individual files, only `job_id`, `success`, and `message`.
+Its `success: true` means that the job has been **accepted**, not that anything
+has been deleted. The results for the individual files are only available in
+`job.delete_result.results` once the job has finished.
 {{< /warning >}}
 
 ## Updating a document
 
-The Importer does not expose an in-place update endpoint. To replace a
-document's content in Layer 3:
+The Importer has no endpoint for updating a document in place. To replace the
+content of a document in Layer 3, do the following:
 
 1. **Delete** the old file with `POST /v1/delete`, using the same
-   `partition_id` and the file id and/or name. Capture the returned `job_id`.
-2. **Poll** `GET /v1/jobs/{job_id}` until the delete job reaches **terminal
-   success**. Do not continue if the job failed.
+   `partition_id` and the file ID and/or name. Note down the returned `job_id`.
+2. **Poll** `GET /v1/jobs/{job_id}` until the delete job has **finished
+   successfully**. Do not continue if the job failed.
 3. **Import** the new version with `POST /v1/import` or
    `POST /v1/import-multiple` into the **same** `partition_id`.
 
-That delete-then-import sequence is the supported update path. Because the
-delete holds the import lock until it finishes, calling import before the
-delete job is terminal is rejected as busy - `HTTP 200` with
-`"success": false`, the import endpoints' rejection shape.
+Deleting and then importing is the supported way to update a document. The
+deletion holds the import lock until it is done, so an import that you start
+before the delete job has finished is rejected with `HTTP 200` and
+`"success": false`.
 
 {{< warning >}}
-Importing a revised file **without** deleting the old one first creates another
-import batch alongside the previous document, which leaves duplicate content in
-the graph. Always delete first when you intend to replace.
+If you import a revised file **without** deleting the old one first, you create
+another import batch next to the existing document and end up with duplicate
+content in the graph. Always delete first if you want to replace a document.
 {{< /warning >}}
 
 ## Divergence
 
-**Divergence** measures how far a `full_graphrag` partition's community layer
-has drifted from its current entity and relationship graph after inserts,
-deletes, and updates. It is computed and interpreted by **AutoGraph**, not by
-the Importer - no Importer endpoint returns a divergence score.
+The **divergence** shows how far the community layer of a `full_graphrag`
+partition has drifted from its current entities and relationships after inserts,
+deletes, and updates. It is calculated by **AutoGraph**, not by the Importer.
+No Importer endpoint returns a divergence score.
 
-When divergence crosses the partition's threshold, AutoGraph flags the partition
-as needing reclustering. It does **not** start a recluster on its own: you
-decide whether to pay for the refresh and then trigger it, which in turn calls
-`POST /v1/recluster` for the affected `partition_id`. For the formula, the
+If the divergence gets above the threshold of the partition, AutoGraph flags the
+partition as needing a reclustering. It does **not** start one on its own. You
+decide whether the refresh is worth the cost and then start it, which in turn
+calls `POST /v1/recluster` for the affected `partition_id`. For the formula, the
 threshold, and the lifecycle, see
 [Partition divergence and reclustering](../autograph/incremental-graph-updates.md#partition-divergence-and-reclustering).
 
-Divergence does not apply to `vector_rag` partitions, which hold no `Entities`
-or `Communities`.
+The divergence does not apply to `vector_rag` partitions because they have no
+`Entities` or `Communities`.
 
 ## Reclustering
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/recluster" >}}
 
 Rebuilds the **community layer** of a single `full_graphrag` partition without
-re-ingesting documents. The call is **asynchronous**: it returns a `job_id`
-immediately; poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`.
+importing the documents again. The call is **asynchronous**. It returns a
+`job_id` right away, and you can poll `GET /v1/jobs/{job_id}` until
+`is_terminal` is `true`.
 
 Only `full_graphrag` partitions have a community layer. A `vector_rag` partition
-holds no `Entities` or `Communities`
-(see [Knowledge graph collections](architecture.md#knowledge-graph-collections)),
-so there is nothing for a recluster to consolidate, cluster, or swap in.
+has no `Entities` or `Communities`, see [Knowledge graph
+collections](architecture.md#knowledge-graph-collections), so there is nothing
+to consolidate, cluster, or replace.
 
 ### Request
 
@@ -260,44 +262,47 @@ so there is nothing for a recluster to consolidate, cluster, or swap in.
 
 ### What the Importer does
 
-1. **Consolidate (when needed).** If the partition holds multiple import
-   batches, or is not already a single batch at `import_number=1`, the Importer
-   groups duplicate entities that share a name and picks a winner: the
-   duplicate with the most entity-to-entity `RELATED_TO` edges, breaking ties
-   by the latest `import_number`. The winner's content is kept as-is and
-   relocated to the canonical `import_number=1` slot if needed. Losing entity
-   vertices are dropped and their `RELATED_TO` and `MENTIONED_IN` edges are
-   repointed onto the winner; self-loops are dropped and parallel `RELATED_TO`
-   edges are deduplicated.
-2. **Load the graph.** The partition's `Entities` and `RELATED_TO` edges are
-   loaded into an in-memory graph, keyed by entity name, with `source_id`
-   rebuilt from `MENTIONED_IN`. Disconnected graphs are accepted.
-3. **Cluster and summarize.** Leiden clustering runs and community reports are
-   generated, in the same way as during a full import.
+1. **Consolidate the batches, if needed.** If the partition has more than one
+   import batch, or is not already a single batch with `import_number=1`, the
+   Importer groups the entities that share a name and picks a winner. The winner
+   is the entity with the most `RELATED_TO` edges to other entities, and if
+   there is a tie, the one with the highest `import_number`. Its content is kept
+   as it is and moved to `import_number=1` if necessary. The other entity
+   vertices are removed and their `RELATED_TO` and `MENTIONED_IN` edges are
+   redirected to the winner. Self-references are removed and duplicate
+   `RELATED_TO` edges are merged.
+2. **Load the graph.** The `Entities` and `RELATED_TO` edges of the partition
+   are loaded into an in-memory graph, keyed by entity name, with the
+   `source_id` rebuilt from `MENTIONED_IN`. Graphs that are not fully connected
+   are accepted.
+3. **Cluster and summarize.** The Leiden clustering runs and the community
+   reports are generated, in the same way as during a full import.
 4. **Swap in the new communities.** The old `Communities` and the community
-   edges (`IN_COMMUNITY`, `SUB_COMMUNITY_OF`) are replaced only once the new
-   ones are ready. New communities, embeddings, and entity cluster assignments
-   are written back at `import_number=1`.
+   edges (`IN_COMMUNITY`, `SUB_COMMUNITY_OF`) are only replaced once the new
+   ones are ready. New communities, embeddings, and cluster assignments for the
+   entities are written with `import_number=1`.
 
-**Preserved:** `Documents`, `Chunks`, `Entities`, and the non-community
-relations (`PART_OF`, `MENTIONED_IN`, `RELATED_TO`). Reclustering refreshes
-community membership on entities; it does not recreate those preserved edges.
+**What is kept:** `Documents`, `Chunks`, `Entities`, and the relations that are
+not community-related (`PART_OF`, `MENTIONED_IN`, `RELATED_TO`). Reclustering
+updates which community an entity belongs to. It does not recreate the
+relations that are kept.
 
 ### Duration and performance impact
 
-Reclustering is not a full re-ingest - it skips document, chunk, and entity
-extraction and rebuilds only the community layer. Runtime is dominated by
-**LLM community-report generation**, the same work as the community stage of a
-full import, plus the optional consolidation pass and Leiden clustering.
+Reclustering is not a full import. It skips the extraction of documents, chunks,
+and entities, and only rebuilds the community layer. Most of the runtime goes
+into **generating the community reports with the LLM**, which is the same work
+as in the community stage of a full import, plus the optional consolidation and
+the Leiden clustering.
 
 - Expect longer jobs for partitions with many entities, relationships, or
   communities.
-- Multi-batch partitions pay for a consolidation pass first.
-- While a recluster runs it holds the single-flight import lock, so concurrent
-  delete and recluster calls return `UNAVAILABLE`, and concurrent import calls
-  return `"success": false`, until it finishes.
-- Old communities are removed only after the new ones are ready, so a mid-job
-  failure leaves the previous community layer intact.
+- Partitions with multiple batches need to be consolidated first.
+- A reclustering holds the import lock for the whole job. Until it is done,
+  delete and recluster calls return `UNAVAILABLE`, and import calls return
+  `"success": false`.
+- The old communities are only removed once the new ones are ready, so if the
+  job fails halfway through, the previous community layer is still there.
 
 ### HTTP example
 
@@ -322,21 +327,21 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 
 | Symptom | Likely cause | What to do |
 |---------|--------------|------------|
-| Delete or recluster returns `UNAVAILABLE`, or an import returns `"success": false` | Another import, delete, or recluster holds the single-flight lock on this replica | Retry after the running job reaches a terminal state (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`). If the holder is a **single-file** import (`POST /v1/import`), there is no `job_id` to poll - watch the platform service status feed, or `GET /v1/health` for the busy message, until it clears |
-| A delete job failed and nothing was removed | At least one requested file was missing from the partition | Check `delete_result.results` for `FILE_NOT_FOUND`, then fix the ids or names, or drop the missing entries, and retry |
-| `FILE_NOT_FOUND` when deleting by `file_id` | The document was imported before `file_id` stamping, or the id does not match | Pass `doc_names` as a fallback, or confirm `Documents.file_id` (see [Documents](architecture.md#documents)) |
-| An update left duplicate content in the graph | The import ran without a prior successful delete, or started before the delete finished | Delete, poll to terminal success, then import into the same `partition_id` |
-| An import during an in-flight delete is rejected as busy | The delete holds the import lock until its background task completes | Poll the delete `job_id` until `is_terminal`, then retry the import |
-| Communities look stale after inserts or deletes | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Trigger it through AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
-| A recluster takes a long time and blocks other work | LLM community reports, with the lock held for the whole job | Expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is terminal |
+| Delete or recluster returns `UNAVAILABLE`, or an import returns `"success": false` | Another import, delete, or recluster job holds the lock on this replica | Try again once the running job is done (`GET /v1/jobs/{job_id}` or `GET /v1/jobs`). If a **single-file** import (`POST /v1/import`) holds the lock, there is no `job_id` to poll. Watch the platform service status or `GET /v1/health` for the busy message until it clears |
+| A delete job failed and nothing was removed | At least one of the requested files is not in the partition | Check `delete_result.results` for `FILE_NOT_FOUND`, then correct the IDs or names, or remove the missing entries, and try again |
+| `FILE_NOT_FOUND` when deleting by file ID | The document was imported before file IDs were stored, or the ID does not match | Use `doc_names` as a fallback, or check the `Documents.file_ids` list (see [Documents](architecture.md#documents)) |
+| An update left duplicate content in the graph | The import ran without deleting first, or started before the deletion was done | Delete, poll until the job has finished successfully, then import into the same `partition_id` |
+| An import during a running delete is rejected as busy | The deletion holds the import lock until its background task is done | Poll the delete `job_id` until `is_terminal`, then try the import again |
+| Communities look outdated after inserts or deletes | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Start it in AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
+| A reclustering takes a long time and blocks other work | The LLM community reports take a while and the lock is held for the whole job | This is expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is done |
 
 ## Next steps
 
 - **[Incremental Graph Updates in AutoGraph](../autograph/incremental-graph-updates.md)**:
-  The operator-facing workflow that drives these endpoints.
-- **[Architecture](architecture.md)**: Knowledge-graph collections and the
-  async-job lifecycle.
+  The workflow that uses these endpoints.
+- **[Architecture](architecture.md)**: The knowledge graph collections and the
+  lifecycle of asynchronous jobs.
 - **[Import Files](importing-files.md)**: Single-file and multi-file import
   workflows.
 - **[Error Handling](reference/error-handling.md)**: Synchronous error codes and
-  asynchronous failure markers.
+  markers for asynchronous failures.

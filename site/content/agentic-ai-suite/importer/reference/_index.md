@@ -46,19 +46,20 @@ Endpoints are served at **`http://<host>:8080`**.
 | `GET` | `/v1/health` | Check service readiness | [Import Files](../importing-files.md#health-check) |
 | `POST` | `/v1/import` | Import a single file | [Import Files](../importing-files.md#single-file-import) |
 | `POST` | `/v1/import-multiple` | Import a batch of files | [Import Files](../importing-files.md#multi-file-import) |
-| `POST` | `/v1/delete` | Remove a file's Layer 3 artifacts | [Incremental Updates](../incremental-updates.md#deleting-a-document) |
+| `POST` | `/v1/delete` | Remove the Layer 3 data of a file | [Incremental Updates](../incremental-updates.md#deleting-a-document) |
 | `POST` | `/v1/recluster` | Rebuild the community layer of one partition | [Incremental Updates](../incremental-updates.md#reclustering) |
 | `GET` | `/v1/jobs/{job_id}` | Get the status of a multi-file import, delete, or recluster job | [Import Files](../importing-files.md#monitoring-jobs) |
 | `GET` | `/v1/jobs` | List recent jobs | [Import Files](../importing-files.md#monitoring-jobs) |
 
 {{< info >}}
-Import, delete, and recluster are **single-flight** per replica: while one holds
-the import lock, a concurrent call to any of the three is rejected. The
-rejection shape depends on the endpoint you called - the import endpoints return
-`HTTP 200` with `"success": false`, while `/v1/delete` and `/v1/recluster`
+A replica can only run one import, delete, or recluster job at a time. While one
+of them holds the import lock, calls to the other endpoints are rejected. How
+they are rejected depends on the endpoint you call. The import endpoints return
+`HTTP 200` with `"success": false`, whereas `/v1/delete` and `/v1/recluster`
 return `UNAVAILABLE`. See
 [Concurrency](../architecture.md#asynchronous-import-lifecycle).
-There is no in-place update endpoint - see
+
+There is no endpoint for updating a document in place. See
 [Updating a document](../incremental-updates.md#updating-a-document).
 {{< /info >}}
 
@@ -94,17 +95,18 @@ the platform service status. See
 
 ### Deleting or reclustering
 
-1. `POST /v1/delete` or `POST /v1/recluster` - save the returned `job_id`.
-2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`. For deletes, read
-   the outcome from `job.delete_result`, not from the immediate response.
+1. Call `POST /v1/delete` or `POST /v1/recluster` and save the returned
+   `job_id`.
+2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`. For deletions,
+   the result is in `job.delete_result`, not in the immediate response.
 
-See [Incremental Updates](../incremental-updates.md) for request fields, what
-each operation removes or rebuilds, and troubleshooting.
+See [Incremental Updates](../incremental-updates.md) for the request fields,
+what each operation removes or rebuilds, and how to troubleshoot problems.
 
 ## Related references
 
-- **[Incremental Updates](../incremental-updates.md)**: Layer 3 deletes,
-  reclustering, and the delete-then-import update path.
+- **[Incremental Updates](../incremental-updates.md)**: Layer 3 deletions,
+  reclustering, and how to update a document by deleting and importing it.
 - **[Parameters](parameters.md)**: Complete request parameter reference.
 - **[Error Handling](error-handling.md)**: Troubleshooting, known
   limitations, and error markers in job status messages.

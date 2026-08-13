@@ -43,10 +43,10 @@ request fails.
 
 ## Services
 
-Each service type has its own URL path prefix for deployment, but all types
-share a common request and response structure. Once a service is installed, it
-is identified by the `serviceId` returned in the response, which you use for all
-subsequent status, upgrade, and uninstall operations.
+Every service type has its own URL path for the deployment, but all of them use
+the same request and response structure. Once a service is installed, it is
+identified by the `serviceId` that the response returns. You need this ID to
+check the status of the service, to upgrade it, and to uninstall it.
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
@@ -221,16 +221,16 @@ documentation for its specific readiness or health check endpoint.
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
-Use this endpoint to update a running service's environment variables or labels,
-or to upgrade it to the latest available chart version. Calling this endpoint
-always performs a Helm chart upgrade to the latest version - you cannot pin a
-specific target version.
+Use this endpoint to change the environment variables or labels of a running
+service, or to upgrade it to the latest chart version. Every call upgrades the
+Helm chart to the latest version. You cannot select a specific version.
 
 {{< info >}}
-This endpoint only affects the configuration and chart version of an individual
-running service. It does not modify platform-level configuration (Helm values
-files, operator settings) or ArangoDB cluster versioning, which are managed
-separately via your deployment YAML and Helm operator.
+This endpoint only changes the configuration and the chart version of a single
+running service. It does not change the configuration of the platform, such as
+Helm values files and operator settings, nor the version of the ArangoDB
+cluster. You manage these separately with your deployment YAML file and the
+Helm operator.
 {{< /info >}}
 
 **Path parameters:**

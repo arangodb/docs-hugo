@@ -66,9 +66,9 @@ request fails.
 
 ## Services
 
-The ACP installs each service from a Helm chart and tracks it under a
-`serviceId` that you use for all follow-up operations, such as checking the
-status, upgrading the configuration, and uninstalling the service.
+The ACP installs every service from a Helm chart and gives it a `serviceId`.
+You use this ID for all follow-up operations, such as checking the status,
+changing the configuration, and uninstalling the service.
 
 The following service types can be deployed through dedicated endpoints:
 
@@ -80,14 +80,14 @@ The following service types can be deployed through dedicated endpoints:
 - User-Defined Services (UDS), see
   [Deploy a new service via API](../container-manager/deploy-api.md)
 
-In addition, a generic endpoint accepts any Helm chart service name, so you are
-not limited to the service types listed above.
+There is also a generic endpoint that accepts any Helm chart service name, so
+you are not limited to the service types listed above.
 
-Every service creation request shares the same structure. Service-specific
-parameters are passed as key-value pairs in an `env` object, and optional
-`labels` let you tag services so that you can filter them later. A `profiles`
-key inside `env` selects which resource profiles to apply (for example, `gpu`),
-falling back to the default profile if omitted.
+All requests for creating a service have the same structure. You pass the
+parameters of the individual service as key-value pairs in an `env` object. You
+can also add `labels` to tag services and filter them later. The `profiles` key
+inside `env` selects the resource profiles to apply, for example `gpu`. If you
+omit it, the default profile is used.
 
 For the request and response format of each operation, see
 [Services](api/#services) in the API reference.
