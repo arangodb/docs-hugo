@@ -110,7 +110,7 @@ due to feature removals:
 
 #### Log API
 
-The `security` and `bench` log topics have been removed.
+The `bench`, `security`, and `statistics` log topics have been removed.
 
 The `/_admin/log/level` endpoints no longer include these log topics in
 responses and attempts to set the log levels for these topics are ignored.
@@ -223,6 +223,10 @@ used have been removed:
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
 - `GET /_api/wal/open-transactions`
 - `GET /_admin/wal/transactions`
 - `GET /_admin/wal/properties`

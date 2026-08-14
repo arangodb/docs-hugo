@@ -1278,6 +1278,7 @@ deployment modes, both for single servers.
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
 - `GET /_api/replication/server-id`
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
@@ -1326,6 +1327,10 @@ The `_registerCompatibilityFunctions()` exports have also been removed from
 the JavaScript graph modules.
 
 ## Startup options
+
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
 
 ### `--database.extended-names` enabled by default
 
