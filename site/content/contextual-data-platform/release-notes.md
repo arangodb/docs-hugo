@@ -7,6 +7,106 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.0 (August 2026)
+
+### AutoGraph Studio
+
+{{< tag "Agentic AI Suite" >}}
+
+The AutoGraph and GraphRAG web interfaces have been unified into
+[AutoGraph Studio](../agentic-ai-suite/autograph/web-interface.md), a single
+workflow that covers document upload, model configuration, corpus and knowledge
+graph building, retriever deployment, and querying your Context Graph.
+
+The workflow has two stages, and the first one can be your finish line:
+
+- **AutoGraph**: Analyzes your documents, builds the Corpus Graph, and generates
+  the strategies for the Knowledge Graph. If all you need is the Context Graph,
+  you can stop here and explore it in the
+  [Graph Visualizer](../platform-suite/graph-visualizer.md)
+  or query it directly.
+- **AutoRAG**: Optionally
+  [deploys retrievers](../agentic-ai-suite/autograph/web-interface.md#deploy-an-autorag-retriever)
+  on top of that Context Graph, so your agents and applications can
+  [ask questions](../agentic-ai-suite/autograph/web-interface.md#ask-questions-against-your-context-graph)
+  against it.
+
+The terminology has been aligned across the documentation: **Corpus Graph**,
+**Knowledge Graph**, and **Context Graph** now refer to distinct artifacts of
+the AutoGraph pipeline. The standalone GraphRAG web interface is deprecated; use
+AutoGraph Studio or the [Importer](../agentic-ai-suite/importer/_index.md) and
+[Retriever](../agentic-ai-suite/retriever/_index.md) APIs instead.
+
+### Incremental Graph Updates
+
+{{< tag "Agentic AI Suite" >}}
+
+[Incremental Graph Updates](../agentic-ai-suite/autograph/incremental-graph-updates.md)
+keep a Knowledge Graph current after it has been built. You can insert new
+documents, delete obsolete ones, and replace changed ones without re-running the
+corpus build, the RAG Strategizer, and a full orchestration pass. Existing
+clusters and strategy profiles are preserved, and only the documents that
+actually changed are processed.
+
+AutoGraph also tracks how far a FullGraphRAG partition has drifted since it was
+last clustered and flags it, so you can trigger
+[reclustering](../agentic-ai-suite/autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
+when you choose to. Reclustering is never automatic.
+
+In this release, incremental updates are available through the
+[HTTP API](../agentic-ai-suite/autograph/reference/orchestration.md) only.
+
+### File Parser service
+
+{{< tag "Agentic AI Suite" >}}
+
+A new internal service for converting documents has been added. Both
+[AutoGraph](../agentic-ai-suite/autograph/setup.md#supported-file-formats) and
+the [Importer](../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats)
+now delegate the conversion of documents into Markdown to the File Parser
+service.
+
+PDF files, including scanned documents that are read using OCR, and Office
+documents (`.docx`, `.pptx`, `.doc`, `.ppt`) are now officially supported. The
+service additionally extracts embedded images together with their surrounding
+text, so that the Importer can pick them up as
+[semantic units](../agentic-ai-suite/importer/semantic-units.md). It scales
+horizontally with two worker tiers, one for PDF documents and one for everything
+else; see
+[Tuning the File Parser](../agentic-ai-suite/importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments)
+for self-hosted clusters.
+
+### File Manager
+
+{{< tag "Platform Suite" >}}
+
+- RAG input files are now organized into
+  [scopes](../platform-suite/file-manager/_index.md#organizing-files-with-scopes),
+  an ordered list of up to five labels that addresses a file within a database.
+  Each service maps its own concepts, such as projects and modules, onto scope
+  levels. A file is identified by database, scope, and name, and re-uploading
+  the same name into the same scope creates a new version.
+- You can attach
+  [custom metadata](../platform-suite/file-manager/_index.md#attaching-custom-metadata)
+  to uploaded files. The reserved
+  [`citable_url`](../platform-suite/file-manager/api.md#the-citable_url-key) key
+  lets AutoGraph and the Importer resolve
+  [citations](../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
+  back to the original source document.
+
+### Container Manager
+
+{{< tag "Platform Suite" >}}
+
+- Services that serve their own HTML interface can be registered as
+  [Apps](../platform-suite/container-manager/apps.md). An App appears in the
+  platform's Apps catalog and is rendered embedded in the web interface, which
+  is useful for custom dashboards, admin panels, and interactive tools next to
+  your data.
+- [Node.js 22](../platform-suite/container-manager/package-code.md#example-nodejs-project)
+  is now available as a base image (`node22base`) for code-based deployments
+  via the API, alongside the Python variants.
+
 ## v4.0.2 (May 2026)
 
 This is a maintenance release.
