@@ -44,10 +44,9 @@ request fails.
 
 ## Services
 
-Every service type has its own URL path for the deployment, but all of them use
-the same request and response structure. Once a service is installed, it is
-identified by the `serviceId` that the response returns. You need this ID to
-check the status of the service, to upgrade it, and to uninstall it.
+Once a service is installed, it is identified by the `serviceId` that the
+response returns. You need this ID for the status, upgrade, and uninstall
+endpoints.
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
@@ -377,16 +376,8 @@ Where:
   project will be created.
 - **project_description** (optional): A description of your project.
 
-Once created, you can reference your project in service deployments using the
-`project_name` field:
-
-```json
-{
-  "env": {
-    "project_name": "docs"
-  }
-}
-```
+Once created, you can reference the project when you deploy a service. See
+[Projects](_index.md#projects) for how the project name is used.
 
 ---
 

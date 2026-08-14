@@ -22,10 +22,8 @@ profiles used by services:
   example, LLM API keys). See [Secrets Manager](../secrets-manager.md).
 
 The ACP service is **started by default** and is available at
-`https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`.
-
-All operations are performed over HTTP. For the full endpoint reference, see the
-[Arango Control Plane HTTP API](api/).
+`https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`. All operations are performed
+over HTTP.
 
 ## Getting started
 
@@ -49,21 +47,9 @@ documentation.
 
 ### Health check
 
-To verify the ACP service is running:
-
-{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
-
-```bash
-curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health \
-  -H "Authorization: Bearer <your-bearer-token>"
-```
-
-Expected output on success: `{"status":"OK"}`
-
-{{< info >}}
-This request requires a valid Bearer token. Without a valid Bearer token, the
-request fails.
-{{< /info >}}
+To verify that the ACP service is running, call the
+[health check endpoint](api/#health-check). Like every other ACP request, it
+requires a valid Bearer token.
 
 ## Services
 
@@ -84,14 +70,11 @@ The following service types can be deployed through dedicated endpoints:
 There is also a generic endpoint that accepts any Helm chart service name, so
 you are not limited to the service types listed above.
 
-All requests for creating a service have the same structure. You pass the
-parameters of the individual service as key-value pairs in an `env` object. You
-can also add `labels` to tag services and filter them later. The `profiles` key
-inside `env` selects the resource profiles to apply, for example `gpu`. If you
-omit it, the default profile is used.
-
-For the request and response format of each operation, see
-[Services](api/#services) in the API reference.
+All requests for creating a service have the same structure: the parameters of
+the individual service go into an `env` object, with optional `labels` for
+tagging and filtering, and an optional `profiles` key for selecting resource
+profiles such as `gpu`. For the field-level description and the format of each
+operation, see [Services](api/#services) in the API reference.
 
 ## Projects
 
@@ -119,14 +102,9 @@ Once a project exists, you can reference it in service deployments using the
 ```
 
 {{< warning >}}
-Deleting a project removes the project record itself, but it does **not**
-delete the resources the project referenced:
-- Importer, Retriever, and AutoGraph services
-- ArangoDB collections created with the project name as prefix
-  (for example, `docs_Documents`, `docs_Chunks`)
-- Knowledge graphs stored in ArangoDB
-
-Delete those separately if you no longer need them.
+Deleting a project removes only the project record. The services, collections,
+and knowledge graphs it referenced remain and have to be deleted separately.
+See [Delete a Project](api/#delete-a-project) in the API reference.
 {{< /warning >}}
 
 For the endpoints to create, retrieve, list, and delete projects, see
