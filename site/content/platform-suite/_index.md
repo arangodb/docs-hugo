@@ -26,7 +26,7 @@ description: >-
 - [**Cypher to AQL Translation Service**](cypher2aql.md) (experimental):
   Translate Cypher queries to AQL.
 
-- [**Arango Control Plane**](control-plane-acp/_index.md):
+- [**Arango Control Plane**](control-plane-acp.md):
   Install, manage, and run services in the Contextual Data Platform with the
   Arango Control Plane (ACP).
 

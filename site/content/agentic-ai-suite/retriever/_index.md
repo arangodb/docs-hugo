@@ -72,7 +72,7 @@ To install and start the Retriever service, use the following endpoint:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
 For detailed instructions on installing, monitoring, and managing services, see
-[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp/_index.md).
+[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md).
 
 ## Getting Started
 

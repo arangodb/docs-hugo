@@ -11,7 +11,7 @@ description: >-
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
 - A **GraphRAG project** in your target database. The project name prefixes
   the collection names, so it must follow ArangoDB naming rules.
-  See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
+  See [Projects](../../platform-suite/control-plane-acp.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** (`Authorization: Bearer ...`).
 - A document to import (`.txt`, `.md`, or `.pdf`).
