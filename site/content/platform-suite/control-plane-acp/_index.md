@@ -22,7 +22,7 @@ profiles used by services:
   example, LLM API keys). See [Secrets Manager](../secrets-manager.md).
 
 The ACP service is **started by default** and is available at
-`https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service`.
+`https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`.
 
 All operations are performed over HTTP. For the full endpoint reference, see the
 [Arango Control Plane HTTP API](api/).
@@ -54,7 +54,8 @@ To verify the ACP service is running:
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health" >}}
 
 ```bash
-curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health
+curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health \
+  -H "Authorization: Bearer <your-bearer-token>"
 ```
 
 Expected output on success: `{"status":"OK"}`

@@ -23,7 +23,8 @@ generate one.
 Returns the current health status of the service.
 
 ```bash
-curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health
+curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/health \
+  -H "Authorization: Bearer <your-bearer-token>"
 ```
 
 **Response (200):**
@@ -247,7 +248,15 @@ curl -X PUT https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/arangodb-g
     "env": {
       "db_name": "your_database_name",
       "project_name": "your_project_name",
-      "chat_model": "<new-chat-model>"
+      "chat_api_provider": "openai",
+      "chat_api_url": "https://api.openai.com/v1",
+      "embedding_api_provider": "openai",
+      "embedding_api_url": "https://api.openai.com/v1",
+      "chat_model": "<new-chat-model>",
+      "embedding_model": "text-embedding-3-small",
+      "chat_api_key": "your_openai_api_key",
+      "embedding_api_key": "your_openai_api_key",
+      "embedding_dim": "512"
     },
     "labels": { "key1": "value1" }
   }'
@@ -259,8 +268,8 @@ to the latest chart version with no configuration changes.
 - **env** (optional): Updated service-specific environment variables. The object
   **replaces** the current `env` rather than merging into it, so send every
   value the service needs, not only the ones you are changing. The example above
-  resends `db_name` and `project_name` for that reason, changing only
-  `chat_model`.
+  resends the full `env` the service was installed with for that reason,
+  changing only `chat_model`.
 - **labels** (optional): Updated key-value pairs used to filter and identify
   the service in the platform.
 
