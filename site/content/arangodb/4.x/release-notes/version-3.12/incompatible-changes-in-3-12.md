@@ -1278,6 +1278,7 @@ deployment modes, both for single servers.
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
 - `GET /_api/replication/server-id`
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
