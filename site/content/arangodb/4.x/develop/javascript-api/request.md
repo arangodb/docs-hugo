@@ -63,7 +63,7 @@ The request function takes the following options:
 - `json` (optional): if `true`, `body` will be serialized to a JSON string and the `Content-Type` header will be set to `"application/json"`. Additionally the response body will also be parsed as JSON (unless `encoding` is set to `null`). Default: `false`.
 - `form` (optional): when set to a string or object and no `body` has been set, `body` will be set to a querystring representation of that value and the `Content-Type` header will be set to `"application/x-www-form-urlencoded"`. Also see `useQuerystring`.
 - `auth` (optional): an object with the properties `username` and `password` for HTTP Basic authentication or the property `bearer` for HTTP Bearer token authentication.
-- `sslProtocol` (optional): which tls version should be used to connect to the url. The default is `4` which is TLS 1.0. See [SSL protocol](../../components/arangodb-server/options.md#--sslprotocol) for more options.
+- `sslProtocol` (optional): which tls version should be used to connect to the url. The default is `4` which is TLS 1.0. See the [`--tls.protocol` startup option](../../components/arangodb-server/options.md#--tlsprotocol) for more settings.
 - `verifyCertificates` (optional, introduced in v3.11.11 and v3.12.2): if set to `true`, the server certificate of the remote server is verified using the default certificate store of the system. Default: `false`.
 - `verifyDepth` (optional, introduced in v3.11.11 and v3.12.2): limit the maximum length of the certificate chain that counts as valid. Default: `10`.
 - `followRedirect` (optional): whether HTTP 3xx redirects should be followed. Default: `true`.

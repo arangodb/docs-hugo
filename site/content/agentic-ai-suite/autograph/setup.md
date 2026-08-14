@@ -49,11 +49,11 @@ Before importing data, you need to create a GraphRAG project. Projects keep
 datasets and configurations isolated from each other.
 
 For detailed instructions on creating and managing projects, see the
-[Projects](../../platform-suite/control-plane-acp.md#projects) section in
+[Projects](../../platform-suite/control-plane-acp/_index.md#projects) section in
 the Arango Control Plane (ACP) documentation.
 
 To install and start the AutoGraph service, use the `/_platform/acp/v1/autograph`
-endpoint of the [Arango Control Plane (ACP)](../../platform-suite/control-plane-acp.md).
+endpoint of the [Arango Control Plane (ACP)](../../platform-suite/control-plane-acp/_index.md).
 
 ## Get started
 

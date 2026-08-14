@@ -321,7 +321,7 @@ aliases:
 - **Advanced Encryption and Security Configuration**:
   Key rotation for [JWT secrets](../develop/http-api/authentication.md#hot-reload-jwt-secrets)
   and [on-disk encryption](../develop/http-api/security.md#encryption-at-rest),
-  as well as [Server Name Indication (SNI)](../components/arangodb-server/options.md#--sslserver-name-indication).
+  as well as [Server Name Indication (SNI)](../components/arangodb-server/options.md#--tlsserver-name-indication).
 
 - [**Authentication**](../operations/administration/user-management/_index.md):
   Built-in user management with password- and token-based authentication.
@@ -329,7 +329,7 @@ aliases:
 - **Role-based Access Control**:
   ArangoDB supports all basic security requirements. <!-- TODO -->
 
-- [**TLS Encryption**](../components/arangodb-server/options.md#ssl):
+- [**TLS Encryption**](../components/arangodb-server/options.md#tls):
   Internal and external communication over encrypted network connections with
   TLS (formerly SSL).
   [TLS key and certificate rotation](../release-notes/version-3.7/whats-new-in-3-7.md#tls-key-and-certificate-rotation)
