@@ -789,7 +789,7 @@ may be shipped in a disabled-by-default state.
 
 ## TLS v1.3
 
-Added support for TLS 1.3 for the [arangod server](../../components/arangodb-server/options.md#--sslprotocol)
+Added support for TLS 1.3 for the [arangod server](../../components/arangodb-server/options.md#--tlsprotocol)
 and the client tools (also added to v3.5.1).
 
 The arangod server can be started with option `--ssl.protocol 6` to make it require
