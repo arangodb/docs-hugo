@@ -1949,7 +1949,7 @@ nav.pagination .next {
 
 .back-to-top {
     position: fixed;
-    bottom: 62px;
+    bottom: 35px;
     right: 52px;
     z-index: 99;
     outline: none;
