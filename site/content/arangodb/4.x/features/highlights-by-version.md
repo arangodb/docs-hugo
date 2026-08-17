@@ -464,7 +464,7 @@ Also see [What's New in 3.2](../release-notes/version-3.2/whats-new-in-3-2.md).
   of your application layer to shard your graph efficiently to your machines
   and let traversals run locally.
 
-- **Encryption Control**: Choose your level of [SSL encryption](../components/arangodb-server/options.md#ssl)
+- **Encryption Control**: Choose your level of [TLS encryption](../components/arangodb-server/options.md#tls)
 
 - [**Auditing**](../operations/security/audit-logging.md): Keep a detailed log
   of all the important things that happened in ArangoDB.
