@@ -2,7 +2,8 @@
 title: Configure LLMs and Embedding Models for the Retriever
 menuTitle: LLM Configuration
 description: >-
-  Configure OpenAI-compatible APIs or Triton Inference Server for the Retriever service
+  Configure OpenAI-compatible APIs or Triton Inference Server for the Retriever
+  service, at install time or at runtime
 weight: 20
 ---
 {{< info >}}
@@ -340,6 +341,122 @@ When configuring the service, ensure you:
    - The `triton` provider requires valid server URLs
 
 The service will validate your configuration and reject any unsupported combinations or missing required parameters with an error message.
+
+## Update the model configuration at runtime
+
+You can change the chat and embedding provider, model, secret profile, and API
+URL of a running Retriever without reinstalling or restarting the service:
+
+{{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/projects/{project}/model-config/credentials" >}}
+
+### Request
+
+```json
+{
+  "project": "my-project",
+  "chat_api_provider": "openai",
+  "embedding_api_provider": "openai",
+  "chat_model": "gpt-5.4-nano",
+  "embedding_model": "text-embedding-3-small",
+  "chat_secret_profile_id": "your_chat_secret_profile_id",
+  "embedding_secret_profile_id": "your_embedding_secret_profile_id",
+  "chat_api_url": "https://api.openai.com/v1",
+  "embedding_api_url": "https://api.openai.com/v1"
+}
+```
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `project` | string | Yes | | Project name. It must match the project this Retriever belongs to. |
+| `chat_api_provider` | string | Yes | | `"openai"` or `"custom"`. |
+| `embedding_api_provider` | string | Yes | | `"openai"` or `"custom"`. It can differ from `chat_api_provider`. |
+| `chat_model` | string | Yes | | Model name for chat. |
+| `embedding_model` | string | Yes | | Model name for embeddings. |
+| `chat_secret_profile_id` | string | Yes | | UUID of the [secret profile](../../platform-suite/secrets-manager.md) that holds the chat API key. |
+| `embedding_secret_profile_id` | string | Yes | | UUID of the secret profile that holds the embedding API key. |
+| `chat_api_url` | string | Yes for `custom` | Unchanged | URL of the chat endpoint. See [Setting the URLs](#setting-the-urls). |
+| `embedding_api_url` | string | Yes for `custom` | Unchanged | URL of the embedding endpoint. See [Setting the URLs](#setting-the-urls). |
+
+#### Setting the URLs
+
+For `chat_api_url` and `embedding_api_url`, what you send decides whether the
+endpoint changes:
+
+| To do this | Send this |
+|------------|-----------|
+| Keep the endpoint the service uses at the moment | Nothing. Leave the field out of the request. |
+| Switch back to the standard OpenAI endpoint | An empty string, `""`. The service fills in `https://api.openai.com/v1` for you. |
+| Use a different endpoint | The full URL, for example `https://openrouter.ai/api/v1`. |
+
+{{< tip >}}
+Send the URL explicitly whenever you change the provider, including when you
+change it to `openai`. If you leave the field out, the service keeps the
+endpoint of the previous provider: a Retriever that you move from Azure to
+`openai` would still send its requests to the Azure URL.
+{{< /tip >}}
+
+### What happens on update
+
+1. **The new settings are checked**: The service reads the API keys from the
+   secret profiles you named, then tries them out by sending one small chat
+   request and one small embedding request to the endpoints. If either request
+   fails, the update stops there and your service keeps running unchanged.
+2. **The new settings are saved**: Once the check passes, the settings are
+   stored with your project, so they still apply the next time the service
+   restarts.
+3. **The service switches over**: The Retriever starts using the new settings
+   right away. You do not need to restart or reinstall it.
+
+### Response
+
+```json
+{
+  "applied": true,
+  "valid": true,
+  "appliedToRunningPod": true,
+  "keyStatus": "valid",
+  "field": "",
+  "errorCode": "",
+  "message": ""
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `applied` | boolean | `true` if the new settings passed the check and were saved |
+| `valid` | boolean | `true` if all checks passed |
+| `appliedToRunningPod` | boolean | `true` if the running Retriever picked up the settings without a restart |
+| `keyStatus` | string | `"valid"`, `"invalid"`, `"expired"`, `"rate_limited"`, `"insufficient_quota"`, or empty when the endpoint could not be reached or the check did not run |
+| `field` | string | On failure: which request field caused the error |
+| `errorCode` | string | On failure: machine-readable error code |
+| `message` | string | On failure: human-readable description |
+
+{{< warning >}}
+A rejected update still returns HTTP `200`, with `valid: false` in the body.
+Look at `errorCode` and `field` rather than the status code to find out whether
+the update went through.
+{{< /warning >}}
+
+If `applied` is `true` but `appliedToRunningPod` is `false`, the new settings
+were saved but the running Retriever could not pick them up. It keeps answering
+queries with the previous settings until it restarts.
+
+The `errorCode` field reports one of the following:
+
+| Cause | Codes |
+|-------|-------|
+| Something is wrong with the request | `PROJECT_MISMATCH`, `PROVIDER_REQUIRED`, `INVALID_PROVIDER`, `PROVIDER_MISMATCH`, `MODEL_REQUIRED`, `SECRET_PROFILE_REQUIRED`, `SECRET_NOT_FOUND`, `SECRET_RESOLUTION_ERROR`, `SECRET_PROFILE_INVALID` |
+| The test requests to the provider failed | `INVALID_API_KEY`, `KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, `RATE_LIMITED`, `PERMISSION_DENIED`, `MODEL_NOT_FOUND`, `MODEL_REJECTED_REQUEST`, `ENDPOINT_UNREACHABLE`, `TIMEOUT`, `PROVIDER_ERROR`, `PROVIDER_EMPTY_RESPONSE`, `API_KEY_REQUIRED`, `INVALID_BASE_URL`, `UNKNOWN_VALIDATION_ERROR` |
+| The settings could not be saved | `METADATA_CLIENT_UNAVAILABLE`, `METADATA_WRITE_TIMEOUT`, `METADATA_WRITE_FAILED`, `SERVICE_NOT_REGISTERED` |
+
+The endpoint accepts the same `openai` and `custom` combinations as a fresh
+install, described in
+[Supported Provider Combinations](#supported-provider-combinations). A Retriever
+running on Triton cannot be updated this way; its models are set at install time
+only.
+
+To override the chat model for a single query instead of for the whole service,
+use the [`model` query parameter](parameters.md#model).
 
 ## Next Steps
 

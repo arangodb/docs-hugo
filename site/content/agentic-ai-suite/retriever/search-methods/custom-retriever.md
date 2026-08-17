@@ -111,15 +111,32 @@ with the following structure:
   - `bind_params`: Custom parameters passed to AQL execution. Default values
     defined here act as safe defaults for the AQL template and can be
     overridden at query time.
+- `auto_create_indexes`: Whether to create missing indexes and views for this
+  tool. Takes priority over the request-level
+  [`auto_create_indexes`](../parameters.md#auto_create_indexes). See
+  [Index and view management](#index-and-view-management).
+- `partition_ids`: Specific partition IDs for this tool. When provided, the tool
+  queries only these partitions instead of using automatic selection. Cannot be
+  combined with `auto_select_partitions`.
+- `auto_select_partitions`: Whether the service picks the partitions for this
+  tool automatically. Defaults to `true`; set it to `false` to disable automatic
+  selection for this tool. Cannot be combined with `partition_ids`.
+- `max_partition_limit`: Maximum number of partitions that automatic selection
+  can return for this tool. Must be a positive integer. Defaults to the service
+  value of `3` when omitted.
+
+{{< info >}}
+The three partition fields apply to this tool only. See
+[`auto_select_partitions`](../parameters.md#auto_select_partitions) for how
+routing works when the tool config leaves them unset.
+{{< /info >}}
 
 ## Index and view management
 
-By default, the system checks that the required indexes and views exist before
-executing a search. If anything is missing, it returns a clear error listing
+By default, the system creates the required indexes and views before executing a
+search if they do not exist yet. Pass `"auto_create_indexes": false` in your
+request to check instead of create: the query then returns a clear error listing
 what is absent.
-
-Pass `"auto_create_indexes": true` in your request to create missing indexes
-automatically:
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
@@ -129,11 +146,15 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
     "query": "Find airports in New York",
     "query_type": 4,
     "custom_tools": ["airport_search_v1"],
-    "auto_create_indexes": true
+    "auto_create_indexes": false
   }'
 ```
 
-**Resources created with `auto_create_indexes: true`:**
+A tool's own `auto_create_indexes` setting takes priority over the
+request-level value. Missing indexes and views are created automatically when
+neither is set.
+
+**Resources created automatically:**
 
 | Search type | Resource | Naming pattern |
 |-------------|----------|----------------|

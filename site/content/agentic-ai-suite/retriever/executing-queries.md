@@ -25,11 +25,13 @@ as they are generated, making it ideal for real-time applications and
 interactive interfaces.
 {{< /tip >}}
 
-{{< warning >}}
-Streaming is not compatible with Triton Inference Server. It is only supported
-with the OpenAI-compatible providers, `openai` and `custom` — the latter
-covering OpenRouter, corporate LLMs, and any other compatible endpoint.
-{{< /warning >}}
+{{< info >}}
+The streaming endpoint accepts requests for every provider. The
+OpenAI-compatible providers, `openai` and `custom` (OpenRouter, corporate LLMs,
+and any other compatible endpoint), stream tokens as they are generated. Triton
+does not token-stream: the request still succeeds, but the full answer arrives
+as a single chunk.
+{{< /info >}}
 
 {{< info >}}
 All endpoints require authentication. Include an `Authorization: Bearer <token>`
@@ -145,6 +147,27 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
   }'
 ```
 
+**Instant or Deep Search using `mode`:**
+
+Instead of combining `query_type` and `use_llm_planner`, you can set
+[`mode`](parameters.md#mode):
+
+```bash
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "query": "What are all the technical specifications mentioned?",
+    "mode": "DEEP_SEARCH",
+    "include_metadata": true
+  }'
+```
+
+`"mode": "INSTANT"` gives you a fast answer from Instant Search, and
+`"mode": "DEEP_SEARCH"` a thorough one, using your Custom Retriever tools if you
+have any and Local Search if you do not. Either value takes precedence over
+`query_type` and `use_llm_planner`.
+
 **Deep Search:**
 
 ```bash
@@ -161,8 +184,9 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
 ```
 
 {{< info >}}
-In Deep Search mode (`use_llm_planner=true`), citations are always disabled
-regardless of `show_citations`. The same applies to `GLOBAL` queries.
+Citations are supported in Deep Search mode (`use_llm_planner=true`) for `LOCAL`
+and `CUSTOM` queries. Only `GLOBAL` queries disable citations unconditionally,
+regardless of `show_citations`.
 {{< /info >}}
 
 **Global Search:**
@@ -204,16 +228,21 @@ The streaming endpoint returns chunks with the following structure:
 ```json
 {
   "delta": "The",
-  "final_result": "",
+  "finalResult": "",
   "metadata": "",
-  "is_final": false
+  "isFinal": false,
+  "runId": "a1b2c3d4-...",
+  "errorCode": ""
 }
 ```
 
 - `delta`: Partial token text for intermediate chunks.
-- `final_result`: Full final text on the last chunk.
+- `finalResult`: Full final text on the last chunk.
 - `metadata`: Optional JSON metadata string (typically on the last chunk when `include_metadata=true`).
-- `is_final`: `true` only on the last chunk.
+- `isFinal`: `true` only on the last chunk.
+- `runId`: Identifier of the stored query run, included on the first and last
+  chunks.
+- `errorCode`: Empty on success; a machine-readable code on failure.
 
 For Deep Search streaming, you may also receive metadata-only progress chunks
 before token chunks:
@@ -221,9 +250,9 @@ before token chunks:
 ```json
 {
   "delta": "",
-  "final_result": "",
+  "finalResult": "",
   "metadata": "{\"type\":\"progress\",\"step\":\"tool_selection\",\"message\":\"Selecting best tool\"}",
-  "is_final": false
+  "isFinal": false
 }
 ```
 
