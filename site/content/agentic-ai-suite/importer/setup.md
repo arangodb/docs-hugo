@@ -29,8 +29,8 @@ converts it to Markdown and, where applicable, extracts the embedded images
 together with the text surrounding each one. The Importer then chunks that
 Markdown and builds the knowledge graph from it.
 
-The File Parser is a platform service installed once per environment. It has no
-web interface and you do not call it directly.
+The File Parser is a data platform service installed once per environment.
+It has no web interface and you do not call it directly.
 [AutoGraph](../autograph/setup.md#supported-file-formats) uses the same service
 for its corpus build, so both paths accept the same inputs and produce the same
 Markdown.
@@ -54,11 +54,11 @@ referenced at its position in the Markdown, together with the text surrounding
 it. That is what the Importer turns into semantic units.
 
 {{< info >}}
-**Vector graphics in Office documents.** Word drawing objects are generally
+**Vector graphics in Office documents**: Word drawing objects are generally
 rasterized during conversion and may therefore get extracted as images.
 Charts and SmartArt in particular may be dropped. In PowerPoint, native charts,
-drawn shapes, and SmartArt are not extracted, and neither are Excel charts.
-Text, slide titles, and native tables are never affected.
+drawn shapes, and SmartArt are not extracted. Text and slide titles are never
+affected.
 {{< /info >}}
 
 Documents that legitimately contain no extractable text, such as a blank page,
@@ -69,7 +69,7 @@ succeed with empty content and a warning rather than failing.
 The File Parser ships with defaults sized for a reference data platform deployment.
 Deployments on the [Arango Managed Platform (AMP)](../../amp/_index.md) run
 these defaults unchanged. For self-hosted clusters, the settings below are the
-ones worth revisiting; the rest are safe to leave alone.
+most relevant ones to adjust limits and resource utilization.
 
 | Setting | Default | When to change it |
 |---------|---------|-------------------|
@@ -86,11 +86,11 @@ service setting, and values for those must be quoted strings.
 
 #### Applying values
 
-The File Parser is installed once per environment as the
-`arangodb-file-parser` platform service. Put your values in that service's
-`overrides` block in the platform package (`platform.yaml`), the same file you
-install with
-[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md):
+The File Parser is installed once per environment as the `arangodb-file-parser`
+data platform service. Put your values in that service's `overrides` block in
+the platform package (`platform.yaml`), the same file you install the
+data platform with, and apply the configuration using
+[`arangodb_operator_platform package install`](../../contextual-data-platform/install-and-upgrade/online-setup.md#step-7-install-the-contextual-data-platform-package):
 
 ```yaml
   arangodb-file-parser:

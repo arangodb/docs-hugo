@@ -17,9 +17,8 @@ extract and process multimedia references from your documents.
 {{< /tip >}}
 
 {{< info >}}
-Semantic units work on the image references present in the Markdown the
-Importer processes. For PDF, Office, and OpenDocument documents, those
-references are produced by the
+Semantic units work on the image references present in the Markdown the Importer
+processes. For PDF and Office documents, those references are produced by the
 [File Parser service](setup.md#document-conversion-and-supported-formats),
 which extracts each embedded image as a separate artifact and places a
 reference to it at the image's position in the Markdown. Set
