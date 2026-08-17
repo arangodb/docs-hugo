@@ -131,6 +131,90 @@ question mark operator:
 ["foo", "bar"][? ANY FILTER ! REGEX_TEST(CURRENT, "^mo+$")]
 ```
 
+### Sub-attributes as edge weights in graph queries
+
+The `weightAttribute` option of graph queries is no longer limited to top-level
+edge attributes. In addition to a string, you can now specify an array of
+strings that describes the path to the attribute to read the edge weight from.
+This is supported by the following graph query types:
+
+- [Traversals](../../aql/graph-queries/traversals.md#weightattribute) with
+  `order: "weighted"`
+- [`SHORTEST_PATH`](../../aql/graph-queries/shortest-path.md#weightattribute)
+- [`K_SHORTEST_PATHS`](../../aql/graph-queries/k-shortest-paths.md#weightattribute)
+
+For example, you can use the value of the nested `sub` attribute of the
+following edge document as the edge weight:
+
+```json
+{ "attr": { "sub": 3 } }
+```
+
+```aql
+FOR v IN OUTBOUND SHORTEST_PATH "nodes/A" TO "nodes/D" GRAPH "weightGraph"
+  OPTIONS { weightAttribute: ["attr", "sub"] }
+  RETURN v._key
+```
+
+A `.` in a string is still interpreted as a literal dot and thus selects a
+top-level attribute, for instance `attr.sub` of the following edge document:
+
+```json
+{ "attr.sub": 5 }
+```
+
+```aql
+FOR v IN OUTBOUND SHORTEST_PATH "nodes/A" TO "nodes/D" GRAPH "weightGraph"
+  OPTIONS { weightAttribute: "attr.sub" }
+  RETURN v._key
+```
+
+This change is backward compatible. Passing a string works like before and
+accesses a top-level attribute with exactly the specified name.
+
+### Improved joins in sharded clusters
+
+A new `upgrade-scatter-to-distribute` optimizer rule has been added to utilize
+sharding information for join queries in cluster deployments.
+
+In the execution plan, the optimization upgrades a `ScatterNode` to a
+`DistributeNode` where a join filter already determines the distribution.
+Only the respective DB-Server is involved if it's known to have the documents
+when using a filter for a join like this:
+
+```aql
+FOR doc1 IN coll1
+   FOR doc2 IN coll2
+      FILTER doc2._key == doc1.attr
+      RETURN [doc1, doc2]
+```
+
+If `coll2` uses `_key` as sharding attribute, the only matching documents with
+`doc1.attr == doc2._key` reside on the DB-Server that serves the shard for
+`doc2._key`. Therefore, only `doc1` / `doc1.attr` has to be distributed to that
+server, not scattered to all of them. This equally works for custom `shardKeys`
+if you filter by them in the join.
+
+### Improved joins for SmartGraphs
+
+A new `smart-join-smart-edge` optimizer rule has been added to perform joins
+locally when joining edges on nodes that are part of a SmartGraph.
+
+All incident edges are available locally for the join, so there is no need to
+contact other DB-Servers. For repeated joins, where the adjacent node might not
+reside on the same DB-Server, the query plan can still be optimized by only
+involving the DB-Server that has the node, using the SmartGraph attribute value
+that is encoded in the `_from` and `_to` attributes of the edge.
+
+```aql
+FOR n IN nodes
+   FOR e IN edges
+      FILTER e._from == n._id  // Local join, no other DB-Servers involved
+      FOR m IN nodes
+         FILTER e._to == m._id // Distributed to relevant DB-Server only
+         RETURN [n, e, m]
+```
+
 ## Indexing
 
 ### Upgrading vector indexes

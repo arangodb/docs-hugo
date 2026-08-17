@@ -285,7 +285,7 @@ Server and cluster statistics are superseded by the
 [Metrics API](../../develop/http-api/monitoring/metrics.md). Therefore, the
 startup options and HTTP API endpoints related to the statistics features have
 been removed and no `_statistics*` system collections are used by _arangod_
-anymore.
+anymore. The `statistics` log topic has been removed as well.
 
 When upgrading to v4.0, the `_statistics`, `_statistics15`, and `_statisticsRaw`
 system collections are actively removed.
@@ -365,6 +365,38 @@ For string concatenation, you can rely on the new `+` operator behavior or use
 the [`CONCAT()`](../../aql/functions/string.md#concat) function.
 
 For more information, see [String operators](../../aql/operators.md#string-operators).
+
+### New reserved keywords
+
+The following keywords are now reserved for future use:
+
+- `INNER_JOIN`
+- `LEFT_JOIN`
+- `RIGHT_JOIN`
+- `OUTER_JOIN`
+- `MATCH`
+- `WHILE`
+- `UNTIL`
+- `SCAN`
+- `FOLD`
+
+Note that keywords are case-insensitive.
+
+If you want to use them as variable names or collection names in AQL queries,
+wrap them in backticks or forward ticks. To use them as attribute names in
+object literals, wrap them in single or double quote marks, backticks, or
+forward ticks:
+
+```aql
+FOR doc IN `match`
+  LET ´Inner_Join´ = 1
+  RETURN {
+    `Inner_Join`,
+    `LEFT_JOIN`: 2,
+    'scan': 3,
+    "fold": 4
+  }
+```
 
 ## Rclone upgrades possibly requiring configuration changes
 
@@ -611,6 +643,10 @@ A few obsolete endpoints related to the write-ahead log have been removed, too.
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
 - `GET /_api/wal/open-transactions`
 - `GET /_admin/wal/transactions`
 - `GET /_admin/wal/properties`
@@ -700,6 +736,10 @@ To set a batch size, use the `batchSize` query option instead of `execute(<batch
 - `updateByExample()`
 
 ## Startup options
+
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
 
 ### RocksDB format version 6
 
@@ -812,22 +852,25 @@ startup. They are recognized, but they don't have any effect anymore.
 
 - The `security` log topic has been removed.
 
-  Attempts to set the log level for this topic log a warning, for example, using
-  a startup option like `--log.level security=debug`.
-
   The only remaining use of the `security` log topic was for the log message with
   ID `2cafe`, dumping information about the JavaScript hardening (allow/denylists).
   It has been changed to the `v8` log topic.
 
 - The `bench` log topic has been removed.
 
-  Attempting to set the log level for this topic logs a warning, for example,
-  when using a startup option like `--log.level bench=debug`.
-
   The only remaining use of the `bench` log topic (due to the removal of
   _arangobench_) was for the log message with ID `bafc2`, used by _arangoexport_
   to report a JSON format error related to the `--custom-query-bindvars`
   startup option. It has been changed to the `config` log topic.
+
+- The `statistics` log topic has been removed.
+
+  See [Statistics features removed](#statistics-features-removed).
+
+If you try to set a log level for these topics using startup options, like
+`--log.level security=debug`, the server logs a warning. If you try to change
+their log levels at runtime using the `PUT /_admin/log/level` HTTP API endpoint,
+the server returns an error.
 
 ### `--server.allow-use-database` removed
 
@@ -887,3 +930,20 @@ The benchmark and test tool _arangobench_ has been removed.
 It was originally used internally in the development of ArangoDB for performance
 and server function testing, but lost its relevance over time and became
 unmaintained.
+
+### Obsolete startup options removed
+
+The following startup options have been removed from all client-tools.
+They are no longer recognized and throw errors if set:
+
+- `--log.performance`
+- `--log.use-local-time`
+- `--log.use-microtime`
+
+### `--tls.protocol` renamed
+
+The `--ssl.protocol` startup option has been renamed to `--tls.protocol` for
+all client-tools because the legacy SSL encryption settings are not supported
+by _arangod_  anymore and the remaining ones are all TLS versions.
+
+You can still use the old startup option name.

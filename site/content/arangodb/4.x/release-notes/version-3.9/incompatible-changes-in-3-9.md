@@ -158,8 +158,7 @@ The startup option `--query.allow-collections-in-expressions` added in 3.8.0
 controls whether collection names are allowed in arbitrary places in AQL
 expressions. The default was *true*, but is now changed to *false* in 3.9.0 to
 make queries like `FOR doc IN collection RETURN collection` fail, where it was
-probably intended to `RETURN doc` instead. Also see
-[ArangoDB Server Query Options](../../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
+probably intended to `RETURN doc` instead.
 
 Such unintentional usage of collection names in queries now makes the query
 fail with error 1568 ("collection used as expression operand") by default.

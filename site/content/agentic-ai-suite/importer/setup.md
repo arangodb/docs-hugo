@@ -144,7 +144,7 @@ patterns.
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
 - A **GraphRAG project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the
-  [Projects](../../platform-suite/control-plane-acp.md#projects) section in
+  [Projects](../../platform-suite/control-plane-acp/_index.md#projects) section in
   the Arango Control Plane (ACP) documentation.
 
 {{< warning >}}
@@ -168,7 +168,7 @@ To install and start the Importer service, use the following endpoint:
 This endpoint is part of the Arango Control Plane (ACP) service, which
 manages the lifecycle of all AI services in the platform. For detailed
 installation, monitoring, and lifecycle management instructions, see the
-[Arango Control Plane (ACP)](../../platform-suite/control-plane-acp.md)
+[Arango Control Plane (ACP)](../../platform-suite/control-plane-acp/_index.md)
 documentation.
 
 ## Get started

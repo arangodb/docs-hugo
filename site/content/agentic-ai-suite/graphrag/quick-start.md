@@ -10,7 +10,7 @@ description: >-
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
 - A **GraphRAG project** in your target database.
-  See [Projects](../../platform-suite/control-plane-acp.md#projects).
+  See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - One or more documents to ingest (`.txt`, `.md`, `.pdf`, or an Office file
   such as `.docx`). See

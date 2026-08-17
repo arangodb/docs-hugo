@@ -252,8 +252,6 @@ value for the option will change to *false* in 3.9. The option will also be
 deprecated in 3.9 and removed in future versions. From then on, unintended
 usage of collection names will always be disallowed.
 
-Also see [ArangoDB Server Query Options](../../components/arangodb-server/options.md#--queryallow-collections-in-expressions)
-
 ## ArangoSearch
 
 ### Pipeline Analyzer

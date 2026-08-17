@@ -60,7 +60,7 @@ The following features are now available in the Community Edition:
 - [Enhanced Data Masking](../../components/tools/arangodump/maskings.md#masking-functions)
 - Key rotation for [JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
   and [on-disk encryption](../../develop/http-api/security.md#encryption-at-rest)
-- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--sslserver-name-indication)
+- [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--tlsserver-name-indication)
 
 ## ArangoSearch
 
@@ -1463,6 +1463,51 @@ For example, `FILTER doc.arr ANY == "foo"` could previously not utilize a
 expression is automatically changed to `FILTER "foo" IN doc.arr`, which can
 utilize such an index.
 
+### Constant folding of empty array comparisons
+
+<small>Introduced in: v3.12.10</small>
+
+Comparisons against empty arrays always have the same outcome, and the AQL
+query optimizer can now determine it at query compile time:
+
+- `x IN []` as well as `[] ANY <op> x` are always `false`
+- `x NOT IN []` as well as `[] ALL <op> x` and `[] NONE <op> x` are always `true`
+
+`<op>` can be `==`, `!=`, `<`, `<=`, `>`, `>=`, `IN`, or `NOT IN`.
+
+The `remove-unnecessary-filters` optimizer rule removes `FILTER` operations
+with conditions that are always true. If a condition is always false, the
+optimizer now replaces the affected part of the execution plan with a
+`NoResultsNode` because the query cannot produce any results there.
+
+For example, the following query no longer enumerates the collection at all,
+as the `FILTER` condition can never be satisfied:
+
+```aql
+FOR doc IN coll
+  LET cond = ([] ANY == doc.value)
+  FILTER cond
+  RETURN doc
+```
+
+### Improved filter condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The AQL query optimizer now performs additional simplifications when it
+normalizes the conditions of `FILTER` operations:
+
+- `x IN [a]` with a constant, single-element array is rewritten to `x == a`,
+  which the index selection can then treat like any other equality comparison.
+- `OR` branches that contain an always-false condition are dropped, and
+  always-true conditions are removed from `AND` combinations.
+- Duplicate conditions within an `AND` combination as well as duplicate `OR`
+  branches are detected and removed. This is limited to deterministic
+  conditions.
+
+A related correctness fix for the string comparison in these optimizations is
+described in [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#string-comparison-in-filter-condition-optimizations).
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1617,8 +1662,8 @@ has been added.
 
 <small>Introduced in: v3.12.6</small>
 
-Vector indexes now support filtering. You can add `FILTER` operations between
-`FOR` and `SORT` that are then applied during the lookup in the vector index.
+Vector indexes now support filtering. You can add a single `FILTER` operation
+between `FOR` and `SORT` that is then applied during the lookup in the vector index.
 Note that e.g. `LIMIT 5` does not ensure that you get 5 results by searching
 as many neighboring Voronoi cells as necessary, but it rather considers only as
 many as configured via the `nProbes` parameter. Example:
@@ -2995,6 +3040,17 @@ state of the vector indexes.
 | `arangodb_vector_index_training_duration` | Duration of vector index training in seconds. |
 | `arangodb_vector_index_training_ongoing` | Number of vector index trainings currently ongoing. |
 | `arangodb_vector_index_unusable` | Number of unusable vector indexes on this DB-Server. |
+
+### HTTP status code metric
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
 
 ## Client tools
 

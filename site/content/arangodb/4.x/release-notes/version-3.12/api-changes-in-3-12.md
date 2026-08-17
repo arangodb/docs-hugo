@@ -713,6 +713,40 @@ In single server deployments, the collection name is used as the shard key,
 mirroring the cluster format. The top-level `trainingState` is the
 least-progressed state across all shards.
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+Creating a vector index with `inBackground` set to `false` blocks until the
+index training has finished. If the training fails permanently, for example,
+because there is not enough training data, the index is created nevertheless
+but cannot be used for queries.
+
+Up to v3.12.9, the `POST /_api/index` request failed with an error in this case,
+like `ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such
+as `ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the request succeeds with
+an HTTP `201 Created` response that reports the `trainingState` as `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute:
+
+```json
+{
+  "id": "coll/68",
+  "name": "vector_l2",
+  "type": "vector",
+  "isNewlyCreated": true,
+  "trainingState": "unusable",
+  "errorMessage": "not enough training data for vector index",
+  "code": 201,
+  "error": false
+}
+```
+
+Errors that are not related to the training outcome, like a timeout while
+waiting for the index or a server shutdown, are still reported as errors.
+
+See the [`inBackground` option of vector indexes](../../develop/http-api/indexes/vector.md)
+for details.
+
 ##### Changed consolidation defaults for inverted indexes
 
 <small>Introduced in: v3.12.6</small>
@@ -938,6 +972,15 @@ state of the vector indexes:
 - `arangodb_vector_index_training_ongoing`
 - `arangodb_vector_index_unusable`
 
+---
+
+<small>Introduced in: v3.12.10</small>
+
+The following new metric has been added for tracking how often particular
+HTTP status codes are used in server responses:
+
+- `arangodb_http_response_code_total`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -1094,6 +1137,7 @@ used have been removed:
 - `GET /_api/replication/logger-follow`
 - `GET /_api/replication/logger-first-tick`
 - `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
 - `GET /_api/replication/server-id`
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
@@ -1211,6 +1255,19 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### JavaScript files denylist
+
+<small>Introduced in: v3.12.10</small>
+
+A `--javascript.files-denylist` startup option has been added to complement the
+existing `--javascript.files-allowlist`. It lets you forbid access to specific
+filesystem paths from client-side and server-side JavaScript, mirroring the allow/deny
+pairs already available for endpoints, environment variables, and startup options.
+File access is now controlled by both lists: a path must match the allowlist and
+must not match the denylist. The denylist is empty by default, so existing
+configurations are unaffected.
 

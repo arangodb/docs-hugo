@@ -567,9 +567,6 @@ If for any reason you prefer not to share usage statistics with ArangoDB, you
 can easily disable this feature by setting the new `--server.telemetrics-api`
 startup option to `false`. The default value is `true`.
 
-For a detailed list of what anonymous metrics ArangoDB collects see
-[Telemetrics](../../operations/administration/telemetrics.md).
-
 ### Extended naming constraints for collections, Views, and indexes
 
 In ArangoDB 3.9, the `--database.extended-names-databases` startup option was
