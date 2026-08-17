@@ -115,15 +115,21 @@ with the following structure:
   tool. Takes priority over the request-level
   [`auto_create_indexes`](../parameters.md#auto_create_indexes). See
   [Index and view management](#index-and-view-management).
-- `partition_ids`: Specific partition IDs for this tool. When provided, the tool
-  queries only these partitions instead of using automatic selection. Cannot be
-  combined with `auto_select_partitions`.
+- `partition_ids`: Specific partition IDs for this tool, as a non-empty list of
+  strings. Setting them is enough to turn automatic selection off for the tool.
 - `auto_select_partitions`: Whether the service picks the partitions for this
-  tool automatically. Defaults to `true`; set it to `false` to disable automatic
-  selection for this tool. Cannot be combined with `partition_ids`.
+  tool automatically. A boolean, `true` by default. Setting it to `true` in a
+  tool that also has `partition_ids` is rejected.
 - `max_partition_limit`: Maximum number of partitions that automatic selection
   can return for this tool. Must be a positive integer. Defaults to the service
   value of `3` when omitted.
+
+{{< warning >}}
+When a request runs several tools, their partition settings have to agree. The
+service rejects a request in which one tool sets `auto_select_partitions` to
+`true` and another sets it to `false`, or in which one tool has `partition_ids`
+while another asks for automatic selection.
+{{< /warning >}}
 
 {{< info >}}
 The three partition fields apply to this tool only. See
@@ -136,7 +142,9 @@ routing works when the tool config leaves them unset.
 By default, the system creates the required indexes and views before executing a
 search if they do not exist yet. Pass `"auto_create_indexes": false` in your
 request to check instead of create: the query then returns a clear error listing
-what is absent.
+what is absent. This affects the tools that do not set `auto_create_indexes`
+themselves. A tool with `auto_create_indexes` set to `true` in its own
+configuration still creates what it needs, whatever the request asks for.
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
@@ -150,9 +158,8 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
   }'
 ```
 
-A tool's own `auto_create_indexes` setting takes priority over the
-request-level value. Missing indexes and views are created automatically when
-neither is set.
+When neither the request nor the tool sets `auto_create_indexes`, missing
+indexes and views are created automatically.
 
 **Resources created automatically:**
 

@@ -99,9 +99,10 @@ filtering to work. See the [Importer `partition_id` parameter](../importer/refer
 {{< /info >}}
 
 {{< warning >}}
-`partition_ids` and [`auto_select_partitions`](#auto_select_partitions) are
-mutually exclusive. Set partition IDs manually or let the service choose them,
-not both.
+Passing `partition_ids` is enough on its own: it turns automatic selection off
+for that query. Do not also send
+[`auto_select_partitions`](#auto_select_partitions) as `true`, because the
+service rejects a request that asks for both.
 {{< /warning >}}
 
 ### `auto_select_partitions`
@@ -117,7 +118,9 @@ Whether the service selects the relevant partitions itself.
     the same effect as setting it to `true`.
   - When `false`: No automatic selection happens, and the query runs without a
     partition filter unless you pass `partition_ids`.
-- **Cannot be combined with**: `partition_ids`.
+- **Cannot be combined with**: `partition_ids`, if you set this parameter to
+  `true`. Sending `false` alongside `partition_ids` is allowed but unnecessary,
+  because those IDs already switch automatic selection off.
 
 {{< info >}}
 Custom Retriever tools can override partition routing per tool. See
@@ -173,8 +176,9 @@ Override the chat model for a single query.
 
 - **Required**: No.
 - **Description**: The chat model to use for this query only. If omitted, the
-  chat model configured at install time is used. The model is returned in
-  response metadata as `"model"` when `include_metadata` is `true`.
+  query uses the chat model the service is currently configured with, which may
+  have been changed since the install. The model is returned in response
+  metadata as `"model"` when `include_metadata` is `true`.
 - **Example**: `"gpt-5.4-nano"`
 
 {{< info >}}
@@ -303,8 +307,8 @@ different structures depending on the query type.
 **Common fields (all query types):**
 
 - `model`: The chat model that generated the response, whether it came from the
-  install-time configuration or from the request-level
-  [`model`](#model) override. The embedding model is not included.
+  configuration of the service or from the request-level [`model`](#model)
+  override. The embedding model is not included.
 - `mode`, `query_type`: Included when the request used
   [`mode`](#mode). `mode` is echoed as `"INSTANT"` or `"DEEP_SEARCH"`.
 

@@ -379,14 +379,13 @@ URL of a running Retriever without reinstalling or restarting the service:
 
 #### Setting the URLs
 
-For `chat_api_url` and `embedding_api_url`, what you send decides whether the
-endpoint changes:
+What you send in `chat_api_url` and `embedding_api_url` depends on the provider
+you pair it with:
 
-| To do this | Send this |
-|------------|-----------|
-| Keep the endpoint the service uses at the moment | Nothing. Leave the field out of the request. |
-| Switch back to the standard OpenAI endpoint | An empty string, `""`. The service fills in `https://api.openai.com/v1` for you. |
-| Use a different endpoint | The full URL, for example `https://openrouter.ai/api/v1`. |
+| Provider | What to send |
+|----------|--------------|
+| `custom` | The full URL, every time, for example `https://openrouter.ai/api/v1`. An update that leaves the URL out or sends it empty is rejected with `INVALID_BASE_URL`, because `custom` never falls back to the OpenAI endpoint. |
+| `openai` | Nothing, to keep the endpoint the service uses at the moment, or an empty string (`""`) to reset it to `https://api.openai.com/v1`. |
 
 {{< tip >}}
 Send the URL explicitly whenever you change the provider, including when you

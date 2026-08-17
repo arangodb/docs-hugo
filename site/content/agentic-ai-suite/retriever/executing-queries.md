@@ -240,12 +240,15 @@ The streaming endpoint returns chunks with the following structure:
 - `finalResult`: Full final text on the last chunk.
 - `metadata`: Optional JSON metadata string (typically on the last chunk when `include_metadata=true`).
 - `isFinal`: `true` only on the last chunk.
-- `runId`: Identifier of the stored query run, included on the first and last
-  chunks.
-- `errorCode`: Empty on success; a machine-readable code on failure.
+- `runId`: Identifier of the stored query run. Only the first and the last chunk
+  of a stream carry it, whichever kind of chunk they happen to be. The chunks in
+  between leave it out.
+- `errorCode`: Empty on success; set on the chunk that reports a failure.
 
 For Deep Search streaming, you may also receive metadata-only progress chunks
-before token chunks:
+before token chunks. The example below is such a chunk from the middle of a
+stream, so it has no `runId`. A progress chunk that arrives first in the stream
+does carry one, following the rule above:
 
 ```json
 {
