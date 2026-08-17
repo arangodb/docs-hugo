@@ -332,18 +332,32 @@ built, and the **Retrievers** panel points you back to the overview to build it.
    overview.
 2. In the **Retriever services** list, click **+ Deploy**.
 3. In the **Deploy retriever** form, configure the following:
-   - **CHAT LLM**: The **Provider** (for example **OpenAI**) and the
-     **Chat model** (for example **GPT-5.4 Nano**).
-   - **EMBEDDING**: The **Provider** and **Embedding model** are locked to your
-     corpus build, because the retriever must embed queries with the same
-     provider and model that the import used.
-   - **API key**: Select a saved key or add a new one. Optionally, select
-     **Use a different key for embeddings**.
+   - **CHAT LLM**: The **Provider** (for example **OpenAI**), the
+     **Chat model** (for example **GPT-5.4 Nano**), and the **Chat API key**.
+   - **EMBEDDING**: The **Provider**, **URL**, and **Embedding model** are locked
+     to your corpus build, because the retriever must embed queries with the same
+     provider and model that the import used. The **Embedding API key** stays
+     editable — the corpus pins the endpoint, not the credential for it, as the
+     hint states: *Only its key can be changed*.
+   - Both key fields are required and independent of each other. Select a saved
+     key or add a new one for each. Keys are managed in the
+     [Secrets Manager](../../platform-suite/secrets-manager.md).
 4. Click **Deploy retriever**.
 
-The retriever appears in the **Retriever services** list with its ID and an
-**initializing** status while it starts up, which usually takes about a minute.
-It switches to **live** when it is ready to answer.
+The retriever appears in the **Retriever services** list. Retrievers have no name
+of their own, so each is listed by its service ID with the
+`graphrag-retriever-` prefix stripped, next to a colored status dot. Hover over
+the dot for the status:
+
+| Dot | Status | Meaning |
+|-----|--------|---------|
+| Green | Live | Ready to answer. |
+| Yellow | Deploying | Starting up. This usually takes about a minute. |
+| Red | Failed to start | Deployed, but not answering its health check. |
+| Red | Failed to deploy | The service never came up. |
+
+Select the retriever to see its full service ID and an **initializing** to
+**live** status in the playground header.
 
 ## Ask questions against your Context Graph
 
@@ -352,8 +366,11 @@ questions, then click **New question**. Past questions are marked with the mode
 they ran in.
 
 {{< info >}}
-The composer shows *Waiting for retriever service to become reachable…* until the
-service is ready to answer.
+Until the service is ready to answer, a panel takes the place of the composer:
+*Your retriever is starting up. This usually takes a minute. You'll be able to
+ask questions as soon as it's live.* If the service does not come up, the panel
+reports *This retriever isn't responding* with a **Check again** button, or
+*This retriever failed to start*.
 {{< /info >}}
 
 1. Choose a [search mode](../retriever/search-methods/_index.md):
@@ -365,9 +382,13 @@ service is ready to answer.
    Active toggles show a cross that clears them again. For the underlying
    settings, see the [retriever parameters](../retriever/parameters.md).
    - **Add to query** (`+`): Attach extra context to the question you are asking.
+     Once you change any option, the menu also offers **Reset to defaults**.
    - **Include metadata** (document icon): Return the retrieval metadata
      alongside the answer.
-   - **Citations** (book icon): Include inline citations in the answer.
+   - **Show citations** (book icon): Include inline citations in the answer.
+     Citations are built from the retrieval metadata, so this toggle is disabled
+     while **Include metadata** is off, and turning **Include metadata** off
+     clears it.
    - **Use cache**: Answer from the retriever's cache when a similar question has
      been asked before, and store this answer for later questions. This saves an
      LLM round trip on repeated questions, but a cached answer reflects your
@@ -392,10 +413,10 @@ retriever used to produce it, so you can verify a claim instead of taking it on
 trust. It has the following views:
 
 - **Citations**: The source passages the answer is built from, numbered to match
-  the inline `[1]`, `[2]` markers in the text. Each entry names the document the
-  passage comes from and shows the retrieved chunk itself, so you can compare a
-  claim against the original wording. Documents imported with a canonical URL
-  link out to it — see
+  the inline `[1]`, `[2]` markers in the text, for both search modes. Each entry
+  names the document the passage comes from and shows the retrieved chunk itself,
+  so you can compare a claim against the original wording. Documents imported
+  with a canonical URL link out to it — see
   [`citable_url`](../importer/reference/parameters.md#file-source-parameters).
 - **Graph**: The part of your Context Graph the answer was drawn from — the
   entities and relationships the retriever traversed to assemble it. This is
@@ -403,15 +424,17 @@ trust. It has the following views:
   connections that produced the answer, not just the matching text.
 - **Trace**: Only shown for **Deep Search** answers. Deep Search splits your
   question into sub-questions and runs each step with the tool it selected for
-  it, and the trace reports that work, including how many tools were used.
+  it, and the trace reports that work. Its header counts the steps and the tools
+  involved, including the ones that failed, for example
+  *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the Tools collection
+  and are defined manually; see
+  [Tool configuration](../retriever/search-methods/custom-retriever.md#tool-configuration).
 
-{{< info >}}
-Deep Search picks its tools from the Tools collection in your database. Adding
-your own tools is a manual step — see
-[Tool configuration](../retriever/search-methods/custom-retriever.md#tool-configuration)
-for how to define them. When no custom tool matches, Deep Search falls back to
-the built-in `local`, `global`, and `unified` retrievers.
-{{< /info >}}
+Each view needs the data it displays, so the tabs are only there if the answer
+carries it: **Graph** and **Trace** require **Include metadata**, and
+**Citations** requires **Include metadata** together with **Show citations**.
+Both toggles are on by default. If you turn them off, the tabs disappear and the
+panel names the toggle to switch back on instead.
 
 {{< tip >}}
 Provenance is per question. Open a past question from the list to review the
@@ -424,8 +447,14 @@ The **Retriever services** section of the **Retrievers** panel lists all
 deployed retrievers with their status and past questions.
 
 - Click **+ Deploy** to add another retriever with a different configuration.
-- Use the menu next to a retriever to manage or remove it.
+- Use the menu next to a retriever for **Edit retriever** and
+  **Delete retriever**. Both are only available while the service is live — a
+  tooltip explains why they are disabled otherwise.
 - Use the chevron between the list and the composer to collapse the list.
+
+**Edit retriever** reopens the deploy form in edit mode, to update this
+retriever's chat model, provider, or keys. Click **Save changes** to apply them
+to the running service — no redeployment is needed.
 
 Each retriever can have different settings for search mode, response
 instructions, and other parameters, allowing you to create specialized

@@ -3,9 +3,22 @@ title: AutoGraph
 menuTitle: AutoGraph
 weight: 4
 description: >-
-  AutoGraph structures enterprise data into contextual knowledge shards with domain-aware retrieval strategies providing AI copilots and agents with production-grade context infrastructure
+  AutoGraph structures enterprise data into a Context Graph with domain-aware
+  retrieval strategies, and AutoRAG deploys the retrievers that answer questions
+  from it, providing AI copilots and agents with production-grade context
+  infrastructure
 ---
-{{< embed-svg "GraphRAG-Flow" "AutoGraph end-to-end flow." >}}
+{{< embed-svg "AutoGraph-Flow" "AutoGraph builds the Context Graph from your documents; AutoRAG serves questions from it." >}}
+
+The workflow has two stages, both driven from the **AutoGraph Studio** view of
+the web interface:
+
+1. **AutoGraph** builds your **Context Graph** — the **Corpus Graph** that maps
+   your documents into topic domains, plus the **Knowledge Graph** built from
+   them. This can be your finish line.
+2. **AutoRAG** is the retrieval layer on top. It deploys the retrievers that
+   answer questions from that Context Graph, so your agents and applications can
+   query it.
 
 ## What is AutoGraph?
 
@@ -58,17 +71,22 @@ By organizing enterprise data into contextual knowledge graphs, AutoGraph create
 Not all content is equally complex. The RAG Strategizer examines the domain
 clusters in the Corpus Graph and assigns each one a processing strategy:
 complex domains get a full knowledge graph with extracted entities and
-relationships (FullGraphRAG); simpler domains get a lighter partition that
-skips entity extraction (VectorRAG). For FullGraphRAG domains, it also
+relationships (`FullGraphRAG`, labeled **GraphRAG** in the web interface);
+simpler domains get a lighter partition that skips entity extraction
+(`VectorRAG`). For `FullGraphRAG` domains, it also
 generates a domain-specific ontology (the entity types to extract), so the
 resulting knowledge graph reflects the concepts that actually matter in
 that content.
 
 ## What's next
 
+- **[Quick Start](quick-start.md)**: Turn a pile of documents into a knowledge
+  base you can chat with, with answers cited back to the source.
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
 - **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
-- **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
+- **[Web Interface](web-interface.md)**: Run the complete workflow in AutoGraph
+  Studio, from building the Context Graph to deploying AutoRAG retrievers and
+  asking questions against it.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
 - **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.
