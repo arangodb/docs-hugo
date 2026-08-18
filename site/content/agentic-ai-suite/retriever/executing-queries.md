@@ -245,19 +245,25 @@ The streaming endpoint returns chunks with the following structure:
   between leave it out.
 - `errorCode`: Empty on success; set on the chunk that reports a failure.
 
-For Deep Search streaming, you may also receive metadata-only progress chunks
-before token chunks. The example below is such a chunk from the middle of a
-stream, so it has no `runId`. A progress chunk that arrives first in the stream
-does carry one, following the rule above:
+When Deep Search runs on your Custom Retriever tools, you may also receive
+metadata-only progress chunks before token chunks. Deep Search that falls back
+to Local Search does not send them. The example below is such a chunk from the
+middle of a stream, so it has no `runId`. A progress chunk that arrives first in
+the stream does carry one, following the rule above:
 
 ```json
 {
   "delta": "",
   "finalResult": "",
-  "metadata": "{\"type\":\"progress\",\"step\":\"tool_selection\",\"message\":\"Selecting best tool\"}",
+  "metadata": "{\"type\":\"progress\",\"stage\":\"tool_matching\",\"status\":\"started\",\"message\":\"Global context empty, matching tools directly...\"}",
   "isFinal": false
 }
 ```
+
+Inside that JSON, `stage` names the part of the search that is reporting:
+`global_context`, `tool_matching`, `plan_creation`, `step_execution`, or
+`synthesis`. The `status` field reports how that stage is progressing, and
+`message` is a human-readable description of it.
 
 ## Next Steps
 

@@ -385,13 +385,17 @@ you pair it with:
 | Provider | What to send |
 |----------|--------------|
 | `custom` | The full URL, every time, for example `https://openrouter.ai/api/v1`. An update that leaves the URL out or sends it empty is rejected with `INVALID_BASE_URL`, because `custom` never falls back to the OpenAI endpoint. |
-| `openai` | Nothing, to keep the endpoint the service uses at the moment, or an empty string (`""`) to reset it to `https://api.openai.com/v1`. |
+| `openai` | The full OpenAI URL, `https://api.openai.com/v1`. Leave the field out only when you want to keep the endpoint the service uses at the moment. |
 
 {{< tip >}}
 Send the URL explicitly whenever you change the provider, including when you
 change it to `openai`. If you leave the field out, the service keeps the
 endpoint of the previous provider: a Retriever that you move from Azure to
 `openai` would still send its requests to the Azure URL.
+
+An empty string is not a substitute: it switches the running service to the
+OpenAI endpoint, but the saved configuration keeps the previous URL, so the next
+restart brings the old endpoint back.
 {{< /tip >}}
 
 ### What happens on update

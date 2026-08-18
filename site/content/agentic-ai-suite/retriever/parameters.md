@@ -23,6 +23,22 @@ Your search query text.
 
 - **Required**: Yes.
 - **Description**: The natural language question or search query to execute against your knowledge graph. Example: `"What is the AR3 Drone?"`.
+- **Maximum size**: 65,536 bytes (64 KiB) of UTF-8 text. A larger query is
+  rejected with `INVALID_ARGUMENT` and a message naming its size, before any
+  retrieval work starts. Operators can change the limit with the
+  `MAX_QUERY_BYTES` environment variable.
+
+{{< info >}}
+The limit counts bytes, not characters, so a query written in a script whose
+characters take two or three bytes each in UTF-8, such as Cyrillic, Chinese, or
+Japanese, reaches it well before an English query of the same length.
+{{< /info >}}
+
+{{< warning >}}
+A query rejected for its size never becomes a run, so it does not appear in the
+[query history](verify-and-monitor.md#query-history). Handle the error from the
+call itself; there is no stored run to look up afterwards.
+{{< /warning >}}
 
 ### `query_type`
 
@@ -57,8 +73,12 @@ Selects Instant or Deep Search with a single value, instead of combining
 {{< info >}}
 With `include_metadata` set to `true`, the response reports `mode` by name
 (`"INSTANT"` or `"DEEP_SEARCH"`) together with the search type it picked. For
-`DEEP_SEARCH`, the `deep_search_route` field tells you whether the query ran on
-your Custom Retriever tools or on Local Search.
+`DEEP_SEARCH`, you can tell which of the two paths ran from the metadata:
+`deep_search_route` is set to `"LOCAL"` when the query fell back to Local
+Search, and `deep_search_route_reason` says why, for example that no tools were
+found in the Tools collection. When your Custom Retriever tools were used
+instead, both fields are absent and the tool fields such as
+`custom_retrievers_used` and `successful_tools` are populated.
 {{< /info >}}
 
 ### `use_llm_planner`
@@ -294,10 +314,17 @@ All queries return a response with `result`, `metadata`, `runId`, and
 
 {{< warning >}}
 Inspect `errorCode` instead of treating any non-empty `result` as success.
-Provider failures reuse the codes of the credentials endpoint, for example
-`INVALID_API_KEY`, `KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, or `MODEL_NOT_FOUND`.
-All other failures return `PROCESSING_ERROR`.
 {{< /warning >}}
+
+These are the values `errorCode` can have on a failed query:
+
+| `errorCode` | Meaning |
+|-------------|---------|
+| `CONTEXT_LENGTH_EXCEEDED` | The context assembled for the query exceeded the context window of the model. For a Custom Retriever query, lower the `top_k` of the tool named in the message. |
+| `CREDENTIAL_VALIDATION_FAILED` | The service has no chat or embedding API key, or it runs on the `custom` provider without an API URL. See [Configure LLMs](llm-configuration.md). |
+| `VECTOR_INDEX_NOT_READY` | The vector index needed for semantic search is still building. Retry once it is ready. |
+| `INVALID_API_KEY`, `KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, `MODEL_NOT_FOUND`, and other provider codes | The LLM provider rejected the call. These are the same codes the [credentials endpoint](llm-configuration.md#update-the-model-configuration-at-runtime) returns, so a key that stops working mid-query reads the same as one caught while saving credentials. |
+| `PROCESSING_ERROR` | Any other failure. The accompanying message carries the underlying cause. |
 
 ### Response with Metadata
 

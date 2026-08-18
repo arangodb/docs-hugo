@@ -127,8 +127,10 @@ with the following structure:
 {{< warning >}}
 When a request runs several tools, their partition settings have to agree. The
 service rejects a request in which one tool sets `auto_select_partitions` to
-`true` and another sets it to `false`, or in which one tool has `partition_ids`
-while another asks for automatic selection.
+`true` while another sets it to `false`, or in which one tool has
+`partition_ids` while another explicitly sets `auto_select_partitions` to
+`true`. Tools that
+leave the field unset are not part of this check.
 {{< /warning >}}
 
 {{< info >}}

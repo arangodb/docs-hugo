@@ -10,11 +10,21 @@ weight: 50
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → **Verify**
 {{< /info >}}
 
+{{< info >}}
+Every endpoint on this page needs an `Authorization: Bearer <token>` header, the
+health endpoint included. A request without one is rejected with `401`.
+{{< /info >}}
+
 ## Health Check
 
 You can monitor the Retriever service health using the health endpoint:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
+
+```bash
+curl https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/health \
+  -H "Authorization: Bearer <your-jwt-token>"
+```
 
 **Example response:**
 
@@ -28,7 +38,7 @@ You can monitor the Retriever service health using the health endpoint:
 | Field | Type | Description |
 |-------|------|-------------|
 | `status` | string | `"OK"` when the service is healthy |
-| `message` | string | Detail string, typically `"Service is healthy"` |
+| `message` | string | Detail about the status, usually the text `"Service is healthy"`. Some deployments return a JSON document here instead, so do not assume the value is prose. |
 
 ## Verify Service Status
 
@@ -80,6 +90,12 @@ Returns the runs of the project, newest first. Deleted runs are excluded.
 |-----------|------|----------|---------|-------------|
 | `limit` | integer | No | `0` | Maximum number of runs to return. `0` means no limit. |
 
+{{< warning >}}
+There is no server-side maximum and no pagination: with `limit` omitted or set
+to `0`, the response contains every run of the project. Since each query adds a
+run, pass an explicit `limit` on projects with a long history.
+{{< /warning >}}
+
 **Example response:**
 
 ```json
@@ -120,7 +136,9 @@ Returns one run, in the same shape as the items of the list response. Returns
 }
 ```
 
-Returns `404` if the run does not exist or was already deleted.
+Deleting a run that does not exist, or that you already deleted, is not an
+error: the call returns HTTP `200` with `success: false`. Check the `success`
+field rather than the status code to find out whether anything was deleted.
 
 {{< info >}}
 Deletion is a soft delete. The run stops appearing in list and get responses,
@@ -142,14 +160,9 @@ that other services can still consume the history.
 | `status` | string | `streaming`, `complete`, or `error`. |
 | `error` | string | Error message, populated only when `status` is `error`. |
 | `durationMs` | integer | Total query duration in milliseconds. |
-| `configSnapshot` | string | JSON string of all query parameters used, such as query type, level, planner, citations, cache, partitions, and custom tools. |
+| `configSnapshot` | string | JSON string of the query parameters recorded for the run: `mode`, `query_type`, `level`, `use_llm_planner`, `show_citations`, `use_cache`, `include_metadata`, `response_instructions`, `partition_ids`, `custom_prompts`, `custom_tools`, and `auto_create_indexes`. It does not record `model` or `auto_select_partitions`, and it stores `auto_create_indexes` as `false` when the request omitted it, even though the query itself defaults to creating indexes. |
 | `createdAt` | string | ISO 8601 timestamp of when the run started. |
 | `updatedAt` | string | ISO 8601 timestamp of the last update. |
-
-{{< info >}}
-All query history endpoints need the same `Authorization: Bearer <token>` header
-as the query endpoints.
-{{< /info >}}
 
 ## Next Steps
 
