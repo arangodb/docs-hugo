@@ -147,12 +147,14 @@ flowchart TD
    cannot be targeted, so orchestrate its whole category instead. See
    [Identifying documents for Layer 3](#identifying-documents-for-layer-3). A
    delete schedules its own Layer 3 cleanup in the background.
-3. **Check the divergence.** On a **FullGraphRAG** partition, every operation
-   calculates a new `divergence_score` and sets `needs_reclustering` if the
-   score is above the partition's threshold. **VectorRAG** partitions have
-   nothing to measure and are never flagged, so this step and the next one do
-   not apply to them. See [Partition divergence and
-   reclustering](#partition-divergence-and-reclustering).
+3. **Check the divergence.** On a **FullGraphRAG** partition, a new
+   `divergence_score` is calculated once Layer 3 reflects the change, and
+   `needs_reclustering` is set if the score is above the partition's threshold.
+   Insert and update responses do not carry the score, so read it from
+   [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration)
+   after step 2, see [Where to read the score](#where-to-read-the-score).
+   **VectorRAG** partitions have nothing to measure and are never flagged, so
+   this step and the next one do not apply to them.
 4. **Recluster if you want to.** If the flag is `true` and you think the refresh
    is worth the cost, call
    [recluster](reference/orchestration.md#trigger-reclustering) with the
@@ -200,8 +202,9 @@ documents that are already in the partition adds another import batch. See
 After every insert, delete, and update, AutoGraph measures how far each affected
 **FullGraphRAG** partition in Layer 3 has drifted from the state it was in when
 it was last clustered with the Leiden algorithm. The result is a
-**`divergence_score`**. It is stored in the partition's `rags` strategy profile
-and, if available, returned with the result for each file.
+**`divergence_score`**. It is stored in the partition's `rags` strategy profile.
+Where you can read it back depends on the operation, see [Where to read the
+score](#where-to-read-the-score).
 
 Everything in this section applies to FullGraphRAG partitions only.
 
@@ -294,16 +297,25 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | Successful `POST /v1/graph/recluster` | The score is reset to `0`, the churn is cleared, a new baseline is taken, the flag is cleared, and `last_reclustered_at` is set |
 | Failed or incomplete reclustering | The score and the flag stay as they are, so that you can try again later |
 
-### When the score is final
+### Where to read the score
 
-- **Delete**: The divergence is written after the Layer 3 cleanup has finished
-  and is available in the delete status that you poll.
-- **Insert**: The immediate insert response can contain a score that was
-  calculated before the new Layer 3 entities existed. The final value is written
-  after the targeted orchestration has created them.
-- **Update**: The delete and the insert part both add to the gross churn. The
-  combined result for each file shows the state after the insert part, with the
-  same Layer 3 timing as for an insert.
+A score is only meaningful once Layer 3 reflects the change, so **insert and
+update do not report one at all**. Their responses are produced while the work is
+still in Layers 1 and 2, before a targeted orchestration has created the
+entities the score would be measured against. Rather than return a value that is
+wrong by construction, AutoGraph leaves the field off.
+
+That leaves three places to read it:
+
+| Where | What you get | Notes |
+|-------|--------------|-------|
+| [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration), per entry of `job_results` | The **authoritative** score for each partition the run touched | This is the value to act on after an insert or an update. Held in memory only: a new `POST /v1/orchestrate` evicts the previous run, and an unknown or evicted id returns `404` |
+| [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents), per file in `results` | The score after the deletion | Stamped **only** once the Layer 3 cleanup has committed. Absent while it is pending, and absent if it fails |
+| The partition's `rags` strategy profile | The **durable** state, see [Where the values are stored](#where-the-values-are-stored) | Survives eviction. Read it here when the orchestration status is gone |
+
+A delete can report its score directly because its Layer 3 work is a removal that
+finishes on its own. There is no import to schedule afterwards, so nothing is
+still pending when the score is taken.
 
 ## Next steps
 

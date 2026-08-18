@@ -85,14 +85,17 @@ again.
 }
 ```
 
-Orchestration runs in the background. The counters start at zero in this immediate response. Monitor completion through your platform's job tracking or service logs.
+Orchestration runs in the background. The counters start at zero in this immediate
+response. Poll
+[`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) for the
+per-partition results, or watch your platform's job tracking and service logs.
 
 | Field | Meaning | Typical use |
 |-------|---------|-------------|
 | `orchestration_id` | Id for this orchestration run. | Log for correlation with support / metadata. |
 | `success` | **`true`** if the background pipeline was scheduled. | Treat as "accepted", not "all Importer jobs finished". |
 | `message` | e.g. **`Orchestration started`**. | Display to operators. |
-| `total_jobs` / `completed_jobs` / `failed_jobs` / `job_results` | Counters and per-partition results. | Often remain at initial values on this first response; rely on monitoring for completion. |
+| `total_jobs` / `completed_jobs` / `failed_jobs` / `job_results` | Counters and per-partition results. | Often remain at initial values on this first response. Read the populated values from [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration). |
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -128,6 +131,49 @@ curl -X POST \
   -H "Authorization: Bearer <token>" \
   -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
+```
+
+## Monitor an orchestration
+
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/{orchestration_id}" >}}
+
+Returns the status of the orchestration run that
+[`POST /v1/orchestrate`](#trigger-orchestration) started, using the
+`orchestration_id` from its response. This is where the per-partition results
+of the run become visible, including the **authoritative partition divergence**.
+
+Each entry of `job_results` reports one Importer job, that is, one strategized
+partition. For a **FullGraphRAG** partition, the entry carries the
+`divergence_score` and `needs_reclustering` of that partition, measured after the
+job has created its Layer 3 entities. This is the value to act on, not the one
+from an insert or update response, see
+[Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
+
+{{< warning >}}
+**The status is held in memory only, and one run at a time.** Starting a new
+`POST /v1/orchestrate` **evicts the previous run immediately**, so read the
+results of a run before you start the next one. There is no history to go back
+to. An `orchestration_id` that was never issued, or that has been evicted this
+way, returns `404`.
+
+The durable copy of the divergence lives on the partition's `rags` strategy
+profile, see [Where the values are
+stored](../incremental-graph-updates.md#where-the-values-are-stored). Read it
+from there if you need the state after the run has been evicted.
+{{< /warning >}}
+
+| Status Code | Meaning |
+|-------------|---------|
+| `200` | The status of the run is returned. |
+| `401` | Authentication failed. |
+| `404` | Unknown `orchestration_id`, or the run has been evicted by a later orchestration. |
+| `500` | Server error. |
+
+### HTTP Example
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/orch_1711812345_a1b2c3d4
 ```
 
 ## Insert documents
@@ -182,9 +228,7 @@ it.
       "doc_name": "new-contract.pdf",
       "success": true,
       "cluster_key": "cluster_legal_0",
-      "rag_partition_id": "legal_0_a",
-      "divergence_score": 0.12,
-      "needs_reclustering": false
+      "rag_partition_id": "legal_0_a"
     }
   ]
 }
@@ -198,8 +242,16 @@ it.
 | `cluster_key` | The existing cluster that has been selected for the document. Can be empty if there is no suitable neighbor in a cluster. |
 | `rag_partition_id` | The Layer 3 partition of the selected cluster. Can be empty if there is no strategy profile yet. |
 | `file_id` | The File Manager ID of the inserted document. Use this value in the `file_ids` of your targeted orchestration. |
-| `divergence_score` | The partition divergence after this insert. It can be lower than the actual churn until a targeted orchestration has created the Layer 3 entities. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `needs_reclustering` | `true` if the `divergence_score` is above the threshold of the partition. Nothing is reclustered automatically. |
+
+{{< info >}}
+**The insert response carries no divergence.** The score is deliberately left off,
+because at this point it would be premature: it is measured on Layers 1 and 2,
+before the targeted orchestration has created the insert's Layer 3 entities. Read
+the authoritative value from
+[`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) once the
+orchestration has run. See [Where to read the
+score](../incremental-graph-updates.md#where-to-read-the-score).
+{{< /info >}}
 
 Insert extracts the text, creates an embedding, stores the source, assigns the
 closest existing cluster, and adds the membership and similarity edges. It only
@@ -319,9 +371,11 @@ The deletion in Layer 1 and Layer 2 is not rolled back if the Layer 3 cleanup
 fails.
 {{< /warning >}}
 
-Once the Layer 3 cleanup is done, AutoGraph calculates the divergence of every
-affected partition again and adds `divergence_score` and `needs_reclustering` to
-the result of each file in that status.
+Once the Layer 3 cleanup has **committed**, AutoGraph calculates the divergence of
+every affected partition again and stamps `divergence_score` and
+`needs_reclustering` onto the result of each file. The fields are only present in
+that case: while the cleanup is pending, or if it fails, no score is written. See
+[Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -417,9 +471,7 @@ A final status message looks like this:
       "result": "updated",
       "cluster": "cluster_legal_0",
       "previous_cluster": "cluster_legal_1",
-      "partition": "legal_0_a",
-      "divergence_score": 0.20,
-      "needs_reclustering": false
+      "partition": "legal_0_a"
     }
   ]
 }
@@ -431,8 +483,14 @@ A final status message looks like this:
 | `result` | The result for this file, for example `updated`. |
 | `cluster` / `previous_cluster` | The cluster that is assigned to the new version, and the cluster the old version belonged to. |
 | `partition` | The Layer 3 partition of the new cluster. |
-| `divergence_score` | The partition divergence after the deletion and the insertion, as gross churn. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `needs_reclustering` | `true` if the score is above the threshold of the partition. AutoGraph does not recluster automatically. |
+
+{{< info >}}
+**The update status carries no divergence either**, and for the same reason as
+[insert](#insert-documents): the new version only reaches Layer 3 through a
+targeted orchestration, so any score written here would predate the entities it
+is supposed to measure. Read it from
+[`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) afterwards.
+{{< /info >}}
 
 An update waits for the old Layer 3 data to be removed before it inserts the new
 version, so that old and new knowledge graph data do not exist side by side. It
@@ -480,10 +538,14 @@ Schedules a Layer 3 reclustering for one or more **FullGraphRAG** partitions.
 The call returns right away and tells you whether the work has been scheduled.
 The reclustering itself runs **asynchronously**.
 
-Call this endpoint if the result of an insert, delete, or update, or the `rags`
-profile of the partition, reports `needs_reclustering: true` and you decide that
-refreshing the communities is worth the cost. AutoGraph never starts a
-reclustering on its own.
+Call this endpoint if `needs_reclustering: true` is reported for a partition and
+you decide that refreshing the communities is worth the cost. AutoGraph never
+starts a reclustering on its own. The flag is reported by
+[`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration), by a
+[delete](#delete-documents) once its Layer 3 cleanup has committed, and by the
+`rags` profile of the partition. Insert and update responses do not report it,
+see [Where to read the
+score](../incremental-graph-updates.md#where-to-read-the-score).
 
 Only FullGraphRAG partitions have a community layer that can be rebuilt. A
 VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
@@ -622,8 +684,17 @@ curl -X POST \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
-If a result reports `needs_reclustering: true` for a partition, you can start a
-reclustering. It is optional and never automatic:
+Then read the results of that run, which is where the divergence of each affected
+partition is reported:
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate/<orchestration_id>
+```
+
+If `needs_reclustering: true` is reported for a partition, by the orchestration
+status above or by the delete result, you can start a reclustering. It is optional
+and never automatic:
 
 ```bash
 curl -X POST \
@@ -660,14 +731,16 @@ and `needs_reclustering` is cleared.
 - **A call returns `409`.** Another operation, such as a build, insert, update,
   delete, or reclustering, is using the service-wide slot. Wait for it to finish
   and try again.
-- **`needs_reclustering` is `true` after an insert, delete, or update.** The
-  divergence score of the partition is above its threshold, which is 25% by
-  default. Nothing is reclustered automatically. Call
-  `POST /v1/graph/recluster` with the `rag_partition_id` if you want to refresh
-  the communities.
-- **An insert showed a low `divergence_score` but the flag was set later.** This
-  is expected. The insert response can be calculated before the Layer 3 entities
-  exist. The final score is written after the targeted orchestration.
+- **`needs_reclustering` is `true` for a partition.** The divergence score of the
+  partition is above its threshold, which is 25% by default. Nothing is
+  reclustered automatically. Call `POST /v1/graph/recluster` with the
+  `rag_partition_id` if you want to refresh the communities.
+- **The insert or update result has no `divergence_score`.** This is by design,
+  not a missing field. Neither response reports a divergence, because it would be
+  measured before Layer 3 holds the new entities. Read the score from
+  [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) after the
+  targeted orchestration, or from the partition's `rags` profile. See
+  [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
   The scheduling succeeded, but the background job may still be running or it
   may have failed. Poll `importerOrchestration`. A failed reclustering does not

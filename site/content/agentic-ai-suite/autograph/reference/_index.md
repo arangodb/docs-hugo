@@ -33,6 +33,7 @@ Endpoints are served at **`http://<host>:8080`**.
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
 | `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](orchestration.md#monitor-an-orchestration) |
 | `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
 | `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
 | `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
@@ -61,6 +62,10 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
    See [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies).
 7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
    See [Graph Operations](orchestration.md).
+8. Poll `GET /v1/orchestrate/{orchestration_id}` for the per-partition results,
+   including the divergence of each FullGraphRAG partition. Read them before you
+   start another orchestration, which evicts this run. See
+   [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
 
 ### Embed-only workflow
 
@@ -93,7 +98,10 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
    content.
-3. Check `divergence_score` and `needs_reclustering` in the result of each file.
+3. Check `divergence_score` and `needs_reclustering` in the `job_results` of
+   `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
+   After a delete, they are on each file's result once the Layer 3 cleanup has
+   committed.
 4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
    want to refresh the communities. Reclustering is never automatic.
 
