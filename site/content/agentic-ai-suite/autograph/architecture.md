@@ -181,7 +181,7 @@ prefix is `SG_`).
 | `entity_types` | `[configured types]` | Entity types the extractor may produce (the per-cluster ontology; typically 8–12 types). |
 | `smart_graph_attribute` | `partition_id` | The SmartGraph sharding key. |
 | `divergence_score` | `0.20` | FullGraphRAG only. How far the partition has drifted since it was last clustered. It is calculated again after every [incremental graph update](incremental-graph-updates.md#partition-divergence-and-reclustering). |
-| `divergence_threshold` | `0.25` | FullGraphRAG only. If the score gets above this value, the partition is flagged for reclustering. You can configure it per partition. |
+| `divergence_threshold` | `0.25` | FullGraphRAG only. If the score gets above this value, the partition is flagged for reclustering. Stored per partition, but not configurable through the API. |
 | `needs_reclustering` | `false` | FullGraphRAG only. Set to `true` if the `divergence_score` is above the threshold. You still need to start the reclustering yourself. |
 | `last_reclustered_at` | `2026-05-04T09:12:00Z` | FullGraphRAG only. When the partition was last clustered or reclustered successfully. |
 

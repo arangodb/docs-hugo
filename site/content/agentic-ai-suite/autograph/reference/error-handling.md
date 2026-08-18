@@ -174,11 +174,10 @@ some query types need. This limits which queries you can run later.
   Layers 1 and 2. Run a targeted orchestration with the returned `file_id`. For
   other problems with incremental graph updates, see
   [Graph Operations](orchestration.md#troubleshooting).
-- **The update result has no `file_id` for the orchestration.** The new version
-  was submitted as inline base64 `content`, for which no File Manager ID is
-  created, and a targeted orchestration can only identify documents by
-  `file_id`. Update from the File Manager if the new version has to reach
-  Layer 3. See [Identifying documents for Layer
+- **An insert or update is rejected with `400` and a list of `doc_name`
+  values.** Those entries have no `file_id`. Both endpoints take File Manager
+  input only, and a single missing id rejects the whole batch. See [Identifying
+  documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must

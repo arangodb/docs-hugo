@@ -291,8 +291,10 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
 
-Removes documents from an existing corpus graph. Layers 1 and 2 are updated
-**synchronously**. The Layer 3 cleanup runs **asynchronously** in the Importer.
+Removes documents from an existing corpus graph. The call is **synchronous** and
+performs the whole removal itself. It cleans up **Layer 3 first**, then Layers 1
+and 2. No Importer worker is involved, and there is no background job to wait
+for. The response is the final result.
 
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
 provide `doc_names`, which are looked up in the requested category. You need to
@@ -333,57 +335,96 @@ invalid, the request returns `400` and nothing is deleted.
 {{< /info >}}
 
 {{< info >}}
-**Delete has no replica setting.** The Layer 3 cleanup in the background always
-runs on a single Importer worker. Unlike an
-[orchestration](#trigger-orchestration), it cannot run in parallel.
+**Delete has no replica setting, because it has no workers.** AutoGraph removes
+the Layer 3 data itself, with AQL queries against the knowledge graph, as part
+of this request. There are no Importer jobs to spawn or to scale, unlike an
+[orchestration](#trigger-orchestration).
 {{< /info >}}
 
 ### Response
 
 ```json
 {
+  "delete_id": "delete_1711812345_a1b2c3d4",
   "results": [
     {
       "file_id": "<file-manager-file-id-1>",
       "status": "LAYER2_DELETE_STATUS_SUCCESS",
       "rag_partition_id": "legal_0_a",
       "cluster_key": "cluster_legal_0",
-      "similarity_edges_removed": 4
+      "similarity_edges_removed": 4,
+      "divergence_score": 0.31,
+      "needs_reclustering": true
     }
   ],
   "affected_rag_partitions": ["legal_0_a"],
   "removed_rag_partitions": [],
   "affected_cluster_ids": ["cluster_legal_0"],
   "removed_cluster_ids": [],
-  "layer3_results": [],
-  "layer3_overall_status": "LAYER3_DELETE_STATUS_PENDING"
+  "layer3_results": [
+    {
+      "status": "LAYER3_DELETE_STATUS_SUCCESS"
+    }
+  ],
+  "overall_status": "COMMITTED"
 }
 ```
 
-The response confirms the changes in Layer 1 and Layer 2.
-`LAYER3_DELETE_STATUS_PENDING` means that the Importer is still removing the
-documents, chunks, entities, and edges of Layer 3. Poll the
-`importerOrchestration` status in the metadata of your platform project until it
-reports `completed` or `failed`.
+The response reports the outcome of the complete deletion, Layer 3 included.
+There is no `importerOrchestration` entry to poll, because a standalone delete
+does not write one.
 
-{{< warning >}}
-The deletion in Layer 1 and Layer 2 is not rolled back if the Layer 3 cleanup
-fails.
-{{< /warning >}}
+| Field | Meaning |
+|-------|---------|
+| `delete_id` | The id of this deletion, and the key of the concurrency lock it holds. Log it, so that you can correlate a `409` from a parallel call with the deletion that was holding the lock. |
+| `overall_status` | How the deletion as a whole ended, see the table below. |
+| `results` | The Layer 1 and Layer 2 result of every file, with the cluster and partition it belonged to, the number of similarity edges that were removed, and the divergence of the partition. |
+| `layer3_results` | The Layer 3 result of the cleanup, with its `status` and the counts of what was removed. The counts are AutoGraph's own AQL totals, not Importer figures. |
+| `affected_rag_partitions` / `affected_cluster_ids` | The partitions and clusters the deletion touched. |
+| `removed_rag_partitions` / `removed_cluster_ids` | The partitions and clusters that became empty and have been dropped. |
 
-Once the Layer 3 cleanup has **committed**, AutoGraph calculates the divergence of
-every affected partition again and stamps `divergence_score` and
-`needs_reclustering` onto the result of each file. The fields are only present in
-that case: while the cleanup is pending, or if it fails, no score is written. See
+**`overall_status`** covers both stages and tells you whether you can retry:
+
+| Value | Meaning |
+|-------|---------|
+| `COMMITTED` | The deletion succeeded. Layer 3 and Layers 1 and 2 are both done. |
+| `ROLLED_BACK` | Something failed, and the state from before the call has been **fully restored**. The documents are still in the graph, and it is safe to retry the same batch. |
+| `FAILED` | Something failed and the restore itself was **incomplete**. Do not simply retry. Inspect the corpus and the knowledge graph before you call again. |
+
+The `status` of a `layer3_results` entry is one of `LAYER3_DELETE_STATUS_SUCCESS`,
+`LAYER3_DELETE_STATUS_FAILED`, `LAYER3_DELETE_STATUS_NOT_ATTEMPTED`, or
+`LAYER3_DELETE_STATUS_UNSPECIFIED`.
+
+{{< info >}}
+**`NOT_ATTEMPTED` is a success case.** It means there were no knowledge graph
+collections for the deletion to work on, so there was nothing to clean up. The
+Layer 1 and Layer 2 removal still goes ahead, and `overall_status` can still be
+`COMMITTED`. Treat it as "nothing to do", not as an error.
+{{< /info >}}
+
+{{< tip >}}
+**A failed deletion is rolled back.** AutoGraph snapshots the Layer 3 data before
+it removes anything. If the Layer 3 cleanup fails, the snapshot is restored and
+Layers 1 and 2 are never touched. If Layer 1 or Layer 2 then fails, the Layer 3
+snapshots are restored as well. A deletion that unwinds this way reports
+`ROLLED_BACK`, and the same batch is safe to send again. Only `FAILED` means the
+restore did not complete.
+{{< /tip >}}
+
+When the deletion **commits**, AutoGraph calculates the divergence of every
+affected partition again and stamps `divergence_score` and `needs_reclustering`
+onto the result of each file. The fields are only present if `overall_status` is
+`COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` writes no score.
+See
 [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | The Layer 1 and Layer 2 results are returned. Check `layer3_overall_status`. |
+| `200` | The deletion has been processed. Check `overall_status` and the `status` of every entry in `results`. |
 | `400` | Missing or duplicate identifiers, invalid category, a document does not exist, or it belongs to another category. Nothing is deleted. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
-| `409` | Another operation is currently changing the corpus. |
+| `409` | Another operation is currently changing the corpus. The `delete_id` of the deletion that holds the lock lets you correlate the two calls. |
 | `500` | Server error. |
 | `503` | A required dependency is temporarily unavailable. |
 
@@ -412,12 +453,18 @@ invalid document makes the whole batch fail before anything is changed.
 
 ### Request
 
+Like an insert, every document is identified by its File Manager `file_id`.
+Update takes **no inline content**: the replacement is always read back from the
+File Manager. Upload the new version with
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md)
+and pass the returned ID.
+
 ```json
 {
   "files": [
     {
       "doc_name": "existing-contract.txt",
-      "content": "VXBkYXRlZCBjb250cmFjdCB0ZXh0"
+      "file_id": "<file-manager-file-id>"
     }
   ],
   "category": "legal"
@@ -429,9 +476,8 @@ invalid document makes the whole batch fail before anything is changed.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `files` | object[] | Yes | The documents to replace. The list cannot be empty and cannot contain duplicate `doc_name` or `file_id` values. |
-| `files[].doc_name` | string | Yes | The file name of the document to replace. It has to match the File Manager file name if you use `file_id`. |
-| `files[].content` | string | No | The new content, base64-encoded. Provide either `content` or `file_id`. No `file_id` is created for inline content, so you cannot use the new version in a targeted orchestration. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
-| `files[].file_id` | string | No | The File Manager ID to get the new version from. Preferred over inline content, and required if you want to add the new version to Layer 3 later. |
+| `files[].doc_name` | string | Yes | The file name of the document to replace. It has to match the File Manager file name of `file_id`. |
+| `files[].file_id` | string | Yes | The File Manager ID to get the new version from. Every entry needs one. If any entry is missing it, the whole batch is rejected with `400` and a message that lists the offending `doc_name` values. |
 | `category` | string | Conditional | The category the documents belong to. Required unless the project has exactly one category. If you omit it in a project with a single category, the `doc_name` values are looked up in that category before anything is changed. |
 
 Update still accepts the **deprecated** `module` field, which is only honored
@@ -453,10 +499,15 @@ field at all.
 it is done. Poll the `importerOrchestration` entry in the metadata of your
 platform project. The update goes through the following phases:
 
-1. `DELETE_L12`: Removes the old source and the corpus graph data.
-2. `DELETE_L3`: Waits for the Importer to remove the old knowledge graph data.
+1. `DELETE_L3`: AutoGraph removes the old knowledge graph data with AQL queries
+   of its own. This is synchronous, and no Importer is involved.
+2. `DELETE_L12`: Removes the old source and the corpus graph data.
 3. `INSERT_L12`: Inserts the new version and assigns a cluster to it.
 4. `DONE`: The update has succeeded or failed.
+
+The order is **Layer 3 first**, for the same reason as a standalone
+[delete](#delete-documents): an update reuses the same deletion core, which
+snapshots and removes the knowledge graph data before it touches Layers 1 and 2.
 
 A final status message looks like this:
 
@@ -471,7 +522,9 @@ A final status message looks like this:
       "result": "updated",
       "cluster": "cluster_legal_0",
       "previous_cluster": "cluster_legal_1",
-      "partition": "legal_0_a"
+      "partition": "legal_0_a",
+      "file_id": "<file-manager-file-id>",
+      "error": ""
     }
   ]
 }
@@ -483,6 +536,14 @@ A final status message looks like this:
 | `result` | The result for this file, for example `updated`. |
 | `cluster` / `previous_cluster` | The cluster that is assigned to the new version, and the cluster the old version belonged to. |
 | `partition` | The Layer 3 partition of the new cluster. |
+| `file_id` | The File Manager ID of the new version. Use it in the `file_ids` of the targeted orchestration, and to add the document again with [insert](#insert-documents) if the update left it removed. |
+| `error` | Set if this file failed. Empty otherwise. |
+
+{{< warning >}}
+**Check every file, not only the top-level `status`.** A run can report
+`status: "completed"` while an individual entry of `files[]` carries an `error`.
+Read the `result` and `error` of each file before you treat the update as done.
+{{< /warning >}}
 
 {{< info >}}
 **The update status carries no divergence either**, and for the same reason as
@@ -498,7 +559,8 @@ is still not a database transaction.
 
 {{< warning >}}
 If the deletion succeeds but the insertion fails, the document stays removed.
-Fix the underlying problem and add it again with `POST /v1/graph/insert`.
+Fix the underlying problem and add it again with `POST /v1/graph/insert`, using
+the `file_id` from the entry of that file.
 {{< /warning >}}
 
 After a successful update, run a targeted orchestration to import the new
@@ -507,7 +569,7 @@ version into Layer 3.
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The update has been validated and started. Poll for the result. |
-| `400` | Empty or invalid batch, invalid category, or a document that is not in the graph. |
+| `400` | Empty or invalid batch, a missing `file_id` on any entry, invalid category, or a document that is not in the graph. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `409` | Another operation is currently changing the corpus. |
@@ -523,7 +585,7 @@ curl -X POST \
   -d '{
     "files": [{
       "doc_name": "existing-contract.txt",
-      "content": "VXBkYXRlZCBjb250cmFjdCB0ZXh0"
+      "file_id": "<file-manager-file-id>"
     }],
     "category": "legal"
   }' \
@@ -534,9 +596,10 @@ curl -X POST \
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster" >}}
 
-Schedules a Layer 3 reclustering for one or more **FullGraphRAG** partitions.
-The call returns right away and tells you whether the work has been scheduled.
-The reclustering itself runs **asynchronously**.
+Schedules a Layer 3 reclustering for up to five **FullGraphRAG** partitions. The
+call returns right away and reports whether each partition was taken up, which is
+weaker than a queue position, see the response below. The reclustering itself runs
+**asynchronously**, and only one runs at a time.
 
 Call this endpoint if `needs_reclustering: true` is reported for a partition and
 you decide that refreshing the communities is worth the cost. AutoGraph never
@@ -550,8 +613,40 @@ score](../incremental-graph-updates.md#where-to-read-the-score).
 Only FullGraphRAG partitions have a community layer that can be rebuilt. A
 VectorRAG partition has no `Entities` or `Communities`, so there is nothing to
 rebuild, and such a partition is never flagged for reclustering in the first
-place. See [Partition divergence and
+place.
+
+**How the flag you are reacting to is calculated.** The `divergence_score` is the
+higher of two signals, both measured on the `Entities` of the partition:
+
+```text
+divergence_score = max(gross_churn_score, multi_batch_score)
+
+gross_churn_score = cumulative_churn / baseline_entity_count
+multi_batch_score = (total_entities - largest_batch) / total_entities
+```
+
+- **Gross churn** counts every entity that has been added **and** deleted since
+  the last clustering, gross rather than net. A same-size replacement therefore
+  still counts: an update that removes 100 entities and adds 100 new ones adds
+  about 200 to the churn, not 0. The `baseline_entity_count` is the entity count
+  at the last successful clustering or reclustering.
+- **Multi-batch spread** groups the entities by `import_number`, takes the
+  **largest** batch as the stable baseline, and counts everything outside it as
+  changed. A partition with a single batch, or with no entities, scores `0` here.
+
+`needs_reclustering` is set when the score is **strictly above** the threshold,
+which is `0.25` and not configurable. For the baseline bootstrap, worked
+examples, and the lifecycle of the values, see [Partition divergence and
 reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering).
+
+{{< warning >}}
+**Plan a reclustering as a maintenance operation.** It holds the single
+service-wide mutation slot for its entire run, which can take up to **3600
+seconds**, and blocks every corpus build, insert, update, and delete until it is
+done. Partitions are reclustered one after another, so a request for several of
+them blocks writes for roughly the sum of their run times. Run it in a window
+where nothing else has to write to the corpus.
+{{< /warning >}}
 
 ### Request
 
@@ -563,7 +658,14 @@ reclustering](../incremental-graph-updates.md#partition-divergence-and-recluster
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from the response of an insert, delete, or update. At least one non-empty ID is required. Duplicates are ignored. |
+| `partition_ids` | string[] | Yes | One or more `rag_partition_id` values, for example from the response of an insert, delete, or update. At least one non-empty ID is required, and **at most five**. Duplicates are ignored. |
+
+{{< info >}}
+**Five partitions per request is a hard cap.** A request that lists more than
+five `partition_ids` is rejected with `400`, and nothing is reclustered. Split
+larger sets into several requests. They still run one at a time, so splitting
+does not make them faster.
+{{< /info >}}
 
 ### Response
 
@@ -585,20 +687,40 @@ reclustering](../incremental-graph-updates.md#partition-divergence-and-recluster
 | Field | Meaning |
 |-------|---------|
 | `results[].rag_partition_id` | The partition this result refers to. |
-| `results[].accepted` | `true` if a reclustering has been scheduled, or if it has been merged into a reclustering that is already running for this partition. |
+| `results[].accepted` | `true` if the request for this partition was taken up, or if it has been merged into a reclustering that is already running for this partition. It does **not** mean the work is queued, see the warning below. |
 | `results[].error_message` | Set if the reclustering could not be scheduled for this partition, for example because the ID is empty. |
 
-`accepted: true` means that the work is **queued**, not that the reclustering is
-done. Poll the `importerOrchestration` entry in the metadata of your platform
-project to see whether it is running, completed, or failed. If it succeeds,
-AutoGraph resets the divergence of the partition. The `divergence_score` becomes
-`0`, `needs_reclustering` becomes `false`, and a new baseline is taken. If it
-fails, the score and the flag stay as they are so that you can try again.
+{{< warning >}}
+**`accepted: true` is not a queue position.** Reclusterings are serialized. Only
+one runs at a time, and there is no queue behind it. A partition whose peer holds
+the mutation slot makes about **ten attempts, one second apart**, to claim it and
+then gives up. It is left flagged `needs_reclustering`, so that you can trigger
+it again later. The response reports `accepted: true` for those partitions too,
+which means it tells you nothing about whether they actually ran.
+{{< /warning >}}
+
+Read the per-partition outcome from the **`rags` strategy profile**, not from
+`importerOrchestration`. The `importerOrchestration` entry in your project
+metadata carries the status of the job that holds the slot. It is *not* a
+per-partition ledger, and a partition that gave up waiting is never published
+there at all, so it is invisible in that slot. The `rags` node of the partition
+is authoritative:
+
+| Field on the `rags` node | After a successful reclustering |
+|--------------------------|---------------------------------|
+| `needs_reclustering` | Cleared to `false` |
+| `last_reclustered_at` | Set to the time of the run |
+| `divergence_score` | Reset to `0`, and a new baseline is taken |
+
+If `needs_reclustering` is still `true` and `last_reclustered_at` has not moved,
+the partition was not reclustered, whether it failed or never got the slot.
+Trigger it again. See [Where the values are
+stored](../incremental-graph-updates.md#where-the-values-are-stored).
 
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The request has been processed. Check the `accepted` value of every entry in `results`. |
-| `400` | `partition_ids` is missing or empty. |
+| `400` | `partition_ids` is missing or empty, it lists more than five partitions, or the project runs on **Triton**, which cannot be reclustered (gRPC `FAILED_PRECONDITION`). |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `500` | Server error. |
@@ -611,6 +733,12 @@ fails, the score and the flag stay as they are so that you can try again.
   delete, so it cannot run at the same time as these operations.
 - A reclustering that fails or is skipped does not clear `needs_reclustering`.
   Start it again once the slot is free.
+- **Triton projects can never be reclustered.** The request is rejected up front
+  with `400`, so there is no job and nothing to poll.
+- A partition **without entities** is a successful no-op. The job reports `0`
+  communities over `0` entities and finishes, so a completed job is not evidence
+  that anything was refreshed. Check `last_reclustered_at` and the
+  `Communities` of the partition.
 - To learn what the Importer does during a reclustering and how long it takes,
   see
   [Importer Incremental Updates](../../importer/incremental-updates.md#reclustering).
@@ -645,7 +773,7 @@ curl -X POST \
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert
 
-# 2. Delete an obsolete document (Layer 3 cleanup continues in the background)
+# 2. Delete an obsolete document (synchronous, Layer 3 included)
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
@@ -706,33 +834,44 @@ curl -X POST \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/recluster
 ```
 
-Poll `importerOrchestration` in your project metadata until the reclustering is
-done. If it succeeds, the `divergence_score` of the partition is reset to `0`
-and `needs_reclustering` is cleared.
+Then read the `rags` profile of the partition. If the reclustering succeeded,
+`needs_reclustering` is `false`, `last_reclustered_at` has moved, and the
+`divergence_score` is back to `0`. Reclusterings run one at a time and block
+every other write while they do, so send at most five partitions per request and
+pick a maintenance window for them.
 
 ## Troubleshooting
 
 - **The insert succeeded but the document is not in Layer 3.** An insert only
   updates Layers 1 and 2. Run a targeted orchestration with the new `file_id`.
-- **The update result has no `file_id`.** The call used inline `content`, for
-  which no File Manager ID is created, so there is nothing you can use in the
-  `file_ids` of a targeted orchestration. Inserts are unaffected, they always
-  take a `file_id`. See [Identifying documents for Layer
+- **The update was rejected with `400` and a list of `doc_name` values.** Those
+  entries have no `file_id`. Update reads the replacement from the File Manager
+  and takes no inline content, so every entry needs one, and one missing id
+  rejects the whole batch. Upload the new version first, then send the returned
+  id. See [Identifying documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
-- **The delete returned `LAYER3_DELETE_STATUS_PENDING`.** This is expected.
-  Layers 1 and 2 are done and the Layer 3 cleanup runs in the background. Poll
-  `importerOrchestration` in your project metadata.
+- **The delete reports `overall_status: "ROLLED_BACK"`.** Something failed, and
+  the state from before the call has been fully restored, so the documents are
+  still in the graph. There is nothing to poll and nothing to clean up by hand.
+  Fix the underlying problem and send the same batch again.
+- **The delete reports `overall_status: "FAILED"`.** The restore did not complete
+  either, so the corpus can be in a partial state. Do not retry blindly. Inspect
+  the affected partitions and clusters first, then decide what to send again.
+- **The delete reports `LAYER3_DELETE_STATUS_NOT_ATTEMPTED`.** There were no
+  knowledge graph collections to clean up. This is expected for a corpus that has
+  no Layer 3 yet, and it does not stop the Layer 1 and Layer 2 removal.
 - **The update returned `accepted: true` but the document has not changed.**
   Updates are asynchronous. Poll `importerOrchestration` until the JSON message
   reports `phase: "DONE"`.
 - **The update failed and the source document is gone.** The deletion succeeded
   but the insertion failed. Fix the input or the underlying problem and add the
-  document again with `POST /v1/graph/insert`.
+  document again with `POST /v1/graph/insert`, using the `file_id` that the
+  status message reports for that file.
 - **A call returns `409`.** Another operation, such as a build, insert, update,
   delete, or reclustering, is using the service-wide slot. Wait for it to finish
   and try again.
 - **`needs_reclustering` is `true` for a partition.** The divergence score of the
-  partition is above its threshold, which is 25% by default. Nothing is
+  partition is above its threshold, which is 25% and not configurable. Nothing is
   reclustered automatically. Call `POST /v1/graph/recluster` with the
   `rag_partition_id` if you want to refresh the communities.
 - **The insert or update result has no `divergence_score`.** This is by design,
@@ -742,9 +881,21 @@ and `needs_reclustering` is cleared.
   targeted orchestration, or from the partition's `rags` profile. See
   [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
-  The scheduling succeeded, but the background job may still be running or it
-  may have failed. Poll `importerOrchestration`. A failed reclustering does not
-  clear the flag, so you can try again.
+  `accepted: true` only means the request was taken up. The partition may still
+  be running, it may have failed, or it may never have got the mutation slot:
+  reclusterings are serialized, and a partition that waits behind a peer gives up
+  after about ten one-second attempts. None of that clears the flag. Check
+  `last_reclustered_at` on the `rags` node to tell "not yet reclustered" from
+  "reclustered and drifted again", and trigger the partition again. Do not look
+  for the answer in `importerOrchestration`, which only shows the job that holds
+  the slot and never sees a partition that gave up waiting.
+- **A recluster request returns `400`.** Either `partition_ids` is empty, or it
+  lists more than five partitions, or the project runs on Triton. Triton projects
+  cannot be reclustered at all.
+- **A reclustering completed but the communities look unchanged.** A partition
+  with no entities is a successful no-op that reports `0` communities over `0`
+  entities. Confirm that the partition has `Entities` before you expect a
+  refreshed community layer.
 
 ## Next Steps
 

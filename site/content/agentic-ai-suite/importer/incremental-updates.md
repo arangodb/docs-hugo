@@ -68,11 +68,11 @@ Layer 3 data of the document:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete" >}}
 
 Call it with the File Manager IDs in `file_ids`, or with `doc_names` as a
-fallback, and the `category` the documents belong to. Layers 1 and 2 are updated
-synchronously and the response reports what was removed there, along with the
-affected Layer 3 partitions. The Layer 3 cleanup is scheduled in the background,
-so poll the `importerOrchestration` status of your platform project until it is
-done. For the request and response fields, see
+fallback, and the `category` the documents belong to. The call is synchronous and
+removes the Layer 3 data as well, using AQL queries of its own. No Importer job
+is spawned and there is nothing to poll: the response is the final result and
+reports what was removed, along with the affected Layer 3 partitions. For the
+request and response fields, see
 [Delete documents](../autograph/reference/orchestration.md#delete-documents).
 
 What a deletion removes from the Layer 3 collections of `{project}_kg`:
@@ -102,10 +102,11 @@ operation:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
 
-It removes the old version, including its Layer 3 data, and adds the new version
-to Layers 1 and 2. The new content only reaches Layer 3 once you run a targeted
-orchestration for the `rag_partition_id` and `file_id` of the new version, which
-submits an import to the Importer. For the phases of an update and its response
+It takes the new version from the File Manager by `file_id` and accepts no inline
+content. It removes the old version, including its Layer 3 data, and adds the new
+version to Layers 1 and 2. The new content only reaches Layer 3 once you run a
+targeted orchestration with that `file_id`, which submits an import to the
+Importer. AutoGraph resolves the partitions itself, so you do not name one. For the phases of an update and its response
 fields, see
 [Update documents](../autograph/reference/orchestration.md#update-documents).
 
@@ -158,6 +159,20 @@ to consolidate, cluster, or replace.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `partition_id` | string | Yes | The partition whose community layer is rebuilt. |
+
+{{< warning >}}
+**Triton projects cannot be reclustered.** A recluster for a project that runs on
+Triton is rejected before any work starts, with gRPC `FAILED_PRECONDITION`
+(`HTTP 400`). No job is created, so there is nothing to poll, and there is no way
+to rebuild the community layer of such a partition.
+{{< /warning >}}
+
+{{< info >}}
+**A partition without entities is a successful no-op.** The job clusters `0`
+entities into `0` communities and reports success. A terminal job is therefore
+not evidence that anything was rebuilt. Check that the partition has `Entities`
+before you read a completed job as a refreshed community layer.
+{{< /info >}}
 
 ### What the Importer does
 
@@ -242,6 +257,8 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/<SERVICE_ID_POST
 | An update left duplicate content in the graph | The revised file was imported instead of replaced, so it was added as another import batch next to the old version | Use [`POST /v1/graph/update`](../autograph/reference/orchestration.md#update-documents) in AutoGraph to replace a document |
 | Communities look outdated after inserts, deletions, or updates | The community layer of a `full_graphrag` partition has not been rebuilt yet | Reclustering is never automatic. Start it in AutoGraph once it reports `needs_reclustering: true`, or call `POST /v1/recluster` for that `partition_id` yourself |
 | A reclustering takes a long time and blocks other work | The LLM community reports take a while and the lock is held for the whole job | This is expected for large partitions. Avoid overlapping calls on the same replica until the recluster job is done |
+| Recluster is rejected with gRPC `FAILED_PRECONDITION` (`HTTP 400`) | The project runs on Triton | Triton projects cannot be reclustered. There is nothing to retry and no job to poll |
+| A recluster job reached a terminal state but the communities are unchanged | The partition has no entities, so the job was a no-op over `0` entities | Confirm that the partition has `Entities`. If it does not, import documents into it first |
 
 ## Next steps
 

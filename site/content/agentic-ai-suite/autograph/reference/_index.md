@@ -94,14 +94,14 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
 
 1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
    depending on what changed. Insert and update only cover Layers 1 and 2.
-   Delete also schedules the Layer 3 cleanup.
+   Delete is synchronous and removes the Layer 3 data itself.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
    content.
 3. Check `divergence_score` and `needs_reclustering` in the `job_results` of
    `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
-   After a delete, they are on each file's result once the Layer 3 cleanup has
-   committed.
+   After a delete, they are on each file's result if its `overall_status` is
+   `COMMITTED`.
 4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
    want to refresh the communities. Reclustering is never automatic.
 

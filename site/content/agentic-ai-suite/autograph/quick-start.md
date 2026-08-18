@@ -119,11 +119,10 @@ knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /steps >}}
 
 {{< info >}}
-Insert takes File Manager input only, and update needs a File Manager `file_id`
-if the new version has to reach the knowledge graph. Documents that you upload
-with `/v1/import-multiple`, as in step 2, do not get one. Use the
-[File Manager](../../platform-suite/file-manager/) if you expect to insert or
-update documents later. See [Identifying documents for Layer
+Insert and update identify every document by its File Manager `file_id`, so
+upload through the [File Manager](../../platform-suite/file-manager/) rather than
+with `/v1/import-multiple` as in step 2, if you expect to change documents later.
+See [Identifying documents for Layer
 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
 

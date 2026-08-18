@@ -13,16 +13,28 @@ Strategizer, and a full orchestration pass again.
 
 IGU updates all [three layers](design-guide.md#the-three-layers). In Layers 1
 and 2, it maintains the corpus graph with its sources, similarity edges, and
-cluster membership. In Layer 3, it lets the Importer add or remove the knowledge
-graph data, such as documents, chunks, entities, communities, and relationships.
-Existing clusters and strategy profiles are kept, and a new document joins the
-cluster closest to it, so the whole module does not have to be clustered again.
+cluster membership. In Layer 3, it adds or removes the knowledge graph data, such
+as documents, chunks, entities, communities, and relationships. Existing clusters
+and strategy profiles are kept, and a new document joins the cluster closest to
+it, so the whole module does not have to be clustered again.
 
-How you track an operation depends on which layer it changes. Layers 1 and 2
-hold AutoGraph's own data, so changes there are reported right away. Layer 3
-belongs to the Importer, which is a separate service, so that work always runs
-in the background. You either start it with an orchestration call or poll until
-it is finished.
+**Adding to Layer 3 is the Importer's job. Removing from it is not.** AutoGraph
+deletes knowledge graph data itself, with AQL queries, and only involves the
+Importer when new content has to be extracted, embedded, and clustered:
+
+| Operation | Layers 1 and 2 | Layer 3 |
+|-----------|----------------|---------|
+| Insert | AutoGraph, reported in the response | The Importer, through a [targeted orchestration](reference/orchestration.md#trigger-orchestration) that you start afterwards |
+| Delete | AutoGraph, reported in the response | AutoGraph, in the same call, before Layers 1 and 2 |
+| Update | AutoGraph, asynchronous | The old data: AutoGraph, in the same run. The new version: the Importer, through a targeted orchestration |
+| Recluster | Not touched | The Importer, rebuilding the communities of the partition |
+
+An update is a delete followed by an insert, which is why its Layer 3 work is
+split between the two services in exactly that way.
+
+How you track an operation follows from the table. What AutoGraph does itself is
+reported by the call that did it. What the Importer does runs in the background,
+so you start it with an orchestration call and poll until it is finished.
 
 For everyday document changes, this is much cheaper and faster than a rebuild,
 because only the documents that actually changed are processed.
@@ -52,10 +64,10 @@ reclustering](#partition-divergence-and-reclustering).
 | Update | [`POST /v1/graph/update`](reference/orchestration.md#update-documents) | Replace the content of a document that already exists |
 | Recluster | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) | Rebuild the Layer 3 communities of a FullGraphRAG partition that has drifted |
 
-Insert, delete, and update start in Layers 1 and 2 and reach Layer 3 through the
-Importer. Reclustering skips that first part. It takes Layer 3 partitions
-directly, schedules the Importer work, and resets the divergence values if the
-job succeeds.
+Insert, delete, and update work on documents and start in Layers 1 and 2, as
+described above. Reclustering is different: it takes Layer 3 partitions directly,
+schedules the Importer work for them, and resets the divergence values if the job
+succeeds.
 
 This page explains the concepts: when to use IGU, how it compares to a rebuild,
 and how partition divergence is measured. For the requests and responses of each
@@ -67,10 +79,21 @@ Use IGU if all of the following is true:
 
 - The initial corpus build has finished successfully, and usually the RAG
   Strategizer and orchestration have run as well.
-- You want to add, remove, or replace **individual documents** in an
-  **existing** module.
+- You want to add, remove, or replace documents in an **existing** module. Every
+  endpoint takes a batch, so this is not limited to one document per call.
+- The change is **small compared to what the module already holds**.
 - The cluster topology is still valid. You are not redesigning modules, and you
   do not need to compute the similarity and clustering of a whole module again.
+
+{{< info >}}
+**What matters is the size of the change, not the number of documents.** Insert,
+delete, and update all take a list, and a batch of documents is a perfectly
+ordinary IGU. Adding a number of documents that is large in relation to what the
+partition already holds is the case to avoid: it drives the
+[divergence score](#partition-divergence-and-reclustering) up, which flags the
+partition for a reclustering that you then have to pay for. Use an incremental
+corpus build for changes of that size.
+{{< /info >}}
 
 ### When not to use IGU
 
@@ -79,10 +102,11 @@ Use IGU if all of the following is true:
 | No corpus graph exists yet | The [standard workflow](reference/_index.md#standard-workflow) |
 | Adding an entirely **new module** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the new module in `modules` |
 | **Clean rebuild** of a module, for example because of wrong embeddings, bad clusters, or files that are replaced as a whole | [`POST /v1/corpus/builds`](reference/corpus-build.md) with that module in `modules` and `incremental: false`. This wipes and rebuilds only that module |
-| **Adding many documents in bulk** to an existing module | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that module in `modules` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
+| **Adding documents in bulk** to an existing module, that is, a batch that is large in relation to what the module already holds | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that module in `modules` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
 | You only need vectors on an existing collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
-**Rule of thumb:** Use IGU for single documents, an incremental corpus build for
+**Rule of thumb:** Use IGU for changes that are small in relation to the module,
+whether that is one document or a batch of them, an incremental corpus build for
 bulk additions, and a corpus build for a new module or a clean module rebuild.
 
 ## Prerequisites
@@ -100,10 +124,10 @@ bulk additions, and a corpus build for a new module or a clean module rebuild.
 
 | | Full rebuild | IGU |
 |--|--------------|-----|
-| **How** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the module in `modules` and `incremental: false`, followed by the RAG Strategizer and orchestration as needed | `POST /v1/graph/insert`, `/delete`, or `/update`, followed by a targeted orchestration for Layer 3. Optionally `/recluster` if the divergence is high |
+| **How** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the module in `modules` and `incremental: false`, followed by the RAG Strategizer and orchestration as needed | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
 | **Scope** | The entire module. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing module |
-| **Clusters and strategies** | Computed again for the processed module | Existing clusters and `rags` profiles are kept, and new documents join the closest cluster |
-| **Layer 3** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for the changed files and partitions. Deletions are cleaned up in the background |
+| **Clusters and strategies** | Computed again for the processed module | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster at Layer 2 and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
+| **Layer 3** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for inserted and updated files, scoped to their `file_ids`. Deletions need no orchestration, they clean up Layer 3 in the same call |
 | **Cost and time** | Higher. Full extraction, embedding, and clustering, usually followed by a Strategizer and Importer run | Lower. Only the changed documents are processed |
 | **Use if** | Embeddings or clusters are wrong, files are replaced as a whole, or the module topology has to be reset | You regularly add, remove, or replace documents and the cluster topology is still valid |
 
@@ -142,11 +166,11 @@ flowchart TD
    [targeted orchestration](reference/orchestration.md) with the returned
    `file_id`, so that the knowledge graph contains the new content. AutoGraph
    works out which strategized clusters hold those ids, so you do not name a
-   partition. An insert always returns a `file_id`, because it only takes File
-   Manager input. An update that you submit as inline `content` does not, and
-   cannot be targeted, so orchestrate its whole category instead. See
+   partition. Both insert and update take File Manager input only, so every
+   changed document has a `file_id` you can target with. See
    [Identifying documents for Layer 3](#identifying-documents-for-layer-3). A
-   delete schedules its own Layer 3 cleanup in the background.
+   delete needs no orchestration, because it has already removed its Layer 3
+   data.
 3. **Check the divergence.** On a **FullGraphRAG** partition, a new
    `divergence_score` is calculated once Layer 3 reflects the change, and
    `needs_reclustering` is set if the score is above the partition's threshold.
@@ -158,43 +182,28 @@ flowchart TD
 4. **Recluster if you want to.** If the flag is `true` and you think the refresh
    is worth the cost, call
    [recluster](reference/orchestration.md#trigger-reclustering) with the
-   affected `rag_partition_id` values.
+   affected `rag_partition_id` values, **at most five per request**.
+   Reclusterings run one at a time and hold the service-wide write slot for the
+   whole run, so plan them like a maintenance window. Confirm the outcome on the
+   partition's `rags` node: `needs_reclustering` is cleared and
+   `last_reclustered_at` is set only if it really ran.
 
 ### Identifying documents for Layer 3
 
-Step 2 identifies documents by `file_id`. This is the only identifier that a
-targeted orchestration accepts, `doc_name` does not work here.
-
-[Insert](reference/orchestration.md#insert-documents) requires a File Manager
-`file_id` for every document, so anything you insert is targetable in Layer 3 by
-construction. [Update](reference/orchestration.md#update-documents) also accepts
-inline base64 `content`, and that is the one case to watch:
-
-| Input used for an update | `file_id` available afterwards | Can you target it in Layer 3? |
-|--------------------------|:-:|---|
-| File Manager `file_id` | Yes, it is returned with the result for that file | Yes, pass it in `file_ids` |
-| Inline base64 `content` | No | No, there is nothing to put in `file_ids` |
-
-{{< warning >}}
-**Use a File Manager `file_id` when you update a document that has to reach
-Layer 3.** No File Manager ID is created or returned for inline `content`, so
-you cannot use such a document in the `file_ids` of a targeted orchestration.
-IDs have the form `rag-input-{base64url(db:path)}` and refer to a File Manager
-path, so you cannot construct one for content that was never uploaded there.
-{{< /warning >}}
-
-This is why the [prerequisites](#prerequisites) ask for a project built through
-the File Manager. It makes sure that every document in the project has a
-`file_id`. Upload the document with
+A targeted orchestration identifies documents by `file_id` alone. `doc_name` does
+not work here, and it never has to:
+[insert](reference/orchestration.md#insert-documents) and
+[update](reference/orchestration.md#update-documents) both require a File Manager
+`file_id` for every document, so the id you send is the id you pass on to the
+orchestration. IDs have the form `rag-input-{base64url(db:path)}` and refer to a
+File Manager path, which is why the [prerequisites](#prerequisites) ask for a
+project built through the File Manager. Upload a document with
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md)
-first, then pass the returned ID to insert or update.
+and pass the returned ID.
 
-If you have already replaced a document with inline `content`, you can
-orchestrate its whole category instead. To do so, provide `categories` and omit
-`file_ids`. Note that this processes every document of those categories again,
-not just the changed one. The alternative is to delete the document and insert it
-again from the File Manager. Weigh one against the other, because importing
-documents that are already in the partition adds another import batch. See
+To orchestrate without ids, provide `categories` and omit `file_ids`. That
+processes every document of those categories again, and importing documents that
+are already in a partition adds another import batch. See
 [Updating a document](../importer/incremental-updates.md#updating-a-document).
 
 ## Partition divergence and reclustering
@@ -232,10 +241,11 @@ divergence_score = max(gross_churn_score, multi_batch_score)
 needs_reclustering = (divergence_score > divergence_threshold)
 ```
 
-The default **`divergence_threshold`** is **`0.25`** (25%). A score that is
-equal to the threshold does not set the flag, only a higher score does. The
-threshold is stored per partition and can be configured when the strategy
-profile is created.
+The **`divergence_threshold`** is stored per partition on the `rags` profile and
+is **`0.25`** (25%) in this release. It is **not configurable through the API**:
+no request field sets it, so every partition falls through to the default. The
+only way to change it is to edit the `rags` document in ArangoDB by hand. A score
+that is equal to the threshold does not set the flag, only a higher score does.
 
 **Gross churn score**
 
@@ -260,7 +270,7 @@ then adding `100` gives a `cumulative_churn` of `200` and thus a
 
 If a partition has taken several incremental imports without being
 consolidated, the same entities can exist multiple times across the import
-batches. AutoGraph groups the entities by import batch, uses the **largest**
+batches. AutoGraph groups the entities by `import_number`, uses the **largest**
 batch as the baseline, and counts everything outside of it as changed:
 
 ```text
@@ -274,7 +284,7 @@ Batch sizes of `[500, 300, 200]`, for example, give
 **Combined example**
 
 If the gross churn is `0.20` and the multi-batch value is `0.50`, then the
-`divergence_score` is `0.50`. With the default threshold of `0.25`,
+`divergence_score` is `0.50`. With the threshold of `0.25`,
 `needs_reclustering` is set to `true`.
 
 ### Where the values are stored
@@ -284,7 +294,7 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | Field | Meaning |
 |-------|---------|
 | `divergence_score` | The current score, calculated as described above |
-| `divergence_threshold` | The threshold for this partition, `0.25` by default |
+| `divergence_threshold` | The threshold for this partition. Always `0.25`, as no API sets it |
 | `needs_reclustering` | `true` as soon as the score is above the threshold |
 | `last_reclustered_at` | When the partition was last clustered or reclustered successfully. This is also when the current baseline was taken |
 
@@ -295,7 +305,7 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | First measurement after a build | The current entity count becomes the baseline, the score is `0`, and the flag is `false` |
 | Insert, delete, or update, once Layer 3 reflects the change | The score is calculated again, and the flag is set if the score is above the threshold |
 | Successful `POST /v1/graph/recluster` | The score is reset to `0`, the churn is cleared, a new baseline is taken, the flag is cleared, and `last_reclustered_at` is set |
-| Failed or incomplete reclustering | The score and the flag stay as they are, so that you can try again later |
+| Failed, deferred, or incomplete reclustering | The score and the flag stay as they are, so that you can try again later. A partition that never got the write slot is left untouched in exactly the same way |
 
 ### Where to read the score
 
@@ -310,12 +320,12 @@ That leaves three places to read it:
 | Where | What you get | Notes |
 |-------|--------------|-------|
 | [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration), per entry of `job_results` | The **authoritative** score for each partition the run touched | This is the value to act on after an insert or an update. Held in memory only: a new `POST /v1/orchestrate` evicts the previous run, and an unknown or evicted id returns `404` |
-| [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents), per file in `results` | The score after the deletion | Stamped **only** once the Layer 3 cleanup has committed. Absent while it is pending, and absent if it fails |
+| [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents), per file in `results` | The score after the deletion | Stamped **only** if `overall_status` is `COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` writes no score |
 | The partition's `rags` strategy profile | The **durable** state, see [Where the values are stored](#where-the-values-are-stored) | Survives eviction. Read it here when the orchestration status is gone |
 
-A delete can report its score directly because its Layer 3 work is a removal that
-finishes on its own. There is no import to schedule afterwards, so nothing is
-still pending when the score is taken.
+A delete can report its score directly because it removes the Layer 3 data
+itself, before it returns. There is no import to schedule afterwards, so nothing
+is still pending when the score is taken.
 
 ## Next steps
 
