@@ -112,18 +112,18 @@ only after the strategizer has finished.
 Once the graph is built, you can add, remove, or replace individual documents
 with `/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
 rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
-with `partition_ids` and `file_ids` so that the change reaches the knowledge
-graph. See [Incremental Graph Updates](incremental-graph-updates.md).
+with the `file_ids` of the changed documents so that the change reaches the
+knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /step >}}
 
 {{< /steps >}}
 
 {{< info >}}
-Insert and update can only add a document to the knowledge graph if it has a
-File Manager `file_id`. Documents that you upload with `/v1/import-multiple`, as
-in step 2, do not get one. Use the
-[File Manager](../../platform-suite/file-manager/) if you expect to update
-documents later. See [Identifying documents for Layer
+Insert takes File Manager input only, and update needs a File Manager `file_id`
+if the new version has to reach the knowledge graph. Documents that you upload
+with `/v1/import-multiple`, as in step 2, do not get one. Use the
+[File Manager](../../platform-suite/file-manager/) if you expect to insert or
+update documents later. See [Identifying documents for Layer
 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
 

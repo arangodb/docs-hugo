@@ -15,18 +15,31 @@ To learn when to use the `/v1/graph/*` endpoints, how they compare to a full
 rebuild, and how the partition divergence is measured, see
 [Incremental Graph Updates](../incremental-graph-updates.md).
 
+{{< info >}}
+The endpoints on this page scope documents by **category**. A category is the
+second scope level of a project and carries the label you set as `module` when
+you imported the files, see
+[Import files](importing-files.md#parameters). The orchestrate request takes a
+list of them in `categories`, and the `/v1/graph/*` endpoints take a single one
+in `category`.
+{{< /info >}}
+
 ## Trigger Orchestration
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
 Spawn GraphRAG importer workers for all strategy profiles. Called after RAG strategizer is completed.
 
-**Recommended path:** Call after a successful corpus build and strategizer run, when `rags` is non-empty. This is the final step of the standard workflow. Omit `partition_ids` to process all profiles; supply specific ids from `GET /v1/rag-strategizer/strategy` to retry or target individual partitions. Do not overlap with an active build (`409`).
+**Recommended path:** Call after a successful corpus build and strategizer run, when `rags` is non-empty. This is the final step of the standard workflow. Omit `categories` to process every strategy profile; list category labels to scope the run to those categories. Do not overlap with an active build (`409`).
 
 {{< tip >}}
-**Targeted orchestration.** If you combine `partition_ids` with `file_ids`, the
-Importer only processes the listed documents in the listed partitions. This is
-how an [incremental graph update](../incremental-graph-updates.md) adds a newly
+**Targeted orchestration is driven by `file_ids` alone.** When `file_ids` is
+non-empty, the run is narrowed to the strategized clusters that actually contain
+those File Manager ids, and each of those partitions imports only those ids. You
+do not name the partitions, and there is no parameter for doing so. A
+strategized partition whose intersection with `file_ids` is empty is skipped as a
+completed no-op, not a failure. This is how an
+[incremental graph update](../incremental-graph-updates.md) adds a newly
 inserted or replaced document to Layer 3 without processing the whole partition
 again.
 {{< /tip >}}
@@ -35,13 +48,13 @@ again.
 
 ```json
 {
+  "project": "my_project",
   "replicas": 3,
   "max_retries": 3,
-  "chat_api_keys": ["sk-key1", "sk-key2"],
+  "categories": ["legal", "finance"],
   "importer_env": {
     "CUSTOM_ENV": "value"
-  },
-  "partition_ids": ["domain_0_a", "domain_1_b"]
+  }
 }
 ```
 
@@ -49,14 +62,14 @@ again.
 
 | Parameter | Type | Required | Description | Recommended value |
 |-----------|------|----------|-------------|-------------------|
+| `project` | string | Yes | The platform project that holds the corpus. It has to match the project the service runs against, otherwise the request is rejected with `400`. | The project name of your deployment. Send it in **every** orchestrate request. |
 | `replicas` | integer | Yes | Number of Importer worker replicas (parallelism). Minimum: **1**. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
 | `max_retries` | integer | No | Retries per failed Importer job before giving up. | **3** (default) is appropriate for transient errors. |
-| `chat_api_keys` | string[] | No | Raw chat LLM API keys rotated across replicas. | Prefer **secret profiles** in production; use keys only when your deployment has no secrets manager. |
-| `chat_secret_profile_ids` | string[] | No | Platform secret profile ids for chat keys. Overrides `chat_api_keys` when both are provided. | Provide one or more secret profile IDs. Follow your operator's convention. |
+| `chat_secret_profile_ids` | string[] | No | Platform secret profile ids for chat keys. | Provide one or more secret profile IDs. Follow your operator's convention. Raw chat keys are not accepted on this endpoint. |
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
-| `partition_ids` | string[] | No | If **non-empty**, only strategies whose **`rag_partition_id`** is listed are orchestrated. | **Omit or `[]`** for full corpus. Use **exact ids** from **`GET /v1/rag-strategizer/strategy`** for targeted reruns. |
-| `file_ids` | string[] | No | If **non-empty**, the Importer job of each listed partition only processes these files instead of the whole partition. | **Omit** for a normal build. Use it together with `partition_ids` after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
+| `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition id. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
+| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager ids, and each of those partitions imports only those ids. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
 
 ### Response
 
@@ -84,9 +97,28 @@ Orchestration runs in the background. The counters start at zero in this immedia
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | Orchestration started |
+| `400` | `project` is missing, or does not name the project the service runs against |
 | `401` | Authentication failed |
-| `409` | Another orchestration or build is in progress |
+| `409` | Another orchestration or build is in progress, or none of the `file_ids` matched anything (`NoMatchingFilesError`) |
 | `500` | Server error |
+
+{{< info >}}
+**`409` has two causes.** Besides an overlapping orchestration or build, a
+request whose `file_ids` match **nothing at all** is rejected with a
+`NoMatchingFilesError`. The body sorts every unmatched id into a reason, so read
+those before you retry:
+
+| Reason | Meaning |
+|--------|---------|
+| `not_in_project` | The id does not belong to the requested `project`. |
+| `not_in_any_cluster` | The document is in the project, but no cluster contains it. |
+| `cluster_not_strategized` | The cluster that holds it has no strategy profile yet. Run the RAG Strategizer. |
+| `outside_requested_categories` | The id matches, but its category is not in `categories`. |
+| `corpus_has_no_file_id_stamps` | The corpus was built without File Manager ids, so nothing can be matched by id at all. |
+
+A request that matches **some** of its ids is not rejected. The unmatched ids are
+reported and the run continues with the rest.
+{{< /info >}}
 
 ### HTTP Example
 
@@ -94,7 +126,7 @@ Orchestration runs in the background. The counters start at zero in this immedia
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"replicas": 2, "max_retries": 3}' \
+  -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 
@@ -104,28 +136,15 @@ curl -X POST \
 
 Adds documents that are not in the graph yet. The call is **synchronous**.
 
-The corpus and the target module have to exist already. If the project has
-exactly one module, you can omit `module`. Otherwise, it is required.
+The corpus and the target category have to exist already. If the project has
+exactly one category, you can omit `category`. Otherwise, it is required.
 
 ### Request
 
-Inline content, base64-encoded:
-
-```json
-{
-  "files": [
-    {
-      "doc_name": "new-contract.txt",
-      "content": "Q29udHJhY3QgdGV4dA==",
-      "citable_url": "https://example.com/new-contract"
-    }
-  ],
-  "module": "legal"
-}
-```
-
-To get the file from the File Manager instead, omit `content` and provide a
-`file_id`:
+Every document is identified by its File Manager `file_id`. Insert takes no
+inline content, so upload the document with
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md)
+first and pass the returned ID.
 
 ```json
 {
@@ -135,7 +154,7 @@ To get the file from the File Manager instead, omit `content` and provide a
       "file_id": "<file-manager-file-id>"
     }
   ],
-  "module": "legal"
+  "category": "legal"
 }
 ```
 
@@ -144,11 +163,15 @@ To get the file from the File Manager instead, omit `content` and provide a
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `files` | object[] | Yes | The documents to insert. The list cannot be empty and cannot contain duplicate `doc_name` or `file_id` values. |
-| `files[].doc_name` | string | Yes | The file name of the document. It has to match the File Manager file name if you use `file_id`. |
-| `files[].content` | string | No | The file content, base64-encoded. Provide either `content` or `file_id`. No `file_id` is created for inline content, so you cannot use the document in a targeted orchestration. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
-| `files[].file_id` | string | No | The File Manager ID to get the document from. Preferred over inline content, and required if you want to add the document to Layer 3 later. |
-| `files[].citable_url` | string | No | The canonical URL for citations. It is passed through the pipeline. |
-| `module` | string | Conditional | The target module. Required unless the project has exactly one module. |
+| `files[].doc_name` | string | Yes | The file name of the document. It has to match the File Manager file name of `file_id`. |
+| `files[].file_id` | string | Yes | The File Manager ID to get the document from. Every entry needs one. If any entry is missing it, the whole batch is rejected with `400` and a message that lists the offending `doc_name` values. |
+| `category` | string | Conditional | The target category. Required unless the project has exactly one category. |
+
+There is no `citable_url` request field. AutoGraph reads the citable URL from the
+`custom_metadata` of the File Manager file and validates it the same way a
+[corpus build](importing-files.md#parameters) does, so it has to be an
+`http` or `https` URL with valid characters. Set it on the file when you upload
+it.
 
 ### Response
 
@@ -156,7 +179,7 @@ To get the file from the File Manager instead, omit `content` and provide a
 {
   "results": [
     {
-      "doc_name": "new-contract.txt",
+      "doc_name": "new-contract.pdf",
       "success": true,
       "cluster_key": "cluster_legal_0",
       "rag_partition_id": "legal_0_a",
@@ -174,21 +197,22 @@ To get the file from the File Manager instead, omit `content` and provide a
 | `error_message` | Set if this file failed. The other files of the batch can still succeed. |
 | `cluster_key` | The existing cluster that has been selected for the document. Can be empty if there is no suitable neighbor in a cluster. |
 | `rag_partition_id` | The Layer 3 partition of the selected cluster. Can be empty if there is no strategy profile yet. |
-| `file_id` | Returned if you provided File Manager input. Not set for inserts with inline content because they have no File Manager ID. Use this value in the `file_ids` of your targeted orchestration. |
+| `file_id` | The File Manager ID of the inserted document. Use this value in the `file_ids` of your targeted orchestration. |
 | `divergence_score` | The partition divergence after this insert. It can be lower than the actual churn until a targeted orchestration has created the Layer 3 entities. See [Partition divergence and reclustering](../incremental-graph-updates.md#partition-divergence-and-reclustering). |
 | `needs_reclustering` | `true` if the `divergence_score` is above the threshold of the partition. Nothing is reclustered automatically. |
 
 Insert extracts the text, creates an embedding, stores the source, assigns the
 closest existing cluster, and adds the membership and similarity edges. It only
 updates **Layers 1 and 2**. To add the document to Layer 3, run a targeted
-orchestration with its `file_id` and the returned `rag_partition_id`. This is
-only possible if the insert used a File Manager `file_id`, see
+orchestration with its `file_id`. AutoGraph resolves the partition itself, so you
+do not pass one. Because every insert is keyed by a File Manager ID, an inserted
+document is always targetable, see
 [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The request has been processed. Check the `success` of every entry in `results`. |
-| `400` | Empty or invalid batch, corpus not built, invalid module, duplicate names or IDs, file name mismatch, or the file could not be retrieved from the File Manager. |
+| `400` | Empty or invalid batch, a missing `file_id` on any entry, corpus not built, invalid category, duplicate names or IDs, file name mismatch, or the file could not be retrieved from the File Manager. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `409` | Another operation is currently changing the corpus. |
@@ -203,10 +227,10 @@ curl -X POST \
   -H "Authorization: Bearer <token>" \
   -d '{
     "files": [{
-      "doc_name": "new-contract.txt",
-      "content": "Q29udHJhY3QgdGV4dA=="
+      "doc_name": "new-contract.pdf",
+      "file_id": "<file-manager-file-id>"
     }],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert
 ```
@@ -219,7 +243,7 @@ Removes documents from an existing corpus graph. Layers 1 and 2 are updated
 **synchronously**. The Layer 3 cleanup runs **asynchronously** in the Importer.
 
 Use File Manager IDs in `file_ids` if you can, as they are stable. Otherwise,
-provide `doc_names`, which are looked up in the requested module. You need to
+provide `doc_names`, which are looked up in the requested category. You need to
 provide at least one of the two lists.
 
 ### Request
@@ -230,7 +254,7 @@ provide at least one of the two lists.
     "<file-manager-file-id-1>",
     "<file-manager-file-id-2>"
   ],
-  "module": "legal"
+  "category": "legal"
 }
 ```
 
@@ -239,7 +263,7 @@ By file name instead:
 ```json
 {
   "doc_names": ["old-contract.pdf"],
-  "module": "legal"
+  "category": "legal"
 }
 ```
 
@@ -248,8 +272,8 @@ By file name instead:
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `file_ids` | string[] | Conditional | The File Manager IDs of the documents to delete. Required unless you provide `doc_names`. |
-| `doc_names` | string[] | Conditional | The file names to look up in `module`. Required unless you provide `file_ids`. |
-| `module` | string | Conditional | The module the documents belong to. Required unless the project has exactly one module. |
+| `doc_names` | string[] | Conditional | The file names to look up in `category`. Required unless you provide `file_ids`. |
+| `category` | string | Conditional | The category the documents belong to. Required unless the project has exactly one category. |
 
 {{< info >}}
 The batch is validated before anything is removed. If one of the documents is
@@ -302,7 +326,7 @@ the result of each file in that status.
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The Layer 1 and Layer 2 results are returned. Check `layer3_overall_status`. |
-| `400` | Missing or duplicate identifiers, invalid module, a document does not exist, or it belongs to another module. Nothing is deleted. |
+| `400` | Missing or duplicate identifiers, invalid category, a document does not exist, or it belongs to another category. Nothing is deleted. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `409` | Another operation is currently changing the corpus. |
@@ -317,7 +341,7 @@ curl -X POST \
   -H "Authorization: Bearer <token>" \
   -d '{
     "file_ids": ["<file-manager-file-id>"],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete
 ```
@@ -329,8 +353,8 @@ curl -X POST \
 Replaces the content of documents that are already in the graph. The call is
 **asynchronous**.
 
-Every document has to exist and belong to the requested module. A single invalid
-document makes the whole batch fail before anything is changed.
+Every document has to exist and belong to the requested category. A single
+invalid document makes the whole batch fail before anything is changed.
 
 ### Request
 
@@ -342,7 +366,7 @@ document makes the whole batch fail before anything is changed.
       "content": "VXBkYXRlZCBjb250cmFjdCB0ZXh0"
     }
   ],
-  "module": "legal"
+  "category": "legal"
 }
 ```
 
@@ -354,7 +378,11 @@ document makes the whole batch fail before anything is changed.
 | `files[].doc_name` | string | Yes | The file name of the document to replace. It has to match the File Manager file name if you use `file_id`. |
 | `files[].content` | string | No | The new content, base64-encoded. Provide either `content` or `file_id`. No `file_id` is created for inline content, so you cannot use the new version in a targeted orchestration. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3). |
 | `files[].file_id` | string | No | The File Manager ID to get the new version from. Preferred over inline content, and required if you want to add the new version to Layer 3 later. |
-| `module` | string | Conditional | The module the documents belong to. Required unless the project has exactly one module. If you omit it in a project with a single module, the `doc_name` values are looked up in that module before anything is changed. |
+| `category` | string | Conditional | The category the documents belong to. Required unless the project has exactly one category. If you omit it in a project with a single category, the `doc_name` values are looked up in that category before anything is changed. |
+
+Update still accepts the **deprecated** `module` field, which is only honored
+when `category` is empty. Send `category`. Insert and delete have no `module`
+field at all.
 
 ### Immediate response
 
@@ -421,7 +449,7 @@ version into Layer 3.
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The update has been validated and started. Poll for the result. |
-| `400` | Empty or invalid batch, invalid module, or a document that is not in the graph. |
+| `400` | Empty or invalid batch, invalid category, or a document that is not in the graph. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `409` | Another operation is currently changing the corpus. |
@@ -439,7 +467,7 @@ curl -X POST \
       "doc_name": "existing-contract.txt",
       "content": "VXBkYXRlZCBjb250cmFjdCB0ZXh0"
     }],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update
 ```
@@ -551,7 +579,7 @@ curl -X POST \
       "doc_name": "new.txt",
       "file_id": "<new-file-id>"
     }],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/insert
 
@@ -561,7 +589,7 @@ curl -X POST \
   -H "Authorization: Bearer <token>" \
   -d '{
     "file_ids": ["<old-file-id>"],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/delete
 
@@ -574,7 +602,7 @@ curl -X POST \
       "doc_name": "existing.txt",
       "file_id": "<existing-file-id>"
     }],
-    "module": "legal"
+    "category": "legal"
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update
 ```
@@ -587,8 +615,8 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{
+    "project": "my_project",
     "replicas": 1,
-    "partition_ids": ["legal_0_a"],
     "file_ids": ["<new-or-updated-file-id>"]
   }' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
@@ -614,12 +642,11 @@ and `needs_reclustering` is cleared.
 ## Troubleshooting
 
 - **The insert succeeded but the document is not in Layer 3.** An insert only
-  updates Layers 1 and 2. Run a targeted orchestration with the returned
-  `rag_partition_id` and the new `file_id`.
-- **The insert or update result has no `file_id`.** The call used inline
-  `content`, for which no File Manager ID is created, so there is nothing you
-  can use in the `file_ids` of a targeted orchestration. See [Identifying
-  documents for Layer
+  updates Layers 1 and 2. Run a targeted orchestration with the new `file_id`.
+- **The update result has no `file_id`.** The call used inline `content`, for
+  which no File Manager ID is created, so there is nothing you can use in the
+  `file_ids` of a targeted orchestration. Inserts are unaffected, they always
+  take a `file_id`. See [Identifying documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **The delete returned `LAYER3_DELETE_STATUS_PENDING`.** This is expected.
   Layers 1 and 2 are done and the Layer 3 cleanup runs in the background. Poll

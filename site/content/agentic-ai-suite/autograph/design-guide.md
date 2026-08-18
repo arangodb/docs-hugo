@@ -141,8 +141,10 @@ Importer partitions:
    how modules become parallel partitions in Layer 3; a partitioned knowledge
    graph, not a single undifferentiated blob.
 
-Use `partition_ids` on the orchestrate request to re-run or subset specific
-partitions (for example, only `legal_0_a`) without touching others.
+Use `categories` on the orchestrate request to subset the run to specific
+modules (for example, only `legal`) without touching the others. Scoping stops
+at the category, so you cannot single out one partition of a category. To
+reprocess individual documents, pass their `file_ids` instead.
 
 ---
 
@@ -212,9 +214,10 @@ AutoGraph orchestration (POST /v1/orchestrate)
 
 **When you do interact with the Importer directly:**
 
-- **Re-running a specific partition** - pass `partition_ids` in
-  [`POST /v1/orchestrate`](reference/orchestration.md) to target only the
-  partitions you need rather than re-orchestrating the entire corpus.
+- **Re-running part of the corpus** - pass `categories` in
+  [`POST /v1/orchestrate`](reference/orchestration.md) to orchestrate only the
+  modules you need, or `file_ids` to reprocess only specific documents, rather
+  than re-orchestrating the entire corpus.
 - **Configuring Importer behavior** - pass environment variable overrides in
   the `importer_env` map of the orchestration request (for example, chunk sizes
   or model endpoints) without rebuilding the corpus.
@@ -225,8 +228,8 @@ AutoGraph orchestration (POST /v1/orchestrate)
 {{< info >}}
 After the RAG strategizer has written profiles to `rags`, call
 `POST /v1/orchestrate` to have Importer workers process those profiles. Both
-FullGraphRAG and VectorRAG partitions receive Importer jobs. Use `partition_ids`
-to target specific partitions if you want to exclude some from processing.
+FullGraphRAG and VectorRAG partitions receive Importer jobs. Use `categories` to
+scope the run to specific modules if you want to exclude the others.
 {{< /info >}}
 
 ---

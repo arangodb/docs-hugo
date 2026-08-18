@@ -90,8 +90,9 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
 1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
    depending on what changed. Insert and update only cover Layers 1 and 2.
    Delete also schedules the Layer 3 cleanup.
-2. After an insert or a successful update, call `POST /v1/orchestrate` with
-   `partition_ids` and `file_ids`, so that Layer 3 contains the new content.
+2. After an insert or a successful update, call `POST /v1/orchestrate` with the
+   `file_ids` of the changed documents, so that Layer 3 contains the new
+   content.
 3. Check `divergence_score` and `needs_reclustering` in the result of each file.
 4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
    want to refresh the communities. Reclustering is never automatic.
@@ -169,7 +170,7 @@ curl -H "Authorization: Bearer <token>" \
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"replicas": 2, "max_retries": 3}' \
+  -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
   http://localhost:8080/v1/orchestrate
 ```
 

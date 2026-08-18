@@ -126,7 +126,7 @@ insert call, the previous version of the document stays in the graph.
 ```mermaid
 flowchart TD
   A["Corpus graph already built"] --> B["Insert / Delete / Update\n(Layers 1-2)"]
-  B --> C["Targeted orchestration\npartition_ids + file_ids\n(Layer 3)"]
+  B --> C["Targeted orchestration\nfile_ids\n(Layer 3)"]
   C --> D{"needs_reclustering\ntrue?"}
   D -->|no| E["Done"]
   D -->|yes| F["POST /v1/graph/recluster\n(your decision)"]
@@ -140,13 +140,13 @@ flowchart TD
    changed.
 2. **Build Layer 3.** After an insert or a successful update, run a
    [targeted orchestration](reference/orchestration.md) with the returned
-   `rag_partition_id` and `file_id`, so that the knowledge graph contains the
-   new content. This requires input from the File Manager. A document that you
-   submit as inline `content` has no `file_id` and can therefore not be
-   targeted. In this case, you need to orchestrate the whole partition instead.
-   See [Identifying documents for Layer
-   3](#identifying-documents-for-layer-3). A delete schedules its own Layer 3
-   cleanup in the background.
+   `file_id`, so that the knowledge graph contains the new content. AutoGraph
+   works out which strategized clusters hold those ids, so you do not name a
+   partition. An insert always returns a `file_id`, because it only takes File
+   Manager input. An update that you submit as inline `content` does not, and
+   cannot be targeted, so orchestrate its whole category instead. See
+   [Identifying documents for Layer 3](#identifying-documents-for-layer-3). A
+   delete schedules its own Layer 3 cleanup in the background.
 3. **Check the divergence.** On a **FullGraphRAG** partition, every operation
    calculates a new `divergence_score` and sets `needs_reclustering` if the
    score is above the partition's threshold. **VectorRAG** partitions have
@@ -161,21 +161,24 @@ flowchart TD
 ### Identifying documents for Layer 3
 
 Step 2 identifies documents by `file_id`. This is the only identifier that a
-targeted orchestration accepts, `doc_name` does not work here. That limits how
-you should submit an insert or an update:
+targeted orchestration accepts, `doc_name` does not work here.
 
-| Input used for insert/update | `file_id` available afterwards | Can you target it in Layer 3? |
-|------------------------------|:-:|---|
+[Insert](reference/orchestration.md#insert-documents) requires a File Manager
+`file_id` for every document, so anything you insert is targetable in Layer 3 by
+construction. [Update](reference/orchestration.md#update-documents) also accepts
+inline base64 `content`, and that is the one case to watch:
+
+| Input used for an update | `file_id` available afterwards | Can you target it in Layer 3? |
+|--------------------------|:-:|---|
 | File Manager `file_id` | Yes, it is returned with the result for that file | Yes, pass it in `file_ids` |
 | Inline base64 `content` | No | No, there is nothing to put in `file_ids` |
 
 {{< warning >}}
-**Use a File Manager `file_id` for every document that you want to add to Layer
-3.** Insert and update also accept inline `content`, but no File Manager ID is
-created or returned for such a document, so you cannot use it in the `file_ids`
-of a targeted orchestration. IDs have the form `rag-input-{base64url(db:path)}`
-and refer to a File Manager path, so you cannot construct one for content that
-was never uploaded there.
+**Use a File Manager `file_id` when you update a document that has to reach
+Layer 3.** No File Manager ID is created or returned for inline `content`, so
+you cannot use such a document in the `file_ids` of a targeted orchestration.
+IDs have the form `rag-input-{base64url(db:path)}` and refer to a File Manager
+path, so you cannot construct one for content that was never uploaded there.
 {{< /warning >}}
 
 This is why the [prerequisites](#prerequisites) ask for a project built through
@@ -184,10 +187,10 @@ the File Manager. It makes sure that every document in the project has a
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md)
 first, then pass the returned ID to insert or update.
 
-If you have already inserted a document with inline `content`, you can
-orchestrate the whole partition instead. To do so, provide `partition_ids` and
-omit `file_ids`. Note that this processes everything in the partition again, not
-just the new document. The alternative is to delete the document and insert it
+If you have already replaced a document with inline `content`, you can
+orchestrate its whole category instead. To do so, provide `categories` and omit
+`file_ids`. Note that this processes every document of those categories again,
+not just the changed one. The alternative is to delete the document and insert it
 again from the File Manager. Weigh one against the other, because importing
 documents that are already in the partition adds another import batch. See
 [Updating a document](../importer/incremental-updates.md#updating-a-document).
@@ -306,12 +309,12 @@ The divergence values are stored in the partition's `rags` strategy profile:
 
 - [Graph Operations](reference/orchestration.md#insert-documents): The requests
   and responses of `/v1/graph/insert`, `/delete`, `/update`, and `/recluster`,
-  as well as targeted orchestration with `partition_ids` and `file_ids`
+  as well as targeted orchestration with `file_ids`
 - [Design Guide](design-guide.md): How modules, layers, and partitions fit
   together
 - [Corpus Build](reference/corpus-build.md#incremental-builds): Incremental
   builds for new modules and bulk additions
 - [Importer Incremental Updates](../importer/incremental-updates.md): What the
-  Importer does for Layer 3 deletions and reclustering
+  Importer does for Layer 3, and its reclustering endpoint
 - [Error Handling](reference/error-handling.md): HTTP codes and general
   troubleshooting

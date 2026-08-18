@@ -59,10 +59,10 @@ along with the failed build record):
 - The RAG Strategizer was called before a corpus build finished successfully.
 - An [incremental graph update](../incremental-graph-updates.md) was called
   before the initial corpus build had finished.
-- The `module` of an incremental graph update is unknown, or it was omitted in a
-  project that has more than one module.
+- The `category` of an incremental graph update is unknown, or it was omitted in
+  a project that has more than one category.
 - A document that you want to delete or update is not in the graph, or it
-  belongs to another module.
+  belongs to another category.
 - A batch contains duplicate `doc_name` or `file_id` values.
 - The `partition_ids` array is empty in a recluster request.
 - An embed request is missing `collection` or `field`, or `field` ends in
@@ -141,8 +141,8 @@ some query types need. This limits which queries you can run later.
   `full_graph_rag_strategy` percentage, clear the `rags` collection if needed,
   then re-run orchestration for the affected partitions.
 4. **For critical domains**: Review strategy assignments with
-  `GET /v1/rag-strategizer/strategy`, then use the `partition_ids` parameter
-  on orchestration to reprocess specific clusters with FullGraphRAG.
+  `GET /v1/rag-strategizer/strategy`, then use the `categories` parameter
+  on orchestration to reprocess the affected modules with FullGraphRAG.
 
 ## Troubleshooting
 
@@ -171,13 +171,13 @@ some query types need. This limits which queries you can run later.
   runs, and the `/v1/graph/*` endpoints share one service-wide slot. Wait for
   the active operation to finish and try again.
 - **A document is missing from Layer 3 after an insert.** An insert only updates
-  Layers 1 and 2. Run a targeted orchestration with the returned
-  `rag_partition_id` and `file_id`. For other problems with incremental graph
-  updates, see [Graph Operations](orchestration.md#troubleshooting).
-- **The insert result has no `file_id` for the orchestration.** The document was
-  inserted with inline base64 `content`, for which no File Manager ID is
+  Layers 1 and 2. Run a targeted orchestration with the returned `file_id`. For
+  other problems with incremental graph updates, see
+  [Graph Operations](orchestration.md#troubleshooting).
+- **The update result has no `file_id` for the orchestration.** The new version
+  was submitted as inline base64 `content`, for which no File Manager ID is
   created, and a targeted orchestration can only identify documents by
-  `file_id`. Insert documents from the File Manager if you want to add them to
+  `file_id`. Update from the File Manager if the new version has to reach
   Layer 3. See [Identifying documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the

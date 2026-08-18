@@ -103,11 +103,11 @@ the Importer yourself only for standalone imports or advanced scenarios
 
 After the initial build, AutoGraph also uses the Importer for
 [Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
-Layer 3. It inserts new files, deletes removed files, and replaces changed files
-by deleting and then inserting them. It can also recluster a partition whose
-communities have drifted, but only if you ask for it. AutoGraph flags the drift
-and never reclusters on its own. For the Importer endpoints that are used, see
-[Incremental Updates](incremental-updates.md).
+Layer 3. It submits imports for new and changed files, and it can recluster a
+partition whose communities have drifted, but only if you ask for it. AutoGraph
+flags the drift and never reclusters on its own. Removing a document from
+Layer 3 is not an Importer call, AutoGraph handles it as part of its own delete
+and update operations. See [Incremental Updates](incremental-updates.md).
 
 ## How `partition_id` maps to the Corpus Graph
 

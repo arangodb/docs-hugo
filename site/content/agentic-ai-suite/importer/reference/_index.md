@@ -32,6 +32,7 @@ These status codes apply to the immediate HTTP response of an API call:
 | Database access denied after auth | `403` |
 | Invalid `rag_mode`, `partition_id`, vector params, or missing `file_name` | `400` |
 | Unexpected server fault | `500` |
+| `POST /v1/recluster` while the import lock is held | `503` |
 
 Many **business** failures (busy importer, multi-file validation) return
 `HTTP 200` with `"success": false` in the JSON body. See
@@ -46,20 +47,22 @@ Endpoints are served at **`http://<host>:8080`**.
 | `GET` | `/v1/health` | Check service readiness | [Import Files](../importing-files.md#health-check) |
 | `POST` | `/v1/import` | Import a single file | [Import Files](../importing-files.md#single-file-import) |
 | `POST` | `/v1/import-multiple` | Import a batch of files | [Import Files](../importing-files.md#multi-file-import) |
-| `POST` | `/v1/delete` | Remove the Layer 3 data of a file | [Incremental Updates](../incremental-updates.md#deleting-a-document) |
 | `POST` | `/v1/recluster` | Rebuild the community layer of one partition | [Incremental Updates](../incremental-updates.md#reclustering) |
-| `GET` | `/v1/jobs/{job_id}` | Get the status of a multi-file import, delete, or recluster job | [Import Files](../importing-files.md#monitoring-jobs) |
+| `GET` | `/v1/jobs/{job_id}` | Get the status of a multi-file import or recluster job | [Import Files](../importing-files.md#monitoring-jobs) |
 | `GET` | `/v1/jobs` | List recent jobs | [Import Files](../importing-files.md#monitoring-jobs) |
 
 {{< info >}}
-A replica can only run one import, delete, or recluster job at a time. While one
-of them holds the import lock, calls to the other endpoints are rejected. How
-they are rejected depends on the endpoint you call. The import endpoints return
-`HTTP 200` with `"success": false`, whereas `/v1/delete` and `/v1/recluster`
-return `UNAVAILABLE`. See
+A replica can only run one import or recluster job at a time, under a single
+global lock that is not keyed by partition. While one job holds the lock, calls
+to the other endpoints are rejected. How they are rejected depends on the
+endpoint you call. The import endpoints return `HTTP 200` with
+`"success": false`, whereas `/v1/recluster` returns `HTTP 503` (gRPC
+`UNAVAILABLE`). See
 [Concurrency](../architecture.md#asynchronous-import-lifecycle).
 
-There is no endpoint for updating a document in place. See
+There is no endpoint for deleting or updating a document. AutoGraph removes and
+replaces documents across all three layers. See
+[Deleting a document](../incremental-updates.md#deleting-a-document) and
 [Updating a document](../incremental-updates.md#updating-a-document).
 {{< /info >}}
 
@@ -93,20 +96,22 @@ Strategizer's assignment. Monitor via the AutoGraph orchestration status and
 the platform service status. See
 [AutoGraph Integration](../autograph-integration.md).
 
-### Deleting or reclustering
+### Reclustering
 
-1. Call `POST /v1/delete` or `POST /v1/recluster` and save the returned
-   `job_id`.
-2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`. For deletions,
-   the result is in `job.delete_result`, not in the immediate response.
+1. Call `POST /v1/recluster` and save the returned `job_id`.
+2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`.
 
 See [Incremental Updates](../incremental-updates.md) for the request fields,
-what each operation removes or rebuilds, and how to troubleshoot problems.
+what the operation rebuilds, and how to troubleshoot problems. To remove or
+replace a document, use AutoGraph's
+[`POST /v1/graph/delete`](../../autograph/reference/orchestration.md#delete-documents)
+or
+[`POST /v1/graph/update`](../../autograph/reference/orchestration.md#update-documents).
 
 ## Related references
 
-- **[Incremental Updates](../incremental-updates.md)**: Layer 3 deletions,
-  reclustering, and how to update a document by deleting and importing it.
+- **[Incremental Updates](../incremental-updates.md)**: Reclustering, and how
+  documents are removed and replaced in Layer 3.
 - **[Parameters](parameters.md)**: Complete request parameter reference.
 - **[Error Handling](error-handling.md)**: Troubleshooting, known
   limitations, and error markers in job status messages.
