@@ -444,13 +444,9 @@ If `applied` is `true` but `appliedToRunningPod` is `false`, the new settings
 were saved but the running Retriever could not pick them up. It keeps answering
 queries with the previous settings until it restarts.
 
-The `errorCode` field reports one of the following:
-
-| Cause | Codes |
-|-------|-------|
-| Something is wrong with the request | `PROJECT_MISMATCH`, `PROVIDER_REQUIRED`, `INVALID_PROVIDER`, `PROVIDER_MISMATCH`, `MODEL_REQUIRED`, `SECRET_PROFILE_REQUIRED`, `SECRET_NOT_FOUND`, `SECRET_RESOLUTION_ERROR`, `SECRET_PROFILE_INVALID` |
-| The test requests to the provider failed | `INVALID_API_KEY`, `KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, `RATE_LIMITED`, `PERMISSION_DENIED`, `MODEL_NOT_FOUND`, `MODEL_REJECTED_REQUEST`, `ENDPOINT_UNREACHABLE`, `TIMEOUT`, `PROVIDER_ERROR`, `PROVIDER_EMPTY_RESPONSE`, `API_KEY_REQUIRED`, `INVALID_BASE_URL`, `UNKNOWN_VALIDATION_ERROR` |
-| The settings could not be saved | `METADATA_CLIENT_UNAVAILABLE`, `METADATA_WRITE_TIMEOUT`, `METADATA_WRITE_FAILED`, `SERVICE_NOT_REGISTERED` |
+On failure, `errorCode` names the reason and `field` names the request field to
+correct. For the full list, see
+[Error handling](error-handling.md#model-configuration-error-codes).
 
 The endpoint accepts the same `openai` and `custom` combinations as a fresh
 install, described in

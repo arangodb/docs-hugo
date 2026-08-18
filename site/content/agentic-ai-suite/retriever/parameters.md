@@ -316,15 +316,8 @@ All queries return a response with `result`, `metadata`, `runId`, and
 Inspect `errorCode` instead of treating any non-empty `result` as success.
 {{< /warning >}}
 
-These are the values `errorCode` can have on a failed query:
-
-| `errorCode` | Meaning |
-|-------------|---------|
-| `CONTEXT_LENGTH_EXCEEDED` | The context assembled for the query exceeded the context window of the model. For a Custom Retriever query, lower the `top_k` of the tool named in the message. |
-| `CREDENTIAL_VALIDATION_FAILED` | The service has no chat or embedding API key, or it runs on the `custom` provider without an API URL. See [Configure LLMs](llm-configuration.md). |
-| `VECTOR_INDEX_NOT_READY` | The vector index needed for semantic search is still building. Retry once it is ready. |
-| `INVALID_API_KEY`, `KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, `MODEL_NOT_FOUND`, and other provider codes | The LLM provider rejected the call. These are the same codes the [credentials endpoint](llm-configuration.md#update-the-model-configuration-at-runtime) returns, so a key that stops working mid-query reads the same as one caught while saving credentials. |
-| `PROCESSING_ERROR` | Any other failure. The accompanying message carries the underlying cause. |
+For the meaning of every code, see
+[Error handling](error-handling.md#query-error-codes).
 
 ### Response with Metadata
 

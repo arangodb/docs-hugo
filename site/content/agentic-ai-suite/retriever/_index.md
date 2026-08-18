@@ -89,6 +89,8 @@ For detailed instructions on installing, monitoring, and managing services, see
 - [**Verify and Monitor**](verify-and-monitor.md): Check service health, service
   status, and the query history of your project.
 - [**Parameter Reference**](parameters.md): Complete list of query parameters.
+- [**Error Handling**](error-handling.md): Status codes, error codes, and the
+  failures that arrive with an HTTP `200`.
 
 ## API Reference
 
