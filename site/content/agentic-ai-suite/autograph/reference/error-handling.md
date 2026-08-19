@@ -26,8 +26,8 @@ Error responses are usually JSON with a `message` field (and sometimes a
 
 {{< info >}}
 **Async jobs**: Corpus build and RAG Strategizer jobs run in the background.
-The request that starts a job usually returns `200` even if the job later
-fails because of an LLM or embedding provider problem; the `200` only means
+The request that starts a job returns `202` even if the job later
+fails because of an LLM or embedding provider problem; the `202` only means
 the job was accepted, not that it finished. To check the real outcome, call
 `GET /v1/corpus/builds/{id}` and look for `status: "failed"` (and an optional
 `error_code`), or watch the status in the ArangoGraph web interface.

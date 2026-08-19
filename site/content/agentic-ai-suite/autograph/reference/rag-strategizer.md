@@ -44,7 +44,7 @@ The strategizer runs asynchronously. For each cluster it samples documents, uses
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Strategizer started |
+| `202` | Strategizer accepted and started in the background |
 | `401` | Authentication failed |
 | `409` | Corpus build still in progress |
 | `500` | Server error |

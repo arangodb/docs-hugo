@@ -296,7 +296,7 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | `divergence_score` | The current score, calculated as described above |
 | `divergence_threshold` | The threshold for this partition. Always `0.25`, as no API sets it |
 | `needs_reclustering` | `true` as soon as the score is above the threshold |
-| `last_reclustered_at` | When the partition was last clustered or reclustered successfully. This is also when the current baseline was taken |
+| `last_reclustered_at` | When the partition was last clustered or reclustered successfully, as epoch seconds. This is also when the current baseline was taken |
 
 ### Divergence lifecycle
 
@@ -319,7 +319,7 @@ That leaves three places to read it:
 
 | Where | What you get | Notes |
 |-------|--------------|-------|
-| [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration), per entry of `job_results` | The **authoritative** score for each partition the run touched | This is the value to act on after an insert or an update. Held in memory only: a new `POST /v1/orchestrate` evicts the previous run, and an unknown or evicted id returns `404` |
+| [`GET /v1/orchestrate/{orchestration_id}`](reference/orchestration.md#monitor-an-orchestration), per entry of `jobs` | The **authoritative** score for each partition the run touched | This is the value to act on after an insert or an update. Held in memory only: a new `POST /v1/orchestrate` evicts the previous run, and an unknown or evicted id returns `404` |
 | [`POST /v1/graph/delete`](reference/orchestration.md#delete-documents), per file in `results` | The score after the deletion | Stamped **only** if `overall_status` is `COMMITTED`. A deletion that ends in `ROLLED_BACK` or `FAILED` writes no score |
 | The partition's `rags` strategy profile | The **durable** state, see [Where the values are stored](#where-the-values-are-stored) | Survives eviction. Read it here when the orchestration status is gone |
 

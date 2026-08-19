@@ -98,7 +98,7 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
    content.
-3. Check `divergence_score` and `needs_reclustering` in the `job_results` of
+3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
    `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
    After a delete, they are on each file's result if its `overall_status` is
    `COMMITTED`.
