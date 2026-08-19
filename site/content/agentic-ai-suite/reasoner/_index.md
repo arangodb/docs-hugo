@@ -48,10 +48,9 @@ For requests such as "list all collections" or "show me the graph structure":
 
 ```mermaid
 flowchart TD
-    A([Request received]) --> B["**Execute**
-    Calls database tools as needed
-    to retrieve the relevant data"]
-    B --> C([Respond — results returned in a clear, formatted answer])
+    A([Request received]) --> B["`**Execute**
+      Calls database tools as needed to retrieve the relevant data`"]
+    B --> C(["`**Respond** — results returned in a clear, formatted answer`"])
 ```
 
 ### Query optimization
@@ -61,23 +60,23 @@ For requests that mention terms such as `optimize`, `slow`, `performance`,
 
 ```mermaid
 flowchart TD
-    A([Request received]) --> B["**Profile**
-    Baseline metrics collected from the original query
-    (execution time, memory, index usage, row counts)"]
-    B --> C["**Analyze**
-    Available indexes and collection sizes examined"]
-    C --> D["**Optimize**
-    A new query is produced using applicable techniques
-    (consults relevant AQL manual sections as needed,
-    e.g. aggregation, graph traversal, subqueries, filtering)"]
-    D --> E["**Validate**
-    The optimized query is verified to return identical
-    results and achieve a measurable improvement (≥ 5%)"]
+    A([Request received]) --> B["`**Profile**
+      Baseline metrics collected from the original query
+      (execution time, memory, index usage, row counts)`"]
+    B --> C["`**Analyze**
+      Available indexes and collection sizes examined`"]
+    C --> D["`**Optimize**
+      A new query is produced using applicable techniques
+      (consults relevant AQL manual sections as needed,
+      e.g. aggregation, graph traversal, subqueries, filtering)`"]
+    D --> E["`**Validate**
+      The optimized query is verified to return identical
+      results and achieve a measurable improvement (≥ 5%)`"]
     E --> F{Passed?}
     F -->|No — up to 3 attempts| D
-    F -->|Yes| G["**Report**
-    A structured markdown report is returned with the
-    performance comparison and the final optimized query"]
+    F -->|Yes| G["`**Report**
+      A structured markdown report is returned with the
+      performance comparison and the final optimized query`"]
 ```
 
 ## Architecture overview
@@ -89,7 +88,7 @@ exposes ArangoDB operations as structured tools.
 ```mermaid
 flowchart TD
     Client["Client Request
-    POST /query"] --> ReasonerPort
+      <code>POST /query</code>"] --> ReasonerPort
 
     subgraph ReasonerService["Reasoner Service"]
         ReasonerPort["Reasoner
@@ -98,7 +97,7 @@ flowchart TD
     end
 
     AICoder --> MCP["ArangoDB MCP Server
-    (database tooling)"]
+      (database tooling)"]
     MCP --> DB[(ArangoDB)]
 ```
 

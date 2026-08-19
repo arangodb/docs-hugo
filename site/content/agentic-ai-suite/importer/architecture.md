@@ -146,7 +146,7 @@ submits an import and monitors progress.
 flowchart LR
   Client["Client / orchestrator"]
   API["Importer API"]
-  Poll["GET /v1/jobs/{job_id}"]
+  Poll["<code>GET /v1/jobs/{job_id}</code>"]
   Status["Platform service status"]
   DB["ArangoDB knowledge graph"]
 

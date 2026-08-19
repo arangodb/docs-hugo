@@ -47,9 +47,15 @@ diagram.
 
 ```mermaid
 flowchart LR
-  L1["Layer 1\nModules\n(your design choice)"]
-  L2["Layer 2\nCorpus Graph\n(AutoGraph)"]
-  L3["Layer 3\nKnowledge Graph\n(Importer)"]
+  L1["`**Layer 1**
+    Modules
+    (your design choice)`"]      
+  L2["`**Layer 2**
+    Corpus Graph
+    (AutoGraph)`"]      
+  L3["`**Layer 3**
+    Knowledge Graph
+    (Importer)`"]      
   L1 -->|corpus build| L2 -->|orchestration| L3
 ```
 
