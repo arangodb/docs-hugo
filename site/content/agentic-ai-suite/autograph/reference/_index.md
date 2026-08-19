@@ -9,6 +9,14 @@ This section documents the AutoGraph HTTP REST API. All endpoints require
 JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).
 
+{{< info >}}
+**Field names are lowerCamelCase over HTTP.** This reference uses the
+protobuf field names, such as `rag_partition_id` or `overall_status`. The REST
+gateway emits the JSON names instead, so an actual response carries
+`ragPartitionId` and `overallStatus`. Convert accordingly when you read a
+response or build a request body.
+{{< /info >}}
+
 ## Authentication
 
 All endpoints require a **JWT** in the `Authorization` header:
