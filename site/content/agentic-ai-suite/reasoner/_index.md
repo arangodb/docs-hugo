@@ -114,6 +114,8 @@ The following external services are required:
 
 ## Query optimization
 
+{{< tag "Beta" >}}
+
 The Reasoner includes a fully automated query optimization pipeline. To trigger
 it, include the query you want to optimize in your request along with any of the
 following terms: `optimize`, `slow`, `performance`, `speed up`, `faster`,
