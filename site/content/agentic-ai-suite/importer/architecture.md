@@ -187,7 +187,7 @@ AutoGraph orchestration.
 1. **Choose `rag_mode` explicitly** - `full_graphrag` (default when omitted)
    for entity and community graphs; `vector_rag` for chunk-only retrieval.
 2. **Use multi-file imports plus the jobs API** for batches; use single-file
-   import only when you already integrate with platform service status.
+   import only when you already integrate with data platform service status.
 3. **Serialize imports per replica** - wait for `service_completed` or a
    terminal job status before submitting again.
 4. **Match `embedding_dim` to the deployed embedding model**. Mismatches
@@ -198,16 +198,11 @@ AutoGraph orchestration.
    vendors (OpenRouter, Azure, private endpoints) with the `custom` provider;
    pointing `openai` at a non-OpenAI URL is not supported. See
    [LLM Configuration](llm-configuration.md#using-openai-compatible-apis).
-6. **Prefer File Manager `file_id`s** for large files already on the platform
-   instead of inline base64 payloads.
+6. **Prefer File Manager `file_id`s** for large files already on the
+   data platform instead of inline base64 payloads.
 7. **Plan for long-running jobs**. Graph build and vector-index training can
-   take tens of minutes; ensure tokens can renew (the platform JWT lifetime
+   take tens of minutes; ensure tokens can renew (the data platform JWT lifetime
    applies).
 8. **SmartGraph constraints**: use `smart_graph_attribute="partition_id"`, a
    valid `partition_id`, and `shard_count=1` when creating a new SmartGraph.
    See [Import Files](importing-files.md#smartgraph-and-sharding) for details.
-9. **Account for the shared File Parser**. It is installed once per environment
-   and every consumer in it competes for the same worker pods, so a large
-   AutoGraph corpus build and a large import running at the same time queue
-   behind each other. Scanned PDFs dominate that queue. See
-   [Tuning the File Parser](setup.md#tuning-the-file-parser-for-self-hosted-deployments).

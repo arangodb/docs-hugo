@@ -43,7 +43,7 @@ these existing files or upload new ones.
    - **PDF files**: `.pdf`, including scanned documents
    - **Office documents**: `.docx`, `.pptx`, `.doc`, `.ppt`
 
-   For details especially around image extraction, see
+   For details, especially around image extraction, see
    [Format support](../importer/setup.md#format-support).
 3. You can also click **Upload Folder** to upload an entire folder of documents.
 4. Once files are uploaded, they appear in a **Ready to Upload** list showing the filename and size.

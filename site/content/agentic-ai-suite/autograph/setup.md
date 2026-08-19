@@ -29,9 +29,9 @@ converts it to Markdown and, where applicable, extracts the embedded images
 together with the text surrounding each one. AutoGraph then embeds and clusters
 that Markdown.
 
-The File Parser is a platform service installed once per environment, without a
-web interface of its own. The GraphRAG [Importer](../importer/_index.md) uses
-the same service when it builds the knowledge graph, so the whole AutoGraph
+The File Parser is an internal data platform service installed once per environment,
+without a web interface of its own. The GraphRAG [Importer](../importer/_index.md)
+uses the same service when it builds the knowledge graph, so the whole AutoGraph
 pipeline accepts one consistent set of inputs:
 
 - **PDF**: `.pdf` files including scanned documents, read using OCR
@@ -44,8 +44,8 @@ For the per-format detail, see
 {{< tip >}}
 Parsing runs on CPU. Throughput for large-scale ingestion of PDF and Office
 documents is governed by how many File Parser worker pods your node pool can
-support, not by GPU availability. Scanned PDFs are by far the most expensive
-input, because every page without a text layer has to be read using OCR. See
+support, not by GPU availability. Parsing PDFs is by far the most expensive
+operation, because every page without a text layer has to be read using OCR. See
 [Tuning the File Parser](../importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments)
 if a self-hosted cluster is slower than you expect.
 {{< /tip >}}

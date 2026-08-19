@@ -26,8 +26,8 @@ automation.
 The Importer does not parse documents itself. Every input that is not already
 plain text or Markdown is handed to the internal **File Parser service**, which
 converts it to Markdown and, where applicable, extracts the embedded images
-together with the text surrounding each one. The Importer then chunks that
-Markdown and builds the knowledge graph from it.
+together with the text surrounding each one (if requested). The Importer then
+chunks that Markdown and builds the knowledge graph from it.
 
 The File Parser is a data platform service installed once per environment.
 It has no web interface and you do not call it directly.
@@ -45,7 +45,7 @@ given document type.
 | Format | Text | Images and media |
 |--------|------|------------------|
 | PDF (digital, scanned, mixed) | Full, including OCR for scanned pages | Embedded images extracted with position and surrounding text |
-| DOCX, PPTX | Full | Embedded raster images extracted with position. Vector graphics vary, see the note below |
+| DOCX, PPTX | Full | Embedded raster images extracted with position. Also see the note below |
 | DOC, PPT | Full. Converted internally to the modern Office format first | Same as DOCX, PPTX |
 | Markdown, TXT | Full | Not applicable |
 
@@ -54,11 +54,9 @@ referenced at its position in the Markdown, together with the text surrounding
 it. That is what the Importer turns into semantic units.
 
 {{< info >}}
-**Vector graphics in Office documents**: Word drawing objects are generally
-rasterized during conversion and may therefore get extracted as images.
-Charts and SmartArt in particular may be dropped. In PowerPoint, native charts,
-drawn shapes, and SmartArt are not extracted. Text and slide titles are never
-affected.
+**Vector graphics in Office documents**: Word and PowerPoint documents may
+contain charts, drawn shapes, SmartArt, and other kinds of graphics that are not
+raster images. Only raster images are extracted, vector graphics are ignored.
 {{< /info >}}
 
 Documents that legitimately contain no extractable text, such as a blank page,
@@ -73,16 +71,23 @@ most relevant ones to adjust limits and resource utilization.
 
 | Setting | Default | When to change it |
 |---------|---------|-------------------|
-| `FPS_MAX_REPLICAS__PDF`, `FPS_MAX_REPLICAS__DEFAULT` | 10 worker pods per tier | Lower it if the node pool has fewer CPUs than the fleet would claim; raise it for large ingestion batches on a bigger pool. |
-| `workerPdf.resources.limits.memory` | 6Gi | The memory limit is the parse memory envelope. Raise it if large or image-dense PDFs fail with a resource error. |
-| `FPS_T_PAGE_OCR_S` | 15 seconds per OCR'd page | Raise it on slower CPUs so that scanned PDFs are not cut off by their attempt budget. Parsing is CPU-based; no GPU is used. |
-| `FPS_RETENTION_WINDOW_S` | 259200 (3 days) | The main storage-cost lever. It only needs to outlast an import, so it can be shortened considerably. |
-| `FPS_MAX_FILE_SIZE_BYTES` | 104857600 (100 MB) | Raise it if your corpus contains larger single documents. |
-| `FPS_IMAGE_CAP` | 200 images per document | Raise it for image-heavy documents such as scanned catalogs. |
-| `FPS_MAX_ATTEMPTS` | 3 | Retries per job on transient failures. |
+| `workerPdf.replicas`, `workerDefault.replicas` | 10 worker pods per tier (PDF, other) | Lower it if the node pool has fewer CPUs than the fleet would claim; raise it for large ingestion batches on a bigger pool. |
+| `workerPdf.resources.limits.memory` | 6Gi | The memory limit is the PDF parse memory envelope. Raise it if large or image-dense PDFs fail with a resource error. |
 
-The worker resource limits are Helm values; everything prefixed with `FPS_` is a
-service setting, and values for those must be quoted strings.
+The worker resource limits are defined at deploy time of the service.
+Changing them in an active system is discouraged as it may have adverse effects
+on other components.
+
+<!-- TODO: Once more tuning options have been tested and are considered public, we can add them here
+
+| `FPS_MAX_FILE_SIZE_BYTES` | 104857600 (100 MB) | Raise it if your corpus contains larger single documents. |
+
+everything prefixed with `FPS_` is a service setting, and values for those must be quoted strings.
+
+overrides:
+  config:
+    FPS_MAX_FILE_SIZE_BYTES: "..."
+-->
 
 #### Applying values
 
@@ -96,13 +101,13 @@ data platform with, and apply the configuration using
   arangodb-file-parser:
     package: arangodb-file-parser
     overrides:
-      config:
-        FPS_RETENTION_WINDOW_S: "7200"
-        FPS_MAX_REPLICAS__PDF: "6"
       workerPdf:
+        replicas: 5
         resources:
           limits:
             memory: 8Gi
+      workerDefault:
+        replicas: 15
 ```
 
 The package is the right place for anything you want to keep: it is re-applied
@@ -129,11 +134,9 @@ the full applied set instead, read the service's rendered configuration:
 kubectl get cm arangodb-file-parser-config -n <namespace> -o yaml
 ```
 
-If jobs queue for a long time, the fleet is too small: raise
-`FPS_MAX_REPLICAS__*`, or give the pool more CPU. If jobs fail with resource or
-timeout errors, the per-job limits are too tight for your documents. The
-[Monitoring](../../platform-suite/monitoring.md) dashboards surface both
-patterns.
+If jobs queue for a long time, the fleet is too small: raise `workerPdf.replicas`
+/ `workerDefault.replicas`, or give the pool more CPU. If jobs fail with resource
+or timeout errors, the per-job limits are too tight for your documents.
 
 ## Prerequisites
 

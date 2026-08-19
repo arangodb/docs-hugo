@@ -24,9 +24,9 @@ which extracts each embedded image as a separate artifact and places a
 reference to it at the image's position in the Markdown. Set
 `process_images: true` to have the Importer follow those storage references.
 
-Not every format yields images. Vector graphics in Office documents, charts and
-SmartArt among them, may also be missing. See
-[Format support](setup.md#format-support) for the per-format detail.
+Not every format yields images. Non-raster images like vector graphics in
+Office documents (charts, SmartArt, and so on) are ignored. See
+[Format support](setup.md#format-support) for the per-format details.
 {{< /info >}}
 
 ## Configuration
