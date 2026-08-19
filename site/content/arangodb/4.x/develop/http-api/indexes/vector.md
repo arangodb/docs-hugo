@@ -144,6 +144,7 @@ paths:
                           Similarity in terms of angle and magnitude.
                           Vectors are not normalized, making it faster than `cosine`.
                         - `"l2":` Euclidean distance.
+                      type: string
                       enum: ["cosine", "innerProduct", "l2"]
                     dimension:
                       description: |
