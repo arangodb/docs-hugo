@@ -6,6 +6,8 @@ description: >-
   REST API reference for the Natural Language to AQL service, including
   endpoints for text processing, AQL generation, and query execution
 ---
+{{< tag "Beta" >}}
+
 This page documents the runtime REST endpoints of the Natural Language to AQL
 service. For deployment and configuration, see [Setup](setup.md).
 
