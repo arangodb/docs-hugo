@@ -35,14 +35,14 @@ The workflow has two stages:
    a **Description** of what this project's knowledge base is for.
 3. Click **Create**.
 
-The project opens the three-step setup wizard: **Docs**, **Configure**, and
-**Build**.
+The project opens the three-step setup wizard: **Documents**, **Configure**,
+and **Build**.
 
 ## Add your documents
 
-In the **Docs** step, you upload documents into categories. Each upload becomes
-a category that you name. Documents are uploaded to the project when you
-continue to the next step.
+In the **Documents** step, you upload documents into categories. Each upload
+becomes a category that you name and can edit later. Documents are uploaded to
+the project when you continue to the next step.
 
 1. Click **Upload files** to select individual files, or **Upload folder** to
    upload an entire folder. You can also drag files or a folder anywhere onto the
@@ -52,9 +52,9 @@ continue to the next step.
    - **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
    - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
    - **Rich Text Format**: `.rtf`
-2. The **Name the category** dialog opens and lists the files you selected.
-   Enter a unique **Category name** that describes what these files are about,
-   for example `oasisctl` or `release-notes`.
+2. The **Name this category** dialog opens and lists the files you selected.
+   Enter a short, unique **Category name** that describes what these files
+   cover, for example `architecture` or `release-notes`. You can edit it later.
 3. Click **Upload `<N>` files**.
 4. The files appear grouped under the category with a **Pending** status and
    their file size. You can:
@@ -63,8 +63,8 @@ continue to the next step.
    - Remove a single file with the cross icon, or delete a whole category with
      the trash icon.
    - Repeat the upload to add more categories.
-5. Click **Next**. The documents are uploaded to the project and the wizard
-   continues to the configuration step automatically.
+5. Click **Configure LLM**. The documents are uploaded to the project and the
+   wizard continues to the configuration step automatically.
 
 {{< tip >}}
 If you drop a folder, its name is used as the category name. For loose files,
@@ -77,7 +77,11 @@ In the **Configure** step, choose the LLM provider used to build the Corpus
 Graph. A banner confirms what you are building from, for example
 *Building from 50 documents across 1 category*. A callout summarizes what
 clicking **Start build** does: it deploys the AutoGraph service with these
-settings and builds the Corpus Graph from your uploaded documents.
+settings and builds the Corpus Graph from your uploaded documents. When it is
+ready, the wizard finishes at your project overview, where you can generate
+retrieval strategies and build the Knowledge Graph (AutoRAG).
+
+![The Configure step of the AutoGraph setup wizard](../../images/autograph-ui-configure.png)
 
 {{< warning >}}
 The Corpus Graph is built with the provider configuration you set here. You can
@@ -89,41 +93,42 @@ Corpus Graph.
 {{< tabs "llm-provider" >}}
 
 {{< tab "OpenAI" >}}
-1. In the **CHAT LLM** section, select **OpenAI** from the **Provider** dropdown
-   menu.
+1. In the **Chat model** section, select **OpenAI** from the **Provider**
+   dropdown menu.
 2. Select the model you want to use from the **Model** dropdown menu.
    The default is `gpt-5.4-nano`.
 3. In the **API key** field, search for a saved secret or add a new one. Keys are
    managed in the [Secrets Manager](../../platform-suite/secrets-manager.md).
-4. Optionally, select **Use a different key for embeddings** to configure a
-   separate provider and key for the embedding model. Otherwise, embeddings use
-   your chat provider and key, as the hint below the **EMBEDDING** section
-   states.
-5. In the **EMBEDDING** section, select the **Embedding model**
+4. Optionally, select **Use a separate key for embeddings** to configure a
+   separate provider and key for the embedding model. This adds a **Provider**
+   dropdown menu and an **Embedding key** field to the **Embeddings** section.
+   Otherwise, embeddings use your chat provider and key, as the hint below the
+   **Embeddings** section states.
+5. In the **Embeddings** section, select the **Embedding model**
    (`text-embedding-3-small` or `text-embedding-3-large`).
-6. In the **MULTIMODAL** section, select the **Multimodal model**. This model
+6. In the **Multimodal** section, select the **Multimodal model**. This model
    describes images in your documents during the build. Keep
    **Provider default** or select a specific model.
 7. Click **Start build**.
 {{< /tab >}}
 
 {{< tab "Custom (OpenAI-compatible)" >}}
-1. In the **CHAT LLM** section, select **Custom (OpenAI-compatible)** from the
+1. In the **Chat model** section, select **Custom (OpenAI-compatible)** from the
    **Provider** dropdown menu.
 2. Enter the URL of your OpenAI-compatible endpoint and the **Model** name.
 3. In the **API key** field, search for a saved secret or add a new one. Keys are
    managed in the [Secrets Manager](../../platform-suite/secrets-manager.md).
-4. Optionally, select **Use a different key for embeddings** to configure a
+4. Optionally, select **Use a separate key for embeddings** to configure a
    separate endpoint and key for the embedding model.
-5. Configure the **EMBEDDING** and **MULTIMODAL** sections as needed.
+5. Configure the **Embeddings** and **Multimodal** sections as needed.
 6. Click **Start build**.
 {{< /tab >}}
 
 {{< /tabs >}}
 
 {{< info >}}
-**Start build** stays disabled until every required key is set. The footer tells
-you what is missing, for example *Enter the chat API key to continue*.
+Every required key must be set before the build can start. The footer tells you
+what is missing, for example *Enter the chat API key to continue*.
 {{< /info >}}
 
 Clicking **Start build** moves the wizard to the **Build** step and deploys the
@@ -140,8 +145,8 @@ happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
 1. **Deploy AutoGraph service**: The service is deployed and the interface waits
    for it to respond, showing *Checking service status…* and
    *Service deployed — waiting for it to respond. This might take up to 10
-   minutes.* The **Service ID** is displayed, for example
-   `arangodb-autograph-52vp6`. Wait for the confirmation message
+   minutes.* The **AutoGraph service ID** is displayed, for example
+   `arangodb-autograph-hwyyp`. Wait for the confirmation message
    **AutoGraph service deployed**.
 2. Click **Build Corpus Graph**.
 3. **Build corpus**: Your documents are extracted into the Corpus Graph. When it
@@ -163,6 +168,8 @@ The project overview is the home of your project. It has the following sections:
 - **Model & credentials**: The provider and models used by the build.
 - **AutoRAG**: Deploy retrievers against your Context Graph.
 
+![The project overview of an AutoGraph project](../../images/autograph-ui-project-overview.png)
+
 Your Context Graph is the Corpus Graph together with the Knowledge Graph — as
 the **Context Graph** section puts it, everything AutoGraph generates there is
 part of your Context Graph. The credentials and retriever services shown
@@ -171,7 +178,7 @@ alongside them configure and serve the Context Graph, but are not part of it.
 ## Explore the Corpus Graph
 
 The **Corpus Graph** card shows the graph name (for example
-`<project>_CorpusGraph`) and its number of nodes and edges.
+`<project>_CorpusGraph`) and how many documents and clusters it holds.
 
 Click **Open in Graph Visualizer** to inspect the graph. You can search and add
 nodes to the canvas, run queries, change the layout, and style node types by
@@ -210,7 +217,8 @@ formats of the affected category and try again.
 ## Generate strategies and build the Knowledge Graph
 
 The **Knowledge Graph** card shows the graph name (for example `<project>_kg`)
-and whether the Knowledge Graph is built. The RAG Strategizer analyzes the
+and whether the Knowledge Graph is built. Once it is, the card reports how many
+entities and relationships it contains. The RAG Strategizer analyzes the
 Corpus Graph and generates the import strategies per cluster. For details on how
 strategies are determined, see [RAG Strategizer](reference/rag-strategizer.md).
 
@@ -334,11 +342,12 @@ built, and the **Retrievers** panel points you back to the overview to build it.
 3. In the **Deploy retriever** form, configure the following:
    - **CHAT LLM**: The **Provider** (for example **OpenAI**), the
      **Chat model** (for example **GPT-5.4 Nano**), and the **Chat API key**.
-   - **EMBEDDING**: The **Provider**, **URL**, and **Embedding model** are locked
-     to your corpus build, because the retriever must embed queries with the same
-     provider and model that the import used. The **Embedding API key** stays
-     editable — the corpus pins the endpoint, not the credential for it, as the
-     hint states: *Only its key can be changed*.
+   - **EMBEDDING**: The **Provider** and **Embedding model** — and the **URL**
+     for a custom provider — are locked to your corpus build, because the
+     retriever must embed queries with the same provider and model that the
+     import used. The **Embedding API key** stays editable — the corpus pins the
+     endpoint, not the credential for it, as the hint states:
+     *Only its key can be changed*.
    - Both key fields are required and independent of each other. Select a saved
      key or add a new one for each. Keys are managed in the
      [Secrets Manager](../../platform-suite/secrets-manager.md).
@@ -362,15 +371,15 @@ Select the retriever to see its full service ID and an **initializing** to
 ## Ask questions against your Context Graph
 
 Select a retriever from the list to open its question composer and its past
-questions, then click **New question**. Past questions are marked with the mode
+questions, then click **New question**. A retriever that has not answered
+anything yet is listed as *No runs yet*. Past questions are marked with the mode
 they ran in.
 
 {{< info >}}
 Until the service is ready to answer, a panel takes the place of the composer:
-*Your retriever is starting up. This usually takes a minute. You'll be able to
-ask questions as soon as it's live.* If the service does not come up, the panel
-reports *This retriever isn't responding* with a **Check again** button, or
-*This retriever failed to start*.
+*Your retriever is starting up — wait 1 min until the retriever is started.* If
+the service does not come up, the panel reports *This retriever isn't responding*
+with a **Check again** button, or *This retriever failed to start*.
 {{< /info >}}
 
 1. Choose a [search mode](../retriever/search-methods/_index.md):
@@ -405,6 +414,8 @@ reports *This retriever isn't responding* with a **Check again** button, or
    submit it, or click one of the **Suggested questions**.
 
 Every claim in the answer links back to the exact source chunk it came from.
+
+![The question composer of a deployed AutoRAG retriever](../../images/autograph-ui-retriever.png)
 
 ### See where an answer came from
 
