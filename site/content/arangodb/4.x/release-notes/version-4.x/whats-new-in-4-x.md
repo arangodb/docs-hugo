@@ -184,9 +184,9 @@ when using a filter for a join like this:
 
 ```aql
 FOR doc1 IN coll1
-   FOR doc2 IN coll2
-      FILTER doc2._key == doc1.attr
-      RETURN [doc1, doc2]
+  FOR doc2 IN coll2
+    FILTER doc2._key == doc1.attr
+    RETURN [doc1, doc2]
 ```
 
 If `coll2` uses `_key` as sharding attribute, the only matching documents with
@@ -208,11 +208,11 @@ that is encoded in the `_from` and `_to` attributes of the edge.
 
 ```aql
 FOR n IN nodes
-   FOR e IN edges
-      FILTER e._from == n._id  // Local join, no other DB-Servers involved
-      FOR m IN nodes
-         FILTER e._to == m._id // Distributed to relevant DB-Server only
-         RETURN [n, e, m]
+  FOR e IN edges
+    FILTER e._from == n._id  // Local join, no other DB-Servers involved
+    FOR m IN nodes
+      FILTER e._to == m._id // Distributed to relevant DB-Server only
+      RETURN [n, e, m]
 ```
 
 ## Indexing
