@@ -12,23 +12,29 @@ weight: 35
 Import documents into the corpus for later processing.
 
 Use this endpoint to upload files directly, instead of pointing to ones you have
-already uploaded to the File Manager (`file_ids`). Each call attaches every
-file in the request to one module (the `module` field) and creates one new
-partition for that module. A new call to this endpoint replaces any files
-staged by previous direct-upload calls. Do not import new files while a
-build is in progress.
+already uploaded to the File Manager. Each call attaches every file in the
+request to one module (the `module` field) and creates one new partition for
+that module. A new call to this endpoint replaces any files staged by previous
+direct-upload calls. Do not import new files while a build is in progress.
 
 Choose one of the following upload workflows:
 
-- **Direct upload**: Send one `import-multiple` call
-  containing every file for the module (set `module` on the request body),
-  then run a [corpus build](corpus-build.md). To add or update another
-  module later, import the next module's files and run an
-  [incremental build](corpus-build.md#incremental-builds) with
-  `incremental: true` and the target module listed in `modules`.
-- **File Manager**: Upload your files to the
-  [File Manager](../../../platform-suite/file-manager/_index.md), then call
-  [`POST /v1/corpus/builds`](corpus-build.md) with their `file_ids`.
+- **File Manager (preferred)**: Upload your files to the
+  [File Manager](../../../platform-suite/file-manager/_index.md) under the scope
+  `[project, category]`, then call
+  [`POST /v1/corpus/builds`](corpus-build.md) with those category labels in
+  `categories`. The service resolves and parses the files itself. To add another
+  category later, run another build that lists only the new category.
+- **Direct upload**: Send one `import-multiple` call containing every file for
+  the module (set `module` on the request body), then run a
+  [corpus build](corpus-build.md) without a selector. Every imported basename
+  has to exist as a RAG input in the File Manager for the same database as well.
+
+{{< info >}}
+Documents uploaded through this endpoint are parsed in-process. File Manager
+builds extract the text through the File Parsing Service instead, see
+[Document parsing](corpus-build.md#document-parsing).
+{{< /info >}}
 
 {{< warning >}}
 A new `import-multiple` call replaces the files staged by the previous
@@ -67,7 +73,7 @@ on how to work with modules.
 | `files` | array | Yes | Non-empty list of file objects for this request. | Batch sizes that fit your timeout and payload limits (e.g. tens of small docs or fewer large ones per call). |
 | `files[].doc_name` | string | Yes | Filename as stored for the corpus build. Basename only; requests containing path segments or `..` are rejected with `400`. | Use real extensions (`.md`, `.pdf`, `.docx`, …) so format detection works. Example: `guide.md`. |
 | `files[].content` | string (base64) | Yes | Raw file bytes, **base64-encoded** in JSON. | Encode the entire file in a single field; the endpoint does not support chunked or resumable uploads. |
-| `files[].citable_url` | string | No | Canonical URL shown in citations. This URL is preserved through the corpus build and passed to the GraphRAG Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
+| `files[].citable_url` | string | No | Canonical URL shown in citations, for **this direct-upload path only**. On the File Manager path, set `custom_metadata.citable_url` on the RAG input at upload time instead. The URL is preserved through the corpus build and passed to the GraphRAG Importer. Automatic citation extraction and SemanticUnits linking are not yet implemented; see [Known Limitations](error-handling.md#citation-handling). | Provide the source URL for web-sourced documents (for example, `https://docs.example.com/guide`). Omit the field for documents without a canonical web location. |
 | `files[].metadata` | string | No | Opaque string carried in metadata (often JSON as text). | Use for stable IDs, versions, or tags your app parses later. Omit if unused. |
 | `module` | string | No | Module label applied to **every** file in this request. See [Designing modules](../design-guide.md#designing-modules) for naming guidance. | Use a **stable** module label (`legal`, `docs_en`, …). If omitted, files receive the `default` module label during corpus build. |
 

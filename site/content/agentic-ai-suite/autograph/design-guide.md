@@ -61,7 +61,7 @@ the corpus build. Modules are the unit of isolation:
 
 - No cross-module similarity edges
 - Clustering runs inside each module independently
-- Rebuilds can target a single module using `incremental: true` with `modules`
+- A build targets individual modules through the `categories` parameter
 
 See [Designing modules](#designing-modules) for split-vs-merge trade-offs.
 
@@ -159,38 +159,49 @@ Use AutoGraph for everything up to and including Layer 2.
 | Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](reference/corpus-build.md#monitoring-build-status) |
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |
-| Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new module in `categories` |
+| Append documents to a module that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
 | Add, remove, or replace individual documents in an existing module | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
 | Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) |
+| Inspect the state of the project and its modules | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
+| Remove a module and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds
 
-- **`incremental: false`** (default) - wipes and rebuilds data for all
-  discovered modules. Use for first builds or full rebuilds.
-- **`incremental: true`** - preserves all modules except those listed in
-  `modules`, which are wiped and rebuilt from their current files. Use to add a
-  new module or update one module without touching others.
+- **`incremental: false`** (default) - builds the listed modules from scratch.
+  It is only accepted when every listed module is **new** to the corpus. Use it
+  for a first build and when you add a module.
+- **`incremental: true`** - appends to the listed modules and leaves every other
+  module untouched. On a File Manager build it also removes corpus documents
+  that are no longer in the File Manager listing.
 
 {{< warning >}}
-Do not use incremental mode for a first-time build; there is no existing data
-to preserve. See [Incremental Builds](reference/corpus-build.md#incremental-builds)
-for details.
+**A module that is already built cannot be rebuilt in place.** A build with
+`incremental: false` that lists an existing module is rejected with
+`REBUILD_NOT_ALLOWED`, because the knowledge graph cannot be rebuilt from the
+new vectors.
+
+To rebuild a module cleanly, remove it with
+[`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category)
+first, then build it, run the RAG Strategizer, and orchestrate again.
 {{< /warning >}}
 
 ### Document-level changes
 
-Neither build mode is a good fit if documents change regularly, because both
-wipe and rebuild an entire module. To add, remove, or replace individual
-documents in a module that is already built, and keep its clusters, strategy
-profiles, and knowledge graph consistent, use
+Neither build mode is a good fit if documents change regularly. A build works at
+the granularity of a whole module and recomputes its similarity and clustering,
+and it never touches Layer 3. To add, remove, or replace individual documents in
+a module that is already built, and keep its clusters, strategy profiles, and
+knowledge graph consistent, use
 [Incremental Graph Updates](incremental-graph-updates.md) instead.
 
 | Change | How to apply it |
 |--------|------|
 | A few documents are added, removed, or replaced | [Incremental Graph Updates](incremental-graph-updates.md) |
-| Many documents are added to an existing module | Corpus build with `incremental: true` |
-| A new module, or a clean rebuild of one module | Corpus build with the module in `modules` |
+| Many documents are added to an existing module | Corpus build with that module in `categories` and `incremental: true` |
+| A new module | Corpus build with only the new module in `categories` |
+| A clean rebuild of one module | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and orchestrate it again |
 
 ---
 
