@@ -25,6 +25,8 @@ The workflow has two stages:
    **AutoGraph Studio**. You can also open the **Agentic AI Suite** overview and
    click **Run AutoGraph Studio**.
 
+![The Agentic AI Suite overview with the AutoGraph Studio card](../../images/autograph-ui-suite-overview.png)
+
 ## Create an AutoGraph project
 
 1. In the **AutoGraph Studio** view, click **+ New Project**.
@@ -33,6 +35,9 @@ The workflow has two stages:
    **Filters** to narrow the list, and click a project name to open it.
 2. The **New project** dialog opens. Enter a **Project name** and, optionally,
    a **Description** of what this project's knowledge base is for.
+
+   ![The New project dialog with a project name entered](../../images/autograph-ui-new-project.png)
+
 3. Click **Create**.
 
 The project opens the three-step setup wizard: **Documents**, **Configure**,
@@ -43,6 +48,8 @@ and **Build**.
 In the **Documents** step, you upload documents into categories. Each upload
 becomes a category that you name and can edit later. Documents are uploaded to
 the project when you continue to the next step.
+
+![The empty Documents step of the AutoGraph setup wizard](../../images/autograph-ui-documents.png)
 
 1. Click **Upload files** to select individual files, or **Upload folder** to
    upload an entire folder. You can also drag files or a folder anywhere onto the
@@ -55,9 +62,16 @@ the project when you continue to the next step.
 2. The **Name this category** dialog opens and lists the files you selected.
    Enter a short, unique **Category name** that describes what these files
    cover, for example `architecture` or `release-notes`. You can edit it later.
+
+   ![The Name this category dialog listing the selected files](../../images/autograph-ui-name-category.png)
+
 3. Click **Upload `<N>` files**.
 4. The files appear grouped under the category with a **Pending** status and
-   their file size. You can:
+   their file size.
+
+   ![The uploaded files grouped under a category with a Pending status](../../images/autograph-ui-documents-pending.png)
+
+   You can:
    - Use the **Search files by name** field and the **Category** dropdown to
      filter the list.
    - Remove a single file with the cross icon, or delete a whole category with
@@ -75,7 +89,7 @@ you name the category yourself.
 
 In the **Configure** step, choose the LLM provider used to build the Corpus
 Graph. A banner confirms what you are building from, for example
-*Building from 50 documents across 1 category*. A callout summarizes what
+*Building from 3 documents across 1 category*. A callout summarizes what
 clicking **Start build** does: it deploys the AutoGraph service with these
 settings and builds the Corpus Graph from your uploaded documents. When it is
 ready, the wizard finishes at your project overview, where you can generate
@@ -146,8 +160,11 @@ happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
    for it to respond, showing *Checking service status…* and
    *Service deployed — waiting for it to respond. This might take up to 10
    minutes.* The **AutoGraph service ID** is displayed, for example
-   `arangodb-autograph-hwyyp`. Wait for the confirmation message
+   `arangodb-autograph-jdn9r`. Wait for the confirmation message
    **AutoGraph service deployed**.
+
+   ![The Build step of the AutoGraph setup wizard waiting for the service](../../images/autograph-ui-build.png)
+
 2. Click **Build Corpus Graph**.
 3. **Build corpus**: Your documents are extracted into the Corpus Graph. When it
    completes, a **Corpus Graph ready** notification appears and the project
@@ -351,6 +368,9 @@ built, and the **Retrievers** panel points you back to the overview to build it.
    - Both key fields are required and independent of each other. Select a saved
      key or add a new one for each. Keys are managed in the
      [Secrets Manager](../../platform-suite/secrets-manager.md).
+
+   ![The Deploy retriever form with the chat and embedding configuration](../../images/autograph-ui-deploy-retriever.png)
+
 4. Click **Deploy retriever**.
 
 The retriever appears in the **Retriever services** list. Retrievers have no name
