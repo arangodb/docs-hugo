@@ -26,37 +26,6 @@ Error responses are usually JSON with a `message` field (and sometimes a
 `code`) that you can log or show to operators.
 
 {{< info >}}
-**`507 Insufficient Storage` is defined but never reached.** The gateway maps a
-local storage limit onto `507`, but no endpoint raises it. Staging budget
-exhaustion is reported on the build itself, as a **completed** build with
-`error_code: STORAGE_FILE_TOO_LARGE`, and a single file that is larger than the
-whole budget is a `400`. Do not write a client branch for `507`.
-{{< /info >}}
-
-### Two outcomes that are not failures
-
-- **`202`** means accepted, not finished. Poll the matching status endpoint.
-- **`409` from `POST /v1/orchestrate`** with a message that reads
-  `Nothing to orchestrate: …` means the knowledge graph is already up to date.
-  Do not retry. Check
-  [Project Overview](project-operations.md#project-overview) if you expected
-  work to be pending.
-
-### Successful responses that you still have to inspect
-
-- `GET /v1/corpus/builds/{id}` with `status: completed` **and** a non-empty
-  `error_code` is a partial success, see
-  [Build error codes](corpus-build.md#build-error-codes).
-- `PUT /v1/projects/{project}/model-config/credentials` returns `200` even when
-  the validation failed. Key off `valid` and `applied`, see
-  [Update Model Config Credentials](project-operations.md#update-model-config-credentials).
-- `DELETE /v1/projects/{project}` returns `200` for a complete teardown and for
-  a partial failure. Key off `deleted`, see
-  [Delete Project](project-operations.md#delete-project).
-- A `POST /v1/graph/insert` or `/v1/graph/update` response can report a failure
-  per file while the request itself succeeded.
-
-{{< info >}}
 **Async jobs**: Corpus build, RAG Strategizer, and orchestration jobs run in the
 background. The request that starts one returns `202` even if the job later
 fails because of an LLM or embedding provider problem; the `202` only means that

@@ -296,7 +296,7 @@ The divergence values are stored in the partition's `rags` strategy profile:
 | `divergence_score` | The current score, calculated as described above |
 | `divergence_threshold` | The threshold for this partition. Always `0.25`, as no API sets it |
 | `needs_reclustering` | `true` as soon as the score is above the threshold |
-| `last_reclustered_at` | When the partition was last clustered or reclustered successfully. This is also when the current baseline was taken |
+| `last_reclustered_at` | When the partition was last clustered or reclustered successfully, as epoch seconds. This is also when the current baseline was taken |
 
 ### Divergence lifecycle
 

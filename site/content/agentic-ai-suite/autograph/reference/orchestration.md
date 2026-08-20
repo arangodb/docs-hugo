@@ -83,7 +83,7 @@ upper bound.
 | Parameter | Type | Required | Description | Recommended value |
 |-----------|------|----------|-------------|-------------------|
 | `project` | string | Yes | The platform project that holds the corpus. It has to match the project the service runs against, otherwise the request is rejected with `400`. | The project name of your deployment. Send it in **every** orchestrate request. |
-| `replicas` | integer | No | Number of Importer worker replicas (parallelism). Defaults to **1** when omitted. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
+| `replicas` | integer | No | Number of Importer worker replicas (parallelism). Defaults to **1**. A value of `0`, or omitting the field, is silently treated as `1`. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
 | `max_retries` | integer | No | Retries per failed Importer job before giving up. | **3** (default) is appropriate for transient errors. |
 | `chat_secret_profile_ids` | string[] | No | Platform secret profile IDs for chat keys. | Provide one or more secret profile IDs. Follow your operator's convention. Raw chat keys are not accepted on this endpoint. |
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
@@ -141,7 +141,7 @@ per-partition results, or watch your platform's job tracking and service logs.
 | `orchestration_id` | Id for this orchestration run. | Log for correlation with support / metadata. |
 | `success` | **`true`** if the background pipeline was scheduled. | Treat as "accepted", not "all Importer jobs finished". |
 | `message` | e.g. **`Orchestration started`**. | Display to operators. |
-| `total_jobs` / `completed_jobs` / `failed_jobs` / `job_results` | Counters and per-partition results. | Often remain at initial values on this first response. Read the populated values from [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration). |
+| `total_jobs` / `completed_jobs` / `failed_jobs` / `job_results` | Counters and per-partition results. | Often remain at initial values on this first response. Read the populated values from [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration), where the per-job array is called `jobs`. |
 | `unmatched_file_ids` | The requested `file_ids` that matched no document in any strategized cluster within the requested categories. Empty when every ID matched, or when `file_ids` was omitted. | Read it on a partial match to see which documents were silently left out. |
 
 {{< warning >}}
@@ -154,7 +154,7 @@ read it from the response body before you start polling. A request in which
 | Status Code | Meaning |
 |-------------|---------|
 | `202` | Orchestration accepted and started in the background |
-| `400` | `project` is missing or does not name the project the service runs against, no strategy profile matches the given `categories`, or the model configuration gate is latched (see [Corpus Build](corpus-build.md#create-corpus-build)) |
+| `400` | `project` is missing, or does not name the project the service runs against |
 | `401` | Authentication failed |
 | `403` | Access denied |
 | `409` | One of three distinct conditions, see below |
@@ -810,8 +810,7 @@ A final status message looks like this:
       "cluster": "cluster_legal_0",
       "previous_cluster": "cluster_legal_1",
       "partition": "legal_0_a",
-      "file_id": "<file-manager-file-id>",
-      "error": ""
+      "file_id": "<file-manager-file-id>"
     }
   ]
 }
@@ -824,7 +823,11 @@ A final status message looks like this:
 | `cluster` / `previous_cluster` | The cluster that is assigned to the new version, and the cluster the old version belonged to. |
 | `partition` | The Layer 3 partition of the new cluster. |
 | `file_id` | The File Manager ID of the new version. Use it in the `file_ids` of the targeted orchestration, and to add the document again with [insert](#insert-documents) if the update left it removed. |
-| `error` | Set if this file failed. Empty otherwise. |
+| `error` | Present only if this file failed. |
+
+Only `file` and `result` are always present. The service adds every other key
+conditionally, so read them as absent rather than empty when the value does not
+apply.
 
 {{< warning >}}
 **Check every file, not only the top-level `status`.** A run can report
@@ -989,9 +992,10 @@ which means it tells you nothing about whether they actually ran.
 Read the per-partition outcome from the **`rags` strategy profile**, not from
 `importerOrchestration`. The `importerOrchestration` entry in your project
 metadata carries the status of the job that holds the slot. It is *not* a
-per-partition ledger, and a partition that gave up waiting is never published
-there at all, so it is invisible in that slot. The `rags` node of the partition
-is authoritative:
+per-partition ledger. A partition that gave up waiting behind **another
+reclustering** is not published there at all, so it is invisible in that slot; a
+deferral behind any other operation is published as `failed`. The `rags` node of
+the partition is authoritative:
 
 | Field on the `rags` node | After a successful reclustering |
 |--------------------------|---------------------------------|
@@ -1007,7 +1011,7 @@ stored](../incremental-graph-updates.md#where-the-values-are-stored).
 | Status Code | Meaning |
 |-------------|---------|
 | `200` | The request has been processed. Check the `accepted` value of every entry in `results`. |
-| `400` | `partition_ids` is missing or empty, it lists more than five partitions, or the project runs on **Triton**, which cannot be reclustered. |
+| `400` | `partition_ids` is missing or empty, or it lists more than five partitions. |
 | `401` | Authentication failed. |
 | `403` | Access denied. |
 | `500` | Server error. |
@@ -1020,8 +1024,13 @@ stored](../incremental-graph-updates.md#where-the-values-are-stored).
   delete, so it cannot run at the same time as these operations.
 - A reclustering that fails or is skipped does not clear `needs_reclustering`.
   Start it again once the slot is free.
-- **Triton projects can never be reclustered.** The request is rejected up front
-  with `400`, so there is no job and nothing to poll.
+- **Triton projects cannot be reclustered, but this endpoint does not reject
+  them.** A recluster of a Triton project is accepted (`accepted: true`) but
+  fails in the background: the Importer rejects it with gRPC
+  `FAILED_PRECONDITION` before doing any work, see
+  [Reclustering](../../importer/incremental-updates.md#reclustering). The failure
+  appears in the `importerOrchestration` status slot, and `needs_reclustering`
+  stays set.
 - A partition **without entities** is a successful no-op. The job reports `0`
   communities over `0` entities and finishes, so a completed job is not evidence
   that anything was refreshed. Check `last_reclustered_at` and the
@@ -1214,16 +1223,16 @@ pick a maintenance window for them.
   [Where to read the score](../incremental-graph-updates.md#where-to-read-the-score).
 - **The reclustering was accepted but `needs_reclustering` is still `true`.**
   `accepted: true` only means the request was taken up. The partition may still
-  be running, it may have failed, or it may never have got the mutation slot:
-  reclusterings are serialized, and a partition that waits behind a peer gives up
-  after about ten one-second attempts. None of that clears the flag. Check
-  `last_reclustered_at` on the `rags` node to tell "not yet reclustered" from
-  "reclustered and drifted again", and trigger the partition again. Do not look
-  for the answer in `importerOrchestration`, which only shows the job that holds
-  the slot and never sees a partition that gave up waiting.
+  be running, it may have failed (a Triton project always fails here), or it may
+  never have got the mutation slot: reclusterings are serialized, and a partition
+  that waits behind a peer gives up after about ten one-second attempts. None of
+  that clears the flag. Check `last_reclustered_at` on the `rags` node to tell
+  "not yet reclustered" from "reclustered and drifted again", and trigger the
+  partition again. `importerOrchestration` only shows the job that holds the
+  slot, and it does not see a partition that gave up waiting behind another
+  reclustering.
 - **A recluster request returns `400`.** Either `partition_ids` is empty, or it
-  lists more than five partitions, or the project runs on Triton. Triton projects
-  cannot be reclustered at all.
+  lists more than five partitions.
 - **A reclustering completed but the communities look unchanged.** A partition
   with no entities is a successful no-op that reports `0` communities over `0`
   entities. Confirm that the partition has `Entities` before you expect a

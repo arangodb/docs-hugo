@@ -9,6 +9,14 @@ This section documents the AutoGraph HTTP REST API. All endpoints require
 JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).
 
+{{< info >}}
+**Field names are lowerCamelCase over HTTP.** This reference uses the
+protobuf field names, such as `rag_partition_id` or `overall_status`. The REST
+gateway emits the JSON names instead, so an actual response carries
+`ragPartitionId` and `overallStatus`. Convert accordingly when you read a
+response or build a request body.
+{{< /info >}}
+
 ## Authentication
 
 All endpoints require a **JWT** in the `Authorization` header:
@@ -189,8 +197,7 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
    Delete is synchronous and removes the Layer 3 data itself.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
-   content. A non-empty `file_ids` also skips the stale-partition filter, so a
-   partition that is already imported stays eligible.
+   content.
 3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
    `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
    After a delete, they are on each file's result if its `overall_status` is

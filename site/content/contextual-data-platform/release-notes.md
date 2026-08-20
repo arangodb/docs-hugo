@@ -17,8 +17,10 @@ pageToc:
   documents in a knowledge graph that is already built, without rebuilding the
   corpus, the RAG Strategizer, and a full orchestration pass. See
   [Incremental Graph Updates](../agentic-ai-suite/autograph/incremental-graph-updates.md).
-  The feature is API-only in this release; the web interface does not offer
-  these operations.
+  Insert and update identify documents by their File Manager `file_id` and take
+  no inline content; the citable URL is read from the `custom_metadata` of the
+  file. The feature is API-only in this release; the web interface does not
+  offer these operations.
 - **Breaking:** the request field `module` was renamed to `category` on
   [`POST /v1/graph/delete`](../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents).
   Clients that send `module` have to send `category` instead.
@@ -27,10 +29,6 @@ pageToc:
   [`POST /v1/graph/update`](../agentic-ai-suite/autograph/reference/orchestration.md#update-documents)
   takes `category` with `module` kept as a deprecated fallback that is only
   honored when `category` is empty.
-- **Breaking:** `POST /v1/graph/insert` no longer accepts inline base64
-  `content` or a `citable_url` field. Every document is identified by its File
-  Manager `file_id`, and the citable URL is read from the `custom_metadata` of
-  the file.
 - **Breaking:** [`POST /v1/orchestrate`](../agentic-ai-suite/autograph/reference/orchestration.md#trigger-orchestration)
   requires a `project` field and scopes work with `categories` instead of
   `partition_ids`, which was removed. A targeted run is driven by `file_ids`
@@ -78,7 +76,7 @@ This release contains improvements and refinements to features introduced in v4.
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
   also adds HTTP `429` (provider rate-limited or quota exhausted), expands
   the meanings of `401` and `403` to cover LLM provider auth and permission
-  failures, and explains why an accepted (`200`) async job can still fail
+  failures, and explains why an accepted (`202`) async job can still fail
   later.
 - The new Known Limitations section in the
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)

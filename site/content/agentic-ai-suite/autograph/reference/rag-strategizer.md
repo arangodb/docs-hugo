@@ -97,7 +97,7 @@ collection and later passed to the Importer to constrain entity extraction, see
 
 | Status Code | Meaning |
 |-------------|---------|
-| `202` | Job accepted, `strategize_job_id` returned |
+| `202` | Strategizer accepted and started in the background |
 | `400` | Invalid `project`, `complexity`, or `extract_images_default`, or the model configuration gate is latched (see [Corpus Build](corpus-build.md#create-corpus-build)) |
 | `401` | Authentication failed |
 | `403` | No database access |
