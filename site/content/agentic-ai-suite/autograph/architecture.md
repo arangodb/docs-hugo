@@ -426,7 +426,7 @@ flowchart TD
 ## Project-level operations
 
 These endpoints sit outside the sequential pipeline. You can inspect and configure
-a project at any time. Deleting a category is guarded against a running corpus
+a project at any time. Both delete endpoints are guarded against a running corpus
 build or orchestration.
 
 ```mermaid
@@ -437,6 +437,7 @@ flowchart LR
     Client -.->|inspect anytime| OVERVIEW
     Client -.->|configure| MODELCFG
     Client -.->|maintenance| DELCAT
+    Client -.->|teardown| DELPROJ
 
     OVERVIEW["`<code>GET /v1/projects/{project}/overview</code>
       Corpus + KG cards, categories,
@@ -446,6 +447,9 @@ flowchart LR
       secret profiles - validated on write`"]
     DELCAT["`<code>DELETE /v1/projects/{project}/categories/{category}</code>
       409 while a build or orchestration runs`"]
+    DELPROJ["`<code>DELETE /v1/projects/{project}</code>
+      Removes every project-owned resource,
+      then the service tears itself down`"]
 
     L2R[("`**Layer 1-2 - Corpus Graph**
       modules, sources, similarities,
@@ -467,4 +471,9 @@ flowchart LR
     DELCAT -->|1 - remove KG partitions| L3R
     DELCAT -->|2 - remove module data| L2R
     DELCAT -->|3 - delete_files true only| FMR
+    DELPROJ -->|drops graphs and collections| L3R
+
+    DELPROJ -->|drops graphs and collections| L2R
+    DELPROJ -->|delete_files true only| FMR
+    DELPROJ -->|removes the project node| META
 ```
