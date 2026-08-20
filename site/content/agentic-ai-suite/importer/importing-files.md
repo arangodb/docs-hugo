@@ -349,5 +349,6 @@ written as `{partition_id}:{logicalKey}`.
 ## Next Steps
 
 - **[Explore all parameters](reference/parameters.md)**: Customize chunking, entity extraction, and more.
+- **[Incremental updates](incremental-updates.md)**: Recluster a partition after the initial import, and how documents are removed and replaced.
 - **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
 - **[Verify your import](verify-and-explore.md)**: Check import status and explore the created collections.

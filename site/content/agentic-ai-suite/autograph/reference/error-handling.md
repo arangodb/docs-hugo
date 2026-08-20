@@ -16,7 +16,7 @@ The service returns these HTTP status codes:
 | `401` | Missing or invalid token, or the LLM provider rejected authentication. |
 | `403` | Not allowed to use the database, or the LLM provider denied access. |
 | `404` | Unknown build ID, or the collection in an embed request does not exist. |
-| `409` | Another build or orchestration run is already in progress. |
+| `409` | Another build, orchestration run, or graph mutation is already in progress. |
 | `429` | The LLM provider rate-limited the request or its quota is exhausted. |
 | `500` | Server or configuration error. |
 | `503` | Service not ready. |
@@ -26,8 +26,8 @@ Error responses are usually JSON with a `message` field (and sometimes a
 
 {{< info >}}
 **Async jobs**: Corpus build and RAG Strategizer jobs run in the background.
-The request that starts a job usually returns `200` even if the job later
-fails because of an LLM or embedding provider problem; the `200` only means
+The request that starts a job returns `202` even if the job later
+fails because of an LLM or embedding provider problem; the `202` only means
 the job was accepted, not that it finished. To check the real outcome, call
 `GET /v1/corpus/builds/{id}` and look for `status: "failed"` (and an optional
 `error_code`), or watch the status in the ArangoGraph web interface.
@@ -53,10 +53,18 @@ along with the failed build record):
 
 **Common causes of validation or configuration errors:**
 
-- The `files` array is empty on import.
+- The `files` array is empty on import, insert, or update.
 - The `embedding_strategy` is set to a value other than `"first_chunk"`.
 - The `cluster_threshold` is set to a value other than `1` or `2`.
 - The RAG Strategizer was called before a corpus build finished successfully.
+- An [incremental graph update](../incremental-graph-updates.md) was called
+  before the initial corpus build had finished.
+- The `category` of an incremental graph update is unknown, or it was omitted in
+  a project that has more than one category.
+- A document that you want to delete or update is not in the graph, or it
+  belongs to another category.
+- A batch contains duplicate `doc_name` or `file_id` values.
+- The `partition_ids` array is empty in a recluster request.
 - An embed request is missing `collection` or `field`, or `field` ends in
   `_embedding`.
 - The server has no embedding provider or no authentication configured.
@@ -137,8 +145,8 @@ some query types need. This limits which queries you can run later.
   `full_graph_rag_strategy` percentage, clear the `rags` collection if needed,
   then re-run orchestration for the affected partitions.
 4. **For critical domains**: Review strategy assignments with
-  `GET /v1/rag-strategizer/strategy`, then use the `partition_ids` parameter
-  on orchestration to reprocess specific clusters with FullGraphRAG.
+  `GET /v1/rag-strategizer/strategy`, then use the `categories` parameter
+  on orchestration to reprocess the affected modules with FullGraphRAG.
 
 ## Troubleshooting
 
@@ -163,6 +171,18 @@ some query types need. This limits which queries you can run later.
 - **Orchestration fails.** Confirm that the `rags` collection contains
   strategies, and that platform authentication and the GraphRAG Importer
   integration are configured for your environment.
+- **An incremental graph update returns `409`.** Corpus builds, orchestration
+  runs, and the `/v1/graph/*` endpoints share one service-wide slot. Wait for
+  the active operation to finish and try again.
+- **A document is missing from Layer 3 after an insert.** An insert only updates
+  Layers 1 and 2. Run a targeted orchestration with the returned `file_id`. For
+  other problems with incremental graph updates, see
+  [Graph Operations](orchestration.md#troubleshooting).
+- **An insert or update is rejected with `400` and a list of `doc_name`
+  values.** Those entries have no `file_id`. Both endpoints take File Manager
+  input only, and a single missing id rejects the whole batch. See [Identifying
+  documents for Layer
+  3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the
   source field must have non-empty values, and an embedding provider must
   be configured on the service.
