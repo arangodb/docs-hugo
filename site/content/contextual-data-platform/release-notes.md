@@ -140,7 +140,7 @@ This release contains improvements and refinements to features introduced in v4.
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
   also adds HTTP `429` (provider rate-limited or quota exhausted), expands
   the meanings of `401` and `403` to cover LLM provider auth and permission
-  failures, and explains why an accepted (`200`) async job can still fail
+  failures, and explains why an accepted (`202`) async job can still fail
   later.
 - The new Known Limitations section in the
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)

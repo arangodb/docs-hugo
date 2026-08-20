@@ -239,7 +239,7 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
   `docs_sources`, `docs_domains`, `docs_CorpusGraph`, and so on). Set it to the
   same name you chose when creating the project via the
   [web interface](web-interface.md) or the
-  [Project API](../../platform-suite/control-plane-acp.md#creating-a-project).
+  [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
   The Project API names this field `project_name`; the AutoGraph install
   request uses `genai_project_name` for the same value.
 

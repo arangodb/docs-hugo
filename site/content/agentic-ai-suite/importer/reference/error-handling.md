@@ -24,7 +24,8 @@ For the immediate response of an API call:
 | Bad or missing JWT | `401` | Error detail or empty body |
 | Database access denied | `403` | Error detail |
 | Invalid `rag_mode`, `partition_id`, vector params | `400` | Error detail |
-| Importer busy (lock held) | `200` | `"success": false`, message about the lock |
+| Importer busy (lock held), on `/v1/import` or `/v1/import-multiple` | `200` | `"success": false`, message about the lock |
+| Importer busy (lock held), on `/v1/recluster` | `503` | gRPC `UNAVAILABLE` mapped by the HTTP gateway, with the message in the body |
 | Multi-file request validation failure | `200` | `"success": false`, `error_message` set |
 | Unexpected server fault | `500` | Internal error |
 
@@ -60,7 +61,8 @@ the service still starts.
 
 | Symptom | Likely cause | Action |
 |---------|--------------|--------|
-| `success: false` with a "busy" message | Import lock held by another in-flight import | Wait for completion; check `GET /v1/health` for the busy message |
+| `success: false` with a "busy" message on an import call | A running import or recluster job holds the lock | Wait until it is done and check `GET /v1/health` for the busy message |
+| `503` on a recluster call (gRPC `UNAVAILABLE`) | A running import or recluster job holds the lock | Poll the running job until `is_terminal`, then try again (see [Incremental Updates](../incremental-updates.md)). A **single-file** import that holds the lock has no `job_id`. In this case, watch the platform service status or `GET /v1/health` instead |
 | Single-file import reports `success: true` but the DB is empty | Background work still running, or failed asynchronously | Check the platform service status (single-file imports have no `job_id`) |
 | Multi-file job never reaches a terminal status | Long graph build or vector-index training | Continue polling; index training can take up to an hour on large corpora. Read `current_status.message` for hints. |
 | `[NO_ENTITIES_WRITTEN]` in a `full_graphrag` job | Extraction returned nothing, or wrong mode | Inspect the source content; confirm `rag_mode: "full_graphrag"`; check the chat model is producing structured output |
@@ -73,7 +75,8 @@ the service still starts.
 
 ## Known limitations
 
-1. **One import per replica** at a time (an in-process import lock).
+1. **One import or recluster job per replica** at a time (a single in-process
+   import lock, not keyed by partition).
 2. **Single-file imports have no `job_id`**. The jobs API applies only to
    multi-file imports; use the platform service status feed instead.
 3. **`store_in_s3`** request field is accepted by the API but has **no
@@ -99,6 +102,8 @@ the service still starts.
 ## Related references
 
 - **[Reference index](_index.md)**: Endpoints and recommended call sequence.
+- **[Incremental Updates](../incremental-updates.md)**: Reclustering, its job
+  status, and how documents are removed and replaced in Layer 3.
 - **[Parameters](parameters.md)**: Request parameter reference.
 - **[Architecture](../architecture.md)**: Async-job lifecycle diagram and
   terminal status names.
