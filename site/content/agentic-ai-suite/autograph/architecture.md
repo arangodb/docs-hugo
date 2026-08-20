@@ -395,7 +395,8 @@ flowchart TD
 
         subgraph ORCH_PIPE [Orchestration Background Task]
             ORCH["`<code>POST /v1/orchestrate</code>
-              Returns <code>orchestration_id</code>`"]
+              Returns <code>orchestration_id</code>
+              and <code>unmatched_file_ids</code>`"]
             ORCHSTATUS["`<code>GET /v1/orchestrate/{id}</code>
               Counters + per-partition jobs`"]
 
@@ -405,7 +406,7 @@ flowchart TD
             O1["Load jobs for stale partitions only"]
             O2["Spawn Importer replicas"]
             O3["`Submit jobs with <code>rag_mode</code>
-              (<code>vector_rag</code> or <code>full_graphrag</code>`"]
+              (<code>vector_rag</code> or <code>full_graphrag</code>)`"]
             O4["Poll Importer until done"]
             O5["Tear down workers"]
 

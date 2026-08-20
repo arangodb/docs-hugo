@@ -135,9 +135,12 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 9. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
    Returns `202` with an `orchestration_id`. See
    [Graph Operations](orchestration.md).
-10. Poll `GET /v1/orchestrate/{orchestration_id}` for the per-partition results,
-    including the divergence of each FullGraphRAG partition. Read them before you
-    start another orchestration, which evicts this run. See
+10. Poll `GET /v1/orchestrate/{orchestration_id}`. Branch on `status`, which
+    reaches `completed` only once every job is terminal *and* the imported
+    partitions were found in the knowledge graph, and render `phase` as the
+    progress. The response also carries the per-partition results, including the
+    divergence of each FullGraphRAG partition. Read them before you start another
+    orchestration, which evicts this run. See
     [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
 
 At any point,

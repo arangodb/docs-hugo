@@ -83,10 +83,10 @@ along with the failed build record):
 | `LLM_QUOTA_EXCEEDED` | Provider quota for the key was consumed | `429` |
 | `LLM_API_KEY_MISSING` | No chat/embedding key configured on the service | `401` |
 
-A build can also carry `FILE_PARSER_PARTIAL_FAILURE`, `STORAGE_FILE_TOO_LARGE`,
-`REBUILD_NOT_ALLOWED`, or the catch-all `UNKNOWN_ERROR`. For the full list and
-what to do about each of them, see
-[Build error codes](corpus-build.md#build-error-codes).
+A build can also carry `FILE_PARSER_PARTIAL_FAILURE`, `FILE_PARSER_NO_SUCCESS`,
+`FILE_PARSER_TIMEOUT`, `STORAGE_FILE_TOO_LARGE`, `REBUILD_NOT_ALLOWED`, or the
+catch-all `UNKNOWN_ERROR`. For the full list and what to do about each of them,
+see [Build error codes](corpus-build.md#build-error-codes).
 
 ### The model configuration gate
 
@@ -214,6 +214,16 @@ For the full comparison, see
   with a space between `Bearer` and the token value.
 - **Build appears stuck or fails.** Poll `GET /v1/corpus/builds/{id}` and
   inspect the `status`, `message`, and `error` fields for details.
+- **A build failed with `FILE_PARSER_NO_SUCCESS`.** No file in the build
+  produced any usable text, so there was nothing to embed. `message` names the
+  first ten failing files as `filename (ID: file_id): error`. Scanned images
+  without OCR-readable text, and corrupt or password-protected documents, are
+  the usual causes.
+- **A build failed with `FILE_PARSER_TIMEOUT`.** The File Parsing Service did
+  not finish within the batch deadline. The batch was not cancelled and may
+  still complete on the parser side. Retry the build; if it keeps happening, the
+  corpus is probably too slow to parse, for example because it is mostly scanned
+  material.
 - **Only one module's files appear in the build.** Each
   `POST /v1/import-multiple` call replaces files staged by previous
   direct-upload calls. To import multiple modules in a single initial build,
@@ -262,7 +272,7 @@ For the full comparison, see
   [Graph Operations](orchestration.md#troubleshooting).
 - **An insert or update is rejected with `400` and a list of `doc_name`
   values.** Those entries have no `file_id`. Both endpoints take File Manager
-  input only, and a single missing id rejects the whole batch. See [Identifying
+  input only, and a single missing ID rejects the whole batch. See [Identifying
   documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **Embed Field endpoint fails.** The target collection must exist, the

@@ -161,7 +161,7 @@ still parsed in-process.
 Parsing is durable. If the pod restarts in the middle of a build, it picks up
 the batches it already submitted instead of submitting them again.
 
-Two outcomes are worth planning for:
+Three outcomes are worth planning for:
 
 - A file that yields **no extractable text**, such as a scanned image without
   OCR-readable content, is reported as a **failed file**. It is no longer
@@ -169,6 +169,23 @@ Two outcomes are worth planning for:
 - If some files parse and others fail, the build **completes** instead of
   failing, and [`GET /v1/corpus/builds/{id}`](#monitoring-build-status) reports
   `error_code: FILE_PARSER_PARTIAL_FAILURE`.
+- If **no** file parses, the build **fails** with
+  `error_code: FILE_PARSER_NO_SUCCESS`.
+
+In every case the failing files are named individually in `message`, as
+`filename (ID: file_id): error`, so you can tell which document caused the
+failure rather than only which batch did:
+
+```
+Build partially completed: 2 file(s) failed in File Parser. Failed files:
+report.pdf (ID: rag-input-abc): FILE_TOO_LARGE: source exceeds size limit;
+scan.pdf (ID: rag-input-def): no extractable content
+```
+
+A completed build with partial failures lists the **first five** entries and
+then `; ... and N more`. A build that failed because nothing parsed lists the
+**first ten** and then `... and N more file(s)`. On a large failure set,
+`message` alone therefore does not enumerate every affected file.
 
 Scanned and image-heavy documents are much slower to parse than digital text,
 and the quality of the extraction depends on how legible the scan is. The
@@ -257,9 +274,11 @@ Check the progress of a corpus build.
 
 | Code | Status | Meaning | What to do |
 |------|--------|---------|------------|
-| `UNKNOWN_ERROR` | `failed` | The service could not classify the failure. This is the fallback for any unrecognized error and is a common outcome, for example when every file failed to parse. | Read `error` and `message` and quote them in a support ticket. |
-| `FILE_PARSER_PARTIAL_FAILURE` | `completed` | Some files could not be parsed, or yielded no extractable text. | `message` names the failing **File Manager IDs**, the first five only, followed by `, ... (N more)`. Re-upload or fix those files, then build that category again. |
-| `STORAGE_FILE_TOO_LARGE` | `completed` | One or more files were skipped because the local staging budget was exhausted. The remaining files were still processed. | `message` names the skipped IDs the same way. Split or shrink the files, or ask your operator to raise `LOCAL_STORAGE_MAX_BYTES`. |
+| `UNKNOWN_ERROR` | `failed` | The service could not classify the failure. This is the fallback for any unrecognized error. | Read `error` and `message` and quote them in a support ticket. |
+| `FILE_PARSER_PARTIAL_FAILURE` | `completed` | Some files could not be parsed, or yielded no extractable text, but others did. | `message` names each failing file as `filename (ID: file_id): error`, the first five only, followed by `; ... and N more`. Re-upload or fix those files, then build that category again. |
+| `FILE_PARSER_NO_SUCCESS` | `failed` | **No** file produced any usable text, so there was nothing to embed. | `message` names the first ten failing files in the same form. Check that the documents contain extractable text and are not corrupt or password-protected, see [Document parsing](#document-parsing). |
+| `FILE_PARSER_TIMEOUT` | `failed` | The File Parsing Service did not finish the batch within the deadline. The batch was not cancelled and may still complete on the parser side. | `message` names the batch and up to five of the submitted files. Retry the build; if it recurs, the corpus is probably too slow to parse, for example because it is mostly scanned material. |
+| `STORAGE_FILE_TOO_LARGE` | `completed` | One or more files were skipped because the local staging budget was exhausted. The remaining files were still processed. | `message` names the skipped File Manager IDs, the first five, then `, ... (N more)`. Split or shrink the files, or ask your operator to raise `LOCAL_STORAGE_MAX_BYTES`. |
 | `REBUILD_NOT_ALLOWED` | `failed` | `incremental: false` over a category that is already built, on a path where the categories are only resolved after the request was accepted. | Use `incremental: true`, send only new categories, or delete the category and build it again. On the `categories` path this is a `409` on the create request instead. |
 | `LLM_RATE_LIMITED` | `failed` | The embedding or chat provider throttled the service. | Retry later, or lower the embedding concurrency. |
 | `LLM_QUOTA_EXCEEDED` | `failed` | The provider quota for the key is used up. | Top up or rotate the key on the secret profile. |

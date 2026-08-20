@@ -52,7 +52,7 @@ re-run the strategizer, and orchestrate again.
 {{< tip >}}
 **Targeted orchestration is driven by `file_ids` alone.** When `file_ids` is
 non-empty, the run is narrowed to the strategized clusters that actually contain
-those File Manager ids, and each of those partitions imports only those ids. You
+those File Manager IDs, and each of those partitions imports only those IDs. You
 do not name the partitions, and there is no parameter for doing so. A non-empty
 `file_ids` also **bypasses the stale filter**, so an
 [incremental graph update](../incremental-graph-updates.md) can add a newly
@@ -85,11 +85,36 @@ upper bound.
 | `project` | string | Yes | The platform project that holds the corpus. It has to match the project the service runs against, otherwise the request is rejected with `400`. | The project name of your deployment. Send it in **every** orchestrate request. |
 | `replicas` | integer | No | Number of Importer worker replicas (parallelism). Defaults to **1** when omitted. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
 | `max_retries` | integer | No | Retries per failed Importer job before giving up. | **3** (default) is appropriate for transient errors. |
-| `chat_secret_profile_ids` | string[] | No | Platform secret profile ids for chat keys. | Provide one or more secret profile IDs. Follow your operator's convention. Raw chat keys are not accepted on this endpoint. |
+| `chat_secret_profile_ids` | string[] | No | Platform secret profile IDs for chat keys. | Provide one or more secret profile IDs. Follow your operator's convention. Raw chat keys are not accepted on this endpoint. |
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
-| `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition id. If no strategy profile matches, the request is rejected with `400`. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
-| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager ids, each of those partitions imports only those ids, and the stale-partition filter is skipped. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
+| `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition ID. If no strategy profile matches, the request is rejected with `400`. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
+| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. Ids that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
+
+### Credential precedence
+
+AutoGraph is replacing raw API keys with secret profile IDs. When a profile ID
+is available, it takes priority, and the Importer resolves the key from the
+platform secret manager at runtime, so no plaintext key is written into the
+Importer pod environment.
+
+Chat and embedding credentials are resolved independently, each in this order:
+
+1. `chat_secret_profile_ids` and `embedding_secret_profile_id` on the request.
+2. The persisted project model configuration, for any profile field that the
+   request omits. See
+   [Update Model Config Credentials](project-operations.md#update-model-config-credentials).
+3. Inline keys, only when no profile ID exists at either of the levels above:
+   `CHAT_API_KEY` and `EMBEDDING_API_KEY` in `importer_env`, and then the
+   environment of the AutoGraph service itself.
+
+{{< info >}}
+**A resolved secret profile suppresses inline keys.** When a profile ID is found
+on the request or in the project metadata, an inline key for the same credential
+is **not** forwarded to the Importer, including one you set in `importer_env`. A
+discarded inline key is logged as a warning. Configure both profiles if you want
+both credentials forwarded by reference.
+{{< /info >}}
 
 ### Response
 
@@ -101,7 +126,8 @@ upper bound.
   "total_jobs": 0,
   "completed_jobs": 0,
   "failed_jobs": 0,
-  "job_results": []
+  "job_results": [],
+  "unmatched_file_ids": []
 }
 ```
 
@@ -116,6 +142,14 @@ per-partition results, or watch your platform's job tracking and service logs.
 | `success` | **`true`** if the background pipeline was scheduled. | Treat as "accepted", not "all Importer jobs finished". |
 | `message` | e.g. **`Orchestration started`**. | Display to operators. |
 | `total_jobs` / `completed_jobs` / `failed_jobs` / `job_results` | Counters and per-partition results. | Often remain at initial values on this first response. Read the populated values from [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration). |
+| `unmatched_file_ids` | The requested `file_ids` that matched no document in any strategized cluster within the requested categories. Empty when every ID matched, or when `file_ids` was omitted. | Read it on a partial match to see which documents were silently left out. |
+
+{{< warning >}}
+**`unmatched_file_ids` is only on this immediate response.** It is not repeated
+by [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration), so
+read it from the response body before you start polling. A request in which
+*every* ID misses is refused with `409` instead, see below.
+{{< /warning >}}
 
 | Status Code | Meaning |
 |-------------|---------|
@@ -140,21 +174,22 @@ distinguish them, and each calls for a different reaction:
 |-----------|---------------------|---------------|------------|
 | **Already in progress** | The message names the running operation and its `orchestration_id` (`OrchestrationInProgressError`), or a running document delete or project deletion | Another operation holds the single-flight slot | Wait and send the request again. The message carries liveness diagnostics, see below. |
 | **Nothing to orchestrate** | The message reads `Nothing to orchestrate: …` and lists the categories that are already built | Every eligible category is already in the knowledge graph, and `file_ids` was omitted or empty | **Do not retry.** This is a successful steady state. Check [Project Overview](project-operations.md#project-overview) if you expected work. |
-| **No matching `file_ids`** | `NoMatchingFilesError`, with `unmatched_file_ids` and a `reasons` map in the error details | You sent `file_ids` and **none** of them is in any strategized cluster, so the run would import nothing | Fix the ids using `reasons`, see the table below. |
+| **No matching `file_ids`** | `NoMatchingFilesError`, with `unmatched_file_ids` and a `reasons` map in the error details | You sent `file_ids` and **none** of them is in any strategized cluster within the requested categories, so the run would import nothing | Fix the IDs using `reasons`, see the table below. |
 
 A request that matches **some** of its `file_ids` is not rejected. The unmatched
-ids are logged and skipped, and the run continues with the rest. A
-`NoMatchingFilesError` therefore always means that *every* id missed. The
-request is refused before any importer pod is created and before the
-single-flight slot is taken, so there is nothing to clean up.
+ids are skipped and reported in `unmatched_file_ids` on the `202` response, and
+the run continues with the rest. A `NoMatchingFilesError` therefore always means
+that *every* ID missed. The request is refused before any importer pod is
+created and before the single-flight slot is taken, so there is nothing to clean
+up.
 
 | Reason in `reasons` | Meaning | What to do |
 |--------|---------|------------|
-| `not_in_project` | The id does not belong to the requested `project`. | The id is wrong. |
-| `not_in_any_cluster` | The document is in the project, but no cluster contains it. | The id is wrong, or the corpus build did not cover it. |
+| `not_in_project` | The ID does not belong to the requested `project`. | The ID is wrong. |
+| `not_in_any_cluster` | The document is in the project, but no cluster contains it. | The ID is wrong, or the corpus build did not cover it. |
 | `cluster_not_strategized` | The cluster that holds it has no strategy profile yet. | Run the [RAG Strategizer](rag-strategizer.md) for that category. |
-| `outside_requested_categories` | The id matches, but its category is not in `categories`. | Widen or drop the `categories` scope. |
-| `corpus_has_no_file_id_stamps` | The corpus was built without File Manager ids, so nothing can be matched by id at all. | Build that category again on a current version. |
+| `outside_requested_categories` | The ID matches, but its category is not in `categories`. | Widen or drop the `categories` scope. |
+| `corpus_has_no_file_id_stamps` | The corpus was built without File Manager IDs, so nothing can be matched by ID at all. | Build that category again on a current version. |
 
 {{< tip >}}
 **Reading an "already in progress" `409`.** The message carries the liveness of
@@ -202,9 +237,16 @@ from an insert or update response, see
 {
   "orchestration_id": "orch_1711812345_a1b2c3d4",
   "status": "running",
+  "phase": "importing",
   "total_jobs": 4,
   "completed_jobs": 2,
   "failed_jobs": 0,
+  "running_jobs": 2,
+  "pending_jobs": 0,
+  "skipped_jobs": 0,
+  "entities_added": 18432,
+  "elapsed_seconds": 3420,
+  "seconds_since_progress": 7,
   "message": "Running: 2/4 completed, 0 failed",
   "jobs": [
     {
@@ -215,17 +257,62 @@ from an insert or update response, see
       "retry_count": 0,
       "error_message": null,
       "divergence_score": 0.12,
-      "needs_reclustering": false
+      "needs_reclustering": false,
+      "entities_added": 9216,
+      "imported": true
     }
   ]
 }
 ```
 
+### What `status` and `phase` mean
+
+The two status-shaped fields answer different questions and do not substitute
+for each other.
+
+| Field | Answers | Values |
+|-------|---------|--------|
+| `status` | Is the run over, and did it succeed? | `running`, then `completed`, `failed`, or `cancelled` |
+| `phase` | Where the work currently is | `initializing` → `starting_importers` → `importing` → `verifying` → `finished` |
+
+`status` turns terminal only once every import job is terminal, and `completed`
+additionally requires that the partitions the Importer reported writing were
+found in the knowledge graph. A terminal run always reports `phase: "finished"`,
+whatever the outcome — including a cancelled or reaped one, which is the fourth
+`status` value that a client mapping only `running`, `completed`, and `failed`
+meets unhandled. See [Cancel an orchestration](#cancel-an-orchestration).
+
+`phase` is the field to render as progress. A run in `starting_importers` has
+imported nothing yet, whatever `elapsed_seconds` reports: the Importer pods are
+created, health-checked, and given 60 seconds for route registration before the
+first job is dispatched, which is minutes on a large fleet.
+
+`message` carries the human-readable outcome and never reads "completed" for a
+run that lost jobs:
+
+| `message` starts with | Meaning |
+|-----------------------|---------|
+| `Orchestration completed:` | Every job succeeded. |
+| `Orchestration finished with failures:` | At least one job failed after its retries. |
+| `Aborted:` | The run stopped early, for example through the circuit breaker. |
+| `Cancelled:` | The run was cancelled or reaped. |
+
+### Response fields
+
 | Field | Description |
 |-------|-------------|
-| `status` | **`running`** while the pipeline is active, then **`completed`**, **`failed`**, or **`cancelled`**. |
-| `total_jobs` / `completed_jobs` / `failed_jobs` | Live counters, updated as the jobs finish. |
-| `message` | Human-readable summary of the counters. |
+| `status` | The outcome of the run. Terminal only when no job is outstanding, and `completed` also requires verified output. |
+| `phase` | Where the work is, see the table above. |
+| `total_jobs` | The number of import jobs, one per stale partition. **`0` while `phase` is `initializing`**, because the job set is not loaded yet. There, `0` means "not known", not "none". |
+| `completed_jobs` / `failed_jobs` | Live counters. `completed_jobs` **includes** `skipped_jobs`. |
+| `running_jobs` / `pending_jobs` | Jobs assigned to a replica, and jobs loaded but not dispatched yet. |
+| `skipped_jobs` | Jobs counted as succeeded that imported nothing, because the requested `file_ids` matched nothing in that partition. A run where this equals `completed_jobs` wrote no output at all. |
+| `entities_added` | The entities the Importer reported writing in this run, summed over the finished jobs. |
+| `elapsed_seconds` | Wall-clock seconds since the run was triggered. |
+| `seconds_since_progress` | Seconds since an Importer worker last answered. A large value on a `running` run means the fleet has gone quiet, and the run is stopped automatically once the silence budget expires. |
+| `output_verified` | `true` when every partition reported as imported was found in the knowledge graph. `false` when some were absent, which makes the run `failed`. **Absent** while the run is not terminal, and also when the knowledge graph lookup itself failed, which is reported in `message` and never turned into a false import failure. |
+| `unverified_partitions` | The partitions whose jobs reported success but which are absent from the knowledge graph. A non-empty list forces `status: "failed"`. |
+| `message` | Human-readable summary, see the table above. |
 | `jobs` | Per-partition details, ordered running → pending → completed → failed. |
 | `jobs[].rag_partition_id` | The partition this job processed. |
 | `jobs[].category` | The **internal encoded module** of the partition, such as `myproject_legal`, and empty for a legacy corpus without modules. Do not pass it to a `categories` parameter, use the bare labels from [Project Overview](project-operations.md#project-overview) instead. |
@@ -234,13 +321,40 @@ from an insert or update response, see
 | `jobs[].error_message` | Set only when the job `status` is `failed`. |
 | `jobs[].divergence_score` | The partition divergence after this job finished, set once Layer 3 entities exist. |
 | `jobs[].needs_reclustering` | `true` when `divergence_score` strictly exceeds the threshold of the partition. |
+| `jobs[].entities_added` | The entities the Importer reported writing for this partition. Absent until the job is terminal. |
+| `jobs[].imported` | `false` on a completed job that performed no import, which is a no-op success. Absent until the job is terminal. |
 
 {{< warning >}}
-**There are four terminal values, not three.** A state machine that only knows
-`running`, `completed`, and `failed` meets an unhandled value the first time a
-run is cancelled or reaped. Map `cancelled` as well, see
-[Cancel an orchestration](#cancel-an-orchestration).
+**`entities_added: 0` is not evidence that nothing was imported.** A VectorRAG
+partition writes `Documents`, `Chunks`, and `Relations` but no entities by
+design, so a successful VectorRAG-only run legitimately reports `0`. To tell a
+real no-op from an entity-free import, read `skipped_jobs` and
+`jobs[].imported`, not this counter.
 {{< /warning >}}
+
+{{< info >}}
+**Progress within a job is not reported.** The Importer only returns counts on a
+terminal job, so `entities_added` advances one finished job at a time rather
+than continuously. On a run with a single large partition it stays at `0` until
+that partition finishes. During that window, `phase` and
+`seconds_since_progress` are the signals that the run is alive.
+{{< /info >}}
+
+### Waiting for a graph to be ready
+
+Poll until `status` leaves `running`, then treat only `completed` as ready. The
+example prints `phase` while it waits, because the counters alone do not
+distinguish a fleet that is still starting from one that is importing. The JSON
+keys come back in camelCase:
+
+```bash
+while [ "$(curl -sH "Authorization: Bearer $TOKEN" \
+  "$HOST/v1/orchestrate/$ORCH_ID" | jq -r .status)" = "running" ]; do
+  curl -sH "Authorization: Bearer $TOKEN" "$HOST/v1/orchestrate/$ORCH_ID" \
+    | jq -r '"\(.phase): \(.completedJobs)/\(.totalJobs) jobs, \(.entitiesAdded) entities"'
+  sleep 30
+done
+```
 
 {{< warning >}}
 **The status is held in memory only, and one run at a time.** Starting a new
@@ -303,7 +417,7 @@ finished cancellation.
 |-------|-------------|
 | `orchestration_id` | The run that was asked to stop. |
 | `cancellation_requested` | `true` when the running orchestration accepted the request. |
-| `status` | The status of the run at the time of the acknowledgement, which is **still `running`** until it terminalizes. Poll [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) until it reads `cancelled`. |
+| `status` | The status of the run at the time of the acknowledgement, which is **still `running`** until the run reaches a terminal status. Poll [`GET /v1/orchestrate/{orchestration_id}`](#monitor-an-orchestration) until it reads `cancelled`. |
 | `message` | Human-readable summary, including how the slot is released. |
 
 | Status Code | Meaning |
@@ -333,7 +447,7 @@ curl -X DELETE \
 
 ### Automatic reaping of a wedged run
 
-Independently of cancellation, a run that stops making contact is terminalized
+Independently of cancellation, a run that stops making contact is stopped
 automatically, so that a dead importer fleet cannot hold the slot for the full
 wall-clock cap:
 
@@ -344,7 +458,7 @@ wall-clock cap:
 
 Both budgets are measured against **worker contact**, not against job counters,
 because a single large partition sits at unchanged counters for hours while it
-imports normally. A reaped run terminalizes with `status: cancelled` and
+imports normally. A reaped run ends with `status: cancelled` and
 releases the slot. The orchestration wall-clock cap of **3 days** remains as a
 final backstop. These two budgets and the 3-minute cancellation grace period are
 fixed constants, not operator-configurable settings.
@@ -549,7 +663,7 @@ does not write one.
 
 | Field | Meaning |
 |-------|---------|
-| `delete_id` | The id of this deletion, and the key of the concurrency lock it holds. Log it, so that you can correlate a `409` from a parallel call with the deletion that was holding the lock. |
+| `delete_id` | The ID of this deletion, and the key of the concurrency lock it holds. Log it, so that you can correlate a `409` from a parallel call with the deletion that was holding the lock. |
 | `overall_status` | How the deletion as a whole ended, see the table below. |
 | `results` | The Layer 1 and Layer 2 result of every file, with the cluster and partition it belonged to, the number of similarity edges that were removed, and the divergence of the partition. |
 | `layer3_results` | The Layer 3 result of the cleanup, with its `status` and the counts of what was removed. The counts are AutoGraph's own AQL totals, not Importer figures. |
@@ -1019,9 +1133,9 @@ pick a maintenance window for them.
   updates Layers 1 and 2. Run a targeted orchestration with the new `file_id`.
 - **The update was rejected with `400` and a list of `doc_name` values.** Those
   entries have no `file_id`. Update reads the replacement from the File Manager
-  and takes no inline content, so every entry needs one, and one missing id
+  and takes no inline content, so every entry needs one, and one missing ID
   rejects the whole batch. Upload the new version first, then send the returned
-  id. See [Identifying documents for Layer
+  ID. See [Identifying documents for Layer
   3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **The delete reports `overall_status: "ROLLED_BACK"`.** Something failed, and
   the state from before the call has been fully restored, so the documents are
@@ -1064,6 +1178,30 @@ pick a maintenance window for them.
   explicitly, or reaped for worker inactivity. The partitions that finished
   before the stop are in the knowledge graph and count as built, the rest are
   not. Orchestrate again to pick up what is left.
+- **The orchestration reports `failed` with `unverified_partitions`.** Every
+  import job reported success, but those partitions were not found in the
+  `{project}_kg` graph afterwards, so the run does not claim your knowledge
+  graph is ready. `message` names the missing partitions. Delete the affected
+  category, build it again, re-run the strategizer, and orchestrate.
+- **The orchestration seems to hang at `total_jobs: 0`.** While `phase` is
+  `initializing` the job set is not loaded yet, so `0` means "not known", not
+  "nothing to do". Watch `phase` rather than the counters.
+- **`elapsed_seconds` keeps growing but no job finishes.** Check `phase`. In
+  `starting_importers` the fleet is still coming up, which takes minutes on a
+  large fleet, and nothing has been imported yet. In `importing`, check
+  `seconds_since_progress`: the Importer only reports counts on a terminal job,
+  so a single large partition stays at unchanged counters for hours while
+  importing normally.
+- **The orchestration completed but `entities_added` is `0`.** A VectorRAG
+  partition writes `Documents`, `Chunks`, and `Relations` but no entities, so a
+  VectorRAG-only run legitimately reports `0`. To tell that apart from a run
+  that imported nothing, read `skipped_jobs` and `jobs[].imported`. See
+  [Retrieval capability per strategy](rag-strategizer.md#retrieval-capability-per-strategy).
+- **The orchestration succeeded but the graph is unchanged.** Compare
+  `skipped_jobs` with `completed_jobs`. When they are equal, every job was a
+  no-op success, because the `file_ids` you sent matched nothing in any of the
+  dispatched partitions. Check `unmatched_file_ids` on the `202` response of the
+  trigger request.
 - **`needs_reclustering` is `true` for a partition.** The divergence score of the
   partition is above its threshold, which is 25% and not configurable. Nothing is
   reclustered automatically. Call `POST /v1/graph/recluster` with the
