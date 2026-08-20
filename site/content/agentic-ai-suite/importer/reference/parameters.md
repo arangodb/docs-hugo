@@ -33,6 +33,10 @@ For single file import, provide exactly one of `file_content`, `file_url`, or
 `file_id`.
 {{< /tip >}}
 
+Single file import has no `citable_url` field. A file imported by `file_id`
+brings its citation URL along from File Manager; see
+[Citation URLs](#citation-urls).
+
 **Example with direct file content:**
 
 ```json
@@ -86,6 +90,36 @@ Each file in the `files` array requires:
   ]
 }
 ```
+
+There is no `citable_url` field next to `file_ids`. Files that come from File
+Manager bring their own; see [Citation URLs](#citation-urls).
+
+## Citation URLs
+
+When the Retriever answers a question, it cites the documents it used. A
+document that has a `citable_url` is cited as a clickable link; one without it
+is cited as a plain number.
+
+**If your files are in File Manager, there is nothing to set on the import
+request.** Give the file a `citable_url` in its
+[custom metadata](../../../platform-suite/file-manager/api.md#the-citable_url-key)
+when you upload it, and the Importer picks it up on its own:
+
+| How you import | Where the citation URL comes from |
+|----------------|-----------------------------------|
+| `file_id` or `file_ids` | The `citable_url` in the file's File Manager custom metadata. |
+| `files` (inline) | The `citable_url` you set on each file object. |
+| `file_content` or `file_url` | Nowhere. These documents are cited as plain numbers. |
+
+Two things are worth knowing:
+
+- Custom metadata belongs to one version of a file, so uploading a new version
+  to File Manager drops the old `citable_url`. Set it again on the new upload.
+- The Importer keeps only `http` and `https` links that contain no whitespace
+  and no unmatched parentheses. It discards anything else, and the import still
+  succeeds, so a bad link shows up as a plain citation number rather than an
+  error. The reason is written to the Importer's log. Values you set inline on
+  `files[].citable_url` are not checked at all.
 
 ## RAG Mode Configuration
 

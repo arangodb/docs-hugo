@@ -85,15 +85,19 @@ you have to handle these citation features yourself:
 - **SemanticUnits linking**: The orchestrator sets `enable_semantic_units: true`
   for FullGraphRAG partitions, but citation nodes are not yet created or linked
   in the `SemanticUnits` collection.
-- **Citation validation**: The service does not check whether the `citable_url`
-  values you provide are valid or reachable.
+- **Citation validation**: No citation URL is checked for reachability, so a
+  link that has gone dead is still shown. URLs that come from File Manager are
+  at least checked for a usable `http` or `https` form; ones you set inline are
+  stored exactly as you write them.
 - **Cross-document citation tracking**: Links between documents based on
   citations are not created automatically.
 
 **Recommended workflow:**
 
-1. When you import documents via `POST /v1/import-multiple`, set
-   `citable_url` on each file that has a canonical URL to cite.
+1. Give every document you want cited a citation URL. Files in File Manager
+   take theirs from
+   [custom metadata](../../../platform-suite/file-manager/api.md#the-citable_url-key)
+   at upload; inline imports take it from `citable_url` on the file.
 2. The URL is stored in the corpus graph and passed to the importer during
    orchestration.
 3. To extract citations from document content, add your own processing step
