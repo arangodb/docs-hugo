@@ -453,6 +453,39 @@ Available attributes:
 - `class`: CSS classes to apply
 - `style`: CSS inline styles to apply
 
+##### Image compression
+
+When adding or updating images, the files should be reduced in size as much as
+possible before merging to the main branch. This helps to keep the Git history
+small and images load faster over the internet.
+
+[Squoosh](https://squoosh.app/) is a web app to easily re-compress images with
+various options to reduce the file size.
+
+- It runs the compression locally in your browser.
+- You can visually inspect how the options affect the output quality.
+
+There is a modified version that adds batch processing so you can apply the same
+compression to multiple files in one go:
+
+<https://squoosh-multiple-export.vercel.app>
+
+1. Open the web app and drop one or multiple image files.
+2. Adjust the options in the bottom-right panel (see below).
+3. Check that the compression doesn't cause too strong visual artifacts like
+   color banding, color shifts, hard-to-read text, and so on. You can switch
+   between input images using the dropdown menu at the bottom center.
+4. Click the **Download All # Files** button below the options panel to
+   download them all at once.
+5. The file names are preserved, so you can paste the re-compressed files over
+   the original files to replace them.
+
+Suggested options:
+
+- **Reduce palette**, typically `64` colors is enough for screenshots.
+- **Dithering**, can be left at `1` to make up for the reduced color palette.
+- **OxiPNG** as the compressor (if the input is also PNG)
+
 #### Icons
 
 If a web interface uses icons, especially as buttons without labels, use

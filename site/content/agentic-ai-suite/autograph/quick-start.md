@@ -124,15 +124,23 @@ with the `file_ids` of the changed documents so that the change reaches the
 knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /step >}}
 
+{{< step "Keep the graph up-to-date (optional)" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
+Once the graph is built, you can add, remove, or replace individual documents
+with `/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
+rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
+with the `file_ids` of the changed documents so that the change reaches the
+knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
+{{< /step >}}
+
 {{< /steps >}}
 
 {{< info >}}
 Insert and update identify every document by its File Manager `file_id`, which
 is why step 2 uploads through the File Manager. The legacy
 `POST /v1/import-multiple` path uploads files directly to the service, but a
-corpus built that way cannot be changed document by document. See [Identifying
-documents for Layer
-3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+corpus built that way cannot be changed document by document. See
+[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
 
 {{< tip >}}

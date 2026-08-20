@@ -127,22 +127,20 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
    Check `error_code` even then, because a non-empty value on a completed build
    means a partial success. See
    [Monitoring Build Status](corpus-build.md#monitoring-build-status).
-5. `POST /v1/rag-strategizer/analyze` - assign RAG strategies to the clusters.
+5. `POST /v1/rag-strategizer/analyze` - assign RAG strategies to clusters.
    `project` and `complexity` are required. Returns `202` with a
    `strategize_job_id`. See [RAG Strategizer](rag-strategizer.md).
 6. Poll `GET /v1/rag-strategizer/jobs/{strategize_job_id}` until `status` is
    `completed`. See
    [Monitor a strategizer job](rag-strategizer.md#monitor-a-strategizer-job).
-7. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned
-   strategies. See
-   [Retrieve RAG Strategies](rag-strategizer.md#retrieve-rag-strategies).
+7. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
+   See [Retrieve RAG Strategies](rag-strategizer.md#retrieve-rag-strategies).
 8. *(Optional)* `PATCH /v1/rag-strategizer/strategy/{cluster_id}` - override the
    strategy of a cluster if the assigned one is not suitable. Do this **before**
    you orchestrate. See
    [Update a cluster strategy](rag-strategizer.md#update-a-cluster-strategy).
 9. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   Returns `202` with an `orchestration_id`. See
-   [Graph Operations](orchestration.md).
+   Returns `202` with an `orchestration_id`. See [Graph Operations](orchestration.md).
 10. Poll `GET /v1/orchestrate/{orchestration_id}`. Branch on `status`, which
     reaches `completed` only once every job is terminal *and* the imported
     partitions were found in the knowledge graph, and render `phase` as the
@@ -184,6 +182,26 @@ There is no in-place rebuild. To rebuild a category from scratch, remove it with
 [`DELETE /v1/projects/{project}/categories/{category}`](project-operations.md#delete-category),
 then run a corpus build, the strategizer, and an orchestration again. This is
 also the supported recovery path for a partition that imported incompletely.
+
+### Document-level changes to an existing graph
+
+Use these calls if the corpus graph is already built and you only want to change
+individual documents. See
+[Incremental Graph Updates](../incremental-graph-updates.md) for the
+prerequisites, a comparison with a rebuild, and the full endpoint reference.
+
+1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
+   depending on what changed. Insert and update only cover Layers 1 and 2.
+   Delete is synchronous and removes the Layer 3 data itself.
+2. After an insert or a successful update, call `POST /v1/orchestrate` with the
+   `file_ids` of the changed documents, so that Layer 3 contains the new
+   content.
+3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
+   `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
+   After a delete, they are on each file's result if its `overall_status` is
+   `COMMITTED`.
+4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
+   want to refresh the communities. Reclustering is never automatic.
 
 ### Document-level changes to an existing graph
 

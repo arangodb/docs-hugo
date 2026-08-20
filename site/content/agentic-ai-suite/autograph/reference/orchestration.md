@@ -31,7 +31,11 @@ in `category`.
 Spawn GraphRAG importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
 
-**Recommended path:** Call after a successful corpus build and strategizer run, when `rags` is non-empty. This is the final step of the standard workflow. Omit `categories` to process every eligible strategy profile; list bare category labels to scope the run to those categories. Do not overlap with an active build (`409`).
+**Recommended path:** Call after a successful corpus build and strategizer run,
+when `rags` is non-empty. This is the final step of the standard workflow. Omit
+`categories` to process every eligible strategy profile; list bare category
+labels to scope the run to those categories. Do not overlap with an active
+build (`409`).
 
 {{< info >}}
 **Only stale partitions are built**, when `file_ids` is omitted or empty. Before
@@ -1144,8 +1148,7 @@ pick a maintenance window for them.
   entries have no `file_id`. Update reads the replacement from the File Manager
   and takes no inline content, so every entry needs one, and one missing ID
   rejects the whole batch. Upload the new version first, then send the returned
-  ID. See [Identifying documents for Layer
-  3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
+  ID. See [Identifying documents for Layer 3](../incremental-graph-updates.md#identifying-documents-for-layer-3).
 - **The delete reports `overall_status: "ROLLED_BACK"`.** Something failed, and
   the state from before the call has been fully restored, so the documents are
   still in the graph. There is nothing to poll and nothing to clean up by hand.

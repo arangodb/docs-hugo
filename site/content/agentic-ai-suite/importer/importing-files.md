@@ -103,7 +103,8 @@ The response payload looks like this:
 You can also reference files already uploaded to
 [File Manager](../../platform-suite/file-manager/) by passing
 `file_ids` instead of inline `files`. When `file_ids` is non-empty, the
-`files` array is ignored.
+`files` array is ignored. Those files bring their own citation URLs; see
+[Citation URLs](reference/parameters.md#citation-urls).
 {{< /tip >}}
 
 ### Basic example
