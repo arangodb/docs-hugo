@@ -27,6 +27,14 @@ The workflow has two stages:
 
 ![The Agentic AI Suite overview with the AutoGraph Studio card](../../images/autograph-ui-suite-overview.png)
 
+{{< info >}}
+This page describes how to build a knowledge graph from scratch. To keep it
+up-to-date afterwards by inserting, deleting, or replacing individual documents,
+you need to use the API. These operations are not available in the web interface
+in Arango Contextual Data Platform 4.1.0. See
+[Incremental Graph Updates](incremental-graph-updates.md).
+{{< /info >}}
+
 ## Create an AutoGraph project
 
 1. In the **AutoGraph Studio** view, click **+ New Project**.
