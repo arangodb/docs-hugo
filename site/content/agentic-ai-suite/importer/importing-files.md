@@ -103,7 +103,8 @@ The response payload looks like this:
 You can also reference files already uploaded to
 [File Manager](../../platform-suite/file-manager/) by passing
 `file_ids` instead of inline `files`. When `file_ids` is non-empty, the
-`files` array is ignored.
+`files` array is ignored. Those files bring their own citation URLs; see
+[Citation URLs](reference/parameters.md#citation-urls).
 {{< /tip >}}
 
 ### Basic example
@@ -348,5 +349,6 @@ written as `{partition_id}:{logicalKey}`.
 ## Next Steps
 
 - **[Explore all parameters](reference/parameters.md)**: Customize chunking, entity extraction, and more.
+- **[Incremental updates](incremental-updates.md)**: Recluster a partition after the initial import, and how documents are removed and replaced.
 - **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
 - **[Verify your import](verify-and-explore.md)**: Check import status and explore the created collections.
