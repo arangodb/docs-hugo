@@ -24,24 +24,35 @@ partition. They meet only at the `partition_id` link.
 
 ```mermaid
 graph TD
-  subgraph "Layer 1 — Modules  (defined by you)"
-    modules["modules\n(vertex: one per module label)"]
+  subgraph "`**Layer 1** — Modules  (defined by you)`"
+    modules["`**modules**
+      (vertex: one per module label)`"]
   end
 
-  subgraph "Layer 2 — Corpus Graph  (built by AutoGraph)"
-    sources["sources\n(vertex: one per document)"]
-    similarities["similarities\n(edge: source ↔ source, label SIMILAR_TO)"]
-    domains["domains\n(vertex: one per Leiden cluster)"]
-    corpus_relations["corpus_relations\n(edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)"]
-    rags["rags\n(vertex: strategy profiles — added by strategizer)"]
+  subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
+    sources["`**sources**
+      (vertex: one per document)`"]
+    similarities["`**similarities**
+      (edge: source ↔ source, label SIMILAR_TO)`"]
+    domains["`**domains**
+      (vertex: one per Leiden cluster)`"]
+    corpus_relations["`**corpus_relations**
+      (edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)`"]
+    rags["`**rags**
+      (vertex: strategy profiles — added by strategizer)`"]
   end
 
-  subgraph "Layer 3 — Knowledge Graph  (built by Importer)"
-    Documents["Documents\n(vertex: original documents)"]
-    Chunks["Chunks\n(vertex: text chunks)"]
-    Entities["Entities\n(vertex: extracted entities — full_graphrag only)"]
-    Communities["Communities\n(vertex: entity clusters — full_graphrag only)"]
-    Relations["Relations\n(edge: all relationships)"]
+  subgraph "`**Layer 3** — Knowledge Graph  (built by Importer)`"
+    Documents["`**Documents**
+      (vertex: original documents)`"]
+    Chunks["`**Chunks**
+      (vertex: text chunks)`"]
+    Entities["`**Entities**
+      (vertex: extracted entities — full_graphrag only)`"]
+    Communities["`**Communities**
+      (vertex: entity clusters — full_graphrag only)`"]
+    Relations["`**Relations**
+      (edge: all relationships)`"]
   end
 
   modules -->|HAS_CLUSTER| domains
@@ -299,33 +310,51 @@ flowchart TD
     %% Entry points
     Client -->|Step 0| HEALTH
     Client -->|Step 1| IMP
-    Client -->|Step 2| BUILD
+    Client -->|Step 2 - 202| BUILD
     Client -.->|poll anytime| STATUS
-    Client -->|Step 3| STRAT
+    Client -->|Step 3 - 202| STRAT
+    Client -.->|poll job progress| STRATJOB
     Client -.->|inspect anytime| GETSTRAT
-    Client -->|Step 4| ORCH
+    Client -.->|optional override| PATCHSTRAT
+    Client -->|Step 4 - 202| ORCH
+    Client -.->|poll anytime| ORCHSTATUS
 
     %% Health
-    HEALTH["GET /v1/health\nConfirm service status is SERVING"]
+    HEALTH["`<code>GET /v1/health</code>
+      Confirm service status is <code>SERVING</code>`"]
 
     %% Layer 1
-    subgraph L1 [Layer 1 - Modules]
-        IMP["POST /v1/import-multiple\nUpload documents\nAttach module label\nFiles stored on disk"]
+    subgraph L1 ["`**Layer 1** - Modules`"]
+        IMP["`<code>POST /v1/import-multiple</code>
+          Upload documents
+          Attach module label
+          Files stored on disk`"]
+        FM["`File Manager RAG inputs
+          (resolved from categories)`"]
     end
 
     %% Layer 2
-    subgraph L2 [Layer 2 - Corpus Graph]
+    subgraph L2 ["`**Layer 2** - Corpus Graph`"]
 
         %% Build Pipeline
         subgraph BUILD_PIPE [Corpus Build Background Task]
-            BUILD["POST /v1/corpus/builds\nReturns corpus_build_id"]
-            STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
+            BUILD["`<code>POST /v1/corpus/builds</code>
+              Returns <code>corpus_build_id</code> + <code>graph_name</code>`"]
+            STATUS["`<code>GET /v1/corpus/builds/{id}</code>
+              Status, progress, counts, error_code`"]
 
-            B1["Read files from disk"]
-            B2["Extract text\nPDF / Office / JSON / HTML"]
-            B3["Generate embeddings\nFirst 1200 tokens"]
+            B1["`Resolve inputs
+              (categories via File Manager
+              or imported files on disk)`"]
+            B2["`Extract text
+              (File Parsing Service - preview scope
+              first 4800 chars, no images;
+              imported files parsed in-process)`"]
+            B3["`Generate embeddings
+              (first 1200 tokens)`"]
             B4["Insert document nodes"]
-            B5["Build similarity edges\nVector + BM25 + RRF"]
+            B5["`Build similarity edges
+              (Vector + BM25 + RRF)`"]
             B6["Store similarity edges"]
             B7["Leiden clustering per module"]
             B8["Create cluster nodes"]
@@ -338,11 +367,17 @@ flowchart TD
 
         %% Strategizer
         subgraph STRAT_PIPE [RAG Strategizer Background Task]
-            STRAT["POST /v1/rag-strategizer/analyze"]
-            GETSTRAT["GET /v1/rag-strategizer/strategy"]
+            STRAT["`<code>POST /v1/rag-strategizer/analyze</code>
+              Returns <code>strategize_job_id</code>`"]
+            STRATJOB["`<code>GET /v1/rag-strategizer/jobs/{id}</code>
+              Live progress + cluster counts`"]
+            GETSTRAT["`<code>GET /v1/rag-strategizer/strategy</code>`"]
+            PATCHSTRAT["`<code>PATCH /v1/rag-strategizer/strategy/{cluster_id}</code>
+              Override strategy for a specific cluster`"]
 
             S1["Read clusters"]
-            S2["Generate per-cluster ontology\n(8-12 entity types via LLM)"]
+            S2["`Generate per-cluster ontology
+              (8-12 entity types via LLM)`"]
             S3["Compute complexity score"]
             S4{"Rank clusters by complexity"}
             S5["Assign FullGraphRAG"]
@@ -356,23 +391,79 @@ flowchart TD
     end
 
     %% Layer 3
-    subgraph L3 [Layer 3 - Knowledge Graph]
+    subgraph L3 ["`**Layer 3** - Knowledge Graph`"]
 
         subgraph ORCH_PIPE [Orchestration Background Task]
-            ORCH["POST /v1/orchestrate\nReturns orchestration_id"]
+            ORCH["`<code>POST /v1/orchestrate</code>
+              Returns <code>orchestration_id</code>`"]
+            ORCHSTATUS["`<code>GET /v1/orchestrate/{id}</code>
+              Counters + per-partition jobs`"]
 
-            O1["Load jobs from rags\n(all strategy profiles)"]
+            O0{"`Any stale partitions?
+              (strategies exist and
+              not already in the KG)`"}
+            O1["Load jobs for stale partitions only"]
             O2["Spawn Importer replicas"]
-            O3["Submit jobs with rag_mode\nvector_rag or full_graphrag"]
+            O3["`Submit jobs with <code>rag_mode</code>
+              (<code>vector_rag</code> or <code>full_graphrag</code>`"]
             O4["Poll Importer until done"]
             O5["Tear down workers"]
 
-            ORCH --> O1 --> O2 --> O3 --> O4 --> O5
+            ORCH --> O0
+            O0 -->|none - 409| ORCHREJECT["Nothing to orchestrate"]
+            O0 -->|stale found| O1 --> O2 --> O3 --> O4 --> O5
         end
     end
 
     %% Cross-layer connections
     IMP -->|files on disk| B1
+    FM -->|storage locations| B1
     B11 -->|Corpus ready| S1
-    S7 -->|Strategies ready| O1
+    S7 -->|Strategies ready| O0
+```
+
+## Project-level operations
+
+These endpoints sit outside the sequential pipeline. You can inspect and configure
+a project at any time. Deleting a category is guarded against a running corpus
+build or orchestration.
+
+```mermaid
+flowchart LR
+
+    Client["Client / HTTP REST"]
+
+    Client -.->|inspect anytime| OVERVIEW
+    Client -.->|configure| MODELCFG
+    Client -.->|maintenance| DELCAT
+
+    OVERVIEW["`<code>GET /v1/projects/{project}/overview</code>
+      Corpus + KG cards, categories,
+      read-time staleness`"]
+    MODELCFG["`<code>PUT /v1/projects/{project}/model-config/credentials</code>
+      Chat + embedding provider, model,
+      secret profiles - validated on write`"]
+    DELCAT["`<code>DELETE /v1/projects/{project}/categories/{category}</code>
+      409 while a build or orchestration runs`"]
+
+    L2R[("`**Layer 1-2 - Corpus Graph**
+      modules, sources, similarities,
+      domains, corpus_relations, rags`")]
+    L3R[("`**Layer 3 - Knowledge Graph**
+      {project}_kg partitions`")]
+    FMR[("`**File Manager**
+      RAG inputs`")]
+    META[("`**Project metadata**
+      provider, model, secret profile ids`")]
+
+    OVERVIEW -.->|reads| L2R
+    OVERVIEW -.->|reads| L3R
+    OVERVIEW -.->|reads counts| FMR
+
+    MODELCFG -->|"`validates key with provider
+      then persists`"| META
+
+    DELCAT -->|1 - remove KG partitions| L3R
+    DELCAT -->|2 - remove module data| L2R
+    DELCAT -->|3 - delete_files true only| FMR
 ```
