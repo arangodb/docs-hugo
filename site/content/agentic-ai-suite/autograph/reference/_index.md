@@ -10,11 +10,11 @@ JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).
 
 {{< info >}}
-**Field names are lowerCamelCase over HTTP.** This reference uses the
-protobuf field names, such as `rag_partition_id` or `overall_status`. The REST
-gateway emits the JSON names instead, so an actual response carries
-`ragPartitionId` and `overallStatus`. Convert accordingly when you read a
-response or build a request body.
+**Field names are lowerCamelCase over HTTP.** This reference spells field names
+in snake_case, such as `rag_partition_id` or `overall_status`. Responses come
+back with the lowerCamelCase equivalents, `ragPartitionId` and `overallStatus`,
+so convert accordingly when you read one. Request bodies are accepted in either
+form.
 {{< /info >}}
 
 ## Authentication
@@ -195,27 +195,8 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
    Delete is synchronous and removes the Layer 3 data itself.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
-   content.
-3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
-   `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
-   After a delete, they are on each file's result if its `overall_status` is
-   `COMMITTED`.
-4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
-   want to refresh the communities. Reclustering is never automatic.
-
-### Document-level changes to an existing graph
-
-Use these calls if the corpus graph is already built and you only want to change
-individual documents. See
-[Incremental Graph Updates](../incremental-graph-updates.md) for the
-prerequisites, a comparison with a rebuild, and the full endpoint reference.
-
-1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
-   depending on what changed. Insert and update only cover Layers 1 and 2.
-   Delete is synchronous and removes the Layer 3 data itself.
-2. After an insert or a successful update, call `POST /v1/orchestrate` with the
-   `file_ids` of the changed documents, so that Layer 3 contains the new
-   content.
+   content. A non-empty `file_ids` also skips the stale-partition filter, so a
+   partition that is already imported stays eligible.
 3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
    `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
    After a delete, they are on each file's result if its `overall_status` is
@@ -336,14 +317,6 @@ curl -X POST \
   -d '{"collection": "my_collection", "field": "content"}' \
   http://localhost:8080/v1/embed-field-in-collection
 ```
-
-## JSON field naming
-
-The request and response examples in this section spell field names in
-**snake_case**, such as `corpus_build_id` and `document_count`. Responses come
-back in **camelCase** on the wire (`corpusBuildId`, `documentCount`). Read the
-examples as field identifiers rather than as the literal wire encoding, and
-parse the responses accordingly. Request bodies are accepted in either form.
 
 ## API Reference
 

@@ -124,15 +124,6 @@ with the `file_ids` of the changed documents so that the change reaches the
 knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /step >}}
 
-{{< step "Keep the graph up-to-date (optional)" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
-Once the graph is built, you can add, remove, or replace individual documents
-with `/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
-rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
-with the `file_ids` of the changed documents so that the change reaches the
-knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
-{{< /step >}}
-
 {{< /steps >}}
 
 {{< info >}}

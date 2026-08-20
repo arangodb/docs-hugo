@@ -130,9 +130,9 @@ links are missing.
 | Status Code | Meaning |
 |-------------|---------|
 | `202` | Build accepted and started in the background |
-| `400` | Invalid request |
+| `400` | Invalid request: more than one selector, an empty category label, a category scope deeper than the File Manager limit, a single file larger than the whole staging budget, or a latched model configuration (see below) |
 | `401` | Authentication failed |
-| `409` | Another build is in progress |
+| `409` | Another build is in progress, a document delete is running, a project deletion has started, or `REBUILD_NOT_ALLOWED` on a `categories` request with `incremental: false` |
 | `500` | Server error |
 
 {{< info >}}

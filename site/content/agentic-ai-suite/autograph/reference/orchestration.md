@@ -93,7 +93,7 @@ upper bound.
 | `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `categories` | string[] | No | If **non-empty**, only the strategy profiles of the listed categories are orchestrated. A category is a bare category label, such as `legal`, not a partition ID. If no strategy profile matches, the request is rejected with `400`. | **Omit or `[]`** for the full corpus. This is the coarsest scoping level; there is no way to single out one partition of a category. |
-| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. Ids that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
+| `file_ids` | string[] | No | If **non-empty**, the run is narrowed to the strategized clusters that contain these File Manager IDs, each of those partitions imports only those IDs, and the stale-partition filter is skipped. IDs that match nothing are skipped and reported in `unmatched_file_ids` on the response. Matching uses the `file_id` that a corpus build stamps on the corpus sources; there is no fallback to file names. | **Omit** for a normal build. Use it after an [incremental graph update](../incremental-graph-updates.md) to import only the documents that changed. |
 
 ### Credential precedence
 
@@ -158,7 +158,7 @@ read it from the response body before you start polling. A request in which
 | Status Code | Meaning |
 |-------------|---------|
 | `202` | Orchestration accepted and started in the background |
-| `400` | `project` is missing, or does not name the project the service runs against |
+| `400` | `project` is missing or does not name the project the service runs against, no strategy profile matches the given `categories`, or the model configuration gate is latched (see [Corpus Build](corpus-build.md#create-corpus-build)) |
 | `401` | Authentication failed |
 | `403` | Access denied |
 | `409` | One of three distinct conditions, see below |
