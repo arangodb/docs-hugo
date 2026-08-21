@@ -37,10 +37,17 @@ in Arango Contextual Data Platform 4.1.0. See
 
 ## Create an AutoGraph project
 
-1. In the **AutoGraph Studio** view, click **+ New Project**.
+1. In the **AutoGraph Studio** view, click **+ New Project**. A database without
+   any projects reports *No projects yet*.
+
+   ![The AutoGraph Studio view of a database without projects](../../images/autograph-ui-studio-empty.png)
+
    Existing projects of the current database are listed in a table with their
    **Name**, **Description**, and **Actions**. Click a column header to sort, use
    **Filters** to narrow the list, and click a project name to open it.
+
+   ![The AutoGraph Studio view listing the projects of a database](../../images/autograph-ui-projects-list.png)
+
 2. The **New project** dialog opens. Enter a **Project name** and, optionally,
    a **Description** of what this project's knowledge base is for.
 
@@ -88,9 +95,24 @@ the project when you continue to the next step.
      filter the list.
    - Remove a single file with the cross icon, or delete a whole category with
      the trash icon.
-   - Repeat the upload to add more categories.
-5. Click **Configure LLM**. The documents are uploaded to the project and the
-   wizard continues to the configuration step automatically.
+   - Repeat the upload to add more categories. Every upload opens its own
+     **Name this category** dialog, and the files you already staged stay pending
+     in the background. The footer counts them across all categories, for example
+     *17 pending upload*.
+
+     ![The Name this category dialog of a second upload](../../images/autograph-ui-name-category-second.png)
+
+     ![The Name this category dialog of a third upload](../../images/autograph-ui-name-category-third.png)
+
+5. Click **Configure LLM**. The documents are uploaded to the project, with the
+   progress reported as *Uploading `<N>` documents…*, and the wizard continues to
+   the configuration step automatically.
+
+   ![The Documents step uploading the staged documents](../../images/autograph-ui-documents-uploading.png)
+
+   The categories are listed with their file counts once the upload completes.
+
+   ![The Documents step with three uploaded categories](../../images/autograph-ui-documents-uploaded.png)
 
 {{< tip >}}
 If you drop a folder, its name is used as the category name. For loose files,
@@ -101,7 +123,7 @@ you name the category yourself.
 
 In the **Configure** step, choose the LLM provider used to build the Corpus
 Graph. A banner confirms what you are building from, for example
-*Building from 3 documents across 1 category*. A callout summarizes what
+*Building from 35 documents across 3 categories*. A callout summarizes what
 clicking **Start build** does: it deploys the AutoGraph service with these
 settings and builds the Corpus Graph from your uploaded documents. When it is
 ready, the wizard finishes at your project overview, where you can generate
@@ -172,15 +194,23 @@ happens during the corpus build, see [Corpus Build](reference/corpus-build.md).
    for it to respond, showing *Checking service status…* and
    *Service deployed — waiting for it to respond. This might take up to 10
    minutes.* The **AutoGraph service ID** is displayed, for example
-   `arangodb-autograph-jdn9r`. Wait for the confirmation message
-   **AutoGraph service deployed**.
+   `arangodb-autograph-hiojb`.
 
    ![The Build step of the AutoGraph setup wizard waiting for the service](../../images/autograph-ui-build.png)
 
+   Wait for the confirmation message **AutoGraph service deployed**.
+
+   ![The Build step with the AutoGraph service deployed](../../images/autograph-ui-build-deployed.png)
+
 2. Click **Build Corpus Graph**.
-3. **Build corpus**: Your documents are extracted into the Corpus Graph. When it
-   completes, a **Corpus Graph ready** notification appears and the project
-   overview opens.
+3. **Build corpus**: Your documents are extracted into the Corpus Graph. The
+   **Build Corpus Graph** step is marked as **Running** while it extracts your
+   documents, which can take a while for large document sets.
+
+   ![The Build step building the Corpus Graph](../../images/autograph-ui-build-corpus.png)
+
+   When it completes, a **Corpus Graph ready** notification appears and the
+   project overview opens.
 
 {{< info >}}
 If the build fails, the reason is shown above the step list, for example
