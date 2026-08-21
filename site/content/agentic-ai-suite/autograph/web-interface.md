@@ -44,6 +44,10 @@ in Arango Contextual Data Platform 4.1.0. See
 2. The **New project** dialog opens. Enter a **Project name** and, optionally,
    a **Description** of what this project's knowledge base is for.
 
+   The project name must start with a letter and can only contain letters,
+   numbers, underscores, and hyphens. Spaces are not allowed. It must be
+   between 1 and 63 characters long.
+
    ![The New project dialog with a project name entered](../../images/autograph-ui-new-project.png)
 
 3. Click **Create**.
