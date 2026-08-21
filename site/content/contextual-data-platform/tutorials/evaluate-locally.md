@@ -127,7 +127,7 @@ kubectl get secret arango-license-key --namespace arango
 
 Expected output:
 
-```
+```text
 NAME                 TYPE     DATA   AGE
 arango-license-key   Opaque   2      10s
 ```
@@ -163,7 +163,7 @@ helm upgrade --install operator \
 
 The output looks similar to the following on success:
 
-```
+```text
 Release "operator" does not exist. Installing it now.
 NAME: operator
 LAST DEPLOYED: Thu Jul  9 12:52:39 2026
@@ -186,7 +186,7 @@ kubectl get pods --namespace arango --selector app.kubernetes.io/name=kube-arang
 
 Expected output (`x` stands for a varying letter or digit):
 
-```
+```text
 NAME                                        READY   STATUS    RESTARTS   AGE
 arango-operator-operator-xxxxxxxxxx-xxxxx   1/1     Running   0          45s
 ```
@@ -433,7 +433,7 @@ kubectl get pods --namespace minio
 
 Expected output:
 
-```
+```text
 NAME                          READY   STATUS      RESTARTS   AGE
 minio-xxxxxxxxxx-xxxxx        1/1     Running     0          40s
 minio-create-bucket-xxxxx     0/1     Completed   0          40s
@@ -469,7 +469,7 @@ kubectl get arangoplatformstorage --namespace arango
 
 Expected output:
 
-```
+```text
 NAME         READY
 deployment   True
 ```
@@ -497,7 +497,7 @@ helm upgrade platform --install ./chart.tgz \
 On success, Helm reports the release as deployed and lists the platform charts
 and services it created:
 
-```
+```text
 Release "platform" does not exist. Installing it now.
 NAME: platform
 NAMESPACE: arango
@@ -532,7 +532,7 @@ The first run takes several minutes because the service images are large and are
 being pulled for the first time. Eventually every pod reaches a `Running` state
 and reports all of its containers ready, similar to:
 
-```
+```text
 NAME                                                    READY   STATUS    RESTARTS   AGE
 arango-control-plane-xxxxxxxxxx-xxxxx                   3/3     Running   0          16m
 arangodb-core-ui-xxxxxxxxx-xxxxx                        2/2     Running   0          16m
