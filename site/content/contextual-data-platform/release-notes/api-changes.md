@@ -450,3 +450,67 @@ orchestration in two ways:
 In both cases, run a full corpus build
 ([`POST /v1/corpus/builds`](../../agentic-ai-suite/autograph/reference/corpus-build.md))
 to stamp the identifiers. Redeploying the service is not sufficient.
+
+### Importer (v0.0.32)
+
+{{< tag "Agentic AI Suite" >}}
+
+This release removes the Importer's delete endpoint and its image storage
+request fields, and replaces the boot-time API key probe with a full model
+configuration check.
+
+{{< warning >}}
+The following changes require you to adjust existing clients, and one of them
+requires you to import data again:
+
+- [Removed endpoint](#removed-endpoint): `POST /v1/delete` is gone. Deleting a
+  document is an AutoGraph operation.
+- [Removed image request fields](#removed-image-request-fields):
+  `store_image_data`, `crop_images`, and `store_images_to_s3` no longer exist,
+  and a request that still carries them may be rejected.
+- [Metadata of earlier imports](#metadata-of-earlier-imports): partitions
+  imported out of alphabetical order before this release carry the wrong
+  `file_name` and `citable_url` and have to be imported again.
+{{< /warning >}}
+
+#### Removed endpoint
+
+`POST /v1/delete` has been removed. Removing the Layer 3 data of a document is
+handled by
+[`POST /v1/graph/delete`](../../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents)
+in AutoGraph. The Importer keeps
+[`POST /v1/recluster`](../../agentic-ai-suite/importer/incremental-updates.md#reclustering)
+for rebuilding the community layer of a single partition. See
+[Incremental Updates](../../agentic-ai-suite/importer/incremental-updates.md).
+
+#### Removed image request fields
+
+The `store_image_data`, `crop_images`, and `store_images_to_s3` request fields
+have been removed. The service does not read them, and a request body that still
+carries them may be rejected instead of being ignored. Image extraction is now
+driven by `enable_semantic_units` and image descriptions by `process_images`.
+See
+[Semantic Units](../../agentic-ai-suite/importer/semantic-units.md#configuration).
+
+#### Metadata of earlier imports
+
+A bug could attach the wrong `file_name` and `citable_url` to a document when
+several files were imported in an order other than alphabetical. New imports are
+correct. Partitions that were imported out of alphabetical order before this
+release can still carry the wrong values and have to be imported again to fix
+the metadata.
+
+#### Boot-time model configuration gate
+
+The boot-time check of the deployed chat and embedding configuration now tests
+the models with a live inference call and reports the outcome as
+`[MODEL_CONFIG]`. A definitive rejection keeps the service up for inspection
+instead of terminating it, and imports are refused until it is redeployed with a
+valid configuration. See
+[Boot-time model configuration gate](../../agentic-ai-suite/importer/reference/error-handling.md#boot-time-model-configuration-gate).
+
+#### Limits and quotas
+
+The limits the Importer enforces on concurrency, request size, chunking, images,
+and timeouts are now documented. See
+[Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
