@@ -73,7 +73,7 @@ the project when you continue to the next step.
 
    ![The Name this category dialog listing the selected files](../../images/autograph-ui-name-category.png)
 
-3. Click **Upload `<N>` files**.
+3. Click **Upload files**.
 4. The files appear grouped under the category with a **Pending** status and
    their file size.
 
