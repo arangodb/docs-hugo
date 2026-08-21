@@ -420,7 +420,7 @@ The minimum required ArangoDB version is the Enterprise Edition v3.12.5.
 
 What's included:
 
-- [**GraphRAG**](../agentic-ai-suite/graphrag/_index.md):
+- [**GraphRAG**](../agentic-ai-suite/autograph/concepts.md):
   Transform unstructured documents into intelligent knowledge graphs and
   natural language querying through Importer and Retriever services.
 

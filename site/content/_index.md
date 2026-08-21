@@ -119,7 +119,7 @@ data is not properly or cleanly represented. GraphRAG is a technique that
 lets you ground GenAI applications in trusted context using the power of graph
 relationships and vector embeddings.
 
-Arango's [GraphRAG](agentic-ai-suite/graphrag/_index.md) included in the
+Arango's [GraphRAG](agentic-ai-suite/autograph/concepts.md) implementation in the
 [Agentic AI Suite](agentic-ai-suite/_index.md) is a turn-key solution to
 transform your organization's data into a knowledge graph and let everyone
 utilize the knowledge by asking questions in natural language.

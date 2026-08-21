@@ -99,6 +99,8 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
 
 ## What's next
 
+- **[Concepts](concepts.md)**: Knowledge graphs, LLMs, and the GraphRAG
+  approach that AutoGraph builds on.
 - **[Quick Start](quick-start.md)**: Turn a pile of documents into a knowledge
   base you can chat with, with answers cited back to the source.
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
