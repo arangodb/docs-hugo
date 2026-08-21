@@ -419,8 +419,6 @@ is ready. **Deploy a retriever** stays disabled until the Knowledge Graph is
 built, and the **Retrievers** panel points you back to the overview to build it.
 {{< /info >}}
 
-![The Retrievers panel before the Context Graph is ready](../../images/autograph-ui-retrievers-not-ready.png)
-
 1. Open the **Retrievers** panel from the document icon in the project sidebar,
    or click **Deploy a retriever** in the **AutoRAG** section of the project
    overview.
