@@ -768,7 +768,7 @@ function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
-    document.querySelectorAll(".link:not([target]), .card-link:not([target]), .header-link").forEach(el => {
+    document.querySelectorAll(".link:not([target], [data-unversioned]), .card-link:not([target], [data-unversioned]), .header-link").forEach(el => {
       const originalUrl = getLinkHref(el);
       const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
@@ -778,7 +778,7 @@ function linkToVersionedContent() {
       }
     });
   } else {
-    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
+    document.querySelectorAll(".link:not([target], .nav-prev, .nav-next, [data-unversioned]), .card-link:not([target], [data-unversioned])").forEach(el => {
       const originalUrl = getLinkHref(el);
       const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
