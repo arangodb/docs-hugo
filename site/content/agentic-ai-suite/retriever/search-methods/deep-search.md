@@ -19,6 +19,10 @@ There are two Deep Search modes depending on the query type:
 - **Custom Deep Search** (`query_type: 4` + `use_llm_planner: true`): Uses
   [Custom Retriever](custom-retriever.md) tools, with automatic tool selection.
 
+You can also send [`"mode": "DEEP_SEARCH"`](../parameters.md#mode) instead of
+setting `query_type` and `use_llm_planner`. The service then uses Custom
+Retriever tools when they are available, and Local Search otherwise.
+
 {{< diagram src="/images/retriever-deep-search-architecture.png" 
            alt="Deep Search Architecture showing LLM-guided research process" >}}
 
