@@ -244,6 +244,8 @@ nodes to the canvas, run queries, change the layout, and style node types by
 color, icon, and label, including attribute-based rules. For more information,
 see [Graph Visualizer](../../platform-suite/graph-visualizer.md).
 
+![The Corpus Graph of a project in the Graph Visualizer](../../images/autograph-ui-corpus-visualizer.png)
+
 ## Add more documents
 
 You can add documents to an existing project at any time.
@@ -312,18 +314,25 @@ is disabled below **Thorough** and always on at **Deep**.
 The **Estimated cost** card shows the relative cost of your selection, which
 scales with how much you lean on GraphRAG and with image extraction.
 
+![The Configure step of the strategy generation wizard](../../images/autograph-ui-strategies-configure.png)
+
 Click **Generate strategies**. Generation runs server-side, so you can leave the
 page and come back. The wizard moves to **Review** and reports progress as
-*Analyzing your corpus…* with the number of clusters analyzed.
+*Analyzing your corpus…*.
+
+![The strategy generation wizard analyzing the corpus](../../images/autograph-ui-strategies-generating.png)
 
 ### Review strategies
 
-The **Review strategies** step summarizes how many clusters were created and how
-many got GraphRAG and VectorRAG. The table lists each category and the clusters
-below it, with the assigned **Strategy**, the size of its **Ontology**, and the
-number of **Documents**. Your edits here are staged and applied when you build —
-the footer counts them, for example *1 staged edit — applied on build*, and
-edited rows are marked with an **edited** badge.
+The **Review strategies** step lists each category and the clusters below it,
+with the assigned **Strategy**, the size of its **Ontology**, and the number of
+**Documents**. Every category row summarizes its clusters, for example
+*1 cluster · 1 GraphRAG · ontology: 12 types*. Your edits here are staged and
+applied when you build — the footer counts them, for example
+*1 staged edit — applied on build*, and edited rows are marked with an
+**edited** badge.
+
+![The Review strategies step of the strategy generation wizard](../../images/autograph-ui-strategies-review.png)
 
 - Click **Edit** on a cluster to open its editor. You can switch the strategy
   **Type** between **GraphRAG** and **VectorRAG**, toggle
@@ -341,7 +350,8 @@ VectorRAG clusters have no ontology to customize and do not extract images.
 Switch a cluster to **GraphRAG** to build entities and relationships from it.
 {{< /info >}}
 
-Click **Build Knowledge Graph** when you are happy with the strategies.
+Click **Continue to build** when you are happy with the strategies, or
+**Back to configure** to change the complexity and regenerate.
 
 {{< warning >}}
 If a GraphRAG cluster has no entity types, a dialog lists the affected clusters.
@@ -355,8 +365,21 @@ editor or via the category's **Override**, or **Build anyway** to continue.
 
 The **Build** step imports every cluster with its assigned strategy: GraphRAG
 clusters extract entities and relationships, VectorRAG clusters embed chunks. It
-reports how many clusters have completed and failed. For details, see
+names what it is about to build, for example
+*Building 2 GraphRAG clusters and 1 VectorRAG cluster*. For details, see
 [Orchestration](reference/orchestration.md).
+
+Set **Parallel builds** to the number of clusters to import at the same time.
+More parallel builds finish faster but put more load on the service. The default
+is `1`.
+
+![The Build step of the strategy generation wizard](../../images/autograph-ui-kg-build.png)
+
+Click **Build Knowledge Graph** to start the import. It reports progress as
+*Importing your corpus…* and runs server-side, so you can leave the page and
+come back.
+
+![The strategy generation wizard building the Knowledge Graph](../../images/autograph-ui-kg-building.png)
 
 When the import finishes, **Knowledge Graph built** is displayed. Click
 **Go to overview** to return to the project, where the **Knowledge Graph** card
@@ -366,6 +389,8 @@ now shows the graph as built.
 You can explore the Knowledge Graph in the
 [Graph Visualizer](../../platform-suite/graph-visualizer.md) at any time.
 {{< /tip >}}
+
+![The Knowledge Graph of a project in the Graph Visualizer](../../images/autograph-ui-kg-visualizer.png)
 
 ## Change the provider or key
 
@@ -394,10 +419,17 @@ is ready. **Deploy a retriever** stays disabled until the Knowledge Graph is
 built, and the **Retrievers** panel points you back to the overview to build it.
 {{< /info >}}
 
+![The Retrievers panel before the Context Graph is ready](../../images/autograph-ui-retrievers-not-ready.png)
+
 1. Open the **Retrievers** panel from the document icon in the project sidebar,
    or click **Deploy a retriever** in the **AutoRAG** section of the project
    overview.
-2. In the **Retriever services** list, click **+ Deploy**.
+2. In the **Retriever services** list, click **+ Deploy**. Until you deploy one,
+   the panel reports *No retriever services yet* and offers a
+   **Deploy retriever** button as well.
+
+   ![The Retrievers panel without any deployed retriever](../../images/autograph-ui-retrievers-empty.png)
+
 3. In the **Deploy retriever** form, configure the following:
    - **CHAT LLM**: The **Provider** (for example **OpenAI**), the
      **Chat model** (for example **GPT-5.4 Nano**), and the **Chat API key**.
@@ -491,10 +523,24 @@ trust. It has the following views:
   so you can compare a claim against the original wording. Documents imported
   with a canonical URL link out to it — see
   [`citable_url`](../importer/reference/parameters.md#file-source-parameters).
+  Each entry also offers **Open document in database**.
+
+  ![The Citations view of the Provenance panel](../../images/autograph-ui-provenance-citations.png)
+
 - **Graph**: The part of your Context Graph the answer was drawn from — the
   entities and relationships the retriever traversed to assemble it. This is
   where a GraphRAG answer differs from a plain vector search: you see the
-  connections that produced the answer, not just the matching text.
+  connections that produced the answer, not just the matching text. The view
+  counts what it holds, for example *157 entities* and *265 relationships*.
+
+  ![The Graph view of the Provenance panel](../../images/autograph-ui-provenance-graph.png)
+
+  Use the expand icon to open the slice as a **Context Graph slice** dialog, or
+  **Open in Visualizer** to explore it in the
+  [Graph Visualizer](../../platform-suite/graph-visualizer.md).
+
+  ![The Context Graph slice dialog of an answer](../../images/autograph-ui-provenance-graph-expanded.png)
+
 - **Trace**: Only shown for **Deep Search** answers. Deep Search splits your
   question into sub-questions and runs each step with the tool it selected for
   it, and the trace reports that work. Its header counts the steps and the tools
