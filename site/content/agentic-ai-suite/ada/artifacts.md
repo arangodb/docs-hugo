@@ -6,6 +6,8 @@ description: >-
   The interactive charts and custom HTML that Ada renders alongside its chat
   answers
 ---
+{{< tag "Beta" >}}
+
 When Ada responds to a query, it may produce artifacts. An artifact is a
 rendered output that appears alongside the chat message. Ada currently supports
 two artifact types:
