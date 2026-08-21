@@ -322,7 +322,7 @@ flowchart TD
             STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
 
             B1["Read files from disk"]
-            B2["Extract text\nPDF / Office / JSON / HTML"]
+            B2["Convert to Markdown\nvia File Parser service"]
             B3["Generate embeddings\nFirst 1200 tokens"]
             B4["Insert document nodes"]
             B5["Build similarity edges\nVector + BM25 + RRF"]

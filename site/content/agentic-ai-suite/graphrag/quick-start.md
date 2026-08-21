@@ -12,7 +12,9 @@ description: >-
 - A **GraphRAG project** in your target database.
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
-- One or more documents to ingest (`.txt`, `.md`, or `.pdf`).
+- One or more documents to ingest (`.txt`, `.md`, `.pdf`, or an Office file
+  such as `.docx`). See
+  [Format support](../importer/setup.md#format-support).
 
 ## Build a knowledge graph and query it
 

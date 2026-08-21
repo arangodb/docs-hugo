@@ -14,7 +14,8 @@ description: >-
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** (`Authorization: Bearer ...`).
-- A document to import (`.txt`, `.md`, or `.pdf`).
+- A document to import (`.txt`, `.md`, `.pdf`, or an Office file such as
+  `.docx`). See [Format support](setup.md#format-support).
 
 ## Import your first document
 

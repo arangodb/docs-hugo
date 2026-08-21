@@ -23,17 +23,31 @@ interface for a guided experience, or the API for automation.
 
 ## Supported file formats
 
-AutoGraph can process a wide variety of document formats:
+The corpus build does not parse documents itself. It hands every input that is
+not already plain text or Markdown to the **File Parser service**, which
+converts it to Markdown and, where applicable, extracts the embedded images
+together with the text surrounding each one. AutoGraph then embeds and clusters
+that Markdown.
 
-- **Text files**: `.txt`, `.md`
-- **PDF files**: `.pdf`
-- **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
-- **OpenDocument formats**: `.odt`, `.odp`, `.ods`
-- **Rich Text Format**: `.rtf`
+The File Parser is an internal data platform service installed once per environment,
+without a web interface of its own. The GraphRAG [Importer](../importer/_index.md)
+uses the same service when it builds the knowledge graph, so the whole AutoGraph
+pipeline accepts one consistent set of inputs:
+
+- **PDF**: `.pdf` files including scanned documents, read using OCR
+- **Office documents**: `.doc`, `.docx`, `.ppt`, and `.pptx` files
+- **Plain text**: `.txt` and `.md` files
+
+For the per-format detail, see
+[Format support](../importer/setup.md#format-support).
 
 {{< tip >}}
-For large-scale ingestion of PDF and Office documents, GPUs are recommended.
-Ingestion of those formats on CPU-only clusters might introduce significant latency even for small document sets.
+Parsing runs on CPU. Throughput for large-scale ingestion of PDF and Office
+documents is governed by how many File Parser worker pods your node pool can
+support, not by GPU availability. Parsing PDFs is by far the most expensive
+operation, because every page without a text layer has to be read using OCR. See
+[Tuning the File Parser](../importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments)
+if a self-hosted cluster is slower than you expect.
 {{< /tip >}}
 
 ## Prerequisites

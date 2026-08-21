@@ -48,10 +48,11 @@ these existing files or upload new ones.
 1. The interface displays a drag-and-drop area for uploading documents.
 2. Drag and drop files, or click to browse. Supported file formats are:
    - **Text files**: `.txt`, `.md`
-   - **PDF files**: `.pdf`
-   - **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
-   - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
-   - **Rich Text Format**: `.rtf`
+   - **PDF files**: `.pdf`, including scanned documents
+   - **Office documents**: `.docx`, `.pptx`, `.doc`, `.ppt`
+
+   For details, especially around image extraction, see
+   [Format support](../importer/setup.md#format-support).
 3. You can also click **Upload Folder** to upload an entire folder of documents.
 4. Once files are uploaded, they appear in a **Ready to Upload** list showing the filename and size.
 5. Click **Upload** to proceed to the next step.
