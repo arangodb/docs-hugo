@@ -49,7 +49,10 @@ different partitions coexists in the same collections. Filter by
 
 - **Purpose**: Original text documents that were processed.
 - **Key fields**:
-  - `_key`: Unique identifier.
+  - `_key`: Unique identifier, built from a fingerprint of the content plus the
+    `import_number`, and prefixed with the `partition_id` when the target is a
+    SmartGraph. Because the fingerprint covers the content, files with identical
+    content collapse into a single Document within one import.
   - `content`: Full text content.
   - `file_name`: Original filename.
   - `citable_url`: URL used for inline citations at retrieval. Taken from the
@@ -60,6 +63,9 @@ different partitions coexists in the same collections. Filter by
   - `partition_id`: Partition the document belongs to.
   - `file_ids`: List of File Manager ids stamped at import time, when the source
     is a File Manager file. Empty for inline or `file_url` imports without one.
+    It is a list rather than a single id because `_key` is a content hash: when
+    several files hold the same content they share one Document, and the id of
+    each of them is recorded here.
     [Layer 3 removals](incremental-updates.md#deleting-a-document) resolve
     documents primarily by this field.
   - `import_number`: The import batch that produced the document. Repeated

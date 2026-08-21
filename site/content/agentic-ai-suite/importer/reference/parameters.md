@@ -145,14 +145,17 @@ When using `"vector_rag"` mode, chunk embeddings are automatically enabled regar
 
 These parameters control how documents are split into smaller chunks for processing.
 
-- `chunk_token_size`: Maximum tokens per chunk. The default value is `1024`.
+- `chunk_token_size`: Maximum tokens per chunk. The default value is `1024`. It
+  must not be smaller than `chunk_overlap_token_size`; equal values are
+  accepted. A smaller value is rejected with a validation error.
 - `chunk_overlap_token_size`: Number of overlapping tokens between consecutive
   chunks. The default value is `128`.
 - `chunk_min_token_size`: Minimum tokens per chunk. Chunks smaller than this are
   merged with adjacent chunks. The default value is `64`.
 - `chunk_custom_separators`: Custom separators for chunking (optional, e.g., `["\n\n", "\n", " "]`).
 - `preserve_chunk_separator`: Whether to preserve separator characters in chunks
-  (default: `true`).
+  (default: `false`). Set it to `true` explicitly if you want separators kept.
+  Omitting the field is the same as sending `false`.
 - `ignore_chunk_token_size`: If `true`, chunks are split only by separators without
   enforcing token size limits. When enabled, `chunk_token_size` and `chunk_overlap_token_size`
   are ignored (default: `false`).
@@ -288,7 +291,10 @@ In `"vector_rag"` mode, chunk embeddings are always enabled regardless of the `e
 These parameters configure the vector indexes used for semantic search and similarity queries. Vector indexes are automatically created on embedding fields when embeddings are enabled.
 
 - `vector_index_metric`: Distance metric for vector similarity search. The supported values are `"cosine"` (default), `"l2"`, and `"innerProduct"`.
-- `vector_index_n_lists`: Number of lists for approximate search (optional). If not set, it is automatically computed as `8 * sqrt(collection_size)`. This parameter is ignored when using HNSW.
+- `vector_index_n_lists`: Number of lists for approximate search (optional). Must
+  be a positive integer when set. If not set, it is automatically computed as
+  `8 * sqrt(collection_size)` and capped at the collection size. This parameter
+  is ignored when using HNSW.
 - `vector_index_use_hnsw`: Whether to use HNSW (Hierarchical Navigable Small World) index instead of the default inverted index (default: `false`).
 
 **Example:**
@@ -310,14 +316,16 @@ Vector index parameters apply to all embedding fields in your knowledge graph (c
 These parameters enable extraction of images and multimedia references. For detailed 
 information, see the [Semantic Units guide](../semantic-units.md).
 
-- `enable_semantic_units`: Enable semantic unit processing (extracts web URLs and image references). Default: `false`.
-- `process_images`: Process storage-style URLs like base64/S3/FileManager artifact URLs (requires `enable_semantic_units=true`). Default: `false`.
-- `store_image_data`: Store actual image data for storage-style URLs (requires `process_images=true`). Default: `false`.
+- `enable_semantic_units`: Collect image and web references, and ask the File
+  Parser to extract the images embedded in the source documents. Default:
+  `false`.
+- `process_images`: Send each image to a vision-capable model and store the
+  returned description on the semantic unit (requires
+  `enable_semantic_units=true`). Default: `false`.
 - `enable_semantic_unit_embeddings`: Generate vector embeddings for semantic units (requires `enable_semantic_units=true`). Default: `false`.
-- `crop_images`: Extract images from documents and include markdown references. Default: `false`.
-- `store_images_to_s3`: Upload extracted images via sidecar as FileManager artifacts and replace local paths with FileManager download URLs. Default: `false`.
 
-The first three parameters are hierarchical; each requires the previous one to be enabled.
+`process_images` and `enable_semantic_unit_embeddings` both require
+`enable_semantic_units`.
 
 **Example:**
 
@@ -325,9 +333,17 @@ The first three parameters are hierarchical; each requires the previous one to b
 {
   "enable_semantic_units": true,
   "process_images": true,
-  "store_image_data": false
+  "enable_semantic_unit_embeddings": false
 }
 ```
+
+{{< warning >}}
+The `store_image_data`, `crop_images`, and `store_images_to_s3` fields have been
+**removed** from the import requests. The service does not read them, and a
+request body that still carries them may be rejected instead of being ignored.
+Use `enable_semantic_units` and `process_images` instead, as described in the
+[Semantic Units guide](../semantic-units.md#configuration).
+{{< /warning >}}
 
 ## Graph Configuration
 
@@ -393,7 +409,6 @@ The `partition_id` parameter enables semantic sharding and horizontal scaling by
 
 ```json
 {
-  "store_in_s3": false,
   "partition_id": "cluster_0_a",
   "batch_size": 1000
 }
