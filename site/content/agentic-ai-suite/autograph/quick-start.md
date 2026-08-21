@@ -82,29 +82,37 @@ header.
 Confirm AutoGraph is up before you start.
 {{< /step >}}
 
-{{< step "Import your files" >}}
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
-Upload your documents. Repeat this call once per module (for example, once for
-`legal`, once for `engineering`).
+{{< step "Upload your files" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
+Upload your documents to the [File Manager](../../platform-suite/file-manager/)
+under the scope `[project, category]`, one category per knowledge domain, for
+example `legal` and `engineering`.
 {{< /step >}}
 
 {{< step "Build the corpus" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
-Builds the Corpus Graph and discovers domain clusters. Poll
+List your category labels in `categories`. Builds the Corpus Graph and discovers
+domain clusters. Returns `202` with a `corpus_build_id`. Poll
 `GET /autograph/v1/corpus/builds/{corpus_build_id}` until `status` is
-`completed` before moving on.
+`completed` before moving on, and check `error_code` even then.
 {{< /step >}}
 
 {{< step "Generate RAG strategies" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
 Assigns each domain a strategy (FullGraphRAG or VectorRAG) and an ontology.
-Run this only after the corpus build has completed.
+`project` and `complexity` are required; send `complexity: "very_high"` if every
+domain has to answer entity-based questions. Run this only after the corpus
+build has completed, then poll
+`GET /autograph/v1/rag-strategizer/jobs/{strategize_job_id}` until `status` is
+`completed`.
 {{< /step >}}
 
 {{< step "Orchestrate the import" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 Spawns the per-domain Importer workers to build the knowledge graph. Run this
-only after the strategizer has finished.
+only after the strategizer has finished. Returns `202` with an
+`orchestration_id`; poll `GET /autograph/v1/orchestrate/{orchestration_id}`
+until it reports a terminal status.
 {{< /step >}}
 
 {{< step "Keep the graph up-to-date (optional)" >}}
@@ -119,12 +127,19 @@ knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
 {{< /steps >}}
 
 {{< info >}}
-Insert and update identify every document by its File Manager `file_id`, so
-upload through the [File Manager](../../platform-suite/file-manager/) rather than
-with `/v1/import-multiple` as in step 2, if you expect to change documents later.
-See [Identifying documents for Layer
-3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+Insert and update identify every document by its File Manager `file_id`, which
+is why step 2 uploads through the File Manager. The legacy
+`POST /v1/import-multiple` path uploads files directly to the service, but a
+corpus built that way cannot be changed document by document. See
+[Identifying documents for Layer 3](incremental-graph-updates.md#identifying-documents-for-layer-3).
 {{< /info >}}
+
+{{< tip >}}
+At any point, `GET /autograph/v1/projects/{project}/overview` reports where the
+project stands: the document and cluster counts, and which categories still need
+a build, strategies, or an orchestration. See
+[Project Operations](reference/project-operations.md#project-overview).
+{{< /tip >}}
 
 Next, query your knowledge base with the
 [Retriever service](../retriever/quick-start.md).

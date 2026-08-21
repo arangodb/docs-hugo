@@ -36,6 +36,13 @@ For large-scale ingestion of PDF and Office documents, GPUs are recommended.
 Ingestion of those formats on CPU-only clusters might introduce significant latency even for small document sets.
 {{< /tip >}}
 
+{{< info >}}
+A document has to yield extractable text. An image-only PDF without OCR-readable
+content fails as a single file, and the build can still complete with
+`error_code: FILE_PARSER_PARTIAL_FAILURE`, see
+[Document parsing](reference/corpus-build.md#document-parsing).
+{{< /info >}}
+
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (which ships with
@@ -77,14 +84,18 @@ For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 The AutoGraph service exposes HTTP REST endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 
-1. **Import files**
-   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
-2. **Build corpus**
+1. **Upload files** to the [File Manager](../../platform-suite/file-manager/)
+   under the scope `[project, category]`
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
+2. **Build corpus** with those category labels in `categories`
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 3. **Generate strategies**
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
 4. **Orchestrate import**
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
+
+Steps 2 to 4 are asynchronous and acknowledge the request with `202`. Poll the
+matching status endpoint before you move on to the next step.
 
 Authentication uses JWT Bearer tokens. For full endpoint documentation,
 see the [API Reference](reference/_index.md).

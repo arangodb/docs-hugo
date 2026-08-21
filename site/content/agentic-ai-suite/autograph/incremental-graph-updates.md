@@ -100,9 +100,9 @@ corpus build for changes of that size.
 | Situation | Use instead |
 |-----------|-------------|
 | No corpus graph exists yet | The [standard workflow](reference/_index.md#standard-workflow) |
-| Adding an entirely **new module** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the new module in `modules` |
-| **Clean rebuild** of a module, for example because of wrong embeddings, bad clusters, or files that are replaced as a whole | [`POST /v1/corpus/builds`](reference/corpus-build.md) with that module in `modules` and `incremental: false`. This wipes and rebuilds only that module |
-| **Adding documents in bulk** to an existing module, that is, a batch that is large in relation to what the module already holds | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that module in `modules` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
+| Adding an entirely **new module** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the new module in `categories` and `incremental: false` |
+| **Clean rebuild** of a module, for example because of wrong embeddings, bad clusters, or files that are replaced as a whole | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category), then a corpus build, the RAG Strategizer, and an orchestration for that module. A build with `incremental: false` over a module that already exists is rejected with `REBUILD_NOT_ALLOWED` |
+| **Adding documents in bulk** to an existing module, that is, a batch that is large in relation to what the module already holds | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that module in `categories` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
 | You only need vectors on an existing collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 **Rule of thumb:** Use IGU for changes that are small in relation to the module,
@@ -124,7 +124,7 @@ bulk additions, and a corpus build for a new module or a clean module rebuild.
 
 | | Full rebuild | IGU |
 |--|--------------|-----|
-| **How** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the module in `modules` and `incremental: false`, followed by the RAG Strategizer and orchestration as needed | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
+| **How** | [Delete the category](reference/project-operations.md#delete-category), then [`POST /v1/corpus/builds`](reference/corpus-build.md) with the module in `categories`, followed by the RAG Strategizer and orchestration | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
 | **Scope** | The entire module. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing module |
 | **Clusters and strategies** | Computed again for the processed module | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster at Layer 2 and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
 | **Layer 3** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for inserted and updated files, scoped to their `file_ids`. Deletions need no orchestration, they clean up Layer 3 in the same call |
