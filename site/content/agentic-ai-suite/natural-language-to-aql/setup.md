@@ -7,6 +7,8 @@ description: >-
   Contextual Data Platform, including LLM provider configuration and
   Secrets Manager integration
 ---
+{{< tag "Beta" >}}
+
 Deploy the Natural Language to AQL service with a single API call to the platform.
 You provide configuration parameters in the request body, and the platform
 automatically provisions the service with those settings.
