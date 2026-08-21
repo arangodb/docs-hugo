@@ -139,7 +139,7 @@ The sidebar on the left-hand side allows you to manage queries:
 
 ## Generate queries (AQLizer)
 
-{{< tag "Contextual Data Platform" >}}
+{{< tag "Contextual Data Platform" "Beta" >}}
 
 For an introduction to the AQLizer, see
 [Natural Language to AQL](../agentic-ai-suite/natural-language-to-aql/_index.md).
@@ -171,7 +171,7 @@ AI can make mistakes or produce unexpected results.
 
 ## Optimize queries (Reasoner)
 
-{{< tag "Agentic AI Suite" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The **Optimize** button opens the Reasoner panel, which uses AI to analyze your
 AQL queries and return a validated, faster version with a performance comparison
