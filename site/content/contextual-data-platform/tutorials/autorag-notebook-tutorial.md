@@ -1,6 +1,6 @@
 ---
 title: Build and query a Context Graph with AutoGraph and AutoRAG
-menuTitle: AutoGraph Tutorial
+menuTitle: AutoRAG Tutorial
 weight: 18
 description: >-
   Turn 50 documents into a Context Graph and deploy a retriever that answers
