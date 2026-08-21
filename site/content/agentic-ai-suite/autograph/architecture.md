@@ -24,24 +24,35 @@ partition. They meet only at the `partition_id` link.
 
 ```mermaid
 graph TD
-  subgraph "Layer 1 — Modules  (defined by you)"
-    modules["modules\n(vertex: one per module label)"]
+  subgraph "`**Layer 1** — Modules  (defined by you)`"
+    modules["`**modules**
+      (vertex: one per module label)`"]
   end
 
-  subgraph "Layer 2 — Corpus Graph  (built by AutoGraph)"
-    sources["sources\n(vertex: one per document)"]
-    similarities["similarities\n(edge: source ↔ source, label SIMILAR_TO)"]
-    domains["domains\n(vertex: one per Leiden cluster)"]
-    corpus_relations["corpus_relations\n(edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)"]
-    rags["rags\n(vertex: strategy profiles — added by strategizer)"]
+  subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
+    sources["`**sources**
+      (vertex: one per document)`"]      
+    similarities["`**similarities**
+      (edge: source ↔ source, label SIMILAR_TO)`"]      
+    domains["`**domains**
+      (vertex: one per Leiden cluster)`"]      
+    corpus_relations["`**corpus_relations**
+      (edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)`"]      
+    rags["`**rags**
+      (vertex: strategy profiles — added by strategizer)`"]      
   end
 
-  subgraph "Layer 3 — Knowledge Graph  (built by Importer)"
-    Documents["Documents\n(vertex: original documents)"]
-    Chunks["Chunks\n(vertex: text chunks)"]
-    Entities["Entities\n(vertex: extracted entities — full_graphrag only)"]
-    Communities["Communities\n(vertex: entity clusters — full_graphrag only)"]
-    Relations["Relations\n(edge: all relationships)"]
+  subgraph "`**Layer 3** — Knowledge Graph  (built by Importer)`"
+    Documents["`**Documents**
+      (vertex: original documents)`"]
+    Chunks["`**Chunks**
+      (vertex: text chunks)`"]
+    Entities["`**Entities**
+      (vertex: extracted entities — full_graphrag only)`"]
+    Communities["`**Communities**
+      (vertex: entity clusters — full_graphrag only)`"]
+    Relations["`**Relations**
+      (edge: all relationships)`"]
   end
 
   modules -->|HAS_CLUSTER| domains
@@ -306,20 +317,24 @@ flowchart TD
     Client -->|Step 4| ORCH
 
     %% Health
-    HEALTH["GET /v1/health\nConfirm service status is SERVING"]
+    HEALTH["`<code>GET /v1/health</code>
+      Confirm service status is SERVING`"]
 
     %% Layer 1
-    subgraph L1 [Layer 1 - Modules]
-        IMP["POST /v1/import-multiple\nUpload documents\nAttach module label\nFiles stored on disk"]
+    subgraph L1 ["`**Layer 1** - Modules`"]
+        IMP["`<code>POST /v1/import-multiple</code>
+          Upload documents\nAttach module label\nFiles stored on disk`"]
     end
 
     %% Layer 2
-    subgraph L2 [Layer 2 - Corpus Graph]
+    subgraph L2 ["`**Layer 2** - Corpus Graph`"]
 
         %% Build Pipeline
         subgraph BUILD_PIPE [Corpus Build Background Task]
-            BUILD["POST /v1/corpus/builds\nReturns corpus_build_id"]
-            STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
+            BUILD["`<code>POST /v1/corpus/builds</code>
+              Returns corpus_build_id`"]
+            STATUS["`<code>GET /v1/corpus/builds/{id}</code>
+              Status + progress`"]
 
             B1["Read files from disk"]
             B2["Extract text\nPDF / Office / JSON / HTML"]
@@ -338,8 +353,8 @@ flowchart TD
 
         %% Strategizer
         subgraph STRAT_PIPE [RAG Strategizer Background Task]
-            STRAT["POST /v1/rag-strategizer/analyze"]
-            GETSTRAT["GET /v1/rag-strategizer/strategy"]
+            STRAT["`<code>POST /v1/rag-strategizer/analyze</code>`"]
+            GETSTRAT["`<code>GET /v1/rag-strategizer/strategy</code>`"]
 
             S1["Read clusters"]
             S2["Generate per-cluster ontology\n(8-12 entity types via LLM)"]
@@ -356,10 +371,11 @@ flowchart TD
     end
 
     %% Layer 3
-    subgraph L3 [Layer 3 - Knowledge Graph]
+    subgraph L3 ["`**Layer 3** - Knowledge Graph`"]
 
         subgraph ORCH_PIPE [Orchestration Background Task]
-            ORCH["POST /v1/orchestrate\nReturns orchestration_id"]
+            ORCH["`<code>POST /v1/orchestrate</code>
+              Returns orchestration_id`"]
 
             O1["Load jobs from rags\n(all strategy profiles)"]
             O2["Spawn Importer replicas"]
