@@ -7,6 +7,46 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.0
+
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+- **Incremental Graph Updates (IGU)** add, remove, and replace individual
+  documents in a knowledge graph that is already built, without rebuilding the
+  corpus, the RAG Strategizer, and a full orchestration pass. See
+  [Incremental Graph Updates](../agentic-ai-suite/autograph/incremental-graph-updates.md).
+  Insert and update identify documents by their File Manager `file_id` and take
+  no inline content; the citable URL is read from the `custom_metadata` of the
+  file. The feature is API-only in this release; the web interface does not
+  offer these operations.
+- **Breaking:** the request field `module` was renamed to `category` on
+  [`POST /v1/graph/delete`](../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents).
+  Clients that send `module` have to send `category` instead.
+  [`POST /v1/graph/insert`](../agentic-ai-suite/autograph/reference/orchestration.md#insert-documents)
+  takes `category` as well, and
+  [`POST /v1/graph/update`](../agentic-ai-suite/autograph/reference/orchestration.md#update-documents)
+  takes `category` with `module` kept as a deprecated fallback that is only
+  honored when `category` is empty.
+- **Breaking:** [`POST /v1/orchestrate`](../agentic-ai-suite/autograph/reference/orchestration.md#trigger-orchestration)
+  requires a `project` field and scopes work with `categories` instead of
+  `partition_ids`, which was removed. A targeted run is driven by `file_ids`
+  alone, which narrow the run to the strategized clusters that contain those
+  ids. The `chat_api_keys` field was removed; use `chat_secret_profile_ids`.
+
+### Importer
+
+{{< tag "Agentic AI Suite" >}}
+
+- **Breaking:** `POST /v1/delete` was removed. Removing the Layer 3 data of a
+  document is handled by
+  [`POST /v1/graph/delete`](../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents)
+  in AutoGraph. The Importer keeps
+  [`POST /v1/recluster`](../agentic-ai-suite/importer/incremental-updates.md#reclustering)
+  for rebuilding the community layer of a single partition. See
+  [Incremental Updates](../agentic-ai-suite/importer/incremental-updates.md).
+
 ## v4.0.2 (May 2026)
 
 This is a maintenance release.
@@ -36,7 +76,7 @@ This release contains improvements and refinements to features introduced in v4.
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)
   also adds HTTP `429` (provider rate-limited or quota exhausted), expands
   the meanings of `401` and `403` to cover LLM provider auth and permission
-  failures, and explains why an accepted (`200`) async job can still fail
+  failures, and explains why an accepted (`202`) async job can still fail
   later.
 - The new Known Limitations section in the
   [error reference](../agentic-ai-suite/autograph/reference/error-handling.md)

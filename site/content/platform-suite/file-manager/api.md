@@ -327,6 +327,72 @@ with `422`.
 Changing the *order* of the scope labels addresses a different lineage:
 `["acme", "legal"]` and `["legal", "acme"]` are unrelated.
 
+### Custom metadata
+
+When you upload a RAG input file, you can attach information of your own to it,
+as a set of name-value pairs called `custom_metadata`:
+
+```json
+{
+  "author": "Ada",
+  "department": "legal",
+  "citable_url": "https://example.com/doc"
+}
+```
+
+Names and values are both plain text. File Manager only keeps them and hands
+them back unchanged; it never acts on them itself, so you are free to use
+whatever names suit your own applications. A few names are picked up by other
+services, such as `citable_url`, described below.
+
+The following limits apply:
+
+| Limit | Value |
+|-------|-------|
+| Number of pairs per file | 32 |
+| Length of one name | 64 characters |
+| Length of one value | 2048 characters |
+| Size of all pairs together | 16 KiB |
+
+An upload that goes over one of these limits, or that sends anything other than
+plain text, is rejected with `400`.
+
+A file uploaded without custom metadata simply has none, and every response
+shows it as `{}`.
+
+Custom metadata belongs to **one version** of a file. Uploading the same file
+again creates a new version, and that version carries only the custom metadata
+sent with it. Nothing is merged into or removed from earlier versions, which
+keep their own. To read what an earlier version carries, add a `version` query
+parameter to [Get RAG Input File Info](#get-rag-input-file-info), as in
+`?version=1`. The numbers you can ask for come from
+[Get Version History](#get-version-history).
+
+#### The `citable_url` key
+
+`citable_url` is one of the names other services look for. When AutoGraph
+builds a knowledge graph from your files, it turns this URL into a clickable
+link on every citation that points at the file. Without it, readers see a bare
+citation number instead.
+
+Set it to the document's public web address when you upload the file:
+
+```bash
+curl -X POST \
+  "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/my-database/rag-input" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -F "name=my-file.pdf" \
+  -F "file=@./downloads/my-file.pdf" \
+  -F 'custom_metadata={"citable_url":"https://example.com/docs/my-file"}'
+```
+
+The link has to start with `http://` or `https://` and must not contain
+whitespace or unmatched parentheses. File Manager does not check this; it only
+applies the size limits above. Anything that is not a usable link is quietly
+skipped, which leaves the citation unlinked. See
+[Import parameters](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
+for how the Importer resolves the key.
+
 ### Safe-to-delete
 
 Every *version* carries its own `safe_to_delete` flag in its own metadata
@@ -397,6 +463,7 @@ into the same scope automatically creates a new version.
 | `name` | string | Yes | File name identifier (1–255 characters). |
 | `scope` | string | No | One scope label. Repeat the field once per level, in order. Omit for an unscoped file. |
 | `file` | file | Yes | File content to upload. Must not be empty. |
+| `custom_metadata` | string (JSON) | No | Your own name-value pairs, as a JSON object, stored with this version of the file. See [Custom metadata](#custom-metadata). Defaults to `{}`. |
 
 **Example:**
 
@@ -407,7 +474,8 @@ curl -X POST \
   -F "name=my-file.pdf" \
   -F "scope=acme" \
   -F "scope=legal" \
-  -F "file=@my-file.pdf"
+  -F "file=@my-file.pdf" \
+  -F 'custom_metadata={"author":"Ada","citable_url":"https://example.com/doc"}'
 ```
 
 **Response (200):**
@@ -423,14 +491,18 @@ curl -X POST \
   "uploaded_at": "2026-01-15T10:30:00Z",
   "version": 1,
   "safe_to_delete": true,
+  "custom_metadata": {
+    "author": "Ada",
+    "citable_url": "https://example.com/doc"
+  },
   "metadata_key": "_rag_input.my-database.acme.legal.rag-input-OjI6bXktZGF0YWJhc2U6YWNtZTpsZWdhbDpteS1maWxlLnBkZg.v1"
 }
 ```
 
 **Errors:** `400` (invalid scope, including a violation of the level or
-combined-length limits), `422` (a required form field is missing or a typed
-field is invalid), `500` (storage, metadata, or another internal operation
-failed)
+combined-length limits, or invalid `custom_metadata`), `422` (a required form
+field is missing or a typed field is invalid), `500` (storage, metadata, or
+another internal operation failed).
 
 There is no application-level size limit on single-file upload, although an
 ingress or proxy in front of the service may impose one.
@@ -461,10 +533,11 @@ exceed 2 GiB. Files are processed sequentially and independently, and the
 | `manifest` | string (JSON) | No | Per-file target mappings. See [Targeting files with a manifest](#targeting-files-with-a-manifest). |
 | `scope` | string | No | Shared base scope applied to every file, used only when `manifest` is omitted. Repeat once per level, in order. Defaults to the empty scope. |
 | `mapping` | string | No | `flatten` (default) or `preserve_paths`, used only when `manifest` is omitted. |
+| `custom_metadata` | string (JSON) | No | Shared [custom metadata](#custom-metadata) applied to every file in the batch. A manifest entry's own `custom_metadata` is merged on top of it. Applies in both manifest and shared-scope mode. |
 
 The two ways of placing files are alternatives: supply a `manifest`, or supply
 `scope` and `mapping`. When a `manifest` is present, `scope` and `mapping` do
-not apply.
+not apply. The shared `custom_metadata` field applies either way.
 
 In shared-scope mode, `flatten` stores every uploaded basename directly in the
 shared scope. `preserve_paths` appends the directory segments of each multipart
@@ -499,9 +572,16 @@ file by the zero-based `file` index, or by its own position in the array when
 | `file` | integer | No | Zero-based index of the multipart file this entry applies to. Defaults to the entry's position in the array. |
 | `name` | string | No | Stored file name. Defaults to the basename of the uploaded file. |
 | `scope` | array of strings | No | Full scope for this file, ordered from the top level down. Defaults to the empty scope. |
+| `custom_metadata` | object | No | [Custom metadata](#custom-metadata) for this file only, merged on top of the shared `custom_metadata` form field. |
 
 Every manifest `scope` follows the [scope rules](#scopes). An entry that omits
 `scope` defaults to the empty scope.
+
+A file ends up with the shared `custom_metadata` and its own entry's
+`custom_metadata` combined. Where both use the same name, the entry's value is
+the one that is kept. The combined result is checked against the
+[size limits](#custom-metadata) again, so two sets that are each small enough
+on their own can still be too large together.
 
 **Example using a manifest:**
 
@@ -540,6 +620,7 @@ curl -X POST \
       "content_type": "application/pdf",
       "size": 4096,
       "uploaded_at": "2026-01-15T10:30:00Z",
+      "custom_metadata": {},
       "metadata_key": "_rag_input.my-database.acme.reports.rag-input-OjI6bXktZGF0YWJhc2U6YWNtZTpyZXBvcnRzOnExLnBkZg.v1"
     }
   ],
@@ -561,7 +642,8 @@ message.
       "scope": ["acme", "reports"],
       "status": "ok",
       "id": "rag-input-OjI6bXktZGF0YWJhc2U6YWNtZTpyZXBvcnRzOnExLnBkZg",
-      "version": 1
+      "version": 1,
+      "custom_metadata": {}
     },
     {
       "name": "bad.pdf",
@@ -575,10 +657,15 @@ message.
 }
 ```
 
-**Errors:** `400` (no files, more than 100 files, a malformed `manifest`, or an
-unsupported `mapping` value), `413` (combined size exceeds the 2 GiB limit),
-`422` (a required form field is missing or a typed field is invalid),
-`500` (every file failed because of an internal or storage error)
+An invalid **shared** `custom_metadata` map fails the whole request with `400`
+before any file is stored. An invalid per-entry or merged map fails only the
+file it belongs to and is reported in the `207` body.
+
+**Errors:** `400` (no files, more than 100 files, a malformed `manifest`, an
+unsupported `mapping` value, or an invalid shared `custom_metadata`),
+`413` (combined size exceeds the 2 GiB limit), `422` (a required form field is
+missing or a typed field is invalid), `500` (every file failed because of an
+internal or storage error).
 
 ---
 
@@ -627,7 +714,10 @@ curl -X GET \
       "size": 102400,
       "uploaded_at": "2026-01-15T11:00:00Z",
       "version": 2,
-      "safe_to_delete": true
+      "safe_to_delete": true,
+      "custom_metadata": {
+        "citable_url": "https://example.com/doc"
+      }
     }
   ],
   "total": 1,
@@ -740,7 +830,8 @@ of the child you want to descend into.
       "size": 2048,
       "uploaded_at": "2026-01-15T10:30:00Z",
       "version": 1,
-      "safe_to_delete": true
+      "safe_to_delete": true,
+      "custom_metadata": {}
     }
   ]
 }
@@ -789,14 +880,20 @@ unless a specific version is requested.
   "size": 102400,
   "uploaded_at": "2026-01-15T11:00:00Z",
   "version": 2,
-  "safe_to_delete": true
+  "safe_to_delete": true,
+  "custom_metadata": {
+    "author": "Ada",
+    "citable_url": "https://example.com/doc"
+  }
 }
 ```
 
 The scope is decoded from the `id`, so this endpoint takes no scope argument.
+Requesting an explicit `version` returns that version's own `custom_metadata`,
+which may differ from the latest version's map.
 
 **Errors:** `404` (the id cannot be resolved or the selected version does not
-exist), `422` (invalid `version`), `500` (metadata lookup failed)
+exist), `422` (invalid `version`), `500` (metadata lookup failed).
 
 ---
 
@@ -869,7 +966,10 @@ version's metadata is returned.
   "size": 102400,
   "uploaded_at": "2026-01-15T11:00:00Z",
   "version": 2,
-  "safe_to_delete": false
+  "safe_to_delete": false,
+  "custom_metadata": {
+    "citable_url": "https://example.com/doc"
+  }
 }
 ```
 
