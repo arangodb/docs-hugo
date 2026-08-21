@@ -6,6 +6,8 @@ description: >-
   Ask Ada questions in natural language and use the suggested prompts to get
   started quickly
 ---
+{{< tag "Beta" >}}
+
 Type your question or instruction in the **Ask about your database...** input
 field at the bottom of the panel and press **Enter** to send. Use
 **Shift+Enter** to insert a line break without sending.

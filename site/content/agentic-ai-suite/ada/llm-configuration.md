@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/ada/configure-the-llm-provider/
 ---
+{{< tag "Beta" >}}
+
 Before using Ada you need to configure the LLM provider and model for the
 current database.
 
