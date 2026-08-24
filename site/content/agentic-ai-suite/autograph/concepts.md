@@ -27,43 +27,64 @@ real-world entities and the intricate relationships that exist between them.
 Key aspects of knowledge graphs:
 - **Domain-specific knowledge**: You can tailor knowledge graphs to specific
   domains and industries.
-- **Structured information**: Makes it easy to query, analyze, and extract
-  meaningful insights from your data.
+- **Explicit relationships**: Entities and the connections between them are
+  modeled directly, so related information can be traversed instead of inferred.
+  The entities and relationships themselves are typically described in natural
+  language, not reduced to fixed fields.
 - **Accessibility**: You can build a Semantic Web knowledge graph or build one
   from custom data.
 
-LLMs can help distill knowledge graphs from natural language by performing
-the following tasks:
-- Entity discovery
-- Relation extraction
-- Coreference resolution
-- End-to-end knowledge graph construction
-- (Text) Embeddings
+An AutoGraph build turns a document collection into such a graph, using LLMs at
+most of its stages:
+- **Document parsing and chunking**: Source files are parsed and split into
+  token-sized chunks, which stay in the graph as the retrieval unit.
+- **Image interpretation**: A multimodal model describes the images in your
+  documents, so their content becomes part of the searchable text.
+- **Ontology generation**: Each domain gets its own set of entity types,
+  generated from a sample of its documents.
+- **Entity and relation extraction**: Entities of those types are extracted
+  together with the relationships between them, and each entity gets an
+  LLM-written description.
+- **Community detection and summarization**: Related entities are clustered into
+  a hierarchy of communities, and each community gets an LLM-written summary
+  report.
+- **Embeddings**: Chunks, entities, and communities are embedded for similarity
+  search.
+
+The target consumer is an agent, not a dashboard. An agent needs the prose that
+explains a domain as much as the structure that connects it, which is why the
+pipeline invests in generated descriptions and summaries rather than stopping at
+bare entity-and-relationship triples. See
+[Architecture](architecture.md#knowledge-graph-nodes) for the fields each stage
+writes.
 
 ## LLMs and knowledge graphs
 
-Large language models (LLMs) and knowledge graphs are two prominent and
-contrasting concepts, each possessing unique characteristics and functionalities
-that significantly impact the methods we employ to extract valuable insights from
-constantly expanding and complex datasets.
+Large language models (LLMs) and knowledge graphs solve different halves of the
+same problem. An LLM reads and writes natural language well but has no reliable
+memory of your corpus. A knowledge graph makes the relationships among discrete
+and seemingly unrelated pieces of information explicit, so they can be traversed
+and reasoned over instead of being rediscovered on every query, but it cannot
+interpret a question on its own.
 
-LLMs, such as those powering OpenAI's ChatGPT, represent a class of powerful language
-transformers. These models leverage advanced neural networks to exhibit a
-remarkable proficiency in understanding, generating, and participating in
-contextually-aware conversations.
+AutoGraph uses each for what it is good at, in both directions:
 
-On the other hand, knowledge graphs contain carefully structured data and are
-designed to capture intricate relationships among discrete and seemingly
-unrelated information.
-
-Arango's unique capabilities and flexible integration of knowledge graphs and
-LLMs provide a powerful and efficient solution for anyone seeking to extract
-valuable insights from diverse datasets.
+- **LLMs build the graph.** Once documents are parsed and chunked, they describe
+  images, propose the entity types of a domain, extract entities and
+  relationships, and write the descriptions and community summaries that the
+  graph stores.
+- **The graph grounds the LLM.** At query time, retrieval walks the graph to
+  assemble the entities, chunks, and community summaries that are relevant to a
+  question, and the answer is generated from that evidence rather than from the
+  model's own recollection.
 
 ## Why GraphRAG
 
-GraphRAG is particularly valuable for use cases like the following:
+AutoGraph exists to support agents, and an agent asks harder questions of a
+corpus than a search box does. GraphRAG is particularly valuable for cases like
+the following:
 
+- Agents that need grounded, traceable evidence for the answers they give
 - Applications requiring in-depth knowledge retrieval
 - Contextual question answering
 - Reasoning over interconnected information
