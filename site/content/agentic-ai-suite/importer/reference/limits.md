@@ -67,6 +67,8 @@ the bytes passing through the request at all.
 | `shard_count` for a new SmartGraph or sharded Enterprise Graph | exactly `1` | Hard |
 | `smart_graph_attribute` | must be `partition_id`, which must also be set | Hard |
 | `is_disjoint` on a new Enterprise Graph | must be `false` | Hard |
+| `partition_id` length | 1-254 UTF-8 bytes | Hard |
+| `partition_id` characters | No whitespace, no `:`. Allowed: `A-Z a-z 0-9 _ - . @ ( ) + , = ; $ ! * ' %` | Hard |
 | Replication factor | `3`, or the cluster's `minReplicationFactor` if that is higher | Fixed |
 
 Multi-shard SmartGraphs are not supported in this version, because ArangoDB
@@ -109,8 +111,10 @@ Which formats can be converted is not an Importer limit. See
 | Limit | Value | Notes |
 |-------|-------|-------|
 | Local image size | 20 MiB | Larger images are skipped, not failed |
-| `http://` and `https://` image fetches | Allowlist-gated | Only hosts on the operator's allowlist are fetched. Without an allowlist, only File Manager URLs are |
-| Other URL schemes | Refused | File Manager and `s3://` artifact routes are the exception, and are read through the platform's storage path |
+| `http://` and `https://` image fetches | Allowlist-gated | Only hosts on the operator's allowlist (`IMAGE_FETCH_ALLOWED_HOSTS`) are fetched. If no allowlist is set, only File Manager URLs are fetched |
+| File Manager and `s3://` artifact routes | Not allowlist-gated | Read through the platform's storage path instead of being fetched by URL, so the host allowlist does not apply |
+| `data:` URIs | Stored as-is | Inline base64 images are kept unchanged |
+| Any other URL scheme | Refused | |
 
 ## Timeouts and retries
 
@@ -138,8 +142,14 @@ for the full set of chat controls.
 
 The project name is not validated by the Importer, but it is used verbatim as
 the prefix of every collection it creates. It therefore has to satisfy
-ArangoDB's collection naming rules. See
-[Knowledge graph collections](../architecture.md#knowledge-graph-collections).
+ArangoDB's collection naming rules:
+
+- It must start with a letter or an underscore (`_`).
+- It may only contain letters, digits, underscores (`_`), and hyphens (`-`).
+- It must not exceed 256 characters, including suffixes such as `_Documents`.
+
+An invalid name is not caught at startup; collection creation fails at runtime.
+See [Prerequisites](../setup.md#prerequisites).
 
 ## Related references
 
