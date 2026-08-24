@@ -3450,6 +3450,30 @@
   description: |
     This figure contains the size of the virtual memory the process is using.
 
+- name: arangodb_rbac_request_duration
+  introducedIn: "3.12.10"
+  help: |
+    Duration of requests to the external RBAC authorization service in microseconds.
+  unit: microseconds
+  type: histogram
+  category: Connectivity
+  complexity: medium
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Histogram of the time spent on a single batch permission-check request to the
+    external RBAC authorization service, in microseconds. This covers serializing
+    the request body, the round trip to the authorization service, and parsing the
+    response. The buckets start at 10 microseconds and double up to about 21
+    seconds, because the authorization service is typically a sidecar reachable
+    over the loopback interface. The metric is only exposed if an external RBAC
+    service is configured.
+  troubleshoot: |
+    Counts in the high buckets mean that permission checks are slow, which directly
+    adds latency to every incoming request that requires an authorization decision.
+    Check the health of the authorization service and the network path to it.
+
 - name: arangodb_read_transactions_total
   introducedIn: "3.8.2"
   help: |
@@ -5848,6 +5872,44 @@
   description: |
     Amount of memory in bytes that is used for writing to an inverted index of
     a collection or index of a View (`arangosearch` View link).
+
+- name: arangodb_server_health
+  introducedIn: "3.12.11"
+  help: |
+    Cluster server health status (0=FAILED, 1=BAD, 2=GOOD).
+  unit: number
+  type: gauge
+  category: Health
+  complexity: simple
+  exposedBy:
+    - coordinator
+  description: |
+    Reports the Agency Supervision health of every known cluster server
+    (Coordinators and DB-Servers). Values are `0` (FAILED),
+    `1` (BAD), and `2` (GOOD).
+  
+    Metric-specific labels identify the *target* server whose health is
+    reported:
+  
+    - `target_server`: unique server id (for example `PRMR-...` / `CRDN-...`)
+    - `target_shortname`: human-readable short name from
+      `Target/MapUniqueToShortID` (for example `DBServer0001`)  
+  
+    Exporter identity (the Coordinator being scraped) continues to come from
+    the global Prometheus labels `shortname` and `role`. Those must not be
+    confused with `target_shortname`.
+  
+    Agents do not export this metric: AgencyCache / ClusterInfo server-list
+    sync is not started for Agents, and Coordinators are the intended scrape
+    targets for the cluster-wide health view.
+  threshold: |
+    Persistently BAD or FAILED servers indicate heartbeat / connectivity
+    problems or servers that Supervision has failed. Investigate Agency
+    Supervision health and server logs.
+  troubleshoot: |
+    Confirm the Coordinator still sees the server in `Current/ServersKnown`
+    and `Supervision/Health`. Missing `target_shortname` usually means the
+    short-name mapping in `Target/MapUniqueToShortID` is not yet available.
 
 - name: arangodb_server_statistics_cpu_cgroup_version
   introducedIn: "3.12.7"
