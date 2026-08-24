@@ -1,11 +1,10 @@
 ---
-title: Design Guide
+title: AutoGraph Design Guide
 menuTitle: Design Guide
 weight: 25
 description: >-
   How to structure your data with modules, layers, and components when building knowledge graphs with AutoGraph
 ---
-
 This guide explains how to structure your data when building knowledge graphs
 with AutoGraph. It covers module design, the three processing layers, and when
 to use each component.
@@ -110,25 +109,25 @@ Good candidates:
 The same module string flows through the entire pipeline, from files to
 Importer partitions:
 
-1. **Ingestion** —
+1. **Ingestion** -
    [`POST /v1/import-multiple`](reference/importing-files.md) accepts a `module`
    field for the batch. Files without a module receive the `default` label when
    the corpus build runs.
 
-2. **Corpus build** —
+2. **Corpus build** -
    Processing runs per module, sequentially. Within a module, similarity
    computation and Leiden clustering see only that module's documents.
 
-3. **Cluster key naming** —
+3. **Cluster key naming** -
    Cluster vertices use keys like `cluster_<module>_<n>` when a module label is
    present (for example, `cluster_legal_0`), or `cluster_<n>` when no module was
    assigned. This prevents collisions across modules.
 
-4. **Graph wiring** —
+4. **Graph wiring** -
    `modules` vertices link to their clusters via `HAS_CLUSTER` edges. Documents
    link into clusters via `corpus_relations` membership edges.
 
-5. **RAG strategizer** —
+5. **RAG strategizer** -
    The [strategizer](reference/rag-strategizer.md) reads clusters, ranks them by
    complexity, and assigns VectorRAG or FullGraphRAG. It writes profiles to the
    `rags` collection with a `rag_partition_id` derived from the cluster key.
@@ -136,14 +135,16 @@ Importer partitions:
    - Suffix `_b` indicates a VectorRAG partition
    - Example: cluster key `cluster_legal_0` produces partition ID `legal_0_a`
 
-6. **Orchestration** —
+6. **Orchestration** -
    [`POST /v1/orchestrate`](reference/orchestration.md) loads every matching
    profile from `rags` and runs one Importer job per `rag_partition_id`. This is
    how modules become parallel partitions in Layer 3; a partitioned knowledge
    graph, not a single undifferentiated blob.
 
-Use `partition_ids` on the orchestrate request to re-run or subset specific
-partitions (for example, only `legal_0_a`) without touching others.
+Use `categories` on the orchestrate request to subset the run to specific
+modules (for example, only `legal`) without touching the others. Scoping stops
+at the category, so you cannot single out one partition of a category. To
+reprocess individual documents, pass their `file_ids` instead.
 
 ---
 
@@ -159,6 +160,8 @@ Use AutoGraph for everything up to and including Layer 2.
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |
 | Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| Add, remove, or replace individual documents in an existing module | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
+| Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds
@@ -174,6 +177,20 @@ Do not use incremental mode for a first-time build; there is no existing data
 to preserve. See [Incremental Builds](reference/corpus-build.md#incremental-builds)
 for details.
 {{< /warning >}}
+
+### Document-level changes
+
+Neither build mode is a good fit if documents change regularly, because both
+wipe and rebuild an entire module. To add, remove, or replace individual
+documents in a module that is already built, and keep its clusters, strategy
+profiles, and knowledge graph consistent, use
+[Incremental Graph Updates](incremental-graph-updates.md) instead.
+
+| Change | How to apply it |
+|--------|------|
+| A few documents are added, removed, or replaced | [Incremental Graph Updates](incremental-graph-updates.md) |
+| Many documents are added to an existing module | Corpus build with `incremental: true` |
+| A new module, or a clean rebuild of one module | Corpus build with the module in `modules` |
 
 ---
 
@@ -197,9 +214,10 @@ AutoGraph orchestration (POST /v1/orchestrate)
 
 **When you do interact with the Importer directly:**
 
-- **Re-running a specific partition** - pass `partition_ids` in
-  [`POST /v1/orchestrate`](reference/orchestration.md) to target only the
-  partitions you need rather than re-orchestrating the entire corpus.
+- **Re-running part of the corpus** - pass `categories` in
+  [`POST /v1/orchestrate`](reference/orchestration.md) to orchestrate only the
+  modules you need, or `file_ids` to reprocess only specific documents, rather
+  than re-orchestrating the entire corpus.
 - **Configuring Importer behavior** - pass environment variable overrides in
   the `importer_env` map of the orchestration request (for example, chunk sizes
   or model endpoints) without rebuilding the corpus.
@@ -210,8 +228,8 @@ AutoGraph orchestration (POST /v1/orchestrate)
 {{< info >}}
 After the RAG strategizer has written profiles to `rags`, call
 `POST /v1/orchestrate` to have Importer workers process those profiles. Both
-FullGraphRAG and VectorRAG partitions receive Importer jobs. Use `partition_ids`
-to target specific partitions if you want to exclude some from processing.
+FullGraphRAG and VectorRAG partitions receive Importer jobs. Use `categories` to
+scope the run to specific modules if you want to exclude the others.
 {{< /info >}}
 
 ---
@@ -286,9 +304,12 @@ cannot be merged after the fact without a full rebuild of the affected modules.
 ## Next steps
 
 - [Architecture](architecture.md): Collections and named graphs per layer
-- [Quickstart](quickstart.md): End-to-end setup with the web interface or API
+- [Incremental Graph Updates](incremental-graph-updates.md): Insert, delete, and
+  update documents in a knowledge graph that has already been built
+- [Setup](setup.md): End-to-end setup with the web interface or API
 - [Import Files](reference/importing-files.md): Upload documents with module labels
 - [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
 - [RAG Strategizer](reference/rag-strategizer.md): Analyze clusters and assign strategies
-- [Orchestration](reference/orchestration.md): Spawn Importer workers
+- [Graph Operations](reference/orchestration.md): Spawn Importer workers and
+  apply document-level graph updates
 - [Error Handling](reference/error-handling.md): Troubleshooting common issues

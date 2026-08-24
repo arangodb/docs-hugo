@@ -1,11 +1,10 @@
 ---
-title: Corpus Build
+title: AutoGraph Corpus Build Reference
 menuTitle: Corpus Build
 description: >-
   Create and monitor corpus builds for document analysis and clustering
 weight: 40
 ---
-
 ## Create Corpus Build
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
@@ -68,7 +67,7 @@ Trigger a corpus build from imported files or File Manager.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Build started successfully |
+| `202` | Build accepted and started in the background |
 | `400` | Invalid request |
 | `401` | Authentication failed |
 | `409` | Another build is already in progress |

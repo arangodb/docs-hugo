@@ -1,5 +1,5 @@
 ---
-title: The Arango Platform Suite (v4.0)
+title: Arango Platform Suite
 menuTitle: Platform Suite
 weight: 3
 description: >-
@@ -26,7 +26,7 @@ description: >-
 - [**Cypher to AQL Translation Service**](cypher2aql.md) (experimental):
   Translate Cypher queries to AQL.
 
-- [**Arango Control Plane**](control-plane-acp.md):
+- [**Arango Control Plane**](control-plane-acp/_index.md):
   Install, manage, and run services in the Contextual Data Platform with the
   Arango Control Plane (ACP).
 

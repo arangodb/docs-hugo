@@ -5,7 +5,6 @@ description: >-
   Complete reference for all Retriever service query parameters
 weight: 60
 ---
-
 {{< info >}}
 This page provides detailed parameter definitions. For query workflows and examples, 
 see the [Execute Queries guide](executing-queries.md).
@@ -24,6 +23,22 @@ Your search query text.
 
 - **Required**: Yes.
 - **Description**: The natural language question or search query to execute against your knowledge graph. Example: `"What is the AR3 Drone?"`.
+- **Maximum size**: 65,536 bytes (64 KiB) of UTF-8 text. A larger query is
+  rejected with `INVALID_ARGUMENT` and a message naming its size, before any
+  retrieval work starts. Operators can change the limit with the
+  `MAX_QUERY_BYTES` environment variable.
+
+{{< info >}}
+The limit counts bytes, not characters, so a query written in a script whose
+characters take two or three bytes each in UTF-8, such as Cyrillic, Chinese, or
+Japanese, reaches it well before an English query of the same length.
+{{< /info >}}
+
+{{< warning >}}
+A query rejected for its size never becomes a run, so it does not appear in the
+[query history](verify-and-monitor.md#query-history). Handle the error from the
+call itself; there is no stored run to look up afterwards.
+{{< /warning >}}
 
 ### `query_type`
 
@@ -36,6 +51,35 @@ The type of search to perform.
   - `2` or `LOCAL`: Deep Search (with LLM planner) or Local Search (without LLM planner).
   - `3` or `UNIFIED`: Instant Search.
   - `4` or `CUSTOM`: Custom Retriever. Requires `custom_tools` in standard mode; optional in Deep Search mode (`use_llm_planner=true`).
+
+### `mode`
+
+Selects Instant or Deep Search with a single value, instead of combining
+`query_type` and `use_llm_planner`.
+
+- **Required**: No.
+- **Possible values**:
+  - `1` or `"INSTANT"`: Runs
+    [Instant Search](search-methods/unified-search.md) for a fast answer.
+  - `2` or `"DEEP_SEARCH"`: Runs [Deep Search](search-methods/deep-search.md)
+    for a thorough answer. It searches with your
+    [Custom Retriever](search-methods/custom-retriever.md) tools if you have
+    any, and with Local Search if you do not.
+- **Description**: You can send the value as a number or as its name, for
+  example `2` or `"DEEP_SEARCH"`. Setting `mode` takes precedence over
+  `query_type` and `use_llm_planner`, so whatever you pass for those two is
+  ignored.
+
+{{< info >}}
+With `include_metadata` set to `true`, the response reports `mode` by name
+(`"INSTANT"` or `"DEEP_SEARCH"`) together with the search type it picked. For
+`DEEP_SEARCH`, you can tell which of the two paths ran from the metadata:
+`deep_search_route` is set to `"LOCAL"` when the query fell back to Local
+Search, and `deep_search_route_reason` says why, for example that no tools were
+found in the Tools collection. When your Custom Retriever tools were used
+instead, both fields are absent and the tool fields such as
+`custom_retrievers_used` and `successful_tools` are populated.
+{{< /info >}}
 
 ### `use_llm_planner`
 
@@ -63,7 +107,7 @@ Community hierarchy level for Global Search analysis.
 
 Filter results to specific data partitions.
 
-- **Required**: No (defaults to empty; all partitions included).
+- **Required**: No (defaults to empty).
 - **Description**: An array of partition ID strings. When provided, all data
   (communities, entities, chunks, relationships) is filtered to the specified
   partitions. Multiple partitions can be specified.
@@ -71,7 +115,36 @@ Filter results to specific data partitions.
 
 {{< info >}}
 Your knowledge graph data must include a `partition_id` field on documents for
-filtering to work. See the [Importer `partition_id` parameter](../importer/parameters.md#partition_id).
+filtering to work. See the [Importer `partition_id` parameter](../importer/reference/parameters.md#partition_id).
+{{< /info >}}
+
+{{< warning >}}
+Passing `partition_ids` is enough on its own: it turns automatic selection off
+for that query. Do not also send
+[`auto_select_partitions`](#auto_select_partitions) as `true`, because the
+service rejects a request that asks for both.
+{{< /warning >}}
+
+### `auto_select_partitions`
+
+Whether the service selects the relevant partitions itself.
+
+- **Required**: No (defaults to `true`).
+- **Applicable to**: All query types (`GLOBAL`, `LOCAL`, `UNIFIED`, `CUSTOM`).
+- **Description**:
+  - When `true` (default): The service searches the
+    [AutoGraph](../autograph/_index.md) corpus graph before retrieval and
+    restricts the query to the partitions that match. Omitting the parameter has
+    the same effect as setting it to `true`.
+  - When `false`: No automatic selection happens, and the query runs without a
+    partition filter unless you pass `partition_ids`.
+- **Cannot be combined with**: `partition_ids`, if you set this parameter to
+  `true`. Sending `false` alongside `partition_ids` is allowed but unnecessary,
+  because those IDs already switch automatic selection off.
+
+{{< info >}}
+Custom Retriever tools can override partition routing per tool. See
+[Custom Retriever configuration parameters](search-methods/custom-retriever.md#configuration-parameters).
 {{< /info >}}
 
 ### `custom_tools`
@@ -90,17 +163,21 @@ Tool IDs for Custom Retriever execution.
 
 Whether to auto-create missing indexes and views for Custom Retriever.
 
-- **Required**: No (defaults to `false`).
+- **Required**: No (defaults to `true`).
 - **Applicable to**: `CUSTOM` query type only.
 - **Description**:
-  - When `false` (default): Checks that required indexes and views exist; returns
+  - When `true` (default): Automatically creates any missing inverted indexes,
+    vector indexes, and search-alias views.
+  - When `false`: Checks that required indexes and views exist; returns
     a clear error listing what is missing if they are not found.
-  - When `true`: Automatically creates any missing inverted indexes, vector
-    indexes, and search-alias views.
+- **Precedence**: A tool's own `auto_create_indexes` setting takes priority over
+  the request-level value. Missing indexes and views are created automatically
+  when neither is set.
 
 {{< warning >}}
-Set to `true` with care on large pre-existing collections; index creation can
-be expensive in memory and compute.
+Because creation is the default, set `auto_create_indexes` to `false` on large
+pre-existing collections where you want to control index creation yourself;
+building indexes can be expensive in memory and compute.
 {{< /warning >}}
 
 ### `custom_prompts`
@@ -112,6 +189,24 @@ Override default LLM prompts for this query.
   Only specified prompts are overridden; all others use defaults. See the
   [Custom Prompts reference](custom-prompts.md) for available keys and template
   variables.
+
+### `model`
+
+Override the chat model for a single query.
+
+- **Required**: No.
+- **Description**: The chat model to use for this query only. If omitted, the
+  query uses the chat model the service is currently configured with, which may
+  have been changed since the install. The model is returned in response
+  metadata as `"model"` when `include_metadata` is `true`.
+- **Example**: `"gpt-5.4-nano"`
+
+{{< info >}}
+This parameter overrides the chat model only; the embedding model is never
+affected. To change the embedding model, or to change the chat model for every
+query, see
+[Update the model configuration at runtime](llm-configuration.md#update-the-model-configuration-at-runtime).
+{{< /info >}}
 
 ## Response Parameters
 
@@ -130,9 +225,13 @@ Whether to show inline citations in the response.
 - **Description**:
   - When `true` (default): Citations appear inline as `[X]` in the response.
   - When `false`: All `[CITE:X]` patterns are stripped from the response.
-  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../importer/parameters.md#file-source-parameters) at import time.
-- **Supported query types**: `LOCAL` (with `use_llm_planner=false`), `UNIFIED`, and `CUSTOM`.
-- **Not supported**: `GLOBAL` queries, and any query running in deep search mode (`use_llm_planner=true`); citations are always disabled in those cases regardless of this flag.
+  - This parameter controls displaying citations only. The actual citation URL metadata is set via [`citable_url`](../importer/reference/parameters.md#file-source-parameters) at import time.
+- **Supported query types**: `LOCAL` (with or without `use_llm_planner`),
+  `UNIFIED`, and `CUSTOM` (both standard and Deep Search). A Deep Search query
+  runs several retrieval steps, and the citations they collect are combined into
+  a single numbered list for the final answer, with each source cited once.
+- **Not supported**: `GLOBAL` queries; citations are always disabled for Global
+  Search regardless of this flag.
 
 {{< info >}}
 For `CUSTOM` queries, a tool's own `show_citations: false` configuration can still suppress citations from that tool's results, even when the request-level flag is `true`.
@@ -193,21 +292,45 @@ Enable caching to improve response times for repeated queries. Leave it disabled
 
 ## Response Format
 
-All queries return a response with `result` and `metadata` fields.
+All queries return a response with `result`, `metadata`, `runId`, and
+`errorCode` fields.
 
 ### Standard Response
 
 ```json
 {
   "result": "Your answer text...",
-  "metadata": ""
+  "metadata": "",
+  "runId": "a1b2c3d4-...",
+  "errorCode": ""
 }
 ```
+
+- `result`: The generated answer text.
+- `metadata`: JSON-encoded metadata string, populated when `include_metadata`
+  is `true`.
+- `runId`: Identifier of the stored query run.
+- `errorCode`: Empty on success; a machine-readable code on failure.
+
+{{< warning >}}
+Inspect `errorCode` instead of treating any non-empty `result` as success.
+{{< /warning >}}
+
+For the meaning of every code, see
+[Error handling](error-handling.md#query-error-codes).
 
 ### Response with Metadata
 
 When `include_metadata` is `true`, the `metadata` field contains JSON with 
 different structures depending on the query type.
+
+**Common fields (all query types):**
+
+- `model`: The chat model that generated the response, whether it came from the
+  configuration of the service or from the request-level [`model`](#model)
+  override. The embedding model is not included.
+- `mode`, `query_type`: Included when the request used
+  [`mode`](#mode). `mode` is echoed as `"INSTANT"` or `"DEEP_SEARCH"`.
 
 **For Local and Unified Search:**
 
@@ -259,6 +382,17 @@ different structures depending on the query type.
 - `cached`: `true`
 - `similarity`: Cache match score
 - `cached_question`: The cached question that matched
+
+**For partition routing:**
+
+When partition selection is active, metadata includes a `partition_routing`
+object:
+
+- `mode`: One of `manual`, `auto`, `auto_no_match`, `auto_failed`,
+  `tool_config`, `tool_config_disabled`, or `not_requested`
+- `partition_ids`: The partition IDs used for retrieval
+- `partition_filter_applied`: Whether a partition filter was applied
+- `max_partition_limit`: The effective limit for automatic selection
 
 ## API Reference
 

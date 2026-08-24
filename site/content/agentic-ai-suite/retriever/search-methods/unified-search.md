@@ -1,11 +1,10 @@
 ---
-title: Unified Search (Instant Search)
+title: Retriever Unified Search (Instant Search)
 menuTitle: Unified Search
 description: >-
   Fast unified retrieval combining chunk and entity search for quick answers
 weight: 30
 ---
-
 ## Overview
 
 Unified Search combines chunk and entity search to provide comprehensive
@@ -29,6 +28,8 @@ Unified Search is also available as **Instant Search** via the
   "query_type": 3
 }
 ```
+
+Sending [`"mode": "INSTANT"`](../parameters.md#mode) has the same effect.
 
 ## How it works
 

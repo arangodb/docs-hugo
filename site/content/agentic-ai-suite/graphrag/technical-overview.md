@@ -146,7 +146,7 @@ OpenAI, OpenRouter, Google Gemini, Anthropic Claude, and any corporate or self-h
 LLM with OpenAI-compatible endpoints.
 
 For detailed configuration examples, see:
-- [Importer - Deployment Options](../importer/#deployment-options)
+- [Importer - LLM Configuration](../importer/llm-configuration.md)
 - [Retriever - Installation](../retriever/)
 
 ## Limitations

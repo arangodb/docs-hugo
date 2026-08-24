@@ -1,11 +1,12 @@
 ---
-title: The Reasoner feature of the Arango Contextual Data Platform
+title: The Reasoner feature for AQL queries
 menuTitle: Reasoner
 weight: 18
 description: >-
   Analyze and optimize AQL queries using AI-powered reasoning with the Reasoner
   feature of the Agentic AI Suite
 ---
+{{< tag "Beta" >}}
 
 The Reasoner is an AI-powered query optimization agent for ArangoDB that helps
 improve the performance of AQL queries. Once the service is set up and started,

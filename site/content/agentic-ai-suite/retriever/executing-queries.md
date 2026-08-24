@@ -1,11 +1,10 @@
 ---
-title: Execute Queries
+title: Execute Queries using the Retriever
 menuTitle: Execute Queries
 description: >-
   Learn how to execute different types of queries against your knowledge graph
 weight: 40
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → **Execute Queries** → [Verify](verify-and-monitor.md)
 {{< /info >}}
@@ -26,11 +25,13 @@ as they are generated, making it ideal for real-time applications and
 interactive interfaces.
 {{< /tip >}}
 
-{{< warning >}}
-Streaming is not compatible with Triton Inference Server. Streaming is only
-supported when using OpenAI, OpenAI-compatible APIs (including corporate LLMs),
-or OpenRouter providers.
-{{< /warning >}}
+{{< info >}}
+The streaming endpoint accepts requests for every provider. The
+OpenAI-compatible providers, `openai` and `custom` (OpenRouter, corporate LLMs,
+and any other compatible endpoint), stream tokens as they are generated. Triton
+does not token-stream: the request still succeeds, but the full answer arrives
+as a single chunk.
+{{< /info >}}
 
 {{< info >}}
 All endpoints require authentication. Include an `Authorization: Bearer <token>`
@@ -146,6 +147,27 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
   }'
 ```
 
+**Instant or Deep Search using `mode`:**
+
+Instead of combining `query_type` and `use_llm_planner`, you can set
+[`mode`](parameters.md#mode):
+
+```bash
+curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-jwt-token>" \
+  -d '{
+    "query": "What are all the technical specifications mentioned?",
+    "mode": "DEEP_SEARCH",
+    "include_metadata": true
+  }'
+```
+
+`"mode": "INSTANT"` gives you a fast answer from Instant Search, and
+`"mode": "DEEP_SEARCH"` a thorough one, using your Custom Retriever tools if you
+have any and Local Search if you do not. Either value takes precedence over
+`query_type` and `use_llm_planner`.
+
 **Deep Search:**
 
 ```bash
@@ -162,8 +184,9 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
 ```
 
 {{< info >}}
-In Deep Search mode (`use_llm_planner=true`), citations are always disabled
-regardless of `show_citations`. The same applies to `GLOBAL` queries.
+Citations are supported in Deep Search mode (`use_llm_planner=true`) for `LOCAL`
+and `CUSTOM` queries. Only `GLOBAL` queries disable citations unconditionally,
+regardless of `show_citations`.
 {{< /info >}}
 
 **Global Search:**
@@ -205,28 +228,42 @@ The streaming endpoint returns chunks with the following structure:
 ```json
 {
   "delta": "The",
-  "final_result": "",
+  "finalResult": "",
   "metadata": "",
-  "is_final": false
+  "isFinal": false,
+  "runId": "a1b2c3d4-...",
+  "errorCode": ""
 }
 ```
 
 - `delta`: Partial token text for intermediate chunks.
-- `final_result`: Full final text on the last chunk.
+- `finalResult`: Full final text on the last chunk.
 - `metadata`: Optional JSON metadata string (typically on the last chunk when `include_metadata=true`).
-- `is_final`: `true` only on the last chunk.
+- `isFinal`: `true` only on the last chunk.
+- `runId`: Identifier of the stored query run. Only the first and the last chunk
+  of a stream carry it, whichever kind of chunk they happen to be. The chunks in
+  between leave it out.
+- `errorCode`: Empty on success; set on the chunk that reports a failure.
 
-For Deep Search streaming, you may also receive metadata-only progress chunks
-before token chunks:
+When Deep Search runs on your Custom Retriever tools, you may also receive
+metadata-only progress chunks before token chunks. Deep Search that falls back
+to Local Search does not send them. The example below is such a chunk from the
+middle of a stream, so it has no `runId`. A progress chunk that arrives first in
+the stream does carry one, following the rule above:
 
 ```json
 {
   "delta": "",
-  "final_result": "",
-  "metadata": "{\"type\":\"progress\",\"step\":\"tool_selection\",\"message\":\"Selecting best tool\"}",
-  "is_final": false
+  "finalResult": "",
+  "metadata": "{\"type\":\"progress\",\"stage\":\"tool_matching\",\"status\":\"started\",\"message\":\"Global context empty, matching tools directly...\"}",
+  "isFinal": false
 }
 ```
+
+Inside that JSON, `stage` names the part of the search that is reporting:
+`global_context`, `tool_matching`, `plan_creation`, `step_execution`, or
+`synthesis`. The `status` field reports how that stage is progressing, and
+`message` is a human-readable description of it.
 
 ## Next Steps
 

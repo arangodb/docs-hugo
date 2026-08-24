@@ -96,8 +96,8 @@ def workflow_generate(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
-            continue # compilation can be skipped, 3.10 nightly images no longer available
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
+            continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         branch = args.arangodb_branches[i]
         if branch == "undefined":
             continue
@@ -143,9 +143,9 @@ def workflow_generate(config):
                 elif openssl.startswith("1.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
                 else:
-                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:7" # clang-16
-            else: # build image for 3.12.8 and devel as of 2026-03-02
-                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:19" # clang-19
+                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
+            else: # build image for 3.12.9 and devel as of 2026-06-29
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
 
         print(f"compileJob = {compileJob}")
 
@@ -186,12 +186,14 @@ def workflow_generate_scheduled(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+        if version in ["3.10", "3.11"]:
+            continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         
         compileJob = {
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
+                "arangodb-branch": nightlyImage(version),
                 "version": version
             }
         }
@@ -249,9 +251,9 @@ def workflow_release_arangodb(config):
         elif openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
         else:
-            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:7" # clang-16
-    else: # build image for 3.12.8 and devel as of 2026-03-02
-        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:19" # clang-19
+            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
+    else: # build image for 3.12.9 and devel as of 2026-06-29
+        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
 
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
@@ -302,19 +304,22 @@ export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
-        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
-            continue # 3.10 nightly images no longer available
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version in ["3.10", "3.11"]:
+            continue # Skip generation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
+            branch = nightlyImage(version)
 
         if branch == "undefined":
             continue
 
         pullImage = pullImageCmd(branch, version)
 
-        version_underscore = version.replace(".", "_")
+        # Uppercase so a version name with letters (e.g. "4.x" -> "4_X") matches
+        # the ARANGODB_BRANCH_4_X/ARANGODB_SRC_4_X vars that docker-compose.yml,
+        # config.yaml and toolchain.sh reference.
+        version_underscore = version.replace(".", "_").upper()
         branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
@@ -395,7 +400,7 @@ export GENERATORS=''\n"
 
     pullImage = pullImageCmd(args.arangodb_branch, args.docs_version)
 
-    version_underscore = args.docs_version.replace(".", "_")
+    version_underscore = args.docs_version.replace(".", "_").upper()  # see note in workflow_generate_launch_command
     branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={args.arangodb_branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_version}"
@@ -414,6 +419,33 @@ exit $?"
 ## UTILS
 
 
+# Map a docs version to its upstream enterprise-preview nightly image tag.
+# The docs version name does NOT equal the upstream branch/tag one-to-one:
+#   - "3.12" tracks the upstream "devel" branch -> devel-nightly
+#   - "4.x"  tracks the upstream "4.0" branch   -> 4.0-nightly
+#   - "3.10"/"3.11" use their own same-named nightlies (currently skipped anyway)
+# Only used by the scheduled/oasisctl workflows, which run against prebuilt
+# nightlies instead of compiling from source. Keep this in sync with the
+# upstream branch mapping in base_config.yml's clone-arangodb (4.x -> 4.0).
+NIGHTLY_IMAGE = {
+    "3.10": "arangodb/enterprise-preview:3.10-nightly",
+    "3.11": "arangodb/enterprise-preview:3.11-nightly",
+    "3.12": "arangodb/enterprise-preview:devel-nightly",
+    "4.x": "arangodb/enterprise-preview:4.0-nightly",
+}
+
+
+def nightlyImage(version):
+    try:
+        return NIGHTLY_IMAGE[version]
+    except KeyError:
+        raise RuntimeError(
+            f"No nightly image mapping for docs version '{version}'. "
+            f"Add it to NIGHTLY_IMAGE in generate_config.py (the docs version "
+            f"name is not necessarily the upstream nightly tag, e.g. '4.x' -> '4.0-nightly')."
+        )
+
+
 def pullImageCmd(branch, version):
     pullImage = f"docker pull {branch}"
 
@@ -429,13 +461,26 @@ docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$versi
     return pullImage
 
 def findOpensslVersion(branch):
-    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
+    url = f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS'
     print(f"Find OpenSSL Version for branch {branch}")
+    r = requests.get(url)
+    if r.status_code != 200:
+        raise RuntimeError(
+            f"Could not fetch VERSIONS for arangodb/arangodb branch '{branch}' "
+            f"(HTTP {r.status_code} from {url}). Does that branch exist upstream? "
+            f"Note: the docs version name (e.g. '4.x') is NOT necessarily the upstream "
+            f"arangodb/arangodb branch name (e.g. '4.0' or 'devel')."
+        )
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
-            return version
+            if version:
+                return version
+    raise RuntimeError(
+        f"No non-empty OPENSSL_LINUX entry found in VERSIONS for arangodb/arangodb "
+        f"branch '{branch}' ({url}); cannot determine which OpenSSL version to compile."
+    )
 
 
 ## MAIN
@@ -451,8 +496,8 @@ def main():
             config = generate_workflow(config)
             with open("generated_config.yml", "w", encoding="utf-8") as outstream:
                 yaml.dump(config, outstream)
-    except Exception as exc:
-        traceback.print_exc(exc, file=sys.stderr)
+    except Exception:
+        traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
 if __name__ == "__main__":

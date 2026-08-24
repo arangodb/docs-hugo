@@ -21,7 +21,7 @@ deployment has internet access:
 | **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or, if **Managed** activation is enabled for your license, with the [License Activation portal](https://activate.license.arango.ai/) (one-off). | **Optional** — only if you use the Platform CLI tool |
 | **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh, the web interface, or the HTTP API. | **Yes** — on the internet-connected machine only |
 | **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (`kube-arangodb`)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
-| **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine, then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
+| **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine — the [License Activation portal](https://activate.license.arango.ai/) is the recommended way to do this — then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
 {{< info >}}
 **Legacy deployments (pre-v3.12.6):** Arango issued a ready-made license
@@ -677,11 +677,11 @@ license key by creating a Kubernetes secret and referencing it in the
 `ArangoDeployment` spec. The operator takes care of setting the license on
 the ArangoDB servers.
 
-1. Generate the license key on an internet-connected system using the
-   Platform CLI tool, as described in
+1. Generate the license key on an internet-connected system, as described in
    [Generate a license key](#generate-a-license-key) above. You need the
    deployment ID and an inventory file collected from the air-gapped
-   ArangoDB instance.
+   ArangoDB instance. The [License Activation portal](https://activate.license.arango.ai/)
+   is the recommended way to generate the key.
 
 2. On the cluster, create a Kubernetes secret with the generated license key.
    Substitute `<license-string>` with the key contents:

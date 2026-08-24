@@ -7,6 +7,7 @@ description: >-
   Contextual Data Platform, including LLM provider configuration and
   Secrets Manager integration
 ---
+{{< tag "Beta" >}}
 
 Deploy the Natural Language to AQL service with a single API call to the platform.
 You provide configuration parameters in the request body, and the platform
@@ -97,6 +98,16 @@ All parameters are provided in the `env` object of your deployment request.
 | `chat_model` | Model name (default: `gpt-5.4`) |
 | `chat_api_url` | Base URL for OpenAI-compatible endpoints (required for OpenRouter, self-hosted models, etc.) |
 | `openai_max_retries` | Maximum retry attempts for failed LLM requests |
+
+{{< info >}}
+`openai` is the only provider value Natural Language to AQL accepts. The
+`custom` provider available in the
+[Importer](../importer/llm-configuration.md),
+[AutoGraph](../autograph/llm-configuration.md), and
+[Retriever](../retriever/llm-configuration.md) does not apply here: to use a
+non-OpenAI endpoint, keep `chat_api_provider` set to `openai` and add a
+`chat_api_url`, as shown below.
+{{< /info >}}
 
 ### Using OpenAI
 

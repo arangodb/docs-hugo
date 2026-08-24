@@ -1,11 +1,10 @@
 ---
-title: Design your graph 
+title: Design your graph in the Data Loader
 menuTitle: Design graph
 weight: 10
 description: >-
   Design your graph database schema using the integrated graph modeler in the Data Loader
 ---
-
 Based on the data you have uploaded, you can start designing your graph.
 The graph designer allows you to create a schema using nodes and edges.
 Once this is done, you can save and start the import. The resulting

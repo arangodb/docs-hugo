@@ -1,0 +1,22 @@
+{{ .Title | markdownify | plainify | safeHTML -}}
+{{ if or 
+  .IsHome
+  (eq .Page.RelPermalink "/contextual-data-platform/")
+  (eq .Page.RelPermalink "/amp/")
+  (eq .Page.RelPermalink "/arangodb/")
+  (eq .Page.RelPermalink "/ecosystem/") -}}
+  {{/* Avoid redundancy */}}
+{{- else if or
+  (eq .Type "contextual-data-platform")
+  (eq .Type "agentic-ai-suite" )
+  (eq .Type "platform-suite" ) }} | Arango Contextual Data Platform 4.0
+{{- else if eq .Type "amp" }} | Arango Managed Platform
+{{- else if eq .Type "arangodb" }} | ArangoDB
+  {{- $pageVersion := .Page.Store.Get "versionShort" -}}
+  {{ if and (not $pageVersion) (ne .Page.RelPermalink "/arangodb/") -}}
+    {{ $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) -}}
+  {{ end -}}
+  {{ with $pageVersion }} {{ . }}{{ end -}}
+{{ else }} | Arango
+  {{- with (index .Ancestors.Reverse 1).Params.menuTitle }} {{ . }}{{ end -}}
+{{ end -}}

@@ -1,11 +1,10 @@
 ---
-title: Search Methods
+title: Retriever Search Methods
 menuTitle: Search Methods
 description: >-
   Understand the different search methods available in the Retriever service
 weight: 30
 ---
-
 {{< info >}}
 **Getting Started Path:** [Overview](../) → [Configure LLMs](../llm-configuration.md) → **Search Methods** → [Execute Queries](../executing-queries.md) → [Verify](../verify-and-monitor.md)
 {{< /info >}}
@@ -16,13 +15,21 @@ The Retriever service provides multiple search methods that leverage the
 structured knowledge graph created by the Importer to deliver accurate and
 contextually relevant responses to your natural language queries.
 
-| Method | `query_type` | Best for | Latency |
-|--------|-----------|----------|---------|
-| [**Global Search**](global-search.md) | `1` (GLOBAL) | Themes, patterns, high-level insights | Medium |
-| [**Local Search**](local-search.md) | `2` (LOCAL) | Specific entities and relationships | Low |
-| [**Deep Search**](deep-search.md) | `2` (LOCAL) + `use_llm_planner: true` | Detailed, multi-step research | Higher |
-| [**Unified (Instant Search)**](unified-search.md) | `3` (UNIFIED) | Fast answers with document references | Low |
-| [**Custom Retriever**](custom-retriever.md) | `4` (CUSTOM) | Domain-specific search with custom logic | Varies |
+| Method | `query_type` | `mode` | Best for | Latency |
+|--------|-----------|--------|----------|---------|
+| [**Global Search**](global-search.md) | `1` (GLOBAL) | | Themes, patterns, high-level insights | Medium |
+| [**Local Search**](local-search.md) | `2` (LOCAL) | | Specific entities and relationships | Low |
+| [**Deep Search**](deep-search.md) | `2` (LOCAL) + `use_llm_planner: true` | `DEEP_SEARCH` | Detailed, multi-step research | Higher |
+| [**Unified (Instant Search)**](unified-search.md) | `3` (UNIFIED) | `INSTANT` | Fast answers with document references | Low |
+| [**Custom Retriever**](custom-retriever.md) | `4` (CUSTOM) | `DEEP_SEARCH` | Domain-specific search with custom logic | Varies |
+
+{{< info >}}
+Instead of choosing a method from the table, you can send
+[`mode`](../parameters.md#mode) and let the service pick: `INSTANT` for a fast
+answer, or `DEEP_SEARCH` for a thorough one. `DEEP_SEARCH` uses your Custom
+Retriever tools if you have any, and Local Search if you do not. Set a
+`query_type` yourself when you want a specific method, such as Global Search.
+{{< /info >}}
 
 ## Choosing a search method
 

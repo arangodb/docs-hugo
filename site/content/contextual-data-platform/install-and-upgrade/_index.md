@@ -1,5 +1,5 @@
 ---
-title: Install and upgrade the Arango Contextual Data Platform (v4.0)
+title: Install and upgrade the data platform
 menuTitle: Install & Upgrade
 weight: 25
 description: >-
@@ -67,14 +67,14 @@ Follow the guide for deploying the Arango Contextual Data Platform that matches 
 - [**Offline on-prem setup**](offline-setup.md): Install without internet access,
   including fully air-gapped environments.
 
-<!-- TODO
 ## Upgrade the Contextual Data Platform
 
+<!-- TODO
 - [**Upgrade from ArangoDB**](upgrade-from-arangodb.md): Migrate your existing
   ArangoDB deployment to a Kubernetes-managed Contextual Data Platform deployment.
-- [**Upgrade version**](upgrade-version.md): Upgrade to a newer version of the
-  Contextual Data Platform.
 -->
+- [**Upgrade version**](upgrade-version.md): Upgrade to a newer version of the
+  Arango Contextual Data Platform.
 
 ## Interfaces
 

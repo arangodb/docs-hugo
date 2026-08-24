@@ -1,17 +1,24 @@
 ---
-title: How to use AutoGraph in the Arango Contextual Data Platform web interface
+title: How to use AutoGraph in the web interface
 menuTitle: Web Interface
 weight: 15
 description: >-
   Learn how to create, configure, and run a complete AutoGraph workflow in the web interface
 ---
-
 Learn how to use AutoGraph's web interface to build an intelligent knowledge
 graph from your documents. AutoGraph analyzes your content, automatically
 discovers knowledge domains, generates optimized import strategies,
 and deploys retrieval services, all through a streamlined, step-by-step workflow.
 In just a few steps, your fully operational knowledge graph is ready to answer
 questions about your documents.
+
+{{< info >}}
+This page describes how to build a knowledge graph from scratch. To keep it
+up-to-date afterwards by inserting, deleting, or replacing individual documents,
+you need to use the API. These operations are not available in the web interface
+in Arango Contextual Data Platform 4.1.0. See
+[Incremental Graph Updates](incremental-graph-updates.md).
+{{< /info >}}
 
 ## Create an AutoGraph project
 

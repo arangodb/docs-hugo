@@ -6,7 +6,6 @@ description: >-
   graphs created by the Importer service
 weight: 8
 ---
-
 ## Overview
 
 The Retriever service provides intelligent search and retrieval from knowledge
@@ -58,9 +57,9 @@ guidance on choosing the right method.
 Before using the Retriever service, you need:
 
 1. **A GraphRAG project** with imported data. If you are using the Importer
-   standalone, follow the [Importer Getting Started](../importer/#getting-started)
-   guide. If you are using AutoGraph, follow the
-   [AutoGraph Quickstart](../autograph/quickstart.md).
+   standalone, follow the [Importer Setup](../importer/setup.md).
+   If you are using AutoGraph, follow the
+   [AutoGraph Setup](../autograph/setup.md).
 
 2. **An LLM provider** configured for the Retriever. See
    [LLM Configuration](llm-configuration.md) to set up Triton Inference Server
@@ -73,7 +72,7 @@ To install and start the Retriever service, use the following endpoint:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
 For detailed instructions on installing, monitoring, and managing services, see
-[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md).
+[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp/_index.md).
 
 ## Getting Started
 
@@ -87,8 +86,11 @@ For detailed instructions on installing, monitoring, and managing services, see
 **Additional resources:**
 
 - [**Custom Prompts**](custom-prompts.md): Customize LLM prompts for domain-specific behavior.
-- [**Verify and Monitor**](verify-and-monitor.md): Check service health and query status.
+- [**Verify and Monitor**](verify-and-monitor.md): Check service health, service
+  status, and the query history of your project.
 - [**Parameter Reference**](parameters.md): Complete list of query parameters.
+- [**Error Handling**](error-handling.md): Status codes, error codes, and the
+  failures that arrive with an HTTP `200`.
 
 ## API Reference
 

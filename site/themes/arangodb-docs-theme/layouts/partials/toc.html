@@ -9,7 +9,7 @@
         {{- $splitPath := split $path "/" }}
         {{- $versionAlias := index $splitPath 1 }}
         {{- if or (eq $versionAlias "stable") (eq $versionAlias "devel") }}
-          {{- $versionName := (index (where (index site.Data.versions "/arangodb/") "alias" $versionAlias) 0).name }}
+          {{- $versionName := (index (where (index hugo.Data.versions "/arangodb/") "alias" $versionAlias) 0).name }}
           {{- $path = $path | replaceRE (printf "^arangodb/%s/" $versionAlias) (printf "arangodb/%s/" $versionName) }}
         {{- end }}
       {{- end }}

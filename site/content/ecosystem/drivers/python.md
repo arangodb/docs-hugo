@@ -9,7 +9,7 @@ aliases:
   - ../../arangodb/3.11/develop/drivers/python
   - ../../arangodb/3.12/develop/drivers/python
   - ../../arangodb/stable/develop/drivers/python
-  - ../../arangodb/4.0/develop/drivers/python
+  - ../../arangodb/4.x/develop/drivers/python
   - ../../arangodb/devel/develop/drivers/python
 ---
 The Python-Arango driver is the recommended driver for using ArangoDB as the
@@ -227,7 +227,7 @@ edges.insert({"_from": "students/03", "_to": "lectures/CSC101"})
 # Traverse the graph in outbound direction, breath-first.
 query = """
     FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-    OPTIONS { bfs: true, uniqueVertices: 'global' }
+    OPTIONS { order: 'bfs', uniqueVertices: 'global' }
     RETURN {node: v, edge: e, path: p}
     """
 cursor = db.aql.execute(query)
@@ -284,7 +284,7 @@ async with ArangoClient(hosts="http://localhost:8529") as client:
     # Traverse the graph in outbound direction, breath-first.
     query = """
         FOR v, e, p IN 1..3 OUTBOUND 'students/01' GRAPH 'school'
-        OPTIONS { bfs: true, uniqueVertices: 'global' }
+        OPTIONS { order: 'bfs', uniqueVertices: 'global' }
         RETURN {vertex: v, edge: e, path: p}
         """
 

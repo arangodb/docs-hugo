@@ -1,11 +1,10 @@
 ---
-title: Global Search
+title: Retriever Global Search
 menuTitle: Global Search
 description: >-
   Community-based analysis for themes, patterns, and high-level insights
 weight: 10
 ---
-
 ## Overview
 
 Global Search is designed for queries that require understanding and aggregation

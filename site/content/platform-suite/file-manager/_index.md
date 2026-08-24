@@ -1,17 +1,56 @@
 ---
-title: The File Manager of the Arango Contextual Data Platform
+title: File Manager
 menuTitle: File Manager
 weight: 25
 description: >-
   View and manage container service files and RAG input files stored by the
   Arango Contextual Data Platform
 ---
-
 The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
 the Agentic AI Suite for instance, such as for storing AI models and training-related
 metadata, as well as for user-uploaded GraphRAG content. Custom services make
 use of the file manager for application code, too.
+
+
+## Organizing files with scopes
+
+
+RAG input files are organized into **scopes**. A scope is an ordered list of
+labels that addresses a file within a database, for example
+`acme / legal / q3`. The model is deliberately generic: the same
+mechanism represents a project, a module, or any deeper folder level, and each
+service that uses the File Manager maps its own concepts onto scope levels.
+
+The following rules apply:
+
+- A scope has at most **five levels**.
+- Each label can be up to **128 characters** long and may contain letters,
+  digits, underscores, and hyphens only. All labels combined must not exceed
+  256 characters.
+- A file belongs to **exactly one** scope.
+- Scopes are **derived from files**. A scope exists only while at least one file
+  is stored under it, and it disappears when the last file is removed. You
+  cannot create an empty scope.
+- Files that have no scope are the database's default, unscoped files.
+
+A file is identified by the combination of database, scope, and name. Uploading
+a file with the same name into the same scope creates a new version of that
+file, whereas the same name in a different scope is a separate, independent
+file.
+
+## Attaching custom metadata
+
+Besides its scope, a RAG input file can carry information of your own, attached
+when you upload it as a set of name-value pairs called `custom_metadata`. File
+Manager only keeps these and hands them back unchanged, so you can use whatever
+names suit your own applications.
+
+A few names are picked up by other services. Setting `citable_url` to a
+document's public web address, for example, lets the AutoGraph service show
+clickable links on the citations for that document. See
+[Custom metadata](api.md#custom-metadata) for the size limits and how custom
+metadata relates to file versions.
 
 ## Web interface
 

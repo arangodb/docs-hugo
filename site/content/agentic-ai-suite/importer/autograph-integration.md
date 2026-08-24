@@ -3,9 +3,8 @@ title: Integration with AutoGraph
 menuTitle: AutoGraph Integration
 description: >-
   How the Importer service integrates with AutoGraph for automated, partition-aware knowledge graph builds
-weight: 55
+weight: 80
 ---
-
 ## When to use the Importer standalone vs. with AutoGraph
 
 The Importer supports two distinct usage patterns depending on your needs.
@@ -102,6 +101,14 @@ handles replica creation, job submission, status polling, and teardown. Call
 the Importer yourself only for standalone imports or advanced scenarios
 (e.g., re-running a single partition with custom settings).
 
+After the initial build, AutoGraph also uses the Importer for
+[Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
+Layer 3. It submits imports for new and changed files, and it can recluster a
+partition whose communities have drifted, but only if you ask for it. AutoGraph
+flags the drift and never reclusters on its own. Removing a document from
+Layer 3 is not an Importer call, AutoGraph handles it as part of its own delete
+and update operations. See [Incremental Updates](incremental-updates.md).
+
 ## How `partition_id` maps to the Corpus Graph
 
 - AutoGraph's `rag_partition_id` (cluster key + strategy suffix `_a`/`_b`)
@@ -116,7 +123,7 @@ the Importer yourself only for standalone imports or advanced scenarios
 When using the Importer **standalone** (without AutoGraph), you can set
 `partition_id` to any string to logically separate different import batches
 within the same collections. See the
-[`partition_id` parameter reference](parameters.md#partition_id) for details.
+[`partition_id` parameter reference](reference/parameters.md#partition_id) for details.
 
 ## Related resources
 
