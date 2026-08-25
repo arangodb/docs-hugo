@@ -33,20 +33,24 @@ The workflow has two stages, and the first one can be your finish line:
 
 The terminology has been aligned across the documentation: **Corpus Graph**,
 **Knowledge Graph**, and **Context Graph** now refer to distinct artifacts of
-the AutoGraph pipeline. The standalone GraphRAG web interface is deprecated; use
-AutoGraph Studio or the [Importer](../../agentic-ai-suite/importer/_index.md) and
-[Retriever](../../agentic-ai-suite/retriever/_index.md) APIs instead.
+the AutoGraph pipeline. The standalone GraphRAG web interface has been removed;
+use AutoGraph and the new AutoGraph Studio web interface instead. You can also
+use the [Importer](../../agentic-ai-suite/importer/_index.md) and
+[Retriever](../../agentic-ai-suite/retriever/_index.md) APIs.
 
 ### Incremental Graph Updates
 
 {{< tag "Agentic AI Suite" >}}
 
 [Incremental Graph Updates](../../agentic-ai-suite/autograph/incremental-graph-updates.md)
-keep a Knowledge Graph current after it has been built. You can insert new
-documents, delete obsolete ones, and replace changed ones without re-running the
-corpus build, the RAG Strategizer, and a full orchestration pass. Existing
-clusters and strategy profiles are preserved, and only the documents that
-actually changed are processed.
+keep a Knowledge Graph current after it has been built. It is faster and more
+efficient than to recreate it, and can significantly reduce the LLM cost and
+latency.
+
+You can insert new documents, delete obsolete ones, and replace changed ones
+without re-running the corpus build, the RAG Strategizer, and a full
+orchestration pass. Existing clusters and strategy profiles are preserved, and
+only the documents that actually changed are processed.
 
 AutoGraph also tracks how far a FullGraphRAG partition has drifted since it was
 last clustered and flags it, so you can trigger
