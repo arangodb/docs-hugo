@@ -69,6 +69,11 @@ Selects Instant or Deep Search with a single value, instead of combining
   example `2` or `"DEEP_SEARCH"`. Setting `mode` takes precedence over
   `query_type` and `use_llm_planner`, so whatever you pass for those two is
   ignored.
+- **VectorRAG partitions**: Only `INSTANT` is supported. `DEEP_SEARCH` falls
+  back to Local Search when you have no Custom Retriever tools, and Local
+  Search needs entities that VectorRAG does not build. For Deep Search on a
+  VectorRAG partition, use Custom Retriever tools that search chunks. See
+  [VectorRAG and FullGraphRAG partitions](search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 {{< info >}}
 With `include_metadata` set to `true`, the response reports `mode` by name
