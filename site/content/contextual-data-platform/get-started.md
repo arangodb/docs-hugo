@@ -19,12 +19,12 @@ description: >-
 - **Permissions**: Root or `sudo` access on your local machine.
 - **LLM access**: A valid OpenAI API key.
 
-## Install Arango CDP
+## Install Arango Contextual Data Platform
 
 Generate your Client ID and Client Secret from the
 [Arango developer portal](https://arango.ai/developers/).
 
-Then run the following command to install the Arango CDP:
+Then run the following command to install the Arango Contextual Data Platform:
 
 ```bash
 curl -fsSL https://get.arango.ai/install.sh | \
