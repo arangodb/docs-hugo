@@ -67,7 +67,7 @@ Trigger a corpus build from imported files or File Manager.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Build started successfully |
+| `202` | Build accepted and started in the background |
 | `400` | Invalid request |
 | `401` | Authentication failed |
 | `409` | Another build is already in progress |
