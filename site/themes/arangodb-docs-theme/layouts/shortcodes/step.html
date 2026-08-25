@@ -2,7 +2,7 @@
 {{ $title := or (.Get "title") (.Get 0) -}}
 {{ $icon := .Get "icon" -}}
 {{ $id := .Get "id" -}}
-{{ if .Parent -}}
+{{ if and .Parent (eq .Parent.Name "steps") -}}
   {{ if not (.Parent.Scratch.Get "steps") -}}
     {{ .Parent.Scratch.Set "steps" slice -}}
   {{ end -}}
@@ -13,5 +13,5 @@
     "id"      $id
   ) -}}
 {{ else -}}
-  {{ errorf "[%s] %q: step shortcode missing its parent (must be nested inside a steps shortcode)" site.Language.Lang .Page.Path -}}
+  {{ errorf "[%s] %q: step shortcode must be nested directly inside a steps shortcode" site.Language.Lang .Page.Path -}}
 {{ end -}}
