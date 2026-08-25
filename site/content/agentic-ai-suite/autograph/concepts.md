@@ -92,6 +92,29 @@ the following:
 
 For detailed business scenarios, see [Use Cases](use-cases.md).
 
+### How GraphRAG works
+
+Arango's GraphRAG solution democratizes the creation and usage of knowledge
+graphs with a unique combination of vector search, graphs, and LLMs (privately
+or publicly hosted) in a single product.
+
+The overall workflow involves the following steps:
+
+1. **Chunking**:
+   - Breaking down raw documents into text chunks
+2. **Entity and relation extraction for Knowledge Graph construction**:
+   - LLM-assisted description of entities and relations
+   - Entities get inserted as nodes with embeddings
+   - Relations get inserted as edges, these include: entity-entity, entity-chunk,
+     chunk-document
+3. **Topology-based clustering into mini-topics (called communities)**:
+   - Each entity points to its community
+   - Each community points to its higher-level community, if available
+     (mini-topics point to major topics)
+4. **LLM-assisted community summarization**:
+   - Community summarization is based on all information available about each
+     topic
+
 ## Cross-document intelligence
 
 GraphRAG extracts meaningful insights from document collections by creating
