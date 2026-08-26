@@ -755,8 +755,10 @@ directly (without a file). However, this is discouraged for security reasons.
 This option has now been removed. It is no longer recognized and throws an error
 if set.
 
-You can use `--server.jwt-secret-keyfile` to specify the path to a file that
-contains the JWT secret instead.
+You can use [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+instead to specify the path to a file that contains the JWT secret. You can also
+use [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+to specify a folder path and read secrets from multiple files.
 
 ### SSL encryption options removed and renamed
 

@@ -108,10 +108,20 @@ ArangoDB servers using TLS for encryption in transit.
 
 ArangoDB uses a standard JWT-based authentication method.
 To authenticate via JWT, you must first obtain a JWT token with a signature
-generated via HMAC with SHA-256. The secret may either be set using
-`--server.jwt-secret` or it is randomly generated on server startup.
+generated via HMAC with SHA-256.
 
-For more information on JWT please consult RFC7519 and [jwt.io](https://jwt.io).
+You can set the secret on server startup in one of the following ways:
+- Set [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+  to let the server read the JWT secret from the specified file.
+- Set [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+  to specify a path and let the server read JWT secrets from multiple files
+  (only one is used for signing).
+- Not specify either option to let the server generate a random JWT secret.
+- Don't use the deprecated `--server.jwt-secret` startup option to set a
+  JWT secret directly, as this may leak the secret (e.g. via the process list).
+
+For more information on JWT, please consult [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)
+and [jwt.io](https://jwt.io).
 
 ### JWT user tokens
 
