@@ -6,6 +6,8 @@
   - Section indexes without own body -> CollectionPage (they only list child pages)
 */ -}}
 {{- $pageDescription := .Description | default .Site.Params.description | markdownify | plainify | htmlUnescape -}}
+{{- /* Same disambiguated title as <title> and og:title, e.g. "Edge | Arango Contextual Data Platform 4.0". */ -}}
+{{- $documentTitle := partial "title.html" . | plainify | htmlUnescape | strings.TrimSpace -}}
 {{- $publisher := dict
     "@type" "Organization"
     "name" "Arango"
@@ -26,7 +28,7 @@
   {{- $schema = dict
       "@context" "https://schema.org"
       "@type" "CollectionPage"
-      "name" (.Title | markdownify | plainify | htmlUnescape)
+      "name" $documentTitle
       "description" $pageDescription
       "url" .Permalink
       "inLanguage" (.Language.Lang | default "en")
@@ -36,7 +38,7 @@
   {{- $schema = dict
       "@context" "https://schema.org"
       "@type" "TechArticle"
-      "headline" (.Title | markdownify | plainify | htmlUnescape)
+      "headline" $documentTitle
       "description" $pageDescription
       "url" .Permalink
       "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
