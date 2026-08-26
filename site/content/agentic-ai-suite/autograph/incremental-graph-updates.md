@@ -228,7 +228,7 @@ own. If the score gets above the partition's threshold, AutoGraph sets
 **Divergence and reclustering only apply to FullGraphRAG partitions.** Both
 signals below are calculated from a partition's `Entities`, and reclustering
 rebuilds its `Communities` and community edges. **VectorRAG** partitions
-(`rag_mode: vector_rag`, `rag_partition_id` ending in `_b`) have neither
+(`strategy_type: VectorRAG`, `rag_partition_id` ending in `_b`) have neither
 collection, see [Layer 3 collections](architecture.md#layer-3). Their score
 therefore stays at `0`, `needs_reclustering` is never set, and there is nothing
 for a reclustering to rebuild. Insert, delete, and update work on both kinds of

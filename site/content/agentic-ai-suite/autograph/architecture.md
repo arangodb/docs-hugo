@@ -24,9 +24,9 @@ partition. They meet only at the `partition_id` link.
 
 ```mermaid
 graph TD
-  subgraph "`**Layer 1** — Modules  (defined by you)`"
+  subgraph "`**Layer 1** — Categories  (defined by you)`"
     modules["`**modules**
-      (vertex: one per module label)`"]
+      (vertex: one per category)`"]
   end
 
   subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
@@ -48,9 +48,9 @@ graph TD
     Chunks["`**Chunks**
       (vertex: text chunks)`"]
     Entities["`**Entities**
-      (vertex: extracted entities — full_graphrag only)`"]
+      (vertex: extracted entities — FullGraphRAG only)`"]
     Communities["`**Communities**
-      (vertex: entity clusters — full_graphrag only)`"]
+      (vertex: entity clusters — FullGraphRAG only)`"]
     Relations["`**Relations**
       (edge: all relationships)`"]
   end
@@ -114,7 +114,7 @@ your chosen RAG strategy.
 
 {{< embed-svg "AutoGraph-Knowledge-Graph" "Inside a partition, documents become chunks, entities are extracted from chunks, and entities are grouped into communities." >}}
 
-| Collection | Type | `full_graphrag` | `vector_rag` |
+| Collection | Type | FullGraphRAG | VectorRAG |
 |------------|------|:-:|:-:|
 | `Documents` | vertex (original documents) | yes | yes |
 | `Chunks` | vertex (text chunks with optional embeddings) | yes | yes |

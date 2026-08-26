@@ -243,8 +243,8 @@ AutoGraph orchestration (POST /v1/orchestrate)
   ├─ Spawns Importer replica pool
   │
   └─ Submits one import job per profile
-       • vector_rag   → Documents, Chunks, Relations
-       • full_graphrag → Documents, Chunks, Entities, Communities, Relations
+       • VectorRAG    → Documents, Chunks, Relations
+       • FullGraphRAG → Documents, Chunks, Entities, Communities, Relations
 ```
 
 **When you do interact with the Importer directly:**
