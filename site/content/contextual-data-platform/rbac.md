@@ -18,9 +18,10 @@ You manage all of this from the **Access Control** section of the
 ## Concepts
 
 - **User**:
-  An account that authenticates against the platform. Every user starts with
-  no roles and therefore no permissions, except for the built-in `root`
-  account, which holds all roles.
+  An account that authenticates against the platform. Nothing is permitted by
+  default, so a new user starts with no roles and no permissions. The
+  exception is the built-in `root` account, which the operator binds to the
+  all-powerful `super-admin` role automatically.
 
 - **Role**:
   A named bundle of actions, such as `coredb-reader`, `ai-developer`, or
@@ -30,8 +31,9 @@ You manage all of this from the **Access Control** section of the
 - **Scope**:
   A restriction attached to one role assignment that describes *where* the
   role applies. A scope is either **Everything** or a set of
-  **specific resources**. Not every role can be narrowed - some always apply
-  everywhere.
+  **specific resources**, selected per resource type as a single resource,
+  several resources, or a name pattern. Not every role can be narrowed - some
+  always apply everywhere.
 
 An effective permission is therefore the combination of a user, a role, and
 the scope of that assignment. Assigning the same role to two users with
@@ -39,26 +41,45 @@ different scopes gives them the same abilities over different data.
 
 ## Available roles
 
-The platform ships with a fixed set of predefined roles, named after the area
-they govern:
+When RBAC is enabled, the operator automatically creates a catalog of
+**predefined roles** in every deployment. They are operator-managed: Access
+Control shows them, but you cannot create, rename, or delete one. What you
+configure is which users hold which roles, and how each of those assignments
+is scoped.
 
-- `coredb-reader`, `coredb-developer`, `coredb-admin` - the ArangoDB database
-  system
-- `ai-user`, `ai-developer` - the Agentic AI Suite
-- `secret-admin` - the Secrets Manager
-- `tenant-admin` - the tenant
-- `platform-operator` - platform operations
-- `super-admin` - the entire platform
+Every predefined role is named under the reserved `managed:predefined:` prefix,
+for example `managed:predefined:coredb-reader`. The web interface lists the
+short name, `coredb-reader`, whereas the API and the Kubernetes resources
+expect the fully qualified name.
 
-The set of roles is fixed - the interface offers no way to create or delete
-one. What you configure is which users hold which roles, and how each of those
-assignments is scoped.
+| Role | Purpose |
+|------|---------|
+| `super-admin` | Full access. Reserved - bound automatically to the `root` user and not assignable |
+| `tenant-admin` | Manages users and role bindings |
+| `coredb-reader` | Read-only database operations on scoped resources |
+| `coredb-developer` | Read and write database operations on scoped resources |
+| `coredb-admin` | Manages the structure and lifecycle of scoped resources |
+| `ai-user` | Executes AI workflows and reads outputs on scoped resources |
+| `ai-developer` | Builds, configures, manages, and executes AI workflows on scoped resources |
+| `platform-operator` | Operates the platform and bundled services, views observability, starts containers |
+| `secret-admin` | Manages secrets on scoped resources |
 
-Alongside these, the platform generates a role per operator-managed identity,
-named `managed:operator:<uuid>`. These appear in the Access Control lists like
-any other role, together with the service accounts that hold them, such as
-`operator-arango-control-plane-token-<id>`. They are maintained by the platform,
-so leave them untouched.
+{{< info >}}
+`super-admin` is reserved. The operator binds it to the deployment's `root`
+user automatically and rejects any attempt to assign it to somebody else, so
+it appears in the lists with `root` as its holder but cannot be handed out.
+{{< /info >}}
+
+The platform denies everything by default. A role grants nothing until it is
+assigned to a user together with a scope, and a user's effective permissions
+are the union of all of their assignments, with a `Deny` always taking
+precedence over an `Allow`.
+
+Alongside the predefined catalog, the platform generates a role per
+operator-managed identity, named `managed:operator:<uuid>`. These appear in the
+Access Control lists like any other role, together with the service accounts
+that hold them, such as `operator-arango-control-plane-token-<id>`. They are
+maintained by the platform, so leave them untouched.
 
 ## Open the Access Control interface
 
@@ -237,3 +258,18 @@ name and an **Assign user** button, and lists the users that hold the role,
 each with the number of roles that user has in total, for example
 `testuser - 1 role`. The pencil icon on a user card opens the assignment dialog
 for that user, and the chevron expands the card.
+
+## Troubleshoot denied access
+
+The platform's services do not silently drop actions a user is not allowed to
+perform - they return an actionable error. If somebody reports being denied,
+check two things in Access Control:
+
+1. That a role granting the action is actually assigned to them.
+2. That the **scope** of that assignment covers the resource they are working
+   on. A correct role with too narrow a scope is the more common cause.
+
+Remember that a `Deny` beats an `Allow`, so adding another assignment cannot
+widen access that something else denies. Also give a recent change time to
+propagate, as [enforcement](#saving-and-enforcement) can lag by up to about
+30 seconds.
