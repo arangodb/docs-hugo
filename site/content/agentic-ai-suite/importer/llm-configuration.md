@@ -105,10 +105,14 @@ Where:
 - `embedding_model`: Specific model to use for generating text embeddings
 - `chat_api_key`: API key for authenticating with the chat/language model service
 - `embedding_api_key`: API key for authenticating with the embedding model service
-- `embedding_dim`: Optional embedding dimension. The default value is `512`
-  (auto-set to `768` for `nomic-embed-text-v1`). Only set manually if using a
-  custom embedding model with a different dimension. It must match the
-  embedding model's output dimension.
+- `embedding_dim`: Embedding dimension used for the vector indexes. The default
+  value is `512`. It must match the output dimension of the embedding model you
+  configured. On any OpenAI-compatible provider (`openai` or `custom`) you have
+  to set it yourself to match the model, including when that model is
+  `nomic-embed-text-v1`. The only case in which the Importer overrides your
+  value is `embedding_api_provider: "triton"` together with the
+  `nomic-embed-text-v1` model, where it is forced to `768`. A mismatch is hard
+  to diagnose once the indexes exist.
 
 {{< info >}}
 When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and
@@ -240,6 +244,17 @@ with these differences:
 - `chat_api_url` and `embedding_api_url` point to your ArangoDB LLM Host service.
 - No API keys or `embedding_dim` are required.
 
+{{< warning >}}
+Two features are unavailable on a Triton-only deployment, because both require
+an OpenAI-compatible endpoint:
+
+- **Image descriptions** need an OpenAI API key in `CHAT_API_KEY`. Graph
+  building still runs entirely on Triton. See
+  [Vision model requirements](semantic-units.md#vision-model-requirements).
+- **Reclustering** is rejected before any work starts. See
+  [Reclustering](incremental-updates.md#reclustering).
+{{< /warning >}}
+
 ## Token budget for chat models
 
 The Importer maps a single completion cap to OpenAI-style chat calls
@@ -283,6 +298,24 @@ continues rather than failing with `context_length_exceeded`. The guard is a
 no-op for chat models the Importer does not recognize, so historical behavior is
 preserved for custom or private fine-tunes.
 {{< /info >}}
+
+## Embedding request tuning
+
+Some OpenAI-compatible providers reject or require fields that the Importer
+sends by default on embedding requests. Two settings adjust the payload:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `DISABLED_PARAMS` | empty | A JSON array of field names to strip from embedding requests, for example `'["embedding_dim", "encoding_format"]'`. Invalid JSON is ignored with a warning |
+| `EMBEDDING_INPUT_TYPE` | empty | When set, it is sent as `input_type` on embedding requests. Providers such as Cohere require a value like `query` or `passage` |
+
+{{< info >}}
+`DISABLED_PARAMS` applies to **embedding** requests only. It has no effect on
+chat calls. Use `CHAT_DISABLED_PARAMS` to suppress fields on chat requests.
+{{< /info >}}
+
+Several variables are also accepted in lowercase, for example
+`disabled_params` as an install request key.
 
 ## OpenAI Responses API fallback
 

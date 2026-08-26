@@ -122,5 +122,7 @@ or
 - **[Parameters](parameters.md)**: Complete request parameter reference.
 - **[Error Handling](error-handling.md)**: Troubleshooting, known
   limitations, and error markers in job status messages.
+- **[Limits and Quotas](limits.md)**: Concurrency, size, timeout, and provider
+  limits, and which of them are configurable.
 - **[API Reference](https://apiref.arango.ai/#graphrag_importer)**: Full
   machine-readable API reference.
