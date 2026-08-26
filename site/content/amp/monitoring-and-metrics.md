@@ -74,8 +74,16 @@ which is required for connecting to Prometheus.
 1. To create a metrics token, click **New metrics token**.
 2. For **Name**, enter a name for the metrics token.
 3. Optionally, you can also enter a **Short description**.
-4. Select the **Lifetime** of the metrics token. 
+4. Select the **Lifetime** of the metrics token.
+   The default lifetime is 90 days.
 5. Click **Create**.
+
+{{< info >}}
+The maximum lifetime of a metrics token is one year (365 days). This limit
+applies regardless of how the token is created. If you create a token with
+[oasisctl](oasisctl/create/create-metrics-token.md) and specify a longer
+`--lifetime` value, it is capped at one year.
+{{< /info >}}
 
 ### How to connect Prometheus
 
