@@ -408,8 +408,9 @@ flowchart TD
               not already in the KG)`"}
             O1["Load jobs for stale partitions only"]
             O2["Spawn Importer replicas"]
-            O3["`Submit jobs with <code>rag_mode</code>
-              (<code>vector_rag</code> or <code>full_graphrag</code>)`"]
+            O3["`Submit one job per partition
+              with its strategy
+              (<code>FullGraphRAG</code> or <code>VectorRAG</code>)`"]
             O4["Poll Importer until done"]
             O5["Tear down workers"]
 
@@ -429,8 +430,10 @@ flowchart TD
 ## Project-level operations
 
 These endpoints sit outside the sequential pipeline. You can inspect and configure
-a project at any time. Both delete endpoints are guarded against a running corpus
-build or orchestration.
+a project at any time. Both delete endpoints are guarded against work that is
+already running and return `409` while it is: a corpus build, an orchestration,
+or a document delete for a category delete, and additionally a strategizer run
+for a project delete.
 
 ```mermaid
 flowchart LR
@@ -449,10 +452,13 @@ flowchart LR
       Chat + embedding provider, model,
       secret profiles - validated on write`"]
     DELCAT["`<code>DELETE /v1/projects/{project}/categories/{category}</code>
-      409 while a build or orchestration runs`"]
+      409 while a build, an orchestration,
+      or a document delete runs`"]
     DELPROJ["`<code>DELETE /v1/projects/{project}</code>
       Removes every project-owned resource,
-      then the service tears itself down`"]
+      then the service tears itself down
+      409 while a build, an orchestration,
+      a strategizer run, or a document delete runs`"]
 
     L2R[("`**Layer 1-2 - Corpus Graph**
       modules, sources, similarities,
