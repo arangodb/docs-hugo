@@ -448,6 +448,8 @@ Request-level errors use a common body with a `detail` string:
 Uploads a single file for RAG processing. Re-uploading a file with the same name
 into the same scope automatically creates a new version.
 
+To upload multiple files at once, see [Upload a batch of RAG Input Files](#upload-a-batch-of-rag-input-files).
+
 **Path parameters:**
 
 | Parameter | Description |

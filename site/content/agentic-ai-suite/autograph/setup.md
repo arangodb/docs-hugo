@@ -84,7 +84,8 @@ For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 The AutoGraph service exposes HTTP REST endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 
-1. **Upload files** to the [File Manager](../../platform-suite/file-manager/)
+1. **Upload files** to the
+   [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
    under the scope `[project, category]`
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
 2. **Build corpus** with those category labels in `categories`

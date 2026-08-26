@@ -139,7 +139,8 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
    you orchestrate. See
    [Update a cluster strategy](rag-strategizer.md#update-a-cluster-strategy).
 9. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   Returns `202` with an `orchestration_id`. See [Graph Operations](orchestration.md).
+   Returns `202` with an `orchestration_id`. See
+   [Trigger Orchestration](orchestration.md#trigger-orchestration).
 10. Poll `GET /v1/orchestrate/{orchestration_id}`. Branch on `status`, which
     reaches `completed` only once every job is terminal *and* the imported
     partitions were found in the knowledge graph, and render `phase` as the

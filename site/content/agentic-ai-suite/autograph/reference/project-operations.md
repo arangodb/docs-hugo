@@ -156,7 +156,7 @@ is stale.
 |--------|-----------|
 | `categories[].needs_corpus_update` is `true` | [`POST /v1/corpus/builds`](corpus-build.md) for that category |
 | `strategies.categories_without_strategies` is non-empty | [`POST /v1/rag-strategizer/analyze`](rag-strategizer.md) scoped to those categories |
-| `knowledge_graph.new_categories` is non-empty | [`POST /v1/orchestrate`](orchestration.md) with those labels in `categories`, or without `categories` to build everything stale |
+| `knowledge_graph.new_categories` is non-empty | [`POST /v1/orchestrate`](orchestration.md#trigger-orchestration) with those labels in `categories`, or without `categories` to build everything stale |
 | Everything is `false` or empty | Nothing to do. `POST /v1/orchestrate` would return `409`. |
 
 | Status Code | Meaning |

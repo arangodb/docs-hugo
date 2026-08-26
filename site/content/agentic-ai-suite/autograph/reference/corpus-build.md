@@ -146,7 +146,7 @@ service resolved at startup is invalid, or if a pod is still reloading the
 persisted settings, this endpoint returns `400` right away instead of queueing a
 build that would fail while embedding. The same gate applies to
 [`POST /v1/rag-strategizer/analyze`](rag-strategizer.md) and
-[`POST /v1/orchestrate`](orchestration.md). Clear it with
+[`POST /v1/orchestrate`](orchestration.md#trigger-orchestration). Clear it with
 [`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-model-config-credentials).
 {{< /warning >}}
 

@@ -480,7 +480,7 @@ exactly one category, you can omit `category`. Otherwise, it is required.
 
 Every document is identified by its File Manager `file_id`. Insert takes no
 inline content, so upload the document with
-[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md)
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
 first and pass the returned ID.
 
 ```json
@@ -747,7 +747,7 @@ invalid document makes the whole batch fail before anything is changed.
 Like an insert, every document is identified by its File Manager `file_id`.
 Update takes **no inline content**: the replacement is always read back from the
 File Manager. Upload the new version with
-[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md)
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
 and pass the returned ID.
 
 ```json

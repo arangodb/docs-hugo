@@ -165,7 +165,8 @@ flowchart TD
    [update](reference/orchestration.md#update-documents), depending on what
    changed.
 2. **Build Layer 3.** After an insert or a successful update, run a
-   [targeted orchestration](reference/orchestration.md) with the returned
+   [targeted orchestration](reference/orchestration.md#trigger-orchestration) with
+   the returned
    `file_id`, so that the knowledge graph contains the new content. AutoGraph
    works out which strategized clusters hold those ids, so you do not name a
    partition. Both insert and update take File Manager input only, so every
@@ -200,7 +201,7 @@ not work here, and it never has to:
 orchestration. IDs have the form `rag-input-{base64url(db:path)}` and refer to a
 File Manager path, which is why the [prerequisites](#prerequisites) ask for a
 project built through the File Manager. Upload a document with
-[`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md)
+[`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
 and pass the returned ID.
 
 To orchestrate without ids, provide `categories` and omit `file_ids`. That

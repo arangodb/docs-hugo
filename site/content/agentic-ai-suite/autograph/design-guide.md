@@ -92,7 +92,8 @@ shows what is connected to what before the full GraphRAG import.
 
 ### Layer 3 - Per-partition Knowledge Graph (Importer)
 
-After strategies exist, [orchestration](reference/orchestration.md) assigns each
+After strategies exist,
+[orchestration](reference/orchestration.md#trigger-orchestration) assigns each
 `rag_partition_id` to an Importer job. The Importer creates `Documents`,
 `Chunks`, and `Relations` for every partition. FullGraphRAG partitions also get
 `Entities` and `Communities` (rich entity and relationship graphs); VectorRAG
@@ -153,7 +154,7 @@ Importer partitions:
    - Example: cluster key `cluster_legal_0` produces partition ID `legal_0_a`
 
 6. **Orchestration** -
-   [`POST /v1/orchestrate`](reference/orchestration.md) loads every matching
+   [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) loads every matching
    profile from `rags` and runs one Importer job per `rag_partition_id`. This is
    how categories become parallel partitions in Layer 3; a partitioned knowledge
    graph, not a single undifferentiated blob.
