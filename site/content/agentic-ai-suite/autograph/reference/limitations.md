@@ -2,22 +2,15 @@
 title: AutoGraph Limitations
 menuTitle: Limitations
 description: >-
-  Known limitations of the AutoGraph service, covering file uploads and processing
+  Known limitations of the AutoGraph API
 weight: 65
 ---
-This page collects the known limitations of the AutoGraph service. They apply
-to every client of the API, including the AutoGraph Studio web interface, which
-is built on top of it.
-
 ## File uploads and processing
 
 The API performs no checks when files are uploaded. Neither the file format
 nor the file size is validated, and files are stored successfully regardless.
-All restrictions are applied later, by the platform, during the corpus build,
-and a file that cannot be processed is dropped at that point rather than
-rejected on upload.
-
-Note the following in particular:
+All restrictions are applied later during the corpus build, and a file that
+cannot be processed is dropped at that point rather than rejected on upload.
 
 - **No format check**: The parser identifies a file by its contents rather
   than by its name. Formats other than the [supported ones](../setup.md) are
@@ -25,9 +18,15 @@ Note the following in particular:
   designed or tested for them.
 - **No size check**: A file that exceeds the maximum size is stored
   successfully and is only dropped once the build reaches it.
-- **No chunked or resumable uploads**: Each file has to be transferred in a
-  single request, base64-encoded in the `content` field of
-  [`POST /v1/import-multiple`](importing-files.md).
+- **No chunked or resumable uploads**: Each file has to be transferred to the
+  [File Manager](../../../platform-suite/file-manager/_index.md) in a single
+  `multipart/form-data` request.
+- **Only one upload path**: Files reach a build through the File Manager, by
+  their `file_ids`. The direct upload with `POST /v1/import-multiple` is
+  deprecated and cannot carry an upload on its own, as a call deletes what the
+  previous one staged and a staged file only reaches the build if it also
+  exists in the File Manager under an ID of its own. See
+  [Import Files](importing-files.md).
 
 ### Files dropped from the build
 
