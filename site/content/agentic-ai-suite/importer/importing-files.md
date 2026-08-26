@@ -190,7 +190,6 @@ This comprehensive example demonstrates all available import parameters for the 
     }
   ],
   "rag_mode": "full_graphrag",
-  "store_in_s3": false,
   "batch_size": 1000,
   "enable_chunk_embeddings": true,
   "enable_edge_embeddings": true,
@@ -225,7 +224,7 @@ This comprehensive example demonstrates all available import parameters for the 
   },
   "enable_semantic_units": true,
   "process_images": true,
-  "store_image_data": true,
+  "enable_semantic_unit_embeddings": false,
   "vector_index_n_lists": 2048,
   "vector_index_metric": "cosine",
   "vector_index_use_hnsw": true,

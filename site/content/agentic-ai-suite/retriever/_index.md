@@ -36,6 +36,10 @@ queries across these partitions using `partition_ids` to target specific
 domains. AutoGraph's two-stage retrieval pattern first identifies relevant
 partitions, then performs deep search within them.
 
+Each partition is built either as **VectorRAG** or as **FullGraphRAG**, and
+that choice determines which search methods you can run against it. See
+[VectorRAG and FullGraphRAG partitions](search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+
 For details on how partitions are created and mapped, see the
 [Importer AutoGraph Integration](../importer/autograph-integration.md) page.
 

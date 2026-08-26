@@ -122,6 +122,9 @@ place the output into the rendered documentation, for example.
   - `` ```openapi `` for REST HTTP API descriptions
   - `` ```curl `` for REST HTTP API examples
 
+  There is also a `` ```mermaid `` codeblock for [Diagrams](#diagrams) that does
+  not involve _arangoproxy_ at all.
+
 The hooks trigger a `POST` call to the dedicated _arangoproxy_ endpoint
 (`/js`, `/aql`, `/curl`, `openapi`) with the entire codeblock as request body.
 
@@ -561,6 +564,68 @@ Conventions used in the existing diagrams:
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
   hover styling defined in the theme.
+
+#### Diagrams
+
+For flowcharts and similar schematics that you want to maintain as text instead
+of as an image file, use a fenced `mermaid` codeblock:
+
+````markdown
+```mermaid
+flowchart LR
+  A([Start]) --> B["Do the work"] --> C([Done])
+```
+````
+
+For the available diagram types and their syntax, see the
+[Mermaid documentation](https://mermaid.js.org/intro/).
+
+Unlike the other codeblock render hooks, `mermaid` blocks are not sent to
+_arangoproxy_. The hook only wraps the block in a `<pre class="mermaid">`
+element, and `theme.js` renders it in the browser using the Mermaid version
+pinned there. A diagram with a syntax error therefore does not fail the build.
+Mermaid draws an error graphic in place of the diagram and logs a warning to the
+browser console instead, so always check diagrams in the preview.
+
+Each diagram is rendered into a box of a fixed height and can be panned and
+zoomed:
+
+- Drag the diagram to pan it. Dragging continues while the pointer is outside
+  the box, but a diagram cannot be moved out of view entirely.
+- Use the mouse wheel or the `+` and `-` buttons to zoom, and `RESET` to fit the
+  diagram into the box again.
+
+The relevant files are the hook
+`site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-mermaid.html`,
+the rendering and pan/zoom setup in `static/js/theme.js`, and the `pre.mermaid`
+rules in `static/css/theme.css`.
+
+Labels in Mermaid are plain text by default, so `["**Execute**"]` renders the
+asterisks literally. To use Markdown in a label, wrap the label text in
+backticks inside the quotes:
+
+````markdown
+```mermaid
+flowchart TD
+  A([Request received]) --> B["`**Execute**
+    Runs query by calling
+    <code>POST /_api/cursor</code>`"]
+```
+````
+
+In such a label, a line break in the source becomes a line break in the label
+and the indentation of continuation lines is stripped. Two subsequent line
+breaks are an exception: they wrap the text like a single line break but keep the
+indentation, because Mermaid starts a new paragraph (rendered without any extra
+spacing) instead of continuing the current one.
+
+Plain labels support line breaks in the source as well, but keep the indentation
+of continuation lines as a leading space, and two subsequent line breaks create
+an empty line. `<br>` works in both kinds of labels. The `\n` escape sequence
+only works in plain labels — a Markdown label renders it literally.
+
+For inline code, use `<code>`. You cannot use backticks in a Markdown label as
+that is a syntax error.
 
 #### Keyboard shortcuts
 
