@@ -161,5 +161,5 @@ source. To query it programmatically, see the
   replace documents in a knowledge graph that has already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
-- [Design Guide](design-guide.md): Structure data with modules, layers, and
+- [Design Guide](design-guide.md): Structure data with categories, layers, and
   components.

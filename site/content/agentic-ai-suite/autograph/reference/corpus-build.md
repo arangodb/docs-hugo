@@ -28,7 +28,7 @@ than one is rejected with `400`.
 | `categories` | **Preferred** | Category labels below the current project. The service lists the files of each category from the File Manager. |
 | `modules` | Deprecated alias | Identical to `categories`, and only used when `categories` is empty. |
 | `file_ids` | Deprecated | Explicit File Manager IDs of RAG inputs. |
-| *(none)* | Legacy | Uses the files staged by [`POST /v1/import-multiple`](importing-files.md) at the project root. |
+| *(none)* | **Deprecated** | Uses the files staged by [`POST /v1/import-multiple`](importing-files.md) at the project root. |
 
 {{< info >}}
 Category labels are the **bare** labels, such as `legal`, exactly as
@@ -155,8 +155,8 @@ build that would fail while embedding. The same gate applies to
 For File Manager builds (`categories`, `modules`, or `file_ids`), the service
 extracts the text through the **File Parsing Service** instead of parsing
 in-process: preview scope, the **first 4,800 characters**, images excluded.
-Files uploaded through [`POST /v1/import-multiple`](importing-files.md) are
-still parsed in-process.
+Files uploaded through the deprecated
+[`POST /v1/import-multiple`](importing-files.md) are still parsed in-process.
 
 Parsing is durable. If the pod restarts in the middle of a build, it picks up
 the batches it already submitted instead of submitting them again.
@@ -317,7 +317,7 @@ curl -H "Authorization: Bearer <token>" \
 
 An incremental build appends documents to categories that already exist, without
 rebuilding the rest of the corpus. For guidance on structuring categories, see
-the [Design Guide](../design-guide.md#designing-modules).
+the [Design Guide](../design-guide.md#designing-categories).
 
 **When to use an incremental build:**
 

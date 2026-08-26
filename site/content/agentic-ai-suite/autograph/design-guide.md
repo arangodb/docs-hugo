@@ -3,10 +3,10 @@ title: AutoGraph Design Guide
 menuTitle: Design Guide
 weight: 25
 description: >-
-  How to structure your data with modules, layers, and components when building knowledge graphs with AutoGraph
+  How to structure your data with categories, layers, and components when building knowledge graphs with AutoGraph
 ---
 This guide explains how to structure your data when building knowledge graphs
-with AutoGraph. It covers module design, the three processing layers, and when
+with AutoGraph. It covers category design, the three processing layers, and when
 to use each component.
 
 ## AutoGraph vs. Importer
@@ -47,32 +47,43 @@ diagram.
 
 ```mermaid
 flowchart LR
-  L1["Layer 1\nModules\n(your design choice)"]
+  L1["Layer 1\nCategories\n(your design choice)"]
   L2["Layer 2\nCorpus Graph\n(AutoGraph)"]
   L3["Layer 3\nKnowledge Graph\n(Importer)"]
   L1 -->|corpus build| L2 -->|orchestration| L3
 ```
 
-### Layer 1 - Modules (your design choice)
+### Layer 1 - Categories (your design choice)
 
-A module is a label you attach to documents via the `module` field at
-[import time](reference/importing-files.md), or assigned from metadata during
-the corpus build. Modules are the unit of isolation:
+A category is the label a document is filed under: the second level of its
+[File Manager](../../platform-suite/file-manager/api.md#scopes) scope,
+`[project, category]`.
+A legacy [`POST /v1/import-multiple`](reference/importing-files.md) upload sets
+it through the `module` field instead. Categories are the unit of isolation:
 
-- No cross-module similarity edges
-- Clustering runs inside each module independently
-- A build targets individual modules through the `categories` parameter
+- No cross-category similarity edges
+- Clustering runs inside each category independently
+- A build targets individual categories through the `categories` parameter
 
-See [Designing modules](#designing-modules) for split-vs-merge trade-offs.
+See [Designing categories](#designing-categories) for split-vs-merge trade-offs.
+
+{{< info >}}
+**`module` is the internal name of the same thing.** The corpus graph stores a
+category as a `module`, and several internal fields keep that name, such as the
+`modules` collection and the `jobs[].category` of an orchestration status. Those
+values are encoded, for example `myproject_legal`, and are never what you send.
+Requests always take the bare label, see
+[The category contract](reference/_index.md#the-category-contract).
+{{< /info >}}
 
 ### Layer 2 - Corpus Graph (AutoGraph)
 
-For each module, AutoGraph builds:
+For each category, AutoGraph builds:
 - Document vertices in the `sources` collection
 - Similarity edges (vector + BM25 + RRF) in `similarities`
 - Leiden cluster vertices in `domains`
 - Membership and `HAS_CLUSTER` edges in `corpus_relations`
-- A `modules` collection linking modules to their clusters
+- A `modules` collection linking categories to their clusters
 - Strategy profiles in `rags` (after running the
   [RAG strategizer](reference/rag-strategizer.md))
 
@@ -90,38 +101,44 @@ skips those for a lighter path.
 All Layer 3 data lives in the `{project}_kg` named graph, partitioned by the
 `partition_id` field on each document.
 
-## What can a module be?
+## What can a category be?
 
-A module is any stable string identifier that groups documents that should share
-similarity and clustering with each other, but not with other groups. Treat it
-as a shard key for the corpus graph, not a display name.
+A category is any stable string identifier that groups documents that should
+share similarity and clustering with each other, but not with other groups.
+Treat it as a shard key for the corpus graph, not a display name.
 
 Good candidates:
 
 - **Product or surface**: `"docs"`, `"api"`, `"console"`
 - **Audience or function**: `"legal"`, `"support"`, `"engineering"`
 - **Locale**: `"en"`, `"de"` - useful when you do not want cross-language similarity
-- **Tenant or org unit**: one module per customer or business unit when isolation is required
-- **Default bucket**: omit the module at import time or rely on `default` (assigned during corpus build for any file without a label) for a single mixed corpus
+- **Tenant or org unit**: one category per customer or business unit when isolation is required
+- **Default bucket**: a single mixed corpus can rely on `default`, which the corpus build assigns to any file that has no label
 
-## How modules become a partitioned knowledge graph
+## How categories become a partitioned knowledge graph
 
-The same module string flows through the entire pipeline, from files to
+The same category label flows through the entire pipeline, from files to
 Importer partitions:
 
 1. **Ingestion** -
+   Files uploaded to the
+   [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
+   carry the category as the second level of their scope, and
+   [`POST /v1/corpus/builds`](reference/corpus-build.md) takes those labels in
+   `categories`. The legacy
    [`POST /v1/import-multiple`](reference/importing-files.md) accepts a `module`
-   field for the batch. Files without a module receive the `default` label when
-   the corpus build runs.
+   field for the batch instead. Files without a label receive the `default`
+   category when the corpus build runs.
 
 2. **Corpus build** -
-   Processing runs per module, sequentially. Within a module, similarity
-   computation and Leiden clustering see only that module's documents.
+   Processing runs per category, sequentially. Within a category, similarity
+   computation and Leiden clustering see only that category's documents.
 
 3. **Cluster key naming** -
-   Cluster vertices use keys like `cluster_<module>_<n>` when a module label is
-   present (for example, `cluster_legal_0`), or `cluster_<n>` when no module was
-   assigned. This prevents collisions across modules.
+   Cluster vertices use keys like `cluster_<module>_<n>`, where `<module>` is the
+   stored form of the category (for example, `cluster_legal_0`), or
+   `cluster_<n>` when no label was assigned. This prevents collisions across
+   categories.
 
 4. **Graph wiring** -
    `modules` vertices link to their clusters via `HAS_CLUSTER` edges. Documents
@@ -138,12 +155,12 @@ Importer partitions:
 6. **Orchestration** -
    [`POST /v1/orchestrate`](reference/orchestration.md) loads every matching
    profile from `rags` and runs one Importer job per `rag_partition_id`. This is
-   how modules become parallel partitions in Layer 3; a partitioned knowledge
+   how categories become parallel partitions in Layer 3; a partitioned knowledge
    graph, not a single undifferentiated blob.
 
 Use `categories` on the orchestrate request to subset the run to specific
-modules (for example, only `legal`) without touching the others. Scoping stops
-at the category, so you cannot single out one partition of a category. To
+categories (for example, only `legal`) without touching the others. Scoping
+stops at the category, so you cannot single out one partition of a category. To
 reprocess individual documents, pass their `file_ids` instead.
 
 ---
@@ -154,35 +171,35 @@ Use AutoGraph for everything up to and including Layer 2.
 
 | Goal | Endpoint |
 |------|----------|
-| Import documents and assign them to a module | [`POST /v1/import-multiple`](reference/importing-files.md) |
+| Upload documents and assign them to a category | Upload to the [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file) under the scope `[project, category]`, then build with those labels in `categories` |
 | Build the corpus graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
 | Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](reference/corpus-build.md#monitoring-build-status) |
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
-| Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md) |
-| Add a module without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new module in `categories` |
-| Append documents to a module that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
-| Add, remove, or replace individual documents in an existing module | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
+| Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) |
+| Add a category without rebuilding the whole corpus | [`POST /v1/corpus/builds`](reference/corpus-build.md) with only the new category in `categories` |
+| Append documents to a category that is already built | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with `incremental: true` |
+| Add, remove, or replace individual documents in an existing category | [`POST /v1/graph/insert`, `/delete`, `/update`](reference/orchestration.md#insert-documents) |
 | Rebuild the Layer 3 communities of a FullGraphRAG partition after many document changes | [`POST /v1/graph/recluster`](reference/orchestration.md#trigger-reclustering) |
-| Inspect the state of the project and its modules | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
-| Remove a module and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
+| Inspect the state of the project and its categories | [`GET /v1/projects/{project}/overview`](reference/project-operations.md#project-overview) |
+| Remove a category and everything it contributed | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category) |
 | Embed a field on an existing ArangoDB collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
 ### Incremental vs. full builds
 
-- **`incremental: false`** (default) - builds the listed modules from scratch.
-  It is only accepted when every listed module is **new** to the corpus. Use it
-  for a first build and when you add a module.
-- **`incremental: true`** - appends to the listed modules and leaves every other
-  module untouched. On a File Manager build it also removes corpus documents
-  that are no longer in the File Manager listing.
+- **`incremental: false`** (default) - builds the listed categories from scratch.
+  It is only accepted when every listed category is **new** to the corpus. Use it
+  for a first build and when you add a category.
+- **`incremental: true`** - appends to the listed categories and leaves every
+  other category untouched. On a File Manager build it also removes corpus
+  documents that are no longer in the File Manager listing.
 
 {{< warning >}}
-**A module that is already built cannot be rebuilt in place.** A build with
-`incremental: false` that lists an existing module is rejected with
+**A category that is already built cannot be rebuilt in place.** A build with
+`incremental: false` that lists an existing category is rejected with
 `REBUILD_NOT_ALLOWED`, because the knowledge graph cannot be rebuilt from the
 new vectors.
 
-To rebuild a module cleanly, remove it with
+To rebuild a category cleanly, remove it with
 [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category)
 first, then build it, run the RAG Strategizer, and orchestrate again.
 {{< /warning >}}
@@ -190,18 +207,18 @@ first, then build it, run the RAG Strategizer, and orchestrate again.
 ### Document-level changes
 
 Neither build mode is a good fit if documents change regularly. A build works at
-the granularity of a whole module and recomputes its similarity and clustering,
+the granularity of a whole category and recomputes its similarity and clustering,
 and it never touches Layer 3. To add, remove, or replace individual documents in
-a module that is already built, and keep its clusters, strategy profiles, and
+a category that is already built, and keep its clusters, strategy profiles, and
 knowledge graph consistent, use
 [Incremental Graph Updates](incremental-graph-updates.md) instead.
 
 | Change | How to apply it |
 |--------|------|
 | A few documents are added, removed, or replaced | [Incremental Graph Updates](incremental-graph-updates.md) |
-| Many documents are added to an existing module | Corpus build with that module in `categories` and `incremental: true` |
-| A new module | Corpus build with only the new module in `categories` |
-| A clean rebuild of one module | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and orchestrate it again |
+| Many documents are added to an existing category | Corpus build with that category in `categories` and `incremental: true` |
+| A new category | Corpus build with only the new category in `categories` |
+| A clean rebuild of one category | [Delete the category](reference/project-operations.md#delete-category), then build, strategize, and orchestrate it again |
 
 ---
 
@@ -226,8 +243,8 @@ AutoGraph orchestration (POST /v1/orchestrate)
 **When you do interact with the Importer directly:**
 
 - **Re-running part of the corpus** - pass `categories` in
-  [`POST /v1/orchestrate`](reference/orchestration.md) to orchestrate only the
-  modules you need, or `file_ids` to reprocess only specific documents, rather
+  [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) to orchestrate only the
+  categories you need, or `file_ids` to reprocess only specific documents, rather
   than re-orchestrating the entire corpus.
 - **Configuring Importer behavior** - pass environment variable overrides in
   the `importer_env` map of the orchestration request (for example, chunk sizes
@@ -240,7 +257,7 @@ AutoGraph orchestration (POST /v1/orchestrate)
 After the RAG strategizer has written profiles to `rags`, call
 `POST /v1/orchestrate` to have Importer workers process those profiles. Both
 FullGraphRAG and VectorRAG partitions receive Importer jobs. Use `categories` to
-scope the run to specific modules if you want to exclude the others.
+scope the run to specific categories if you want to exclude the others.
 {{< /info >}}
 
 ---
@@ -276,17 +293,18 @@ You can inspect each cluster's ontology via
 
 ---
 
-## Designing modules
+## Designing categories
 
-Modules are the primary architectural decision you make at ingestion time. They
-cannot be merged after the fact without a full rebuild of the affected modules.
+Categories are the primary architectural decision you make at ingestion time.
+They cannot be merged after the fact without a full rebuild of the affected
+categories.
 
-**Split into separate modules when:**
+**Split into separate categories when:**
 
 - Documents belong to fundamentally different knowledge domains (for example,
   legal contracts vs. product engineering specs)
 
-**Keep as a single module (or use `default`) when:**
+**Keep as a single category (or use `default`) when:**
 
 - All documents cover a single product or system (for example, all technical
   guides for one software platform)
@@ -296,19 +314,19 @@ cannot be merged after the fact without a full rebuild of the affected modules.
 
 **Practical naming examples:**
 
-| Scenario | Suggested modules |
-|----------|-------------------|
+| Scenario | Suggested categories |
+|----------|----------------------|
 | SaaS product with docs, legal, and support content | `"docs"`, `"legal"`, `"support"` |
 | Multi-language knowledge base | `"en"`, `"de"`, `"fr"` |
 | Single unified internal wiki | `"default"` |
-| Regulated industry with strict data separation | one module per business unit |
+| Regulated industry with strict data separation | one category per business unit |
 
 **Rules of thumb:**
-- Start with fewer modules and split later if queries return irrelevant
+- Start with fewer categories and split later if queries return irrelevant
   cross-domain results.
-- A module with fewer than ~20 documents produces a single cluster; the RAG
+- A category with fewer than ~20 documents produces a single cluster; the RAG
   strategizer has little signal to differentiate strategies.
-- Module names are stored in document metadata and in `HAS_CLUSTER` edges.
+- Category labels are stored in document metadata and in `HAS_CLUSTER` edges.
   Choose names that are stable identifiers, not human-readable labels that might
   change.
 
@@ -318,7 +336,7 @@ cannot be merged after the fact without a full rebuild of the affected modules.
 - [Incremental Graph Updates](incremental-graph-updates.md): Insert, delete, and
   update documents in a knowledge graph that has already been built
 - [Setup](setup.md): End-to-end setup with the web interface or API
-- [Import Files](reference/importing-files.md): Upload documents with module labels
+- [Import Files](reference/importing-files.md): Upload documents with the legacy `module` label
 - [Corpus Build](reference/corpus-build.md): Trigger and monitor corpus builds
 - [RAG Strategizer](reference/rag-strategizer.md): Analyze clusters and assign strategies
 - [Graph Operations](reference/orchestration.md): Spawn Importer workers and

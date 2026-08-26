@@ -1246,5 +1246,5 @@ pick a maintenance window for them.
 - **[Retriever Setup](../../retriever/)**: Query your built knowledge graphs
 - **[Monitor Results](../../importer/verify-and-explore.md)**: Verify import success
 - **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
-- **[Design Guide - Modules to partitions](../design-guide.md#how-modules-become-a-partitioned-knowledge-graph)**: How module names flow into partition IDs
+- **[Design Guide - Categories to partitions](../design-guide.md#how-categories-become-a-partitioned-knowledge-graph)**: How category labels flow into partition IDs
 - **[Error Handling](error-handling.md)**: HTTP codes and general troubleshooting

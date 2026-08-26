@@ -16,7 +16,7 @@ and 2, it maintains the corpus graph with its sources, similarity edges, and
 cluster membership. In Layer 3, it adds or removes the knowledge graph data, such
 as documents, chunks, entities, communities, and relationships. Existing clusters
 and strategy profiles are kept, and a new document joins the cluster closest to
-it, so the whole module does not have to be clustered again.
+it, so the whole category does not have to be clustered again.
 
 **Adding to Layer 3 is the Importer's job. Removing from it is not.** AutoGraph
 deletes knowledge graph data itself, with AQL queries, and only involves the
@@ -79,11 +79,12 @@ Use IGU if all of the following is true:
 
 - The initial corpus build has finished successfully, and usually the RAG
   Strategizer and orchestration have run as well.
-- You want to add, remove, or replace documents in an **existing** module. Every
-  endpoint takes a batch, so this is not limited to one document per call.
-- The change is **small compared to what the module already holds**.
-- The cluster topology is still valid. You are not redesigning modules, and you
-  do not need to compute the similarity and clustering of a whole module again.
+- You want to add, remove, or replace documents in an **existing** category.
+  Every endpoint takes a batch, so this is not limited to one document per call.
+- The change is **small compared to what the category already holds**.
+- The cluster topology is still valid. You are not redesigning categories, and
+  you do not need to compute the similarity and clustering of a whole category
+  again.
 
 {{< info >}}
 **What matters is the size of the change, not the number of documents.** Insert,
@@ -100,14 +101,15 @@ corpus build for changes of that size.
 | Situation | Use instead |
 |-----------|-------------|
 | No corpus graph exists yet | The [standard workflow](reference/_index.md#standard-workflow) |
-| Adding an entirely **new module** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the new module in `categories` and `incremental: false` |
-| **Clean rebuild** of a module, for example because of wrong embeddings, bad clusters, or files that are replaced as a whole | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category), then a corpus build, the RAG Strategizer, and an orchestration for that module. A build with `incremental: false` over a module that already exists is rejected with `REBUILD_NOT_ALLOWED` |
-| **Adding documents in bulk** to an existing module, that is, a batch that is large in relation to what the module already holds | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that module in `categories` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
+| Adding an entirely **new category** | [`POST /v1/corpus/builds`](reference/corpus-build.md) with the new category in `categories` and `incremental: false` |
+| **Clean rebuild** of a category, for example because of wrong embeddings, bad clusters, or files that are replaced as a whole | [`DELETE /v1/projects/{project}/categories/{category}`](reference/project-operations.md#delete-category), then a corpus build, the RAG Strategizer, and an orchestration for that category. A build with `incremental: false` over a category that already exists is rejected with `REBUILD_NOT_ALLOWED` |
+| **Adding documents in bulk** to an existing category, that is, a batch that is large in relation to what the category already holds | [`POST /v1/corpus/builds`](reference/corpus-build.md#incremental-builds) with that category in `categories` and `incremental: true`. This keeps the existing collections and adds the new documents to them |
 | You only need vectors on an existing collection | [`POST /v1/embed-field-in-collection`](reference/embeddings.md) |
 
-**Rule of thumb:** Use IGU for changes that are small in relation to the module,
-whether that is one document or a batch of them, an incremental corpus build for
-bulk additions, and a corpus build for a new module or a clean module rebuild.
+**Rule of thumb:** Use IGU for changes that are small in relation to the
+category, whether that is one document or a batch of them, an incremental corpus
+build for bulk additions, and a corpus build for a new category or a clean
+category rebuild.
 
 ## Prerequisites
 
@@ -116,20 +118,20 @@ bulk additions, and a corpus build for a new module or a clean module rebuild.
 - An AutoGraph project with a corpus graph that has already been built.
   Typically, the RAG Strategizer and orchestration have run as well.
 - The project was built through the
-  [File Manager](../../platform-suite/file-manager/), so that every document in
-  the project has a `file_id`.
-- The documents you want to change belong to **existing** modules.
+  [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file),
+  so that every document in the project has a `file_id`.
+- The documents you want to change belong to **existing** categories.
 
 ## Full rebuild vs. IGU
 
 | | Full rebuild | IGU |
 |--|--------------|-----|
-| **How** | [Delete the category](reference/project-operations.md#delete-category), then [`POST /v1/corpus/builds`](reference/corpus-build.md) with the module in `categories`, followed by the RAG Strategizer and orchestration | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
-| **Scope** | The entire module. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing module |
-| **Clusters and strategies** | Computed again for the processed module | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster at Layer 2 and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
+| **How** | [Delete the category](reference/project-operations.md#delete-category), then [`POST /v1/corpus/builds`](reference/corpus-build.md) with the category in `categories`, followed by the RAG Strategizer and orchestration | `POST /v1/graph/insert`, `/delete`, or `/update`, then a targeted orchestration for Layer 3 where one is needed. No Strategizer run. Optionally `/recluster` if the divergence is high |
+| **Scope** | The entire category. Similarity, clustering, and the related graph data are wiped and rebuilt | Individual documents in an existing category |
+| **Clusters and strategies** | Computed again for the processed category | Existing clusters and `rags` profiles are kept. A new document joins the closest cluster at Layer 2 and **inherits that cluster's strategy profile**, so the RAG Strategizer never runs again |
 | **Layer 3** | Orchestrated again for the affected partitions after the Strategizer | Targeted orchestration for inserted and updated files, scoped to their `file_ids`. Deletions need no orchestration, they clean up Layer 3 in the same call |
 | **Cost and time** | Higher. Full extraction, embedding, and clustering, usually followed by a Strategizer and Importer run | Lower. Only the changed documents are processed |
-| **Use if** | Embeddings or clusters are wrong, files are replaced as a whole, or the module topology has to be reset | You regularly add, remove, or replace documents and the cluster topology is still valid |
+| **Use if** | Embeddings or clusters are wrong, files are replaced as a whole, or the category topology has to be reset | You regularly add, remove, or replace documents and the cluster topology is still valid |
 
 ## Insert vs. update
 
@@ -332,10 +334,10 @@ is still pending when the score is taken.
 - [Graph Operations](reference/orchestration.md#insert-documents): The requests
   and responses of `/v1/graph/insert`, `/delete`, `/update`, and `/recluster`,
   as well as targeted orchestration with `file_ids`
-- [Design Guide](design-guide.md): How modules, layers, and partitions fit
+- [Design Guide](design-guide.md): How categories, layers, and partitions fit
   together
 - [Corpus Build](reference/corpus-build.md#incremental-builds): Incremental
-  builds for new modules and bulk additions
+  builds for new categories and bulk additions
 - [Importer Incremental Updates](../importer/incremental-updates.md): What the
   Importer does for Layer 3, and its reclustering endpoint
 - [Error Handling](reference/error-handling.md): HTTP codes and general

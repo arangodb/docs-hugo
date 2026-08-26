@@ -37,16 +37,16 @@ Endpoints are served at **`http://<host>:8080`**.
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
 | `GET` | `/v1/health` | Check service readiness | - |
-| `POST` | `/v1/import-multiple` | Upload documents with module labels | [Import Files](importing-files.md) |
 | `POST` | `/v1/corpus/builds` | Start a corpus build | [Corpus Build](corpus-build.md) |
 | `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
 | `GET` | `/v1/rag-strategizer/jobs/{id}` | Monitor a strategizer run | [RAG Strategizer](rag-strategizer.md#monitor-a-strategizer-job) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
 | `PATCH` | `/v1/rag-strategizer/strategy/{cluster_id}` | Override the strategy of one cluster | [RAG Strategizer](rag-strategizer.md#update-a-cluster-strategy) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md#trigger-orchestration) |
 | `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](orchestration.md#monitor-an-orchestration) |
 | `DELETE` | `/v1/orchestrate/{id}` | Cancel a running orchestration | [Graph Operations](orchestration.md#cancel-an-orchestration) |
+| `POST` | `/v1/import-multiple` | **Deprecated.** Direct upload of documents with module labels, superseded by the File Manager | [Import Files](importing-files.md) |
 
 ### Document-level changes
 
@@ -116,10 +116,9 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 ### Standard workflow
 
 1. `GET /v1/health` - confirm the service is ready.
-2. Upload the documents. Either upload them to the File Manager under the scope
-   `[project, category]`, which is the preferred path, or call
-   `POST /v1/import-multiple` once per module. See
-   [Import Files](importing-files.md).
+2. Upload the documents to the File Manager under the scope
+   `[project, category]`. The direct upload with `POST /v1/import-multiple` is
+   deprecated. See [Import Files](importing-files.md).
 3. `POST /v1/corpus/builds` - start the corpus build, preferably with
    `categories`. Returns `202` with a `corpus_build_id` and the `graph_name`.
    See [Corpus Build](corpus-build.md).
@@ -224,16 +223,16 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
   build or an orchestration is running.
 {{< /warning >}}
 
-For guidance on structuring your data with modules, see the
+For guidance on structuring your data with categories, see the
 [Design Guide](../design-guide.md).
 
 ## Workflow Examples
 
 ### Knowledge graph build
 
-This example drives the build from File Manager categories. To use the legacy
-direct-upload path instead, call `POST /v1/import-multiple` first and omit
-`categories` from the corpus build (see [Import Files](importing-files.md)).
+This example drives the build from File Manager categories. The direct upload
+with `POST /v1/import-multiple`, and a corpus build without a selector, are
+deprecated (see [Import Files](importing-files.md)).
 
 ```bash
 # Step 1: Health check

@@ -228,12 +228,15 @@ For the full comparison, see
   still complete on the parser side. Retry the build; if it keeps happening, the
   corpus is probably too slow to parse, for example because it is mostly scanned
   material.
-- **Only one module's files appear in the build.** Each
-  `POST /v1/import-multiple` call replaces files staged by previous
-  direct-upload calls. To import multiple modules in a single initial build,
-  upload to the File Manager and pass all `file_ids` to
-  `POST /v1/corpus/builds`. See [Import Files](importing-files.md) for the
-  staging model.
+- **Only one module's files appear in the build**, or **files and a category
+  from an earlier import are gone.** Each `POST /v1/import-multiple` call
+  deletes the files of the previous direct-upload call and the category its
+  `module` label created. Earlier versions of the service kept both. The
+  endpoint is deprecated for this reason: upload to the File Manager and build
+  with `categories` instead. See [Import Files](importing-files.md).
+- **A build ignores files that `import-multiple` accepted.** A staged file only
+  reaches the build if the same basename also exists as a RAG input in the
+  File Manager for the same database, so the direct upload alone is not enough.
 - **RAG Strategizer fails.** Make sure a corpus build has finished and
   produced clusters before you run the Strategizer. Poll
   `GET /v1/rag-strategizer/jobs/{strategize_job_id}` for the outcome of a run.

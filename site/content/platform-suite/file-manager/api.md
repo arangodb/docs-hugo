@@ -276,7 +276,7 @@ A scope is an ordered list of labels that addresses a file within a database,
 for example `["acme", "legal", "q3"]`. The model is deliberately
 generic: the same mechanism represents a project, a module, or any deeper
 folder level. Consumers map their own concepts onto scope levels —
-[AutoGraph](../../agentic-ai-suite/autograph/design-guide.md#designing-modules)
+[AutoGraph](../../agentic-ai-suite/autograph/design-guide.md#designing-categories)
 uses the first level for the project and the second, the *category*, for its
 module, for instance.
 

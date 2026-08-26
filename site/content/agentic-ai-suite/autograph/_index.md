@@ -89,6 +89,6 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
 - **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
 - **[Web Interface](web-interface.md)**: Create, configure, and run a complete AutoGraph workflow in the web interface.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
-- **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
+- **[Design Guide](design-guide.md)**: Learn how to structure your data with categories, layers, and components.
 - **[Incremental Graph Updates](incremental-graph-updates.md)**: Insert, delete, and update individual documents in a knowledge graph that has already been built.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

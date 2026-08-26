@@ -109,5 +109,5 @@ see the [API Reference](reference/_index.md).
   impact metrics.
 - [Architecture](architecture.md): Learn more about the three-layer knowledge graph
   architecture and resulting collections.
-- [Design Guide](design-guide.md): How to structure your data with modules,
+- [Design Guide](design-guide.md): How to structure your data with categories,
   layers, and components.

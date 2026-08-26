@@ -309,7 +309,8 @@ flowchart TD
 
     %% Entry points
     Client -->|Step 0| HEALTH
-    Client -->|Step 1| IMP
+    Client -->|Step 1| FM
+    Client -.->|legacy alternative| IMP
     Client -->|Step 2 - 202| BUILD
     Client -.->|poll anytime| STATUS
     Client -->|Step 3 - 202| STRAT
@@ -324,13 +325,15 @@ flowchart TD
       Confirm service status is <code>SERVING</code>`"]
 
     %% Layer 1
-    subgraph L1 ["`**Layer 1** - Modules`"]
-        IMP["`<code>POST /v1/import-multiple</code>
-          Upload documents
-          Attach module label
-          Files stored on disk`"]
+    subgraph L1 ["`**Layer 1** - Categories`"]
         FM["`File Manager RAG inputs
-          (resolved from categories)`"]
+          Upload under scope
+          <code>[project, category]</code>`"]
+        IMP["`<code>POST /v1/import-multiple</code> (legacy)
+          Upload documents to the service
+          Attach a <code>module</code> label
+          Files stored on disk
+          No document-level updates later`"]
     end
 
     %% Layer 2
@@ -344,8 +347,8 @@ flowchart TD
               Status, progress, counts, error_code`"]
 
             B1["`Resolve inputs
-              (categories via File Manager
-              or imported files on disk)`"]
+              (<code>categories</code> via File Manager,
+              or legacy imported files on disk)`"]
             B2["`Extract text
               (File Parsing Service - preview scope
               first 4800 chars, no images;
@@ -356,7 +359,7 @@ flowchart TD
             B5["`Build similarity edges
               (Vector + BM25 + RRF)`"]
             B6["Store similarity edges"]
-            B7["Leiden clustering per module"]
+            B7["Leiden clustering per category"]
             B8["Create cluster nodes"]
             B9["Link docs to clusters"]
             B10["Build corpus relations"]
@@ -417,8 +420,8 @@ flowchart TD
     end
 
     %% Cross-layer connections
-    IMP -->|files on disk| B1
     FM -->|storage locations| B1
+    IMP -->|files on disk| B1
     B11 -->|Corpus ready| S1
     S7 -->|Strategies ready| O0
 ```
@@ -469,7 +472,7 @@ flowchart LR
       then persists`"| META
 
     DELCAT -->|1 - remove KG partitions| L3R
-    DELCAT -->|2 - remove module data| L2R
+    DELCAT -->|2 - remove corpus graph data| L2R
     DELCAT -->|3 - delete_files true only| FMR
     DELPROJ -->|drops graphs and collections| L3R
 
