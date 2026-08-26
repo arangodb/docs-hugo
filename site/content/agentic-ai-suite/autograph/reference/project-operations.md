@@ -424,7 +424,7 @@ DELETE /v1/projects/my_project/categories/legal   -d '{"delete_files": true}'
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `deleted` | boolean | Always `true` on a `200`. A category that does not exist returns `404` rather than `deleted: false`. |
+| `deleted` | boolean | Always `true` on a `200`. A category that cannot be resolved returns `404` rather than `deleted: false`. |
 | `category` | string | Echo of the requested category. |
 | `graph_updated` | boolean | `true` if corpus graph **or** knowledge graph data was removed. |
 | `files_deleted` | integer | Files successfully deleted from the File Manager, only when `delete_files` is `true`. Zero when it is `false`, or when every file was locked. |
@@ -436,18 +436,23 @@ DELETE /v1/projects/my_project/categories/legal   -d '{"delete_files": true}'
 | `400` | The `project` or `category` path segment is empty |
 | `401` | Authentication failed |
 | `403` | Access denied |
-| `404` | The category could not be resolved and does not match any built category of this project |
+| `404` | The category could not be resolved: it does not match any built category of this project, **or** its File Manager listing is empty, see the warning below |
 | `409` | A corpus build, an orchestration, or a document delete is in progress |
 | `500` | Server error |
 
 {{< warning >}}
-**Delete the category before you delete its files.** The endpoint enumerates the
-files of the category *first* and returns `404` if it finds none, before any
-graph cleanup happens. If you remove the files of a category from the File
-Manager by hand and then call this endpoint, you get a `404` and its corpus and
-knowledge graph data is **left in place**, with no supported way to clean it up
-through this API. Always let the delete remove the files, or call it before you
-remove them.
+**Delete the category before its files leave the File Manager.** The endpoint
+resolves a category by listing its File Manager files, and it does so *before*
+any graph cleanup. If that listing is empty, the request returns `404` and
+cleans nothing, whatever removed the files — the corpus and knowledge graph
+data of the category is **left in place**.
+
+**There is no recovery through the API.** Removing knowledge graph records is
+exclusive to this endpoint, and a corpus build never does it at either
+`incremental` setting. You have to remove the leftovers directly in ArangoDB.
+
+Let this endpoint delete the files with `delete_files=true`, or call it while
+they are still there.
 {{< /warning >}}
 
 Deleting a category also removes its strategies, so building it again is a full
