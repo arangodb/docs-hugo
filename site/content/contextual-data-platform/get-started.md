@@ -27,8 +27,8 @@ Generate your Client ID and Client Secret from the
 Then run the following command to install the Arango Contextual Data Platform:
 
 ```bash
-curl -fsSL https://get.arango.ai/install.sh | \
-  ARANGO_CLIENT_ID=... ARANGO_CLIENT_SECRET=... sh
+curl -fsSL https://raw.githubusercontent.com/arangodb/arango-ai-install/main/install.sh | bash -s -- \
+    --client-id "YOUR_CLIENT_ID" --client-secret "YOUR_CLIENT_SECRET"
 ```
 
 Sample output:
