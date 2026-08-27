@@ -168,6 +168,9 @@
           {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page "isResponse" false }}
         {{- else }}
           {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
+          {{- if isset $v.schema "example" }}
+            <p class="regular-font">Example: <code>{{ $v.schema.example | jsonify }}</code></p>
+          {{- end }}
           {{- range $prop, $value := $v.schema.properties}}
             {{- $required := in $v.schema.required $prop }}
             {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page "isResponse" false }}
@@ -292,8 +295,17 @@
             </p>
           {{- end }}
           <p class="regular-font">{{ $description }}</p>
+          {{- $exampleSet := false }}
+          {{- $example := "" }}
           {{- if isset $value.schema "example" }}
-            <p class="regular-font">Example: <code>{{ $value.schema.example | jsonify }}</code></p>
+            {{- $exampleSet = true }}
+            {{- $example = $value.schema.example }}
+          {{- else if isset $value "example" }}
+            {{- $exampleSet = true }}
+            {{- $example = $value.example }}
+          {{- end }}
+          {{- if $exampleSet }}
+            <p class="regular-font">Example: <code>{{ $example | jsonify}}</code></p>
           {{- end }}
         </div>
       </details>
