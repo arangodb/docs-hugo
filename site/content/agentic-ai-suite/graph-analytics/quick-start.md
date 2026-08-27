@@ -8,8 +8,7 @@ description: >-
 ---
 ## Prerequisites
 
-- Access to an ArangoDB deployment (Contextual Data Platform or Arango
-  Managed Platform).
+- Access to an Arango Contextual Data Platform deployment.
 - An existing **graph** in ArangoDB (node and edge collections).
 - An API key or authentication token (for API access).
 

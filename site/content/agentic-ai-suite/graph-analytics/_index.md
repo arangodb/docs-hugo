@@ -16,9 +16,8 @@ algorithms. Common use cases include fraud detection, recommender systems,
 and network flow analysis.
 
 ArangoDB offers a feature for running algorithms on your graph data,
-called Graph Analytics Engines (GAEs). It is available on request for the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [Arango Contextual Data Platform](../../contextual-data-platform/_index.md).
+called Graph Analytics Engines (GAEs). It is included in the
+[Arango Contextual Data Platform](../../contextual-data-platform/_index.md).
 
 Key features:
 
