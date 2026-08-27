@@ -276,7 +276,7 @@
           <span class="openapi-property-type">
             {{- $preceding := false }}
             {{- with $value.schema.type }}<span class="bold-text">{{ . }}</span>{{ $preceding = true }}{{ end }}
-            {{- if isset $value.schema "default" }} (default: <code>{{ $value.schema.default | jsonify }}</code>){{ $preceding = true }}{{ end }}
+            {{- if isset $value.schema "default" }} (default: <code>{{ $value.schema.default }}</code>){{ $preceding = true }}{{ end }}
             {{- if and $value.required (ne $category "path") }}{{ if $preceding }}, {{ end }}<span style="color: var(--orange-700)">required</span>{{ end }}
           </span>
           <a class="openapi-property-link" href="{{ printf "#%s" $anchor }}"><i class="fa fa-link"></i></a>
@@ -284,11 +284,11 @@
         {{- $description := $value.description | $page.RenderString }}
         <div class="openapi-prop-content">
           {{- if isset $value.schema "const" }}
-            <p class="regular-font">Set this to the value: <code>{{ $value.schema.const | jsonify }}</code></p>
+            <p class="regular-font">Set this to the value: <code>{{ $value.schema.const }}</code></p>
           {{- else if isset $value.schema "enum" }}
             <p class="regular-font">Possible values:
               {{- range $i, $val := $value.schema.enum }}
-                {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+                {{- if gt $i 0 }},{{ end }} <code>{{ . }}</code>
               {{- else }}
                 <em>(none)</em>
               {{- end }}
@@ -296,7 +296,7 @@
           {{- end }}
           <p class="regular-font">{{ $description }}</p>
           {{- if isset $value "example" }}
-            <p class="regular-font">Example: <code>{{ $value.example | jsonify}}</code></p>
+            <p class="regular-font">Example: <code>{{ $value.example }}</code></p>
           {{- end }}
         </div>
       </details>
