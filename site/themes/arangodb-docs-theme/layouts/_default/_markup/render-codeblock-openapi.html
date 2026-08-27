@@ -326,7 +326,8 @@
           {{- if isset $value "default" }} (default: <code>{{ $value.default | jsonify }}</code>){{ $preceding = true }}{{ end }}
 
           {{- if and $required (not $isResponse) }}{{ if $preceding }}, {{ end }}<span style="color: var(--orange-700)">required</span>
-          {{- else if and (eq $value.type "object") (not $required) $isResponse }}{{ if $preceding }}, {{ end }}optional
+          {{- /* $prop is empty for a top-level array, don't display "optional" */}}
+          {{- else if and (not $required) $isResponse (ne $prop "") }}{{ if $preceding }}, {{ end }}optional
           {{- end }}
         </span>
         <a class="openapi-property-link" href="#{{ $anchor }}"><i class="fa fa-link"></i></a>
