@@ -265,6 +265,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - cypher
+                  - AQL
+                  - error
+                  - errorMessage
+                  - errorCode
                 properties:
                   cypher:
                     description: |
@@ -293,6 +299,12 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - cypher
+                  - AQL
+                  - error
+                  - errorMessage
+                  - errorCode
                 properties:
                   cypher:
                     description: |
