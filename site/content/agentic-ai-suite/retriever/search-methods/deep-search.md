@@ -28,8 +28,16 @@ Retriever tools when they are available, and Local Search otherwise.
 
 {{< info >}}
 Deep Search is also available via the
-[web interface](../../graphrag/web-interface.md).
+[web interface](../../autograph/web-interface.md).
 {{< /info >}}
+
+{{< warning >}}
+Standard Deep Search is not supported on a **VectorRAG** partition, because its
+Local Search retriever needs entities and communities that VectorRAG does not
+build. Use Custom Deep Search with tools that search chunks, or
+[Instant Search](unified-search.md). See
+[VectorRAG and FullGraphRAG partitions](_index.md#vectorrag-and-fullgraphrag-partitions).
+{{< /warning >}}
 
 ## Standard Deep Search
 

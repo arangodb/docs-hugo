@@ -40,6 +40,11 @@ Analyze existing clusters and assign optimal RAG strategies. Must be called **af
 
 Sending **`{}`** is valid; all parameters have defaults.
 
+In the web interface, this trade-off is exposed as the **Complexity** slider of
+the strategy generation wizard, which runs from *Vector only* (no FullGraphRAG)
+to *Graph + images* (FullGraphRAG everywhere, with image extraction). See
+[Web Interface](../web-interface.md#configure-strategy-generation).
+
 The strategizer runs asynchronously. For each cluster it samples documents, uses an LLM to generate a **domain-specific ontology** (8-12 entity types), computes a complexity score, and assigns **FullGraphRAG** or **VectorRAG**. The ontology and strategy profiles are persisted to the **`rags`** collection and later passed to the Importer to constrain entity extraction (see [Per-cluster ontology](../design-guide.md#per-cluster-ontology-entity_types)).
 
 | Status Code | Meaning |

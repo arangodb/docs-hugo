@@ -13,35 +13,49 @@ owner, a set of collections, and a specific purpose.
 All collection names are prefixed with your project name. For example, if the
 project is `myapp`, collections will be `myapp_sources`, `myapp_domains`, and so on.
 
-An AutoGraph project is made of two graphs that work as a pipeline: the **corpus
-graph** (`{project}_CorpusGraph`) organizes the documents you feed in, and the
-**knowledge graph** (`{project}_kg`) is the GraphRAG graph built inside each
-partition. They meet only at the `partition_id` link.
+An AutoGraph project is made of two graphs that work as a pipeline: the
+**Corpus Graph** (`{project}_CorpusGraph`) organizes the documents you feed in,
+and the **Knowledge Graph** (`{project}_kg`) is the GraphRAG graph built inside
+each partition. They meet only at the partition, through a shared-property join
+between `rags.rag_partition_id` and `Documents.partition_id` — not a stored edge,
+so you cannot traverse from one graph to the other. Together they make up the
+**Context Graph**, the complete output of AutoGraph for the project.
 
-{{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the corpus graph. Right: the knowledge graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
+{{< embed-svg "AutoGraph-Data-Model-Overview" "The AutoGraph data model. Left: the Corpus Graph. Right: the Knowledge Graph. Solid arrows are stored edges; the dashed link is a shared-property reference, not an edge." >}}
 
 ## Collections per layer
 
 ```mermaid
 graph TD
-  subgraph "Layer 1 — Modules  (defined by you)"
-    modules["modules\n(vertex: one per module label)"]
+  subgraph "`**Layer 1** — Modules  (defined by you)`"
+    modules["`**modules**
+      (vertex: one per module label)`"]
   end
 
-  subgraph "Layer 2 — Corpus Graph  (built by AutoGraph)"
-    sources["sources\n(vertex: one per document)"]
-    similarities["similarities\n(edge: source ↔ source, label SIMILAR_TO)"]
-    domains["domains\n(vertex: one per Leiden cluster)"]
-    corpus_relations["corpus_relations\n(edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)"]
-    rags["rags\n(vertex: strategy profiles — added by strategizer)"]
+  subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
+    sources["`**sources**
+      (vertex: one per document)`"]      
+    similarities["`**similarities**
+      (edge: source ↔ source, label SIMILAR_TO)`"]      
+    domains["`**domains**
+      (vertex: one per Leiden cluster)`"]      
+    corpus_relations["`**corpus_relations**
+      (edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)`"]      
+    rags["`**rags**
+      (vertex: strategy profiles — added by strategizer)`"]      
   end
 
-  subgraph "Layer 3 — Knowledge Graph  (built by Importer)"
-    Documents["Documents\n(vertex: original documents)"]
-    Chunks["Chunks\n(vertex: text chunks)"]
-    Entities["Entities\n(vertex: extracted entities — full_graphrag only)"]
-    Communities["Communities\n(vertex: entity clusters — full_graphrag only)"]
-    Relations["Relations\n(edge: all relationships)"]
+  subgraph "`**Layer 3** — Knowledge Graph  (built by Importer)`"
+    Documents["`**Documents**
+      (vertex: original documents)`"]
+    Chunks["`**Chunks**
+      (vertex: text chunks)`"]
+    Entities["`**Entities**
+      (vertex: extracted entities — full_graphrag only)`"]
+    Communities["`**Communities**
+      (vertex: entity clusters — full_graphrag only)`"]
+    Relations["`**Relations**
+      (edge: all relationships)`"]
   end
 
   modules -->|HAS_CLUSTER| domains
@@ -59,7 +73,7 @@ graph TD
 AutoGraph builds the corpus by creating collections in Layers 1 and 2. These
 collections are organized into a named graph called `{project}_CorpusGraph`.
 
-{{< embed-svg "AutoGraph-Corpus-Graph" "The corpus graph groups ingested sources into topic domains; each domain becomes a retrievable RAG partition." >}}
+{{< embed-svg "AutoGraph-Corpus-Graph" "The Corpus Graph groups ingested sources into topic domains; each domain becomes a retrievable RAG partition." >}}
 
 | Collection | Type | Built by |
 |------------|------|----------|
@@ -75,9 +89,9 @@ The `rags` collection is populated by the RAG Strategizer,
 and not during the initial corpus build.
 {{< /info >}}
 
-**Edge labels in the corpus graph**
+**Edge labels in the Corpus Graph**
 
-AutoGraph assigns semantic labels to edges in the corpus graph to distinguish
+AutoGraph assigns semantic labels to edges in the Corpus Graph to distinguish
 different relationship types:
 
 - `SIMILAR_TO`: Applied to edges in the `similarities` collection connecting
@@ -126,8 +140,8 @@ carries a `partition_id` field so data from different partitions coexists in the
 
 {{< info >}}
 **Where the relationship type is stored differs between the two graphs.** In the
-corpus graph, `corpus_relations` and `similarities` store the relationship name in
-a **`label`** field. In the knowledge graph, `{project}_Relations` stores it in a
+Corpus Graph, `corpus_relations` and `similarities` store the relationship name in
+a **`label`** field. In the Knowledge Graph, `{project}_Relations` stores it in a
 **`type`** field instead (`PART_OF`, `MENTIONED_IN`, `RELATED_TO`, `IN_COMMUNITY`,
 `SUB_COMMUNITY_OF`). In both cases the value also lines up one-to-one with the
 `_from`/`_to` collection pair, so you can filter either way. See
@@ -269,7 +283,7 @@ collections each edge connects:
 
 ## Things people misread
 
-- **Two graphs, not one.** The corpus graph and the knowledge graph are separate;
+- **Two graphs, not one.** The Corpus Graph and the Knowledge Graph are separate;
   they meet only at the partition.
 - **The relationship type lives in different fields.** `corpus_relations` and
   `similarities` use a `label` field; `Relations` uses a `type` field. Both also
@@ -283,7 +297,7 @@ collections each edge connects:
   collection and also a field stored on `sources`, `domains`, and `rags`.
 - **The corpus embedding is not the retrieval index.** The `sources` embedding is a
   single-vector clustering signature (from the first chunk); the full text is
-  chunked and indexed separately in the knowledge graph.
+  chunked and indexed separately in the Knowledge Graph.
 
 ## Complete Pipeline
 
@@ -306,20 +320,24 @@ flowchart TD
     Client -->|Step 4| ORCH
 
     %% Health
-    HEALTH["GET /v1/health\nConfirm service status is SERVING"]
+    HEALTH["`<code>GET /v1/health</code>
+      Confirm service status is SERVING`"]
 
     %% Layer 1
-    subgraph L1 [Layer 1 - Modules]
-        IMP["POST /v1/import-multiple\nUpload documents\nAttach module label\nFiles stored on disk"]
+    subgraph L1 ["`**Layer 1** - Modules`"]
+        IMP["`<code>POST /v1/import-multiple</code>
+          Upload documents\nAttach module label\nFiles stored on disk`"]
     end
 
     %% Layer 2
-    subgraph L2 [Layer 2 - Corpus Graph]
+    subgraph L2 ["`**Layer 2** - Corpus Graph`"]
 
         %% Build Pipeline
         subgraph BUILD_PIPE [Corpus Build Background Task]
-            BUILD["POST /v1/corpus/builds\nReturns corpus_build_id"]
-            STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
+            BUILD["`<code>POST /v1/corpus/builds</code>
+              Returns corpus_build_id`"]
+            STATUS["`<code>GET /v1/corpus/builds/{id}</code>
+              Status + progress`"]
 
             B1["Read files from disk"]
             B2["Extract text\nPDF / Office / JSON / HTML"]
@@ -338,8 +356,8 @@ flowchart TD
 
         %% Strategizer
         subgraph STRAT_PIPE [RAG Strategizer Background Task]
-            STRAT["POST /v1/rag-strategizer/analyze"]
-            GETSTRAT["GET /v1/rag-strategizer/strategy"]
+            STRAT["`<code>POST /v1/rag-strategizer/analyze</code>`"]
+            GETSTRAT["`<code>GET /v1/rag-strategizer/strategy</code>`"]
 
             S1["Read clusters"]
             S2["Generate per-cluster ontology\n(8-12 entity types via LLM)"]
@@ -356,10 +374,11 @@ flowchart TD
     end
 
     %% Layer 3
-    subgraph L3 [Layer 3 - Knowledge Graph]
+    subgraph L3 ["`**Layer 3** - Knowledge Graph`"]
 
         subgraph ORCH_PIPE [Orchestration Background Task]
-            ORCH["POST /v1/orchestrate\nReturns orchestration_id"]
+            ORCH["`<code>POST /v1/orchestrate</code>
+              Returns orchestration_id`"]
 
             O1["Load jobs from rags\n(all strategy profiles)"]
             O2["Spawn Importer replicas"]
