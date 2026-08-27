@@ -15,9 +15,8 @@ infrastructure, and can immediately start using the GraphML and AI
 functionalities.
 
 The notebooks are primarily focused on the following solutions:
-- [GraphRAG](graphrag/_index.md): A complete solution for extracting entities
-  from text files to create a knowledge graph that you can then query with a
-  natural language interface.
+- [AutoGraph](autograph/_index.md): Extract entities from text files to create a
+  knowledge graph that you can then query with a natural language interface.
 - [GraphML](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and similar tasks.
 - [Adapters](../ecosystem/adapters/_index.md): Use ArangoDB together with cuGraph,
@@ -42,7 +41,5 @@ The ArangoDB Notebooks include the following:
 
 - To get a better understanding of how to interact with ArangoDB using notebooks,
   open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
-- To get started with GraphRAG using ArangoDB's integrated notebook servers, see
-  the [GraphRAG Notebook Tutorial](graphrag/tutorial-notebook.md).
 - To get started with GraphML using ArangoDB's integrated notebook servers, see
   the [GraphML Notebooks and API](graphml/notebooks-api.md) documentation.

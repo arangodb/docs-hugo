@@ -94,11 +94,9 @@ you have to handle these citation features yourself:
 
 **Recommended workflow:**
 
-1. Give every document you want cited a citation URL. Files in File Manager
-   take theirs from
-   [custom metadata](../../../platform-suite/file-manager/api.md#the-citable_url-key)
-   at upload; inline imports take it from `citable_url` on the file.
-2. The URL is stored in the corpus graph and passed to the importer during
+1. When you import documents via `POST /v1/import-multiple`, set
+   `citable_url` on each file that has a canonical URL to cite.
+2. The URL is stored in the Corpus Graph and passed to the importer during
    orchestration.
 3. To extract citations from document content, add your own processing step
    that:
