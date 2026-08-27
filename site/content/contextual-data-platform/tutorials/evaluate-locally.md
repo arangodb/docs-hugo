@@ -234,7 +234,7 @@ metadata:
   name: "deployment"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.9"
+  image: "arangodb/enterprise:latest"
   architecture:
     - ${ARCH}
   gateway:
