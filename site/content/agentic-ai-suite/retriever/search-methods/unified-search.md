@@ -29,6 +29,8 @@ Unified Search is also available as **Instant Search** via the
 }
 ```
 
+Sending [`"mode": "INSTANT"`](../parameters.md#mode) has the same effect.
+
 ## How it works
 
 1. **Chunk Search**: Performs semantic search on text chunks using vector embeddings.

@@ -705,7 +705,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\n\nAvailable log levels: fatal, error, warning, info, debug, trace.\n\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\n\nAvailable log levels: fatal, error, warning, info, debug, trace.\n\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, ssl, startup, supervision, syscall, threads, trx, ttl, v8, validation, views.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -810,27 +810,6 @@
     "requiresValue" : true,
     "section" : "log",
     "type" : "string..."
-  },
-  "log.performance" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : [
-      "v3.5.0"
-    ],
-    "description" : "Shortcut for `--log.level performance=trace`.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "log",
-    "type" : "boolean"
   },
   "log.prefix" : {
     "category" : "option",
@@ -1023,50 +1002,6 @@
       "v3.8.0"
     ],
     "longDescription" : "You can use this option to switch the log output\nto the JSON format. Each log message then produces a separate line with\nJSON-encoded log data, which can be consumed by other applications.\n\nThe object attributes produced for each log message are:\n\n| Key        | Value      |\n|:-----------|:-----------|\n| `time`     | date/time of log message, in format specified by `--log.time-format`\n| `prefix`   | only emitted if `--log.prefix` is set\n| `pid`      | process id, only emitted if `--log.process` is set\n| `tid`      | thread id, only emitted if `--log.thread` is set\n| `thread`   | thread name, only emitted if `--log.thread-name` is set\n| `role`     | server role (1 character), only emitted if `--log.role` is set\n| `level`    | log level (e.g. `\"WARN\"`, `\"INFO\"`)\n| `file`     | source file name of log message, only emitted if `--log.line-number` is set\n| `line`     | source file line of log message, only emitted if `--log.line-number` is set\n| `function` | source file function name, only emitted if `--log.line-number` is set\n| `topic`    | log topic name\n| `id`       | log id (5 digit hexadecimal string), only emitted if `--log.ids` is set\n| `hostname` | hostname if `--log.hostname` is set\n| `message`  | the actual log message payload",
-    "obsolete" : false,
-    "os" : [
-      "linux"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "log",
-    "type" : "boolean"
-  },
-  "log.use-local-time" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : [
-      "v3.5.0"
-    ],
-    "description" : "Use the local timezone instead of UTC.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "longDescription" : "This option is deprecated.\nUse `--log.time-format local-datestring` instead.",
-    "obsolete" : false,
-    "os" : [
-      "linux"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "log",
-    "type" : "boolean"
-  },
-  "log.use-microtime" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : [
-      "v3.5.0"
-    ],
-    "description" : "Use Unix timestamps in seconds with microsecond precision.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "longDescription" : "This option is deprecated.\nUse `--log.time-format timestamp-micros` instead.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -1506,30 +1441,6 @@
     "section" : "",
     "type" : "boolean"
   },
-  "ssl.protocol" : {
-    "base" : 1,
-    "category" : "option",
-    "default" : 5,
-    "deprecatedIn" : null,
-    "description" : "The SSL protocol (1 = SSLv2 (unsupported), 2 = SSLv2 or SSLv3 (negotiated), 3 = SSLv3, 4 = TLSv1, 5 = TLSv1.2, 6 = TLSv1.3, 9 = generic TLS (negotiated))",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 0,
-    "obsolete" : false,
-    "os" : [
-      "linux"
-    ],
-    "requiresValue" : true,
-    "section" : "ssl",
-    "type" : "uint64",
-    "values" : "Possible values: 1, 2, 3, 4, 5, 6, 9"
-  },
   "temp.path" : {
     "category" : "option",
     "default" : "",
@@ -1571,6 +1482,30 @@
     "requiresValue" : true,
     "section" : "",
     "type" : "uint32"
+  },
+  "tls.protocol" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 5,
+    "deprecatedIn" : null,
+    "description" : "The TLS protocol version (4 = TLSv1, 5 = TLSv1.2, 6 = TLSv1.3, 9 = generic TLS (negotiated))",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "tls",
+    "type" : "uint64",
+    "values" : "Possible values: 4, 5, 6, 9"
   },
   "to-collection-prefix" : {
     "category" : "option",

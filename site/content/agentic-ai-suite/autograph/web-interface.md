@@ -12,6 +12,14 @@ and deploys retrieval services, all through a streamlined, step-by-step workflow
 In just a few steps, your fully operational knowledge graph is ready to answer
 questions about your documents.
 
+{{< info >}}
+This page describes how to build a knowledge graph from scratch. To keep it
+up-to-date afterwards by inserting, deleting, or replacing individual documents,
+you need to use the API. These operations are not available in the web interface
+in Arango Contextual Data Platform 4.1.0. See
+[Incremental Graph Updates](incremental-graph-updates.md).
+{{< /info >}}
+
 ## Create an AutoGraph project
 
 To create a new AutoGraph project using the Arango Contextual Data Platform

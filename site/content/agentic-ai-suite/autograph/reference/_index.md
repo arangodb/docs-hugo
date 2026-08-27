@@ -9,6 +9,14 @@ This section documents the AutoGraph HTTP REST API. All endpoints require
 JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).
 
+{{< info >}}
+**Field names are lowerCamelCase over HTTP.** This reference uses the
+protobuf field names, such as `rag_partition_id` or `overall_status`. The REST
+gateway emits the JSON names instead, so an actual response carries
+`ragPartitionId` and `overallStatus`. Convert accordingly when you read a
+response or build a request body.
+{{< /info >}}
+
 ## Authentication
 
 All endpoints require a **JWT** in the `Authorization` header:
@@ -32,7 +40,12 @@ Endpoints are served at **`http://<host>:8080`**.
 | `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Orchestration](orchestration.md) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](orchestration.md#monitor-an-orchestration) |
+| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
+| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
+| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
 | `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](embeddings.md) |
 
 For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md).
@@ -56,7 +69,11 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 6. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
    See [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies).
 7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   See [Orchestration](orchestration.md).
+   See [Graph Operations](orchestration.md).
+8. Poll `GET /v1/orchestrate/{orchestration_id}` for the per-partition results,
+   including the divergence of each FullGraphRAG partition. Read them before you
+   start another orchestration, which evicts this run. See
+   [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
 
 ### Embed-only workflow
 
@@ -76,6 +93,26 @@ only the new module in `modules`. Existing modules are preserved; only the
 listed modules are updated. See
 [Incremental Builds](corpus-build.md#incremental-builds).
 
+### Document-level changes to an existing graph
+
+Use these calls if the corpus graph is already built and you only want to change
+individual documents. See
+[Incremental Graph Updates](../incremental-graph-updates.md) for the
+prerequisites, a comparison with a rebuild, and the full endpoint reference.
+
+1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
+   depending on what changed. Insert and update only cover Layers 1 and 2.
+   Delete is synchronous and removes the Layer 3 data itself.
+2. After an insert or a successful update, call `POST /v1/orchestrate` with the
+   `file_ids` of the changed documents, so that Layer 3 contains the new
+   content.
+3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
+   `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
+   After a delete, they are on each file's result if its `overall_status` is
+   `COMMITTED`.
+4. *(Optional)* Call `POST /v1/graph/recluster` if the flag is `true` and you
+   want to refresh the communities. Reclustering is never automatic.
+
 ### Ordering rules
 
 {{< warning >}}
@@ -83,8 +120,10 @@ listed modules are updated. See
   reaches `status: completed`.
 - Do not call `POST /v1/orchestrate` until the strategizer has finished
   after a successful build.
-- Only one corpus build and one orchestration run may be active at a time
-  (`409` if you collide).
+- Do not call the `/v1/graph/*` endpoints before the initial corpus build has
+  finished.
+- Only one corpus build, orchestration run, or graph update can be active at a
+  time. If they overlap, you get a `409`.
 {{< /warning >}}
 
 For guidance on structuring your data with modules, see the
@@ -147,7 +186,7 @@ curl -H "Authorization: Bearer <token>" \
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"replicas": 2, "max_retries": 3}' \
+  -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
   http://localhost:8080/v1/orchestrate
 ```
 

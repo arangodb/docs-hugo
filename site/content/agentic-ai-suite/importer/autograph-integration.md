@@ -77,15 +77,19 @@ to **Importer partitions**:
 
 ```mermaid
 flowchart LR
-  module["Module<br><b>legal</b>"]
+  module["`Module
+    **legal**`"]
 
   module --> cluster0["cluster_legal_0"]
   module --> cluster1["cluster_legal_1"]
   module --> cluster2["cluster_legal_2"]
 
-  cluster0 -->|full_graphrag| part0["Partition<br><b>legal_0_a</b>"]
-  cluster1 -->|full_graphrag| part1["Partition<br><b>legal_1_a</b>"]
-  cluster2 -->|vector_rag| part2["Partition<br><b>legal_2_b</b>"]
+  cluster0 -->|full_graphrag| part0["`Partition
+    **legal_0_a**`"]
+  cluster1 -->|full_graphrag| part1["`Partition
+    **legal_1_a**`"]
+  cluster2 -->|vector_rag| part2["`Partition
+    **legal_2_b**`"]
 
   part0 --> orch["Orchestration"]
   part1 --> orch
@@ -100,6 +104,14 @@ Under normal operation you **do not call the Importer directly**; AutoGraph
 handles replica creation, job submission, status polling, and teardown. Call
 the Importer yourself only for standalone imports or advanced scenarios
 (e.g., re-running a single partition with custom settings).
+
+After the initial build, AutoGraph also uses the Importer for
+[Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
+Layer 3. It submits imports for new and changed files, and it can recluster a
+partition whose communities have drifted, but only if you ask for it. AutoGraph
+flags the drift and never reclusters on its own. Removing a document from
+Layer 3 is not an Importer call, AutoGraph handles it as part of its own delete
+and update operations. See [Incremental Updates](incremental-updates.md).
 
 ## How `partition_id` maps to the Corpus Graph
 

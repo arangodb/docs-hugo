@@ -24,24 +24,35 @@ partition. They meet only at the `partition_id` link.
 
 ```mermaid
 graph TD
-  subgraph "Layer 1 — Modules  (defined by you)"
-    modules["modules\n(vertex: one per module label)"]
+  subgraph "`**Layer 1** — Modules  (defined by you)`"
+    modules["`**modules**
+      (vertex: one per module label)`"]
   end
 
-  subgraph "Layer 2 — Corpus Graph  (built by AutoGraph)"
-    sources["sources\n(vertex: one per document)"]
-    similarities["similarities\n(edge: source ↔ source, label SIMILAR_TO)"]
-    domains["domains\n(vertex: one per Leiden cluster)"]
-    corpus_relations["corpus_relations\n(edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)"]
-    rags["rags\n(vertex: strategy profiles — added by strategizer)"]
+  subgraph "`**Layer 2** — Corpus Graph  (built by AutoGraph)`"
+    sources["`**sources**
+      (vertex: one per document)`"]      
+    similarities["`**similarities**
+      (edge: source ↔ source, label SIMILAR_TO)`"]      
+    domains["`**domains**
+      (vertex: one per Leiden cluster)`"]      
+    corpus_relations["`**corpus_relations**
+      (edge: labels IN_DOMAIN · HAS_CLUSTER · INGESTED_AS)`"]      
+    rags["`**rags**
+      (vertex: strategy profiles — added by strategizer)`"]      
   end
 
-  subgraph "Layer 3 — Knowledge Graph  (built by Importer)"
-    Documents["Documents\n(vertex: original documents)"]
-    Chunks["Chunks\n(vertex: text chunks)"]
-    Entities["Entities\n(vertex: extracted entities — full_graphrag only)"]
-    Communities["Communities\n(vertex: entity clusters — full_graphrag only)"]
-    Relations["Relations\n(edge: all relationships)"]
+  subgraph "`**Layer 3** — Knowledge Graph  (built by Importer)`"
+    Documents["`**Documents**
+      (vertex: original documents)`"]
+    Chunks["`**Chunks**
+      (vertex: text chunks)`"]
+    Entities["`**Entities**
+      (vertex: extracted entities — full_graphrag only)`"]
+    Communities["`**Communities**
+      (vertex: entity clusters — full_graphrag only)`"]
+    Relations["`**Relations**
+      (edge: all relationships)`"]
   end
 
   modules -->|HAS_CLUSTER| domains
@@ -180,6 +191,15 @@ prefix is `SG_`).
 | `enable_chunk_embeddings` | `true` | Whether chunks get their own embeddings. |
 | `entity_types` | `[configured types]` | Entity types the extractor may produce (the per-cluster ontology; typically 8–12 types). |
 | `smart_graph_attribute` | `partition_id` | The SmartGraph sharding key. |
+| `divergence_score` | `0.20` | FullGraphRAG only. How far the partition has drifted since it was last clustered. It is calculated again after every [incremental graph update](incremental-graph-updates.md#partition-divergence-and-reclustering). |
+| `divergence_threshold` | `0.25` | FullGraphRAG only. If the score gets above this value, the partition is flagged for reclustering. Stored per partition, but not configurable through the API. |
+| `needs_reclustering` | `false` | FullGraphRAG only. Set to `true` if the `divergence_score` is above the threshold. You still need to start the reclustering yourself. |
+| `last_reclustered_at` | `1778230320.0` | FullGraphRAG only. When the partition was last clustered or reclustered successfully, as **epoch seconds**, not an ISO-8601 string. Unset until the first successful clustering. |
+
+The divergence fields are only used for **FullGraphRAG** partitions. The
+divergence is calculated from the entities of a partition, and a reclustering
+rebuilds its communities. A VectorRAG partition has neither collection, see
+[Layer 3](#layer-3), so it is never flagged for reclustering.
 
 **`modules`** — the top-level corpus container
 
@@ -197,7 +217,8 @@ prefix is `SG_`).
 | `file_name` | `enterprise-context-management.md` | Source file (provenance). |
 | `content` | `"--- source: https://…"` | Full document text. |
 | `partition_id` | `default_0_a` | Which RAG partition it belongs to. |
-| `import_number` | `1` | Which import / build produced it. |
+| `import_number` | `1` | Which import / build produced it. Every incremental import into the same partition adds another batch. |
+| `file_ids` | `["rag-input-…"]` | The File Manager IDs stored at import time. [Incremental graph updates](incremental-graph-updates.md) use them to find a document that you want to delete. |
 
 **`Chunks`** — a token-sized passage, the retrieval unit
 
@@ -296,20 +317,24 @@ flowchart TD
     Client -->|Step 4| ORCH
 
     %% Health
-    HEALTH["GET /v1/health\nConfirm service status is SERVING"]
+    HEALTH["`<code>GET /v1/health</code>
+      Confirm service status is SERVING`"]
 
     %% Layer 1
-    subgraph L1 [Layer 1 - Modules]
-        IMP["POST /v1/import-multiple\nUpload documents\nAttach module label\nFiles stored on disk"]
+    subgraph L1 ["`**Layer 1** - Modules`"]
+        IMP["`<code>POST /v1/import-multiple</code>
+          Upload documents\nAttach module label\nFiles stored on disk`"]
     end
 
     %% Layer 2
-    subgraph L2 [Layer 2 - Corpus Graph]
+    subgraph L2 ["`**Layer 2** - Corpus Graph`"]
 
         %% Build Pipeline
         subgraph BUILD_PIPE [Corpus Build Background Task]
-            BUILD["POST /v1/corpus/builds\nReturns corpus_build_id"]
-            STATUS["GET /v1/corpus/builds/{id}\nStatus + progress"]
+            BUILD["`<code>POST /v1/corpus/builds</code>
+              Returns corpus_build_id`"]
+            STATUS["`<code>GET /v1/corpus/builds/{id}</code>
+              Status + progress`"]
 
             B1["Read files from disk"]
             B2["Extract text\nPDF / Office / JSON / HTML"]
@@ -328,8 +353,8 @@ flowchart TD
 
         %% Strategizer
         subgraph STRAT_PIPE [RAG Strategizer Background Task]
-            STRAT["POST /v1/rag-strategizer/analyze"]
-            GETSTRAT["GET /v1/rag-strategizer/strategy"]
+            STRAT["`<code>POST /v1/rag-strategizer/analyze</code>`"]
+            GETSTRAT["`<code>GET /v1/rag-strategizer/strategy</code>`"]
 
             S1["Read clusters"]
             S2["Generate per-cluster ontology\n(8-12 entity types via LLM)"]
@@ -346,10 +371,11 @@ flowchart TD
     end
 
     %% Layer 3
-    subgraph L3 [Layer 3 - Knowledge Graph]
+    subgraph L3 ["`**Layer 3** - Knowledge Graph`"]
 
         subgraph ORCH_PIPE [Orchestration Background Task]
-            ORCH["POST /v1/orchestrate\nReturns orchestration_id"]
+            ORCH["`<code>POST /v1/orchestrate</code>
+              Returns orchestration_id`"]
 
             O1["Load jobs from rags\n(all strategy profiles)"]
             O2["Spawn Importer replicas"]

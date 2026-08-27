@@ -6,6 +6,8 @@ description: >-
   Turn slow AQL queries into fast ones - let AI find the bottleneck and
   rewrite the query, with results verified to match
 ---
+{{< tag "Beta" >}}
+
 ## Prerequisites
 
 - An ArangoDB instance with the **ArangoDB MCP Server** running and connected.

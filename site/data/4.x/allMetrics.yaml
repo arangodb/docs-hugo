@@ -1463,31 +1463,6 @@
     It is normal that this number is growing rapidly when there is any
     kind of activity in the cluster.
 
-- name: arangodb_connection_statistics_memory_usage
-  introducedIn: "3.12.0"
-  help: |
-    Total memory usage of connection statistics.
-  unit: bytes
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Total memory usage of connection statistics. 
-    If the startup option `--server.statistics` is set to `true`, then some
-    connection statistics are built up in memory for every connection that is
-    made to the arangod server.
-    It is expected that the memory usage reported by this metric remains
-    relatively constant over time. It should grow only when there are bursts of 
-    new connections.
-    Some memory is pre-allocated at startup for higher efficiency.
-    No memory will be allocated for connection statistics if the startup option
-    is set to `false`.
-
 - name: arangodb_dirty_read_queries_total
   introducedIn: "3.10.0"
   help: |
@@ -2256,6 +2231,27 @@
     This metrics reflects the performance of an instance in a certain way.
     Note that your mileage may vary according to available resources as well
     as to complexity of the requests the client sends.
+
+- name: arangodb_http_response_code_total
+  introducedIn: "3.12.10"
+  help: |
+    Total number of HTTP responses by response code.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This counter reflects the total number of HTTP responses by response code
+    which have hit this particular instance of `arangod`. Note that this counter
+    is ever growing during the lifetime of the `arangod` process. However,
+    when the process is restarted, it starts from scratch. In the Grafana
+    dashboards, it is usually visualized as a rate per second, averaged
+    with a sliding window of a minute.
 
 - name: arangodb_index_estimates_memory_usage
   introducedIn: "3.12.0"
@@ -4789,30 +4785,6 @@
     Histogram of the body sizes of the received HTTP/2 requests in bytes.
     Note that this does not account for the header.
 
-- name: arangodb_request_statistics_memory_usage
-  introducedIn: "3.12.0"
-  help: |
-    Total memory usage of request statistics.
-  unit: bytes
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Total memory usage of request statistics. 
-    If the startup option `--server.statistics` is set to `true`, then some
-    request statistics are built up in memory for incoming requests.
-    Some memory is pre-allocated at startup for higher efficiency.
-    It is expected that the memory usage reported by this metric remains
-    relatively constant over time. It should grow only when there are bursts of 
-    incoming requests.
-    No memory will be allocated for request statistics if the startup option
-    is set to `false`.
-
 - name: arangodb_requests_memory_usage
   introducedIn: "3.12.0"
   help: |
@@ -6377,8 +6349,8 @@
     transactions that were not explicitly started by an end user.
     Internal transactions include ArangoDB-internal maintenance queries,
     queries to purge data from TTL indexes, periodic queries for
-    collecting and aggregating statistics, for maintaining the state of
-    Foxx, and transactions internally used by shard synchronization.
+    collecting and aggregating statistics, and transactions internally 
+    used by shard synchronization.
 
 - name: arangodb_transactions_rest_memory_usage
   introducedIn: "3.12.0"
@@ -6421,251 +6393,6 @@
     transaction counterparts on leaders and followers.
     This metric was named `arangodb_transactions_started` in previous
     versions of ArangoDB.
-
-- name: arangodb_v8_context_alive
-  introducedIn: "3.6.7"
-  help: |
-    Number of V8 contexts currently alive.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Number of V8 contexts currently alive. Normally, only Coordinators and
-    single servers should have V8 contexts, for DB-Servers and Agents the
-    value is always zero.
-  threshold: |
-    If this number is close to the maximum allowed number of V8 contexts,
-    there might be a shortage. This can delay Foxx queries and AQL
-    user defined functions. On the other hand, V8 contexts can use
-    quite a lot of memory, so one should not have too many if RAM
-    is scarce.
-
-- name: arangodb_v8_context_busy
-  introducedIn: "3.6.7"
-  help: |
-    Number of V8 contexts currently busy.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Number of V8 contexts currently busy, that means, they are currently
-    working on some JavaScript task. Normally, only Coordinators and
-    single servers should have V8 contexts, for DB-Servers and Agents the
-    value is always zero.
-  threshold: |
-    If this number is close to the maximum allowed number of V8 contexts,
-    there might be a shortage. This can delay Foxx queries and AQL
-    user defined functions. On the other hand, V8 contexts can use
-    quite a lot of memory, so one should not have too many if RAM
-    is scarce.
-
-- name: arangodb_v8_context_created_total
-  renamedFrom: arangodb_v8_context_created
-  introducedIn: "3.8.0"
-  help: |
-    Total number of V8 contexts ever created.
-  unit: number
-  type: counter
-  category: V8
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This counter reflects the total number of V8 contexts ever created. It is
-    OK if this number keeps growing since the V8 contexts are created and
-    destroyed as needed. In rare cases a high fluctuation can indicate
-    some unfortunate usage pattern.
-
-- name: arangodb_v8_context_creation_time_msec_total
-  renamedFrom: arangodb_v8_context_creation_time_msec
-  introducedIn: "3.8.0"
-  help: |
-    Accumulated total time for creating V8 contexts.
-  unit: ms
-  type: counter
-  category: V8
-  complexity: medium
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This counter reflects the accumulated total time for creating V8
-    contexts, in milliseconds. It is OK if this number keeps growing since
-    the V8 contexts are created and destroyed as needed. In rare cases a
-    high fluctuation can indicate some unfortunate usage pattern.
-
-- name: arangodb_v8_context_destroyed_total
-  renamedFrom: arangodb_v8_context_destroyed
-  introducedIn: "3.8.0"
-  help: |
-    Total number of V8 contexts ever destroyed.
-  unit: number
-  type: counter
-  category: V8
-  complexity: medium
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This counter reflects the total number of V8 contexts ever destroyed.
-    It is OK if this number keeps growing since the V8 contexts are
-    created and destroyed as needed. In rare cases a high fluctuation can
-    indicate some unfortunate usage pattern.
-
-- name: arangodb_v8_context_dirty
-  introducedIn: "3.6.7"
-  help: |
-    Number of V8 contexts currently dirty.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This gauge reflects the number of V8 contexts that are currently dirty.
-    A V8 context is dirty, if it has executed JavaScript for some time and
-    is due for a garbage collection.
-
-- name: arangodb_v8_context_enter_failures_total
-  renamedFrom: arangodb_v8_context_enter_failures
-  introducedIn: "3.8.0"
-  help: |
-    Total number of V8 context enter failures.
-  unit: number
-  type: counter
-  category: V8
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Total number of V8 context enter failures. A context receives a context
-    enter event every time it begins to execute some JavaScript. If no
-    context is available at such a time the system waits for 60s for a
-    context to become free. If this does not happen within the 60s, the
-    context enter event fails, a warning is logged and this counter is
-    increased by one.
-  threshold: |
-    If you see V8 context enter failures, then you do not have enough
-    V8 contexts or the server is overloaded by JavaScript tasks. If some
-    JavaScript code blocks V8 contexts for too long, the free V8 contexts
-    can run out and these failures begin to happen.
-
-- name: arangodb_v8_context_entered_total
-  renamedFrom: arangodb_v8_context_entered
-  introducedIn: "3.8.0"
-  help: |
-    Total number of V8 context enter events.
-  unit: number
-  type: counter
-  category: V8
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Total number of V8 context enter events. A context receives a context
-    enter event every time it begins to execute some JavaScript. This number
-    is a rough estimate as to how much JavaScript the server executes.
-
-- name: arangodb_v8_context_exited_total
-  renamedFrom: arangodb_v8_context_exited
-  introducedIn: "3.8.0"
-  help: |
-    Total number of V8 context exit events.
-  unit: number
-  type: counter
-  category: V8
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This counter reflects the total number of V8 context exit events.
-    A context receives a context exit event every time it finishes to
-    execute some JavaScript.
-
-- name: arangodb_v8_context_free
-  introducedIn: "3.6.7"
-  help: |
-    Number of V8 contexts currently free.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This gauge reflects the number of V8 contexts that are currently free.
-    If this number drops to `0` there might be a shortage of V8 contexts.
-
-- name: arangodb_v8_context_max
-  introducedIn: "3.6.7"
-  help: |
-    Maximum number of concurrent V8 contexts.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This is the maximum number of concurrent V8 contexts. This is limited
-    by a server option, since V8 contexts can use a lot of RAM. V8 contexts
-    are created and destroyed as needed up to the limit shown in this metric.
-
-- name: arangodb_v8_context_min
-  introducedIn: "3.6.7"
-  help: |
-    Minimum number of concurrent V8 contexts.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: simple
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    This is the minimum number of concurrent V8 contexts. This is limited
-    by a server option. V8 contexts are created and destroyed as needed
-    but there are never fewer than the limit shown in this metric.
 
 - name: arangodb_vector_index_ingestion_duration
   introducedIn: "3.12.9"

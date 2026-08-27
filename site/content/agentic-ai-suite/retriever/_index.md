@@ -36,6 +36,10 @@ queries across these partitions using `partition_ids` to target specific
 domains. AutoGraph's two-stage retrieval pattern first identifies relevant
 partitions, then performs deep search within them.
 
+Each partition is built either as **VectorRAG** or as **FullGraphRAG**, and
+that choice determines which search methods you can run against it. See
+[VectorRAG and FullGraphRAG partitions](search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+
 For details on how partitions are created and mapped, see the
 [Importer AutoGraph Integration](../importer/autograph-integration.md) page.
 
@@ -72,7 +76,7 @@ To install and start the Retriever service, use the following endpoint:
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
 For detailed instructions on installing, monitoring, and managing services, see
-[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp.md).
+[The Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp/_index.md).
 
 ## Getting Started
 
@@ -86,8 +90,11 @@ For detailed instructions on installing, monitoring, and managing services, see
 **Additional resources:**
 
 - [**Custom Prompts**](custom-prompts.md): Customize LLM prompts for domain-specific behavior.
-- [**Verify and Monitor**](verify-and-monitor.md): Check service health and query status.
+- [**Verify and Monitor**](verify-and-monitor.md): Check service health, service
+  status, and the query history of your project.
 - [**Parameter Reference**](parameters.md): Complete list of query parameters.
+- [**Error Handling**](error-handling.md): Status codes, error codes, and the
+  failures that arrive with an HTTP `200`.
 
 ## API Reference
 

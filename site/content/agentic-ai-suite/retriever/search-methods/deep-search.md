@@ -19,6 +19,10 @@ There are two Deep Search modes depending on the query type:
 - **Custom Deep Search** (`query_type: 4` + `use_llm_planner: true`): Uses
   [Custom Retriever](custom-retriever.md) tools, with automatic tool selection.
 
+You can also send [`"mode": "DEEP_SEARCH"`](../parameters.md#mode) instead of
+setting `query_type` and `use_llm_planner`. The service then uses Custom
+Retriever tools when they are available, and Local Search otherwise.
+
 {{< diagram src="/images/retriever-deep-search-architecture.png" 
            alt="Deep Search Architecture showing LLM-guided research process" >}}
 
@@ -26,6 +30,14 @@ There are two Deep Search modes depending on the query type:
 Deep Search is also available via the
 [web interface](../../graphrag/web-interface.md).
 {{< /info >}}
+
+{{< warning >}}
+Standard Deep Search is not supported on a **VectorRAG** partition, because its
+Local Search retriever needs entities and communities that VectorRAG does not
+build. Use Custom Deep Search with tools that search chunks, or
+[Instant Search](unified-search.md). See
+[VectorRAG and FullGraphRAG partitions](_index.md#vectorrag-and-fullgraphrag-partitions).
+{{< /warning >}}
 
 ## Standard Deep Search
 
