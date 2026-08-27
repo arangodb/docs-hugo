@@ -368,6 +368,9 @@
           {{- end }}
           </ul>
         {{- end }}
+        {{- with $value.items.description }}
+          <p class="regular-font">{{ . | $page.RenderString }}</p>
+        {{- end }}
         {{- if $value.items.properties }}
           <ul class="openapi-table">
           {{- range $k, $v := $value.items.properties }}
