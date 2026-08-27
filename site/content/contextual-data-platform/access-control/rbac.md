@@ -1,7 +1,7 @@
 ---
 title: Role-Based Access Control
 menuTitle: RBAC
-weight: 40
+weight: 10
 description: >-
   Control who can do what in the Arango Contextual Data Platform by assigning
   roles to users and scoping each role to the resources it may act on
@@ -13,15 +13,15 @@ role supports it, you can additionally narrow the assignment with one or more
 **scopes** that say which resources the role applies to.
 
 You manage all of this from the **Access Control** section of the
-**Control Panel** in the platform web interface.
+**Control Panel** in the web interface of the Arango Contextual Data Platform.
 
 ## Concepts
 
 - **User**:
-  An account that authenticates against the platform. Nothing is permitted by
-  default, so a new user starts with no roles and no permissions. The
-  exception is the built-in `root` account, which the operator binds to the
-  all-powerful `super-admin` role automatically.
+  An account that authenticates against the data platform. Nothing is permitted
+  by default, so a new user starts with no roles and no permissions. The
+  exception is the built-in `root` account, which is bound to the all-powerful
+  `super-admin` role automatically.
 
 - **Role**:
   A named bundle of actions, such as `coredb-reader`, `ai-developer`, or
@@ -41,11 +41,13 @@ different scopes gives them the same abilities over different data.
 
 ## Available roles
 
-When RBAC is enabled, the operator automatically creates a catalog of
-**predefined roles** in every deployment. They are operator-managed: Access
-Control shows them, but you cannot create, rename, or delete one. What you
-configure is which users hold which roles, and how each of those assignments
-is scoped.
+When RBAC is enabled, there is a set of **predefined roles** that you cannot
+edit or delete. What you configure is which users hold which roles, and how each
+of those assignments is scoped. Creating custom roles is not supported at this
+time.
+
+The predefined roles are automatically created and managed by the
+ArangoDB Kubernetes Operator (`kube-arangodb`).
 
 Every predefined role is named under the reserved `managed:predefined:` prefix,
 for example `managed:predefined:coredb-reader`. The web interface lists the
@@ -61,29 +63,29 @@ expect the fully qualified name.
 | `coredb-admin` | Manages the structure and lifecycle of scoped resources |
 | `ai-user` | Executes AI workflows and reads outputs on scoped resources |
 | `ai-developer` | Builds, configures, manages, and executes AI workflows on scoped resources |
-| `platform-operator` | Operates the platform and bundled services, views observability, starts containers |
+| `platform-operator` | Operates the data platform and bundled services, views observability, starts containers |
 | `secret-admin` | Manages secrets on scoped resources |
 
 {{< info >}}
-`super-admin` is reserved. The operator binds it to the deployment's `root`
+`super-admin` is reserved. `kube-arangodb` binds it to the deployment's `root`
 user automatically and rejects any attempt to assign it to somebody else, so
 it appears in the lists with `root` as its holder but cannot be handed out.
 {{< /info >}}
 
-The platform denies everything by default. A role grants nothing until it is
+The data platform denies everything by default. A role grants nothing until it is
 assigned to a user together with a scope, and a user's effective permissions
 are the union of all of their assignments, with a `Deny` always taking
 precedence over an `Allow`.
 
-Alongside the predefined catalog, the platform generates a role per
-operator-managed identity, named `managed:operator:<uuid>`. These appear in the
-Access Control lists like any other role, together with the service accounts
-that hold them, such as `operator-arango-control-plane-token-<id>`. They are
-maintained by the platform, so leave them untouched.
+Alongside the predefined catalog, the data platform generates a role per
+Kubernetes operator-managed identity, named `managed:operator:<uuid>`. These
+appear in the Access Control lists like any other role, together with the service
+accounts that hold them, such as `operator-arango-control-plane-token-<id>`.
+They are maintained by the data platform, so leave them untouched.
 
 ## Open the Access Control interface
 
-1. Open the **Control Panel** in the platform web interface.
+1. Open the **Control Panel** in the data platform web interface.
 2. Select **Access Control**.
 
 The page has two tabs that show the same information from two directions:
@@ -261,8 +263,8 @@ for that user, and the chevron expands the card.
 
 ## Troubleshoot denied access
 
-The platform's services do not silently drop actions a user is not allowed to
-perform - they return an actionable error. If somebody reports being denied,
+The data platform's services do not silently drop actions a user is not allowed
+to perform - they return an actionable error. If somebody reports being denied,
 check two things in Access Control:
 
 1. That a role granting the action is actually assigned to them.
