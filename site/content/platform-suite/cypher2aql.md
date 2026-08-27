@@ -236,7 +236,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       requestBody:
         content:
           application/json:
@@ -374,7 +374,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       responses:
         '200':
           description: |
@@ -441,7 +441,7 @@ paths:
             (after the last `-`).
           schema:
             type: string
-            example: z8fue
+          example: z8fue
       responses:
         '200':
           description: |
@@ -510,7 +510,7 @@ paths:
             `arango-cypher2aql` service.
           schema:
             type: string
-            example: arango-cypher2aql-z8fue
+          example: arango-cypher2aql-z8fue
       responses:
         '200':
           description: |

@@ -295,17 +295,8 @@
             </p>
           {{- end }}
           <p class="regular-font">{{ $description }}</p>
-          {{- $exampleSet := false }}
-          {{- $example := "" }}
-          {{- if isset $value.schema "example" }}
-            {{- $exampleSet = true }}
-            {{- $example = $value.schema.example }}
-          {{- else if isset $value "example" }}
-            {{- $exampleSet = true }}
-            {{- $example = $value.example }}
-          {{- end }}
-          {{- if $exampleSet }}
-            <p class="regular-font">Example: <code>{{ $example | jsonify}}</code></p>
+          {{- if isset $value "example" }}
+            <p class="regular-font">Example: <code>{{ $value.example | jsonify}}</code></p>
           {{- end }}
         </div>
       </details>
