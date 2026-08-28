@@ -98,7 +98,7 @@ clusters, see
   [custom metadata](../../platform-suite/file-manager/_index.md#attaching-custom-metadata)
   to uploaded files. The reserved
   [`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key) key
-  lets AutoGraph and the Importer resolve
+  lets Retriever resolve
   [citations](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
   back to the original source document.
 
