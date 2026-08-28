@@ -1,0 +1,18 @@
+# Arango Documentation — Full Corpus
+
+> {{ .Site.Params.description | plainify | chomp }}
+
+This file concatenates the documentation for ingestion by long-context agents. The browsable index is at [/llms.txt](/llms.txt).
+{{ range (where .Site.Pages "Kind" "in" (slice "page" "section")) -}}
+{{ if .Title }}
+# {{ .Title }}
+
+Source: {{ .Permalink }}
+{{ with .Params.description }}
+{{ . | plainify | chomp }}
+{{ end }}
+{{ .RawContent }}
+
+---
+{{ end -}}
+{{ end -}}
