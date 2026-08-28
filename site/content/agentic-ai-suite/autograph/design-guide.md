@@ -14,7 +14,7 @@ to use each component.
 AutoGraph and the Importer are separate services with distinct responsibilities:
 
 **AutoGraph** (this service) is the primary control plane for ingestion and
-corpus graph construction. It handles importing files, building the corpus graph
+Corpus Graph construction. It handles importing files, building the Corpus Graph
 (similarity edges and Leiden clusters), running the RAG strategizer, and
 orchestrating Importer workers. It writes Layer 1 and Layer 2 data to ArangoDB
 and strategy profiles to the `rags` collection.
@@ -112,7 +112,7 @@ All Layer 3 data lives in the `{project}_kg` named graph, partitioned by the
 
 A category is any stable string identifier that groups documents that should
 share similarity and clustering with each other, but not with other groups.
-Treat it as a shard key for the corpus graph, not a display name.
+Treat it as a shard key for the Corpus Graph, not a display name.
 
 Good candidates:
 
@@ -179,7 +179,7 @@ Use AutoGraph for everything up to and including Layer 2.
 | Goal | Endpoint |
 |------|----------|
 | Upload documents and assign them to a category | Upload to the [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file) under the scope `[project, category]`, then build with those labels in `categories` |
-| Build the corpus graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
+| Build the Corpus Graph (similarity + clusters) | [`POST /v1/corpus/builds`](reference/corpus-build.md) |
 | Monitor a build in progress | [`GET /v1/corpus/builds/{id}`](reference/corpus-build.md#monitoring-build-status) |
 | Assign VectorRAG or FullGraphRAG per cluster | [`POST /v1/rag-strategizer/analyze`](reference/rag-strategizer.md) |
 | Run orchestration (Importer jobs for all profiles) | [`POST /v1/orchestrate`](reference/orchestration.md#trigger-orchestration) |

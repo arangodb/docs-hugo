@@ -2,7 +2,7 @@
 title: AutoGraph Import Files Reference (Deprecated)
 menuTitle: Import Files (deprecated)
 description: >-
-  The deprecated direct upload of files into the corpus graph, superseded by
+  The deprecated direct upload of files into the Corpus Graph, superseded by
   the File Manager
 weight: 57
 ---

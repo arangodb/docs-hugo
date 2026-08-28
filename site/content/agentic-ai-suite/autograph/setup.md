@@ -71,11 +71,11 @@ The web interface of the Arango Contextual Data Platform lets you create,
 configure, and run a complete AutoGraph workflow through a streamlined
 web interface.
 
-1. Navigate to **Agentic AI Suite** > **AutoGraph** in the sidebar.
-2. Create a new project and upload your documents.
-3. Configure your LLM provider and import settings.
-4. Deploy the AutoGraph service and build your corpus.
-5. Generate strategies, import into the knowledge graph, and deploy a retriever.
+1. Navigate to **Agentic AI Suite** > **AutoGraph Studio** in the sidebar.
+2. Create a new project and upload your documents into categories.
+3. Configure your LLM provider, embedding, and multimodal models.
+4. Start the build to deploy the AutoGraph service and build the Corpus Graph.
+5. Generate strategies and deploy an AutoRAG retriever to query your Context Graph.
 
 For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 {{< /tab >}}

@@ -76,6 +76,12 @@ A VectorRAG partition has no `Entities` and no `Communities`, so it cannot serve
 has to support entity-based retrieval. See
 [Retrieval capability per strategy](#retrieval-capability-per-strategy).
 
+In the web interface, the split between the two strategies is exposed as the
+**Complexity** slider of the strategy generation wizard, which runs from
+*Vector only* (no FullGraphRAG) to *Graph + images* (FullGraphRAG everywhere,
+with image extraction). See
+[Web Interface](../web-interface.md#configure-strategy-generation).
+
 ### Response
 
 ```json
