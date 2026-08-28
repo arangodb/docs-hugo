@@ -62,9 +62,9 @@ Trigger a corpus build from imported files or File Manager.
 ```
 
 **Formats:** Plain text files (`.txt`, `.md`) are parsed directly. Other
-file types are submitted to the File Parser service, which converts them to
-Markdown before AutoGraph embeds and clusters the content. **PDF** (including
-scanned documents, read using OCR) and **Office** formats
+file types are submitted to the File Parser service, which converts a sample to
+Markdown before AutoGraph embeds and clusters the sampled content. **PDF** (including
+scanned documents, read using OCR) and some **Office** formats
 (`.doc`, `.docx`, `.ppt`, `.pptx`) are officially supported.
 See [Supported file formats](../setup.md#supported-file-formats) for details.
 

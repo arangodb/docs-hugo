@@ -25,8 +25,7 @@ interface for a guided experience, or the API for automation.
 
 The corpus build does not parse documents itself. It hands every input that is
 not already plain text or Markdown to the **File Parser service**, which
-converts it to Markdown and, where applicable, extracts the embedded images
-together with the text surrounding each one. AutoGraph then embeds and clusters
+samples it and converts it to Markdown. AutoGraph then embeds and clusters
 that Markdown.
 
 The File Parser is an internal data platform service installed once per environment,

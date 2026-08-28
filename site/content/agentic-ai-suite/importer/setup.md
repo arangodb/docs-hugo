@@ -32,8 +32,10 @@ chunks that Markdown and builds the knowledge graph from it.
 The File Parser is a data platform service installed once per environment.
 It has no web interface and you do not call it directly.
 [AutoGraph](../autograph/setup.md#supported-file-formats) uses the same service
-for its corpus build, so both paths accept the same inputs and produce the same
-Markdown.
+for its corpus build, so both paths accept the same inputs. The Markdown they
+get back differs: a corpus build only needs enough text to cluster a document,
+so it requests a truncated sample and never images, whereas an import converts
+the document in full.
 
 ### Format support
 
@@ -71,8 +73,15 @@ most relevant ones to adjust limits and resource utilization.
 
 | Setting | Default | When to change it |
 |---------|---------|-------------------|
-| `workerPdf.replicas`, `workerDefault.replicas` | 10 worker pods per tier (PDF, other) | Lower it if the node pool has fewer CPUs than the fleet would claim; raise it for large ingestion batches on a bigger pool. |
+| `workerPdf.replicas`, `workerDefault.replicas` | 3 worker pods per tier (PDF, other) | PDF workers consume considerably more resources than the default workers. Lower it if the node pool has fewer CPUs than the fleet would claim; raise it for large ingestion batches on a bigger pool. |
 | `workerPdf.resources.limits.memory` | 6Gi | The memory limit is the PDF parse memory envelope. Raise it if large or image-dense PDFs fail with a resource error. |
+| `workerPdf.resources.limits.cpu` | 4 | The CPU limit caps how much parallel work a single PDF worker pod can do. Raise it to speed up the parsing of large documents; lower it if the node pool cannot satisfy the total request across all replicas. |
+
+Consider the combined resource footprint of the PDF workers. With the default
+settings, three PDF worker pods request twelve CPUs and 18 GiB of memory in
+total, which can exhaust the capacity of a single node. Adjust the replica count
+and the per-pod limits together, based on the resources available in your
+cluster.
 
 The worker resource limits are defined at deploy time of the service.
 Changing them in an active system is discouraged as it may have adverse effects

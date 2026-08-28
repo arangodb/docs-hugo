@@ -143,10 +143,13 @@ background and return immediately. The diagram below shows how a client
 submits an import and monitors progress.
 
 An import begins by converting its inputs: every document that is not already
-plain text or Markdown is submitted to the File Parser service, and the
-Importer chunks the Markdown it gets back. This stage is not reported as a
-separate job status. A document that cannot be parsed fails the import with the
-File Parser's verdict in the status message. See
+plain text or Markdown is submitted to the File Parser service, which returns
+Markdown and, when image extraction is enabled, the embedded images as separate
+artifacts referenced at their position in that Markdown. The Importer chunks the
+Markdown, and the image references are what
+[semantic units](semantic-units.md) are built from. This stage is not reported
+as a separate job status. A document that cannot be parsed fails the import
+with the File Parser's verdict in the status message. See
 [Document conversion and supported formats](setup.md#document-conversion-and-supported-formats).
 
 ```mermaid
