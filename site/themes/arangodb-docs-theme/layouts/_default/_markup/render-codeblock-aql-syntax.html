@@ -1,5 +1,9 @@
-{{/* TODO: In Hugo v0.158+, use single call to strings.ReplacePairs */ -}}
-{{ $substitutedBrackets := replace (replace (replace (replace .Inner "<" " ⟨ ") ">" " ⟩ ") "[" " ⟦ ") "]" " ⟧ "  -}}
+{{ $substitutedBrackets := .Inner | strings.ReplacePairs
+    "<" " ⟨ "
+    ">" " ⟩ "
+    "[" " ⟦ "
+    "]" " ⟧ "
+-}}
 {{ $options := merge .Options (dict "wrapperClass" "highlight no-collapse") }}
 {{ $html := transform.Highlight $substitutedBrackets "aql" $options -}}
 
