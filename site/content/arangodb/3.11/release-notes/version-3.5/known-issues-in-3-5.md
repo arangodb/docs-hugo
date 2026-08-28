@@ -27,7 +27,7 @@ To fix query errors caused by an immediately re-created Analyzer, the
 DB-Servers need to be forced to clear their Analyzer caches. This can be
 achieved by using below code in _arangosh_:
 
-1. Connect to a Coordinator with `arangosh`
+1. Connect to a Coordinator with _arangosh_
 2. `var analyzers = require("@arangodb/analyzers");`
 3. `analyzers.remove("<PROBLEMATIC ANALYZER>");`
 4. `var dummy = "dummy_analyzer_" + Date.now();`

@@ -213,7 +213,7 @@ The following options have been added to it:
   *_users* collection when looking up users.
 
 - the option `--server.authentication-timeout` controls the expiration time for 
-  cached LDAP user information entries in arangod.
+  cached LDAP user information entries in _arangod_.
 
 - basic role support has been added for the LDAP module in the *Enterprise Edition*.
   New configuration options for LDAP in 3.3 are:
@@ -263,7 +263,7 @@ The following options have been added to it:
   - '%a': elapsed time since ArangoShell start in seconds
   - '%p': duration of last command in seconds
  
-  For example, to show the execution time of the last command executed in arangosh
+  For example, to show the execution time of the last command executed in _arangosh_
   in the shell's prompt, start arangosh using:
 
   ```

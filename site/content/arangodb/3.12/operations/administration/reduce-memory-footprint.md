@@ -29,8 +29,8 @@ are good reasons why these defaults are not suitable and the
 administrator wants to fine tune memory usage. The two
 major reasons for this are:
 
- - something else (potentially another `arangod` server) is running on
-   the same machine so that your `arangod` is supposed to use less than
+ - something else (potentially another _arangod_ server) is running on
+   the same machine so that your _arangod_ is supposed to use less than
    the available RAM, and/or
  - the actual usage scenario makes it necessary to increase the memory
    allotted to some subsystem at the cost of another to achieve higher
@@ -50,15 +50,15 @@ fine-tune the settings for maximal performance.
 
 ## Limiting the overall RAM usage
 
-A first simple approach could be to simply tell the `arangod` process
+A first simple approach could be to simply tell the _arangod_ process
 as a whole to use only a certain amount of memory. This is done by
 overriding the detected memory size using the
 [`ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`](../../components/arangodb-server/environment-variables.md) 
 environment variable.
 
-This essentially scales down `arangod`'s memory usage to the
+This essentially scales down _arangod_'s memory usage to the
 given value. This is for example a first measure if more than
-one `arangod` server are running on the same machine.
+one _arangod_ server are running on the same machine.
 
 Note, however, that certain subsystems will then still be able to use
 an arbitrary amount of RAM, depending on the load from the user. If you
@@ -155,7 +155,7 @@ ArangoSearch uses memory in different ways:
 - The actual indexed search data resides in memory mapped files, which
   also need RAM to be cached.
 
-Finally, the cluster internal management uses RAM in each `arangod`
+Finally, the cluster internal management uses RAM in each _arangod_
 instance. The whole meta data of the cluster is kept in the AgencyCache
 and in the ClusterInfo cache. There is very little one can change about
 this memory usage.
@@ -665,7 +665,7 @@ in combination with the bundled memory allocator ArangoDB ships with (jemalloc).
 
 The allocator demands consecutive blocks of memory from the kernel, which are
 also mapped to on-disk blocks. This is done on behalf of the server process
-(*arangod*). The process may use some chunks of a block for a long time span, but
+(_arangod_). The process may use some chunks of a block for a long time span, but
 others only for a short while and therefore release the memory. It is then up to
 the allocator to return the freed parts back to the kernel. Because it can only
 give back consecutive blocks of memory, it has to split the large block into
@@ -682,7 +682,7 @@ environments.
 Another issue when running jemalloc with `vm.overcommit_memory` set to **2** is
 that for some workloads the amount of memory that the Linux kernel tracks as
 *committed memory* also grows over time and never decreases. Eventually,
-*arangod* may not get any more memory simply because it reaches the configured
+_arangod_ may not get any more memory simply because it reaches the configured
 overcommit limit (physical RAM * `overcommit_ratio` + swap space).
 
 The solution is to

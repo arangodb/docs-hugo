@@ -9,7 +9,7 @@ description: >-
 ## Server not starting or not reachable
 
 If the ArangoDB server does not start or if you cannot connect to it 
-using *arangosh* or other clients, you can try to find the problem cause by 
+using _arangosh_ or other clients, you can try to find the problem cause by 
 executing the following steps. If the server starts up without problems
 you can skip this section.
 

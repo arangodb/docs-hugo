@@ -1509,7 +1509,7 @@ to a high value.
 
 #### Automatic file format detection
 
-*arangoimport* now automatically detects the type of the import file based on
+_arangoimport_ now automatically detects the type of the import file based on
 the file extension. The default value of the `--type` startup option has been
 changed from `json` to `auto`. You might need to explicitly specify the `--type`
 in exceptional cases now whereas it was not necessary to do so previously.
@@ -1522,7 +1522,7 @@ The default value of the `--batch-size` startup option has been lowered from
 8 MiB to 4 MiB to avoid potential resource limits, in particular when importing
 to smart edge collections.
 
-### jslint feature in arangosh removed
+### jslint feature in *arangosh* removed
 
 The `--jslint` startup option and all of the underlying functionality has been
 removed from arangosh. The feature was mainly for internal purposes.

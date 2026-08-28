@@ -139,7 +139,7 @@ def rewrite_content(data, section, filename, weight):
 
             if line.startswith("title: "):
                 if filename.endswith("/options.md"):
-                    content = content + f"title: The `oasisctl` command\nmenuTitle: Options\nweight: {weight}\n"
+                    content = content + f"title: Command reference for _oasisctl_\nmenuTitle: Options\nweight: {weight}\n"
                     continue
 
                 menuTitle = ""
@@ -147,7 +147,7 @@ def rewrite_content(data, section, filename, weight):
                 for word in title.split(" ")[1:]:
                     menuTitle = menuTitle + f" {TITLE_CASE.get(word.lower(), word)}"
 
-                content = content + f"title:{menuTitle} with `oasisctl`\nmenuTitle:{menuTitle}\nweight: {weight}\n"
+                content = content + f"title:{menuTitle} with _oasisctl_\nmenuTitle:{menuTitle}\nweight: {weight}\n"
                 continue
             
         if line.startswith("###### Auto generated"):

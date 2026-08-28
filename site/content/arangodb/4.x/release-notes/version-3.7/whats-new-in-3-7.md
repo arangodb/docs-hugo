@@ -580,7 +580,7 @@ This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
 
 It is now possible to change the TLS keyfile (secret key as well as
 public certificates) at run time. The API `POST /_admin/server/tls`
-basically makes the `arangod` server reload the keyfile from disk.
+basically makes the _arangod_ server reload the keyfile from disk.
 
 Furthermore, one can query the current TLS setup at runtime with the
 `GET /_admin/server/tls` API. The public certificates as well as a
@@ -637,7 +637,7 @@ the [JS API](../../develop/javascript-api/@arangodb/collection-object.md#collect
 
 ### Override detected total memory and CPU cores
 
-`arangod` detects the total amount of RAM present on the system and calculates
+_arangod_ detects the total amount of RAM present on the system and calculates
 various default sizes based on this value. If you run it alongside other
 services or in a container with a RAM limitation for its cgroup, then you
 probably don't want the server to detect and use all available memory.

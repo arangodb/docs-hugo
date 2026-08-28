@@ -151,10 +151,10 @@ if (batch.length > 0) {
 }
 ```
 
-## Using `arangosh` via Unix shebang mechanisms
+## Using *arangosh* via Unix shebang mechanisms
 
 In Unix operating systems, you can start scripts by specifying the interpreter in the first line of the script.
-This is commonly called `shebang` or `hash bang`. You can also do that with `arangosh`, i.e. create `~/test.js`:
+This is commonly called `shebang` or `hash bang`. You can also do that with _arangosh_, i.e. create `~/test.js`:
 
 ```sh
 #!/usr/bin/arangosh --javascript.execute 

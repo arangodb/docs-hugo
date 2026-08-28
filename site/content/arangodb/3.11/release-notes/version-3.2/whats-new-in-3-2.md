@@ -152,7 +152,7 @@ are available in the *Enterprise Edition*.
   Waiting for an unused V8 context will now also abort and write a log message
   in case no V8 context can be acquired/created after 60 seconds.
 
-- the number of pending operations in arangod can now be limited to a configurable
+- the number of pending operations in _arangod_ can now be limited to a configurable
   number. If this number is exceeded, the server will now respond with HTTP 503
   (service unavailable). The maximum size of pending operations is controlled via
   the startup option `--server.maximal-queue-size`. Setting it to 0 means "no limit".

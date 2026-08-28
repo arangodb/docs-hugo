@@ -69,7 +69,7 @@ Foxx/server console would return `{ <details> }` while arangosh would return
 `{ server: ..., license: ..., version: ..., details: { <details> }}`.
 
 This is now unified so that the result structure is always consistent with the
-one in arangosh. Any Foxx app or script that ran in the server console which
+one in _arangosh_. Any Foxx app or script that ran in the server console which
 used `db._version(true)` must now be changed to use `db._version(true).details`
 instead.
 
@@ -158,7 +158,7 @@ below 200. Arrays or objects with higher nesting than this will cause `Too deep 
 exceptions. 
 The limit is also enforced when converting any server data to JavaScript in Foxx, or
 when sending JavaScript input data from Foxx to a server API.
-This maximum recursion depth is hard-coded in arangod and all client tools.
+This maximum recursion depth is hard-coded in _arangod_ and all client tools.
 
 ## Validation of `smartGraphAttribute` in SmartGraphs
 

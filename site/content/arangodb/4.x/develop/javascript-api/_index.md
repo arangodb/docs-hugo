@@ -3,7 +3,7 @@ title: JavaScript API
 menuTitle: JavaScript API
 weight: 270
 description: >-
-  You can use ArangoDB's JavaScript interface in ArangoDB's shell `arangosh`
+  You can use ArangoDB's JavaScript interface in ArangoDB's shell _arangosh_
   to interact with the server using the JavaScript language
 ---
 The JavaScript API is available in the ArangoDB Shell client tool
@@ -27,7 +27,7 @@ The key element for using the JavaScript API is the
 The `db` object lets you access and manage databases, for example:
 
 ```js
-// The db object is available by default in arangosh
+// The db object is available by default in _arangosh_
 //let db = require("@arangodb").db;
 
 // Create a new database
@@ -93,7 +93,7 @@ AQL query returns a [_cursor_ object](@arangodb/cursor-object.md).
 let cursor = db._query(`FOR doc IN collection FILTER doc.value >= "bar" RETURN doc`);
 cursor.toArray();
 
-// The aql query helper is available by default in arangosh
+// The aql query helper is available by default in _arangosh_
 //const aql = require("@arangodb").aql;
 
 // Run an AQL query using the query helper to use variables as bind parameters

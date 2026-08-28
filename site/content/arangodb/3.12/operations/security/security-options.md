@@ -73,7 +73,7 @@ reduce the attack surface.
 
 ## JavaScript security options
 
-`arangod` has several options that allow you to make your installation more
+_arangod_ has several options that allow you to make your installation more
 secure when it comes to running application code in it. Below you find
 an overview of the relevant options.
 
@@ -119,8 +119,8 @@ Each option can be used multiple times. When specifying more than one
 pattern, these patterns are combined with a _logical or_ to the actual pattern
 ArangoDB uses.
 
-These patterns and how they are applied can be observed in the `arangod` or
-`arangosh` log output by enabling `--log.level security=debug`.
+These patterns and how they are applied can be observed in the _arangod_ or
+_arangosh_ log output by enabling `--log.level security=debug`.
 
 ### Options for allowlisting and denylisting
 

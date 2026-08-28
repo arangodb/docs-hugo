@@ -163,7 +163,7 @@ the `--ssl.auto-key` option.
 
 ## Passing through other database options
 
-Options for `arangod` that are not supported by the starter can still be passed to
+Options for _arangod_ that are not supported by the starter can still be passed to
 the DB-Servers using a pass through option.
 Every option that start with a pass through prefix is passed through to the
 command-line of one or more server instances.
@@ -281,11 +281,11 @@ The network port for the Starter (default 8528).
 This is the port used for communication of the `arangodb` instances
 amongst each other.
 
-The Starter uses the subsequent ports for the `arangod` processes it starts.
+The Starter uses the subsequent ports for the _arangod_ processes it starts.
 
 - `--starter.disable-ipv6=bool`
 
-If disabled, the starter configures the `arangod` servers
+If disabled, the starter configures the _arangod_ servers
 to bind to address `0.0.0.0` (all IPv4 interfaces)
 instead of binding to `[::]` (all IPv4 and all IPv6 interfaces).
 
@@ -293,7 +293,7 @@ This is useful when IPv6 has actively been disabled on your machine.
 
 - `--server.arangod=path`
 
-The path to the `arangod` executable (default varies from platform to
+The path to the _arangod_ executable (default varies from platform to
 platform, an executable is searched in various places).
 
 This option only has to be specified if the standard search fails.
@@ -307,7 +307,7 @@ This option only has to be specified if the standard search fails.
 
 - `--server.storage-engine=rocksdb`
 
-Sets the storage engine used by the `arangod` servers.
+Sets the storage engine used by the _arangod_ servers.
 Defaults to `rocksdb`, which is also the only available option for
 ArangoDB v3.7 and above.
 

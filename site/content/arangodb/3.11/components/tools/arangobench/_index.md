@@ -3,7 +3,7 @@ title: arangobench
 menuTitle: arangobench
 weight: 40
 description: >-
-  `arangobench` is a benchmark and test tool that can be used to issue test
+  _arangobench_ is a benchmark and test tool that can be used to issue test
   requests to the database system for performance and server function testing
 ---
 _arangobench_ is a client tool which makes network connections to an ArangoDB

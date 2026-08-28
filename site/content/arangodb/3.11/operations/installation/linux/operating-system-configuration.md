@@ -69,7 +69,7 @@ sudo bash -c "echo madvise >/sys/kernel/mm/transparent_hugepage/enabled"
 sudo bash -c "echo madvise >/sys/kernel/mm/transparent_hugepage/defrag"
 ```
 
-before executing `arangod`.
+before executing _arangod_.
 
 {{< info >}}
 The official release executables of ArangoDB require the operating system
@@ -91,7 +91,7 @@ killing ArangoDB too eagerly on Linux.
 The recommended kernel setting for `overcommit_memory` is 0 or 1.
 The Linux kernel default is 0.
 
-You can set it as follows before executing `arangod`:
+You can set it as follows before executing _arangod_:
 
 ```bash
 sudo bash -c "echo 0 >/proc/sys/vm/overcommit_memory"
@@ -154,7 +154,7 @@ Execute
 sudo bash -c "echo 0 >/proc/sys/vm/zone_reclaim_mode"
 ```
 
-before executing `arangod`.
+before executing _arangod_.
 
 From [www.kernel.org](https://www.kernel.org/doc/Documentation/sysctl/vm.txt):
 

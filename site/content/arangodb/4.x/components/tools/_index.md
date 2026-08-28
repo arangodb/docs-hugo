@@ -7,7 +7,7 @@ description: >-
   programmatically, deploying clusters, creating backups, and importing data
 ---
 A full ArangoDB installation package contains the [ArangoDB server](../arangodb-server/_index.md)
-(`arangod`) as well as the following client tools:
+(_arangod_) as well as the following client tools:
 
 | Executable name | Brief description |
 |-----------------|-------------------|
@@ -21,7 +21,7 @@ A full ArangoDB installation package contains the [ArangoDB server](../arangodb-
 | `arangovpack`   | Utility to validate and [convert VelocyPack](arangovpack/_index.md) and JSON data.
 | `arangoinspect` | [Inspection tool](arangoinspect/_index.md) that gathers server setup information.
 
-A client installation package comes without the `arangod` server executable and
+A client installation package comes without the _arangod_ server executable and
 the ArangoDB Starter.
 
 Additional tools which are available separately:

@@ -9,7 +9,7 @@ description: >-
 You can execute AQL queries using different interfaces:
 
 - The web interface
-- The `db` object of the JavaScript API (either in arangosh or in a Foxx service)
+- The `db` object of the JavaScript API (either in _arangosh_ or in a Foxx service)
 - The raw HTTP REST API
 - Through a [driver](../../../../ecosystem/drivers/_index.md) or
   [integration](../../../../ecosystem/integrations/_index.md) as an abstraction over the

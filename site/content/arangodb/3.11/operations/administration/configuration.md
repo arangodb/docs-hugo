@@ -329,7 +329,7 @@ instance, or adjusted at runtime via an API call. Examples:
 
 ## Fetch Current Configuration Options
 
-To list the configuration options of a running `arangod` instance, you can
+To list the configuration options of a running _arangod_ instance, you can
 connect with an [ArangoShell](../../components/tools/arangodb-shell/_index.md) and invoke a
 [Transaction](../../develop/transactions/_index.md) by calling `db._executeTransaction()`
 and providing a JavaScript function to retrieve the server options:

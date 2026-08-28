@@ -28,7 +28,7 @@ Below you'll find an overview per component.
   - A metrics API `GET /metrics`. This API is compatible with Prometheus.
     Sample Grafana dashboards for inspecting these metrics are available.
 
-- ArangoDB cluster: The `arangod` servers that make up the ArangoDB cluster
+- ArangoDB cluster: The _arangod_ servers that make up the ArangoDB cluster
   provide:
   - A log file. This is configurable with settings with a `log.` prefix.
   E.g. `--log.output=file://myLogFile` or `--log.level=info`.

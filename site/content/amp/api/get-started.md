@@ -1,9 +1,9 @@
 ---
-title: Get started with the AMP API and oasisctl
+title: Get started with the AMP API and _oasisctl_
 menuTitle: Get started with oasisctl
 weight: 10
 description: >-
-  A tutorial that guides you through the AMP API as well as the `oasisctl`
+  A tutorial that guides you through the AMP API as well as the _oasisctl_
   command-line tool
 ---
 This tutorial shows you how to do the following:
@@ -12,7 +12,7 @@ This tutorial shows you how to do the following:
 - View information related to your organizations, projects, and deployments
 - Configure, create and delete a deployment
 
-With oasisctl, the general command structure is to execute commands such as:
+With _oasisctl_, the general command structure is to execute commands such as:
 
 ```
 oasisctl list deployments
@@ -24,10 +24,10 @@ will explore it in more detail later. Most commands also have associated
 interaction method for many command line utilities. If you aren’t already
 familiar with this, follow along as there are many examples in this guide that
 will familiarize you with this command structure and using flags, along with
-how to use OasisCtl to access the Arango Managed Platform (AMP) API.
+how to use _oasisctl_ to access the Arango Managed Platform (AMP) API.
 
 Note: A good rule of thumb for all variables, resource names, and identifiers
-is to **assume they are all case sensitive**, when being used with oasisctl.
+is to **assume they are all case sensitive**, when being used with _oasisctl_.
 
 ## API Authentication
 
@@ -65,11 +65,11 @@ Once you have securely stored your API key ID and secret, click close.
 
 That is all there is to setting up API access to your AMP organizations.
 
-### Authenticating with oasisctl
+### Authenticating with *oasisctl*
 
-Now that you have API access it is time to login with oasisctl.
+Now that you have API access it is time to login with _oasisctl_.
 
-Running the oasisctl utility without any arguments is the equivalent of
+Running the _oasisctl_ utility without any arguments is the equivalent of
 including the --help flag. This shows all of the top level commands available
 and you can continue exploring each command by typing the command name
 followed by the --help flag to see the options available for that command.
@@ -128,7 +128,7 @@ using other commands that require authentication.
 This section covers the basics of retrieving information from the AMP API.
 Depending on the data you are requesting from the AMP API, being able to read
 it in the command line can start to become difficult. To make text easier to
-read for humans and your applications, oasisctl offers two options for
+read for humans and your applications, _oasisctl_ offers two options for
 formatting the data received:
 
 - Table
@@ -227,7 +227,7 @@ modifications to the deployment or to get more detailed information, with the
 
 ### Using the Get Command
 
-In oasisctl, you use the get command to obtain more detailed information about
+In _oasisctl_, you use the get command to obtain more detailed information about
 any of your available resources. It follows the same command structure as the
 previous commands but typically requires a bit more information. For example,
 to get more information on a specific deployment means you need to know at
@@ -317,7 +317,7 @@ command.
 
 Now that you have seen how to obtain information about your available
 resources, it’s time to start using those skills to start creating your own
-deployment. To create resources with oasisctl you use the create command.
+deployment. To create resources with _oasisctl_ you use the create command.
 To see all the possible options you can start with the following command:
 
 ```bash
@@ -461,7 +461,7 @@ oasisctl list deployments \
 
 ## Next Steps
 
-As promised, this guide covered the basics of using oasisctl with the ArangoDB
+As promised, this guide covered the basics of using _oasisctl_ with the ArangoDB
 API. While we primarily focused on viewing and managing deployments there is
 also a lot more to explore, including:
 

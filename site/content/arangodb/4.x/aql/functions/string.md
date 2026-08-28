@@ -823,8 +823,8 @@ context:
   escaped to `\\` unless the value is wrapped in double quotes and already
   escaped properly)
 - `\\` in bind variables (_JSON_ view mode) and queries in the web interface
-- `\\` in bind variables in arangosh
-- `\\\\` in queries in arangosh
+- `\\` in bind variables in _arangosh_
+- `\\\\` in queries in _arangosh_
 - Double the amount compared to arangosh in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 {{< /info >}}
@@ -2244,8 +2244,8 @@ context:
   escaped to `\\` unless the value is wrapped in double quotes and already
   escaped properly)
 - `\\` in bind variables (_JSON_ view mode) and queries in the web interface
-- `\\` in bind variables in arangosh
-- `\\\\` in queries in arangosh
+- `\\` in bind variables in _arangosh_
+- `\\\\` in queries in _arangosh_
 - Double the amount compared to arangosh in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 {{< /info >}}

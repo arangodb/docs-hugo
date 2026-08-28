@@ -320,7 +320,7 @@ exclusive lock during the entire index creation. The collection remains basicall
 so that other CRUD operations can run on the collection while the index is being created.
 This can be achieved by setting the *inBackground* attribute when creating an index.
 
-To create an index in the background in *arangosh* just specify `inBackground: true`, 
+To create an index in the background in _arangosh_ just specify `inBackground: true`, 
 like in the following example:
 
 ```js
@@ -602,7 +602,7 @@ const documentId = collection.documentId(documentKey);
 
 ### Dump and restore all databases
 
-**arangodump** got an option `--all-databases` to make it dump all available databases
+*_arangodump_* got an option `--all-databases` to make it dump all available databases
 instead of just a single database specified via the option `--server.database`.
 
 When set to true, this makes arangodump dump all available databases the current 
@@ -617,7 +617,7 @@ When dumping all databases, the consistency guarantees of arangodump are the sam
 as when dumping multiple single database individually, so the dump does not provide
 cross-database consistency of the data.
 
-**arangorestore** got an option `--all-databases` to make it restore all databases from
+*_arangorestore_* got an option `--all-databases` to make it restore all databases from
 inside the subdirectories of the specified dump directory, instead of just the
 single database specified via the option `--server.database`.
 
@@ -633,8 +633,8 @@ arangorestore. Please note that in this case a database user must be used that h
 access to the `_system` database, in order to create the databases on restore. 
 
 Also see:
-- [_arangodump_](../../components/tools/arangodump/_index.md)
-- [_arangorestore_](../../components/tools/arangorestore/_index.md)
+- [arangodump](../../components/tools/arangodump/_index.md)
+- [arangorestore](../../components/tools/arangorestore/_index.md)
 
 ### Warning if connected to DB-Server
 

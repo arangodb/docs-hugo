@@ -34,7 +34,7 @@ port them to a cluster with multiple servers.
 You can create SmartGraphs, Disjoint SmartGraphs, SmartGraphs using 
 SatelliteCollections, Disjoint SmartGraphs using SatelliteCollections, as well
 as SatelliteGraphs in the usual way, using
-`arangosh` for instance, but on a single server, then dump them, start a cluster
+_arangosh_ for instance, but on a single server, then dump them, start a cluster
 (with multiple servers) and restore the graphs in the cluster. The graphs and
 the collections will keep all properties that are kept when the graph is already
 created in a cluster.
@@ -431,7 +431,7 @@ These metrics are exposed by single servers and DB-Servers.
 Additionally, the JavaScript and HTTP API for indexes has been extended with
 figures for `arangosearch` View links and inverted indexes.
 
-In arangosh, you can call `db.<collection>.indexes(true, true);` to get at this
+In _arangosh_, you can call `db.<collection>.indexes(true, true);` to get at this
 information. Also see [Listing all indexes of a collection](../../indexes-and-search/indexing/working-with-indexes/_index.md#listing-all-indexes-of-a-collection).
 The information has the following structure:
 

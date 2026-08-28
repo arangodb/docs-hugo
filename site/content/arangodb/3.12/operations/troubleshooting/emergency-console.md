@@ -3,7 +3,7 @@ title: Emergency Console
 menuTitle: Emergency Console
 weight: 15
 description: >-
-  You can start an `arangod` process in an emergency mode with a console
+  You can start an _arangod_ process in an emergency mode with a console
 ---
 {{< warning >}}
 The emergency console mode is deprecated and removed in ArangoDB v4.0.

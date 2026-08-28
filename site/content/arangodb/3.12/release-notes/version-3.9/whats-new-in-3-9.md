@@ -173,7 +173,7 @@ The timeout value for web interface sessions can be adjusted via the
 
 ### Configurable root redirect
 
-Added two options to `arangod` to allow HTTP redirection customization for
+Added two options to _arangod_ to allow HTTP redirection customization for
 root (`/`) call of the HTTP API:
 
 - `--http.permanently-redirect-root`: if `true` (default), use a permanent
@@ -962,7 +962,7 @@ See [License Management](../../operations/administration/license-management.md) 
 ### Collection statuses
 
 The previously existing collection statuses "new born", "loading", "unloading"
-and "unloaded" were removed, as they weren't actively used in arangod.
+and "unloaded" were removed, as they weren't actively used in _arangod_.
 
 These statuses were last relevant with the MMFiles storage engine, when it was
 important to differentiate which collections were present in main memory and
@@ -1159,7 +1159,7 @@ If this option is disabled, but other histogram flags are addressed, e.g. `--his
 
 _arangobench_ now prints a short description of the test case started, so
 it is easier to figure out what operations are carried out by a test case.
-Several test cases in arangobench have been deprecated because they do not
+Several test cases in _arangobench_ have been deprecated because they do not
 target real world use cases but were rather writing for some internal testing.
 The deprecated test cases will be removed in a future version to clear up
 the list of test cases.

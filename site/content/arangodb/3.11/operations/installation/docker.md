@@ -141,17 +141,17 @@ the Docker command.
 docker run -e ARANGO_RANDOM_ROOT_PASSWORD=1 arangodb --help
 ```
 
-The entry point script starts the `arangod` binary by default and forwards
+The entry point script starts the _arangod_ binary by default and forwards
 your arguments.
 
-You may also start other binaries, such as the ArangoDB Shell (`arangosh`):
+You may also start other binaries, such as the ArangoDB Shell (_arangosh_):
 
 ```
 docker run -it arangodb arangosh --server.database myDB ...
 ```
 
-Note that you need to set up networking for containers if `arangod` runs in one
-container and you want to access it with `arangosh` running in another container.
+Note that you need to set up networking for containers if _arangod_ runs in one
+container and you want to access it with _arangosh_ running in another container.
 It is easier to execute it in the same container instead.
 Use `docker ps` to find out the container ID or the name of a running container:
 
@@ -172,7 +172,7 @@ For more information, see the [Configuration](../administration/configuration.md
 
 ## Limiting resource utilization
 
-`arangod` checks the following environment variables, which can be used to
+_arangod_ checks the following environment variables, which can be used to
 restrict how much memory and how many CPU cores it should use.
 
 - `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
@@ -190,11 +190,11 @@ restrict how much memory and how many CPU cores it should use.
 
   Setting this option can be useful in two cases:
 
-  - If `arangod` is running in a container and its cgroup has a RAM limitation,
+  - If _arangod_ is running in a container and its cgroup has a RAM limitation,
     then you should specify this limitation in this environment variable, since
     it is currently not automatically detected.
 
-  - If `arangod` is running alongside other services on the same machine and
+  - If _arangod_ is running alongside other services on the same machine and
     thus sharing the RAM with them, you should limit the amount of memory using
     this environment variable.
 
@@ -207,7 +207,7 @@ restrict how much memory and how many CPU cores it should use.
   If the variable is set, the overridden value is shown. Various default values
   for threading are calculated based on this value.
 
-  Setting this option is useful if `arangod` is running in a container or alongside
+  Setting this option is useful if _arangod_ is running in a container or alongside
   other services on the same machine and shall not use all available CPUs.
 
 ## Using host directories
@@ -256,8 +256,8 @@ When deriving the image, you can control the instantiation via putting files
 into `/docker-entrypoint-initdb.d/`.
 
 - `*.sh` - files having this extension are run as a bash shell script.
-- `*.js` - files having this extension are executed with `arangosh`. You can
-  specify additional `arangosh` arguments via the `ARANGOSH_ARGS` environment variable.
+- `*.js` - files having this extension are executed with _arangosh_. You can
+  specify additional _arangosh_ arguments via the `ARANGOSH_ARGS` environment variable.
 - `dumps/` - in this directory you can place subdirectories containing database
   dumps generated using [arangodump](../../components/tools/arangodump/_index.md).
   They can be restored using [arangorestore](../../components/tools/arangorestore/_index.md).

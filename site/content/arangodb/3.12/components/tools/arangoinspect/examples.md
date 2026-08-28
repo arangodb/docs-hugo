@@ -3,7 +3,7 @@ title: _arangoinspect_ Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to use the `arangoinspect` tool to collection information for troubleshooting
+  How to use the _arangoinspect_ tool to collection information for troubleshooting
 ---
 If you are asked by Arango support to provide an inspector output, run
 the _arangoinspect_ binary to generate a file in the current working folder.
@@ -30,7 +30,7 @@ arangoinspect --server.endpoint tcp://127.0.0.1:8529
 
 This starts the tool with a prompt for the JWT secret and tries to connect
 to the specified ArangoDB server. You have to type the secret as is used for
-the `arangod` option `--server.jwt-secret`. For non-cluster deployments,
+the _arangod_ option `--server.jwt-secret`. For non-cluster deployments,
 you may authenticate with a user name and password (or access token) instead:
 
 ```

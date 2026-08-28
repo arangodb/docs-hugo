@@ -227,7 +227,7 @@ use the Platform CLI tool's `--license.interval` instead.
 5. Optionally enable **Custom TTL** to override the default license duration.
 6. Click **Activate** and copy the generated license key.
 7. Apply the license key to ArangoDB using one of the interfaces in
-   [Apply a license key](#apply-a-license-key) — for example `arangosh` or
+   [Apply a license key](#apply-a-license-key) — for example _arangosh_ or
    the web interface.
 
 Repeat this procedure when the license is close to expiry. If you want
@@ -573,7 +573,7 @@ docker cp arangodb:/license_key.txt ./license_key.txt
 
 Copy the license string from `license_key.txt` and apply it to your ArangoDB
 deployment using any of the interfaces documented in the next section,
-[Apply a license key](#apply-a-license-key) — for example `arangosh` or
+[Apply a license key](#apply-a-license-key) — for example _arangosh_ or
 the web interface.
 
 ## Apply a license key

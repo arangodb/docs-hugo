@@ -70,7 +70,7 @@ it is required that database names are properly URL-encoded in URLs. In addition
 database names containing UTF-8 characters must be 
 [NFC-normalized](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 Non-NFC-normalized names will be rejected by arangod.
-This is true for any REST API endpoint in arangod if the extended database naming
+This is true for any REST API endpoint in _arangod_ if the extended database naming
 convention is used.
 
 {{< info >}}

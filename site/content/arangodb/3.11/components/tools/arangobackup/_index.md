@@ -9,8 +9,8 @@ description: >-
 {{< tag "ArangoDB Enterprise Edition" >}}
 
 {{< tip >}}
-In the Community Edition, use [_arangodump_](../arangodump/_index.md) and
-[_arangorestore_](../arangorestore/_index.md) for
+In the Community Edition, use [arangodump](../arangodump/_index.md) and
+[arangorestore](../arangorestore/_index.md) for
 [logical backups](../../../operations/backup-and-restore.md#logical-backups).
 {{< /tip >}}
 

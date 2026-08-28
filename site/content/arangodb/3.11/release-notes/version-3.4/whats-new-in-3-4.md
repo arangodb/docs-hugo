@@ -1039,7 +1039,7 @@ library by default in recent versions. ArangoDB is following this step.
 
 Clients that use SSLv2 with ArangoDB should change the protocol from SSLv2 to TLSv12
 if possible, by adjusting the value of the `--ssl.protocol` startup option for the
-`arangod` server and all client tools.
+_arangod_ server and all client tools.
 
 ## Distribution Packages
 
@@ -1084,8 +1084,8 @@ invoking it.
 ### arangoimport
 
 _arangoimp_ was renamed to _arangoimport_ for consistency.
-The 3.4 release packages will still install `arangoimp` as a symlink so user scripts
-invoking `arangoimp` do not need to be changed.
+The 3.4 release packages will still install _arangoimp_ as a symlink so user scripts
+invoking _arangoimp_ do not need to be changed.
 
 [arangoimport now can pace the data load rate automatically](../../components/tools/arangoimport/details.md#automatic-pacing-with-busy-or-low-throughput-disk-subsystems)
 based on the actual rate of

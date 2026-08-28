@@ -292,7 +292,7 @@ removed in a future version of ArangoDB, and its use is now highly discouraged.
 
 ### arangovpack
 
-The former `--json` and `--pretty` options of the *arangovpack* utility
+The former `--json` and `--pretty` options of the _arangovpack_ utility
 were removed and replaced with separate options for specifying
 the input and output types:
 

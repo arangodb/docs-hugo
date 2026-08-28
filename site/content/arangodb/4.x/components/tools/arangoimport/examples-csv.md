@@ -3,7 +3,7 @@ title: _arangoimport_ Examples CSV / TSV
 menuTitle: Examples CSV
 weight: 10
 description: >-
-  How to import tabular data into ArangoDB on the command-line with `arangoimport`
+  How to import tabular data into ArangoDB on the command-line with _arangoimport_
 ---
 ## Importing CSV Data
 

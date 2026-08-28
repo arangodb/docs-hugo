@@ -3,7 +3,7 @@ title: Emergency Console
 menuTitle: Emergency Console
 weight: 15
 description: >-
-  You can start an `arangod` process in an emergency mode with a console
+  You can start an _arangod_ process in an emergency mode with a console
 ---
 The ArangoDB database server has two modes of operation: As a server, where it
 will answer to client requests and as an emergency console, in which you can

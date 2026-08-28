@@ -35,7 +35,7 @@ Consider the following document:
 
 {{< tab "`search-alias` View" >}}
 You would normally index the `dimensions.type` and `dimensions.value` fields and
-with an inverted index and then use it via a `search-alias` View, in arangosh:
+with an inverted index and then use it via a `search-alias` View, in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({

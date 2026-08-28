@@ -333,7 +333,7 @@ credentials or handle cookies, ArangoDB needs to set the
 ArangoDB will automatically set this header to `true` if the value of the
 request's `origin` header matches a trusted origin in the `http.trusted-origin`
 configuration option. To make ArangoDB trust a certain origin, you can provide
-a startup option when running `arangod` like this:
+a startup option when running _arangod_ like this:
 
 `--http.trusted-origin "http://localhost:8529"`
 

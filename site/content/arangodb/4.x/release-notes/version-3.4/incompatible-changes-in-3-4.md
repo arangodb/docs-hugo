@@ -39,7 +39,7 @@ In case the target platform does not conform to these requirements, ArangoDB may
 not work correctly.
 
 The compiled-in architecture optimizations can be retrieved on most platforms by 
-invoking the *arangod* binary with the `--version` option. The optimization switches
+invoking the _arangod_ binary with the `--version` option. The optimization switches
 will then show up in the output in the line starting with `optimization-flags`, e.g.
 
 ```
@@ -830,12 +830,12 @@ removed in future versions of ArangoDB:
   to the above forms. However, AQL queries using the deprecated AQL functions
   should eventually be adjusted.
 
-- using the `arangoimp` binary instead of `arangoimport` 
+- using the _arangoimp_ binary instead of _arangoimport_ 
 
-  `arangoimp` has been renamed to `arangoimport` for consistency in ArangoDB
-  3.4, and `arangoimp` is just a symbolic link to `arangoimport` now.
-  `arangoimp` is there for compatibility only, but client scripts should 
-  eventually be migrated to use `arangoimport` instead.
+  _arangoimp_ has been renamed to _arangoimport_ for consistency in ArangoDB
+  3.4, and _arangoimp_ is just a symbolic link to _arangoimport_ now.
+  _arangoimp_ is there for compatibility only, but client scripts should 
+  eventually be migrated to use _arangoimport_ instead.
 
 - the `foxx-manager` executable is deprecated and will be removed in ArangoDB 4.
   

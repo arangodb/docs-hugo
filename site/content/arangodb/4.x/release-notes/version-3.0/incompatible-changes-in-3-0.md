@@ -1062,7 +1062,7 @@ In order to connect to earlier versions of ArangoDB with the client tools, an ol
 version of the client tools needs to be kept installed.
 
 The preferred name for the template string generator function `aqlQuery` is now
-`aql` and is automatically available in arangosh. Elsewhere, it can be loaded
+`aql` and is automatically available in _arangosh_. Elsewhere, it can be loaded
 like `const aql = require('@arangodb').aql`.
 
 ### Command-line options added
@@ -1088,7 +1088,7 @@ because it had no effect in them.
 ### arangobench
 
 In order to make its purpose more apparent the former `arangob` client tool has 
-been renamed to `arangobench` in 3.0.
+been renamed to _arangobench_ in 3.0.
 
 ## Miscellaneous changes
 

@@ -3,9 +3,9 @@ title: _arangorestore_ Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to restore database dumps to an ArangoDB server with `arangorestore`
+  How to restore database dumps to an ArangoDB server with _arangorestore_
 ---
-To restore data from a dump previously created with [_arangodump_](../arangodump/_index.md),
+To restore data from a dump previously created with [arangodump](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.
 
 ## Invoking *arangorestore*
@@ -18,7 +18,7 @@ arangorestore --input-directory "dump"
 
 This connects to an ArangoDB server (`tcp://127.0.0.1:8529` by default), then restores the
 collection structure and the documents from the files found in the input directory `dump`.
-Note that the input directory must have been created by running `arangodump` before.
+Note that the input directory must have been created by running _arangodump_ before.
 
 _arangorestore_ connects to the `_system` database by default, using the default
 endpoint. To override the endpoint, or specify a different user, use one of the
@@ -189,11 +189,11 @@ also restored or already present on the server.
 
 ## Encryption
 
-See [_arangodump_](../arangodump/examples.md#encryption) for details.
+See [arangodump](../arangodump/examples.md#encryption) for details.
 
 ## Compression
 
-You can optionally let *arangorestore* compress the data for the network transfer
+You can optionally let _arangorestore_ compress the data for the network transfer
 with the `--compress-transfer` startup option. This can reduce the traffic and
 thus save time. Set the `--compress-request-threshold` startup option to define
 the minimum size for request bodies (in bytes) at which compression is applied.

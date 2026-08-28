@@ -30,7 +30,7 @@ with an [Analyzer](../../analyzers.md), for instance, to tokenize text into word
 ### Basic definition
 
 For example, you can create an inverted index for the attributes `value1` and
-`value2` with the following command in arangosh:
+`value2` with the following command in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({

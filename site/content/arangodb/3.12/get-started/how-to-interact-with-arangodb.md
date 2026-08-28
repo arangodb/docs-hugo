@@ -8,7 +8,7 @@ description: >-
 ## How to Communicate with the Server
 
 The core component of ArangoDB is the [ArangoDB server](../components/arangodb-server/_index.md)
-(`arangod`) that stores data and handles requests. You have different options
+(_arangod_) that stores data and handles requests. You have different options
 for talking to the server, through the web interface, command-line tools, 
 drivers, and the server's REST API.
 
@@ -65,19 +65,19 @@ deployment modes, a single server instance and cluster.
 
 In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:
-- Run the `arangod` executable directly
+- Run the _arangod_ executable directly
 - [Docker containers](../operations/installation/docker.md)
 - [Kubernetes](../deploy/kubernetes.md)
 - Use installation packages
 
 ## How to Get Data In and Out of ArangoDB
 
-With the [*arangoimport*](../components/tools/arangoimport/_index.md) command-line tool, you can
+With the [arangoimport](../components/tools/arangoimport/_index.md) command-line tool, you can
 import data from JSON, JSONL, CSV, and TSV formats into a database collection in
 ArangoDB. Thanks to its multi-threaded architecture and bulk import capabilities,
 you can import your data at high speeds.
 
-Similarly, with [*arangoexport*](../components/tools/arangoexport/_index.md) you can export data
+Similarly, with [arangoexport](../components/tools/arangoexport/_index.md) you can export data
 from your database collection to JSON, JSONL, CSV, TSV, XML, and XGMML formats.
 
 There are also other alternatives, such as using drivers to write custom importers
@@ -85,20 +85,20 @@ or directly using the server's HTTP API.
 
 ## How to Back Up and Restore Data in ArangoDB
 
-[*arangodump*](../components/tools/arangodump/_index.md) is a command-line tool that lets you
+[arangodump](../components/tools/arangodump/_index.md) is a command-line tool that lets you
 create backups of your data and structural information in a flexible and
 efficient manner and can be used for all ArangoDB deployment modes.
-With *arangodump*, you can create backups for selected collections or for all
+With _arangodump_, you can create backups for selected collections or for all
 collections of a database, including system collections. Additionally, you can
 back up the structural information of your collections (name, indexes, sharding, etc.)
 with or without the data stored in them.  
 
-To restore backups created by *arangodump*, you can use 
-[*arangorestore*](../components/tools/arangorestore/_index.md). Similarly to the backup process,
+To restore backups created by _arangodump_, you can use 
+[arangorestore](../components/tools/arangorestore/_index.md). Similarly to the backup process,
 you can restore either all collections or just specific ones and choose whether
 to restore structural information with or without data.
 
-[*arangobackup*](../components/tools/arangobackup/_index.md) is a command-line tool that enables
+[_arangobackup_](../components/tools/arangobackup/_index.md) is a command-line tool that enables
 you to create instantaneous and consistent [hot backups](../operations/backup-and-restore.md#hot-backups)
 of the data and structural information stored in ArangoDB, without interrupting
 the database operations. It can be used for all ArangoDB deployment modes.

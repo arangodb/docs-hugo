@@ -7,7 +7,7 @@ description: ''
 AQL queries can be invoked in the following ways:
 
 - Via the web interface
-- Using the `db` object of the JavaScript API, for example, in arangosh or in a Foxx service
+- Using the `db` object of the JavaScript API, for example, in _arangosh_ or in a Foxx service
 - Via the raw REST HTTP API
 
 There are always calls to the server's HTTP API under the hood, but the web interface

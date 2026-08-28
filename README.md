@@ -410,7 +410,7 @@ ArangoDB.
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
-Start `arangod` with the startup option `--log.level startup=trace`.
+Start _arangod_ with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
 {{< tab "Configuration file" >}}
@@ -754,7 +754,7 @@ The following shortcodes also exist but are rarely used:
   rules from a JSON source file.
 
 - `{{% program-options name="arangod" %}}` renders the startup options of a
-  component like the ArangoDB server (`arangod`) or shell (`arangosh`).
+  component like the ArangoDB server (_arangod_) or shell (_arangosh_).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
 

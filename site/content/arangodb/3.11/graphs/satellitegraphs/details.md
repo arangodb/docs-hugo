@@ -29,7 +29,7 @@ only covers a part of it, then you can do so.
 
 ### Create a graph
 
-To create a SatelliteGraph in arangosh, use the `satellite-graph` module:
+To create a SatelliteGraph in _arangosh_, use the `satellite-graph` module:
 
 ```js
 ---

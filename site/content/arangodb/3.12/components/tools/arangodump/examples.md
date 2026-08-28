@@ -4,7 +4,7 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to create database dumps of an ArangoDB server and use encryption,
-  compression, multi-threading, and other features of `arangodump`
+  compression, multi-threading, and other features of _arangodump_
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 
