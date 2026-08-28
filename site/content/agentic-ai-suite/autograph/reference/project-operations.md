@@ -220,7 +220,7 @@ For guidance on picking providers and models, see
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `project` | URL path | Yes | Has to match the project the service runs against. A mismatch returns `200` with `valid: false` and `error_code: PROJECT_MISMATCH`, not a `4xx`. |
+| `project` | URL path | Yes | Has to match the project the service runs against. A mismatch returns `400` with `valid: false` and `error_code: PROJECT_MISMATCH`. |
 | `chat_api_provider` | string | **Yes** | `openai`, `triton`, or `custom` for any other OpenAI-compatible endpoint. |
 | `chat_model` | string | **Yes** | The chat model name. A model the provider does not serve is rejected with `MODEL_NOT_FOUND`. |
 | `chat_secret_profile_id` | string | **Yes** | The secret profile ID of the chat key. **Never a raw key.** |
@@ -251,7 +251,7 @@ project metadata.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `valid` | boolean | The validation probe passed. |
+| `valid` | boolean | The validation probe passed. It is `false` on the `400` of a rejected configuration. |
 | `applied` | boolean | The configuration was persisted to the project metadata. |
 | `applied_to_running_pod` | boolean | `true` means it is live immediately, without a restart. **`false` means the persisted configuration only takes effect on the next service restart.** |
 | `rebuild_required` | boolean | Always `false`. Kept for wire compatibility: no accepted update can invalidate the stored vectors. |
@@ -260,27 +260,55 @@ project metadata.
 | `error_code` | string | On a failure, a machine-readable code such as `MODEL_NOT_FOUND`, `INVALID_API_KEY`, or `EMBEDDING_CONFIG_IMMUTABLE`. |
 | `message` | string | On a failure, a human-readable explanation. |
 
-{{< warning >}}
-**A validation failure returns `200` with `valid: false`, not a `4xx`.** Key off
-`valid`, `applied`, and `error_code`, never off the HTTP status alone. Only
-authentication problems, missing service metadata, and unexpected server faults
-produce a non-`200` status.
-{{< /warning >}}
+{{< info >}}
+**A validation failure returns `400` with the same response body.** A `2xx`
+therefore means that the configuration was accepted and persisted, and you can
+key off the HTTP status. The body has not changed: `valid`, `applied`, `field`,
+`error_code`, and `message` are still there on a rejection, so anything you
+already parse keeps working.
+
+Earlier versions answered a rejected configuration with `200` and
+`valid: false`, which let a client that only checked the status treat a refused
+credential as applied.
+{{< /info >}}
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | The request was processed. **Inspect `valid` and `applied`** to learn the outcome. |
+| `200` | The configuration was validated and persisted. Read `applied_to_running_pod` to find out whether it is live or only takes effect after the next restart. |
+| `400` | Rejected by the validation: an unresolvable secret profile, an unsupported provider, a model the provider does not serve, a missing required field, a `project` mismatch, or a change of the embedding identity. Nothing was persisted or applied. |
 | `401` | Authentication failed |
 | `404` | The AutoGraph service node was not found in the project metadata |
-| `500` | Server error |
+| `409` | A project deletion is in progress |
+| `500` | Server error, including `METADATA_WRITE_FAILED`: the configuration validated but could not be stored |
+| `503` | `METADATA_WRITE_TIMEOUT`: the configuration validated but the metadata write timed out. Retrying is safe. |
+
+The following is an example of a rejection with `400`, here for a chat secret
+profile that cannot be resolved:
+
+```json
+{
+  "applied": false,
+  "valid": false,
+  "applied_to_running_pod": false,
+  "rebuild_required": false,
+  "key_status": "",
+  "field": "chat_secret_profile_id",
+  "error_code": "SECRET_NOT_FOUND",
+  "message": "Secret profile '00000000-0000-0000-0000-000000000000' not found"
+}
+```
+
+The two metadata write faults are the exception. They are server errors, `503`
+and `500`, and they carry the standard error body of the gateway instead of the
+response documented above, because nothing was wrong with the request itself.
 
 ### Embedding identity is immutable
 
 Once `embedding_api_provider`, `embedding_model`, and `embedding_api_url` have
 been saved for a project, they cannot be changed. A request that changes any of
-them is rejected with `valid: false`, `error_code: EMBEDDING_CONFIG_IMMUTABLE`,
-and a `field` naming the offending value. Nothing is written to the metadata and
-nothing is applied to the pod.
+them is rejected with `400`, `valid: false`,
+`error_code: EMBEDDING_CONFIG_IMMUTABLE`, and a `field` naming the offending
+value. Nothing is written to the metadata and nothing is applied to the pod.
 
 A different embedding model produces vectors that do not match the ones already
 stored, and the corpus cannot be re-embedded without stranding the knowledge
@@ -290,14 +318,19 @@ or secret. To embed with a different model, create a new project.
 
 ### Error codes
 
-The stable `error_code` values are `INVALID_API_KEY`, `KEY_EXPIRED`,
-`INSUFFICIENT_QUOTA`, `RATE_LIMITED`, `PERMISSION_DENIED`, `MODEL_NOT_FOUND`,
-`MODEL_REJECTED_REQUEST`, `ENDPOINT_UNREACHABLE`, `TIMEOUT`, `PROVIDER_ERROR`,
-`PROVIDER_EMPTY_RESPONSE`, `RESPONSES_API_UNAVAILABLE`, `API_KEY_REQUIRED`,
-`MODEL_REQUIRED`, `INVALID_BASE_URL`, `PROVIDER_NOT_FOUND`, `URL_REQUIRED`,
-`UNKNOWN_VALIDATION_ERROR`, and `EMBEDDING_CONFIG_IMMUTABLE`, plus the metadata
-write codes `METADATA_WRITE_FAILED`, `METADATA_WRITE_TIMEOUT`, and
-`PROJECT_MISMATCH`.
+The stable `error_code` values of a validation failure are `INVALID_API_KEY`,
+`KEY_EXPIRED`, `INSUFFICIENT_QUOTA`, `RATE_LIMITED`, `PERMISSION_DENIED`,
+`MODEL_NOT_FOUND`, `MODEL_REJECTED_REQUEST`, `ENDPOINT_UNREACHABLE`, `TIMEOUT`,
+`PROVIDER_ERROR`, `PROVIDER_EMPTY_RESPONSE`, `RESPONSES_API_UNAVAILABLE`,
+`API_KEY_REQUIRED`, `MODEL_REQUIRED`, `INVALID_BASE_URL`, `PROVIDER_NOT_FOUND`,
+`URL_REQUIRED`, `SECRET_PROFILE_REQUIRED`, `SECRET_NOT_FOUND`,
+`SECRET_RESOLUTION_ERROR`, `PROJECT_MISMATCH`, `EMBEDDING_CONFIG_IMMUTABLE`, and
+`UNKNOWN_VALIDATION_ERROR`. They all come with a `400`.
+
+The metadata write codes `METADATA_WRITE_TIMEOUT` and `METADATA_WRITE_FAILED`
+are not validation failures. The configuration passed the validation but could
+not be stored, so they are server faults and come with a `503` and a `500`
+respectively.
 
 ### Notes
 
@@ -308,8 +341,9 @@ write codes `METADATA_WRITE_FAILED`, `METADATA_WRITE_TIMEOUT`, and
 - Concurrent updates are **serialized**, not rejected. A global lock makes the
   second request wait for the first, so expect a slower response rather than a
   `409`.
-- A rejected candidate configuration is reported in the response only. It does
-  not overwrite the status of a corpus build or a strategizer job.
+- A rejected candidate configuration is reported in the response only. Nothing
+  is written to the metadata or applied to the pod, and it does not overwrite
+  the status of a corpus build or a strategizer job.
 - The persisted configuration lives at the project level in the metadata and
   **survives a teardown and redeployment** of the AutoGraph service.
 

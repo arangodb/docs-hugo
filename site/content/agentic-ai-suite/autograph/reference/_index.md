@@ -79,6 +79,11 @@ For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md
 `POST /v1/rag-strategizer/analyze`, and `POST /v1/orchestrate` acknowledge the
 request with `202` and run the work in the background. Accept any `2xx` as
 "accepted" and poll the matching status endpoint for the outcome.
+
+A corpus build can still be rejected synchronously. If the File Manager has no
+files for the selector, the request comes back as `400` and no
+`corpus_build_id` is created, so check the status code before you read the ID
+from the response body.
 {{< /info >}}
 
 ## The category contract

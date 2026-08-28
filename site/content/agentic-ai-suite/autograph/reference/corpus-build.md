@@ -130,7 +130,7 @@ links are missing.
 | Status Code | Meaning |
 |-------------|---------|
 | `202` | Build accepted and started in the background |
-| `400` | Invalid request: more than one selector, an empty category label, a category scope deeper than the File Manager limit, a single file larger than the whole staging budget, or a latched model configuration (see below) |
+| `400` | Invalid request: more than one selector, an empty category label, a category scope deeper than the File Manager limit, a selector the File Manager has nothing for, or a latched model configuration (see below) |
 | `401` | Authentication failed |
 | `409` | Another build is in progress, a document delete is running, a project deletion has started, or `REBUILD_NOT_ALLOWED` on a `categories` request with `incremental: false` |
 | `500` | Server error |
@@ -149,6 +149,33 @@ build that would fail while embedding. The same gate applies to
 [`POST /v1/orchestrate`](orchestration.md#trigger-orchestration). Clear it with
 [`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-model-config-credentials).
 {{< /warning >}}
+
+### Selector validation
+
+The service looks the selector up in the File Manager while it handles the
+request, and rejects the build with `400` if there is nothing to build:
+
+- A `categories` label that holds no files, on a full build with
+  `incremental: false`.
+- `file_ids` that the File Manager cannot resolve, because they are unknown or
+  malformed, or because they belong to another database.
+
+The response names what was missing. **No build is created in these cases**, so
+there is no `corpus_build_id` to poll. Check the status code before you read the
+ID out of the response body.
+
+Two cases are deliberately not rejected:
+
+- An **incremental build** (`incremental: true`) still accepts a category whose
+  files are all gone, because reconciling such removals is part of what an
+  incremental run is for. See [Incremental Builds](#incremental-builds).
+- If the **File Manager cannot be reached at all**, the service reaches no
+  verdict and accepts the build as before. An outage is reported on the build,
+  never as a bad request.
+
+A file that is deleted after the check still fails the build the way it always
+did. The check makes the common mistake visible right away, it does not remove
+the deferred failure path.
 
 ### Document parsing
 
@@ -244,7 +271,11 @@ Check the progress of a corpus build.
   "cluster_count": 0,
   "documents_added": 0,
   "documents_removed": 0,
-  "documents_unchanged": 0
+  "documents_unchanged": 0,
+  "files_written": 0,
+  "documents_created": 0,
+  "documents_deduplicated": 0,
+  "dedup_groups": []
 }
 ```
 
@@ -264,6 +295,29 @@ Check the progress of a corpus build.
 | `documents_added` | integer | On a **`completed`** incremental File Manager build: files that were in the File Manager but not yet in the corpus. **0** otherwise. |
 | `documents_removed` | integer | On a **`completed`** incremental File Manager build: corpus documents removed because they were no longer in the File Manager listing. **0** otherwise. |
 | `documents_unchanged` | integer | On a **`completed`** incremental File Manager build: corpus documents that are still in the File Manager. **0** otherwise. |
+| `files_written` | integer | On a **`completed`** build: the input files that this build wrote successfully. It counts the File Manager entries the build was given, not your uploads, so a file that a re-upload under the same name superseded was never part of it. Set on every build, not only on incremental ones. |
+| `documents_created` | integer | On a **`completed`** build: the number of **distinct documents** that these files produced. It equals `files_written` minus `documents_deduplicated`. |
+| `documents_deduplicated` | integer | On a **`completed`** build: input files that were absorbed into a document another file already owned. A value above **0** means that the build produced fewer documents than it was given files, see [Document identity and deduplication](#document-identity-and-deduplication). |
+| `dedup_groups` | object[] | One entry per collapsed document, naming every source file that mapped onto it. Empty when `documents_deduplicated` is **0**. |
+
+Every `dedup_groups` entry has the following fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `document_key` | string | The `_key` of the surviving document in `{project}_sources`. |
+| `document_id` | string | The `_id` of the surviving document. |
+| `module` | string | The category the document belongs to. |
+| `filename` | string | The filename the document is keyed by. |
+| `source_filenames` | string[] | Every input file that mapped onto this document, in input order. **The content of the last one is what the document holds.** |
+| `source_file_ids` | string[] | The File Manager IDs of these files, in the same order. Use them to tell files with the same name apart. |
+| `collapsed_onto_existing` | boolean | `true` if the collapse also overwrote a document from an earlier build, instead of only colliding within this build. |
+
+{{< info >}}
+**A `documents_deduplicated` of `0` does not prove that nothing was lost.**
+A file that a re-upload under the same name superseded within one category is
+replaced by the File Manager before the build even runs, so it cannot show up
+in these counters.
+{{< /info >}}
 
 {{< warning >}}
 **A `completed` build with a non-empty `error_code` is a partial success.** Read
@@ -310,6 +364,86 @@ both texts. Read `message`, not only `error_code`.
 curl -H "Authorization: Bearer <token>" \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds/cb_01ARZ3NDEKTSV4RRFFQ69G5FAV
 ```
+
+---
+
+## Document identity and deduplication
+
+A corpus document is identified by its **category and its filename**, and by
+nothing else. The document key is a hash of exactly these two values, and the
+writes use the `update` overwrite mode of ArangoDB. That has the following
+consequences:
+
+- **Two input files with the same filename in the same category produce a single
+  document.** The one written last provides the content, the other one is
+  absorbed. This is what makes a re-import idempotent instead of duplicating
+  rows, and it is reported in `documents_deduplicated` and `dedup_groups`.
+- **The deduplication is by name, never by content.** No content is hashed, no
+  embedding similarity is compared, and no similarity threshold is involved.
+  Two documents whose extracted text is identical, a shared boilerplate cover
+  page for example, stay two documents as long as their filenames differ.
+- **The category scopes the name.** A `cover.pdf` in `legal` and a `cover.pdf`
+  in `finance` are two separate documents.
+- **Filenames are disambiguated on the way in.** If a build resolves several
+  File Manager files that share a basename, they are renamed to `report.pdf`,
+  `report_1.pdf`, and so on, before any of the above applies. The counter is
+  shared by the entire build, so the renaming also occurs between files in
+  different categories.
+- **A re-upload under an existing name never reaches this rule.** The File
+  Manager keys a RAG input by database, project, category, and name, so
+  uploading the same name into the same category supersedes the earlier file
+  with a new version instead of adding a second entry. Only the latest version
+  of a file is built, and this loss occurs before AutoGraph sees anything.
+
+### When a collapse actually happens
+
+Because names are unique within a category and are disambiguated across
+categories, few sequences reach a collapse. The known one is a filename that
+collides with the output of the disambiguation:
+
+| Upload | Category | Stored as | Result |
+|--------|----------|-----------|--------|
+| `a.md` | `archive` | `a.md` | — |
+| `a.md` | `legal` | `a_1.md` | Renamed, because `a.md` already occurred in `archive` |
+| `a_1.md` | `legal` | `a_1.md` | **Collides** with the row above: the same category and the same name |
+
+Three File Manager entries become two documents, with
+`documents_deduplicated: 1`. The renaming does not reserve the name it
+generates, so a file that is genuinely called `a_1.md` is not disambiguated
+against it. Watch out for this if you use systematic `_1` and `_2` suffixes in
+your filenames **and** reuse those basenames across categories.
+
+### Which files a document came from
+
+Every document records its own mapping, so you do not have to reconstruct the
+key hash. The documents in the `{project}_sources` collection have the following
+fields:
+
+| Field | Description |
+|-------|-------------|
+| `source_filenames` | Every input file that mapped onto this document, in input order. |
+| `source_file_ids` | The File Manager IDs of the same files, in the same order. |
+
+Both are on every document, with a single entry in the ordinary case where
+nothing collapsed, so you never have to handle their absence. Documents that
+were written before these fields existed have neither. Import them again to
+populate them.
+
+If `documents_deduplicated` is not what you expected:
+
+1. Read `dedup_groups`. It names the exact files and their File Manager IDs.
+2. If the collapse was unintended, upload the absorbed file under a filename
+   that is distinct **and** not of the form `name_1` or `name_2` for a basename
+   that is used elsewhere in the build, then add it with
+   [`POST /v1/graph/insert`](orchestration.md#insert-documents). Uploading it
+   under the same name in the same category does not help, because the File
+   Manager supersedes the earlier version instead of creating a second entry.
+3. To replace the content of a document deliberately, use
+   [`POST /v1/graph/update`](orchestration.md#update-documents) instead of
+   relying on a re-import under the same name.
+
+If 5% or more of a batch collapses, the completion `message` of the build says
+so as well, so a high deduplication ratio is visible without reading the counts.
 
 ---
 

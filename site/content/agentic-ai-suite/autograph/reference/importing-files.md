@@ -138,7 +138,7 @@ On success:
 | Status code | Meaning |
 |-------------|---------|
 | `200` | Files imported successfully. |
-| `400` | Validation failure (empty `files`, invalid `doc_name`, etc.). Returned as a JSON error body from the gateway, not the `success`/`message` shape. |
+| `400` | Validation failure (empty `files`, invalid `doc_name`, a single file larger than the whole local staging budget, etc.). Returned as a JSON error body from the gateway, not the `success`/`message` shape. |
 | `401` | Authentication failed. |
 | `409` | A corpus build is already in progress. |
 | `500` | Server error. |
