@@ -21,13 +21,6 @@ oasisctl create metrics token [flags]
   -p, --project-id string        Identifier of the project to create the token in
 ```
 
-{{< info >}}
-You can specify the `--lifetime` in minutes or hours, for example `--lifetime 720h`.
-The maximum lifetime of a metrics token is one year (365 days), and larger values
-are capped at this limit. Metrics tokens created in the web interface have a
-default lifetime of 90 days.
-{{< /info >}}
-
 ## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the Arango Managed Platform (AMP) (default "api.cloud.arangodb.com")
