@@ -18,10 +18,10 @@ You manage all of this from the **Access Control** section of the
 ## Concepts
 
 - **User**:
-  An account that authenticates against the data platform. Nothing is permitted
-  by default, so a new user starts with no roles and no permissions. The
-  exception is the built-in `root` account, which is bound to the all-powerful
-  `super-admin` role automatically.
+  An account that authenticates against the data platform. **Nothing is
+  permitted by default**, so a new user starts with no roles and no permissions.
+  The exception is the built-in `root` account, which is bound to the
+  all-powerful `super-admin` role automatically.
 
 - **Role**:
   A named bundle of actions, such as `coredb-reader`, `ai-developer`, or
@@ -38,6 +38,62 @@ You manage all of this from the **Access Control** section of the
 An effective permission is therefore the combination of a user, a role, and
 the scope of that assignment. Assigning the same role to two users with
 different scopes gives them the same abilities over different data.
+
+## The permission model
+
+Users, roles, and scopes are the surface of a policy-based permission system
+that the data platform evaluates on every request. You don't need to author its
+objects to work with the Access Control interface, but knowing them explains
+what an `Allow` and a `Deny` are, and how a scope takes effect.
+
+Every request is reduced to who wants to do what, and where:
+
+- The **user** the request is made on behalf of, taken from the token that
+  [authenticates](authentication.md) it.
+- The **action** to perform, named `<namespace>:<name>`, for example
+  `database:read` or `collection:write`.
+- The **resource** to perform it on, for example a database or a collection.
+
+What may be done is expressed in **policies**. A policy is a list of
+**statements**, and every statement combines an effect with the actions and the
+resources it covers:
+
+| Field | Description |
+|--------|-------------|
+| `effect` | Either `Allow` or `Deny`. These are the only two values |
+| `actions` | The actions the statement applies to |
+| `resources` | The resources the actions may be performed on |
+
+Actions and resources both support wildcard patterns. A `*` matches everything,
+`database:*` matches every action of the `database` namespace, and `reports-*`
+matches every resource whose name starts with `reports-`.
+
+These objects form a chain from a user to the actions that user may perform:
+
+1. A **policy** holds the statements.
+2. A **role** is a named collection of policies. It is the unit you see in the
+   web interface, such as `coredb-reader`.
+3. A **role assignment** binds a role to a user and carries the **scope**. The
+   scope is a policy as well.
+
+### How a request is decided
+
+For every request, the data platform matches the requested action and resource
+against the statements that apply to the user:
+
+1. Nothing is permitted by default. A request that no statement matches is
+   denied.
+2. Each assignment of the user is evaluated on its own. The statements of the
+   role's policies are matched against the requested action and resource. A
+   matching `Deny` denies the request for that assignment, a matching `Allow`
+   grants it, and if nothing matches, the assignment contributes nothing. A
+   `Deny` thus takes precedence over an `Allow` within an assignment.
+3. The scope of the assignment has to allow the same action on the same
+   resource. The effective permission of an assignment is the intersection of
+   its role and its scope, so a role that allows an action still results in a
+   denial if the scope does not cover the resource.
+4. The request is permitted if at least one assignment allows it. Otherwise it
+   is denied, and the service returns an error.
 
 ## Available roles
 
@@ -72,10 +128,10 @@ user automatically and rejects any attempt to assign it to somebody else, so
 it appears in the lists with `root` as its holder but cannot be handed out.
 {{< /info >}}
 
-The data platform denies everything by default. A role grants nothing until it is
-assigned to a user together with a scope, and a user's effective permissions
-are the union of all of their assignments, with a `Deny` always taking
-precedence over an `Allow`.
+The data platform denies everything by default. A role grants nothing until it
+is assigned to a user together with a scope, and a user's effective permissions
+are the union of all of their assignments, evaluated as described in
+[The permission model](#the-permission-model).
 
 Alongside the predefined catalog, the data platform generates a role per
 Kubernetes operator-managed identity, named `managed:operator:<uuid>`. These
@@ -271,7 +327,7 @@ check two things in Access Control:
 2. That the **scope** of that assignment covers the resource they are working
    on. A correct role with too narrow a scope is the more common cause.
 
-Remember that a `Deny` beats an `Allow`, so adding another assignment cannot
-widen access that something else denies. Also give a recent change time to
-propagate, as [enforcement](#saving-and-enforcement) can lag by up to about
-30 seconds.
+Remember that an assignment grants only what its role and its scope allow at
+the same time, so a role that covers the action is still not enough if the
+scope leaves the resource out. Also give a recent change time to propagate, as
+[enforcement](#saving-and-enforcement) can lag by up to about 30 seconds.
