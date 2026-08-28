@@ -855,10 +855,12 @@ The following shortcodes also exist but are rarely used:
   _arangosh_ instead of _Arangosh_.
 
 - When referring to programs by their executable names, like the server or
-  client-tool binaries, make the name italic, e.g. `_oasisctl_` or `_arangod_`.
+  client-tool binaries, make the name italic, e.g. `_oasisctl_` or `_arangod_`
+  (`*oasisctl*` and `*arangod*` in headlines).
   
-  Exception: If it's the full label of a link, don't make it italic, e.g.
-  `[oasisctl](...)` but `[The _oasisctl_ reference](...)`.
+  Exceptions: Don't make it italic if it's in the `menuTitle` front matter or if
+  it's the full label of a link. Examples: `menuTitle: Get started with oasisctl`,
+  `[oasisctl](...)`, but `[The _oasisctl_ reference](...)`.
 
   Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
   is supposed to run it as a command.
