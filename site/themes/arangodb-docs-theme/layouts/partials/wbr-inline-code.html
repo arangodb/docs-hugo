@@ -1,0 +1,51 @@
+{{- /*
+  Adds <wbr> (word break opportunity) hints inside inline <code> elements, so
+  that long identifiers wrap at meaningful places instead of at an arbitrary
+  character or overflowing their container (table cells in particular).
+
+  A hint is placed at the end of a run of separator characters, except that a
+  trailing dot belongs to the segment that follows it:
+
+    foo[].bar_baz               -> foo[]<wbr>.bar_<wbr>baz
+    --server.endpoint=tcp://x   -> --server<wbr>.endpoint=<wbr>tcp://<wbr>x
+
+  Runs are never broken up (no hint between the dashes of `--`, the slashes of
+  `://` or the dots of `..`), and no hint is added before whitespace, which is
+  a break opportunity already.
+
+  Only bare inline <code> elements are processed. Highlighted code blocks are
+  emitted as <code class="..."> and any element with markup inside it is left
+  untouched.
+
+  @param {string} The rendered HTML to process.
+  @returns {template.HTML}
+*/ -}}
+
+{{- /* Separators a hint may follow. `.` is excluded, it is handled by the
+       second rule below. A literal `]` has to come first in a character
+       class. */ -}}
+{{- $after := `[]_)}:,=|/\\]` -}}
+{{- /* Characters a hint must not precede: any separator, so that runs stay
+       intact, and whitespace, which already allows a break. */ -}}
+{{- $notBefore := `[^]._)}:,=|/\\[:space:]]` -}}
+{{- /* Stand-in for a hint while the rules are applied, so that the markup of
+       one hint is not mistaken for content by the next rule. U+E000 is a
+       private-use character and never occurs in the content. */ -}}
+{{- $tok := "\ue000" -}}
+
+{{- $html := . | string -}}
+{{- range $code := findRE (printf `<code>[^<>]*%s[^<>]*</code>` $after) $html -}}
+  {{- $text := $code | strings.TrimPrefix "<code>" | strings.TrimSuffix "</code>" -}}
+  {{- /* End of a separator run: `bar_baz` -> `bar_<wbr>baz` */ -}}
+  {{- $text = replaceRE (printf `(%s)(%s)` $after $notBefore) (printf "${1}%s${2}" $tok) $text -}}
+  {{- /* Start of a dot run: `foo[].bar` -> `foo[]<wbr>.bar` */ -}}
+  {{- $text = replaceRE (printf `(\.+)(%s)` $notBefore) (printf "%s${1}${2}" $tok) $text -}}
+  {{- /* A run that starts a word has nothing to wrap before it, so `_key`
+         stays `_key` rather than becoming `_<wbr>key`. */ -}}
+  {{- $text = replaceRE (printf `(^|\s)(%s+)%s` $after $tok) "${1}${2}" $text -}}
+  {{- /* A hint at either end would be pointless. */ -}}
+  {{- $text = replaceRE (printf `^%s|%s$` $tok $tok) "" $text -}}
+  {{- $text = replace $text $tok "<wbr>" -}}
+  {{- $html = replace $html $code (printf "<code>%s</code>" $text) -}}
+{{- end -}}
+{{- return ($html | safeHTML) -}}

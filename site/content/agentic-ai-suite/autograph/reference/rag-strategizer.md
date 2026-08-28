@@ -28,6 +28,7 @@ Analyze existing clusters and assign optimal RAG strategies. Must be called **af
 |-----------|------|----------|-------------|-------------------|
 | `full_graph_rag_strategy` | string | No | Controls what **fraction of clusters** receive **FullGraphRAG** (the rest get **VectorRAG**). Descriptive tokens: **`very low`** → 0% FullGraph; **`low`** → 25%; **`high`** → 75%; **`very high`** → 100%. You can also send a string like **`"40%"`** (0–100). | **`"very high"`** (default behavior if omitted) when you want maximum FullGraph coverage. **`"low"`** or **`"very low"`** to limit expensive graph extraction. **`"high"`** as a **balanced** default for mixed corpora. |
 | `max_parallel_clusters` | integer | No | Limits concurrent cluster analyses (each may call the LLM). | Default: **5**. Lower (e.g. **2–3**) if you hit LLM rate limits. |
+{colwidth-1="20ch"}
 
 ### Response
 
@@ -131,6 +132,7 @@ No body or query parameters.
 | `strategies[].parameters` | map<string, string> | All non-core fields stored alongside the strategy. Always includes **`rag_mode`** (mirrors `strategy_type`) and the **`module`** label when one applies. **FullGraphRAG** profiles additionally include the importer tunables shown above (`batch_size`, `enable_chunk_embeddings`, `enable_edge_embeddings`, `chunk_token_size`, `chunk_overlap_token_size`, `community_report_num_findings`, `enable_semantic_units`). Note that while `enable_semantic_units` is set to true, automatic citation extraction is not yet implemented (see [Known Limitations](error-handling.md#citation-handling)). If LLM-driven entity-type generation failed for a FullGraphRAG cluster, the field **`entity_generation_error`** is included and `entity_types` is empty. Booleans and numbers are serialized as their string form because the gRPC type is `map<string, string>`. |
 | `total_strategies` | integer | Length of `strategies`. |
 | `strategy_type_counts` | map | e.g. counts of `VectorRAG` vs `FullGraphRAG`. |
+{colwidth-1="20ch"}
 
 ### HTTP Example
 

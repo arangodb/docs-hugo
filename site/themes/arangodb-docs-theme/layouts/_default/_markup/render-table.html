@@ -1,0 +1,88 @@
+{{- /*
+  Column widths can be set with `colwidth-N` attributes below the table, N
+  being the 1-based number of the column. Repeat the attribute to size more
+  than one column, any value the CSS `width` property accepts works:
+
+    | Parameter | Description |
+    |-----------|-------------|
+    | `foo`     | Bar         |
+
+    {colwidth-1="20ch" colwidth-3="10%"}
+
+  The widths are emitted as a <colgroup>. Note that they are a suggestion the
+  browser can override to fit the content, unless the table opts into a fixed
+  layout as well: {.fixed colwidth-1="20ch"}
+*/ -}}
+{{- /* Every row has the same number of cells, so any one of them will do. */ -}}
+{{- $columns := 0 -}}
+{{- with .THead -}}
+  {{- $columns = len (index . 0) -}}
+{{- else -}}
+  {{- with .TBody -}}
+    {{- $columns = len (index . 0) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* A width that never reaches a column is a typo, not a no-op. */ -}}
+{{- $widths := dict -}}
+{{- range $k, $v := .Attributes -}}
+  {{- if and $v (hasPrefix $k "colwidth-") -}}
+    {{- $col := strings.TrimPrefix "colwidth-" $k -}}
+    {{- if not (findRE `^[1-9][0-9]*$` $col) -}}
+      {{- warnf "render-table: colwidth-%s is not a column number in %s" $col $.Position -}}
+    {{- else if gt (int $col) $columns -}}
+      {{- warnf "render-table: colwidth-%s exceeds the %d columns of the table in %s" $col $columns $.Position -}}
+    {{- else -}}
+      {{- $widths = merge $widths (dict $col $v) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<table
+  {{- range $k, $v := .Attributes }}
+    {{- if and $v (not (hasPrefix $k "colwidth-")) }}
+      {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+    {{- end }}
+  {{- end }}>
+  {{- if and $widths $columns }}
+  <colgroup>
+    {{- range $col := seq $columns }}
+      <col
+        {{- with index $widths (string $col) }}
+          {{- printf " style=%q" (printf "width: %s" .) | safeHTMLAttr }}
+        {{- end -}}
+      >
+    {{- end }}
+  </colgroup>
+  {{- end }}
+  <thead>
+    {{- range .THead }}
+      <tr>
+        {{- range . }}
+          <th
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >
+            {{- partial "wbr-inline-code.html" .Text -}}
+          </th>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </thead>
+  <tbody>
+    {{- range .TBody }}
+      <tr>
+        {{- range . }}
+          <td
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >
+            {{- partial "wbr-inline-code.html" .Text -}}
+          </td>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </tbody>
+</table>
