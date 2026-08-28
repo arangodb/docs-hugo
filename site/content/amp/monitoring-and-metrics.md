@@ -81,8 +81,8 @@ which is required for connecting to Prometheus.
 {{< info >}}
 The maximum lifetime of a metrics token is one year (365 days). This limit
 applies regardless of how the token is created. If you create a token with
-[`oasisctl`](oasisctl/create/create-metrics-token.md), specify the `--lifetime`
-in minutes or hours, for example `--lifetime 720h`; longer values are capped
+[oasisctl](oasisctl/create/create-metrics-token.md), specify the `--lifetime`
+in minutes or hours, for example `--lifetime 720h`. The duration is capped
 at one year.
 {{< /info >}}
 
