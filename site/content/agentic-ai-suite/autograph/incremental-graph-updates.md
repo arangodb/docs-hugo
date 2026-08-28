@@ -204,10 +204,17 @@ project built through the File Manager. Upload a document with
 [`POST /_platform/filemanager/_db/{database}/rag-input`](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
 and pass the returned ID.
 
-To orchestrate without ids, provide `categories` and omit `file_ids`. That
-processes every document of those categories again, and importing documents that
-are already in a partition adds another import batch. See
-[Updating a document](../importer/incremental-updates.md#updating-a-document).
+After an insert or an update, send the `file_ids` of the changed documents,
+together with the `project`, which is required. Non-empty `file_ids` is what
+keeps an already imported partition eligible, because it bypasses the filter
+that orchestration applies otherwise.
+
+Sending `categories` alone does not bypass that filter. Orchestration then only
+builds the partitions that are not in the `{project}_kg` knowledge graph yet,
+which skips exactly the partitions that your insert or update touched. If
+nothing else is stale, the request is rejected with a `409` and a
+`Nothing to orchestrate` message, see
+[Telling the three `409` responses apart](reference/orchestration.md#telling-the-three-409-responses-apart).
 
 ## Partition divergence and reclustering
 
