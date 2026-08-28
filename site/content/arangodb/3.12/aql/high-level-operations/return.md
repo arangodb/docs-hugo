@@ -13,7 +13,9 @@ in data modification queries is optional.
 
 The general syntax for `RETURN` is:
 
-<pre><code>RETURN <em>expression</em></code></pre>
+```aql-syntax
+RETURN <expression>
+```
 
 There is also a variant [`RETURN DISTINCT`](#return-distinct).
 
@@ -25,8 +27,10 @@ query and a single return value returned as array with one element.
 To return all elements from the currently iterated array without modification,
 the following simple form can be used:
 
-<pre><code>FOR <em>variableName</em> IN <em>expression</em>
-  RETURN <em>variableName</em></code></pre>
+```aql-syntax
+FOR <variableName> IN <expression>
+  RETURN <variableName>
+```
 
 As `RETURN` allows specifying an expression, arbitrary computations can be
 performed to calculate the result elements. Any of the variables valid in the
@@ -141,8 +145,10 @@ FOR u IN users
 The `DISTINCT` keyword will ensure uniqueness of the values returned by the
 `RETURN` statement:
 
-<pre><code>FOR <em>variableName</em> IN <em>expression</em>
-  RETURN DISTINCT <em>expression</em></code></pre>
+```aql-syntax
+FOR <variableName> IN <expression>
+  RETURN DISTINCT <expression>
+```
 
 `RETURN DISTINCT` is not allowed on the top-level of a query if there is no `FOR`
 loop preceding it.
