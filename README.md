@@ -854,6 +854,15 @@ The following shortcodes also exist but are rarely used:
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
 
+- When referring to programs by their executable names, like the server or
+  client-tool binaries, make the name italic, e.g. `_oasisctl_` or `_arangod_`.
+  
+  Exception: If it's the full label of a link, don't make it italic, e.g.
+  `[oasisctl](...)` but `[The _oasisctl_ reference](...)`.
+
+  Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
+  is supposed to run it as a command.
+
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
 
