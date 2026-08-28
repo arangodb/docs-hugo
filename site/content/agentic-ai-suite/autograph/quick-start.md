@@ -22,7 +22,7 @@ description: >-
 {{< steps >}}
 
 {{< step "Create a project" >}}
-In the sidebar, open **Agentic AI Suite** > **AutoGraph** and create a
+In the sidebar, open **Agentic AI Suite** > **AutoGraph Studio** and create a
 project. A project is an isolated workspace: you keep one set of related
 documents per project and their data stays separate from everything else.
 {{< /step >}}
@@ -48,17 +48,30 @@ on its own; wait for it to finish.
 {{< /step >}}
 
 {{< step "Build the knowledge base" >}}
-Start the import. AutoGraph turns each topic group into a part of a searchable
-knowledge base and deploys a retriever to query it. Wait for the
-"knowledge graph built successfully" confirmation.
+Click **Generate strategies**. Pick how much of the corpus should lean on graph
+extraction with the **Complexity** slider — the balanced default is a good first
+run — then review the strategies AutoGraph picked per topic group and click
+**Build Knowledge Graph**. AutoGraph turns each topic group into a part of a
+searchable knowledge base. Wait for the **Knowledge Graph built** confirmation.
+{{< /step >}}
+
+{{< step "Deploy a retriever" >}}
+Deploy a retriever against your Context Graph. It is what your questions,
+agents, and applications talk to. Wait for it to go **live**.
 {{< /step >}}
 
 {{< step "Ask your first question" >}}
-Open the chat and ask a question in plain language. Answers come back with
-citations linking to the source documents they came from.
+Ask a question in plain language. Answers come back with citations linking to the
+source documents they came from.
 {{< /step >}}
 
 {{< /steps >}}
+
+{{< info >}}
+To add, remove, or replace individual documents later, use the API. The web
+interface does not offer these operations in Arango Contextual Data Platform
+4.1.0. See [Incremental Graph Updates](incremental-graph-updates.md).
+{{< /info >}}
 {{< /tab >}}
 
 {{< tab "HTTP REST API" >}}
@@ -101,7 +114,24 @@ Spawns the per-domain Importer workers to build the knowledge graph. Run this
 only after the strategizer has finished.
 {{< /step >}}
 
+{{< step "Keep the graph up-to-date (optional)" >}}
+{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/graph/update" >}}
+Once the graph is built, you can add, remove, or replace individual documents
+with `/v1/graph/insert`, `/v1/graph/delete`, and `/v1/graph/update` instead of
+rebuilding the corpus. After an insert or update, call `/v1/orchestrate` again
+with the `file_ids` of the changed documents so that the change reaches the
+knowledge graph. See [Incremental Graph Updates](incremental-graph-updates.md).
+{{< /step >}}
+
 {{< /steps >}}
+
+{{< info >}}
+Insert and update identify every document by its File Manager `file_id`, so
+upload through the [File Manager](../../platform-suite/file-manager/) rather than
+with `/v1/import-multiple` as in step 2, if you expect to change documents later.
+See [Identifying documents for Layer
+3](incremental-graph-updates.md#identifying-documents-for-layer-3).
+{{< /info >}}
 
 Next, query your knowledge base with the
 [Retriever service](../retriever/quick-start.md).
@@ -119,6 +149,8 @@ source. To query it programmatically, see the
 ## Next steps
 
 - [Use Cases](use-cases.md): Real-world enterprise scenarios.
+- [Incremental Graph Updates](incremental-graph-updates.md): Add, remove, and
+  replace documents in a knowledge graph that has already been built.
 - [Architecture](architecture.md): The three-layer knowledge graph and
   resulting collections.
 - [Design Guide](design-guide.md): Structure data with modules, layers, and

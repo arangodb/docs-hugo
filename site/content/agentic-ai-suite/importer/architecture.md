@@ -6,14 +6,14 @@ description: >-
   Knowledge graph collections, vector indexes, async-job lifecycle, and
   operational guidance for the Importer service
 ---
-The Importer builds the **Layer 3 knowledge graph** in your ArangoDB database:
+The Importer builds the **Layer 3 Knowledge Graph** in your ArangoDB database:
 the documents, chunks, entities, communities, and relationships that the
 Retriever (and downstream applications) query at runtime. This page describes
 the collections it creates, the vector indexes it adds, the asynchronous job
 lifecycle of an import, and the operational rules to keep in mind when
 deploying the service.
 
-For Layer 1 and Layer 2 (modules and corpus graph), see
+For Layer 1 and Layer 2 (modules and Corpus Graph), see
 [AutoGraph Architecture](../autograph/architecture.md).
 
 ## Knowledge graph collections
@@ -49,11 +49,28 @@ different partitions coexists in the same collections. Filter by
 
 - **Purpose**: Original text documents that were processed.
 - **Key fields**:
-  - `_key`: Unique identifier.
+  - `_key`: Unique identifier, built from a fingerprint of the content plus the
+    `import_number`, and prefixed with the `partition_id` when the target is a
+    SmartGraph. Because the fingerprint covers the content, files with identical
+    content collapse into a single Document within one import.
   - `content`: Full text content.
-  - `file_name` (multi-file imports only): Original filename.
-  - `citable_url` (multi-file imports only): URL used for inline citations at retrieval.
+  - `file_name`: Original filename.
+  - `citable_url`: URL used for inline citations at retrieval. Taken from the
+    inline `files[].citable_url` field, or from the file's File Manager custom
+    metadata on the `file_id` and `file_ids` paths. Empty for `file_content`
+    and `file_url` imports, which have no way to supply one. See
+    [Citation URLs](reference/parameters.md#citation-urls).
   - `partition_id`: Partition the document belongs to.
+  - `file_ids`: List of File Manager ids stamped at import time, when the source
+    is a File Manager file. Empty for inline or `file_url` imports without one.
+    It is a list rather than a single id because `_key` is a content hash: when
+    several files hold the same content they share one Document, and the id of
+    each of them is recorded here.
+    [Layer 3 removals](incremental-updates.md#deleting-a-document) resolve
+    documents primarily by this field.
+  - `import_number`: The import batch that produced the document. Repeated
+    imports into the same partition add further batches, which
+    [reclustering](incremental-updates.md#reclustering) consolidates.
 
 ### Chunks
 
@@ -95,7 +112,7 @@ different partitions coexists in the same collections. Filter by
 
 ### Relations
 
-- **Purpose**: Edges connecting all nodes in the knowledge graph.
+- **Purpose**: Edges connecting all nodes in the Knowledge Graph.
 - **Key fields**:
   - `_from`, `_to`: Source and target node references.
   - `type`: Relationship type (see below).
@@ -109,6 +126,13 @@ The Importer creates the following relationship types:
 3. **RELATED_TO**: Relationships between different entities.
 4. **IN_COMMUNITY**: Associates entities with their community groups.
 5. **SUB_COMMUNITY_OF**: Relates a sub-community to its parent community.
+
+The community edges (`IN_COMMUNITY`, `SUB_COMMUNITY_OF`) only exist in
+`full_graphrag` partitions. They are rebuilt if you
+[recluster](incremental-updates.md#reclustering) such a partition after
+incremental updates. The other relationship types are kept. A `vector_rag`
+partition has no `Entities` or `Communities` and therefore no community layer
+that could be rebuilt.
 
 ### Semantic Units
 
@@ -156,7 +180,7 @@ with the File Parser's verdict in the status message. See
 flowchart LR
   Client["Client / orchestrator"]
   API["Importer API"]
-  Poll["GET /v1/jobs/{job_id}"]
+  Poll["<code>GET /v1/jobs/{job_id}</code>"]
   Status["Platform service status"]
   DB["ArangoDB knowledge graph"]
 
@@ -173,7 +197,35 @@ flowchart LR
 |---------|--------|---------|
 | **Single file** (`POST /v1/import`) | Returns immediately with `success: true` | **No `job_id`**. Use the platform service status (the same status feed AutoGraph reads) |
 | **Multiple files** (`POST /v1/import-multiple`) | Returns a `job_id` | Poll `GET /v1/jobs/{job_id}` until `job.is_terminal` is `true` |
-| **Concurrency** | Only **one** import per replica at a time | A second submit while one is running gets `success: false` (busy), not an HTTP conflict |
+| **Concurrency** | Only **one** import or recluster job per replica at a time, under a single global lock | A second submit while one is running gets `success: false` (busy), not an HTTP conflict |
+
+The same lock also applies to `POST /v1/recluster`: a replica can only run one
+import or recluster job at a time. It is a **single global lock per replica**,
+not keyed by partition, so any import blocks any recluster, no matter which
+partitions the two jobs touch.
+
+**How a rejection is reported depends on the endpoint you call**, so your client
+needs to handle both cases:
+
+| Endpoint you call while the lock is held | What you get |
+|------------------------------------------|-------------------|
+| `POST /v1/import`, `POST /v1/import-multiple` | `HTTP 200` with `success: false` and a busy message in the body. It is neither an HTTP conflict nor a gRPC status |
+| `POST /v1/recluster` | `HTTP 503` (gRPC `UNAVAILABLE`) with the message in the body |
+
+This is independent of which operation holds the lock. A blocked import reports
+`success: false` even if a recluster job is running, and a blocked recluster
+reports `503` even if an import is running. In both cases, wait until the
+running job is done and try again. The exception is a single-file import, which
+has no `job_id`. In this case, watch the platform service status instead. For the
+recluster endpoint and how to poll its job, see
+[Incremental Updates](incremental-updates.md). For the different response shapes,
+see [Error handling](reference/error-handling.md#synchronous-http-errors).
+
+{{< info >}}
+The recluster handler raises the gRPC status `UNAVAILABLE`, which the HTTP
+gateway maps to **`HTTP 503`**. A REST caller sees `503` with the message in the
+body, and only a gRPC caller sees the `UNAVAILABLE` token itself.
+{{< /info >}}
 
 Terminal statuses include `service_completed`, `service_failed`,
 `openai_graph_build_failed`, `triton_graph_build_failed`,

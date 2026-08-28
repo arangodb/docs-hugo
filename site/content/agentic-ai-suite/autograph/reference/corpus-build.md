@@ -72,7 +72,7 @@ See [Supported file formats](../setup.md#supported-file-formats) for details.
 
 | Status Code | Meaning |
 |-------------|---------|
-| `200` | Build started successfully |
+| `202` | Build accepted and started in the background |
 | `400` | Invalid request |
 | `401` | Authentication failed |
 | `409` | Another build is already in progress |

@@ -6,6 +6,8 @@ description: >-
   Ask questions about your data in plain language and get answers back, no AQL
   required
 ---
+{{< tag "Beta" >}}
+
 {{< steps >}}
 
 {{< step "Open Ada" >}}
