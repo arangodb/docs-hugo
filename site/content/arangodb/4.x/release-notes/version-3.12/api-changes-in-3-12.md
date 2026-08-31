@@ -981,6 +981,17 @@ HTTP status codes are used in server responses:
 
 - `arangodb_http_response_code_total`
 
+---
+
+<small>Introduced in: v3.12.11</small>
+
+The following new metrics have been added for monitoring how long requests to
+the Role-Based Access Control (RBAC) service take and what the health of the
+cluster servers is:
+
+- `arangodb_rbac_request_duration`
+- `arangodb_server_health`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>

@@ -2241,6 +2241,31 @@ A new `--vector-index-build-retry-backoff` startup option has been added.
 If training a vector index fails, wait this many seconds before retrying.
 The default is `60` seconds.
 
+### External service for RBAC
+
+<small>Introduced in: v3.12.11</small>
+
+Role-Based Access Control (RBAC) lets you manage which users can do what by
+assigning roles to them, and each role is a set of specific permissions.
+This makes it easier to manage authorization for many users because you don't
+have to assign a lot of specific permissions for each individual user.
+
+The classic authorization system of ArangoDB lets you configure the access level
+for databases and collections per user, with some special cases like access to
+the `_system` database granting administrative permissions. From v3.12.11 onward,
+you can optionally use RBAC instead, if you run ArangoDB as part of the
+Arango Contextual Data Platform.
+
+With RBAC enabled, ArangoDB talks to a service of the data platform to determine
+whether to allow to deny actions on specific resources. Where this service runs
+can be configured with the new `--server.external-rbac-service` startup option,
+which enables RBAC for ArangoDB at the same time.
+
+| Authorization Type | RBAC | Classic |
+|---|---|---|
+| ArangoDB standalone | – | ✅ |
+| Arango Contextual Data Platform | ✅ | ✅ |
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
@@ -3051,6 +3076,19 @@ HTTP status codes are used in server responses:
 | Label | Description |
 |:------|:------------|
 | `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
+
+### RBAC connectivity & server health metrics
+
+<small>Introduced in: v3.12.11</small>
+
+The following new metrics have been added for monitoring how long requests to
+the Role-Based Access Control (RBAC) service take and what the health of the
+cluster servers is:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
+| `arangodb_server_health` | Cluster server health status (0=FAILED, 1=BAD, 2=GOOD). |
 
 ## Client tools
 
