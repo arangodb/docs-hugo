@@ -2257,7 +2257,7 @@ you can optionally use RBAC instead, if you run ArangoDB as part of the
 Arango Contextual Data Platform.
 
 With RBAC enabled, ArangoDB talks to a service of the data platform to determine
-whether to allow to deny actions on specific resources. Where this service runs
+whether to allow or deny actions on specific resources. Where this service runs
 can be configured with the new `--server.external-rbac-service` startup option,
 which enables RBAC for ArangoDB at the same time.
 
