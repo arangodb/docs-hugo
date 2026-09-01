@@ -7,7 +7,7 @@ weight: 65
 ---
 ## File uploads and processing
 
-The API performs no checks when files are uploaded, where as the data platform
+The API performs no checks when files are uploaded, whereas the data platform
 web interface does. The API neither validates the file format nor the file size,
 and files are stored successfully regardless.
 All restrictions are applied later during the corpus build, and a file that
@@ -18,7 +18,8 @@ cannot be processed is dropped at that point rather than rejected on upload.
   parsed and imported without complaint, although no downstream stage is
   designed or tested for them.
 - **No size check**: A file that exceeds the maximum size is stored
-  successfully and is only dropped once the build reaches it.
+  successfully and is only dropped once the build reaches it (see
+  `FILE_TOO_LARGE` below).
 - **No chunked or resumable uploads**: Each file has to be transferred to the
   [File Manager](../../../platform-suite/file-manager/_index.md) in a single
   `multipart/form-data` request.
