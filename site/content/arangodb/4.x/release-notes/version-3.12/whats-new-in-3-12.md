@@ -2252,7 +2252,8 @@ via the `valid_until` parameter in the
 The default is `604800` (1 week).
 
 If a request specifies a `valid_until` further in the future than this maximum
-allows, it is silently capped to now plus this option's value by the server.
+allows, the server caps it silently to the moment of the request plus this
+option's value.
 
 ## Miscellaneous changes
 
