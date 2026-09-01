@@ -1,6 +1,6 @@
 ---
 title: Retriever Service
-menuTitle: Retriever
+menuTitle: AutoRAG (Retriever)
 description: >-
   The Retriever service enables intelligent search and retrieval from knowledge
   graphs created by the Importer service
