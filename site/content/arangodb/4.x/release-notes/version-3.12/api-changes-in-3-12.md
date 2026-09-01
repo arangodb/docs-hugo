@@ -241,7 +241,7 @@ When requesting a personal access token via the
 the server may not honor the requested `valid_until` timestamp and issue the
 access token with a shorter validity. The maximum lifetime (in seconds) is
 controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
-startup option.
+startup option. The default is `604800` (1 week).
 
 ### Endpoint return value changes
 

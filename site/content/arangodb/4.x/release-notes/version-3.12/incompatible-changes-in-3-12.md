@@ -1283,7 +1283,7 @@ deployment modes, both for single servers.
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
 
-#### Access token lifetime
+### Access token lifetime
 
 <small>Introduced in: v3.12.10-1</small>
 
@@ -1292,7 +1292,7 @@ When requesting a personal access token via the
 the server may not honor the requested `valid_until` timestamp and issue the
 access token with a shorter validity. The maximum lifetime (in seconds) is
 controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
-startup option.
+startup option. The default is `604800` (1 week).
 
 ## JavaScript API
 

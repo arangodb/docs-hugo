@@ -2245,10 +2245,11 @@ The default is `60` seconds.
 
 <small>Introduced in: v3.12.10-1</small>
 
-The new `--auth.maximal-access-token-expiry-time` startup options lets you set the
-maximum lifetime (in seconds) that can be requested for a personal access token
+The new `--auth.maximal-access-token-expiry-time` startup options lets you set
+the maximum lifetime (in seconds) that can be requested for a personal access token
 via the `valid_until` parameter in the
 [`POST /_api/token` endpoint](../../develop/http-api/authentication.md#access-tokens).
+The default is `604800` (1 week).
 
 If a request specifies a `valid_until` further in the future than this maximum
 allows, it is silently capped to now plus this option's value by the server.
