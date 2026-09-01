@@ -42,6 +42,17 @@ from version 3.12.2 or 3.12.3 to 3.12.4, make sure to use the
 ArangoDB Kubernetes Operator (`kube-arangodb`) version 1.2.47 or later for any
 deployment that was previously on version 3.11.
 
+## Access tokens should be recreated
+
+In ArangoDB versions before 3.12.10-1, expired
+[access tokens](../../develop/http-api/authentication.md#access-tokens) may have
+been used to successfully request new access tokens for a user account. It is
+recommended to upgrade to v3.12.10-1 or later and revoke all access tokens to
+ensure that no user is in possession of non-expired access tokens who shouldn't
+have them. New access tokens can then be created, with a lifetime of one week
+by default (see [Access token lifetime](#access-token-lifetime)). Once expired,
+they cannot be used to get new access tokens or access the system in general.
+
 ## Resolving known issues with versions prior to 3.12.4
 
 Due to issues with the versions 3.12.0 through 3.12.3 and prior to 3.11.11,
@@ -1282,6 +1293,49 @@ deployment modes, both for single servers.
 - `GET /_api/replication/server-id`
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
+
+### Permission checks for Stream Transactions in cluster
+
+<small>Introduced in: v3.12.10-1</small>
+
+Operations that you execute as part of a
+[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+by setting the `x-arango-trx-id` header now explicitly check whether you have
+the required
+[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+This closes a gap in cluster deployments for collections that are not declared
+in the `collections` attribute when beginning the transaction. It affects the
+following operations:
+
+- All operations of the [Document API](../../develop/http-api/documents.md)
+- Getting the document count and truncating a collection via the
+  [Collection API](../../develop/http-api/collections.md)
+
+If you don't have the required access level for the collection, these requests
+now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
+error number. Previously, Coordinators didn't check the access level for
+undeclared collections:
+
+- Write operations failed with an HTTP `400 Bad Request` error and the
+  `ERROR_TRANSACTION_UNREGISTERED_COLLECTION` (`1652`) error number.
+- Reading a single document by key as well as getting the document count
+  succeeded.
+
+Single servers are unaffected. They check the access level when they add an
+undeclared collection to a running transaction and therefore already reject
+such requests with an HTTP `403 Forbidden` error. Operations outside of
+Stream Transactions as well as AQL queries are unaffected, too.
+
+### Access token lifetime
+
+<small>Introduced in: v3.12.10-1</small>
+
+When requesting a personal access token via the
+[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+the server may not honor the requested `valid_until` timestamp and issue the
+access token with a shorter validity. The maximum lifetime (in seconds) is
+controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
+startup option. The default is `604800` (1 week).
 
 ## JavaScript API
 

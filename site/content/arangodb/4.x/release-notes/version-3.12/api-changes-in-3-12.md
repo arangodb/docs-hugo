@@ -232,6 +232,49 @@ unused since v3.12.0 and has now been removed. The `/_admin/log/level` endpoints
 no longer include this log topic in responses and attempts to set the log level
 for this topic are ignored.
 
+#### Permission checks for Stream Transactions in cluster
+
+<small>Introduced in: v3.12.10-1</small>
+
+Operations that you execute as part of a
+[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+by setting the `x-arango-trx-id` header now explicitly check whether you have
+the required
+[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+This closes a gap in cluster deployments for collections that are not declared
+in the `collections` attribute when beginning the transaction. It affects the
+following operations:
+
+- All operations of the [Document API](../../develop/http-api/documents.md)
+- Getting the document count and truncating a collection via the
+  [Collection API](../../develop/http-api/collections.md)
+
+If you don't have the required access level for the collection, these requests
+now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
+error number. Previously, Coordinators didn't check the access level for
+undeclared collections:
+
+- Write operations failed with an HTTP `400 Bad Request` error and the
+  `ERROR_TRANSACTION_UNREGISTERED_COLLECTION` (`1652`) error number.
+- Reading a single document by key as well as getting the document count
+  succeeded.
+
+Single servers are unaffected. They check the access level when they add an
+undeclared collection to a running transaction and therefore already reject
+such requests with an HTTP `403 Forbidden` error. Operations outside of
+Stream Transactions as well as AQL queries are unaffected, too.
+
+#### Access token lifetime
+
+<small>Introduced in: v3.12.10-1</small>
+
+When requesting a personal access token via the
+[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+the server may not honor the requested `valid_until` timestamp and issue the
+access token with a shorter validity. The maximum lifetime (in seconds) is
+controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
+startup option. The default is `604800` (1 week).
+
 ### Endpoint return value changes
 
 #### Storage engine API
