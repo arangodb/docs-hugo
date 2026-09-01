@@ -34,8 +34,7 @@ Run the following command to install and start up the Arango Contextual Data
 Platform:
 
 ```bash
-curl -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- \
-    --client-id "YOUR_CLIENT_ID" --client-secret "YOUR_CLIENT_SECRET"
+curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
 ```
 
 If you prefer to run the installation steps manually, see
