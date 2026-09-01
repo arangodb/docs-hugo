@@ -42,6 +42,17 @@ from version 3.12.2 or 3.12.3 to 3.12.4, make sure to use the
 ArangoDB Kubernetes Operator (`kube-arangodb`) version 1.2.47 or later for any
 deployment that was previously on version 3.11.
 
+## Access tokens should be recreated
+
+In ArangoDB versions before 3.12.10-1, expired
+[access tokens](../../develop/http-api/authentication.md#access-tokens) may have
+been used to successfully request new access tokens for a user account. It is
+recommended to upgrade to v3.12.10-1 or later and revoke all access tokens to
+ensure that no user is in possession of non-expired access tokens who shouldn't
+have them. New access tokens can then be created, with a lifetime of one week
+by default (see [Access token lifetime](#access-token-lifetime)). Once expired,
+they cannot be used to get new access tokens or access the system in general.
+
 ## Resolving known issues with versions prior to 3.12.4
 
 Due to issues with the versions 3.12.0 through 3.12.3 and prior to 3.11.11,
