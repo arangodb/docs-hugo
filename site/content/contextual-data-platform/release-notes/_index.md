@@ -70,8 +70,8 @@ the [Importer](../../agentic-ai-suite/importer/setup.md#document-conversion-and-
 now delegate the conversion of documents into Markdown to the new File Parser
 service.
 
-PDF files, including scanned documents that are read using OCR, and Office
-documents (`.docx`, `.pptx`, `.doc`, `.ppt`) are now officially supported.
+PDF files, including scanned documents that are read using OCR, and some Office
+document formats (`.docx`, `.pptx`, `.doc`, `.ppt`) are now officially supported.
 The service additionally extracts embedded images together with their
 surrounding text (if requested), so that the Importer can pick them up as
 [semantic units](../../agentic-ai-suite/importer/semantic-units.md). For what each
@@ -79,7 +79,7 @@ format guarantees, see
 [Document conversion and supported formats](../../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats).
 
 The new service is designed for horizontal scalability, using two worker tiers,
-one for PDF documents and one for everything else, with 10 worker pods by
+one for PDF documents and one for everything else, with 3 worker pods by
 default. Deployments in AMP run these defaults unchanged. For self-hosted
 clusters, see
 [Tuning the File Parser](../../agentic-ai-suite/importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments).
