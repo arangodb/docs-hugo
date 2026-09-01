@@ -1472,6 +1472,14 @@ match both the normalized endpoint and full request URL.
 See [Security options](../../operations/security/security-options.md#url-access)
 for detailed examples.
 
+### Replication startup option obsolete
+
+<small>Removed in: v3.12.11</small>
+
+The `--replication.auto-start` startup option related to the unused replication
+functionality that has been removed in v3.12.10 is now obsolete. You can still
+specify the option without raising an error, but it no longer has any effect.
+
 ## Client tools
 
 ### arangodump
