@@ -1283,6 +1283,17 @@ deployment modes, both for single servers.
 - `PUT /_api/replication/server-id`
 - `PUT /_api/replication/sync`
 
+### Access token lifetime
+
+<small>Introduced in: v3.12.10-1</small>
+
+When requesting a personal access token via the
+[`POST /_api/token` endpoint](../../develop/http-api/authentication.md#access-tokens),
+the server may not honor the requested `valid_until` timestamp and issue the
+access token with a shorter validity. The maximum lifetime (in seconds) is
+controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
+startup option.
+
 ## JavaScript API
 
 ### `@arangodb/graph/traversal` module removed
