@@ -19,7 +19,8 @@ description: >-
 - **Resources**: 2+ CPU cores, 8 GB+ RAM, and 50 GB+ free disk space.
 - **Connectivity**: Active internet connection for downloading container images
   and tools.
-- **License key**: Generate your license key from the
+- **License credentials**: An Arango client ID and client secret. Generate them
+  from the
   [Arango developer portal](https://arangoaistg.wpenginepowered.com/developers/).
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private
@@ -33,7 +34,8 @@ Run the following command to install and start up the Arango Contextual Data
 Platform:
 
 ```bash
-curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
+curl -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- \
+    --client-id "YOUR_CLIENT_ID" --client-secret "YOUR_CLIENT_SECRET"
 ```
 
 If you prefer to run the installation steps manually, see
