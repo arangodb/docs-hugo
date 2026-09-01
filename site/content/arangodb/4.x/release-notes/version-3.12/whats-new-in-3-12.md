@@ -2241,14 +2241,14 @@ A new `--vector-index-build-retry-backoff` startup option has been added.
 If training a vector index fails, wait this many seconds before retrying.
 The default is `60` seconds.
 
-### Limit access tokens lifetime
+### Limit access token lifetime
 
 <small>Introduced in: v3.12.10-1</small>
 
-The new `--auth.maximal-access-token-expiry-time` startup options lets you set
+The new `--auth.maximal-access-token-expiry-time` startup option lets you set
 the maximum lifetime (in seconds) that can be requested for a personal access token
 via the `valid_until` parameter in the
-[`POST /_api/token` endpoint](../../develop/http-api/authentication.md#access-tokens).
+[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens).
 The default is `604800` (1 week).
 
 If a request specifies a `valid_until` further in the future than this maximum
