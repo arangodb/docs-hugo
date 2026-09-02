@@ -1201,6 +1201,34 @@ new index. From v3.12.10 onward, it succeeds in this case, too.
 See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
 for details.
 
+## Corrected results for graph traversal path filters
+
+<small>Introduced in: v3.12.11</small>
+
+Two issues in the `optimize-traversals` query optimizer rule could make graph
+traversals return incorrect results. Affected queries now return the same
+results as they do with the optimizer rule disabled.
+
+- Path filters using an array expansion with an
+  [inline `FILTER`](../../aql/operators.md#inline-filter), like
+  `FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()`,
+  were applied to the paths after the traversal emitted them. In combination
+  with the `uniqueVertices: "global"` traversal option, this could drop results.
+  A node that the traversal first reached over an edge violating the condition
+  counted as visited, and was therefore not reachable anymore over another path
+  that satisfies the condition. Such conditions are now evaluated during the
+  traversal, so a rejected edge is not followed in the first place. See
+  [Traversal optimization for path filters with an inline `FILTER`](whats-new-in-3-12.md#traversal-optimization-for-path-filters-with-an-inline-filter).
+
+- Path filters using the `AT LEAST (<number>)` array comparison operator, like
+  `FILTER p.edges[*].weight AT LEAST (2) <= 10`, were moved into the traversal
+  and checked for every edge or node of a path, effectively evaluating them like
+  `ALL`. This rejected paths that satisfy the condition for at least the
+  requested number of elements but not for all of them, and it accepted paths
+  that are shorter than the requested number of elements. `AT LEAST (<number>)`
+  cannot be checked per node or edge and the condition therefore remains a
+  post-filter that is applied to the emitted paths.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed

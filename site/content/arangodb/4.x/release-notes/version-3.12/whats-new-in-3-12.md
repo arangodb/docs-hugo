@@ -1508,6 +1508,42 @@ normalizes the conditions of `FILTER` operations:
 A related correctness fix for the string comparison in these optimizations is
 described in [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#string-comparison-in-filter-condition-optimizations).
 
+### Traversal optimization for path filters with an inline `FILTER`
+
+<small>Introduced in: v3.12.11</small>
+
+Graph traversals can use array comparison operators to check a condition for
+all nodes or edges of a path, like `FILTER p.edges[*].weight ALL <= 10`.
+The array expansion can contain an
+[inline `FILTER`](../../aql/operators.md#inline-filter) to restrict the check to
+a subset of the path, which is useful if an attribute is optional:
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND startNode GRAPH "myGraph"
+  FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()
+  RETURN p.edges[*]._key
+```
+
+Only the edges that have a `validUntil` attribute are compared against the
+current date, instead of every edge without this attribute rejecting the entire
+path.
+
+The query optimizer previously couldn't handle path filters with an inline
+`FILTER` and applied them to the paths after the traversal emitted them. The
+`optimize-traversals` rule can now move them into the traversal, like it already
+could for path filters without an inline `FILTER`. The traversal thus stops
+following a path as soon as a node or an edge violates the condition, and the
+condition can be taken into account for the edge index lookups.
+
+The optimization is applied if the array comparison operator is `ALL` or `NONE`,
+the array expansion has no inline `LIMIT` or `RETURN` projection, and the inline
+`FILTER` condition doesn't use the path variable. See
+[Filter a subset of the path](../../aql/graph-queries/traversals.md#filter-a-subset-of-the-path)
+for details and examples.
+
+This change also corrects the results of affected queries, see
+[Corrected results for graph traversal path filters](incompatible-changes-in-3-12.md#corrected-results-for-graph-traversal-path-filters).
+
 ## Indexing
 
 ### Multi-dimensional indexes
