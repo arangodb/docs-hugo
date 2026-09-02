@@ -12,9 +12,7 @@ the Agentic AI Suite for instance, such as for storing AI models and training-re
 metadata, as well as for user-uploaded GraphRAG content. Custom services make
 use of the file manager for application code, too.
 
-
 ## Organizing files with scopes
-
 
 RAG input files are organized into **scopes**. A scope is an ordered list of
 labels that addresses a file within a database, for example
@@ -105,4 +103,4 @@ The delete icon is only active when the file is safe to delete.
 
 ## API
 
-You can manage files programmatically using the [File Manager HTTP API](api/).
+You can manage files programmatically using the [File Manager HTTP API](api.md).

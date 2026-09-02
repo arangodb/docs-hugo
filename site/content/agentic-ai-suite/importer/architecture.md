@@ -166,6 +166,16 @@ Both `POST /v1/import` and `POST /v1/import-multiple` start work in the
 background and return immediately. The diagram below shows how a client
 submits an import and monitors progress.
 
+An import begins by converting its inputs: every document that is not already
+plain text or Markdown is submitted to the File Parser service, which returns
+Markdown and, when image extraction is enabled, the embedded images as separate
+artifacts referenced at their position in that Markdown. The Importer chunks the
+Markdown, and the image references are what
+[semantic units](semantic-units.md) are built from. This stage is not reported
+as a separate job status. A document that cannot be parsed fails the import
+with the File Parser's verdict in the status message. See
+[Document conversion and supported formats](setup.md#document-conversion-and-supported-formats).
+
 ```mermaid
 flowchart LR
   Client["Client / orchestrator"]
@@ -232,7 +242,7 @@ AutoGraph orchestration.
 1. **Choose `rag_mode` explicitly** - `full_graphrag` (default when omitted)
    for entity and community graphs; `vector_rag` for chunk-only retrieval.
 2. **Use multi-file imports plus the jobs API** for batches; use single-file
-   import only when you already integrate with platform service status.
+   import only when you already integrate with data platform service status.
 3. **Serialize imports per replica** - wait for `service_completed` or a
    terminal job status before submitting again.
 4. **Match `embedding_dim` to the deployed embedding model**. Mismatches
@@ -243,10 +253,10 @@ AutoGraph orchestration.
    vendors (OpenRouter, Azure, private endpoints) with the `custom` provider;
    pointing `openai` at a non-OpenAI URL is not supported. See
    [LLM Configuration](llm-configuration.md#using-openai-compatible-apis).
-6. **Prefer File Manager `file_id`s** for large files already on the platform
-   instead of inline base64 payloads.
+6. **Prefer File Manager `file_id`s** for large files already on the
+   data platform instead of inline base64 payloads.
 7. **Plan for long-running jobs**. Graph build and vector-index training can
-   take tens of minutes; ensure tokens can renew (the platform JWT lifetime
+   take tens of minutes; ensure tokens can renew (the data platform JWT lifetime
    applies).
 8. **SmartGraph constraints**: use `smart_graph_attribute="partition_id"`, a
    valid `partition_id`, and `shard_count=1` when creating a new SmartGraph.
