@@ -19,7 +19,7 @@ description: >-
 {{< tab "Web Interface" >}}
 {{< steps >}}
 
-{{< step "Start an engine" >}}
+{{< step "Start an ephemeral engine" >}}
 In the **Running Engines** panel, click **Start New Engine**, choose an
 engine size, and click **Start Engine**. The engine is the dedicated compute
 resource your algorithms run on.
