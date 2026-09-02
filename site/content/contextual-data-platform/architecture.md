@@ -11,7 +11,7 @@ from the ground up to run on [Kubernetes](https://kubernetes.io/) and requires
 it to function. This is not an optional feature, Kubernetes is the foundation
 that powers the entire platform architecture.
 
-{{< embed-svg "Platform-Architecture" >}}
+{{< embed-svg "Platform-Architecture" "High-level architecture of the Arango Contextual Data Platform. Everything runs inside a single Kubernetes cluster. Click a component to open its documentation." >}}
 
 The diagram above shows the platform's high-level architecture. Everything runs
 inside a single Kubernetes cluster, with user traffic

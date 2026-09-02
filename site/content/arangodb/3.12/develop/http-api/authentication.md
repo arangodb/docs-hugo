@@ -355,7 +355,12 @@ paths:
                   type: string
                 valid_until:
                   description: |
-                    A Unix timestamp in seconds to set the expiration date and time.
+                    A Unix timestamp in seconds with the desired expiration date and time.
+
+                    The server caps it to the moment of the request plus the
+                    maximum configured lifetime for access tokens, see the
+                    [`--auth.maximal-access-token-expiry-time` startup option](../../components/arangodb-server/options.md#--authmaximal-access-token-expiry-time)
+                    (introduced in v3.12.10-1).
                   type: integer
       responses:
         '200':
@@ -386,7 +391,7 @@ paths:
                     type: string
                   valid_until:
                     description: |
-                      A Unix timestamp in seconds with the configured expiration date and time.
+                      A Unix timestamp in seconds with the expiration date and time.
                     type: integer
                   created_at:
                     description: |
@@ -651,7 +656,7 @@ paths:
                           type: string
                         valid_until:
                           description: |
-                            A Unix timestamp in seconds with the configured expiration date and time.
+                            A Unix timestamp in seconds with the expiration date and time.
                           type: integer
                         created_at:
                           description: |
