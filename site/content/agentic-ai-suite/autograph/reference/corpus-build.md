@@ -61,9 +61,14 @@ Trigger a corpus build from imported files or File Manager.
 }
 ```
 
-**Formats:** common text and markup (e.g. `.txt`, `.md`, `.json`, `.html`, `.xml`, `.csv`), **PDF** (page-oriented extraction), and **Office** formats (via conversion to PDF where the deployment provides LibreOffice).
+**Formats:** Plain text files (`.txt`, `.md`) are parsed directly. Other
+file types are submitted to the File Parser service, which converts a sample to
+Markdown before AutoGraph embeds and clusters the sampled content. **PDF** (including
+scanned documents, read using OCR) and some **Office** formats
+(`.doc`, `.docx`, `.ppt`, `.pptx`) are officially supported.
+See [Supported file formats](../setup.md#supported-file-formats) for details.
 
-**Chunk limit:** by default the first **1200 tokens (~4800 characters)** per document drive embedding. PDFs fill that budget page-by-page; other formats use a character cap. Your operator may tune limits via service configuration (`CHUNK_SIZE` and `CHARACTERS_PER_TOKENS`).
+**Chunk limit:** by default the first **1200 tokens (~4800 characters)** of each document's Markdown drive embedding. Your operator may tune limits via service configuration (`CHUNK_SIZE` and `CHARACTERS_PER_TOKENS`).
 
 | Status Code | Meaning |
 |-------------|---------|
