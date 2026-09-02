@@ -52,15 +52,13 @@ with your actual values: `data-platform.example.org` (platform endpoint) and
 
 ## Start and stop Graph Analytics Engines
 
-### ACP service
-
 GAEs are deployed and deleted via the [Arango Control Plane (ACP) service](../../platform-suite/control-plane-acp/_index.md)
 in the Contextual Data Platform.
 
 If you use cURL, you need to use the `-k` / `--insecure` option for requests
-if the Platform deployment uses a self-signed certificate (default).
+if the data platform deployment uses a self-signed certificate (default).
 
-#### Start a `graphanalytics` service
+### Start a `graphanalytics` service
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphanalytics" >}}
 
@@ -113,7 +111,7 @@ Save the trailing segment of the `serviceId` from the response (here: `tqcge`).
 You need it to construct the Engine API URL for running graph analytics operations.
 {{< /info >}}
 
-#### List the services
+### List the services
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/list_services" >}}
 
@@ -125,7 +123,7 @@ curl -sSk -H "Authorization: bearer <ADB_TOKEN>" \
   -X POST "https://data-platform.example.org:8529/_platform/acp/v1/list_services" | jq
 ```
 
-#### Stop a `graphanalytics` service
+### Stop a `graphanalytics` service
 
 {{< endpoint "DELETE" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/service/{serviceId}" >}}
 
@@ -770,6 +768,12 @@ curl -H "Authorization: bearer $ADB_TOKEN" -X POST -d "{\"database\":\"_system\"
 
 You need to specify to which ArangoDB `database` and `target_collection` to save
 the results to. They need to exist already.
+
+Whereas an engine can load data from multiple collections, it writes the results
+to a single `target_collection` only and never updates the source documents.
+Use a dedicated collection for the results. It is considerably faster to create
+new documents that only hold the computed attributes than to update existing
+documents, and you can join the results with your source data at query time.
 
 You also need to specify a list of `job_ids` with one or more jobs that have run
 graph algorithms.
