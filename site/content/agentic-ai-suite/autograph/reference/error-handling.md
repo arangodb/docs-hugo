@@ -37,10 +37,13 @@ branch for these two statuses.
   [`PUT /v1/projects/{project}/model-config/credentials`](project-operations.md#update-model-config-credentials)
   runs into is a `400` with `error_code: RATE_LIMITED` instead, and a
   rate-limited File Manager is reported as `503`.
-- **Staging budget exhaustion** is reported on the build itself, as a
-  **completed** build with `error_code: STORAGE_FILE_TOO_LARGE`. A single file
-  that is larger than the whole budget is a `400` on the deprecated
-  [`POST /v1/import-multiple`](importing-files.md).
+- **A single file larger than the whole staging budget** is skipped and
+  reported on the build itself, as a **completed** build with
+  `error_code: STORAGE_FILE_TOO_LARGE`. On the deprecated
+  [`POST /v1/import-multiple`](importing-files.md) the same file is rejected up
+  front with a `400` instead. Ordinary exhaustion of the staging space is not an
+  error and is never reported, see
+  [Build error codes](corpus-build.md#build-error-codes).
 {{< /info >}}
 
 ### Two outcomes that are not failures

@@ -340,15 +340,29 @@ in these counters.
 | `LLM_API_KEY_MISSING` | `failed` | No chat or embedding key is configured on the service. | Fix it with [`PUT …/model-config/credentials`](project-operations.md#update-model-config-credentials). |
 | `LLM_PERMISSION_DENIED` | `failed` | The API key is valid but has no access to the model. | Fix it with [`PUT …/model-config/credentials`](project-operations.md#update-model-config-credentials). |
 
+Two different situations report `STORAGE_FILE_TOO_LARGE`:
+
+- A file larger than the whole staging space is skipped on its own, and the wave
+  carries on with the files behind it.
+
+- Separately, if a wave can download nothing at all and no staging space can be
+  reclaimed, every file still queued is abandoned and reported as
+  `Local storage budget exhausted; could not download remaining files`.
+  Those files are not too large and succeed on a retry once the staging space is
+  free.
+
+Check the per-file text before you split or shrink anything.
+
 {{< info >}}
 **This list is not closed.** Any failure the service cannot classify is reported
-as `UNKNOWN_ERROR`, so a client that switches on `error_code` needs a
-fall-through branch that surfaces `message` verbatim.
+as `UNKNOWN_ERROR`, so if you switch on `error_code`, you need a fall-through
+branch that surfaces `message` verbatim.
 
 **The two partial-success codes are not alternatives.** A build can hit parse
 failures *and* the staging budget in the same run. `error_code` is then
 `FILE_PARSER_PARTIAL_FAILURE`, which takes precedence, and `message` carries
-both texts. Read `message`, not only `error_code`.
+both texts. If you branch on `STORAGE_FILE_TOO_LARGE` alone, you never learn
+that files were skipped, so read `message`, not only `error_code`.
 {{< /info >}}
 
 | Status Code | Meaning |

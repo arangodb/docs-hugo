@@ -75,9 +75,10 @@ See [Designing categories](#designing-categories) for split-vs-merge trade-offs.
 
 {{< info >}}
 **`module` is the internal name of the same thing.** The corpus graph stores a
-category as a `module`, and several internal fields keep that name, such as the
-`modules` collection and the `jobs[].category` of an orchestration status. Those
-values are encoded, for example `myproject_legal`, and are never what you send.
+category as a `module`. Some internal fields keep that name, such as the
+`modules` collection. Others keep the name `category` but hold the encoded
+value, such as the `jobs[].category` of an orchestration status. Either way the
+value is encoded, for example `myproject_legal`, and is never what you send.
 Requests always take the bare label, see
 [The category contract](reference/_index.md#the-category-contract).
 {{< /info >}}
