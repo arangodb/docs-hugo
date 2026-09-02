@@ -2280,6 +2280,13 @@ which enables RBAC for ArangoDB at the same time.
 | ArangoDB standalone | – | ✅ |
 | Arango Contextual Data Platform | ✅ | ✅ |
 
+A new metric for monitoring how long requests to the RBAC service take has been
+added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
@@ -3091,17 +3098,15 @@ HTTP status codes are used in server responses:
 |:------|:------------|
 | `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
 
-### RBAC connectivity & server health metrics
+### Server health metrics
 
 <small>Introduced in: v3.12.11</small>
 
-The following new metrics have been added for monitoring how long requests to
-the Role-Based Access Control (RBAC) service take and what the health of the
+The following new metric has been added for monitoring what the health of the
 cluster servers is:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
 | `arangodb_server_health` | Cluster server health status (0=FAILED, 1=BAD, 2=GOOD). |
 
 ## Client tools
