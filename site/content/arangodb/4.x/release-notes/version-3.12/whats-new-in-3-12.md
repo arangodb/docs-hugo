@@ -3066,6 +3066,37 @@ HTTP status codes are used in server responses:
 |:------|:------------|
 | `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
 
+### Activities of all servers (experimental)
+
+<small>Introduced in: v3.12.10</small>
+
+The [server activities API](../../develop/http-api/monitoring/activities.md)
+has been extended for cluster deployments. The new
+[`GET /_admin/activities/all` endpoint](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+returns the activities of every server of a cluster, grouped by server ID.
+You need to call it on a Coordinator, which gathers the activities of all
+Coordinators, DB-Servers, and Agents. The response contains an
+`activities_per_server` object with the server IDs as the attribute keys and
+the activities of the respective server as the attribute values.
+
+Activity objects now also have a `threads` attribute that lists the threads
+which currently execute the activity, each with the identifier of the
+light-weight process (`LWPID`) and the thread `name`.
+
+### ArangoSearch consolidation activity (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+The [server activities API](../../develop/http-api/monitoring/activities.md)
+now reports the background consolidation of `arangosearch` View and inverted
+index data. For every consolidation that is currently running, an activity of
+type `ArangoSearchConsolidation` is listed. Its `data` object holds a `segments`
+array with the name, size, and document counts of every index segment that is
+being merged.
+
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearch-consolidation-activities)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
