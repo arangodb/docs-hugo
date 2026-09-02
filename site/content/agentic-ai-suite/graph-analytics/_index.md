@@ -37,11 +37,17 @@ Key features:
 
 You can interact with Graph Analytics Engines through:
 
-- **[Web Interface](web-interface.md)**: Use the graphical user interface for
-  interactive graph analytics workflows.
+- **[Web Interface](web-interface.md)**: Control the engines through a graphical
+  user interface. It makes the workflow and management very approachable.
 
-- **[HTTP API](api.md)**: Programmatically load data, run algorithms,
-  and manage engines through HTTP APIs.
+- **[HTTP API](api.md)**: Programmatically start and stop engines, load data,
+  run algorithms, and store the results. Use it if you want to automate
+  workflows with code.
+
+Note that you cannot interactively explore the graph data that is loaded into
+an engine, nor inspect the computed values before you store them. Once the
+results are written to a collection, you can query them with AQL and inspect the
+result documents.
 
 ## Available Algorithms
 

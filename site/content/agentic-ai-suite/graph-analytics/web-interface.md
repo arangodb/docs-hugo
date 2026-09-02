@@ -7,10 +7,15 @@ description: >-
   monitor jobs, and store results using the web interface of the Arango
   Contextual Data Platform
 ---
-The Graph Analytics web interface in the Arango Contextual Data Platform provides a graphical
-way to run graph algorithms on your data. You can start engines, load graphs into
-memory, execute algorithms with custom parameters, monitor job progress, and
-store the computed results in a collection of your database.
+The Graph Analytics web interface in the Arango Contextual Data Platform
+provides a graphical way to run graph algorithms on your data. You can start
+engines, load graphs into memory, execute algorithms with custom parameters,
+monitor job progress, and store the computed results in a collection of your
+database.
+
+The web interface is a front-end for the [HTTP API](api.md) and provides the
+same set of features. To look at the computed values, store them in a
+collection first, then query them with AQL or inspect the result documents.
 
 ## The Graph Analytics workflow in the web interface
 
