@@ -855,15 +855,31 @@ The following shortcodes also exist but are rarely used:
   _arangosh_ instead of _Arangosh_.
 
 - When referring to programs by their executable names, like the server or
-  client-tool binaries, make the name italic, e.g. `_oasisctl_` or `_arangod_`
-  (`*oasisctl*` and `*arangod*` in headlines).
-  
-  Exceptions: Don't make it italic if it's in the `menuTitle` front matter or if
-  it's the full label of a link. Examples: `menuTitle: Get started with oasisctl`,
-  `[oasisctl](...)`, but `[The _oasisctl_ reference](...)`.
+  client-tool binaries, make the name italic using underscores, e.g. `_arangod_`
+  or `_oasisctl_`. In headlines, use asterisks, e.g. `*oasisctl*` and `*arangod*`,
+  because underscores would affect the generated fragment IDs.
+
+  Exceptions: Don't make it italic in the following cases:
+
+  -  In the `menuTitle` front matter \
+    `menuTitle: Get started with oasisctl` but `title: Get started with _oasisctl_`
+
+  - If it's the full label of a link \
+    `[oasisctl](...)` but `[The _oasisctl_ reference](...)`
+
+  - If it's the only text of a headline \
+    `### arangodump` but `### Create backups with *arangodump*`
+
+  - If it specifically refers to the file on disk or is a command to run
+    (use inline code instead) \
+    `` The ArangoDB server executable is named `arangod` ``
+
+  - Inside of code including comments \
+    `const aql = require('@arangodb').aql; // not needed in arangosh`
 
   Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
-  is supposed to run it as a command.
+  is supposed to run it as a command or if it's specifically used as a
+  code value or file name.
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
