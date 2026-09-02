@@ -310,7 +310,7 @@ first deployment and you will need to supply:
 - Region ID (name)
 
 Try looking up that information to get more familiar with how to find
-information with oasisctl. When in doubt use the `--help` flag with any
+information with _oasisctl_. When in doubt use the `--help` flag with any
 command.
 
 ## Creating Resources

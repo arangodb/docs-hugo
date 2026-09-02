@@ -313,7 +313,7 @@ Also see [Dealing with eventual consistency](../../arangosearch/_index.md#dealin
 ## Examples
 
 The following examples demonstrate how you can set up and use inverted indexes
-with the JavaScript API of arangosh. See the
+with the JavaScript API of _arangosh_. See the
 [`ensureIndex()` method](_index.md#creating-an-index)
 description for details. 
 

@@ -1,10 +1,10 @@
 ---
-title: _arangobackup_ client tool
+title: _arangobackup_ command-line tool
 menuTitle: arangobackup
 weight: 25
 description: >-
-  `arangobackup` is a command-line client tool to create global hot backups of
-  ArangoDB deployments
+  _arangobackup_ is a client tool to create global hot backups of ArangoDB
+  deployments using a command-line interface (CLI)
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

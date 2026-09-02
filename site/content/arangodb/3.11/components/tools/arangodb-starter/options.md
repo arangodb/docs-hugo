@@ -189,15 +189,15 @@ command like this:
 arangodb --args.coordinators.log.level=requests=debug
 ```
 
-## Passing through `arangosync` options
+## Passing through *arangosync* options
 
-Options for `arangosync` that are not supported by the starter can still be
+Options for _arangosync_ that are not supported by the starter can still be
 passed to the syncmasters & syncworkers using a pass through option.
 Every option that start with a pass through prefix is passed through to the
-command-line of one or more `arangosync` instances.
+command-line of one or more _arangosync_ instances.
 
 - `--args.sync.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all arangosync instances started by this starter.
+  `--<section>.<key>=<value>` to all _arangosync_ instances started by this starter.
 - `--args.syncmasters.<section>.<key>=<value>` is passed as
   `--<section>.<key>=<value>` to all syncmasters started by this starter.
 - `--args.syncworkers.<section>.<key>=<value>` is passed as
@@ -216,8 +216,8 @@ arangodb --args.syncmasters.mq.direct-token-ttl=12h ...
 
 ## Passing environment variables
 
-Environment variables by default gonna be passed from arangodb process by
-default. However, variables can be overridden using arangodb command line option.
+Environment variables by default gonna be passed from _arangodb_ process by
+default. However, variables can be overridden using _arangodb_ command line option.
 
 - `--envs.<group>.<env name>=<value>`
 - `--envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G` sets
@@ -237,7 +237,7 @@ arangodb --envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G --envs.coordinato
 
 - `--starter.sync=bool`
 
-If set, the Starter also starts `arangosync` instances.
+If set, the Starter also starts _arangosync_ instances.
 
 - `--sync.start-master=bool`
 

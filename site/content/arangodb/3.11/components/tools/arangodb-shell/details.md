@@ -27,7 +27,7 @@ require("internal").load("/tmp/test.js")     // <- Linux / macOS
 require("internal").load("c:\\tmp\\test.js") // <- Windows
 ```
 
-You can exit arangosh using the key combination {{< kbd "Ctrl D" >}} or by
+You can exit _arangosh_ using the key combination {{< kbd "Ctrl D" >}} or by
 typing `quit` and hitting {{< kbd "Return" >}}.
 
 ## Shell Output

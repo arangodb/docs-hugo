@@ -157,7 +157,7 @@ option itself can be used as well in a flexibly sharded database.
 
 ### Running Queries
 
-For this arangosh example, first insert a few documents into a collection,
+For this _arangosh_ example, first insert a few documents into a collection,
 then create a query and explain it to inspect the execution plan.
 
 ```js

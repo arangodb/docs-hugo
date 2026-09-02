@@ -3,7 +3,7 @@ title: Hot Backup Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to create a consistent snapshot with the `arangobackup` tool
+  How to create a consistent snapshot with the _arangobackup_ tool
 ---
 ## Create
 
@@ -46,7 +46,7 @@ global write transaction lock:
   considered to have failed if the maximal waiting time for the lock is
   exceeded. If set to `true`, the system will take a potentially non-consistent
   hot backup when the timeout is exceeded.
-- `--force`: will make arangobackup abort ongoing write transactions in order
+- `--force`: will make _arangobackup_ abort ongoing write transactions in order
   to more quickly acquire the global write transaction lock. This option should
   be used with caution, as it will potentially abort valid write transactions,
   meaning client applications will see errors for otherwise valid operations
@@ -235,7 +235,7 @@ be used for restores until the download has finished.
 {{< /info >}}
 
 To configure rclone, use the `rclone-config-file` startup option to
-point arangobackup to a JSON configuration file. The expected format
+point _arangobackup_ to a JSON configuration file. The expected format
 is an object with user-chosen remote names as attribute keys, and the
 actual configuration as attribute value (a nested object). The option
 names and values in the [rclone documentation](https://rclone.org/docs/)

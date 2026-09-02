@@ -64,8 +64,8 @@ replicated and do not change the documents' `_rev` values.
 ## Foxx / Server Console
 
 Previously a call to `db._version(true)` inside a Foxx app or the server console
-would return a different structure than the same call from arangosh.
-Foxx/server console would return `{ <details> }` while arangosh would return
+would return a different structure than the same call from _arangosh_.
+Foxx/server console would return `{ <details> }` while _arangosh_ would return
 `{ server: ..., license: ..., version: ..., details: { <details> }}`.
 
 This is now unified so that the result structure is always consistent with the
@@ -350,7 +350,7 @@ The `/_api/gharial` endpoints for named graphs have changed:
 
 Renamed the `--concurrency` startup option to `--threads`.
 
-The following deprecated arangobench testcases have been removed from _arangobench_:
+The following deprecated _arangobench_ testcases have been removed from _arangobench_:
 - `aqltrx`
 - `aqlv8`
 - `counttrx`

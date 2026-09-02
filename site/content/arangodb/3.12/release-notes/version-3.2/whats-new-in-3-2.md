@@ -83,7 +83,7 @@ Once the storage engine was selected, the selection cannot be changed by adjusti
 to re-start the server with another (empty) database directory. In order to use data
 created with the other storage engine, it is required to dump the data first with the
 old engine and restore it using the new storage engine. This can be achieved via
-invoking arangodump and arangorestore.
+invoking _arangodump_ and _arangorestore_.
 
 Unlike in MySQL, the storage engine selection in ArangoDB is for an entire cluster or
 an entire single-server instance. All databases and collections will use the same storage
@@ -123,9 +123,9 @@ are available in the *Enterprise Edition*.
 
 ## Memory management
 
-- make arangod start with less V8 JavaScript contexts
+- make _arangod_ start with less V8 JavaScript contexts
 
-  This speeds up the server start and makes arangod use less memory at start.
+  This speeds up the server start and makes _arangod_ use less memory at start.
   Whenever a V8 context is needed by a Foxx action or some other JavaScript operation
   and there is no usable V8 context, a new context will be created dynamically now.
 
@@ -171,12 +171,12 @@ are available in the *Enterprise Edition*.
 
 ## Communication Layer
 
-- HTTP responses returned by arangod will now include the extra HTTP header
+- HTTP responses returned by _arangod_ will now include the extra HTTP header
   `x-content-type-options: nosniff` to work around a cross-site scripting bug
   in MSIE
 
 - the default value for `--ssl.protocol` was changed from TLSv1 to TLSv1.2.
-  When not explicitly set, arangod and all client tools will now use TLSv1.2.
+  When not explicitly set, _arangod_ and all client tools will now use TLSv1.2.
 
 - the JSON data in all incoming HTTP requests in now validated for duplicate
   attribute names.
@@ -198,9 +198,9 @@ are available in the *Enterprise Edition*.
   FAILED).
 
 - change default string truncation length from 80 characters to 256 characters for
-  `print`/`printShell` functions in ArangoShell and arangod. This will emit longer
+  `print`/`printShell` functions in ArangoShell and _arangod_. This will emit longer
   prefixes of string values before truncating them with `...`, which is helpful
-  for debugging. This change is mostly useful when using the ArangoShell (arangosh).
+  for debugging. This change is mostly useful when using the ArangoShell (_arangosh_).
 
 - the `@arangodb` module now provides a `time` function which returns the current time
   in seconds as a floating point value with microsecond precision.
@@ -313,14 +313,14 @@ are available in the *Enterprise Edition*.
 
 ## Client tools
 
-- added data export tool, arangoexport.
+- added data export tool, _arangoexport_.
 
-  arangoexport can be used to export collections to json, jsonl or xml
+  _arangoexport_ can be used to export collections to json, jsonl or xml
   and export a graph or collections to xgmml.
 
-- added "jsonl" as input file type for arangoimp
+- added "jsonl" as input file type for _arangoimp_
 
-- added `--translate` option for arangoimp to translate attribute names from
+- added `--translate` option for _arangoimp_ to translate attribute names from
   the input files to attribute names expected by ArangoDB
 
   The `--translate` option can be specified multiple times (once per translation
@@ -333,7 +333,7 @@ are available in the *Enterprise Edition*.
 
   `--translate` works for CSV and TSV inputs only.
 
-- added `--threads` option to arangoimp to specify the number of parallel import threads
+- added `--threads` option to _arangoimp_ to specify the number of parallel import threads
 
 - changed default value for client tools option `--server.max-packet-size` from 128 MB
   to 256 MB. this allows transferring bigger result sets from the server without the
@@ -361,7 +361,7 @@ Read more in the [overview](../../operations/administration/user-management/_ind
 
 ## Miscellaneous Changes
 
-- arangod now validates several OS/environment settings on startup and warns if
+- _arangod_ now validates several OS/environment settings on startup and warns if
   the settings are non-ideal. It additionally will print out ways to remedy the
   options.
 

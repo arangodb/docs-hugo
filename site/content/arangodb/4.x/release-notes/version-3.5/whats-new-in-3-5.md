@@ -97,7 +97,7 @@ Execution plan:
 
 Note that the `primarySort` option is immutable: it cannot be changed after
 View creation. It is therefore not possible to configure it through the Web UI.
-The View needs to be created via the HTTP or JavaScript API (arangosh) to set it.
+The View needs to be created via the HTTP or JavaScript API (_arangosh_) to set it.
 
 See [Primary Sort Order](../../indexes-and-search/arangosearch/performance.md#primary-sort-order)
 of ArangoSearch Views.
@@ -605,15 +605,15 @@ const documentId = collection.documentId(documentKey);
 *_arangodump_* got an option `--all-databases` to make it dump all available databases
 instead of just a single database specified via the option `--server.database`.
 
-When set to true, this makes arangodump dump all available databases the current 
+When set to true, this makes _arangodump_ dump all available databases the current 
 user has access to. The option `--all-databases` cannot be used in combination with 
 the option `--server.database`. 
 
-When `--all-databases` is used, arangodump will create a subdirectory with the data 
+When `--all-databases` is used, _arangodump_ will create a subdirectory with the data 
 of each dumped database. Databases will be dumped one after the after. However, 
 inside each database, the collections of the database can be dumped in parallel 
 using multiple threads.
-When dumping all databases, the consistency guarantees of arangodump are the same
+When dumping all databases, the consistency guarantees of _arangodump_ are the same
 as when dumping multiple single database individually, so the dump does not provide
 cross-database consistency of the data.
 
@@ -621,15 +621,15 @@ cross-database consistency of the data.
 inside the subdirectories of the specified dump directory, instead of just the
 single database specified via the option `--server.database`.
 
-Using the option for arangorestore only makes sense for dumps created with arangodump 
-and the `--all-databases` option. As for arangodump, arangorestore cannot be invoked 
+Using the option for _arangorestore_ only makes sense for dumps created with _arangodump_ 
+and the `--all-databases` option. As for _arangodump_, _arangorestore_ cannot be invoked 
 with the both options `--all-databases` and `--server.database` at the same time. 
 Additionally, the option `--force-same-database` cannot be used together with 
 `--all-databases`.
   
 If the to-be-restored databases do not exist on the target server, then restoring data 
 into them will fail unless the option `--create-database` is also specified for
-arangorestore. Please note that in this case a database user must be used that has 
+_arangorestore_. Please note that in this case a database user must be used that has 
 access to the `_system` database, in order to create the databases on restore. 
 
 Also see:
@@ -643,7 +643,7 @@ database server in a cluster with one of the client tools, and it is
 likely that any user operations carried out there with one of the client
 tools may cause trouble. 
 
-The client tools arangosh, arangodump and arangorestore will now emit 
+The client tools _arangosh_, _arangodump_ and _arangorestore_ will now emit 
 a warning when connecting with them to a database server node in a cluster.
 
 ## Startup option changes
@@ -663,7 +663,7 @@ value.
 The `--help-all` command-line option for all ArangoDB executables will now also 
 show all hidden program options.
 
-Previously hidden program options were only returned when invoking arangod or
+Previously hidden program options were only returned when invoking _arangod_ or
 a client tool with the cryptic `--help-.` option. Now `--help-all` simply returns 
 them as well.
 
@@ -702,7 +702,7 @@ any of their log messages, e.g.
 
 In this message, the `cf3f4` is the message's unique ID value. ArangoDB users can
 use this ID to build custom monitoring or alerting based on specific log ID values.
-Existing log ID values are supposed to stay constant in future releases of arangod.
+Existing log ID values are supposed to stay constant in future releases of _arangod_.
 
 Additionally the unique log ID values can be used by the Arango support to find
 out which component of the product exactly generated a log message. The IDs also
@@ -717,7 +717,7 @@ of the ID values. The ID values are always 5 byte strings, consisting of the cha
 `[0-9a-f]`. ID values are placed directly behind the log level (e.g. `INFO`).
 
 Alternatively, the log IDs can be suppressed in all log messages by setting the startup
-option `--log.ids false` when starting arangod or any of the client tools.
+option `--log.ids false` when starting _arangod_ or any of the client tools.
 
 ## Internal
 

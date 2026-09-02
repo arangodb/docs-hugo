@@ -164,5 +164,5 @@ across multiple shards or even multiple collections. In a single server,
 _arangodump_ produces a consistent snapshot.
 
 In the Enterprise Edition, there is an additional utility
-`arangobackup` and an HTTP API for [Hot Backups](../operations/backup-and-restore.md#hot-backups)
+_arangobackup_ and an HTTP API for [Hot Backups](../operations/backup-and-restore.md#hot-backups)
 to create consistent cluster snapshots.

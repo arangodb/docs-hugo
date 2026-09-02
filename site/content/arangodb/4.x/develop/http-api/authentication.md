@@ -916,7 +916,7 @@ In the Arango Managed Platform (AMP), authentication secrets are managed and
 therefore this feature isn't available.
 {{< /tip >}}
 
-To reload the JWT secrets of a local arangod process without a restart, you
+To reload the JWT secrets of a local _arangod_ process without a restart, you
 may use the following RESTful API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 

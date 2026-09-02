@@ -190,8 +190,8 @@ arangodb --args.coordinators.log.level=requests=debug
 
 ## Passing environment variables
 
-Environment variables by default gonna be passed from arangodb process by
-default. However, variables can be overridden using arangodb command line option.
+Environment variables by default gonna be passed from _arangodb_ process by
+default. However, variables can be overridden using _arangodb_ command line option.
 
 - `--envs.<group>.<env name>=<value>`
 - `--envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G` sets

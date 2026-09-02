@@ -99,7 +99,7 @@ To restore backups created by _arangodump_, you can use
 you can restore either all collections or just specific ones and choose whether
 to restore structural information with or without data.
 
-[_arangobackup_](../components/tools/arangobackup/_index.md) is a command-line tool that enables
+[arangobackup](../components/tools/arangobackup/_index.md) is a command-line tool that enables
 you to create instantaneous and consistent [hot backups](../operations/backup-and-restore.md#hot-backups)
 of the data and structural information stored in ArangoDB, without interrupting
 the database operations. It can be used for all ArangoDB deployment modes.

@@ -6,7 +6,7 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
-- AQL: during a traversal if a vertex is not found, arangod will not log an error and 
+- AQL: during a traversal if a vertex is not found, _arangod_ will not log an error and 
   continue with a NULL value, but will instead register a warning at the query and 
   continue with a NULL value.
 
@@ -23,11 +23,11 @@ description: >-
   still used in the configuration, but it will silently ignore this option.
 
 - The startup configuration parameter `--cluster.my-local-info` is deprecated now.
-  Using it will make arangod log a warning on startup.
+  Using it will make _arangod_ log a warning on startup.
 
 - Server startup: the recommended value for the Linux kernel setting in 
   `/proc/sys/vm/max_map_count` was increased to a value eight times as high as in 
-  3.2. arangod compares at startup if the effective value of this setting is 
+  3.2. _arangod_ compares at startup if the effective value of this setting is 
   presumably too low, and it will issue a warning in this case, recommending to 
   increase the value.
   
@@ -44,16 +44,16 @@ description: >-
 
 ## Client tools
 
-- The option `--recycle-ids` has been removed from the arangorestore command. 
+- The option `--recycle-ids` has been removed from the _arangorestore_ command. 
   Using this option could have led to problems on the restore, with potential 
   id conflicts between the originating server (the source dump server) and the 
   target server (the restore server). 
 
-- The option `--compat` has been removed from the arangodump command
+- The option `--compat` has been removed from the _arangodump_ command
   and the `/_api/replication/dump` REST API endpoint.
   In order to create a dump from an ArangoDB 2.8 instance, please use an older
   version of the client tools. Older ArangoDB versions are no longer be supported by 
-  the arangodump and arangorestore binaries shipped with 3.3.
+  the _arangodump_ and _arangorestore_ binaries shipped with 3.3.
 
 ## Miscellaneous
 

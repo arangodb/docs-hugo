@@ -219,9 +219,9 @@ The default value for the `--threads` startup parameter was changed from
 2 to the maximum of 2 and the number of available CPU cores for the
 following client tools:
 
-- arangodump
-- arangoimport
-- arangorestore
+- _arangodump_
+- _arangoimport_
+- _arangorestore_
 
 This change can help to improve performance of imports, dumps or restore
 processes on machines with multiple cores in case the `--threads` parameter
@@ -232,11 +232,11 @@ threads explicitly when invoking any of the above client tools.
 
 ### arangodump
 
-The default value of arangodump's `--envelope` option changes from `true`
+The default value of _arangodump_'s `--envelope` option changes from `true`
 in 3.8 to `false` in 3.9. This change turns on the non-envelope dump
 format by default, which will lead to smaller and slightly faster dumps.
 In addition, the non-enveloped format allows higher parallelism when
-restoring dumps with arangorestore.
+restoring dumps with _arangorestore_.
 
 The non-enveloped dump format is different to the enveloped dump format
 used by default in previous versions of ArangoDB.
@@ -259,24 +259,24 @@ actual documents, e.g.
 ```
 
 The change of the default dump format may have an effect on third-party
-backup tools or script. arangorestore will work fine with both formats.
-To switch between the formats, arangodump provides the `--envelope` option.
+backup tools or script. _arangorestore_ will work fine with both formats.
+To switch between the formats, _arangodump_ provides the `--envelope` option.
 
 ### arangorestore
 
 With the default dump format changing from the enveloped variant to the
-non-enveloped variant, arangorestore will now by default be able to employ
+non-enveloped variant, _arangorestore_ will now by default be able to employ
 higher parallelism when restoring data of large collections.
 
-When restoring a collection from a non-enveloped dump, arangorestore can
+When restoring a collection from a non-enveloped dump, _arangorestore_ can
 send multiple batches of data for the collection in parallel if it can read
-the dump files faster than the server can respond to arangorestore's requests.
+the dump files faster than the server can respond to _arangorestore_'s requests.
 This increased parallelism normally helps to speed up the restore process,
-but it can also lead to arangorestore saturating the server with its restore
+but it can also lead to _arangorestore_ saturating the server with its restore
 requests.
-In this case it is advised to decrease the value of arangorestore's `--threads`
+In this case it is advised to decrease the value of _arangorestore_'s `--threads`
 option accordingly. The value of `--threads` will the determine the maximum
-parallelism used by arangorestore.
+parallelism used by _arangorestore_.
 
 ### arangoimport
 
@@ -300,5 +300,5 @@ the input and output types:
 - `--output-type` (`json`, `json-pretty`, `vpack`, `vpack-hex`)
 
 The former `--print-non-json` option was replaced with the new
-`--fail-on-non-json` option, which makes arangovpack fail when trying to emit non-JSON
+`--fail-on-non-json` option, which makes _arangovpack_ fail when trying to emit non-JSON
 types to JSON output.

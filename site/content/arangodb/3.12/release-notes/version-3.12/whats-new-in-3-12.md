@@ -2254,7 +2254,7 @@ Note that ArangoDB's build of V8 has pointer compression disabled to allow for
 more than 4 GB of heap memory.
 
 The V8 upgrade brings various language features to JavaScript contexts in
-ArangoDB, like arangosh and Foxx. These features are part of the ECMAScript
+ArangoDB, like _arangosh_ and Foxx. These features are part of the ECMAScript
 specifications ES2020 through ES2024. The following list is non-exhaustive:
 
 - Optional chaining, like `obj.foo?.bar?.length` to easily access an object
@@ -2914,8 +2914,8 @@ _arangod_ process into account:
 | Label | Description |
 |:------|:------------|
 | `arangodb_server_statistics_cpu_cgroup_version` | CGroup version detected on the system (0=none, 1=v1, 2=v2). |
-| `arangodb_server_statistics_effective_cpu_cores` | Number of effective CPU cores available to the arangod process. |
-| `arangodb_server_statistics_effective_physical_memory` | Effective physical memory available to the arangod process in bytes. |
+| `arangodb_server_statistics_effective_cpu_cores` | Number of effective CPU cores available to the _arangod_ process. |
+| `arangodb_server_statistics_effective_physical_memory` | Effective physical memory available to the _arangod_ process in bytes. |
 
 The size of the currently mounted disk is already exposed by the
 `rocksdb_total_disk_space` metric.

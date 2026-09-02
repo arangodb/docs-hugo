@@ -73,7 +73,7 @@ from 3.3, as the old binary format will continue to work as before.
 In order to use the new binary format with existing data, it is required to
 create a logical dump of the database data, shut down the server, erase the
 database directory and restore the data from the logical dump. To minimize
-downtime you can alternatively run a second arangod instance in your system,
+downtime you can alternatively run a second _arangod_ instance in your system,
 that replicates the original data; once the replication has reached completion,
 you can switch the instances.
 
@@ -966,7 +966,7 @@ in the request to the cursor API at endpoint `/_api/cursor`.
 
 However, streaming cursors are enabled automatically for the following parts of ArangoDB in 3.4:
 
-- when exporting data from collections using the arangoexport binary
+- when exporting data from collections using the _arangoexport_ binary
 - when using `db.<collection>.toArray()` from the Arango shell
 
 Please note that AQL queries consumed in a streaming fashion have their own, adjustable
@@ -1031,8 +1031,8 @@ The same mechanism is also in place for the following APIs:
 ### Dropped support for SSLv2
 
 ArangoDB 3.4 will not start when attempting to bind the server to a Secure Sockets
-Layer (SSL) v2 endpoint. Additionally, the client tools (arangosh, arangoimport,
-arangodump, arangorestore etc.) will refuse to connect to an SSLv2-enabled server.
+Layer (SSL) v2 endpoint. Additionally, the client tools (_arangosh_, _arangoimport_,
+_arangodump_, _arangorestore_ etc.) will refuse to connect to an SSLv2-enabled server.
 
 SSLv2 can be considered unsafe nowadays and as such has been disabled in the OpenSSL
 library by default in recent versions. ArangoDB is following this step.
@@ -1058,7 +1058,7 @@ Starting with ArangoDB version 3.4.5, the ArangoShell (_arangosh_) provides the 
 should be loaded from and persisted in a file.
 
 The default value for this option is `true`. Setting it to `false`
-will make arangosh not load any command-line history from the history
+will make _arangosh_ not load any command-line history from the history
 file, and not store the current session's history when the shell is
 exited. The command-line history will then only be available in the
 current shell session.
@@ -1087,7 +1087,7 @@ _arangoimp_ was renamed to _arangoimport_ for consistency.
 The 3.4 release packages will still install _arangoimp_ as a symlink so user scripts
 invoking _arangoimp_ do not need to be changed.
 
-[arangoimport now can pace the data load rate automatically](../../components/tools/arangoimport/details.md#automatic-pacing-with-busy-or-low-throughput-disk-subsystems)
+[_arangoimport_ now can pace the data load rate automatically](../../components/tools/arangoimport/details.md#automatic-pacing-with-busy-or-low-throughput-disk-subsystems)
 based on the actual rate of
 data the server can handle. This is useful in contexts when the server has a limited
 I/O bandwidth, which is often the case in cloud environments. Loading data too quickly

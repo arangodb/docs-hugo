@@ -136,7 +136,7 @@ _arangod_ will then store the master key encrypted with the provided secrets.
 $ arangod --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets ...
 ```
 
-To start an arangod instance only one of the secrets needs to be correct, 
+To start an _arangod_ instance only one of the secrets needs to be correct, 
 this should guard against service interruptions during the rotation process.
 
 Please be aware that the encryption at rest key rotation is an **experimental** 

@@ -117,7 +117,7 @@ there is any discrepancy, the Coordinator will abort its startup.
 - The on-disk storage format for indexes of type `geo` has changed for the RocksDB
   storage engine. This also affects `geo1` and `geo2` indexes.
 
-  This **requires** users to start the arangod process with the
+  This **requires** users to start the _arangod_ process with the
   `--database.auto-upgrade true` option to allow ArangoDB recreating these 
   indexes using the new on-disk format.
 
@@ -149,7 +149,7 @@ of your data on this fresh installation).
 In order to use the new binary format with existing data, it is required to 
 create a logical dump of the database data, shut down the server, erase the 
 database directory and restore the data from the logical dump. To minimize 
-downtime you can alternatively run a second arangod instance in your system,
+downtime you can alternatively run a second _arangod_ instance in your system,
 that replicates the original data; once the replication has reached completion, 
 you can switch the instances.
 
@@ -178,7 +178,7 @@ to a value greater than 0 will produce a startup warning on Windows.
 
 The total amount of data to build up in all in-memory write buffers (backed by log
 files) is now by default restricted to a certain fraction of the available physical 
-RAM. This helps restricting memory usage for the arangod process, but may have an 
+RAM. This helps restricting memory usage for the _arangod_ process, but may have an 
 effect on the RocksDB storage engine's write performance. 
 
 In ArangoDB 3.3 the governing configuration option `--rocksdb.total-write-buffer-size`
@@ -206,7 +206,7 @@ The number of server threads is now configured by the following startup options:
   threads the server will start and always keep around
 - `--server.maximal-threads`: determines the maximum number of request processing 
   threads the server will start for request handling. If that number of threads is 
-  already running, arangod will not start further threads for request handling
+  already running, _arangod_ will not start further threads for request handling
 
 The actual number of request processing threads is adjusted dynamically at runtime
 and will float between `--server.minimal-threads` and `--server.maximal-threads`.
@@ -574,7 +574,7 @@ in case a lot of the above features are used.
 
 ## Startup option changes
 
-For arangod, the following startup options have changed:
+For _arangod_, the following startup options have changed:
 
 - the number of server threads is now configured by the following startup options:
 
@@ -647,7 +647,7 @@ specified is now:
 
 ## SSLv2
 
-Support for SSLv2 has been removed from arangod and all client tools.
+Support for SSLv2 has been removed from _arangod_ and all client tools.
 
 Startup will now be aborted when using SSLv2 for a server endpoint, or when connecting 
 with one of the client tools via an SSLv2 connection.
@@ -837,6 +837,6 @@ removed in future versions of ArangoDB:
   _arangoimp_ is there for compatibility only, but client scripts should 
   eventually be migrated to use _arangoimport_ instead.
 
-- the `foxx-manager` executable is deprecated and will be removed in ArangoDB 4.
+- the _foxx-manager_ executable is deprecated and will be removed in ArangoDB 4.
   
   Please use Foxx CLI for v3.x.x instead.

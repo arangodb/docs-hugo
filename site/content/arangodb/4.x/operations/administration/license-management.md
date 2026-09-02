@@ -21,7 +21,7 @@ deployment has internet access:
 | Your deployment | How to license it | Run the Platform CLI tool? |
 |---|---|---|
 | **Standalone ArangoDB** with internet access | [Activate the deployment](#activate-a-deployment) with the Platform CLI tool (recommended for unattended renewal) or, if **Managed** activation is enabled for your license, with the [License Activation portal](https://activate.license.arango.ai/) (one-off). | **Optional** — only if you use the Platform CLI tool |
-| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via arangosh or the HTTP API. | **Yes** — on the internet-connected machine only |
+| **Standalone ArangoDB**, offline / air-gapped | [Generate a license key](#generate-a-license-key) on a separate internet-connected machine, then [apply it](#apply-a-license-key) via _arangosh_ or the HTTP API. | **Yes** — on the internet-connected machine only |
 | **Kubernetes with internet access** (incl. Contextual Data Platform) | Create a Kubernetes secret with your client ID and client secret. The [ArangoDB Kubernetes Operator (`kube-arangodb`)](https://github.com/arangodb/kube-arangodb) activates the deployment and renews the license automatically. | **No** — the operator does everything |
 | **Air-gapped Kubernetes** (no internet access) | Generate a license key on a separate internet-connected machine — the [License Activation portal](https://activate.license.arango.ai/) is the recommended way to do this — then apply it as a Kubernetes secret on the air-gapped cluster. | **Yes** — on the internet-connected machine only |
 
@@ -394,7 +394,7 @@ Use this walkthrough if you need to run
 `arangodb_operator_platform license generate` yourself — that is, you are:
 
 - Running **standalone ArangoDB** (no Kubernetes) and want a license key
-  file you can apply via arangosh or the HTTP API, or
+  file you can apply via _arangosh_ or the HTTP API, or
 - Preparing an **air-gapped Kubernetes** install and need to generate a key
   on an internet-connected machine to carry into the air-gapped cluster.
 

@@ -230,7 +230,7 @@ Consider the following document:
 {{< tab "`search-alias` View" >}}
 To index the array of dimension objects and the nested array of measurement
 objects, you can use an inverted index and `search-view` View definition like
-the following, using arangosh:
+the following, using _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({

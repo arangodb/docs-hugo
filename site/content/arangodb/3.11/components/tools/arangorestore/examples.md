@@ -44,12 +44,12 @@ target database, the username and passwords passed to _arangorestore_ (in option
 `--server.username` and `--server.password`) are used to create an initial user for the
 new database.
 
-The option `--force-same-database` allows restricting arangorestore operations to a
+The option `--force-same-database` allows restricting _arangorestore_ operations to a
 database with the same name as in the source dump's `dump.json` file. It can thus be used
 to prevent restoring data into a "wrong" database by accident.
 
 For example, if a dump was taken from database ***A***, and the restore is attempted into 
-database ***B***, then with the `--force-same-database` option set to `true`, arangorestore
+database ***B***, then with the `--force-same-database` option set to `true`, _arangorestore_
 aborts instantly.
 
 The `--force-same-database` option is set to `false` by default to ensure backwards-compatibility.
@@ -231,7 +231,7 @@ The _arangorestore_ behavior for these collections is as follows:
   restored without revision trees.
 - In ArangoDB versions 3.8.7, 3.9.2 or later, the
   collections use revision trees by default, but you can opt out of this by
-  invoking arangorestore with the `--enable-revision-trees false` option.
+  invoking _arangorestore_ with the `--enable-revision-trees false` option.
 
 If the `--enable-revision-trees` startup option is `true` (which is the default value),
 then _arangorestore_ adds the necessary attributes for using revision trees
@@ -296,7 +296,7 @@ If you restore a collection that was dumped from a cluster into a single
 ArangoDB instance, the number of shards, replication factor and shard keys are
 silently ignored.
 
-### Factors affecting speed of arangorestore in a Cluster
+### Factors affecting speed of *arangorestore* in a Cluster
 
 The following factors affect speed of _arangorestore_ in a Cluster:
 
@@ -310,7 +310,7 @@ The following factors affect speed of _arangorestore_ in a Cluster:
   be done by using the `--threads` option of _arangorestore_.
   Depending on your specific case, you might be able to achieve additional
   parallelization by restoring on multiple _Coordinators_ at the same time.
-- **Dump Format**: Since ArangoDB 3.8 arangodump can produce two different
+- **Dump Format**: Since ArangoDB 3.8 _arangodump_ can produce two different
   dump formats: an enveloped format, which was the default format up to
   including ArangoDB 3.8, and a non-envelop format, which is the default
   since ArangoDB 3.9.0.
@@ -319,11 +319,11 @@ The following factors affect speed of _arangorestore_ in a Cluster:
   into versions older than 3.9. The non-envelope format is only understood
   since ArangoDB 3.8.0 and not compatible with previous versions. However, it
   is smaller and slightly faster to produce. In addition, the non-envelope
-  format allows arangorestore to parallelize the restore operations not
+  format allows _arangorestore_ to parallelize the restore operations not
   only across collections but also within collections. The latter is not
   possible with the envelope dump format.
-  In order to use the non-envelope dump format, invoke arangodump with the
-  option `--envelope false`. arangorestore can automatically parallelize
+  In order to use the non-envelope dump format, invoke _arangodump_ with the
+  option `--envelope false`. _arangorestore_ can automatically parallelize
   the restore of such dumps even for individual collections.
 
 ### Restoring collections with sharding prototypes

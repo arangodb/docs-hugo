@@ -21,7 +21,7 @@ with the [`db._query()`](with-arangosh.md#with-db_query) and
 [`db._createStatement()`](with-arangosh.md#with-db_createstatement-arangostatement)
 methods of the [`db` object](../../develop/javascript-api/@arangodb/db-object.md). This chapter
 also describes how to use bind parameters, statistics, counting, and cursors with
-arangosh.
+_arangosh_.
 
 If you use Foxx microservices, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
 for examples including tagged template strings.

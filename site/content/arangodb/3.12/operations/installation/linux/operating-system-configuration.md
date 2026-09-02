@@ -82,7 +82,7 @@ You can check the page size with the `getconf PAGESIZE` command.
 
 ## Swap Space
 
-It is recommended to assign swap space for a server that is running arangod.
+It is recommended to assign swap space for a server that is running _arangod_.
 Configuring swap space can prevent the operating system's OOM killer from
 killing ArangoDB too eagerly on Linux.
 
@@ -109,7 +109,7 @@ From [www.kernel.org](https://www.kernel.org/doc/Documentation/sysctl/vm.txt):
   policy that attempts to prevent any overcommit of memory.
 
 Experience has shown that setting `overcommit_memory` to a value of 2 has severe
-negative side-effects when running arangod, so it should be avoided at all costs.
+negative side-effects when running _arangod_, so it should be avoided at all costs.
 
 ## Max Memory Mappings
 
@@ -117,7 +117,7 @@ Linux kernels by default restrict the maximum number of memory mappings of a
 single process to about 64K mappings. While this value is sufficient for most
 workloads, it may be too low for a process that has lots of parallel threads
 that all require their own memory mappings. In this case all the threads'
-memory mappings will be accounted to the single arangod process, and the
+memory mappings will be accounted to the single _arangod_ process, and the
 maximum number of 64K mappings may be reached. When the maximum number of
 mappings is reached, calls to mmap will fail, so the process will think no
 more memory is available although there may be plenty of RAM left.
@@ -130,7 +130,7 @@ For a 32 core server, a good rule-of-thumb value thus would be 2,048,000
 (32 * 8 * 8000). For certain workloads, it may be sensible to use even a higher
 value for the number of memory mappings.
 
-To set the value once, use the following command before starting arangod:
+To set the value once, use the following command before starting _arangod_:
 
 ```bash
 sudo bash -c "sysctl -w 'vm.max_map_count=2048000'"
@@ -142,7 +142,7 @@ looking at.
 
 ## Memory Limits
 
-A long-running arangod process may accumulate a lot of virtual memory after a
+A long-running _arangod_ process may accumulate a lot of virtual memory after a
 while, so it is recommended to **not** restrict the amount of virtual memory
 that a process can acquire, neither via using `ulimit`, `cgroups` or systemd.
 
@@ -175,11 +175,11 @@ numactl --interleave=all arangod ...
 
 ## Open Files Limit
 
-An arangod instance may need to use a lot of file descriptors for working with
-files and network resources. It is therefore required to allow arangod processes
+An _arangod_ instance may need to use a lot of file descriptors for working with
+files and network resources. It is therefore required to allow _arangod_ processes
 to use a lot of file descriptors at the same time. A reasonable value for the
-maximum number of open file descriptors for an arangod process is 1048576. This
-should provide enough headroom so that arangod doesn't run out of file descriptors.
+maximum number of open file descriptors for an _arangod_ process is 1048576. This
+should provide enough headroom so that _arangod_ doesn't run out of file descriptors.
 
 The maximum number of file descriptors can be adjusted using `ulimit`, `cgroups`
 and `systemd`.

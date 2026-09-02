@@ -673,8 +673,8 @@ multiple small blocks and can then return the unused ones.
 
 With an `vm.overcommit_memory` kernel settings value of **2**, the allocator may
 have trouble with splitting existing memory mappings, which makes the *number*
-of memory mappings of an arangod server process grow over time. This can lead to
-the kernel refusing to hand out more memory to the arangod process, even if more
+of memory mappings of an _arangod_ server process grow over time. This can lead to
+the kernel refusing to hand out more memory to the _arangod_ process, even if more
 physical memory is available. The kernel will only grant up to `vm.max_map_count`
 memory mappings to each process, which defaults to 65530 on many Linux
 environments.

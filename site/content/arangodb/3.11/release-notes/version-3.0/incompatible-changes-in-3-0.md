@@ -1048,12 +1048,12 @@ on the command-line.
 ## Web Admin Interface
 
 The JavaScript shell has been removed from ArangoDB's web interface. The functionality
-the shell provided is still fully available in the ArangoShell (arangosh) binary shipped
+the shell provided is still fully available in the ArangoShell (_arangosh_) binary shipped
 with ArangoDB.
 
 ## ArangoShell and client tools
 
-The ArangoShell (arangosh) and the other client tools bundled with ArangoDB can only
+The ArangoShell (_arangosh_) and the other client tools bundled with ArangoDB can only
 connect to an ArangoDB server of version 3.0 or higher. They will not connect to an
 ArangoDB 2.8. This is because the server HTTP APIs have changed between 2.8 and 3.0,
 and all client tools uses these APIs.
@@ -1082,7 +1082,7 @@ is the opposite of the previous `--server.disable-authentication`.
 The option `--server.ssl-protocol` was renamed to `--ssl.protocol`. The meaning of 
 the option is unchanged.
 
-The command-line option `--quiet` was removed from all client tools except arangosh 
+The command-line option `--quiet` was removed from all client tools except _arangosh_ 
 because it had no effect in them.
 
 ### arangobench

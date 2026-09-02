@@ -55,7 +55,7 @@ Note: Datacenter replication is an option for the `cluster` deployment mode.
 You select one of these modes using the `--starter.mode` command line option.
 
 Depending on the mode you've selected, the Starter launches one or more
-(_arangod_ / `arangosync`) server processes.
+(_arangod_ / _arangosync_) server processes.
 
 No matter which mode you select, the Starter always provides you
 a common directory structure for storing the servers data, configuration & log files.

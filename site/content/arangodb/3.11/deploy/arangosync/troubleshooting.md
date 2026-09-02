@@ -19,7 +19,7 @@ _Datacenter-to-Datacenter Replication_.
 All of the components of _ArangoSync_ provide means to monitor their status.
 Below you'll find an overview per component.
 
-- Sync master & workers: The `arangosync` servers running as either master
+- Sync master & workers: The _arangosync_ servers running as either master
   or worker, provide:
   - A status API, see `arangosync get status`. Make sure that all statuses report `running`.
     For even more detail the following commands are also available:

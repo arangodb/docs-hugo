@@ -27,7 +27,7 @@ The key element for using the JavaScript API is the
 The `db` object lets you access and manage databases, for example:
 
 ```js
-// The db object is available by default in _arangosh_
+// The db object is available by default in arangosh
 //let db = require("@arangodb").db;
 
 // Create a new database
@@ -93,7 +93,7 @@ AQL query returns a [_cursor_ object](@arangodb/cursor-object.md).
 let cursor = db._query(`FOR doc IN collection FILTER doc.value >= "bar" RETURN doc`);
 cursor.toArray();
 
-// The aql query helper is available by default in _arangosh_
+// The aql query helper is available by default in arangosh
 //const aql = require("@arangodb").aql;
 
 // Run an AQL query using the query helper to use variables as bind parameters

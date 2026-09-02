@@ -96,7 +96,7 @@ The following REST API endpoints have been added in 3.7:
   basically makes the _arangod_ server reload the keyfile from disk.
 - HTTP POST `/_admin/server/jwt`: can be used to
   [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
-  of a local arangod process without having to restart it (hot-reload).
+  of a local _arangod_ process without having to restart it (hot-reload).
   This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
   This endpoint is available only in the Enterprise Edition.
 - HTTP POST `/_admin/server/encryption` can be used to
