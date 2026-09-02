@@ -74,17 +74,18 @@ the project when you continue to the next step.
    upload an entire folder. You can also drag files or a folder anywhere onto the
    panel. Supported file formats are:
    - **Text files**: `.txt`, `.md`
-   - **PDF files**: `.pdf`
-   - **Office documents**: `.docx`, `.pptx`, `.xlsx`, `.doc`, `.ppt`, `.xls`
-   - **OpenDocument formats**: `.odt`, `.odp`, `.ods`
-   - **Rich Text Format**: `.rtf`
+   - **PDF files**: `.pdf`, including scanned documents
+   - **Office documents**: `.docx`, `.pptx`, `.doc`, `.ppt`
+
+   For details, especially around image extraction, see
+   [Format support](../importer/setup.md#format-support).
 2. The **Name this category** dialog opens and lists the files you selected.
    Enter a short, unique **Category name** that describes what these files
    cover, for example `architecture` or `release-notes`. You can edit it later.
 
    ![The Name this category dialog listing the selected files](../../images/autograph-ui-name-category.png)
 
-3. Click **Upload files**.
+3. Click **Upload # files**.
 4. The files appear grouped under the category with a **Pending** status and
    their file size.
 

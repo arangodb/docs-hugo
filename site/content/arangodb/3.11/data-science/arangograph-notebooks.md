@@ -4,8 +4,6 @@ menuTitle: AMP Notebooks
 weight: 130
 description: >-
   Colocated Jupyter Notebooks within the Arango Managed Platform
-aliases:
-  - ../../../../amp/notebooks
 ---
 {{< tip >}}
 AMP Notebooks don't include the ArangoGraphML services.
