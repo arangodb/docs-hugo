@@ -185,6 +185,13 @@ in-process: preview scope, the **first 4,800 characters**, images excluded.
 Files uploaded through the deprecated
 [`POST /v1/import-multiple`](importing-files.md) are still parsed in-process.
 
+Plain text files (`.txt` and `.md`) are parsed directly. Every other input is
+submitted to the File Parser service, which converts a sample to Markdown
+before AutoGraph embeds and clusters it. **PDF** files (including scanned
+documents, read using OCR) and the **Office** formats `.doc`, `.docx`, `.ppt`,
+and `.pptx` are officially supported. See
+[Supported file formats](../setup.md#supported-file-formats) for details.
+
 Parsing is durable. If the pod restarts in the middle of a build, it picks up
 the batches it already submitted instead of submitting them again.
 
