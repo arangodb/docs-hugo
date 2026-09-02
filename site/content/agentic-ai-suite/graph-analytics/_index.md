@@ -16,9 +16,8 @@ algorithms. Common use cases include fraud detection, recommender systems,
 and network flow analysis.
 
 ArangoDB offers a feature for running algorithms on your graph data,
-called Graph Analytics Engines (GAEs). It is available on request for the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and included in the [Arango Contextual Data Platform](../../contextual-data-platform/_index.md).
+called Graph Analytics Engines (GAEs). It is included in the
+[Arango Contextual Data Platform](../../contextual-data-platform/_index.md).
 
 Key features:
 
@@ -28,7 +27,7 @@ Key features:
   affecting the performance of the transaction-oriented database systems.
 
 - **Fast data loading**: You can easily and efficiently import graph data from
-  ArangoDB and export results back to ArangoDB.
+  ArangoDB and export the computed results to a dedicated collection in ArangoDB.
 
 - **In-memory processing**: All imported data is held and processed in the
   main memory of the compute machines for very fast execution of graph algorithms
@@ -38,11 +37,17 @@ Key features:
 
 You can interact with Graph Analytics Engines through:
 
-- **[Web Interface](web-interface.md)**: Use the graphical user interface for
-  interactive graph analytics workflows.
+- **[Web Interface](web-interface.md)**: Control the engines through a graphical
+  user interface. It makes the workflow and management very approachable.
 
-- **[HTTP API](api.md)**: Programmatically load data, run algorithms,
-  and manage engines through HTTP APIs.
+- **[HTTP API](api.md)**: Programmatically start and stop engines, load data,
+  run algorithms, and store the results. Use it if you want to automate
+  workflows with code.
+
+Note that you cannot interactively explore the graph data that is loaded into
+an engine, nor inspect the computed values before you store them. Once the
+results are written to a collection, you can query them with AQL and inspect the
+result documents.
 
 ## Available Algorithms
 
