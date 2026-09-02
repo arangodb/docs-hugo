@@ -275,6 +275,68 @@ access token with a shorter validity. The maximum lifetime (in seconds) is
 controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
 startup option. The default is `604800` (1 week).
 
+#### Refactored authorization system
+
+<small>Introduced in: v3.12.11</small>
+
+The authorization system has been refactored to support
+[Role-Based Access Control (RBAC)](whats-new-in-3-12.md#external-service-for-rbac).
+The following behavior changes are side effects of this refactoring. They apply
+to the classic authorization system as well, regardless of whether you enable
+RBAC.
+
+##### Error number for write operations in read-only mode
+
+Nearly every endpoint that writes something refuses to perform the operation if
+the server is in read-only mode. For those that require write access to a
+collection, the HTTP status code remains `403 Forbidden`, but the reported error
+number has intentionally been changed from `ERROR_FORBIDDEN` (`11`) to
+`ERROR_ARANGO_READ_ONLY` (`1004`).
+
+This only affects requests where the user account you authenticate with actually
+**has** read/write access to the collection but the read-only mode prevents the
+write. If the access level is insufficient, the error number remains `11`.
+The superuser is not restricted by the read-only mode.
+
+##### Access token management in read-only mode
+
+The following endpoints for managing
+[access tokens](../../develop/http-api/authentication.md#access-tokens) now
+respect the read-only mode of the server:
+
+- `POST /_api/token/{user}`
+- `DELETE /_api/token/{user}/{token-id}`
+
+Up to v3.12.10, they allowed creating and deleting access tokens even if the
+server was in read-only mode, provided that the user account you authenticate
+with has read/write access to the `_system` database. Now, such requests fail
+with an HTTP `403 Forbidden` error and the `ERROR_ARANGO_READ_ONLY` (`1004`)
+error number. The superuser can still create and delete access tokens in
+read-only mode.
+
+##### Permission checks for the AQL query results cache API
+
+The following endpoints of the
+[AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
+now require at least read access to the `_system` database:
+
+- `PUT /_api/query-cache/properties`
+- `DELETE /_api/query-cache`
+
+Up to v3.12.10, they didn't perform any permission check at all. If you don't
+have the required access level, these requests now fail with an HTTP
+`403 Forbidden` error.
+
+##### Error response for inaccessible databases in the Activities API
+
+If the user account you authenticate with has no access to the database you
+target with the experimental
+[`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
+the request now fails with an HTTP `404 Not Found` error and the
+`ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
+request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
+(`11`) error number.
+
 ### Endpoint return value changes
 
 #### Storage engine API
