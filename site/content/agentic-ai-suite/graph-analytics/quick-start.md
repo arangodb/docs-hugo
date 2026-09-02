@@ -105,7 +105,7 @@ to finish before you can store its results.
 {{< /tabs >}}
 
 {{< tip >}}
-**You now have** your nodes ranked by PageRank score, persisted to an
+**You now have** your nodes ranked by PageRank score, persisted to a dedicated
 ArangoDB collection - your most influential nodes are at the top.
 {{< /tip >}}
 

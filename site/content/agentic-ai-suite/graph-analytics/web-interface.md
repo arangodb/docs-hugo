@@ -9,7 +9,8 @@ description: >-
 ---
 The Graph Analytics web interface in the Arango Contextual Data Platform provides a graphical
 way to run graph algorithms on your data. You can start engines, load graphs into
-memory, execute algorithms with custom parameters, and monitor job progress.
+memory, execute algorithms with custom parameters, monitor job progress, and
+store the computed results in a collection of your database.
 
 ## The Graph Analytics workflow in the web interface
 
@@ -19,7 +20,7 @@ The typical workflow follows these steps:
 2. **Graph Loading**: Load graph data from your database into the engine's memory.
 3. **Algorithm Execution**: Run graph algorithms (PageRank, Connected Components, Label Propagation, etc.).
 4. **Job Monitoring**: Track the execution of algorithms in the Jobs History.
-5. **Result Storage**: Write the results of completed jobs to a
+5. **Result Storage**: Write the results of completed jobs to a dedicated
    collection in your database.
 
 ## How to access the Graph Analytics interface
@@ -147,6 +148,14 @@ to be able to query them, write them to a collection of your database:
 3. Specify the target collection and the attribute name to store the results under.
    The collection needs to exist already.
 4. The results are written to the collection.
+
+{{< info >}}
+An engine can load data from multiple collections but writes the results to a
+single target collection only. It does not update the source documents. Use a
+dedicated collection for the results, storing one document per node with the
+computed attribute. Creating new documents is considerably faster than updating
+existing ones, and you can join the results with your source data at query time.
+{{< /info >}}
 
 You can also use the [Store Results API](api.md#store-job-results) to
 programmatically write results with custom configuration such as setting

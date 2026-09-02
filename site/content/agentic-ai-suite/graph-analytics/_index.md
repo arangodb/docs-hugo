@@ -27,7 +27,7 @@ Key features:
   affecting the performance of the transaction-oriented database systems.
 
 - **Fast data loading**: You can easily and efficiently import graph data from
-  ArangoDB and export results back to ArangoDB.
+  ArangoDB and export the computed results to a dedicated collection in ArangoDB.
 
 - **In-memory processing**: All imported data is held and processed in the
   main memory of the compute machines for very fast execution of graph algorithms
