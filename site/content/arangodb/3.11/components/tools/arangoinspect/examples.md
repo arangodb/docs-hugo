@@ -28,10 +28,34 @@ _Coordinator_, _Agent_).
 arangoinspect --server.endpoint tcp://127.0.0.1:8529
 ```
 
-This starts the tool with a prompt for the JWT secret and tries to connect
-to the specified ArangoDB server. You have to type the secret as is used for
-the `arangod` option `--server.jwt-secret`. For non-cluster deployments,
-you may authenticate with a user name and password instead:
+This tries to connect to the specified ArangoDB server. As _arangoinspect_
+needs to query the Agency, you generally have to authenticate with the
+JWT secret of the deployment, that is, the content of the file that the `arangod`
+option [`--server.jwt-secret-keyfile`](../../arangodb-server/options.md#--serverjwt-secret-keyfile)
+points to (or of one of the files in a `--server.jwt-secret-folder`).
+
+Let _arangoinspect_ read the secret from this file:
+
+```
+arangoinspect --server.endpoint tcp://127.0.0.1:8529 --server.jwt-secret-keyfile /etc/arangodb.secret
+```
+
+Alternatively, you can use the `--server.ask-jwt-secret` option to get prompted
+for the secret and type it in. This is only feasible if the secret is a string
+you can type, however. It may contain arbitrary bytes, like the secrets that the
+[ArangoDB Starter](../arangodb-starter/security.md#jwt-tokens) creates, in which
+case you need to use `--server.jwt-secret-keyfile`.
+
+{{< security >}}
+Avoid passing secrets as command-line arguments, as they may be visible to other
+users of the system, for instance via the process list. This is also why the
+`arangod` option `--server.jwt-secret` is deprecated in favor of
+`--server.jwt-secret-keyfile`.
+{{< /security >}}
+
+For non-cluster deployments, you may authenticate with a user name and password
+instead. The prompt for the JWT secret is enabled by default for _arangoinspect_
+and cannot be combined with a user name and password, so you need to disable it:
 
 ```
 arangoinspect --server.ask-jwt-secret false --server.username "root" --server.password "foobar"
