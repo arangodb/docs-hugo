@@ -32,6 +32,10 @@ configuration:
   now rejected.
 - [Corpus builds](#corpus-builds): a full rebuild over already-built modules is
   rejected.
+- [Direct file upload](#direct-file-upload): `POST /v1/import-multiple` is
+  deprecated. A new call now deletes the files and the category that the
+  previous call created, and every uploaded file has to exist in the File
+  Manager as well.
 - [Model configuration](#model-configuration): the embedding model of an
   existing project can no longer be changed.
 - [Deployment configuration](#deployment-configuration): the embedding model and
@@ -149,6 +153,44 @@ waves within that budget and deleted after extraction. A single file that
 exceeds the budget is skipped and the build status carries
 `STORAGE_FILE_TOO_LARGE`. The remaining files are still processed, so the build
 completes and reports the skipped files.
+
+#### Direct file upload
+
+**`POST /v1/import-multiple` is deprecated, and its behavior has regressed**
+
+The direct upload of documents with a `module` label is deprecated and is
+documented only for integrations that already use it. The endpoint is still
+served and still accepts files, but two changes in this release make it
+unusable as the only upload path:
+
+- A new call **deletes** the files staged by the previous call, together with
+  the category that the previous `module` label created. Earlier versions of
+  the service kept both in place and only superseded the staged files, so
+  successive uploads accumulated. Now only the most recent batch survives, and
+  a version history staged through the endpoint is lost with it.
+- A staged file only reaches a corpus build if a file with the same basename
+  also exists as a RAG input in the File Manager for the same database.
+  Earlier versions built from the staged files alone. Every document therefore
+  has to be uploaded twice.
+
+In addition,
+[incremental graph updates](../../agentic-ai-suite/autograph/incremental-graph-updates.md)
+identify a document by its File Manager `file_id` and cannot reach a document
+that exists only as a direct upload.
+
+Upload your files to the
+[File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
+under the scope `[<project>, <category>]` and build with `categories` instead.
+See [Import Files](../../agentic-ai-suite/autograph/reference/importing-files.md).
+
+The File Manager is the more convenient way to manage uploads, and it scales
+better. Files are uploaded once and can then be listed, searched, replaced, and
+reused across builds, each with a stable `file_id` that corpus builds and
+incremental graph updates refer to. It also keeps large uploads away from
+AutoGraph itself: a direct upload pushes an entire batch into the service in
+one request, which a big enough batch can overwhelm, whereas a build over File
+Manager files downloads and parses them in waves within the
+[staging budget](#corpus-builds).
 
 **`doc_name` values are validated**
 
