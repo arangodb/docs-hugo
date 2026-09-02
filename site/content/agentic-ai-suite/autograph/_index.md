@@ -109,6 +109,6 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
   Studio, from building the Context Graph to deploying AutoRAG retrievers and
   asking questions against it.
 - **[Architecture](architecture.md)**: Explore AutoGraph's three-layer knowledge graph architecture and ArangoDB collections.
-- **[Design Guide](design-guide.md)**: Learn how to structure your data with modules, layers, and components.
+- **[Design Guide](design-guide.md)**: Learn how to structure your data with categories, layers, and components.
 - **[Incremental Graph Updates](incremental-graph-updates.md)**: Insert, delete, and update individual documents in a knowledge graph that has already been built.
 - **[API Reference](reference/)**: Dive into the corpus build, embeddings, RAG Strategizer, and orchestration endpoints.

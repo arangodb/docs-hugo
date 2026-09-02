@@ -49,6 +49,13 @@ operation, because every page without a text layer has to be read using OCR. See
 if a self-hosted cluster is slower than you expect.
 {{< /tip >}}
 
+{{< info >}}
+A document has to yield extractable text. An image-only PDF without OCR-readable
+content fails as a single file, and the build can still complete with
+`error_code: FILE_PARSER_PARTIAL_FAILURE`, see
+[Document parsing](reference/corpus-build.md#document-parsing).
+{{< /info >}}
+
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (which ships with
@@ -90,14 +97,19 @@ For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 The AutoGraph service exposes HTTP REST endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 
-1. **Import files**
-   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
-2. **Build corpus**
+1. **Upload files** to the
+   [File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
+   under the scope `[project, category]`
+   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/filemanager/_db/{database}/rag-input" >}}
+2. **Build corpus** with those category labels in `categories`
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}
 3. **Generate strategies**
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
 4. **Orchestrate import**
    {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
+
+Steps 2 to 4 are asynchronous and acknowledge the request with `202`. Poll the
+matching status endpoint before you move on to the next step.
 
 Authentication uses JWT Bearer tokens. For full endpoint documentation,
 see the [API Reference](reference/_index.md).
@@ -111,5 +123,5 @@ see the [API Reference](reference/_index.md).
   impact metrics.
 - [Architecture](architecture.md): Learn more about the three-layer knowledge graph
   architecture and resulting collections.
-- [Design Guide](design-guide.md): How to structure your data with modules,
+- [Design Guide](design-guide.md): How to structure your data with categories,
   layers, and components.
