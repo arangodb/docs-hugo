@@ -23,8 +23,12 @@ How to perform the steps is detailed in the subsequent sections.
    information and a configurable subset of the node attributes.
 4. [Run graph algorithms](#run-algorithms) on the data. You only need to load the data once per
    engine and can then run various algorithms with different settings.
-5. [Write the computation results back](#store-job-results) to the ArangoDB core.
-6. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
+5. [Check the progress of the job](#get-a-job) that runs the algorithm. The job
+   is done when its `progress` is equal to its `total`, which needs to be the
+   case before you can store the computation results.
+6. [Write the computation results](#store-job-results) to a dedicated collection
+   in the ArangoDB core.
+7. [Stop the engine service](#stop-a-graphanalytics-service) once you are done.
 
 ## Authentication
 
@@ -36,6 +40,7 @@ well as to authenticate requests to the [Engine API](#engine-api).
 - Access tokens
 - JWT session tokens
 <!-- TODO
+- JWT superuser tokens?
 - Single Sign-On (SSO)
 -->
 

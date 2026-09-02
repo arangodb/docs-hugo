@@ -36,9 +36,15 @@ In **Algorithm Execution**, select your engine and loaded graph, choose
 `maximum_supersteps`, and click **Run Algorithm**.
 {{< /step >}}
 
-{{< step "View and store results" >}}
-Click **View Jobs History** to monitor execution. When the job completes,
-use the download icon to store the results into a collection.
+{{< step "Monitor the job" >}}
+Click **View Jobs History** to track the execution. Wait until the **Status**
+column of your algorithm job shows `COMPLETED`.
+{{< /step >}}
+
+{{< step "Store the results" >}}
+In the **Actions** column of the completed job, click the
+{{< icon "download" >}} icon, specify the target collection and the attribute
+name to store the results under, and confirm.
 {{< /step >}}
 
 {{< /steps >}}
@@ -71,6 +77,13 @@ Returns a `job_id` and a `graph_id`.
 ```
 
 Returns a `job_id`.
+{{< /step >}}
+
+{{< step "Check the job progress" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
+
+Poll the job until its `progress` is equal to its `total`. The algorithm needs
+to finish before you can store its results.
 {{< /step >}}
 
 {{< step "Store the results" >}}
