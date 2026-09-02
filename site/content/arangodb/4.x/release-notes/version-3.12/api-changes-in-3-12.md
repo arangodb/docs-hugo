@@ -476,6 +476,15 @@ A new activities API has been added as an observability feature.
 See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
 for details.
 
+#### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature
+for inspecting the index segments of `arangosearch` Views and inverted indexes.
+See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
