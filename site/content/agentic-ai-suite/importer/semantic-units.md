@@ -23,12 +23,16 @@ to extract and process multimedia references from your documents.
 The Importer collects image references from two places:
 
 - **Images embedded in your documents**, which are extracted during
-  [document conversion](setup.md#supported-file-formats) and referenced at the
-  position they appeared in. Extraction only happens when
-  `enable_semantic_units` is `true`. Not every format yields images.
+  [document conversion](setup.md#document-conversion-and-supported-formats) and
+  referenced at the position they appeared in. Extraction only happens when
+  `enable_semantic_units` is `true`.
 - **Links that were already written into the document**, such as a Markdown
   image pointing at `https://example.com/logo.png`, which are picked up as they
   are.
+
+Not every format yields images, and non-raster graphics in Office documents
+(charts, SmartArt, and so on) are ignored. See
+[Format support](setup.md#format-support) for the per-format details.
 
 Extracted images are copied into the File Manager before chunking, and the
 reference is rewritten to a durable File Manager download URL. The knowledge

@@ -104,7 +104,7 @@ trains the vector index per shard. For a graph that already exists,
 | Markdown accepted per document | 64 MiB | Soft. A larger result excludes that file as `MARKDOWN_TOO_LARGE` |
 
 Which formats can be converted is not an Importer limit. See
-[Supported file formats](../setup.md#supported-file-formats).
+[Format support](../setup.md#format-support).
 
 ## Images
 
