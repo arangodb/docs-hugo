@@ -1371,9 +1371,12 @@ startup option. The default is `604800` (1 week).
 
 The authorization system has been refactored to support
 [Role-Based Access Control (RBAC)](whats-new-in-3-12.md#external-service-for-rbac).
-The following behavior changes are side effects of this refactoring. They apply
-to the classic authorization system as well, regardless of whether you enable
-RBAC.
+The following behavior changes are side effects of this refactoring. They
+specifically apply to the classic authorization system, so when not using RBAC.
+
+Note that enabling RBAC changes the behavior more significantly because
+different permissions are needed, and the API under RBAC is designed to not
+disclose whether a resource exists if a user has no permission to access it.
 
 #### Error number for write operations in read-only mode
 
@@ -1408,14 +1411,15 @@ read-only mode.
 
 The following endpoints of the
 [AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
-now require at least read access to the `_system` database:
+now require at least read access to the `_system` database, in addition to the
+read access to the specified database that was already required before:
 
 - `PUT /_api/query-cache/properties`
 - `DELETE /_api/query-cache`
 
-Up to v3.12.10, they didn't perform any permission check at all. If you don't
-have the required access level, these requests now fail with an HTTP
-`403 Forbidden` error.
+Up to v3.12.10, they didn't check the access level for the `_system` database.
+If you don't have the required access level, these requests now fail with an
+HTTP `403 Forbidden` error.
 
 #### Error response for inaccessible databases in the Activities API
 
