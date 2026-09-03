@@ -4,7 +4,7 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to create database dumps of an ArangoDB server and use encryption,
-  compression, multi-threading, and other features of `arangodump`
+  compression, multi-threading, and other features of _arangodump_
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 
@@ -137,7 +137,7 @@ sorted first by shards and within each shard by ascending timestamp. The
 structural information of the collection contains the number of shards
 and the shard keys.
 
-Note that the version of the arangodump client tool needs to match the
+Note that the version of the _arangodump_ client tool needs to match the
 version of the ArangoDB server it connects to.
 
 ### Dumping collections with sharding prototypes
@@ -145,7 +145,7 @@ version of the ArangoDB server it connects to.
 Collections may be created with the shard distribution identical to an existing
 prototypical collection (see [`distributeShardsLike`](../../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options));
 i.e. shards are distributed in the very same pattern as in the prototype collection.
-Such collections cannot be dumped without the referenced collection or arangodump
+Such collections cannot be dumped without the referenced collection or _arangodump_
 yields an error.
 
 ```

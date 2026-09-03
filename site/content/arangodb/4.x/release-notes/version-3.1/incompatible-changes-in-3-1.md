@@ -69,8 +69,8 @@ It is highly recommended to backup all your data before loading a database
 directory that was written by ArangoDB <= 3.0 into an ArangoDB >= 3.1.
 
 To change all your old `_rev` attributes into new style time stamps you
-have to use `arangodump` to dump all data out (using ArangoDB 3.0), and
-use `arangorestore` into the new ArangoDB 3.1, which is the safest
+have to use _arangodump_ to dump all data out (using ArangoDB 3.0), and
+use _arangorestore_ into the new ArangoDB 3.1, which is the safest
 way to upgrade.
 
 The change also affects the return format of `_rev` values and other revision

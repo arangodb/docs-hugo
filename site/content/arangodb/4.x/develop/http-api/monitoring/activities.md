@@ -165,9 +165,7 @@ paths:
                           #              type: number
         '401':
           description: |
-            The user account you authenticated with lacks read access for the
-            specified database, the credentials are wrong, or the user account
-            is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -237,8 +235,15 @@ paths:
                     type: string
         '404':
           description: |
-            Returned if the server specified by the `serverId` query parameter
-            is not known in the cluster.
+            The specified database doesn't exist, the user account you
+            authenticated with has no access to this database, or the server
+            specified by the `serverId` query parameter is not known in the
+            cluster.
+
+            Up to v3.12.10, a lack of database access resulted in an HTTP `401`
+            error with the `ERROR_FORBIDDEN` (`11`) error number instead of an
+            HTTP `404` error with the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`)
+            error number.
           content:
             application/json:
               schema:

@@ -71,7 +71,7 @@ Trying to restore the encrypted dump without specifying the key will fail:
 arangorestore --collection "secret-collection" dump --create-collection true
 ```
 
-arangorestore will complain with:
+_arangorestore_ will complain with:
 
 ```
 the dump data seems to be encrypted with aes-256-ctr, but no key information was specified to decrypt the dump
@@ -209,11 +209,11 @@ The following options have been added to it:
 - the option `--server.local-authentication` controls whether the local *_users*
   collection is also used for looking up users. This is also the default behavior.
   If the authentication shall be restricted to just the LDAP directory, the
-  option can be set to *true*, and arangod will then not make any queries to its
+  option can be set to *true*, and _arangod_ will then not make any queries to its
   *_users* collection when looking up users.
 
 - the option `--server.authentication-timeout` controls the expiration time for 
-  cached LDAP user information entries in arangod.
+  cached LDAP user information entries in _arangod_.
 
 - basic role support has been added for the LDAP module in the *Enterprise Edition*.
   New configuration options for LDAP in 3.3 are:
@@ -254,14 +254,14 @@ The following options have been added to it:
   - MATCHES
 
 - The ArangoShell prompt substitution characters have been extended. Now the
-  following extra substitutions can be used for the arangosh prompt:
+  following extra substitutions can be used for the _arangosh_ prompt:
   
   - '%t': current time as timestamp
   - '%a': elapsed time since ArangoShell start in seconds
   - '%p': duration of last command in seconds
  
-  For example, to show the execution time of the last command executed in arangosh
-  in the shell's prompt, start arangosh using:
+  For example, to show the execution time of the last command executed in _arangosh_
+  in the shell's prompt, start _arangosh_ using:
 
   ```
   arangosh --console.prompt "%E@%d %p> "
@@ -287,7 +287,7 @@ The following options have been added to it:
   - `--log.thread-name true`: this new option will log the name of the ArangoDB thread that 
     triggered the log message. Will have meaningful output on Linux only
 
-- make the ArangoShell (arangosh) refill its collection cache when a yet-unknown collection
+- make the ArangoShell (_arangosh_) refill its collection cache when a yet-unknown collection
   is first accessed. This fixes the following problem when working with the shell while
   in another shell or by another process a new collection is added:
 

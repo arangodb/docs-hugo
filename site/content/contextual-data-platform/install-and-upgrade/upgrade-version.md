@@ -30,7 +30,7 @@ to what services are started automatically.
 
 {{< info >}}
 A newer version of the Contextual Data Platform may require a higher ArangoDB
-version. Make sure to check the [Release notes](../release-notes.md) and plan
+version. Make sure to check the [Release notes](../release-notes/_index.md) and plan
 for an upgrade of ArangoDB as part of the data platform upgrade if necessary.
 {{< /info >}}
 
@@ -77,7 +77,7 @@ More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.
 ### Step 3: Update the deployment
 
 The planned upgrade of the data platform may require a newer version of
-ArangoDB. See the [Release notes](../release-notes.md) for the minimum versions.
+ArangoDB. See the [Release notes](../release-notes/_index.md) for the minimum versions.
 
 {{< warning >}}
 Before upgrading ArangoDB, make sure to check for any incompatible changes in

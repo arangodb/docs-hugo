@@ -31,7 +31,7 @@ storage requirements and poorer write performance on this data.
 To create a SatelliteCollection set the `replicationFactor` of this collection
 to "satellite".
 
-Using arangosh:
+Using _arangosh_:
 
 ```js
 db._create("satellite", {"replicationFactor": "satellite"});

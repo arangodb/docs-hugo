@@ -55,7 +55,7 @@ Note: Datacenter replication is an option for the `cluster` deployment mode.
 You select one of these modes using the `--starter.mode` command line option.
 
 Depending on the mode you've selected, the Starter launches one or more
-(`arangod` / `arangosync`) server processes.
+(_arangod_ / _arangosync_) server processes.
 
 No matter which mode you select, the Starter always provides you
 a common directory structure for storing the servers data, configuration & log files.
@@ -97,7 +97,7 @@ It contains the following files & sub-directories.
 ## Starter configuration file
 
 The Starter can be configured using a configuration file. The format of the
-configuration file is the same as the `arangod` configuration file format.
+configuration file is the same as the _arangod_ configuration file format.
 For more details, refer to the [configuration file format](../../../operations/administration/configuration.md#configuration-file-format)
 and [how to use configuration files](../../../operations/administration/configuration.md#using-configuration-files).
 
@@ -107,11 +107,11 @@ For more information about other
 configuration options, see [ArangoDB Starter options](options.md). 
 
 {{< info >}}
-The Starter has a different set of supported command line options than `arangod` binary.
-Using the `arangod` configuration file as input for `arangodb` binary is not supported.
+The Starter has a different set of supported command line options than _arangod_ binary.
+Using the _arangod_ configuration file as input for `arangodb` binary is not supported.
 {{< /info >}}
 
-### Passing through `arangod` options
+### Passing through *arangod* options
 
 The configuration file also supports setting pass-through options. Options with
 same prefixes can be split into sections.

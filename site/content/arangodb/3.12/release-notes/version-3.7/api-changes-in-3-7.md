@@ -93,10 +93,10 @@ The following REST API endpoints have been added in 3.7:
 
 - HTTP POST `/_admin/server/tls`: this endpoint can be used to change the 
   TLS keyfile (secret key as well as public certificates) at run time. The API
-  basically makes the `arangod` server reload the keyfile from disk.
+  basically makes the _arangod_ server reload the keyfile from disk.
 - HTTP POST `/_admin/server/jwt`: can be used to
   [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
-  of a local arangod process without having to restart it (hot-reload).
+  of a local _arangod_ process without having to restart it (hot-reload).
   This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
   This endpoint is available only in the Enterprise Edition.
 - HTTP POST `/_admin/server/encryption` can be used to
@@ -216,7 +216,7 @@ storage engine, but not for the RocksDB storage engine.
 
 The `rotate` function has been removed on the ArangoCollection object. This
 means the following JavaScript code will not work in ArangoDB 3.7, neither in
-the ArangoShell nor in arangod (when using Foxx):
+the ArangoShell nor in _arangod_ (when using Foxx):
 
 ```js
 db.<collection>.rotate();

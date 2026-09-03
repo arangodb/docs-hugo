@@ -79,7 +79,7 @@ The restrictions for database names are as follows:
   - Database names are case sensitive.
   - Database names containing UTF-8 characters must be 
     [NFC-normalized](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
-    Non-normalized names will be rejected by arangod.
+    Non-normalized names will be rejected by _arangod_.
   - The maximum length of a database name is 128 bytes after normalization. 
     As a UTF-8 character may consist of multiple bytes, this does not necessarily 
     equate to 128 characters.
@@ -187,7 +187,7 @@ db._useDatabase("mydb");
 See [`db._useDatabase()`](../../develop/javascript-api/@arangodb/db-object.md#db_usedatabasename)
 in the _JavaScript API_ for details.
 
-It is also possible to specify a database name when invoking arangosh. For this
+It is also possible to specify a database name when invoking _arangosh_. For this
 purpose, use the `--server.database` startup option:
 
 ```sh

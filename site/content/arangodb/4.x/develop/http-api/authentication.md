@@ -304,6 +304,9 @@ paths:
         to the `_system` database if you want to create an access token for a
         different user. You can always create an access token for yourself,
         regardless of database access levels.
+
+        Creating access tokens is not possible if the server is in read-only
+        mode, with the exception of the superuser (introduced in v3.12.11).
       parameters:
         - name: user
           in: path
@@ -450,8 +453,15 @@ paths:
                     type: string
         '403':
           description: |
-            The user's access level for the `_system` database is too low.
-            It needs to be *Administrate* to manage access tokens for other users.
+            The request is not authorized. The reason can be one of the following:
+
+            - The access level of the user account you authenticated with is too
+              low for the `_system` database. It needs to be *Administrate* to
+              manage access tokens for other users. The error number is
+              `ERROR_FORBIDDEN` (`11`).
+            - The server is in read-only mode, which doesn't allow to create
+              access tokens, except for the superuser. The error number is
+              `ERROR_ARANGO_READ_ONLY` (`1004`) (introduced in v3.12.11).
           content:
             application/json:
               schema:
@@ -772,6 +782,9 @@ paths:
         to the `_system` database if you want to delete an access token for a
         different user. You can always delete your own access tokens,
         regardless of database access levels.
+
+        Deleting access tokens is not possible if the server is in read-only
+        mode, with the exception of the superuser (introduced in v3.12.11).
       parameters:
         - name: user
           in: path
@@ -831,8 +844,15 @@ paths:
                     type: string
         '403':
           description: |
-            The user's access level for the `_system` database is too low.
-            It needs to be *Administrate* to manage access tokens for other users.
+            The request is not authorized. The reason can be one of the following:
+
+            - The access level of the user account you authenticated with is too
+              low for the `_system` database. It needs to be *Administrate* to
+              manage access tokens for other users. The error number is
+              `ERROR_FORBIDDEN` (`11`).
+            - The server is in read-only mode, which doesn't allow to delete
+              access tokens, except for the superuser. The error number is
+              `ERROR_ARANGO_READ_ONLY` (`1004`) (introduced in v3.12.11).
           content:
             application/json:
               schema:
@@ -921,7 +941,7 @@ In the Arango Managed Platform (AMP), authentication secrets are managed and
 therefore this feature isn't available.
 {{< /tip >}}
 
-To reload the JWT secrets of a local arangod process without a restart, you
+To reload the JWT secrets of a local _arangod_ process without a restart, you
 may use the following RESTful API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 

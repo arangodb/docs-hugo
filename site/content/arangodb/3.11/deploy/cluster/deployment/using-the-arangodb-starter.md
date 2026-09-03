@@ -101,7 +101,7 @@ If two or more of the `arangodb` instances run on the same machine,
 you have to use the `--starter.data-dir` option to let each use a different
 directory.
 
-The Starter tries to find the ArangoDB executable (`arangod`) and the
+The Starter tries to find the ArangoDB executable (_arangod_) and the
 other installation files automatically. If this fails, use the
 `--server.arangod` and `--server.js-dir` options to manually point it to them.
 
@@ -131,7 +131,7 @@ The leader Starter is chosen as follows:
   If a Starter is the first in this sorted list, it becomes the leader.
 - In all other cases, the Starter becomes a follower.
 
-Note: Once the bootstrap phase is over (all `arangod` processes have started and
+Note: Once the bootstrap phase is over (all _arangod_ processes have started and
 are running), the bootstrap phase ends and the Starters use the ArangoDB Agency
 to elect a leader for the runtime phase.
 
