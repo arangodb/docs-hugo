@@ -1156,7 +1156,7 @@ background consolidation of `arangosearch` View and inverted index data.
 Such activities have the type `ArangoSearchConsolidation` and their `data`
 object lists the index segments that are being merged.
 
-See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearch-consolidation-activities)
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
 for details.
 
 ### Endpoints deprecated

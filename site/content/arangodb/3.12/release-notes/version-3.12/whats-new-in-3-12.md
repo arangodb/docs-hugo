@@ -3094,7 +3094,7 @@ type `ArangoSearchConsolidation` is listed. Its `data` object holds a `segments`
 array with the name, size, and document counts of every index segment that is
 being merged.
 
-See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearch-consolidation-activities)
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
 for details.
 
 ## Client tools

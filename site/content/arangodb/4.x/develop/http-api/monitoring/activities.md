@@ -6,6 +6,8 @@ description: >-
   The HTTP interface for server activities is an observability feature that
   shows which high-level processes are currently ongoing in the database system
 ---
+<small>Introduced in: v3.12.8</small>
+
 The activities API lets you observe which high-level processes are currently
 running on the server, such as HTTP request handlers, AQL queries, transactions,
 index creations, and the background consolidation of ArangoSearch index data.
@@ -138,10 +140,29 @@ paths:
                             intentionally left flexible so the feature can grow
                             without breaking the API. Do not rely on a fixed schema.
 
-                            See [ArangoSearch consolidation activities](#arangosearch-consolidation-activities)
+                            See [the `ArangoSearchConsolidation` type](#arangosearchconsolidation)
                             for the details reported by activities of type
                             `ArangoSearchConsolidation`.
                           type: object
+                          # TODO: describe the shape per activity type here once
+                          # the docs tooling can render composition
+                          #oneOf:
+                          #  - title: ArangoSearchConsolidation
+                          #    type: object
+                          #    properties:
+                          #      segments:
+                          #        type: array
+                          #        items:
+                          #          type: object
+                          #          properties:
+                          #            name:
+                          #              type: string
+                          #            byteSize:
+                          #              type: number
+                          #            docsCount:
+                          #              type: number
+                          #            liveDocsCount:
+                          #              type: number
         '401':
           description: |
             The user account you authenticated with lacks read access for the
@@ -361,7 +382,7 @@ paths:
         [`GET /_admin/activities` endpoint](#get-the-activities-experimental).
 
         The endpoint is useful for activities that only occur on particular
-        servers, like the [ArangoSearch consolidation](#arangosearch-consolidation-activities)
+        servers, like the [ArangoSearch consolidation](#arangosearchconsolidation)
         that DB-Servers perform.
 
         The permissions required to use the endpoint depend on the
@@ -522,24 +543,27 @@ paths:
         - Monitoring
 ```
 
-## ArangoSearch consolidation activities
+## Activity types
+
+The `data` object of an activity holds details that are specific to the activity
+type. The following types report such type-specific data.
+
+### ArangoSearchConsolidation
 
 <small>Introduced in: v3.12.11</small>
 
-`arangosearch` Views and inverted indexes store their data in index segments and
-periodically merge smaller segments into bigger ones in the background. This
-process is called consolidation.
+A [consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#segments-commits-and-consolidation)
+of the index segments of an `arangosearch` View or an inverted index.
 
-Every consolidation is reported as an activity of type
-`ArangoSearchConsolidation` for as long as it runs, from the point at which the
-segments to merge have been selected until the merge is complete. The activities
-are created by single servers and DB-Servers because they store and maintain the
-index data. In a cluster, you therefore need to either ask the DB-Servers
-directly using the `serverId` query parameter, or retrieve the activities of
+Every consolidation is reported as an activity for as long as it runs, from the
+point at which the segments to merge have been selected until the merge is
+complete. The activities are created by single servers and DB-Servers because
+they store and maintain the index data. In a cluster, you therefore need to
+either ask the DB-Servers directly using the `serverId` query parameter, or
+retrieve the activities of
 [all servers at once](#get-the-activities-of-all-servers-experimental).
 
-The `data` object of an `ArangoSearchConsolidation` activity has the following
-attributes:
+The `data` object has the following attributes:
 
 - `segments` (array): The index segments that have been selected for the merge.
   Each element is an object with the following attributes:
