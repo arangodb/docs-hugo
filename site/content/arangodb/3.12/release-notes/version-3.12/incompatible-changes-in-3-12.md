@@ -192,7 +192,7 @@ Deployments that were set up with the RocksDB storage engine using ArangoDB 3.2
 or 3.3 and that have been upgraded since then still use the old format.
 This should not affect many users because the default storage engine in ArangoDB
 3.2 and 3.3 was the MMFiles storage engine.
-Furthermore, deployments that have been recreated from a dump using arangodump
+Furthermore, deployments that have been recreated from a dump using _arangodump_
 since ArangoDB 3.4 are not affected because restoring a dump into a fresh
 deployment also makes ArangoDB use the big-endian on-disk format.
 
@@ -201,9 +201,9 @@ on-disk format is in use, but it still supports using the little-endian key form
 for almost all operations, with the following exceptions:
 - Parallel index creation is disabled when the little-endian key format is used.
   Indexes are always created using a single thread.
-- The experimental version of arangodump (invocable via the `--use-experimental-dump` 
+- The experimental version of _arangodump_ (invocable via the `--use-experimental-dump` 
   startup option) does not work. You can still use the traditional
-  arangodump version, which is the default anyway.
+  _arangodump_ version, which is the default anyway.
 
 ArangoDB 3.12 and later refuse to start when detecting that the little-endian
 on-disk is in use, so users that still use this format
@@ -215,7 +215,7 @@ The migration can be performed as follows:
 2. Stop the database servers in the deployment
 3. Wipe the existing database directories
 4. Restart the servers in the deployment
-5. Restore the logical dump into the deployment using arangodump
+5. Restore the logical dump into the deployment using _arangodump_
 
 It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
@@ -667,7 +667,7 @@ the following steps.
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
 and JSON, it was previously possible for precision loss to occur in edge cases.
-This also affected creating and restoring dumps with arangodump and arangorestore.
+This also affected creating and restoring dumps with _arangodump_ and _arangorestore_.
 
 A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
 used to be serialized to `1152921504606847000` in JSON, which deserializes back
@@ -1632,7 +1632,7 @@ specify the option without raising an error, but it no longer has any effect.
 
 ### arangodump
 
-This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
+This following startup options of _arangodump_ are obsolete from ArangoDB 3.12 on:
 
 #### Obsolete envelope and tick startup options
 
@@ -1641,9 +1641,9 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
   This was useful for the MMFiles storage engine, where dumps could also include 
   document removals. With the RocksDB storage engine, the envelope only caused 
   overhead and increased the size of the dumps. The default value of `--envelope`
-  was changed to false in ArangoDB 3.9 already, so by default all arangodump 
+  was changed to false in ArangoDB 3.9 already, so by default all _arangodump_ 
   invocations since then created non-envelope dumps. With the option being removed 
-  now, all arangodump invocations will unconditionally create non-envelope dumps.
+  now, all _arangodump_ invocations will unconditionally create non-envelope dumps.
 - `--tick-start`: setting this option allowed to restrict the dumped data to some 
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
@@ -1665,7 +1665,7 @@ to a high value.
 
 #### Automatic file format detection
 
-*arangoimport* now automatically detects the type of the import file based on
+_arangoimport_ now automatically detects the type of the import file based on
 the file extension. The default value of the `--type` startup option has been
 changed from `json` to `auto`. You might need to explicitly specify the `--type`
 in exceptional cases now whereas it was not necessary to do so previously.
@@ -1678,10 +1678,10 @@ The default value of the `--batch-size` startup option has been lowered from
 8 MiB to 4 MiB to avoid potential resource limits, in particular when importing
 to smart edge collections.
 
-### jslint feature in arangosh removed
+### jslint feature in *arangosh* removed
 
 The `--jslint` startup option and all of the underlying functionality has been
-removed from arangosh. The feature was mainly for internal purposes.
+removed from _arangosh_. The feature was mainly for internal purposes.
 
 ### arangobench
 
@@ -1689,6 +1689,6 @@ removed from arangosh. The feature was mainly for internal purposes.
 
 <small>Removed in: v3.12.3</small>
 
-The `--batch-size` startup option is now ignored by arangobench and no longer
+The `--batch-size` startup option is now ignored by _arangobench_ and no longer
 has an effect. It allowed you to specify the number of operations to issue in
 one batch but the batch request API has been removed on the server-side.

@@ -3,9 +3,9 @@ title: _arangorestore_ Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to restore database dumps to an ArangoDB server with `arangorestore`
+  How to restore database dumps to an ArangoDB server with _arangorestore_
 ---
-To restore data from a dump previously created with [_arangodump_](../arangodump/_index.md),
+To restore data from a dump previously created with [arangodump](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.
 
 ## Invoking *arangorestore*
@@ -18,7 +18,7 @@ arangorestore --input-directory "dump"
 
 This connects to an ArangoDB server (`tcp://127.0.0.1:8529` by default), then restores the
 collection structure and the documents from the files found in the input directory `dump`.
-Note that the input directory must have been created by running `arangodump` before.
+Note that the input directory must have been created by running _arangodump_ before.
 
 _arangorestore_ connects to the `_system` database by default, using the default
 endpoint. To override the endpoint, or specify a different user, use one of the
@@ -45,12 +45,12 @@ target database, the username and passwords passed to _arangorestore_ (in option
 `--server.username` and `--server.password`) are used to create an initial user for the
 new database.
 
-The option `--force-same-database` allows restricting arangorestore operations to a
+The option `--force-same-database` allows restricting _arangorestore_ operations to a
 database with the same name as in the source dump's `dump.json` file. It can thus be used
 to prevent restoring data into a "wrong" database by accident.
 
 For example, if a dump was taken from database ***A***, and the restore is attempted into 
-database ***B***, then with the `--force-same-database` option set to `true`, arangorestore
+database ***B***, then with the `--force-same-database` option set to `true`, _arangorestore_
 aborts instantly.
 
 The `--force-same-database` option is set to `false` by default to ensure backwards-compatibility.
@@ -189,11 +189,11 @@ also restored or already present on the server.
 
 ## Encryption
 
-See [_arangodump_](../arangodump/examples.md#encryption) for details.
+See [arangodump](../arangodump/examples.md#encryption) for details.
 
 ## Compression
 
-You can optionally let *arangorestore* compress the data for the network transfer
+You can optionally let _arangorestore_ compress the data for the network transfer
 with the `--compress-transfer` startup option. This can reduce the traffic and
 thus save time. Set the `--compress-request-threshold` startup option to define
 the minimum size for request bodies (in bytes) at which compression is applied.
@@ -243,7 +243,7 @@ The _arangorestore_ behavior for these collections is as follows:
   restored without revision trees.
 - In ArangoDB versions 3.8.7, 3.9.2 or later, the
   collections use revision trees by default, but you can opt out of this by
-  invoking arangorestore with the `--enable-revision-trees false` option.
+  invoking _arangorestore_ with the `--enable-revision-trees false` option.
 
 If the `--enable-revision-trees` startup option is `true` (which is the default value),
 then _arangorestore_ adds the necessary attributes for using revision trees
@@ -308,7 +308,7 @@ If you restore a collection that was dumped from a cluster into a single
 ArangoDB instance, the number of shards, replication factor and shard keys are
 silently ignored.
 
-### Factors affecting speed of arangorestore in a Cluster
+### Factors affecting speed of *arangorestore* in a Cluster
 
 The following factors affect speed of _arangorestore_ in a Cluster:
 

@@ -3,7 +3,7 @@ title: Foxx CLI Details
 menuTitle: Details
 weight: 5
 description: >-
-  How to install, use, and configure the `foxx-cli` utility
+  How to install, use, and configure the _foxx-cli_ utility
 ---
 ## Install
 

@@ -192,7 +192,7 @@ storage engine, but not for the RocksDB storage engine.
 
 The `rotate` function has been removed on the ArangoCollection object. This 
 means the following JavaScript code will not work in ArangoDB 3.7, neither in
-the ArangoShell nor in arangod (when using Foxx):
+the ArangoShell nor in _arangod_ (when using Foxx):
 
 ```js
 db.<collection>.rotate();
@@ -224,7 +224,7 @@ views) in the cluster.
 
 The default values for the startup options `--rocksdb.block-cache-size` and
 `--rocksdb.total-write-buffer-size` have been decreased for systems with less
-than 4GiB of RAM. The intention is to make arangod use less memory on very
+than 4GiB of RAM. The intention is to make _arangod_ use less memory on very
 small systems.
 
 For systems with less than 4GiB of RAM, the default values for 

@@ -308,7 +308,7 @@ do {
 } while (count > 0);
 ```
 
-This script has to be executed in [`arangosh`](../../components/tools/arangodb-shell/_index.md)
+This script has to be executed in [arangosh](../../components/tools/arangodb-shell/_index.md)
 by issuing the following command:
 
 ```bash

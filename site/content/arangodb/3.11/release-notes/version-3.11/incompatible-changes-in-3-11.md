@@ -594,7 +594,7 @@ the following steps.
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
 and JSON, it was previously possible for precision loss to occur in edge cases.
-This also affected creating and restoring dumps with arangodump and arangorestore.
+This also affected creating and restoring dumps with _arangodump_ and _arangorestore_.
 
 A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
 used to be serialized to `1152921504606847000` in JSON, which deserializes back
@@ -772,7 +772,7 @@ effect anymore.
 
 ### arangoexport
 
-The default output file type produced by arangoexport, controlled by the `--type`
+The default output file type produced by _arangoexport_, controlled by the `--type`
 startup option, has been changed from `json` to `jsonl`.
-This allows for more efficient processing of the files produced by arangoexport
-with other tools, such as arangoimport, by default.
+This allows for more efficient processing of the files produced by _arangoexport_
+with other tools, such as _arangoimport_, by default.

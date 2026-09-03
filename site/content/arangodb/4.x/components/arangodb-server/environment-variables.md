@@ -3,9 +3,9 @@ title: ArangoDB Server environment variables
 menuTitle: Environment variables
 weight: 15
 description: >-
-  Environment variables used by `arangod`
+  Environment variables used by _arangod_
 ---
-`arangod` inspects the following list of environment variables:
+_arangod_ inspects the following list of environment variables:
 
  - `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
    
@@ -30,11 +30,11 @@ description: >-
 
    Setting this option can in particular be useful in two cases:
 
-   1. If `arangod` is running in a container and its cgroup has a RAM
+   1. If _arangod_ is running in a container and its cgroup has a RAM
       limitation, then one should specify this limitation in this
       environment variable, since it is currently not automatically
       detected.
-   2. If `arangod` is running alongside other services on the same
+   2. If _arangod_ is running alongside other services on the same
       machine and thus sharing the RAM with them, one should limit the
       amount of memory using this environment variable.
 
@@ -61,14 +61,14 @@ description: >-
    server start. If the variable is set, the overridden value is shown.
    Various default values for threading are calculated based on this value.
 
-   Setting this option is useful if `arangod` is running in a container
+   Setting this option is useful if _arangod_ is running in a container
    or alongside other services on the same machine and shall not use
    all available CPUs.
  
  - `ARANGODB_OVERRIDE_CRASH_HANDLER`
    
    This variable can be used to toggle the built-in crash handler in the
-   Linux builds of `arangod`. The crash handler is turned on by default
+   Linux builds of _arangod_. The crash handler is turned on by default
    for Linux builds, and it can be turned off by setting this environment
    variable to an empty string, the value of `0` or `off`.
 

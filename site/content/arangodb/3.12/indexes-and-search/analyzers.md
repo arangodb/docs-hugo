@@ -1006,7 +1006,7 @@ attributes:
     ```aql
     FOR token IN ["and","the"] RETURN TO_HEX(token)
     ```
-  - arangosh / Node.js:
+  - _arangosh_ / Node.js:
     ```js
     ["and","the"].map(token => Buffer(token).toString("hex"))
     ```

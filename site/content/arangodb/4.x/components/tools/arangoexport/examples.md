@@ -4,7 +4,7 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to export data in JSON, CSV, or XML formats from ArangoDB on the
-  command-line with `arangoexport`
+  command-line with _arangoexport_
 ---
 _arangoexport_ can be invoked by executing the following command in a command line:
 

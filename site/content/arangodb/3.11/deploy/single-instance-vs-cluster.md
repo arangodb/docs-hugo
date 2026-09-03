@@ -14,8 +14,8 @@ between these two configurations. A summary of potential differences follows.
 
 To migrate from a _Single Instance_ to a _Cluster_ you will need
 to take a backup from the _Single Instance_ and restore it into
-the _Cluster_ with the tools [_arangodump_](../components/tools/arangodump/_index.md)
-and [_arangorestore_](../components/tools/arangorestore/_index.md).
+the _Cluster_ with the tools [arangodump](../components/tools/arangodump/_index.md)
+and [arangorestore](../components/tools/arangorestore/_index.md).
 
 {{< warning >}}
 If you have developed your application using a _Single Instance_
@@ -159,10 +159,10 @@ server deployment.
 
 ## Dump/Restore
 
-In a cluster, the `arangodump` utility cannot guarantee a consistent snapshot
+In a cluster, the _arangodump_ utility cannot guarantee a consistent snapshot
 across multiple shards or even multiple collections. In a single server,
-`arangodump` produces a consistent snapshot.
+_arangodump_ produces a consistent snapshot.
 
 In the Enterprise Edition, there is an additional utility
-`arangobackup` and an HTTP API for [Hot Backups](../operations/backup-and-restore.md#hot-backups)
+_arangobackup_ and an HTTP API for [Hot Backups](../operations/backup-and-restore.md#hot-backups)
 to create consistent cluster snapshots.

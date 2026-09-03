@@ -30,7 +30,7 @@ detailed information about breaking changes before upgrading.
 - **Little-endian on-disk key format for the RocksDB storage engine**:\
   The little-endian on-disk key format for the RocksDB storage engine is
   deprecated and support will be removed in v3.12. Parallel index creation and
-  the `--use-experimental-dump` arangodump option are only available in v3.11
+  the `--use-experimental-dump` _arangodump_ option are only available in v3.11
   for deployments that use the big-endian format, which is the default since v3.4.
 
   Only deployments that were set up with the RocksDB storage engine using
@@ -104,9 +104,9 @@ detailed information about breaking changes before upgrading.
   It is recommended to use [ArangoSearch](../indexes-and-search/arangosearch/_index.md) for advanced full-text search capabilities.
 
 - **Simple Queries**:\
-  Idiomatic interface in arangosh to perform trivial queries.
+  Idiomatic interface in _arangosh_ to perform trivial queries.
   They are superseded by [AQL queries](../aql/_index.md), which can also
-  be run in arangosh. AQL is a language on its own and way more powerful than
+  be run in _arangosh_. AQL is a language on its own and way more powerful than
   *Simple Queries* could ever be. In fact, the (still supported) *Simple Queries*
   are translated internally to AQL, then the AQL query is optimized and run
   against the database in recent versions, because of better performance and
@@ -210,7 +210,7 @@ detailed information about breaking changes before upgrading.
     unnecessary nowadays.
     The functionality will be removed in ArangoDB 3.12.
   - `--http.hide-product-header`: whether or not to hide the `Server: ArangoDB`
-    header in all responses served by arangod.
+    header in all responses served by _arangod_.
     The functionality will be removed in ArangoDB 3.12.
   - `--network.protocol`: network protocol to use for cluster-internal 
     communication. The protocol will be auto-decided from version 3.9 onwards.
@@ -229,7 +229,7 @@ detailed information about breaking changes before upgrading.
     This was useful for the MMFiles storage engine, where dumps could also include 
     document removals. With the RocksDB storage engine, the envelope only caused 
     overhead and increased the size of the dumps. The default value of `--envelope`
-    was changed to false in ArangoDB 3.9 already, so by default all arangodump 
+    was changed to false in ArangoDB 3.9 already, so by default all _arangodump_ 
     invocations since then create non-envelope dumps. 
   - `--tick-start`: setting this option allowed to restrict the dumped data to some 
     time range with the MMFiles storage engine. It has no effect for the RocksDB 

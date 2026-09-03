@@ -199,7 +199,7 @@ when [ranking](ranking.md) results.
 
 #### Custom Analyzer
 
-Create a `text` Analyzer in arangosh to tokenize text, normalize case to all
+Create a `text` Analyzer in _arangosh_ to tokenize text, normalize case to all
 lowercase and to remove diacritics, but with stemming disabled unlike the
 built-in `text_en` Analyzer. The search will be accent- and case-insensitive,
 and the Levenshtein distance between the stored and searched text will be taken
@@ -317,7 +317,7 @@ FOR doc IN imdb
 #### Custom Analyzer
 
 `NGRAM_MATCH()` requires an `ngram` Analyzer. For this example, create a
-trigram Analyzer in arangosh with a minimum and maximum _n_-gram size of 3,
+trigram Analyzer in _arangosh_ with a minimum and maximum _n_-gram size of 3,
 not including the original string:
 
 ```js

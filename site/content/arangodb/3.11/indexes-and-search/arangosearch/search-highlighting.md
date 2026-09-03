@@ -60,7 +60,7 @@ A collection called `food` with the following documents:
 #### Custom Analyzer
 
 If you want to use an `arangosearch` View,
-create a `text` Analyzer in arangosh to tokenize text, like the built-in
+create a `text` Analyzer in _arangosh_ to tokenize text, like the built-in
 `text_en` Analyzer, but additionally set the `offset` feature, enabling
 search highlighting:
 
