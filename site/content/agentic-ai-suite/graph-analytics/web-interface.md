@@ -4,11 +4,18 @@ menuTitle: Web Interface
 weight: 10
 description: >-
   Learn how to manage Graph Analytics Engines (GAEs), load graphs, run algorithms,
-  and monitor jobs using the web interface of the Arango Contextual Data Platform
+  monitor jobs, and store results using the web interface of the Arango
+  Contextual Data Platform
 ---
-The Graph Analytics web interface in the Arango Contextual Data Platform provides a graphical
-way to run graph algorithms on your data. You can start engines, load graphs into
-memory, execute algorithms with custom parameters, and monitor job progress.
+The Graph Analytics web interface in the Arango Contextual Data Platform
+provides a graphical way to run graph algorithms on your data. You can start
+engines, load graphs into memory, execute algorithms with custom parameters,
+monitor job progress, and store the computed results in a collection of your
+database.
+
+The web interface is a front-end for the [HTTP API](api.md) and provides the
+same set of features. To look at the computed values, store them in a
+collection first, then query them with AQL or inspect the result documents.
 
 ## The Graph Analytics workflow in the web interface
 
@@ -17,7 +24,9 @@ The typical workflow follows these steps:
 1. **Engine Management**: Start a Graph Analytics Engine with the right size for your data.
 2. **Graph Loading**: Load graph data from your database into the engine's memory.
 3. **Algorithm Execution**: Run graph algorithms (PageRank, Connected Components, Label Propagation, etc.).
-4. **Job Monitoring**: Track algorithm execution and view results in the Jobs History.
+4. **Job Monitoring**: Track the execution of algorithms in the Jobs History.
+5. **Result Storage**: Write the results of completed jobs to a dedicated
+   collection in your database.
 
 ## How to access the Graph Analytics interface
 
@@ -116,7 +125,10 @@ For detailed descriptions, parameters, and use cases, see the
 ## Monitor jobs
 
 Click **View Jobs History** in the top right to open a detailed view of all
-algorithm executions.
+algorithm executions. It lets you track the progress of running jobs and see
+which jobs have completed or failed. It does not show the computed values -
+to access them, [store the results](#store-results-to-a-collection) in a
+collection first.
 
 The **Jobs History** table displays:
 
@@ -129,15 +141,26 @@ The **Jobs History** table displays:
 | **Progress** | Completion percentage (0-100%) |
 | **Duration** | Execution time |
 | **Memory** | Peak memory usage during computation |
-| **Actions** | Store results to collections or delete the job |
+| **Actions** | [Store the results](#store-results-to-a-collection) to a collection or delete the job |
 
-### Store results to collections
+## Store results to a collection
 
-For completed jobs, you can store the algorithm results back to your ArangoDB collections:
+The results of an algorithm are computed in the engine memory. To keep them and
+to be able to query them, write them to a collection of your database:
 
-1. Click the {{< icon "download" >}} icon in the **Actions** column.
-2. Specify the target collection and attribute name where results should be stored.
-3. The results are written back to the collection.
+1. Open the **Jobs History** and locate a job with the `COMPLETED` status.
+2. Click the {{< icon "download" >}} icon in the **Actions** column.
+3. Specify the target collection and the attribute name to store the results under.
+   The collection needs to exist already.
+4. The results are written to the collection.
+
+{{< info >}}
+An engine can load data from multiple collections but writes the results to a
+single target collection only. It does not update the source documents. Use a
+dedicated collection for the results, storing one document per node with the
+computed attribute. Creating new documents is considerably faster than updating
+existing ones, and you can join the results with your source data at query time.
+{{< /info >}}
 
 You can also use the [Store Results API](api.md#store-job-results) to
 programmatically write results with custom configuration such as setting

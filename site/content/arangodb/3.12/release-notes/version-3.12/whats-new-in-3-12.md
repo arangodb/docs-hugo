@@ -1508,6 +1508,42 @@ normalizes the conditions of `FILTER` operations:
 A related correctness fix for the string comparison in these optimizations is
 described in [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#string-comparison-in-filter-condition-optimizations).
 
+### Traversal optimization for path filters with an inline `FILTER`
+
+<small>Introduced in: v3.12.11</small>
+
+Graph traversals can use array comparison operators to check a condition for
+all nodes or edges of a path, like `FILTER p.edges[*].weight ALL <= 10`.
+The array expansion can contain an
+[inline `FILTER`](../../aql/operators.md#inline-filter) to restrict the check to
+a subset of the path, which is useful if an attribute is optional:
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND startNode GRAPH "myGraph"
+  FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()
+  RETURN p.edges[*]._key
+```
+
+Only the edges that have a `validUntil` attribute are compared against the
+current date, instead of every edge without this attribute rejecting the entire
+path.
+
+The query optimizer previously couldn't handle path filters with an inline
+`FILTER` and applied them to the paths after the traversal emitted them. The
+`optimize-traversals` rule can now move them into the traversal, like it already
+could for path filters without an inline `FILTER`. The traversal thus stops
+following a path as soon as a node or an edge violates the condition, and the
+condition can be taken into account for the edge index lookups.
+
+The optimization is applied if the array comparison operator is `ALL` or `NONE`,
+the array expansion has no inline `LIMIT` or `RETURN` projection, and the inline
+`FILTER` condition doesn't use the path variable. See
+[Filter a subset of the path](../../aql/graph-queries/traversals.md#filter-a-subset-of-the-path)
+for details and examples.
+
+This change also corrects the results of affected queries, see
+[Corrected results for graph traversal path filters](incompatible-changes-in-3-12.md#corrected-results-for-graph-traversal-path-filters).
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -2254,6 +2290,38 @@ The default is `604800` (1 week).
 If a request specifies a `valid_until` further in the future than this maximum
 allows, the server caps it silently to the moment of the request plus this
 option's value.
+
+### External service for RBAC
+
+<small>Introduced in: v3.12.11</small>
+
+Role-Based Access Control (RBAC) lets you manage which users can do what by
+assigning roles to them, and each role is a set of specific permissions.
+This makes it easier to manage authorization for many users because you don't
+have to assign a lot of specific permissions for each individual user.
+
+The classic authorization system of ArangoDB lets you configure the access level
+for databases and collections per user, with some special cases like access to
+the `_system` database granting administrative permissions. From v3.12.11 onward,
+you can optionally use RBAC instead, if you run ArangoDB as part of the
+Arango Contextual Data Platform.
+
+With RBAC enabled, ArangoDB talks to a service of the data platform to determine
+whether to allow or deny actions on specific resources. Where this service runs
+can be configured with the new `--server.external-rbac-service` startup option,
+which enables RBAC for ArangoDB at the same time.
+
+| Authorization Type | RBAC | Classic |
+|---|---|---|
+| ArangoDB standalone | – | ✅ |
+| Arango Contextual Data Platform | ✅ | ✅ |
+
+A new metric for monitoring how long requests to the RBAC service take has been
+added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_rbac_request_duration` | Duration of requests to the external RBAC authorization service in microseconds. |
 
 ## Miscellaneous changes
 
@@ -3065,6 +3133,17 @@ HTTP status codes are used in server responses:
 | Label | Description |
 |:------|:------------|
 | `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
+
+### Server health metrics
+
+<small>Introduced in: v3.12.11</small>
+
+The following new metric has been added for monitoring what the health of the
+cluster servers is:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_server_health` | Cluster server health status (0=FAILED, 1=BAD, 2=GOOD). |
 
 ## Client tools
 
