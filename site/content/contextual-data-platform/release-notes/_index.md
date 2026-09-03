@@ -79,8 +79,8 @@ format guarantees, see
 [Document conversion and supported formats](../../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats).
 
 The new service is designed for horizontal scalability, using two worker tiers,
-one for PDF documents and one for everything else, with 3 worker pods by
-default. Deployments in AMP run these defaults unchanged. For self-hosted
+one for PDF documents and one for everything else, with 3 worker pods per tier
+by default. Deployments in AMP run these defaults unchanged. For self-hosted
 clusters, see
 [Tuning the File Parser](../../agentic-ai-suite/importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments).
 
@@ -101,6 +101,28 @@ clusters, see
   lets Retriever resolve
   [citations](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
   back to the original source document.
+- You can upload
+  [many files in one request](../../platform-suite/file-manager/api.md#upload-a-batch-of-rag-input-files),
+  up to 100 files and 2 GiB, either with a manifest that places each file
+  individually or with one shared scope. The response reports the outcome per
+  file, so a batch in which single files fail still stores the rest.
+- Files can be [browsed](../../platform-suite/file-manager/api.md#browse-scopes)
+  as a folder tree: a scope reports its child scopes with their file counts
+  along with the files that sit directly in it. Listing files accepts a scope,
+  which covers everything below it, and a case-insensitive name search, and it
+  returns the latest version of each file instead of the full history.
+- Files can be
+  [locked](../../platform-suite/file-manager/api.md#safe-to-delete) against
+  deletion, individually, in bulk, or for a whole scope. Every delete path
+  skips a locked file and reports it instead of removing it, which is how
+  AutoGraph protects the files that a corpus still references.
+- Files can be deleted
+  [in bulk](../../platform-suite/file-manager/api.md#delete-multiple-files) by
+  id or [by the scope](../../platform-suite/file-manager/api.md#delete-a-scope)
+  that holds them.
+
+For the endpoints and the status code changes, see
+[API changes](api-changes.md#file-manager-v0019-to-v0022).
 
 ### Container Manager
 

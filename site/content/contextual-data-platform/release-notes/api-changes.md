@@ -11,7 +11,18 @@ pageToc:
 ---
 ## v4.1.0 (August 2026)
 
-### AutoGraph (v0.0.14)
+The service versions this release bundles, next to the ones the previous
+platform release shipped. Each section below covers everything that changed
+across that span, not only the newest service release:
+
+| Service | v4.0.2 (May 2026) | v4.1.0 (August 2026) |
+|---------|-------------------|----------------------|
+| [AutoGraph](#autograph-v0013-to-v0016) | v0.0.12 | v0.0.16 |
+| [Importer](#importer-v0030-to-v0034) | v0.0.29 | v0.0.34 |
+| [Retriever](#retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
+| [File Manager](#file-manager-v0019-to-v0022) | v0.0.18 | v0.0.22 |
+
+### AutoGraph (v0.0.13 to v0.0.16)
 
 {{< tag "Agentic AI Suite" >}}
 
@@ -31,13 +42,15 @@ configuration:
   removed, `project` is required, and requests over an already-built corpus are
   now rejected.
 - [Corpus builds](#corpus-builds): a full rebuild over already-built modules is
-  rejected.
+  rejected, and so is a selector that the File Manager has nothing for, before a
+  build id is issued.
 - [Direct file upload](#direct-file-upload): `POST /v1/import-multiple` is
   deprecated. A new call now deletes the files and the category that the
   previous call created, and every uploaded file has to exist in the File
   Manager as well.
 - [Model configuration](#model-configuration): the embedding model of an
-  existing project can no longer be changed.
+  existing project can no longer be changed, and a rejected configuration is now
+  an HTTP `400` instead of a `200` with `valid=false`.
 - [Deployment configuration](#deployment-configuration): the embedding model and
   dimension keys have been renamed, and `fps_recovery_username` is now required.
 - [Status and error codes](#status-and-error-codes): the asynchronous endpoints
@@ -113,6 +126,15 @@ resolved server-side through the File Manager as the scope
 - An incremental build over File Manager categories now also removes documents
   whose files were deleted in the File Manager, and reports `documents_added`,
   `documents_removed`, and `documents_unchanged`.
+- A completed build reports how many input files it wrote and how many distinct
+  documents they produced: `files_written`, `documents_created`, and
+  `documents_deduplicated`, with one `dedup_groups` entry per collapsed
+  document. A document's identity is its `(module, filename)` pair and nothing
+  else, so two files with the same name in the same category collapse into one
+  document that holds the content of the last one. The build used to do this
+  silently. Each source document also stores the `source_filenames` and
+  `source_file_ids` that mapped onto it. See
+  [Document identity and deduplication](../../agentic-ai-suite/autograph/reference/corpus-build.md#document-identity-and-deduplication).
 
 **Citable URLs**
 
@@ -122,9 +144,9 @@ persist it on the source documents, so inline RAG citations render as links.
 
 **Document conversion runs through the File Parser**
 
-File Manager corpus builds parse documents through the File Parser service. A
-build in which only some documents fail to parse completes and reports
-`FILE_PARSER_PARTIAL_FAILURE` together with the ids of the failed files.
+File Manager corpus builds parse documents through the new internal File Parser
+service. A build in which only some documents fail to parse completes and
+reports `FILE_PARSER_PARTIAL_FAILURE` together with the ids of the failed files.
 
 **Full rebuilds over already-built modules are rejected**
 
@@ -145,6 +167,23 @@ requests the rejection is synchronous, before a build id is issued. For
 File Manager files have been resolved, so the build fails with the same error
 code after a build id has been handed out.
 
+**The selector is validated before the build is accepted**
+
+`POST /v1/corpus/builds` resolves its selector in the File Manager while it
+handles the request and rejects the build with HTTP `400` if there is nothing to
+build: a `categories` label that holds no files on a full build, or `file_ids`
+that the File Manager cannot resolve because they are unknown, malformed, or
+addressed to another database. **No build is created** in these cases, so there
+is no `corpus_build_id` to poll — check the status code before you read the id
+out of the response body. Previously, such a request was answered with a `202`
+and a build id, and failed minutes later.
+
+An incremental build (`incremental: true`) still accepts a category whose files
+are all gone, because reconciling such removals is what it is for. If the File
+Manager cannot be reached at all, the check reaches no verdict and the build is
+accepted as before, so an outage is never reported as a bad request. See
+[Selector validation](../../agentic-ai-suite/autograph/reference/corpus-build.md#selector-validation).
+
 **A staging budget caps how much a build downloads at once**
 
 Total on-disk staging is capped by `LOCAL_STORAGE_MAX_BYTES` (default
@@ -152,7 +191,13 @@ Total on-disk staging is capped by `LOCAL_STORAGE_MAX_BYTES` (default
 waves within that budget and deleted after extraction. A single file that
 exceeds the budget is skipped and the build status carries
 `STORAGE_FILE_TOO_LARGE`. The remaining files are still processed, so the build
-completes and reports the skipped files.
+completes and reports the skipped files. On the deprecated
+`POST /v1/import-multiple`, such a file is rejected up front with HTTP `400`
+instead.
+
+Ordinary exhaustion of the staging space is not an error and is never reported:
+each wave is processed and deleted before the next one starts, so a build of
+several gigabytes fills and frees the budget many times over.
 
 #### Direct file upload
 
@@ -285,7 +330,7 @@ before it requests any Importer pod:
 
 | Status | Error | Cause |
 |--------|-------|-------|
-| `400` | `NO_STRATEGY_PROFILES` | No matching strategy profiles exist. Run the RAG Strategizer first. |
+| `400` | `NoStrategyProfilesError` | No matching strategy profiles exist. Run the RAG Strategizer first. |
 | `409` | `NothingToOrchestrateError` | Every candidate partition is already present in the Knowledge Graph. |
 | `409` | `NoMatchingFilesError` | A non-empty `file_ids` list matches no document. The response names the unmatched ids and the reason for each. |
 
@@ -301,13 +346,28 @@ skipping most of them later, so `total_jobs` is meaningful for targeted runs.
 
 **New endpoints**
 
-- `GET /v1/orchestrate/{orchestration_id}` returns the status, the job counters,
-  and per-job details of a run. The status is held in memory only, and a newer
-  trigger evicts it.
+- `GET /v1/orchestrate/{orchestration_id}` reports both the outcome and the
+  progress of a run. `status` answers whether the Knowledge Graph is ready, and
+  `phase` (`initializing` → `starting_importers` → `importing` → `verifying` →
+  `finished`) answers how far along the run is — a run in `starting_importers`
+  has imported nothing however long it has been going, which the counters alone
+  cannot express. Next to `completed_jobs` and `failed_jobs`, the response
+  carries `running_jobs`, `pending_jobs`, `skipped_jobs`, `entities_added`,
+  `elapsed_seconds`, `seconds_since_progress`, and per-job details. The status
+  is held in memory only, and a newer trigger evicts it.
+- A terminal `completed` now also requires that the partitions the Importer
+  reported as imported are actually present in the `{project}_kg` graph. A run
+  whose jobs all succeeded over a graph that does not hold them is reported
+  `failed`, with `output_verified: false` and the partitions named in
+  `unverified_partitions`, instead of telling a caller that the graph is ready.
+  `skipped_jobs` counts jobs that imported nothing because the requested
+  `file_ids` matched no document in their partition, so a run where it equals
+  `completed_jobs` wrote no output at all.
 - `DELETE /v1/orchestrate/{orchestration_id}` cancels a running orchestration.
-  This adds `cancelled` as a fourth terminal state next to `pending`, `running`,
-  `completed`, and `failed`, so clients that treat the status field as a closed
-  set must handle the new value.
+  This adds `cancelled` to the `status` vocabulary (`running`, `completed`,
+  `failed`, `cancelled`), so clients that treat the field as a closed set must
+  handle the new value. A run that is reaped after the cancellation grace period
+  also ends as `cancelled`.
 
 The `409` `OrchestrationInProgressError` now reports the age of the run holding
 the slot, its job counts, the time since the last worker contact, and whether a
@@ -360,8 +420,8 @@ the embedding side accepts `openai` and `custom`.
 **The embedding model of a project can no longer be changed**
 
 The endpoint rejects any request that changes a previously stored
-`embedding_api_provider`, `embedding_model`, or `embedding_api_url`. The
-response has `valid=false`, `errorCode=EMBEDDING_CONFIG_IMMUTABLE`, and the
+`embedding_api_provider`, `embedding_model`, or `embedding_api_url` with a `400`
+carrying `valid=false`, `errorCode=EMBEDDING_CONFIG_IMMUTABLE`, and the
 offending `field`. Nothing is persisted and nothing is applied to the running
 service.
 
@@ -380,8 +440,23 @@ no embedding models at all, and let a key without remaining credit pass. It
 issues one minimal chat completion and one single-input embeddings request
 instead. The `MODEL_INVALID` error code is gone, and failures now map to a fixed
 set of codes such as `INVALID_API_KEY`, `INSUFFICIENT_QUOTA`,
-`MODEL_NOT_FOUND`, and `ENDPOINT_UNREACHABLE`. A validation failure is not an
-HTTP error: the endpoint returns HTTP `200` with `valid=false` and the code.
+`MODEL_NOT_FOUND`, and `ENDPOINT_UNREACHABLE`.
+
+**A rejected configuration is an HTTP `400`**
+
+Every validation failure now answers with HTTP `400`, and the response body is
+unchanged: `valid`, `applied`, `field`, `errorCode`, and `message` are still
+first-class keys, so nothing a client already parses has moved — only the status
+line. Earlier versions answered a rejection with `200` and `valid=false`, which
+let a client that only checked the status treat a refused credential as applied.
+A `2xx` now means the configuration was accepted and persisted, and
+`appliedToRunningPod` still says whether it is live or waits for a restart.
+
+The two metadata write faults are the exception. The configuration validated but
+could not be stored, so they are server errors — `503`
+`METADATA_WRITE_TIMEOUT`, which is safe to retry, and `500`
+`METADATA_WRITE_FAILED` — and they carry the standard error envelope of the
+gateway instead of the response body above.
 
 **Model-sensitive endpoints are refused until the model configuration is valid**
 
@@ -407,9 +482,8 @@ status endpoint for the outcome.
 | Status | When |
 |--------|------|
 | `202 Accepted` | An asynchronous operation has been accepted. |
+| `400 Bad Request` | Two requests that used to be accepted are now rejected upfront: a corpus build whose selector the File Manager has nothing for, and a model configuration that fails validation. |
 | `409 Conflict` | The request conflicts with an operation that is already in progress, such as a build, an orchestration, or a delete. |
-| `429 Too Many Requests` | A service resource has been exhausted. |
-| `507 Insufficient Storage` | Defined for the local storage limit. In practice, exhausting the staging budget surfaces as a *completed* build carrying `STORAGE_FILE_TOO_LARGE`, and a single oversized file is a `400`. |
 
 **Corpus build error codes**
 
@@ -493,7 +567,7 @@ In both cases, run a full corpus build
 ([`POST /v1/corpus/builds`](../../agentic-ai-suite/autograph/reference/corpus-build.md))
 to stamp the identifiers. Redeploying the service is not sufficient.
 
-### Importer (v0.0.32)
+### Importer (v0.0.30 to v0.0.34)
 
 {{< tag "Agentic AI Suite" >}}
 
@@ -502,8 +576,8 @@ request fields, and replaces the boot-time API key probe with a full model
 configuration check.
 
 {{< warning >}}
-The following changes require you to adjust existing clients, and one of them
-requires you to import data again:
+The following changes require you to adjust existing clients, and two of them
+require you to import data again:
 
 - [Removed endpoint](#removed-endpoint): `POST /v1/delete` is gone. Deleting a
   document is an AutoGraph operation.
@@ -513,6 +587,9 @@ requires you to import data again:
 - [Metadata of earlier imports](#metadata-of-earlier-imports): partitions
   imported out of alphabetical order before this release carry the wrong
   `file_name` and `citable_url` and have to be imported again.
+- [Semantic unit embeddings of earlier imports](#semantic-unit-embeddings-of-earlier-imports):
+  semantic units built from images stored in the File Manager carry a
+  meaningless embedding and have to be imported again.
 {{< /warning >}}
 
 #### Removed endpoint
@@ -542,6 +619,21 @@ correct. Partitions that were imported out of alphabetical order before this
 release can still carry the wrong values and have to be imported again to fix
 the metadata.
 
+#### Semantic unit embeddings of earlier imports
+
+The text that a semantic unit embeds names the image it was built from. For an
+image stored in the File Manager, that name was taken from the last segment of
+the canonical download URL, which is always `download`, so every such semantic
+unit embedded the same uninformative `Image: download` token. That shifted all
+of them in the same direction and blurred the cosine distance between images
+that are in fact unrelated. The real filename is now recovered from the file id.
+
+The fix applies to newly written embeddings only. Partitions whose semantic
+units were built from File Manager images before this release keep the old
+vectors and have to be imported again. Documents whose images are referenced by
+an ordinary HTTP or S3 URL were never affected, and neither were imports without
+[semantic units](../../agentic-ai-suite/importer/semantic-units.md).
+
 #### Boot-time model configuration gate
 
 The boot-time check of the deployed chat and embedding configuration now tests
@@ -556,3 +648,272 @@ valid configuration. See
 The limits the Importer enforces on concurrency, request size, chunking, images,
 and timeouts are now documented. See
 [Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
+
+### Retriever (v0.0.18 to v0.0.20)
+
+{{< tag "Agentic AI Suite" >}}
+
+This release gives the Retriever a query-run history, lets you change its model
+configuration and its chat model without a restart, reports every failed query
+with a machine-readable code, and caps the size of a query.
+
+{{< warning >}}
+The following changes require you to adjust existing clients:
+
+- [Query options](#query-options): `auto_select_partitions` defaults to `true`,
+  so a query that sends no `partition_ids` is now restricted to the partitions
+  that the service considers relevant.
+- [Query status and error codes](#query-status-and-error-codes): a query larger
+  than 64 KiB is rejected instead of being truncated, and a failed query carries
+  an `errorCode` that you have to inspect, because the status code stays `200`.
+{{< /warning >}}
+
+**New endpoints**
+
+| Endpoint | Purpose |
+|----------|---------|
+| `GET /v1/retriever-runs` | List the query runs of the project, newest first. |
+| `GET /v1/retriever-runs/{run_id}` | Read a single run. |
+| `DELETE /v1/retriever-runs/{run_id}` | Delete a run. |
+| `PUT /v1/projects/{project}/model-config/credentials` | Change the chat and embedding configuration of a running service. |
+
+For request and response details, see
+[Verify and monitor](../../agentic-ai-suite/retriever/verify-and-monitor.md) and
+[Configure LLMs](../../agentic-ai-suite/retriever/llm-configuration.md).
+
+#### Query run history
+
+The Retriever records every query it serves in the `{project}_Runs` collection
+and exposes it through the `/v1/retriever-runs` endpoints. A run holds the
+query, the response, the query type, the model, the duration, and a snapshot of
+the configuration it ran with, and it moves from `streaming` to `complete` or
+`error`. A run that stays in `streaming` beyond the stale timeout is swept to
+`error`, so a crashed or disconnected query does not stay open forever.
+
+Note that the list endpoint has **no server-side maximum and no pagination**.
+With `limit` omitted or set to `0`, the response carries every run of the
+project, so pass an explicit `limit` once a project has a history. Deleting a
+run is a soft delete, and deleting a run that does not exist, or that you have
+already deleted, is not an error: the response is HTTP `200` with
+`success: false`.
+
+#### Runtime model configuration
+
+`PUT /v1/projects/{project}/model-config/credentials` changes the chat and
+embedding provider, model, secret profile, and API URL of a running Retriever.
+The settings are validated, persisted in the project metadata, and applied to
+the running pod right away, so no restart or reinstall is needed.
+
+- Validation issues one small chat request and one small embeddings request
+  instead of looking the model up in the provider's `GET /v1/models` catalog.
+  This detects an expired key and an exhausted quota, and accepts a model that a
+  gateway serves but does not list. The `KEY_*` and `MODEL_INVALID` codes are
+  replaced by the provider's own reason and the field to fix.
+- `custom` is a first-class provider for any OpenAI-compatible endpoint and can
+  be set independently for chat and embedding. It requires an explicit
+  `chat_api_url` or `embedding_api_url`. Unknown provider strings are rejected
+  rather than defaulting to `openai`, and a configuration already stored as
+  `openai` with a non-default base URL is not migrated automatically.
+- A rejected configuration is reported as HTTP `200` with `valid: false`, an
+  `errorCode`, and the offending `field`. This differs from the AutoGraph
+  endpoint of the same name, which answers a rejection with `400`.
+
+Credentials are no longer probed on every query. They are checked when you
+update them and when a real LLM call fails.
+
+#### Query options
+
+`POST /v1/graphrag-query` and `POST /v1/graphrag-query-stream` accept three new
+fields:
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `mode` | enum, optional | Selects Instant (`1` or `"INSTANT"`) or Deep Search (`2` or `"DEEP_SEARCH"`) with a single value. It takes precedence over `query_type` and `use_llm_planner`, which are then ignored. |
+| `model` | string, optional | Overrides the chat model for this query only. The embedding model is never affected. The model is echoed in the response metadata. |
+| `auto_select_partitions` | boolean, optional | Defaults to `true`. The service searches the corpus graph before retrieval and restricts the query to the partitions that match. A request that sends both this as `true` and `partition_ids` is rejected. |
+
+Response caching is now model-aware. A cached response is stored with the model
+that produced it and is only served to a query that asks for the same model, so
+the same question under a different `model` produces its own cache entry.
+
+Inline citations now survive the multi-step search paths: Local Search with the
+LLM planner and Custom Deep Search merge, renumber, and deduplicate the
+per-step citations and report them in the `citation_mapping` response metadata.
+
+A VectorRAG partition still only serves Instant Search and chunk-searching
+Custom Retriever tools, because Global, Local, and Deep Search need the entities
+and communities that VectorRAG does not build. See
+[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/retriever/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+
+#### Query status and error codes
+
+**A query larger than 64 KiB is rejected**
+
+A `query` above 65,536 bytes of UTF-8 text is rejected with HTTP `400` and a
+message naming its size, before any query-history, retrieval, embedding, or LLM
+work starts. Operators can change the limit with the `MAX_QUERY_BYTES`
+environment variable. The limit counts bytes, not characters, so a query in a
+script that needs two or three bytes per character reaches it much earlier than
+an English one of the same length.
+
+Unified Search previously truncated any query at 1,000 characters instead. That
+truncation is gone, along with the `max_query_chars` setting of all four
+retriever configurations.
+
+**A failed query is a `200` with an `errorCode`**
+
+Query failures are reported in the response body, on both the unary and the
+streaming endpoint, and `result` can be non-empty because the service puts the
+failure message there. Inspect `errorCode` rather than the status code:
+
+| `errorCode` | Meaning |
+|-------------|---------|
+| `CREDENTIAL_VALIDATION_FAILED` | The service has no chat or embedding API key, or it runs on the `custom` provider without an API URL. The check is local, so it fails before any retrieval instead of surfacing as a `401` deep in the query. |
+| `VECTOR_INDEX_NOT_READY` | The vector index that semantic search needs is still building, or does not exist. |
+| `CONTEXT_LENGTH_EXCEEDED` | The assembled context exceeded the context window of the model. For a Custom Retriever query, the message names the tool whose `top_k` to lower. |
+| `PROCESSING_ERROR` | Any other failure that is not a provider failure. The message carries the cause. |
+
+A provider failure reuses the codes of the credentials endpoint, such as
+`INSUFFICIENT_QUOTA`, `INVALID_API_KEY`, and `MODEL_NOT_FOUND`. Quota, auth,
+permission, and model rejections are no longer retried: quota exhaustion arrives
+as a rate-limit error, so a dead key used to be retried for up to an hour. Rate
+limits, timeouts, and connection errors are still retried.
+
+See [Error handling](../../agentic-ai-suite/retriever/error-handling.md).
+
+### File Manager (v0.0.19 to v0.0.22)
+
+{{< tag "Platform Suite" >}}
+
+The RAG input file API grows from a flat, database-level store into a scoped
+one. Files can be placed in a folder path, uploaded in batches, browsed,
+locked against deletion, and deleted in bulk or by the scope.
+
+{{< warning >}}
+The following changes require you to adjust existing clients:
+
+- [Status code changes](#status-code-changes): a request that fails schema
+  validation now answers `422` where it used to answer `400` or `200`, and the
+  single upload no longer returns `413`.
+- [Locking files against deletion](#locking-files-against-deletion): a file that
+  a consumer has locked is skipped by every delete path.
+{{< /warning >}}
+
+**New endpoints**
+
+All paths are below
+`/_platform/filemanager/_db/{database}/rag-input`.
+
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /batch` | Upload many files in one request. |
+| `GET /scopes` | Browse the child scopes of a scope and the files located at it. |
+| `PATCH /{id}` | Lock or unlock one file for deletion. |
+| `POST /safe-to-delete` | Lock or unlock up to 100 files by id. |
+| `POST /safe-to-delete-scope` | Lock or unlock every file at a scope and below it. |
+| `POST /delete` | Delete up to 100 files by id. |
+| `POST /delete-scope` | Delete every file at a scope and below it. |
+
+For request and response details, see the
+[File Manager API](../../platform-suite/file-manager/api.md).
+
+#### Files are addressed by scope
+
+A file now belongs to a
+[scope](../../platform-suite/file-manager/api.md#scopes), an ordered list of at
+most five labels that addresses it within a database. A lineage is identified by
+the database, the scope, and the name, so the same name in a different scope is
+a separate file, and re-uploading a name into the same scope adds a version to
+that lineage. Each label allows letters, digits, hyphens, and underscores, up to
+128 characters, with 256 characters across all labels of one scope.
+
+Scopes are derived from the files: a scope exists while at least one file is
+stored under it and disappears with the last one, so there is nothing to create
+and nothing to clean up. An empty scope stays valid and addresses the
+database-level files, which is what files uploaded before this release carry, so
+existing clients keep working unchanged.
+
+The single upload, the file info, the download, and the version history are all
+scope-aware. A scoped file is fully addressable by its id, which encodes the
+database, the scope, and the name; `GET /versions` takes the `scope` explicitly,
+because it looks a lineage up by name.
+
+#### Custom metadata
+
+An upload can carry
+[`custom_metadata`](../../platform-suite/file-manager/api.md#custom-metadata), a
+string-to-string map that File Manager stores with the file version and returns
+on upload, get, and list. It is opaque to the service: at most 32 pairs, a key
+of up to 64 and a value of up to 2048 characters, and 16 KiB in total.
+Each version carries only the metadata that was sent with it, and nothing is
+merged into the versions that came before.
+
+The reserved
+[`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key)
+key is the one other services read: AutoGraph turns it into a link on every
+citation that points at the file.
+
+#### Batch upload
+
+`POST /batch` takes up to **100 files and 2 GiB** per request, either as a
+`manifest` that names the scope and the metadata of each entry, or as one shared
+scope plus a `mapping` of `flatten`, which puts every file directly under that
+scope, or `preserve_paths`, which turns the subfolders of each filename into
+scope levels. A shared `custom_metadata` field applies to every file, and the
+keys of a manifest entry merge on top of it and win a collision.
+
+The upload reports per-file results and partially succeeds: `200` when every
+file was stored, `207` when at least one failed. The combined size is checked
+after the whole request body has been received, and exceeding it is a `413`.
+
+An oversized batch could previously exhaust the platform gateway's default
+one-minute upstream timeout and answer `504` even though every file had been
+stored. The service now sets an explicit 15-minute timeout on its route, which
+starts once the request body is fully received.
+
+#### Browsing and listing
+
+- `GET /scopes` returns the child scopes of a scope with their active-file
+  counts, together with the files that sit exactly at that scope, which is the
+  folder view a file browser needs.
+- `GET /` gains a `scope` filter that returns that scope **and everything below
+  it**, and a `search` parameter that matches a case-insensitive substring of
+  the name. It now returns only the **latest** version of each file, so a
+  lineage with a long history no longer floods the page. `limit` accepts 1 to
+  1000 and defaults to 100.
+
+#### Locking files against deletion
+
+Every version carries a
+[`safe_to_delete`](../../platform-suite/file-manager/api.md#safe-to-delete)
+flag. `false` locks the version: a delete request skips it, reports it as
+locked, and leaves it in place, and deleting a single locked version is a `423`.
+A newly uploaded version always starts out unlocked.
+
+The flag was already reported before this release, but nothing could set it.
+`PATCH /{id}`, `POST /safe-to-delete`, and `POST /safe-to-delete-scope` now
+write it, always across **every** version of a lineage, so the versions of one
+file cannot drift apart. AutoGraph uses this to protect the files that a corpus
+still references, and reports the ones it skipped in `locked_skipped`.
+
+#### Bulk and scope-wide deletion
+
+`POST /delete` removes up to 100 files by id and `POST /delete-scope` removes a
+whole scope and everything below it. Both skip locked files, report them, and
+answer `207` when anything was skipped, failed, or was not found. Read the
+per-item lists rather than the status code alone.
+
+#### Status code changes
+
+| Endpoint | Change |
+|----------|--------|
+| `POST /` (single upload) | `413` is gone. The service enforces no size limit of its own, although a gateway or proxy may still cap the request. `422` is added for a missing or mistyped form field. |
+| `GET /`, `GET /versions` | `400` for an invalid scope and `422` for an invalid pagination or query value are now documented and enforced. |
+| `GET /{id}`, `GET /{id}/download`, `DELETE /{id}` | `version` has to be `1` or greater. `0` or a negative value is a `422` instead of being accepted. |
+| `POST /delete`, `POST /safe-to-delete` | An empty `ids` list, or more than 100 ids, is a `422` rather than a `400`, enforced by the schema. |
+| `POST /batch` | An unsupported `mapping` value is a request-level `400` rather than a per-file entry in a `207`. |
+
+Scope validation — at most five levels, 128 characters per label, and letters,
+digits, hyphens, and underscores only — is now declared in the OpenAPI
+specification and enforced by the generated models, so a violation is rejected
+consistently rather than depending on the endpoint.
