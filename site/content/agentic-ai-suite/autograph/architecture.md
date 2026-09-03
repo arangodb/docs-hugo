@@ -153,6 +153,20 @@ It contains two edge definitions:
 - `similarities` (connecting sources to sources),
 - `corpus_relations` (connecting sources, domains, modules, and rags).
 
+### Replication factor
+
+AutoGraph creates every collection and graph of both layers with a replication
+factor of **3**, or with the cluster's `minReplicationFactor` if that is higher.
+The value is fixed and cannot be configured; a single-server deployment is
+unaffected.
+
+Where collections inherit their replication factor from a prototype collection
+through `distributeShardsLike`, as in a OneShard database, the inherited value
+stands and AutoGraph leaves it alone.
+
+The [Importer](../importer/reference/limits.md#graphs-and-sharding) uses the
+same replication factor for the Knowledge Graph collections it creates.
+
 ## Node fields
 
 When you open a node in the
