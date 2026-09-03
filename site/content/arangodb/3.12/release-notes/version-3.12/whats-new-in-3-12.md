@@ -109,7 +109,9 @@ for details.
 
 A new ArangoSearch statistics API has been added as an observability feature,
 allowing you to inspect the index segments that back `arangosearch` Views and
-inverted indexes. For a data store as a whole, it reports the number of
+inverted indexes. Every View link and every inverted index stores its data in a
+separate ArangoSearch data store. For a data store as a whole, the endpoint
+reports the number of
 documents, live documents, segments, and files as well as the index size, and
 for every individual segment its name, document counts, and size:
 

@@ -7,11 +7,16 @@ description: >-
   that lets you inspect the index segments that back `arangosearch` Views and
   inverted indexes
 ---
-Both `arangosearch` Views and inverted indexes store their data in an
-ArangoSearch data store that is made up of immutable _segments_.
+Both [`arangosearch` Views](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md)
+and [inverted indexes](../../../indexes-and-search/indexing/working-with-indexes/inverted-indexes.md)
+store their data in ArangoSearch _data stores_. Every link of an
+`arangosearch` View and every inverted index has its own data store, and each
+data store is made up of immutable _segments_.
 New segments are created by commits, and the background consolidation process
 merges small segments into bigger ones and thereby removes documents that have
-been marked as deleted.
+been marked as deleted, as governed by the
+[consolidation properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
+of the View or inverted index.
 
 The ArangoSearch statistics API lets you look at these segments to understand
 how a data store is laid out, how much of it is occupied by deleted documents,
@@ -329,9 +334,11 @@ paths:
 **Examples**
 
 {{< comment >}}
-Example not generated because it requires an arangosearch View or inverted index
-with committed data and the segment layout depends on the commit and
-consolidation timing.
+Example not generated because the endpoint reports the first View link or
+inverted index it finds in the database, which in `_system` can be one from any
+other example that runs at the same time. It would need a dedicated database
+and a wait for the commit, and the segment layout would still differ on every
+regeneration.
 {{< /comment >}}
 
 ```bash
@@ -367,10 +374,3 @@ curl --header 'accept: application/json' --dump - http://localhost:8529/_arango/
 }
 ```
 {{< /details >}}
-
-How eagerly segments are merged is governed by the `consolidationPolicy` and
-`consolidationIntervalMsec` properties of `arangosearch` Views and inverted
-indexes, whereas the `cleanupIntervalStep` property controls how often unused
-files are removed. See
-[View Properties](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
-for details.
