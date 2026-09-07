@@ -106,9 +106,31 @@ paths:
       operationId: rotateEncryptionAtRestKey
       description: |
         Change the user-supplied encryption at rest key by sending a request without
-        payload to this endpoint. The file supplied via `--rocksdb.encryption-keyfolder`
-        will be reloaded and the internal encryption key will be re-encrypted with the
-        new user key.
+        payload to this endpoint. The user key is read again from the configured
+        key source, and the internal encryption key is re-encrypted with it. The
+        stored data itself is not re-encrypted.
+
+        You can rotate the key no matter which of the following mutually exclusive
+        startup options you use for supplying the user key:
+
+        - [`--rocksdb.encryption-keyfile`](../../components/arangodb-server/options.md#--rocksdbencryption-keyfile):
+          The file is read again. It needs to contain the new key when you call
+          this endpoint.
+        - [`--rocksdb.encryption-key-generator`](../../components/arangodb-server/options.md#--rocksdbencryption-key-generator):
+          The program is run again. It needs to output the new key.
+        - [`--rocksdb.encryption-keyfolder`](../../components/arangodb-server/options.md#--rocksdbencryption-keyfolder):
+          All key files in the folder are read again, and the internal encryption
+          key is re-encrypted with every one of these keys. Keys that you removed
+          from the folder can no longer unlock the internal encryption key.
+
+        A key folder lets you roll out a new key without downtime because any one
+        of the keys it contains can unlock the internal encryption key. See
+        [Rotating encryption keys](../../operations/security/encryption-at-rest.md#rotating-encryption-keys)
+        for the recommended procedure.
+
+        Rotating the encryption key is only allowed if the
+        [`--rocksdb.encryption-key-rotation` startup option](../../components/arangodb-server/options.md#--rocksdbencryption-key-rotation)
+        is enabled.
 
         This is a protected API and can only be executed with superuser rights.
         This API is not available on Coordinator nodes.

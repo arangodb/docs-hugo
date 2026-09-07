@@ -117,10 +117,20 @@ If you specify the user name, it must match the name encoded in the token.
 
 ArangoDB uses a standard JWT-based authentication method.
 To authenticate via JWT, you must first obtain a JWT token with a signature
-generated via HMAC with SHA-256. The secret may either be set using
-`--server.jwt-secret` or it is randomly generated on server startup.
+generated via HMAC with SHA-256.
 
-For more information on JWT please consult RFC7519 and [jwt.io](https://jwt.io).
+You can set the secret on server startup in one of the following ways:
+- Set [`--server.jwt-secret-keyfile`](../../components/arangodb-server/options.md#--serverjwt-secret-keyfile)
+  to let the server read the JWT secret from the specified file.
+- Set [`--server.jwt-secret-folder`](../../components/arangodb-server/options.md#--serverjwt-secret-folder)
+  to specify a path and let the server read JWT secrets from multiple files
+  (only one is used for signing).
+- Not specify either option to let the server generate a random JWT secret.
+- Don't use the deprecated `--server.jwt-secret` startup option to set a
+  JWT secret directly, as this may leak the secret (e.g. via the process list).
+
+For more information on JWT, please consult [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)
+and [jwt.io](https://jwt.io).
 
 ### JWT user tokens
 
@@ -1058,7 +1068,7 @@ paths:
       operationId: reloadServerJwtSecrets
       description: |
         Sending a request without payload to this endpoint reloads the JWT secret(s)
-        from disk. Only the files specified via the arangod startup option
+        from disk. Only the files specified via the _arangod_ startup option
         `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder` are used.
         It is not possible to change the locations where files are loaded from
         without restarting the process.
@@ -1110,6 +1120,41 @@ paths:
                         type: array
                         items:
                           type: object
+        '400':
+          description: |
+            The JWT secrets cannot be reloaded because no JWT secret file is
+            configured. This is the case if the server has been started with the
+            deprecated `--server.jwt-secret` startup option or with no JWT secret
+            at all.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                    example: 10
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '403':
           description: |
             if the request was not authenticated as a user with sufficient rights

@@ -392,7 +392,7 @@ detailed information about breaking changes before upgrading.
   The following _arangod_ startup options are deprecated and will be removed
   in a future version:
   - `--database.old-system-collections` (no need to use it anymore)
-  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile`) 
+  - `--server.jwt-secret` (use `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder`) 
   - `--arangosearch.threads` / `--arangosearch.threads-limit`
     (use the following options instead):
     - `--arangosearch.commit-threads`
