@@ -62,6 +62,8 @@ paths:
                   minItems: 1
                   uniqueItems: true
                   items:
+                    description: |
+                      Each object holds the options for indexing one attribute.
                     type: object
                     required:
                       - name
@@ -164,6 +166,8 @@ paths:
                           conditions need to be met by a single sub-object instead of across all of them.
                         type: array
                         items:
+                          description: |
+                            Each object holds the options for indexing one nested attribute.
                           type: object
                           required:
                             - name

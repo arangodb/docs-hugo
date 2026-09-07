@@ -96,7 +96,6 @@ paths:
                   items:
                     description: |
                       A list of attribute paths. The `.` character denotes sub-attributes.
-                      type: string
                     type: string
                 sparse:
                   description: |

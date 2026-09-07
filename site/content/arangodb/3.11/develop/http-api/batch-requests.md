@@ -307,11 +307,11 @@ paths:
 description: |-
   Sending a batch request with five batch parts:
 
-  - GET /_api/version
-  - DELETE /_api/collection/products
-  - POST /_api/collection/products
-  - GET /_api/collection/products/figures
-  - DELETE /_api/collection/products
+  1. {{< endpoint "GET" "/_api/version" >}}
+  2. {{< endpoint "DELETE" "/_api/collection/products" >}}
+  3. {{< endpoint "POST" "/_api/collection/products" >}}
+  4. {{< endpoint "GET" "/_api/collection/products/figures" >}}
+  5. {{< endpoint "DELETE" "/_api/collection/products" >}}
 
   The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
   `Content-Type` HTTP header.

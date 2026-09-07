@@ -761,6 +761,11 @@ paths:
                         type: array
                         items:
                           type: object
+                          required:
+                            - timeStamp
+                            - requestType
+                            - path
+                            - database
                           properties:
                             timeStamp:
                               description: |
@@ -771,7 +776,7 @@ paths:
                               description: |
                                 The HTTP request method.
                               type: string
-                              enum: [GET, PATCH, PUT, DELETE, HEAD]
+                              enum: [GET, POST, PUT, PATCH, DELETE, HEAD]
                             path:
                               description: |
                                 The HTTP request path excluding the database prefix (`/_db/<database-name>`).
@@ -995,6 +1000,11 @@ paths:
                         type: array
                         items:
                           type: object
+                          required:
+                            - timeStamp
+                            - query
+                            - bindVars
+                            - database
                           properties:
                             timeStamp:
                               description: |
@@ -1008,6 +1018,12 @@ paths:
                             bindVars:
                               description: |
                                 Key/value pairs representing the bind variables.
+
+                                Bind parameters are only recorded if they don't
+                                exceed a total size of 1024 bytes. Otherwise, an
+                                empty object is reported, which is
+                                indistinguishable from a query that uses no
+                                bind parameters.
                               type: object
                             database:
                               description: |

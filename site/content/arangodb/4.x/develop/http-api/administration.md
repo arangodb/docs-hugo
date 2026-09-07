@@ -76,10 +76,10 @@ paths:
                       - enterprise
                   version:
                     description: |
-                      The server version string in the format `major.minor.sub`.
+                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`)
                       The `major` and `minor` parts are numeric, and `sub` is a
                       number that may have a version suffix starting with
-                      a hyphen minus (e.g. `3.12.7-2` or `4.0.0-devel`).
+                      a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
                     type: string
                   apiVersions:
                     description: |
@@ -109,10 +109,62 @@ paths:
                     enum: [v1]
                   details:
                     description: |
-                      an optional JSON object with additional details. This is
-                      returned only if the `details` query parameter is set to `true` in the
-                      request.
+                      An object with additional details like compile flags,
+                      dependency versions, and so on.
+                      
+                      Only returned if the `details` query parameter is set to
+                      `true` in the request.
                     type: object
+                    required:
+                      - architecture
+                      - arm
+                      - asan
+                      - assertions
+                      - avx
+                      - avx2
+                      - boost-version
+                      - build-date
+                      - compiler
+                      - coverage
+                      - cplusplus
+                      - curl-version
+                      - debug
+                      - endianness
+                      - failure-tests
+                      - faiss
+                      - fd-client-event-handler
+                      - fd-setsize
+                      - full-version-string
+                      - icu-version
+                      - ipo
+                      - iresearch-version
+                      - jemalloc
+                      - license
+                      - libunwind
+                      - maintainer-mode
+                      - memory-profiler
+                      - ndebug
+                      - openmp
+                      - openssl-version-compile-time
+                      - openssl-version-run-time
+                      - pic
+                      - pie
+                      - platform
+                      - reactor-type
+                      - replication2-enabled
+                      - rocksdb-version
+                      - server-version
+                      - "sizeof int"
+                      - "sizeof long"
+                      - "sizeof void*"
+                      - sse42
+                      - tsan
+                      - unaligned-access
+                      - v8-version
+                      - vpack-version
+                      - zlib-version
+                      - role
+                      - host
                     properties:
                       architecture:
                         description: |
@@ -280,10 +332,6 @@ paths:
                         description: |
                           The OpenMP version used for parallelization.
                         type: string
-                      openssl-version:
-                        description: |
-                          The OpenSSL version that is linked.
-                        type: string
                       openssl-version-compile-time:
                         description: |
                           The OpenSSL version at compile time.
@@ -295,6 +343,11 @@ paths:
                       optimization-flags:
                         description: |
                           The compiler optimization flags used for this build.
+                        type: string
+                      oskar-build-repository:
+                        description: |
+                          Reference to the Git ID of the build environment this was
+                          compiled with.
                         type: string
                       pic:
                         description: |
@@ -421,7 +474,9 @@ paths:
     get:
       operationId: getEngine
       description: |
-        Returns the storage engine the server is configured to use.
+        Returns the name of the storage engine the server is configured to use,
+        the endianness of its on-disk key format, as well as the index types
+        it supports.
       parameters:
         - name: database-name
           in: path
@@ -436,18 +491,72 @@ paths:
       responses:
         '200':
           description: |
-            Successfully retrieved storage engine name.
+            Successfully retrieved the storage engine information.
           content:
             application/json:
               schema:
                 type: object
                 required:
                   - name
+                  - endianness
+                  - supports
                 properties:
                   name:
                     description: |
-                      Always `rocksdb`.
+                      The name of the storage engine.
                     type: string
+                    const: rocksdb
+                  endianness:
+                    description: |
+                      The endianness of the key format the storage engine
+                      uses on disk.
+                    type: string
+                    enum: [little, big]
+                  supports:
+                    description: |
+                      An object describing what the storage engine supports.
+                    type: object
+                    required:
+                      - indexes
+                      - aliases
+                    properties:
+                      indexes:
+                        description: |
+                          A list of the index types you can use.
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - primary
+                            - edge
+                            - ttl
+                            - persistent
+                            - geo
+                            - mdi
+                            - mdi-prefixed
+                            - inverted
+                            - vector
+                      aliases:
+                        description: |
+                          An object describing the alternative names you can
+                          use for certain index types.
+                        type: object
+                        required:
+                          - indexes
+                        properties:
+                          indexes:
+                            description: |
+                              The keys are the alternative index type names and
+                              the values are the index types they refer to.
+                            type: object
+                            required:
+                              - zkd
+                            properties:
+                              zkd:
+                                description: |
+                                  The `zkd` index type is an alias for `mdi`.
+                                type: string
+                                const: mdi
         '401':
           description: |
             Missing read access to the given database.
@@ -689,9 +798,9 @@ paths:
                   - serverInfo
                 properties:
                   server:
-                    description: |
-                      Always `"arango"`.
+                    description: ''
                     type: string
+                    const: arango
                   license:
                     description: |
                       ArangoDB Edition, either `"community"` or `"enterprise"`.
@@ -801,12 +910,16 @@ paths:
                       Information about the Agency.
                       *Cluster only* (Coordinators and DB-Servers).
                     type: object
+                    required:
+                      - agencyComm
                     properties:
                       agencyComm:
                         description: |
                           Information about the communication with the Agency.
                           *Cluster only* (Coordinators and DB-Servers).
                         type: object
+                        required:
+                          - endpoints
                         properties:
                           endpoints:
                             description: |
@@ -814,16 +927,17 @@ paths:
                             type: array
                             items:
                               type: string
-                  coordinator:
-                    description: |
-                      Information about the Coordinators.
-                      *Cluster only* (Coordinators)
-                    type: object
                   agent:
                     description: |
                       Information about the Agents.
                       *Cluster only* (Agents)
                     type: object
+                    required:
+                      - id
+                      - leaderId
+                      - leading
+                      - endpoint
+                      - term
                     properties:
                       id:
                         description: |
@@ -1331,8 +1445,8 @@ paths:
 
         This endpoint is available regardless of the
         [`--server.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api)
-        setting, so that the Arango Contextual Data Platform web interface for instance can always
-        access the public options.
+        setting, so that the Arango Contextual Data Platform web interface for
+        instance can always access the public options.
       parameters:
         - name: database-name
           in: path
@@ -1353,6 +1467,13 @@ paths:
             application/json:
               schema:
                 type: object
+                required:
+                  - database.extended-names
+                  - cluster.min-replication-factor
+                  - cluster.max-replication-factor
+                  - cluster.max-number-of-shards
+                  - cluster.api-jwt-policy
+                  - server.session-timeout
                 properties:
                   database.extended-names:
                     description: |

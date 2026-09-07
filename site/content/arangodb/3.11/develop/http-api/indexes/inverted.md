@@ -42,7 +42,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"inverted"`.
+                    Needs to be set to `"inverted"`.
                   type: string
                   example: inverted
                 name:
@@ -61,6 +61,8 @@ paths:
                   minItems: 1
                   uniqueItems: true
                   items:
+                    description: |
+                      Each object holds the options for indexing one attribute.
                     type: object
                     required:
                       - name
@@ -167,6 +169,8 @@ paths:
                           This property is available in the Enterprise Edition only.
                         type: array
                         items:
+                          description: |
+                            Each object holds the options for indexing one nested attribute.
                           type: object
                           required:
                             - name

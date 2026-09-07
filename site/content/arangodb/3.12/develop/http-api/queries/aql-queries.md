@@ -699,6 +699,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -750,8 +751,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1110,6 +1112,9 @@ paths:
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction that has just been canceled or timed out.
+        '500':
+          description: |
+            This error occurs if a query is not eligible for plan caching.
         '503':
           description: |
             A server which processes the query or the leader of a shard which is used
@@ -1462,6 +1467,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -1513,8 +1519,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1928,8 +1935,9 @@ paths:
         - `errorNum`: a server error number (if `error` is `true`)
         - `errorMessage`: a descriptive error message (if `error` is `true`)
         - `extra`: an object with additional information about the query result, with
-          the nested objects `stats` and `warnings`. Only delivered as part of the last
-          batch in case of a cursor with the `stream` option enabled.
+          the nested objects `stats` and `warnings`. For cursors with the `stream` option
+          enabled, only delivered as part of the last batch. Otherwise, included in
+          every batch.
 
         Note that even if `hasMore` returns `true`, the next call might
         still return no documents. If, however, `hasMore` is `false`, then
@@ -2111,6 +2119,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -2162,8 +2171,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
