@@ -83,8 +83,8 @@ Sample output:
      kind delete cluster --name arango-platform
 ```
 
-For common setup issues, please refer to the
-[Troubleshooting / Installation FAQ](https://docs.arangodb.com/troubleshooting).
+For common setup issues, see
+[Troubleshooting the installation](troubleshooting.md).
 
 ## Install Python Client
 

@@ -1,7 +1,7 @@
 ---
 title: Arango Platform Suite
 menuTitle: Platform Suite
-weight: 3
+weight: 4
 description: >-
   The Platform Suite is a set of services and features for operating ArangoDB
   with Kubernetes and includes a Graph Visualizer and advanced Query Editor
