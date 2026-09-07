@@ -1043,7 +1043,7 @@ paths:
       operationId: reloadServerJwtSecrets
       description: |
         Sending a request without payload to this endpoint reloads the JWT secret(s)
-        from disk. Only the files specified via the arangod startup option
+        from disk. Only the files specified via the _arangod_ startup option
         `--server.jwt-secret-keyfile` or `--server.jwt-secret-folder` are used.
         It is not possible to change the locations where files are loaded from
         without restarting the process.
@@ -1095,6 +1095,41 @@ paths:
                         type: array
                         items:
                           type: object
+        '400':
+          description: |
+            The JWT secrets cannot be reloaded because no JWT secret file is
+            configured. This is the case if the server has been started with the
+            deprecated `--server.jwt-secret` startup option or with no JWT secret
+            at all.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                    example: 10
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '403':
           description: |
             if the request was not authenticated as a user with sufficient rights
