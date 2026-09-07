@@ -39,7 +39,7 @@ build in isolation and [dump](../../../components/tools/arangodump/_index.md) an
 stable to your custom build.
 {{< /danger >}}
 
-When running like this, you must run the db as the arangod user (the default
+When running like this, you must run the db as the _arangod_ user (the default
 installed by the package) in order to have write access to the log, database
 directory etc. Running as root will likely mess up the file permissions - good
 luck fixing that!

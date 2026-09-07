@@ -410,7 +410,7 @@ ArangoDB.
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
-Start `arangod` with the startup option `--log.level startup=trace`.
+Start _arangod_ with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
 {{< tab "Configuration file" >}}
@@ -754,7 +754,7 @@ The following shortcodes also exist but are rarely used:
   rules from a JSON source file.
 
 - `{{% program-options name="arangod" %}}` renders the startup options of a
-  component like the ArangoDB server (`arangod`) or shell (`arangosh`).
+  component like the ArangoDB server (_arangod_) or shell (_arangosh_).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
 
@@ -842,8 +842,9 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Contextual Data Platform_, but not
-     ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+  - _Arango Contextual Data Platform_
+    and _data platform_ for short in prose that refers to it many times, but not
+     ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
      ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
@@ -852,6 +853,33 @@ The following shortcodes also exist but are rarely used:
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
+
+- When referring to programs by their executable names, like the server or
+  client-tool binaries, make the name italic using underscores, e.g. `_arangod_`
+  or `_oasisctl_`. In headlines, use asterisks, e.g. `*oasisctl*` and `*arangod*`,
+  because underscores would affect the generated fragment IDs.
+
+  Exceptions: Don't make it italic in the following cases:
+
+  -  In the `menuTitle` front matter \
+    `menuTitle: Get started with oasisctl` but `title: Get started with _oasisctl_`
+
+  - If it's the full label of a link \
+    `[oasisctl](...)` but `[The _oasisctl_ reference](...)`
+
+  - If it's the only text of a headline \
+    `### arangodump` but `### Create backups with *arangodump*`
+
+  - If it specifically refers to the file on disk or is a command to run
+    (use inline code instead) \
+    `` The ArangoDB server executable is named `arangod` ``
+
+  - Inside of code including comments \
+    `const aql = require('@arangodb').aql; // not needed in arangosh`
+
+  Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
+  is supposed to run it as a command or if it's specifically used as a
+  code value or file name.
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.

@@ -573,14 +573,14 @@ JWT secret file.
 
 Additionally the `/_admin/server/jwt` API can be used to
 [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
-of a local arangod process without having to restart it (hot-reload).
+of a local _arangod_ process without having to restart it (hot-reload).
 This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
 
 ### TLS key and certificate rotation
 
 It is now possible to change the TLS keyfile (secret key as well as
 public certificates) at run time. The API `POST /_admin/server/tls`
-basically makes the `arangod` server reload the keyfile from disk.
+basically makes the _arangod_ server reload the keyfile from disk.
 
 Furthermore, one can query the current TLS setup at runtime with the
 `GET /_admin/server/tls` API. The public certificates as well as a
@@ -637,7 +637,7 @@ the [JS API](../../develop/javascript-api/@arangodb/collection-object.md#collect
 
 ### Override detected total memory and CPU cores
 
-`arangod` detects the total amount of RAM present on the system and calculates
+_arangod_ detects the total amount of RAM present on the system and calculates
 various default sizes based on this value. If you run it alongside other
 services or in a container with a RAM limitation for its cgroup, then you
 probably don't want the server to detect and use all available memory.
@@ -646,7 +646,7 @@ An environment variable `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY` can now be
 set to restrict the amount of memory it will detect (also available in v3.6.3).
 
 An environment variable `ARANGODB_OVERRIDE_DETECTED_NUMBER_OF_CORES` can be
-set to restrict the number of CPU cores that are visible to arangod.
+set to restrict the number of CPU cores that are visible to _arangod_.
 
 See [ArangoDB Server Environment Variables](../../components/arangodb-server/environment-variables.md)
 
@@ -949,9 +949,9 @@ instead of libcurl.
 
 ### Crash handler
 
-The Linux builds of the arangod executable contain a built-in crash handler
+The Linux builds of the _arangod_ executable contain a built-in crash handler
 The crash handler is supposed to log basic crash information to the ArangoDB
-logfile in case the arangod process receives one of the signals SIGSEGV,
+logfile in case the _arangod_ process receives one of the signals SIGSEGV,
 SIGBUS, SIGILL, SIGFPE or SIGABRT. SIGKILL signals, which the operating system
 can send to a process in case of OOM (out of memory), are not interceptable and
 thus cannot be intercepted by the crash handler.
@@ -994,9 +994,9 @@ later. VS 2017 might still work, but is not officially supported any longer.
 
 The following features have been added for auto-generating documentation:
 
-- the `--dump-options` command for arangod and the client tools now also emits
+- the `--dump-options` command for _arangod_ and the client tools now also emits
   an attribute `os` which indicates on which operating system(s) the respective
   options are supported.
-- the `--dump-options` command for arangod now also emits an attribute
+- the `--dump-options` command for _arangod_ now also emits an attribute
   `component` which indicates for which node type(s) the respective options are
   supported (`single` server, `coordinator`, `dbserver`, `agent`).

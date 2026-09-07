@@ -136,7 +136,7 @@ would simply do
 db.edges.ensureIndex({"type": "persistent", "fields": ["_from", "timestamp"]});
 ```
 
-in arangosh. Then, queries like
+in _arangosh_. Then, queries like
 
 ```aql
 FOR v, e, p IN 1..1 OUTBOUND "V/1" edges
@@ -606,7 +606,7 @@ exclusive lock during the entire index creation. The collection remains basicall
 so that other CRUD operations can run on the collection while the index is being created.
 This can be achieved by setting the `inBackground` attribute when creating an index.
 
-To create an index in the background in *arangosh* just specify `inBackground: true`, 
+To create an index in the background in _arangosh_ just specify `inBackground: true`, 
 like in the following examples:
 
 ```js

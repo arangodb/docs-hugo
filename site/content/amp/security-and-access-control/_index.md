@@ -535,7 +535,7 @@ Permissions are solely defined by the AMP API.
 
 {{% comment %}}
 Retrieved with the below command, with manual adjustments:
-oasisctl list permissions
+`oasisctl list permissions`
 
 Note that if the tier is "internal", there is an `internal-dashboard` API that should be excluded in below list!
 {{% /comment %}}

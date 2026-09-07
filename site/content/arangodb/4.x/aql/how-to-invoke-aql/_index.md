@@ -16,7 +16,7 @@ You can execute AQL queries using different interfaces:
   HTTP REST API
 
 There are always calls to the server's API under the hood, but the web interface,
-arangosh, drivers, and integrations abstract away the low-level
+_arangosh_, drivers, and integrations abstract away the low-level
 communication details and are thus easier to use.
 
 <!-- TODO: New link/description
@@ -28,7 +28,7 @@ with the [`db._query()`](with-arangosh.md#with-db_query) and
 [`db._createStatement()`](with-arangosh.md#with-db_createstatement-arangostatement)
 methods of the [`db` object](../../develop/javascript-api/@arangodb/db-object.md). This chapter
 also describes how to use bind parameters, statistics, counting, and cursors with
-arangosh.
+_arangosh_.
 
 If you want to run AQL queries from your application via the HTTP REST API,
 see the full API description at [HTTP interface for AQL queries](../../develop/http-api/queries/aql-queries.md).

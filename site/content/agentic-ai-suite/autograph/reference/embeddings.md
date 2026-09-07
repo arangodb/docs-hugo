@@ -11,7 +11,7 @@ weight: 55
 
 Add embeddings to documents in **any** ArangoDB collection you already have. This path is **independent** of import, corpus build, clustering, and the `{project}_CorpusGraph` named graph.
 
-**Recommended path:** This endpoint works independently; no import or corpus build required. Call once per `(collection, field)` pair; repeated calls only process documents still missing the embedding.
+**Recommended path:** This endpoint works independently; no import or corpus build required. Call once per `(collection, field)` pair. Every call recomputes the candidates from the live data, so rows that were inserted after a previous successful run are embedded on the next call.
 
 ## Request
 
@@ -31,7 +31,21 @@ Add embeddings to documents in **any** ArangoDB collection you already have. Thi
 
 ## Behavior
 
-Only documents **without** `<field>_embedding` are updated. Values may be string or numeric (coerced to text). Truncation follows the same rough character budget as corpus build. After a successful run, the service ensures a **vector index** on the embedding field and an **ArangoSearch view** on the source field when applicable. Rows that fail validation or embedding appear only in the **`message`** text; **`documents_skipped`** counts docs that **already had** an embedding and were not re-processed.
+The service rescans the collection on every call and sorts the documents into
+three groups:
+
+- **Candidates** have a non-null source field and a missing or **null**
+  `<field>_embedding`. An explicit `null` counts as not yet embedded. These are
+  the documents that get embedded.
+- **Skipped** documents already have a non-null `<field>_embedding` and are left
+  untouched.
+- **Ineligible** documents have no source value and no embedding. They are
+  neither embedded nor counted as failed.
+
+Source values may be string or numeric (coerced to text). Truncation follows the
+same rough character budget as corpus build. After a successful run, the service
+ensures a **vector index** on the embedding field and an **ArangoSearch view**
+on the source field when applicable.
 
 ## Response
 
@@ -43,19 +57,35 @@ Only documents **without** `<field>_embedding` are updated. Values may be string
   "field": "description",
   "embedding_field": "description_embedding",
   "documents_updated": 150,
-  "documents_skipped": 20
+  "documents_skipped": 20,
+  "documents_examined": 175,
+  "documents_failed": 2,
+  "documents_ineligible": 3
 }
 ```
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `status` | string | `"completed"` |
-| `message` | string | Summary; may mention counts if some documents could not be embedded |
+| `message` | string | Summary; may mention documents that could not be embedded |
 | `collection` | string | Collection name |
 | `field` | string | Source field |
 | `embedding_field` | string | Name of the embedding attribute |
 | `documents_updated` | integer | Documents that received embeddings in this run |
-| `documents_skipped` | integer | Documents that **already had** `<field>_embedding` (unchanged by this call) |
+| `documents_skipped` | integer | Documents that **already had** a non-null `<field>_embedding` (unchanged by this call) |
+| `documents_examined` | integer | The size of the collection. Reconcile it against your own store. |
+| `documents_failed` | integer | Candidates that could not be embedded, because of an empty value or an error |
+| `documents_ineligible` | integer | Documents with no source value and no embedding |
+
+The counts are expected to add up:
+
+```
+documents_examined == documents_updated + documents_skipped
+                      + documents_failed + documents_ineligible
+```
+
+A gap is logged server-side at error level. The response still returns the
+counts, because the call does not abort mid-write only for a counter mismatch.
 
 | Status Code | Meaning |
 |-------------|---------|

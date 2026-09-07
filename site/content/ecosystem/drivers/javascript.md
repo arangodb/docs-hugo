@@ -19,7 +19,7 @@ The official ArangoDB low-level JavaScript client.
 - [Changelog](https://github.com/arangodb/arangojs/blob/main/CHANGELOG.md)
 
 {{< info >}}
-If you are looking for the ArangoDB JavaScript API used in the `arangosh` interactive
+If you are looking for the ArangoDB JavaScript API used in the _arangosh_ interactive
 shell (and up to ArangoDB v3.12 also in Foxx), please refer to the documentation about the
 [`@arangodb` module](../../arangodb/3.12/develop/javascript-api/@arangodb/_index.md) instead.
 

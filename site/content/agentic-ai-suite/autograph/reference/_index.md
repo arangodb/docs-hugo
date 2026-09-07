@@ -10,11 +10,11 @@ JWT authentication and are served on port `8080`. For the pipeline
 architecture, see [Architecture](../architecture.md#complete-pipeline).
 
 {{< info >}}
-**Field names are lowerCamelCase over HTTP.** This reference uses the
-protobuf field names, such as `rag_partition_id` or `overall_status`. The REST
-gateway emits the JSON names instead, so an actual response carries
-`ragPartitionId` and `overallStatus`. Convert accordingly when you read a
-response or build a request body.
+**Field names are lowerCamelCase over HTTP.** This reference spells field names
+in snake_case, such as `rag_partition_id` or `overall_status`. Responses come
+back with the lowerCamelCase equivalents, `ragPartitionId` and `overallStatus`,
+so convert accordingly when you read one. Request bodies are accepted in either
+form.
 {{< /info >}}
 
 ## Authentication
@@ -32,23 +32,87 @@ background jobs (corpus build, RAG strategizer, orchestration).
 
 Endpoints are served at **`http://<host>:8080`**.
 
+### Pipeline
+
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
 | `GET` | `/v1/health` | Check service readiness | - |
-| `POST` | `/v1/import-multiple` | Upload documents with module labels | [Import Files](importing-files.md) |
 | `POST` | `/v1/corpus/builds` | Start a corpus build | [Corpus Build](corpus-build.md) |
 | `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
 | `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
+| `GET` | `/v1/rag-strategizer/jobs/{id}` | Monitor a strategizer run | [RAG Strategizer](rag-strategizer.md#monitor-a-strategizer-job) |
 | `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md) |
+| `PATCH` | `/v1/rag-strategizer/strategy/{cluster_id}` | Override the strategy of one cluster | [RAG Strategizer](rag-strategizer.md#update-a-cluster-strategy) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md#trigger-orchestration) |
 | `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](orchestration.md#monitor-an-orchestration) |
+| `DELETE` | `/v1/orchestrate/{id}` | Cancel a running orchestration | [Graph Operations](orchestration.md#cancel-an-orchestration) |
+| `POST` | `/v1/import-multiple` | **Deprecated.** Direct upload of documents with module labels, superseded by the File Manager | [Import Files](importing-files.md) |
+
+### Document-level changes
+
+| Method | Path | Description | Details |
+|--------|------|-------------|---------|
 | `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
 | `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
 | `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
 | `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
+
+### Project operations
+
+| Method | Path | Description | Details |
+|--------|------|-------------|---------|
+| `GET` | `/v1/projects/{project}/overview` | Read the whole project state in one call | [Project Operations](project-operations.md#project-overview) |
+| `PUT` | `/v1/projects/{project}/model-config/credentials` | Set the chat and embedding configuration | [Project Operations](project-operations.md#update-model-config-credentials) |
+| `DELETE` | `/v1/projects/{project}/categories/{category}` | Remove a category and its graph data | [Project Operations](project-operations.md#delete-category) |
+| `DELETE` | `/v1/projects/{project}` | Tear down the whole project | [Project Operations](project-operations.md#delete-project) |
+
+### Standalone
+
+| Method | Path | Description | Details |
+|--------|------|-------------|---------|
 | `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](embeddings.md) |
 
 For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md).
+
+{{< info >}}
+**Asynchronous operations return `202 Accepted`.** `POST /v1/corpus/builds`,
+`POST /v1/rag-strategizer/analyze`, and `POST /v1/orchestrate` acknowledge the
+request with `202` and run the work in the background. Accept any `2xx` as
+"accepted" and poll the matching status endpoint for the outcome.
+
+A corpus build can still be rejected synchronously. If the File Manager has no
+files for the selector, the request comes back as `400` and no
+`corpus_build_id` is created, so check the status code before you read the ID
+from the response body.
+{{< /info >}}
+
+## The category contract
+
+A **category** is the second scope level of a project and carries the label you
+set as `module` when you imported the files, see
+[Import files](importing-files.md#parameters).
+
+Every endpoint that takes a category expects the **bare label**, such as
+`legal`, exactly as `GET /v1/projects/{project}/overview` reports it in
+`categories[].name`. The internal `{project}_legal` encoding is a server-side
+detail that you never have to construct. An already encoded value is still
+accepted as a legacy alias, but the bare form is the one to use.
+
+`POST /v1/corpus/builds`, `POST /v1/rag-strategizer/analyze`, and
+`POST /v1/orchestrate` take a list of them in `categories`, the `/v1/graph/*`
+endpoints take a single one in `category`, and
+`DELETE /v1/projects/{project}/categories/{category}` takes one in the path.
+
+{{< warning >}}
+**Responses mix bare labels and internal identifiers.** The overview exposes
+bare labels on `categories[].name`, `knowledge_graph.new_categories`, and
+`strategies.categories_without_strategies`. Those are the values to feed back
+into a `categories` parameter.
+
+`knowledge_graph.removed_categories` carries `rag_partition_id` values, and
+`jobs[].category` of an orchestration status carries the encoded module. Never
+pass either of them to a `categories` parameter.
+{{< /warning >}}
 
 ## Call Sequence
 
@@ -57,23 +121,44 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 ### Standard workflow
 
 1. `GET /v1/health` - confirm the service is ready.
-2. `POST /v1/import-multiple` - upload documents. Repeat once per module
-   (for example, call once for `"legal"`, once for `"engineering"`, and so on).
-   See [Import Files](importing-files.md).
-3. `POST /v1/corpus/builds` - start the corpus build for all imported modules.
+2. Upload the documents to the File Manager under the scope
+   `[project, category]`. The direct upload with `POST /v1/import-multiple` is
+   deprecated. See [Import Files](importing-files.md).
+3. `POST /v1/corpus/builds` - start the corpus build, preferably with
+   `categories`. Returns `202` with a `corpus_build_id` and the `graph_name`.
    See [Corpus Build](corpus-build.md).
 4. Poll `GET /v1/corpus/builds/{corpus_build_id}` until `status` is `completed`.
-   See [Monitoring Build Status](corpus-build.md#monitoring-build-status).
+   Check `error_code` even then, because a non-empty value on a completed build
+   means a partial success. See
+   [Monitoring Build Status](corpus-build.md#monitoring-build-status).
 5. `POST /v1/rag-strategizer/analyze` - assign RAG strategies to clusters.
-   See [RAG Strategizer](rag-strategizer.md).
-6. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
-   See [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies).
-7. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
-   See [Graph Operations](orchestration.md).
-8. Poll `GET /v1/orchestrate/{orchestration_id}` for the per-partition results,
-   including the divergence of each FullGraphRAG partition. Read them before you
-   start another orchestration, which evicts this run. See
-   [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
+   `project` and `complexity` are required. Returns `202` with a
+   `strategize_job_id`. See [RAG Strategizer](rag-strategizer.md).
+6. Poll `GET /v1/rag-strategizer/jobs/{strategize_job_id}` until `status` is
+   `completed`. See
+   [Monitor a strategizer job](rag-strategizer.md#monitor-a-strategizer-job).
+7. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
+   See [Retrieve RAG Strategies](rag-strategizer.md#retrieve-rag-strategies).
+8. *(Optional)* `PATCH /v1/rag-strategizer/strategy/{cluster_id}` - override the
+   strategy of a cluster if the assigned one is not suitable. Do this **before**
+   you orchestrate. See
+   [Update a cluster strategy](rag-strategizer.md#update-a-cluster-strategy).
+9. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
+   Returns `202` with an `orchestration_id`. See
+   [Trigger Orchestration](orchestration.md#trigger-orchestration).
+10. Poll `GET /v1/orchestrate/{orchestration_id}`. Branch on `status`, which
+    reaches `completed` only once every job is terminal *and* the imported
+    partitions were found in the knowledge graph, and render `phase` as the
+    progress. The response also carries the per-partition results, including the
+    divergence of each FullGraphRAG partition. Read them before you start another
+    orchestration, which evicts this run. See
+    [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
+
+At any point,
+[`GET /v1/projects/{project}/overview`](project-operations.md#project-overview)
+reports where the project stands: the document and cluster counts, whether the
+corpus, the strategies, or the knowledge graph are stale, and which categories
+still need work.
 
 ### Embed-only workflow
 
@@ -86,12 +171,22 @@ build is required.
    existing ArangoDB collection. Repeat per `(collection, field)` pair.
    See [Embeddings](embeddings.md).
 
-### Adding a module to an existing corpus
+### Adding a category to an existing corpus
 
-Follow the standard workflow, but in step 3 set `incremental: true` and list
-only the new module in `modules`. Existing modules are preserved; only the
-listed modules are updated. See
-[Incremental Builds](corpus-build.md#incremental-builds).
+Follow the standard workflow, but in step 3 list **only** the new category in
+`categories` and leave `incremental` at its default of `false`. The existing
+categories are left untouched.
+
+Use `incremental: true` only to **append documents to a category that already
+exists**. A full rebuild of an already built category is rejected with
+`REBUILD_NOT_ALLOWED`, see [Corpus Build](corpus-build.md#create-corpus-build).
+
+### Rebuilding a category
+
+There is no in-place rebuild. To rebuild a category from scratch, remove it with
+[`DELETE /v1/projects/{project}/categories/{category}`](project-operations.md#delete-category),
+then run a corpus build, the strategizer, and an orchestration again. This is
+also the supported recovery path for a partition that imported incompletely.
 
 ### Document-level changes to an existing graph
 
@@ -105,7 +200,8 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
    Delete is synchronous and removes the Layer 3 data itself.
 2. After an insert or a successful update, call `POST /v1/orchestrate` with the
    `file_ids` of the changed documents, so that Layer 3 contains the new
-   content.
+   content. A non-empty `file_ids` also skips the stale-partition filter, so a
+   partition that is already imported stays eligible.
 3. Check `divergence_score` and `needs_reclustering` in the `jobs` of
    `GET /v1/orchestrate/{id}`. Insert and update responses do not report them.
    After a delete, they are on each file's result if its `overall_status` is
@@ -124,70 +220,89 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
   finished.
 - Only one corpus build, orchestration run, or graph update can be active at a
   time. If they overlap, you get a `409`.
+- `POST /v1/orchestrate` returns `409` when every category with strategies is
+  already in the knowledge graph. That is a successful steady state, not a
+  failure, see
+  [Telling the three `409` responses apart](orchestration.md#telling-the-three-409-responses-apart).
+- `DELETE /v1/projects/{project}/categories/{category}` and
+  `PATCH /v1/rag-strategizer/strategy/{cluster_id}` also return `409` while a
+  build or an orchestration is running.
 {{< /warning >}}
 
-For guidance on structuring your data with modules, see the
+For guidance on structuring your data with categories, see the
 [Design Guide](../design-guide.md).
 
 ## Workflow Examples
 
 ### Knowledge graph build
 
-This example uses the `import-multiple` path. To use File Manager instead,
-replace steps 2 and 3 with a single `POST /v1/corpus/builds` call that
-includes `file_ids` (see [Corpus Build](corpus-build.md)).
+This example drives the build from File Manager categories. The direct upload
+with `POST /v1/import-multiple`, and a corpus build without a selector, are
+deprecated (see [Import Files](importing-files.md)).
 
 ```bash
 # Step 1: Health check
 curl -H "Authorization: Bearer <token>" http://localhost:8080/v1/health
 
-# Step 2: Import documents (repeat per module)
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "files": [
-      {
-        "doc_name": "doc1.txt",
-        "content": "VGV4dCBjb250ZW50",
-        "citable_url": "https://example.com/doc1"
-      }
-    ],
-    "module": "engineering"
-  }' \
-  http://localhost:8080/v1/import-multiple
-
-# Step 3: Build corpus
+# Step 2: Build the corpus for the categories you uploaded to the File Manager.
+# Returns 202 with corpus_build_id and graph_name.
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{
     "embedding_strategy": "first_chunk",
+    "categories": ["legal", "finance"],
     "strategy": { "top_k": 7, "cluster_threshold": 2 }
   }' \
   http://localhost:8080/v1/corpus/builds
 
-# Step 4: Monitor build progress
+# Step 3: Monitor build progress. Poll until status is completed or failed, and
+# check error_code even on a completed build.
 curl -H "Authorization: Bearer <token>" \
   http://localhost:8080/v1/corpus/builds/<corpus_build_id>
 
-# Step 5: Analyze clusters (after build completes)
+# Step 4: Analyze the clusters. Returns 202 with strategize_job_id.
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"full_graph_rag_strategy": "high"}' \
+  -d '{"project": "my_project", "complexity": "high"}' \
   http://localhost:8080/v1/rag-strategizer/analyze
 
-# Step 6: Review strategies
+# Step 5: Monitor the strategizer job
+curl -H "Authorization: Bearer <token>" \
+  http://localhost:8080/v1/rag-strategizer/jobs/<strategize_job_id>
+
+# Step 6: Review the strategies
 curl -H "Authorization: Bearer <token>" \
   http://localhost:8080/v1/rag-strategizer/strategy
 
-# Step 7: Start orchestration
+# Step 7: Start the orchestration. Returns 202 with orchestration_id.
+# A 409 here means every eligible category is already in the knowledge graph.
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
   -d '{"project": "my_project", "replicas": 2, "max_retries": 3}' \
   http://localhost:8080/v1/orchestrate
+
+# Step 8: Monitor the orchestration
+curl -H "Authorization: Bearer <token>" \
+  http://localhost:8080/v1/orchestrate/<orchestration_id>
+```
+
+### Checking the project state
+
+```bash
+curl -H "Authorization: Bearer <token>" \
+  http://localhost:8080/v1/projects/my_project/overview
+```
+
+### Removing a category
+
+```bash
+# Graph cleanup and file deletion. delete_files is a query parameter.
+curl -X DELETE \
+  -H "Authorization: Bearer <token>" \
+  "http://localhost:8080/v1/projects/my_project/categories/legal?delete_files=true"
 ```
 
 ### Field embedding on an existing collection

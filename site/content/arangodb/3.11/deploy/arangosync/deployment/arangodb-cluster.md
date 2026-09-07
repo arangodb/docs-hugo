@@ -20,7 +20,7 @@ The _Starter_ supervises its child tasks (namely _Coordinators_,
 _DB-Servers_ and _Agents_) and restarts them in case of failures.
 
 Datacenter-to-Datacenter Replication (DC2DC) requires a normal ArangoDB cluster in both datacenters
-and one or more (`arangosync`) syncmasters & syncworkers in both datacenters.
+and one or more (_arangosync_) syncmasters & syncworkers in both datacenters.
 The Starter enables you to run these syncmasters & syncworkers in combination with your normal
 cluster.
 

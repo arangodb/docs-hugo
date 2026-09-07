@@ -45,7 +45,7 @@ The following security options are available:
 
 ## JavaScript security options
 
-`arangod` has several options that allow you to make your installation more
+_arangod_ has several options that allow you to make your installation more
 secure when it comes to running application code in it. Below you will find 
 an overview of the relevant options.
 
@@ -75,7 +75,7 @@ pattern, these patterns will be combined with a _logical or_ to the actual patte
 ArangoDB will use.
 
 These patterns and how they are applied can be observed by enabling 
-`--log.level SECURITY=debug` in the `arangod` or `arangosh` log output.
+`--log.level SECURITY=debug` in the _arangod_ or _arangosh_ log output.
 
 ### Options for allowlisting and denylisting
 
@@ -334,14 +334,14 @@ extra options are available for locking down JavaScript access to server functio
 - `--javascript.user-defined-functions`: You can set this option to `false` to
   turn off [user-defined functions](../../aql/user-defined-functions.md) (UDFs). It disallows
   the execution of user-defined JavaScript code on the server inside of
-  user-defined AQL functions (introduced in: v3.10.4).
+  user-defined AQL functions (introduced in v3.10.4).
 
 ## Security options for managing Foxx applications
 
 The following options are available for controlling the installation of Foxx applications
 in an ArangoDB server:
 
-- `--foxx.enable` (introduced in: v3.10.5):
+- `--foxx.enable` (introduced in v3.10.5):
   If set to `false`, this option disables access to any user-defined Foxx apps.
   Accessing the URL of any (existing or potentially existing) Foxx app produces an
   HTTP `403 Forbidden` error with this setting.
@@ -370,5 +370,5 @@ in an ArangoDB server:
   section of the web interface. Installing apps from Github and/or zip files is 
   still possible with this setting, but any other remote sources are blocked.
   When set to `true`, installing Foxx apps from other remote sources via URLs
-  is allowed (introduced in: v3.8.5).
+  is allowed (introduced in v3.8.5).
   The default value is `false`.

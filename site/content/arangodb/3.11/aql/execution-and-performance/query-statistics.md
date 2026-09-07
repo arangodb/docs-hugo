@@ -89,7 +89,7 @@ The meaning of the statistics attributes is as follows:
 - **nodes** (_optional_): When the query is executed with the option `profile` set to at least `2`,
   then this value contains runtime statistics per query execution node.
   For a human readable output you can execute `db._profileQuery(<query>, <bind-vars>)`
-  in the arangosh.
+  in the _arangosh_.
   - **id**: The execution node ID to correlate the statistics with the `plan` returned in
     the `extra` attribute.
   - **calls**: The number of calls to this node.

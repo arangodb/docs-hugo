@@ -169,7 +169,7 @@ or
 The value `none` is case-insensitive.
 
 {{% comment %}}
-Specific to arangod, move to programs detail page?
+Specific to _arangod_, move to programs detail page?
 Does the resolution order for config files apply to all binaries?
 
 If this command is not passed to the server, then by default, the server

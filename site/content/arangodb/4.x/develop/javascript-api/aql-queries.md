@@ -4,7 +4,7 @@ menuTitle: '@arangodb/aql/queries'
 weight: 20
 description: >-
   The query module provides the infrastructure for working with currently
-  running AQL queries via arangosh
+  running AQL queries via _arangosh_
 ---
 `const queries = require('@arangodb/aql/queries')`
 

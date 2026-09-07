@@ -66,7 +66,7 @@ You need to create Geo Analyzers manually. There are no pre-configured
 
 **Custom Analyzers:**
 
-Create a `geojson` Analyzer in arangosh to pre-process arbitrary
+Create a `geojson` Analyzer in _arangosh_ to pre-process arbitrary
 GeoJSON features or `[longitude, latitude]` arrays.
 The default properties are usually what you want, therefore an empty object
 is passed. No [Analyzer features](../analyzers.md#analyzer-features) are set
@@ -87,7 +87,7 @@ drop-in replacement, but you can choose between different binary formats. See
 [Analyzers](../analyzers.md#geo_s2) for details.
 {{< /tip >}}
 
-Create a `geopoint` Analyzer in arangosh using the default properties
+Create a `geopoint` Analyzer in _arangosh_ using the default properties
 (empty object) to pre-process coordinate arrays in `[latitude, longitude]` order.
 No [Analyzer features](../analyzers.md#analyzer-features) are set as they cannot
 be utilized for Geo Analyzers:
@@ -98,7 +98,7 @@ var analyzers = require("@arangodb/analyzers");
 analyzers.save("geo_pair", "geopoint", {}, []);
 ```
 
-Create a `geopoint` Analyzer in arangosh to pre-process coordinates with
+Create a `geopoint` Analyzer in _arangosh_ to pre-process coordinates with
 latitude and longitude stored in two different attributes. These attributes
 cannot be at the top-level of the document, but must be nested in an object,
 e.g. `{ location: { lat: 40.78, lon: -73.97 } }`. The path relative to the
