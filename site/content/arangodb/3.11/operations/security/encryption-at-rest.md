@@ -74,6 +74,13 @@ to the server.
 Make sure to pass this option the very first time you start your database.
 You cannot encrypt a database that already exists.
 
+There are multiple ways of supplying the encryption key but you can only use one
+of them at a time. If you specify more than one of the
+`--rocksdb.encryption-keyfile`, `--rocksdb.encryption-key-generator`, and
+`--rocksdb.encryption-keyfolder` startup options, then the server refuses to
+start. See [Rotating encryption keys](#rotating-encryption-keys) about supplying
+a set of keys using a folder.
+
 ### Encryption key stored in file
 
 Pass the following option to `arangod`:
@@ -130,16 +137,55 @@ It is possible to change the user supplied encryption at rest key via the
 is disabled by default, but can be turned on by setting the startup option
 `--rocksdb.encryption-key-rotation` to `true`.
 
-To enable smooth rollout of new keys you can use the new option 
-`--rocksdb.encryption-keyfolder` to provide a set of secrets.
-_arangod_ will then store the master key encrypted with the provided secrets.
+A rotation reads the user key again from the key source that the instance is
+configured with and re-encrypts the internal master key with it. It is not
+limited to a particular key source. It works with the mutually exclusive
+`--rocksdb.encryption-keyfile`, `--rocksdb.encryption-key-generator`, and
+`--rocksdb.encryption-keyfolder` startup options alike, but a key folder is
+recommended because it allows for a rollout without a risky time window:
+
+- If you use a single key file or a key generator, you need to replace the key
+  before you call the API. Until the rotation succeeds, the instance cannot be
+  restarted because the new key doesn't match the internal keystore yet.
+- If you use a key folder, the instance can be started with any one of the keys
+  in the folder, guarding against service interruptions during the rotation.
+
+To use a folder of keys, pass the following option to _arangod_:
 
 ```
 $ arangod --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets ...
 ```
 
-To start an arangod instance only one of the secrets needs to be correct, 
-this should guard against service interruptions during the rotation process.
+_arangod_ then stores the master key encrypted with each of the provided
+secrets, so that only one of the secrets needs to be correct in order to start
+the instance.
+
+Only regular files in the folder are read as keys, and each of them needs to
+contain exactly 32 bytes. Hidden files (with names starting with a dot), files
+with a `.tmp` file extension, and subfolders are ignored. The files are not read
+in a defined order. If the folder contains multiple keys at the initial startup
+and you don't set `--rocksdb.encryption-gen-internal-key` to `true`, then which
+key becomes the internal master key is therefore not predictable.
+
+A rotation always uses the keys that are in the folder at the time
+you call the API. It re-encrypts the master key with every key it finds there and
+discards the internal keystore entries of keys that you removed from the folder.
+You can therefore roll out a new key like this:
+
+1. Add the new key as an additional file to the key folder.
+2. Call the key rotation API. The master key is now stored encrypted with the
+   old as well as the new key, and the instance can be started with either.
+3. Remove the old key file from the key folder.
+4. Call the key rotation API again. The master key is now only stored encrypted
+   with the new key, and the old key can no longer unlock it.
+
+{{< info >}}
+Unless you set `--rocksdb.encryption-gen-internal-key` to `true` at the initial
+startup, the internal master key is a copy of the first user-supplied key.
+Rotating the user keys only changes how the master key is encrypted in the
+internal keystore in this case. The key material that the data on disk is
+encrypted with remains the same.
+{{< /info >}}
 
 Please be aware that the encryption at rest key rotation is an **experimental** 
 feature, and its APIs and behavior are still subject to change. 
