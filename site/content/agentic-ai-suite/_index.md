@@ -3,11 +3,11 @@ title: Agentic AI Suite
 menuTitle: Agentic AI Suite
 weight: 2
 description: >-
-  A comprehensive AI solution that transforms your data into intelligent
-  knowledge graphs with GraphRAG capabilities, applies advanced machine learning
-  with GraphML, and provides enterprise-grade tools for analytics,
-  natural language querying, and AI-powered insights, all through an intuitive
-  web interface
+  A comprehensive AI solution that transforms your documents into a Context
+  Graph with AutoGraph and answers questions from it with AutoRAG, applies
+  advanced machine learning with GraphML, and provides enterprise-grade tools for
+  analytics, natural language querying, and AI-powered insights, all through an
+  intuitive web interface
 aliases:
   - arangodb/3.12/data-science # 3.10, 3.11
   - arangodb/stable/data-science # 3.10, 3.11
@@ -21,25 +21,27 @@ aliases:
 The Agentic AI Suite is composed of the following major components:
 
 - [**Ada**](ada/_index.md): The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph**](autograph/_index.md): Organize enterprise data into a
-  contextual knowledge graph, with the **AutoRAG** assigning each
-  domain the right processing depth.
+- [**AutoGraph and AutoRAG**](autograph/_index.md): **AutoGraph** organizes
+  enterprise data into a **Context Graph**, assigning each domain the right
+  processing depth. **AutoRAG** is the retrieval layer on top: it deploys the
+  retrievers that answer questions from that Context Graph. Both stages are
+  driven from the **AutoGraph Studio** view of the web interface. See
+  [GraphRAG Concepts](autograph/concepts.md) for the approach behind them.
 - [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
   queries from natural language to explore your data and gain insights without having
   to learn the query language first.
 - [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
   using AI-powered reasoning, with validated performance improvements.
-- [**GraphRAG**](graphrag/_index.md): A complete solution for extracting entities
-  from text files to create a knowledge graph that you can then query with a
-  natural language interface.
 - [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and computing embeddings.
 - [**Graph Analytics**](graph-analytics/_index.md):
   Run graph algorithms such as PageRank on dedicated compute resources to
   discover influential nodes and patterns.
 
-Each component has an intuitive graphical user interface integrated into the
+Most components have an intuitive graphical user interface integrated into the
 Arango Contextual Data Platform web interface, guiding you through the process.
+In the left-hand sidebar, **Agentic AI Suite** groups **AutoGraph Studio**,
+**Graph Analytics**, and **GraphML**.
 
 Alongside these components, you also get the following additional features:
 
@@ -63,7 +65,8 @@ results, query history) is persisted as collections and documents in
 ArangoDB databases, alongside your existing application data.
 
 The exception is raw files (PDFs, images, office documents, and other
-binaries) that you upload for Agentic AI processing, such as GraphRAG input.
+binaries) that you upload for Agentic AI processing, such as the documents you
+feed into AutoGraph.
 These are stored in object storage (S3, MinIO, or another blob store) and
 managed through the
 [File Manager](../platform-suite/file-manager/_index.md) service. The same

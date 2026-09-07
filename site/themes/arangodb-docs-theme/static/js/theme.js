@@ -2,6 +2,10 @@ var theme = true;
 
 let _mermaid = null;
 let _mermaidPanZoom = null;
+let _mermaidDragSvg = null;
+let _mermaidDragRelayReady = false;
+/* How much of a diagram has to stay inside its box while panning, in pixels. */
+const MERMAID_PAN_GUTTER = 60;
 async function renderMermaidDiagrams() {
   var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
   if (!nodes.length) return;
@@ -11,7 +15,14 @@ async function renderMermaidDiagrams() {
       _mermaid = mermaidjs.default;
       _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
     }
-    await _mermaid.run({ nodes });
+    try {
+      await _mermaid.run({ nodes });
+    } catch (err) {
+      /* Mermaid puts an error graphic in place of the offending diagram. Carry
+         on so that a single malformed diagram does not cost the other diagrams
+         on the page their pan and zoom controls. */
+      console.warn('Mermaid rendering failed', err);
+    }
     if (!_mermaidPanZoom) {
       try {
         let svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
@@ -39,9 +50,84 @@ function attachMermaidPanZoom(pre) {
     center: true,
     minZoom: 0.5,
     maxZoom: 10,
+    /* The library default of 0.1 zooms by only 8% per mouse wheel notch and
+       10% per zoom button click, which feels unresponsive. This gives ~31%
+       and 40% respectively. */
+    zoomScaleSensitivity: 0.4,
+    beforePan: limitPan,
+  });
+
+  setupMermaidDragRelay();
+  svg.addEventListener('mousedown', function (evt) {
+    if (evt.button === 0) _mermaidDragSvg = svg;
   });
 
   pre.dataset.panzoomReady = 'true';
+
+  /**
+   * Keeps the diagram from being dragged out of sight: at least
+   * MERMAID_PAN_GUTTER pixels of it stay inside the box on every side. The
+   * limits are derived from the rendered geometry rather than from
+   * getSizes(), whose view box does not account for the padding mermaid
+   * leaves around a diagram, so that they hold at every zoom level.
+   */
+  function limitPan(oldPan, newPan) {
+    let group = svg.querySelector('.svg-pan-zoom_viewport');
+    if (!group) return newPan;
+    let box = svg.getBoundingClientRect();
+    let content = group.getBoundingClientRect();
+    /* Where the diagram sits inside the box with the current pan taken out. */
+    let offsetX = content.left - box.left - oldPan.x;
+    let offsetY = content.top - box.top - oldPan.y;
+
+    return {
+      x: Math.min(
+        box.width - MERMAID_PAN_GUTTER - offsetX,
+        Math.max(MERMAID_PAN_GUTTER - offsetX - content.width, newPan.x)
+      ),
+      y: Math.min(
+        box.height - MERMAID_PAN_GUTTER - offsetY,
+        Math.max(MERMAID_PAN_GUTTER - offsetY - content.height, newPan.y)
+      ),
+    };
+  }
+}
+
+/**
+ * svg-pan-zoom listens for mouse events on the SVG only and treats mouseleave
+ * as the end of a drag, so panning stopped whenever the pointer left the
+ * diagram. Hide that mouseleave from the library and relay the mouse events
+ * that happen outside the SVG back to it, so that a drag keeps going wherever
+ * the pointer travels. Registered once for all diagrams on the page.
+ */
+function setupMermaidDragRelay() {
+  if (_mermaidDragRelayReady) return;
+  _mermaidDragRelayReady = true;
+
+  document.addEventListener('mouseleave', function (evt) {
+    if (_mermaidDragSvg && evt.target === _mermaidDragSvg) {
+      evt.stopPropagation();
+    }
+  }, true);
+
+  document.addEventListener('mousemove', function (evt) {
+    relayToMermaidDrag(evt);
+  }, true);
+
+  document.addEventListener('mouseup', function (evt) {
+    relayToMermaidDrag(evt);
+    _mermaidDragSvg = null;
+  }, true);
+}
+
+function relayToMermaidDrag(evt) {
+  let svg = _mermaidDragSvg;
+  if (!svg || evt.target === svg || svg.contains(evt.target)) return;
+  svg.dispatchEvent(new MouseEvent(evt.type, {
+    clientX: evt.clientX,
+    clientY: evt.clientY,
+    buttons: evt.buttons,
+  }));
 }
 
 function closeAllEntries() {

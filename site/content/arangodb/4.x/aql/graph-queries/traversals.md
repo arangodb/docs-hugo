@@ -806,6 +806,85 @@ FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
 It is guaranteed that at least one, but potentially more edges fulfill the condition.
 All of the above filters can be defined on nodes in the exact same way.
 
+#### Filter a subset of the path
+
+<small>Introduced in: v3.12.11</small>
+
+An array expansion in a path filter can contain an
+[inline `FILTER`](../operators.md#inline-filter) to restrict which nodes or
+edges the array comparison operator applies to. This is useful if a condition
+is only meaningful for some of the path elements, for instance because an
+attribute is optional:
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND startNode GRAPH "myGraph"
+  FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()
+  RETURN p.edges[*]._key
+```
+
+Only the edges that have a `validUntil` attribute are compared against the
+current date. Without the inline `FILTER`, an edge without this attribute would
+evaluate `null > DATE_NOW()` to `false` and thus reject the entire path.
+
+The optimizer can check such a condition during the traversal instead of
+filtering the emitted paths afterwards. Each node and edge is checked as the
+traversal reaches it, and the elements that the inline `FILTER` excludes are
+skipped. The traversal can thus stop following a path as soon as an element
+violates the condition, and the condition can be taken into account for the
+edge index lookups.
+
+An inline `FILTER` only allows the condition to be evaluated during the
+traversal if all of the following apply. Otherwise, the condition remains a
+post-filter that is applied to the paths the traversal emits:
+
+- The array comparison operator is `ALL` or `NONE`. `ANY` and
+  `AT LEAST (<number>)` need to count the matching elements of the entire path
+  and cannot be expressed as a condition for a single node or edge.
+- The array expansion uses `FILTER` only, without an inline `LIMIT` or a
+  `RETURN` projection. Both of them need the complete array and therefore the
+  complete path.
+- The inline `FILTER` condition doesn't use the path variable, because the path
+  isn't available when the traversal evaluates a single node or edge. It may
+  refer to `CURRENT` and to variables defined before the traversal, however.
+- The inline `FILTER` condition doesn't use the
+  [question mark operator](../operators.md#question-mark-operator).
+
+Conditions that can be evaluated during the traversal:
+
+```aql
+// Only check the edges that have a `weight` attribute
+FILTER p.edges[* FILTER CURRENT.weight != null].weight ALL <= 10
+
+// `NONE` is supported as well, and so are function calls in the inline `FILTER`
+FILTER p.edges[* FILTER HAS(CURRENT, "weight")].weight NONE > 10
+
+// A variable from outside of the traversal can be used in the inline `FILTER`
+FILTER p.edges[* FILTER CURRENT.weight > threshold].weight ALL <= 10
+
+// A nested array expansion in the inline `FILTER` is allowed
+FILTER p.edges[* FILTER LENGTH(CURRENT.tags[* FILTER CURRENT != "draft"]) > 0].weight ALL <= 10
+```
+
+Conditions that remain post-filters:
+
+```aql
+// `ANY` and `AT LEAST` cannot be checked per edge
+FILTER p.edges[* FILTER CURRENT.weight != null].weight ANY <= 10
+FILTER p.edges[* FILTER CURRENT.weight != null].weight AT LEAST (2) <= 10
+
+// An inline `LIMIT` or `RETURN` needs the entire path
+FILTER p.edges[* FILTER CURRENT.weight != null LIMIT 3].weight ALL <= 10
+FILTER p.edges[* FILTER CURRENT.weight != null RETURN CURRENT.weight] ALL <= 10
+
+// The inline `FILTER` cannot use the path variable
+FILTER p.edges[* FILTER CURRENT.weight > LENGTH(p.vertices)].weight ALL <= 10
+```
+
+To check whether a condition is evaluated during the traversal, inspect the
+[execution plan](../execution-and-performance/query-optimization.md#execution-plans).
+If the `optimize-traversals` rule can move the condition into the traversal,
+no `FilterNode` remains for it.
+
 ### Filtering on the path vs. filtering on nodes or edges
 
 Filtering on the path influences the Iteration on your graph. If certain conditions 

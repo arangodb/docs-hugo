@@ -3,7 +3,7 @@ title: _arangoimport_ Details
 menuTitle: Details
 weight: 15
 description: >-
-  The most convenient method to import a lot of data into ArangoDB is to use the arangoimport command-line tool
+  The most convenient method to import a lot of data into ArangoDB is to use the _arangoimport_ command-line tool
 ---
 The most convenient method to import a lot of data into ArangoDB is to use the
 _arangoimport_ command-line tool. It allows you to bulk import data records
@@ -34,7 +34,7 @@ valid document IDs in existing collections.
 ```
 
 **Note**: The edge collection must already exist when the import is started. Using
-the `--create-collection` flag does not work because arangoimport always tries to
+the `--create-collection` flag does not work because _arangoimport_ always tries to
 create a regular document collection if the target collection does not exist.
 
 ## Attribute Naming and Special Attributes
@@ -83,13 +83,13 @@ Importing the following document creates an edge between `users/1234` and
 
 ## Updating existing documents
 
-By default, arangoimport tries to insert all documents from the import file into the
+By default, _arangoimport_ tries to insert all documents from the import file into the
 specified collection. In case the import file contains documents that are already present
 in the target collection (matching is done via the `_key` attributes), then a default
-arangoimport run does not import these documents and complain about unique key constraint
+_arangoimport_ run does not import these documents and complain about unique key constraint
 violations.
 
-However, arangoimport can be used to update or replace existing documents in case they
+However, _arangoimport_ can be used to update or replace existing documents in case they
 already exist in the target collection. It provides the command-line option `--on-duplicate`
 to control the behavior in case a document is already present in the database.
 
@@ -101,7 +101,7 @@ the database is not modified.
 Other possible values for `--on-duplicate` are:
 
 - `update`: each document present in the import file that is also present in the target
-  collection already is updated by arangoimport. `update` performs a partial update
+  collection already is updated by _arangoimport_. `update` performs a partial update
   of the existing document, modifying only the attributes that are present in the import
   file and leaving all other attributes untouched.
 
@@ -109,7 +109,7 @@ Other possible values for `--on-duplicate` are:
   updated or replaced in existing documents.
 
 - `replace`: each document present in the import file that is already present in the
-  target collection is replaced by arangoimport. `replace` replaces the existing
+  target collection is replaced by _arangoimport_. `replace` replaces the existing
   document entirely, resulting in a document with only the attributes specified in the import
   file.
 
@@ -119,14 +119,14 @@ Other possible values for `--on-duplicate` are:
 - `ignore`: each document present in the import file that is also present in the target
   collection already is ignored and not modified in the target collection.
 
-When `--on-duplicate` is set to either `update` or `replace`, arangoimport returns the
+When `--on-duplicate` is set to either `update` or `replace`, _arangoimport_ returns the
 number of documents updated/replaced in the `updated` return value. When set to another
 value, the value of `updated` is always zero. When `--on-duplicate` is set to `ignore`,
-arangoimport returns the number of ignored documents in the `ignored` return value.
+_arangoimport_ returns the number of ignored documents in the `ignored` return value.
 When set to another value, `ignored` is always zero.
 
 It is possible to perform a combination of inserts and updates/replaces with a single
-arangoimport run. When `--on-duplicate` is set to `update` or `replace`, all documents present
+_arangoimport_ run. When `--on-duplicate` is set to `update` or `replace`, all documents present
 in the import file are inserted into the target collection provided they are valid
 and do not already exist with the specified `_key`. Documents that are already present
 in the target collection (identified by `_key` attribute) are instead updated/replaced.
@@ -185,7 +185,7 @@ it is not possible to predict which versions of the documents are inserted.
 
 Automatic pacing frees the user from adjusting the throughput used to
 match available resources. It is disabled by default, and can be enabled
-by invoking arangoimport with the `--auto-rate-limit true` parameter.
+by invoking _arangoimport_ with the `--auto-rate-limit true` parameter.
 
 When enabling the pacing, the initial chunk size is 8MB per second. This
 may be too high or too low, depending on the available disk throughput of

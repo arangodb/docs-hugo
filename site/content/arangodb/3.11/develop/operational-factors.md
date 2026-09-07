@@ -133,7 +133,7 @@ FOR i IN 1..1000
 
 Indexes can improve the performance of AQL queries drastically. Queries that
 frequently filter on or one more fields can be made faster by creating an index
-(in arangosh via the _ensureIndex_ command, the web interface or your specific
+(in _arangosh_ via the `<coll>.ensureIndex()` function, the web interface, or your specific
 client driver). There is already an automatic (and non-deletable) primary index
 in every collection on the `_key` and `_id` fields as well as the edge index
 on `_from` and `_to` (for edge collections).

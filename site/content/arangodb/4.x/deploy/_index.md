@@ -91,7 +91,7 @@ with different roles (Agents, DB-Servers, and Coordinators). The starter
 simplifies this process.
 
 The Starter supports different deployment modes (single server and cluster) and
-it can either use Docker containers or processes (using the `arangod` executable).
+it can either use Docker containers or processes (using the _arangod_ executable).
 
 Besides starting and maintaining ArangoDB deployments, the Starter also provides
 various commands to create TLS certificates and JWT token secrets to secure your

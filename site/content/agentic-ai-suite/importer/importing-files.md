@@ -103,7 +103,8 @@ The response payload looks like this:
 You can also reference files already uploaded to
 [File Manager](../../platform-suite/file-manager/) by passing
 `file_ids` instead of inline `files`. When `file_ids` is non-empty, the
-`files` array is ignored.
+`files` array is ignored. Those files bring their own citation URLs; see
+[Citation URLs](reference/parameters.md#citation-urls).
 {{< /tip >}}
 
 ### Basic example
@@ -189,7 +190,6 @@ This comprehensive example demonstrates all available import parameters for the 
     }
   ],
   "rag_mode": "full_graphrag",
-  "store_in_s3": false,
   "batch_size": 1000,
   "enable_chunk_embeddings": true,
   "enable_edge_embeddings": true,
@@ -224,7 +224,7 @@ This comprehensive example demonstrates all available import parameters for the 
   },
   "enable_semantic_units": true,
   "process_images": true,
-  "store_image_data": true,
+  "enable_semantic_unit_embeddings": false,
   "vector_index_n_lists": 2048,
   "vector_index_metric": "cosine",
   "vector_index_use_hnsw": true,
@@ -348,5 +348,6 @@ written as `{partition_id}:{logicalKey}`.
 ## Next Steps
 
 - **[Explore all parameters](reference/parameters.md)**: Customize chunking, entity extraction, and more.
+- **[Incremental updates](incremental-updates.md)**: Recluster a partition after the initial import, and how documents are removed and replaced.
 - **[Enable semantic units](semantic-units.md)**: Process images and multimedia content.
 - **[Verify your import](verify-and-explore.md)**: Check import status and explore the created collections.

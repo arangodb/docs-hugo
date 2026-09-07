@@ -898,8 +898,8 @@ The following metrics have been added:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
-| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+| `arangodb_file_descriptors_limit` | System limit for the number of open files for the _arangod_ process. |
+| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the _arangod_ process. |
 
 ---
 

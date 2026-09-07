@@ -34,7 +34,7 @@ Now you've got three choices.
 
 - **Disabling PIC altogether**
 
-  This will build an arangod which doesn't use this compiler feature. It may
+  This will build an _arangod_ which doesn't use this compiler feature. It may
   be not so nice for development builds. It can be achieved by specifying
   these options on cmake:
 

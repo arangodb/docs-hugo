@@ -425,7 +425,7 @@ parameters were not set explicitly.
 ### Default per-query memory limit
 
 A default per-query memory limit has been introduced for queries, to prevent rogue
-AQL queries from consuming the too much memory of an arangod instance.
+AQL queries from consuming the too much memory of an _arangod_ instance.
 
 The per-query limit is introduced via changing the default value of the option
 `--query.memory-limit` from previously `0` (meaning no limit) to a dynamically
@@ -584,7 +584,7 @@ new protocol, and existing deployments will benefit from the new protocol for
 any collections that are created with 3.8 onwards.
 Existing collections created with previous versions of ArangoDB will only benefit 
 from the new protocol if the collections are dumped and recreated/restored using 
-arangodump and arangorestore.
+_arangodump_ and _arangorestore_.
 
 ## Index selectivity estimates
 
@@ -598,7 +598,7 @@ automatically in ArangoDB 3.8 for all selectivity estimate writes.
 ### Less impact of selectivity estimate updates for system collections
 
 Previous versions of ArangoDB could suffer from an "idle writes" problem, in
-which an otherwise idle arangod instance would still write a lot of data to
+which an otherwise idle _arangod_ instance would still write a lot of data to
 disk over time. These writes happened because the server statistics feature
 periodically stored the current statistics in some system collections, so that
 they can be retrieved later and also be inspected from the web interface at
@@ -767,7 +767,7 @@ The following logging-related options have been added:
 
 - added option `--log.process` to toggle the logging of the process id
   (pid) in log messages. Logging the process ID is useless when running
-  arangod in Docker containers, as the pid will always be 1. So one may
+  _arangod_ in Docker containers, as the pid will always be 1. So one may
   as well turn it off in these contexts with the new option.
 
 - added option `--log.hostname` to optionally log the current host's name
@@ -794,7 +794,7 @@ The following logging-related options have been added:
   informational, warning and error messages.
 
 - added option `--log.max-entry-length` to control the maximum line length for 
-  individual log messages that are written into normal logfiles by arangod 
+  individual log messages that are written into normal logfiles by _arangod_ 
   (note: this does not include audit log messages).
   Any log messages longer than the specified value will be truncated and the 
   suffix '...' will be added to them. 
@@ -802,15 +802,15 @@ The following logging-related options have been added:
   not a lot of space for logfiles, and to keep rogue log messages from overusing 
   resources.
   The default value is 128 MB, which is very high and should effectively mean 
-  downwards-compatibility with previous arangod versions, which did not restrict 
+  downwards-compatibility with previous _arangod_ versions, which did not restrict 
   the maximum size of log messages.
 
 - added option `--audit.max-entry-length` to control the maximum line length 
-  for individual audit log messages that are written into audit logs by arangod. 
+  for individual audit log messages that are written into audit logs by _arangod_. 
   Any audit log messages longer than the specified value will be truncated and 
   the suffix '...' will be added to them.
   The default value is 128 MB, which is very high and should effectively mean 
-  downwards-compatibility with previous arangod versions, which did not restrict 
+  downwards-compatibility with previous _arangod_ versions, which did not restrict 
   the maximum size of log messages.
 
 - added option `--audit.queue` to control audit logging queuing behavior 
@@ -930,7 +930,7 @@ aliases and deprecated ones.
 
 ## Client tools
 
-### arangodump concurrency / shard-parallelism
+### *arangodump* concurrency / shard-parallelism
 
 Since v3.4.0, _arangodump_ can use multiple threads for dumping database data in
 parallel. _arangodump_ versions prior to v3.8.0 distribute dump jobs for
@@ -944,7 +944,7 @@ to dump but only few collections.
 
 Also see [_arangodump_ Threads](../../components/tools/arangodump/examples.md#threads).
 
-### arangodump output format
+### *arangodump* output format
 
 Since its inception, _arangodump_ wrapped each dumped document into an extra
 JSON envelope, such as follows:
@@ -966,7 +966,7 @@ Using the new non-enveloped dump format also allows _arangorestore_ to
 parallelize restore operations for individual collections. This is not possible
 with the old, enveloped format.
 
-### arangorestore parallelization for single collections
+### *arangorestore* parallelization for single collections
 
 _arangorestore_ can now parallelize restore operations even for single
 collections, which can lead to increased restore performance.
@@ -974,24 +974,24 @@ This requires that a dump in the new non-enveloped dump format is used, and that
 there are enough _arangorestore_ threads to employ.
 
 The dump format can be configured by specifying the `--envelope false` option
-when invoking arangodump, and the number of restore threads can be adjusted by
+when invoking _arangodump_, and the number of restore threads can be adjusted by
 setting _arangorestore_'s `--threads` option.
 
-### arangodump dumping of individual shards
+### *arangodump* dumping of individual shards
 
 _arangodump_ can now optionally dump individual shards only, by specifying the
 `--shard` option one or multiple times. This option can be used to split the
 dump of a large collection with multiple shards into multiple separate dump
 processes, which could be run against different Coordinators etc.
 
-### arangodump and arangorestore with JWT secret
+### *arangodump* and *arangorestore* with JWT secret
 
 _arangodump_ and _arangorestore_ can now also be invoked by providing the cluster's
 JWT secret instead of the username/password combination. Both tools now provide
 the options `--server.jwt-secret-keyfile` (to read the JWT secret from a file)
 and `--server.ask-jwt-secret` (to enter it manually).
 
-### arangobench with custom queries
+### *arangobench* with custom queries
 
 In addition to executing the predefined benchmarks, the _arangobench_ client tool
 now offers a new test case named `custom-query` for running arbitrary AQL
@@ -1002,13 +1002,13 @@ To run a custom AQL query, the query needs to be specified in either the
 the query string can be passed on the command-line, in the latter case the
 query string will be read from a file.
 
-### Continuing arangorestore operations
+### Continuing *arangorestore* operations
 
 _arangorestore_ now provides a `--continue` option. Setting it will make
 _arangorestore_ keep track of the restore progress, so if the restore process
 gets aborted it can later be continued from the point it left off.
 
-### Controlling the number of documents per batch for arangoexport
+### Controlling the number of documents per batch for *arangoexport*
 
 _arangoexport_ now has a `--documents-per-batch` option that can be used to limit
 the number of documents to be returned in each batch from the server. This is
@@ -1016,25 +1016,25 @@ useful if a query is run on overly large documents, which would lead to the
 response sizes getting out of hand with the default number of documents per
 batch (1000).
 
-### Controlling the maximum query runtime of arangoexport
+### Controlling the maximum query runtime of *arangoexport*
 
 _arangoexport_ now has a `--query-max-runtime` option to limit the runtime of
 queries it executes.
 
-### arangorestore option to enable revision trees
+### *arangorestore* option to enable revision trees
 
 <small>Introduced in: v3.8.7, v3.9.2</small>
 
 A new `--enable-revision-trees` option has been added to _arangorestore_, which
 adds the `syncByRevision` and `usesRevisionsAsDocumentIds` attributes to the
 collection structure if they are missing. As a consequence, these collections
-created by arangorestore are able to use revision trees and a faster
+created by _arangorestore_ are able to use revision trees and a faster
 getting-in-sync procedure after a restart.
 
 The option defaults to `true`, meaning that the attributes are added if they are
 missing. If you set the option to `false`, the attributes are not added to the
 collection structure. If the attributes are already present in the dump data, they
-are not modified by arangorestore, irrespective of the setting of this option.
+are not modified by _arangorestore_, irrespective of the setting of this option.
 
 Miscellaneous
 -------------

@@ -103,6 +103,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -148,7 +152,11 @@ paths:
           required: true
           example: _system
           description: |
-            The name of the database.
+            The name of the database whose query results cache to clear.
+
+            The user account you authenticate with needs at least read access to
+            this database as well as to the `_system` database (the latter is
+            required from v3.12.11 onward).
           schema:
             type: string
       responses:
@@ -176,6 +184,15 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
+        '403':
+          description: |
+            The user account you authenticated with lacks read access to the
+            `_system` database (introduced in v3.12.11). Up to v3.12.10, this
+            endpoint didn't perform this permission check.
       tags:
         - Queries
 ```
@@ -258,6 +275,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -297,7 +318,8 @@ paths:
           description: |
             The name of a database. Which database you use doesn't matter as long
             as the user account you authenticate with has at least read access
-            to this database.
+            to this database as well as to the `_system` database (the latter
+            is required from v3.12.11 onward).
           schema:
             type: string
       requestBody:
@@ -390,6 +412,15 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
+        '403':
+          description: |
+            The user account you authenticated with lacks read access to the
+            `_system` database (introduced in v3.12.11). Up to v3.12.10, this
+            endpoint didn't perform this permission check.
       tags:
         - Queries
 ```

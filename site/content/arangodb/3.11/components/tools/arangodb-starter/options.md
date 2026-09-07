@@ -163,7 +163,7 @@ the `--ssl.auto-key` option.
 
 ## Passing through other database options
 
-Options for `arangod` that are not supported by the starter can still be passed to
+Options for _arangod_ that are not supported by the starter can still be passed to
 the DB-Servers using a pass through option.
 Every option that start with a pass through prefix is passed through to the
 command-line of one or more server instances.
@@ -189,15 +189,15 @@ command like this:
 arangodb --args.coordinators.log.level=requests=debug
 ```
 
-## Passing through `arangosync` options
+## Passing through *arangosync* options
 
-Options for `arangosync` that are not supported by the starter can still be
+Options for _arangosync_ that are not supported by the starter can still be
 passed to the syncmasters & syncworkers using a pass through option.
 Every option that start with a pass through prefix is passed through to the
-command-line of one or more `arangosync` instances.
+command-line of one or more _arangosync_ instances.
 
 - `--args.sync.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all arangosync instances started by this starter.
+  `--<section>.<key>=<value>` to all _arangosync_ instances started by this starter.
 - `--args.syncmasters.<section>.<key>=<value>` is passed as
   `--<section>.<key>=<value>` to all syncmasters started by this starter.
 - `--args.syncworkers.<section>.<key>=<value>` is passed as
@@ -216,8 +216,8 @@ arangodb --args.syncmasters.mq.direct-token-ttl=12h ...
 
 ## Passing environment variables
 
-Environment variables by default gonna be passed from arangodb process by
-default. However, variables can be overridden using arangodb command line option.
+Environment variables by default gonna be passed from _arangodb_ process by
+default. However, variables can be overridden using _arangodb_ command line option.
 
 - `--envs.<group>.<env name>=<value>`
 - `--envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G` sets
@@ -237,7 +237,7 @@ arangodb --envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G --envs.coordinato
 
 - `--starter.sync=bool`
 
-If set, the Starter also starts `arangosync` instances.
+If set, the Starter also starts _arangosync_ instances.
 
 - `--sync.start-master=bool`
 
@@ -281,11 +281,11 @@ The network port for the Starter (default 8528).
 This is the port used for communication of the `arangodb` instances
 amongst each other.
 
-The Starter uses the subsequent ports for the `arangod` processes it starts.
+The Starter uses the subsequent ports for the _arangod_ processes it starts.
 
 - `--starter.disable-ipv6=bool`
 
-If disabled, the starter configures the `arangod` servers
+If disabled, the starter configures the _arangod_ servers
 to bind to address `0.0.0.0` (all IPv4 interfaces)
 instead of binding to `[::]` (all IPv4 and all IPv6 interfaces).
 
@@ -293,7 +293,7 @@ This is useful when IPv6 has actively been disabled on your machine.
 
 - `--server.arangod=path`
 
-The path to the `arangod` executable (default varies from platform to
+The path to the _arangod_ executable (default varies from platform to
 platform, an executable is searched in various places).
 
 This option only has to be specified if the standard search fails.
@@ -307,7 +307,7 @@ This option only has to be specified if the standard search fails.
 
 - `--server.storage-engine=rocksdb`
 
-Sets the storage engine used by the `arangod` servers.
+Sets the storage engine used by the _arangod_ servers.
 Defaults to `rocksdb`, which is also the only available option for
 ArangoDB v3.7 and above.
 

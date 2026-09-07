@@ -397,8 +397,8 @@ The following AQL functions are available to work with schemas:
 
 ## Backup and restore
 
-Logical backups created with arangodump include the schema configuration, which
+Logical backups created with _arangodump_ include the schema configuration, which
 is a collection property.
 
-When using arangorestore to restore to a collection with a defined schema,
+When using _arangorestore_ to restore to a collection with a defined schema,
 no schema validation is executed.

@@ -6,6 +6,8 @@ description: >-
   Step-by-step instructions for accessing, setting up, and using the Reasoner
   from the Query Editor in the Arango Contextual Data Platform UI
 ---
+{{< tag "Beta" >}}
+
 The Reasoner is accessible directly from the **Query Editor** in the Arango
 Contextual Data Platform. It requires the Agentic AI Suite license.
 

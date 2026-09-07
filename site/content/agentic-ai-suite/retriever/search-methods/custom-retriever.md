@@ -111,15 +111,42 @@ with the following structure:
   - `bind_params`: Custom parameters passed to AQL execution. Default values
     defined here act as safe defaults for the AQL template and can be
     overridden at query time.
+- `auto_create_indexes`: Whether to create missing indexes and views for this
+  tool. Takes priority over the request-level
+  [`auto_create_indexes`](../parameters.md#auto_create_indexes). See
+  [Index and view management](#index-and-view-management).
+- `partition_ids`: Specific partition IDs for this tool, as a non-empty list of
+  strings. Setting them is enough to turn automatic selection off for the tool.
+- `auto_select_partitions`: Whether the service picks the partitions for this
+  tool automatically. A boolean, `true` by default. Setting it to `true` in a
+  tool that also has `partition_ids` is rejected.
+- `max_partition_limit`: Maximum number of partitions that automatic selection
+  can return for this tool. Must be a positive integer. Defaults to the service
+  value of `3` when omitted.
+
+{{< warning >}}
+When a request runs several tools, their partition settings have to agree. The
+service rejects a request in which one tool sets `auto_select_partitions` to
+`true` while another sets it to `false`, or in which one tool has
+`partition_ids` while another explicitly sets `auto_select_partitions` to
+`true`. Tools that
+leave the field unset are not part of this check.
+{{< /warning >}}
+
+{{< info >}}
+The three partition fields apply to this tool only. See
+[`auto_select_partitions`](../parameters.md#auto_select_partitions) for how
+routing works when the tool config leaves them unset.
+{{< /info >}}
 
 ## Index and view management
 
-By default, the system checks that the required indexes and views exist before
-executing a search. If anything is missing, it returns a clear error listing
-what is absent.
-
-Pass `"auto_create_indexes": true` in your request to create missing indexes
-automatically:
+By default, the system creates the required indexes and views before executing a
+search if they do not exist yet. Pass `"auto_create_indexes": false` in your
+request to check instead of create: the query then returns a clear error listing
+what is absent. This affects the tools that do not set `auto_create_indexes`
+themselves. A tool with `auto_create_indexes` set to `true` in its own
+configuration still creates what it needs, whatever the request asks for.
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1/graphrag-query \
@@ -129,11 +156,14 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POS
     "query": "Find airports in New York",
     "query_type": 4,
     "custom_tools": ["airport_search_v1"],
-    "auto_create_indexes": true
+    "auto_create_indexes": false
   }'
 ```
 
-**Resources created with `auto_create_indexes: true`:**
+When neither the request nor the tool sets `auto_create_indexes`, missing
+indexes and views are created automatically.
+
+**Resources created automatically:**
 
 | Search type | Resource | Naming pattern |
 |-------------|----------|----------------|

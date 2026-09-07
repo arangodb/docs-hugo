@@ -66,7 +66,7 @@ client-side if it's too complex to port to AQL.
 
 The Foxx microservice framework including tasks/queues, the related
 startup options, JavaScript modules, and HTTP API endpoints have been removed.
-The `foxx-cli` tool has been discontinued as well.
+The _foxx-cli_ tool has been discontinued as well.
 
 Running JavaScript code on the server-side enabled interesting customization
 abilities, but usability and scalability issues limited the field of application.
@@ -916,14 +916,14 @@ and throw errors if set:
 
 ## Client tools
 
-### arangoimp removed
+### *arangoimp* removed
 
 The _arangoimport_ client tool used to be called _arangoimp_ and was still
 shipped (at least as a symlink) under the old name in packages and container
 images for backward compatibility. This is no longer the case and there is only
 the _arangoimport_ executable now.
 
-### arangobench removed
+### *arangobench* removed
 
 The benchmark and test tool _arangobench_ has been removed.
 

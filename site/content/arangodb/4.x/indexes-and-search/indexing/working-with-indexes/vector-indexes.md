@@ -126,9 +126,13 @@ centroids and the quality of vector search thus degrades.
     let ArangoDB compute the number from the document count:
 
     - **Fixed mode** (number): Use exactly this number of centroids, for example
-      `100`. The recommendation for ArangoDB is to use approximately
-      `15 * sqrt(N)` where `N` is the number of documents in the collection,
-      respectively the number of documents in the shard for cluster deployments.
+      `100`. You can use `c * sqrt(N)` where `c` is a constant factor
+      and `N` is the number of documents in the collection, respectively the
+      number of documents in the shard for cluster deployments.
+
+      Suggested values for `c`:
+      - Between 15 and 20 for larger datasets (according to the Faiss paper)
+      - Between 4 and 8 (used in practice by autofaiss)
     - **Scaling mode** (object, introduced in v3.12.10): Compute the number of
       centroids from the number of documents at training time. In cluster
       deployments, the computation is done per shard using the document count of
@@ -155,6 +159,12 @@ centroids and the quality of vector search thus degrades.
 
       If you specify `nLists` as an object, you need to set `strategy`,
       `multiplier`, and `minNLists`. Only `tiers` is optional.
+
+    {{< tip >}}
+    The recommendation for ArangoDB is to use the scaling mode. The default
+    settings scale `nLists` sublinearly with the document count, and the tiers
+    bound it for high document counts so that it doesn't become impractically high.
+    {{< /tip >}}
 
     If you don't specify `nLists` at all, the following scaling specification is
     used (the values are taken from the

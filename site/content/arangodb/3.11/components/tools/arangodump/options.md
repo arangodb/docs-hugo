@@ -3,7 +3,7 @@ title: _arangodump_ Options
 menuTitle: Options
 weight: 10
 description: >-
-  The startup options of the `arangodump` executable
+  The startup options of the _arangodump_ executable
 pageToc:
   maxHeadlineLevel: 2
 ---

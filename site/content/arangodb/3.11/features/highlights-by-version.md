@@ -269,7 +269,7 @@ Also see [What's New in 3.6](../release-notes/version-3.6/whats-new-in-3-6.md).
   index to utilize.
 
 - [**Data Masking**](../components/tools/arangodump/maskings.md):
-  arangodump provides a convenient way to extract production data but mask
+  _arangodump_ provides a convenient way to extract production data but mask
   critical information that should not be visible.
 
 **Enterprise Edition**

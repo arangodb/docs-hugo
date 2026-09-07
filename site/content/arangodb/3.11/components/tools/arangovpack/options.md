@@ -3,7 +3,7 @@ title: _arangovpack_ Options
 menuTitle: Options
 weight: 5
 description: >-
-  The startup options of the `arangovpack` executable
+  The startup options of the _arangovpack_ executable
 pageToc:
   maxHeadlineLevel: 2
 ---

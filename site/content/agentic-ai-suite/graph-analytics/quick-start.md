@@ -8,8 +8,7 @@ description: >-
 ---
 ## Prerequisites
 
-- Access to an ArangoDB deployment (Contextual Data Platform or Arango
-  Managed Platform).
+- Access to an Arango Contextual Data Platform deployment.
 - An existing **graph** in ArangoDB (node and edge collections).
 - An API key or authentication token (for API access).
 
@@ -20,7 +19,7 @@ description: >-
 {{< tab "Web Interface" >}}
 {{< steps >}}
 
-{{< step "Start an engine" >}}
+{{< step "Start an ephemeral engine" >}}
 In the **Running Engines** panel, click **Start New Engine**, choose an
 engine size, and click **Start Engine**. The engine is the dedicated compute
 resource your algorithms run on.
@@ -37,9 +36,15 @@ In **Algorithm Execution**, select your engine and loaded graph, choose
 `maximum_supersteps`, and click **Run Algorithm**.
 {{< /step >}}
 
-{{< step "View and store results" >}}
-Click **View Jobs History** to monitor execution. When the job completes,
-use the download icon to store the results into a collection.
+{{< step "Monitor the job" >}}
+Click **View Jobs History** to track the execution. Wait until the **Status**
+column of your algorithm job shows `COMPLETED`.
+{{< /step >}}
+
+{{< step "Store the results" >}}
+In the **Actions** column of the completed job, click the
+{{< icon "download" >}} icon, specify the target collection and the attribute
+name to store the results under, and confirm.
 {{< /step >}}
 
 {{< /steps >}}
@@ -74,6 +79,13 @@ Returns a `job_id` and a `graph_id`.
 Returns a `job_id`.
 {{< /step >}}
 
+{{< step "Check the job progress" >}}
+{{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/jobs/{JOB_ID}" >}}
+
+Poll the job until its `progress` is equal to its `total`. The algorithm needs
+to finish before you can store its results.
+{{< /step >}}
+
 {{< step "Store the results" >}}
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/gral/{serviceIdPostfix}/v1/storeresults" >}}
 
@@ -93,7 +105,7 @@ Returns a `job_id`.
 {{< /tabs >}}
 
 {{< tip >}}
-**You now have** your nodes ranked by PageRank score, persisted to an
+**You now have** your nodes ranked by PageRank score, persisted to a dedicated
 ArangoDB collection - your most influential nodes are at the top.
 {{< /tip >}}
 

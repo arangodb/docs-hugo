@@ -1,5 +1,5 @@
 ---
-title: _arangosh_
+title: _arangosh_ command-line tool
 menuTitle: ArangoDB Shell
 weight: 5
 description: >-

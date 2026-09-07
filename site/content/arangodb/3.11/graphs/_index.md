@@ -414,8 +414,8 @@ combine with geo, search, ...
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [_arangodump_](../components/tools/arangodump/_index.md)
-to create the backup, and [_arangorestore_](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

@@ -18,7 +18,7 @@ with clickable references to the relevant documents.
 
 {{< info >}}
 Unified Search is also available as **Instant Search** via the
-[web interface](../../graphrag/web-interface.md).
+[web interface](../../autograph/web-interface.md).
 {{< /info >}}
 
 ## Configuration
@@ -28,6 +28,8 @@ Unified Search is also available as **Instant Search** via the
   "query_type": 3
 }
 ```
+
+Sending [`"mode": "INSTANT"`](../parameters.md#mode) has the same effect.
 
 ## How it works
 

@@ -1287,8 +1287,8 @@ The following system metrics have been added:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
-| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+| `arangodb_file_descriptors_limit` | System limit for the number of open files for the _arangod_ process. |
+| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the _arangod_ process. |
 
 ### More instant Hot Backups
 
@@ -1517,7 +1517,18 @@ Upgraded OpenSSL to version 3.5.5.
 
 Upgraded ArangoDB Starter to version 0.18.24.
 
-Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.9 and
+Upgraded Rclone to version 1.73.5, compiled with Go version 1.25.10 and
 updated dependencies.
 
 Upgraded OpenSSL to version 3.5.6.
+
+---
+
+<small>Introduced in: v3.11.14-5</small>
+
+Upgraded ArangoDB Starter to version 0.18.28.
+
+Upgraded Rclone to version 1.75.0, compiled with Go version 1.25.12 and
+updated dependencies.
+
+Upgraded OpenSSL to version 3.5.7.

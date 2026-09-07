@@ -209,7 +209,7 @@ The data is always stored on the _DB-Servers_.
 The following example gives you an idea of how synchronous operation
 has been implemented in ArangoDB Cluster:
 
-1. Connect to a _Coordinator_ via [_arangosh_](../../components/tools/arangodb-shell/_index.md)
+1. Connect to a _Coordinator_ via [arangosh](../../components/tools/arangodb-shell/_index.md)
 2. Create a collection: `db._create("test", {"replicationFactor": 2});`
 3. The _Coordinator_ figures out a *leader* and one *follower* and creates
    one *shard* (as this is the default)

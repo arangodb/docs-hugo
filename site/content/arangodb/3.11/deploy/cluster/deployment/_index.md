@@ -20,7 +20,7 @@ The configuration file used for the standalone instance is
 `/etc/arangodb3/arangod.conf` (on Linux), and you should use a different one for
 the cluster instance(s). If you are using the _Starter_ binary `arangodb`, that is
 automatically the case. Otherwise, you might have to copy the configuration
-somewhere else and pass it to your `arangod` cluster instance via
+somewhere else and pass it to your _arangod_ cluster instance via
 `--configuration`.
 
 ### Use a different data directory for the standalone instance

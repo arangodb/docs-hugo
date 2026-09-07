@@ -602,14 +602,14 @@ The following APIs have been expanded / changed:
   allowing to omit these attributes when creating collections. However, the
   values set here are just defaults for new collections in the database.
   The values can still be adjusted per collection when creating new collections
-  in that database via the web UI, the arangosh or drivers.
+  in that database via the web UI, the _arangosh_ or drivers.
 
   In an Enterprise Edition cluster, the `sharding` attribute can be given a
   value of `"single"`, which will make all new collections in that database use
   the same shard distribution and use one shard by default (OneShard
   configuration). This can still be overridden by setting the values of
   `numberOfShards` and `distributeShardsLike` when creating new collections in
-  that database via the web UI, arangosh or drivers (unless the startup option
+  that database via the web UI, _arangosh_ or drivers (unless the startup option
   `--cluster.force-one-shard` is enabled).
 
 - [Database properties API](../../develop/http-api/databases.md#get-information-about-the-current-database),\
@@ -789,14 +789,14 @@ may be shipped in a disabled-by-default state.
 
 ## TLS v1.3
 
-Added support for TLS 1.3 for the [arangod server](../../components/arangodb-server/options.md#--tlsprotocol)
+Added support for TLS 1.3 for the [_arangod_ server](../../components/arangodb-server/options.md#--tlsprotocol)
 and the client tools (also added to v3.5.1).
 
-The arangod server can be started with option `--ssl.protocol 6` to make it require
+The _arangod_ server can be started with option `--ssl.protocol 6` to make it require
 TLS 1.3 for incoming client connections. The server can be started with option
-`--ssl.protocol 5` to make it require TLS 1.2, as in previous versions of arangod.
+`--ssl.protocol 5` to make it require TLS 1.2, as in previous versions of _arangod_.
 
-The default TLS protocol for the arangod server is now generic TLS
+The default TLS protocol for the _arangod_ server is now generic TLS
 (`--ssl.protocol 9`), which will allow the negotiation of the TLS version between
 the client and the server.
 
@@ -804,7 +804,7 @@ All client tools also support TLS 1.3, by using the `--ssl.protocol 6` option wh
 invoking them. The client tools will use TLS 1.2 by default, in order to be
 compatible with older versions of ArangoDB that may be contacted by these tools.
 
-To configure the TLS version for arangod instances started by the ArangoDB starter,
+To configure the TLS version for _arangod_ instances started by the ArangoDB starter,
 one can use the `--all.ssl.protocol=VALUE` startup option for the ArangoDB starter,
 where VALUE is one of the following:
 

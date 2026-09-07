@@ -41,7 +41,7 @@ queued [Foxx tasks](../../develop/foxx-microservices/guides/scripts-and-scheduli
 which were created on the _leader_ will also be valid on the newly elected _leader_
 (always depending on the condition that they were synced already).
 
-Consider the case for two *arangod* instances. The two servers are connected via
+Consider the case for two _arangod_ instances. The two servers are connected via
 server wide (global) asynchronous replication. One of the servers is
 elected _Leader_, and the other one is made a _Follower_ automatically. At startup,
 the two servers race for the leadership position. This happens through the _Agency

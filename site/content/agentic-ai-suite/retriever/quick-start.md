@@ -23,8 +23,9 @@ description: >-
 {{< step "Install the Retriever service" >}}
 Install and start the service through the Arango Control Plane. Configure your
 LLM and embedding providers at install time by passing them in the `env` object
-of the install request body. Streaming is supported with the OpenAI-compatible
-providers, `openai` and `custom`, but not with `triton`.
+of the install request body. Token streaming is available with the
+OpenAI-compatible providers, `openai` and `custom`. With `triton`, the streaming
+endpoint still works but returns the full answer as a single chunk.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 

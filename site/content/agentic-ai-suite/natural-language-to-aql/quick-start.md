@@ -6,6 +6,8 @@ description: >-
   Ask a question in plain language and get an executable AQL query back, using
   AQLizer
 ---
+{{< tag "Beta" >}}
+
 ## Prerequisites
 
 - An ArangoDB database (note its name).

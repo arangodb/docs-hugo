@@ -1949,7 +1949,7 @@ nav.pagination .next {
 
 .back-to-top {
     position: fixed;
-    bottom: 62px;
+    bottom: 35px;
     right: 52px;
     z-index: 99;
     outline: none;
@@ -2305,15 +2305,19 @@ nav.pagination .next {
 pre.mermaid {
     height: 500px;
     margin: 0;
+    overflow: hidden;
 }
 
 pre.mermaid > svg {
     width: 100%;
     height: 100%;
-    max-width: none;
+    margin: 0;
+    /* Don't shrink SVG to the size of the diagram, avoiding clipping */
+    max-width: none !important;
 }
 
 pre.mermaid > svg .nodeLabel {
     word-break: normal;
     overflow-wrap: break-word;
+    font-weight: normal;
 }

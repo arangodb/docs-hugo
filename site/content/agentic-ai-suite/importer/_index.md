@@ -22,7 +22,7 @@ The Importer fits three usage patterns:
 
 | Pattern | How you use it |
 |---------|----------------|
-| **Web interface** | The fastest path. Configure, run, and inspect imports through the [GraphRAG web interface](../graphrag/web-interface.md) without writing code. |
+| **Web interface** | The fastest path. Configure, run, and inspect imports through [AutoGraph Studio](../autograph/web-interface.md) without writing code. |
 | **Direct API** | Call the Importer over HTTP API when you want full control - custom partitions, custom prompts, batch automation, or integration into an existing pipeline. |
 | **Driven by AutoGraph** | For large or heterogeneous corpora, [AutoGraph](../autograph/) discovers domains, assigns a RAG strategy per domain, and orchestrates Importer workers automatically. You don't call the Importer directly in this mode. See [AutoGraph Integration](autograph-integration.md). |
 
@@ -51,6 +51,9 @@ See [Architecture](architecture.md) for the collections each mode populates.
   embedding providers (OpenAI-compatible APIs or Triton Inference Server).
 - [**Import Files**](importing-files.md): Single-file and multi-file import
   workflows with examples.
+- [**Incremental Updates**](incremental-updates.md): Rebuild the community layer
+  of a partition without importing the documents again, and how documents are
+  removed and replaced in the knowledge graph.
 - [**Verify and explore**](verify-and-explore.md): Check that your import
   succeeded and inspect the resulting collections.
 - [**Semantic Units**](semantic-units.md) *(optional)*: Process images and

@@ -883,7 +883,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -1620,7 +1620,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -2238,7 +2238,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
