@@ -1,7 +1,7 @@
 ---
 title: Agentic AI Suite
 menuTitle: Agentic AI Suite
-weight: 2
+weight: 3
 description: >-
   A comprehensive AI solution that transforms your data into intelligent
   knowledge graphs with GraphRAG capabilities, applies advanced machine learning

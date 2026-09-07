@@ -1,7 +1,7 @@
 ---
 title: Arango Contextual Data Platform 4.0
 menuTitle: Arango Contextual Data Platform
-weight: 1
+weight: 2
 description: >-
   The Arango Contextual Data Platform provides entity-aware retrieval,
   graph-based reasoning, temporal state management, and platform-level

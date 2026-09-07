@@ -1,7 +1,7 @@
 ---
 title: ArangoDB database system
 menuTitle: ArangoDB
-weight: 5
+weight: 6
 description: >-
   ArangoDB is a scalable graph database system to drive value from connected
   data, faster
