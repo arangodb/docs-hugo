@@ -149,7 +149,7 @@ paths:
                         type: array
                         items:
                           type: object
-                          requires:
+                          required:
                             - sha256
                           properties:
                             sha256:

@@ -30,7 +30,7 @@ paths:
       operationId: getMetricsV2
       description: |
         Returns the instance's current metrics in Prometheus format.
-        
+
         Whether the endpoint is available depends on the setting of
         the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
         For additional document read and write metrics, the
@@ -158,7 +158,7 @@ paths:
         {{</* /warning */>}}
 
         Returns the instance's current metrics in Prometheus format.
-        
+
         Whether the endpoint is available depends on the setting of
         the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
         For additional document read and write metrics, the

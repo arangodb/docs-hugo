@@ -76,7 +76,7 @@ paths:
                       - enterprise
                   version:
                     description: |
-                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`)
+                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`).
                       The `major` and `minor` parts are numeric, and `sub` is a
                       number that may have a version suffix starting with
                       a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
@@ -111,7 +111,7 @@ paths:
                     description: |
                       An object with additional details like compile flags,
                       dependency versions, and so on.
-                      
+
                       Only returned if the `details` query parameter is set to
                       `true` in the request.
                     type: object

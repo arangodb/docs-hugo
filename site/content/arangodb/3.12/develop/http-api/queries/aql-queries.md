@@ -1114,7 +1114,8 @@ paths:
             Stream Transaction that has just been canceled or timed out.
         '500':
           description: |
-            This error occurs if a query is not eligible for plan caching.
+            The query is not eligible for plan caching, but the `usePlanCache`
+            option is enabled.
         '503':
           description: |
             A server which processes the query or the leader of a shard which is used
