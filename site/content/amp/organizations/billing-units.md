@@ -11,7 +11,6 @@ meters the following units.
 
 {{% comment %}}
 TODO: This page is derived from the Billing 2.0 design document. Open points:
-- The design document numbering skips 1.1.3. Check whether a unit is missing.
 - Section 1.1.5 refers to "DP30/60/100 performance details" but the pricing list
   omits DP60.
 - Sections 1.2.2 and 1.2.3 both name "Infrastructure Internal Network costs" as
