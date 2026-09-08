@@ -1,7 +1,8 @@
 ---
-title: List Group with `oasisctl`
+title: List Group with _oasisctl_
 menuTitle: List Group
 weight: 20
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List group resources

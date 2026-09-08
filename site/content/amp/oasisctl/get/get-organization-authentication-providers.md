@@ -1,7 +1,8 @@
 ---
-title: Get Organization Authentication Providers with `oasisctl`
+title: Get Organization Authentication Providers with _oasisctl_
 menuTitle: Get Organization Authentication Providers
-weight: 17
+weight: 16
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get which authentication providers are allowed for accessing a specific organization

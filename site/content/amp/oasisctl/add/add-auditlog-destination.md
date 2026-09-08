@@ -1,7 +1,8 @@
 ---
-title: Add Audit Log Destination with `oasisctl`
+title: Add Audit Log Destination with _oasisctl_
 menuTitle: Add Audit Log Destination
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Add a destination to an auditlog.

@@ -1,7 +1,8 @@
 ---
-title: Get Metrics with `oasisctl`
+title: Get Metrics with _oasisctl_
 menuTitle: Get Metrics
 weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get metrics information

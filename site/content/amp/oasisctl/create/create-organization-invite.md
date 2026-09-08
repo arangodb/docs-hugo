@@ -1,7 +1,8 @@
 ---
-title: Create Organization Invite with `oasisctl`
+title: Create Organization Invite with _oasisctl_
 menuTitle: Create Organization Invite
-weight: 15
+weight: 14
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new invite to an organization

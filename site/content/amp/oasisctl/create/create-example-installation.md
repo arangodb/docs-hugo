@@ -1,7 +1,8 @@
 ---
-title: Create Example Installation with `oasisctl`
+title: Create Example Installation with _oasisctl_
 menuTitle: Create Example Installation
 weight: 8
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new example dataset installation

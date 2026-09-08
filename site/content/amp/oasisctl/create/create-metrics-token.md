@@ -1,7 +1,8 @@
 ---
-title: Create Metrics Token with `oasisctl`
+title: Create Metrics Token with _oasisctl_
 menuTitle: Create Metrics Token
 weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new metrics access token

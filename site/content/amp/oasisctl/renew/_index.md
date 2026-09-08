@@ -1,7 +1,8 @@
 ---
-title: Renew with `oasisctl`
+title: Renew with _oasisctl_
 menuTitle: Renew
 weight: 22
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Renew keys & tokens

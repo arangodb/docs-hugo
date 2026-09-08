@@ -1,7 +1,8 @@
 ---
-title: Delete Project with `oasisctl`
+title: Delete Project with _oasisctl_
 menuTitle: Delete Project
-weight: 21
+weight: 20
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a project the authenticated user has access to

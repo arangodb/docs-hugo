@@ -1,7 +1,8 @@
 ---
-title: Logs with `oasisctl`
+title: Logs with _oasisctl_
 menuTitle: Logs
 weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get logs of the servers of a deployment the authenticated user has access to

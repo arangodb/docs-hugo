@@ -1,7 +1,8 @@
 ---
-title: Get Server Status with `oasisctl`
+title: Get Server Status with _oasisctl_
 menuTitle: Get Server Status
-weight: 32
+weight: 31
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get the status of servers for a deployment

@@ -1,7 +1,8 @@
 ---
-title: Unlock Deployment with `oasisctl`
+title: Unlock Deployment with _oasisctl_
 menuTitle: Unlock Deployment
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Unlock a deployment, so it can be deleted

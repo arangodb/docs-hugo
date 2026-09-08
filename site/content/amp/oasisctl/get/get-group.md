@@ -1,7 +1,8 @@
 ---
-title: Get Group with `oasisctl`
+title: Get Group with _oasisctl_
 menuTitle: Get Group
 weight: 10
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a group the authenticated user has access to

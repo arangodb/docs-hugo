@@ -1,7 +1,8 @@
 ---
-title: Update Organization with `oasisctl`
+title: Update Organization with _oasisctl_
 menuTitle: Update Organization
-weight: 11
+weight: 10
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update an organization the authenticated user has access to

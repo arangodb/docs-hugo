@@ -1,7 +1,8 @@
 ---
-title: Delete Example Installation with `oasisctl`
+title: Delete Example Installation with _oasisctl_
 menuTitle: Delete Example Installation
 weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an example datasets installation

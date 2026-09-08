@@ -1,7 +1,8 @@
 ---
-title: List Groups with `oasisctl`
+title: List Groups with _oasisctl_
 menuTitle: List Groups
 weight: 22
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all groups of the given organization
