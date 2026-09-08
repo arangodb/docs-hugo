@@ -59,6 +59,24 @@ description: >-
   respective packages.
 {{< /comment >}}
 
+## Version compatibility
+
+The Arango Contextual Data Platform is versioned independent of its core
+database system (ArangoDB) and the operator for Kubernetes.
+
+The minimally required versions of ArangoDB and the operator for a given
+data platform version are listed below.
+
+| Arango Contextual Data Platform | ArangoDB | Operator (`kube-arangodb`) |
+|-------|----------|--------|
+| 4.0.x | 3.12.9+  | 1.4.3+ |
+| 4.1.x | 3.12.11+ | 1.4.5+ |
+
+The Agentic AI Suite and the Platform Suite have no separate versions.
+A data platform release defines the versions of all services that the suites are
+composed of. Upgrading the data platform inherently upgrades these services,
+but they are guaranteed to be compatible with each other.
+
 ## Install the Contextual Data Platform
 
 Follow the guide for deploying the Arango Contextual Data Platform that matches your needs:
