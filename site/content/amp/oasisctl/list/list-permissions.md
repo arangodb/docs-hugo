@@ -1,7 +1,8 @@
 ---
-title: List Permissions with `oasisctl`
+title: List Permissions with _oasisctl_
 menuTitle: List Permissions
-weight: 33
+weight: 31
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List the known permissions

@@ -1,7 +1,8 @@
 ---
-title: Delete Audit Log Archive with `oasisctl`
+title: Delete Audit Log Archive with _oasisctl_
 menuTitle: Delete Audit Log Archive
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an auditlog archive

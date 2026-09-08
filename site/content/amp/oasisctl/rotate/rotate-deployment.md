@@ -1,7 +1,8 @@
 ---
-title: Rotate Deployment with `oasisctl`
+title: Rotate Deployment with _oasisctl_
 menuTitle: Rotate Deployment
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Rotate deployment resources

@@ -1,7 +1,8 @@
 ---
-title: Create IP Allowlist with `oasisctl`
+title: Create IP Allowlist with _oasisctl_
 menuTitle: Create IP Allowlist
 weight: 10
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new IP allowlist

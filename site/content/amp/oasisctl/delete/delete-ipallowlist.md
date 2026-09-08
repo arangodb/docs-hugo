@@ -1,7 +1,8 @@
 ---
-title: Delete IP Allowlist with `oasisctl`
+title: Delete IP Allowlist with _oasisctl_
 menuTitle: Delete IP Allowlist
 weight: 14
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an IP allowlist the authenticated user has access to

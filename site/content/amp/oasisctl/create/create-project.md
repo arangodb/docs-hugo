@@ -1,7 +1,8 @@
 ---
-title: Create Project with `oasisctl`
+title: Create Project with _oasisctl_
 menuTitle: Create Project
-weight: 19
+weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create a new project

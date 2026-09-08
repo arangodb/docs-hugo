@@ -1,7 +1,8 @@
 ---
-title: Get Private with `oasisctl`
+title: Get Private with _oasisctl_
 menuTitle: Get Private
-weight: 23
+weight: 22
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get private information

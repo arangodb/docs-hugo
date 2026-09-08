@@ -1,7 +1,8 @@
 ---
-title: Revoke Metrics with `oasisctl`
+title: Revoke Metrics with _oasisctl_
 menuTitle: Revoke Metrics
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Revoke keys & tokens

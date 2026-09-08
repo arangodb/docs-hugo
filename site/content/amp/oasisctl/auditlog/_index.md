@@ -1,7 +1,8 @@
 ---
-title: Audit Log with `oasisctl`
+title: Audit Log with _oasisctl_
 menuTitle: Audit Log
 weight: 4
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 AuditLog resources

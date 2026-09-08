@@ -1,19 +1,19 @@
 ---
-title: Pause Notebook with `oasisctl`
-menuTitle: Pause Notebook
-weight: 1
+title: Pause with _oasisctl_
+menuTitle: Pause
+weight: 19
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
-Pause a notebook
+Pause resources
 
 ```
-oasisctl pause notebook [flags]
+oasisctl pause [flags]
 ```
 
 ## Options
 ```
-  -h, --help                 help for notebook
-  -n, --notebook-id string   Identifier of the notebook
+  -h, --help   help for pause
 ```
 
 ## Options Inherited From Parent Commands
@@ -24,5 +24,5 @@ oasisctl pause notebook [flags]
 ```
 
 ## See also
-* [oasisctl pause](_index.md)	 - Pause resources
+* [oasisctl](options.md)	 - Arango Managed Platform (AMP)
 

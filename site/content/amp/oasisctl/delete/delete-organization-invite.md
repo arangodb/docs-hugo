@@ -1,7 +1,8 @@
 ---
-title: Delete Organization Invite with `oasisctl`
+title: Delete Organization Invite with _oasisctl_
 menuTitle: Delete Organization Invite
-weight: 19
+weight: 18
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete an organization invite the authenticated user has access to

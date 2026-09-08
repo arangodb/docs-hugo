@@ -1,7 +1,8 @@
 ---
-title: Delete Metrics Token with `oasisctl`
+title: Delete Metrics Token with _oasisctl_
 menuTitle: Delete Metrics Token
 weight: 16
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a metrics token for a deployment

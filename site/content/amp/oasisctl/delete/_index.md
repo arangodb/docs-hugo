@@ -1,7 +1,8 @@
 ---
-title: Delete with `oasisctl`
+title: Delete with _oasisctl_
 menuTitle: Delete
 weight: 9
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete resources
@@ -33,7 +34,6 @@ oasisctl delete [flags]
 * [oasisctl delete group](delete-group.md)	 - Delete a group the authenticated user has access to
 * [oasisctl delete ipallowlist](delete-ipallowlist.md)	 - Delete an IP allowlist the authenticated user has access to
 * [oasisctl delete metrics](delete-metrics.md)	 - Delete metrics resources
-* [oasisctl delete notebook](delete-notebook.md)	 - Delete a notebook
 * [oasisctl delete organization](delete-organization.md)	 - Delete an organization the authenticated user has access to
 * [oasisctl delete project](delete-project.md)	 - Delete a project the authenticated user has access to
 * [oasisctl delete role](delete-role.md)	 - Delete a role the authenticated user has access to

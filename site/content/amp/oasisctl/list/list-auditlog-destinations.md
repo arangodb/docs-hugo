@@ -1,7 +1,8 @@
 ---
-title: List Audit Log Destinations with `oasisctl`
+title: List Audit Log Destinations with _oasisctl_
 menuTitle: List Audit Log Destinations
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List auditlog destinations

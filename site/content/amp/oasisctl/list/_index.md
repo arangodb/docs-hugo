@@ -1,7 +1,8 @@
 ---
-title: List with `oasisctl`
+title: List with _oasisctl_
 menuTitle: List
 weight: 15
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List resources
@@ -42,8 +43,6 @@ oasisctl list [flags]
 * [oasisctl list ipallowlists](list-ipallowlists.md)	 - List all IP allowlists of the given project
 * [oasisctl list metrics](list-metrics.md)	 - List metrics resources
 * [oasisctl list nodesizes](list-nodesizes.md)	 - List node sizes
-* [oasisctl list notebookmodels](list-notebookmodels.md)	 - List notebook models
-* [oasisctl list notebooks](list-notebooks.md)	 - List notebooks
 * [oasisctl list organization](list-organization.md)	 - List organization resources
 * [oasisctl list organizations](list-organizations.md)	 - List all organizations the authenticated user is a member of
 * [oasisctl list permissions](list-permissions.md)	 - List the known permissions

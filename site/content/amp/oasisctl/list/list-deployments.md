@@ -1,7 +1,8 @@
 ---
-title: List Deployments with `oasisctl`
+title: List Deployments with _oasisctl_
 menuTitle: List Deployments
 weight: 13
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all deployments of the given project

@@ -1,7 +1,8 @@
 ---
-title: List Organization Invites with `oasisctl`
+title: List Organization Invites with _oasisctl_
 menuTitle: List Organization Invites
-weight: 30
+weight: 28
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List invites of an organization the authenticated user is a member of

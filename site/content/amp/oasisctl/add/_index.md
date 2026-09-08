@@ -1,7 +1,8 @@
 ---
-title: Add with `oasisctl`
+title: Add with _oasisctl_
 menuTitle: Add
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Add resources
