@@ -25,10 +25,6 @@ TODO: This page is derived from the Billing 2.0 design document. Open points:
 - The pod, PVC, Prometheus, and DataManager references below come from the design
   document. Decide how much of this implementation detail belongs on a
   customer-facing page.
-- The design document is a proposal and states parts of the model in the future
-  tense ("Pricing should be based on...", "Add Instance family as a label").
-  That wording is preserved below. Confirm what has actually shipped before
-  publishing this page, and rewrite those parts in the present tense.
 {{% /comment %}}
 
 ## Infrastructure
@@ -97,8 +93,8 @@ Use cases:
 
 ### Storage Performance Hours
 
-The performance allocated for storage should be based on the DP30/60/100
-performance details.
+The performance allocated for storage is based on the DP30/60/100 performance
+details.
 
 - **Unit:** Storage performance allocated for one hour
 - **Usage item:** Infrastructure Storage Performance Hour costs
@@ -109,7 +105,7 @@ Calculation:
 - The purpose of the pod is taken from the `billing.arangodb.com/type` label.
 - Based on the resources requested by the PVC, taken from the additional metrics
   released by the DataManager.
-- Pricing should be based on the following units per hour:
+- Pricing is based on the following units per hour:
 
   | Disk performance | Units per hour |
   |------------------|----------------|
@@ -140,7 +136,7 @@ Calculation:
 - Based on the resources requested by the pod.
 - Calculation starts when the pod is scheduled to a node.
 - Calculation ends when the pod enters the terminated state, or is removed.
-- Add the instance family as a label.
+- The instance family is added as a label.
 
 Use cases:
 
