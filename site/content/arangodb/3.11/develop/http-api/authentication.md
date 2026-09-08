@@ -8,7 +8,12 @@ description: >-
   user credentials or the JWT secret of the deployment
 ---
 Client authentication can be achieved by using the `Authorization` HTTP header
-in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
+in client requests. ArangoDB supports authentication via the following:
+
+- [**HTTP Basic Authentication**](#http-basic-authentication) with a username
+  and either a password or access token.
+- [**Bearer Token Authentication**](#bearer-token-authentication) using JWT,
+  which can be session tokens for regular users or non-expiring superuser tokens.
 
 Authentication is turned on by default for all internal database APIs but
 turned off for custom Foxx apps. To toggle authentication for incoming
