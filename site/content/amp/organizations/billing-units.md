@@ -22,9 +22,11 @@ TODO: This page is derived from the Billing 2.0 design document. Open points:
   metric name is `aue` or `aeu`.
 - The design document does not state how the four AEU inputs are combined into an
   AEU value, and does not expand the AEU acronym. Both are needed here.
-- The pod, PVC, Prometheus, and DataManager references below come from the design
-  document. Decide how much of this implementation detail belongs on a
-  customer-facing page.
+- The AEU section below still uses the design document's metric-exposition
+  wording ("exposed via a label", "exposes a static value") and quotes raw metric
+  names. Decide whether those belong on a customer-facing page, the way the pod,
+  PVC, Prometheus, and DataManager references were already removed from the unit
+  sections above.
 {{% /comment %}}
 
 ## Infrastructure
@@ -38,15 +40,13 @@ Real allocation of the used resources for the CPU.
 
 Calculation:
 
-- Based on Prometheus metrics.
-- The purpose of the pod is taken from the `billing.arangodb.com/type` label.
-- Based on the resources requested by the pod.
-- Calculation starts when the pod is scheduled to a node.
-- Calculation ends when the pod enters the terminated state, or is removed.
+- Based on the CPU resources reserved for the workload, not on how much of that
+  CPU is actually used.
+- Metering starts when the workload starts running, and ends when it stops.
 
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
@@ -59,15 +59,13 @@ Real allocation of the used resources for the memory.
 
 Calculation:
 
-- Based on Prometheus metrics.
-- The purpose of the pod is taken from the `billing.arangodb.com/type` label.
-- Based on the resources requested by the pod.
-- Calculation starts when the pod is scheduled to a node.
-- Calculation ends when the pod enters the terminated state, or is removed.
+- Based on the memory reserved for the workload, not on how much of that memory
+  is actually used.
+- Metering starts when the workload starts running, and ends when it stops.
 
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
@@ -80,14 +78,13 @@ Real usage of the storage.
 
 Calculation:
 
-- Based on Prometheus metrics.
-- The purpose of the pod is taken from the `billing.arangodb.com/type` label.
-- Based on the resources requested by the PVC, taken from the status.
-- Bills even if the deployment is hibernated.
+- Based on the storage size provisioned for the workload, not on the amount of
+  data stored.
+- Billed even if the deployment is hibernated.
 
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
@@ -101,10 +98,7 @@ details.
 
 Calculation:
 
-- Based on Prometheus metrics.
-- The purpose of the pod is taken from the `billing.arangodb.com/type` label.
-- Based on the resources requested by the PVC, taken from the additional metrics
-  released by the DataManager.
+- Based on the disk performance provisioned for the workload.
 - Pricing is based on the following units per hour:
 
   | Disk performance | Units per hour |
@@ -118,7 +112,7 @@ Calculation:
 
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
@@ -131,12 +125,10 @@ Real allocation of the used resources for the GPU.
 
 Calculation:
 
-- Based on Prometheus metrics.
-- The purpose of the pod is taken from the `billing.arangodb.com/type` label.
-- Based on the resources requested by the pod.
-- Calculation starts when the pod is scheduled to a node.
-- Calculation ends when the pod enters the terminated state, or is removed.
-- The instance family is added as a label.
+- Based on the GPU resources reserved for the workload, not on how much of that
+  GPU is actually used.
+- Metering starts when the workload starts running, and ends when it stops.
+- Usage is tracked per GPU type and instance family.
 
 Use cases:
 
@@ -152,7 +144,7 @@ Real usage of the resources for the cloud storage.
 
 Calculation:
 
-- Based on the cloud provider details.
+- Based on the usage reported by the cloud provider.
 - Averaged maximum over the day.
 
 Use cases:
@@ -162,54 +154,44 @@ Use cases:
 
 ## Network
 
+Network usage is metered per workload.
+
 ### Internal Network Usage
 
-Real internal network usage on the pod level.
+Real internal network usage.
 
 - **Unit:** GiB of transfer
 - **Usage item:** Infrastructure Internal Network costs
 
-Calculation:
-
-- Based on Prometheus metrics.
-
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
 ### External Egress Network Usage
 
-Real external egress network usage on the pod level.
+Real external egress network usage.
 
 - **Unit:** GiB of transfer
 - **Usage item:** Infrastructure Internal Network costs
 
-Calculation:
-
-- Based on Prometheus metrics.
-
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
 ### External Ingress Network Usage
 
-Real external ingress network usage on the pod level.
+Real external ingress network usage.
 
 - **Unit:** GiB of transfer
 - **Usage item:** Infrastructure Internal Network costs
 
-Calculation:
-
-- Based on Prometheus metrics.
-
 Use cases:
 
-- ArangoDB pod runs
+- ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
