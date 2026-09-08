@@ -19,12 +19,6 @@ coupled to specific internals that may be replaced by other mechanisms in the
 future.
 {{< /warning >}}
 
-Whether the `/_admin/metrics*` endpoints are available depends on the setting of
-the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
-For additional document read and write metrics, the
-[`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
-needs to be enabled.
-
 ## Metrics API
 
 ### Get the metrics
@@ -35,8 +29,15 @@ paths:
     get:
       operationId: getMetrics
       description: |
-        Returns the instance's current metrics in Prometheus format. The
-        returned document collects all instance metrics, which are measured
+        Returns the instance's current metrics in Prometheus format.
+
+        Whether the endpoint is available depends on the setting of
+        the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
+        For additional document read and write metrics, the
+        [`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+        needs to be enabled.
+
+        The returned document collects all instance metrics, which are measured
         at any given time and exposes them for collection by Prometheus.
 
         The document contains different metrics and metrics groups dependent
@@ -160,14 +161,21 @@ paths:
         removed in v4.0.
         {{</* /warning */>}}
 
-        Returns the instance's current metrics in Prometheus format. The
-        returned document collects all instance metrics, which are measured
+        Returns the instance's current metrics in Prometheus format.
+
+        Whether the endpoint is available depends on the setting of
+        the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
+        For additional document read and write metrics, the
+        [`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+        needs to be enabled.
+
+        The returned document collects all instance metrics, which are measured
         at any given time and exposes them for collection by Prometheus.
 
         The document contains different metrics and metrics groups dependent
         on the role of the queried instance. All exported metrics are
-        published with a `arangodb_` or `rocksdb_` prefix to distinguish
-        them from other collected data.
+        published with a `arangodb_` or `rocksdb_` prefix to distinguish them
+        from other collected data.
 
         The API then needs to be added to the Prometheus configuration file
         for collection.

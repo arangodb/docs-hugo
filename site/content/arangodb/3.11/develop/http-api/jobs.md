@@ -228,6 +228,8 @@ paths:
       description: |
         Cancels the currently running job identified by `job-id`. Note that it still
         might take some time to actually cancel the running async job.
+
+        If you cancel an ongoing AQL query job, the query gets killed.
       parameters:
         - name: database-name
           in: path
@@ -258,10 +260,9 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.
@@ -376,6 +377,9 @@ paths:
         specific job.
         Clients can use this method to perform an eventual garbage collection of job
         results.
+
+        If you delete the result of an ongoing AQL query job, this does not kill
+        the query but leaves it running and discards the results when it finishes.
       parameters:
         - name: database-name
           in: path
@@ -424,8 +428,7 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
                     example: true
         '400':
@@ -736,8 +739,7 @@ logRawResponse(response);
 ```curl
 ---
 description: |-
-  Querying the status of a pending job:
-  (therefore we create a long running job...)
+  Querying the status of a pending job while a long-running job is executing:
 name: job_getStatusById_02
 ---
 var url = "/_api/transaction";
@@ -802,7 +804,7 @@ logJsonResponse(response);
 ---
 description: |-
   Fetching the list of a `pending` jobs while a long-running job is executing
-  (and aborting it):
+  (and discarding the results once it's done):
 name: job_getByType_03
 ---
 var url = "/_api/transaction";

@@ -699,6 +699,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -750,8 +751,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1110,6 +1112,10 @@ paths:
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction that has just been canceled or timed out.
+        '500':
+          description: |
+            The query is not eligible for plan caching, but the `usePlanCache`
+            option is enabled.
         '503':
           description: |
             A server which processes the query or the leader of a shard which is used
@@ -1462,6 +1468,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -1513,8 +1520,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1970,6 +1978,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -2021,8 +2030,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings

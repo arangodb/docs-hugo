@@ -398,13 +398,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -814,13 +817,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1308,13 +1314,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1973,13 +1982,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2433,13 +2445,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -3093,7 +3108,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -3467,13 +3482,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -4219,7 +4237,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -4395,13 +4413,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -4976,13 +4997,16 @@ paths:
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |

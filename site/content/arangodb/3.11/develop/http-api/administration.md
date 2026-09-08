@@ -59,150 +59,331 @@ paths:
                   - version
                 properties:
                   server:
-                    description: |
-                      will always contain `arango`
+                    description: ''
                     type: string
+                    const: arango
                   version:
                     description: |
-                      the server version string. The string has the format
-                      `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
-                      may contain a number or a textual version.
+                      The server version string in the format `major.minor.sub` (e.g. `3.12.11`).
+                      The `major` and `minor` parts are numeric, and `sub` is a
+                      number that may have a version suffix starting with
+                      a hyphen minus (e.g. `3.11.14-5` or `4.0.0-devel`).
                     type: string
                   details:
                     description: |
-                      an optional JSON object with additional details. This is
-                      returned only if the `details` query parameter is set to `true` in the
-                      request.
+                      An object with additional details like compile flags,
+                      dependency versions, and so on.
+
+                      Only returned if the `details` query parameter is set to
+                      `true` in the request.
                     type: object
+                    required:
+                      - architecture
+                      - arm
+                      - asan
+                      - assertions
+                      - avx
+                      - avx2
+                      - boost-version
+                      - build-date
+                      - compiler
+                      - coverage
+                      - cplusplus
+                      - curl-version
+                      - debug
+                      - endianness
+                      - failure-tests
+                      - fd-client-event-handler
+                      - fd-setsize
+                      - full-version-string
+                      - icu-version
+                      - ipo
+                      - iresearch-version
+                      - jemalloc
+                      - license
+                      - libunwind
+                      - maintainer-mode
+                      - memory-profiler
+                      - ndebug
+                      - openssl-version-compile-time
+                      - openssl-version-run-time
+                      - pic
+                      - pie
+                      - platform
+                      - reactor-type
+                      - replication2-enabled
+                      - rocksdb-version
+                      - server-version
+                      - "sizeof int"
+                      - "sizeof long"
+                      - "sizeof void*"
+                      - sse42
+                      - tsan
+                      - unaligned-access
+                      - v8-version
+                      - vpack-version
+                      - zlib-version
+                      - mode
+                      - role
+                      - host
                     properties:
                       architecture:
                         description: |
-                          The CPU architecture, i.e. `64bit`
+                          The CPU architecture in terms of bitness.
                         type: string
+                        const: 64bit
                       arm:
                         description: |
-                          `false` - this is not running on an ARM cpu
+                          Whether the server binary has been compiled for an ARM CPU.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       asan:
                         description: |
-                          has this been compiled with the asan address sanitizer turned on? (should be false)
+                          Whether the server has been compiled with the
+                          ASAN address sanitizer enabled.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       assertions:
                         description: |
-                          do we have assertions compiled in (=> developer version)
+                          Whether the server has assertions compiled in
+                          (only in development builds).
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      avx2:
+                        description: |
+                          Whether the server binary has been compiled with
+                          AVX2 instruction support.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       boost-version:
                         description: |
-                          which boost version do we bind
+                          Which version of the Boost library is used.
                         type: string
                       build-date:
                         description: |
-                          the date when this binary was created
+                          The date when this binary was created.
                         type: string
                       build-repository:
                         description: |
-                          reference to the git-ID this was compiled from
+                          Reference to the Git ID this was compiled from.
                         type: string
                       compiler:
                         description: |
-                          which compiler did we use
+                          The compiler that has been used.
                         type: string
+                      coverage:
+                        description: |
+                          Whether this build has code coverage instrumentation.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       cplusplus:
                         description: |
-                          C++ standards version
+                          The C++ standards version.
+                        type: string
+                      curl-version:
+                        description: |
+                          The linked cURL version, or `"none"` if not linked.
                         type: string
                       debug:
                         description: |
-                          `false` for production binaries
+                          Whether this is a debug build, `"false"` for
+                          production binaries.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       endianness:
                         description: |
-                          currently only `little` is supported
+                          The byte order of the system, detected at runtime.
                         type: string
+                        const: little
+                      enterprise-build-repository:
+                        description: |
+                          Reference to the enterprise Git ID this was compiled from.
+                        type: string
+                      enterprise-version:
+                        description: |
+                          Only present if this is a build that includes the
+                          non-public enterprise code.
+                        type: string
+                        const: enterprise
                       failure-tests:
                         description: |
-                          `false` for production binaries (the facility to invoke fatal errors is disabled)
+                          Whether the facility to invoke fatal errors is compiled
+                          in, `"false"` for production binaries.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       fd-client-event-handler:
                         description: |
-                          which method do we use to handle fd-sets, `poll` should be here on linux.
+                          Which method is used to handle fd-sets, typically `poll`
+                          on Linux.
                         type: string
                       fd-setsize:
                         description: |
-                          if not `poll` the fd setsize is valid for the maximum number of file descriptors
+                          If not `poll`, the fd setsize is valid for the maximum
+                          number of file descriptors.
                         type: string
                       full-version-string:
                         description: |
-                          The full version string
+                          The full version string including the build ID and
+                          the versions of major dependencies.
                         type: string
                       icu-version:
                         description: |
-                          Which version of ICU do we bundle
+                          The version of the bundled ICU library.
+                        type: string
+                      ipo:
+                        description: |
+                          Whether interprocedural optimization was enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      iresearch-version:
+                        description: |
+                          The ArangoSearch/IResearch library version.
                         type: string
                       jemalloc:
                         description: |
-                          `true` if we use jemalloc
+                          Whether the jemalloc memory allocator is used,
+                          typically `"true"`
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      license:
+                        description: |
+                          Whether this build of ArangoDB includes the non-public
+                          enterprise code. Reports `"community"` for the
+                          Community Edition and `"enterprise"` for the
+                          Enterprise Edition.
+                        type: string
+                        enum:
+                          - community
+                          - enterprise
+                      libunwind:
+                        description: |
+                          Whether libunwind is linked for stack unwinding.
                         type: string
                       maintainer-mode:
                         description: |
-                          `false` if this is a production binary
+                          Whether the server has been compiled in maintainer mode,
+                          `"false"` for production binaries.
                         type: string
-                      openssl-version:
+                        enum: ["true", "false"] # Boolean as string!
+                      memory-profiler:
                         description: |
-                          which openssl version do we link?
+                          Whether the memory profiler is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      ndebug:
+                        description: |
+                          Whether NDEBUG was defined for the build.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
+                      openssl-version-compile-time:
+                        description: |
+                          The OpenSSL version at compile time.
+                        type: string
+                      openssl-version-run-time:
+                        description: |
+                          The OpenSSL version at run time.
+                        type: string
+                      optimization-flags:
+                        description: |
+                          The compiler optimization flags used for this build.
+                        type: string
+                      oskar-build-repository:
+                        description: |
+                          Reference to the Git ID of the build environment this was
+                          compiled with.
+                        type: string
+                      pic:
+                        description: |
+                          The position-independent code setting.
+                        type: string
+                      pie:
+                        description: |
+                          The position-independent executable setting.
                         type: string
                       platform:
                         description: |
-                          the host os - `linux`, `windows` or `darwin`
+                          The operating system the server has been compiled for.
                         type: string
+                        enum: [linux, windows, darwin]
                       reactor-type:
-                        description: |
-                          `epoll`
+                        description: ''
                         type: string
+                        const: epoll
+                      replication2-enabled:
+                        description: |
+                          Whether replication2 is enabled.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       rocksdb-version:
                         description: |
-                          the rocksdb version this release bundles
+                          The rocksdb version this release bundles.
                         type: string
                       server-version:
                         description: |
-                          the ArangoDB release version
+                          The ArangoDB release version.
                         type: string
                       sizeof int:
                         description: |
-                          number of bytes for integers
+                          Number of bytes for integers.
+                        type: string
+                      sizeof long:
+                        description: |
+                          Number of bytes for long integers.
                         type: string
                       sizeof void*:
                         description: |
-                          number of bytes for void pointers
+                          Number of bytes for void pointers.
                         type: string
                       sse42:
                         description: |
-                          do we have a SSE 4.2 enabled cpu?
+                          Whether the server binary has been compiled with
+                          SSE 4.2 instruction support.
                         type: string
+                      tsan:
+                        description: |
+                          Whether this was compiled with the thread sanitizer.
+                        type: string
+                        enum: ["true", "false"] # Boolean as string!
                       unaligned-access:
                         description: |
-                          does this system support unaligned memory access?
+                          Whether this system supports unaligned memory accesses.
                         type: string
+                        enum: ["true", "false"] # Boolean as string!
                       v8-version:
                         description: |
-                          the bundled V8 javascript engine version
+                          The bundled V8 JavaScript engine version.
                         type: string
                       vpack-version:
                         description: |
-                          the version of the used velocypack implementation
+                          The version of the used VelocyPack implementation.
                         type: string
                       zlib-version:
                         description: |
-                          the version of the bundled zlib
+                          The version of the bundled zlib compression library.
                         type: string
                       mode:
                         description: |
-                          The mode arangod runs in.
+                          The mode the server runs in.
                         type: string
                         enum: [server, console, script]
+                      role:
+                        description: |
+                          The server role.
+                          - `"SINGLE"`: Standalone single server
+                          - `"PRIMARY"`: DB-Server of a cluster
+                          - `"COORDINATOR"`: Coordinator of a cluster
+                          - `"AGENT"`: Part of the cluster's Agency
+                        type: string
+                        enum: [SINGLE, PRIMARY, COORDINATOR, AGENT]
                       host:
                         description: |
-                          the host ID
+                          The host ID.
                         type: string
       tags:
         - Administration
@@ -244,7 +425,8 @@ paths:
     get:
       operationId: getEngine
       description: |
-        Returns the storage engine the server is configured to use.
+        Returns the name of the storage engine the server is configured to use
+        and the index types it supports.
       parameters:
         - name: database-name
           in: path
@@ -259,18 +441,81 @@ paths:
       responses:
         '200':
           description: |
-            is returned in all cases.
+            Successfully retrieved the storage engine information.
           content:
             application/json:
               schema:
                 type: object
                 required:
                   - name
+                  - supports
                 properties:
                   name:
                     description: |
-                      will be `rocksdb`
+                      The name of the storage engine.
                     type: string
+                    const: rocksdb
+                  supports:
+                    description: |
+                      An object describing what the storage engine supports.
+                    type: object
+                    required:
+                      - indexes
+                      - aliases
+                      - dfdb
+                    properties:
+                      indexes:
+                        description: |
+                          A list of the index types you can use.
+                          `vector` is only included if the
+                          `--vector-index` startup option is enabled.
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                            - primary
+                            - edge
+                            - ttl
+                            - persistent
+                            - geo
+                            - zkd
+                            - inverted
+                            - hash
+                            - skiplist
+                            - fulltext
+                      aliases:
+                        description: |
+                          An object describing the alternative names you can
+                          use for certain index types.
+                        type: object
+                        required:
+                          - indexes
+                        properties:
+                          indexes:
+                            description: |
+                              The keys are the alternative index type names and
+                              the values are the index types they refer to.
+                            type: object
+                            required:
+                              - hash
+                              - skiplist
+                            properties:
+                              hash:
+                                description: |
+                                  The `hash` index type is an alias for `persistent`.
+                                type: string
+                                const: persistent
+                              skiplist:
+                                description: |
+                                  The `skiplist` index type is an alias for `persistent`.
+                                type: string
+                                const: persistent
+                      dfdb:
+                        description: |
+                          Whether the active storage engine support being
+                          inspected/repaired with the MMFiles datafile debugger.
+                        type: boolean
+                        const: false
       tags:
         - Administration
 ```
@@ -385,9 +630,9 @@ paths:
                   - serverInfo
                 properties:
                   server:
-                    description: |
-                      Always `"arango"`.
+                    description: ''
                     type: string
+                    const: arango
                   license:
                     description: |
                       ArangoDB Edition, either `"community"` or `"enterprise"`.
@@ -536,20 +781,22 @@ paths:
                       foxxmaster:
                         description: |
                           The server ID of the Coordinator that is the Foxx master.
-                        type: array
-                        items:
-                          type: string
+                        type: string
                       isFoxxmaster:
                         description: |
                           Whether the queried Coordinator is the Foxx master.
-                        type: array
-                        items:
-                          type: string
+                        type: boolean
                   agent:
                     description: |
                       Information about the Agents.
                       *Cluster only* (Agents)
                     type: object
+                    required:
+                      - id
+                      - leaderId
+                      - leading
+                      - endpoint
+                      - term
                     properties:
                       id:
                         description: |
