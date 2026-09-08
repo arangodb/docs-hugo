@@ -73,7 +73,7 @@ search across multiple steps.
 ```
 
 You can optionally provide `custom_tools` to limit which tools are available.
-If omitted, all tools are auto-loaded from the Tools collection.
+If omitted, all tools are auto-loaded from the `Tools` collection.
 
 ## How Deep Search works
 
@@ -90,7 +90,7 @@ Both modes follow the same pipeline:
    - **Pass 2**: If no `custom_retriever` tool matches, LLM picks from
      service-retriever tools (`local`, `global`, `unified`).
    - If `custom_tools` is not provided, the system auto-loads all supported
-     tool types from the Tools collection.
+     tool types from the `Tools` collection.
 
    The selected tool is used for all steps in the plan.
 
