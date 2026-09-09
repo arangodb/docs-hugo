@@ -141,7 +141,7 @@ Use cases:
 
 ## Network
 
-Real network usage, metered per workload.
+Real network transfer to and from the ArangoDB servers of a deployment, metered per deployment. Traffic of the AI Suite components and notebooks to the database is included; traffic that does not pass through the ArangoDB servers is not.
 
 - **Unit:** 1 GiB (1024<sup>3</sup>) of transfer
 - **Usage item:** Infrastructure Network costs
