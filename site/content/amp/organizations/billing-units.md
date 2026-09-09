@@ -22,7 +22,7 @@ Calculation:
 
 - Based on the CPU resources reserved for the workload, not on how much of that
   CPU is actually used.
-Metering starts when the workload is scheduled, and ends when it stops.
+- Metering starts when the workload is scheduled, and ends when it stops.
 
 Use cases:
 
@@ -60,13 +60,14 @@ Calculation:
 
 - Based on the storage size provisioned for the workload, not on the amount of
   data stored.
-- Billed even if the deployment is hibernated.
+- Billed even if the deployment is hibernated, because the volumes are kept.
+- Only the volumes of the ArangoDB servers are metered. The AI Suite components
+  and notebooks do not have persistent volumes of their own. Their data is
+  stored in cloud storage and billed as Cloud Storage Usage.
 
 Use cases:
 
 - ArangoDB deployment runs
-- GenAI job runs
-- Any additional workload, such as APIs and notebooks
 
 ### Storage Performance Hours
 
@@ -95,20 +96,23 @@ Calculation:
 
 Use cases:
 
-- ArangoDB deployment runs. The AI Suite components and notebooks do not have data volumes of their own and raise no storage performance costs.
+- ArangoDB deployment runs. The AI Suite components and notebooks do not have
+  data volumes of their own and raise no storage performance costs.
 
 ### GPU Hours
 
 Real allocation of the used resources for the GPU.
 
-- **Unit:** One GPU allocated for one hour                                                                                                                                                                                 
-- **Usage item:** Infrastructure GPU Hour costs                                                                                                                                                                            
-                                                                                                                                                                                                                             
-  Calculation:                                                                                                                                                                                                               
-                                                                                                                                                                                                                             
-- Based on the GPU resources reserved for the workload, not on how much of that GPU is actually used.                                                                                                                                                                                                                                                                                                                                 
-- Metering starts when the workload is scheduled, and ends when it stops.                                                                                                                                                  
-- A workload that requests a GPU occupies the whole GPU node. The rate reflects the cost of that node and depends on the cloud provider and the region.                                                                                                                                          
+- **Unit:** One GPU allocated for one hour
+- **Usage item:** Infrastructure GPU Hour costs
+
+Calculation:
+
+- Based on the GPU resources reserved for the workload, not on how much of that
+  GPU is actually used.
+- Metering starts when the workload is scheduled, and ends when it stops.
+- A workload that requests a GPU occupies the whole GPU node. The rate reflects
+  the cost of that node and depends on the cloud provider and the region.
 
 Use cases:
 
@@ -124,22 +128,24 @@ Real usage of the resources for the cloud storage.
 
 Calculation:
 
-- Based on the size of the data AMP stores for the deployment in its object                                                                                                                                                
-  storage buckets, measured by AMP itself.                                                                                                                                                                                 
-- The size is sampled continuously and averaged over each 24-hour period.                                                                                                                                                  
-                                                                                                                                                                                                                           
-Use cases:                                                                                                                                                                                                                 
-                                                                                                                                                                                                                           
-- Backups, including deployment-specific backup buckets                                                                                                                                                                    
-- Remote backups                                                                                                                                                                                                           
-- Audit logs delivered to a cloud storage destination                                                                                                                                                                      
-- Platform storage                                                                                                                                                                                                         
-- Machine learning data                                                                                                                                                                                                    
-- Core dumps  
+- Based on the size of the data AMP stores for the deployment in its object
+  storage buckets, measured by AMP itself.
+- The size is sampled continuously and averaged over each 24-hour period.
+
+Use cases:
+
+- Backups, including deployment-specific backup buckets
+- Remote backups
+- Audit logs delivered to a cloud storage destination
+- Platform storage
+- Machine learning data
+- Core dumps
 
 ## Network
 
-Real network transfer to and from the ArangoDB servers of a deployment, metered per deployment. Traffic of the AI Suite components and notebooks to the database is included; traffic that does not pass through the ArangoDB servers is not.
+Real network transfer to and from the ArangoDB servers of a deployment, metered
+per deployment. Traffic of the AI Suite components and notebooks to the database
+is included; traffic that does not pass through the ArangoDB servers is not.
 
 - **Unit:** 1 GiB (1024<sup>3</sup>) of transfer
 - **Usage item:** Infrastructure Network costs
@@ -160,6 +166,7 @@ Use cases:
 - ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
+
 ## Audit Log Delivery
 
 Delivery of audit-log events to an HTTPS-POST destination of a deployment.
@@ -212,6 +219,7 @@ Calculation:
 Use cases:
 
 - Organizations with the Dedicated Data Cluster add-on
+
 ## ArangoDB Equivalent Units (AEU)
 
 An ArangoDB Equivalent Unit (AEU) expresses how much ArangoDB a deployment
@@ -248,7 +256,8 @@ Calculation:
 
 - Based on the memory of the AMP deployment size, for example `16` for an A16
   deployment.
-- The letter of the node size is its node size class (`A`, `C`, or `R`). The class selects the Deployment AEU Base below.
+- The letter of the node size is its node size class (`A`, `C`, or `R`). The
+  class selects the Deployment AEU Base below.
 
 ### Deployment Node Count
 
