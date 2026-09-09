@@ -126,13 +126,18 @@ Real usage of the resources for the cloud storage.
 
 Calculation:
 
-- Based on the usage reported by the cloud provider.
-- Averaged maximum over the day.
-
-Use cases:
-
-- Cloud backups
-- Platform storage
+- Based on the size of the data AMP stores for the deployment in its object                                                                                                                                                
+  storage buckets, measured by AMP itself.                                                                                                                                                                                 
+- The size is sampled continuously and averaged over each 24-hour period.                                                                                                                                                  
+                                                                                                                                                                                                                           
+Use cases:                                                                                                                                                                                                                 
+                                                                                                                                                                                                                           
+- Backups, including deployment-specific backup buckets                                                                                                                                                                    
+- Remote backups                                                                                                                                                                                                           
+- Audit logs delivered to a cloud storage destination                                                                                                                                                                      
+- Platform storage                                                                                                                                                                                                         
+- Machine learning data                                                                                                                                                                                                    
+- Core dumps  
 
 ## Network
 
