@@ -103,15 +103,14 @@ Use cases:
 
 Real allocation of the used resources for the GPU.
 
-- **Unit:** GPU type allocated for one hour
-- **Usage item:** Infrastructure GPU Type Hour costs
-
-Calculation:
-
-- Based on the GPU resources reserved for the workload, not on how much of that
-  GPU is actually used.
-- Metering starts when the workload starts running, and ends when it stops.
-- Usage is tracked per GPU type and instance family.
+- **Unit:** One GPU allocated for one hour                                                                                                                                                                                 
+- **Usage item:** Infrastructure GPU Hour costs                                                                                                                                                                            
+                                                                                                                                                                                                                             
+  Calculation:                                                                                                                                                                                                               
+                                                                                                                                                                                                                             
+- Based on the GPU resources reserved for the workload, not on how much of that GPU is actually used.                                                                                                                                                                                                                                                                                                                                 
+- Metering starts when the workload is scheduled, and ends when it stops.                                                                                                                                                  
+- A workload that requests a GPU occupies the whole GPU node. The rate reflects the cost of that node and depends on the cloud provider and the region.                                                                                                                                          
 
 Use cases:
 
