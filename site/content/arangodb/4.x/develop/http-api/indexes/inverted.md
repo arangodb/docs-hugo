@@ -5,6 +5,12 @@ weight: 10
 description: >-
   HTTP interface reference for creating indexes of type `inverted`
 ---
+The data store that backs an inverted index is made up of segments whose
+creation and merging you can control with the `commitIntervalMsec`,
+`consolidationIntervalMsec`, and `consolidationPolicy` properties. To inspect
+the resulting segment layout, see the
+[ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
+
 ## Create an inverted index
 
 ```openapi
