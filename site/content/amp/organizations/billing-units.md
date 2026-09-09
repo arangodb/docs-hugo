@@ -49,7 +49,7 @@ Use cases:
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
-### Storage GB Hours
+### Storage GiB Hours
 
 Real usage of the storage.
 
