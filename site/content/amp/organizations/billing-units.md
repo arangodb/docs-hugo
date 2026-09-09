@@ -41,7 +41,7 @@ Calculation:
 
 - Based on the memory reserved for the workload, not on how much of that memory
   is actually used.
-- Metering starts when the workload starts running, and ends when it stops.
+- Metering starts when the workload is scheduled, and ends when it stops.
 
 Use cases:
 
