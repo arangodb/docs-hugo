@@ -41,7 +41,13 @@
   {{- $url := index $match 2 }}
   {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
   {{- if not $isRemote }}
-    {{- $absPath := urls.RelRef $page $url }}
+    {{- /* RelRef leaves fragment-only refs untouched, so resolve them against the current page */}}
+    {{- $absPath := "" }}
+    {{- if strings.HasPrefix $url "#" }}
+      {{- $absPath = printf "%s%s" $page.RelPermalink $url }}
+    {{- else }}
+      {{- $absPath = urls.RelRef $page $url }}
+    {{- end }}
     {{- $absPathUnaliased := replaceRE "^/arangodb/(?:stable|devel)/" (printf "/arangodb/%s/" $pageVersion) $absPath 1 }}
     {{- $absUrl := printf "https://docs.arango.ai%s" $absPathUnaliased }}
     {{- $newLink := printf "[%s](%s)" (index $match 1) $absUrl }}
