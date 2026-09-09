@@ -9,26 +9,6 @@ description: >-
 To bill based on the real resources used, the Arango Managed Platform (AMP)
 meters the following units.
 
-{{% comment %}}
-TODO: This page is derived from the Billing 2.0 design document. Open points:
-- Section 1.1.5 refers to "DP30/60/100 performance details" but the pricing list
-  omits DP60.
-- Sections 1.2.2 and 1.2.3 both name "Infrastructure Internal Network costs" as
-  the raised usage item, which is likely a copy-paste error. Confirm the correct
-  usage item names for egress and ingress.
-- Section 1.1.8 gives the unit as "Number of allocated cores" but states that the
-  value represents the memory size. Confirm which is correct.
-- Section 1.1.9 writes the metric as `deployment_aue_base`. Confirm whether the
-  metric name is `aue` or `aeu`.
-- The design document does not state how the four AEU inputs are combined into an
-  AEU value, and does not expand the AEU acronym. Both are needed here.
-- The AEU section below still uses the design document's metric-exposition
-  wording ("exposed via a label", "exposes a static value") and quotes raw metric
-  names. Decide whether those belong on a customer-facing page, the way the pod,
-  PVC, Prometheus, and DataManager references were already removed from the unit
-  sections above.
-{{% /comment %}}
-
 ## Infrastructure
 
 ### CPU Hours
@@ -90,25 +70,28 @@ Use cases:
 
 ### Storage Performance Hours
 
-The performance allocated for storage is based on the DP30/60/100 performance
-details.
+The disk performance provisioned for the data volumes of a deployment.
 
-- **Unit:** Storage performance allocated for one hour
+- **Unit:** One data volume of a given disk performance tier for one hour
 - **Usage item:** Infrastructure Storage Performance Hour costs
 
 Calculation:
 
-- Based on the disk performance provisioned for the workload.
-- Pricing is based on the following units per hour:
+- Based on the disk performance provisioned for the workload. There are five
+  tiers and the deployment is charged the rate of the tier it uses. There are
+  no values in between.
+- Charged per data volume and hour, regardless of the size of the volume.
+- Only the data volumes of the DB-Servers or of the single server are charged.
+  The volumes of the Agents are not charged.
+- The following rates apply, relative to the rate of the DP100 tier:
 
-  | Disk performance | Units per hour |
-  |------------------|----------------|
-  | DP30             | 0              |
-  | DP100            | 1              |
-  | DP150            | 2              |
-  | DP200            | 4              |
-
-- Values in between are proportional and pre-calculated.
+  | Disk performance | Rate | Availability |
+  |------------------|------|--------------|
+  | DP30             | Not charged | All cloud providers |
+  | DP60             | 0.5x | AWS, GCP, Azure |
+  | DP100            | 1x   | AWS, GCP, Azure |
+  | DP150            | 2.6x | AWS only |
+  | DP200            | 4.6x | AWS only |
 
 Use cases:
 
@@ -154,27 +137,21 @@ Use cases:
 
 ## Network
 
-Network usage is metered per workload.
+Real network usage, metered per workload.
 
-### Internal Network Usage
+- **Unit:** 1 GiB (1024<sup>3</sup>) of transfer
+- **Usage item:** Infrastructure Network costs
 
-Real internal network usage.
+Calculation:
 
-- **Unit:** GiB of transfer
-- **Usage item:** Infrastructure Internal Network costs
+- The billed quantity is the ingress and the egress transfer, summed up.
+- The rate depends on the destination of the transfer:
 
-Use cases:
-
-- ArangoDB deployment runs
-- GenAI job runs
-- Any additional workload, such as APIs and notebooks
-
-### External Egress Network Usage
-
-Real external egress network usage.
-
-- **Unit:** GiB of transfer
-- **Usage item:** Infrastructure Internal Network costs
+  | Destination      | Transfer                                    | Rate |
+  |------------------|---------------------------------------------|------|
+  | Internet         | To and from the public internet             | Depends on the cloud provider and the region |
+  | In-cluster       | Internal traffic within the cluster         | A flat rate, the same for all cloud providers |
+  | Private endpoint | Through a private endpoint                  | The same flat rate as for in-cluster traffic |
 
 Use cases:
 
@@ -182,59 +159,43 @@ Use cases:
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
 
-### External Ingress Network Usage
+## ArangoDB Equivalent Units (AEU)
 
-Real external ingress network usage.
+An ArangoDB Equivalent Unit (AEU) expresses how much ArangoDB a deployment
+runs, independent of the infrastructure it runs on. It is the license unit of
+AMP, charged on top of the infrastructure units, and it draws from the same
+credit balance.
 
-- **Unit:** GiB of transfer
-- **Usage item:** Infrastructure Internal Network costs
+- **Unit:** 1 AEU for one hour
+- **Usage item:** Deployment AEU Hour costs
 
-Use cases:
+Calculation:
 
-- ArangoDB deployment runs
-- GenAI job runs
-- Any additional workload, such as APIs and notebooks
+- The AEU value of a deployment is the product of four inputs:
 
-## AEU calculation inputs
+  ```
+  AEU = Deployment Size × Deployment Node Count × Deployment AEU Base × Deployment Type Ratio
+  ```
 
-The following values raise no usage items of their own. They are intermediates
-used for the AEU calculation.
+- The value is sampled every five minutes and aggregated over 24-hour periods.
+- The rate per AEU hour is flat. It is the same in all regions and for all
+  cloud providers.
+- A hibernated deployment has a node count of `0` and therefore raises no
+  AEU costs.
+
+The four inputs raise no usage items of their own:
 
 ### Deployment Size
 
 The deployment size defined in AMP.
 
-- **Unit:** Number of allocated cores
+- **Unit:** Allocated memory in GiB (1024<sup>3</sup>)
 
 Calculation:
 
-- Based on the AMP deployment size.
-- Represents the memory size.
-- The deployment type is exposed via a label: `A` (1:4), `C` (1:2), `R` (1:8).
-
-```
-deployment_size{type="A"} 16   # for A16
-```
-
-### Deployment AEU Base
-
-The number of AEU per core, based on the deployment size.
-
-- **Unit:** Number of AEU
-
-Calculation:
-
-- Exposes a static value per deployment type:
-
-  | Type | Value |
-  |------|-------|
-  | `A`  | 1     |
-  | `C`  | 1.5   |
-  | `R`  | 0.625 |
-
-```
-deployment_aue_base 1.5   # for C16
-```
+- Based on the memory of the AMP deployment size, for example `16` for an A16
+  deployment.
+- The node size class of the deployment is `A` (1:4), `C` (1:2), or `R` (1:8).
 
 ### Deployment Node Count
 
@@ -244,7 +205,24 @@ The number of nodes.
 
 Calculation:
 
-- Exposes the number of nodes in the deployment definition.
+- The number of nodes in the deployment definition.
+- The value is `0` while the deployment is hibernated.
+
+### Deployment AEU Base
+
+The number of AEU per unit of deployment size.
+
+- **Unit:** Number of AEU
+
+Calculation:
+
+- A static value per node size class:
+
+  | Node size class | Value |
+  |-----------------|-------|
+  | `A`             | 1     |
+  | `C`             | 1.5   |
+  | `R`             | 0.625 |
 
 ### Deployment Type Ratio
 
@@ -254,13 +232,13 @@ The ratio of the AEU calculation, based on the deployment type.
 
 Calculation:
 
-- Exposes a ratio based on the deployment type:
+- A ratio based on the platform bundle of the deployment:
 
   | Deployment type | Ratio |
   |-----------------|-------|
-  | Standard        | 1     |
-  | Platform        | 1.5   |
-  | AI              | 3.0   |
+  | CoreDB          | 1     |
+  | AI Suite        | 1.5   |
+  | DataScience     | 3     |
 
 ## See also
 
