@@ -95,9 +95,7 @@ Calculation:
 
 Use cases:
 
-- ArangoDB deployment runs
-- GenAI job runs
-- Any additional workload, such as APIs and notebooks
+- ArangoDB deployment runs. The AI Suite components and notebooks do not have data volumes of their own and raise no storage performance costs.
 
 ### GPU Hours
 
