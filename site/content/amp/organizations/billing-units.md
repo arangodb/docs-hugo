@@ -22,7 +22,7 @@ Calculation:
 
 - Based on the CPU resources reserved for the workload, not on how much of that
   CPU is actually used.
-- Metering starts when the workload starts running, and ends when it stops.
+Metering starts when the workload is scheduled, and ends when it stops.
 
 Use cases:
 
