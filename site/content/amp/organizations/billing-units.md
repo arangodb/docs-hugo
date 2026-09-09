@@ -160,7 +160,58 @@ Use cases:
 - ArangoDB deployment runs
 - GenAI job runs
 - Any additional workload, such as APIs and notebooks
+## Audit Log Delivery
 
+Delivery of audit-log events to an HTTPS-POST destination of a deployment.
+Audit logs delivered to a cloud storage destination are billed as
+[Cloud Storage Usage](#cloud-storage-usage) instead.
+
+### Audit Log Requests
+
+- **Unit:** One HTTPS-POST request
+- **Usage item:** AuditLog Requests
+
+Calculation:
+
+- Each delivery request to an HTTPS-POST destination counts as one request.
+- Metered per destination. A deployment with several HTTPS-POST destinations
+  is charged for each of them.
+- The rate is flat. It is the same in all regions and for all cloud providers.
+
+### Audit Log Data
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) of request body
+- **Usage item:** AuditLog Data
+
+Calculation:
+
+- Based on the size of the bodies of the delivery requests.
+- The rate depends on the cloud provider.
+
+Use cases:
+
+- Audit logs with an HTTPS-POST destination
+
+## Add-ons
+
+Paid add-ons are metered by the time they are active.
+
+### Dedicated Data Cluster
+
+- **Unit:** One dedicated data cluster for one hour
+- **Usage item:** Addons
+
+Calculation:
+
+- Charged for every hour a dedicated data cluster is provisioned for the
+  organization, regardless of the deployments running on it.
+- Charged per dedicated data cluster. Two dedicated data clusters are charged
+  twice.
+- The rate is flat. It is the same in all regions and for all cloud providers.
+
+Use cases:
+
+- Organizations with the Dedicated Data Cluster add-on
 ## ArangoDB Equivalent Units (AEU)
 
 An ArangoDB Equivalent Unit (AEU) expresses how much ArangoDB a deployment
