@@ -197,7 +197,7 @@ Calculation:
 
 - Based on the memory of the AMP deployment size, for example `16` for an A16
   deployment.
-- The node size class of the deployment is `A` (1:4), `C` (1:2), or `R` (1:8).
+- The letter of the node size is its node size class (`A`, `C`, or `R`). The class selects the Deployment AEU Base below.
 
 ### Deployment Node Count
 
