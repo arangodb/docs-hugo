@@ -2917,7 +2917,7 @@ value of the respective environment variable.
 
 ### License management changes
 
-<small>Introduced: v3.12.6</small>
+<small>Introduced in: v3.12.6</small>
 
 The Enterprise Edition requires a license and customers used to receive a
 license key directly. Going forward, customers receive license credentials

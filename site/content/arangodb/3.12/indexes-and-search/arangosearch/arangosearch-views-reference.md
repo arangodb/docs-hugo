@@ -487,13 +487,13 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsMin** (_optional_; type: `integer`; default: `50`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     The minimum number of segments that are evaluated as candidates for consolidation.
 
   - **segmentsMax** (_optional_; type: `integer`; default: `200`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     The maximum number of segments that are evaluated as candidates for consolidation.
 
@@ -503,20 +503,20 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsBytesFloor** (_optional_; type: `integer`; default: `25165824`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     Defines the value (in bytes) to treat all smaller segments as equal for consolidation
     selection.
 
   - **minScore** (_optional_; type: `integer`; default: `0`)
 
-    This option is only available up to v3.12.6:
+    <small>Removed in: v3.12.7</small>
 
     Filter out consolidation candidates with a score less than this.
 
   - **maxSkewThreshold** (_optional_; type: `number`; default: `0.4`)
 
-    This option is available from v3.12.7 onward:
+    <small>Introduced in: v3.12.7</small>
 
     The skew describes how much segment files vary in file size. It is a number
     between `0.0` and `1.0` and is calculated by dividing the largest file size
@@ -542,7 +542,7 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **minDeletionRatio** (_optional_; type: `number`; default: `0.5`)
 
-    This option is available from v3.12.7 onward:
+    <small>Introduced in: v3.12.7</small>
 
     The `minDeletionRatio` represents the minimum required deletion ratio
     in one or more segments to perform a cleanup of those segments.

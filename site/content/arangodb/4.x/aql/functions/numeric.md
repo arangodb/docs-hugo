@@ -139,8 +139,6 @@ COS(RADIANS(45)) // 0.7071067811865476
 
 ## COSINE_SIMILARITY()
 
-<small>Introduced in: v3.9.0</small>
-
 `COSINE_SIMILARITY(x, y) → num`
 
 Return the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity)
@@ -166,8 +164,6 @@ COSINE_SIMILARITY([-1,0], [1,0]) // -1
 
 ## DECAY_GAUSS()
 
-<small>Introduced in: v3.9.0</small>
-
 `DECAY_GAUSS(value, origin, scale, offset, decay) → score`
 
 Calculate the score for one or multiple values with a **Gaussian function** that
@@ -192,8 +188,6 @@ DECAY_GAUSS(49.9889, 49.987, 0.001, 0.001, 0.2) // 0.2715403018822964
 
 ## DECAY_EXP()
 
-<small>Introduced in: v3.9.0</small>
-
 `DECAY_EXP(value, origin, scale, offset, decay) → num, array`
 
 Calculate the score for one or multiple values with an **exponential function**
@@ -217,8 +211,6 @@ DECAY_EXP(49.9889, 50, 0.001, 0.001, 0.2) // 8.717720806626885e-08
 ```
 
 ## DECAY_LINEAR()
-
-<small>Introduced in: v3.9.0</small>
 
 `DECAY_LINEAR(value, origin, scale, offset, decay) → score`
 
@@ -357,8 +349,6 @@ LOG10(0) // null
 
 ## L1_DISTANCE()
 
-<small>Introduced in: v3.9.0</small>
-
 `L1_DISTANCE(x, y) → num`
 
 Return the [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry)
@@ -382,8 +372,6 @@ L1_DISTANCE([1.5], [3]) // 1.5
 ```
 
 ## L2_DISTANCE()
-
-<small>Introduced in: v3.9.0</small>
 
 `L2_DISTANCE(x,y) → num`
 

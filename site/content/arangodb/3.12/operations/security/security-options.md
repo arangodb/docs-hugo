@@ -485,5 +485,5 @@ in an ArangoDB server:
   section of the web interface. Installing apps from Github and/or zip files is 
   still possible with this setting, but any other remote sources are blocked.
   When set to `true`, installing Foxx apps from other remote sources via URLs
-  is allowed (introduced in v3.8.5).
+  is allowed.
   The default value is `false`.

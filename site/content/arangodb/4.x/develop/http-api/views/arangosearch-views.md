@@ -116,6 +116,8 @@ paths:
                   default: lz4
                 primarySortCache:
                   description: |
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
                     If you enable this option, then the primary sort columns are always cached in
                     memory. This can improve the
                     performance of queries that utilize the primary sort order. Otherwise, these
@@ -124,30 +126,38 @@ paths:
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option.
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 primaryKeyCache:
                   description: |
-                    If you enable this option, then the primary key columns are always cached in
-                    memory (introduced in v3.9.6). This can improve the
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
+                    If you enable this option, then the primary key columns are
+                    always cached in memory. This can improve the
                     performance of queries that return many documents. Otherwise, these values are
                     memory-mapped and it is up to the operating system to load them from disk into
                     memory and to evict them from memory.
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 optimizeTopK:
                   description: |
+                    <small>Introduced in: v3.12.0</small>
+
                     An array of strings defining sort expressions that you want to optimize.
-                    This is also known as _WAND optimization_ (introduced in v3.12.0).
+                    This is also known as _WAND optimization_.
 
                     This option is immutable.
 
@@ -230,15 +240,19 @@ paths:
                         default: lz4
                       cache:
                         description: |
+                          <small>Introduced in: v3.9.5, v3.10.2</small>
+
                           Whether to always cache stored values in memory.
                           This can improve the query performance if stored values are involved.
                           Otherwise, these values are memory-mapped and it is up to the operating system
                           to load them from disk into memory and to evict them from memory.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the
-                          column cache in cluster deployments by only using the cache for leader shards,
-                          see the `--arangosearch.columns-cache-only-leader` startup option.
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                         default: false
                 cleanupIntervalStep:
@@ -307,8 +321,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -354,6 +368,8 @@ paths:
                       default: 8589934592
                     maxSkewThreshold:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
                         of a set of segment files by the total size. For example, the skew of a
@@ -381,6 +397,8 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
@@ -514,16 +532,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -555,6 +579,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -577,8 +603,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -607,6 +633,8 @@ paths:
                         type: integer
                       maxSkewThreshold:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
                           of a set of segment files by the total size. For example, the skew of a
@@ -633,6 +661,8 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
@@ -1021,16 +1051,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -1062,6 +1098,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -1084,8 +1122,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1114,6 +1152,8 @@ paths:
                         type: integer
                       maxSkewThreshold:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
                           of a set of segment files by the total size. For example, the skew of a
@@ -1140,6 +1180,8 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
@@ -1506,8 +1548,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -1553,6 +1595,8 @@ paths:
                       default: 8589934592
                     maxSkewThreshold:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
                         of a set of segment files by the total size. For example, the skew of a
@@ -1580,6 +1624,8 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
@@ -1691,16 +1737,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -1732,6 +1784,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -1754,8 +1808,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -1784,6 +1838,8 @@ paths:
                         type: integer
                       maxSkewThreshold:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
                           of a set of segment files by the total size. For example, the skew of a
@@ -1810,6 +1866,8 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
@@ -2083,8 +2141,8 @@ paths:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
 
-                    - If the `tier` type is used, then the `maxSkewThreshold`,
-                    `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                    - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                      properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     _Background:_
@@ -2129,6 +2187,8 @@ paths:
                       default: 8589934592
                     maxSkewThreshold:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The skew describes how much segment files vary in file size. It is a number
                         between `0.0` and `1.0` and is calculated by dividing the largest file size
                         of a set of segment files by the total size. For example, the skew of a
@@ -2156,6 +2216,8 @@ paths:
                       default: 0.4
                     minDeletionRatio:
                       description: |
+                        <small>Introduced in: v3.12.7</small>
+
                         The `minDeletionRatio` represents the minimum required deletion ratio
                         in one or more segments to perform a cleanup of those segments.
                         It is a number between `0.0` and `1.0`.
@@ -2267,16 +2329,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -2308,6 +2376,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -2330,8 +2400,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2360,6 +2430,8 @@ paths:
                         type: integer
                       maxSkewThreshold:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
                           of a set of segment files by the total size. For example, the skew of a
@@ -2386,6 +2458,8 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.
@@ -2669,16 +2743,22 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
+                      <small>Introduced in: v3.12.0</small>
+
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (introduced in v3.12.0).
+                      This is also known as _WAND optimization_.
                     type: array
                     items:
                       type: string
@@ -2710,6 +2790,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
@@ -2732,8 +2814,8 @@ paths:
                     description: |
                       The consolidation policy to apply for selecting which segments should be merged.
 
-                      - If the `tier` type is used, then the `maxSkewThreshold`,
-                      `minDeletionRatio`, `segments*`, and `minScore` properties are available.
+                      - If the `tier` type is used, then the `maxSkewThreshold` and `minDeletionRatio`
+                        properties are available.
                       - If the `bytes_accum` type is used, then the `threshold` property is available.
                     type: object
                     properties:
@@ -2762,6 +2844,8 @@ paths:
                         type: integer
                       maxSkewThreshold:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The skew describes how much segment files vary in file size. It is a number
                           between `0.0` and `1.0` and is calculated by dividing the largest file size
                           of a set of segment files by the total size. For example, the skew of a
@@ -2788,6 +2872,8 @@ paths:
                         maximum: 1.0
                       minDeletionRatio:
                         description: |
+                          <small>Introduced in: v3.12.7</small>
+
                           The `minDeletionRatio` represents the minimum required deletion ratio
                           in one or more segments to perform a cleanup of those segments.
                           It is a number between `0.0` and `1.0`.

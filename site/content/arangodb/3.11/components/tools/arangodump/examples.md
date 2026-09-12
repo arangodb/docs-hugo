@@ -234,8 +234,6 @@ arangorestore --input-directory "dump"
 
 ## Dump output format
 
-<small>Introduced in: v3.8.0</small>
-
 Since its inception, _arangodump_ wrapped each dumped document into an extra
 JSON envelope, such as follows:
 

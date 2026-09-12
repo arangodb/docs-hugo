@@ -81,7 +81,9 @@ paths:
                     type: string
                 storedValues:
                   description: |
-                    Store additional attributes in the index (introduced in v3.12.7).
+                    <small>Introduced in: v3.12.7</small>
+
+                    Store additional attributes in the index.
 
                     The maximum number of attributes that you can use in `storedValues` is 32.
 
@@ -280,6 +282,8 @@ paths:
                       default: 25
                     numberOfDocsPerCentroid:
                       description: |
+                        <small>Introduced in: v3.12.10</small>
+
                         How many vectors per centroid to include in the random sample used for
                         training. It must be `1` or greater.
 
@@ -352,6 +356,8 @@ paths:
                     example: false
                   errorMessage:
                     description: |
+                      <small>Introduced in: v3.12.9</small>
+
                       An optional message with details about the
                       training state, for example, `"not enough training data for vector index"`.
                       Only present if there is a problem with the index.
@@ -402,6 +408,8 @@ paths:
                       type: string
                   trainingState:
                     description: |
+                      <small>Introduced in: v3.12.9</small>
+
                       The current training state of the vector index:
                       - `"unusable"`: The index is not yet trained or cannot be
                         trained, for example, because of insufficient training data.
@@ -462,8 +470,10 @@ paths:
                         type: integer
                       numberOfDocsPerCentroid:
                         description: |
+                          <small>Introduced in: v3.12.10</small>
+
                           How many vectors per centroid are included in the random
-                          sample used for training (introduced in v3.12.10).
+                          sample used for training.
                         type: integer
                       factory:
                         description: |
@@ -503,6 +513,8 @@ paths:
                     example: false
                   errorMessage:
                     description: |
+                      <small>Introduced in: v3.12.9</small>
+
                       An optional message with details about the
                       training state, for example, `"not enough training data for vector index"`.
                       Only present if there is a problem with the index.
@@ -559,6 +571,8 @@ paths:
                       type: string
                   trainingState:
                     description: |
+                      <small>Introduced in: v3.12.9</small>
+
                       The current training state of the vector index:
                       - `"unusable"`: The index is not yet trained or cannot be
                         trained, for example, because of insufficient training data.
@@ -619,8 +633,10 @@ paths:
                         type: integer
                       numberOfDocsPerCentroid:
                         description: |
+                          <small>Introduced in: v3.12.10</small>
+
                           How many vectors per centroid are included in the random
-                          sample used for training (introduced in v3.12.10).
+                          sample used for training.
                         type: integer
                       factory:
                         description: |

@@ -131,8 +131,8 @@ Specify which traversal algorithm to use (string):
   first returns all paths from *min* depth to *max* depth for one vertex at
   depth 1, then for the next vertex at depth 1 and so on.
 
-- `"weighted"`: The traversal is a weighted traversal
-  (introduced in v3.8.0). Paths are enumerated with increasing cost.
+- `"weighted"`: The traversal is a weighted traversal.
+  Paths are enumerated with increasing cost.
   The order of paths having the same cost is non-deterministic.
 
   You can define what attribute to use as the cost of an edge with the
