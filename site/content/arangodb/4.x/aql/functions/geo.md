@@ -608,8 +608,6 @@ second argument. Passing it as the first argument, like
 
 ### GEO_IN_RANGE()
 
-<small>Introduced in: v3.8.0</small>
-
 `GEO_IN_RANGE(geoJsonA, geoJsonB, low, high, includeLow, includeHigh) → bool`
 
 Checks whether the distance between two [GeoJSON objects](#geojson)

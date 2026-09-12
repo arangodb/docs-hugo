@@ -143,8 +143,6 @@ FOR … IN … OPTIONS { indexHint: … , forceIndexHint: true }
 
 ### `disableIndex`
 
-<small>Introduced in: v3.9.1</small>
-
 In some rare cases it can be beneficial to not do an index lookup or scan,
 but to do a full collection scan.
 An index lookup can be more expensive than a full collection scan if
@@ -185,8 +183,6 @@ Note that setting `disableIndex: true` plus `indexHint` is ambiguous. In
 this case the optimizer will always prefer the `disableIndex` hint.
 
 ### `maxProjections`
-
-<small>Introduced in: v3.9.1</small>
 
 By default, the query optimizer will consider up to 5 document attributes
 per FOR loop to be used as projections. If more than 5 attributes of a

@@ -523,7 +523,6 @@ paths:
 
                         Default: Controlled by the [`--query.cache-mode` startup option](../../../components/arangodb-server/options.md#--querycache-mode).
                       type: boolean
-
                     spillOverThresholdMemoryUsage:
                       description: |
                         This option allows queries to store intermediate and final results temporarily

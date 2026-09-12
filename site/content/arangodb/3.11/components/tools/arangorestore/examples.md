@@ -216,8 +216,6 @@ arangorestore --collection mycopyvalues --server.database mycopy --input-directo
 
 ## Enabling revision trees for older dumps
 
-<small>Introduced in: v3.8.7, v3.9.2</small>
-
 Collections in ArangoDB 3.8 and later can use an internal format that is based
 on revision trees for replication. Using this format has advantages over the
 previous format, because changes to the collection on the leader can quickly be
