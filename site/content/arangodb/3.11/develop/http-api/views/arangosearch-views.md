@@ -40,7 +40,7 @@ paths:
                   type: string
                 type:
                   description: |
-                    The type of the View. Must be equal to `"arangosearch"`.
+                    The type of the View. Needs to be set to `"arangosearch"`.
                     This option is immutable.
                   type: string
                   example: arangosearch
@@ -116,33 +116,45 @@ paths:
                   default: lz4
                 primarySortCache:
                   description: |
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
                     If you enable this option, then the primary sort columns are always cached in
-                    memory (Enterprise Edition only). This can improve the
+                    memory. This can improve the
                     performance of queries that utilize the primary sort order. Otherwise, these
                     values are memory-mapped and it is up to the operating system to load them from
                     disk into memory and to evict them from memory.
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option.
+                    This option is available in the Enterprise Edition only.
+
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 primaryKeyCache:
                   description: |
-                    If you enable this option, then the primary key columns are always cached in
-                    memory (introduced in v3.9.6, Enterprise Edition only). This can improve the
+                    <small>Introduced in: v3.9.6, v3.10.2</small>
+
+                    If you enable this option, then the primary key columns are
+                    always cached in memory. This can improve the
                     performance of queries that return many documents. Otherwise, these values are
                     memory-mapped and it is up to the operating system to load them from disk into
                     memory and to evict them from memory.
 
                     This option is immutable.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    This option is available in the Enterprise Edition only.
+
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                 storedValues:
                   description: |
@@ -178,7 +190,7 @@ paths:
                       ```
 
                     The `storedValues` option is not to be confused with the `storeValues` option,
-                    which allows to store meta data about attribute values in the View index.
+                    which allows you to store meta data about attribute values in the View index.
                   type: array
                   default: []
                   items:
@@ -207,15 +219,21 @@ paths:
                         default: lz4
                       cache:
                         description: |
-                          Whether to always cache stored values in memory (Enterprise Edition only).
+                          <small>Introduced in: v3.9.5, v3.10.2</small>
+
+                          Whether to always cache stored values in memory.
                           This can improve the query performance if stored values are involved.
                           Otherwise, these values are memory-mapped and it is up to the operating system
                           to load them from disk into memory and to evict them from memory.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the
-                          column cache in cluster deployments by only using the cache for leader shards,
-                          see the `--arangosearch.columns-cache-only-leader` startup option.
+                          This option is available in the Enterprise Edition only.
+
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                         default: false
                 cleanupIntervalStep:
@@ -457,11 +475,15 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
@@ -493,6 +515,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory
                             (Enterprise Edition only).
                           type: boolean
@@ -924,11 +948,15 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
@@ -960,6 +988,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory
                             (Enterprise Edition only).
                           type: boolean
@@ -1521,11 +1551,15 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
@@ -1557,6 +1591,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory
                             (Enterprise Edition only).
                           type: boolean
@@ -2024,11 +2060,15 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
@@ -2060,6 +2100,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory
                             (Enterprise Edition only).
                           type: boolean
@@ -2386,11 +2428,15 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary sort columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
                   primaryKeyCache:
                     description: |
+                      <small>Introduced in: v3.9.6, v3.10.2</small>
+
                       Whether the primary key columns are always cached in memory
                       (Enterprise Edition only).
                     type: boolean
@@ -2422,6 +2468,8 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
+                            <small>Introduced in: v3.9.5, v3.10.2</small>
+
                             Whether stored values are always cached in memory
                             (Enterprise Edition only).
                           type: boolean

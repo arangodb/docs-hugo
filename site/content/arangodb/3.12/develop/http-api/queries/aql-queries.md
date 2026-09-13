@@ -525,9 +525,11 @@ paths:
                       type: boolean
                     usePlanCache:
                       description: |
+                        <small>Introduced in: v3.12.4</small>
+
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed (introduced in v3.12.4).
+                        is bypassed.
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have
@@ -834,8 +836,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1053,6 +1056,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -1603,8 +1608,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1822,6 +1828,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -2255,8 +2263,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -2474,6 +2483,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -3061,6 +3072,8 @@ paths:
                       type: object
                     dataSources:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The collections and Views involved in the query.
 
                         Only present if the
@@ -3107,10 +3120,14 @@ paths:
                       type: boolean
                     modificationQuery:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         Whether the query writes data (`true`) or only reads (`false`).
                       type: boolean
                     warnings:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The number of query warnings that occurred.
 
                         Values other than `0` may not be observable because this information
@@ -3303,6 +3320,8 @@ paths:
                       type: object
                     dataSources:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The collections and Views involved in the query.
 
                         Only present if the
@@ -3338,11 +3357,15 @@ paths:
                       type: boolean
                     modificationQuery:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         Whether the query created, updated, replaced, or deleted
                         any documents (`true`) or only read data (`false`).
                       type: boolean
                     warnings:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The number of query warnings that occurred.
                       type: integer
                     exitCode:
@@ -3735,9 +3758,11 @@ paths:
                             type: string
                     usePlanCache:
                       description: |
+                        <small>Introduced in: v3.12.4</small>
+
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed (introduced in v3.12.4).
+                        is bypassed.
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have

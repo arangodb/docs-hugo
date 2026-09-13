@@ -2770,8 +2770,6 @@ paths:
           in: query
           required: false
           description: |
-            <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
             If set to `true`, this initiates a soft shutdown. This is only available
             on Coordinators. When issued, the Coordinator tracks a number of ongoing
             operations, waits until all have finished, and then shuts itself down
@@ -2813,8 +2811,6 @@ paths:
     get:
       operationId: getShutdownProgress
       description: |
-        <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
         This call reports progress about a soft Coordinator shutdown (see
         documentation of `DELETE /_admin/shutdown?soft=true`).
         In this case, the following types of operations are tracked:

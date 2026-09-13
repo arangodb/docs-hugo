@@ -911,69 +911,180 @@ See [Named Graphs](#named-graphs)
 
 ### Version Remarks
 
-The main page about a new feature should indicate the version the feature was
-added in, as shown below:
+If features are added or removed in the middle of a release series, use version
+remarks to point this out.
 
-```markdown
----
-title: New feature
-...
----
-<small>Introduced in: v3.12.0</small>
+This is not necessary for the first release of a series as this is expected and
+the changes are described in detail in the release notes. However, if a
+significant change sits inside content that otherwise still applies to the
+previous release series, a version remark can be helpful.
 
-...
-```
+If features are deprecated, this should be pointed out with a version remark
+regardless of the version, including the first release of a series.
 
-Similarly, the remark should be added if only a section is added to an existing
-page, as shown below:
+Examples:
 
-```markdown
-## Existing feature
+- **v3.12.0**: A new feature can be added to the docs **without** version remark.
+- **v3.12.1**: A new feature should have a version remark so that users on
+  v3.12.0 know that it's not available in their version (v3.12 release series).
+- **v4.0.0**: A removed feature has the description removed from the content.
+  You can learn about the removal from the release notes, and in case of a
+  larger feature, also from the _Deprecated and removed features_ page.
+- **v4.1.0**: A removed feature has the description still present in the content
+  for users on older v4.x.x versions (v4.x release series). A version remark needs
+  be added to let users know that it can't be used from v4.1.0 onward anymore.
+- **v5.0.0**: A feature deprecated in v5.0.0 is still available and usable.
+  It needs a version remark to inform users that it shouldn't be used anymore.
+  The feature will be removed in a future version (e.g. v6.0.0).
 
-...
+**Implied versions and multiple versions**
 
-### New feature section
-
-<small>Introduced in: v3.12.0</small>
-
-...
-```
-
-The value `v3.12.0` implies that all later versions also have this feature
-(3.12.1, 3.12.2, etc., as well as 4.0.0 and later). If this is not the case,
-then also mention the other relevant versions. For example, if a feature is
-added to 3.11.5 and 3.12.2, then write the following in the 3.12 documentation:
+The value `v3.12.1` implies that all later versions also have this feature
+(v3.12.2, v3.12.3, and so on, as well as v4.0.0 and later). If this is not the
+case, then also mention the other relevant versions. For example, if a feature is
+added to v3.11.5 and v3.12.2, then write the following in the 3.12 documentation:
 
 ```markdown
 <small>Introduced in: v3.11.5, v3.12.2</small>
 ```
 
-All later documentation versions should use a copy of the content, as thus the
-4.x documentation would contain the same.
+All later documentation versions generally use a copy of the content, therefore
+the 4.x documentation would contain the same.
 
 In the 3.11 documentation, only mention versions up to this documentation version
 (excluding 3.12 and later in this example), pretending no later version exists
 to be consistent with the rest of the 3.11 documentation and to avoid additional
-maintenance burdens:
+maintenance burden:
 
 ```markdown
 <small>Introduced in: v3.11.5</small>
 ```
 
-New options in the JavaScript and HTTP APIs are covered by the release notes,
-but if new options are added mid-release (not in the `x.x.0` release but a later
-bugfix version), then this should be pointed out as follows:
+**Remark styles**
 
-```markdown
-- `existingOption` (number, _optional_): ...
-- `newOption` (string, _optional_): ... (introduced in v3.11.5, v3.12.2).
-```
+The style and formatting of a version remark depends on whether it is applicable
+to an entire page or section, a single option/parameter, or just a single
+paragraph/sentence.
 
-You may also add a remark if an existing feature or option is significantly
-extended by a new (sub-)option in a `x.x.0` release.
+- **Page scope**: The main page about a new feature should indicate the version
+  the feature was added in, as shown below.
 
-While version remarks are mostly `Introduced in: ...`, you can also mark
-deprecated features in the same manner with `Deprecated in: ...`.
+  ```markdown
+  ---
+  title: New feature
+  ...
+  ---
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Section scope**: If there is an existing page and you add a section about a
+  new (sub-)feature to it, add the version remark as shown below.
+
+  ```markdown
+  ## Existing feature
+
+  ...
+
+  ### New feature section
+
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Option/parameter scope**: New options and response fields in the JavaScript
+  and HTTP APIs are covered by the release notes, but if new attributes are
+  added mid release series, then this should be pointed out.
+
+  You may also add a remark if an existing feature or option is significantly
+  extended by a new (sub-)option in the first release of a series, specifically
+  if it sits inside content that otherwise still applies to the previous release
+  series. This is to indicate that the availability of the feature as a whole
+  differs from the availability of the later added sub-feature. This is rarely
+  the case, however.
+
+  If an attribute of type object is added, its sub-attributes don't need a
+  separate version remark - they inherit it.
+
+  If the same attribute is described in multiple request and response schemas of
+  a page, add the version remark to every copy. Readers typically jump to a
+  specific endpoint rather than reading the page top to bottom.
+
+  If a version remark applies to the entire description of an option, then use
+  the following style, even if it's a single sentence:
+
+  ```markdown
+  newOption:
+    description: |
+      <small>Introduced in: v3.11.5, v3.12.2</small>
+
+      ...
+  ```
+
+  If the version remark only applies to single sentence of a larger text, a
+  single enum value, or similar, you can use a more compact version remark.
+  You may use a list for this:
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      - Option A ...
+      - Option B ... (introduced in v3.11.5 and v3.12.2).
+  ```
+
+  In case the behavior is significantly changed between versions, you may
+  describe the before and after in detail stating the versions and no version
+  remark as described above. This is a good option if a whole paragraph is
+  needed to explain the differences.
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      In versions up to v3.12.5, ...
+
+      From version 3.12.6 onward, ...
+  ```
+
+**Remark types**
+
+While version remarks are mostly used for newly added features, you can also
+mark deprecated features in the same manner. The same goes for removals,
+although they are rare mid release series.
+
+- `Introduced in: ...` / `(introduced in ...)`
+- `Deprecated in: ...` / `(deprecated in ...)`
+- `Removed in: ...` / `(removed in ...)`
+
+**When to remove version remarks**
+
+The documentation content between subsequent ArangoDB versions is largely the
+same and copied when creating the folder for the next release series. Therefore,
+version remarks get copied over as well. They can generally remain in the
+content (except if the first release of a series removes a feature or option,
+then the version remark is deleted along with the page or description).
+
+When an old, unsupported version is removed from the documentation, then version
+remarks mentioning this or older versions should be removed from the remaining
+content. If there are multiple mentioned versions but at least one of them is
+still present in the documentation, then the version remark should remain as-is
+until all mentioned versions are removed.
+
+Examples:
+- When deleting 3.10 from the docs, version remarks like `(introduced in v3.10.2)`
+  should be removed from the 3.11+ content.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.9.6 and v3.10.2)` should be removed because 3.9 is already
+  deleted and 3.10 is being deleted.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.10.6 and v3.11.1)` should **not** be removed or modified
+  because 3.11 is still present and changing the remark would distort the
+  original information.
 
 ### Environment remarks
 
