@@ -473,3 +473,25 @@ and deserialized internally by the driver.
 The behavior to serialize and deserialize these classes is considered an internal 
 implementation detail, and as such, it might change without prior notice.
 The API with regard to the public members of these classes is kept compatible.
+
+## Changes in ArangoDB 4.0
+
+The following Java driver APIs (and their asynchronous counterparts) are deprecated
+because the corresponding ArangoDB APIs are removed in ArangoDB 4.0:
+- `ArangoDatabase#createAqlFunction`
+- `ArangoDatabase#deleteAqlFunction`
+- `ArangoDatabase#getAqlFunctions`
+- `ArangoDatabase#transaction`
+- `ArangoDatabase#reloadRouting`
+- `ArangoCollection#ensureFulltextIndex`
+- `ArangoCollectionAsync#ensureFulltextIndex`
+- `IndexType.hash`
+- `IndexType.skiplist`
+- `IndexType.geo1`
+- `IndexType.geo2`
+- `IndexType.fulltext`
+- `CollectionEntity#getStatus`
+- `CollectionStatus#getStatus`
+- `DatabaseEntity#getPath`
+
+The corresponding server-side APIs are no longer available in ArangoDB 4.0.
