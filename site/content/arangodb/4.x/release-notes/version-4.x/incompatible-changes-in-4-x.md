@@ -542,7 +542,7 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
-#### Code execution API removed
+### Code execution API removed
 
 The `/_admin/execute` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 `PUT`, and `DELETE` HTTP methods have been removed. They allowed to executes
