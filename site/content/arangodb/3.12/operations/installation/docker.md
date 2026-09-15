@@ -17,6 +17,7 @@ You can choose one of the following:
 Check also the following resources:
 - [Manually starting a stand-alone instance via Docker](../../deploy/single-instance/manual-start.md#manual-start-in-docker)
 - [Manually starting a Cluster via Docker](../../deploy/cluster/deployment/manual-start.md#manual-start-in-docker)
+- [Easypanel](https://easypanel.io/) offers an [official one-click template](https://easypanel.io/templates/arangodb) that deploys a stand-alone instance for you without running Docker commands manually.
 
 ## Start an ArangoDB instance
 
