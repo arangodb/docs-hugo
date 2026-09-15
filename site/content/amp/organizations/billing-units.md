@@ -1,0 +1,308 @@
+---
+title: Billing Units in AMP
+menuTitle: Billing Units
+weight: 12
+description: >-
+  The units that the Arango Managed Platform (AMP) meters in order to bill based
+  on the real resources used
+---
+To bill based on the real resources used, the Arango Managed Platform (AMP)
+meters the following units.
+
+## Infrastructure
+
+### CPU Hours
+
+Real allocation of the used resources for the CPU.
+
+- **Unit:** Single CPU allocated for one hour
+- **Usage item:** Infrastructure CPU Hour costs
+
+Calculation:
+
+- Based on the CPU resources reserved for the workload, not on how much of that
+  CPU is actually used.
+- Metering starts when the workload is scheduled, and ends when it stops.
+
+Use cases:
+
+- ArangoDB deployment runs
+- GenAI job runs
+- Any additional workload, such as APIs and notebooks
+
+### Memory Hours
+
+Real allocation of the used resources for the memory.
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) memory allocated for one hour
+- **Usage item:** Infrastructure Memory Hour costs
+
+Calculation:
+
+- Based on the memory reserved for the workload, not on how much of that memory
+  is actually used.
+- Metering starts when the workload is scheduled, and ends when it stops.
+
+Use cases:
+
+- ArangoDB deployment runs
+- GenAI job runs
+- Any additional workload, such as APIs and notebooks
+
+### Storage GiB Hours
+
+Real usage of the storage.
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) storage allocated for one hour
+- **Usage item:** Infrastructure Storage Hour costs
+
+Calculation:
+
+- Based on the storage size provisioned for the workload, not on the amount of
+  data stored.
+- Billed even if the deployment is hibernated, because the volumes are kept.
+- Only the volumes of the ArangoDB servers are metered. The AI Suite components
+  and notebooks do not have persistent volumes of their own. Their data is
+  stored in cloud storage and billed as Cloud Storage Usage.
+
+Use cases:
+
+- ArangoDB deployment runs
+
+### Storage Performance Hours
+
+The disk performance provisioned for the data volumes of a deployment.
+
+- **Unit:** One data volume of a given disk performance tier for one hour
+- **Usage item:** Infrastructure Storage Performance Hour costs
+
+Calculation:
+
+- Based on the disk performance provisioned for the workload. There are five
+  tiers and the deployment is charged the rate of the tier it uses. There are
+  no values in between.
+- Charged per data volume and hour, regardless of the size of the volume.
+- Only the data volumes of the DB-Servers or of the single server are charged.
+  The volumes of the Agents are not charged.
+- The following rates apply, relative to the rate of the DP100 tier:
+
+  | Disk performance | Rate | Availability |
+  |------------------|------|--------------|
+  | DP30             | Not charged | All cloud providers |
+  | DP60             | 0.5x | AWS, GCP, Azure |
+  | DP100            | 1x   | AWS, GCP, Azure |
+  | DP150            | 2.6x | AWS only |
+  | DP200            | 4.6x | AWS only |
+
+Use cases:
+
+- ArangoDB deployment runs. The AI Suite components and notebooks do not have
+  data volumes of their own and raise no storage performance costs.
+
+### GPU Hours
+
+Real allocation of the used resources for the GPU.
+
+- **Unit:** One GPU allocated for one hour
+- **Usage item:** Infrastructure GPU Hour costs
+
+Calculation:
+
+- Based on the GPU resources reserved for the workload, not on how much of that
+  GPU is actually used.
+- Metering starts when the workload is scheduled, and ends when it stops.
+- A workload that requests a GPU occupies the whole GPU node. The rate reflects
+  the cost of that node and depends on the cloud provider and the region.
+
+Use cases:
+
+- GenAI job runs
+- Any additional workload, such as APIs and notebooks
+
+### Cloud Storage Usage
+
+Real usage of the resources for the cloud storage.
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) storage used for one hour
+- **Usage item:** Cloud Storage GiB Hour
+
+Calculation:
+
+- Based on the size of the data AMP stores for the deployment in its object
+  storage buckets, measured by AMP itself.
+- The size is sampled continuously and averaged over each 24-hour period.
+
+Use cases:
+
+- Backups, including deployment-specific backup buckets
+- Remote backups
+- Audit logs delivered to a cloud storage destination
+- Platform storage
+- Machine learning data
+- Core dumps
+
+## Network
+
+Real network transfer to and from the ArangoDB servers of a deployment, metered
+per deployment. Traffic of the AI Suite components and notebooks to the database
+is included; traffic that does not pass through the ArangoDB servers is not.
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) of transfer
+- **Usage item:** Infrastructure Network costs
+
+Calculation:
+
+- The billed quantity is the ingress and the egress transfer, summed up.
+- The rate depends on the destination of the transfer:
+
+  | Destination      | Transfer                                    | Rate |
+  |------------------|---------------------------------------------|------|
+  | Internet         | To and from the public internet             | Depends on the cloud provider and the region |
+  | In-cluster       | Internal traffic within the cluster         | A flat rate, the same for all cloud providers |
+  | Private endpoint | Through a private endpoint                  | The same flat rate as for in-cluster traffic |
+
+Use cases:
+
+- ArangoDB deployment runs
+- GenAI job runs
+- Any additional workload, such as APIs and notebooks
+
+## Audit Log Delivery
+
+Delivery of audit-log events to an HTTPS-POST destination of a deployment.
+Audit logs delivered to a cloud storage destination are billed as
+[Cloud Storage Usage](#cloud-storage-usage) instead.
+
+### Audit Log Requests
+
+- **Unit:** One HTTPS-POST request
+- **Usage item:** AuditLog Requests
+
+Calculation:
+
+- Each delivery request to an HTTPS-POST destination counts as one request.
+- Metered per destination. A deployment with several HTTPS-POST destinations
+  is charged for each of them.
+- The rate is flat. It is the same in all regions and for all cloud providers.
+
+### Audit Log Data
+
+- **Unit:** 1 GiB (1024<sup>3</sup>) of request body
+- **Usage item:** AuditLog Data
+
+Calculation:
+
+- Based on the size of the bodies of the delivery requests.
+- The rate depends on the cloud provider.
+
+Use cases:
+
+- Audit logs with an HTTPS-POST destination
+
+## Add-ons
+
+Paid add-ons are metered by the time they are active.
+
+### Dedicated Data Cluster
+
+- **Unit:** One dedicated data cluster for one hour
+- **Usage item:** Addons
+
+Calculation:
+
+- Charged for every hour a dedicated data cluster is provisioned for the
+  organization, regardless of the deployments running on it.
+- Charged per dedicated data cluster. Two dedicated data clusters are charged
+  twice.
+- The rate is flat. It is the same in all regions and for all cloud providers.
+
+Use cases:
+
+- Organizations with the Dedicated Data Cluster add-on
+
+## ArangoDB Equivalent Units (AEU)
+
+An ArangoDB Equivalent Unit (AEU) expresses how much ArangoDB a deployment
+runs, independent of the infrastructure it runs on. It is the license unit of
+AMP, charged on top of the infrastructure units, and it draws from the same
+credit balance.
+
+- **Unit:** 1 AEU for one hour
+- **Usage item:** Deployment AEU Hour costs
+
+Calculation:
+
+- The AEU value of a deployment is the product of four inputs:
+
+  ```
+  AEU = Deployment Size × Deployment Node Count × Deployment AEU Base × Deployment Type Ratio
+  ```
+
+- The value is sampled every five minutes and aggregated over 24-hour periods.
+- The rate per AEU hour is flat. It is the same in all regions and for all
+  cloud providers.
+- A hibernated deployment has a node count of `0` and therefore raises no
+  AEU costs.
+
+The four inputs raise no usage items of their own:
+
+### Deployment Size
+
+The deployment size defined in AMP.
+
+- **Unit:** Allocated memory in GiB (1024<sup>3</sup>)
+
+Calculation:
+
+- Based on the memory of the AMP deployment size, for example `16` for an A16
+  deployment.
+- The letter of the node size is its node size class (`A`, `C`, or `R`). The
+  class selects the Deployment AEU Base below.
+
+### Deployment Node Count
+
+The number of nodes.
+
+- **Unit:** Number of nodes
+
+Calculation:
+
+- The number of nodes in the deployment definition.
+- The value is `0` while the deployment is hibernated.
+
+### Deployment AEU Base
+
+The number of AEU per unit of deployment size.
+
+- **Unit:** Number of AEU
+
+Calculation:
+
+- A static value per node size class:
+
+  | Node size class | Value |
+  |-----------------|-------|
+  | `A`             | 1     |
+  | `C`             | 1.5   |
+  | `R`             | 0.625 |
+
+### Deployment Type Ratio
+
+The ratio of the AEU calculation, based on the deployment type.
+
+- **Unit:** Float number for ratio calculation
+
+Calculation:
+
+- A ratio based on the platform bundle of the deployment:
+
+  | Deployment type | Ratio |
+  |-----------------|-------|
+  | CoreDB          | 1     |
+  | AI Suite        | 1.5   |
+  | DataScience     | 3     |
+
+## See also
+
+- [Billing](billing.md)
+- [Credits & Usage](credits-and-usage.md)
