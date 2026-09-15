@@ -5402,7 +5402,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` or the `name` attribute is missing.
+            The `collection-name` parameter or the `name` attribute is missing.
           content:
             application/json:
               schema:

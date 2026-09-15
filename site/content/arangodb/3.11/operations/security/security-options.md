@@ -11,37 +11,57 @@ Administrators can use these options to limit access to certain ArangoDB
 server functionality as well as preventing the leakage of information about
 the environment that a server is running in.
 
-## General security options
+## Server hardening
 
-The following security options are available:
+If the [`--server.harden` startup option](../../components/arangodb-server/options.md#--serverharden)
+is set to `true` and authentication is enabled, non-admin users are denied
+access to the following HTTP APIs:
 
-- `--server.harden`
-  If this option is set to `true` and authentication is enabled, non-admin users
-  will be denied access to the following REST APIs:
+- `/_admin/cluster/numberOfServers`
+- `/_admin/license`
+- `/_admin/metrics`
+- `/_admin/statistics-description`
+- `/_admin/statistics`
+- `/_admin/status`
+- `/_admin/system-report`
+- `/_admin/usage-metrics`
+- `/_api/engine/stats`
 
-  - `/_admin/cluster/numberOfServers`
-  - `/_admin/log`
-  - `/_admin/log/level`
-  - `/_admin/status`
-  - `/_admin/statistics`
-  - `/_admin/statistics-description`
-  - `/_api/engine/stats`
+Additionally, no version details are revealed by the version HTTP API at
+`/_api/version`.
 
-  Additionally, no version details will be revealed by the version REST API at 
-  `/_api/version`.
+The default value for this option is `false`.
 
-  The default value for this option is `false`.
+## API availability and access
 
-- `--server.support-info-api`
-  This option controls access to the REST API endpoint `/_admin/support-info` 
-  for retrieving deployment information. It can have the following values:
-  - `disabled`: support info API is disabled.
-  - `jwt`: support info API can only be accessed via superuser JWT.
-  - `admin` (default): the support info API can only be accessed by admin users and superuser JWTs.
-  - `public`: everyone with access to the `_system` database can access the
-    support info API.
+Certain administrative endpoints can be restricted with startup options. Some
+only let you control the availability of API endpoints while others let you
+specify the access permissions and required level of authentication, or both.
+Disabling APIs you don't use and increasing the access restriction help to
+reduce the attack surface.
 
-  The default value for this option is `admin`.
+- [`--server.support-info-api`](../../components/arangodb-server/options.md#--serversupport-info-api):
+  - `disabled`: Disable the API.
+  - `jwt`: The API can only be accessed via superuser JWTs.
+  - `admin` (default): The API can only be accessed by admin users
+    and superuser JWTs.
+  - `public`: Everyone with access to the `_system` database can access the API.
+
+- [`--backup.api-enabled`](../../components/arangodb-server/options.md#--backupapi-enabled)\
+  [`--log.api-enabled`](../../components/arangodb-server/options.md#--logapi-enabled):
+  - `false`: Disable the API.
+  - `jwt`: The API can only be accessed via superuser JWTs.
+  - `true` (default): The API can only be accessed by admin users
+    and superuser JWTs.
+
+- [`--cluster.api-jwt-policy`](../../components/arangodb-server/options.md#--clusterapi-jwt-policy):
+  - `jwt-all`: Superuser JWT required to access all operations
+  - `jwt-write`: Superuser JWT required for `POST`/`PUT`/`DELETE` operations
+  - `jwt-compat` (default): ArangoDB v3.7 compatibility mode
+
+- [`--server.export-metrics-api`](../../components/arangodb-server/options.md#--serverexport-metrics-api):
+  - `false`: Disable the API.
+  - `true` (default): Enable the API.
 
 ## JavaScript security options
 

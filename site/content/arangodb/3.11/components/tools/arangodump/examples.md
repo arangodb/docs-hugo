@@ -213,8 +213,6 @@ RocksDB encryption-at-rest feature.
 
 ## Compression
 
-The size of dumps can be reduced for storing using compression.
-
 You can optionally store data in a compressed format to save space on disk with
 the `--compress-output` startup option. It cannot be used together with
 [Encryption](#encryption).

@@ -3,7 +3,8 @@ title: Create an Active Failover deployment using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
 description: >-
-  How to set up a local or distributed, Starter-managed Active Failover deployment
+  How to set up a local or distributed Active Failover deployment in a
+  convenient and managed fashion
 ---
 This section describes how to start an Active Failover setup the tool [_Starter_](../../components/tools/arangodb-starter/_index.md)
 (the _arangodb_ binary program).

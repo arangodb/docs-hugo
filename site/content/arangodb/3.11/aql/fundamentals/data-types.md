@@ -138,6 +138,8 @@ The first supported compound type is the array type. Arrays are effectively
 sequences of (unnamed / anonymous) values. Individual array elements can be
 accessed by their positions. The order of elements in an array is important.
 
+#### Array declaration
+
 An *array declaration* starts with a left square bracket `[` and ends with
 a right square bracket `]`. The declaration contains zero, one or more
 *expression*s, separated from each other with the comma `,` symbol.
@@ -170,6 +172,8 @@ A trailing comma after the last element is allowed:
 ]
 ```
 
+#### Indexed value access
+
 Individual array values can later be accessed by their positions using the `[]`
 accessor:
 
@@ -188,6 +192,8 @@ composition of zero to many attributes. Each attribute is a name/value pair.
 Object attributes can be accessed individually by their names. This data type is
 also known as dictionary, map, associative array and other names.
 
+#### Object declaration
+
 Object declarations start with a left curly bracket `{` and end with a
 right curly bracket `}`. An object contains zero to many attribute declarations,
 separated from each other with the `,` symbol. Whitespace around elements is ignored
@@ -198,6 +204,18 @@ In the simplest case, an object is empty. Its declaration would then be:
 ```json
 { }
 ```
+
+A trailing comma after the last element is allowed:
+
+```aql
+{
+  "a": 1,
+  "b": 2,
+  "c": 3, // trailing comma
+}
+```
+
+#### Attribute names
 
 Each attribute in an object is a name/value pair. Name and value of an
 attribute are separated using the colon `:` symbol. The name is always a string,
@@ -228,16 +246,6 @@ then the attribute name must be quoted:
 { ´return´: … }  // quoted name (forward ticks)
 ```
 
-A trailing comma after the last element is allowed:
-
-```aql
-{
-  "a": 1,
-  "b": 2,
-  "c": 3, // trailing comma
-}
-```
-
 Attribute names can be computed using dynamic expressions, too.
 To disambiguate regular attribute names from attribute name expressions,
 computed attribute names must be enclosed in square brackets `[ … ]`:
@@ -245,6 +253,20 @@ computed attribute names must be enclosed in square brackets `[ … ]`:
 ```aql
 { [ CONCAT("test/", "bar") ] : "someValue" }
 ```
+
+#### Duplicate attribute names
+
+If the same attribute name occurs more than once in an object literal, the
+**first occurrence** wins and determines the value of the attribute.
+
+With the attribute name `foo` twice in an object literal, the attribute value
+will be that of the first occurrence, so `1`:
+
+```aql
+RETURN { foo: 1, foo: 2 }
+```
+
+#### Attribute shorthand notation
 
 There is also shorthand notation for attributes which is handy for
 returning existing variables easily:
@@ -271,6 +293,8 @@ objects can be used as attribute values:
 { "name" : "Vanessa", "age" : 15 }
 { "name" : "John", likes : [ "Swimming", "Skiing" ], "address" : { "street" : "Cucumber lane", "zip" : "94242" } }
 ```
+
+#### Attribute access
 
 Individual object attributes can later be accessed by their names using the
 dot `.` accessor:
