@@ -1110,7 +1110,7 @@ values and hard-coded string literals/separators.
 
 The following example would add a new attribute named `fullName` that consists
 of the values of the `firstName` and `lastName` columns, separated by a colon
-character `:`, as well as as an additional attribute `nameAndId` that builds on
+character `:`, as well as an additional attribute `nameAndId` that builds on
 the new `fullName` attribute and concatenates it with a hyphen `-` and the value
 of the `id` column:
 

@@ -428,6 +428,12 @@ Also see [What's New in 3.3](../release-notes/version-3.3/whats-new-in-3-3.md).
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
 
+- **Fault-Tolerant Foxx**: The Foxx management
+  internals have been rewritten from the ground up to make sure
+  multi-coordinator cluster setups always keep their services in sync and
+  new Coordinators are fully initialized even when all existing Coordinators
+  are unavailable.
+
 **Enterprise Edition**
 
 - **LDAP integration**: Users and permissions

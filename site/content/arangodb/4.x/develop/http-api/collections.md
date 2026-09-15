@@ -217,7 +217,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -603,7 +603,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -1022,7 +1022,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -1519,17 +1519,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -1701,7 +1701,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or invalid, or not all of the
+            The `collection-name` parameter is missing or invalid, or not all of the
             collection's shard key attributes are present in the input document.
             You cannot use a numeric ID to reference the collection.
           content:
@@ -2187,17 +2187,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -2650,17 +2650,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -2863,7 +2863,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -3840,17 +3840,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4027,17 +4027,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4618,17 +4618,17 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -4778,17 +4778,17 @@ paths:
                     example: true
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -5205,7 +5205,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or invalid, or the `name` attribute
+            The `collection-name` parameter is missing or invalid, or the `name` attribute
             is missing. You cannot use a numeric ID to reference the collection.
           content:
             application/json:
@@ -5351,17 +5351,17 @@ paths:
                     type: integer
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - code
                   - error
-                  - errorMessage
+                  - code
                   - errorNum
+                  - errorMessage
                 properties:
                   error:
                     description: |
@@ -5505,7 +5505,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` is missing or has an invalid value.
+            The `collection-name` parameter is missing or has an invalid value.
             You cannot use a numeric ID to reference the collection.
           content:
             application/json:

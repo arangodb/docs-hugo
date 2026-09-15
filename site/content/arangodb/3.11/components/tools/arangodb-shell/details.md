@@ -2,7 +2,8 @@
 title: _arangosh_ Details
 menuTitle: Details
 weight: 10
-description: ''
+description: >-
+  The behavior and configuration of the ArangoDB Shell
 ---
 ## Interaction
 

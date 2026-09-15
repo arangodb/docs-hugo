@@ -464,7 +464,7 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: consolidate based on segment byte size skew and live document count
+    - `"tier"`: Consolidate based on segment byte size skew and live document count
       as dictated by the customization attributes.
 
     {{< warning >}}

@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for JavaScript Transactions
+title: JavaScript Transaction HTTP API
 menuTitle: JavaScript Transactions
 weight: 10
 description: >-

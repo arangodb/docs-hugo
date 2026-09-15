@@ -186,8 +186,8 @@ The `setup.json` config file must not be edited manually.
 
 ## Running on multiple machines (under the hood)
 
-As mentioned above, when the Starter is used to create a or `cluster` deployment,
-it first creates a "cluster" of Starters.
+As mentioned above, when the Starter is used to create a
+`cluster` deployment, it first creates a "cluster" of Starters.
 
 These are the steps taken by the Starters to bootstrap such a deployment
 from scratch.

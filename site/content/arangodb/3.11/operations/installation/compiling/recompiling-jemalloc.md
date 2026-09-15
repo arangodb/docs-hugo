@@ -3,7 +3,7 @@ title: Jemalloc
 menuTitle: Recompiling jemalloc
 weight: 20
 description: >-
-  Resolving
+  How to address linking errors with ArangoDB and the jemalloc memory allocator
 ---
 {{< info >}}
 This article is only relevant if you intend to compile ArangoDB on Ubuntu 16.10

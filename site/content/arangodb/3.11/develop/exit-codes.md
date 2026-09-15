@@ -14,7 +14,7 @@ Exit codes are numeric values programs return when they finish, indicating
 success or failure.
 
 - An exit code of zero indicates a successful execution, e.g. the termination of
-  the server process without without any issues.
+  the server process without any issues.
 - Any non-zero exit code indicates that some error occurred, e.g. you tried to
   run a program with invalid parameters or it failed to process something.
 

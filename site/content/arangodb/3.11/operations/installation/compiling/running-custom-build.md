@@ -1,9 +1,9 @@
 ---
-title: create data directory
+title: Running a custom build of ArangoDB
 menuTitle: Running Custom Build
 weight: 15
 description: >-
-  You've already built a custom version of ArangoDB and want to run it
+  How to use an existing or a new database directory when testing ArangoDB builds
 ---
 Once you built a custom version of ArangoDB (see
 [Compiling](_index.md)), you may want to run it using

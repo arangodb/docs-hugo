@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for jobs
+title: Job HTTP API
 menuTitle: Jobs
 weight: 80
 description: >-
-  The HTTP API for jobs lets you access the results of asynchronously executed
+  The HTTP interface for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
 # All /_api/job* endpoints are also available via /_admin/job*
 ---
@@ -430,7 +430,7 @@ paths:
                   result:
                     description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.

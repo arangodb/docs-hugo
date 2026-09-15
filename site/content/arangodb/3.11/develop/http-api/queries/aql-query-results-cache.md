@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for the query results cache
+title: AQL query results cache HTTP API
 menuTitle: AQL query results cache
 weight: 10
 description: >-
-  The query results cache HTTP API lets you control the cache for AQL query results
+  Control the caching of AQL query results with the HTTP interface
 ---
 See [The AQL query results cache](../../../aql/execution-and-performance/caching-query-results.md)
 for a description of the feature and the configuration options.
@@ -103,6 +103,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -148,7 +152,10 @@ paths:
           required: true
           example: _system
           description: |
-            The name of the database.
+            The name of the database whose query results cache to clear.
+
+            The user account you authenticate with needs at least read access to
+            this database.
           schema:
             type: string
       responses:
@@ -176,6 +183,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -258,6 +269,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```
@@ -390,6 +405,10 @@ paths:
         '400':
           description: |
             The request is malformed.
+        '401':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database.
       tags:
         - Queries
 ```

@@ -2,7 +2,9 @@
 title: Foxx Authentication
 menuTitle: Authentication
 weight: 5
-description: ''
+description: >-
+  The `auth` module implements basic password hashing and verification for Foxx
+  services
 ---
 `const createAuth = require('@arangodb/foxx/auth');`
 

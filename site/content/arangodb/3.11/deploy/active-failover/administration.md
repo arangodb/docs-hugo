@@ -2,7 +2,8 @@
 title: Administrate an Active Failover deployment
 menuTitle: Administration
 weight: 15
-description: ''
+description: >-
+  How to find the leader, read from followers, and manage leader and follower nodes
 ---
 ## Introduction
 
