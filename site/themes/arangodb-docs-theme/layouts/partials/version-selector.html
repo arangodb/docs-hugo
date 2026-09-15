@@ -4,6 +4,7 @@
     {{ range $i, $version := $versions -}}
       <option value="{{ $version.alias }}"{{/* if eq $version.alias "stable" }} selected{{ end */}}>
         {{- $version.name }}
+        {{- with $version.label }} {{ . }}{{ end }}
         {{- if ne $version.name $version.alias }} ({{ $version.alias }}){{ end -}}
       </option>
     {{ end -}}
