@@ -1,11 +1,10 @@
 ---
-title: Add files into Data Loader
+title: Add files in the AMP Data Loader
 menuTitle: Add files
 weight: 5
 description: >-
   Provide your set of files in CSV format containing the data to be imported
 ---
-
 The Data Loader allows you to upload your data files in CSV format into the
 Arango Managed Platform (AMP) and then use these data sources to design a graph using the
 built-in graph designer.

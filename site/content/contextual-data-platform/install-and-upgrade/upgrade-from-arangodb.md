@@ -1,5 +1,5 @@
 ---
-title: Upgrade from ArangoDB to the Arango Contextual Data Platform (v4.0)
+title: Upgrade from ArangoDB to the data platform
 menuTitle: Upgrade from ArangoDB
 weight: 15
 description: >-

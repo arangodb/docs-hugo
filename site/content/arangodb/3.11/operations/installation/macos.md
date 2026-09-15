@@ -2,7 +2,9 @@
 title: Installing ArangoDB on macOS
 menuTitle: macOS
 weight: 15
-description: ''
+description: >-
+  You can use ArangoDB on macOS via Docker images, or use the client-tools
+  from .tar.gz archives
 ---
 You can run the ArangoDB client tools on macOS using _tar.gz_ archives.
 

@@ -1,12 +1,11 @@
 ---
-title: Load your data into the Arango Managed Platform (AMP)
+title: Load your data into AMP
 menuTitle: Data Loader
 weight: 22
 description: >-
    Load your data into AMP and transform it into richly-connected graph
    structures, without needing to write any code or deploy any infrastructure
 ---
-
 The Arango Managed Platform (AMP) provides different ways of loading your data
 into the platform, based on your migration use case.
 

@@ -3,14 +3,22 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  Find one path of shortest length between two vertices
+  Find one path of shortest length or lowest weight between two vertices
 ---
 ## General query idea
 
-This type of query finds the shortest path between two given documents
-(*startVertex* and *targetVertex*) in your graph. If there are multiple
-shortest paths, the path with the lowest weight or a random one (in case
-of a tie) is returned.
+This type of query finds a path between two given documents
+(*startVertex* and *targetVertex*) in your graph.
+
+By default, a path with the fewest edges is returned. If there are multiple
+paths of this length, then it is undefined which one of them you get.
+
+If you set the [`weightAttribute` option](#weightattribute), a path with the
+lowest sum of edge weights is returned instead. Such a path is not necessarily
+one of the paths with the fewest edges. It can comprise more edges but have a
+lower total weight than a path of shorter length, so this mode finds the
+*lightest* path rather than the shortest one. If there are multiple paths with
+the lowest weight, then it is undefined which one of them you get.
 
 The shortest path search emits the following two variables for every step of
 the path:
@@ -103,7 +111,11 @@ graph path search. If you specify unknown options, query warnings are raised.
 
 #### `weightAttribute`
 
-A top-level edge attribute that should be used to read the edge weight (string).
+A top-level edge attribute to use as the weight (string).
+
+If you set this option, the returned path is the one with the lowest total
+weight, which may comprise more edges than a path of shorter length but with a
+higher total weight.
 
 If the attribute does not exist or is not numeric, the `defaultWeight` is used
 instead.
@@ -135,6 +147,23 @@ FOR vertex IN OUTBOUND SHORTEST_PATH
 All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
 direction for each collection in your path search.
+
+### Graph path searches in a cluster
+
+Due to the nature of graphs, edges may reference vertices from arbitrary
+collections. Following the paths can thus involve documents from various
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
+
+If you use anonymous graphs / collection sets for graph queries, which vertex
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the vertex collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start vertex as well if it's not declared already
+(like by a `FOR` loop).
 
 ## Conditional shortest path
 

@@ -2,7 +2,9 @@
 title: Foxx queues
 menuTitle: Queues
 weight: 25
-description: ''
+description: >-
+  Foxx queues let you perform slow or expensive actions asynchronously, with
+  retries on failure
 ---
 {{< warning >}}
 The tasks and Foxx queues features are deprecated and removed in ArangoDB v4.0.

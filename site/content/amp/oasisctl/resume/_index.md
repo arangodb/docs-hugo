@@ -1,7 +1,8 @@
 ---
-title: Resume with `oasisctl`
+title: Resume with _oasisctl_
 menuTitle: Resume
 weight: 23
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Resume resources
@@ -25,5 +26,4 @@ oasisctl resume [flags]
 ## See also
 * [oasisctl](../options.md)	 - Arango Managed Platform (AMP)
 * [oasisctl resume deployment](resume-deployment.md)	 - Resume a paused deployment the authenticated user has access to
-* [oasisctl resume notebook](resume-notebook.md)	 - Resume a notebook
 

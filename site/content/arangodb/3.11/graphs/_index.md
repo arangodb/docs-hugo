@@ -28,7 +28,8 @@ and mathematics, the terms **vertices** (singular: vertex) and **edges** are
 commonly used to refer to nodes and relations, respectively. In information
 science and data analysis, they are referred to as _entities_ and _connection_.
 In social sciences, they are often called _actors_ and _ties_ or _links_.
-They may also be called _points_ and _arcs_.
+They may also be called _points_ and _arcs_ or _circles_  and _arrows_ based on
+how they are typically represented visually.
 
 Using graphs with vertices to represent things and edges to define how they
 relate to one another is a very expressive data model. It lets you represent
@@ -402,8 +403,8 @@ combine with geo, search, ...
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [_arangodump_](../components/tools/arangodump/_index.md)
-to create the backup, and [_arangorestore_](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for search-alias Views
+title: search-alias View HTTP API
 menuTitle: '`search-alias` Views'
 weight: 5
 description: >-
-  The HTTP API for Views lets you manage `search-alias` Views, including adding
+  The HTTP interface for Views lets you manage `search-alias` Views, including adding
   and removing inverted indexes
 ---
 ## Create a search-alias View

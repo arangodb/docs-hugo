@@ -131,8 +131,8 @@ Specify which traversal algorithm to use (string):
   first returns all paths from *min* depth to *max* depth for one vertex at
   depth 1, then for the next vertex at depth 1 and so on.
 
-- `"weighted"`: The traversal is a weighted traversal
-  (introduced in v3.8.0). Paths are enumerated with increasing cost.
+- `"weighted"`: The traversal is a weighted traversal.
+  Paths are enumerated with increasing cost.
   The order of paths having the same cost is non-deterministic.
 
   You can define what attribute to use as the cost of an edge with the
@@ -235,9 +235,8 @@ projections (number). The default value is `5`.
 
 This option is only used for traversals with `order: "weighted"`.
 
-Specifies the name of an attribute that is used to look up the weight of an edge
-(string). A `.` is interpreted as a literal dot, which means only top-level
-attributes are supported.
+The edge attribute to use as the weight (string). A `.` is interpreted as a
+literal dot, which means only top-level attributes are supported.
 
 If no attribute is specified, or if it is not present in the edge document, or
 if it has a non-numeric value, then the `defaultWeight` is used.
@@ -286,13 +285,18 @@ collection in your traversal.
 
 Due to the nature of graphs, edges may reference vertices from arbitrary
 collections. Following the paths can thus involve documents from various
-collections and it is not possible to predict which are visited in a
-traversal. Which collections need to be loaded by the graph engine can only be
-determined at run time.
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
 
-Use the [`WITH` statement](../high-level-operations/with.md) to specify the collections you
-expect to be involved. This is required for traversals using collection sets
-in cluster deployments.
+If you use anonymous graphs / collection sets for graph queries, which vertex
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the vertex collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start vertex as well if it's not declared already
+(like by a `FOR` loop).
 
 ## Pruning
 
@@ -659,16 +663,17 @@ All of the above filters can be defined on vertices in the exact same way.
 
 ### Filtering on the path vs. filtering on vertices or edges
 
-Filtering on the path influences the Iteration on your graph. If certain conditions 
-aren't met, the traversal may stop continuing along this path.
+Filters on the emitted path (`p` variable) influence how the graph is traversed.
+If a path doesn't fulfill a condition, the traversal may stop following this
+path and not explore it any further.
 
-In contrast filters on vertex or edge only express whether you're interested in the actual value of these
-documents. Thus, it influences the list of returned documents (if you return v or e) similar 
-as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
-two nodes of these paths has to be executed - you just won't see them in your result array. 
-
-Similar are filters on vertices or edges - the traverser has to walk along these nodes, since 
-you may be interested in documents further down the path.
+Filters on the emitted vertex (`v` variable) or edge (`e` variable) only
+determine whether the current vertex and edge become part of the result.
+The traversal walks past them either way, because vertices and edges further
+down the path may still match. This is comparable to setting a minimum traversal
+depth greater than zero. With a minimum depth of `2`, the traversal still has to
+walk over the first two vertices of every path, you just don't see them in the
+result.
 
 ### Examples
 

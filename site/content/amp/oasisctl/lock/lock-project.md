@@ -1,7 +1,8 @@
 ---
-title: Lock Project with `oasisctl`
+title: Lock Project with _oasisctl_
 menuTitle: Lock Project
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Lock a project, so it cannot be deleted

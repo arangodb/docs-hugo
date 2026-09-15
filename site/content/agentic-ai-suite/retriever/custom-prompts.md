@@ -1,11 +1,10 @@
 ---
-title: Custom Prompts Reference
+title: Retriever Custom Prompts Reference
 menuTitle: Custom Prompts
 description: >-
   Customize LLM prompts used during query processing for domain-specific behavior
 weight: 55
 ---
-
 ## Overview
 
 The Retriever service allows you to customize the LLM prompts used during query
@@ -39,6 +38,7 @@ prompts are available for which query type:
 | Prompt Key | Local | Global | Unified | Deep Search | Custom Deep Search |
 |---|---|---|---|---|---|
 | `local_rag_response` | Yes | | Yes | | |
+| `local_rag_response_no_citations` | Yes | | Yes | | |
 | `global_map_rag_points` | | Yes | | | |
 | `global_reduce_rag_response` | | Yes | | | |
 | `ds_generate_plan` | | | | Yes | |
@@ -50,7 +50,6 @@ prompts are available for which query type:
 | `ds_custom_generate_plan` | | | | | Yes |
 | `ds_custom_final_synthesis` | | | | | Yes |
 | `ds_cr_completion_check` | | | | | Yes |
-| `ds_completion_system` | | | | | Yes |
 | `ds_no_tools_available` | | | | | Yes |
 
 ## Prompt reference
@@ -59,8 +58,16 @@ prompts are available for which query type:
 
 - **`local_rag_response`**: Main prompt for generating responses in Local Search
   and Unified Search.
-  - **Used by**: Local Search (`query_type=2`), Unified Search (`query_type=3`).
+  - **Used by**: Local Search (`query_type=2`), Unified Search (`query_type=3`),
+    when `show_citations` is `true`.
   - Template variables: `{response_instructions}`, `{context_data}`.
+
+- **`local_rag_response_no_citations`**: Citation-free variant of
+  `local_rag_response`.
+  - **Used by**: Local Search and Unified Search when `show_citations` is
+    `false`. The service selects this variant instead of appending a
+    contradictory instruction to the citation-carrying template.
+  - Template variables: same as `local_rag_response`.
 
 ### Global prompts
 
@@ -124,9 +131,6 @@ These prompts are used when `use_llm_planner=true` with Custom Retriever
   after each step. Returns `"SOLVED"` or `"CONTINUE"`.
   - Template variables: `{original_query}`, `{execution_summary}`.
 
-- **`ds_completion_system`**: System prompt for the completion check LLM call.
-  Simple string (no template variables).
-
 - **`ds_no_tools_available`**: Message returned when no custom retriever tools
   are available. Simple string (no template variables).
 
@@ -150,6 +154,6 @@ the invalid keys and all valid keys:
 
 ```json
 {
-  "error": "Invalid prompt keys found: ['invalid_key']. Valid keys are: ['ds_completion_check', 'ds_completion_system', 'ds_cr_completion_check', 'ds_custom_final_synthesis', 'ds_custom_generate_plan', 'ds_final_synthesis', 'ds_generate_plan', 'ds_no_tools_available', 'ds_step_query', 'ds_tool_selection', 'global_map_rag_points', 'global_reduce_rag_response', 'local_rag_response', 'no_relevant_data_message']"
+  "error": "Invalid prompt keys found: ['invalid_key']. Valid keys are: ['ds_completion_check', 'ds_cr_completion_check', 'ds_custom_final_synthesis', 'ds_custom_generate_plan', 'ds_final_synthesis', 'ds_generate_plan', 'ds_no_tools_available', 'ds_step_query', 'ds_tool_selection', 'global_map_rag_points', 'global_reduce_rag_response', 'local_rag_response', 'local_rag_response_no_citations', 'no_relevant_data_message']"
 }
 ```

@@ -1,7 +1,8 @@
 ---
-title: Unlock Project with `oasisctl`
+title: Unlock Project with _oasisctl_
 menuTitle: Unlock Project
 weight: 6
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Unlock a project, so it can be deleted

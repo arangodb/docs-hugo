@@ -1,5 +1,5 @@
 ---
-title: Ecosystem
+title: Arango Ecosystem
 menuTitle: Ecosystem
 weight: 10
 description: >-

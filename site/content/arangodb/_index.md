@@ -1,5 +1,5 @@
 ---
-title: The ArangoDB database system
+title: ArangoDB database system
 menuTitle: ArangoDB
 weight: 5
 description: >-

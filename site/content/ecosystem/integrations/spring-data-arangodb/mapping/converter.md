@@ -1,18 +1,19 @@
 ---
-title: Converter
+title: Converter in Spring Data ArangoDB
 menuTitle: Converter
 weight: 30
-description: ''
+description: >-
+  How to use Spring Converters in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/converter
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/converter
 ---
 ## Registering a Spring Converter

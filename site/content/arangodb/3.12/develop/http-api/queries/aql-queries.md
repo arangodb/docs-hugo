@@ -1,9 +1,9 @@
 ---
-title: HTTP interfaces for AQL queries
+title: AQL query and cursor HTTP API
 menuTitle: AQL queries
 weight: 5
 description: >-
-  The HTTP API for AQL queries lets you to execute, track, kill, explain, and
+  The HTTP interface for AQL queries lets you to execute, track, kill, explain, and
   validate queries written in ArangoDB's query language
 ---
 ## Cursors
@@ -525,9 +525,11 @@ paths:
                       type: boolean
                     usePlanCache:
                       description: |
+                        <small>Introduced in: v3.12.4</small>
+
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed (introduced in v3.12.4).
+                        is bypassed.
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have
@@ -699,6 +701,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -750,8 +753,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -832,8 +836,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -909,7 +914,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -1051,6 +1056,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -1110,6 +1117,10 @@ paths:
 
             This error also occurs if you try to run this operation as part of a
             Stream Transaction that has just been canceled or timed out.
+        '500':
+          description: |
+            The query is not eligible for plan caching, but the `usePlanCache`
+            option is enabled.
         '503':
           description: |
             A server which processes the query or the leader of a shard which is used
@@ -1462,6 +1473,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -1513,8 +1525,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1595,8 +1608,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -1672,7 +1686,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -1814,6 +1828,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -1928,8 +1944,9 @@ paths:
         - `errorNum`: a server error number (if `error` is `true`)
         - `errorMessage`: a descriptive error message (if `error` is `true`)
         - `extra`: an object with additional information about the query result, with
-          the nested objects `stats` and `warnings`. Only delivered as part of the last
-          batch in case of a cursor with the `stream` option enabled.
+          the nested objects `stats` and `warnings`. For cursors with the `stream` option
+          enabled, only delivered as part of the last batch. Otherwise, included in
+          every batch.
 
         Note that even if `hasMore` returns `true`, the next call might
         still return no documents. If, however, `hasMore` is `false`, then
@@ -2111,6 +2128,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -2162,8 +2180,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -2244,8 +2263,9 @@ paths:
                             type: integer
                           searchParallelism:
                             description: |
-                              The number of threads used by ArangoSearch for this
-                              query (introduced in v3.12.9).
+                              <small>Introduced in: v3.12.9</small>
+
+                              The number of threads used by ArangoSearch for this query.
                             type: integer
                           cursorsCreated:
                             description: |
@@ -2321,7 +2341,7 @@ paths:
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
                               For a human-readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -2463,6 +2483,8 @@ paths:
                     type: boolean
                   planCacheKey:
                     description: |
+                      <small>Introduced in: v3.12.4</small>
+
                       The key of the plan cache entry. This attribute is only
                       present if a cached query execution plan has been used.
                     type: string
@@ -3050,6 +3072,8 @@ paths:
                       type: object
                     dataSources:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The collections and Views involved in the query.
 
                         Only present if the
@@ -3096,10 +3120,14 @@ paths:
                       type: boolean
                     modificationQuery:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         Whether the query writes data (`true`) or only reads (`false`).
                       type: boolean
                     warnings:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The number of query warnings that occurred.
 
                         Values other than `0` may not be observable because this information
@@ -3292,6 +3320,8 @@ paths:
                       type: object
                     dataSources:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The collections and Views involved in the query.
 
                         Only present if the
@@ -3327,11 +3357,15 @@ paths:
                       type: boolean
                     modificationQuery:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         Whether the query created, updated, replaced, or deleted
                         any documents (`true`) or only read data (`false`).
                       type: boolean
                     warnings:
                       description: |
+                        <small>Introduced in: v3.12.2</small>
+
                         The number of query warnings that occurred.
                       type: integer
                     exitCode:
@@ -3724,9 +3758,11 @@ paths:
                             type: string
                     usePlanCache:
                       description: |
+                        <small>Introduced in: v3.12.4</small>
+
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed (introduced in v3.12.4).
+                        is bypassed.
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have

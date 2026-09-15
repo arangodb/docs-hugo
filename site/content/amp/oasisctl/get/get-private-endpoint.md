@@ -1,7 +1,8 @@
 ---
-title: Get Private Endpoint with `oasisctl`
+title: Get Private Endpoint with _oasisctl_
 menuTitle: Get Private Endpoint
-weight: 24
+weight: 23
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 

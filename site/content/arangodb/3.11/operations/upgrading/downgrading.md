@@ -21,7 +21,7 @@ be able to downgrade the binaries in this case.
 
 In order to downgrade, the following options are available:
 
-- Restore a backup you took using the tool [_arangodump_](../../components/tools/arangodump/_index.md)
+- Restore a backup you took using the tool [arangodump](../../components/tools/arangodump/_index.md)
   before the upgrade.
 - Start the old package on the data directory backup you took before the upgrade.
 
@@ -30,10 +30,10 @@ In order to downgrade, the following options are available:
 This procedure assumes that you have taken an _arangodump_ backup using the old
 ArangoDB version, before you upgraded it. 
 
-1. Stop ArangoDB (if you are using a Cluster, stop all the needed
+1. Stop ArangoDB (if you use a Cluster, stop all the needed
    processes on all the machines).
 2. As extra precaution, take a backup of your current data directory (at filesystem level).
-   If you are using a Cluster, you will need to backup all the data
+   If you use a Cluster, you will need to backup all the data
    directories of all the processes involved, from all machines. Make sure you move your
    data directory backup to a safe place.
 3. Uninstall the ArangoDB package (use appropriate _purge_ option so your current data
@@ -46,7 +46,7 @@ ArangoDB version, before you upgraded it.
 ### Start the old package on the data directory backup
 
 This procedure assumes that you have created a copy of your data directory (after having
-stopped the ArangoDB process running on it) before the upgrade. If you are running
+stopped the ArangoDB process running on it) before the upgrade. If you run
 a Cluster, this procedure assumes that you have stopped every ArangoDB process before
 the upgrade, and that you have taken a copy of their data directories, from all involved
 machines.
@@ -54,10 +54,10 @@ machines.
 This procedure cannot be used if you have done a rolling upgrade of your
 Cluster setup because in this case you do not have a copy of the data directories.
 
-1. Stop ArangoDB (if you are using a Cluster, stop all the needed
+1. Stop ArangoDB (if you use a Cluster, stop all the needed
    processes on all the machines).
 2. As extra precaution, take a backup of your data directory (at filesystem level). If
-   you are using a Cluster, you will need to backup all the data
+   you use a Cluster, you will need to backup all the data
    directories of all the processes involved, from all machines. Make sure you move your
    backup to a safe place.
 3. Uninstall the ArangoDB package (use appropriate _purge_ option so your current data

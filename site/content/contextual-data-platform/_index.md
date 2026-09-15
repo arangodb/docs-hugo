@@ -1,5 +1,5 @@
 ---
-title: The Arango Contextual Data Platform (v4.0)
+title: Arango Contextual Data Platform
 menuTitle: Arango Contextual Data Platform
 weight: 1
 description: >-

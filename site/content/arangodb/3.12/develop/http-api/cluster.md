@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for clusters
+title: Cluster HTTP API
 menuTitle: Cluster
 weight: 115
 description: >-

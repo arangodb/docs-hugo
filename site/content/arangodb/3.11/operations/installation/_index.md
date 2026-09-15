@@ -4,7 +4,7 @@ menuTitle: Installation
 weight: 210
 description: >-
   You can install ArangoDB by downloading and running the official packages,
-  as well as run ArangoDB using Docker images
+  as well as run ArangoDB in containers
 aliases:
   - installation/macos # 3.11 -> 3.11
 ---

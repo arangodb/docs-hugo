@@ -1,11 +1,10 @@
 ---
-title: Local Search
+title: Retriever Local Search
 menuTitle: Local Search
 description: >-
   Entity-focused retrieval for detailed queries about specific concepts and relationships
 weight: 20
 ---
-
 ## Overview
 
 Local Search focuses on specific entities and their relationships within your

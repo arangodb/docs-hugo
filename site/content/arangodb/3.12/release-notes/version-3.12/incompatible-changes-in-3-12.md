@@ -28,6 +28,10 @@ ArangoDB version 3.12.9 addresses an issue with vector indexes and the cluster
 replication. You can upgrade normally, but any vector indexes created with
 v3.12.9 or later cannot be downgraded to v3.12.8 or earlier v3.12.x versions.
 
+Similarly, you cannot downgrade vector indexes created with v3.12.10 or later
+to v3.12.9 or older versions because of a new format version that is not
+backward compatible.
+
 If you need to downgrade, drop the vector indexes first and recreate them after
 the downgrade.
 
@@ -37,6 +41,17 @@ To avoid potential issues when upgrading Kubernetes-managed ArangoDB deployments
 from version 3.12.2 or 3.12.3 to 3.12.4, make sure to use the
 ArangoDB Kubernetes Operator (`kube-arangodb`) version 1.2.47 or later for any
 deployment that was previously on version 3.11.
+
+## Access tokens should be recreated
+
+In ArangoDB versions before 3.12.10-1, expired
+[access tokens](../../develop/http-api/authentication.md#access-tokens) may have
+been used to successfully request new access tokens for a user account. It is
+recommended to upgrade to v3.12.10-1 or later and revoke all access tokens to
+ensure that no user is in possession of non-expired access tokens who shouldn't
+have them. New access tokens can then be created, with a lifetime of one week
+by default (see [Access token lifetime](#access-token-lifetime)). Once expired,
+they cannot be used to get new access tokens or access the system in general.
 
 ## Resolving known issues with versions prior to 3.12.4
 
@@ -177,7 +192,7 @@ Deployments that were set up with the RocksDB storage engine using ArangoDB 3.2
 or 3.3 and that have been upgraded since then still use the old format.
 This should not affect many users because the default storage engine in ArangoDB
 3.2 and 3.3 was the MMFiles storage engine.
-Furthermore, deployments that have been recreated from a dump using arangodump
+Furthermore, deployments that have been recreated from a dump using _arangodump_
 since ArangoDB 3.4 are not affected because restoring a dump into a fresh
 deployment also makes ArangoDB use the big-endian on-disk format.
 
@@ -186,9 +201,9 @@ on-disk format is in use, but it still supports using the little-endian key form
 for almost all operations, with the following exceptions:
 - Parallel index creation is disabled when the little-endian key format is used.
   Indexes are always created using a single thread.
-- The experimental version of arangodump (invocable via the `--use-experimental-dump` 
+- The experimental version of _arangodump_ (invocable via the `--use-experimental-dump` 
   startup option) does not work. You can still use the traditional
-  arangodump version, which is the default anyway.
+  _arangodump_ version, which is the default anyway.
 
 ArangoDB 3.12 and later refuse to start when detecting that the little-endian
 on-disk is in use, so users that still use this format
@@ -200,7 +215,7 @@ The migration can be performed as follows:
 2. Stop the database servers in the deployment
 3. Wipe the existing database directories
 4. Restart the servers in the deployment
-5. Restore the logical dump into the deployment using arangodump
+5. Restore the logical dump into the deployment using _arangodump_
 
 It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
@@ -652,7 +667,7 @@ the following steps.
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
 and JSON, it was previously possible for precision loss to occur in edge cases.
-This also affected creating and restoring dumps with arangodump and arangorestore.
+This also affected creating and restoring dumps with _arangodump_ and _arangorestore_.
 
 A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
 used to be serialized to `1152921504606847000` in JSON, which deserializes back
@@ -1072,6 +1087,148 @@ For details, see:
 - [HTTP interface for inverted indexes](../../develop/http-api/indexes/inverted.md)
 - [`arangosearch` View properties](../../indexes-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 
+## Rclone upgrades possibly requiring configuration changes
+
+<small>Introduced in: v3.12.9-2</small>
+
+Rclone is used by ArangoDB for uploading and downloading Hot Backups to and from
+object storage, often using cloud provider services like AWS's S3 or S3-compatible
+offerings.
+
+To transfer Hot Backups this way, rclone requires a configuration file to
+specify the provider, region, and so on. The configuration is typically
+backwards compatible, but behavioral changes on the provider side or of
+technical nature may require that you modify the configuration.
+
+The version of the bundled rclone has been updated in the ArangoDB hotfix releases
+3.12.9-2 and 3.12.9-4. These and later versions may therefore require action
+regarding the rclone configuration:
+
+| ArangoDB version | Rclone version    |
+|:-----------------|:------------------|
+| v3.12.9          | v1.65.2           |
+| v3.12.9-1        | v1.65.2           |
+| v3.12.9-2        | v1.73.5 (updated) |
+| v3.12.9-3        | v1.73.5           |
+| v3.12.9-4        | v1.74.3 (updated) |
+
+You should check for the following things in particular:
+
+- If you use AWS S3 and a region other than `us-east-1`, you need to either specify the
+  region in the `location_constraint` (e.g. `"location_constraint": "eu-central-1"`),
+  set `"no_check_bucket": "true"`, or both.
+
+  Otherwise, rclone makes a check with an unspecified location constraint which
+  AWS rejects (IllegalLocationConstraintException). This is caused by an upgrade
+  to the AWS SDK v2 in rclone v1.68.0.
+
+- If you use an S3-compatible provider like GCS, Ceph, MinIO, Wasabi, or older
+  gateways, uploads may fail unless you set `"use_data_integrity_protections": "false"`.
+
+  The upgrade to the AWS SDK v2 in rclone v1.68.0 changed the default algorithm
+  for data integrity checksums to CRC32/CRC64. While this is supported by AWS,
+  other S3-compatible providers may still expect MD5 and therefore fail. Later
+  rclone versions may automatically account for this quirk for certain providers.
+
+- If you use an S3-compatible provider, there may be quirks that rclone should
+  automatically handle for known providers. For example, `use_x_id` is disabled
+  for GCS. Other options that are auto-set per provider are `sign_accept_encoding`
+  and `use_multipart_uploads`.
+
+  You might need to force specific settings in case your provider is not known
+  to rclone and therefore doesn't handle specific quirks on its own.
+
+### Telemetrics removed
+
+<small>Removed in: v3.12.10</small>
+
+ArangoDB gathered anonymous information on its usage and feature utilization
+since v3.11.0 unless disabled. These telemetrics have now been removed.
+
+The `--server.telemetrics-api` and `--server.telemetrics-api-max-requests`
+startup options are obsolete. They are still recognized but don't have any
+effect anymore.
+
+## String comparison in `FILTER` condition optimizations
+
+<small>Introduced in: v3.12.10</small>
+
+The `==` and `!=` operators as well as their array comparison variants compare
+strings byte-wise. However, the AQL query optimizer used a Unicode-aware
+comparison when it compared such conditions with each other while optimizing
+`FILTER` operations. It could therefore treat two strings that are
+Unicode-equivalent but encoded differently – like the NFC and NFD normalization
+forms of the same text – as the same value, and remove a condition it considered
+a duplicate. The optimizer now uses a byte-wise comparison as well, in line with
+how the query evaluates these operators.
+
+This can change the results of queries that use the `==` or `!=` operator, or
+one of their array comparison variants, against strings which are
+Unicode-equivalent but differently encoded. Such queries now return
+what the unoptimized comparison would return. If you rely on comparing strings
+in a Unicode-aware manner, normalize them to the same form, either before
+storing them or in the query.
+
+## Changed response for vector indexes that cannot be trained
+
+<small>Introduced in: v3.12.10</small>
+
+If you create a vector index with the `inBackground` option set to `false`, the
+call blocks until the index training has finished. If the training fails
+permanently, for example, because there is not enough training data or because
+the training would exceed the memory limit, then the index is created
+nevertheless but cannot be used for queries.
+
+Up to v3.12.9, the index creation reports an error in this case, like
+`ERROR_QUERY_VECTOR_INDEX_NOT_READY` (`1555`) or the underlying error such as
+`ERROR_RESOURCE_LIMIT` (`32`). From v3.12.10 onward, the index creation is
+reported as successful. The response has the `trainingState` set to `"unusable"`
+and the reason for the failed training in the `errorMessage` attribute. This
+affects the `POST /_api/index` endpoint as well as `db.<collection>.ensureIndex()`
+in _arangosh_ and the equivalent driver methods.
+
+If your application relies on an exception or an error response to detect that
+the training of a synchronously created vector index failed, you need to check
+the `trainingState` attribute of the successful response instead. Errors that
+are not related to the training outcome, like a timeout while waiting for the
+index or a server shutdown, are still reported as errors.
+
+In cluster deployments, this can also affect index creation with `inBackground`
+set to `true`. Up to v3.12.9, the request can fail if the training of a shard's
+index fails while the Coordinator is still waiting for all shards to report the
+new index. From v3.12.10 onward, it succeeds in this case, too.
+
+See [Vector index properties](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+for details.
+
+## Corrected results for graph traversal path filters
+
+<small>Introduced in: v3.12.11</small>
+
+Two issues in the `optimize-traversals` query optimizer rule could make graph
+traversals return incorrect results. Affected queries now return the same
+results as they do with the optimizer rule disabled.
+
+- Path filters using an array expansion with an
+  [inline `FILTER`](../../aql/operators.md#inline-filter), like
+  `FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()`,
+  were applied to the paths after the traversal emitted them. In combination
+  with the `uniqueVertices: "global"` traversal option, this could drop results.
+  A node that the traversal first reached over an edge violating the condition
+  counted as visited, and was therefore not reachable anymore over another path
+  that satisfies the condition. Such conditions are now evaluated during the
+  traversal, so a rejected edge is not followed in the first place. See
+  [Traversal optimization for path filters with an inline `FILTER`](whats-new-in-3-12.md#traversal-optimization-for-path-filters-with-an-inline-filter).
+
+- Path filters using the `AT LEAST (<number>)` array comparison operator, like
+  `FILTER p.edges[*].weight AT LEAST (2) <= 10`, were moved into the traversal
+  and checked for every edge or node of a path, effectively evaluating them like
+  `ALL`. This rejected paths that satisfy the condition for at least the
+  requested number of elements but not for all of them, and it accepted paths
+  that are shorter than the requested number of elements. `AT LEAST (<number>)`
+  cannot be checked per node or edge and the condition therefore remains a
+  post-filter that is applied to the emitted paths.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -1138,6 +1295,142 @@ To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
 
+### Obsolete replication APIs removed
+
+<small>Removed in: v3.12.10</small>
+
+Various endpoints related to replication functionality that is no longer
+used have been removed.
+
+This includes endpoints related to asynchronous replication like the
+global applier that provided the low-level mechanisms for the user-managed
+Leader/Follower Replication and the Agency-managed Active Failover
+deployment modes, both for single servers.
+
+- `GET /_api/replication/applier-config`
+- `PUT /_api/replication/applier-config`
+- `PUT /_api/replication/applier-start`
+- `PUT /_api/replication/applier-stop`
+- `GET /_api/replication/applier-state`
+- `GET /_api/replication/applier-state-all`
+- `PUT /_api/replication/make-follower`
+- `GET /_api/replication/logger-follow`
+- `GET /_api/replication/logger-first-tick`
+- `GET /_api/replication/logger-tick-ranges`
+- `GET /_api/replication/logger-last`
+- `GET /_api/replication/server-id`
+- `PUT /_api/replication/server-id`
+- `PUT /_api/replication/sync`
+
+### Permission checks for Stream Transactions in cluster
+
+<small>Introduced in: v3.12.10-1</small>
+
+Operations that you execute as part of a
+[Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+by setting the `x-arango-trx-id` header now explicitly check whether you have
+the required
+[collection access level](../../operations/administration/user-management/_index.md#actions-and-access-levels).
+This closes a gap in cluster deployments for collections that are not declared
+in the `collections` attribute when beginning the transaction. It affects the
+following operations:
+
+- All operations of the [Document API](../../develop/http-api/documents.md)
+- Getting the document count and truncating a collection via the
+  [Collection API](../../develop/http-api/collections.md)
+
+If you don't have the required access level for the collection, these requests
+now fail with an HTTP `403 Forbidden` error and the `ERROR_FORBIDDEN` (`11`)
+error number. Previously, Coordinators didn't check the access level for
+undeclared collections:
+
+- Write operations failed with an HTTP `400 Bad Request` error and the
+  `ERROR_TRANSACTION_UNREGISTERED_COLLECTION` (`1652`) error number.
+- Reading a single document by key as well as getting the document count
+  succeeded.
+
+Single servers are unaffected. They check the access level when they add an
+undeclared collection to a running transaction and therefore already reject
+such requests with an HTTP `403 Forbidden` error. Operations outside of
+Stream Transactions as well as AQL queries are unaffected, too.
+
+### Access token lifetime
+
+<small>Introduced in: v3.12.10-1</small>
+
+When requesting a personal access token via the
+[`POST /_api/token/{user}` endpoint](../../develop/http-api/authentication.md#access-tokens),
+the server may not honor the requested `valid_until` timestamp and issue the
+access token with a shorter validity. The maximum lifetime (in seconds) is
+controlled by the new `--auth.maximal-access-token-expiry-time` _arangod_
+startup option. The default is `604800` (1 week).
+
+### Refactored authorization system
+
+<small>Introduced in: v3.12.11</small>
+
+The authorization system has been refactored to support
+[Role-Based Access Control (RBAC)](whats-new-in-3-12.md#external-service-for-rbac).
+The following behavior changes are side effects of this refactoring. They
+specifically apply to the classic authorization system, so when not using RBAC.
+
+Note that enabling RBAC changes the behavior more significantly because
+different permissions are needed, and the API under RBAC is designed to not
+disclose whether a resource exists if a user has no permission to access it.
+
+#### Error number for write operations in read-only mode
+
+Nearly every endpoint that writes something refuses to perform the operation if
+the server is in read-only mode. For those that require write access to a
+collection, the HTTP status code remains `403 Forbidden`, but the reported error
+number has intentionally been changed from `ERROR_FORBIDDEN` (`11`) to
+`ERROR_ARANGO_READ_ONLY` (`1004`).
+
+This only affects requests where the user account you authenticate with actually
+**has** read/write access to the collection but the read-only mode prevents the
+write. If the access level is insufficient, the error number remains `11`.
+The superuser is not restricted by the read-only mode.
+
+#### Access token management in read-only mode
+
+The following endpoints for managing
+[access tokens](../../develop/http-api/authentication.md#access-tokens) now
+respect the read-only mode of the server:
+
+- `POST /_api/token/{user}`
+- `DELETE /_api/token/{user}/{token-id}`
+
+Up to v3.12.10, they allowed creating and deleting access tokens even if the
+server was in read-only mode, provided that the user account you authenticate
+with has read/write access to the `_system` database. Now, such requests fail
+with an HTTP `403 Forbidden` error and the `ERROR_ARANGO_READ_ONLY` (`1004`)
+error number. The superuser can still create and delete access tokens in
+read-only mode.
+
+#### Permission checks for the AQL query results cache API
+
+The following endpoints of the
+[AQL query results cache API](../../develop/http-api/queries/aql-query-results-cache.md)
+now require at least read access to the `_system` database, in addition to the
+read access to the specified database that was already required before:
+
+- `PUT /_api/query-cache/properties`
+- `DELETE /_api/query-cache`
+
+Up to v3.12.10, they didn't check the access level for the `_system` database.
+If you don't have the required access level, these requests now fail with an
+HTTP `403 Forbidden` error.
+
+#### Error response for inaccessible databases in the Activities API
+
+If the user account you authenticate with has no access to the database you
+target with the experimental
+[`GET /_arango/experimental/_admin/activities` endpoint](../../develop/http-api/monitoring/activities.md),
+the request now fails with an HTTP `404 Not Found` error and the
+`ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`) error number. Up to v3.12.10, the
+request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
+(`11`) error number.
+
 ## JavaScript API
 
 ### `@arangodb/graph/traversal` module removed
@@ -1182,6 +1475,10 @@ The `_registerCompatibilityFunctions()` exports have also been removed from
 the JavaScript graph modules.
 
 ## Startup options
+
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
 
 ### `--database.extended-names` enabled by default
 
@@ -1284,14 +1581,58 @@ of disallowing everything:
 - `--javascript.startup-options-denylist`
 - `--javascript.endpoints-denylist`
 
-Note that file access is exclusively controlled by `--javascript.files-allowlist`
-with no corresponding `--javascript.files-denylist` option.
+Up to v3.12.9, file access is exclusively controlled by
+`--javascript.files-allowlist` with no corresponding denylist. A
+`--javascript.files-denylist` option was added in v3.12.10.
+
+### No storage engine selection
+
+<small>Introduced in: v3.12.10</small>
+
+The `--server.storage-engine` startup option is now obsolete. ArangoDB supports
+RocksDB as the only storage engine since v3.7.0 and therefore this option is not
+useful.
+
+The option no longer has an effect but it's still recognized to avoid causing a
+fatal error on startup if you specify it.
+
+### JavaScript endpoint access validated against request URLs only
+
+<small>Introduced in: v3.12.10</small>
+
+The `--javascript.endpoints-allowlist` and `--javascript.endpoints-denylist`
+startup options are now exclusively matched against the full request URL as
+used in the JavaScript code, like `http://example.com:8000/path?query=1`.
+
+Up to v3.12.8, a request was also permitted if the normalized endpoint of the
+request matched instead, using a `tcp://host:port` respectively
+`ssl://host:port` notation with the default port added if not specified in the
+URL. This was supported for backward compatibility. In v3.12.9, the request URL
+**and** the normalized endpoint had to match, which could unexpectedly deny
+requests.
+
+If your patterns are written for the endpoint notation, you need to change them
+to match request URLs, for instance `^tcp://example\.com:80$` to
+`^http://example\.com(:80)?/`. If you use v3.12.9, you can specify both patterns
+until you upgrade to v3.12.10 or later, to work around the issue of having to
+match both the normalized endpoint and full request URL.
+
+See [Security options](../../operations/security/security-options.md#url-access)
+for detailed examples.
+
+### Replication startup option obsolete
+
+<small>Removed in: v3.12.11</small>
+
+The `--replication.auto-start` startup option related to the unused replication
+functionality that has been removed in v3.12.10 is now obsolete. You can still
+specify the option without raising an error, but it no longer has any effect.
 
 ## Client tools
 
 ### arangodump
 
-This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
+This following startup options of _arangodump_ are obsolete from ArangoDB 3.12 on:
 
 #### Obsolete envelope and tick startup options
 
@@ -1300,9 +1641,9 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
   This was useful for the MMFiles storage engine, where dumps could also include 
   document removals. With the RocksDB storage engine, the envelope only caused 
   overhead and increased the size of the dumps. The default value of `--envelope`
-  was changed to false in ArangoDB 3.9 already, so by default all arangodump 
+  was changed to false in ArangoDB 3.9 already, so by default all _arangodump_ 
   invocations since then created non-envelope dumps. With the option being removed 
-  now, all arangodump invocations will unconditionally create non-envelope dumps.
+  now, all _arangodump_ invocations will unconditionally create non-envelope dumps.
 - `--tick-start`: setting this option allowed to restrict the dumped data to some 
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
@@ -1324,7 +1665,7 @@ to a high value.
 
 #### Automatic file format detection
 
-*arangoimport* now automatically detects the type of the import file based on
+_arangoimport_ now automatically detects the type of the import file based on
 the file extension. The default value of the `--type` startup option has been
 changed from `json` to `auto`. You might need to explicitly specify the `--type`
 in exceptional cases now whereas it was not necessary to do so previously.
@@ -1337,10 +1678,10 @@ The default value of the `--batch-size` startup option has been lowered from
 8 MiB to 4 MiB to avoid potential resource limits, in particular when importing
 to smart edge collections.
 
-### jslint feature in arangosh removed
+### jslint feature in *arangosh* removed
 
 The `--jslint` startup option and all of the underlying functionality has been
-removed from arangosh. The feature was mainly for internal purposes.
+removed from _arangosh_. The feature was mainly for internal purposes.
 
 ### arangobench
 
@@ -1348,6 +1689,6 @@ removed from arangosh. The feature was mainly for internal purposes.
 
 <small>Removed in: v3.12.3</small>
 
-The `--batch-size` startup option is now ignored by arangobench and no longer
+The `--batch-size` startup option is now ignored by _arangobench_ and no longer
 has an effect. It allowed you to specify the number of operations to issue in
 one batch but the batch request API has been removed on the server-side.

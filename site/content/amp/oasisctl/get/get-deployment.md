@@ -1,7 +1,8 @@
 ---
-title: Get Deployment with `oasisctl`
+title: Get Deployment with _oasisctl_
 menuTitle: Get Deployment
 weight: 7
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a deployment the authenticated user has access to

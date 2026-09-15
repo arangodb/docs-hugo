@@ -8,7 +8,7 @@ description: >-
 ---
 The Kubernetes operator lets you do the following:
 
-- Manage deployments of the ArangoDB database
+- Manage deployments of the ArangoDB database system
 - Manage backups
 - Provide `PersistentVolumes` on local storage of your nodes for optimal storage performance
 

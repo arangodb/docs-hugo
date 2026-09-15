@@ -1,18 +1,19 @@
 ---
-title: Auditing
+title: Auditing in Spring Data ArangoDB
 menuTitle: Auditing
 weight: 40
-description: ''
+description: >-
+  How to use the auditing feature of the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/auditing
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/auditing
 ---
 Spring Data ArangoDB provides basic auditing functionality

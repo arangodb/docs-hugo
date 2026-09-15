@@ -1,5 +1,5 @@
 ---
-title: Upgrades and Versioning in the Arango Managed Platform (AMP)
+title: Upgrades and Versioning in AMP
 menuTitle: Upgrades and Versioning
 weight: 10
 description: >-

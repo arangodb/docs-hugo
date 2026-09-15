@@ -1,5 +1,5 @@
 ---
-title: Single Sign-On (SSO) in the Arango Managed Platform (AMP)
+title: Single Sign-On (SSO) in AMP
 menuTitle: Single Sign-On
 weight: 10
 description: >-

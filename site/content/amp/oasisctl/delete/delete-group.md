@@ -1,7 +1,8 @@
 ---
-title: Delete Group with `oasisctl`
+title: Delete Group with _oasisctl_
 menuTitle: Delete Group
 weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a group the authenticated user has access to

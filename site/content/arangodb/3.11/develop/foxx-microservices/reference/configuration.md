@@ -2,7 +2,9 @@
 title: Foxx configuration
 menuTitle: Configuration
 weight: 15
-description: ''
+description: >-
+  Define configuration parameters in the service manifest to make your Foxx
+  services reusable
 ---
 Foxx services can define configuration parameters
 [in the service manifest](service-manifest.md) to make them more re-usable.
@@ -21,7 +23,7 @@ The parameter definition can have the following properties:
 
 - **description**: `string`
 
-  Human readable description of the parameter.
+  Human-readable description of the parameter.
 
 - **type**: `string` (Default: `"string"`)
 
@@ -43,7 +45,7 @@ The parameter definition can have the following properties:
     any well-formed JSON value.
 
   - `"password"`:
-    like *string* but will be displayed as a masked input field in the web web interface.
+    like *string* but will be displayed as a masked input field in the web interface.
 
 - **default**: `any`
 

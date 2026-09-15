@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Package your application code for deployment in Container Manager
 ---
-
 Before deploying a code-based service via the [Web Interface](web-interface/)
 or [API](deploy-api/), you need to package your application as a `.tar.gz`
 archive containing your code and dependencies.
@@ -48,6 +47,7 @@ follow the steps below.
 1. Create a project structure with your application code and entry point script.
 2. Add a dependency configuration file:
    - For Python: Create a `pyproject.toml` with your dependencies and Python version requirement.
+   - For Node.js: Create a `package.json` with your dependencies and a start script.
 3. Use `uv` for Python projects (recommended):
    - Ensure your `pyproject.toml` specifies `requires-python` matching your target runtime
      (e.g., `">=3.12"` for the `py12*` base images).
@@ -64,7 +64,7 @@ follow the steps below.
 ## Example: Python Project
 
 **Project structure:**
-```
+```text
 myproject/
 ├── pyproject.toml
 ├── main.py
@@ -81,6 +81,39 @@ dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.32.0",
 ]
+```
+
+**Create the archive:**
+```bash
+tar -czf myservice.tar.gz myproject/
+```
+
+## Example: Node.js Project
+
+**Project structure:**
+```text
+myproject/
+├── package.json
+├── index.js
+└── config.json
+```
+
+**Example `package.json`:**
+```json
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "express": "^5.0.0"
+  }
+}
 ```
 
 **Create the archive:**

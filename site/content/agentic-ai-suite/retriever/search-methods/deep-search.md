@@ -1,11 +1,10 @@
 ---
-title: Deep Search
+title: Retriever Deep Search
 menuTitle: Deep Search
 description: >-
   LLM-orchestrated multi-step research for complex queries requiring thorough analysis
 weight: 25
 ---
-
 ## Overview
 
 Deep Search uses an LLM planner to break complex queries into multiple steps
@@ -20,13 +19,25 @@ There are two Deep Search modes depending on the query type:
 - **Custom Deep Search** (`query_type: 4` + `use_llm_planner: true`): Uses
   [Custom Retriever](custom-retriever.md) tools, with automatic tool selection.
 
+You can also send [`"mode": "DEEP_SEARCH"`](../parameters.md#mode) instead of
+setting `query_type` and `use_llm_planner`. The service then uses Custom
+Retriever tools when they are available, and Local Search otherwise.
+
 {{< diagram src="/images/retriever-deep-search-architecture.png" 
            alt="Deep Search Architecture showing LLM-guided research process" >}}
 
 {{< info >}}
 Deep Search is also available via the
-[web interface](../../graphrag/web-interface.md).
+[web interface](../../autograph/web-interface.md).
 {{< /info >}}
+
+{{< warning >}}
+Standard Deep Search is not supported on a **VectorRAG** partition, because its
+Local Search retriever needs entities and communities that VectorRAG does not
+build. Use Custom Deep Search with tools that search chunks, or
+[Instant Search](unified-search.md). See
+[VectorRAG and FullGraphRAG partitions](_index.md#vectorrag-and-fullgraphrag-partitions).
+{{< /warning >}}
 
 ## Standard Deep Search
 
@@ -62,7 +73,7 @@ search across multiple steps.
 ```
 
 You can optionally provide `custom_tools` to limit which tools are available.
-If omitted, all tools are auto-loaded from the Tools collection.
+If omitted, all tools are auto-loaded from the `Tools` collection.
 
 ## How Deep Search works
 
@@ -79,7 +90,7 @@ Both modes follow the same pipeline:
    - **Pass 2**: If no `custom_retriever` tool matches, LLM picks from
      service-retriever tools (`local`, `global`, `unified`).
    - If `custom_tools` is not provided, the system auto-loads all supported
-     tool types from the Tools collection.
+     tool types from the `Tools` collection.
 
    The selected tool is used for all steps in the plan.
 

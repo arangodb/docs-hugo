@@ -9,7 +9,7 @@ aliases:
   - ../arangodb/3.11/develop/drivers
   - ../arangodb/3.12/develop/drivers
   - ../arangodb/stable/develop/drivers
-  - ../arangodb/4.0/develop/drivers
+  - ../arangodb/4.x/develop/drivers
   - ../arangodb/devel/develop/drivers
 ---
 Database drivers, also called connectors, adapters, or client libraries, let you

@@ -1,5 +1,5 @@
 ---
-title: Install and upgrade the Arango Contextual Data Platform (v4.0)
+title: Install and upgrade the data platform
 menuTitle: Install & Upgrade
 weight: 25
 description: >-

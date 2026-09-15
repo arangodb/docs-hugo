@@ -1,18 +1,19 @@
 ---
-title: Relations
+title: Relations in Spring Data ArangoDB
 menuTitle: Relations
 weight: 20
-description: ''
+description: >-
+  How to use graph relations in the Spring Data ArangoDB integration
 aliases:
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-3/mapping/relations
   - ../../../../arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
   - ../../../../arangodb/3.12/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
   - ../../../../arangodb/stable/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
-  - ../../../../arangodb/4.0/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
+  - ../../../../arangodb/4.x/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
   - ../../../../arangodb/devel/develop/integrations/spring-data-arangodb/reference-version-4/mapping/relations
 ---
 With the annotation `@Relations` applied on a collection or array field in a

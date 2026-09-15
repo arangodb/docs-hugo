@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for documents
+title: Document HTTP API
 menuTitle: Documents
 weight: 30
 description: >-
-  The HTTP API for documents lets you create, read, update, and delete documents
+  The HTTP interface for documents lets you create, read, update, and delete documents
   in collections, either one or multiple at a time
 ---
 The basic operations for documents are mapped to the standard HTTP methods:
@@ -442,7 +442,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -492,6 +492,10 @@ paths:
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]
@@ -2009,7 +2013,7 @@ paths:
           description: |
             Whether to additionally include the complete previous document under the
             `old` attribute in the result. Only available if the `overwriteMode`
-            parameter is to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
+            parameter is set to `"update"` or `"replace"`, or if `overwrite` is set to `true`.
           schema:
             type: boolean
             default: false
@@ -2060,6 +2064,10 @@ paths:
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
           schema:
             type: string
             enum: [ignore, replace, update, conflict]
