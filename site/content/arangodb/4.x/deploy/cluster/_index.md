@@ -95,7 +95,7 @@ which are suitable for different usage scenarios:
   _Coordinators_ and all expose the same view to the data store. _Agents_
   can run on separate, less powerful machines.
 - You can deploy more _Coordinators_ than _DB-Servers_. When your queries are
-  CPU-bound, you can greatly benefit from having more Coordinators.
+  CPU-bound, you can greatly benefit from having more _Coordinators_.
 - You can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
   is needed and the query performance is the lesser bottleneck.
 - You can deploy a _Coordinator_ on each machine where an application

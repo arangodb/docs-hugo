@@ -346,9 +346,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
+                        - `"tier"`: Consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -646,9 +646,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
+                          - `"tier"`: Consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -1193,9 +1193,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
+                          - `"tier"`: Consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -1661,9 +1661,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
+                        - `"tier"`: Consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -1939,9 +1939,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
+                          - `"tier"`: Consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -2314,9 +2314,9 @@ paths:
                         The segment candidates for the "consolidation" operation are selected based
                         upon several possible configurable formulas as defined by their types.
                         The currently supported types are:
-                        - `"tier"`: consolidate based on segment byte size skew and live
+                        - `"tier"`: Consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes. 
-                        - `"bytes_accum"`: consolidate if and only if
+                        - `"bytes_accum"`: Consolidate if and only if
                           `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
@@ -2591,9 +2591,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
+                          - `"tier"`: Consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
@@ -3033,9 +3033,9 @@ paths:
                           The segment candidates for the "consolidation" operation are selected based
                           upon several possible configurable formulas as defined by their types.
                           The currently supported types are:
-                          - `"tier"`: consolidate based on segment byte size skew and live
+                          - `"tier"`: Consolidate based on segment byte size skew and live
                             document count as dictated by the customization attributes.
-                          - `"bytes_accum"`: consolidate if and only if
+                          - `"bytes_accum"`: Consolidate if and only if
                             `{threshold} > (segment_bytes + sum_of_merge_candidate_segment_bytes) / all_segment_bytes`
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.

@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for inverted indexes
+title: Inverted index HTTP API
 menuTitle: Inverted
 weight: 10
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `inverted`
 ---
 ## Create an inverted index
 
@@ -580,7 +581,7 @@ paths:
                         upon several possible configurable formulas as defined by their types.
                         The supported types are:
 
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: Consolidate based on segment byte size and live
                           document count as dictated by the customization attributes.
                       type: string
                       default: tier

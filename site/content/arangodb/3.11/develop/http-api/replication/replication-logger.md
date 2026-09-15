@@ -1,8 +1,11 @@
 ---
-title: Replication logger commands
+title: Replication logger commands of the HTTP API
 menuTitle: Replication Logger
 weight: 10
-description: ''
+description: >-
+  The replication logger commands let you query the state of the logger,
+  incrementally fetch the latest changes from the write-ahead log, and check
+  what range of changes is available
 ---
 All data-modification operations are written to the server's write-ahead log and are
 not handled by a separate replication logger.

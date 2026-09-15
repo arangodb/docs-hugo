@@ -887,16 +887,17 @@ no `FilterNode` remains for it.
 
 ### Filtering on the path vs. filtering on nodes or edges
 
-Filtering on the path influences the Iteration on your graph. If certain conditions 
-aren't met, the traversal may stop continuing along this path.
+Filters on the emitted path (`p` variable) influence how the graph is traversed.
+If a path doesn't fulfill a condition, the traversal may stop following this
+path and not explore it any further.
 
-In contrast filters on node or edge only express whether you're interested in the actual value of these
-documents. Thus, it influences the list of returned documents (if you return v or e) similar 
-as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
-two nodes of these paths has to be executed - you just won't see them in your result array. 
-
-Similar are filters on nodes or edges - the traverser has to walk along these nodes, since 
-you may be interested in documents further down the path.
+Filters on the emitted node (`v` variable) or edge (`e` variable) only
+determine whether the current node and edge become part of the result.
+The traversal walks past them either way, because vertices and edges further
+down the path may still match. This is comparable to setting a minimum traversal
+depth greater than zero. With a minimum depth of `2`, the traversal still has to
+walk over the first two vertices of every path, you just don't see them in the
+result.
 
 ### Examples
 

@@ -157,7 +157,7 @@ Now, a request like this succeeds and returns an empty array as response.
 
 ### Endpoint return value changes
 
-- All collections in ArangoDB are now always in the `loaded` state. APIs return
+- All collections in ArangoDB are now always in the `loaded` state. APIs that
   return a collection's status will now return it as `loaded`, unconditionally.
 
 - The HTTP endpoints for loading and unloading collections (i.e. HTTP PUT

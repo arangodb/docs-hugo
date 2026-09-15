@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from
@@ -462,7 +464,7 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: consolidate based on segment byte size skew and live document count
+    - `"tier"`: Consolidate based on segment byte size skew and live document count
       as dictated by the customization attributes.
 
     {{< warning >}}

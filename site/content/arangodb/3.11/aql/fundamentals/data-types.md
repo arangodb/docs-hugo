@@ -69,6 +69,7 @@ The following notations are invalid and will throw a syntax error:
 All numeric values are treated as 64-bit signed integer or 64-bit
 double-precision floating point values internally. The internal floating-point
 format used is IEEE 754.
+
 {{< warning >}}
 In _arangosh_ and server-side JavaScript contexts like Foxx and user-defined
 AQL functions, when returning numeric integer values to JavaScript that leave

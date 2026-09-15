@@ -622,7 +622,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `name` attribute is missing or has an invalid value.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/properties`.
           content:
             application/json:
               schema:
@@ -1085,7 +1086,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/count`.
         '404':
           description: |
             The collection cannot be found.
@@ -1579,7 +1581,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/figures`.
           content:
             application/json:
               schema:
@@ -2266,7 +2269,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/shards`.
           content:
             application/json:
               schema:
@@ -2754,7 +2758,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/revision`.
           content:
             application/json:
               schema:
@@ -2981,8 +2986,8 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/checksum`.
         '404':
           description: |
             If the collection is unknown, then a *HTTP 404*
@@ -5397,7 +5402,7 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter or the `name` attribute is missing.
+            The `collection-name` or the `name` attribute is missing.
           content:
             application/json:
               schema:

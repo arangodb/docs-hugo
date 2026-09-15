@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for authentication
+title: Authentication HTTP API
 menuTitle: Authentication
 weight: 10
 description: >-
@@ -10,11 +10,11 @@ description: >-
 Client authentication can be achieved by using the `Authorization` HTTP header
 in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
 
-Authentication is turned on by default for all internal database APIs but
-turned off for custom Foxx apps. To toggle authentication for incoming
+Authentication is enabled by default for all internal database APIs but
+disabled for custom Foxx apps. To toggle authentication for incoming
 requests to the internal database APIs, use the
 [`--server.authentication`](../../components/arangodb-server/options.md#--serverauthentication)
-startup option. This option is turned on by default so authentication is
+startup option. This option is enabled by default so authentication is
 required for the database APIs.
 
 {{< security >}}
