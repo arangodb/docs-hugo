@@ -411,24 +411,6 @@ The roles below are described following this pattern:
 - `ml.mlservices.update`
 - `ml.mlservicessize.list`
 
-**Notebook Administrator** (`notebook-admin`):
-- `notebook.model.list`
-- `notebook.notebook.create`
-- `notebook.notebook.delete`
-- `notebook.notebook.get`
-- `notebook.notebook.list`
-- `notebook.notebook.pause`
-- `notebook.notebook.resume`
-- `notebook.notebook.update`
-
-**Notebook Executor** (`notebook-executor`):
-- `notebook.notebook.execute`
-
-**Notebook Viewer** (`notebook-viewer`):
-- `notebook.model.list`
-- `notebook.notebook.get`
-- `notebook.notebook.list`
-
 **Organization Administrator** (`organization-admin`):
 - `billing.organization.get`
 - `resourcemanager.organization-invite.create`
@@ -590,8 +572,6 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `monitoring`        | `logs`                        | `get`
 | `monitoring`        | `metrics`                     | `get`
 | `network`           | `privateendpointservice`      | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
-| `notebook`          | `model`                       | `list`
-| `notebook`          | `notebook`                    | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
 | `notification`      | `deployment-notification`     | `list`, `mark-as-read`, `mark-as-unread`
 | `prepaid`           | `prepaiddeployment`           | `get`, `list`
 | `replication`       | `deploymentmigration`         | `create`, `delete`, `get`
