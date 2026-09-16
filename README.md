@@ -434,6 +434,91 @@ active tab of each group.
 The parameter for the `tab` shortcode is the label to display for the tab in the
 tab panel. Tab groups using the same identifier should use the same tab labels.
 
+#### API version tabs
+
+Display multiple versions of the same HTTP API endpoint in a tabbed interface.
+Only use this if an endpoint has to be documented separately per API version
+because it actually differs between them, like a changed path or request body
+between API v0 and API v1. If a single description covers all API versions, use
+a plain `openapi` code block.
+
+````markdown
+## Set the AQL query results cache configuration
+
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v0]
+---
+paths:
+  /_db/{database-name}/_api/query-cache/properties:
+    put:
+      operationId: setQueryCacheProperties
+      # ...
+```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_arango/v1/_db/_system/_api/query-cache/properties:
+    put:
+      operationId: setQueryCacheProperties
+      # ...
+```
+
+{{< api-versions-end >}}
+````
+
+Every pane still needs the `apiVersions` front matter in its `openapi` code
+block. The shortcodes only create the tab panel, whereas the front matter alone
+decides which OpenAPI file an endpoint ends up in, see
+[Configure the OpenAPI metadata and API versions](#configure-the-openapi-metadata-and-api-versions).
+You can put `curl` examples into the panes as well.
+
+Unlike with the `tabs` shortcode, the panes are not nested inside the shortcode.
+`{{< api-version >}}` and `{{< api-versions-end >}}` are markers that only emit
+the surrounding HTML elements so that the `openapi` code blocks stay part of the
+page's Markdown. Nested inside a shortcode, Hugo would render them with
+`RenderString` only after the Markdown pass of the page is done, with two
+consequences:
+
+- The endpoint summaries are wrong. The heading render hook stores every
+  headline it renders, and the `openapi` render hook reads the most recently
+  stored one to use it as the endpoint summary and as the prefix of the anchor
+  IDs. A nested code block is rendered after the Markdown pass, however, so the
+  stored headline is the last one of the entire page by then.
+
+- Admonitions in endpoint descriptions break. Hugo removes one level of escaping
+  from a `{{</* warning */>}}` and executes it, leaving an internal placeholder
+  like `HAHAHUGOSHORTCODE1s0HBHB` in the description that is sent to
+  _arangoproxy_, so that the placeholder ends up in the generated `openapi.json`
+  instead of the admonition. The placeholders are numbered per page render,
+  which makes a version and its alias (like `3.12` and `stable`) send different
+  descriptions for the same endpoint, and the toolchain reports it as a
+  duplicate. Alias pages don't call _arangoproxy_ anymore, so the duplicate
+  error no longer occurs, but the admonition would still not render correctly.
+
+The API versions have to be listed in the opening `{{< api-versions >}}`
+shortcode because it renders before the panes exist, and the tab buttons need to
+precede the tab panels in the HTML so that keyboard and screen reader users
+reach them first. `{{< api-version >}}` takes its label from this list, in
+order. No group identifier is needed as all version tabs share a single group,
+so that selecting an API version switches every endpoint on the page, and is
+remembered across pages.
+
+The build fails if the number of panes doesn't match the number of declared
+versions, if a marker is used outside of a group, or if a group is still open
+when the next one starts. A missing `{{< api-versions-end >}}` at the end of a
+page cannot be detected, however, because no further marker follows that could
+report it. It results in unclosed HTML elements.
+
 #### Images
 
 Use the native Markdown syntax for including images, using a relative file path:
