@@ -156,7 +156,7 @@ that other services can still consume the history.
 | `metadata` | string | Response metadata JSON, when `include_metadata` was `true`. |
 | `queryType` | string | `GLOBAL`, `LOCAL`, `UNIFIED`, or `CUSTOM`. |
 | `model` | string | The chat model used for this query. |
-| `retrieverServiceId` | string | Identifier of the retriever service instance. |
+| `retrieverServiceId` | string | Identifier of the AutoRAG service instance. |
 | `status` | string | `streaming`, `complete`, or `error`. |
 | `error` | string | Error message, populated only when `status` is `error`. |
 | `durationMs` | integer | Total query duration in milliseconds. |

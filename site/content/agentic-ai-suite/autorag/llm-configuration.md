@@ -345,7 +345,7 @@ The service will validate your configuration and reject any unsupported combinat
 ## Update the model configuration at runtime
 
 You can change the chat and embedding provider, model, secret profile, and API
-URL of a running retriever without reinstalling or restarting the service:
+URL of a running AutoRAG service without reinstalling or restarting it:
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/projects/{project}/model-config/credentials" >}}
 
@@ -367,7 +367,7 @@ URL of a running retriever without reinstalling or restarting the service:
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `project` | string | Yes | | Project name. It must match the project this retriever belongs to. |
+| `project` | string | Yes | | Project name. It must match the project this AutoRAG service belongs to. |
 | `chat_api_provider` | string | Yes | | `"openai"` or `"custom"`. |
 | `embedding_api_provider` | string | Yes | | `"openai"` or `"custom"`. It can differ from `chat_api_provider`. |
 | `chat_model` | string | Yes | | Model name for chat. |
@@ -390,7 +390,7 @@ you pair it with:
 {{< tip >}}
 Send the URL explicitly whenever you change the provider, including when you
 change it to `openai`. If you leave the field out, the service keeps the
-endpoint of the previous provider: a retriever that you move from Azure to
+endpoint of the previous provider: a service that you move from Azure to
 `openai` would still send its requests to the Azure URL.
 
 An empty string is not a substitute: it switches the running service to the
@@ -407,8 +407,8 @@ restart brings the old endpoint back.
 2. **The new settings are saved**: Once the check passes, the settings are
    stored with your project, so they still apply the next time the service
    restarts.
-3. **The service switches over**: The retriever starts using the new settings
-   right away. You do not need to restart or reinstall it.
+3. **The service switches over**: It starts using the new settings right away.
+   You do not need to restart or reinstall it.
 
 ### Response
 
@@ -428,7 +428,7 @@ restart brings the old endpoint back.
 |-------|------|-------------|
 | `applied` | boolean | `true` if the new settings passed the check and were saved |
 | `valid` | boolean | `true` if all checks passed |
-| `appliedToRunningPod` | boolean | `true` if the running retriever picked up the settings without a restart |
+| `appliedToRunningPod` | boolean | `true` if the running service picked up the settings without a restart |
 | `keyStatus` | string | `"valid"`, `"invalid"`, `"expired"`, `"rate_limited"`, `"insufficient_quota"`, or empty when the endpoint could not be reached or the check did not run |
 | `field` | string | On failure: which request field caused the error |
 | `errorCode` | string | On failure: machine-readable error code |
@@ -441,7 +441,7 @@ the update went through.
 {{< /warning >}}
 
 If `applied` is `true` but `appliedToRunningPod` is `false`, the new settings
-were saved but the running retriever could not pick them up. It keeps answering
+were saved but the running service could not pick them up. It keeps answering
 queries with the previous settings until it restarts.
 
 On failure, `errorCode` names the reason and `field` names the request field to
@@ -450,9 +450,9 @@ correct. For the full list, see
 
 The endpoint accepts the same `openai` and `custom` combinations as a fresh
 install, described in
-[Supported Provider Combinations](#supported-provider-combinations). A retriever
-running on Triton cannot be updated this way; its models are set at install time
-only.
+[Supported Provider Combinations](#supported-provider-combinations). An AutoRAG
+service running on Triton cannot be updated this way; its models are set at
+install time only.
 
 To override the chat model for a single query instead of for the whole service,
 use the [`model` query parameter](parameters.md#model).

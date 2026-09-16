@@ -68,7 +68,7 @@ correct.
 
 | `errorCode` | Meaning |
 |-------------|---------|
-| `PROJECT_MISMATCH` | The `project` in the request is not the project this retriever belongs to. |
+| `PROJECT_MISMATCH` | The `project` in the request is not the project this AutoRAG service belongs to. |
 | `PROVIDER_REQUIRED` | A provider field is empty. |
 | `INVALID_PROVIDER` | A provider field is not `openai`, `custom`, or `triton`. |
 | `PROVIDER_MISMATCH` | The chat and embedding providers are not compatible with each other, for example one is `triton` and the other is not. |
@@ -82,7 +82,7 @@ correct.
 
 | `errorCode` | Meaning |
 |-------------|---------|
-| `SERVICE_NOT_REGISTERED` | This retriever is not recorded in the project, so there is nothing to update. |
+| `SERVICE_NOT_REGISTERED` | This AutoRAG service is not recorded in the project, so there is nothing to update. |
 | `METADATA_CLIENT_UNAVAILABLE` | The service cannot reach the store that holds the project settings. |
 | `METADATA_WRITE_TIMEOUT` | Saving the settings took too long. |
 | `METADATA_WRITE_FAILED` | Saving the settings failed. |

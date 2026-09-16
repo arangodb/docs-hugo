@@ -53,7 +53,7 @@ endpoints.
 | POST | `/v1/graphanalytics` | Deploy a Graph Analytics service |
 | POST | `/v1/graphrag` | Deploy a GraphRAG service (legacy, superseded by AutoGraph) |
 | POST | `/v1/graphragimporter` | Deploy an Importer service |
-| POST | `/v1/graphragretriever` | Deploy an AutoRAG (Retriever) service |
+| POST | `/v1/graphragretriever` | Deploy an AutoRAG service |
 | POST | `/v1/autograph` | Deploy an AutoGraph service |
 | POST | `/v1/llmhost` | Deploy an LLM Host service |
 | POST | `/v1/notebook` | Deploy a Notebook service |

@@ -16,9 +16,9 @@ Retriever for domain-specific search on any collection.
 {{< info >}}
 AutoRAG was previously called the **Retriever service**. The former name still
 appears in the API surface, for example in the `graphragretriever` deployment
-endpoint and in the `/graphrag/retriever/` URL prefix of the query API. The
-service that AutoRAG deploys and that answers a query is still called a
-*retriever*.
+endpoint and in the `/graphrag/retriever/` URL prefix of the query API, and in
+[AutoGraph Studio](../autograph/web-interface.md#deploy-an-autorag-retriever),
+which calls the services it deploys *retrievers*.
 {{< /info >}}
 
 ## When to use AutoRAG

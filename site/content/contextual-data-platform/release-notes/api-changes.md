@@ -19,7 +19,7 @@ across that span, not only the newest service release:
 |---------|-------------------|----------------------|
 | [AutoGraph](#autograph-v0013-to-v0016) | v0.0.12 | v0.0.16 |
 | [Importer](#importer-v0030-to-v0034) | v0.0.29 | v0.0.34 |
-| [AutoRAG](#autorag-v0018-to-v0020) | v0.0.17 | v0.0.20 |
+| [AutoRAG](#autorag-formerly-retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
 | [File Manager](#file-manager-v0019-to-v0022) | v0.0.18 | v0.0.22 |
 
 ### AutoGraph (v0.0.13 to v0.0.16)
@@ -271,8 +271,8 @@ The share is applied to the ranked cluster list as
 `round(target_percentage / 100.0 * cluster_count)`, so a project with a single
 cluster gets **zero** FullGraphRAG clusters at `moderate` and below. Check the
 assigned strategies with `GET /v1/rag-strategizer/strategy` before you query: a
-VectorRAG partition has no entities and no communities, and cannot serve the
-retriever's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
+VectorRAG partition has no entities and no communities, and cannot serve
+AutoRAG's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
 
 **New request options**
 
@@ -649,7 +649,7 @@ The limits the Importer enforces on concurrency, request size, chunking, images,
 and timeouts are now documented. See
 [Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
 
-### AutoRAG (v0.0.18 to v0.0.20)
+### AutoRAG, formerly Retriever (v0.0.18 to v0.0.20)
 
 {{< tag "Agentic AI Suite" >}}
 
@@ -700,9 +700,9 @@ already deleted, is not an error: the response is HTTP `200` with
 #### Runtime model configuration
 
 `PUT /v1/projects/{project}/model-config/credentials` changes the chat and
-embedding provider, model, secret profile, and API URL of a running retriever.
-The settings are validated, persisted in the project metadata, and applied to
-the running pod right away, so no restart or reinstall is needed.
+embedding provider, model, secret profile, and API URL of a running AutoRAG
+service. The settings are validated, persisted in the project metadata, and
+applied to the running pod right away, so no restart or reinstall is needed.
 
 - Validation issues one small chat request and one small embeddings request
   instead of looking the model up in the provider's `GET /v1/models` catalog.
