@@ -227,6 +227,7 @@
 /agentic-ai-suite/graphrag/tutorial-notebook/                                   /agentic-ai-suite/autograph/web-interface/                      301
 /agentic-ai-suite/graphrag/                                                     /agentic-ai-suite/autograph/                                    301
 /agentic-ai-suite/graphrag/*                                                    /agentic-ai-suite/autograph/                                    301
+/amp/notebooks/                                                                 /agentic-ai-suite/notebook-servers/                             301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
@@ -628,7 +629,7 @@
 /docs/3.10/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.10/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.10/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.10/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.10/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.10/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.10/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.10/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -1374,7 +1375,7 @@
 /docs/stable/arangograph/deployments.html                                                  /amp/deployments/                                                                         301
 /docs/stable/arangograph/private-endpoints.html                                            /amp/deployments/private-endpoints/                                                       301
 /docs/stable/arangograph/upgrades-versioning.html                                          /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/stable/arangograph/notebooks.html                                                    /amp/notebooks/                                                                           301
+/docs/stable/arangograph/notebooks.html                                                    /agentic-ai-suite/notebook-servers/                                                       301
 /docs/stable/arangograph/cloud-migration-tool.html                                         /amp/                                                                                     301
 /docs/stable/arangograph/my-account.html                                                   /amp/my-account/                                                                          301
 /docs/stable/arangograph/monitoring-metrics.html                                           /amp/monitoring-and-metrics/                                                              301
@@ -2121,7 +2122,7 @@
 /docs/3.11/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.11/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.11/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.11/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.11/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.11/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.11/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.11/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -2863,7 +2864,7 @@
 /docs/devel/arangograph/deployments.html                                                   /amp/deployments/                                                                         301
 /docs/devel/arangograph/private-endpoints.html                                             /amp/deployments/private-endpoints/                                                       301
 /docs/devel/arangograph/upgrades-versioning.html                                           /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/devel/arangograph/notebooks.html                                                     /amp/notebooks/                                                                           301
+/docs/devel/arangograph/notebooks.html                                                     /agentic-ai-suite/notebook-servers/                                                       301
 /docs/devel/arangograph/cloud-migration-tool.html                                          /amp/                                                                                     301
 /docs/devel/arangograph/my-account.html                                                    /amp/my-account/                                                                          301
 /docs/devel/arangograph/monitoring-metrics.html                                            /amp/monitoring-and-metrics/                                                              301
@@ -3607,7 +3608,7 @@
 /docs/3.12/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.12/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.12/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.12/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.12/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.12/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.12/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.12/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301

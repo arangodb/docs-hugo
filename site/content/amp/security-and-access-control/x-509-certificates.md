@@ -47,10 +47,6 @@ Each AMP deployment is accessible on different port numbers:
 - default port `8529`, `443`
 - high port `18529`
 
-Each AMP Notebook is accessible on different port numbers:
-- default port `8840`, `443`
-- high port `18840`
-
 Metrics are accessible on different port numbers:
 - default port `8829`, `443`
 - high port `18829`
