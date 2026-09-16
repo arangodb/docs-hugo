@@ -131,8 +131,8 @@ Specify which traversal algorithm to use (string):
   first returns all paths from *min* depth to *max* depth for one node at
   depth 1, then for the next node at depth 1, and so on.
 
-- `"weighted"`: The traversal is a weighted traversal
-  (introduced in v3.8.0). Paths are enumerated with increasing cost.
+- `"weighted"`: The traversal is a weighted traversal.
+  Paths are enumerated with increasing cost.
   The order of paths having the same cost is non-deterministic.
 
   You can define what attribute to use as the cost of an edge with the
@@ -231,7 +231,7 @@ versus the whole document.
 
 #### `indexHint`
 
-<small>Introduced in v3.12.1</small>
+<small>Introduced in: v3.12.1</small>
 
 You can provide index hints for traversals to let the optimizer prefer
 the [vertex-centric indexes](../../indexes-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
@@ -403,7 +403,7 @@ search - unless you use named graphs that define all node and edge collections
 that belong to them and the graph data is consistent.
 
 If you use anonymous graphs / collection sets for graph queries, which node
-collections need to be loaded by the graph engine can deduced automatically if
+collections need to be loaded by the graph engine can be deduced automatically if
 there is a named graph with a matching edge collection in its edge definitions
 (introduced in v3.12.6). Edge collections are always declared explicitly in
 queries, directly or via referencing a named graph.
@@ -887,16 +887,17 @@ no `FilterNode` remains for it.
 
 ### Filtering on the path vs. filtering on nodes or edges
 
-Filtering on the path influences the Iteration on your graph. If certain conditions 
-aren't met, the traversal may stop continuing along this path.
+Filters on the emitted path (`p` variable) influence how the graph is traversed.
+If a path doesn't fulfill a condition, the traversal may stop following this
+path and not explore it any further.
 
-In contrast filters on node or edge only express whether you're interested in the actual value of these
-documents. Thus, it influences the list of returned documents (if you return v or e) similar 
-as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
-two nodes of these paths has to be executed - you just won't see them in your result array. 
-
-Similar are filters on nodes or edges - the traverser has to walk along these nodes, since 
-you may be interested in documents further down the path.
+Filters on the emitted node (`v` variable) or edge (`e` variable) only
+determine whether the current node and edge become part of the result.
+The traversal walks past them either way, because vertices and edges further
+down the path may still match. This is comparable to setting a minimum traversal
+depth greater than zero. With a minimum depth of `2`, the traversal still has to
+walk over the first two vertices of every path, you just don't see them in the
+result.
 
 ### Examples
 

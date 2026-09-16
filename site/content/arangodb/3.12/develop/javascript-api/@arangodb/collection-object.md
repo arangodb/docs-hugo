@@ -97,7 +97,7 @@ coll.drop({ isSystem: true });
 Returns an object containing statistics about the collection.
 
 Setting `details` to `true` returns extended storage engine-specific
-details to the figures (introduced in v3.8.0). The details are intended for
+details to the figures. The details are intended for
 debugging ArangoDB itself and their format is subject to change. By default,
 `details` is set to `false`, so no details are returned and the behavior is
 identical to previous versions of ArangoDB.
@@ -1005,6 +1005,11 @@ used to specify the following options:
     return a unique constraint violation error so that the insert operation
     fails. This is also the default behavior in case the overwrite mode is
     not set, and the `overwrite` flag is `false` or not set either.
+
+  Note that operations with `overwriteMode` other than `"conflict"` require
+  a `_key` attribute in the request payload, therefore they can only be
+  performed on collections sharded by `_key`.
+
 - `keepNull`: The optional `keepNull` parameter can be used to modify
   the behavior when handling `null` values. Normally, `null` values
   are stored in the database. By setting the `keepNull` parameter to

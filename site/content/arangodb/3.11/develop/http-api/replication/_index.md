@@ -1,10 +1,11 @@
 ---
-title: HTTP interface for replication
+title: Replication HTTP API
 menuTitle: Replication
 weight: 95
 description: >-
-  The Replication HTTP API is used internally for synchronizing the nodes in
-  distributed ArangoDB setups, as well as by users to control the replication
+  The replication HTTP interface lets you fetch the initial data as well as the
+  continuous changes from a Leader, query its state, and administer the
+  replication applier of a Follower
 ---
 The replication architecture and components are described in more details in 
 [Replication](../../../deploy/architecture/replication.md).

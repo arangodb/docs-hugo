@@ -2,7 +2,9 @@
 title: _arangodump_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to create database dumps of an ArangoDB server and use encryption,
+  compression, multi-threading, and other features of _arangodump_
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 
@@ -211,12 +213,11 @@ RocksDB encryption-at-rest feature.
 
 ## Compression
 
-`--compress-output`
+You can optionally store data in a compressed format to save space on disk with
+the `--compress-output` startup option. It cannot be used together with
+[Encryption](#encryption).
 
-Data can optionally be dumped in a compressed format to save space on disk.
-The `--compress-output` option cannot be used together with [Encryption](#encryption).
-
-If compression is enabled, no `.data.json` files are written. Instead, the
+If output compression is enabled, no `.data.json` files are written. Instead, the
 collection data gets compressed using the Gzip algorithm and for each collection
 a `.data.json.gz` file is written. Metadata files such as `.structure.json` and
 `.view.json` do not get compressed.
@@ -233,8 +234,6 @@ arangorestore --input-directory "dump"
 ```
 
 ## Dump output format
-
-<small>Introduced in: v3.8.0</small>
 
 Since its inception, _arangodump_ wrapped each dumped document into an extra
 JSON envelope, such as follows:

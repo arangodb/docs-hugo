@@ -16,11 +16,13 @@ following line in the `[server]` section:
 authentication = true
 ```
 
-This will make ArangoDB require authentication for every request (including
-requests to Foxx apps depending on the option below). If you want to run Foxx
-apps without HTTP authentication, but activate HTTP authentication for the built-in
-server APIs, you can add the following line in the `[server]` section of the 
-configuration:
+This makes ArangoDB require authentication for every request (including
+requests to Foxx apps depending on the option below), except for
+endpoints with the `/_open` prefix that never require authentication.
+
+If you want to run Foxx apps without HTTP authentication, but activate
+HTTP authentication for the built-in server APIs, you can add the following
+line in the `[server]` section of the configuration:
 
 ```
 authentication-system-only = true

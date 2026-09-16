@@ -2680,8 +2680,6 @@ paths:
           in: query
           required: false
           description: |
-            <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
             If set to `true`, this initiates a soft shutdown. This is only available
             on Coordinators. When issued, the Coordinator tracks a number of ongoing
             operations, waits until all have finished, and then shuts itself down
@@ -2723,8 +2721,6 @@ paths:
     get:
       operationId: getShutdownProgress
       description: |
-        <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
-
         This call reports progress about a soft Coordinator shutdown (see
         documentation of `DELETE /_admin/shutdown?soft=true`).
         In this case, the following types of operations are tracked:
@@ -2865,64 +2861,4 @@ var response = logCurlRequest('PUT', '/_admin/compact', '');
 assert(response.code === 200);
 
 logJsonResponse(response);
-```
-
-### Execute a script
-
-```openapi
-paths:
-  /_db/{database-name}/_admin/execute:
-    post:
-    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
-      operationId: executeCode
-      deprecated: true
-      description: |
-        {{</* warning */>}}
-        The `/_admin/execute` endpoint is deprecated and removed in ArangoDB v4.0.
-        {{</* /warning */>}}
-
-        Executes the JavaScript code in the body on the server as the body
-        of a function with no arguments. If you have a `return` statement
-        then the return value you produce will be returned as content type
-        `application/json`. If the parameter `returnAsJSON` is set to
-        `true`, the result will be a JSON object describing the return value
-        directly, otherwise a string produced by JSON.stringify will be
-        returned.
-
-        Note that this API endpoint is available if the server has been
-        started with the `--javascript.allow-admin-execute` startup options
-        enabled.
-
-        The default value of this option is `false`, which disables the execution of
-        user-defined code and disables this API endpoint entirely.
-        This is also the recommended setting for production.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-      requestBody:
-        content:
-          text/javascript:
-            schema:
-              description: |
-                The request body is the JavaScript code to be executed.
-      responses:
-        '200':
-          description: |
-            is returned when everything went well, or if a timeout occurred. In the
-            latter case a body of type application/json indicating the timeout
-            is returned. depending on `returnAsJSON` this is a json object or a plain string.
-        '403':
-          description: |
-            is returned if ArangoDB is not running in cluster mode.
-        '404':
-          description: |
-            is returned if ArangoDB was not compiled for cluster operation.
-      tags:
-        - Administration
 ```

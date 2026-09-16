@@ -409,8 +409,6 @@ These endpoints generally don't work well with load-balancers.
 
 ## Overload control
 
-<small>Introduced in: v3.9.0</small>
-
 _arangod_ returns an `x-arango-queue-time-seconds` HTTP
 header with all responses. This header contains the most recent request
 queueing/dequeuing time (in seconds) as tracked by the server's scheduler.
@@ -471,10 +469,10 @@ to be recovered.
 The following APIs can reply early with an HTTP 200 status:
 
 - `GET /_api/version` and `GET /_admin/version`:
-  These APIs return the server version number, but can also be used as a
+  These endpoints return the server version number, but can also be used as a
   liveliness probe, to check if the instance is responding to incoming HTTP requests.
 - `GET /_admin/status`:
-  This API returns information about the instance's status, including the recovery
+  This endpoint returns information about the instance's status, including the recovery
   progress and information about which server feature is currently starting.
 
 During the early startup phase, all APIs other than the ones listed above are

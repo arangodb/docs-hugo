@@ -1,8 +1,10 @@
 ---
-title: HTTP interface for WAL access
+title: WAL (Write-Ahead Log) HTTP API
 menuTitle: Write-Ahead Log
 weight: 25
-description: ''
+description: >-
+  The WAL access HTTP interface provides access to the server's write-ahead log to
+  facilitate faster and more reliable asynchronous replication
 ---
 The WAL Access API is used to facilitate faster and
 more reliable asynchronous replication. The API offers access to the 

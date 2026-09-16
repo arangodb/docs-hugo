@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for inverted indexes
+title: Inverted index HTTP API
 menuTitle: Inverted
 weight: 10
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `inverted`
 ---
 ## Create an inverted index
 
@@ -137,6 +138,8 @@ paths:
                         type: boolean
                       cache:
                         description: |
+                          <small>Introduced in: v3.10.2</small>
+
                           Enable this option to always cache the field normalization values in memory
                           for this specific field. This can improve the performance of scoring and
                           ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -154,10 +157,12 @@ paths:
 
                           This property is available in the Enterprise Edition only.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the column
-                          cache in cluster deployments by only using the cache for leader shards, see the
-                          `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                       nested:
                         description: |
@@ -215,6 +220,8 @@ paths:
                               type: boolean
                             cache:
                               description: |
+                                <small>Introduced in: v3.10.2</small>
+
                                 Enable this option to always cache the field normalization values in memory
                                 for this specific nested field. This can improve the performance of scoring and
                                 ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -232,10 +239,12 @@ paths:
 
                                 This property is available in the Enterprise Edition only.
 
-                                See the `--arangosearch.columns-cache-limit` startup option to control the
-                                memory consumption of this cache. You can reduce the memory usage of the column
-                                cache in cluster deployments by only using the cache for leader shards, see the
-                                `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                                See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                                to control the memory consumption of this cache. You can
+                                reduce the memory usage of the column cache in cluster
+                                deployments by only using the cache for leader shards, see the
+                                [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                                (introduced in v3.10.6).
                               type: boolean
                             nested:
                               description: |
@@ -261,6 +270,8 @@ paths:
                   default: false
                 cache:
                   description: |
+                    <small>Introduced in: v3.10.2</small>
+
                     Enable this option to always cache the field normalization values in memory
                     for all fields by default. This can improve the performance of scoring and
                     ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -276,10 +287,12 @@ paths:
 
                     This property is available in the Enterprise Edition only.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                   default: false
                 storedValues:
@@ -332,6 +345,8 @@ paths:
                         default: lz4
                       cache:
                         description: |
+                          <small>Introduced in: v3.10.2</small>
+
                           Enable this option to always cache stored values in memory. This can improve the
                           query performance if stored values are involved. Otherwise, these values are
                           memory-mapped and it is up to the operating system to load them from disk into
@@ -339,10 +354,12 @@ paths:
 
                           This property is available in the Enterprise Edition only.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the column
-                          cache in cluster deployments by only using the cache for leader shards, see the
-                          `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                         default: false
                 primarySort:
@@ -386,6 +403,8 @@ paths:
                       default: lz4
                     cache:
                       description: |
+                        <small>Introduced in: v3.10.2</small>
+
                         Enable this option to always cache the primary sort columns in memory. This can
                         improve the performance of queries that utilize the primary sort order.
                         Otherwise, these values are memory-mapped and it is up to the operating system
@@ -393,23 +412,31 @@ paths:
 
                         This property is available in the Enterprise Edition only.
 
-                        See the `--arangosearch.columns-cache-limit` startup option to control the
-                        memory consumption of this cache. You can reduce the memory usage of the column
-                        cache in cluster deployments by only using the cache for leader shards, see the
-                        `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                        See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                        to control the memory consumption of this cache. You can
+                        reduce the memory usage of the column cache in cluster
+                        deployments by only using the cache for leader shards, see the
+                        [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                        (introduced in v3.10.6).
                       type: boolean
                       default: false
                 primaryKeyCache:
                   description: |
+                    <small>Introduced in: v3.10.2</small>
+
                     Enable this option to always cache the primary key column in memory. This can
                     improve the performance of queries that return many documents. Otherwise, these
                     values are memory-mapped and it is up to the operating system to load them from
                     disk into memory and to evict them from memory.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    This property is available in the Enterprise Edition only.
+
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                   default: false
                 analyzer:
@@ -554,7 +581,7 @@ paths:
                         upon several possible configurable formulas as defined by their types.
                         The supported types are:
 
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: Consolidate based on segment byte size and live
                           document count as dictated by the customization attributes.
                       type: string
                       default: tier

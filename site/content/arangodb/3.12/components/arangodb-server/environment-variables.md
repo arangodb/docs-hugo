@@ -72,7 +72,7 @@ _arangod_ inspects the following list of environment variables:
    for Linux builds, and it can be turned off by setting this environment
    variable to an empty string, the value of `0` or `off`.
 
-- `CACHE_OBLIVIOUS` _(introduced in v3.9.7, v3.10.3)_
+- `CACHE_OBLIVIOUS` (introduced in v3.9.7 and v3.10.3)
 
   If set to the string `true`, jemalloc allocates one additional page
   (4096 bytes) for every allocation of 16384 or more bytes to change the
@@ -89,7 +89,7 @@ _arangod_ inspects the following list of environment variables:
 
   Also see the [jemalloc documentation](http://jemalloc.net/jemalloc.3.html#opt.cache_oblivious).
 
-- `TZ_DATA` _(introduced in v3.8.0)_
+- `TZ_DATA`
 
    This variable can be used to specify the path to the directory containing
    the timezone information database for ArangoDB. That directory is normally

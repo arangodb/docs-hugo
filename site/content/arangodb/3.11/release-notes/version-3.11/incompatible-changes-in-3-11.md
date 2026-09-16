@@ -745,7 +745,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 

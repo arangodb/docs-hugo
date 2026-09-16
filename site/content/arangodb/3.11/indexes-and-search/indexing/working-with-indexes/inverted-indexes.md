@@ -208,7 +208,8 @@ Attribute paths specified in the `primarySort` option can be utilized for
 projections. Therefore, you don't need to add them to `storedValues`, too.
 
 For each object in the `storedValues` array, you can additionally set a
-`compression` (`lz4` by default) and `cache` option (`false` by default):
+`compression` (`lz4` by default) and `cache` option (`false` by default, and
+available in the Enterprise Edition only):
 
 ```js
 db.<collection>.ensureIndex({

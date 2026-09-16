@@ -129,7 +129,7 @@ only for collections that are accessed mostly for reading via equality lookups,
 and that are not often written to.
 
 For AQL queries that will use indexes with an enabled in-memory cache and that are
-known to not benefit from using using the cache, you may turn off the usage of
+known to not benefit from using the cache, you may turn off the usage of
 the cache for individual query parts. This can be achieved
 via the `useCache` hint that can be provided to an AQL `FOR` loop:
 
@@ -162,7 +162,7 @@ as attribute paths. At least one attribute path has to be given. The index will
 be non-sparse by default.
 
 All documents in the collection must differ in terms of the indexed 
-attributes. Creating a new document or updating an existing document will
+attributes. Creating a new document or updating an existing document
 will fail if the attribute uniqueness is violated. 
 
 ---

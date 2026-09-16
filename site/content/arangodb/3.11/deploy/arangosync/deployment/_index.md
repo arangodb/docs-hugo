@@ -2,7 +2,9 @@
 title: Datacenter-to-Datacenter Replication deployment
 menuTitle: Deployment
 weight: 5
-description: ''
+description: >-
+  An overview of the components you need to set up for Datacenter-to-Datacenter
+  Replication and the environment each of them should run in
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

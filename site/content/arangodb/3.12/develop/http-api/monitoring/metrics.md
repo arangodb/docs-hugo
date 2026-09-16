@@ -106,7 +106,7 @@ paths:
       operationId: getUsageMetrics
       description: |
         Returns detailed shard usage metrics on DB-Servers.
-        
+
         These metrics can be enabled by setting the
         [`--server.export-shard-usage-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-shard-usage-metrics)
         to `enabled-per-shard` to make DB-Servers collect per-shard

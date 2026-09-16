@@ -1,10 +1,10 @@
 ---
-title: HTTP interfaces for security features
+title: Audit logging and encryption HTTP APIs
 menuTitle: Security
 weight: 105
 description: >-
-  The security-related endpoints let you can configure audit logging,
-  encryption at rest, and encryption in transit
+  The security-related endpoints in the HTTP interface let you configure
+  audit logging, encryption at rest, and encryption in transit
 ---
 ## Audit logging
 
@@ -105,6 +105,11 @@ paths:
     post:
       operationId: rotateEncryptionAtRestKey
       description: |
+        {{</* warning */>}}
+        The encryption at rest key rotation is an **experimental** feature,
+        and its APIs and behavior are still subject to change. 
+        {{</* /warning */>}}
+
         Change the user-supplied encryption at rest key by sending a request without
         payload to this endpoint. The file supplied via `--rocksdb.encryption-keyfolder`
         will be reloaded and the internal encryption key will be re-encrypted with the

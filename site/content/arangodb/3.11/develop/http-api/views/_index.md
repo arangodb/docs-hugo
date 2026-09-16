@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for Views
+title: View HTTP API
 menuTitle: Views
 weight: 60
 description: >-
-  The HTTP API for Views lets you manage Views of any type
+  The HTTP interface for Views lets you manage Views of any type
 ---
 ## Addresses of Views
 

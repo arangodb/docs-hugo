@@ -333,10 +333,9 @@ paths:
                   description: |
                     A Unix timestamp in seconds with the desired expiration date and time.
 
-                    The server caps it to the moment of the request plus the
-                    maximum configured lifetime for access tokens, see the
-                    [`--auth.maximal-access-token-expiry-time` startup option](../../components/arangodb-server/options.md#--authmaximal-access-token-expiry-time)
-                    (introduced in v3.12.10-1).
+                    The server caps it to the moment of the request plus the maximum
+                    configured lifetime for access tokens (introduced in v3.12.10-1), see the
+                    [`--auth.maximal-access-token-expiry-time` startup option](../../components/arangodb-server/options.md#--authmaximal-access-token-expiry-time).
                   type: integer
       responses:
         '200':

@@ -2,7 +2,9 @@
 title: Getting Started
 menuTitle: Getting started
 weight: 5
-description: ''
+description: >-
+  Build your first Foxx service from an empty folder, with custom endpoints
+  that handle user input and query the database
 ---
 This practical introduction will take you from an empty folder to a first
 Foxx service installed in ArangoDB, with custom endpoints which can handle

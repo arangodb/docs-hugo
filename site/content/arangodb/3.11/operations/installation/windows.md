@@ -14,7 +14,7 @@ You can use ArangoDB on Windows (64-bit) in different ways:
 - Manually, using a [ZIP archive](#installing-using-the-zip-archive)
 
 Visit the official [Download](https://arango.ai/downloads/)
-page of the ArangoDB web site.
+page of the ArangoDB website.
 
 You may verify the download by comparing the SHA256 hash listed on the website
 to the hash of the file. For example, you can run `openssl sha256 <filename>`

@@ -754,7 +754,7 @@ which is a stopgap measure only.
 
 ### AQL options
 
-The new startup option `--query.optimizer-rules` can be used to to selectively
+The new startup option `--query.optimizer-rules` can be used to selectively
 enable or disable AQL query optimizer rules by default. The option can be
 specified multiple times, and takes the same input as the query option of the
 same name.

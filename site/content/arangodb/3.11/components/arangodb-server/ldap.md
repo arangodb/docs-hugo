@@ -1,9 +1,9 @@
 ---
-title: ArangoDB Server LDAP Options
+title: LDAP options of the ArangoDB server
 menuTitle: LDAP
 weight: 10
 description: >-
-  LDAP authentication options in the ArangoDB server
+  The LDAP-related startup options of _arangod_ and how to use LDAP authentication
 ---
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
