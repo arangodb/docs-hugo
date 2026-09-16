@@ -11,7 +11,7 @@ description: >-
 - **ArangoDB Enterprise Edition**: The multi-model database system for graph,
   document, key-value, search, and vector.
   
-  The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
+  The minimum required ArangoDB version is the Enterprise Edition v3.12.11.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Contextual Data Platform, running them in containers for safety and scalability.
@@ -41,7 +41,10 @@ description: >-
   In environments with internet access, you don't need your own container registry
   but you can optionally use one.
 
-- **x86-64 CPU**: The processor(s) must support the **x86-64** architecture.
+- **x86-64 or ARM64 CPU**: The processor(s) must support either the **x86-64**
+  or the **ARM64** architecture. Set the architecture of your Kubernetes nodes
+  when you install the ArangoDB Kubernetes Operator, using the
+  `operator.architectures` option.
   See the [Supported platforms and architectures](../../arangodb/3.12/operations/installation/_index.md#supported-platforms-and-architectures)
   of ArangoDB for details.
 
