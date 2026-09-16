@@ -1,16 +1,16 @@
 ---
-title: Configure LLMs and Embedding Models for the Retriever
+title: Configure LLMs and Embedding Models for AutoRAG
 menuTitle: LLM Configuration
 description: >-
-  Configure OpenAI-compatible APIs or Triton Inference Server for the Retriever
-  service, at install time or at runtime
+  Configure OpenAI-compatible APIs or Triton Inference Server for AutoRAG,
+  at install time or at runtime
 weight: 20
 ---
 {{< info >}}
 **Getting Started Path:** [Overview](./) → **Configure LLMs** → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → [Verify](verify-and-monitor.md)
 {{< /info >}}
 
-The Retriever service can be configured to use either Triton Inference Server or any
+AutoRAG can be configured to use either Triton Inference Server or any
 OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
 setup, as well as any other endpoint implementing the same contract — OpenRouter,
 Gemini, Anthropic, Azure, or a private corporate LLM.
@@ -22,7 +22,7 @@ supported.
 
 ## Supported models
 
-The following models are validated for use with the Retriever service. For the full
+The following models are validated for use with AutoRAG. For the full
 list across all services, see
 [Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
 
@@ -30,7 +30,7 @@ The recommended provider is `openai` with the OpenAI models below. That is the
 combination ArangoDB tests, so prefer it where you can; other endpoints can
 differ in behavior such as latency.
 
-You can still point the Retriever at any other OpenAI-compatible endpoint —
+You can still point AutoRAG at any other OpenAI-compatible endpoint —
 OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
 that is not on the list. Configure these with the `custom` provider and the
 `chat_api_url` / `embedding_api_url` of your endpoint, as described in
@@ -43,7 +43,7 @@ environment. For the models served through Triton, see
 
 ## Supported Provider Combinations
 
-The Retriever service supports the following provider configurations:
+AutoRAG supports the following provider configurations:
 
 1. **OpenAI-compatible for chat and embeddings**: Use the OpenAI API (`openai`)
    or any other OpenAI-compatible endpoint (`custom`) for chat and for
@@ -75,7 +75,7 @@ These defaults are applied automatically by the service when the corresponding m
 {{< /info >}}
 
 {{< warning >}}
-One URL-based special case survives in the Retriever: when `chat_api_url`
+One URL-based special case survives in AutoRAG: when `chat_api_url`
 contains `openrouter.ai` and `chat_model` is not set, the service resolves the
 chat model to `mistralai/mistral-nemo` rather than leaving it unset. Do not
 rely on this — always set `chat_model` explicitly with the `custom` provider.
@@ -83,7 +83,7 @@ rely on this — always set `chat_model` explicitly with the `custom` provider.
 
 ## Using OpenAI-compatible APIs
 
-The Retriever reaches OpenAI-compatible APIs through two provider values:
+AutoRAG reaches OpenAI-compatible APIs through two provider values:
 
 - `openai` for the official OpenAI API. The URLs default to
   `https://api.openai.com/v1`, so you can omit them.
@@ -158,7 +158,7 @@ For a full description of all parameters, see
 ### Using Azure as a chat and embedding provider
 
 Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
-OpenAI-compatible endpoint, so the Retriever reaches them through the `custom`
+OpenAI-compatible endpoint, so AutoRAG reaches them through the `custom`
 provider. Three things are specific to Azure:
 
 - Provision the models yourself before you start. An Azure resource serves only
@@ -207,8 +207,8 @@ Triton Inference Server and MLflow at the backend.
 For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
 and [MLflow](../private-llms/mlflow.md) documentation.
 
-Once the `llmhost` service is up-and-running, then you can start the Retriever
-service using the below configuration:
+Once the `llmhost` service is up-and-running, then you can start AutoRAG
+using the below configuration:
 
 ```json
 {
@@ -231,7 +231,7 @@ For a full description of all parameters, see
 
 ## Configuration Parameters Reference
 
-The following parameters are available when configuring the Retriever service.
+The following parameters are available when configuring AutoRAG.
 Provider-specific defaults and requirements are noted where applicable.
 
 ### General parameters
@@ -284,7 +284,7 @@ Provider-specific defaults and requirements are noted where applicable.
 {{< tip >}}
 Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id` when your platform supports secret profiles
-for the Retriever install.
+for the AutoRAG install.
 {{< /tip >}}
 
 {{< info >}}
@@ -301,7 +301,7 @@ as `gpt-5.4-nano`, `gpt-5.4-mini`, or `gpt-5`. With the `custom` provider, your
 endpoint may serve model families that are not in that table, including older
 ones such as the GPT-4 series; the options below exist so you can match their
 payload requirements. Different model families accept different optional fields
-on chat completions. The Retriever builds the request from service environment
+on chat completions. AutoRAG builds the request from service environment
 variables and retries once if the API returns an unsupported-parameter error.
 
 Optional environment variables (also accepted in lowercase, e.g. `chat_parameter_policy`):
@@ -319,7 +319,7 @@ Optional environment variables (also accepted in lowercase, e.g. `chat_parameter
 **GPT-5 series (typical usage):** Start with defaults (`safe`, `CHAT_TOKEN_LIMIT_PARAM=none`). If the provider rejects specific fields, add them to `CHAT_DISABLED_PARAMS` or rely on the built-in unsupported-parameter retry. Tune latency for reasoning-capable models with `CHAT_REASONING_EFFORT` or `CHAT_EXTRA_PARAMS_JSON` per your provider's documentation.
 
 {{< warning >}}
-**Access errors:** Messages about organization verification or model access come from the provider account, not from the Retriever configuration.
+**Access errors:** Messages about organization verification or model access come from the provider account, not from the AutoRAG configuration.
 {{< /warning >}}
 
 **Defaults vs. older behavior:** With defaults (`safe`, `none` for token limit), requests omit `temperature` and omit a token-limit field unless you configure otherwise - by design for compatibility. To approximate prior behavior (temperature plus a completion token cap where the code supplies a limit), use `CHAT_PARAMETER_POLICY=legacy` and `CHAT_TOKEN_LIMIT_PARAM=auto` (or an explicit `max_*` mode).
@@ -345,7 +345,7 @@ The service will validate your configuration and reject any unsupported combinat
 ## Update the model configuration at runtime
 
 You can change the chat and embedding provider, model, secret profile, and API
-URL of a running Retriever without reinstalling or restarting the service:
+URL of a running retriever without reinstalling or restarting the service:
 
 {{< endpoint "PUT" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/projects/{project}/model-config/credentials" >}}
 
@@ -367,7 +367,7 @@ URL of a running Retriever without reinstalling or restarting the service:
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `project` | string | Yes | | Project name. It must match the project this Retriever belongs to. |
+| `project` | string | Yes | | Project name. It must match the project this retriever belongs to. |
 | `chat_api_provider` | string | Yes | | `"openai"` or `"custom"`. |
 | `embedding_api_provider` | string | Yes | | `"openai"` or `"custom"`. It can differ from `chat_api_provider`. |
 | `chat_model` | string | Yes | | Model name for chat. |
@@ -390,7 +390,7 @@ you pair it with:
 {{< tip >}}
 Send the URL explicitly whenever you change the provider, including when you
 change it to `openai`. If you leave the field out, the service keeps the
-endpoint of the previous provider: a Retriever that you move from Azure to
+endpoint of the previous provider: a retriever that you move from Azure to
 `openai` would still send its requests to the Azure URL.
 
 An empty string is not a substitute: it switches the running service to the
@@ -407,7 +407,7 @@ restart brings the old endpoint back.
 2. **The new settings are saved**: Once the check passes, the settings are
    stored with your project, so they still apply the next time the service
    restarts.
-3. **The service switches over**: The Retriever starts using the new settings
+3. **The service switches over**: The retriever starts using the new settings
    right away. You do not need to restart or reinstall it.
 
 ### Response
@@ -428,7 +428,7 @@ restart brings the old endpoint back.
 |-------|------|-------------|
 | `applied` | boolean | `true` if the new settings passed the check and were saved |
 | `valid` | boolean | `true` if all checks passed |
-| `appliedToRunningPod` | boolean | `true` if the running Retriever picked up the settings without a restart |
+| `appliedToRunningPod` | boolean | `true` if the running retriever picked up the settings without a restart |
 | `keyStatus` | string | `"valid"`, `"invalid"`, `"expired"`, `"rate_limited"`, `"insufficient_quota"`, or empty when the endpoint could not be reached or the check did not run |
 | `field` | string | On failure: which request field caused the error |
 | `errorCode` | string | On failure: machine-readable error code |
@@ -441,7 +441,7 @@ the update went through.
 {{< /warning >}}
 
 If `applied` is `true` but `appliedToRunningPod` is `false`, the new settings
-were saved but the running Retriever could not pick them up. It keeps answering
+were saved but the running retriever could not pick them up. It keeps answering
 queries with the previous settings until it restarts.
 
 On failure, `errorCode` names the reason and `field` names the request field to
@@ -450,7 +450,7 @@ correct. For the full list, see
 
 The endpoint accepts the same `openai` and `custom` combinations as a fresh
 install, described in
-[Supported Provider Combinations](#supported-provider-combinations). A Retriever
+[Supported Provider Combinations](#supported-provider-combinations). A retriever
 running on Triton cannot be updated this way; its models are set at install time
 only.
 

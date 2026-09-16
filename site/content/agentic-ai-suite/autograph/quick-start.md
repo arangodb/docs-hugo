@@ -9,7 +9,7 @@ description: >-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
-- A **GraphRAG project** in your target database (keeps datasets isolated).
+- A **project** in your target database (keeps datasets isolated).
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** for the API (`Authorization: Bearer ...`).
@@ -167,7 +167,7 @@ categories still need a build, strategies, or an orchestration.
 {{< /tip >}}
 
 Next, query your knowledge base with the
-[Retriever service](../retriever/quick-start.md).
+[AutoRAG](../autorag/quick-start.md).
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -176,7 +176,7 @@ Next, query your knowledge base with the
 **You now have** a knowledge base built from your documents and a chat
 interface that answers questions about them, with citations back to the
 source. To query it programmatically, see the
-[Retriever service](../retriever/quick-start.md).
+[AutoRAG](../autorag/quick-start.md).
 {{< /tip >}}
 
 ## Next steps

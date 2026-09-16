@@ -1,5 +1,5 @@
 ---
-title: Retriever Custom Prompts Reference
+title: AutoRAG Custom Prompts Reference
 menuTitle: Custom Prompts
 description: >-
   Customize LLM prompts used during query processing for domain-specific behavior
@@ -7,7 +7,7 @@ weight: 55
 ---
 ## Overview
 
-The Retriever service allows you to customize the LLM prompts used during query
+AutoRAG allows you to customize the LLM prompts used during query
 processing. This enables you to:
 - Tailor responses to your domain or use case
 - Adjust the tone, style, or format of responses

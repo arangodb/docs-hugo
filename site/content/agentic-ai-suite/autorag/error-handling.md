@@ -1,14 +1,14 @@
 ---
-title: Retriever Error Handling
+title: AutoRAG Error Handling
 menuTitle: Error Handling
 weight: 65
 description: >-
-  How the Retriever reports failures, the status codes it returns, and what
+  How AutoRAG reports failures, the status codes it returns, and what
   every error code means
 ---
-## How the Retriever reports failures
+## How AutoRAG reports failures
 
-The Retriever reports a failure in one of two ways, depending on how far the
+AutoRAG reports a failure in one of two ways, depending on how far the
 request got:
 
 - **The request was rejected.** You get an HTTP error status and no result, for
@@ -68,7 +68,7 @@ correct.
 
 | `errorCode` | Meaning |
 |-------------|---------|
-| `PROJECT_MISMATCH` | The `project` in the request is not the project this Retriever belongs to. |
+| `PROJECT_MISMATCH` | The `project` in the request is not the project this retriever belongs to. |
 | `PROVIDER_REQUIRED` | A provider field is empty. |
 | `INVALID_PROVIDER` | A provider field is not `openai`, `custom`, or `triton`. |
 | `PROVIDER_MISMATCH` | The chat and embedding providers are not compatible with each other, for example one is `triton` and the other is not. |
@@ -82,7 +82,7 @@ correct.
 
 | `errorCode` | Meaning |
 |-------------|---------|
-| `SERVICE_NOT_REGISTERED` | This Retriever is not recorded in the project, so there is nothing to update. |
+| `SERVICE_NOT_REGISTERED` | This retriever is not recorded in the project, so there is nothing to update. |
 | `METADATA_CLIENT_UNAVAILABLE` | The service cannot reach the store that holds the project settings. |
 | `METADATA_WRITE_TIMEOUT` | Saving the settings took too long. |
 | `METADATA_WRITE_FAILED` | Saving the settings failed. |
@@ -92,7 +92,7 @@ The test requests that validate the new settings fail with the
 
 ## Provider error codes
 
-These come from the LLM provider rather than from the Retriever. You meet them
+These come from the LLM provider rather than from AutoRAG. You meet them
 in two places: on a query, when a working configuration stops working, and on a
 model configuration update, when the service tries the new settings before
 saving them. The same code means the same thing in both, so a key that dies

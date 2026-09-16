@@ -1,5 +1,5 @@
 ---
-title: Retriever Quick Start
+title: AutoRAG Quick Start
 menuTitle: Quick Start
 weight: 2
 description: >-
@@ -8,11 +8,11 @@ description: >-
 ---
 ## Prerequisites
 
-- A **GraphRAG project with imported data**. If you haven't built a graph
+- A **project with imported data**. If you haven't built a graph
   yet, follow the [Importer Quick Start](../importer/quick-start.md) (or the
   [AutoGraph Quick Start](../autograph/quick-start.md) for partitioned
   corpora).
-- An **LLM provider** for the Retriever (Triton or any OpenAI-compatible
+- An **LLM provider** for AutoRAG (Triton or any OpenAI-compatible
   API). See [LLM Configuration](llm-configuration.md).
 - A **valid JWT** (`Authorization: Bearer ...`).
 
@@ -20,7 +20,7 @@ description: >-
 
 {{< steps >}}
 
-{{< step "Install the Retriever service" >}}
+{{< step "Install AutoRAG" >}}
 Install and start the service through the Arango Control Plane. Configure your
 LLM and embedding providers at install time by passing them in the `env` object
 of the install request body. Token streaming is available with the
