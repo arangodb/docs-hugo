@@ -337,27 +337,6 @@ The roles below are described following this pattern:
 - `example.exampledatasetinstallation.get`
 - `example.exampledatasetinstallation.list`
 
-**Graph Analytics Administrator** (`graph-analytics-admin`):
-- `graphanalytics.engine.create`
-- `graphanalytics.engine.deleted`
-- `graphanalytics.engine.feature`
-- `graphanalytics.engine.get`
-- `graphanalytics.engine.list`
-- `graphanalytics.enginesize.list`
-- `graphanalytics.enginetype.list`
-
-**Graph Analytics Executor** (`graph-analytics-executor`):
-- `graphanalytics.engine.delete-graph`
-- `graphanalytics.engine.delete-job`
-- `graphanalytics.engine.get-graph`
-- `graphanalytics.engine.get-job`
-- `graphanalytics.engine.list-graphs`
-- `graphanalytics.engine.list-jobs`
-- `graphanalytics.engine.load-data`
-- `graphanalytics.engine.process`
-- `graphanalytics.engine.shutdown`
-- `graphanalytics.engine.store-results`
-
 **Group Administrator** (`group-admin`):
 - `iam.group.create`
 - `iam.group.delete`
@@ -405,11 +384,6 @@ The roles below are described following this pattern:
 - `replication.deploymentmigration.create`
 - `replication.deploymentmigration.delete`
 - `replication.deploymentmigration.get`
-
-**MLServices Admin** (`mlservices-admin`):
-- `ml.mlservices.get`
-- `ml.mlservices.update`
-- `ml.mlservicessize.list`
 
 **Organization Administrator** (`organization-admin`):
 - `billing.organization.get`
@@ -558,17 +532,12 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `deploymentprofile` | `deploymentprofile`           | `list`
 | `example`           | `exampledatasetinstallation`  | `create`, `delete`, `get`, `list`, `update`
 | `example`           | `exampledataset`              | `get`, `list`
-| `graphanalytics`    | `enginesize`                  | `list`
-| `graphanalytics`    | `enginetype`                  | `list`
-| `graphanalytics`    | `engine`                      | `create`, `delete-graph`, `delete-job`, `deleted`, `feature`, `get`, `get-graph`, `get-job`, `list`, `list-graphs`, `list-jobs`, `load-data`, `process`, `shutdown`, `store-results`
 | `iam`               | `group`                       | `create`, `delete`, `get`, `list`, `update`
 | `iam`               | `policy`                      | `get`, `update`
 | `iam`               | `role`                        | `create`, `delete`, `get`, `list`, `update`
 | `iam`               | `user`                        | `get-personal-data`, `update`
 | `metrics`           | `endpoint`                    | `get`
 | `metrics`           | `token`                       | `create`, `delete`, `get`, `list`, `revoke`, `update`
-| `ml`                | `mlservicessize`              | `list`
-| `ml`                | `mlservices`                  | `get`, `update`
 | `monitoring`        | `logs`                        | `get`
 | `monitoring`        | `metrics`                     | `get`
 | `network`           | `privateendpointservice`      | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
