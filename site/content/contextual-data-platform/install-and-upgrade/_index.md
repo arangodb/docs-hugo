@@ -10,8 +10,6 @@ description: >-
 
 - **ArangoDB Enterprise Edition**: The multi-model database system for graph,
   document, key-value, search, and vector.
-  
-  The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   Arango Contextual Data Platform, running them in containers for safety and scalability.
@@ -73,9 +71,9 @@ data platform version are listed below.
 | 4.1.x | 3.12.11+ | 1.4.5+ |
 
 The Agentic AI Suite and the Platform Suite have no separate versions.
-A data platform release defines the versions of all services that the suites are
-composed of. Upgrading the data platform inherently upgrades these services,
-but they are guaranteed to be compatible with each other.
+A data platform release defines the [versions of all services](../release-notes/service-versions.md)
+that the suites are composed of. Upgrading the data platform inherently upgrades
+these services, but they are guaranteed to be compatible with each other.
 
 ## Install the Contextual Data Platform
 
