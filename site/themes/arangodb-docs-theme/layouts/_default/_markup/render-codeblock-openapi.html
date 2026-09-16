@@ -62,20 +62,41 @@
   {{- $isAliasPage = ne $segment $pageVersion }}
 {{- end }}
 {{- if not $isAliasPage }}
-{{- $remote := resources.GetRemote $endpoint (dict
-    "method" "post"
-    "body" $innerAbsLinks
-    "headers" (dict 
-      "Content-Type" "application/json"
-      "Endpoint-Title" $title
-      "Service-Name" $service
-      "API-Versions" ($apiVersions | jsonify)
-      "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
+  {{- $remote := resources.GetRemote $endpoint (dict
+      "method" "post"
+      "body" $innerAbsLinks
+      "headers" (dict
+        "Content-Type" "application/json"
+        "Endpoint-Title" $title
+        "Service-Name" $service
+        "API-Versions" ($apiVersions | jsonify)
+        "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
+      )
     )
-  )
-}}
+  }}
 {{- end }}
 {{- $title = $title | urlize }}
+{{- /* Anchors are derived from the headline, so documenting several API versions of the same
+       endpoint would make them collide. The version's primary (lowest allowed) API version keeps
+       the unsuffixed anchors so that existing links stay valid; only the additional API versions
+       are suffixed, e.g. "_apiv1" on 3.12 where v0 is primary. */}}
+{{- if eq $service "arangodb" }}
+  {{- $primary := "" }}
+  {{- range $version := (index hugo.Data.versions "/arangodb/") }}
+    {{- if eq $version.name $pageVersion }}
+      {{- with $version.allowedAPIVersions }}{{ $primary = index . 0 }}{{ end }}
+    {{- end }}
+  {{- end }}
+  {{- $blockVersion := "" }}
+  {{- range $candidate := (slice "v0" "v1" "experimental") }}
+    {{- if and (not $blockVersion) (in $apiVersions $candidate) }}{{ $blockVersion = $candidate }}{{ end }}
+  {{- end }}
+  {{- /* Experimental endpoints are documented under their own headlines, so they cannot collide
+         and keep their existing anchors. Suffix them as well if that ever changes. */}}
+  {{- if and $primary $blockVersion (ne $blockVersion $primary) (ne $blockVersion "experimental") }}
+    {{- $title = printf "%s_api%s" $title $blockVersion }}
+  {{- end }}
+{{- end }}
 {{- $yamlBlock := $body | transform.Unmarshal }}
 {{- with $yamlBlock }}
   <div class="openapi">
