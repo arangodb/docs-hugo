@@ -53,6 +53,15 @@
   {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
 {{- end }}
 
+{{- /* The aliased version trees (e.g. /arangodb/stable/ for 3.12) are the same files mounted
+       twice, so they would submit every spec a second time under the same Page-Version. Submit
+       only from the canonical tree, where the URL segment matches the resolved version. */}}
+{{- $isAliasPage := false }}
+{{- if and (eq $service "arangodb") $pageVersion (strings.HasPrefix .Page.RelPermalink "/arangodb/") }}
+  {{- $segment := index (split (strings.TrimPrefix "/arangodb/" .Page.RelPermalink) "/") 0 }}
+  {{- $isAliasPage = ne $segment $pageVersion }}
+{{- end }}
+{{- if not $isAliasPage }}
 {{- $remote := resources.GetRemote $endpoint (dict
     "method" "post"
     "body" $innerAbsLinks
@@ -65,6 +74,7 @@
     )
   )
 }}
+{{- end }}
 {{- $title = $title | urlize }}
 {{- $yamlBlock := $body | transform.Unmarshal }}
 {{- with $yamlBlock }}
