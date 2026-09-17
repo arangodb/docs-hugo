@@ -1454,7 +1454,7 @@ pre > code {
     max-height: unset;
 }
 
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
+pre:hover > .copy-to-clipboard-button {
     display: flex;
 }
 
