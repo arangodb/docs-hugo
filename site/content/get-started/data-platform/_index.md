@@ -23,8 +23,7 @@ description: >-
 - **Resources**: 2+ CPU cores, 8 GB+ RAM, and 50 GB+ free disk space.
 - **Connectivity**: Active internet connection for downloading container images
   and tools.
-- **License credentials**: An Arango client ID and client secret. Request them
-  with the
+- **License key**: An Arango license key. Request one with the
   [license key request form](https://arangoaistg.wpenginepowered.com/cdp-license-request/).
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private

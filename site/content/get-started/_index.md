@@ -1,7 +1,6 @@
 ---
 title: Get started with Arango
 menuTitle: Get Started
-navDescription: Understand the products, then install one
 weight: 1
 description: >-
   Understand what Arango offers, pick the product you need, then install it and

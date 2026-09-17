@@ -1,7 +1,6 @@
 ---
 title: Arango Platform Suite
 menuTitle: Platform Suite
-navDescription: Services and the web interface for operating your data
 weight: 4
 description: >-
   The Platform Suite is a set of services and features for operating ArangoDB
