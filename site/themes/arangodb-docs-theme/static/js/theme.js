@@ -1030,6 +1030,7 @@ function handleDocumentClick(event) {
   
     // Copy URI clicks
     if (closest('.header-link, .openapi-property-link')) {
+        if (openInNew) return;
         event.preventDefault();
         copyURI(event);
         return;
