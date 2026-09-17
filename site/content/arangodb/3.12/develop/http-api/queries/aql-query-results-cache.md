@@ -139,7 +139,14 @@ db._drop("coll");
 
 ## Clear the AQL query results cache
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/query-cache:
     delete:
@@ -208,6 +215,77 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 200);
 logJsonResponse(response);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/query-cache:
+    delete:
+      operationId: deleteAqlQueryCache
+      description: |
+        Clears all results stored in the AQL query results cache for the selected database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database whose query results cache to clear.
+
+            The user account you authenticate with needs at least read access to
+            this database as well as **write** access to the `_system` database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The results cache has been cleared.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+        '400':
+          description: |
+            The request is malformed.
+        '403':
+          description: |
+            The user account you authenticate with lacks read access to the
+            specified database, or lacks write access to the `_system` database.
+      tags:
+        - Queries
+```
+
+```curl
+---
+name: HttpClearQueryResultsCacheApiV1
+description: |
+  Clear the AQL query results cache of the current database:
+---
+var url = "/_arango/v1/_api/query-cache";
+var response = logCurlRequest('DELETE', url);
+assert(response.code === 200);
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
 
 ## Get the AQL query results cache configuration
 
@@ -454,7 +532,7 @@ logJsonResponse(response);
 apiVersions: [v1]
 ---
 paths:
-  /_arango/v1/_db/_system/_api/query-cache/properties:
+  /_db/_system/_api/query-cache/properties:
     put:
       operationId: setQueryCacheProperties
       description: |
@@ -558,8 +636,9 @@ paths:
             The request is malformed.
         '403':
           description: |
-            The user account you authenticated with lacks write access to the
-            `_system` database.
+            The user account you authenticate with lacks write access to the
+            `_system` database, or the request has been made in a database other
+            than `_system` (error code `1230`).
       tags:
         - Queries
 ```

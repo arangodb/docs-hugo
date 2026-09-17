@@ -360,7 +360,14 @@ db._drop(cn);
 
 ### Create a document
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/document/{collection}:
     post:
@@ -801,6 +808,443 @@ logJsonResponse(response);
 
 db._drop(cn);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/document/{collection}:
+    post:
+      operationId: createDocument
+      description: |
+        Creates a new document from the document given in the body, unless there
+        is already a document with the `_key` given. If no `_key` is given, a
+        new unique `_key` is generated automatically. The `_id` is automatically
+        set in both cases, derived from the collection name and `_key`.
+
+        {{</* info */>}}
+        An `_id` or `_rev` attribute specified in the body is ignored.
+        {{</* /info */>}}
+
+        If the document was created successfully, then the `Location` header
+        contains the path to the newly created document. The `ETag` header field
+        contains the revision of the document. Both are only set in the single
+        document case.
+
+        Unless `silent` is set to `true`, the body of the response contains a
+        JSON object with the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
+
+        If the collection parameter `waitForSync` is `false`, then the call
+        returns as soon as the document has been accepted. It does not wait
+        until the documents have been synced to disk.
+
+        Optionally, the query parameter `waitForSync` can be used to force
+        synchronization of the document creation operation to disk even in
+        case that the `waitForSync` flag had been disabled for the entire
+        collection. Thus, the `waitForSync` query parameter can be used to
+        force synchronization of just this specific operations. To use this,
+        set the `waitForSync` parameter to `true`. If the `waitForSync`
+        parameter is not specified or set to `false`, then the collection's
+        default `waitForSync` behavior is applied. The `waitForSync` query
+        parameter cannot be used to disable synchronization for collections
+        that have a default `waitForSync` value of `true`.
+
+        If the query parameter `returnNew` is `true`, then, for each
+        generated document, the complete new document is returned under
+        the `new` attribute in the result.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection
+          in: path
+          required: true
+          description: |
+            Name of the `collection` in which the document is to be created.
+          schema:
+            type: string
+        - name: waitForSync
+          in: query
+          required: false
+          description: |
+            Wait until document has been synced to disk.
+          schema:
+            type: boolean
+        - name: returnNew
+          in: query
+          required: false
+          description: |
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
+          schema:
+            type: boolean
+            default: false
+        - name: returnOld
+          in: query
+          required: false
+          description: |
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result. Only available if the `overwriteMode`
+            parameter is set to `"update"` or `"replace"`.
+          schema:
+            type: boolean
+            default: false
+        - name: silent
+          in: query
+          required: false
+          description: |
+            If set to `true`, an empty object is returned as response if the document operation
+            succeeds. No meta-data is returned for the created document. If the
+            operation raises an error, an error object is returned.
+
+            You can use this option to save network traffic.
+          schema:
+            type: boolean
+            default: false
+        - name: overwriteMode
+          in: query
+          required: false
+          description: |
+            Controls what happens if a document with the specified `_key` value
+            exists already. The following modes are available:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
+              nothing is done and no write operation is carried out. The
+              insert operation returns success in this case. This mode does not
+              support returning the old document version using `RETURN OLD`. When using
+              `RETURN NEW`, `null` is returned in case the document already existed.
+            - `"replace"`: if a document with the specified `_key` value exists already,
+              it is overwritten with the specified document value.
+            - `"update"`: if a document with the specified `_key` value exists already,
+              it is patched (partially updated) with the specified document value.
+              The overwrite mode can be further controlled via the `keepNull` and
+              `mergeObjects` parameters.
+            - `"conflict"`: if a document with the specified `_key` value exists already,
+              return a unique constraint violation error so that the insert operation
+              fails. This is also the default behavior in case the overwrite mode is
+              not set.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
+          schema:
+            type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
+        - name: keepNull
+          in: query
+          required: false
+          description: |
+            If the intention is to delete existing attributes with the update-insert
+            command, set the `keepNull` query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays). This option controls the update-insert behavior only.
+          schema:
+            type: boolean
+            default: true
+        - name: mergeObjects
+          in: query
+          required: false
+          description: |
+            Controls whether objects (not arrays) are merged if present in both, the
+            existing and the update-insert document. If set to `false`, the value in the
+            patch document overwrites the existing document's value. If set to `true`,
+            objects are merged.
+            This option controls the update-insert behavior only.
+          schema:
+            type: boolean
+            default: true
+        - name: refillIndexCaches
+          in: query
+          required: false
+          description: |
+            Whether to add new entries to in-memory index caches if document insertions
+            affect the edge index or cache-enabled persistent indexes.
+          schema:
+            type: boolean
+            default: false
+        - name: versionAttribute
+          in: query
+          required: false
+          description: |
+            Only applicable if `overwriteMode` is set to `update` or `replace`.
+
+            You can use the `versionAttribute` option for external versioning support.
+            If set, the attribute with the name specified by the option is looked up in the
+            stored document and the attribute value is compared numerically to the value of
+            the versioning attribute in the supplied document that is supposed to update/replace it.
+
+            If the version number in the new document is higher (rounded down to a whole number)
+            than in the document that already exists in the database, then the update/replace
+            operation is performed normally. This is also the case if the new versioning
+            attribute has a non-numeric value, if it is a negative number, or if the
+            attribute doesn't exist in the supplied or stored document.
+
+            If the version number in the new document is lower or equal to what exists in
+            the database, the operation is not performed and the existing document thus not
+            changed. No error is returned in this case.
+
+            The attribute can only be a top-level attribute.
+
+            You can check if `_oldRev` (if present) and `_rev` are different to determine if the
+            document has been changed.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of a single document.
+              type: object
+      responses:
+        '201':
+          description: |
+            The document has been created successfully and
+            `waitForSync` was `true`.
+        '202':
+          description: |
+            The document has been created successfully and
+            `waitForSync` was `false`.
+        '400':
+          description: |
+            The request body does not contain a valid JSON representation
+            of a document. The response body contains
+            an error document in this case.
+        '403':
+          description: |
+            If the error code is `1004`, the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
+        '404':
+          description: |
+            The collection cannot be found.
+            The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '409':
+          description: |
+            There are two possible reasons for this error in the single document case:
+
+            - A document with the same qualifiers in an indexed attribute conflicts with an
+              already existing document and thus violates the unique constraint.
+              The response body contains an error document with the `errorNum` set to
+              `1210` (`ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED`) in this case.
+            - Locking the document key or some unique index entry failed to due to another
+              concurrent operation that operates on the same document. This is also referred
+              to as a _write-write conflict_. The response body contains an error document
+              with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+        '503':
+          description: |
+            The system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
+      tags:
+        - Documents
+```
+
+**Examples**
+
+```curl
+---
+description: |-
+  Create a document in a collection named `products`. Note that the
+  revision identifier might or might not by equal to the auto-generated
+  key.
+name: RestDocumentHandlerPostCreate1ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn, { waitForSync: true });
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '{ "Hello": "World" }';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 201);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Create a document in a collection named `products` with a collection-level
+  `waitForSync` value of `false`.
+name: RestDocumentHandlerPostAccept1ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn, { waitForSync: false });
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '{ "Hello": "World" }';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 202);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Create a document in a collection with a collection-level `waitForSync`
+  value of `false`, but using the `waitForSync` query parameter.
+name: RestDocumentHandlerPostWait1ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn, { waitForSync: false });
+
+var url = "/_arango/v1/_api/document/" + cn + "?waitForSync=true";
+var body = '{ "Hello": "World" }';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 201);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Unknown collection name
+name: RestDocumentHandlerPostUnknownCollection1ApiV1
+---
+var cn = "products";
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '{ "Hello": "World" }';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 404);
+
+logJsonResponse(response);
+```
+
+```curl
+---
+description: |-
+  Illegal document
+name: RestDocumentHandlerPostBadJson1ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '{ 1: "World" }';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 400);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Use of returnNew:
+name: RestDocumentHandlerPostReturnNewApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_arango/v1/_api/document/" + cn + "?returnNew=true";
+var body = '{"Hello":"World"}';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 202);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Use `overwriteMode` to replace a document whose key exists already. The
+  `overwrite` query parameter of API version 0 is no longer accepted.
+name: RestDocumentHandlerPostOverwriteModeApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn, { waitForSync: true });
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '{ "Hello": "World", "_key" : "lock" }';
+var response = logCurlRequest('POST', url, body);
+// insert
+assert(response.code === 201);
+logJsonResponse(response);
+
+body = '{ "Hello": "Universe", "_key" : "lock" }';
+url = "/_arango/v1/_api/document/" + cn + "?overwriteMode=replace";
+response = logCurlRequest('POST', url, body);
+// insert same key
+assert(response.code === 201);
+logJsonResponse(response);
+
+db._drop(cn);
+```
+
+{{< api-versions-end >}}
 
 ### Replace a document
 
@@ -1924,7 +2368,14 @@ db._drop(cn);
 
 ### Create multiple documents
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/document/{collection}#multiple:
     post:
@@ -2270,6 +2721,346 @@ assert(response.code === 202);
 logJsonResponse(response);
 db._drop(cn);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/document/{collection}#multiple:
+    post:
+      operationId: createDocuments
+      description: |
+        Creates new documents from the documents given in the body, unless there
+        is already a document with the `_key` given. If no `_key` is given, a new
+        unique `_key` is generated automatically. The `_id` is automatically
+        set in both cases, derived from the collection name and `_key`.
+
+        The result body contains a JSON array of the
+        same length as the input array, and each entry contains the result
+        of the operation for the corresponding input. In case of an error
+        the entry is a document with attributes `error` set to `true` and
+        errorCode set to the error code that has happened.
+
+        {{</* info */>}}
+        Any `_id` or `_rev` attribute specified in the body is ignored.
+        {{</* /info */>}}
+
+        Unless `silent` is set to `true`, the body of the response contains an
+        array of JSON objects with the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
+
+        If the collection parameter `waitForSync` is `false`, then the call
+        returns as soon as the documents have been accepted. It does not wait
+        until the documents have been synced to disk.
+
+        Optionally, the query parameter `waitForSync` can be used to force
+        synchronization of the document creation operation to disk even in
+        case that the `waitForSync` flag had been disabled for the entire
+        collection. Thus, the `waitForSync` query parameter can be used to
+        force synchronization of just this specific operations. To use this,
+        set the `waitForSync` parameter to `true`. If the `waitForSync`
+        parameter is not specified or set to `false`, then the collection's
+        default `waitForSync` behavior is applied. The `waitForSync` query
+        parameter cannot be used to disable synchronization for collections
+        that have a default `waitForSync` value of `true`.
+
+        If the query parameter `returnNew` is `true`, then, for each
+        generated document, the complete new document is returned under
+        the `new` attribute in the result.
+
+        Should an error have occurred with some of the documents,
+        the `X-Arango-Error-Codes` HTTP header is set. It contains a map of the
+        error codes and how often each kind of error occurred. For example,
+        `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
+        has happened, and in 10 cases the error 1205 ("illegal document handle").
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection
+          in: path
+          required: true
+          description: |
+            Name of the `collection` in which the documents are to be created.
+          schema:
+            type: string
+        - name: waitForSync
+          in: query
+          required: false
+          description: |
+            Wait until document has been synced to disk.
+          schema:
+            type: boolean
+        - name: returnNew
+          in: query
+          required: false
+          description: |
+            Whether to additionally include the complete new document under the
+            `new` attribute in the result.
+          schema:
+            type: boolean
+            default: false
+        - name: returnOld
+          in: query
+          required: false
+          description: |
+            Whether to additionally include the complete previous document under the
+            `old` attribute in the result. Only available if the `overwriteMode`
+            parameter is set to `"update"` or `"replace"`.
+          schema:
+            type: boolean
+            default: false
+        - name: silent
+          in: query
+          required: false
+          description: |
+            If set to `true`, an empty object is returned as response if all document operations
+            succeed. No meta-data is returned for the created documents. If any of the
+            operations raises an error, an array with the error object(s) is returned.
+
+            You can use this option to save network traffic but you cannot map any errors
+            to the inputs of your request.
+          schema:
+            type: boolean
+            default: false
+        - name: overwriteMode
+          in: query
+          required: false
+          description: |
+            Controls what happens if a document with the specified `_key` value
+            exists already. The following modes are available:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
+              nothing is done and no write operation is carried out. The
+              insert operation returns success in this case. This mode does not
+              support returning the old document version using `RETURN OLD`. When using
+              `RETURN NEW`, `null` is returned in case the document already existed.
+            - `"replace"`: if a document with the specified `_key` value exists already,
+              it is overwritten with the specified document value.
+            - `"update"`: if a document with the specified `_key` value exists already,
+              it is patched (partially updated) with the specified document value.
+              The overwrite mode can be further controlled via the `keepNull` and
+              `mergeObjects` parameters.
+            - `"conflict"`: if a document with the specified `_key` value exists already,
+              return a unique constraint violation error so that the insert operation
+              fails. This is also the default behavior in case the overwrite mode is
+              not set.
+
+              Note that operations with `overwriteMode` other than `"conflict"` require
+              a `_key` attribute in the request payload, therefore they can only be
+              performed on collections sharded by `_key`.
+          schema:
+            type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
+        - name: keepNull
+          in: query
+          required: false
+          description: |
+            If the intention is to delete existing attributes with the update-insert
+            command, set the `keepNull` query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays). This option controls the update-insert behavior only.
+          schema:
+            type: boolean
+            default: true
+        - name: mergeObjects
+          in: query
+          required: false
+          description: |
+            Controls whether objects (not arrays) are merged if present in both, the
+            existing and the update-insert document. If set to `false`, the value in the
+            patch document overwrites the existing document's value. If set to `true`,
+            objects are merged.
+            This option controls the update-insert behavior only.
+          schema:
+            type: boolean
+            default: true
+        - name: refillIndexCaches
+          in: query
+          required: false
+          description: |
+            Whether to add new entries to in-memory index caches if document insertions
+            affect the edge index or cache-enabled persistent indexes.
+          schema:
+            type: boolean
+            default: false
+        - name: versionAttribute
+          in: query
+          required: false
+          description: |
+            Only applicable if `overwriteMode` is set to `update` or `replace`.
+
+            You can use the `versionAttribute` option for external versioning support.
+            If set, the attribute with the name specified by the option is looked up in the
+            stored document and the attribute value is compared numerically to the value of
+            the versioning attribute in the supplied document that is supposed to update/replace it.
+
+            If the version number in the new document is higher (rounded down to a whole number)
+            than in the document that already exists in the database, then the update/replace
+            operation is performed normally. This is also the case if the new versioning
+            attribute has a non-numeric value, if it is a negative number, or if the
+            attribute doesn't exist in the supplied or stored document.
+
+            If the version number in the new document is lower or equal to what exists in
+            the database, the operation is not performed and the existing document thus not
+            changed. No error is returned in this case.
+
+            The attribute can only be a top-level attribute.
+
+            You can check if `_oldRev` (if present) and `_rev` are different to determine if the
+            document has been changed.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                An array of documents to create.
+              type: array
+              items:
+                type: object
+      responses:
+        '201':
+          description: |
+            The individual operations have been processed and `waitForSync` was `true`.
+        '202':
+          description: |
+            The individual operations have been processed and `waitForSync` was `false`.
+        '400':
+          description: |
+            The request body does not contain a valid JSON representation
+            of an array of documents.
+        '403':
+          description: |
+            If the error code is `1004`, the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
+        '404':
+          description: |
+            The document or collection cannot be found.
+            The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+        '503':
+          description: |
+            The system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
+      tags:
+        - Documents
+```
+
+**Examples**
+
+```curl
+---
+description: |-
+  Insert multiple documents:
+name: RestDocumentHandlerPostMulti1ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '[{"Hello":"Earth"}, {"Hello":"Venus"}, {"Hello":"Mars"}]';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 202);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Use of returnNew:
+name: RestDocumentHandlerPostMulti2ApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_arango/v1/_api/document/" + cn + "?returnNew=true";
+var body = '[{"Hello":"Earth"}, {"Hello":"Venus"}, {"Hello":"Mars"}]';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 202);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+```curl
+---
+description: |-
+  Partially illegal documents:
+name: RestDocumentHandlerPostBadJsonMultiApiV1
+---
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_arango/v1/_api/document/" + cn;
+var body = '[{ "_key": 111 }, {"_key":"abc"}]';
+
+var response = logCurlRequest('POST', url, body);
+
+assert(response.code === 202);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+{{< api-versions-end >}}
 
 ### Replace multiple documents
 
