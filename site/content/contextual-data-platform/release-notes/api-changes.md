@@ -1,5 +1,5 @@
 ---
-title: API changes in the Arango Contextual Data Platform
+title: API changes in the data platform
 menuTitle: API changes
 weight: 10
 description: >-
