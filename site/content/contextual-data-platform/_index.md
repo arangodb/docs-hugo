@@ -1,7 +1,7 @@
 ---
 title: Arango Contextual Data Platform
 menuTitle: Arango Contextual Data Platform
-weight: 1
+weight: 2
 description: >-
   The Arango Contextual Data Platform provides entity-aware retrieval,
   graph-based reasoning, temporal state management, and platform-level
@@ -13,6 +13,9 @@ in a single solution that you can deploy and self-manage on-premises or in the
 cloud, or use as a managed service - [Arango Managed Platform (AMP)](../amp/_index.md).
 It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
+
+To install the platform and run your first graph-powered questions, see
+[Get started with the data platform](../get-started/data-platform/_index.md).
 
 ## Architecture
 
