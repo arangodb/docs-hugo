@@ -10,7 +10,9 @@ Every release of the Arango Contextual Data Platform bundles a fixed set of
 services, each with its own version. The tables below list what each
 data platform release ships, along with the feature that the service implements.
 
-The service versions are informational. You install and upgrade the
-data platform as a whole, see [Install and upgrade](../install-and-upgrade/_index.md).
+Arango tests and validates each listed combination of service versions as a
+whole, and it is the officially supported configuration of that data platform
+release. You install and upgrade the data platform as a whole, see
+[Install and upgrade](../install-and-upgrade/_index.md).
 
 {{% service-versions %}}
