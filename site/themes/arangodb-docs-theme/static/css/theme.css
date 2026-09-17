@@ -854,7 +854,7 @@ body .page-container {
     padding-left: 10px;
 }
 
-header .logo {
+.header .logo {
     width: 219px;
     height: 45px;
     top: 8px;
@@ -867,6 +867,11 @@ header .logo {
     margin-left: 2px;
 }
 
+.header .logo a,
+.arangodb-logo-small a {
+    display: block;
+    height: 100%;
+}
 
 @media screen and (max-width: 768px) {
     .arangodb-logo-large {
