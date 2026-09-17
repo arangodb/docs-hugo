@@ -1,13 +1,13 @@
 ---
 title: Troubleshooting the ArangoDB installation
 menuTitle: Troubleshooting the install
-weight: 20
+weight: 10
 description: >-
   Common problems when running ArangoDB in a Docker container for the first
   time, and how to fix them
 ---
 This page covers the problems you are most likely to hit when following
-[Get started with ArangoDB](arangodb.md).
+[Get started with ArangoDB](_index.md).
 
 Two commands answer most questions:
 
@@ -119,9 +119,9 @@ docker run -d --name arangodb \
 
 ## Still stuck?
 
-- [Install with Docker](../arangodb/3.12/operations/installation/docker.md) -
+- [Install with Docker](../../arangodb/3.12/operations/installation/docker.md) -
   the complete set of container options.
-- [Troubleshooting](../arangodb/3.12/operations/troubleshooting/_index.md) -
+- [Troubleshooting](../../arangodb/3.12/operations/troubleshooting/_index.md) -
   diagnosing a running ArangoDB instance.
-- [Known issues](../arangodb/3.12/release-notes/version-3.12/known-issues-in-3-12.md)
+- [Known issues](../../arangodb/3.12/release-notes/version-3.12/known-issues-in-3-12.md)
   for the current release.

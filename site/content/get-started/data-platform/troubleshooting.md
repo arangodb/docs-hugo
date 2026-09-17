@@ -1,13 +1,13 @@
 ---
 title: Troubleshooting the data platform installation
 menuTitle: Troubleshooting the install
-weight: 27
+weight: 10
 description: >-
   Common problems when installing the Arango Contextual Data Platform for the
   first time and running the quick start, and how to fix them
 ---
 This page covers the problems you are most likely to hit when following
-[Get started with the data platform](get-started.md).
+[Get started with the data platform](_index.md).
 
 ## Start here
 
@@ -84,8 +84,8 @@ kubectl get events --namespace arango --sort-by=.lastTimestamp | tail -20
 ```
 
 Allow outbound access to `*.license.arango.ai`, or follow the
-[offline setup](install-and-upgrade/offline-setup.md) for air-gapped
-environments. See [License Management](license-management.md) for the full
+[offline setup](../../contextual-data-platform/install-and-upgrade/offline-setup.md) for air-gapped
+environments. See [License Management](../../contextual-data-platform/license-management.md) for the full
 renewal lifecycle.
 
 ### Port 8529 is already in use
@@ -174,7 +174,7 @@ echo $LLM_API_KEY
 
 Any OpenAI-compatible endpoint works - OpenRouter, Google Gemini, Anthropic,
 Azure, or a private corporate LLM. See
-[LLM Configuration](../agentic-ai-suite/autograph/llm-configuration.md) for the
+[LLM Configuration](../../agentic-ai-suite/autograph/llm-configuration.md) for the
 supported providers and models.
 
 ### Questions return nothing useful
@@ -195,9 +195,9 @@ Then run the installation command again.
 
 ## Still stuck?
 
-- [Online setup](install-and-upgrade/online-setup.md) - the manual installation
+- [Online setup](../../contextual-data-platform/install-and-upgrade/online-setup.md) - the manual installation
   steps, useful for isolating which one fails.
-- [License Management](license-management.md) - activation, renewal, and the
+- [License Management](../../contextual-data-platform/license-management.md) - activation, renewal, and the
   required network access.
-- [Architecture](architecture.md) - what each component does and how they
+- [Architecture](../../contextual-data-platform/architecture.md) - what each component does and how they
   connect.

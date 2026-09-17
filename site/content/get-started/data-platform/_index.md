@@ -1,6 +1,6 @@
 ---
 title: Get started with the data platform
-menuTitle: Contextual Data Platform
+menuTitle: Arango Contextual Data Platform
 weight: 10
 description: >-
   Install the Arango Contextual Data Platform and run your first graph-powered
@@ -29,7 +29,7 @@ description: >-
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private
   corporate LLM - see
-  [LLM Configuration](../agentic-ai-suite/autograph/llm-configuration.md) for the
+  [LLM Configuration](../../agentic-ai-suite/autograph/llm-configuration.md) for the
   supported providers and models.
 
 ## Install Arango Contextual Data Platform
@@ -106,13 +106,13 @@ and it does not roll back the installation.
 
 If you would prefer not to run an installation script at all, or you need the
 full platform rather than the evaluation subset, follow
-[Online setup](../contextual-data-platform/install-and-upgrade/online-setup.md)
+[Online setup](../../contextual-data-platform/install-and-upgrade/online-setup.md)
 instead. It covers the same deployment as a sequence of `kubectl` and `helm`
 commands that you can read and run one at a time, against a cluster you already
 control.
 
 For an environment without internet access, see
-[Offline setup](../contextual-data-platform/install-and-upgrade/offline-setup.md).
+[Offline setup](../../contextual-data-platform/install-and-upgrade/offline-setup.md).
 
 The rest of this page assumes you used the installation script.
 
@@ -162,7 +162,7 @@ Sample output:
 ```
 
 For common setup issues, see
-[Troubleshooting the installation](../contextual-data-platform/troubleshooting.md).
+[Troubleshooting the installation](troubleshooting.md).
 
 ## Install Python Client
 

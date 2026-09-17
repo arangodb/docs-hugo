@@ -1,6 +1,7 @@
 ---
 title: Get started with Arango
 menuTitle: Get Started
+navDescription: Understand the products, then install one
 weight: 1
 description: >-
   Understand what Arango offers, pick the product you need, then install it and
@@ -19,7 +20,7 @@ to each other and which one to install.
 
 {{< cards >}}
 
-{{% card title="Arango Contextual Data Platform" link="data-platform.md" %}}
+{{% card title="Arango Contextual Data Platform" link="data-platform/" %}}
 Install the data platform, turn documents into a knowledge graph with AutoGraph,
 and ask questions about them in natural language. Choose between an
 installation script for local evaluation and a manual install of the full
@@ -27,7 +28,7 @@ platform. The script takes about 10 minutes, most of it downloading container
 images.
 {{% /card %}}
 
-{{% card title="ArangoDB" link="arangodb.md" %}}
+{{% card title="ArangoDB" link="arangodb/" %}}
 Run the open-source multi-model database in a Docker container, store your first
 documents, and query them with AQL.
 Takes about 2 minutes.
@@ -40,5 +41,5 @@ Takes about 2 minutes.
 Each installation path has a troubleshooting page that covers the problems you
 are most likely to hit on a first install:
 
-- [Troubleshooting the data platform installation](../contextual-data-platform/troubleshooting.md)
-- [Troubleshooting the ArangoDB installation](arangodb-troubleshooting.md)
+- [Troubleshooting the data platform installation](data-platform/troubleshooting.md)
+- [Troubleshooting the ArangoDB installation](arangodb/troubleshooting.md)

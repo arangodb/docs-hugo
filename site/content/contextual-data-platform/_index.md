@@ -1,6 +1,7 @@
 ---
 title: Arango Contextual Data Platform
 menuTitle: Arango Contextual Data Platform
+navDescription: The licensed platform for agent-ready context
 weight: 2
 description: >-
   The Arango Contextual Data Platform provides entity-aware retrieval,
@@ -15,7 +16,7 @@ It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
 To install the platform and run your first graph-powered questions, see
-[Get started with the data platform](../get-started/data-platform.md).
+[Get started with the data platform](../get-started/data-platform/_index.md).
 
 ## Architecture
 

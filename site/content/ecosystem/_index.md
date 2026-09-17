@@ -1,6 +1,7 @@
 ---
 title: Arango Ecosystem
 menuTitle: Ecosystem
+navDescription: Drivers, MCP server, and framework integrations
 weight: 10
 description: >-
   The Arango ecosystem includes an MCP server, drivers, integrations, and

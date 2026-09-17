@@ -1,6 +1,7 @@
 ---
 title: Arango Managed Platform (AMP)
 menuTitle: Arango Managed Platform
+navDescription: Arango's fully managed cloud service
 weight: 5
 description: >-
   The Arango Managed Platform (AMP) provides the entire functionality of

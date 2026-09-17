@@ -1,6 +1,7 @@
 ---
 title: Agentic AI Suite
 menuTitle: Agentic AI Suite
+navDescription: Context graphs, retrieval, and graph machine learning
 weight: 3
 description: >-
   A comprehensive AI solution that transforms your documents into a Context

@@ -1,6 +1,7 @@
 ---
 title: ArangoDB database system
 menuTitle: ArangoDB
+navDescription: The open-source multi-model database underneath it
 weight: 6
 description: >-
   ArangoDB is a scalable graph database system to drive value from connected

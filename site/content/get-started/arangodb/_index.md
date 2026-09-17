@@ -35,7 +35,7 @@ cannot be changed afterwards without re-initializing.
 first run, and this instance is only meant for local evaluation.
 
 On Apple silicon and other ARM machines, add `--platform linux/arm64/v8` to the
-command. See [Install with Docker](../arangodb/3.12/operations/installation/docker.md)
+command. See [Install with Docker](../../arangodb/3.12/operations/installation/docker.md)
 for the full set of container options.
 {{< /step >}}
 
@@ -105,8 +105,8 @@ Type `exit` to leave the shell.
 
 {{< tip >}}
 **You now have** a running ArangoDB instance with a collection you can query.
-The same AQL runs unchanged from every [driver](../ecosystem/drivers/_index.md)
-and against the [HTTP API](../arangodb/3.12/develop/http-api/_index.md).
+The same AQL runs unchanged from every [driver](../../ecosystem/drivers/_index.md)
+and against the [HTTP API](../../arangodb/3.12/develop/http-api/_index.md).
 {{< /tip >}}
 
 ## Keep your data between restarts
@@ -133,11 +133,11 @@ docker rm arangodb
 
 ## Next steps
 
-- [Troubleshooting the ArangoDB installation](arangodb-troubleshooting.md) if
+- [Troubleshooting the ArangoDB installation](troubleshooting.md) if
   something did not work.
-- [Start using AQL](../arangodb/3.12/get-started/start-using-aql/_index.md) for a
+- [Start using AQL](../../arangodb/3.12/get-started/start-using-aql/_index.md) for a
   longer tutorial covering CRUD, filtering, joins, and graph traversals.
-- [Graphs](../arangodb/3.12/graphs/_index.md) to connect your documents with
+- [Graphs](../../arangodb/3.12/graphs/_index.md) to connect your documents with
   edges and traverse them.
-- [Deploy](../arangodb/3.12/deploy/_index.md) when you are ready to run
+- [Deploy](../../arangodb/3.12/deploy/_index.md) when you are ready to run
   something other than a single container.
