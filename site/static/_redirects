@@ -227,6 +227,10 @@
 /agentic-ai-suite/graphrag/tutorial-notebook/                                   /agentic-ai-suite/autograph/web-interface/                      301
 /agentic-ai-suite/graphrag/                                                     /agentic-ai-suite/autograph/                                    301
 /agentic-ai-suite/graphrag/*                                                    /agentic-ai-suite/autograph/                                    301
+/agentic-ai-suite/retriever/                                                    /agentic-ai-suite/autorag/                                      301
+/agentic-ai-suite/retriever/*                                                   /agentic-ai-suite/autorag/:splat                                301
+/agentic-ai-suite/reference/retriever/                                          /agentic-ai-suite/autorag/                                      301
+/agentic-ai-suite/reference/retriever/*                                         /agentic-ai-suite/autorag/:splat                                301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301

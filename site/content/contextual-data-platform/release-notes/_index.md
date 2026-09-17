@@ -36,7 +36,7 @@ The terminology has been aligned across the documentation: **Corpus Graph**,
 the AutoGraph pipeline. The standalone GraphRAG web interface has been removed;
 use AutoGraph and the new AutoGraph Studio web interface instead. You can also
 use the [Importer](../../agentic-ai-suite/importer/_index.md) and
-[Retriever](../../agentic-ai-suite/retriever/_index.md) APIs.
+[AutoRAG](../../agentic-ai-suite/autorag/_index.md) APIs.
 
 ### Incremental Graph Updates
 
@@ -98,7 +98,7 @@ clusters, see
   [custom metadata](../../platform-suite/file-manager/_index.md#attaching-custom-metadata)
   to uploaded files. The reserved
   [`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key) key
-  lets Retriever resolve
+  lets AutoRAG resolve
   [citations](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
   back to the original source document.
 - You can upload
@@ -210,14 +210,14 @@ This release contains improvements and refinements to features introduced in v4.
   environment variable (default `gpt-4o-mini`), and it honors the same token
   budget and Responses API settings as the rest of the pipeline.
 
-### Retriever
+### Retriever (now AutoRAG)
 
 {{< tag "Agentic AI Suite" >}}
 
-- Response [caching](../../agentic-ai-suite/retriever/parameters.md#use_cache)
+- Response [caching](../../agentic-ai-suite/autorag/parameters.md#use_cache)
   (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
   `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
-- [`show_citations`](../../agentic-ai-suite/retriever/parameters.md#show_citations)
+- [`show_citations`](../../agentic-ai-suite/autorag/parameters.md#show_citations)
   is documented as a no-op in Deep Search (`use_llm_planner=true`) and
   `GLOBAL` queries, because those modes always strip citations regardless of
   the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
@@ -233,7 +233,7 @@ This release contains improvements and refinements to features introduced in v4.
 
 Default OpenAI chat model upgraded from `gpt-4o` to the
 GPT-5.4 family. The [Importer](../../agentic-ai-suite/importer/llm-configuration.md)
-and [Retriever](../../agentic-ai-suite/retriever/llm-configuration.md) now default
+and [Retriever](../../agentic-ai-suite/autorag/llm-configuration.md) now default
 to `gpt-5.4-nano`; the
 [Natural Language to AQL](../../agentic-ai-suite/natural-language-to-aql/setup.md)
 service (AQLizer) defaults to `gpt-5.4`. [Ada](../../agentic-ai-suite/ada/_index.md) also
@@ -414,7 +414,8 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 {{< tag "Agentic AI Suite" >}}
 
-- **Instant and Deep Search**: New [Retriever](../../agentic-ai-suite/retriever/search-methods/_index.md) search methods
+- **Instant and Deep Search**: New Retriever (now
+  [AutoRAG](../../agentic-ai-suite/autorag/search-methods/_index.md)) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
@@ -512,7 +513,8 @@ What's included:
 
 - [**GraphRAG**](../../agentic-ai-suite/autograph/concepts.md):
   Transform unstructured documents into intelligent knowledge graphs and
-  natural language querying through Importer and Retriever services.
+  natural language querying through the Importer and Retriever (now AutoRAG)
+  services.
 
 - [**GraphML**](../../agentic-ai-suite/graphml/_index.md):
   Apply machine learning to graphs with node classification and

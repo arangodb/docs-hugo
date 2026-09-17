@@ -1,40 +1,47 @@
 ---
-title: Retriever Service
-menuTitle: AutoRAG (Retriever)
+title: AutoRAG
+menuTitle: AutoRAG
 description: >-
-  The Retriever service enables intelligent search and retrieval from knowledge
-  graphs created by the Importer service
+  AutoRAG enables intelligent search and retrieval from the knowledge graphs
+  built by the Importer and AutoGraph
 weight: 8
 ---
 ## Overview
 
-The Retriever service provides intelligent search and retrieval from knowledge
-graphs stored in ArangoDB. It offers multiple search methods optimized for
-different query types, from fast instant answers to thorough multi-step research,
-plus a Custom Retriever for domain-specific search on any collection.
+AutoRAG provides intelligent search and retrieval from knowledge graphs stored
+in ArangoDB. It offers multiple search methods optimized for different query
+types, from fast instant answers to thorough multi-step research, plus a Custom
+Retriever for domain-specific search on any collection.
 
-## When to use the Retriever
+{{< info >}}
+AutoRAG was previously called the **Retriever service**. The former name still
+appears in the API surface, for example in the `graphragretriever` deployment
+endpoint and in the `/graphrag/retriever/` URL prefix of the query API, and in
+[AutoGraph Studio](../autograph/web-interface.md#deploy-an-autorag-retriever),
+which calls the services it deploys *retrievers*.
+{{< /info >}}
 
-The Retriever serves two usage patterns depending on how your knowledge graph
-was built.
+## When to use AutoRAG
 
-### With GraphRAG (standalone)
+AutoRAG serves two usage patterns depending on how your knowledge graph was
+built.
+
+### With the Importer (standalone)
 
 When using the [Importer](../importer/) directly to build a single knowledge
 graph, you query it with the
 [query API](executing-queries.md), which gives access to all search methods and
 parameters.
 
-The standalone GraphRAG workflow is not available in the web interface.
+The standalone Importer workflow is not available in the web interface.
 [AutoGraph Studio](../autograph/web-interface.md) can only query Context Graphs
 that belong to an AutoGraph project.
 
 ### With AutoGraph (partitioned)
 
 When [AutoGraph](../autograph/) manages your document pipeline, it builds
-partitioned knowledge graphs with domain-aware RAG strategies. The Retriever
-queries across these partitions using `partition_ids` to target specific
-domains. AutoGraph's two-stage retrieval pattern first identifies relevant
+partitioned knowledge graphs with domain-aware RAG strategies. AutoRAG queries
+across these partitions using `partition_ids` to target specific domains. AutoGraph's two-stage retrieval pattern first identifies relevant
 partitions, then performs deep search within them.
 
 Each partition is built either as **VectorRAG** or as **FullGraphRAG**, and
@@ -59,20 +66,19 @@ guidance on choosing the right method.
 
 ## Prerequisites
 
-Before using the Retriever service, you need:
+Before using AutoRAG, you need:
 
-1. **A GraphRAG project** with imported data. If you are using the Importer
-   standalone, follow the [Importer Setup](../importer/setup.md).
-   If you are using AutoGraph, follow the
-   [AutoGraph Setup](../autograph/setup.md).
+1. **A project** with imported data. If you are using the Importer standalone,
+   follow the [Importer Setup](../importer/setup.md). If you are using
+   AutoGraph, follow the [AutoGraph Setup](../autograph/setup.md).
 
-2. **An LLM provider** configured for the Retriever. See
+2. **An LLM provider** configured for AutoRAG. See
    [LLM Configuration](llm-configuration.md) to set up Triton Inference Server
    or any OpenAI-compatible API.
 
 ## Installation
 
-To install and start the Retriever service, use the following endpoint:
+To install and start AutoRAG, use the following endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragretriever" >}}
 
