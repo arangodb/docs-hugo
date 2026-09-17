@@ -1,7 +1,7 @@
 ---
 title: Get started with the data platform
-menuTitle: Get Started
-weight: 15
+menuTitle: Contextual Data Platform
+weight: 10
 description: >-
   Install the Arango Contextual Data Platform and run your first graph-powered
   questions with the Python client
@@ -38,7 +38,7 @@ curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/release
 ```
 
 If you prefer to run the installation steps manually, see
-[Online setup](install-and-upgrade/online-setup.md).
+[Online setup](../contextual-data-platform/install-and-upgrade/online-setup.md).
 
 When the installation completes, it prints one or two **Next Steps**. Make sure
 you run those steps before accessing the web interface or running the quick
@@ -84,7 +84,7 @@ Sample output:
 ```
 
 For common setup issues, see
-[Troubleshooting the installation](troubleshooting.md).
+[Troubleshooting the installation](../contextual-data-platform/troubleshooting.md).
 
 ## Install Python Client
 

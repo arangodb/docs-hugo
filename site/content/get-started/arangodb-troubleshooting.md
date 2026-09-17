@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting the ArangoDB installation
 menuTitle: Troubleshooting the install
-weight: 15
+weight: 20
 description: >-
   Common problems when running ArangoDB in a Docker container for the first
   time, and how to fix them

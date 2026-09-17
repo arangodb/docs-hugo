@@ -19,7 +19,7 @@ to each other and which one to install.
 
 {{< cards >}}
 
-{{% card title="Arango Contextual Data Platform" link="../contextual-data-platform/get-started.md" %}}
+{{% card title="Arango Contextual Data Platform" link="data-platform.md" %}}
 Install the data platform, turn documents into a knowledge graph with AutoGraph,
 and ask questions about them in natural language.
 Takes about 10 minutes, most of it downloading container images.

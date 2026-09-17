@@ -38,7 +38,7 @@ query language, the drivers, and the HTTP API are the same.
 | **Runs on** | A container, a VM, or bare metal | Kubernetes |
 | **Licensing** | Community Edition is free and open source; Enterprise Edition adds clustering and security features | Licensed; requires ArangoDB Enterprise Edition 3.12.9 or later |
 | **Install time** | About 2 minutes | About 10 minutes |
-| **Start here** | [Get started with ArangoDB](arangodb.md) | [Get started with the data platform](../contextual-data-platform/get-started.md) |
+| **Start here** | [Get started with ArangoDB](arangodb.md) | [Get started with the data platform](data-platform.md) |
 
 If you are building an application that stores and traverses connected data,
 you want ArangoDB. If you are building something that has to answer questions
@@ -119,5 +119,5 @@ products, because both speak the same HTTP API.
 
 Pick an installation path:
 
-- [Get started with the Arango Contextual Data Platform](../contextual-data-platform/get-started.md)
+- [Get started with the Arango Contextual Data Platform](data-platform.md)
 - [Get started with ArangoDB](arangodb.md)

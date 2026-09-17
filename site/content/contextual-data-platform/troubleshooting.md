@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting the data platform installation
 menuTitle: Troubleshooting the install
-weight: 17
+weight: 27
 description: >-
   Common problems when installing the Arango Contextual Data Platform for the
   first time and running the quick start, and how to fix them

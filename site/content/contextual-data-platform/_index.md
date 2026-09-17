@@ -14,6 +14,9 @@ cloud, or use as a managed service - [Arango Managed Platform (AMP)](../amp/_ind
 It is built on a modern, cloud-native foundation designed for enterprise
 scalability and reliability.
 
+To install the platform and run your first graph-powered questions, see
+[Get started with the data platform](../get-started/data-platform.md).
+
 ## Architecture
 
 The Arango Contextual Data Platform is a layered architecture that combines

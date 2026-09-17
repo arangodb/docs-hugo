@@ -1,7 +1,7 @@
 ---
 title: Get started with ArangoDB
 menuTitle: ArangoDB
-weight: 10
+weight: 15
 description: >-
   Run the open-source ArangoDB database in a Docker container, store your first
   documents, and query them with AQL
