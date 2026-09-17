@@ -542,6 +542,20 @@ A new activities API has been added as an observability feature.
 See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
 for details.
 
+#### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature
+for inspecting the index segments of `arangosearch` Views and inverted indexes.
+It reports the number of segments and files a data store is made up of, its
+size, as well as the document counts and deletion ratios overall and per
+segment. This lets you see how much of a data store is occupied by documents
+that are marked as deleted and whether the background consolidation keeps up
+with the write load.
+See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API

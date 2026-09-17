@@ -103,6 +103,50 @@ more become available.
 See [`SEARCH` operation in AQL](../../aql/high-level-operations/search.md#parallelism)
 for details.
 
+### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature,
+allowing you to inspect the index segments that back `arangosearch` Views and
+inverted indexes. Every View link and every inverted index stores its data in a
+separate ArangoSearch data store. For a data store as a whole, the endpoint
+reports the number of
+documents, live documents, segments, and files as well as the index size, and
+for every individual segment its name, document counts, and size:
+
+```json
+{
+  "numDocs": 6,
+  "numLiveDocs": 5,
+  "deletionRatio": 0.17,
+  "numPrimaryDocs": 6,
+  "numSegments": 2,
+  "numFiles": 12,
+  "indexSize": 4118,
+  "segments": [
+    {
+      "name": "_1",
+      "numDocs": 5,
+      "numLiveDocs": 4,
+      "byteSize": 3562,
+      "deletionRatio": 0.2
+    },
+    ...
+  ]
+}
+```
+
+You can use this information to see how a data store is laid out and whether
+the background consolidation keeps up with the write load.
+
+The endpoint is only available on single servers, and it reports the statistics
+of a single ArangoSearch data store of the specified database that you cannot
+select.
+
+See the [`GET /_admin/arangosearch/stats` endpoint](../../develop/http-api/monitoring/arangosearch-statistics.md)
+for details.
+
 ## Analyzers
 
 ### `wildcard` Analyzer

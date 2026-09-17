@@ -361,6 +361,11 @@ multiple index segments into a bigger one and removing garbage documents (e.g.
 deleted from a collection). **Cleanup** is meant to be treated as the procedure
 of removing unused segments after release of internal resources.
 
+To inspect the segment layout of the data store that backs a View, how much
+of it is occupied by documents that are marked as deleted, and whether
+consolidation keeps up with the write load, see the
+[ArangoSearch statistics HTTP API](../../develop/http-api/monitoring/arangosearch-statistics.md).
+
 - **cleanupIntervalStep** (_optional_; type: `integer`; default: `2`; to
   disable use: `0`)
 
