@@ -5,4 +5,4 @@
   {{- $level := 2 }}
 {{- end }}
 <h{{ $level }} id="{{ .Anchor | safeURL }}">{{ .Text | safeHTML }} <a href="{{ $ref | safeURL }}" class="header-link"><span></span><i class="fa fa-link"></i></a></h{{ $level }}>
-{{- .Page.Scratch.Set "currentHeadline" .Text }}
+{{- .Page.Store.Set "currentHeadline" .Text }}
