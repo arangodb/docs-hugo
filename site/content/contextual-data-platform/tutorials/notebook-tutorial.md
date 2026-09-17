@@ -35,7 +35,7 @@ By the end, you will have:
 The **Expected output** blocks in this tutorial are illustrative - IDs, counts,
 and generated text will differ on your run.
 
-{{< embed-svg "GraphRAG-Flow" "AutoGraph end-to-end flow." >}}
+{{< embed-svg "AutoGraph-Flow" "AutoGraph end-to-end flow." >}}
 
 ## Step 1: Check the prerequisites
 
