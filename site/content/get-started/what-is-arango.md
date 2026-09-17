@@ -64,8 +64,8 @@ The platform itself comes in two parts:
 
 - The [**Agentic AI Suite**](../agentic-ai-suite/_index.md) is the optional
   capability layer on top. It adds
-  [AutoGraph](../agentic-ai-suite/autograph/_index.md) with AutoRAG,
-  [GraphRAG](../agentic-ai-suite/graphrag/_index.md),
+  [AutoGraph](../agentic-ai-suite/autograph/_index.md) with AutoRAG and
+  [GraphRAG](../agentic-ai-suite/autograph/concepts.md),
   [GraphML](../agentic-ai-suite/graphml/_index.md),
   [Graph Analytics](../agentic-ai-suite/graph-analytics/_index.md),
   the [Reasoner](../agentic-ai-suite/reasoner/_index.md),
