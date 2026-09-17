@@ -21,7 +21,7 @@ func ParseOpenapiPayload(request io.Reader) (map[string]interface{}, error) {
 		lines := strings.Split(string(req), "\n")
 		for i, line := range lines {
 			if i < 4 {
-				Logger.Printf(line)
+				Logger.Printf("%s", line)
 			} else {
 				break
 			}
