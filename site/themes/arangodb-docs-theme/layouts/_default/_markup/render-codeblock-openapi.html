@@ -103,6 +103,9 @@
   <div class="openapi">
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
+      {{- if hasPrefix $path "/_arango/" }}
+        {{- errorf "Omit the API version prefix for the endpoint path %q in %s" $path $page.File.Path }}
+      {{- end }}
       {{- $displayPath := $path }}
       {{- if (eq $service "arangodb") }}
         {{- if (in $apiVersions "v0") }}

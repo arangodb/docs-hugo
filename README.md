@@ -467,7 +467,7 @@ paths:
 apiVersions: [v1]
 ---
 paths:
-  /_arango/v1/_db/_system/_api/query-cache/properties:
+  /_db/_system/_api/query-cache/properties:
     put:
       operationId: setQueryCacheProperties
       # ...
@@ -481,6 +481,9 @@ block. The shortcodes only create the tab panel, whereas the front matter alone
 decides which OpenAPI file an endpoint ends up in, see
 [Configure the OpenAPI metadata and API versions](#configure-the-openapi-metadata-and-api-versions).
 You can put `curl` examples into the panes as well.
+
+Note that the endpoint paths don't start with `/_arango/<api-version>`. This is
+automatically prepended by the toolchain if necessary (non-default API version).
 
 Unlike with the `tabs` shortcode, the panes are not nested inside the shortcode.
 `{{< api-version >}}` and `{{< api-versions-end >}}` are markers that only emit
