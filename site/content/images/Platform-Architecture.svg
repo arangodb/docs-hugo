@@ -38,7 +38,7 @@
     <path d="M 450 90 L 450 145" stroke="#4F6D8B" stroke-width="1.8" fill="none" marker-end="url(#arrow-g)"/>
     <text x="458" y="125" font-family="sans-serif" font-size="10" fill="#4F6D8B">HTTP/HTTPS (ingress)</text>
 
-    <a class="card-link" xlink:href="/arangodb/4.x/develop/http-api/">
+    <a class="card-link" xlink:href="/contextual-data-platform/architecture/#third-party-components-used-by-the-platform">
       <rect x="340" y="145" width="220" height="72" rx="10" class="node" fill="#0f3726" stroke="#22c55e" stroke-width="2"/>
       <text x="450" y="174" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#ffffff">Envoy</text>
       <text x="450" y="192" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#86efac">(API Gateway &amp;</text>
@@ -112,30 +112,32 @@
 
     <a class="card-link" xlink:href="/agentic-ai-suite/">
       <rect x="660" y="255" width="210" height="320" rx="10" fill="#f5edff" stroke="#470878" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <text x="765" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#470878">AI TOOLS &amp; GRAPH ANALYTICS</text>
+      <text x="765" y="275" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#470878">AGENTIC AI SUITE</text>
     </a>
     <path d="M 590 181 L 590 240 L 720 240 L 720 255" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <a class="card-link" xlink:href="/agentic-ai-suite/graph-analytics/">
-      <rect x="675" y="290" width="180" height="70" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
-      <text x="765" y="320" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Graph Analytics</text>
-      <text x="765" y="338" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Engine</text>
-    </a>
     <a class="card-link" xlink:href="/agentic-ai-suite/autograph/">
-      <rect x="675" y="380" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
-      <text x="765" y="405" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
-      <text x="765" y="421" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Loader</text>
+      <rect x="675" y="300" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="326" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
+      <text x="765" y="343" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b21a8">Context Graph &amp; retrievers</text>
     </a>
-    <a class="card-link" xlink:href="/agentic-ai-suite/retriever/">
-      <rect x="675" y="460" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
-      <text x="765" y="485" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">AutoGraph</text>
-      <text x="765" y="501" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Retriever</text>
+    <a class="card-link" xlink:href="/agentic-ai-suite/graphml/">
+      <rect x="675" y="395" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="421" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">GraphML</text>
+      <text x="765" y="438" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b21a8">Graph machine learning</text>
+    </a>
+    <a class="card-link" xlink:href="/agentic-ai-suite/graph-analytics/">
+      <rect x="675" y="490" width="180" height="60" rx="8" class="node-ai" fill="#ffffff" stroke="#470878" stroke-width="1.5"/>
+      <text x="765" y="516" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#470878">Graph Analytics</text>
+      <text x="765" y="533" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#6b21a8">Graph algorithms</text>
     </a>
 
-    <a class="card-link" xlink:href="https://arangodb.github.io/kube-arangodb/" target="_blank">
+    <a class="card-link" xlink:href="/contextual-data-platform/architecture/#the-arangodb-kubernetes-operator">
       <rect x="30" y="420" width="130" height="110" rx="10" class="node-op" fill="#153d28" stroke="#4ade80" stroke-width="1.5"/>
-      <text x="95" y="471" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">ArangoDB</text>
-      <text x="95" y="487" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Operator</text>
+      <text x="95" y="463" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">ArangoDB</text>
+      <text x="95" y="479" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Kubernetes</text>
+      <text x="95" y="495" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="bold" fill="#ffffff">Operator</text>
+      <text x="95" y="512" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#86efac">(kube-arangodb)</text>
     </a>
 
     <path d="M 160 450 L 200 450" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)" marker-start="url(#arrow-g-start)"/>
@@ -161,11 +163,11 @@
     <path d="M 795 255 L 795 229" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
     <path d="M 815 227 L 815 253" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
 
-    <path d="M 620 410 L 647 410 L 647 325 L 675 325" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-    <text x="652" y="372" font-family="sans-serif" font-size="9" fill="#4F6D8B">Query/Data access</text>
-
-    <path d="M 675 420 L 620 420" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
-
-    <path d="M 620 490 L 675 490" stroke="#4F6D8B" stroke-width="1.5" fill="none" marker-end="url(#arrow-g)"/>
+    <path d="M 648 330 L 648 560" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
+    <path d="M 675 330 L 648 330" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
+    <path d="M 675 425 L 648 425" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
+    <path d="M 675 520 L 648 520" stroke="#4F6D8B" stroke-width="1.5" fill="none"/>
+    <path d="M 648 560 L 620 560" stroke="#4F6D8B" stroke-width="1.6" fill="none" marker-end="url(#arrow-g)" marker-start="url(#arrow-g-start)"/>
+    <text x="636" y="470" text-anchor="middle" transform="rotate(-90 636 470)" font-family="sans-serif" font-size="8" fill="#4F6D8B">Query/Data access</text>
   </g>
 </svg>

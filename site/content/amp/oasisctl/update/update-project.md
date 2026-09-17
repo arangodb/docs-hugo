@@ -1,7 +1,8 @@
 ---
-title: Update Project with `oasisctl`
+title: Update Project with _oasisctl_
 menuTitle: Update Project
-weight: 25
+weight: 24
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update a project the authenticated user has access to

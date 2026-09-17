@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from
@@ -462,7 +464,7 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: consolidate based on segment byte size skew and live document count
+    - `"tier"`: Consolidate based on segment byte size skew and live document count
       as dictated by the customization attributes.
 
     {{< warning >}}
@@ -489,6 +491,8 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **maxSkewThreshold** (_optional_; type: `number`; default: `0.4`)
 
+    <small>Introduced in: v3.12.7</small>
+
     The skew describes how much segment files vary in file size. It is a number
     between `0.0` and `1.0` and is calculated by dividing the largest file size
     of a set of segment files by the total size. For example, the skew of a
@@ -512,6 +516,8 @@ is used by these writers (in terms of "writers pool") one can use
     the configured `segmentsBytesMax`.
 
   - **minDeletionRatio** (_optional_; type: `number`; default: `0.5`)
+
+    <small>Introduced in: v3.12.7</small>
 
     The `minDeletionRatio` represents the minimum required deletion ratio
     in one or more segments to perform a cleanup of those segments.

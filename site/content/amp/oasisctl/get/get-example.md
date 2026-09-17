@@ -1,7 +1,8 @@
 ---
-title: Get Example with `oasisctl`
+title: Get Example with _oasisctl_
 menuTitle: Get Example
 weight: 8
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get a single example dataset

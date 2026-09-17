@@ -95,7 +95,7 @@ which are suitable for different usage scenarios:
   _Coordinators_ and all expose the same view to the data store. _Agents_
   can run on separate, less powerful machines.
 - You can deploy more _Coordinators_ than _DB-Servers_. When your queries are
-  CPU-bound, you can greatly benefit from having more Coordinators.
+  CPU-bound, you can greatly benefit from having more _Coordinators_.
 - You can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
   is needed and the query performance is the lesser bottleneck.
 - You can deploy a _Coordinator_ on each machine where an application
@@ -208,7 +208,7 @@ The data is always stored on the _DB-Servers_.
 The following example gives you an idea of how synchronous operation
 has been implemented in ArangoDB Cluster:
 
-1. Connect to a _Coordinator_ via [_arangosh_](../../components/tools/arangodb-shell/_index.md)
+1. Connect to a _Coordinator_ via [arangosh](../../components/tools/arangodb-shell/_index.md)
 2. Create a collection: `db._create("test", {"replicationFactor": 2});`
 3. The _Coordinator_ figures out a *leader* and one *follower* and creates
    one *shard* (as this is the default)

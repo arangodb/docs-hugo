@@ -2,7 +2,9 @@
 title: Foxx queues
 menuTitle: Queues
 weight: 25
-description: ''
+description: >-
+  Foxx queues let you perform slow or expensive actions asynchronously, with
+  retries on failure
 ---
 `const queues = require('@arangodb/foxx/queues')`
 

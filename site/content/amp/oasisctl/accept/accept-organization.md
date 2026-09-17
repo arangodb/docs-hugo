@@ -1,7 +1,8 @@
 ---
-title: Accept Organization with `oasisctl`
+title: Accept Organization with _oasisctl_
 menuTitle: Accept Organization
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Accept organization related invites

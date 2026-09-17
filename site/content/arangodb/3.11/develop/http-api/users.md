@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for user management
+title: User HTTP API
 menuTitle: Users
 weight: 15
 description: >-
-  The HTTP API for user management lets you create, modify, delete, and list
+  The HTTP interface for user management lets you create, modify, delete, and list
   ArangoDB user accounts, as well as grant and revoke permissions for databases
   and collections
 # GET|PUT|DELETE /_api/user/{user}/config and GET /_api/user/{user}/config/{key}

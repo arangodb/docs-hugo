@@ -10,7 +10,7 @@ description: >-
 
 Before you can insert documents with AQL, you need a place to put them in – a
 collection. You can [manage collections](../../concepts/data-structure/collections.md#collection-interfaces)
-via different interfaces including the web interface, arangosh, or a driver.
+via different interfaces including the web interface, _arangosh_, or a driver.
 It is not possible to do so with AQL, however.
 
 1. In the web interface, click **COLLECTIONS** in the main navigation.
@@ -36,7 +36,7 @@ INSERT {
 ```
 
 The syntax is `INSERT document INTO collectionName`. The document is an object
-like you may know it from JavaScript or JSON, which is comprised of attribute
+like you may know it from JavaScript or JSON, which is composed of attribute
 key and value pairs. The quotes around the attribute keys are optional in AQL.
 Keys are always character sequences (strings), whereas attribute values can
 have [different types](../../aql/fundamentals/data-types.md):
@@ -223,7 +223,7 @@ RETURN DOCUMENT("Characters/ned")
 ]
 ```
 
-The `DOCUMENT()` function also allows to fetch multiple documents at once:
+The `DOCUMENT()` function also allows you to fetch multiple documents at once:
 
 ```aql
 RETURN DOCUMENT("Characters", ["ned", "catelyn"])

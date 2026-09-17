@@ -345,7 +345,7 @@ use case, but normally it is extremely undesired).
 ## Unexpected long running queries
 
 Slow queries can have various reasons and be legitimate for queries with a high
-computational complexity or if they touch a lot of data. Use the *Explain*
+computational complexity or if they touch a lot of data. Use the **Explain**
 feature to inspect execution plans and verify that appropriate indexes are
 utilized. Also check for mistakes such as references to the wrong variables.
 

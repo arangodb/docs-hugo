@@ -2,7 +2,9 @@
 title: _arangoimport_ Examples JSON
 menuTitle: Examples JSON
 weight: 5
-description: ''
+description: >-
+  How to import JSON and JSONL data into ArangoDB on the command-line with
+  _arangoimport_
 ---
 Using JSON as data format, records are represented as JSON objects and called
 documents in ArangoDB. They are self-contained. Therefore, there is no need
@@ -88,7 +90,7 @@ which allows any valid JSON value on a line.
 
 An input with JSON objects in an array, optionally pretty printed, can be
 easily converted into JSONL with one JSON object per line using the
-[**jq** command line tool](http://stedolan.github.io/jq/):
+[**jq** command-line tool](https://jqlang.github.io/jq/):
 
 ```
 jq -c ".[]" inputFile.json > outputFile.jsonl
@@ -154,7 +156,7 @@ arangoimport --file "users.jsonl.gz" --type jsonl --collection "users"
 ```
 
 For other input formats it is possible to decompress the input file using another
-program and piping its output into arangoimport, e.g.
+program and piping its output into _arangoimport_, e.g.
 
 ```
 bzcat data.bz2 | arangoimport --file "-" --type jsonl --collection "users"
@@ -195,7 +197,7 @@ arangoimport --file "data.jsonl" --type jsonl --collection users --progress true
 
 It is also possible to use the output of another command as an input for
 _arangoimport_. For example, you can use the following shell command to pipe
-data from the `cat` process to arangoimport (in a Bash-like shell):
+data from the `cat` process to _arangoimport_ (in a Bash-like shell):
 
 ```
 cat data.json | arangoimport --file - --type jsonl --collection users
@@ -209,7 +211,7 @@ type data.json | arangoimport --file - --type jsonl --collection users
 
 The option `--file -` with a hyphen as the file name is special and makes it
 read from the standard input. No progress can be reported for such imports as the
-size of the input is unknown to arangoimport.
+size of the input is unknown to _arangoimport_.
 
 By default, the endpoint `tcp://127.0.0.1:8529` is used. If you want to
 specify a different endpoint, you can use the `--server.endpoint` option. You
@@ -264,7 +266,7 @@ arangoimport --threads 4 --file "data.jsonl" --type jsonl --collection users
 Using multiple threads may lead to a non-sequential import of the input
 data. Data that appears later in the input file may be imported earlier than data
 that appears earlier in the input file. This is normally not a problem but may cause
-issues when when there are data dependencies or duplicates in the import data. In
+issues when there are data dependencies or duplicates in the import data. In
 this case, the number of threads should be set to 1. Also, using parallelism with
 the `--threads X` parameter together with the `--on-duplicate` parameter set to `ignore`,
 `update` or `replace` can lead to a race condition, when there are duplicates e.g. multiple 

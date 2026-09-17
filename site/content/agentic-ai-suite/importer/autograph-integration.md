@@ -15,7 +15,7 @@ If you are building a single knowledge graph from your documents and do not
 need multiple partitions or automated domain discovery, use the Importer
 directly. You can call it through:
 
-- The [Contextual Data Platform web interface](../graphrag/web-interface.md),
+- [AutoGraph Studio](../autograph/web-interface.md),
   which guides you through configuring and running the Importer step by step.
 - The [Import API](importing-files.md) (`POST /v1/import` or
   `POST /v1/import-multiple`), which gives you full control over all parameters.
@@ -77,15 +77,19 @@ to **Importer partitions**:
 
 ```mermaid
 flowchart LR
-  module["Module<br><b>legal</b>"]
+  module["`Module
+    **legal**`"]
 
   module --> cluster0["cluster_legal_0"]
   module --> cluster1["cluster_legal_1"]
   module --> cluster2["cluster_legal_2"]
 
-  cluster0 -->|full_graphrag| part0["Partition<br><b>legal_0_a</b>"]
-  cluster1 -->|full_graphrag| part1["Partition<br><b>legal_1_a</b>"]
-  cluster2 -->|vector_rag| part2["Partition<br><b>legal_2_b</b>"]
+  cluster0 -->|full_graphrag| part0["`Partition
+    **legal_0_a**`"]
+  cluster1 -->|full_graphrag| part1["`Partition
+    **legal_1_a**`"]
+  cluster2 -->|vector_rag| part2["`Partition
+    **legal_2_b**`"]
 
   part0 --> orch["Orchestration"]
   part1 --> orch

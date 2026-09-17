@@ -1,7 +1,8 @@
 ---
-title: Delete Role with `oasisctl`
+title: Delete Role with _oasisctl_
 menuTitle: Delete Role
-weight: 22
+weight: 21
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a role the authenticated user has access to

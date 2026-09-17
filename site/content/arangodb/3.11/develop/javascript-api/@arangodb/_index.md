@@ -4,7 +4,7 @@ menuTitle: '@arangodb'
 weight: 5
 description: >-
   The `@arangodb` module provides the `db` object and AQL helper methods for
-  Foxx, arangosh, and a few other JavaScript contexts
+  Foxx, _arangosh_, and a few other JavaScript contexts
 ---
 `const arangodb = require('@arangodb')`
 

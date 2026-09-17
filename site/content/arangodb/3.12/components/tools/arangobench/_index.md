@@ -1,10 +1,11 @@
 ---
-title: arangobench
+title: _arangobench_ command-line tool
 menuTitle: arangobench
 weight: 40
 description: >-
-  `arangobench` is a benchmark and test tool that can be used to issue test
-  requests to the database system for performance and server function testing
+  _arangobench_ is a benchmark and test tool to issue test requests to the
+  database system for performance and server function testing using a
+  command-line interface (CLI)
 ---
 {{< warning >}}
 The _arangobench_ tool is deprecated and removed in ArangoDB v4.0.

@@ -122,6 +122,9 @@ place the output into the rendered documentation, for example.
   - `` ```openapi `` for REST HTTP API descriptions
   - `` ```curl `` for REST HTTP API examples
 
+  There is also a `` ```mermaid `` codeblock for [Diagrams](#diagrams) that does
+  not involve _arangoproxy_ at all.
+
 The hooks trigger a `POST` call to the dedicated _arangoproxy_ endpoint
 (`/js`, `/aql`, `/curl`, `openapi`) with the entire codeblock as request body.
 
@@ -407,7 +410,7 @@ ArangoDB.
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
-Start `arangod` with the startup option `--log.level startup=trace`.
+Start _arangod_ with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
 {{< tab "Configuration file" >}}
@@ -562,6 +565,68 @@ Conventions used in the existing diagrams:
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
   hover styling defined in the theme.
 
+#### Diagrams
+
+For flowcharts and similar schematics that you want to maintain as text instead
+of as an image file, use a fenced `mermaid` codeblock:
+
+````markdown
+```mermaid
+flowchart LR
+  A([Start]) --> B["Do the work"] --> C([Done])
+```
+````
+
+For the available diagram types and their syntax, see the
+[Mermaid documentation](https://mermaid.js.org/intro/).
+
+Unlike the other codeblock render hooks, `mermaid` blocks are not sent to
+_arangoproxy_. The hook only wraps the block in a `<pre class="mermaid">`
+element, and `theme.js` renders it in the browser using the Mermaid version
+pinned there. A diagram with a syntax error therefore does not fail the build.
+Mermaid draws an error graphic in place of the diagram and logs a warning to the
+browser console instead, so always check diagrams in the preview.
+
+Each diagram is rendered into a box of a fixed height and can be panned and
+zoomed:
+
+- Drag the diagram to pan it. Dragging continues while the pointer is outside
+  the box, but a diagram cannot be moved out of view entirely.
+- Use the mouse wheel or the `+` and `-` buttons to zoom, and `RESET` to fit the
+  diagram into the box again.
+
+The relevant files are the hook
+`site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-mermaid.html`,
+the rendering and pan/zoom setup in `static/js/theme.js`, and the `pre.mermaid`
+rules in `static/css/theme.css`.
+
+Labels in Mermaid are plain text by default, so `["**Execute**"]` renders the
+asterisks literally. To use Markdown in a label, wrap the label text in
+backticks inside the quotes:
+
+````markdown
+```mermaid
+flowchart TD
+  A([Request received]) --> B["`**Execute**
+    Runs query by calling
+    <code>POST /_api/cursor</code>`"]
+```
+````
+
+In such a label, a line break in the source becomes a line break in the label
+and the indentation of continuation lines is stripped. Two subsequent line
+breaks are an exception: they wrap the text like a single line break but keep the
+indentation, because Mermaid starts a new paragraph (rendered without any extra
+spacing) instead of continuing the current one.
+
+Plain labels support line breaks in the source as well, but keep the indentation
+of continuation lines as a leading space, and two subsequent line breaks create
+an empty line. `<br>` works in both kinds of labels. The `\n` escape sequence
+only works in plain labels — a Markdown label renders it literally.
+
+For inline code, use `<code>`. You cannot use backticks in a Markdown label as
+that is a syntax error.
+
 #### Keyboard shortcuts
 
 To document hotkeys and key combinations to press in a terminal or graphical
@@ -689,7 +754,7 @@ The following shortcodes also exist but are rarely used:
   rules from a JSON source file.
 
 - `{{% program-options name="arangod" %}}` renders the startup options of a
-  component like the ArangoDB server (`arangod`) or shell (`arangosh`).
+  component like the ArangoDB server (_arangod_) or shell (_arangosh_).
 
 - `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
 
@@ -777,8 +842,9 @@ The following shortcodes also exist but are rarely used:
   - _Agent_, _Agency_ (uppercase A)
   - _Arango Managed Platform (AMP)_ and _AMP_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, ~~ArangoDB Cloud~~, ~~ArangoGraph Insights Platform~~, or ~~ArangoGraph~~
-  - _Arango Contextual Data Platform_, but not
-     ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
+  - _Arango Contextual Data Platform_
+    and _data platform_ for short in prose that refers to it many times, but not
+     ~~Data Platform~~, ~~Arango Data Platform~~, ~~Arango AI Services Data Platform~~,
      ~~Arango AI Suite Data Platform~~, or ~~Arango AI Data Platform~~
   - _Arango Platform Suite_ and _Arango Agentic AI Suite_, but not
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
@@ -787,6 +853,33 @@ The following shortcodes also exist but are rarely used:
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
+
+- When referring to programs by their executable names, like the server or
+  client-tool binaries, make the name italic using underscores, e.g. `_arangod_`
+  or `_oasisctl_`. In headlines, use asterisks, e.g. `*oasisctl*` and `*arangod*`,
+  because underscores would affect the generated fragment IDs.
+
+  Exceptions: Don't make it italic in the following cases:
+
+  -  In the `menuTitle` front matter \
+    `menuTitle: Get started with oasisctl` but `title: Get started with _oasisctl_`
+
+  - If it's the full label of a link \
+    `[oasisctl](...)` but `[The _oasisctl_ reference](...)`
+
+  - If it's the only text of a headline \
+    `### arangodump` but `### Create backups with *arangodump*`
+
+  - If it specifically refers to the file on disk or is a command to run
+    (use inline code instead) \
+    `` The ArangoDB server executable is named `arangod` ``
+
+  - Inside of code including comments \
+    `const aql = require('@arangodb').aql; // not needed in arangosh`
+
+  Don't write the name as inline code, e.g. `` `oasisctl` ``, unless the user
+  is supposed to run it as a command or if it's specifically used as a
+  code value or file name.
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
@@ -818,69 +911,180 @@ See [Named Graphs](#named-graphs)
 
 ### Version Remarks
 
-The main page about a new feature should indicate the version the feature was
-added in, as shown below:
+If features are added or removed in the middle of a release series, use version
+remarks to point this out.
 
-```markdown
----
-title: New feature
-...
----
-<small>Introduced in: v3.12.0</small>
+This is not necessary for the first release of a series as this is expected and
+the changes are described in detail in the release notes. However, if a
+significant change sits inside content that otherwise still applies to the
+previous release series, a version remark can be helpful.
 
-...
-```
+If features are deprecated, this should be pointed out with a version remark
+regardless of the version, including the first release of a series.
 
-Similarly, the remark should be added if only a section is added to an existing
-page, as shown below:
+Examples:
 
-```markdown
-## Existing feature
+- **v3.12.0**: A new feature can be added to the docs **without** version remark.
+- **v3.12.1**: A new feature should have a version remark so that users on
+  v3.12.0 know that it's not available in their version (v3.12 release series).
+- **v4.0.0**: A removed feature has the description removed from the content.
+  You can learn about the removal from the release notes, and in case of a
+  larger feature, also from the _Deprecated and removed features_ page.
+- **v4.1.0**: A removed feature has the description still present in the content
+  for users on older v4.x.x versions (v4.x release series). A version remark needs
+  be added to let users know that it can't be used from v4.1.0 onward anymore.
+- **v5.0.0**: A feature deprecated in v5.0.0 is still available and usable.
+  It needs a version remark to inform users that it shouldn't be used anymore.
+  The feature will be removed in a future version (e.g. v6.0.0).
 
-...
+**Implied versions and multiple versions**
 
-### New feature section
-
-<small>Introduced in: v3.12.0</small>
-
-...
-```
-
-The value `v3.12.0` implies that all later versions also have this feature
-(3.12.1, 3.12.2, etc., as well as 4.0.0 and later). If this is not the case,
-then also mention the other relevant versions. For example, if a feature is
-added to 3.11.5 and 3.12.2, then write the following in the 3.12 documentation:
+The value `v3.12.1` implies that all later versions also have this feature
+(v3.12.2, v3.12.3, and so on, as well as v4.0.0 and later). If this is not the
+case, then also mention the other relevant versions. For example, if a feature is
+added to v3.11.5 and v3.12.2, then write the following in the 3.12 documentation:
 
 ```markdown
 <small>Introduced in: v3.11.5, v3.12.2</small>
 ```
 
-All later documentation versions should use a copy of the content, as thus the
-4.x documentation would contain the same.
+All later documentation versions generally use a copy of the content, therefore
+the 4.x documentation would contain the same.
 
 In the 3.11 documentation, only mention versions up to this documentation version
 (excluding 3.12 and later in this example), pretending no later version exists
 to be consistent with the rest of the 3.11 documentation and to avoid additional
-maintenance burdens:
+maintenance burden:
 
 ```markdown
 <small>Introduced in: v3.11.5</small>
 ```
 
-New options in the JavaScript and HTTP APIs are covered by the release notes,
-but if new options are added mid-release (not in the `x.x.0` release but a later
-bugfix version), then this should be pointed out as follows:
+**Remark styles**
 
-```markdown
-- `existingOption` (number, _optional_): ...
-- `newOption` (string, _optional_): ... (introduced in v3.11.5, v3.12.2).
-```
+The style and formatting of a version remark depends on whether it is applicable
+to an entire page or section, a single option/parameter, or just a single
+paragraph/sentence.
 
-You may also add a remark if an existing feature or option is significantly
-extended by a new (sub-)option in a `x.x.0` release.
+- **Page scope**: The main page about a new feature should indicate the version
+  the feature was added in, as shown below.
 
-While version remarks are mostly `Introduced in: ...`, you can also mark
-deprecated features in the same manner with `Deprecated in: ...`.
+  ```markdown
+  ---
+  title: New feature
+  ...
+  ---
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Section scope**: If there is an existing page and you add a section about a
+  new (sub-)feature to it, add the version remark as shown below.
+
+  ```markdown
+  ## Existing feature
+
+  ...
+
+  ### New feature section
+
+  <small>Introduced in: v3.12.1</small>
+
+  ...
+  ```
+
+- **Option/parameter scope**: New options and response fields in the JavaScript
+  and HTTP APIs are covered by the release notes, but if new attributes are
+  added mid release series, then this should be pointed out.
+
+  You may also add a remark if an existing feature or option is significantly
+  extended by a new (sub-)option in the first release of a series, specifically
+  if it sits inside content that otherwise still applies to the previous release
+  series. This is to indicate that the availability of the feature as a whole
+  differs from the availability of the later added sub-feature. This is rarely
+  the case, however.
+
+  If an attribute of type object is added, its sub-attributes don't need a
+  separate version remark - they inherit it.
+
+  If the same attribute is described in multiple request and response schemas of
+  a page, add the version remark to every copy. Readers typically jump to a
+  specific endpoint rather than reading the page top to bottom.
+
+  If a version remark applies to the entire description of an option, then use
+  the following style, even if it's a single sentence:
+
+  ```markdown
+  newOption:
+    description: |
+      <small>Introduced in: v3.11.5, v3.12.2</small>
+
+      ...
+  ```
+
+  If the version remark only applies to single sentence of a larger text, a
+  single enum value, or similar, you can use a more compact version remark.
+  You may use a list for this:
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      - Option A ...
+      - Option B ... (introduced in v3.11.5 and v3.12.2).
+  ```
+
+  In case the behavior is significantly changed between versions, you may
+  describe the before and after in detail stating the versions and no version
+  remark as described above. This is a good option if a whole paragraph is
+  needed to explain the differences.
+
+  ```markdown
+  newOption:
+    description: |
+      ...
+
+      In versions up to v3.12.5, ...
+
+      From version 3.12.6 onward, ...
+  ```
+
+**Remark types**
+
+While version remarks are mostly used for newly added features, you can also
+mark deprecated features in the same manner. The same goes for removals,
+although they are rare mid release series.
+
+- `Introduced in: ...` / `(introduced in ...)`
+- `Deprecated in: ...` / `(deprecated in ...)`
+- `Removed in: ...` / `(removed in ...)`
+
+**When to remove version remarks**
+
+The documentation content between subsequent ArangoDB versions is largely the
+same and copied when creating the folder for the next release series. Therefore,
+version remarks get copied over as well. They can generally remain in the
+content (except if the first release of a series removes a feature or option,
+then the version remark is deleted along with the page or description).
+
+When an old, unsupported version is removed from the documentation, then version
+remarks mentioning this or older versions should be removed from the remaining
+content. If there are multiple mentioned versions but at least one of them is
+still present in the documentation, then the version remark should remain as-is
+until all mentioned versions are removed.
+
+Examples:
+- When deleting 3.10 from the docs, version remarks like `(introduced in v3.10.2)`
+  should be removed from the 3.11+ content.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.9.6 and v3.10.2)` should be removed because 3.9 is already
+  deleted and 3.10 is being deleted.
+- When deleting 3.10 from the docs, version remarks like
+  `(introduced in v3.10.6 and v3.11.1)` should **not** be removed or modified
+  because 3.11 is still present and changing the remark would distort the
+  original information.
 
 ### Environment remarks
 

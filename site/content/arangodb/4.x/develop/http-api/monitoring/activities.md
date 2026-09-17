@@ -104,9 +104,7 @@ paths:
                           type: object
         '401':
           description: |
-            The user account you authenticated with lacks read access for the
-            specified database, the credentials are wrong, or the user account
-            is inactive.
+            The credentials are wrong or the user account is inactive.
           content:
             application/json:
               schema:
@@ -166,6 +164,43 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            The specified database doesn't exist, or the user account you
+            authenticated with has no access to this database.
+
+            Up to v3.12.10, a lack of database access resulted in an HTTP `401`
+            error with the `ERROR_FORBIDDEN` (`11`) error number instead of an
+            HTTP `404` error with the `ERROR_ARANGO_DATABASE_NOT_FOUND` (`1228`)
+            error number.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.

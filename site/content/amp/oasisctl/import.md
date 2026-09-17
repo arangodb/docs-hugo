@@ -1,7 +1,8 @@
 ---
-title: Import with `oasisctl`
+title: Import with _oasisctl_
 menuTitle: Import
 weight: 14
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Import data from a local database or from another remote database into an Arango Managed Platform deployment.

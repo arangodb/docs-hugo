@@ -2,7 +2,8 @@
 title: Foxx request objects
 menuTitle: Request
 weight: 15
-description: ''
+description: >-
+  Reference for the properties and methods of the Foxx request object
 ---
 The request object specifies the following properties:
 

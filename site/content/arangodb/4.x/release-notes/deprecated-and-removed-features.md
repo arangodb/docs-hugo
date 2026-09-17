@@ -152,7 +152,7 @@ detailed information about breaking changes before upgrading.
 - **Foxx microservices**:\
   The Foxx microservice framework including tasks/queues, the related
   startup options, JavaScript modules, and HTTP API endpoints have been removed.
-  The `foxx-cli` tool has been discontinued as well.
+  The _foxx-cli_ tool has been discontinued as well.
 
   You may use Node.js together with the [arangojs driver](../../../ecosystem/drivers/javascript.md)
   to work with ArangoDB from the outside using JavaScript as your language.

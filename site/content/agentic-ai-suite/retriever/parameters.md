@@ -69,6 +69,11 @@ Selects Instant or Deep Search with a single value, instead of combining
   example `2` or `"DEEP_SEARCH"`. Setting `mode` takes precedence over
   `query_type` and `use_llm_planner`, so whatever you pass for those two is
   ignored.
+- **VectorRAG partitions**: Only `INSTANT` is supported. `DEEP_SEARCH` falls
+  back to Local Search when you have no Custom Retriever tools, and Local
+  Search needs entities that VectorRAG does not build. For Deep Search on a
+  VectorRAG partition, use Custom Retriever tools that search chunks. See
+  [VectorRAG and FullGraphRAG partitions](search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 {{< info >}}
 With `include_metadata` set to `true`, the response reports `mode` by name
@@ -76,7 +81,7 @@ With `include_metadata` set to `true`, the response reports `mode` by name
 `DEEP_SEARCH`, you can tell which of the two paths ran from the metadata:
 `deep_search_route` is set to `"LOCAL"` when the query fell back to Local
 Search, and `deep_search_route_reason` says why, for example that no tools were
-found in the Tools collection. When your Custom Retriever tools were used
+found in the `Tools` collection. When your Custom Retriever tools were used
 instead, both fields are absent and the tool fields such as
 `custom_retrievers_used` and `successful_tools` are populated.
 {{< /info >}}
@@ -153,10 +158,10 @@ Tool IDs for Custom Retriever execution.
 
 - **Required**: Yes for `CUSTOM` queries (when `use_llm_planner=false`). Optional for Custom Deep Search (`use_llm_planner=true`).
 - **Applicable to**: `CUSTOM` query type only.
-- **Description**: An array of tool IDs stored in the ArangoDB Tools
+- **Description**: An array of tool IDs stored in the ArangoDB `Tools`
   collection. Tools are executed in parallel with automatic citation merging.
   When using Deep Search with `CUSTOM` and `custom_tools` is omitted, tools
-  are auto-loaded from the Tools collection.
+  are auto-loaded from the `Tools` collection.
 - **Example**: `["airport_search_v1", "entity_expander_v1"]`
 
 ### `auto_create_indexes`

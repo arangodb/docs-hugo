@@ -64,12 +64,12 @@ replicated and do not change the documents' `_rev` values.
 ## Foxx / Server Console
 
 Previously a call to `db._version(true)` inside a Foxx app or the server console
-would return a different structure than the same call from arangosh.
-Foxx/server console would return `{ <details> }` while arangosh would return
+would return a different structure than the same call from _arangosh_.
+Foxx/server console would return `{ <details> }` while _arangosh_ would return
 `{ server: ..., license: ..., version: ..., details: { <details> }}`.
 
 This is now unified so that the result structure is always consistent with the
-one in arangosh. Any Foxx app or script that ran in the server console which
+one in _arangosh_. Any Foxx app or script that ran in the server console which
 used `db._version(true)` must now be changed to use `db._version(true).details`
 instead.
 
@@ -158,7 +158,7 @@ below 200. Arrays or objects with higher nesting than this will cause `Too deep 
 exceptions. 
 The limit is also enforced when converting any server data to JavaScript in Foxx, or
 when sending JavaScript input data from Foxx to a server API.
-This maximum recursion depth is hard-coded in arangod and all client tools.
+This maximum recursion depth is hard-coded in _arangod_ and all client tools.
 
 ## Validation of `smartGraphAttribute` in SmartGraphs
 
@@ -352,7 +352,7 @@ The `/_api/gharial` endpoints for named graphs have changed:
 
 Renamed the `--concurrency` startup option to `--threads`.
 
-The following deprecated arangobench testcases have been removed from _arangobench_:
+The following deprecated _arangobench_ testcases have been removed from _arangobench_:
 - `aqltrx`
 - `aqlv8`
 - `counttrx`

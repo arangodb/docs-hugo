@@ -29,7 +29,7 @@ only covers a part of it, then you can do so.
 
 ### Create a graph
 
-To create a SatelliteGraph in arangosh, use the `satellite-graph` module:
+To create a SatelliteGraph in _arangosh_, use the `satellite-graph` module:
 
 ```js
 ---
@@ -251,4 +251,4 @@ properties are immutable.
 Use _arangodump_ and _arangorestore_. The only thing you have to change in this
 pipeline is that you create the new collections during creation with the
 SatelliteGraph module or add collections manually to the SatelliteGraph
-**before starting the arangorestore process**.
+**before starting the _arangorestore_ process**.
