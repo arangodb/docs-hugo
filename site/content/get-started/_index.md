@@ -21,8 +21,10 @@ to each other and which one to install.
 
 {{% card title="Arango Contextual Data Platform" link="data-platform.md" %}}
 Install the data platform, turn documents into a knowledge graph with AutoGraph,
-and ask questions about them in natural language.
-Takes about 10 minutes, most of it downloading container images.
+and ask questions about them in natural language. Choose between an
+installation script for local evaluation and a manual install of the full
+platform. The script takes about 10 minutes, most of it downloading container
+images.
 {{% /card %}}
 
 {{% card title="ArangoDB" link="arangodb.md" %}}

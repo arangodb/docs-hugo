@@ -69,8 +69,8 @@ license key exactly as issued, including any trailing characters:
 curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
 ```
 
-Generate credentials from the
-[Arango developer portal](https://arangoaistg.wpenginepowered.com/developers/)
+Request credentials with the
+[license key request form](https://arangoaistg.wpenginepowered.com/cdp-license-request/)
 if you do not have them yet.
 
 ### The cluster cannot reach the license service
