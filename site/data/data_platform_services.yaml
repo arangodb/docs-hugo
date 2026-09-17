@@ -1,0 +1,140 @@
+# Maps the package names used by the Arango Contextual Data Platform releases
+# (the `packages` keys of the files in `data/data_platform/`) to the features
+# they implement and the documentation pages that describe them.
+#
+# Rendered by the `service-versions` shortcode. A package that is shipped but
+# not listed here makes the build warn (or fail, with `failOnBrokenLinks`), so
+# add an entry HERE whenever a new service appears in a release file.
+#
+# Each entry has a `features` list, because a single package can ship several
+# of the features that the documentation describes separately (the platform UI
+# holds the Graph Visualizer and the Query Editor, the Control Plane holds the
+# Secrets Manager). Conversely, several packages can contribute to one feature;
+# add the part they contribute in parentheses so that the rows stay
+# distinguishable and sort next to each other.
+#
+# Each feature:
+#   name   the feature as it is called in the documentation. The first one also
+#          determines where the package sorts in the rendered table.
+#   link   path of the page that documents the feature, relative to the content
+#          root (no leading slash). The shortcode rewrites it to a path relative
+#          to the page it renders into, so the link is checked by the link
+#          render hook like any other Markdown link. Optional: omit it for a
+#          feature that has no page of its own, and the name is rendered as
+#          plain text.
+
+arangodb-platform-ui:
+  features:
+    - name: Web interface (frontend)
+      link: platform-suite/_index.md
+    - name: Graph Visualizer
+      link: platform-suite/graph-visualizer.md
+    - name: Query Editor
+      link: platform-suite/query-editor.md
+arangodb-platform-ui-server:
+  features:
+    - name: Web interface (backend)
+      link: platform-suite/_index.md
+arangodb-core-ui:
+  features:
+    # The legacy ArangoDB web interface, embedded in an iframe. It has no
+    # re-implementation in the platform UI yet, so it is documented with the
+    # database rather than with the platform.
+    - name: Web interface (embedded legacy UI)
+      link: arangodb/3.12/components/web-interface/_index.md
+
+arango-control-plane:
+  features:
+    - name: Arango Control Plane (ACP)
+      link: platform-suite/control-plane-acp/_index.md
+    - name: Secrets Manager
+      link: platform-suite/secrets-manager.md
+arango-user-defined:
+  features:
+    - name: Container Manager (BYOC)
+      link: platform-suite/container-manager/_index.md
+file-manager:
+  features:
+    - name: File Manager
+      link: platform-suite/file-manager/_index.md
+arango-cypher2aql:
+  features:
+    - name: Cypher to AQL
+      link: platform-suite/cypher2aql.md
+platform-monitoring-grafana:
+  features:
+    - name: Monitoring (Grafana)
+      link: platform-suite/monitoring.md
+platform-monitoring-prometheus:
+  features:
+    - name: Monitoring (Prometheus)
+      link: platform-suite/monitoring.md
+
+arangodb-autograph:
+  features:
+    - name: AutoGraph
+      link: agentic-ai-suite/autograph/_index.md
+arangodb-graphrag-importer:
+  features:
+    - name: Importer
+      link: agentic-ai-suite/importer/_index.md
+arangodb-graphrag-retriever:
+  features:
+    - name: Retriever
+      link: agentic-ai-suite/retriever/_index.md
+arangodb-file-parser:
+  features:
+    - name: File Parser
+      link: agentic-ai-suite/importer/setup.md
+arangodb-graph-rag:
+  features:
+    - name: Natural Language to AQL (AQLizer)
+      link: agentic-ai-suite/natural-language-to-aql/_index.md
+arangodb-reasoner:
+  features:
+    - name: Reasoner
+      link: agentic-ai-suite/reasoner/_index.md
+arangodb-gral:
+  features:
+    - name: Graph Analytics
+      link: agentic-ai-suite/graph-analytics/_index.md
+arangodb-ml-api:
+  features:
+    - name: GraphML (API)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-featurization-cpu:
+  features:
+    - name: GraphML (featurization, CPU)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-training-cpu:
+  features:
+    - name: GraphML (training, CPU)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-training-gpu:
+  features:
+    - name: GraphML (training, GPU)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-prediction-cpu:
+  features:
+    - name: GraphML (prediction, CPU)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-prediction-gpu:
+  features:
+    - name: GraphML (prediction, GPU)
+      link: agentic-ai-suite/graphml/_index.md
+arangodb-notebook-images:
+  features:
+    - name: Notebook Servers
+      link: agentic-ai-suite/notebook-servers.md
+arangodb-mlflow:
+  features:
+    - name: MLflow
+      link: agentic-ai-suite/private-llms/mlflow.md
+arangodb-llm-host:
+  features:
+    - name: Triton Inference Server
+      link: agentic-ai-suite/private-llms/triton-inference-server.md
+arangodb-mcp-server:
+  features:
+    - name: ArangoDB MCP Server
+      link: ecosystem/arangodb-mcp-server.md
