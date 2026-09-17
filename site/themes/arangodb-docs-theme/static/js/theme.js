@@ -147,29 +147,20 @@ function showSidebarHandler() {
 
 var isMobile=false;
 
-function decodeHtmlEntities(text) {
-  var ta = document.createElement("textarea");
-  ta.innerHTML = text;
-  return ta.value;
-}
-
 function replaceArticle(href, newDoc) {
-  var re = /<title>(.*?)<\/title>/;
-  var match = re.exec(newDoc);
+  // Inert document: nothing loads or runs until a node is inserted into ours.
+  var parsed = new DOMParser().parseFromString(newDoc, "text/html");
+  var newContainer = parsed.querySelector(".container-main");
+  var currentContainer = document.querySelector(".container-main");
 
-  /* TODO: Replace with DOMParser?
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = newDoc;
-  const newContainer = tempDiv.querySelector(".container-main");
-  const currentContainer = document.querySelector(".container-main");
-  
   if (newContainer && currentContainer) {
-    currentContainer.parentNode.replaceChild(newContainer, currentContainer);
+    currentContainer.replaceWith(newContainer);
+  } else {
+    console.error("No .container-main to swap in from " + href);
   }
-  */
-  $(".container-main").replaceWith($(".container-main", newDoc));
-  if (match) {
-    document.title = decodeHtmlEntities(match[1]);
+  // Decoded by the parser, unlike a title scraped out of the response text.
+  if (parsed.title) {
+    document.title = parsed.title;
   }
 
   // Avoid `location.hash = ...` even when the value matches: Firefox runs the navigation
@@ -823,7 +814,7 @@ function addShowMoreButton(parentElem) {
             }
         });
     });
- }
+}
 
 
 /*
@@ -1030,7 +1021,7 @@ function handleDocumentClick(event) {
     if (copyTrigger) {
         event.preventDefault();
         copyFromScope(copyTrigger);
-            return;
+        return;
     }
   
     // Code show more button clicks
