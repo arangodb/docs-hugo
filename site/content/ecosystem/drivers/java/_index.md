@@ -476,8 +476,9 @@ The API with regard to the public members of these classes is kept compatible.
 
 ## Changes in ArangoDB 4.0
 
-The following Java driver APIs (and their asynchronous counterparts) are deprecated
-because the corresponding ArangoDB APIs are removed in ArangoDB 4.0:
+The following Java driver APIs (and their asynchronous counterparts) are
+deprecated because the corresponding HTTP APIs are removed in ArangoDB v4.0.0:
+
 - `ArangoDatabase#createAqlFunction`
 - `ArangoDatabase#deleteAqlFunction`
 - `ArangoDatabase#getAqlFunctions`
@@ -493,5 +494,3 @@ because the corresponding ArangoDB APIs are removed in ArangoDB 4.0:
 - `CollectionEntity#getStatus`
 - `CollectionStatus#getStatus`
 - `DatabaseEntity#getPath`
-
-The corresponding server-side APIs are no longer available in ArangoDB 4.0.
