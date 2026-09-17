@@ -1029,7 +1029,7 @@ function handleDocumentClick(event) {
     }
   
     // Copy URI clicks
-    if (closest('.header-link')) {
+    if (closest('.header-link, .openapi-property-link')) {
         event.preventDefault();
         copyURI(event);
         return;
