@@ -181,6 +181,9 @@
             {{- $required := in $v.schema.required $prop }}
             {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page "isResponse" false }}
           {{- end }}
+          {{- if reflect.IsMap $v.schema.additionalProperties }}
+            {{- template "renderProperty" dict "title" $title "prop" "" "label" "Varying attribute names" "value" $v.schema.additionalProperties "required" false "page" $page "isResponse" false }}
+          {{- end }}
         {{- end }}
       {{- end }}
       </ul>
@@ -252,6 +255,9 @@
                         {{- $required := in $v.schema.required $prop }}
                         {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page "isResponse" true}}
                       {{- end }}
+                      {{- if reflect.IsMap $v.schema.additionalProperties }}
+                        {{- template "renderProperty" dict "title" $statusId "prop" "" "label" "Varying attribute names" "value" $v.schema.additionalProperties "required" false "page" $page "isResponse" true }}
+                      {{- end }}
                     {{- end }}
                   {{- end }}
                 </ul>
@@ -317,9 +323,10 @@
   {{- $required := .required }}
   {{- $page := .page }}
   {{- $isResponse := .isResponse }}
+  {{- $label := .label | default "" }}{{/* Used for non-fixed property names (additionalProperties) */}}
 
   {{- $type := $value.type }}
-  {{- $anchor := printf "%s_%s" $title $prop }}
+  {{- $anchor := printf "%s_%s" $title (cond (ne $label "") "additionalProperties" $prop) }}
   <li class="openapi-table-row regular-font">
     {{- if and (eq $value.type "array") ($value.items.type) }}
       {{- $type = printf "array of %ss" $value.items.type }}
@@ -328,7 +335,11 @@
     {{- end }}
     <details id="{{ $anchor }}">
       <summary class="openapi-prop collapsed">
+        {{- if $label }}
+        <span class="openapi-property-label">{{ $label }}</span>
+        {{- else }}
         <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}</span>
+        {{- end }}
         <span class="openapi-property-type">
           {{- $preceding := false }}
           {{- with $type }}<span class="bold-text">{{ . }}</span>{{ $preceding = true }}{{ end }}
@@ -369,22 +380,30 @@
         {{- if isset $value "example" }}
           <p class="regular-font">Example: <code>{{ $value.example | jsonify }}</code></p>
         {{- end }}
-        {{- if $value.properties }}
+        {{- $hasAdditional := reflect.IsMap $value.additionalProperties }}
+        {{- if or $value.properties $hasAdditional }}
           <ul class="openapi-table">
           {{- range $k, $v := $value.properties }}
             {{- $required = in $value.required $k }}
             {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page "isResponse" $isResponse }}
+          {{- end }}
+          {{- if $hasAdditional }}
+            {{- template "renderProperty" dict "title" $anchor "prop" "" "label" "Varying attribute names" "value" $value.additionalProperties "required" false "page" $page "isResponse" $isResponse }}
           {{- end }}
           </ul>
         {{- end }}
         {{- with $value.items.description }}
           <p class="regular-font">{{ . | $page.RenderString }}</p>
         {{- end }}
-        {{- if $value.items.properties }}
+        {{- $itemsHaveAdditional := reflect.IsMap $value.items.additionalProperties }}
+        {{- if or $value.items.properties $itemsHaveAdditional }}
           <ul class="openapi-table">
           {{- range $k, $v := $value.items.properties }}
             {{- $required = in $value.items.required $k }}
             {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required "page" $page "isResponse" $isResponse }}
+          {{- end }}
+          {{- if $itemsHaveAdditional }}
+            {{- template "renderProperty" dict "title" $anchor "prop" "" "label" "Varying attribute names" "value" $value.items.additionalProperties "required" false "page" $page "isResponse" $isResponse }}
           {{- end }}
           </ul>
         {{- end }}
