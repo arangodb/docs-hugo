@@ -124,11 +124,6 @@ if the desired _Agency_ _size_ is 5.
 The different instances that form a Cluster are supposed to be run in the same
 _Data Center_ (DC), with reliable and high-speed network connection between
 all the machines participating to the Cluster.
-
-Multi-datacenter Clusters, where the entire structure and content of a Cluster located
-in a specific DC is replicated to others Clusters located in different DCs, are
-possible as well. See [Datacenter-to-Datacenter Replication](../arangosync/deployment/_index.md)
-(DC2DC) for further details.
 {{< /info >}}
 
 ## Sharding
