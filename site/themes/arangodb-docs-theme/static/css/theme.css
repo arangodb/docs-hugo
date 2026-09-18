@@ -1840,6 +1840,13 @@ details[open] > summary::before {
     padding: 3px;
 }
 
+.openapi-property-label {
+    color: #3c4257;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
 .openapi-property-type {
     color: #8792a2;
     font-size: 13px;

@@ -542,6 +542,18 @@ A new activities API has been added as an observability feature.
 See the [HTTP interface for server activities](../../develop/http-api/monitoring/activities.md)
 for details.
 
+#### Activities of all servers (experimental)
+
+<small>Introduced in: v3.12.10</small>
+
+A new `GET /_arango/experimental/_admin/activities/all` endpoint has been added.
+You can call it on a Coordinator to get the activities of every server of a
+cluster deployment, grouped by server ID. The activities are returned in an
+`activities_per_server` object.
+
+See [Get the activities of all servers](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -1198,6 +1210,31 @@ curl -uroot:v1.7b2265...71227d http://localhost:8529/_api/database
 
 Note that it is recommended to use access tokens for creating
 [JWT session tokens](../../develop/http-api/authentication.md#create-a-jwt-session-token).
+
+#### Activities API (experimental)
+
+##### Threads of an activity
+
+<small>Introduced in: v3.12.10</small>
+
+The activity objects returned by the
+`GET /_arango/experimental/_admin/activities` endpoint have a new `threads`
+attribute. It lists the threads which currently execute the activity, each with
+the identifier of the light-weight process (`LWPID`) and the thread `name`.
+The list is empty for activities that no thread claims, like background
+maintenance activities.
+
+##### ArangoSearch consolidation activities
+
+<small>Introduced in: v3.12.11</small>
+
+The `GET /_arango/experimental/_admin/activities` endpoint now also reports the
+background consolidation of `arangosearch` View and inverted index data.
+Such activities have the type `ArangoSearchConsolidation` and their `data`
+object lists the index segments that are being merged.
+
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
+for details.
 
 ### Endpoints deprecated
 
