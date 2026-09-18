@@ -323,6 +323,17 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	serviceName := headers.Get("Service-Name")
 	apiVersionsRaw := headers.Get("API-Versions")
 
+	OpenapiFormatter.EditDescriptions(spec)
+	if leftovers := OpenapiFormatter.LeftoverShortcodes(spec); len(leftovers) > 0 {
+		models.Logger.Printf("[ERROR] Unsupported Hugo shortcode(s) %s in openapi spec, endpoint: %s, summary: %s", strings.Join(leftovers, " "), firstSpecPath(spec), summary)
+		OpenapiSpecErrorMutex.Lock()
+		if OpenapiSpecError == nil {
+			OpenapiSpecError = fmt.Errorf("unsupported Hugo shortcode(s) %s in openapi spec, endpoint: %s, summary: %s", strings.Join(leftovers, " "), firstSpecPath(spec), summary)
+		}
+		OpenapiSpecErrorMutex.Unlock()
+		return
+	}
+
 	var apiVersions []string
 	if serviceName == "arangodb" || serviceName == "" {
 		serviceName = "arangodb"

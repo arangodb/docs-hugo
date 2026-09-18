@@ -567,10 +567,17 @@ function trackPageView(title, urlPath) {
   }
 }
 
+// Hugo marks every code block <pre> with tabindex="0" for scrollable code. Code wraps here
+// and never scrolls, so the stop leads nowhere.
+function dropCodeBlockTabStops() {
+  document.querySelectorAll('article pre[tabindex]').forEach(el => el.removeAttribute('tabindex'));
+}
+
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
   addShowMoreButton('article');
+  dropCodeBlockTabStops();
   hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
@@ -682,8 +689,20 @@ function switchTab(tabGroup, tabId, event) {
       var topBefore = clickedTab.getBoundingClientRect().top;
   }
 
-  allTabItems.forEach(item => item.classList.remove("selected"));
-  targetTabItems.forEach(item => item.classList.add("selected"));
+  allTabItems.forEach(item => {
+    item.classList.remove("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "false");
+      item.tabIndex = -1;
+    }
+  });
+  targetTabItems.forEach(item => {
+    item.classList.add("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "true");
+      item.tabIndex = 0;
+    }
+  });
   targetTabItems.forEach(item => addShowMoreButton(item));
   
   if (event) {
@@ -703,6 +722,32 @@ function switchTab(tabGroup, tabId, event) {
       tabSelections[tabGroup] = tabId;
       window.localStorage.setItem("tab-selections", JSON.stringify(tabSelections));
   }
+}
+
+// Arrow key navigation within a tablist; activation follows focus.
+function handleTabKeydown(event) {
+  const tab = event.target;
+  if (!tab || tab.getAttribute("role") !== "tab") return;
+  const tablist = tab.closest("[role='tablist']");
+  if (!tablist) return;
+
+  const tabsInList = Array.from(tablist.querySelectorAll("[role='tab']"));
+  const current = tabsInList.indexOf(tab);
+  if (current === -1) return;
+
+  var next;
+  switch (event.key) {
+    case "ArrowRight": next = (current + 1) % tabsInList.length; break;
+    case "ArrowLeft":  next = (current - 1 + tabsInList.length) % tabsInList.length; break;
+    case "Home":       next = 0; break;
+    case "End":        next = tabsInList.length - 1; break;
+    default: return;
+  }
+
+  event.preventDefault();
+  const target = tabsInList[next];
+  switchTab(target.getAttribute("data-tab-group"), target.getAttribute("data-tab-item"), event);
+  target.focus();
 }
 
 function restoreTabSelections() {
@@ -793,9 +838,11 @@ function initCopyToClipboard() {
         pre.classList.add("copy-ancestor");
         code.classList.add("copy-this");
 
-        const button = document.createElement("span");
+        const button = document.createElement("button");
         button.className = "copy-to-clipboard-button copy-trigger";
+        button.setAttribute("type", "button");
         button.setAttribute("title", "Copy to clipboard");
+        button.setAttribute("aria-label", "Copy to clipboard");
         code.before(button);
     });
 }
@@ -1109,6 +1156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("change", handleDocumentChange);
+    document.addEventListener("keydown", handleTabKeydown);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {

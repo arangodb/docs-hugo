@@ -4,11 +4,8 @@ import (
 	"io"
 	"strings"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/format"
 	"gopkg.in/yaml.v3"
 )
-
-var formatter = format.OpenapiFormatter{}
 
 func ParseOpenapiPayload(request io.Reader) (map[string]interface{}, error) {
 	req, err := io.ReadAll(request)
@@ -17,8 +14,6 @@ func ParseOpenapiPayload(request io.Reader) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	req = formatter.EditDescriptions(req)
-
 	optionsYaml := make(map[string]interface{})
 	err = yaml.Unmarshal(req, &optionsYaml)
 	if err != nil {
@@ -26,7 +21,7 @@ func ParseOpenapiPayload(request io.Reader) (map[string]interface{}, error) {
 		lines := strings.Split(string(req), "\n")
 		for i, line := range lines {
 			if i < 4 {
-				Logger.Printf(line)
+				Logger.Printf("%s", line)
 			} else {
 				break
 			}
