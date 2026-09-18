@@ -58,15 +58,16 @@ paths:
             to this database and write access to the `_system` database.
           schema:
             type: string
-        - name: serverId
-          in: query
-          required: false
-          description: |
-            Returns the activities of the specified server (`CRDN-...`,
-            `PRMR-...`, or `AGNT-...`). If no `serverId` is specified, the asked
-            server replies. This parameter is only meaningful on Coordinators.
-          schema:
-            type: string
+        # TODO: Broken in v3.12.11
+        #- name: serverId
+        #  in: query
+        #  required: false
+        #  description: |
+        #    Returns the activities of the specified server (`CRDN-...`,
+        #    `PRMR-...`, or `AGNT-...`). If no `serverId` is specified, the asked
+        #    server replies. This parameter is only meaningful on Coordinators.
+        #  schema:
+        #    type: string
       responses:
         '200':
           description: |
@@ -235,10 +236,12 @@ paths:
                     type: string
         '404':
           description: |
-            The specified database doesn't exist, the user account you
-            authenticated with has no access to this database, or the server
-            specified by the `serverId` query parameter is not known in the
-            cluster.
+            The specified database doesn't exist, or the user account you
+            authenticate with has no access to this database.
+          # TODO
+          # or the server
+          # specified by the `serverId` query parameter is not known in the
+          # cluster.
 
             Up to v3.12.10, a lack of database access resulted in an HTTP `401`
             error with the `ERROR_FORBIDDEN` (`11`) error number instead of an
