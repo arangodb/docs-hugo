@@ -554,7 +554,43 @@ paths:
 ## Activity types
 
 The `data` object of an activity holds details that are specific to the activity
-type. The following types report such type-specific data.
+`type`. The following types report such type-specific data.
+
+Some activity types report their `data` as a flat object with string values
+only. Numbers are encoded as strings in these objects, like `"job_id": "42"`.
+
+### AqlQuery
+
+<small>Introduced in: v3.12.9</small>
+
+An AQL query that is currently executing.
+
+The `data` object has the following attributes:
+
+- `queryId` (number): The identifier of the query.
+- `startTime` (number): The start time of the query as a steady clock value in
+  seconds. This is not a wall-clock timestamp. It is only meaningful for
+  calculating how long the query has been running relative to other steady
+  clock values.
+- `database` (string): The name of the database the query runs in.
+- `user` (string): The name of the user who started the query.
+- `queryString` (string): The AQL query string.
+- `options` (object): The effective query options, like `memoryLimit`,
+  `maxRuntime`, `profile`, and the optimizer rules.
+- `bindParameters` (object, _optional_): The bind parameters of the query.
+  Only reported if the query has bind parameters.
+- `plan` (object, _optional_): The execution plan of the query.
+
+In a cluster, queries that a Coordinator distributes to DB-Servers report the
+following additional attributes. They mirror the internal query setup request:
+
+- `querySlice` (object, _optional_): The query definition.
+- `collections` (array, _optional_): The collections involved in the query.
+- `variables` (array, _optional_): The variables of the query.
+- `snippets` (object, _optional_): The query snippets to execute.
+- `traverserEngines` (array, _optional_): The traversal engines of the query.
+- `fastPathLocking` (boolean, _optional_): Whether the fast lock round is used
+  for acquiring the collection locks.
 
 ### ArangoSearchConsolidation
 
@@ -581,3 +617,173 @@ The `data` object has the following attributes:
     including documents that are marked as deleted.
   - `liveDocsCount` (number): The number of documents in the index segment that
     are not marked as deleted.
+
+### CreateCollections
+
+<small>Introduced in: v3.12.9</small>
+
+The creation of one or more collections.
+
+The `data` object has the following attributes:
+
+- `collectionNames` (string): The names of the collections to create, as a
+  comma-separated string.
+
+### EnsureIndex
+
+<small>Introduced in: v3.12.9</small>
+
+The creation of an index, as triggered by a user request.
+
+Note that DB-Servers additionally report a
+[maintenance action](#maintenance-actions) of the same name but with a
+different `data` object.
+
+The `data` object has the following attributes:
+
+- `collection` (string): The name of the collection to create the index for.
+- `parameters` (string): The index definition as a JSON string.
+
+### InternalRequest
+
+<small>Introduced in: v3.12.10</small>
+
+A request that a server sends to another server of the deployment, for instance
+a Coordinator asking a DB-Server for data.
+
+The `data` object has the following attributes:
+
+- `destination` (string): The server the request is sent to, either as a
+  `server:<server-id>` string or as an endpoint.
+- `method` (string): The HTTP method of the request, like `Get`, `Post`, or
+  `Delete`. Note that the values are capitalized.
+- `path` (string): The path of the endpoint that is called.
+- `hasPayload` (boolean): Whether the request has a body.
+- `options` (object): The request options, like the `database`, the `timeout`
+  in seconds, the query `parameters`, and the `apiVersion`.
+- `header` (object): The HTTP headers of the request as an object with the
+  header names as attribute keys and the header values as attribute values.
+- `retryCount` (number, _optional_): How often the request has been retried.
+
+### Maintenance actions
+
+<small>Introduced in: v3.12.9</small>
+
+A cluster maintenance action that a DB-Server executes to bring the local state
+in line with the plan, like creating a shard or synchronizing a follower.
+
+Unlike the other activity types, the activity `type` is the name of the
+respective action. It can be one of the following:
+`CreateCollection`, `CreateDatabase`, `DropCollection`, `DropDatabase`,
+`DropIndex`, `EnsureIndex`, `ResignShardLeadership`, `SynchronizeShard`,
+`TakeoverShardLeadership`, `UpdateCollection`, and `UpdateReplicatedLog`.
+
+The `data` object has the following attributes:
+
+- `discriminatoryProperties` (object): The properties that identify the action,
+  like the `database`, `collection`, and `shard` it applies to. Two actions with
+  the same discriminatory properties are considered duplicates.
+- `nonDiscriminatoryProperties` (object): Additional properties of the action
+  that are not used for identifying it.
+- `priority` (number): The scheduling priority of the action.
+- `runEvenIfDuplicate` (boolean): Whether the action is executed even if an
+  identical action is already queued or running.
+
+### RestHandler
+
+An HTTP request that the server is currently handling.
+
+The `data` object has the following attributes:
+
+- `handler` (string): The name of the internal request handler, like
+  `RestCursorHandler`.
+- `url` (string): The path of the endpoint that is called, including the query
+  parameters.
+- `method` (string): The HTTP method of the request, like `GET` or `POST`.
+- `headers` (object): The HTTP headers of the request as an object with the
+  header names as attribute keys and the header values as attribute values.
+- `connectionInfo` (object): Details about the underlying connection, with the
+  following attributes:
+  - `serverAddress` (string): The address the server listens on.
+  - `serverPort` (number): The port the server listens on.
+  - `clientAddress` (string): The address of the client that sent the request.
+  - `clientPort` (number): The port of the client that sent the request.
+  - `endpoint` (string): The endpoint the request was received on.
+  - `endpointType` (string): The domain type of the endpoint. Can be `IPV4`,
+    `IPV6`, `UNIX`, `SRV`, or `UNKNOWN`.
+  - `encryptionType` (string): Whether the connection is encrypted.
+    Can be `SSL` or `NONE`.
+
+### RocksDBCompaction
+
+<small>Introduced in: v3.12.10</small>
+
+A compaction of the underlying RocksDB storage engine.
+
+The `data` object has the following attributes:
+
+- `job_id` (string): The identifier of the compaction job.
+- `column_family` (string): The name of the RocksDB column family that is
+  compacted.
+- `base_input_level` (string): The level the input files are read from.
+- `output_level` (string): The level the compacted files are written to.
+- `input_files` (string): The number of files that are compacted.
+- `reason` (string): What triggered the compaction, like `LevelL0FilesNum`.
+
+### RocksDBDump
+
+<small>Introduced in: v3.12.9</small>
+
+A dump of collection data via the internal dump API that _arangodump_ uses,
+for the duration of the dump context.
+
+The `data` object has the following attributes:
+
+- `id` (string): The identifier of the dump context.
+- `user` (string): The name of the user who started the dump.
+- `database` (string): The name of the database the dump is taken from.
+
+### RocksDBDumpNext
+
+<small>Introduced in: v3.12.10</small>
+
+The retrieval of a single batch of a running [dump](#rocksdbdump).
+
+The `data` object has the following attributes:
+
+- `id` (string): The identifier of the dump context the batch belongs to.
+
+### TransactionActivity
+
+<small>Introduced in: v3.12.9</small>
+
+A transaction that is currently in progress.
+
+The `data` object has the following attributes:
+
+- `user` (string): The name of the user who started the transaction.
+- `database` (string): The name of the database the transaction runs in.
+- `tid` (number): The identifier of the transaction.
+- `status` (string): The state of the transaction. Can be `undefined`,
+  `created`, `running`, `committed`, or `aborted`.
+- `collections` (array): The collections the transaction uses. Each element is
+  an object with the following attributes:
+  - `name` (string): The name of the collection.
+  - `cid` (number): The identifier of the collection.
+  - `accessType` (string): How the transaction accesses the collection.
+    Can be `none`, `read`, `write`, or `exclusive`.
+  - `lockStatus` (string): Whether the transaction holds the required lock.
+    Can be `not_holding`, `acquiring`, `holding`, or `failed`.
+
+### TransactionContext
+
+<small>Introduced in: v3.12.10</small>
+
+The context a transaction runs in. It is created for every operation that needs
+a transaction, including single-document operations and the transactions that
+AQL queries use internally.
+
+The `data` object has the following attributes:
+
+- `origin` (string): A description of what created the transaction, like
+  `executing query`, `inserting document(s)`, or `building index`.
