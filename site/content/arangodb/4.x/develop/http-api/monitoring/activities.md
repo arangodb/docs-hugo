@@ -595,7 +595,7 @@ following additional attributes. They mirror the internal query setup request:
 
 <small>Introduced in: v3.12.11</small>
 
-A [consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#segments-commits-and-consolidation)
+A [consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation)
 of the index segments of an `arangosearch` View or an inverted index.
 
 Every consolidation is reported as an activity for as long as it runs, from the
