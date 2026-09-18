@@ -785,9 +785,6 @@ paths:
                               description: |
                                 The database name.
                               type: string
-        '401':
-          description: |
-            The user account has insufficient permissions for the selected database.
           content:
             application/json:
               schema:
@@ -818,7 +815,9 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled.
+            The recording API has been disabled, or the user account you
+            authenticate with has insufficient permissions for the selected
+            database.
           content:
             application/json:
               schema:
@@ -1029,9 +1028,6 @@ paths:
                               description: |
                                 The database name.
                               type: string
-        '401':
-          description: |
-            The user account has insufficient permissions for the selected database.
           content:
             application/json:
               schema:
@@ -1062,7 +1058,9 @@ paths:
                     type: string
         '403':
           description: |
-            The recording API has been disabled.
+            The recording API has been disabled, or the user account you
+            authenticate with has insufficient permissions for the selected
+            database.
           content:
             application/json:
               schema:

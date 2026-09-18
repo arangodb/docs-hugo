@@ -817,19 +817,29 @@ paths:
 
 ### Get the cluster collections and indexes
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/replication/clusterInventory:
     get:
       operationId: getReplicationClusterInventory
       description: |
-        Returns the array of collections and indexes available on the cluster.
+        Returns the collections and indexes available on the cluster.
 
-        The response will be an array of JSON objects, one for each collection.
-        Each collection contains exactly two keys, `parameters` and `indexes`.
-        This information comes from `Plan/Collections/{DB-Name}/*` in the Agency,
-        just that the `indexes` attribute there is relocated to adjust it to
-        the data format of arangodump.
+        The response is a JSON object with a `collections` array, one entry for
+        each collection. Each entry contains exactly two keys, `parameters` and
+        `indexes`. This information comes from `Plan/Collections/{DB-Name}/*` in
+        the Agency, just that the `indexes` attribute there is relocated to
+        adjust it to the data format of arangodump.
+
+        The `properties` attribute describes the database itself, including a `path` attribute
+        that reports `"none"` on Coordinators as they have no local database directory.
       parameters:
         - name: database-name
           in: path
@@ -861,3 +871,55 @@ paths:
         - Replication
 ```
 
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/replication/clusterInventory:
+    get:
+      operationId: getReplicationClusterInventory
+      description: |
+        Returns the collections and indexes available on the cluster.
+
+        The response is a JSON object with a `collections` array, one entry for
+        each collection. Each entry contains exactly two keys, `parameters` and
+        `indexes`. This information comes from `Plan/Collections/{DB-Name}/*` in
+        the Agency, just that the `indexes` attribute there is relocated to
+        adjust it to the data format of arangodump.
+
+        The `properties` attribute describes the database itself.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: includeSystem
+          in: query
+          required: false
+          description: |
+            Include system collections in the result.
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: |
+            is returned if the request was executed successfully.
+        '405':
+          description: |
+            is returned when an invalid HTTP method is used.
+        '500':
+          description: |
+            is returned if an error occurred while assembling the response.
+      tags:
+        - Replication
+```
+
+{{< api-versions-end >}}
