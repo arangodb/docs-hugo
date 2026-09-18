@@ -235,13 +235,13 @@ paths:
                       A descriptive error message.
                     type: string
         '404':
-          description: |
-            The specified database doesn't exist, or the user account you
-            authenticate with has no access to this database.
           # TODO
           # or the server
           # specified by the `serverId` query parameter is not known in the
           # cluster.
+          description: |
+            The specified database doesn't exist, or the user account you
+            authenticate with has no access to this database.
 
             Up to v3.12.10, a lack of database access resulted in an HTTP `401`
             error with the `ERROR_FORBIDDEN` (`11`) error number instead of an
