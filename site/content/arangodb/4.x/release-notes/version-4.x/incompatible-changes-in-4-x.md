@@ -542,6 +542,12 @@ The `/_admin/echo` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
 an object with the servers request information, the HTTP request headers, or
 both and were used for debugging purposes.
 
+### Code execution API removed
+
+The `/_admin/execute` endpoints supporting the `HEAD`, `GET`, `POST`, `PATCH`,
+`PUT`, and `DELETE` HTTP methods have been removed. They allowed to executes
+JavaScript code for administrative purposes on the server.
+
 ### Metrics API v2 endpoint removed
 
 Since ArangoDB v3.10.0, the `/_admin/metrics` and `/_admin/metrics/v2` endpoints

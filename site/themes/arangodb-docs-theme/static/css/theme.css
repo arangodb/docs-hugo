@@ -129,7 +129,6 @@ label {
 input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea, select {
     border: 1px solid;
     border-color: inherit;
-    outline: none;
     border-radius: 3px;
     background-clip: padding-box;
     margin-bottom: 15px;
@@ -147,7 +146,6 @@ input[type="checkbox"] {
     transition: .15s;
     border-style: solid;
     border-width: 1px;
-    outline: none;
 }
 
 button {
@@ -180,7 +178,6 @@ button, input, optgroup, select, textarea {
     border: none;
     cursor: pointer;
     letter-spacing: 1px;
-    outline: none;
     position: relative;
     white-space: initial;
     -moz-transition: all 0.3s;
@@ -220,7 +217,6 @@ a {
 }
 
 a, a:hover, a:focus {
-    outline: none;
     text-decoration: none !important;
 }
 
@@ -231,6 +227,31 @@ a, a:hover {
 a:hover {
     text-decoration: underline;
 }
+
+/* Focus ring, keyboard only. The :root prefix outranks Bootstrap's dotted inset a:focus;
+   later rules still override it. --focus-ring is re-set on dark surfaces for contrast. */
+:root {
+    --focus-ring: var(--color-avocado);
+}
+
+.main-nav {
+    --focus-ring: var(--color-electric-lime);
+}
+
+:root :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+}
+
+:root :focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Keep outline out of `transition: all`, which animates the ring's width as it appears. */
+a, .btn, input[type=submit], input[type=reset], button, input[type="checkbox"] {
+    transition-property: color, background-color, border-color, border-width, opacity, box-shadow;
+}
+
 
 small {
     font-size: 80%;
@@ -590,6 +611,13 @@ a.section-link {
     pointer-events: none;
 }
 
+/* Inset, to clear the adjacent buttons */
+.tab-nav-button:focus-visible {
+    outline-offset: -2px;
+}
+
+/* Panels are focusable. The ring is outward: an inset one would be painted over by `pre`. */
+
 /* Tabs end */
 
 /* Steps */
@@ -826,7 +854,7 @@ body .page-container {
     padding-left: 10px;
 }
 
-header .logo {
+.header .logo {
     width: 219px;
     height: 45px;
     top: 8px;
@@ -839,6 +867,11 @@ header .logo {
     margin-left: 2px;
 }
 
+.header .logo a,
+.arangodb-logo-small a {
+    display: block;
+    height: 100%;
+}
 
 @media screen and (max-width: 768px) {
     .arangodb-logo-large {
@@ -991,7 +1024,9 @@ header .logo {
     background-color: transparent;
 }
 
-.breadcrumbs > ol > li > a:hover {
+.breadcrumbs > ol > li > a:hover,
+.breadcrumbs > ol > li > a:focus,
+.breadcrumbs > ol > li > a:focus-visible {
     color: var(--gray-950);
     border-bottom: 0;
 }
@@ -1347,6 +1382,9 @@ article ul li {
 .header-link {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
+    /* Box, so the focus ring encloses the icon */
+    display: inline-block;
+    line-height: 1;
 }
 
 h2:hover .header-link,
@@ -1356,6 +1394,11 @@ h5:hover .header-link,
 h6:hover .header-link {
     filter: alpha(opacity=70);
     opacity: 0.7;
+}
+
+/* Reveal on focus, otherwise the ring would surround an invisible icon */
+.header-link:focus-visible {
+    opacity: 1;
 }
 
 .openapi-property-link {
@@ -1398,11 +1441,18 @@ li > code {
     padding: 4px 12px;
     margin: 4px;
     border-radius: 1px;
-    opacity: 0.7;
-    display: none;
+    /* Invisible rather than display:none, which cannot be focused */
+    display: flex;
+    opacity: 0;
 }
 
-.copy-to-clipboard-button:hover{
+.copy-to-clipboard:hover > .copy-to-clipboard-button {
+    opacity: 0.7;
+}
+
+/* After the rule above to win the specificity tie */
+.copy-to-clipboard-button:hover,
+.copy-to-clipboard-button:focus-visible {
     opacity: 1;
 }
 
@@ -1447,16 +1497,14 @@ pre > code {
 
 .code-long {
     max-height: calc(15 * 1.8rem);
-    overflow: hidden;
+    /* clip, not hidden: hidden is a scroll container and so gets a useless tab stop */
+    overflow: clip;
 }
 
 .code-long.expanded {
     max-height: unset;
 }
 
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
-    display: flex;
-}
 
 pre > .code-show-more {
     font-size: 1rem;
@@ -1860,7 +1908,6 @@ details[open] > summary::before {
     display: inline-block;
     padding: 6px 16px;
     font-size: var(--font-size-small);
-    outline: 0;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
@@ -1952,7 +1999,6 @@ nav.pagination .next {
     bottom: 35px;
     right: 52px;
     z-index: 99;
-    outline: none;
     background-color: white;
     color: #577138;
     cursor: pointer;

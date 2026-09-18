@@ -163,8 +163,6 @@ arangoimport --file "data.csv" --type csv --remove-attribute "_id"
 
 ## Overriding data types per attribute
 
-<small>Introduced in: v3.9.0</small>
-
 The `--datatype` startup option can be used to fix
 the datatypes for certain attributes in CSV/TSV imports. For example, in the
 following CSV input file, it is unclear if the numeric values should be
@@ -216,8 +214,6 @@ the datatype for non-string fields with `--datatype`:
 ```
 
 ## Merging Attributes
-
-<small>Introduced in: v3.9.0</small>
 
 _arangoimport_ supports creating additional attributes during the import
 process, which are concatenations of other attribute values and hard-coded

@@ -544,7 +544,7 @@ trust. It has the following views:
   question into sub-questions and runs each step with the tool it selected for
   it, and the trace reports that work. Its header counts the steps and the tools
   involved, including the ones that failed, for example
-  *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the Tools collection
+  *5 steps · 4 of 6 tools used · 1 failed*. Tools come from the `Tools` collection
   and are defined manually; see
   [Tool configuration](../retriever/search-methods/custom-retriever.md#tool-configuration).
 

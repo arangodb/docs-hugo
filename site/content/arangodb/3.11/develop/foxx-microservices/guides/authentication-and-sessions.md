@@ -2,7 +2,9 @@
 title: Authentication in Foxx services
 menuTitle: Authentication and sessions
 weight: 50
-description: ''
+description: >-
+  Combine the `auth` or OAuth modules with the session middleware to implement
+  authentication in your Foxx services
 ---
 Foxx provides the [auth module](../reference/related-modules/authentication.md) to implement
 basic password verification and hashing but is not very secure unless using

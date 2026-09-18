@@ -2,7 +2,9 @@
 title: DC2DC Replication Operations & Maintenance
 menuTitle: Operations & Maintenance
 weight: 15
-description: ''
+description: >-
+  How to monitor the status of the ArangoSync components and the ArangoDB
+  clusters, what to look out for, and which metrics endpoints are available
 ---
 ## Operations & Maintenance
 

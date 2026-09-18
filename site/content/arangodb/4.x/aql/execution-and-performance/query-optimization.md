@@ -539,7 +539,7 @@ query's execution plan for an `IndexNode`.
 
 #### Filter Projections Optimizations
 
-<small>Introduced: v3.10.0</small>
+<small>Introduced in: v3.10.0</small>
 
 If an index is used that does not cover all required attributes for the query,
 but if it is followed by filter conditions that only access attributes that are

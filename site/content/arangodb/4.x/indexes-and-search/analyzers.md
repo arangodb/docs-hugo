@@ -677,8 +677,6 @@ db._query(`RETURN TOKENS(
 
 ### `collation`
 
-<small>Introduced in: v3.9.0</small>
-
 An Analyzer capable of converting the input into a set of language-specific
 tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
@@ -742,8 +740,6 @@ db._query("FOR doc IN view SEARCH ANALYZER(doc.text < TOKENS('c', 'collation_sv'
 ```
 
 ### `aql`
-
-<small>Introduced in: v3.8.0</small>
 
 An Analyzer capable of running a restricted AQL query to perform
 data manipulation / filtering.
@@ -917,8 +913,6 @@ position, thus there is negative one to skip to match the tokens.
 
 ### `pipeline`
 
-<small>Introduced in: v3.8.0</small>
-
 An Analyzer capable of chaining effects of multiple Analyzers into one.
 The pipeline is a list of Analyzers, where the output of an Analyzer is passed
 to the next for further processing. The final token value is determined by last
@@ -981,8 +975,6 @@ db._query(`RETURN TOKENS("delimited,stemmable,words", "delimiter_stem")`).toArra
 ```
 
 ### `stopwords`
-
-<small>Introduced in: v3.8.1</small>
 
 An Analyzer capable of removing specified tokens from the input.
 
@@ -1053,8 +1045,6 @@ db._query("RETURN FLATTEN(TOKENS(SPLIT('The fox AND the dog äñḏ a ţhéäter
 ```
 
 ### `segmentation`
-
-<small>Introduced in: v3.9.0</small>
 
 An Analyzer capable of breaking up the input text into tokens in a
 language-agnostic manner as per
@@ -1354,8 +1344,6 @@ db._query(`LET str = "salt, oil"
 
 ### `geojson`
 
-<small>Introduced in: v3.8.0</small>
-
 An Analyzer capable of breaking up a GeoJSON object or coordinate array in
 `[longitude, latitude]` order into a set of indexable tokens for further usage
 with [ArangoSearch Geo functions](../aql/functions/arangosearch.md#geo-functions).
@@ -1584,8 +1572,6 @@ preserve the exact coordinate values, then the document is filtered out as
 expected.
 
 ### `geopoint`
-
-<small>Introduced in: v3.8.0</small>
 
 An Analyzer capable of breaking up a coordinate array in `[latitude, longitude]`
 order or a JSON object describing a coordinate pair using two separate attributes

@@ -1,7 +1,8 @@
 ---
-title: Update Metrics Token with `oasisctl`
+title: Update Metrics Token with _oasisctl_
 menuTitle: Update Metrics Token
 weight: 9
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update a metrics token

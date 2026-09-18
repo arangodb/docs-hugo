@@ -402,8 +402,6 @@ These endpoints generally don't work well with load-balancers.
 
 ## Overload control
 
-<small>Introduced in: v3.9.0</small>
-
 _arangod_ returns an `x-arango-queue-time-seconds` HTTP
 header with all responses. This header contains the most recent request
 queueing/dequeuing time (in seconds) as tracked by the server's scheduler.

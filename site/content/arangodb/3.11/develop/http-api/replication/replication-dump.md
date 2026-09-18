@@ -1,8 +1,11 @@
 ---
-title: Replication dump commands
+title: Replication dump commands of the HTTP API
 menuTitle: Replication Dump
 weight: 5
-description: ''
+description: >-
+  The replication dump commands let clients query the collections and indexes of
+  a database, snapshot the current state with dump batches, and fetch the data
+  of the collections for the initial synchronization
 ---
 ## Inventory
 

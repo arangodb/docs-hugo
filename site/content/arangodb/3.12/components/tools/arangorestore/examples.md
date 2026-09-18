@@ -193,6 +193,9 @@ See [arangodump](../arangodump/examples.md#encryption) for details.
 
 ## Compression
 
+When restoring dumps that are compressed on disk, _arangorestore_ automatically
+handles the decompression.
+
 You can optionally let _arangorestore_ compress the data for the network transfer
 with the `--compress-transfer` startup option. This can reduce the traffic and
 thus save time. Set the `--compress-request-threshold` startup option to define
@@ -227,8 +230,6 @@ arangorestore --collection mycopyvalues --server.database mycopy --input-directo
 ```
 
 ## Enabling revision trees for older dumps
-
-<small>Introduced in: v3.8.7, v3.9.2</small>
 
 Collections in ArangoDB 3.8 and later can use an internal format that is based
 on revision trees for replication. Using this format has advantages over the

@@ -29,7 +29,7 @@ func init() {
 	}
 	models.Conf.Override = strings.ReplaceAll(override, ",", "|")
 
-	models.Logger.Printf(startupBanner)
+	models.Logger.Printf("%s", startupBanner)
 
 	models.Logger.Printf("Configuration:\n%s\n", models.Conf.String())
 

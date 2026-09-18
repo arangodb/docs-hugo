@@ -2,13 +2,14 @@
 title: Custom Retriever
 menuTitle: Custom Retriever
 description: >-
-  Domain-specific search using configurable tools with flexible search strategies and custom graph traversal
+  Domain-specific search using configurable tools with flexible search
+  strategies and custom graph traversal
 weight: 40
 ---
 ## Overview
 
 Custom Retriever enables domain-specific search and retrieval using
-configurable, natural-language-described tools stored in the ArangoDB Tools
+configurable, natural-language-described tools stored in the ArangoDB `Tools`
 collection. Unlike the built-in search methods (Global, Local, Unified),
 Custom Retriever allows you to define your own search logic, combine multiple
 search strategies, and execute custom graph traversal queries tailored to your
@@ -54,7 +55,7 @@ Custom Retriever uses a **3-stage pipeline**:
 
 ## Tool configuration
 
-Custom tools are stored in the ArangoDB `{project_name}_Tools` collection
+Custom tools are stored in the ArangoDB `Tools` collection
 with the following structure:
 
 ```json
@@ -129,8 +130,7 @@ When a request runs several tools, their partition settings have to agree. The
 service rejects a request in which one tool sets `auto_select_partitions` to
 `true` while another sets it to `false`, or in which one tool has
 `partition_ids` while another explicitly sets `auto_select_partitions` to
-`true`. Tools that
-leave the field unset are not part of this check.
+`true`. Tools that leave the field unset are not part of this check.
 {{< /warning >}}
 
 {{< info >}}

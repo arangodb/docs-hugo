@@ -2,7 +2,9 @@
 title: Using Webpack with Foxx
 menuTitle: Using Webpack with Foxx
 weight: 45
-description: ''
+description: >-
+  Compile your Foxx services with Webpack, including handling the service
+  context and ArangoDB's built-in modules
 ---
 You can use [Webpack](https://webpack.js.org/) to compile your Foxx services
 the same way you would compile any other JavaScript code.

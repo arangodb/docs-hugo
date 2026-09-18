@@ -28,7 +28,8 @@ and mathematics, the terms **vertices** (singular: vertex) and **edges** are
 commonly used to refer to nodes and relations, respectively. In information
 science and data analysis, they are referred to as _entities_ and _connection_.
 In social sciences, they are often called _actors_ and _ties_ or _links_.
-They may also be called _points_ and _arcs_.
+They may also be called _points_ and _arcs_ or _circles_  and _arrows_ based on
+how they are typically represented visually.
 
 Using graphs with vertices to represent things and edges to define how they
 relate to one another is a very expressive data model. It lets you represent

@@ -1,7 +1,8 @@
 ---
-title: Update Private with `oasisctl`
+title: Update Private with _oasisctl_
 menuTitle: Update Private
-weight: 22
+weight: 21
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update private resources

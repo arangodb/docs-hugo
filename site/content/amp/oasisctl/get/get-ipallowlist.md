@@ -1,7 +1,8 @@
 ---
-title: Get IP Allowlist with `oasisctl`
+title: Get IP Allowlist with _oasisctl_
 menuTitle: Get IP Allowlist
 weight: 11
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get an IP allowlist the authenticated user has access to

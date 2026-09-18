@@ -21,8 +21,8 @@ paths:
     get:
       operationId: listQueryCacheResults
       description: |
-        Returns an array containing the AQL query results currently stored in the query results
-        cache of the selected database.
+        Returns metadata about the AQL query results currently stored in the query results cache
+        of the selected database. The cached result data itself isn't included.
       parameters:
         - name: database-name
           in: path
@@ -35,16 +35,17 @@ paths:
       responses:
         '200':
           description: |
-            The list of cached query results.
+            The query results cache entries are returned successfully.
           content:
             application/json:
               schema:
                 description: |
-                  The entries of the query results cache.
+                  A list of query results cache entries.
                 type: array
                 items:
                   description: |
-                    The properties of a cache entry.
+                    Each entry describes a cached query result but doesn't include
+                    the cached result data itself.
                   type: object
                   required:
                     - hash
@@ -73,11 +74,11 @@ paths:
                       type: object
                     size:
                       description: |
-                        The size of the query result and bind parameters (in bytes).
+                        The size of the cached query result and bind parameters (in bytes).
                       type: integer
                     results:
                       description: |
-                        The number of documents/rows in the query result.
+                        The number of documents/rows in the cached query result.
                       type: integer
                     started:
                       description: |
@@ -144,7 +145,7 @@ paths:
     delete:
       operationId: deleteAqlQueryCache
       description: |
-        Clears all results stored in the AQL query results cache for the current database.
+        Clears all results stored in the AQL query results cache for the selected database.
       parameters:
         - name: database-name
           in: path
@@ -238,6 +239,12 @@ paths:
                 description: |
                   The result cache configuration.
                 type: object
+                required:
+                  - mode
+                  - maxResults
+                  - maxResultsSize
+                  - maxEntrySize
+                  - includeSystem
                 properties:
                   mode:
                     description: |
@@ -259,6 +266,7 @@ paths:
                     description: |
                       The maximum individual result size of queries that are
                       stored per database-specific cache (in bytes).
+                    type: integer
                   includeSystem:
                     description: |
                       Whether results of queries that involve system collections
@@ -368,6 +376,12 @@ paths:
                 description: |
                   The result cache configuration.
                 type: object
+                required:
+                  - mode
+                  - maxResults
+                  - maxResultsSize
+                  - maxEntrySize
+                  - includeSystem
                 properties:
                   mode:
                     description: |
@@ -389,6 +403,7 @@ paths:
                     description: |
                       The maximum individual result size of queries that are
                       stored per database-specific cache (in bytes).
+                    type: integer
                   includeSystem:
                     description: |
                       Whether results of queries that involve system collections

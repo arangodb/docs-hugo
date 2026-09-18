@@ -259,10 +259,9 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.
@@ -428,10 +427,9 @@ paths:
                   - result
                 properties:
                   result:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '400':
           description: |
             The `job-id` is missing in the request or has an invalid value.
