@@ -17,12 +17,13 @@ function initCopyToClipboard() {
         code.addClass('copy-to-clipboard-code');
         code.parent().addClass( 'copy-to-clipboard' );
 
-        var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
-        code.before(span);
+        // A button, not a span, so it is keyboard reachable and has a role and a name
+        var button = $('<button>').attr("type", "button").addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("aria-label", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
+        code.before(button);
 
-        span.mouseleave(function() {
+        button.mouseleave(function() {
             setTimeout(function() {
-                span.removeClass("tooltipped");
+                button.removeClass("tooltipped");
             }, 1000);
         });
     });
