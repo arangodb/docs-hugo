@@ -1788,7 +1788,8 @@ details[open] > summary::before {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: clip;
+    overflow-clip-margin: 6px;
     letter-spacing: normal;
     color: var(--fg);
     background-color: var(--bg);
