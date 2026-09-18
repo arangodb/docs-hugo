@@ -99,6 +99,7 @@ paths:
                         type:
                           description: |
                             The kind of activity (e.g. `RestHandler`, `AQLQuery`).
+                            See the [Activity types](#activity-types) for the details.
                           type: string
                           example: "RestHandler"
                         created:
@@ -137,13 +138,10 @@ paths:
                         data:
                           description: |
                             Type-specific details for this activity. The shape of
-                            this object depends on the activity type and is
+                            this object depends on the activity `type` and is
                             intentionally left flexible so the feature can grow
                             without breaking the API. Do not rely on a fixed schema.
-
-                            See [the `ArangoSearchConsolidation` type](#arangosearchconsolidation)
-                            for the details reported by activities of type
-                            `ArangoSearchConsolidation`.
+                            See the [Activity types](#activity-types) for the details.
                           type: object
                           # TODO: describe the shape per activity type here once
                           # the docs tooling can render composition
@@ -443,6 +441,7 @@ paths:
                       type: array
                       items:
                         type: object
+                        # TODO: oneOf with activity/error object schema
         '401':
           description: |
             The user account you authenticated with lacks read access for the
