@@ -227,6 +227,7 @@
 /agentic-ai-suite/graphrag/tutorial-notebook/                                   /agentic-ai-suite/autograph/web-interface/                      301
 /agentic-ai-suite/graphrag/                                                     /agentic-ai-suite/autograph/                                    301
 /agentic-ai-suite/graphrag/*                                                    /agentic-ai-suite/autograph/                                    301
+/amp/notebooks/                                                                 /agentic-ai-suite/notebook-servers/                             301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
@@ -628,7 +629,7 @@
 /docs/3.10/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.10/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.10/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.10/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.10/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.10/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.10/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.10/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -676,7 +677,7 @@
 /docs/3.10/arangograph/oasisctl-create-ipallowlist.html                                    /amp/oasisctl/create/create-ipallowlist/                                                  301
 /docs/3.10/arangograph/oasisctl-create-metrics.html                                        /amp/oasisctl/create/create-metrics/                                                      301
 /docs/3.10/arangograph/oasisctl-create-metrics-token.html                                  /amp/oasisctl/create/create-metrics-token/                                                301
-/docs/3.10/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/create-notebook/                                                     301
+/docs/3.10/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/                                                                     301
 /docs/3.10/arangograph/oasisctl-create-organization.html                                   /amp/oasisctl/create/create-organization/                                                 301
 /docs/3.10/arangograph/oasisctl-create-organization-invite.html                            /amp/oasisctl/create/create-organization-invite/                                          301
 /docs/3.10/arangograph/oasisctl-create-private.html                                        /amp/oasisctl/create/create-private/                                                      301
@@ -701,7 +702,7 @@
 /docs/3.10/arangograph/oasisctl-delete-ipallowlist.html                                    /amp/oasisctl/delete/delete-ipallowlist/                                                  301
 /docs/3.10/arangograph/oasisctl-delete-metrics.html                                        /amp/oasisctl/delete/delete-metrics/                                                      301
 /docs/3.10/arangograph/oasisctl-delete-metrics-token.html                                  /amp/oasisctl/delete/delete-metrics-token/                                                301
-/docs/3.10/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/delete-notebook/                                                     301
+/docs/3.10/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/                                                                     301
 /docs/3.10/arangograph/oasisctl-delete-organization.html                                   /amp/oasisctl/delete/delete-organization/                                                 301
 /docs/3.10/arangograph/oasisctl-delete-organization-invite.html                            /amp/oasisctl/delete/delete-organization-invite/                                          301
 /docs/3.10/arangograph/oasisctl-delete-organization-members.html                           /amp/oasisctl/delete/delete-organization-members/                                         301
@@ -726,7 +727,7 @@
 /docs/3.10/arangograph/oasisctl-get-ipallowlist.html                                       /amp/oasisctl/get/get-ipallowlist/                                                        301
 /docs/3.10/arangograph/oasisctl-get-metrics.html                                           /amp/oasisctl/get/get-metrics/                                                            301
 /docs/3.10/arangograph/oasisctl-get-metrics-token.html                                     /amp/oasisctl/get/get-metrics-token/                                                      301
-/docs/3.10/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/get-notebook/                                                           301
+/docs/3.10/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/                                                                        301
 /docs/3.10/arangograph/oasisctl-get-organization.html                                      /amp/oasisctl/get/get-organization/                                                       301
 /docs/3.10/arangograph/oasisctl-get-organization-authentication.html                       /amp/oasisctl/get/get-organization-authentication/                                        301
 /docs/3.10/arangograph/oasisctl-get-organization-authentication-providers.html             /amp/oasisctl/get/get-organization-authentication-providers/                              301
@@ -774,8 +775,8 @@
 /docs/3.10/arangograph/oasisctl-list-metrics.html                                          /amp/oasisctl/list/list-metrics/                                                          301
 /docs/3.10/arangograph/oasisctl-list-metrics-tokens.html                                   /amp/oasisctl/list/list-metrics-tokens/                                                   301
 /docs/3.10/arangograph/oasisctl-list-nodesizes.html                                        /amp/oasisctl/list/list-nodesizes/                                                        301
-/docs/3.10/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/list-notebookmodels/                                                   301
-/docs/3.10/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/list-notebooks/                                                        301
+/docs/3.10/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/                                                                       301
+/docs/3.10/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/                                                                       301
 /docs/3.10/arangograph/oasisctl-list-organization.html                                     /amp/oasisctl/list/list-organization/                                                     301
 /docs/3.10/arangograph/oasisctl-list-organization-invites.html                             /amp/oasisctl/list/list-organization-invites/                                             301
 /docs/3.10/arangograph/oasisctl-list-organization-members.html                             /amp/oasisctl/list/list-organization-members/                                             301
@@ -796,7 +797,7 @@
 /docs/3.10/arangograph/oasisctl-login.html                                                 /amp/oasisctl/login/                                                                      301
 /docs/3.10/arangograph/oasisctl-logs.html                                                  /amp/oasisctl/logs/                                                                       301
 /docs/3.10/arangograph/oasisctl-pause.html                                                 /amp/oasisctl/pause/                                                                      301
-/docs/3.10/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/pause-notebook/                                                       301
+/docs/3.10/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/                                                                      301
 /docs/3.10/arangograph/oasisctl-rebalance.html                                             /amp/oasisctl/rebalance/                                                                  301
 /docs/3.10/arangograph/oasisctl-rebalance-deployment.html                                  /amp/oasisctl/rebalance/rebalance-deployment/                                             301
 /docs/3.10/arangograph/oasisctl-rebalance-deployment-shards.html                           /amp/oasisctl/rebalance/rebalance-deployment-shards/                                      301
@@ -808,7 +809,7 @@
 /docs/3.10/arangograph/oasisctl-renew-apikey-token.html                                    /amp/oasisctl/renew/renew-apikey-token/                                                   301
 /docs/3.10/arangograph/oasisctl-resume.html                                                /amp/oasisctl/resume/                                                                     301
 /docs/3.10/arangograph/oasisctl-resume-deployment.html                                     /amp/oasisctl/resume/resume-deployment/                                                   301
-/docs/3.10/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/resume-notebook/                                                     301
+/docs/3.10/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/                                                                     301
 /docs/3.10/arangograph/oasisctl-revoke.html                                                /amp/oasisctl/revoke/                                                                     301
 /docs/3.10/arangograph/oasisctl-revoke-apikey.html                                         /amp/oasisctl/revoke/revoke-apikey/                                                       301
 /docs/3.10/arangograph/oasisctl-revoke-apikey-token.html                                   /amp/oasisctl/revoke/revoke-apikey-token/                                                 301
@@ -835,7 +836,7 @@
 /docs/3.10/arangograph/oasisctl-update-ipallowlist.html                                    /amp/oasisctl/update/update-ipallowlist/                                                  301
 /docs/3.10/arangograph/oasisctl-update-metrics.html                                        /amp/oasisctl/update/update-metrics/                                                      301
 /docs/3.10/arangograph/oasisctl-update-metrics-token.html                                  /amp/oasisctl/update/update-metrics-token/                                                301
-/docs/3.10/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/update-notebook/                                                     301
+/docs/3.10/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/                                                                     301
 /docs/3.10/arangograph/oasisctl-update-organization.html                                   /amp/oasisctl/update/update-organization/                                                 301
 /docs/3.10/arangograph/oasisctl-update-organization-authentication.html                    /amp/oasisctl/update/update-organization-authentication/                                  301
 /docs/3.10/arangograph/oasisctl-update-organization-authentication-providers.html          /amp/oasisctl/update/update-organization-authentication-providers/                        301
@@ -1374,7 +1375,7 @@
 /docs/stable/arangograph/deployments.html                                                  /amp/deployments/                                                                         301
 /docs/stable/arangograph/private-endpoints.html                                            /amp/deployments/private-endpoints/                                                       301
 /docs/stable/arangograph/upgrades-versioning.html                                          /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/stable/arangograph/notebooks.html                                                    /amp/notebooks/                                                                           301
+/docs/stable/arangograph/notebooks.html                                                    /agentic-ai-suite/notebook-servers/                                                       301
 /docs/stable/arangograph/cloud-migration-tool.html                                         /amp/                                                                                     301
 /docs/stable/arangograph/my-account.html                                                   /amp/my-account/                                                                          301
 /docs/stable/arangograph/monitoring-metrics.html                                           /amp/monitoring-and-metrics/                                                              301
@@ -1422,7 +1423,7 @@
 /docs/stable/arangograph/oasisctl-create-ipallowlist.html                                  /amp/oasisctl/create/create-ipallowlist/                                                  301
 /docs/stable/arangograph/oasisctl-create-metrics.html                                      /amp/oasisctl/create/create-metrics/                                                      301
 /docs/stable/arangograph/oasisctl-create-metrics-token.html                                /amp/oasisctl/create/create-metrics-token/                                                301
-/docs/stable/arangograph/oasisctl-create-notebook.html                                     /amp/oasisctl/create/create-notebook/                                                     301
+/docs/stable/arangograph/oasisctl-create-notebook.html                                     /amp/oasisctl/create/                                                                     301
 /docs/stable/arangograph/oasisctl-create-organization.html                                 /amp/oasisctl/create/create-organization/                                                 301
 /docs/stable/arangograph/oasisctl-create-organization-invite.html                          /amp/oasisctl/create/create-organization-invite/                                          301
 /docs/stable/arangograph/oasisctl-create-private.html                                      /amp/oasisctl/create/create-private/                                                      301
@@ -1447,7 +1448,7 @@
 /docs/stable/arangograph/oasisctl-delete-ipallowlist.html                                  /amp/oasisctl/delete/delete-ipallowlist/                                                  301
 /docs/stable/arangograph/oasisctl-delete-metrics.html                                      /amp/oasisctl/delete/delete-metrics/                                                      301
 /docs/stable/arangograph/oasisctl-delete-metrics-token.html                                /amp/oasisctl/delete/delete-metrics-token/                                                301
-/docs/stable/arangograph/oasisctl-delete-notebook.html                                     /amp/oasisctl/delete/delete-notebook/                                                     301
+/docs/stable/arangograph/oasisctl-delete-notebook.html                                     /amp/oasisctl/delete/                                                                     301
 /docs/stable/arangograph/oasisctl-delete-organization.html                                 /amp/oasisctl/delete/delete-organization/                                                 301
 /docs/stable/arangograph/oasisctl-delete-organization-invite.html                          /amp/oasisctl/delete/delete-organization-invite/                                          301
 /docs/stable/arangograph/oasisctl-delete-organization-members.html                         /amp/oasisctl/delete/delete-organization-members/                                         301
@@ -1472,7 +1473,7 @@
 /docs/stable/arangograph/oasisctl-get-ipallowlist.html                                     /amp/oasisctl/get/get-ipallowlist/                                                        301
 /docs/stable/arangograph/oasisctl-get-metrics.html                                         /amp/oasisctl/get/get-metrics/                                                            301
 /docs/stable/arangograph/oasisctl-get-metrics-token.html                                   /amp/oasisctl/get/get-metrics-token/                                                      301
-/docs/stable/arangograph/oasisctl-get-notebook.html                                        /amp/oasisctl/get/get-notebook/                                                           301
+/docs/stable/arangograph/oasisctl-get-notebook.html                                        /amp/oasisctl/get/                                                                        301
 /docs/stable/arangograph/oasisctl-get-organization.html                                    /amp/oasisctl/get/get-organization/                                                       301
 /docs/stable/arangograph/oasisctl-get-organization-authentication.html                     /amp/oasisctl/get/get-organization-authentication/                                        301
 /docs/stable/arangograph/oasisctl-get-organization-authentication-providers.html           /amp/oasisctl/get/get-organization-authentication-providers/                              301
@@ -1520,8 +1521,8 @@
 /docs/stable/arangograph/oasisctl-list-metrics.html                                        /amp/oasisctl/list/list-metrics/                                                          301
 /docs/stable/arangograph/oasisctl-list-metrics-tokens.html                                 /amp/oasisctl/list/list-metrics-tokens/                                                   301
 /docs/stable/arangograph/oasisctl-list-nodesizes.html                                      /amp/oasisctl/list/list-nodesizes/                                                        301
-/docs/stable/arangograph/oasisctl-list-notebookmodels.html                                 /amp/oasisctl/list/list-notebookmodels/                                                   301
-/docs/stable/arangograph/oasisctl-list-notebooks.html                                      /amp/oasisctl/list/list-notebooks/                                                        301
+/docs/stable/arangograph/oasisctl-list-notebookmodels.html                                 /amp/oasisctl/list/                                                                       301
+/docs/stable/arangograph/oasisctl-list-notebooks.html                                      /amp/oasisctl/list/                                                                       301
 /docs/stable/arangograph/oasisctl-list-organization.html                                   /amp/oasisctl/list/list-organization/                                                     301
 /docs/stable/arangograph/oasisctl-list-organization-invites.html                           /amp/oasisctl/list/list-organization-invites/                                             301
 /docs/stable/arangograph/oasisctl-list-organization-members.html                           /amp/oasisctl/list/list-organization-members/                                             301
@@ -1542,7 +1543,7 @@
 /docs/stable/arangograph/oasisctl-login.html                                               /amp/oasisctl/login/                                                                      301
 /docs/stable/arangograph/oasisctl-logs.html                                                /amp/oasisctl/logs/                                                                       301
 /docs/stable/arangograph/oasisctl-pause.html                                               /amp/oasisctl/pause/                                                                      301
-/docs/stable/arangograph/oasisctl-pause-notebook.html                                      /amp/oasisctl/pause/pause-notebook/                                                       301
+/docs/stable/arangograph/oasisctl-pause-notebook.html                                      /amp/oasisctl/pause/                                                                      301
 /docs/stable/arangograph/oasisctl-rebalance.html                                           /amp/oasisctl/rebalance/                                                                  301
 /docs/stable/arangograph/oasisctl-rebalance-deployment.html                                /amp/oasisctl/rebalance/rebalance-deployment/                                             301
 /docs/stable/arangograph/oasisctl-rebalance-deployment-shards.html                         /amp/oasisctl/rebalance/rebalance-deployment-shards/                                      301
@@ -1554,7 +1555,7 @@
 /docs/stable/arangograph/oasisctl-renew-apikey-token.html                                  /amp/oasisctl/renew/renew-apikey-token/                                                   301
 /docs/stable/arangograph/oasisctl-resume.html                                              /amp/oasisctl/resume/                                                                     301
 /docs/stable/arangograph/oasisctl-resume-deployment.html                                   /amp/oasisctl/resume/resume-deployment/                                                   301
-/docs/stable/arangograph/oasisctl-resume-notebook.html                                     /amp/oasisctl/resume/resume-notebook/                                                     301
+/docs/stable/arangograph/oasisctl-resume-notebook.html                                     /amp/oasisctl/resume/                                                                     301
 /docs/stable/arangograph/oasisctl-revoke.html                                              /amp/oasisctl/revoke/                                                                     301
 /docs/stable/arangograph/oasisctl-revoke-apikey.html                                       /amp/oasisctl/revoke/revoke-apikey/                                                       301
 /docs/stable/arangograph/oasisctl-revoke-apikey-token.html                                 /amp/oasisctl/revoke/revoke-apikey-token/                                                 301
@@ -1581,7 +1582,7 @@
 /docs/stable/arangograph/oasisctl-update-ipallowlist.html                                  /amp/oasisctl/update/update-ipallowlist/                                                  301
 /docs/stable/arangograph/oasisctl-update-metrics.html                                      /amp/oasisctl/update/update-metrics/                                                      301
 /docs/stable/arangograph/oasisctl-update-metrics-token.html                                /amp/oasisctl/update/update-metrics-token/                                                301
-/docs/stable/arangograph/oasisctl-update-notebook.html                                     /amp/oasisctl/update/update-notebook/                                                     301
+/docs/stable/arangograph/oasisctl-update-notebook.html                                     /amp/oasisctl/update/                                                                     301
 /docs/stable/arangograph/oasisctl-update-organization.html                                 /amp/oasisctl/update/update-organization/                                                 301
 /docs/stable/arangograph/oasisctl-update-organization-authentication.html                  /amp/oasisctl/update/update-organization-authentication/                                  301
 /docs/stable/arangograph/oasisctl-update-organization-authentication-providers.html        /amp/oasisctl/update/update-organization-authentication-providers/                        301
@@ -2121,7 +2122,7 @@
 /docs/3.11/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.11/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.11/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.11/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.11/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.11/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.11/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.11/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -2169,7 +2170,7 @@
 /docs/3.11/arangograph/oasisctl-create-ipallowlist.html                                    /amp/oasisctl/create/create-ipallowlist/                                                  301
 /docs/3.11/arangograph/oasisctl-create-metrics.html                                        /amp/oasisctl/create/create-metrics/                                                      301
 /docs/3.11/arangograph/oasisctl-create-metrics-token.html                                  /amp/oasisctl/create/create-metrics-token/                                                301
-/docs/3.11/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/create-notebook/                                                     301
+/docs/3.11/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/                                                                     301
 /docs/3.11/arangograph/oasisctl-create-organization.html                                   /amp/oasisctl/create/create-organization/                                                 301
 /docs/3.11/arangograph/oasisctl-create-organization-invite.html                            /amp/oasisctl/create/create-organization-invite/                                          301
 /docs/3.11/arangograph/oasisctl-create-private.html                                        /amp/oasisctl/create/create-private/                                                      301
@@ -2194,7 +2195,7 @@
 /docs/3.11/arangograph/oasisctl-delete-ipallowlist.html                                    /amp/oasisctl/delete/delete-ipallowlist/                                                  301
 /docs/3.11/arangograph/oasisctl-delete-metrics.html                                        /amp/oasisctl/delete/delete-metrics/                                                      301
 /docs/3.11/arangograph/oasisctl-delete-metrics-token.html                                  /amp/oasisctl/delete/delete-metrics-token/                                                301
-/docs/3.11/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/delete-notebook/                                                     301
+/docs/3.11/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/                                                                     301
 /docs/3.11/arangograph/oasisctl-delete-organization.html                                   /amp/oasisctl/delete/delete-organization/                                                 301
 /docs/3.11/arangograph/oasisctl-delete-organization-invite.html                            /amp/oasisctl/delete/delete-organization-invite/                                          301
 /docs/3.11/arangograph/oasisctl-delete-organization-members.html                           /amp/oasisctl/delete/delete-organization-members/                                         301
@@ -2219,7 +2220,7 @@
 /docs/3.11/arangograph/oasisctl-get-ipallowlist.html                                       /amp/oasisctl/get/get-ipallowlist/                                                        301
 /docs/3.11/arangograph/oasisctl-get-metrics.html                                           /amp/oasisctl/get/get-metrics/                                                            301
 /docs/3.11/arangograph/oasisctl-get-metrics-token.html                                     /amp/oasisctl/get/get-metrics-token/                                                      301
-/docs/3.11/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/get-notebook/                                                           301
+/docs/3.11/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/                                                                        301
 /docs/3.11/arangograph/oasisctl-get-organization.html                                      /amp/oasisctl/get/get-organization/                                                       301
 /docs/3.11/arangograph/oasisctl-get-organization-authentication.html                       /amp/oasisctl/get/get-organization-authentication/                                        301
 /docs/3.11/arangograph/oasisctl-get-organization-authentication-providers.html             /amp/oasisctl/get/get-organization-authentication-providers/                              301
@@ -2267,8 +2268,8 @@
 /docs/3.11/arangograph/oasisctl-list-metrics.html                                          /amp/oasisctl/list/list-metrics/                                                          301
 /docs/3.11/arangograph/oasisctl-list-metrics-tokens.html                                   /amp/oasisctl/list/list-metrics-tokens/                                                   301
 /docs/3.11/arangograph/oasisctl-list-nodesizes.html                                        /amp/oasisctl/list/list-nodesizes/                                                        301
-/docs/3.11/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/list-notebookmodels/                                                   301
-/docs/3.11/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/list-notebooks/                                                        301
+/docs/3.11/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/                                                                       301
+/docs/3.11/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/                                                                       301
 /docs/3.11/arangograph/oasisctl-list-organization.html                                     /amp/oasisctl/list/list-organization/                                                     301
 /docs/3.11/arangograph/oasisctl-list-organization-invites.html                             /amp/oasisctl/list/list-organization-invites/                                             301
 /docs/3.11/arangograph/oasisctl-list-organization-members.html                             /amp/oasisctl/list/list-organization-members/                                             301
@@ -2289,7 +2290,7 @@
 /docs/3.11/arangograph/oasisctl-login.html                                                 /amp/oasisctl/login/                                                                      301
 /docs/3.11/arangograph/oasisctl-logs.html                                                  /amp/oasisctl/logs/                                                                       301
 /docs/3.11/arangograph/oasisctl-pause.html                                                 /amp/oasisctl/pause/                                                                      301
-/docs/3.11/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/pause-notebook/                                                       301
+/docs/3.11/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/                                                                      301
 /docs/3.11/arangograph/oasisctl-rebalance.html                                             /amp/oasisctl/rebalance/                                                                  301
 /docs/3.11/arangograph/oasisctl-rebalance-deployment.html                                  /amp/oasisctl/rebalance/rebalance-deployment/                                             301
 /docs/3.11/arangograph/oasisctl-rebalance-deployment-shards.html                           /amp/oasisctl/rebalance/rebalance-deployment-shards/                                      301
@@ -2301,7 +2302,7 @@
 /docs/3.11/arangograph/oasisctl-renew-apikey-token.html                                    /amp/oasisctl/renew/renew-apikey-token/                                                   301
 /docs/3.11/arangograph/oasisctl-resume.html                                                /amp/oasisctl/resume/                                                                     301
 /docs/3.11/arangograph/oasisctl-resume-deployment.html                                     /amp/oasisctl/resume/resume-deployment/                                                   301
-/docs/3.11/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/resume-notebook/                                                     301
+/docs/3.11/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/                                                                     301
 /docs/3.11/arangograph/oasisctl-revoke.html                                                /amp/oasisctl/revoke/                                                                     301
 /docs/3.11/arangograph/oasisctl-revoke-apikey.html                                         /amp/oasisctl/revoke/revoke-apikey/                                                       301
 /docs/3.11/arangograph/oasisctl-revoke-apikey-token.html                                   /amp/oasisctl/revoke/revoke-apikey-token/                                                 301
@@ -2328,7 +2329,7 @@
 /docs/3.11/arangograph/oasisctl-update-ipallowlist.html                                    /amp/oasisctl/update/update-ipallowlist/                                                  301
 /docs/3.11/arangograph/oasisctl-update-metrics.html                                        /amp/oasisctl/update/update-metrics/                                                      301
 /docs/3.11/arangograph/oasisctl-update-metrics-token.html                                  /amp/oasisctl/update/update-metrics-token/                                                301
-/docs/3.11/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/update-notebook/                                                     301
+/docs/3.11/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/                                                                     301
 /docs/3.11/arangograph/oasisctl-update-organization.html                                   /amp/oasisctl/update/update-organization/                                                 301
 /docs/3.11/arangograph/oasisctl-update-organization-authentication.html                    /amp/oasisctl/update/update-organization-authentication/                                  301
 /docs/3.11/arangograph/oasisctl-update-organization-authentication-providers.html          /amp/oasisctl/update/update-organization-authentication-providers/                        301
@@ -2863,7 +2864,7 @@
 /docs/devel/arangograph/deployments.html                                                   /amp/deployments/                                                                         301
 /docs/devel/arangograph/private-endpoints.html                                             /amp/deployments/private-endpoints/                                                       301
 /docs/devel/arangograph/upgrades-versioning.html                                           /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/devel/arangograph/notebooks.html                                                     /amp/notebooks/                                                                           301
+/docs/devel/arangograph/notebooks.html                                                     /agentic-ai-suite/notebook-servers/                                                       301
 /docs/devel/arangograph/cloud-migration-tool.html                                          /amp/                                                                                     301
 /docs/devel/arangograph/my-account.html                                                    /amp/my-account/                                                                          301
 /docs/devel/arangograph/monitoring-metrics.html                                            /amp/monitoring-and-metrics/                                                              301
@@ -2911,7 +2912,7 @@
 /docs/devel/arangograph/oasisctl-create-ipallowlist.html                                   /amp/oasisctl/create/create-ipallowlist/                                                  301
 /docs/devel/arangograph/oasisctl-create-metrics.html                                       /amp/oasisctl/create/create-metrics/                                                      301
 /docs/devel/arangograph/oasisctl-create-metrics-token.html                                 /amp/oasisctl/create/create-metrics-token/                                                301
-/docs/devel/arangograph/oasisctl-create-notebook.html                                      /amp/oasisctl/create/create-notebook/                                                     301
+/docs/devel/arangograph/oasisctl-create-notebook.html                                      /amp/oasisctl/create/                                                                     301
 /docs/devel/arangograph/oasisctl-create-organization.html                                  /amp/oasisctl/create/create-organization/                                                 301
 /docs/devel/arangograph/oasisctl-create-organization-invite.html                           /amp/oasisctl/create/create-organization-invite/                                          301
 /docs/devel/arangograph/oasisctl-create-private.html                                       /amp/oasisctl/create/create-private/                                                      301
@@ -2936,7 +2937,7 @@
 /docs/devel/arangograph/oasisctl-delete-ipallowlist.html                                   /amp/oasisctl/delete/delete-ipallowlist/                                                  301
 /docs/devel/arangograph/oasisctl-delete-metrics.html                                       /amp/oasisctl/delete/delete-metrics/                                                      301
 /docs/devel/arangograph/oasisctl-delete-metrics-token.html                                 /amp/oasisctl/delete/delete-metrics-token/                                                301
-/docs/devel/arangograph/oasisctl-delete-notebook.html                                      /amp/oasisctl/delete/delete-notebook/                                                     301
+/docs/devel/arangograph/oasisctl-delete-notebook.html                                      /amp/oasisctl/delete/                                                                     301
 /docs/devel/arangograph/oasisctl-delete-organization.html                                  /amp/oasisctl/delete/delete-organization/                                                 301
 /docs/devel/arangograph/oasisctl-delete-organization-invite.html                           /amp/oasisctl/delete/delete-organization-invite/                                          301
 /docs/devel/arangograph/oasisctl-delete-organization-members.html                          /amp/oasisctl/delete/delete-organization-members/                                         301
@@ -2961,7 +2962,7 @@
 /docs/devel/arangograph/oasisctl-get-ipallowlist.html                                      /amp/oasisctl/get/get-ipallowlist/                                                        301
 /docs/devel/arangograph/oasisctl-get-metrics.html                                          /amp/oasisctl/get/get-metrics/                                                            301
 /docs/devel/arangograph/oasisctl-get-metrics-token.html                                    /amp/oasisctl/get/get-metrics-token/                                                      301
-/docs/devel/arangograph/oasisctl-get-notebook.html                                         /amp/oasisctl/get/get-notebook/                                                           301
+/docs/devel/arangograph/oasisctl-get-notebook.html                                         /amp/oasisctl/get/                                                                        301
 /docs/devel/arangograph/oasisctl-get-organization.html                                     /amp/oasisctl/get/get-organization/                                                       301
 /docs/devel/arangograph/oasisctl-get-organization-authentication.html                      /amp/oasisctl/get/get-organization-authentication/                                        301
 /docs/devel/arangograph/oasisctl-get-organization-authentication-providers.html            /amp/oasisctl/get/get-organization-authentication-providers/                              301
@@ -3009,8 +3010,8 @@
 /docs/devel/arangograph/oasisctl-list-metrics.html                                         /amp/oasisctl/list/list-metrics/                                                          301
 /docs/devel/arangograph/oasisctl-list-metrics-tokens.html                                  /amp/oasisctl/list/list-metrics-tokens/                                                   301
 /docs/devel/arangograph/oasisctl-list-nodesizes.html                                       /amp/oasisctl/list/list-nodesizes/                                                        301
-/docs/devel/arangograph/oasisctl-list-notebookmodels.html                                  /amp/oasisctl/list/list-notebookmodels/                                                   301
-/docs/devel/arangograph/oasisctl-list-notebooks.html                                       /amp/oasisctl/list/list-notebooks/                                                        301
+/docs/devel/arangograph/oasisctl-list-notebookmodels.html                                  /amp/oasisctl/list/                                                                       301
+/docs/devel/arangograph/oasisctl-list-notebooks.html                                       /amp/oasisctl/list/                                                                       301
 /docs/devel/arangograph/oasisctl-list-organization.html                                    /amp/oasisctl/list/list-organization/                                                     301
 /docs/devel/arangograph/oasisctl-list-organization-invites.html                            /amp/oasisctl/list/list-organization-invites/                                             301
 /docs/devel/arangograph/oasisctl-list-organization-members.html                            /amp/oasisctl/list/list-organization-members/                                             301
@@ -3031,7 +3032,7 @@
 /docs/devel/arangograph/oasisctl-login.html                                                /amp/oasisctl/login/                                                                      301
 /docs/devel/arangograph/oasisctl-logs.html                                                 /amp/oasisctl/logs/                                                                       301
 /docs/devel/arangograph/oasisctl-pause.html                                                /amp/oasisctl/pause/                                                                      301
-/docs/devel/arangograph/oasisctl-pause-notebook.html                                       /amp/oasisctl/pause/pause-notebook/                                                       301
+/docs/devel/arangograph/oasisctl-pause-notebook.html                                       /amp/oasisctl/pause/                                                                      301
 /docs/devel/arangograph/oasisctl-rebalance.html                                            /amp/oasisctl/rebalance/                                                                  301
 /docs/devel/arangograph/oasisctl-rebalance-deployment.html                                 /amp/oasisctl/rebalance/rebalance-deployment/                                             301
 /docs/devel/arangograph/oasisctl-rebalance-deployment-shards.html                          /amp/oasisctl/rebalance/rebalance-deployment-shards/                                      301
@@ -3043,7 +3044,7 @@
 /docs/devel/arangograph/oasisctl-renew-apikey-token.html                                   /amp/oasisctl/renew/renew-apikey-token/                                                   301
 /docs/devel/arangograph/oasisctl-resume.html                                               /amp/oasisctl/resume/                                                                     301
 /docs/devel/arangograph/oasisctl-resume-deployment.html                                    /amp/oasisctl/resume/resume-deployment/                                                   301
-/docs/devel/arangograph/oasisctl-resume-notebook.html                                      /amp/oasisctl/resume/resume-notebook/                                                     301
+/docs/devel/arangograph/oasisctl-resume-notebook.html                                      /amp/oasisctl/resume/                                                                     301
 /docs/devel/arangograph/oasisctl-revoke.html                                               /amp/oasisctl/revoke/                                                                     301
 /docs/devel/arangograph/oasisctl-revoke-apikey.html                                        /amp/oasisctl/revoke/revoke-apikey/                                                       301
 /docs/devel/arangograph/oasisctl-revoke-apikey-token.html                                  /amp/oasisctl/revoke/revoke-apikey-token/                                                 301
@@ -3070,7 +3071,7 @@
 /docs/devel/arangograph/oasisctl-update-ipallowlist.html                                   /amp/oasisctl/update/update-ipallowlist/                                                  301
 /docs/devel/arangograph/oasisctl-update-metrics.html                                       /amp/oasisctl/update/update-metrics/                                                      301
 /docs/devel/arangograph/oasisctl-update-metrics-token.html                                 /amp/oasisctl/update/update-metrics-token/                                                301
-/docs/devel/arangograph/oasisctl-update-notebook.html                                      /amp/oasisctl/update/update-notebook/                                                     301
+/docs/devel/arangograph/oasisctl-update-notebook.html                                      /amp/oasisctl/update/                                                                     301
 /docs/devel/arangograph/oasisctl-update-organization.html                                  /amp/oasisctl/update/update-organization/                                                 301
 /docs/devel/arangograph/oasisctl-update-organization-authentication.html                   /amp/oasisctl/update/update-organization-authentication/                                  301
 /docs/devel/arangograph/oasisctl-update-organization-authentication-providers.html         /amp/oasisctl/update/update-organization-authentication-providers/                        301
@@ -3607,7 +3608,7 @@
 /docs/3.12/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.12/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.12/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.12/arangograph/notebooks.html                                                      /amp/notebooks/                                                                           301
+/docs/3.12/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.12/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.12/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.12/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -3655,7 +3656,7 @@
 /docs/3.12/arangograph/oasisctl-create-ipallowlist.html                                    /amp/oasisctl/create/create-ipallowlist/                                                  301
 /docs/3.12/arangograph/oasisctl-create-metrics.html                                        /amp/oasisctl/create/create-metrics/                                                      301
 /docs/3.12/arangograph/oasisctl-create-metrics-token.html                                  /amp/oasisctl/create/create-metrics-token/                                                301
-/docs/3.12/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/create-notebook/                                                     301
+/docs/3.12/arangograph/oasisctl-create-notebook.html                                       /amp/oasisctl/create/                                                                     301
 /docs/3.12/arangograph/oasisctl-create-organization.html                                   /amp/oasisctl/create/create-organization/                                                 301
 /docs/3.12/arangograph/oasisctl-create-organization-invite.html                            /amp/oasisctl/create/create-organization-invite/                                          301
 /docs/3.12/arangograph/oasisctl-create-private.html                                        /amp/oasisctl/create/create-private/                                                      301
@@ -3680,7 +3681,7 @@
 /docs/3.12/arangograph/oasisctl-delete-ipallowlist.html                                    /amp/oasisctl/delete/delete-ipallowlist/                                                  301
 /docs/3.12/arangograph/oasisctl-delete-metrics.html                                        /amp/oasisctl/delete/delete-metrics/                                                      301
 /docs/3.12/arangograph/oasisctl-delete-metrics-token.html                                  /amp/oasisctl/delete/delete-metrics-token/                                                301
-/docs/3.12/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/delete-notebook/                                                     301
+/docs/3.12/arangograph/oasisctl-delete-notebook.html                                       /amp/oasisctl/delete/                                                                     301
 /docs/3.12/arangograph/oasisctl-delete-organization.html                                   /amp/oasisctl/delete/delete-organization/                                                 301
 /docs/3.12/arangograph/oasisctl-delete-organization-invite.html                            /amp/oasisctl/delete/delete-organization-invite/                                          301
 /docs/3.12/arangograph/oasisctl-delete-organization-members.html                           /amp/oasisctl/delete/delete-organization-members/                                         301
@@ -3705,7 +3706,7 @@
 /docs/3.12/arangograph/oasisctl-get-ipallowlist.html                                       /amp/oasisctl/get/get-ipallowlist/                                                        301
 /docs/3.12/arangograph/oasisctl-get-metrics.html                                           /amp/oasisctl/get/get-metrics/                                                            301
 /docs/3.12/arangograph/oasisctl-get-metrics-token.html                                     /amp/oasisctl/get/get-metrics-token/                                                      301
-/docs/3.12/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/get-notebook/                                                           301
+/docs/3.12/arangograph/oasisctl-get-notebook.html                                          /amp/oasisctl/get/                                                                        301
 /docs/3.12/arangograph/oasisctl-get-organization.html                                      /amp/oasisctl/get/get-organization/                                                       301
 /docs/3.12/arangograph/oasisctl-get-organization-authentication.html                       /amp/oasisctl/get/get-organization-authentication/                                        301
 /docs/3.12/arangograph/oasisctl-get-organization-authentication-providers.html             /amp/oasisctl/get/get-organization-authentication-providers/                              301
@@ -3753,8 +3754,8 @@
 /docs/3.12/arangograph/oasisctl-list-metrics.html                                          /amp/oasisctl/list/list-metrics/                                                          301
 /docs/3.12/arangograph/oasisctl-list-metrics-tokens.html                                   /amp/oasisctl/list/list-metrics-tokens/                                                   301
 /docs/3.12/arangograph/oasisctl-list-nodesizes.html                                        /amp/oasisctl/list/list-nodesizes/                                                        301
-/docs/3.12/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/list-notebookmodels/                                                   301
-/docs/3.12/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/list-notebooks/                                                        301
+/docs/3.12/arangograph/oasisctl-list-notebookmodels.html                                   /amp/oasisctl/list/                                                                       301
+/docs/3.12/arangograph/oasisctl-list-notebooks.html                                        /amp/oasisctl/list/                                                                       301
 /docs/3.12/arangograph/oasisctl-list-organization.html                                     /amp/oasisctl/list/list-organization/                                                     301
 /docs/3.12/arangograph/oasisctl-list-organization-invites.html                             /amp/oasisctl/list/list-organization-invites/                                             301
 /docs/3.12/arangograph/oasisctl-list-organization-members.html                             /amp/oasisctl/list/list-organization-members/                                             301
@@ -3775,7 +3776,7 @@
 /docs/3.12/arangograph/oasisctl-login.html                                                 /amp/oasisctl/login/                                                                      301
 /docs/3.12/arangograph/oasisctl-logs.html                                                  /amp/oasisctl/logs/                                                                       301
 /docs/3.12/arangograph/oasisctl-pause.html                                                 /amp/oasisctl/pause/                                                                      301
-/docs/3.12/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/pause-notebook/                                                       301
+/docs/3.12/arangograph/oasisctl-pause-notebook.html                                        /amp/oasisctl/pause/                                                                      301
 /docs/3.12/arangograph/oasisctl-rebalance.html                                             /amp/oasisctl/rebalance/                                                                  301
 /docs/3.12/arangograph/oasisctl-rebalance-deployment.html                                  /amp/oasisctl/rebalance/rebalance-deployment/                                             301
 /docs/3.12/arangograph/oasisctl-rebalance-deployment-shards.html                           /amp/oasisctl/rebalance/rebalance-deployment-shards/                                      301
@@ -3787,7 +3788,7 @@
 /docs/3.12/arangograph/oasisctl-renew-apikey-token.html                                    /amp/oasisctl/renew/renew-apikey-token/                                                   301
 /docs/3.12/arangograph/oasisctl-resume.html                                                /amp/oasisctl/resume/                                                                     301
 /docs/3.12/arangograph/oasisctl-resume-deployment.html                                     /amp/oasisctl/resume/resume-deployment/                                                   301
-/docs/3.12/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/resume-notebook/                                                     301
+/docs/3.12/arangograph/oasisctl-resume-notebook.html                                       /amp/oasisctl/resume/                                                                     301
 /docs/3.12/arangograph/oasisctl-revoke.html                                                /amp/oasisctl/revoke/                                                                     301
 /docs/3.12/arangograph/oasisctl-revoke-apikey.html                                         /amp/oasisctl/revoke/revoke-apikey/                                                       301
 /docs/3.12/arangograph/oasisctl-revoke-apikey-token.html                                   /amp/oasisctl/revoke/revoke-apikey-token/                                                 301
@@ -3814,7 +3815,7 @@
 /docs/3.12/arangograph/oasisctl-update-ipallowlist.html                                    /amp/oasisctl/update/update-ipallowlist/                                                  301
 /docs/3.12/arangograph/oasisctl-update-metrics.html                                        /amp/oasisctl/update/update-metrics/                                                      301
 /docs/3.12/arangograph/oasisctl-update-metrics-token.html                                  /amp/oasisctl/update/update-metrics-token/                                                301
-/docs/3.12/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/update-notebook/                                                     301
+/docs/3.12/arangograph/oasisctl-update-notebook.html                                       /amp/oasisctl/update/                                                                     301
 /docs/3.12/arangograph/oasisctl-update-organization.html                                   /amp/oasisctl/update/update-organization/                                                 301
 /docs/3.12/arangograph/oasisctl-update-organization-authentication.html                    /amp/oasisctl/update/update-organization-authentication/                                  301
 /docs/3.12/arangograph/oasisctl-update-organization-authentication-providers.html          /amp/oasisctl/update/update-organization-authentication-providers/                        301

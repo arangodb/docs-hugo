@@ -19,4 +19,5 @@ automatically connecting to AMP services and ArangoDB.
 This makes it much easier to leverage these resources without having
 to download any data locally or to remember user IDs, passwords, and endpoint URLs.
 
-For more information, see the [Notebooks](../../../amp/notebooks.md) documentation.
+For more information, see the
+[Notebook Servers](../../../agentic-ai-suite/notebook-servers.md) documentation.
