@@ -166,8 +166,7 @@ reports where the project stands: the document and cluster counts, and which
 categories still need a build, strategies, or an orchestration.
 {{< /tip >}}
 
-Next, query your knowledge base with the
-[AutoRAG](../autorag/quick-start.md).
+Next, query your knowledge base with [AutoRAG](../autorag/quick-start.md).
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -175,8 +174,7 @@ Next, query your knowledge base with the
 {{< tip >}}
 **You now have** a knowledge base built from your documents and a chat
 interface that answers questions about them, with citations back to the
-source. To query it programmatically, see the
-[AutoRAG](../autorag/quick-start.md).
+source. To query it programmatically, see [AutoRAG](../autorag/quick-start.md).
 {{< /tip >}}
 
 ## Next steps

@@ -57,7 +57,7 @@ Open your ArangoDB database and confirm the knowledge-graph collections
 {{< /steps >}}
 
 {{< tip >}}
-**You now have** a knowledge graph in ArangoDB. Query it with the
+**You now have** a knowledge graph in ArangoDB. Query it with 
 [AutoRAG](../autorag/quick-start.md) or with AQL directly.
 {{< /tip >}}
 
