@@ -29,7 +29,7 @@ To get started, see the [Web interface for GraphML](ui.md) page.
 {{< /tab >}}
 
 {{< tab "Notebooks" >}}
-The [ArangoDB Notebook servers](../notebook-servers.md) run within the
+The [Notebook servers](../notebook-servers.md) run within the
 Arango Contextual Data Platform. They offer a pre-configured environment where
 everything, including necessary components and configurations, comes preloaded.
 You don't need to set up or configure the infrastructure, and can immediately

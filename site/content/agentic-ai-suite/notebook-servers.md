@@ -4,13 +4,8 @@ menuTitle: Notebook Servers
 weight: 20
 description: >-
   Colocated Jupyter Notebooks within the Arango Contextual Data Platform
-aliases:
-  - ../arangodb/3.12/data-science/arangograph-notebooks # 3.10, 3.11
-  - ../arangodb/stable/data-science/arangograph-notebooks # 3.10, 3.11
-  - ../arangodb/4.x/data-science/arangograph-notebooks # 3.10, 3.11
-  - ../arangodb/devel/data-science/arangograph-notebooks # 3.10, 3.11
 ---
-ArangoDB Notebooks provide a Python-based, Jupyter-compatible interface for building
+Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, AI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are
 embedded in the Arango Contextual Data Platform ecosystem and offer a
@@ -27,9 +22,10 @@ The notebooks are primarily focused on the following solutions:
 - [Adapters](../ecosystem/adapters/_index.md): Use ArangoDB together with cuGraph,
   NetworkX, and other data science tools.
 
-The ArangoDB Notebooks include the following:
-- Automatic connection to ArangoDB databases and AI platform services, so that
-  you don't need to download any data locally or to remember user IDs,
+The notebooks include the following:
+- Automatic connection to the ArangoDB databases and to the Agentic AI Suite
+  services such as GraphML, with credentials and endpoints pre-configured, so
+  that you don't need to download any data locally or to remember user IDs,
   passwords, and endpoint URLs
 - [Magic commands](#magic-commands) that simplify database interactions
 - Example notebooks for learning
@@ -53,7 +49,7 @@ The ArangoDB Notebooks include the following:
 
 - To get a better understanding of how to interact with ArangoDB using notebooks,
   open the `GettingStarted.ipynb` notebook from the file browser to learn the basics.
-- To get started with GraphML using ArangoDB's integrated notebook servers, see
+- To get started with GraphML using the integrated notebook servers, see
   the [GraphML Notebooks and API](graphml/notebooks-api.md) documentation.
 
 ## Magic commands

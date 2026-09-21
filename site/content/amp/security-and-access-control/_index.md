@@ -120,6 +120,11 @@ Command to generate below list with (Git)Bash:
 
 export OASIS_TOKEN='<TOKEN>'
 ./oasisctl list roles --organization-id <ID> --format json | jq -r '.[] | select(.predefined == true) | "**\(.description)** (`\(.id)`):\n\(.permissions | split(", ") | map("- `\(.)`\n") | join(""))"'
+
+The API may still return roles for features that are no longer part of AMP.
+When regenerating this list, drop `notebook-admin`, `notebook-executor`,
+`notebook-viewer`, `graph-analytics-admin`, `graph-analytics-executor`, and
+`mlservices-admin` unless the features are back.
 {{% /comment %}}
 
 {{< details summary="List of predefined roles and their permissions" >}}
@@ -494,6 +499,10 @@ Retrieved with the below command, with manual adjustments:
 `oasisctl list permissions`
 
 Note that if the tier is "internal", there is an `internal-dashboard` API that should be excluded in below list!
+
+The API may also still return permissions for features that are no longer part
+of AMP. When regenerating this list, drop the `notebook`, `graphanalytics`, and
+`ml` API rows unless the features are back.
 {{% /comment %}}
 
 | API                 | Kind                          | Verbs

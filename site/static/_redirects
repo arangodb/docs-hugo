@@ -228,6 +228,12 @@
 /agentic-ai-suite/graphrag/                                                     /agentic-ai-suite/autograph/                                    301
 /agentic-ai-suite/graphrag/*                                                    /agentic-ai-suite/autograph/                                    301
 /amp/notebooks/                                                                 /agentic-ai-suite/notebook-servers/                             301
+/arangodb/3.10/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
+/arangodb/3.11/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
+/arangodb/3.12/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
+/arangodb/stable/data-science/arangograph-notebooks/                            /agentic-ai-suite/notebook-servers/                             301
+/arangodb/4.x/data-science/arangograph-notebooks/                               /agentic-ai-suite/notebook-servers/                             301
+/arangodb/devel/data-science/arangograph-notebooks/                             /agentic-ai-suite/notebook-servers/                             301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
@@ -284,7 +290,7 @@
 /docs/3.10/data-science.html                                                               /arangodb/3.10/data-science/                                                              301
 /docs/3.10/graphml.html                                                                    /arangodb/3.10/data-science/arangographml/                                                301
 /docs/3.10/arangographml-getting-started.html                                              /arangodb/3.10/data-science/arangographml/getting-started/                                301
-/docs/3.10/arangograph-notebooks.html                                                      /arangodb/3.10/data-science/arangograph-notebooks/                                        301
+/docs/3.10/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.10/graphs-pregel.html                                                              /arangodb/3.10/data-science/pregel/                                                       301
 /docs/3.10/graphs-pregel-algorithms.html                                                   /arangodb/3.10/data-science/pregel/algorithms/                                            301
 /docs/3.10/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
@@ -1018,7 +1024,7 @@
 /docs/stable/data-science.html                                                             /arangodb/3.11/data-science/                                                              301
 /docs/stable/graphml.html                                                                  /arangodb/3.11/data-science/arangographml/                                                301
 /docs/stable/arangographml-getting-started.html                                            /arangodb/3.11/data-science/arangographml/getting-started/                                301
-/docs/stable/arangograph-notebooks.html                                                    /arangodb/3.11/data-science/arangograph-notebooks/                                        301
+/docs/stable/arangograph-notebooks.html                                                    /agentic-ai-suite/notebook-servers/                                                       301
 /docs/stable/graphs-pregel.html                                                            /arangodb/3.11/data-science/pregel/                                                       301
 /docs/stable/graphs-pregel-algorithms.html                                                 /arangodb/3.11/data-science/pregel/algorithms/                                            301
 /docs/stable/data-science-adapters.html                                                    /ecosystem/adapters/                                                                      301
@@ -1765,7 +1771,7 @@
 /docs/3.11/data-science.html                                                               /arangodb/3.11/data-science/                                                              301
 /docs/3.11/graphml.html                                                                    /arangodb/3.11/data-science/arangographml/                                                301
 /docs/3.11/arangographml-getting-started.html                                              /arangodb/3.11/data-science/arangographml/getting-started/                                301
-/docs/3.11/arangograph-notebooks.html                                                      /arangodb/3.11/data-science/arangograph-notebooks/                                        301
+/docs/3.11/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.11/graphs-pregel.html                                                              /arangodb/3.11/data-science/pregel/                                                       301
 /docs/3.11/graphs-pregel-algorithms.html                                                   /arangodb/3.11/data-science/pregel/algorithms/                                            301
 /docs/3.11/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
@@ -2509,7 +2515,7 @@
 /docs/devel/data-science.html                                                              /arangodb/3.12/data-science/                                                              301
 /docs/devel/graphml.html                                                                   /agentic-ai-suite/graphml/                                                                301
 /docs/devel/arangographml-getting-started.html                                             /agentic-ai-suite/graphml/notebooks-api/                                                  301
-/docs/devel/arangograph-notebooks.html                                                     /arangodb/3.12/data-science/arangograph-notebooks/                                        301
+/docs/devel/arangograph-notebooks.html                                                     /agentic-ai-suite/notebook-servers/                                                       301
 /docs/devel/graphs-pregel.html                                                             /arangodb/3.12/data-science/pregel/                                                       301
 /docs/devel/graphs-pregel-algorithms.html                                                  /arangodb/3.12/data-science/pregel/algorithms/                                            301
 /docs/devel/data-science-adapters.html                                                     /ecosystem/adapters/                                                                      301
@@ -3253,7 +3259,7 @@
 /docs/3.12/data-science.html                                                               /arangodb/3.12/data-science/                                                              301
 /docs/3.12/graphml.html                                                                    /agentic-ai-suite/graphml/                                                                301
 /docs/3.12/arangographml-getting-started.html                                              /agentic-ai-suite/graphml/notebooks-api/                                                  301
-/docs/3.12/arangograph-notebooks.html                                                      /arangodb/3.12/data-science/arangograph-notebooks/                                        301
+/docs/3.12/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
 /docs/3.12/graphs-pregel.html                                                              /arangodb/3.12/data-science/pregel/                                                       301
 /docs/3.12/graphs-pregel-algorithms.html                                                   /arangodb/3.12/data-science/pregel/algorithms/                                            301
 /docs/3.12/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
