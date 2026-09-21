@@ -29,7 +29,7 @@ samples it and converts it to Markdown. AutoGraph then embeds and clusters
 that Markdown.
 
 The File Parser is an internal data platform service installed once per environment,
-without a web interface of its own. The GraphRAG [Importer](../importer/_index.md)
+without a web interface of its own. The [Importer](../importer/_index.md)
 uses the same service when it builds the knowledge graph, so the whole AutoGraph
 pipeline accepts one consistent set of inputs:
 
@@ -65,7 +65,7 @@ content fails as a single file, and the build can still complete with
 - **Platform auth** reachable from the service (for token validation and
   renewal), if your deployment uses it
 
-Before importing data, you need to create a GraphRAG project. Projects keep
+Before importing data, you need to create a project. Projects keep
 datasets and configurations isolated from each other.
 
 For detailed instructions on creating and managing projects, see the

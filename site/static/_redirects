@@ -234,6 +234,10 @@
 /arangodb/stable/data-science/arangograph-notebooks/                            /agentic-ai-suite/notebook-servers/                             301
 /arangodb/4.x/data-science/arangograph-notebooks/                               /agentic-ai-suite/notebook-servers/                             301
 /arangodb/devel/data-science/arangograph-notebooks/                             /agentic-ai-suite/notebook-servers/                             301
+/agentic-ai-suite/retriever/                                                    /agentic-ai-suite/autorag/                                      301
+/agentic-ai-suite/retriever/*                                                   /agentic-ai-suite/autorag/:splat                                301
+/agentic-ai-suite/reference/retriever/                                          /agentic-ai-suite/autorag/                                      301
+/agentic-ai-suite/reference/retriever/*                                         /agentic-ai-suite/autorag/:splat                                301
 
 /data-platform/get-started/                                                     /platform-suite/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301

@@ -104,7 +104,7 @@ All parameters are provided in the `env` object of your deployment request.
 `custom` provider available in the
 [Importer](../importer/llm-configuration.md),
 [AutoGraph](../autograph/llm-configuration.md), and
-[Retriever](../retriever/llm-configuration.md) does not apply here: to use a
+[AutoRAG](../autorag/llm-configuration.md) does not apply here: to use a
 non-OpenAI endpoint, keep `chat_api_provider` set to `openai` and add a
 `chat_api_url`, as shown below.
 {{< /info >}}

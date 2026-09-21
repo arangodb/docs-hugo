@@ -1,5 +1,5 @@
 ---
-title: API changes in the Arango Contextual Data Platform
+title: API changes in the data platform
 menuTitle: API changes
 weight: 10
 description: >-
@@ -19,7 +19,7 @@ across that span, not only the newest service release:
 |---------|-------------------|----------------------|
 | [AutoGraph](#autograph-v0013-to-v0016) | v0.0.12 | v0.0.16 |
 | [Importer](#importer-v0030-to-v0034) | v0.0.29 | v0.0.34 |
-| [Retriever](#retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
+| [AutoRAG](#autorag-formerly-retriever-v0018-to-v0020) | v0.0.17 | v0.0.20 |
 | [File Manager](#file-manager-v0019-to-v0022) | v0.0.18 | v0.0.22 |
 
 ### AutoGraph (v0.0.13 to v0.0.16)
@@ -271,8 +271,8 @@ The share is applied to the ranked cluster list as
 `round(target_percentage / 100.0 * cluster_count)`, so a project with a single
 cluster gets **zero** FullGraphRAG clusters at `moderate` and below. Check the
 assigned strategies with `GET /v1/rag-strategizer/strategy` before you query: a
-VectorRAG partition has no entities and no communities, and cannot serve the
-retriever's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
+VectorRAG partition has no entities and no communities, and cannot serve
+AutoRAG's `LOCAL`, `GLOBAL`, or `UNIFIED` modes.
 
 **New request options**
 
@@ -504,8 +504,8 @@ carries the per-provider LLM tracing health while tracing is enabled.
 
 **Embedding configuration keys have been renamed**
 
-AutoGraph now uses the same keys as the Importer and the Retriever. Rename them
-in your Helm values and deployment environment **before** you upgrade:
+AutoGraph now uses the same keys as the Importer and AutoRAG. Rename them in
+your Helm values and deployment environment **before** you upgrade:
 
 | Old key | New key |
 |---------|---------|
@@ -649,11 +649,11 @@ The limits the Importer enforces on concurrency, request size, chunking, images,
 and timeouts are now documented. See
 [Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
 
-### Retriever (v0.0.18 to v0.0.20)
+### AutoRAG, formerly Retriever (v0.0.18 to v0.0.20)
 
 {{< tag "Agentic AI Suite" >}}
 
-This release gives the Retriever a query-run history, lets you change its model
+This release gives AutoRAG a query-run history, lets you change its model
 configuration and its chat model without a restart, reports every failed query
 with a machine-readable code, and caps the size of a query.
 
@@ -678,13 +678,13 @@ The following changes require you to adjust existing clients:
 | `PUT /v1/projects/{project}/model-config/credentials` | Change the chat and embedding configuration of a running service. |
 
 For request and response details, see
-[Verify and monitor](../../agentic-ai-suite/retriever/verify-and-monitor.md) and
-[Configure LLMs](../../agentic-ai-suite/retriever/llm-configuration.md).
+[Verify and monitor](../../agentic-ai-suite/autorag/verify-and-monitor.md) and
+[Configure LLMs](../../agentic-ai-suite/autorag/llm-configuration.md).
 
 #### Query run history
 
-The Retriever records every query it serves in the `{project}_Runs` collection
-and exposes it through the `/v1/retriever-runs` endpoints. A run holds the
+AutoRAG records every query it serves in the `{project}_Runs` collection and
+exposes it through the `/v1/retriever-runs` endpoints. A run holds the
 query, the response, the query type, the model, the duration, and a snapshot of
 the configuration it ran with, and it moves from `streaming` to `complete` or
 `error`. A run that stays in `streaming` beyond the stale timeout is swept to
@@ -700,9 +700,9 @@ already deleted, is not an error: the response is HTTP `200` with
 #### Runtime model configuration
 
 `PUT /v1/projects/{project}/model-config/credentials` changes the chat and
-embedding provider, model, secret profile, and API URL of a running Retriever.
-The settings are validated, persisted in the project metadata, and applied to
-the running pod right away, so no restart or reinstall is needed.
+embedding provider, model, secret profile, and API URL of a running AutoRAG
+service. The settings are validated, persisted in the project metadata, and
+applied to the running pod right away, so no restart or reinstall is needed.
 
 - Validation issues one small chat request and one small embeddings request
   instead of looking the model up in the provider's `GET /v1/models` catalog.
@@ -743,7 +743,7 @@ per-step citations and report them in the `citation_mapping` response metadata.
 A VectorRAG partition still only serves Instant Search and chunk-searching
 Custom Retriever tools, because Global, Local, and Deep Search need the entities
 and communities that VectorRAG does not build. See
-[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/retriever/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/autorag/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 #### Query status and error codes
 
@@ -779,7 +779,7 @@ permission, and model rejections are no longer retried: quota exhaustion arrives
 as a rate-limit error, so a dead key used to be retried for up to an hour. Rate
 limits, timeouts, and connection errors are still retried.
 
-See [Error handling](../../agentic-ai-suite/retriever/error-handling.md).
+See [Error handling](../../agentic-ai-suite/autorag/error-handling.md).
 
 ### File Manager (v0.0.19 to v0.0.22)
 

@@ -28,7 +28,7 @@ in `category`.
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate" >}}
 
-Spawn GraphRAG importer workers for the strategy profiles that are not in the
+Spawn Importer workers for the strategy profiles that are not in the
 knowledge graph yet. Called after RAG strategizer is completed.
 
 **Recommended path:** Call after a successful corpus build and strategizer run,
@@ -1243,7 +1243,7 @@ pick a maintenance window for them.
 
 ## Next Steps
 
-- **[Retriever Setup](../../retriever/)**: Query your built knowledge graphs
+- **[AutoRAG](../../autorag/)**: Query your built knowledge graphs
 - **[Monitor Results](../../importer/verify-and-explore.md)**: Verify import success
 - **[Incremental Graph Updates](../incremental-graph-updates.md)**: When to use the `/v1/graph/*` endpoints and how the partition divergence is measured
 - **[Design Guide - Categories to partitions](../design-guide.md#how-categories-become-a-partitioned-knowledge-graph)**: How category labels flow into partition IDs
