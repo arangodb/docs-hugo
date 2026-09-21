@@ -80,8 +80,8 @@ arangodb-graphrag-importer:
       link: agentic-ai-suite/importer/_index.md
 arangodb-graphrag-retriever:
   features:
-    - name: Retriever
-      link: agentic-ai-suite/retriever/_index.md
+    - name: AutoRAG
+      link: agentic-ai-suite/autorag/_index.md
 arangodb-file-parser:
   features:
     - name: File Parser

@@ -9,7 +9,7 @@ description: >-
 ## Prerequisites
 
 - **Arango Contextual Data Platform 4.0+** (ships with ArangoDB 3.12.9+).
-- A **GraphRAG project** in your target database. The project name prefixes
+- A **project** in your target database. The project name prefixes
   the collection names, so it must follow ArangoDB naming rules.
   See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
@@ -57,8 +57,8 @@ Open your ArangoDB database and confirm the knowledge-graph collections
 {{< /steps >}}
 
 {{< tip >}}
-**You now have** a knowledge graph in ArangoDB. Query it with the
-[Retriever service](../retriever/quick-start.md) or with AQL directly.
+**You now have** a knowledge graph in ArangoDB. Query it with 
+[AutoRAG](../autorag/quick-start.md) or with AQL directly.
 {{< /tip >}}
 
 ## Next steps

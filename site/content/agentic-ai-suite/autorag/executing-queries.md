@@ -1,5 +1,5 @@
 ---
-title: Execute Queries using the Retriever
+title: Execute Queries with AutoRAG
 menuTitle: Execute Queries
 description: >-
   Learn how to execute different types of queries against your knowledge graph
@@ -11,7 +11,7 @@ weight: 40
 
 ## Query Endpoints
 
-The Retriever service provides two main query endpoints and a health endpoint:
+AutoRAG provides two main query endpoints and a health endpoint:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/graphrag-query" >}}
 
@@ -40,7 +40,7 @@ header on all requests.
 
 ## Executing Queries
 
-After the Retriever service is installed successfully, you can interact with 
+After AutoRAG is installed successfully, you can interact with 
 it using the query endpoints.
 
 {{< tabs "executing-queries" >}}
