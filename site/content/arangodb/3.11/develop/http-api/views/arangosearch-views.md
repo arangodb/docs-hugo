@@ -247,13 +247,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -266,17 +260,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -290,12 +274,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: integer
                   default: 10000
                 consolidationPolicy:
@@ -305,17 +284,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: object
                   required:
                     - type
@@ -1345,13 +1314,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
                   type: integer
                   default: 2
                 commitIntervalMsec:
@@ -1364,17 +1327,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
                   type: integer
                   default: 1000
                 consolidationIntervalMsec:
@@ -1388,12 +1341,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: integer
                   default: 10000
                 consolidationPolicy:
@@ -1403,17 +1351,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: object
                   required:
                     - type
@@ -1858,13 +1796,7 @@ paths:
                     inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
-                    _Background:_
-                      With every "commit" or "consolidate" operation, a new state of the View's
-                      internal data structures is created on disk.
-                      Old states/snapshots are released once there are no longer any users
-                      remaining.
-                      However, the files for the released states/snapshots are left on disk, and
-                      only removed by "cleanup" operation.
+                    Also see [ArangoSearch cleanup](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#cleanup).
                   type: integer
                 commitIntervalMsec:
                   description: |
@@ -1876,17 +1808,7 @@ paths:
                     few inserts/updates because of synchronous locking, and it wastes disk space for
                     each commit call.
 
-                    _Background:_
-                      For data retrieval, ArangoSearch follows the concept of
-                      "eventually-consistent", i.e. eventually all the data in ArangoDB will be
-                      matched by corresponding query expressions.
-                      The concept of ArangoSearch "commit" operations is introduced to
-                      control the upper-bound on the time until document addition/removals are
-                      actually reflected by corresponding query expressions.
-                      Once a "commit" operation is complete, all documents added/removed prior to
-                      the start of the "commit" operation will be reflected by queries invoked in
-                      subsequent ArangoDB transactions, in-progress ArangoDB transactions will
-                      still continue to return a repeatable-read state.
+                    Also see [ArangoSearch commits](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#commits).
                   type: integer
                 consolidationIntervalMsec:
                   description: |
@@ -1899,12 +1821,7 @@ paths:
                     impacts performance due to no segment candidates being available for
                     consolidation.
 
-                    _Background:_
-                      For data modification, ArangoSearch follows the concept of a
-                      "versioned data store". Thus old versions of data may be removed once there
-                      are no longer any users of the old data. The frequency of the cleanup and
-                      compaction operations are governed by `consolidationIntervalMsec` and the
-                      candidates for compaction are selected via `consolidationPolicy`.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: integer
                 consolidationPolicy:
                   description: |
@@ -1913,17 +1830,7 @@ paths:
                     - If the `tier` type is used, then the `segments*` and `minScore` properties are available.
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
-                    _Background:_
-                      With each ArangoDB transaction that inserts documents, one or more
-                      ArangoSearch-internal segments get created.
-                      Similarly, for removed documents, the segments that contain such documents
-                      have these documents marked as 'deleted'.
-                      Over time, this approach causes a lot of small and sparse segments to be
-                      created.
-                      A "consolidation" operation selects one or more segments and copies all of
-                      their valid documents into a single new segment, thereby allowing the
-                      search algorithm to perform more optimally and for extra file handles to be
-                      released once old segments are no longer used.
+                    Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/arangosearch-views-reference.md#consolidation).
                   type: object
                   required:
                     - type
