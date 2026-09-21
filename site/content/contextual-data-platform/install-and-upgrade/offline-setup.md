@@ -774,12 +774,6 @@ spec:
 {{< info >}}
 The MinIO images come from the Chainguard registry because the `minio/minio`
 and `minio/mc` images have been removed from Docker Hub.
-
-The Chainguard MinIO client image doesn't include a shell. The bucket-creation
-job therefore passes the `mc` command as `args` and sets the connection details
-with the `MC_HOST_local` environment variable instead of running a shell script.
-If MinIO isn't up yet, the job is retried as configured by `backoffLimit` and
-`restartPolicy`.
 {{< /info >}}
 
 Set up the MinIO service by applying the configuration file:
