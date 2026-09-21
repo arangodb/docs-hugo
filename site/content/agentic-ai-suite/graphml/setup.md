@@ -29,19 +29,12 @@ To get started, see the [Web interface for GraphML](ui.md) page.
 {{< /tab >}}
 
 {{< tab "Notebooks" >}}
-The ArangoDB Notebooks service runs on the
-[Arango Managed Platform (AMP)](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-It offers a pre-configured environment where everything,
-including necessary components and configurations, comes preloaded. You don't
-need to set up or configure the infrastructure, and can immediately start using the
-GraphML functionalities in a scriptable manner. To get started, see the
-[GraphML Notebooks & API](notebooks-api.md) reference documentation.
-
-{{< tip >}}
-To get access to GraphML services and packages in Arango Managed Platform (AMP),
-[get in touch](https://arangodb.ai/contact-us/)
-with the Arango team.
-{{< /tip >}}
+The [Notebook servers](../notebook-servers.md) run within the
+Arango Contextual Data Platform. They offer a pre-configured environment where
+everything, including necessary components and configurations, comes preloaded.
+You don't need to set up or configure the infrastructure, and can immediately
+start using the GraphML functionalities in a scriptable manner. To get started,
+see the [GraphML Notebooks & API](notebooks-api.md) reference documentation.
 
 - **Accessible at all levels**
   - Low code UI
