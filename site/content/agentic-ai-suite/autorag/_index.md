@@ -8,10 +8,14 @@ weight: 8
 ---
 ## Overview
 
-AutoRAG provides intelligent search and retrieval from knowledge graphs stored
-in ArangoDB. It offers multiple search methods optimized for different query
-types, from fast instant answers to thorough multi-step research, plus a Custom
-Retriever for domain-specific search on any collection.
+AutoRAG provides intelligent search and retrieval from the knowledge graphs
+built by the [Importer](../importer/) and [AutoGraph](../autograph/). Its
+search methods rely on the specific structure these services create, with
+entities, relations, and community summaries, so they cannot run against an
+arbitrary graph of your own. AutoRAG offers multiple search methods optimized
+for different query types, from fast instant answers to thorough multi-step
+research, plus a Custom Retriever that can additionally search any collection
+in the database using search logic you define yourself.
 
 {{< info >}}
 AutoRAG was previously called the **Retriever service**. The former name still
