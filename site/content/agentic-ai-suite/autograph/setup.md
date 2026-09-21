@@ -115,6 +115,27 @@ Authentication uses JWT Bearer tokens. For full endpoint documentation,
 see the [API Reference](reference/_index.md).
 {{< /tab >}}
 
+{{< tab "Python SDK" >}}
+The [Arango AI Suite Python SDK](../../ecosystem/ai-suite-sdk/_index.md) drives
+the setup stages from Python, without assembling requests or handling tokens:
+
+1. **Create a client** with your endpoint and credentials. It signs in and keeps
+   the token current.
+2. **Create a project** with `client.project.create()`.
+3. **Store the chat and embedding API keys** as secret profiles with
+   `client.secret_profile.create()`.
+4. **Upload your documents** under the scope `[project, category]` with
+   `client.files.upload_folder()`.
+5. **Deploy the service** with `project.autograph.deploy()`.
+
+The SDK stops there: the corpus build, the strategizer, orchestration, and
+retrieval have no SDK equivalent yet, so a complete run finishes in the web
+interface or over HTTP.
+
+For the examples side by side with the other two interfaces, see
+[Python SDK](python-sdk.md).
+{{< /tab >}}
+
 {{< /tabs >}}
 
 ## Learn more

@@ -3,10 +3,19 @@ title: Arango Ecosystem
 menuTitle: Ecosystem
 weight: 10
 description: >-
-  The Arango ecosystem includes an MCP server, drivers, integrations, and
-  adapters that help you connect ArangoDB and the Arango Contextual Data Platform
-  to your applications and data science tools
+  The Arango ecosystem includes a Python SDK for the Agentic AI Suite, an MCP
+  server, drivers, integrations, and adapters that help you connect ArangoDB and
+  the Arango Contextual Data Platform to your applications and data science tools
 ---
+## AI Suite SDK
+
+The [Arango AI Suite Python SDK](ai-suite-sdk/_index.md) is the code-first way
+to drive an AutoGraph workflow: create a project, store the API keys your
+models need, upload documents, and deploy AutoGraph, all from Python.
+
+- [Installation](ai-suite-sdk/installation.md)
+- [Getting started](ai-suite-sdk/getting-started.md)
+
 ## MCP Server
 
 A focused [MCP Server](arangodb-mcp-server.md) for generating and executing

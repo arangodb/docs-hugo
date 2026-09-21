@@ -47,6 +47,20 @@ Manager builds extract the text through the File Parsing Service instead, see
 See [Designing categories](../design-guide.md#designing-categories) for guidance
 on how to work with categories.
 
+### With the Python SDK
+
+The [Python SDK](../python-sdk.md) wraps the same File Manager endpoints, so the
+uploaded files are identical to those of a direct `rag-input` call:
+
+```python
+client.files.upload_file("./contracts/nda.pdf", scope=["acme", "legal"])
+client.files.upload_folder("./contracts", scope=["acme", "legal"])
+```
+
+Each file comes back with its own result, and a file the platform rejects does
+not stop the others, so check `status` before reading the storage fields. See
+[Upload documents](../python-sdk.md#upload-documents).
+
 ## Import multiple files (deprecated)
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
