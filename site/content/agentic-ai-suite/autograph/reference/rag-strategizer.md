@@ -45,14 +45,24 @@ the gateway, so a client that only sends it now gets `400`
 
 | Old `full_graph_rag_strategy` | New `complexity` | FullGraphRAG share |
 |-------------------------------|------------------|--------------------|
-| `very high` | `very_high` | 100% |
+| `very high` (the old default) | `very_high` | 100% |
 | `high` | `high` | 75% |
 | - | `moderate` | 50% |
 | `low` | `low` | 25% |
 | `very low` | `very_low` | 0% |
 
+`very high` was what the service assumed when the old field was omitted, so a
+client that never set it ran every cluster on FullGraphRAG. Send
+`complexity: "very_high"` to keep that behavior. `moderate` is new and has no
+counterpart in the old field.
+
 Custom percentage strings such as `"40%"` are no longer supported. Pick the
 nearest of the five values.
+
+`complexity` has **no default** because the level also gates image extraction,
+which is new in this release: `extract_images_default: true` is only accepted
+at `high` and `very_high`. It changes both the generated strategy and the cost
+of the import that follows, so the level has to be chosen explicitly.
 {{< /warning >}}
 
 ### How `complexity` is applied

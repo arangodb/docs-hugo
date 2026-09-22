@@ -209,8 +209,10 @@ function isSameDocumentUrl(urlPath) {
 }
 
 /**
- * Same-document navigation to a fragment via location.hash so CSS :target updates (pushState does not).
- * If the URL already matches (including hash), clears the fragment first so :target can re-apply.
+ * Same-document navigation to a fragment via location.hash, which scrolls and fires hashchange.
+ * If the URL already matches (including the fragment), the browser would treat the assignment as a
+ * no-op, so scroll and flash the target directly instead. That is what makes a link to the section
+ * you are already on work again after scrolling away, without piling up identical history entries.
  * Returns true if handled; caller should not pushState or scroll.
  */
 function navigateSameDocumentFragment(urlPath) {
@@ -224,8 +226,9 @@ function navigateSameDocumentFragment(urlPath) {
       return false;
     }
     if (historyUrlMatchesCurrent(u.href)) {
-      var base = window.location.pathname + window.location.search;
-      window.history.replaceState(window.history.state, document.title, base);
+      scrollToFragment();
+      flashTarget();
+      return true;
     }
     window.location.hash = hash;
     return true;
@@ -236,15 +239,23 @@ function navigateSameDocumentFragment(urlPath) {
 
 function updateHistory(urlPath) {
   //console.log("updateHistory: " + urlPath);
-  if (!urlPath || historyUrlMatchesCurrent(urlPath)) {
+  if (!urlPath) {
     return;
   }
 
-  // Same page, different fragment only: avoid fetch + synthetic popstate (~1s on slow networks).
+  // Same page, fragment link: handled before the "URL already matches" check below so that
+  // re-using a link that points at the current fragment scrolls back to it (the user may have
+  // scrolled away in the meantime) instead of being skipped as a no-op navigation.
+  if (navigateSameDocumentFragment(urlPath)) {
+    return;
+  }
+
+  if (historyUrlMatchesCurrent(urlPath)) {
+    return;
+  }
+
+  // Same page, no fragment: avoid fetch + synthetic popstate (~1s on slow networks).
   if (isSameDocumentUrl(urlPath)) {
-    if (navigateSameDocumentFragment(urlPath)) {
-      return;
-    }
     window.history.pushState("navchange", "Arango Documentation", urlPath);
     scrollToFragment();
     return;

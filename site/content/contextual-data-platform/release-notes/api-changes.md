@@ -263,9 +263,23 @@ still sends only the old field.
 | `"low"` | `low` | 25% |
 | — | `moderate` | 50% |
 | `"high"` | `high` | 75% |
-| `"very high"` | `very_high` | 100% |
+| `"very high"` (the old default) | `very_high` | 100% |
+
+`"very high"` was the value the service assumed when `full_graph_rag_strategy`
+was omitted, so a client that never set the field was running every cluster on
+FullGraphRAG. Send `complexity: "very_high"` to keep that behavior.
+`moderate` is a new level with no counterpart in the old field.
 
 Free-form percentage strings such as `"40%"` are no longer accepted.
+
+**Why the field has no default.** The level no longer only picks the
+FullGraphRAG share. This release adds image extraction, and it is available at
+`high` and `very_high` only: with one of those two levels, a request may set
+`extract_images_default: true`, which turns on semantic units, image processing,
+and image embeddings for the FullGraphRAG profiles it creates (VectorRAG
+profiles keep those flags at `false`). Because that changes both the generated
+strategy and the processing cost of the import that follows, the level has to be
+chosen explicitly instead of being inherited from the previous default.
 
 The share is applied to the ranked cluster list as
 `round(target_percentage / 100.0 * cluster_count)`, so a project with a single
