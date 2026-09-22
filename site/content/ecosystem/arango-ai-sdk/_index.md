@@ -34,16 +34,16 @@ The SDK is developed continuously and grows one area at a time. It does not
 cover the entire AutoGraph flow yet, so anything it does not offer today is done
 through the
 [web interface](../../agentic-ai-suite/autograph/web-interface.md) or the
-[HTTP REST API](../../agentic-ai-suite/autograph/reference/_index.md).
+[HTTP API](../../agentic-ai-suite/autograph/reference/_index.md).
 
 ## What maps to what
 
 The SDK is a third way to drive AutoGraph, alongside the web interface and the
-REST API. The following table shows the operations it covers next to the action
+HTTP API. The following table shows the operations it covers next to the action
 and the endpoint that do the same thing, so you can move between the three
 interfaces:
 
-| Operation | Web interface | HTTP REST API | Arango AI SDK |
+| Operation | Web interface | HTTP API | Arango AI SDK |
 |-----------|---------------|---------------|---------------|
 | Authenticate | Signed in to the platform | [Obtain a Bearer token](../../platform-suite/control-plane-acp/_index.md#obtaining-a-bearer-token) | `ArangoAIClient(...)` |
 | Create a project | AutoGraph Studio, **+ New Project** | [Create a Project](../../platform-suite/control-plane-acp/api.md#create-a-project) | `client.project.create()` |

@@ -173,7 +173,7 @@ except ArangoAIError as exc:
 ## Next steps
 
 Continue in [AutoGraph Studio](../../agentic-ai-suite/autograph/web-interface.md)
-or with the [AutoGraph REST API](../../agentic-ai-suite/autograph/reference/_index.md)
+or with the [AutoGraph HTTP API](../../agentic-ai-suite/autograph/reference/_index.md)
 to build the Context Graph from the documents you uploaded and to ask questions
 against it with [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
 

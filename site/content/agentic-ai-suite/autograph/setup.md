@@ -3,7 +3,7 @@ title: Set up AutoGraph
 menuTitle: Setup
 weight: 5
 description: >-
-  Set up AutoGraph using the web interface or the HTTP REST API
+  Set up AutoGraph using the web interface or the HTTP API
   to build knowledge graphs from your enterprise documents
 ---
 AutoGraph is available in the Arango Contextual Data Platform through two
@@ -12,7 +12,7 @@ interfaces:
 - [**Web interface**](web-interface.md): A guided, step-by-step workflow
   for creating projects, uploading documents, and deploying retrieval
   services without writing code.
-- [**HTTP REST API**](./reference/_index.md): Full programmatic control
+- [**HTTP API**](./reference/_index.md): Full programmatic control
   over the AutoGraph pipeline for automation and integration into existing workflows.
 
 {{< tip >}}
@@ -93,7 +93,7 @@ web interface.
 For the full walkthrough, see the [Web Interface](web-interface.md) guide.
 {{< /tab >}}
 
-{{< tab "HTTP REST API" >}}
+{{< tab "HTTP API" >}}
 The AutoGraph service exposes HTTP REST endpoints (port `8080`)
 for programmatic access. The recommended call sequence is:
 

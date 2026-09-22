@@ -104,7 +104,7 @@ See [Incremental Graph Updates](incremental-graph-updates.md).
 - **[Quick Start](quick-start.md)**: Turn a pile of documents into a knowledge
   base you can chat with, with answers cited back to the source.
 - **[Use Cases](use-cases.md)**: Understand the business value through real-world enterprise scenarios and how AutoGraph compares to traditional RAG.
-- **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP REST API.
+- **[Setup](setup.md)**: Set up AutoGraph using the web interface or the HTTP API.
 - **[Web Interface](web-interface.md)**: Run the complete workflow in AutoGraph
   Studio, from building the Context Graph to deploying AutoRAG retrievers and
   asking questions against it.

@@ -88,7 +88,7 @@ See [Web Interface](web-interface.md) for step-by-step instructions.
 
 ### API
 
-The Natural Language to AQL service exposes a REST API for programmatic access.
+The Natural Language to AQL service exposes a HTTP API for programmatic access.
 You can integrate it into your applications, call it from the command line, or use
 it as part of a larger workflow.
 

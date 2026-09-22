@@ -23,9 +23,8 @@ description: >-
 ## Authenticate to the package index
 
 `arango-ai-sdk` is published to ArangoDB's private package index on Google
-Artifact Registry. Availability on the public PyPI is a later step. Access is
-limited to Google accounts granted permission on ArangoDB's `arango-ml` project,
-so ask your ArangoDB contact for it before you continue.
+Artifact Registry. Availability on the public PyPI is a later step. Ask your
+ArangoDB contact for access to the index before you continue.
 
 Installing from that index needs Google Artifact Registry keyring support:
 
