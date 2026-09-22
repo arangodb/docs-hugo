@@ -37,7 +37,8 @@ A search index normally belongs to a single collection, which is all you need if
 you want to search that one collection. This is what inverted indexes are for.
 Views add a layer on top: a View groups multiple such indexes so that a single
 query can search all of them at once and rank the results of all of them
-together, for instance over the node and edge collections that make up a graph.
+together, for instance over the vertex and edge collections that make up a
+graph.
 
 {{< embed-svg "ArangoSearch-Data-Flow" "Both View types index documents the same way. What differs is where the settings live and how the indexes are grouped for querying." >}}
 
@@ -268,7 +269,6 @@ cannot be switched on retroactively:
 | [Scoring](ranking.md) with `BM25()` and `TFIDF()` | How often a term occurs (`frequency`), and how long the field is (`norm`) | Posting lists, and a column of the column store for the normalization factor |
 | [Phrase and proximity search](phrase-and-proximity-search.md) | The position of every token (`position`) | Posting lists |
 | [Search highlighting](search-highlighting.md) | The offset of every token in the original value (`offset`) | Posting lists |
-| [WAND optimization](performance.md#wand-optimization) (`optimizeTopK`) | An upper bound of the score a portion of a posting list can reach, per scoring expression you declare | Alongside the posting lists, which is why the scoring expressions are part of the index definition |
 | [Primary sort order](performance.md#primary-sort-order) (`primarySort`) | The index entries laid out in the sort order | The order of the entries within a segment |
 | [Stored values](performance.md#stored-values) (`storedValues`) | Copies of the attribute values | Column store |
 | Returning documents | An identifier per index entry | Column store, as the primary key column |
@@ -356,8 +356,7 @@ file handles to be released once the old segments are no longer used.
 How often consolidation occurs is governed by the `consolidationIntervalMsec`
 property, and which segments are selected is governed by the
 `consolidationPolicy` property. You can tune both for your workload, for
-instance based on how much segment sizes vary or how many deleted entries a
-segment holds.
+instance based on the number of segments and their sizes.
 
 Consolidation runs independently of committing, in a separate pool of
 maintenance threads, see the

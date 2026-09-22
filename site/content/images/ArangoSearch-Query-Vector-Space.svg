@@ -1,0 +1,24 @@
+<svg viewBox="0 0 460 420"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:460px;margin:0 auto">
+  <style>
+    .asr .axlbl { font-family: sans-serif; font-size: 14px; fill: #374151; }
+    .asr .qtext { font-family: sans-serif; font-size: 12px; font-weight: bold; fill: #15803d; }
+    .asr .dtext { font-family: sans-serif; font-size: 12px; font-weight: bold; }
+    .asr .ang   { font-family: sans-serif; font-size: 15px; font-style: italic; }
+  </style>
+
+  <g class="asr">
+    <rect width="460" height="420" fill="#f3f4f6" rx="6"/>
+    <path d="M 70 340 L 354.0 340.0" stroke="#d1d5db" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="370.0,340.0 352.0,348.5 352.0,331.5" fill="#d1d5db"/>
+    <path d="M 70 340 L 70.0 56.0" stroke="#d1d5db" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="70.0,40.0 78.5,58.0 61.5,58.0" fill="#d1d5db"/>
+    <text x="386" y="345" class="axlbl">brown</text>
+    <text x="70" y="26" text-anchor="middle" class="axlbl">quick</text>
+    <path d="M 70 340 L 326.7 83.3" stroke="#86efac" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <polygon points="338.0,72.0 331.3,90.7 319.3,78.7" fill="#86efac"/>
+    <text x="382" y="44" text-anchor="middle" class="qtext">query:</text>
+    <text x="382" y="60" text-anchor="middle" class="qtext">quick or brown</text>
+  </g>
+</svg>

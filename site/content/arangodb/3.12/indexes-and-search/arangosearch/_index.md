@@ -65,7 +65,7 @@ Search results can be sorted by their similarity ranking to return the best
 matches first using popular scoring algorithms (Okapi BM25, TF-IDF),
 user-defined relevance boosting and dynamic score calculation.
 
-![Conceptual model of ArangoSearch interacting with Collections and Analyzers](../../../../images/arangosearch.png)
+{{< embed-svg "ArangoSearch-Overview" "Documents are analyzed and indexed in the background, and queries read that index to filter, rank, and sort the matches." >}}
 
 Views can be managed in the web interface, via an [HTTP API](../../develop/http-api/views/_index.md) and
 through a [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views).
@@ -751,7 +751,17 @@ that defaults to `false`.
 With `search-alias` Views, you can get the same behavior by enabling the
 `searchField` option globally or for specific fields in their inverted indexes,
 or you can explicitly expand certain array attributes by appending `[*]` to the
-field name. 
+field name.
+
+{{< warning >}}
+Unlike `arangosearch` Views, which accept values of any type for an indexed
+attribute, inverted indexes expect a field to hold either primitive values or
+arrays, as defined by the index. Storing an array or an object in a field that
+is defined without array expansion and with `searchField` disabled makes the
+document write fail, whereas a field defined with `[*]` silently ignores values
+that are not arrays. See
+[Indexing array values](../indexing/working-with-indexes/inverted-indexes.md#indexing-array-values).
+{{< /warning >}}
 
 Consider the following document:
 
@@ -998,13 +1008,8 @@ For relevance and performance tuning, as well as the reference documentation, se
 
 If you are interested in more technical details, have a look at:
 
-<!-- TODO
-- [**ArangoSearch Tutorial**](https://www.arangodb.com/learn/search/tutorial/#:~:text=Ranking%20in%20ArangoSearch):
-  The tutorial includes sections about the View concept, Analysis, and the
-  ranking model.
--->
-- [**ArangoSearch architecture overview**](architecture.md): 
-  A description of ArangoSearch's design, its inverted index and some
-  implementation details.
-- The [**IResearch library**](https://github.com/iresearch-toolkit/iresearch)
+- [**ArangoSearch architecture overview**](architecture.md):
+  A description of ArangoSearch's design, from how documents get into the index
+  and how it is maintained on disk to the model used for ranking search results.
+- The [**IResearch library**](https://github.com/arangodb/arangodb/tree/devel/lib/iresearch)
   that provides the searching and ranking capabilities.
