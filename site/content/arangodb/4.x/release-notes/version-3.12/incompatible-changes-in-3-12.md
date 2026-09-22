@@ -20,7 +20,7 @@ by a new ArangoDB Community License, which limits deployments to a 100 GiB on
 dataset size in production and you cannot use it for any commercial purposes,
 only internal business purposes.
 
-For details, see the [ArangoDB Community License](https://arangodb.com/community-license/).
+For details, see the [ArangoDB Community License](https://arango.ai/community-license/).
 
 ## Downgrading vector indexes
 
