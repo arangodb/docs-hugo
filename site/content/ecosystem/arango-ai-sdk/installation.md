@@ -1,10 +1,10 @@
 ---
-title: Install the Arango AI Suite Python SDK
+title: Install the Arango AI SDK
 menuTitle: Installation
 weight: 5
 description: >-
-  Requirements for the Arango AI Suite Python SDK and how to install it from
-  ArangoDB's package index with pip or uv
+  Requirements for the Arango AI SDK and how to install it from ArangoDB's
+  package index with pip or uv
 ---
 {{< tag "Experimental" >}}
 
@@ -39,7 +39,7 @@ the usual choice for CI.
 
 ## Install the package
 
-{{< tabs "ai-suite-sdk-install" >}}
+{{< tabs "arango-ai-sdk-install" >}}
 
 {{< tab "pip" >}}
 Pass the index as an extra index URL:
@@ -79,20 +79,6 @@ import arango_ai_sdk
 
 print(arango_ai_sdk.__version__)
 ```
-
-## Release channels
-
-Which channel a build belongs to is encoded in its version number, and both
-`pip` and `uv` skip pre-releases unless you ask for one by name:
-
-| Version looks like | Channel | Who gets it |
-|--------------------|---------|-------------|
-| `0.1.0` | Production | Everyone, by default |
-| `0.1.0rc1` | Release candidate | Only if you ask for it explicitly |
-| `0.1.0rc1.post1.dev3+g1a59664` | Development build | Only if you ask for it explicitly |
-
-A plain `pip install arango-ai-sdk` therefore always gives you the latest
-production release.
 
 ## Next step
 
