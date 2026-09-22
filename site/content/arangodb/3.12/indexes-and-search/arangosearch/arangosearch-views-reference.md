@@ -2,7 +2,9 @@
 title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
-description: ''
+description: >-
+  Overview of the `arangosearch` View properties you can set when creating,
+  modifying, or linking collections to a View
 ---
 `arangosearch` Views enable sophisticated information retrieval queries such as
 full-text search for unstructured or semi-structured data over documents from
@@ -74,6 +76,87 @@ db._createView("products", "arangosearch", { links: { books: { fields: { title: 
 ~db._dropView("products");
 ~db._drop(coll.name());
 ```
+
+## The View data store
+
+An inverted index is the heart of `arangosearch` Views. It is complemented by
+a column store that holds the attribute values you configure a View to store,
+see the `primarySort` and `storedValues` properties.
+
+A View does not maintain a single index, however. Every link has its own data
+store that is separate from the data of the linked collections. There is one
+data store per linked collection, and one per shard of a linked collection in
+cluster deployments. The View properties described below apply to each of these
+data stores individually.
+
+### Segments
+
+The index consists of several independent segments, and each index **segment**
+is meant to be treated as a standalone index.
+
+With each ArangoDB transaction that inserts documents, one or more internal
+segments get created. Similarly, for removed documents, the segments that
+contain these documents have them marked as deleted. Over time, this approach
+causes a lot of small and sparse segments to be created, which is why segments
+are periodically merged, see [Consolidation](#consolidation).
+
+### Commits
+
+A **commit** is the procedure of accumulating processed data, creating new
+index segments. Documents that you add to or remove from a linked collection
+are not visible to queries until the next commit.
+
+For data retrieval, `arangosearch` Views follow the concept of
+"eventually-consistent", that is, eventually all the data in ArangoDB is
+matched by corresponding query expressions. The commit operation controls the
+upper bound on the time until document additions and removals are actually
+reflected by corresponding query expressions. Once a commit operation is
+complete, all documents added and removed prior to the start of the commit
+operation are reflected by queries invoked in subsequent ArangoDB transactions.
+In-progress ArangoDB transactions still continue to return a repeatable-read
+state.
+
+How often commits occur is governed by the
+[`commitIntervalMsec` property](#view-properties).
+
+### Consolidation
+
+A **consolidation** is the procedure of joining multiple index segments into a
+bigger one and removing garbage documents (for example, documents deleted from
+a collection).
+
+A consolidation operation selects one or more segments and copies all of their
+valid documents into a single new segment, thereby allowing the search
+algorithm to perform more optimally and for extra file handles to be released
+once old segments are no longer used.
+
+For data modification, `arangosearch` Views follow the concept of a
+"versioned data store". Old versions of data may thus be removed once there are
+no longer any users of the old data. How often consolidation occurs is governed
+by the [`consolidationIntervalMsec` property](#view-properties), and the
+candidates for consolidation are selected via the
+[`consolidationPolicy` property](#view-properties).
+
+### Cleanup
+
+A **cleanup** is the procedure of removing unused segments after the release of
+internal resources.
+
+With every commit or consolidation operation, a new state of the View-internal
+data structures is created on disk. Old states/snapshots are released once
+there are no longer any users remaining. However, the files of the released
+states/snapshots are left on disk and only removed by a cleanup operation.
+
+How often cleanups occur is governed by the
+[`cleanupIntervalStep` property](#view-properties).
+
+### Write buffers
+
+ArangoSearch performs operations in its index based on numerous writer objects
+that are mapped to processed segments. To control the memory that is used by
+these writers (in terms of a "writers pool"), you can use the
+`writebufferIdle`, `writebufferActive`, and `writebufferSizeMax`
+[View properties](#view-properties).
 
 ## View Definition/Modification
 
@@ -350,15 +433,6 @@ During view modification the following directives apply:
 
   Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
 
-An inverted index is the heart of `arangosearch` Views.
-The index consists of several independent segments and the index **segment**
-itself is meant to be treated as a standalone index. **Commit** is meant to be
-treated as the procedure of accumulating processed data creating new index
-segments. **Consolidation** is meant to be treated as the procedure of joining
-multiple index segments into a bigger one and removing garbage documents (e.g.
-deleted from a collection). **Cleanup** is meant to be treated as the procedure
-of removing unused segments after release of internal resources.
-
 - **cleanupIntervalStep** (_optional_; type: `integer`; default: `2`; to
   disable use: `0`)
 
@@ -369,11 +443,7 @@ of removing unused segments after release of internal resources.
   rarely merge segments (i.e. few inserts/deletes). A higher value impacts
   performance without any added benefits.
 
-  > With every **commit** or **consolidate** operation a new state of the view
-  > internal data-structures is created on disk. Old states/snapshots are
-  > released once there are no longer any users remaining. However, the files
-  > for the released states/snapshots are left on disk, and only removed by
-  > "cleanup" operation.
+  Also see [Cleanup](#cleanup).
 
 - **commitIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -387,16 +457,7 @@ of removing unused segments after release of internal resources.
   few inserts/updates because of synchronous locking, and it wastes disk space for
   each commit call.
 
-  > For data retrieval `arangosearch` Views follow the concept of
-  > "eventually-consistent", i.e. eventually all the data in ArangoDB is
-  > matched by corresponding query expressions.
-  > The concept of `arangosearch` View "commit" operation is introduced to
-  > control the upper-bound on the time until document addition/removals are
-  > actually reflected by corresponding query expressions.
-  > Once a "commit" operation is complete, all documents added/removed prior to
-  > the start of the "commit" operation are reflected by queries invoked in
-  > subsequent ArangoDB transactions. In-progress ArangoDB transactions
-  > still continue to return a repeatable-read state.
+  Also see [Commits](#commits).
 
 - **consolidationIntervalMsec** (_optional_; type: `integer`; default: `5000`;
   to disable use: `0`)
@@ -410,21 +471,13 @@ of removing unused segments after release of internal resources.
   impacts performance due to no segment candidates available for
   consolidation.
 
-  > For data modification `arangosearch` Views follow the concept of a
-  > "versioned data store". Thus old versions of data may be removed once there
-  > are no longer any users of the old data. The frequency of the cleanup and
-  > compaction operations are governed by `consolidationIntervalMsec` and the
-  > candidates for compaction are selected via `consolidationPolicy`.
-
-ArangoSearch performs operations in its index based on numerous writer
-objects that are mapped to processed segments. In order to control memory that
-is used by these writers (in terms of "writers pool") one can use
-`writebuffer*` properties of a view.
+  Also see [Consolidation](#consolidation).
 
 - **writebufferIdle** (_optional_; type: `integer`; default: `64`;
   to disable use: `0`; _immutable_)
 
   Maximum number of writers (segments) cached in the pool.
+  Also see [Write buffers](#write-buffers).
 
 - **writebufferActive** (_optional_; type: `integer`; default: `0`;
   to disable use: `0`; _immutable_)
@@ -443,16 +496,7 @@ is used by these writers (in terms of "writers pool") one can use
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)
 
   The consolidation policy to apply for selecting data store segment merge
-  candidates.
-
-  > With each ArangoDB transaction that inserts documents, one or more
-  > ArangoSearch internal segments gets created. Similarly, for removed
-  > documents the segments containing such documents have these documents
-  > marked as "deleted". Over time, this approach causes a lot of small and
-  > sparse segments to be created. A **consolidation** operation selects one or
-  > more segments and copies all of their valid documents into a single new
-  > segment, thereby allowing the search algorithm to perform more optimally and
-  > for extra file handles to be released once old segments are no longer used.
+  candidates. Also see [Consolidation](#consolidation).
 
   - **type** (_optional_; type: `string`; default: `"tier"`)
 
@@ -462,7 +506,7 @@ is used by these writers (in terms of "writers pool") one can use
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: Consolidate based on segment byte size and live document count
+    - `"tier"`: Consolidate based on segment byte size skew and live document count
       as dictated by the customization attributes.
 
     {{< warning >}}
@@ -485,9 +529,13 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsMin** (_optional_; type: `integer`; default: `50`)
 
+    <small>Removed in: v3.12.7</small>
+
     The minimum number of segments that are evaluated as candidates for consolidation.
 
   - **segmentsMax** (_optional_; type: `integer`; default: `200`)
+
+    <small>Removed in: v3.12.7</small>
 
     The maximum number of segments that are evaluated as candidates for consolidation.
 
@@ -497,9 +545,66 @@ is used by these writers (in terms of "writers pool") one can use
 
   - **segmentsBytesFloor** (_optional_; type: `integer`; default: `25165824`)
 
+    <small>Removed in: v3.12.7</small>
+
     Defines the value (in bytes) to treat all smaller segments as equal for consolidation
     selection.
 
   - **minScore** (_optional_; type: `integer`; default: `0`)
 
+    <small>Removed in: v3.12.7</small>
+
     Filter out consolidation candidates with a score less than this.
+
+  - **maxSkewThreshold** (_optional_; type: `number`; default: `0.4`)
+
+    <small>Introduced in: v3.12.7</small>
+
+    The skew describes how much segment files vary in file size. It is a number
+    between `0.0` and `1.0` and is calculated by dividing the largest file size
+    of a set of segment files by the total size. For example, the skew of a
+    200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+    A large `maxSkewThreshold` value allows merging large segment files with
+    smaller ones, consolidation occurs more frequently, and there are fewer
+    segment files on disk at all times. While this may potentially improve the
+    read performance and use fewer file descriptors, frequent consolidations
+    cause a higher write load and thus a higher write amplification.
+    
+    On the other hand, a small threshold value triggers the consolidation only
+    when there are a large number of segment files that don't vary in size a lot.
+    Consolidation occurs less frequently, reducing the write amplification, but
+    it can result in a greater number of segment files on disk.
+
+    Multiple combinations of candidate segments are checked and the one with
+    the lowest skew value is selected for consolidation. The selection process
+    picks the greatest number of segments that together have the lowest skew value
+    while ensuring that the size of the new consolidated segment remains under
+    the configured `segmentsBytesMax`.
+
+  - **minDeletionRatio** (_optional_; type: `number`; default: `0.5`)
+
+    <small>Introduced in: v3.12.7</small>
+
+    The `minDeletionRatio` represents the minimum required deletion ratio
+    in one or more segments to perform a cleanup of those segments.
+    It is a number between `0.0` and `1.0`.
+
+    The deletion ratio is the percentage of deleted documents across one or
+    more segment files and is calculated by dividing the number of deleted
+    documents by the total number of documents in a segment or a group of
+    segments. For example, if there is a segment with 1000 documents of which
+    300 are deleted and another segment with 1000 documents of which 700 are
+    deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+    The `minDeletionRatio` threshold must be carefully selected. A smaller
+    value leads to earlier cleanup of deleted documents from segments and
+    thus reclamation of disk space but it generates a higher write load.
+    A very large value lowers the write amplification but at the same time
+    the system can be left with a large number of segment files with a high
+    percentage of deleted documents that occupy disk space unnecessarily.
+
+    During cleanup, the segment files are first arranged in decreasing
+    order of their individual deletion ratios. Then the largest subset of
+    segments whose collective deletion ratio is greater than or equal to
+    `minDeletionRatio` is picked.

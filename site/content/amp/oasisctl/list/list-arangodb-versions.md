@@ -1,7 +1,8 @@
 ---
-title: List ArangoDB Versions with `oasisctl`
+title: List ArangoDB Versions with _oasisctl_
 menuTitle: List ArangoDB Versions
 weight: 3
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all supported ArangoDB versions

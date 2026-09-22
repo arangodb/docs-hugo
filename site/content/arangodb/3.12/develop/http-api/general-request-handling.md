@@ -1,5 +1,5 @@
 ---
-title: HTTP request handling in ArangoDB
+title: HTTP request handling
 menuTitle: General request handling
 weight: 5
 description: >-
@@ -192,10 +192,10 @@ they are lost in case of a crash.
 A running async query can internally be executed by C++ code or by JavaScript
 code. For example, CRUD operations are executed directly in C++, whereas AQL
 queries and transactions may be executed by JavaScript code, depending on the
-AQL functions and the transaction type you use. The job cancelation only works
+AQL functions and the transaction type you use. The job cancellation only works
 for JavaScript code, since the mechanism used is simply to trigger an uncatchable
 exception in the JavaScript thread, which is caught on the C++ level, which in
-turn leads to the cancelation of the job. No result can be retrieved later
+turn leads to the cancellation of the job. No result can be retrieved later
 because all data about the request is discarded.
 
 If you cancel a job running on a Coordinator of a cluster, then only the code
@@ -333,7 +333,7 @@ credentials or handle cookies, ArangoDB needs to set the
 ArangoDB will automatically set this header to `true` if the value of the
 request's `origin` header matches a trusted origin in the `http.trusted-origin`
 configuration option. To make ArangoDB trust a certain origin, you can provide
-a startup option when running `arangod` like this:
+a startup option when running _arangod_ like this:
 
 `--http.trusted-origin "http://localhost:8529"`
 
@@ -380,34 +380,34 @@ state data on specific Coordinator nodes, and thus subsequent requests which
 require access to this state must be served by the Coordinator node which owns
 this state data. In order to support function behind a load-balancer, ArangoDB
 can transparently forward requests within the cluster to the correct node. If a
-request is forwarded, the response will contain the following custom HTTP header
-whose value will be the ID of the node which actually answered the request:
+request is forwarded, the response contains the following custom HTTP header
+whose value is the ID of the node which actually answered the request:
 
 - `x-arango-request-forwarded-to`
 
 The following APIs may use request forwarding:
 
 - `/_api/cursor`
-- `/_api/job`
 - `/_api/replication`
 - `/_api/query`
-- `/_api/tasks`
 - `/_api/transaction`
+- `/_api/tasks`
+- `/_api/job` (when requesting a specific job ID)
 
-Note: since forwarding such requests requires an additional cluster-internal HTTP
+Since forwarding such requests requires an additional cluster-internal HTTP
 request, they should be avoided when possible for best performance. Typically
 this is accomplished either by directing the requests to the correct Coordinator
 at a client-level or by enabling request "stickiness" on a load balancer. Since
 these approaches are not always possible in a given environment, we support the
 request forwarding as a fall-back solution.
 
-Note: some endpoints which return "global" data, such as `GET /_api/tasks` will
-only return data corresponding to the server on which the request is executed.
-These endpoints will generally not work well with load-balancers.
+Certain endpoints such as `GET /_api/job/pending` only return information
+corresponding to the server on which the request is executed. There is no
+cluster-wide aggregation of the information, such as a global list of all
+pending tasks. You only get the list of pending tasks from the node you query. 
+These endpoints generally don't work well with load-balancers.
 
 ## Overload control
-
-<small>Introduced in: v3.9.0</small>
 
 _arangod_ returns an `x-arango-queue-time-seconds` HTTP
 header with all responses. This header contains the most recent request
@@ -415,8 +415,8 @@ queueing/dequeuing time (in seconds) as tracked by the server's scheduler.
 This value can be used by client applications and drivers to detect server
 overload and react on it.
 
-The arangod startup option `--http.return-queue-time-header` can be set to
-`false` to suppress these headers in responses sent by arangod.
+The _arangod_ startup option `--http.return-queue-time-header` can be set to
+`false` to suppress these headers in responses sent by _arangod_.
 
 In a cluster, the value returned in the `x-arango-queue-time-seconds` header
 is the most recent queueing/dequeuing request time of the Coordinator the
@@ -425,16 +425,16 @@ another Coordinator. In that case, the value will indicate the current
 queueing/dequeuing time of the forwarded-to Coordinator.
 
 In addition, client applications and drivers can optionally augment the
-requests they send to arangod with the header `x-arango-queue-time-seconds`.
+requests they send to _arangod_ with the header `x-arango-queue-time-seconds`.
 If set, the value of the header should contain the maximum server-side
 queuing time (in seconds) that the client application is willing to accept.
-If the header is set in an incoming request, arangod will compare the current
+If the header is set in an incoming request, _arangod_ will compare the current
 dequeuing time from its scheduler with the maximum queue time value contained
 in the request header. If the current queueing time exceeds the value set
-in the header, arangod will reject the request and return HTTP 412
+in the header, _arangod_ will reject the request and return HTTP 412
 (precondition failed) with the error code 21004 (queue time violated). 
 Using a value of 0 or a non-numeric value in the header will lead to the
-header value being ignored by arangod.
+header value being ignored by _arangod_.
 
 There is also a metric `arangodb_scheduler_queue_time_violations_total`
 that is increased whenever a request is dropped because of the requested
@@ -469,10 +469,10 @@ to be recovered.
 The following APIs can reply early with an HTTP 200 status:
 
 - `GET /_api/version` and `GET /_admin/version`:
-  These APIs return the server version number, but can also be used as a
+  These endpoints return the server version number, but can also be used as a
   liveliness probe, to check if the instance is responding to incoming HTTP requests.
 - `GET /_admin/status`:
-  This API returns information about the instance's status, including the recovery
+  This endpoint returns information about the instance's status, including the recovery
   progress and information about which server feature is currently starting.
 
 During the early startup phase, all APIs other than the ones listed above are

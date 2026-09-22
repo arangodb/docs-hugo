@@ -1,5 +1,135 @@
 var theme = true;
 
+let _mermaid = null;
+let _mermaidPanZoom = null;
+let _mermaidDragSvg = null;
+let _mermaidDragRelayReady = false;
+/* How much of a diagram has to stay inside its box while panning, in pixels. */
+const MERMAID_PAN_GUTTER = 60;
+async function renderMermaidDiagrams() {
+  var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
+  if (!nodes.length) return;
+  try {
+    if (!_mermaid) {
+      let mermaidjs = await import('https://cdn.jsdelivr.net/npm/mermaid@11.14.0/dist/mermaid.esm.min.mjs');
+      _mermaid = mermaidjs.default;
+      _mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+    }
+    try {
+      await _mermaid.run({ nodes });
+    } catch (err) {
+      /* Mermaid puts an error graphic in place of the offending diagram. Carry
+         on so that a single malformed diagram does not cost the other diagrams
+         on the page their pan and zoom controls. */
+      console.warn('Mermaid rendering failed', err);
+    }
+    if (!_mermaidPanZoom) {
+      try {
+        let svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
+        _mermaidPanZoom = svgPanZoom.default;
+      } catch (err) {
+        console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
+      }
+    }
+    nodes.forEach(attachMermaidPanZoom);
+  } catch (err) {
+    console.warn('Mermaid rendering failed', err);
+  }
+}
+
+function attachMermaidPanZoom(pre) {
+  if (pre.dataset.panzoomReady) return;
+  if (!_mermaidPanZoom) return;
+  let svg = pre.querySelector('svg');
+  if (!svg) return;
+
+  _mermaidPanZoom(svg, {
+    zoomEnabled: true,
+    controlIconsEnabled: true,
+    fit: true,
+    center: true,
+    minZoom: 0.5,
+    maxZoom: 10,
+    /* The library default of 0.1 zooms by only 8% per mouse wheel notch and
+       10% per zoom button click, which feels unresponsive. This gives ~31%
+       and 40% respectively. */
+    zoomScaleSensitivity: 0.4,
+    beforePan: limitPan,
+  });
+
+  setupMermaidDragRelay();
+  svg.addEventListener('mousedown', function (evt) {
+    if (evt.button === 0) _mermaidDragSvg = svg;
+  });
+
+  pre.dataset.panzoomReady = 'true';
+
+  /**
+   * Keeps the diagram from being dragged out of sight: at least
+   * MERMAID_PAN_GUTTER pixels of it stay inside the box on every side. The
+   * limits are derived from the rendered geometry rather than from
+   * getSizes(), whose view box does not account for the padding mermaid
+   * leaves around a diagram, so that they hold at every zoom level.
+   */
+  function limitPan(oldPan, newPan) {
+    let group = svg.querySelector('.svg-pan-zoom_viewport');
+    if (!group) return newPan;
+    let box = svg.getBoundingClientRect();
+    let content = group.getBoundingClientRect();
+    /* Where the diagram sits inside the box with the current pan taken out. */
+    let offsetX = content.left - box.left - oldPan.x;
+    let offsetY = content.top - box.top - oldPan.y;
+
+    return {
+      x: Math.min(
+        box.width - MERMAID_PAN_GUTTER - offsetX,
+        Math.max(MERMAID_PAN_GUTTER - offsetX - content.width, newPan.x)
+      ),
+      y: Math.min(
+        box.height - MERMAID_PAN_GUTTER - offsetY,
+        Math.max(MERMAID_PAN_GUTTER - offsetY - content.height, newPan.y)
+      ),
+    };
+  }
+}
+
+/**
+ * svg-pan-zoom listens for mouse events on the SVG only and treats mouseleave
+ * as the end of a drag, so panning stopped whenever the pointer left the
+ * diagram. Hide that mouseleave from the library and relay the mouse events
+ * that happen outside the SVG back to it, so that a drag keeps going wherever
+ * the pointer travels. Registered once for all diagrams on the page.
+ */
+function setupMermaidDragRelay() {
+  if (_mermaidDragRelayReady) return;
+  _mermaidDragRelayReady = true;
+
+  document.addEventListener('mouseleave', function (evt) {
+    if (_mermaidDragSvg && evt.target === _mermaidDragSvg) {
+      evt.stopPropagation();
+    }
+  }, true);
+
+  document.addEventListener('mousemove', function (evt) {
+    relayToMermaidDrag(evt);
+  }, true);
+
+  document.addEventListener('mouseup', function (evt) {
+    relayToMermaidDrag(evt);
+    _mermaidDragSvg = null;
+  }, true);
+}
+
+function relayToMermaidDrag(evt) {
+  let svg = _mermaidDragSvg;
+  if (!svg || evt.target === svg || svg.contains(evt.target)) return;
+  svg.dispatchEvent(new MouseEvent(evt.type, {
+    clientX: evt.clientX,
+    clientY: evt.clientY,
+    buttons: evt.buttons,
+  }));
+}
+
 function closeAllEntries() {
     document.querySelectorAll(".main-nav-ol .expand-nav > input:checked").forEach(el => el.checked = false);
 }
@@ -42,23 +172,134 @@ function replaceArticle(href, newDoc) {
     document.title = decodeHtmlEntities(match[1]);
   }
 
+  // Avoid `location.hash = ...` even when the value matches: Firefox runs the navigation
+  // algorithm and clears the current entry's history.state, breaking back/forward. The URL's
+  // fragment is already set by the prior pushState/replaceHistory; scrolling is handled by
+  // scrollToFragment() in loadPage. If the URL bar is somehow out of sync, replaceState
+  // updates it without creating a new (null-state) entry.
   if (matches = href.match(/.*?(#.*)$/)) {
-    location.hash = matches[1];
+    if (location.hash !== matches[1]) {
+      try {
+        window.history.replaceState(window.history.state, document.title, matches[0]);
+      } catch (e) {
+        location.hash = matches[1];
+      }
+    }
   }
 }
 
 
+function historyUrlMatchesCurrent(urlPath) {
+  try {
+    var u = new URL(urlPath, window.location.href);
+    return u.pathname + u.search + u.hash === window.location.pathname + window.location.search + window.location.hash;
+  } catch (e) {
+    return false;
+  }
+}
+
+function isSameDocumentUrl(urlPath) {
+  try {
+    var u = new URL(urlPath, window.location.href);
+    var cur = window.location;
+    return u.origin === cur.origin && u.pathname === cur.pathname && u.search === cur.search;
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Same-document navigation to a fragment via location.hash so CSS :target updates (pushState does not).
+ * If the URL already matches (including hash), clears the fragment first so :target can re-apply.
+ * Returns true if handled; caller should not pushState or scroll.
+ */
+function navigateSameDocumentFragment(urlPath) {
+  try {
+    var u = new URL(urlPath, window.location.href);
+    if (!isSameDocumentUrl(u.href)) {
+      return false;
+    }
+    var hash = u.hash;
+    if (!hash || hash.length <= 1) {
+      return false;
+    }
+    if (historyUrlMatchesCurrent(u.href)) {
+      var base = window.location.pathname + window.location.search;
+      window.history.replaceState(window.history.state, document.title, base);
+    }
+    window.location.hash = hash;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function updateHistory(urlPath) {
   //console.log("updateHistory: " + urlPath);
-  if (!urlPath || urlPath == window.location.pathname + window.location.hash) {
-    return
-  } 
-  
+  if (!urlPath || historyUrlMatchesCurrent(urlPath)) {
+    return;
+  }
+
+  // Same page, different fragment only: avoid fetch + synthetic popstate (~1s on slow networks).
+  if (isSameDocumentUrl(urlPath)) {
+    if (navigateSameDocumentFragment(urlPath)) {
+      return;
+    }
+    window.history.pushState("navchange", "Arango Documentation", urlPath);
+    scrollToFragment();
+    return;
+  }
+
   window.history.pushState("navchange", "Arango Documentation", urlPath);
   //if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
-  dispatchEvent(popStateEvent);
+  window.dispatchEvent(popStateEvent);
+}
+
+/**
+ * Replaces the current history entry (used after alias/redirect resolution so the intermediate URL is not kept).
+ * Does not dispatch a synthetic popstate: doing so after replaceState during initial load can break the
+ * forward history (e.g. Firefox). Callers must load content after a successful replace (see loadPage).
+ */
+function replaceHistory(urlPath) {
+  if (!urlPath || historyUrlMatchesCurrent(urlPath)) {
+    return false;
+  }
+
+  window.history.replaceState("navchange", "Arango Documentation", urlPath);
+  return true;
+}
+
+function parseHugoAliasDestination(html) {
+  var doc = new DOMParser().parseFromString(html, "text/html");
+  var titleEl = doc.querySelector("title");
+  if (titleEl) {
+    var t = titleEl.textContent.trim();
+    if (/^https?:\/\//.test(t) || t.startsWith("/")) {
+      return t;
+    }
+  }
+  var metas = doc.getElementsByTagName("meta");
+  for (var i = 0; i < metas.length; i++) {
+    var equiv = metas[i].getAttribute("http-equiv");
+    if (!equiv || equiv.toLowerCase() !== "refresh") {
+      continue;
+    }
+    var content = metas[i].getAttribute("content");
+    if (content) {
+      content = content.trim();
+      var parts = content.split(/;\s*url=/i);
+      if (parts.length > 1) {
+        return parts.slice(1).join("; url=").trim().replace(/^["']|["']$/g, "");
+      }
+    }
+    var urlAttr = metas[i].getAttribute("url");
+    if (urlAttr) {
+      return urlAttr.trim();
+    }
+  }
+  return null;
 }
 
 
@@ -78,14 +319,70 @@ function loadNotFoundPage() {
     .then(newDoc => {
       replaceArticle("", newDoc)
       initArticle("");
+      docsLastFetchedDocKey = docKeyWithoutHash(window.location.href);
+      flashTarget();
       return true;
     })
     .catch(error => console.error('Error loading not found page:', error));
 }
 
+/** Origin + pathname + search of the last document we successfully injected (no hash). Used to skip refetch on hash-only history steps. */
+var docsLastFetchedDocKey = null;
+
+function docKeyWithoutHash(urlString) {
+  try {
+    var u = new URL(urlString, window.location.href);
+    return u.origin + u.pathname + u.search;
+  } catch (e) {
+    return null;
+  }
+}
+
+// CSS :target rule wouldn't wait for scrolling
+function flashTarget() {
+  const hash = location.hash;
+  if (!hash || hash.length < 2) return;
+  let el;
+  try {
+    el = document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch (e) {
+    return;
+  }
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const trigger = () => {
+    el.classList.remove("docs-target-flash");
+    void el.offsetWidth; // force reflow so re-adding the class restarts the animation
+    el.classList.add("docs-target-flash");
+    el.addEventListener("animationend", () => el.classList.remove("docs-target-flash"), { once: true });
+  };
+
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    trigger();
+    return;
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      trigger();
+      obs.disconnect();
+    }
+  });
+  obs.observe(el);
+  // Fallback if the element never becomes visible (removed, sticky-obscured, etc.).
+  setTimeout(() => obs.disconnect(), 2000);
+}
 
 function loadPage(target) {
   var href = target;
+
+  var requestedKey = docKeyWithoutHash(href);
+  if (docsLastFetchedDocKey !== null && requestedKey !== null && requestedKey === docsLastFetchedDocKey) {
+    scrollToFragment();
+    return;
+  }
 
   var menuPathName = new URL(href).pathname;
   //console.log(menuPathName);
@@ -96,9 +393,17 @@ function loadPage(target) {
         // Handle 404 and other HTTP errors
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      if (response.url && href.replace(/#.*/, "") !== response.url) {
-        updateHistory(response.url);
-        return;
+      if (response.url) {
+        var reqBase = new URL(href, window.location.href);
+        var resBase = new URL(response.url);
+        if (reqBase.origin + reqBase.pathname + reqBase.search !== resBase.origin + resBase.pathname + resBase.search) {
+          resBase.hash = reqBase.hash;
+          if (!replaceHistory(resBase.pathname + resBase.search + resBase.hash)) {
+            return;
+          }
+          // fetch already followed the redirect; reuse the response body with the resolved URL.
+          href = resBase.href;
+        }
       }
       return response.text();
     })
@@ -106,13 +411,30 @@ function loadPage(target) {
       if (!newDoc) return;
       if (!newDoc.includes("<body>")) {
         // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
-        var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
-        updateHistory(match);
+        var dest = parseHugoAliasDestination(newDoc);
+        if (!dest) {
+          console.error("Hugo alias page: could not parse redirect URL");
+          return;
+        }
+        try {
+          var destUrl = new URL(dest, window.location.href);
+          var fromUrl = new URL(href, window.location.href);
+          if (fromUrl.hash) {
+            destUrl.hash = fromUrl.hash;
+          }
+          if (replaceHistory(destUrl.pathname + destUrl.search + destUrl.hash)) {
+            loadPage(window.location.href);
+          }
+        } catch (e) {
+          console.error("Hugo alias redirect:", e);
+        }
         return;
       }
       replaceArticle(href, newDoc);
+      docsLastFetchedDocKey = docKeyWithoutHash(href);
       scrollToFragment();
       initArticle(href);
+      flashTarget();
       if (window.setupDocSearch) {
         window.setupDocSearch(getSelectedVersion());
       }
@@ -214,23 +536,24 @@ async function loadNav() {
     // TODO: Support multiple versions
     const selectedVersion = getSelectedVersion();
     const versionInfo = getVersionInfo(selectedVersion);
-    if (!versionInfo) {
-      console.log("Selected version not found in version info");
-    }
-    const selectedVersionAlias = versionInfo.alias;
-    const versionSelector = mainNavContent.querySelector(".version-selector");
-    if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
-      versionSelector.value = selectedVersionAlias;
-      
-      versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
-        if (navList.dataset.version == selectedVersion) {
-          navList.classList.add("selected-version");
-        } else {  
-          navList.classList.remove("selected-version");
-        }
-      });
+    if (versionInfo) {
+      const selectedVersionAlias = versionInfo.alias;
+      const versionSelector = mainNavContent.querySelector(".version-selector");
+      if (versionSelector && versionSelector.querySelector(`option[value="${selectedVersionAlias}"]`)) {
+        versionSelector.value = selectedVersionAlias;
+        
+        versionSelector.parentElement.querySelectorAll(":scope > .nav-ol").forEach(navList => {
+          if (navList.dataset.version == selectedVersion) {
+            navList.classList.add("selected-version");
+          } else {  
+            navList.classList.remove("selected-version");
+          }
+        });
+      } else {
+        console.log("Selected/stored version not available in version selector");
+      }
     } else {
-      console.log("Selected/stored version not available in version selector");
+      console.log("Selected version not found in version info");
     }
 
     mainNavPlaceholder.replaceChildren(mainNavContent);
@@ -253,30 +576,39 @@ function trackPageView(title, urlPath) {
   }
 }
 
+// Hugo marks every code block <pre> with tabindex="0" for scrollable code. Code wraps here
+// and never scrolls, so the stop leads nowhere.
+function dropCodeBlockTabStops() {
+  document.querySelectorAll('article pre[tabindex]').forEach(el => el.removeAttribute('tabindex'));
+}
+
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
   addShowMoreButton('article');
+  dropCodeBlockTabStops();
   hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
+  renderMermaidDiagrams();
 }
 
 
 
 window.addEventListener('popstate', function (e) {
-  var state = e.state;
-  if (state !== null) {
-    loadPage(window.location.href);
-  }
+  // Don't gate on e.state: the browser may clear state from inactive entries.
+  // Still need to load the destination page on back/forward.
+  // loadPage's docsLastFetchedDocKey guard short-circuits when the URL hasn't really changed.
+  loadPage(window.location.href);
 });
 
-window.addEventListener('hashchange', function (e) {
-  window.history.pushState("popstate", "Arango Documentation", window.location.href);
-  scrollToFragment()
+window.addEventListener("hashchange", function () {
+  // No pushState here, updateHistory() / the browser already recorded the URL.
+  scrollToFragment();
+  flashTarget();
 });
 
 
@@ -366,8 +698,20 @@ function switchTab(tabGroup, tabId, event) {
       var topBefore = clickedTab.getBoundingClientRect().top;
   }
 
-  allTabItems.forEach(item => item.classList.remove("selected"));
-  targetTabItems.forEach(item => item.classList.add("selected"));
+  allTabItems.forEach(item => {
+    item.classList.remove("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "false");
+      item.tabIndex = -1;
+    }
+  });
+  targetTabItems.forEach(item => {
+    item.classList.add("selected");
+    if (item.getAttribute("role") === "tab") {
+      item.setAttribute("aria-selected", "true");
+      item.tabIndex = 0;
+    }
+  });
   targetTabItems.forEach(item => addShowMoreButton(item));
   
   if (event) {
@@ -387,6 +731,32 @@ function switchTab(tabGroup, tabId, event) {
       tabSelections[tabGroup] = tabId;
       window.localStorage.setItem("tab-selections", JSON.stringify(tabSelections));
   }
+}
+
+// Arrow key navigation within a tablist; activation follows focus.
+function handleTabKeydown(event) {
+  const tab = event.target;
+  if (!tab || tab.getAttribute("role") !== "tab") return;
+  const tablist = tab.closest("[role='tablist']");
+  if (!tablist) return;
+
+  const tabsInList = Array.from(tablist.querySelectorAll("[role='tab']"));
+  const current = tabsInList.indexOf(tab);
+  if (current === -1) return;
+
+  var next;
+  switch (event.key) {
+    case "ArrowRight": next = (current + 1) % tabsInList.length; break;
+    case "ArrowLeft":  next = (current - 1 + tabsInList.length) % tabsInList.length; break;
+    case "Home":       next = 0; break;
+    case "End":        next = tabsInList.length - 1; break;
+    default: return;
+  }
+
+  event.preventDefault();
+  const target = tabsInList[next];
+  switchTab(target.getAttribute("data-tab-group"), target.getAttribute("data-tab-item"), event);
+  target.focus();
 }
 
 function restoreTabSelections() {
@@ -484,10 +854,17 @@ const goToTop = (event) => {
 };
 
 function copyURI(evt) {
-    const url = window.location.origin + evt.target.closest("a").getAttribute('href')
+    const link = evt.target.closest("a");
+    const href = link.getAttribute("href");
+    const url = new URL(href, window.location.href).href;
+
     navigator.clipboard.writeText(url).then(() => {}, () => {
       console.log("clipboard copy failed");
     });
+
+    if (navigateSameDocumentFragment(url)) {
+      return;
+    }
     updateHistory(url);
 }
 
@@ -507,28 +884,39 @@ function toggleExpandShortcode(event) {
     parent.classList.toggle('expand-expanded');
 }
 
+function getLinkHref(el) {
+  return el.getAttribute("href") || el.getAttributeNS("http://www.w3.org/1999/xlink", "href");
+}
+
+function setLinkHref(el, url) {
+  el.setAttribute("href", url);
+  if (el.namespaceURI === "http://www.w3.org/2000/svg") {
+    el.setAttributeNS("http://www.w3.org/1999/xlink", "href", url);
+  }
+}
+
 function linkToVersionedContent() {
   const currentVersion = getVersionFromURL();
   if (currentVersion) {
     if (currentVersion !== "stable" && currentVersion !== "devel") return;
-    document.querySelectorAll(".link:not([target]), .card-link:not([target])").forEach(el => {
-      const originalUrl = el.getAttribute("href");
-      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+    document.querySelectorAll(".link:not([target]), .card-link:not([target]), .header-link").forEach(el => {
+      const originalUrl = getLinkHref(el);
+      const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       if (matches && matches.length > 2) {
         const newUrl = "/arangodb/" + currentVersion + matches[2];
         //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
-        el.setAttribute("href", newUrl);
+        setLinkHref(el, newUrl);
       }
     });
   } else {
     document.querySelectorAll(".link:not([target], .nav-prev, .nav-next), .card-link:not([target])").forEach(el => {
-      const originalUrl = el.getAttribute("href");
-      const matches = originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
+      const originalUrl = getLinkHref(el);
+      const matches = originalUrl && originalUrl.match(/^\/arangodb\/(.+?)(\/.*)/);
       const previousVersion = localStorage.getItem('docs-version') ?? "stable";
       if (matches && matches.length > 2 && previousVersion) {
         const newUrl = "/arangodb/" + previousVersion + matches[2];
         //console.log("linkToVersionedContent: " + originalUrl + " -> " + newUrl);
-        el.setAttribute("href", newUrl);
+        setLinkHref(el, newUrl);
       }
     });
   }
@@ -562,6 +950,9 @@ function handleDocumentChange(event) {
       //console.log("handleDocumentChange: " + newPath);
       updateHistory(newPath);
       loadPage(newPath);
+    } else {
+      // Potentially update links to versioned content on unversioned page
+      linkToVersionedContent();
     }
   }
 }
@@ -572,19 +963,25 @@ function handleDocumentClick(event) {
     const closest = (selector) => target.closest(selector);
 
     if (target.classList.contains("expand-nav")) return;
+
+    // Allow browser default for non-primary buttons (middle/right) and modifier clicks
+    // (Ctrl/Cmd = new tab, Shift = new window, Alt = download/new tab depending on browser)
+    const openInNew = event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey;
   
     // Menu link clicks
-    if (target.classList.contains("link-nav")) {
+    const navLink = target.closest(".link-nav");
+    if (navLink) {
+        if (openInNew) return;
         event.preventDefault();
-        target.closest(".main-nav").classList.remove("active");
+        navLink.closest(".main-nav").classList.remove("active");
         document.querySelectorAll(".link-nav-active").forEach(el => el.classList.remove("link-nav-active"));
-        target.classList.add("link-nav-active");
+        navLink.classList.add("link-nav-active");
         closeAllEntries();
         document.querySelectorAll(".nav-section:has(.link-nav-active) > .nav-section-header > .expand-nav > input").forEach(el => el.checked = true);
-        if (target.parentElement.classList.contains("nav-section-header")) {
-          target.parentElement.querySelector(".expand-nav > input").checked = true;
+        if (navLink.parentElement.classList.contains("nav-section-header")) {
+          navLink.parentElement.querySelector(".expand-nav > input").checked = true;
         }
-        const href = target.getAttribute('href');
+        const href = navLink.getAttribute("href");
         if (href) {
             updateHistory(href);
         } else {
@@ -594,23 +991,46 @@ function handleDocumentClick(event) {
     }
   
     // Internal link clicks (.link)
-    if (target.classList.contains('link') && !target.getAttribute("target")) {
+    const internalLink = target.closest(".link");
+    if (internalLink && !internalLink.getAttribute("target")) {
+        if (openInNew) return;
         event.preventDefault();
-        let href = target.getAttribute('href');
+        const href = internalLink.getAttribute("href");
         if (href) {
             updateHistory(href);
         }
         return;
     }
   
-    // Card link clicks
-    if (target.classList.contains('card-link')) {
+    // Card link clicks (including SVG links, getLinkHref supports xlink:href)
+    const cardLinkEl = closest('.card-link');
+    if (cardLinkEl) {
+        if (openInNew) return;
         event.preventDefault();
-        const href = target.getAttribute('href');
+        const href = getLinkHref(cardLinkEl);
         if (href) {
             updateHistory(href);
         }
         return;
+    }
+
+    // Endpoint copy button clicks
+    if (closest('.clipboard-copy')) {
+        event.preventDefault();
+        const copyAncestor = target.closest('.copy-ancestor');
+        if (!copyAncestor) {
+            console.log("No copy ancestor found");
+            return;
+        }
+        const copyElement = copyAncestor.querySelector('.copy-this');
+        if (copyElement) {
+            navigator.clipboard.writeText(copyElement.textContent).then(() => {
+                target.classList.add("tooltipped");
+                setTimeout(function() {
+                    target.classList.remove("tooltipped");
+                }, 1000);
+            });
+        }
     }
   
     // Code show more button clicks
@@ -661,7 +1081,9 @@ function handleDocumentClick(event) {
     }
   
     // Homepage clicks
-    if (target.classList.contains('home-link')) {
+    const homeLink = target.closest(".home-link");
+    if (homeLink) {
+        if (openInNew) return;
         event.preventDefault();
         updateHistory("/");
         return;
@@ -678,8 +1100,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     loadNav().catch(err => console.error("Failed to initialize navigation:", err));
 
-    window.history.pushState("popstate", "Arango Documentation", window.location.href);
-    //trackPageView(document.title, window.location.pathname);
+    // Attach state to the current history entry so popstate can load content on back/forward.
+    // Use replaceState (not pushState) to avoid duplicate URL in stack and breaking
+    // the forward list when combined with alias resolution
+    if (document.body.hasChildNodes()) {
+      window.history.replaceState("popstate", "Arango Documentation", window.location.href);
+    }
 
     const currentVersion = getVersionFromURL();
     if (currentVersion) {
@@ -691,10 +1117,72 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add central click handler to document
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("change", handleDocumentChange);
+    document.addEventListener("keydown", handleTabKeydown);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
         document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
+    // Initialize custom diagram lightbox
+    initDiagramLightbox();
+
 });
+
+/*
+ * Custom diagram lightbox
+ * Simple, clean lightbox implementation for diagrams without external dependencies
+ */
+function initDiagramLightbox() {
+    // Create lightbox container if it doesn't exist
+    if (!document.querySelector('.diagram-lightbox')) {
+        const lightbox = document.createElement('div');
+        lightbox.className = 'diagram-lightbox';
+        lightbox.innerHTML = `
+            <button class="diagram-lightbox-close" aria-label="Close">&times;</button>
+            <img src="" alt="">
+        `;
+        document.body.appendChild(lightbox);
+
+        // Close on click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox || e.target.classList.contains('diagram-lightbox-close')) {
+                closeDiagramLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeDiagramLightbox();
+            }
+        });
+    }
+
+    // Add click handlers to diagram links
+    document.addEventListener('click', function(e) {
+        const diagramLink = e.target.closest('.diagram-link');
+        if (diagramLink) {
+            e.preventDefault();
+            const src = diagramLink.getAttribute('data-diagram-src');
+            const img = diagramLink.querySelector('img');
+            const alt = img ? img.getAttribute('alt') : '';
+            openDiagramLightbox(src, alt);
+        }
+    });
+}
+
+function openDiagramLightbox(src, alt) {
+    const lightbox = document.querySelector('.diagram-lightbox');
+    const img = lightbox.querySelector('img');
+    img.src = src;
+    img.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDiagramLightbox() {
+    const lightbox = document.querySelector('.diagram-lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}

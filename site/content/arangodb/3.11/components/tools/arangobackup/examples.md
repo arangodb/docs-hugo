@@ -3,7 +3,7 @@ title: Hot Backup Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to create a consistent snapshot with the `arangobackup` tool
+  How to create a consistent snapshot with the _arangobackup_ tool
 ---
 ## Create
 
@@ -46,7 +46,7 @@ global write transaction lock:
   considered to have failed if the maximal waiting time for the lock is
   exceeded. If set to `true`, the system will take a potentially non-consistent
   hot backup when the timeout is exceeded.
-- `--force`: will make arangobackup abort ongoing write transactions in order
+- `--force`: will make _arangobackup_ abort ongoing write transactions in order
   to more quickly acquire the global write transaction lock. This option should
   be used with caution, as it will potentially abort valid write transactions,
   meaning client applications will see errors for otherwise valid operations
@@ -149,8 +149,7 @@ credentials for the remote site. Here is an example:
     "env_auth": "false",
     "access_key_id": "XXXXXXXXXXXXXXXXXXXX",
     "secret_access_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "region": "xx-xxxx-x",
-    "acl": "private"
+    "region": "xx-xxxx-x"
   }
 }
 ```
@@ -236,7 +235,7 @@ be used for restores until the download has finished.
 {{< /info >}}
 
 To configure rclone, use the `rclone-config-file` startup option to
-point arangobackup to a JSON configuration file. The expected format
+point _arangobackup_ to a JSON configuration file. The expected format
 is an object with user-chosen remote names as attribute keys, and the
 actual configuration as attribute value (a nested object). The option
 names and values in the [rclone documentation](https://rclone.org/docs/)
@@ -286,10 +285,18 @@ The file `my-s3.json` could look like this:
     "access_key_id": "XXXXXXXXXXXXXXXXXXXX",
     "secret_access_key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "region": "xx-xxxx-x",
-    "acl": "private"
+    "acl": ""
   }
 }
 ```
+
+{{< info >}}
+AWS buckets created since April 2023 default to _Bucket owner enforced_
+Object Ownership, which rejects requests that include an ACL header.
+Omit the `acl` key (or set it to `""`) in the configuration for such buckets.
+The `acl` key may still be required for some S3-compatible providers and for
+older AWS buckets that have ACLs explicitly re-enabled.
+{{< /info >}}
 
 More examples and details for S3 configurations can be found at
 [rclone.org/s3/](https://rclone.org/s3/).
@@ -306,7 +313,7 @@ The file `my-local.json` could look like this:
 {
   "my-local": {
     "type": "local",
-    "copy-links": "false",
+    "copy_links": "false",
     "links": "false",
     "one_file_system": "false"
   }

@@ -2,7 +2,9 @@
 title: _arangoexport_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to export data in JSON, CSV, or XML formats from ArangoDB on the
+  command-line with _arangoexport_
 ---
 _arangoexport_ can be invoked by executing the following command in a command line:
 
@@ -25,7 +27,7 @@ or use authentication, you can use the following command-line options:
 - `--server.database <string>`: the name of the database to connect to
 - `--server.endpoint <string>`: the endpoint to connect to
 - `--server.username <string>`: the username
-- `--server.password <string>`: the password to use (omit this to get prompted
+- `--server.password <string>`: the password to use (omit this and you'll be prompted
   for the password)
 - `--server.authentication <bool>`: whether or not to use authentication
 

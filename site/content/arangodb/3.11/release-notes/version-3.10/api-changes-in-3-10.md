@@ -222,7 +222,7 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 
 The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
 more general version API with the endpoint `GET /_api/version`.
-The endpoint will be removed in ArangoDB v3.12.
+The endpoint is removed in ArangoDB v4.0.
 
 ### Endpoints added
 
@@ -898,8 +898,8 @@ The following metrics have been added:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
-| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+| `arangodb_file_descriptors_limit` | System limit for the number of open files for the _arangod_ process. |
+| `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the _arangod_ process. |
 
 ---
 

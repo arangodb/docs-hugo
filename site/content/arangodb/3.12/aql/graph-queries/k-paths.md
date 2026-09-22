@@ -25,8 +25,7 @@ Here is an example graph to explain how the k Paths algorithm works:
 Each ellipse stands for a train station with the name of the city written inside
 of it. They are the nodes of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
-describe how long it takes to get from one station to another. They are used
-as edge weights.
+describe how long it takes to get from one station to another.
 
 Assume that you want to go from **Aberdeen** to **London** by train.
 
@@ -192,14 +191,18 @@ direction for each collection in your path search.
 
 Due to the nature of graphs, edges may reference nodes from arbitrary
 collections. Following the paths can thus involve documents from various
-collections and it is not possible to predict which are visited in a
-traversal. Which collections need to be loaded by the graph engine can only be
-determined at run time.
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
 
-Use the [`WITH` operation](../high-level-operations/with.md) to specify the
-node collections you expect to be involved. This is required for traversals
-using collection sets in cluster deployments. Declare the collection of the
-start node as well if it's not declared already (like by a `FOR` loop).
+If you use anonymous graphs / collection sets for graph queries, which node
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the node collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start node as well if it's not declared already
+(like by a `FOR` loop).
 
 {{< tip >}}
 From v3.12.6 onward, node collections are automatically deduced for graph

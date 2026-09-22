@@ -58,7 +58,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[js/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[js/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	resp := JSService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
@@ -67,7 +67,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[js/CONTROLLER] END Example %s\n", request.Options.Name)
+	models.Logger.Printf("[js/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	w.Write(response)
 }
@@ -79,7 +79,7 @@ func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[curl/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	resp, err := CurlService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
@@ -88,7 +88,7 @@ func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[curl/CONTROLLER] END Example %s\n", request.Options.Name)
+	models.Logger.Printf("[curl/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	w.Write(response)
 }
@@ -100,7 +100,7 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	models.Logger.Printf("[aql/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[aql/CONTROLLER] Processing %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	resp := AQLService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
@@ -108,7 +108,7 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
-	models.Logger.Printf("[aql/CONTROLLER] END Example %s\n", request.Options.Name)
+	models.Logger.Printf("[aql/CONTROLLER] END %s Example %s\n", request.Options.Version, request.Options.Name)
 
 	w.Write(response)
 }

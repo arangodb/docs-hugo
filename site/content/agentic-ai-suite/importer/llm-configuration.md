@@ -1,0 +1,370 @@
+---
+title: Configure LLMs and Embedding Models for the Importer
+menuTitle: LLM Configuration
+description: >-
+  Configure OpenAI-compatible APIs or Triton Inference Server for the Importer service
+weight: 40
+---
+The Importer service can be configured to use either Triton Inference Server or any
+OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
+setup, as well as any other endpoint implementing the same contract — OpenRouter,
+Gemini, Anthropic, Azure, or a private corporate LLM.
+
+"OpenAI-compatible" means the endpoint must implement the contract used by the
+OpenAI Chat Completions client (`/v1/chat/completions`, and `/v1/embeddings` for
+embedding models). An endpoint that exposes only a different API surface is not
+supported. Some newer OpenAI models require the Responses API (`/v1/responses`)
+instead; the Importer detects this and falls back automatically (see
+[OpenAI Responses API fallback](#openai-responses-api-fallback)).
+
+## Supported models
+
+The following models are validated for use with the Importer service. For the full
+list across all services, see
+[Supported LLM and embedding models](../_index.md#supported-llm-and-embedding-models).
+
+The recommended provider is `openai` with the OpenAI models below. That is the
+combination ArangoDB tests, so prefer it where you can; other endpoints can
+differ in behavior such as latency.
+
+You can still point the Importer at any other OpenAI-compatible endpoint —
+OpenRouter, Google Gemini, Anthropic, Azure, or a corporate LLM — and run a model
+that is not on the list. Configure these with the `custom` provider and the
+`chat_api_url` / `embedding_api_url` of your endpoint, as described in
+[Using OpenAI-compatible APIs](#using-openai-compatible-apis). Models beyond the
+list below are outside ArangoDB's testing, so validate them in your own
+environment. For the models served through Triton, see
+[Using Triton Inference Server](#using-triton-inference-server).
+
+{{% llm-models "importer" %}}
+
+The chat models above apply when `chat_api_provider` is `openai` and the chat
+endpoint is OpenAI (or an operator-configured OpenAI deployment). Older OpenAI
+model names may still work if your operator deploys them, but **full GraphRAG**
+community reports require JSON-mode chat models — avoid the legacy `gpt-4` 8k
+model.
+
+Some newer model identifiers (for example `gpt-5.4-pro`, `gpt-5.2-pro`, and
+`o3-pro`) require the OpenAI Responses API instead of `/v1/chat/completions`.
+The Importer detects this automatically; see
+[OpenAI Responses API fallback](#openai-responses-api-fallback) below.
+
+## Using OpenAI-compatible APIs
+
+The Importer reaches OpenAI-compatible APIs through two provider values:
+
+- `openai` for the official OpenAI API. The URLs default to
+  `https://api.openai.com/v1`, so you can omit them.
+- `custom` for every other OpenAI-compatible endpoint, including OpenRouter,
+  Google Gemini, Anthropic Claude, Azure (Azure OpenAI in Microsoft Foundry),
+  and corporate or self-hosted LLMs. Set `chat_api_url` and `embedding_api_url`
+  to your endpoint; they have no defaults under `custom`.
+
+Pointing the `openai` provider at a non-OpenAI URL is **not supported**. Use
+`custom` for those endpoints.
+
+For the chat and embedding models validated for the Importer, see
+[Supported models](#supported-models) above.
+
+### Example using OpenAI
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "chat_api_url": "https://api.openai.com/v1",
+    "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "gpt-5.4-nano",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openai_api_key",
+    "embedding_api_key": "your_openai_api_key",
+    "embedding_dim": "512"
+  }
+}
+```
+
+Where:
+- `db_name`: Name of the ArangoDB database where the knowledge graph will be stored
+- `project_name`: The project name created via the
+   [web interface](../autograph/web-interface.md#create-an-autograph-project) or
+  [Project API](../../platform-suite/control-plane-acp/api.md#create-a-project).
+  This name is used as a prefix for all ArangoDB collections (for example, a
+  project named `docs` creates `docs_Documents`, `docs_Chunks`, etc.)
+- `chat_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"` for
+  any other OpenAI-compatible API
+- `chat_api_url`: API endpoint URL for the chat/language model service. Required
+  for `"custom"`; defaults to the OpenAI URL for `"openai"`
+- `embedding_api_provider`: Set to `"openai"` for the OpenAI API, or `"custom"`
+  for any other OpenAI-compatible API
+- `embedding_api_url`: API endpoint URL for the embedding model service.
+  Required for `"custom"`; defaults to the OpenAI URL for `"openai"`
+- `chat_model`: Specific language model to use for text generation and analysis
+- `embedding_model`: Specific model to use for generating text embeddings
+- `chat_api_key`: API key for authenticating with the chat/language model service
+- `embedding_api_key`: API key for authenticating with the embedding model service
+- `embedding_dim`: Embedding dimension used for the vector indexes. The default
+  value is `512`. It must match the output dimension of the embedding model you
+  configured. On any OpenAI-compatible provider (`openai` or `custom`) you have
+  to set it yourself to match the model, including when that model is
+  `nomic-embed-text-v1`. The only case in which the Importer overrides your
+  value is `embedding_api_provider: "triton"` together with the
+  `nomic-embed-text-v1` model, where it is forced to `768`. A mismatch is hard
+  to diagnose once the indexes exist.
+
+{{< info >}}
+When using the official OpenAI API, the service defaults to `gpt-5.4-nano` and
+`text-embedding-3-small` models. The `custom` provider has no model defaults:
+supply `chat_model` and `embedding_model` yourself.
+{{< /info >}}
+
+{{< tip >}}
+Instead of inline API keys, you can use `chat_secret_profile_id` and
+`embedding_secret_profile_id` when your platform supports secret profiles
+for the Importer install.
+{{< /tip >}}
+
+{{< info >}}
+An API key is required for both `openai` and `custom`. If your endpoint does
+not authenticate — a self-hosted model, for example — supply a placeholder
+value rather than omitting the key.
+{{< /info >}}
+
+### Using different OpenAI-compatible services
+
+You can use different OpenAI-compatible services for chat and embedding. For example, 
+you might use OpenRouter for chat and OpenAI for embeddings, depending 
+on your needs for performance, cost, or model availability.
+
+{{< info >}}
+You cannot mix Triton with OpenAI-compatible APIs: if one of
+`chat_api_provider` and `embedding_api_provider` is `"triton"`, both must be.
+You can, however, combine `"openai"` and `"custom"` freely, which is how you
+serve chat and embeddings from two different OpenAI-compatible services.
+{{< /info >}}
+
+**Example using OpenRouter for chat and OpenAI for embedding:**
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "custom",
+    "embedding_api_provider": "openai",
+    "chat_api_url": "https://openrouter.ai/api/v1",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "chat_model": "mistralai/mistral-nemo",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_openrouter_api_key",
+    "embedding_api_key": "your_openai_api_key",
+    "embedding_dim": "512"
+  }
+}
+```
+
+The fields are the same as in the [example using OpenAI](#example-using-openai).
+The differences are that chat uses the `custom` provider with the OpenRouter
+URL while embedding stays on `openai`, and each is authenticated with its own
+API key.
+
+### Using Azure as a chat and embedding provider
+
+Models hosted on Azure (Azure OpenAI in Microsoft Foundry) expose an
+OpenAI-compatible endpoint, so the Importer reaches them through the `custom`
+provider. Three things are specific to Azure:
+
+- Provision the models yourself before you start. An Azure resource serves only
+  the models you have explicitly deployed into it, so deploy both a chat model
+  and an embedding model first. This is unlike an aggregator such as OpenRouter,
+  which exposes a large catalog of models without you provisioning anything.
+- Append `/openai/v1` to your Azure resource endpoint, for example
+  `https://your-resource.cognitiveservices.azure.com/openai/v1/`. This is
+  Azure's OpenAI-compatible v1 API, which removes the need for an
+  `api-version` query parameter. See the
+  [Azure v1 API documentation](https://learn.microsoft.com/en-us/azure/foundry/openai/api-version-lifecycle?view=foundry-classic&tabs=python#code-changes)
+  for details.
+- Set `chat_api_provider` and `embedding_api_provider` to `"custom"`. Azure is
+  addressed as an OpenAI-compatible endpoint, not as a separate provider type.
+
+Use the model deployment names from your Azure resource as `chat_model` and
+`embedding_model`, and your Azure API keys as `chat_api_key` and
+`embedding_api_key`.
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "custom",
+    "embedding_api_provider": "custom",
+    "chat_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
+    "embedding_api_url": "https://your-resource.cognitiveservices.azure.com/openai/v1/",
+    "chat_model": "gpt-4.1-mini",
+    "embedding_model": "text-embedding-3-small",
+    "chat_api_key": "your_azure_api_key",
+    "embedding_api_key": "your_azure_api_key",
+    "embedding_dim": "512"
+  }
+}
+```
+
+## Using Triton Inference Server
+
+The first step is to install the LLM Host service with the LLM and
+embedding models of your choice. The setup will use the 
+Triton Inference Server and MLflow at the backend. 
+For more details, please refer to the [Triton Inference Server](../private-llms/triton-inference-server.md)
+and [MLflow](../private-llms/mlflow.md) documentation.
+
+Once the `llmhost` service is up-and-running, then you can start the Importer
+service using the below configuration:
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "project_name": "your_project_name",
+    "chat_api_provider": "triton",
+    "embedding_api_provider": "triton",
+    "chat_api_url": "your-arangodb-llm-host-url",
+    "embedding_api_url": "your-arangodb-llm-host-url",
+    "chat_model": "mistral-nemo-instruct",
+    "embedding_model": "nomic-embed-text-v1"
+  }
+}
+```
+
+The fields are the same as in the [example using OpenAI](#example-using-openai),
+with these differences:
+- `chat_api_provider` and `embedding_api_provider` are set to `"triton"` instead
+  of `"openai"`.
+- `chat_api_url` and `embedding_api_url` point to your ArangoDB LLM Host service.
+- No API keys or `embedding_dim` are required.
+
+{{< warning >}}
+Two features are unavailable on a Triton-only deployment, because both require
+an OpenAI-compatible endpoint:
+
+- **Image descriptions** need an OpenAI API key in `CHAT_API_KEY`. Graph
+  building still runs entirely on Triton. See
+  [Vision model requirements](semantic-units.md#vision-model-requirements).
+- **Reclustering** is rejected before any work starts. See
+  [Reclustering](incremental-updates.md#reclustering).
+{{< /warning >}}
+
+## Token budget for chat models
+
+The Importer maps a single completion cap to OpenAI-style chat calls
+(`max_completion_tokens` for newer models that require it, `max_tokens` otherwise)
+and derives an internal prompt-packing budget it uses when building
+community reports. The values are auto-detected from the chat model name, so
+common OpenAI models work without manual tuning. You can override them with the
+following environment variables (also accepted as lower-case JSON keys in the
+install request):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `CHAT_MAX_COMPLETION_TOKENS` | model-aware (`8192` fallback) | Maximum completion tokens requested per chat call. When unset, the Importer picks a value that fits the chat model's known context window — for example `2048` for `gpt-4` (8k), `768` for `gpt-3.5-turbo` (4k), `4096` for the 16k variants, and `8192` for `gpt-4o` / `gpt-4-turbo` / `gpt-5.4-nano` / `o1` / `o3` and unknown models. Lower it explicitly to leave more room for the prompt. |
+| `CHAT_MODEL_CONTEXT_TOKENS` | model-aware | Approximate total context window for the chat model. When unset, the Importer falls back to a built-in mapping that covers the common OpenAI models (see below). Set this explicitly when using a model the Importer does not recognize, such as a private fine-tune. |
+| `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` | (unset) | Explicit prompt-packing description budget passed to GraphRAG as `best_model_max_token_size` and `cheap_model_max_token_size`. Overrides the value derived from `CHAT_MODEL_CONTEXT_TOKENS`. Useful for sparse graphs (short entity names, few relationships) where the conservative auto-derived budget is unnecessarily small. |
+
+The built-in context-window mapping covers:
+
+- `gpt-4o` / `gpt-4o-mini`, `gpt-4-turbo` / `gpt-4-1106` / `gpt-4-0125` / `gpt-4-vision`, `gpt-5.4-nano`, `o1-preview` / `o1-mini` → `128000`
+- `o1` / `o3` / `o3-mini` → `200000`
+- `gpt-4-32k` → `32768`
+- `gpt-3.5-turbo-1106` / `gpt-3.5-turbo-0125` → `16385`
+- `gpt-3.5-turbo-16k` → `16384`
+- `gpt-4` → `8192`
+- `gpt-3.5-turbo` → `4096`
+
+Prefix-matching is longest-match-wins, so for example `gpt-4-32k` matches before
+the generic `gpt-4` root.
+
+{{< warning >}}
+OpenAI has scheduled `gpt-4` for deprecation and shutdown on October 23, 2026.
+Use `gpt-4o` or `gpt-4-turbo` for new deployments.
+{{< /warning >}}
+
+{{< info >}}
+Independent of the static budget calculation, the Importer re-tokenizes the
+actual rendered prompt right before every chat-completion call. If the request
+would exceed the model's known context window, the user prompt is truncated with
+`tiktoken` so the request always fits, the Importer logs a warning, and the job
+continues rather than failing with `context_length_exceeded`. The guard is a
+no-op for chat models the Importer does not recognize, so historical behavior is
+preserved for custom or private fine-tunes.
+{{< /info >}}
+
+## Embedding request tuning
+
+Some OpenAI-compatible providers reject or require fields that the Importer
+sends by default on embedding requests. Two settings adjust the payload:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `DISABLED_PARAMS` | empty | A JSON array of field names to strip from embedding requests, for example `'["embedding_dim", "encoding_format"]'`. Invalid JSON is ignored with a warning |
+| `EMBEDDING_INPUT_TYPE` | empty | When set, it is sent as `input_type` on embedding requests. Providers such as Cohere require a value like `query` or `passage` |
+
+{{< info >}}
+`DISABLED_PARAMS` applies to **embedding** requests only. It has no effect on
+chat calls. Use `CHAT_DISABLED_PARAMS` to suppress fields on chat requests.
+{{< /info >}}
+
+Several variables are also accepted in lowercase, for example
+`disabled_params` as an install request key.
+
+## OpenAI Responses API fallback
+
+Some newer OpenAI model identifiers (for example `gpt-5.4-pro`, `o3-pro`) reject
+`/v1/chat/completions` and require `/v1/responses`. The Importer detects these
+errors automatically — matching phrasings such as *"not supported in the
+v1/chat/completions"*, *"not a chat model"*, or an explicit `v1/responses` hint
+— retries the call against `client.responses.create`, and caches the model name
+so subsequent calls in the same process skip the failing chat-completion attempt.
+
+Chat-shaped fields are mapped to Responses fields automatically:
+
+- System prompts → `instructions`
+- User turns → `input_text`
+- Prior assistant turns → `output_text`
+- `max_completion_tokens` / `max_tokens` → `max_output_tokens`
+- `CHAT_REASONING_EFFORT` → `reasoning.effort`
+
+No configuration is required. The official chart pins a compatible `openai`
+Python package version, so the fallback is available out of the box.
+
+## Error messages on graph build failure
+
+When the OpenAI provider fails during graph build, the Importer maps common SDK
+exceptions into concise remediation messages and stores them on the service
+status and job metadata, so operators see actionable text instead of raw JSON
+error bodies. Mapped errors include insufficient quota or billing, invalid API
+key, rate limits, timeouts, 5xx server errors, and context-length exceeded.
+
+The context-length message points at `CHAT_MAX_COMPLETION_TOKENS`,
+`CHAT_MODEL_CONTEXT_TOKENS`, and `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET` (and the
+equivalent lower-case install request keys) so you can adjust the budget without
+diving into raw logs.
+
+## Choosing the right deployment option
+
+| Feature | OpenAI-compatible APIs | Triton Inference Server |
+|---------|----------------------|------------------------|
+| **Setup Complexity** | Simple | Moderate to complex |
+| **Data Privacy** | Data sent to external services | Data stays in your infrastructure |
+| **Model Selection** | Wide variety available | Limited to self-hosted models |
+| **Maintenance** | Managed by provider | Self-managed |
+| **Best For** | Quick prototyping, public data | Air-gapped environments, sensitive data |
+
+## Next Steps
+
+- [**Import your first document**](importing-files.md):
+  Learn how to import files to build your knowledge graph.
+- [**Explore all import parameters**](reference/parameters.md):
+  Customize your import process.
+- [**Enable semantic units**](semantic-units.md):
+  Process images and multimedia content.

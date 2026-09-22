@@ -133,7 +133,7 @@ FOR i IN 1..1000
 
 Indexes can improve the performance of AQL queries drastically. Queries that
 frequently filter on or one more fields can be made faster by creating an index
-(in arangosh via the _ensureIndex_ command, the web interface or your specific
+(in _arangosh_ via the `<coll>.ensureIndex()` function, the web interface, or your specific
 client driver). There is already an automatic (and non-deletable) primary index
 in every collection on the `_key` and `_id` fields as well as the edge index
 on `_from` and `_to` (for edge collections).
@@ -222,7 +222,7 @@ a lot of performance on the table.
 See [_Cluster Sharding_](../deploy/architecture/data-sharding.md) 
 for more information.
 
-### SmartGraphs
+### SmartGraphs and EnterpriseGraphs
 
 SmartGraphs are an Enterprise Edition feature of ArangoDB. It enables you to
 manage graphs at scale. It provides a vast performance benefit for all graphs
@@ -234,8 +234,16 @@ graph into several smaller sub-graphs. Ideally these sub-graphs follow a
 that only connect vertices in the same subgraph and only have few edges
 connecting vertices from other subgraphs.
 
-All the usual considerations for sharding keys also apply for smart attributes,
-for more information see [SmartGraphs](../graphs/smartgraphs/_index.md)
+All the usual considerations for sharding keys also apply for smart attributes.
+For more information, see [SmartGraphs](../graphs/smartgraphs/_index.md).
+
+If there are no clear sub-graphs in the data and you therefore don't have a
+SmartGraph attribute for partitioning, consider using EnterpriseGraphs as the
+next best option. It uses hash-based sharding to pseudo-randomly distribute
+vertices across shards but places the incident edges of a vertex in the same
+shard as the vertex. This partial data locality as well as accidental
+co-location of vertices on the same DB-Server is exploited to speed up
+graph traversals and path searches.
 
 ## Document and Transaction Sizes
 

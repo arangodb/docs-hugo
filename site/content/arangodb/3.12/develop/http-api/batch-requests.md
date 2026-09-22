@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for batch requests
+title: Batch request HTTP API
 menuTitle: Batch Requests
 weight: 90
 description: >-
-  The HTTP API for batch requests lets you send multiple operations in a single
+  The HTTP interface for batch requests lets you send multiple operations in a single
   HTTP request
 ---
 {{< warning >}}
@@ -225,17 +225,21 @@ in a batch part will be ignored.
 
 ### Execute a batch request
 
-{{< warning >}}
-The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
-in v3.12.3.
-{{< /warning >}}
-
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/batch:
     post:
       operationId: executeBatchRequest
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
+        in v3.12.3.
+        {{</* /warning */>}}
+
         Executes a batch request. A batch request can contain any number of
         other requests that can be sent to ArangoDB in isolation. The benefit of
         using batch requests is that batching requests requires less client/server
@@ -309,11 +313,11 @@ paths:
 
 Sending a batch request with five batch parts:
 
-- GET /_api/version
-- DELETE /_api/collection/products
-- POST /_api/collection/products
-- GET /_api/collection/products/figures
-- DELETE /_api/collection/products
+1. {{< endpoint "GET" "/_api/version" >}}
+2. {{< endpoint "DELETE" "/_api/collection/products" >}}
+3. {{< endpoint "POST" "/_api/collection/products" >}}
+4. {{< endpoint "GET" "/_api/collection/products/figures" >}}
+5. {{< endpoint "DELETE" "/_api/collection/products" >}}
 
 The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
 `Content-Type` HTTP header.

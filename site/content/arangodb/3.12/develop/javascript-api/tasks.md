@@ -6,6 +6,10 @@ description: >-
   The tasks module provides an interface for managing scheduled and periodic
   execution of JavaScript code on the server side
 ---
+{{< warning >}}
+The tasks and Foxx queues features are deprecated and removed in ArangoDB v4.0.
+{{< /warning >}}
+
 `const tasks = require('@arangodb/tasks')`
 
 **Note**: If you are trying to schedule tasks in Foxx you should

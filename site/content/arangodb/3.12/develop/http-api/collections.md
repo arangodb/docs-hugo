@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for collections
+title: Collection HTTP API
 menuTitle: Collections
 weight: 25
 description: >-
-  The HTTP API for collections lets you create and delete collections, get
+  The HTTP interface for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
 ---
@@ -413,17 +413,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -520,6 +523,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -529,8 +540,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -608,7 +622,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `name` attribute is missing or has an invalid value.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/properties`.
           content:
             application/json:
               schema:
@@ -862,17 +877,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -969,6 +987,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -978,8 +1004,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -1057,7 +1086,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/count`.
         '404':
           description: |
             The collection cannot be found.
@@ -1342,17 +1372,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -1449,6 +1482,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -1458,8 +1499,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -1537,7 +1581,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/figures`.
           content:
             application/json:
               schema:
@@ -2015,17 +2060,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2122,6 +2170,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2131,8 +2187,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -2210,7 +2269,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/shards`.
           content:
             application/json:
               schema:
@@ -2489,17 +2549,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -2596,6 +2659,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -2605,8 +2676,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -2684,7 +2758,8 @@ paths:
                     type: string
         '400':
           description: |
-            The `collection-name` parameter is missing.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/revision`.
           content:
             application/json:
               schema:
@@ -2911,8 +2986,8 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The request path contains superfluous segments after
+            `/_api/collection/{collection-name}/checksum`.
         '404':
           description: |
             If the collection is unknown, then a *HTTP 404*
@@ -3128,7 +3203,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -3266,6 +3341,10 @@ paths:
                   description: |
                     In a cluster, this value determines the
                     number of shards to create for the collection.
+
+                    Default:
+                    If `distributeShardsLike` is set, the `numberOfShards`
+                    is that of the indicated prototype collection.
                   type: integer
                   default: 1
                 shardKeys:
@@ -3296,7 +3375,10 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
 
-                    Default: The `replicationFactor` defined by the database.
+                    Default:
+                    If `distributeShardsLike` is set, the default `replicationFactor`
+                    is that of the indicated prototype collection. Otherwise,
+                    the default `replicationFactor` is defined by the database.
                   type: integer
                 writeConcern:
                   description: |
@@ -3306,8 +3388,11 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    Default: If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the prototype collection.
+                    Default: If `distributeShardsLike` is set when the collection is created,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
+
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
                     Otherwise, the default value is controlled by the current database's
@@ -3338,7 +3423,10 @@ paths:
                     - `enterprise-hex-smart-vertex`: sharding used for node collections of
                       EnterpriseGraphs
 
-                    If no sharding strategy is specified, the default is `hash` for
+                    Default:
+                    If `distributeShardsLike` is set, the `shardingStrategy`
+                    is that of the indicated prototype collection. Otherwise,
+                    if no sharding strategy is specified, the default is `hash` for
                     all normal collections, `enterprise-hash-smart-edge` for all smart edge
                     collections, and `enterprise-hex-smart-vertex` for EnterpriseGraph
                     node collections.
@@ -3348,8 +3436,9 @@ paths:
                 distributeShardsLike:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
-                    collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
-                    properties from the specified collection (referred to as the _prototype collection_)
+                    collection follows the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+                    properties of the specified collection (referred to as the
+                    _prototype collection_ or sometimes _initial collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. This data co-location is utilized to optimize queries.
 
@@ -3505,17 +3594,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -3612,6 +3704,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -3621,8 +3721,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -4281,7 +4384,7 @@ paths:
                 computedValues:
                   description: |
                     An optional list of objects, each representing a computed value.
-                  type: array
+                  type: array # TODO: [array, null]
                   items:
                     type: object
                     required:
@@ -4341,6 +4444,12 @@ paths:
 
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
+
+                    If `distributeShardsLike` is set, the `replicationFactor`
+                    is that of the indicated prototype collection. You can only
+                    change the `replicationFactor` of the prototype collection
+                    to change the `replicationFactor` for this collection (and for
+                    all other collections that follow this prototype collection).
                   type: integer
                 writeConcern:
                   description: |
@@ -4350,8 +4459,11 @@ paths:
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
 
-                    If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the prototype collection.
+                    If `distributeShardsLike` is set,
+                    the initial `writeConcern` defaults to that of the indicated
+                    prototype collection. Afterwards, `writeConcern` is independent
+                    from the prototype collection and can differ from it.
+
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
                     equal the number of DB-Servers and has a value of `0`.
                     Otherwise, the default value is controlled by the current database's
@@ -4465,17 +4577,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -4572,6 +4687,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -4581,8 +4704,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -5064,17 +5190,20 @@ paths:
                         description: |
                           The schema validation type. Only JSON Schema is supported.
                         type: string
-                        enum: [json]
+                        const: json
                   computedValues:
                     description: |
                       A list of objects, each representing a computed value.
-                    type: array
+                    type: array # TODO: [array, null]
                     items:
                       type: object
                       required:
                         - name
                         - expression
                         - overwrite
+                        - computeOn
+                        - keepNull
+                        - failOnWarning
                       properties:
                         name:
                           description: |
@@ -5171,6 +5300,14 @@ paths:
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
                       for SatelliteCollections. _(cluster only)_
+
+                      If `distributeShardsLike` is set, the actual replication factor
+                      is that of the indicated prototype collection. Query the
+                      prototype collection to get the current `replicationFactor`
+                      for this collection. The reported `replicationFactor` of
+                      this collection is the value as of the time at which the
+                      collection was created, but it may have been changed
+                      for the prototype collection in the meantime.
                     type: integer
                   writeConcern:
                     description: |
@@ -5180,8 +5317,11 @@ paths:
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
 
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
+                      If `distributeShardsLike` is set when the collection is created,
+                      the initial `writeConcern` defaults to that of the indicated
+                      prototype collection. Afterwards, `writeConcern` is independent
+                      from the prototype collection and can differ from it.
+
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
                       equal the number of DB-Servers and has a value of `0`.
                       Otherwise, the default value is controlled by the current database's
@@ -5626,15 +5766,19 @@ db._drop(cn);
 ### Load a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The load function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
@@ -5817,15 +5961,19 @@ db._drop(cn);
 ### Unload a collection
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
+      deprecated: true
       description: |
         {{</* warning */>}}
         The unload function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
+        from version 3.9.0 onwards. It should no longer be used and is removed
+        in ArangoDB v4.0.
         {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to

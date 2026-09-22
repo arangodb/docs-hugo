@@ -31,9 +31,11 @@ FOR vertex[, edge[, path]]
   - **vertex** (object): the current vertex in a traversal
   - **edge** (object, *optional*): the current edge in a traversal
   - **path** (object, *optional*): representation of the current path with
-    two members:
-    - `vertices`: an array of all vertices on this path
-    - `edges`: an array of all edges on this path
+    the following attributes:
+    - `vertices`: An array of all vertices on this path.
+    - `edges`: An array of all edges on this path.
+    - `weights`: An array of the edge weight sums at each depth of this path.
+      See the `"weighted"` setting of the [`order`](#order) traversal option.
 - `IN` `min..max`: the minimal and maximal depth for the traversal:
   - **min** (number, *optional*): edges and vertices returned by this query
     start at the traversal depth of *min* (thus edges and vertices below it are
@@ -121,17 +123,35 @@ graph traversal. If you specify unknown options, query warnings are raised.
 #### `order`
 
 Specify which traversal algorithm to use (string):
-- `"bfs"` – the traversal is executed breadth-first. The results
+
+- `"bfs"`: The traversal is executed breadth-first. The results
   first contain all vertices at depth 1, then all vertices at depth 2 and so on.
-- `"dfs"` (default) – the traversal is executed depth-first. It
+
+- `"dfs"` (default): The traversal is executed depth-first. It
   first returns all paths from *min* depth to *max* depth for one vertex at
   depth 1, then for the next vertex at depth 1 and so on.
-- `"weighted"` - the traversal is a weighted traversal
-  (introduced in v3.8.0). Paths are enumerated with increasing cost.
-  Also see `weightAttribute` and `defaultWeight`. A returned path has an
-  additional attribute `weight` containing the cost of the path after every
-  step. The order of paths having the same cost is non-deterministic.
-  Negative weights are not supported and abort the query with an error.
+
+- `"weighted"`: The traversal is a weighted traversal.
+  Paths are enumerated with increasing cost.
+  The order of paths having the same cost is non-deterministic.
+
+  You can define what attribute to use as the cost of an edge with the
+  [`weightAttribute`](#weightattribute) traversal option, as well as a fallback
+  with [`defaultWeight`](#defaultweight). Negative weights are not supported and
+  abort the query with an error.
+
+  The path variable emitted by the traversal has a `weights` attribute with a
+  list of the calculated edge weight sums at each depth:
+  - **Depth 0**: The first value is always `0`.
+  - **Depth 1**: The second value is the weight of the edge between the
+    start vertex and the direct neighbor vertex.
+  - **Depth 2**: The third value is the sum of weights of the edges between the
+    start vertex, the direct neighbor vertex, and the neighbor's neighbor vertex.
+  - And so on for greater depths, summing all edge weights along the path.
+ 
+  Note that the `weightAttribute` and `defaultWeight` options are ignored for
+  traversal orders other than `"weighted"`, which means the `weights` attribute
+  is like `[0, 1, 2, 3, …]` for e.g. `order: "dfs"` and therefore not useful.
 
 #### `bfs`
 
@@ -213,11 +233,13 @@ projections (number). The default value is `5`.
 
 #### `weightAttribute`
 
-Specifies the name of an attribute that is used to look up the weight of an edge
-(string).
+This option is only used for traversals with `order: "weighted"`.
 
-If no attribute is specified or if it is not present in the edge document then
-the `defaultWeight` is used.
+The edge attribute to use as the weight (string). A `.` is interpreted as a
+literal dot, which means only top-level attributes are supported.
+
+If no attribute is specified, or if it is not present in the edge document, or
+if it has a non-numeric value, then the `defaultWeight` is used.
 
 The attribute value must not be negative.
 
@@ -228,6 +250,8 @@ encountered during traversal, the query is aborted with an error.
 {{< /info >}}
 
 #### `defaultWeight`
+
+This option is only used for traversals with `order: "weighted"`.
 
 Specifies the default weight of an edge (number). The default value is `1`.
 
@@ -261,13 +285,18 @@ collection in your traversal.
 
 Due to the nature of graphs, edges may reference vertices from arbitrary
 collections. Following the paths can thus involve documents from various
-collections and it is not possible to predict which are visited in a
-traversal. Which collections need to be loaded by the graph engine can only be
-determined at run time.
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
 
-Use the [`WITH` statement](../high-level-operations/with.md) to specify the collections you
-expect to be involved. This is required for traversals using collection sets
-in cluster deployments.
+If you use anonymous graphs / collection sets for graph queries, which vertex
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the vertex collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start vertex as well if it's not declared already
+(like by a `FOR` loop).
 
 ## Pruning
 
@@ -634,16 +663,17 @@ All of the above filters can be defined on vertices in the exact same way.
 
 ### Filtering on the path vs. filtering on vertices or edges
 
-Filtering on the path influences the Iteration on your graph. If certain conditions 
-aren't met, the traversal may stop continuing along this path.
+Filters on the emitted path (`p` variable) influence how the graph is traversed.
+If a path doesn't fulfill a condition, the traversal may stop following this
+path and not explore it any further.
 
-In contrast filters on vertex or edge only express whether you're interested in the actual value of these
-documents. Thus, it influences the list of returned documents (if you return v or e) similar 
-as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
-two nodes of these paths has to be executed - you just won't see them in your result array. 
-
-Similar are filters on vertices or edges - the traverser has to walk along these nodes, since 
-you may be interested in documents further down the path.
+Filters on the emitted vertex (`v` variable) or edge (`e` variable) only
+determine whether the current vertex and edge become part of the result.
+The traversal walks past them either way, because vertices and edges further
+down the path may still match. This is comparable to setting a minimum traversal
+depth greater than zero. With a minimum depth of `2`, the traversal still has to
+walk over the first two vertices of every path, you just don't see them in the
+result.
 
 ### Examples
 

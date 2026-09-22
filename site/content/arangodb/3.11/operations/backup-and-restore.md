@@ -29,8 +29,8 @@ and get up and running again in case of serious problems.
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
 {{< warning >}}
-Making use of a high availability deployment mode of ArangoDB, like Active Failover,
-Cluster or Datacenter-to-Datacenter Replication, does not remove the need of
+Using high-availability deployment modes of ArangoDB
+does not remove the need to
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 
@@ -58,15 +58,15 @@ in conjunction to the backup coming from another backup method.
 ## Logical Backups
 
 Logical backups can be created and restored with the tools
-[_arangodump_](../components/tools/arangodump/_index.md) and
-[_arangorestore_](../components/tools/arangorestore/_index.md).
+[arangodump](../components/tools/arangodump/_index.md) and
+[arangorestore](../components/tools/arangorestore/_index.md).
 
 ## Hot Backups
 
 {{< tag "ArangoDB Enterprise Edition" "AMP" >}}
 
 Hot backup and restore associated operations can be performed with the
-[_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the
+[arangobackup](../components/tools/arangobackup/_index.md) client tool and the
 [Hot Backup HTTP API](../develop/http-api/hot-backups.md).
 
 Many operations cannot afford downtimes and thus require administrators and
@@ -254,8 +254,8 @@ not be suited for.
 
 - **Identical Topology**
 
-  Unlike dumps created with [_arangodump_](../components/tools/arangodump/_index.md) and restored
-  with [_arangorestore_](../components/tools/arangorestore/_index.md),
+  Unlike dumps created with [arangodump](../components/tools/arangodump/_index.md) and restored
+  with [arangorestore](../components/tools/arangorestore/_index.md),
   hot backups can only be restored to the same type and structure of deployment.
   This means that one cannot restore a 3-node ArangoDB cluster's hot backup to
   any other deployment than another 3-node ArangoDB cluster of the same version.
@@ -290,7 +290,7 @@ not be suited for.
 
   Especially in the cluster, the result of these successively longer tries to
   obtain the global transaction lock might become visible in periods of apparent
-  dead time. Locks might be obtained on some machines and and not on others, so
+  dead time. Locks might be obtained on some machines and not on others, so
   that the process has to be retried over and over. Every unsuccessful try would
   then lead to the release of all partial locks.
 

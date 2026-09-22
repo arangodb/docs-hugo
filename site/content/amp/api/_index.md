@@ -1,5 +1,5 @@
 ---
-title: The API of the Arango Managed Platform (AMP)
+title: The AMP API
 menuTitle: API
 weight: 60
 description: >-

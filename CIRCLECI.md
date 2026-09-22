@@ -30,7 +30,7 @@ Invoke Args:
 ### Deploy a plain build to production
 
 To update the live documentation independently of an ArangoDB release, for
-example, because of changes to the Data Platform docs or to publish documentation
+example, because of changes to the Contextual Data Platform docs or to publish documentation
 improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -78,6 +78,7 @@ arguments are invoked:
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
+| string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
@@ -96,6 +97,7 @@ arguments are invoked:
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
+| string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 | boolean | `commit-generated` | `true` |
@@ -124,6 +126,7 @@ or for multiple versions.
 | string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
 | string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
 | string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
+| string | `arangodb-4_x`  | [Upstream reference](#upstream-references) for 4.x  |
 | string | `generators` | `examples` |
 | boolean | `commit-generated` | `true` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
@@ -149,7 +152,7 @@ use for generating examples. Do not specify a link when manually triggering a
 pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
 
 For 3.12, an ArangoDB Enterprise Edition image hosted on
-[Docker Hub](https://hub.docker.com/) is specified. Using Docker images has the
+[Docker Hub](https://hub.docker.com/) is specified. Using container images has the
 advantage that the compilation of ArangoDB can be skipped, making the example
 generation faster. Of course, this requires that an image containing relevant
 changes to ArangoDB exists.
@@ -205,6 +208,7 @@ Invoke Args:
 | string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
 | string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
 | string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| string | `arangodb-4_x`  | `arangodb/enterprise-preview:4.0-nightly` |
 | string | `generators` | `metrics error-codes exit-codes optimizer options` |
 | boolean | `commit-generated` | `true` |
 | boolean | `create-pr` | `true` |
@@ -240,3 +244,27 @@ via **Trigger Pipeline**.
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `create-docs-images-arm64` |
+
+## Troubleshooting
+
+### Expired Netlify access token
+
+If the `netlify deploy` command fails in CircleCI, it's possible that the
+Netlify Personal Access Token (PAT) expired. In this case, the error message
+in the CircleCI log looks like this:
+
+> Error: Site not found. Please rerun "netlify link"
+
+In Netlify, expired PATs automatically disappear (in the personal settings
+under Applications):
+
+<https://app.netlify.com/user/applications#personal-access-tokens>
+
+Create a new token, save it in 1Password, and update it in the CircleCI
+project settings:
+
+<https://app.circleci.com/settings/project/github/arangodb/docs-hugo/environment-variables>
+
+You don't have to delete the old one first. You can simply click **Add**, set
+the **Name** to `NETLIFY_ACCESS_TOKEN` and paste the token into the **Value**
+field. This updates the existing `NETLIFY_ACCESS_TOKEN` entry.

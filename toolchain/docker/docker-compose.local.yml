@@ -2,6 +2,9 @@ services:
   toolchain:
     container_name: toolchain
     image: toolchain
+    # Run in super-privileged container domain to use Docker socket
+    security_opt:
+      - label=type:spc_t
     build:
       context: .
       target: toolchain
@@ -20,8 +23,8 @@ services:
       ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10}
       ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
       ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
+      ARANGODB_SRC_4_X: ${ARANGODB_SRC_4_X}
       ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10}
       ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
       ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
+      ARANGODB_BRANCH_4_X: ${ARANGODB_BRANCH_4_X}

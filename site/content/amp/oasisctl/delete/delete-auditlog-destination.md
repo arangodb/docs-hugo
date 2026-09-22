@@ -1,7 +1,8 @@
 ---
-title: Delete Audit Log Destination with `oasisctl`
+title: Delete Audit Log Destination with _oasisctl_
 menuTitle: Delete Audit Log Destination
 weight: 5
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Delete a destination from an auditlog

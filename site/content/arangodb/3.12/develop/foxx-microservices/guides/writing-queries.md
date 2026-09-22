@@ -2,7 +2,9 @@
 title: Writing queries in Foxx services
 menuTitle: Writing queries
 weight: 15
-description: ''
+description: >-
+  Write and execute AQL queries in your Foxx services using the `query` and `aql`
+  template tags with safe bind parameters
 ---
 ArangoDB provides the `query` template string handler
 (or [template tag](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals))
@@ -141,8 +143,8 @@ const numbers = db._query(`
 // RETURN i
 ```
 
-If possible, you should always use the `query` or `aql` template tags
-rather than passing raw query strings to `db._query` directly.
+If possible, you should always use the `aql` or `query` template tags
+rather than passing raw query strings to `db._query()` directly.
 
 ## AQL fragments
 

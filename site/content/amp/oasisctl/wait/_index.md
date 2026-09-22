@@ -1,7 +1,8 @@
 ---
-title: Wait with `oasisctl`
+title: Wait with _oasisctl_
 menuTitle: Wait
 weight: 31
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Wait for a status change

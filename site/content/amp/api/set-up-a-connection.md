@@ -1,5 +1,5 @@
 ---
-title: Get started with the Arango Managed Platform (AMP) API
+title: Get started with the AMP API
 menuTitle: Get started with the API
 weight: 5
 description: >-

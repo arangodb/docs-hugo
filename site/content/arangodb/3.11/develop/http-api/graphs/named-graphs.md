@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for named graphs
+title: Named graphs HTTP API (Gharial)
 menuTitle: Named graphs
 weight: 5
 description: >-
-  The HTTP API for named graphs lets you manage General Graphs, SmartGraphs,
+  The HTTP interface for named graphs lets you manage General Graphs, SmartGraphs,
   EnterpriseGraphs, and SatelliteGraphs
 ---
 The HTTP API for [named graphs](../../../graphs/_index.md#named-graphs) is called _Gharial_.
@@ -69,116 +69,122 @@ paths:
                     example: 200
                   graphs:
                     description: |
-                      A list of all named graphs.
+                      A list with all named graphs.
                     type: array
                     items:
+                      description: |
+                        Each object holds the properties of a named graph.
                       type: object
+                      required:
+                        - name
+                        - edgeDefinitions
+                        - orphanCollections
+                        - _key
+                        - _id
+                        - _rev
                       properties:
-                        graph:
+                        name:
                           description: |
-                            The properties of the named graph.
-                          type: object
-                          required:
-                            - name
-                            - edgeDefinitions
-                            - orphanCollections
-                            - numberOfShards
-                            - _id
-                            - _rev
-                            - replicationFactor
-                            - isSmart
-                            - isDisjoint
-                            - isSatellite
-                          properties:
-                            name:
-                              description: |
-                                The name of the graph.
-                              type: string
-                            edgeDefinitions:
-                              description: |
-                                An array of definitions for the relations of the graph.
-                                Each has the following type:
-                              type: array
-                              items:
-                                type: object
-                                required:
-                                  - collection
-                                  - from
-                                  - to
-                                properties:
-                                  collection:
-                                    description: |
-                                      Name of the edge collection, where the edges are stored in.
-                                    type: string
-                                  from:
-                                    description: |
-                                      List of vertex collection names.
-                                      Edges in collection can only be inserted if their _from is in any of the collections here.
-                                    type: array
-                                    items:
-                                      type: string
-                                  to:
-                                    description: |
-                                      List of vertex collection names.
-
-                                      Edges in collection can only be inserted if their _to is in any of the collections here.
-                                    type: array
-                                    items:
-                                      type: string
-                            orphanCollections:
-                              description: |
-                                An array of additional vertex collections.
-                                Documents in these collections do not have edges within this graph.
-                              type: array
-                              items:
+                            The name of the graph.
+                          type: string
+                        edgeDefinitions:
+                          description: |
+                            An array of definitions for the relations of the graph.
+                          type: array
+                          items:
+                            description: |
+                              Each relation defines the permitted source and target vertex collections
+                              for the edges of one edge collection. An edge is only accepted if its
+                              `_from` collection is listed under `from` and, at the same time, its
+                              `_to` collection is listed under `to`.
+                              This is only enforced if you use the interface for named graphs.
+                            type: object
+                            required:
+                              - collection
+                              - from
+                              - to
+                            properties:
+                              collection:
+                                description: |
+                                  The name of the edge collection the edges of this relation are stored in.
                                 type: string
-                            numberOfShards:
-                              description: |
-                                Number of shards created for every new collection in the graph.
-                              type: integer
-                            _id:
-                              description: |
-                                The internal id value of this graph.
-                              type: string
-                            _rev:
-                              description: |
-                                The revision of this graph. Can be used to make sure to not override
-                                concurrent modifications to this graph.
-                              type: string
-                            replicationFactor:
-                              description: |
-                                The replication factor used for every new collection in the graph.
-                                For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                              from:
+                                description: |
+                                  The vertex collections that edges of this relation may start from.
 
-                                Default: The `replicationFactor` defined by the database.
-                              type: integer
-                            writeConcern:
-                              description: |
-                                The default write concern for new collections in the graph.
-                                It determines how many copies of each shard are required to be
-                                in sync on the different DB-Servers. If there are less than these many copies
-                                in the cluster, a shard refuses to write. Writes to shards with enough
-                                up-to-date copies succeed at the same time, however. The value of
-                                `writeConcern` cannot be greater than `replicationFactor`.
-                                For SatelliteGraphs, the `writeConcern` is automatically controlled to equal the
-                                number of DB-Servers and the attribute is not available. _(cluster only)_
-                              type: integer
-                            isSmart:
-                              description: |
-                                Whether the graph is a SmartGraph (Enterprise Edition only).
-                              type: boolean
-                            isDisjoint:
-                              description: |
-                                Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
-                              type: boolean
-                            smartGraphAttribute:
-                              description: |
-                                Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
-                              type: string
-                            isSatellite:
-                              description: |
-                                Whether the graph is a SatelliteGraph (Enterprise Edition only).
-                              type: boolean
+                                  The collection name in an edge's `_from` attribute
+                                  (`<collection-name>/<document-key>`) needs to be one of these.
+                                type: array
+                                items:
+                                  type: string
+                              to:
+                                description: |
+                                  The vertex collections that edges of this relation may point to.
+
+                                  The collection name in an edge's `_to` attribute
+                                  (`<collection-name>/<document-key>`) needs to be one of these.
+                                type: array
+                                items:
+                                  type: string
+                        orphanCollections:
+                          description: |
+                            An array of additional vertex collections.
+                            Documents in these collections do not have edges within this graph.
+                          type: array
+                          items:
+                            type: string
+                        numberOfShards:
+                          description: |
+                            Number of shards created for every new collection in the graph.
+                          type: integer
+                        _key:
+                          description: |
+                            The internal document key of this graph.
+                          type: string
+                        _id:
+                          description: |
+                            The internal document identifier of this graph.
+                          type: string
+                        _rev:
+                          description: |
+                            The revision of this graph. Can be used to make sure to not override
+                            concurrent modifications to this graph.
+                          type: string
+                        replicationFactor:
+                          description: |
+                            The replication factor used for every new collection in the graph.
+                            For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+
+                            Default: The `replicationFactor` defined by the database.
+                          type: integer
+                        writeConcern:
+                          description: |
+                            The default write concern for new collections in the graph.
+                            It determines how many copies of each shard are required to be
+                            in sync on the different DB-Servers. If there are less than these many copies
+                            in the cluster, a shard refuses to write. Writes to shards with enough
+                            up-to-date copies succeed at the same time, however. The value of
+                            `writeConcern` cannot be greater than `replicationFactor`.
+                            For SatelliteGraphs, the `writeConcern` is automatically controlled to equal the
+                            number of DB-Servers and the attribute is not available. _(cluster only)_
+                          type: integer
+                        isSmart:
+                          description: |
+                            Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                            or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
+                          type: boolean
+                        isDisjoint:
+                          description: |
+                            Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          type: boolean
+                        smartGraphAttribute:
+                          description: |
+                            Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          type: string
+                        isSatellite:
+                          description: |
+                            Whether the graph is a SatelliteGraph (Enterprise Edition only).
+                          type: boolean
       tags:
         - Graphs
 ```
@@ -245,9 +251,14 @@ paths:
                 edgeDefinitions:
                   description: |
                     An array of definitions for the relations of the graph.
-                    Each has the following type:
                   type: array
                   items:
+                    description: |
+                      Each relation defines the permitted source and target vertex collections
+                      for the edges of one edge collection. An edge is only accepted if its
+                      `_from` collection is listed under `from` and, at the same time, its
+                      `_to` collection is listed under `to`.
+                      This is only enforced if you use the interface for named graphs.
                     type: object
                     required:
                       - collection
@@ -256,23 +267,23 @@ paths:
                     properties:
                       collection:
                         description: |
-                          Name of the edge collection, where the edges are stored in.
+                          The name of the edge collection the edges of this relation are stored in.
                         type: string
                       from:
                         description: |
-                          A list of vertex collection names.
-                          Edges you later insert into `collection` can only reference vertices
-                          from these collections in their `_from` attribute (if you use the
-                          interface for named graphs).
+                          The vertex collections that edges of this relation may start from.
+
+                          The collection name in an edge's `_from` attribute
+                          (`<collection-name>/<document-key>`) needs to be one of these.
                         type: array
                         items:
                           type: string
                       to:
                         description: |
-                          A list of vertex collection names.
-                          Edges you later insert into `collection` can only reference vertices
-                          from these collections in their `_to` attribute (if you use the
-                          interface for named graphs).
+                          The vertex collections that edges of this relation may point to.
+
+                          The collection name in an edge's `_to` attribute
+                          (`<collection-name>/<document-key>`) needs to be one of these.
                         type: array
                         items:
                           type: string
@@ -286,6 +297,8 @@ paths:
                 isSmart:
                   description: |
                     Define if the created graph should be smart (Enterprise Edition only).
+                    - Setting `options.smartGraphAttribute` creates a SmartGraph (`isSmart` is automatically `true`).
+                    - Setting `isSmart` to `true` but no `options.smartGraphAttribute` creates an EnterpriseGraph.
                   type: boolean
                   default: false
                 isDisjoint:
@@ -302,7 +315,8 @@ paths:
                   properties:
                     smartGraphAttribute:
                       description: |
-                        Only in the Enterprise Edition and required if `isSmart` is `true`.
+                        Setting this option creates a SmartGraph (Enterprise Edition only).
+
                         The attribute name that is used to smartly shard the vertices of a graph.
                         Every vertex in this SmartGraph has to have this attribute.
                         Cannot be modified later.
@@ -375,13 +389,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -390,9 +400,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -401,20 +416,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -429,9 +447,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -456,7 +478,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -502,13 +525,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -517,9 +536,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -528,20 +552,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -556,9 +583,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -583,7 +614,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -986,13 +1018,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -1001,9 +1029,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -1012,20 +1045,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -1040,9 +1076,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -1067,7 +1107,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1203,10 +1244,9 @@ paths:
                     type: integer
                     example: 202
                   removed:
-                    description: |
-                      Always `true`.
+                    description: ''
                     type: boolean
-                    example: true
+                    const: true
         '403':
           description: |
             Returned if your user has insufficient rights.
@@ -1492,13 +1532,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -1507,9 +1543,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -1518,20 +1559,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -1546,9 +1590,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -1573,7 +1621,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1619,13 +1668,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -1634,9 +1679,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -1645,20 +1695,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -1673,9 +1726,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -1700,7 +1757,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -1915,13 +1973,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -1930,9 +1984,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -1941,20 +2000,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -1969,9 +2031,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -1996,7 +2062,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2040,13 +2107,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -2055,9 +2118,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -2066,20 +2134,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -2094,9 +2165,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -2121,7 +2196,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2433,13 +2509,19 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    The vertex collections that edges of this relation may start from.
+
+                    The collection name in an edge's `_from` attribute
+                    (`<collection-name>/<document-key>`) needs to be one of these.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    The vertex collections that edges of this relation may point to.
+
+                    The collection name in an edge's `_to` attribute
+                    (`<collection-name>/<document-key>`) needs to be one of these.
                   type: array
                   items:
                     type: string
@@ -2491,13 +2573,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -2506,9 +2584,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -2517,20 +2600,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -2545,9 +2631,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -2572,7 +2662,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2618,13 +2709,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -2633,9 +2720,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -2644,20 +2736,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -2672,9 +2767,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -2699,7 +2798,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -2903,13 +3003,19 @@ paths:
                   type: string
                 from:
                   description: |
-                    One or many vertex collections that can contain source vertices.
+                    The vertex collections that edges of this relation may start from.
+
+                    The collection name in an edge's `_from` attribute
+                    (`<collection-name>/<document-key>`) needs to be one of these.
                   type: array
                   items:
                     type: string
                 to:
                   description: |
-                    One or many vertex collections that can contain target vertices.
+                    The vertex collections that edges of this relation may point to.
+
+                    The collection name in an edge's `_to` attribute
+                    (`<collection-name>/<document-key>`) needs to be one of these.
                   type: array
                   items:
                     type: string
@@ -2959,13 +3065,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -2974,9 +3076,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -2985,20 +3092,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -3013,9 +3123,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -3040,7 +3154,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3084,13 +3199,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -3099,9 +3210,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -3110,20 +3226,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -3138,9 +3257,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -3165,7 +3288,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3385,13 +3509,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -3400,9 +3520,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -3411,20 +3536,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -3439,9 +3567,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -3466,7 +3598,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |
@@ -3511,13 +3644,9 @@ paths:
                       - name
                       - edgeDefinitions
                       - orphanCollections
-                      - numberOfShards
+                      - _key
                       - _id
                       - _rev
-                      - replicationFactor
-                      - isSmart
-                      - isDisjoint
-                      - isSatellite
                     properties:
                       name:
                         description: |
@@ -3526,9 +3655,14 @@ paths:
                       edgeDefinitions:
                         description: |
                           An array of definitions for the relations of the graph.
-                          Each has the following type:
                         type: array
                         items:
+                          description: |
+                            Each relation defines the permitted source and target vertex collections
+                            for the edges of one edge collection. An edge is only accepted if its
+                            `_from` collection is listed under `from` and, at the same time, its
+                            `_to` collection is listed under `to`.
+                            This is only enforced if you use the interface for named graphs.
                           type: object
                           required:
                             - collection
@@ -3537,20 +3671,23 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edges are stored in.
+                                The name of the edge collection the edges of this relation are stored in.
                               type: string
                             from:
                               description: |
-                                List of vertex collection names.
-                                Edges in collection can only be inserted if their _from is in any of the collections here.
+                                The vertex collections that edges of this relation may start from.
+
+                                The collection name in an edge's `_from` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
                             to:
                               description: |
-                                List of vertex collection names.
+                                The vertex collections that edges of this relation may point to.
 
-                                Edges in collection can only be inserted if their _to is in any of the collections here.
+                                The collection name in an edge's `_to` attribute
+                                (`<collection-name>/<document-key>`) needs to be one of these.
                               type: array
                               items:
                                 type: string
@@ -3565,9 +3702,13 @@ paths:
                         description: |
                           Number of shards created for every new collection in the graph.
                         type: integer
+                      _key:
+                        description: |
+                          The internal document key of this graph.
+                        type: string
                       _id:
                         description: |
-                          The internal id value of this graph.
+                          The internal document identifier of this graph.
                         type: string
                       _rev:
                         description: |
@@ -3592,7 +3733,8 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph (`smartGraphAttribute` is set)
+                          or EnterpriseGraph (`isSmart` is `true` but `smartGraphAttribute` is not set).
                         type: boolean
                       isDisjoint:
                         description: |

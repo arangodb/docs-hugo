@@ -54,11 +54,6 @@ automatically make _John_ a subscriber of _Mary_'s posts. It is an asymmetrical
 relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
 
-{{< info >}}
-New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
-and get from zero knowledge to advanced query techniques.
-{{< /info >}}
-
 ## Graph model
 
 Graph database systems like ArangoDB can store graphs and provide means to query
@@ -411,8 +406,8 @@ combine with geo, search, ...
 
 ## Back up and restore graph
 
-For backups of your graph data, you can use [_arangodump_](../components/tools/arangodump/_index.md)
-to create the backup, and [_arangorestore_](../components/tools/arangorestore/_index.md) to
+For backups of your graph data, you can use [arangodump](../components/tools/arangodump/_index.md)
+to create the backup, and [arangorestore](../components/tools/arangorestore/_index.md) to
 restore a backup. However, note the following:
 
 - You need to include the `_graphs` system collection if you want to back up

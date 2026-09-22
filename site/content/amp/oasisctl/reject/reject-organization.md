@@ -1,7 +1,8 @@
 ---
-title: Reject Organization with `oasisctl`
+title: Reject Organization with _oasisctl_
 menuTitle: Reject Organization
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Reject organization related invites

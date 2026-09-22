@@ -1,0 +1,30 @@
+---
+title: AQL functions
+menuTitle: Functions
+weight: 30
+description: >-
+  AQL offers an extensive set of functions to allow for complex computations
+---
+Functions can be called at any query position where an expression is allowed.
+The general function call syntax is:
+
+```aql
+FUNCTIONNAME(arguments)
+```
+
+`FUNCTIONNAME` is the name of the function to be called, and `arguments`
+is a comma-separated list of function arguments. If a function does not need any
+arguments, the argument list can be left empty. However, even if the argument
+list is empty, the parentheses around it are still mandatory to make function
+calls distinguishable from variable names.
+
+Some example function calls:
+
+```aql
+HAS(user, "name")
+LENGTH(friends)
+COLLECTIONS()
+```
+
+In contrast to collection and variable names, function names are case-insensitive, 
+i.e. `LENGTH(foo)` and `length(foo)` are equivalent.

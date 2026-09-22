@@ -2,9 +2,10 @@
 title: _arangorestore_ Examples
 menuTitle: Examples
 weight: 5
-description: ''
+description: >-
+  How to restore database dumps to an ArangoDB server with _arangorestore_
 ---
-To restore data from a dump previously created with [_arangodump_](../arangodump/_index.md),
+To restore data from a dump previously created with [arangodump](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.
 
 ## Invoking *arangorestore*
@@ -17,24 +18,24 @@ arangorestore --input-directory "dump"
 
 This connects to an ArangoDB server (`tcp://127.0.0.1:8529` by default), then restores the
 collection structure and the documents from the files found in the input directory `dump`.
-Note that the input directory must have been created by running `arangodump` before.
+Note that the input directory must have been created by running _arangodump_ before.
 
 _arangorestore_ connects to the `_system` database by default, using the default
 endpoint. To override the endpoint, or specify a different user, use one of the
 following startup options:
 
-- `--server.endpoint <string>`: endpoint to connect to
-- `--server.username <string>`: username
-- `--server.password <string>`: password to use
+- `--server.endpoint <string>`: Endpoint to connect to
+- `--server.username <string>`: Username
+- `--server.password <string>`: Password to use
   (omit this and you'll be prompted for the password)
-- `--server.authentication <bool>`: whether or not to use authentication
+- `--server.authentication <bool>`: Whether to use authentication
 
 If you want to connect to a different database or dump all databases you can additionally
 use the following startup options:
 
-- `--server.database <string>`: name of the database to connect to.
+- `--server.database <string>`: Name of the database to connect to.
   Defaults to the `_system` database.
-- `--all-databases true`: restore multiple databases from a dump which used the same option.
+- `--all-databases true`: Restore multiple databases from a dump which used the same option.
 
 Note that the specified user must have access to the database(s).
  
@@ -44,12 +45,12 @@ target database, the username and passwords passed to _arangorestore_ (in option
 `--server.username` and `--server.password`) are used to create an initial user for the
 new database.
 
-The option `--force-same-database` allows restricting arangorestore operations to a
+The option `--force-same-database` allows restricting _arangorestore_ operations to a
 database with the same name as in the source dump's `dump.json` file. It can thus be used
 to prevent restoring data into a "wrong" database by accident.
 
 For example, if a dump was taken from database ***A***, and the restore is attempted into 
-database ***B***, then with the `--force-same-database` option set to `true`, arangorestore
+database ***B***, then with the `--force-same-database` option set to `true`, _arangorestore_
 aborts instantly.
 
 The `--force-same-database` option is set to `false` by default to ensure backwards-compatibility.
@@ -101,13 +102,13 @@ directory and loads data into them. If the target database already contains coll
 which are also present in the input directory, the existing collections in the database
 are dropped and re-created with the properties and data found in the input directory.
 
-The following parameters are available to adjust this behavior:
+The following startup options are available to adjust this behavior:
 
-- `--create-collection <bool>`: set to `true` to create collections in the target
+- `--create-collection <bool>`: Set to `true` to create collections in the target
   database if they don't yet exist. If the target database already contains a 
   collection with the same name, then it is dropped and recreated with the
-  same properties as in the dump if the `overwrite` option is also set. 
-  If the `overwrite` option is not set, an existing collection is used as is,
+  same properties as in the dump if the `--overwrite` option is enabled (default).
+  If the `--overwrite` option is set to `false`, an existing collection is used as is,
   and its properties are not updated nor is its data discarded before restoring.
   If `--create-collection` is set to `false`, then _arangorestore_ does not make any
   attempts to create the collection or modify its properties. Data is restored
@@ -116,12 +117,12 @@ The following parameters are available to adjust this behavior:
   input directory but not in the target database, it aborts with a
   "collection not found" error.
   The default value for `--create-collection` is `true`.
-- `--overwrite <bool>`: controls whether existing collections are dropped if
-  `--create-collection true` is used. The default value is `true`.
-- `--import-data <bool>`: set to `true` to load document data into the collections in
+- `--overwrite <bool>`: Controls whether existing collections are dropped if
+  `--create-collection` is enabled. The default value is `true`.
+- `--import-data <bool>`: Set to `true` to load document data into the collections in
   the target database. Set to `false` to not load any document data. The default value 
   is `true`.
-- `--include-system-collections <bool>`: whether or not to include system collections
+- `--include-system-collections <bool>`: Whether to include system collections
   when re-creating collections or reloading data. The default value is `false`.
 
 For example, to (re-)create all non-system collections and load document data into them, use:
@@ -188,7 +189,7 @@ also restored or already present on the server.
 
 ## Encryption
 
-See [_arangodump_](../arangodump/examples.md#encryption) for details.
+See [arangodump](../arangodump/examples.md#encryption) for details.
 
 ## Reloading Data into a different Collection
 
@@ -216,8 +217,6 @@ arangorestore --collection mycopyvalues --server.database mycopy --input-directo
 
 ## Enabling revision trees for older dumps
 
-<small>Introduced in: v3.8.7, v3.9.2</small>
-
 Collections in ArangoDB 3.8 and later can use an internal format that is based
 on revision trees for replication. Using this format has advantages over the
 previous format, because changes to the collection on the leader can quickly be
@@ -231,7 +230,7 @@ The _arangorestore_ behavior for these collections is as follows:
   restored without revision trees.
 - In ArangoDB versions 3.8.7, 3.9.2 or later, the
   collections use revision trees by default, but you can opt out of this by
-  invoking arangorestore with the `--enable-revision-trees false` option.
+  invoking _arangorestore_ with the `--enable-revision-trees false` option.
 
 If the `--enable-revision-trees` startup option is `true` (which is the default value),
 then _arangorestore_ adds the necessary attributes for using revision trees
@@ -296,21 +295,21 @@ If you restore a collection that was dumped from a cluster into a single
 ArangoDB instance, the number of shards, replication factor and shard keys are
 silently ignored.
 
-### Factors affecting speed of arangorestore in a Cluster
+### Factors affecting speed of *arangorestore* in a Cluster
 
 The following factors affect speed of _arangorestore_ in a Cluster:
 
-- **Replication Factor**: the higher the _replication factor_, the more
+- **Replication Factor**: The higher the _replication factor_, the more
   time the restore takes. To speed up the restore you can restore
   using a _replication factor_ of `1` and then increase it again
   after the restore. This reduces the number of network hops needed
   during the restore.
-- **Restore Parallelization**: if the collections are not restored in
+- **Restore Parallelization**: If the collections are not restored in
   parallel, the restore speed is highly affected. A parallel restore can
   be done by using the `--threads` option of _arangorestore_.
   Depending on your specific case, you might be able to achieve additional
   parallelization by restoring on multiple _Coordinators_ at the same time.
-- **Dump Format**: Since ArangoDB 3.8 arangodump can produce two different
+- **Dump Format**: Since ArangoDB 3.8 _arangodump_ can produce two different
   dump formats: an enveloped format, which was the default format up to
   including ArangoDB 3.8, and a non-envelop format, which is the default
   since ArangoDB 3.9.0.
@@ -319,11 +318,11 @@ The following factors affect speed of _arangorestore_ in a Cluster:
   into versions older than 3.9. The non-envelope format is only understood
   since ArangoDB 3.8.0 and not compatible with previous versions. However, it
   is smaller and slightly faster to produce. In addition, the non-envelope
-  format allows arangorestore to parallelize the restore operations not
+  format allows _arangorestore_ to parallelize the restore operations not
   only across collections but also within collections. The latter is not
   possible with the envelope dump format.
-  In order to use the non-envelope dump format, invoke arangodump with the
-  option `--envelope false`. arangorestore can automatically parallelize
+  In order to use the non-envelope dump format, invoke _arangodump_ with the
+  option `--envelope false`. _arangorestore_ can automatically parallelize
   the restore of such dumps even for individual collections.
 
 ### Restoring collections with sharding prototypes
@@ -364,3 +363,4 @@ For restore this short overview is sufficient:
 - When creating a new database during restore, the given user needs `Administrate`
   access on `_system`. The user is promoted to `Administrate` access on the
   newly created database.
+

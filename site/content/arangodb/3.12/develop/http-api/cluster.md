@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for clusters
+title: Cluster HTTP API
 menuTitle: Cluster
 weight: 115
 description: >-
@@ -15,11 +15,21 @@ setting of the [`--cluster.api-jwt-policy` startup option](../../components/aran
 ### Get the statistics of a DB-Server
 
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_admin/cluster/statistics:
     get:
       operationId: getClusterStatistics
+      deprecated: true
       description: |
+        {{</* warning */>}}
+        This endpoint is deprecated and removed in ArangoDB v4.0.
+        Use `GET /_admin/metrics` instead, which provides the data exposed by
+        this API and a lot more.
+        {{</* /warning */>}}
+
         Queries the statistics of the given DB-Server
       parameters:
         - name: DBserver
@@ -74,6 +84,7 @@ paths:
             - `ShortName`: A string representing the shortname of the server, e.g. `"Coordinator0001"`.
             - `Timestamp`: ISO 8601 timestamp specifying the last heartbeat received. (deprecated)
             - `Host`: An optional string, specifying the host machine if known.
+            - `SyncTime`: ISO 8601 timestamp of the last sync time reported by the node.
 
             **Coordinators** only
             - `AdvertisedEndpoint`: A string representing the advertised endpoint, if set. (e.g. external IP address or load balancer, optional)

@@ -1,0 +1,6 @@
+{{ partial "shortcodes/steps.html" (dict
+  "context"   .
+  "content"   .Inner
+  "titleSize" (.Get "titleSize")
+  "steps"     (.Scratch.Get "steps")
+) -}}

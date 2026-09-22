@@ -1,7 +1,8 @@
 ---
-title: Revoke API Key with `oasisctl`
+title: Revoke API Key with _oasisctl_
 menuTitle: Revoke API Key
 weight: 1
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Revoke an API key with given identifier

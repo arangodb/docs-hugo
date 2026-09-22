@@ -29,7 +29,7 @@
 
 {{ define "getVersionLong" -}}
   {{ $coreVersion := .coreVersion -}}
-  {{ $versions := index site.Data.versions "/arangodb/" -}}
+  {{ $versions := index hugo.Data.versions "/arangodb/" -}}
   {{ range $i, $version := $versions -}}
     {{ if or (eq $coreVersion $version.name) (eq $coreVersion $version.alias) -}}
       {{ $version.version -}}

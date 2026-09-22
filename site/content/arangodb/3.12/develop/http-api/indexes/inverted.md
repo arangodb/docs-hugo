@@ -1,8 +1,9 @@
 ---
-title: HTTP interface for inverted indexes
+title: Inverted index HTTP API
 menuTitle: Inverted
 weight: 10
-description: ''
+description: >-
+  HTTP interface reference for creating indexes of type `inverted`
 ---
 ## Create an inverted index
 
@@ -42,7 +43,7 @@ paths:
               properties:
                 type:
                   description: |
-                    Must be equal to `"inverted"`.
+                    Needs to be set to `"inverted"`.
                   type: string
                   example: inverted
                 name:
@@ -61,6 +62,8 @@ paths:
                   minItems: 1
                   uniqueItems: true
                   items:
+                    description: |
+                      Each object holds the options for indexing one attribute.
                     type: object
                     required:
                       - name
@@ -135,6 +138,8 @@ paths:
                         type: boolean
                       cache:
                         description: |
+                          <small>Introduced in: v3.10.2</small>
+
                           Enable this option to always cache the field normalization values in memory
                           for this specific field. This can improve the performance of scoring and
                           ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -150,10 +155,12 @@ paths:
 
                           Default: the value defined by the top-level `cache` option.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the column
-                          cache in cluster deployments by only using the cache for leader shards, see the
-                          `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                       nested:
                         description: |
@@ -163,6 +170,8 @@ paths:
                           conditions need to be met by a single sub-object instead of across all of them.
                         type: array
                         items:
+                          description: |
+                            Each object holds the options for indexing one nested attribute.
                           type: object
                           required:
                             - name
@@ -207,6 +216,8 @@ paths:
                               type: boolean
                             cache:
                               description: |
+                                <small>Introduced in: v3.10.2</small>
+
                                 Enable this option to always cache the field normalization values in memory
                                 for this specific nested field. This can improve the performance of scoring and
                                 ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -222,10 +233,12 @@ paths:
 
                                 Default: the value defined by the top-level `cache` option.
 
-                                See the `--arangosearch.columns-cache-limit` startup option to control the
-                                memory consumption of this cache. You can reduce the memory usage of the column
-                                cache in cluster deployments by only using the cache for leader shards, see the
-                                `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                                See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                                to control the memory consumption of this cache. You can
+                                reduce the memory usage of the column cache in cluster
+                                deployments by only using the cache for leader shards, see the
+                                [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                                (introduced in v3.10.6).
                               type: boolean
                             nested:
                               description: |
@@ -251,6 +264,8 @@ paths:
                   default: false
                 cache:
                   description: |
+                    <small>Introduced in: v3.10.2</small>
+
                     Enable this option to always cache the field normalization values in memory
                     for all fields by default. This can improve the performance of scoring and
                     ranking queries. Otherwise, these values are memory-mapped and it is up to the
@@ -264,10 +279,12 @@ paths:
                     fields that are indexed with Geo Analyzers in memory for all fields by default.
                     This can improve the performance of geo-spatial queries.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                   default: false
                 storedValues:
@@ -320,15 +337,19 @@ paths:
                         default: lz4
                       cache:
                         description: |
+                          <small>Introduced in: v3.10.2</small>
+
                           Enable this option to always cache stored values in memory. This can improve the
                           query performance if stored values are involved. Otherwise, these values are
                           memory-mapped and it is up to the operating system to load them from disk into
                           memory and to evict them from memory.
 
-                          See the `--arangosearch.columns-cache-limit` startup option to control the
-                          memory consumption of this cache. You can reduce the memory usage of the column
-                          cache in cluster deployments by only using the cache for leader shards, see the
-                          `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                          See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                          to control the memory consumption of this cache. You can
+                          reduce the memory usage of the column cache in cluster
+                          deployments by only using the cache for leader shards, see the
+                          [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                          (introduced in v3.10.6).
                         type: boolean
                         default: false
                 primarySort:
@@ -372,36 +393,46 @@ paths:
                       default: lz4
                     cache:
                       description: |
+                        <small>Introduced in: v3.10.2</small>
+
                         Enable this option to always cache the primary sort columns in memory. This can
                         improve the performance of queries that utilize the primary sort order.
                         Otherwise, these values are memory-mapped and it is up to the operating system
                         to load them from disk into memory and to evict them from memory.
 
-                        See the `--arangosearch.columns-cache-limit` startup option to control the
-                        memory consumption of this cache. You can reduce the memory usage of the column
-                        cache in cluster deployments by only using the cache for leader shards, see the
-                        `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                        See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                        to control the memory consumption of this cache. You can
+                        reduce the memory usage of the column cache in cluster
+                        deployments by only using the cache for leader shards, see the
+                        [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                        (introduced in v3.10.6).
                       type: boolean
                       default: false
                 primaryKeyCache:
                   description: |
+                    <small>Introduced in: v3.10.2</small>
+
                     Enable this option to always cache the primary key column in memory. This can
                     improve the performance of queries that return many documents. Otherwise, these
                     values are memory-mapped and it is up to the operating system to load them from
                     disk into memory and to evict them from memory.
 
-                    See the `--arangosearch.columns-cache-limit` startup option to control the
-                    memory consumption of this cache. You can reduce the memory usage of the column
-                    cache in cluster deployments by only using the cache for leader shards, see the
-                    `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
+                    See the [`--arangosearch.columns-cache-limit` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
+                    to control the memory consumption of this cache. You can
+                    reduce the memory usage of the column cache in cluster
+                    deployments by only using the cache for leader shards, see the
+                    [`--arangosearch.columns-cache-only-leader` startup option](../../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
+                    (introduced in v3.10.6).
                   type: boolean
                   default: false
                 optimizeTopK:
                   description: |
+                    <small>Introduced in: v3.12.0</small>
+
                     This option only applies if you use the inverted index in a `search-alias` Views.
 
                     An array of strings defining sort expressions that you want to optimize.
-                    This is also known as _WAND optimization_ (introduced in v3.12.0).
+                    This is also known as _WAND optimization_.
 
                     If you query a View with the `SEARCH` operation in combination with a
                     `SORT` and `LIMIT` operation, search results can be retrieved faster if the
@@ -561,12 +592,14 @@ paths:
                         upon several possible configurable formulas as defined by their types.
                         The supported types are:
 
-                        - `"tier"`: consolidate based on segment byte size and live
+                        - `"tier"`: Consolidate based on segment byte size skew and live
                           document count as dictated by the customization attributes.
                       type: string
                       default: tier
                     segmentsBytesFloor:
                       description: |
+                        <small>Removed in: v3.12.7</small>
+
                         Defines the value (in bytes) to treat all smaller segments as equal for
                         consolidation selection.
                       type: integer
@@ -578,21 +611,86 @@ paths:
                       default: 8589934592
                     segmentsMax:
                       description: |
+                        <small>Removed in: v3.12.7</small>
+
                         The maximum number of segments that are evaluated as candidates for
                         consolidation.
                       type: integer
                       default: 200
                     segmentsMin:
                       description: |
+                        <small>Removed in: v3.12.7</small>
+
                         The minimum number of segments that are evaluated as candidates for
                         consolidation.
                       type: integer
                       default: 50
                     minScore:
                       description: |
+                        <small>Removed in: v3.12.7</small>
+
                         Filter out consolidation candidates with a score less than this.
                       type: integer
                       default: 0
+                    maxSkewThreshold:
+                      description: |
+                        <small>Introduced in: v3.12.7</small>
+
+                        The skew describes how much segment files vary in file size. It is a number
+                        between `0.0` and `1.0` and is calculated by dividing the largest file size
+                        of a set of segment files by the total size. For example, the skew of a
+                        200 MiB, 300 MiB, and 500 MiB segment file is `0.5` (`500 / 1000`).
+
+                        A large `maxSkewThreshold` value allows merging large segment files with
+                        smaller ones, consolidation occurs more frequently, and there are fewer
+                        segment files on disk at all times. While this may potentially improve the
+                        read performance and use fewer file descriptors, frequent consolidations
+                        cause a higher write load and thus a higher write amplification.
+                        
+                        On the other hand, a small threshold value triggers the consolidation only
+                        when there are a large number of segment files that don't vary in size a lot.
+                        Consolidation occurs less frequently, reducing the write amplification, but
+                        it can result in a greater number of segment files on disk.
+
+                        Multiple combinations of candidate segments are checked and the one with
+                        the lowest skew value is selected for consolidation. The selection process
+                        picks the greatest number of segments that together have the lowest skew value
+                        while ensuring that the size of the new consolidated segment remains under
+                        the configured `segmentsBytesMax`.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.4
+                    minDeletionRatio:
+                      description: |
+                        <small>Introduced in: v3.12.7</small>
+
+                        The `minDeletionRatio` represents the minimum required deletion ratio
+                        in one or more segments to perform a cleanup of those segments.
+                        It is a number between `0.0` and `1.0`.
+
+                        The deletion ratio is the percentage of deleted documents across one or
+                        more segment files and is calculated by dividing the number of deleted
+                        documents by the total number of documents in a segment or a group of
+                        segments. For example, if there is a segment with 1000 documents of which
+                        300 are deleted and another segment with 1000 documents of which 700 are
+                        deleted, the deletion ratio is `0.5` (50%, calculated as `1000 / 2000`).
+
+                        The `minDeletionRatio` threshold must be carefully selected. A smaller
+                        value leads to earlier cleanup of deleted documents from segments and
+                        thus reclamation of disk space but it generates a higher write load.
+                        A very large value lowers the write amplification but at the same time
+                        the system can be left with a large number of segment files with a high
+                        percentage of deleted documents that occupy disk space unnecessarily.
+
+                        During cleanup, the segment files are first arranged in decreasing
+                        order of their individual deletion ratios. Then the largest subset of
+                        segments whose collective deletion ratio is greater than or equal to
+                        `minDeletionRatio` is picked.
+                      type: number
+                      minimum: 0.0
+                      maximum: 1.0
+                      default: 0.5
                 writebufferIdle:
                   description: |
                     Maximum number of writers (segments) cached in the pool

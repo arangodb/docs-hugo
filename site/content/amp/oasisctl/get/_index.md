@@ -1,7 +1,8 @@
 ---
-title: Get with `oasisctl`
+title: Get with _oasisctl_
 menuTitle: Get
 weight: 13
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get information
@@ -32,7 +33,6 @@ oasisctl get [flags]
 * [oasisctl get group](get-group.md)	 - Get a group the authenticated user has access to
 * [oasisctl get ipallowlist](get-ipallowlist.md)	 - Get an IP allowlist the authenticated user has access to
 * [oasisctl get metrics](get-metrics.md)	 - Get metrics information
-* [oasisctl get notebook](get-notebook.md)	 - Get a notebook
 * [oasisctl get organization](get-organization.md)	 - Get an organization the authenticated user is a member of
 * [oasisctl get policy](get-policy.md)	 - Get a policy the authenticated user has access to
 * [oasisctl get private](get-private.md)	 - Get private information

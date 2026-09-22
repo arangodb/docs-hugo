@@ -116,10 +116,12 @@ as well as configuration details in terms of sharding and replication.
     - The number of skiplist indexes
     - The number of persistent indexes
     - The number of geo indexes
+    - The number of ttl indexes
     - The number of fulltext indexes
     - The number of iresearch indexes
     - The number of inverted indexes
     - The number of zkd indexes
+    - The number of unknown indexes
     - A list of detailed information per index
       - The index type
       - Is it a unique index?

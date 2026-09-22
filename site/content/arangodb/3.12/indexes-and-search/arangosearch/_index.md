@@ -998,9 +998,11 @@ For relevance and performance tuning, as well as the reference documentation, se
 
 If you are interested in more technical details, have a look at:
 
+<!-- TODO
 - [**ArangoSearch Tutorial**](https://www.arangodb.com/learn/search/tutorial/#:~:text=Ranking%20in%20ArangoSearch):
   The tutorial includes sections about the View concept, Analysis, and the
   ranking model.
+-->
 - [**ArangoSearch architecture overview**](architecture.md): 
   A description of ArangoSearch's design, its inverted index and some
   implementation details.

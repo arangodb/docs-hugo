@@ -1,8 +1,11 @@
 ---
-title: Replication dump commands
+title: Replication dump commands of the HTTP API
 menuTitle: Replication Dump
 weight: 5
-description: ''
+description: >-
+  The replication dump commands let clients query the collections and indexes of
+  a database, snapshot the current state with dump batches, and fetch the data
+  of the collections for the initial synchronization
 ---
 ## Inventory
 
@@ -217,7 +220,7 @@ paths:
                 ttl:
                   description: |
                     The time-to-live for the new batch (in seconds).
-                  type: integer
+                  type: number
       responses:
         '200':
           description: |
@@ -332,8 +335,8 @@ paths:
               properties:
                 ttl:
                   description: |
-                    the time-to-live for the new batch (in seconds)
-                  type: integer
+                    The time-to-live for the new batch (in seconds)
+                  type: number
       responses:
         '204':
           description: |

@@ -43,10 +43,9 @@ operating system is not supported.
 ### Linux
 
 You can run ArangoDB on Linux, including production environments, on the
-x86-64 architecture. Running ArangoDB on ARM architectures is suitable for
-testing and evaluation purposes.
+x86-64 and ARM architectures.
 
-- **x86-64**: The processor(s) must support the **x86-64** architecture with the
+- **x86-64**: The processor(s) must support the **x86-64** / **AMD64** architecture with the
   **SSE 4.2** and **AVX** instruction set extensions (Intel Sandy Bridge or better,
   AMD Bulldozer or better, etc.).
 - **ARM**: The processor(s) must be 64-bit ARM chips (**AArch64**). The minimum

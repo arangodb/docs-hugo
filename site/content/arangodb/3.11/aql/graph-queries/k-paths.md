@@ -25,8 +25,7 @@ Here is an example graph to explain how the k Paths algorithm works:
 Each ellipse stands for a train station with the name of the city written inside
 of it. They are the vertices of the graph. Arrows represent train connections
 between cities and are the edges of the graph. The numbers near the arrows
-describe how long it takes to get from one station to another. They are used
-as edge weights.
+describe how long it takes to get from one station to another.
 
 Assume that you want to go from **Aberdeen** to **London** by train.
 
@@ -170,6 +169,23 @@ FOR vertex IN OUTBOUND K_PATHS
 All collections in the list that do not specify their own direction use the
 direction defined after `IN` (here: `OUTBOUND`). This allows to use a different
 direction for each collection in your path search.
+
+### Graph path searches in a cluster
+
+Due to the nature of graphs, edges may reference vertices from arbitrary
+collections. Following the paths can thus involve documents from various
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
+
+If you use anonymous graphs / collection sets for graph queries, which vertex
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the vertex collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start vertex as well if it's not declared already
+(like by a `FOR` loop).
 
 ## Examples
 

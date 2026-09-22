@@ -12,7 +12,7 @@ To use vector search, you need to have vector embeddings stored in documents
 and the attribute that stores them needs to be indexed by a
 [vector index](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md).
 
-You can calculate vector embeddings using [ArangoDB's GraphML](../../../../ai-suite/graphml/_index.md)
+You can calculate vector embeddings using [Arango's GraphML](../../../../agentic-ai-suite/graphml/_index.md)
 capabilities (available in the Arango Managed Platform (AMP)) or using external tools.
 
 {{< warning >}}
@@ -58,8 +58,8 @@ be found depends on the data as well as the search effort (see the `nProbe` opti
   undefined which one is selected.
 
 - In v3.12.4 and v3.12.5, you cannot have any `FILTER` operation between `FOR`
-  and `LIMIT` for pre-filtering. From v3.12.6 onward, you can add `FILTER`
-  operations between `FOR` and `SORT` that are then applied during the lookup in
+  and `LIMIT` for pre-filtering. From v3.12.6 onward, you can add a single `FILTER`
+  operations between `FOR` and `SORT` that is then applied during the lookup in
   the vector index. Example:
 
   ```aql

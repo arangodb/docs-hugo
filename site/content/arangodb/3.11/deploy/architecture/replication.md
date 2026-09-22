@@ -7,7 +7,7 @@ description: >-
   different cluster nodes
 ---
 Replication allows you to *replicate* data onto another machine. It
-forms the base of all disaster recovery and failover features ArangoDB
+forms the base of all scalability, disaster recovery, and failover features ArangoDB
 offers. 
 
 ArangoDB offers **synchronous** and **asynchronous** replication.
@@ -25,7 +25,7 @@ Asynchronous replication is used:
 ## Synchronous replication
 
 Synchronous replication only works within an ArangoDB Cluster and is typically
-used for mission critical data which must be accessible at all
+used for mission-critical data which must be accessible at all
 times. Synchronous replication generally stores a copy of a shard's
 data on another DB-Server and keeps it in sync. Essentially, when storing
 data after enabling synchronous replication, the Cluster waits for

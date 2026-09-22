@@ -18,10 +18,6 @@ Under the hood, both models rely on two main components:
   a measure of how relevant a term is, i.e. whether the word is common or rare
   across all documents
 
-See _Ranking in ArangoSearch_ in the
-[ArangoSearch Tutorial](https://www.arangodb.com/learn/search/tutorial/#:~:text=Ranking%20in%20ArangoSearch)
-to learn more about the ranking model.
-
 ## Basic Ranking
 
 To sort View results from most relevant to least relevant, use a

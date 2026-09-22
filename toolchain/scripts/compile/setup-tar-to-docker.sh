@@ -28,11 +28,14 @@ sed -i \
     -e 's~^uid = .*$~~' \
     /etc/arangodb3/arangod.conf
 
-rm -f /usr/bin/foxx
-cat >> /usr/bin/foxx <<'EOF'
+# foxx-cli only available up to ArangoDB 3.x but removed in 4.0
+if [ "${ARANGODB_VERSION%%.*}" = "3" ] && [ -x /usr/lib/node_modules/foxx-cli/bin/foxx ]; then
+  rm -f /usr/bin/foxx
+  cat >> /usr/bin/foxx <<'EOF'
 #!/bin/sh
 test -d /tmp/foxx || mkdir -m 700 /tmp/foxx
 export HOME=/tmp/foxx
 exec /usr/lib/node_modules/foxx-cli/bin/foxx "$@"
 EOF
-chmod 755 /usr/bin/foxx
+  chmod 755 /usr/bin/foxx
+fi

@@ -2,7 +2,10 @@
 title: Set up the ArangoSync Master for Datacenter-to-Datacenter Replication
 menuTitle: ArangoSync Master
 weight: 10
-description: ''
+description: >-
+  The ArangoSync Master manages the synchronization and assigns tasks to the
+  workers, and you can run it as a systemd service that creates the required
+  certificates on every start
 ---
 The _ArangoSync Master_ is responsible for managing all synchronization, creating
 tasks and assigning those to the _ArangoSync Workers_.
@@ -17,7 +20,7 @@ on their own servers, equipped with sufficient CPU power and memory capacity.
 
 To start an _ArangoSync Master_ using a `systemd` service, use a unit like this:
 
-```conf
+```cfg
 [Unit]
 Description=Run ArangoSync in master mode
 After=network.target
@@ -49,7 +52,7 @@ If you want the service to create a TLS certificate & client authentication
 certificate, for authenticating with _ArangoSync Masters_ in another datacenter,
 for every start, add this to the `Service` section.
 
-```conf
+```cfg
 ExecStartPre=/usr/bin/sh -c "mkdir -p ${CERTIFICATEDIR}"
 ExecStartPre=/usr/sbin/arangosync create tls keyfile \
     --cacert=${CERTIFICATEDIR}/tls-ca.crt \

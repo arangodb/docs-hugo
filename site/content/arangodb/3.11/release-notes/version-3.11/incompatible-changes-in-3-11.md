@@ -67,7 +67,7 @@ This is only the case if all of the following conditions are true:
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
-- The glibc version of your system is different than the one used by ArangoDB,
+- The glibc version of your system is different from the one used by ArangoDB,
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
@@ -112,7 +112,7 @@ If the feature is enabled, then any endpoints that contain database, collection,
 View, or index names in the URL may contain special characters that were
 previously not allowed (percent-encoded). They are also to be expected in
 payloads that contain database, collection, View, or index names, as well as
-document identifiers (because they are comprised of the collection name and the
+document identifiers (because they are composed of the collection name and the
 document key). If client applications assemble URLs with extended names
 programmatically, they need to ensure that extended names are properly
 URL-encoded.
@@ -594,7 +594,7 @@ the following steps.
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
 and JSON, it was previously possible for precision loss to occur in edge cases.
-This also affected creating and restoring dumps with arangodump and arangorestore.
+This also affected creating and restoring dumps with _arangodump_ and _arangorestore_.
 
 A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
 used to be serialized to `1152921504606847000` in JSON, which deserializes back
@@ -614,6 +614,85 @@ Moreover, replication-related APIs such as the `/_api/wal/tail` endpoint now
 support the VelocyPack format. The cluster replication has been changed to use
 VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
 risk of deviations due to the serialization.
+
+## `PERCENTILE()` AQL function inclusive of lower end 
+
+<small>Introduced in: v3.11.14-1</small>
+
+The `PERCENTILE()` AQL function is now inclusive on the lower end, which means
+requesting the 0th percentile no longer raises a query warning. Moreover, when
+using the `interpolation` method, a percentile greater than or equal to `0` now
+returns the lowest number of the list where it would previously return `null`.
+
+```aql
+PERCENTILE( [1, 2, 3, 4],  0 ) // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4],  0, "interpolation") // now 1 instead of null and a query warning
+PERCENTILE( [1, 2, 3, 4], 10, "interpolation") // now 1 instead of null
+PERCENTILE( [1, 2, 3, 4], 20, "interpolation") // 1 as before
+```
+
+## Optional elevation for GeoJSON Points
+
+<small>Introduced in: v3.11.14-2</small>
+
+GeoJSON Point may now have three coordinates: `[longitude, latitude, elevation]`.
+However, ArangoDB does not take any elevation into account in geo-spatial
+calculations.
+
+Points with an elevation do no longer fail the validation in the `GEO_POLYGON()`
+and `GEO_MULTIPOLYGON()` functions. Moreover, GeoJSON with three coordinates is
+now indexed by geo indexes and thus also matched by geo-spatial queries, which
+means you may find more results than before.
+
+Also see [Geo-spatial functions in AQL](../../aql/functions/geo.md).
+
+## Rclone upgrade possibly requiring configuration changes
+
+<small>Introduced in: v3.11.14-4</small>
+
+Rclone is used by ArangoDB for uploading and downloading Hot Backups to and from
+object storage, often using cloud provider services like AWS's S3 or S3-compatible
+offerings.
+
+To transfer Hot Backups this way, rclone requires a configuration file to
+specify the provider, region, and so on. The configuration is typically
+backwards compatible, but behavioral changes on the provider side or of
+technical nature may require that you modify the configuration.
+
+The version of the bundled rclone has been updated in the ArangoDB hotfix release
+3.11.14-4. This and later versions may therefore require action
+regarding the rclone configuration:
+
+| ArangoDB version | Rclone version    |
+|:-----------------|:------------------|
+| v3.11.14-3       | v1.62.2           |
+| v3.11.14-4       | v1.73.5 (updated) |
+
+You should check for the following things in particular:
+
+- If you use AWS S3 and a region other than `us-east-1`, you need to either specify the
+  region in the `location_constraint` (e.g. `"location_constraint": "eu-central-1"`),
+  set `"no_check_bucket": "true"`, or both.
+
+  Otherwise, rclone makes a check with an unspecified location constraint which
+  AWS rejects (IllegalLocationConstraintException). This is caused by an upgrade
+  to the AWS SDK v2 in rclone v1.68.0.
+
+- If you use an S3-compatible provider like GCS, Ceph, MinIO, Wasabi, or older
+  gateways, uploads may fail unless you set `"use_data_integrity_protections": "false"`.
+
+  The upgrade to the AWS SDK v2 in rclone v1.68.0 changed the default algorithm
+  for data integrity checksums to CRC32/CRC64. While this is supported by AWS,
+  other S3-compatible providers may still expect MD5 and therefore fail. Later
+  rclone versions may automatically account for this quirk for certain providers.
+
+- If you use an S3-compatible provider, there may be quirks that rclone should
+  automatically handle for known providers. For example, `use_x_id` is disabled
+  for GCS. Other options that are auto-set per provider are `sign_accept_encoding`
+  and `use_multipart_uploads`.
+
+  You might need to force specific settings in case your provider is not known
+  to rclone and therefore doesn't handle specific quirks on its own.
 
 ## JavaScript API
 
@@ -640,6 +719,10 @@ for example, in _arangosh_ or in Foxx services.
 
 ## Startup options
 
+The following list describes miscellaneous changes to ArangoDB server (_arangod_)
+startup options that are independent of larger changes like feature removals
+already covered above.
+
 ### `--server.disable-authentication` and `--server.disable-authentication-unix-sockets` obsoleted
 
 The `--server.disable-authentication` and `--server.disable-authentication-unix-sockets`
@@ -662,7 +745,7 @@ version of ArangoDB. Setting the option to anything but the value of
 `--agency.size` should be avoided.
 
 From v3.11.0 onwards, this option is deprecated, and setting it to a value
-different than the value of `--agency.size` leads to a startup error.
+different from the value of `--agency.size` leads to a startup error.
 
 ### `--query.parallelize-gather-writes` obsoleted
 
@@ -689,7 +772,7 @@ effect anymore.
 
 ### arangoexport
 
-The default output file type produced by arangoexport, controlled by the `--type`
+The default output file type produced by _arangoexport_, controlled by the `--type`
 startup option, has been changed from `json` to `jsonl`.
-This allows for more efficient processing of the files produced by arangoexport
-with other tools, such as arangoimport, by default.
+This allows for more efficient processing of the files produced by _arangoexport_
+with other tools, such as _arangoimport_, by default.

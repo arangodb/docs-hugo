@@ -6,9 +6,10 @@ description: >-
   arangojs is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
 aliases:
+  - ../../arangodb/3.11/develop/drivers/javascript
   - ../../arangodb/3.12/develop/drivers/javascript
   - ../../arangodb/stable/develop/drivers/javascript
-  - ../../arangodb/4.0/develop/drivers/javascript
+  - ../../arangodb/4.x/develop/drivers/javascript
   - ../../arangodb/devel/develop/drivers/javascript
 ---
 The official ArangoDB low-level JavaScript client.
@@ -18,9 +19,8 @@ The official ArangoDB low-level JavaScript client.
 - [Changelog](https://github.com/arangodb/arangojs/blob/main/CHANGELOG.md)
 
 {{< info >}}
-If you are looking for the ArangoDB JavaScript API in
-Foxx or the `arangosh`
-interactive shell, please refer to the documentation about the
+If you are looking for the ArangoDB JavaScript API used in the _arangosh_ interactive
+shell (and up to ArangoDB v3.12 also in Foxx), please refer to the documentation about the
 [`@arangodb` module](../../arangodb/3.12/develop/javascript-api/@arangodb/_index.md) instead.
 
 The JavaScript driver is **only** meant to be used when accessing ArangoDB from

@@ -1,5 +1,8 @@
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
-{{- $dataFolderByVersion := index site.Data $pageVersion }}
+{{- if not $pageVersion }}
+  {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
+{{- end }}
+{{- $dataFolderByVersion := index hugo.Data $pageVersion }}
 {{- $data := index $dataFolderByVersion "exitcodes" }}
 {{- $basePage := .Page.RelPermalink }}
 {{- range $data }}

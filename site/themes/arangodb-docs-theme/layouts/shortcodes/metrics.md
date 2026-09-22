@@ -1,6 +1,9 @@
 {{- $componentMap := dict "single" "Single Servers" "dbserver" "DB-Servers" "coordinator" "Coordinators" "agent" "Agents" }}
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
-{{- $dataFolderByVersion := index site.Data $pageVersion }}
+{{- if not $pageVersion }}
+  {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
+{{- end }}
+{{- $dataFolderByVersion := index hugo.Data $pageVersion }}
 {{- $allMetricsFile := index $dataFolderByVersion "allMetrics" }}
 {{- if not $allMetricsFile }}{{ errorf "Could not find %q in %q data folder" "allMetrics" $pageVersion}}{{ end }}
 {{- $metricGroups := newScratch }}
@@ -14,7 +17,7 @@
 
 {{ range $metric := $metricGroup }}
 
-#### {{ strings.TrimRight ".\r\n" $metric.help }}
+#### {{ strings.TrimRight " ." (replaceRE "[\\s]*?[\\r\\n]+" " " $metric.help) }} {#{{ $metric.name }}}
 
 {{ if eq $metric.type "histogram" -}}
 `{{ $metric.name }}` (basename)<br>

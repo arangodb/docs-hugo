@@ -88,23 +88,23 @@ See [Sharding](#sharding) below for more information.
 This architecture is very flexible and thus allows many configurations,
 which are suitable for different usage scenarios:
 
- 1. The default configuration is to run exactly one _Coordinator_ and
-    one _DB-Server_ on each machine. This achieves the classical
-    master/master setup, since there is a perfect symmetry between the
-    different nodes, clients can equally well talk to any one of the
-    _Coordinators_ and all expose the same view to the data store. _Agents_
-    can run on separate, less powerful machines.
- 2. One can deploy more _Coordinators_ than _DB-Servers_. This is a sensible
-    approach if one needs a lot of CPU power for the Foxx services,
-    because they run on the _Coordinators_.
- 3. One can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
-    is needed and the query performance is the lesser bottleneck
- 4. One can deploy a _Coordinator_ on each machine where an application
-    server (e.g. a node.js server) runs, and the _Agents_ and _DB-Servers_
-    on a separate set of machines elsewhere. This avoids a network hop
-    between the application server and the database and thus decreases
-    latency. Essentially, this moves some of the database distribution
-    logic to the machine where the client runs.
+- The default configuration is to run exactly one _Coordinator_ and
+  one _DB-Server_ on each machine. This achieves the classical
+  master/master setup, since there is a perfect symmetry between the
+  different nodes, clients can equally well talk to any one of the
+  _Coordinators_ and all expose the same view to the data store. _Agents_
+  can run on separate, less powerful machines.
+- You can deploy more _Coordinators_ than _DB-Servers_.
+  This is a sensible approach if you need a lot of CPU power for Foxx services,
+  because they run on the _Coordinators_.
+- You can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
+  is needed and the query performance is the lesser bottleneck.
+- You can deploy a _Coordinator_ on each machine where an application
+  server (e.g. a Node.js server) runs, and the _Agents_ and _DB-Servers_
+  on a separate set of machines elsewhere. This avoids a network hop
+  between the application server and the database and thus decreases
+  latency. Essentially, this moves some of the database distribution
+  logic to the machine where the client runs.
 
 As you can see, the _Coordinator_ layer can be scaled and deployed independently
 from the _DB-Server_ layer.
@@ -209,7 +209,7 @@ The data is always stored on the _DB-Servers_.
 The following example gives you an idea of how synchronous operation
 has been implemented in ArangoDB Cluster:
 
-1. Connect to a _Coordinator_ via [_arangosh_](../../components/tools/arangodb-shell/_index.md)
+1. Connect to a _Coordinator_ via [arangosh](../../components/tools/arangodb-shell/_index.md)
 2. Create a collection: `db._create("test", {"replicationFactor": 2});`
 3. The _Coordinator_ figures out a *leader* and one *follower* and creates
    one *shard* (as this is the default)

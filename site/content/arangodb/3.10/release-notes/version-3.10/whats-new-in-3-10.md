@@ -48,12 +48,9 @@ This feature is only available in the Enterprise Edition.
 The 3.10 version of ArangoDB introduces a specialized version of SmartGraphs, 
 called EnterpriseGraphs. 
 
-EnterpriseGraphs come with a concept of automated sharding key selection,
-meaning that the sharding key is randomly selected while ensuring that all
-their adjacent edges are co-located
-on the same servers, whenever possible. This approach provides significant
-advantages as it minimizes the impact of having suboptimal sharding keys
-defined when creating the graph.
+EnterpriseGraphs use hash-based sharding similar to General Graphs that
+pseudo-randomly distribute nodes across shards, but EnterpriseGraphs ensure that
+the adjacent edges of nodes are co-located in the same shard.
 
 See the [EnterpriseGraphs](../../graphs/enterprisegraphs/_index.md) chapter for more details.
 
@@ -1798,6 +1795,15 @@ with large shards.
   You can enable it by setting the `--split-files` option to `true`. This option
   is disabled by default because dumps created with this option enabled cannot
   be restored into previous versions of ArangoDB.
+
+- You can tune the dumping performance with the following new experimental
+  _arangodump_ startup options:
+
+  - `--dbserver-prefetch-batches`: Number of batches to prefetch on each DB-Server.
+  - `--dbserver-worker-threads`: Number of worker threads on each DB-Server.
+  - `--local-network-threads`: Number of local writer threads.
+  - `--local-writer-threads`: Number of local network threads, i.e. how many
+    requests are sent in parallel.
 
 ## Internal changes
 

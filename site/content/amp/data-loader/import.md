@@ -1,11 +1,10 @@
 ---
-title: Start the import
+title: Start the Data Loader import
 menuTitle: Start import
 weight: 15
 description: >-
   Once the data files are provided and the graph is designed, you can start the import
 ---
-
 Before starting the actual import, make sure that:
 - You have selected a database for import or created a new one;
 - You have provided a valid name for your graph;
