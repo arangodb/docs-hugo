@@ -12,10 +12,10 @@ description: >-
 [Agentic AI Suite](../../agentic-ai-suite/_index.md). It is the code-first way to
 drive an [AutoGraph](../../agentic-ai-suite/autograph/_index.md) workflow: sign
 in, create a project, store the API keys the models need, upload your documents,
-and deploy the AutoGraph service that turns them into a context graph.
+and deploy the AutoGraph service that turns them into a Context Graph.
 
 The SDK wraps the suite's wire contracts, so you never assemble a URL, set an
-authentication header, poll a job by hand, or interpret an HTTP status code.
+authentication header, or interpret an HTTP status code.
 Everything that can go wrong arrives as a named Python exception instead.
 
 ```python
@@ -46,7 +46,7 @@ interfaces:
 | Operation | Web interface | HTTP REST API | Arango AI SDK |
 |-----------|---------------|---------------|---------------|
 | Authenticate | Signed in to the platform | [Obtain a Bearer token](../../platform-suite/control-plane-acp/_index.md#obtaining-a-bearer-token) | `ArangoAIClient(...)` |
-| Create a project | AutoGraph Studio, **Create project** | [Create a Project](../../platform-suite/control-plane-acp/api.md#create-a-project) | `client.project.create()` |
+| Create a project | AutoGraph Studio, **+ New Project** | [Create a Project](../../platform-suite/control-plane-acp/api.md#create-a-project) | `client.project.create()` |
 | Open an existing project | Pick it from the project list | [Get Project Details](../../platform-suite/control-plane-acp/api.md#get-project-details) | `client.project.get()` |
 | Store a model provider key | Control Panel, **Secrets** | [Secrets Manager API](../../platform-suite/secrets-manager.md#api) | `client.secret_profile.create()` |
 | Upload documents | AutoGraph Studio, upload into a category | [Upload a RAG Input File](../../platform-suite/file-manager/api.md#upload-a-rag-input-file) | `client.files.upload_file()` and friends |
@@ -64,8 +64,8 @@ The SDK is a client for services that are documented in their own right:
 - [AutoGraph](../../agentic-ai-suite/autograph/_index.md) builds the context
   graph from your documents. The SDK deploys it and feeds it files.
 - [Projects](../../platform-suite/control-plane-acp/_index.md#projects) in the
-  Arango Control Plane keep datasets isolated. `client.project` creates and
-  fetches them.
+  Arango Control Plane group related services and keep your data separate.
+  `client.project` creates and fetches them.
 - The [Secrets Manager](../../platform-suite/secrets-manager.md) stores the
   provider API keys as secret profiles. `client.secret_profile` writes them, and
   the key never leaves the platform again.

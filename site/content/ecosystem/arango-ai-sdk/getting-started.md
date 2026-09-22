@@ -43,13 +43,13 @@ client = ArangoAIClient(
 ```
 
 Constructing the client signs you in, so a wrong password or a misspelt database
-name fails here rather than on your first real call. From then on, every call
-carries a valid token, and the SDK renews it silently when it expires.
+fails here rather than on your first real call. Every later call carries a valid
+token, which the SDK renews silently when it expires.
 
 ## 2. Create a project
 
 A project is the workspace everything else belongs to: the documents you upload,
-the context graph built from them, and the questions you later ask against it.
+the Context Graph built from them, and the questions you later ask against it.
 
 ```python
 project = client.project.create(
@@ -58,11 +58,11 @@ project = client.project.create(
 )
 ```
 
-The project is created in the database the client was constructed with. Names
-may contain letters, digits, underscores, and hyphens only.
-
-`create` returns a project handle, which is where everything project-scoped
-happens from here on. To pick up a project you created earlier, use
+The project is created in the database the client was constructed with, and
+`create` returns a *project handle*, which is where everything project-scoped
+happens from here on. The name must start with a letter, hold only letters,
+numbers, underscores, and hyphens, and be 1 to 63 characters long; the platform
+rejects anything else with `InvalidProjectNameError`. To pick up a project you created earlier, use
 `client.project.get(project_name=...)` instead.
 
 ## 3. Store the model provider API keys
@@ -81,30 +81,31 @@ embed = client.secret_profile.create(
 )
 ```
 
-The key is encrypted on the platform and never leaves it again. Keep the
-`profile_id` values: that is what the deploy step asks for. If one key covers
-both models, create a single profile and pass its ID twice.
+Keep the `profile_id` values, because that is what the deploy step asks for. The
+key itself is encrypted on the platform and never leaves it again. If one key
+covers both models, create a single profile and pass its ID twice.
 
 ## 4. Upload your documents
 
 Files are uploaded under a *scope*: an ordered list of up to five labels that
 works like a storage path, so `["acme", "legal"]` places a file in the `legal`
-part of `acme`.
+part of `acme`. A label may hold letters, digits, underscores, and hyphens.
 
 ```python
+# Takes the files directly inside the folder and ignores subfolders
 results = client.files.upload_folder("./documents", scope=["acme", "legal"])
 
+# One rejected file does not stop the others, so check every result
 for result in results:
     print(result.name, result.status)
+
+# For a single file
+client.files.upload_file("./documents/nda.pdf", scope=["acme", "legal"])
 ```
 
-`upload_folder` takes the files directly inside the folder and ignores
-subfolders. For a single file, use `client.files.upload_file(path, scope=[...])`.
-
-One file the platform rejects does not stop the others, so check `status` on
-every result rather than assuming success. A file is identified by its database,
-scope, and name together, so uploading the same name under the same scope again
-stores a new version instead of a duplicate. Re-running the script is safe.
+A file is identified by its database, scope, and name together, so uploading the
+same name under the same scope stores a new version instead of a duplicate.
+Re-running the script is therefore safe.
 
 ## 5. Deploy AutoGraph
 
@@ -135,27 +136,22 @@ Acceptance is not readiness. The call returns as soon as the platform accepts
 the install request, while the pod may still be starting.
 {{< /info >}}
 
-To check the deployment, read the handle. It costs nothing, because the state
-comes from the project record the handle already holds:
-
 ```python
+# Reading the handle costs nothing: the state comes from the project record it holds
 print(project.autograph.is_deployed)   # True
 print(project.autograph.service_url)
-```
 
-Call `project.refresh()` first to pick up a change made elsewhere, for example a
-deploy from another client. To remove the service again, use
-`project.autograph.undeploy()`, which takes no arguments.
+project.refresh()              # pick up a change made elsewhere, such as another client
+project.autograph.undeploy()   # remove the service again; takes no arguments
+```
 
 ## 6. Close the client
 
 ```python
-client.close()
+client.close()   # releases the HTTP sessions and sockets; safe to call more than once
 ```
 
-`close()` releases the HTTP sessions and sockets the client keeps open. Call it
-when you are done, typically in a `finally` block. Calling it more than once is
-safe.
+Call it when you are done, typically in a `finally` block.
 
 ## Handle errors
 
@@ -178,7 +174,7 @@ except ArangoAIError as exc:
 
 Continue in [AutoGraph Studio](../../agentic-ai-suite/autograph/web-interface.md)
 or with the [AutoGraph REST API](../../agentic-ai-suite/autograph/reference/_index.md)
-to build the context graph from the documents you uploaded and to ask questions
+to build the Context Graph from the documents you uploaded and to ask questions
 against it with [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
 
 <!-- TODO: link to the SDK's own reference documentation once it is published -->
