@@ -110,7 +110,7 @@ by label to select specific relationship types (e.g., `FILTER edge.label == "SIM
 
 ### Layer 3
 
-The GraphRAG Importer constructs Layer 3 by processing documents into a detailed knowledge
+The Importer constructs Layer 3 by processing documents into a detailed knowledge
 graph stored in the named graph `{project}_kg`. This layer contains the actual document
 content, text chunks, and optionally extracted entities and communities, depending on
 your chosen RAG strategy.
@@ -152,6 +152,20 @@ The named graph `{project}_CorpusGraph` ties Layers 1 and 2 together.
 It contains two edge definitions:
 - `similarities` (connecting sources to sources),
 - `corpus_relations` (connecting sources, domains, modules, and rags).
+
+### Replication factor
+
+AutoGraph creates every collection and graph of both layers with a replication
+factor of **3**, or with the cluster's `minReplicationFactor` if that is higher.
+The value is fixed and cannot be configured; a single-server deployment is
+unaffected.
+
+Where collections inherit their replication factor from a prototype collection
+through `distributeShardsLike`, as in a OneShard database, the inherited value
+stands and AutoGraph leaves it alone.
+
+The [Importer](../importer/reference/limits.md#graphs-and-sharding) uses the
+same replication factor for the Knowledge Graph collections it creates.
 
 ## Node fields
 

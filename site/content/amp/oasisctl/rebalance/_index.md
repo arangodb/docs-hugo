@@ -1,7 +1,8 @@
 ---
-title: Rebalance with `oasisctl`
+title: Rebalance with _oasisctl_
 menuTitle: Rebalance
 weight: 20
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Rebalance resources

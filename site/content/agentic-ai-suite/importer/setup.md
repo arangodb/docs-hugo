@@ -78,10 +78,11 @@ most relevant ones to adjust limits and resource utilization.
 | `workerPdf.resources.limits.cpu` | 4 | The CPU limit caps how much parallel work a single PDF worker pod can do. Raise it to speed up the parsing of large documents; lower it if the node pool cannot satisfy the total request across all replicas. |
 
 Consider the combined resource footprint of the PDF workers. With the default
-settings, three PDF worker pods request twelve CPUs and 18 GiB of memory in
-total, which can exhaust the capacity of a single node. Adjust the replica count
-and the per-pod limits together, based on the resources available in your
-cluster.
+settings, three PDF worker pods request 3 CPUs and 12 GiB of memory in total,
+and are limited to 12 CPUs and 18 GiB. The node pool must satisfy the requests
+for the pods to be scheduled, and the limits for all three to run at full
+capacity at the same time. Adjust the replica count and the per-pod limits
+together, based on the resources available in your cluster.
 
 The worker resource limits are defined at deploy time of the service.
 Changing them in an active system is discouraged as it may have adverse effects
@@ -154,7 +155,7 @@ or timeout errors, the per-job limits are too tight for your documents.
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
   endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
-- A **GraphRAG project** in the target database. Projects keep datasets and
+- A **project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the
   [Projects](../../platform-suite/control-plane-acp/_index.md#projects) section in
   the Arango Control Plane (ACP) documentation.

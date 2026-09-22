@@ -9,7 +9,7 @@ You can install ArangoDB on most common Linux distributions. The basic
 installation steps are:
 
 1. Visit the official [Download](https://arango.ai/downloads/)
-   page of the ArangoDB web site.
+   page of the ArangoDB website.
 
 2. Click the logo of the distribution that matches your operating system.
    If you use Linux Mint, click Ubuntu or Debian.

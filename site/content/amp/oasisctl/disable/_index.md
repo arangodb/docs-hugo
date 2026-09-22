@@ -1,7 +1,8 @@
 ---
-title: Disable with `oasisctl`
+title: Disable with _oasisctl_
 menuTitle: Disable
 weight: 10
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Disable some settings related to deployment

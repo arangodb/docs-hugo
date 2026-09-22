@@ -4,7 +4,7 @@ menuTitle: Examples JSON
 weight: 5
 description: >-
   How to import JSON and JSONL data into ArangoDB on the command-line with
-  `arangoimport`
+  _arangoimport_
 ---
 Using JSON as data format, records are represented as JSON objects and called
 documents in ArangoDB. They are self-contained. Therefore, there is no need
@@ -156,7 +156,7 @@ arangoimport --file "users.jsonl.gz" --type jsonl --collection "users"
 ```
 
 For other input formats it is possible to decompress the input file using another
-program and piping its output into arangoimport, e.g.
+program and piping its output into _arangoimport_, e.g.
 
 ```
 bzcat data.bz2 | arangoimport --file "-" --type jsonl --collection "users"
@@ -197,7 +197,7 @@ arangoimport --file "data.jsonl" --type jsonl --collection users --progress true
 
 It is also possible to use the output of another command as an input for
 _arangoimport_. For example, you can use the following shell command to pipe
-data from the `cat` process to arangoimport (in a Bash-like shell):
+data from the `cat` process to _arangoimport_ (in a Bash-like shell):
 
 ```
 cat data.json | arangoimport --file - --type jsonl --collection users
@@ -205,7 +205,7 @@ cat data.json | arangoimport --file - --type jsonl --collection users
 
 The option `--file -` with a hyphen as the file name is special and makes it
 read from the standard input. No progress can be reported for such imports as the
-size of the input is unknown to arangoimport.
+size of the input is unknown to _arangoimport_.
 
 By default, the endpoint `tcp://127.0.0.1:8529` is used. If you want to
 specify a different endpoint, you can use the `--server.endpoint` option. You

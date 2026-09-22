@@ -259,7 +259,7 @@ an OpenAI-compatible endpoint:
 
 The Importer maps a single completion cap to OpenAI-style chat calls
 (`max_completion_tokens` for newer models that require it, `max_tokens` otherwise)
-and derives an internal prompt-packing budget that GraphRAG uses when building
+and derives an internal prompt-packing budget it uses when building
 community reports. The values are auto-detected from the chat model name, so
 common OpenAI models work without manual tuning. You can override them with the
 following environment variables (also accepted as lower-case JSON keys in the

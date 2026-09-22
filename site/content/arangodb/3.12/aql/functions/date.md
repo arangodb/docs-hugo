@@ -1415,8 +1415,6 @@ RETURN {
 
 ### DATE_UTCTOLOCAL()
 
-<small>Introduced in: v3.8.0</small>
-
 Converts `date` assumed in Zulu time (UTC) to local `timezone`.
 
 It takes historic daylight saving times into account.
@@ -1481,8 +1479,6 @@ RETURN DATE_UTCTOLOCAL(DATE_NOW(), "Africa/Lagos", true)
 ```
 
 ### DATE_LOCALTOUTC()
-
-<small>Introduced in: v3.8.0</small>
 
 Converts `date` assumed in local `timezone` to Zulu time (UTC).
 
@@ -1549,8 +1545,6 @@ RETURN DATE_LOCALTOUTC("2021-03-16T12:00:00.000", "Africa/Lagos", true)
 
 ### DATE_TIMEZONE()
 
-<small>Introduced in: v3.8.0</small>
-
 Returns system timezone ArangoDB is running on.
 
 For cloud servers, this is most likely `"Etc/UTC"`.
@@ -1562,8 +1556,6 @@ For cloud servers, this is most likely `"Etc/UTC"`.
   of the server timezone.
 
 ### DATE_TIMEZONES()
-
-<small>Introduced in: v3.8.0</small>
 
 Returns all valid timezone names.
 

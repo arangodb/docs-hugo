@@ -31,7 +31,7 @@ ArangoDB's web interface has a **Queries** section for
 3. Enter an AQL query in the code editor, e.g. `RETURN CONCAT("Hello, ", @name)`.
 4. Specify any needed bind parameters in the panel on the right-hand side,
    e.g. set `name` to a value of `AQL`.
-5. Click the **Execute** button or hit `Ctrl`/`Cmd` + `Return`.
+5. Click the **Execute** button or press {{< kbd "Ctrl Return" >}} respectively {{< kbd "Cmd Return" >}}.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}

@@ -3,7 +3,7 @@ title: JavaScript API
 menuTitle: JavaScript API
 weight: 270
 description: >-
-  You can use ArangoDB's JavaScript interface in ArangoDB's shell `arangosh`
+  You can use ArangoDB's JavaScript interface in ArangoDB's shell _arangosh_
   to interact with the server using the JavaScript language
 ---
 The JavaScript API is available in the ArangoDB Shell client tool

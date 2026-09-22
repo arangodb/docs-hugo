@@ -236,7 +236,7 @@ search - unless you use named graphs that define all node and edge collections
 that belong to them and the graph data is consistent.
 
 If you use anonymous graphs / collection sets for graph queries, which node
-collections need to be loaded by the graph engine can deduced automatically if
+collections need to be loaded by the graph engine can be deduced automatically if
 there is a named graph with a matching edge collection in its edge definitions
 (introduced in v3.12.6). Edge collections are always declared explicitly in
 queries, directly or via referencing a named graph.

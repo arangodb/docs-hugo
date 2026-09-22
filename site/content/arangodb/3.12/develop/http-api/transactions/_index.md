@@ -3,7 +3,7 @@ title: Transaction HTTP APIs
 menuTitle: Transactions
 weight: 50
 description: >-
-  The HTTP APIs for transactions support Stream Transactions and
+  The HTTP interfaces for transactions support Stream Transactions and
   JavaScript Transactions
 ---
 ArangoDB offers HTTP APIs for different types of transactions:

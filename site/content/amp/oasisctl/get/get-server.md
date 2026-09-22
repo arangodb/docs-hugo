@@ -1,7 +1,8 @@
 ---
-title: Get Server with `oasisctl`
+title: Get Server with _oasisctl_
 menuTitle: Get Server
-weight: 31
+weight: 30
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get server information

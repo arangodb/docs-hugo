@@ -4,7 +4,7 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to create database dumps of an ArangoDB server and use encryption,
-  compression, multi-threading, and other features of `arangodump`
+  compression, multi-threading, and other features of _arangodump_
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 
@@ -137,7 +137,7 @@ sorted first by shards and within each shard by ascending timestamp. The
 structural information of the collection contains the number of shards
 and the shard keys.
 
-Note that the version of the arangodump client tool needs to match the
+Note that the version of the _arangodump_ client tool needs to match the
 version of the ArangoDB server it connects to.
 
 ### Dumping collections with sharding prototypes
@@ -145,7 +145,7 @@ version of the ArangoDB server it connects to.
 Collections may be created with the shard distribution identical to an existing
 prototypical collection (see [`distributeShardsLike`](../../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options));
 i.e. shards are distributed in the very same pattern as in the prototype collection.
-Such collections cannot be dumped without the referenced collection or arangodump
+Such collections cannot be dumped without the referenced collection or _arangodump_
 yields an error.
 
 ```
@@ -221,6 +221,8 @@ RocksDB encryption-at-rest feature.
 The size of dumps can be reduced using compression, for storing but also for the
 data transfer.
 
+### Compressed dumps on disk
+
 You can optionally store data in a compressed format to save space on disk with
 the `--compress-output` startup option. It cannot be used together with
 [Encryption](#encryption).
@@ -241,6 +243,8 @@ detects whether the data is compressed or not based on the file extension.
 arangorestore --input-directory "dump"
 ```
 
+### Compressed dumps on the wire
+
 You can optionally let the server compress the data for the network transfer
 with the `--compress-transfer` startup option. This can reduce the traffic and
 thus save time and money.
@@ -253,8 +257,11 @@ the dump compressed or not but without affecting the transfer size.
 arangodump --output-directory "dump" --compress-transfer --compress-output false
 ```
 
-{{< comment >}} Experimental feature in 3.12
 ## Storage format
+
+{{< warning >}}
+Dumps in VelocyPack format is an **experimental** feature.
+{{< /warning >}}
 
 The default output format for dumps is JSON.
 
@@ -265,7 +272,6 @@ format instead of the text-based JSON format. The output file size can be less
 even compared to compressed JSON. It can also lead to faster dumps because there
 is less data to transfer and no conversion from the server-internal VelocyPack
 format to JSON is needed.
-{{< /comment >}}
 
 ## Threads
 

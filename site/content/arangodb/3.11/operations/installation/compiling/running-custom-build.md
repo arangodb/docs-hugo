@@ -1,9 +1,9 @@
 ---
-title: create data directory
+title: Running a custom build of ArangoDB
 menuTitle: Running Custom Build
 weight: 15
 description: >-
-  You've already built a custom version of ArangoDB and want to run it
+  How to use an existing or a new database directory when testing ArangoDB builds
 ---
 Once you built a custom version of ArangoDB (see
 [Compiling](_index.md)), you may want to run it using
@@ -39,7 +39,7 @@ build in isolation and [dump](../../../components/tools/arangodump/_index.md) an
 stable to your custom build.
 {{< /danger >}}
 
-When running like this, you must run the db as the arangod user (the default
+When running like this, you must run the db as the _arangod_ user (the default
 installed by the package) in order to have write access to the log, database
 directory etc. Running as root will likely mess up the file permissions - good
 luck fixing that!

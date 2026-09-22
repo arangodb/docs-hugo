@@ -1,7 +1,8 @@
 ---
-title: List Effective with `oasisctl`
+title: List Effective with _oasisctl_
 menuTitle: List Effective
 weight: 15
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List effective information

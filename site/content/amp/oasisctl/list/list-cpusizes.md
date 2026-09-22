@@ -1,7 +1,8 @@
 ---
-title: List CPU Sizes with `oasisctl`
+title: List CPU Sizes with _oasisctl_
 menuTitle: List CPU Sizes
 weight: 12
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List CPU sizes

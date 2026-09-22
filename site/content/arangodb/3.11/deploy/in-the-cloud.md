@@ -2,12 +2,14 @@
 title: Deploying ArangoDB in the cloud
 menuTitle: In the Cloud
 weight: 35
-description: ''
+description: >-
+  You can run self-managed instances of ArangoDB on AWS, GCP, and Azure
 ---
-## Deploying ArangoDB on AWS
+## Deploying ArangoDB on AWS and GCP
 
-ArangoDB can be deployed on AWS or other cloud platforms. AWS is the
-infrastructure provider choice for some of the largest ArangoDB installations.
+ArangoDB can be deployed on Amazon Web Services (AWS) or other cloud platforms
+like Google Cloud (GCP). AWS is the infrastructure provider choice for some of
+the largest ArangoDB installations.
 
 Up to and including ArangoDB 3.2, official ArangoDB AMI were available in the
 [AWS marketplace](https://aws.amazon.com/marketplace/search/results/ref=dtl_navgno_search_box?page=1&searchTerms=arangodb).

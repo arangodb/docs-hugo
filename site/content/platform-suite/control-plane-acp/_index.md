@@ -10,13 +10,13 @@ description: >-
 
 The Arango Control Plane (ACP) is the main entry point for installing, running, and
 managing services in the Contextual Data Platform. You can deploy services,
-group AutoGraph and GraphRAG work into projects, and manage the secrets
+group AutoGraph and AutoRAG work into projects, and manage the secrets
 profiles used by services:
 
 - **Services**: install, upgrade, uninstall, get status, and list installed
   services. Each service type has its own URL path prefix but shares a
   common request and response structure. See [Services](#services).
-- **Projects**: organize AutoGraph and GraphRAG work by grouping related services and
+- **Projects**: organize AutoGraph and AutoRAG work by grouping related services and
   keeping data separate. See [Projects](#projects).
 - **Secrets**: create and manage secret profiles used by services (for
   example, LLM API keys). See [Secrets Manager](../secrets-manager.md).
@@ -60,7 +60,8 @@ changing the configuration, and uninstalling the service.
 The following service types can be deployed through dedicated endpoints:
 
 - Graph Analytics
-- GraphRAG, as well as the GraphRAG Importer and Retriever
+- Importer and AutoRAG
+- GraphRAG (legacy all-in-one service, superseded by AutoGraph)
 - AutoGraph
 - LLM Host
 - Notebook
@@ -78,16 +79,16 @@ operation, see [Services](api/#services) in the API reference.
 
 ## Projects
 
-Projects help you organize AutoGraph and GraphRAG deployments by grouping related
-services and keeping your data separate. When the Importer service creates ArangoDB
-collections (such as documents, chunks, entities, relationships, and
-communities), it uses your project name as a prefix. For example, a project
-named `docs` will have collections like `docs_Documents`, `docs_Chunks`, and
-so on.
+Projects help you organize AutoGraph, Importer, and AutoRAG deployments by
+grouping related services and keeping your data separate. When the Importer
+service creates ArangoDB collections (such as documents, chunks, entities,
+relationships, and communities), it uses your project name as a prefix. For
+example, a project named `docs` will have collections like `docs_Documents`,
+`docs_Chunks`, and so on.
 
 Projects are required for the following services:
 - Importer
-- Retriever
+- AutoRAG
 - AutoGraph
 
 Once a project exists, you can reference it in service deployments using the

@@ -1,7 +1,8 @@
 ---
-title: Accept with `oasisctl`
+title: Accept with _oasisctl_
 menuTitle: Accept
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Accept invites

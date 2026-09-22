@@ -18,7 +18,7 @@ A driver abstracts the complexity of the API away by providing a simple
 interface for your programming language or environment and handling things like
 authentication, connection pooling, asynchronous requests, and multi-part replies
 in the background. You can also use ArangoDB's web interface, <!-- TODO: new link/description -->
-the [_arangosh_](../../components/tools/arangodb-shell/_index.md) shell, or other tools.
+the [arangosh](../../components/tools/arangodb-shell/_index.md) shell, or other tools.
 
 The API documentation is relevant for you in the following cases:
 

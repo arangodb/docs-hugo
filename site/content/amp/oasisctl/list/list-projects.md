@@ -1,7 +1,8 @@
 ---
-title: List Projects with `oasisctl`
+title: List Projects with _oasisctl_
 menuTitle: List Projects
-weight: 34
+weight: 32
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all projects of the given organization

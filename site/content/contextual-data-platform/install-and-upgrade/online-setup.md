@@ -92,7 +92,7 @@ the necessary Kubernetes resources.
 You can find the latest release on GitHub:
 <https://github.com/arangodb/kube-arangodb/releases/>
 
-Make sure set the the options as shown below to enable webhooks, certificates,
+Make sure to set the options as shown below to enable webhooks, certificates,
 the gateway feature, and machine learning:
 
 ```sh

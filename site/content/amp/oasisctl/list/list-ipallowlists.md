@@ -1,7 +1,8 @@
 ---
-title: List IP Allowlists with `oasisctl`
+title: List IP Allowlists with _oasisctl_
 menuTitle: List IP Allowlists
 weight: 23
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all IP allowlists of the given project

@@ -1,7 +1,8 @@
 ---
-title: List Effective Permissions with `oasisctl`
+title: List Effective Permissions with _oasisctl_
 menuTitle: List Effective Permissions
 weight: 16
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List the effective permissions, the authenticated user has for a given URL

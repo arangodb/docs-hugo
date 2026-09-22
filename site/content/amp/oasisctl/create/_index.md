@@ -1,7 +1,8 @@
 ---
-title: Create with `oasisctl`
+title: Create with _oasisctl_
 menuTitle: Create
 weight: 8
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Create resources
@@ -33,7 +34,6 @@ oasisctl create [flags]
 * [oasisctl create group](create-group.md)	 - Create a new group
 * [oasisctl create ipallowlist](create-ipallowlist.md)	 - Create a new IP allowlist
 * [oasisctl create metrics](create-metrics.md)	 - Create metrics resources
-* [oasisctl create notebook](create-notebook.md)	 - Create a new notebook
 * [oasisctl create organization](create-organization.md)	 - Create a new organization
 * [oasisctl create private](create-private.md)	 - Create private resources
 * [oasisctl create project](create-project.md)	 - Create a new project
