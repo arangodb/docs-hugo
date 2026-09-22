@@ -47,10 +47,6 @@ Manager builds extract the text through the File Parsing Service instead, see
 See [Designing categories](../design-guide.md#designing-categories) for guidance
 on how to work with categories.
 
-Files can also be uploaded from Python with the
-[Arango AI SDK](../../../ecosystem/arango-ai-sdk/_index.md), which wraps the same
-File Manager endpoints.
-
 ## Import multiple files (deprecated)
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/import-multiple" >}}
