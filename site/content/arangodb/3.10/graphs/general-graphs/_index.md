@@ -15,10 +15,6 @@ graph queries.
 There is no need to include the referenced collections within the query, this
 module will handle it for you.
 
-New to ArangoDB? Take the free
-[ArangoDB Graph Course](https://www.arangodb.com/arangodb-graph-course)
-for freshers.
-
 ## Getting started
 
 ### Create a General Graph using the web interface
