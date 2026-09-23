@@ -5613,7 +5613,14 @@ paths:
 
 ### Compact a collection
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/collection/{collection-name}/compact:
     put:
@@ -5762,6 +5769,167 @@ logJsonResponse(response);
 
 db._drop(cn);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/compact:
+    put:
+      operationId: compactCollection
+      description: |
+        Compacts the data of a collection in order to reclaim disk space.
+        The operation will compact the document and index data by rewriting the
+        underlying .sst files and only keeping the relevant entries.
+
+        Under normal circumstances, running a compact operation is not necessary, as
+        the collection data will eventually get compacted anyway. However, in some
+        situations, e.g. after running lots of update/replace or remove operations,
+        the disk data for a collection may contain a lot of outdated data for which the
+        space shall be reclaimed. In this case the compaction operation can be used.
+
+        The user account you authenticate with needs to have at least read/write
+        access to the collection.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            Name of the collection to compact
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The compaction has been started successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+        '403':
+          description: |
+            The user account you authenticate with lacks read/write access to
+            the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 403
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestApiCollectionCompactApiV1
+---
+var cn = "testCollection";
+db._drop(cn);
+db._create(cn);
+
+var response = logCurlRequest('PUT', '/_arango/v1/_api/collection/' + cn + '/compact', '');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+
+db._drop(cn);
+```
+
+{{< api-versions-end >}}
 
 ### Load a collection
 

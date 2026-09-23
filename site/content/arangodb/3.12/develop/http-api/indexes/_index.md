@@ -25,6 +25,18 @@ URL of that index is as follows:
 http://localhost:8529/_api/index/demo/63563528
 ```
 
+{{< info >}}
+In a cluster, API version 1 checks whether the user account you authenticate
+with has read access to the collection before it looks the collection up. If it
+doesn't, all index endpoints report the collection as not found (HTTP `404`,
+error code `1203`) instead of revealing that it exists. API version 0 performs
+no such check, and lets any authenticated user with database access list and
+read the indexes of the collection.
+
+This only applies to Coordinators. On single servers, both API versions reject
+the request with HTTP `403` in this case.
+{{< /info >}}
+
 ## List all indexes of a collection
 
 ```openapi

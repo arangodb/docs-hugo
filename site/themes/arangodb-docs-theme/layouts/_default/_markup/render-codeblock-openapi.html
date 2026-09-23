@@ -3,7 +3,7 @@
 {{- if and (not $pageVersion) (strings.HasPrefix .Page.RelPermalink "/arangodb/") }}
   {{- $pageVersion = (partialCached "version-short.html" .Page.RelPermalink .Page.RelPermalink) }}
 {{- end }}
-{{- $title := .Page.Scratch.Get "currentHeadline" }}
+{{- $title := .Page.Store.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
 {{- $service := "arangodb" }}
 {{- $apiVersions := slice }}
@@ -59,24 +59,59 @@
   {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
 {{- end }}
 
-{{- $remote := resources.GetRemote $endpoint (dict
-    "method" "post"
-    "body" $innerAbsLinks
-    "headers" (dict 
-      "Content-Type" "application/json"
-      "Endpoint-Title" $title
-      "Service-Name" $service
-      "API-Versions" ($apiVersions | jsonify)
-      "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
+{{- /* The aliased version trees (e.g. /arangodb/stable/ for 3.12) are the same files mounted
+       twice, so they would submit every spec a second time under the same Page-Version. Submit
+       only from the canonical tree, where the URL segment matches the resolved version. */}}
+{{- $isAliasPage := false }}
+{{- if and (eq $service "arangodb") $pageVersion (strings.HasPrefix .Page.RelPermalink "/arangodb/") }}
+  {{- $segment := index (split (strings.TrimPrefix "/arangodb/" .Page.RelPermalink) "/") 0 }}
+  {{- $isAliasPage = ne $segment $pageVersion }}
+{{- end }}
+{{- if not $isAliasPage }}
+  {{- $remote := resources.GetRemote $endpoint (dict
+      "method" "post"
+      "body" $innerAbsLinks
+      "headers" (dict
+        "Content-Type" "application/json"
+        "Endpoint-Title" $title
+        "Service-Name" $service
+        "API-Versions" ($apiVersions | jsonify)
+        "Page-Version" (cond (eq $service "arangodb") $pageVersion "")
+      )
     )
-  )
-}}
+  }}
+{{- end }}
 {{- $title = $title | urlize }}
+{{- /* Anchors are derived from the headline, so documenting several API versions of the same
+       endpoint would make them collide. The version's primary (lowest allowed) API version keeps
+       the unsuffixed anchors so that existing links stay valid; only the additional API versions
+       are suffixed, e.g. "-apiv1" on 3.12 where v0 is primary. */}}
+{{- if eq $service "arangodb" }}
+  {{- $primary := "" }}
+  {{- range $version := (index hugo.Data.versions "/arangodb/") }}
+    {{- if eq $version.name $pageVersion }}
+      {{- with $version.allowedAPIVersions }}{{ $primary = index . 0 }}{{ end }}
+    {{- end }}
+  {{- end }}
+  {{- $blockVersion := "" }}
+  {{- range $candidate := (slice "v0" "v1" "experimental") }}
+    {{- if and (not $blockVersion) (in $apiVersions $candidate) }}{{ $blockVersion = $candidate }}{{ end }}
+  {{- end }}
+  {{- /* Experimental endpoints have their own headlines and cannot collide, so they keep their
+         anchors. A hyphen keeps the headline one part, as underscores separate the parts of an
+         anchor. Suffix experimental too if it ever shares a headline. */}}
+  {{- if and $primary $blockVersion (ne $blockVersion $primary) (ne $blockVersion "experimental") }}
+    {{- $title = printf "%s-api%s" $title $blockVersion }}
+  {{- end }}
+{{- end }}
 {{- $yamlBlock := $body | transform.Unmarshal }}
 {{- with $yamlBlock }}
   <div class="openapi">
   {{- range $path, $methods := .paths }}
     {{- range $method, $items := $methods }}
+      {{- if hasPrefix $path "/_arango/" }}
+        {{- errorf "Omit the API version prefix for the endpoint path %q in %s" $path $page.File.Path }}
+      {{- end }}
       {{- $displayPath := $path }}
       {{- if (eq $service "arangodb") }}
         {{- if (in $apiVersions "v0") }}

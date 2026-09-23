@@ -1,0 +1,15 @@
+{{- /* Closes the last pane and the group opened by {{< api-versions >}}. */ -}}
+{{- $versions := .Page.Store.Get "apiVersions" -}}
+{{- if not (.Page.Store.Get "apiVersionsOpen") -}}
+  {{- errorf "%q: api-versions-end without a matching {{< api-versions >}}" .Page.Path -}}
+{{- else -}}
+  {{- $seen := .Page.Store.Get "apiVersionIndex" -}}
+  {{- if ne $seen (len $versions) -}}
+    {{- errorf "%q: api-versions declared %d version(s) %v but the group has %d pane(s)" .Page.Path (len $versions) $versions $seen -}}
+  {{- end -}}
+  {{- .Page.Store.Set "apiVersions" slice -}}
+  {{- .Page.Store.Set "apiVersionsOpen" false -}}
+    </div>
+  </div>
+</div>
+{{- end -}}
