@@ -305,6 +305,9 @@ paths:
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -1510,6 +1513,9 @@ paths:
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type
@@ -2078,6 +2084,9 @@ paths:
                     - If the `bytes_accum` type is used, then the `threshold` property is available.
 
                     Also see [ArangoSearch consolidation](../../../indexes-and-search/arangosearch/architecture.md#removals-and-consolidation).
+
+                    To inspect the segment layout, see the
+                    [ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
                   type: object
                   required:
                     - type

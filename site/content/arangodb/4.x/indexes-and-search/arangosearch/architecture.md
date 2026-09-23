@@ -377,6 +377,13 @@ A cleanup is not a task of its own. It runs at the end of a commit, after every
 `cleanupIntervalStep` commits of the respective data store, which is why the
 property counts commits instead of defining an interval in milliseconds.
 
+### Observability
+
+To inspect how many segments and files a data store consists of, how much of it
+is occupied by documents that are marked as deleted, and whether consolidation
+keeps up with the write load, see the
+[ArangoSearch statistics HTTP API](../../develop/http-api/monitoring/arangosearch-statistics.md).
+
 ### Managing data consistency
 
 A View or inverted index relies on the data in the collections it indexes.
