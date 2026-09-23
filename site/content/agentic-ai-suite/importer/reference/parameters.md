@@ -70,7 +70,7 @@ Each file in the `files` array requires:
 - `content` (required): File content as base64-encoded bytes.
 - `citable_url` (optional): URL to be cited in inline citations. This URL is stored in
   the document metadata and used at retrieval. When querying your knowledge graph, whether
-  citations are displayed is controlled by the [`show_citations`](../../retriever/parameters.md#show_citations) parameter.
+  citations are displayed is controlled by the [`show_citations`](../../autorag/parameters.md#show_citations) parameter.
 
 **Example:**
 
@@ -96,7 +96,7 @@ Manager bring their own; see [Citation URLs](#citation-urls).
 
 ## Citation URLs
 
-When the Retriever answers a question, it cites the documents it used. A
+When AutoRAG answers a question, it cites the documents it used. A
 document that has a `citable_url` is cited as a clickable link; one without it
 is cited as a plain number.
 
@@ -397,7 +397,7 @@ The `partition_id` parameter enables semantic sharding and horizontal scaling by
 - **Semantic sharding**: Documents from the same domain/cluster are stored together
 - **Horizontal scaling**: Different partitions can be distributed across multiple machines
 - **Multi-tenancy**: Isolate documents for different projects, customers, or use cases
-- **Efficient querying**: Retriever can target specific partitions for faster searches
+- **Efficient querying**: AutoRAG can target specific partitions for faster searches
 
 **Usage patterns:**
 

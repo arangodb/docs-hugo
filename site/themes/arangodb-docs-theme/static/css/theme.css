@@ -216,7 +216,7 @@ a {
     color: var(--gray-950);
 }
 
-a, a:hover, a:focus {
+a, a:is(:hover, :focus) {
     text-decoration: none !important;
 }
 
@@ -279,9 +279,7 @@ ul ul, ul ol, ol ul, ol ol {
     border-bottom: 2px solid var(--color-evergreen);
 }
 
-.link:hover,
-.link:focus,
-.link:focus-visible {
+.link:is(:hover, :focus) {
     border-bottom: 2px solid var(--color-leaf-green);
     color: var(--gray-950);
 }
@@ -1024,9 +1022,7 @@ body .page-container {
     background-color: transparent;
 }
 
-.breadcrumbs > ol > li > a:hover,
-.breadcrumbs > ol > li > a:focus,
-.breadcrumbs > ol > li > a:focus-visible {
+.breadcrumbs > ol > li > a:is(:hover, :focus) {
     color: var(--gray-950);
     border-bottom: 0;
 }
@@ -1451,8 +1447,7 @@ li > code {
 }
 
 /* After the rule above to win the specificity tie */
-.copy-to-clipboard-button:hover,
-.copy-to-clipboard-button:focus-visible {
+.copy-to-clipboard-button:is(:hover, :focus-visible) {
     opacity: 1;
 }
 
@@ -1504,7 +1499,6 @@ pre > code {
 .code-long.expanded {
     max-height: unset;
 }
-
 
 pre > .code-show-more {
     font-size: 1rem;
@@ -1789,7 +1783,8 @@ details[open] > summary::before {
     flex-direction: column;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: clip;
+    overflow-clip-margin: 6px;
     letter-spacing: normal;
     color: var(--fg);
     background-color: var(--bg);
@@ -1840,6 +1835,13 @@ details[open] > summary::before {
     padding: 3px;
 }
 
+.openapi-property-label {
+    color: #3c4257;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
 .openapi-property-type {
     color: #8792a2;
     font-size: 13px;
@@ -1868,7 +1870,8 @@ details[open] > summary::before {
 .openapi-prop > a > .fa-link {
     opacity: 0;
 }
-.openapi-prop:hover > a > .fa-link {
+.openapi-prop:is(:hover, :focus) > a > .fa-link,
+.openapi-prop > a:focus > .fa-link {
     opacity: 1;
 }
 
@@ -2244,10 +2247,7 @@ nav.pagination .next {
     font-weight: 400;
 }
 
-.link-nav:hover,
-.link-nav:visited,
-.link-nav:focus,
-.link-nav:focus-visible {
+.link-nav:is(:hover, .link-nav:visited, .link-nav:focus) {
     color: var(--gray-100);
 }
 
@@ -2260,10 +2260,7 @@ nav.pagination .next {
 }
 
 .link-nav-active,
-.link-nav-active:hover,
-.link-nav-active:visited,
-.link-nav-active:focus,
-.link-nav-active:focus-visible,
+.link-nav-active:is(:hover, .link-nav-active:visited, .link-nav-active:focus),
 .link-nav-active + .expand-nav,
 .nav-section:has(.link-nav-active) > .nav-section-header > .link-nav {
     color: var(--color-electric-lime);

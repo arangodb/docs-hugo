@@ -1,5 +1,5 @@
 ---
-title: Retriever Deep Search
+title: AutoRAG Deep Search
 menuTitle: Deep Search
 description: >-
   LLM-orchestrated multi-step research for complex queries requiring thorough analysis

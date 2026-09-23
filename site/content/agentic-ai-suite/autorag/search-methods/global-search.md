@@ -1,5 +1,5 @@
 ---
-title: Retriever Global Search
+title: AutoRAG Global Search
 menuTitle: Global Search
 description: >-
   Community-based analysis for themes, patterns, and high-level insights

@@ -1,6 +1,6 @@
 {{- /* Renders supported LLM/embedding models from site/data/llm_models.yaml.
        Call with no argument for the suite-wide list — only models supported by
-       all three core services (Importer, AutoGraph, Retriever) are shown. Pass a
+       all three core services (Importer, AutoGraph, AutoRAG) are shown. Pass a
        service id (e.g. "importer") to show that one service's list.
        Use the percent-delimited form so the markdown table is rendered.
 
