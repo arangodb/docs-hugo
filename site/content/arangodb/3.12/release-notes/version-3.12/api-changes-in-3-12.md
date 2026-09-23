@@ -565,6 +565,20 @@ size, as well as the document counts and deletion ratios overall and per
 segment. This lets you see how much of a data store is occupied by documents
 that are marked as deleted and whether the background consolidation keeps up
 with the write load.
+
+---
+
+<small>Introduced in: v3.12.12</small>
+
+The endpoint reports the statistics of **all** ArangoSearch data stores of the
+database. The statistics are now returned in an `indexes` array, with the number
+of data stores in a `numIndexes` attribute, and every data store is identified
+by the new `indexName`, `indexType`, and `collection` attributes.
+
+In v3.12.11, the statistics of a single, arbitrary data store were returned as a
+flat object, and an empty object if the database had no `arangosearch` View and
+no inverted index.
+
 See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
 for details.
 

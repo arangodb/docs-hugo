@@ -110,27 +110,36 @@ for details.
 A new ArangoSearch statistics API has been added as an observability feature,
 allowing you to inspect the index segments that back `arangosearch` Views and
 inverted indexes. Every View link and every inverted index stores its data in a
-separate ArangoSearch data store. For a data store as a whole, the endpoint
-reports the number of
-documents, live documents, segments, and files as well as the index size, and
-for every individual segment its name, document counts, and size:
+separate ArangoSearch data store. For every data store as a whole, the endpoint
+reports the number of documents, live documents, segments, and files as well as
+the index size, and for every individual segment its name, document counts, and
+size:
 
 ```json
 {
-  "numDocs": 6,
-  "numLiveDocs": 5,
-  "deletionRatio": 0.17,
-  "numPrimaryDocs": 6,
-  "numSegments": 2,
-  "numFiles": 12,
-  "indexSize": 4118,
-  "segments": [
+  "numIndexes": 2,
+  "indexes": [
     {
-      "name": "_1",
-      "numDocs": 5,
-      "numLiveDocs": 4,
-      "byteSize": 3562,
-      "deletionRatio": 0.2
+      "indexName": "idx_1780862094262272000",
+      "indexType": "arangosearch",
+      "collection": "coll",
+      "numDocs": 6,
+      "numLiveDocs": 5,
+      "deletionRatio": 0.17,
+      "numPrimaryDocs": 6,
+      "numSegments": 2,
+      "numFiles": 12,
+      "indexSize": 4118,
+      "segments": [
+        {
+          "name": "_1",
+          "numDocs": 5,
+          "numLiveDocs": 4,
+          "byteSize": 3562,
+          "deletionRatio": 0.2
+        },
+        ...
+      ]
     },
     ...
   ]
@@ -140,9 +149,7 @@ for every individual segment its name, document counts, and size:
 You can use this information to see how a data store is laid out and whether
 the background consolidation keeps up with the write load.
 
-The endpoint is only available on single servers, and it reports the statistics
-of a single ArangoSearch data store of the specified database that you cannot
-select.
+The endpoint is only available on single servers.
 
 See the [`GET /_admin/arangosearch/stats` endpoint](../../develop/http-api/monitoring/arangosearch-statistics.md)
 for details.
