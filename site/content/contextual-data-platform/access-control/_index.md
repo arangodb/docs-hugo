@@ -3,35 +3,40 @@ title: Access control in the data platform
 menuTitle: Access control
 weight: 40
 description: >-
-  How callers prove their identity to the Contextual Data Platform, and which
-  permission system governs what they are allowed to do
+  How callers prove their identity to the Contextual Data Platform and what
+  governs the data they are allowed to access
 ---
 Access control answers two questions for every request that reaches the
-Arango Contextual Data Platform:
+Arango Contextual Data Platform: who is making this request, and what is this
+caller allowed to do?
 
-- [**Authentication**](authentication.md): who is making this request? The
-  caller has to prove its identity with credentials that the data platform can
-  verify.
-- **Authorization**: what is this caller allowed to do? Once the identity is
-  established, a permission system decides which operations and which data the
-  caller may access.
+## Authentication
 
-Authentication is handled centrally in the data platform. Identities are
-ArangoDB user accounts, and a token obtained from those credentials is accepted
-by every service, so you don't need to maintain separate accounts per service.
+Authentication establishes who a caller is. It has to prove its identity with
+credentials that the data platform can verify, and requests with missing or
+invalid credentials are rejected.
 
-## Authorization systems
+Identities are [ArangoDB user accounts](../../arangodb/3.12/operations/administration/user-management/_index.md).
+Authentication is handled centrally in the data platform, and a token obtained
+from the credentials of an account is accepted by every service as well as by
+the core database system. You therefore don't need to maintain separate accounts
+per service.
 
-Which permission system governs a request depends on whether RBAC is enabled
-for the deployment:
+See [Authentication](authentication.md) for the credentials you can use, how to
+obtain a token for the HTTP APIs, and how to log in to the web interface.
 
-- [**Role-based access control (RBAC)**](rbac.md) is the permission system of
-  the data platform. You assign roles to users and scope each assignment to the
-  resources it may act on, covering the core database system as well as the
-  services of the data platform.
-- [**ArangoDB user permissions**](../../arangodb/3.12/operations/administration/user-management/_index.md)
-  are the classic access levels of the core database system, granted per user
-  for databases and collections. They apply where RBAC is not enabled.
+## Authorization
 
-The choice also determines which credentials the HTTP APIs accept, see
-[Authentication](authentication.md).
+Authorization determines what an authenticated caller may do, that is which
+operations it may perform and which data it may access.
+
+The services of the data platform do not come with a permission system of their
+own. They require every request to be authenticated, but they do not restrict
+what an authenticated user may do within a service. What does exist are the
+classic access levels of the ArangoDB core database system, granted per user
+account for databases and collections. They govern every access to the database
+system, including the accesses that data platform services perform on your
+behalf.
+
+See [Authorization](authorization.md) for the available access levels, their
+particularities, and how they affect the services of the data platform.
