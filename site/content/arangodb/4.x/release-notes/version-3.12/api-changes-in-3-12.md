@@ -341,6 +341,34 @@ the request now fails with an HTTP `404 Not Found` error and the
 request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
 (`11`) error number.
 
+#### Validation of vector index factory strings
+
+<small>Introduced in: v3.12.12</small>
+
+The optional `factory` string of
+[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+is now validated when you create the index. Requests to
+[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
+in the following cases:
+
+- The factory string cannot be parsed by the Faiss library.
+- It doesn't describe an inverted file (IVF) index.
+- It isn't compatible with the `dimension`.
+- It fixes a number of centroids that conflicts with the `nLists` value.
+
+Up to v3.12.11, such index definitions are accepted. The problem only surfaces
+during the training of the index, leaving behind an index with a
+`trainingState` of `"unusable"`.
+
+A consequence of the stricter validation is that a factory string with a fixed
+number of centroids like `"IVF100,Flat"` now requires you to set `nLists` to the
+same number. You cannot combine it with a scaling specification for `nLists`
+anymore, not even if the specification resolves to a matching number. As
+`nLists` defaults to a scaling specification from v3.12.10 onward, you need to
+set it explicitly in this case. Alternatively, use the `{}` placeholder as in
+`"IVF{},Flat"` to let the number of centroids be substituted.
+
 ### Endpoint return value changes
 
 #### Storage engine API
