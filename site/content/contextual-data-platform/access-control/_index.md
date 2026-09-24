@@ -30,13 +30,19 @@ obtain a token for the HTTP APIs, and how to log in to the web interface.
 Authorization determines what an authenticated caller may do, that is which
 operations it may perform and which data it may access.
 
-The services of the data platform do not come with a permission system of their
-own. They require every request to be authenticated, but they do not restrict
-what an authenticated user may do within a service. What does exist are the
-classic access levels of the ArangoDB core database system, granted per user
-account for databases and collections. They govern every access to the database
-system, including the accesses that data platform services perform on your
-behalf.
+Which permission system governs a request depends on whether RBAC is enabled
+for the deployment:
 
-See [Authorization](authorization.md) for the available access levels, their
-particularities, and how they affect the services of the data platform.
+- [**Role-based access control (RBAC)**](rbac.md) is the permission system of
+  the data platform. You assign roles to users and scope each assignment to the
+  resources it may act on, covering the core database system as well as the
+  services of the data platform.
+- [**Classic authorization**](authorization.md) is the traditional permission
+  system of the core database system, using access levels that are granted per
+  user account for databases and collections. It applies if RBAC is not enabled
+  for the data platform. The services of the data platform don't restrict what
+  an authenticated user may do in this case, but the access levels still affect
+  them because they read from and write to ArangoDB on your behalf.
+
+The choice also determines which credentials the HTTP APIs accept, see
+[Authentication](authentication.md).

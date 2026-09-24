@@ -10,7 +10,8 @@ description: >-
 Every request to the Arango Contextual Data Platform has to prove which
 ArangoDB user account it is made on behalf of. How you do so depends on whether
 you use the web interface or the HTTP APIs, and in the latter case on which
-service you address.
+service you address and whether [Role-Based Access Control (RBAC)](rbac.md) is
+enabled.
 
 There are the following ways to authenticate:
 
@@ -34,8 +35,8 @@ below:
 
 | Credentials | `/_open` endpoints | ArangoDB endpoints | Other data platform endpoints |
 |:---|:---|:---|:---|
-| Username and password (`Basic`) | Not required | Accepted | Not accepted |
-| Username and access token (`Basic`) | Not required | Accepted | Not accepted |
+| Username and password (`Basic`) | Not required | Only without RBAC | Not accepted |
+| Username and access token (`Basic`) | Not required | Only without RBAC | Not accepted |
 | Session token (`Bearer`) | Not required | Accepted | Accepted |
 | Superuser token (`Bearer`) | Not required | Accepted | Accepted |
 
@@ -46,20 +47,20 @@ below:
 - **ArangoDB endpoints**: the HTTP API of the core database system with the
   paths starting with `/_arango/`, `/_db/`, `/_api/`, and `/_admin/`. The
   `/_open/*` endpoints are excluded here but are also handled by ArangoDB.
-  All of the usual
+  If RBAC is off, all of the usual
   [ArangoDB authentication methods](../../arangodb/3.12/develop/http-api/authentication.md)
-  work.
+  work. With RBAC enabled, only JWTs are accepted.
 - **Other data platform endpoints**: everything else the gateway exposes,
   including the [Platform Suite](../../platform-suite/_index.md) services and
   the [Agentic AI Suite](../../agentic-ai-suite/_index.md) services. They only
-  accept JWTs.
+  accept JWTs, independent of whether RBAC is enabled.
 
 A session token is therefore the credential that works everywhere. You can
 obtain it once and reuse it for all services until it expires.
 
-Authentication only establishes who the caller is. What the caller may do with
-the data in the core database system is governed by the
-[access levels](authorization.md) of the user account.
+Authentication only establishes who the caller is. What the caller may do is
+decided by the permission system of the deployment, see
+[Authorization](_index.md#authorization).
 
 ## Log in to the web interface
 
@@ -81,22 +82,24 @@ The login screen asks for the following:
 5. Click **Log in** to get to the **Home** screen of the
    Arango Contextual Data Platform web interface.
 
-What you can see and do in the database system is limited by the permissions of
-the user account you logged in with, see
-[Authorization](authorization.md).
+What you can see and do is governed by the [roles](rbac.md) assigned to the user
+if RBAC is enabled. If RBAC is off, the
+[classic permission system](authorization.md) of ArangoDB may limit your access
+at the level of databases and collections.
 
 ## Authenticate requests to data platform services
 
-The services of the data platform accept **only** `Bearer` tokens. This applies
-to the [Platform Suite](../../platform-suite/_index.md) services such as the
-Control Plane, File Manager, and Container Manager, to the
+The services of the data platform accept **only** `Bearer` tokens, regardless of
+whether RBAC is enabled. This applies to the
+[Platform Suite](../../platform-suite/_index.md) services such as the Control
+Plane, File Manager, and Container Manager, to the
 [Agentic AI Suite](../../agentic-ai-suite/_index.md) services such as AutoGraph,
-AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by the
-ArangoDB Kubernetes operator (`kube-arangodb`).
+AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by
+the ArangoDB Kubernetes operator (`kube-arangodb`) like for configuring RBAC.
 
 A JWT is accepted by every part of the data platform, including the endpoints of
 the ArangoDB core database system. The database system is only special in that
-it accepts additional credentials, as described in
+it accepts additional credentials in deployments without RBAC, as described in
 [Authenticate requests to ArangoDB endpoints](#authenticate-requests-to-arangodb-endpoints).
 If you obtain a session token, you can use it for everything and don't need to
 think about the differences.
@@ -105,7 +108,7 @@ think about the differences.
 
 You exchange your credentials for a session token at the ArangoDB
 authentication endpoint. This endpoint is under the `/_open/` path and thus
-does not require authentication itself:
+does not require authentication itself, independent of the RBAC configuration:
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_open/auth" >}}
 
@@ -168,8 +171,8 @@ curl -H "Authorization: Bearer <JWT>" \
 
 {{< info >}}
 HTTP Basic authentication with a username and password is not supported for the
-data platform services, even though ArangoDB itself accepts it. Always
-obtain a session token for them.
+data platform services, not even in deployments without RBAC where ArangoDB
+itself accepts it. Always obtain a session token for them.
 {{< /info >}}
 
 ### Superuser tokens
@@ -177,7 +180,8 @@ obtain a session token for them.
 A superuser token is a JWT that you sign yourself with the JWT secret of the
 deployment. It is not bound to a user account, does not expire, and bypasses
 the permission system. It is required for certain internal APIs and accepted by
-the data platform services as well as by the ArangoDB endpoints.
+the data platform services as well as by the ArangoDB endpoints, independent of
+the RBAC configuration.
 
 Using superuser access for regular operations is **not advised**. See
 [JWT superuser tokens](../../arangodb/3.12/develop/http-api/authentication.md#jwt-superuser-tokens)
@@ -185,18 +189,26 @@ for how to generate one.
 
 ## Authenticate requests to ArangoDB endpoints
 
-The [HTTP API of the core database system](../../arangodb/3.12/develop/http-api/_index.md)
-accepts all standard ArangoDB authentication methods, that is HTTP Basic
-authentication with a username and a password or an access token, as well as
-`Bearer` authentication with a session token or a superuser token.
+Which methods the [HTTP API of the core database system](../../arangodb/3.12/develop/http-api/_index.md)
+accepts depends on whether RBAC is enabled for the deployment:
 
-If you want your requests to work against the data platform services as well,
-use a [session token](#obtain-a-session-token).
+- **RBAC disabled**: all standard ArangoDB authentication methods are available,
+  that is HTTP Basic authentication with a username and password or an access
+  token, as well as `Bearer` authentication with a session token or a
+  superuser token.
+- **RBAC enabled**: only `Bearer` authentication with a JWT is accepted, be it a
+  session token or a superuser token. HTTP Basic authentication is rejected.
+  The only exception is the `/_open/auth` endpoint, which continues to accept a
+  username and a password or access token so that you can obtain a session
+  token in the first place.
+
+If you want your requests to work in either configuration, use a
+[session token](#obtain-a-session-token).
 
 ### HTTP Basic authentication
 
-You can send the username and password with every request using the `Basic`
-scheme. Tools like cURL can encode the credentials for you:
+If RBAC is disabled, you can send the username and password with every request
+using the `Basic` scheme. Tools like cURL can encode the credentials for you:
 
 ```bash
 curl -u "<USERNAME>:<PASSWORD>" \
