@@ -7,9 +7,12 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
-## v4.1.1 (September 2026)
+## v4.1.1-preview (September 2026)
 
-This is a maintenance release.
+{{< tag "Limited Release" >}}
+
+This preview release is available to selected customers as part of a Limited Release. 
+It is a maintenance release with bug fixes and security improvements.
 
 ### MLflow
 
