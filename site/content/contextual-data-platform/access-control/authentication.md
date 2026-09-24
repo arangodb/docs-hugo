@@ -73,7 +73,7 @@ The login screen asks for the following:
 1. **Username**: the name of an ArangoDB user account, for example `root`.
 2. **Password**: either the password of that account, or one of the
    [access tokens](#access-tokens) created for it. The field accepts both.
-3. Click **Continue**. If the credentials are rejected, the screen reports a
+3. Click **Continue**. If the credentials are rejected, the screen reports an
    error and you can retry.
 4. **Select a database**: the database you want to start in. Only the databases
    your account has access to are listed in the dropdown menu. You can quickly
@@ -91,7 +91,7 @@ The services of the data platform accept **only** `Bearer` tokens. This applies
 to the [Platform Suite](../../platform-suite/_index.md) services such as the
 Control Plane, File Manager, and Container Manager, to the
 [Agentic AI Suite](../../agentic-ai-suite/_index.md) services such as AutoGraph,
-GraphRAG, and Graph Analytics, and to built-in services provided by the
+AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by the
 ArangoDB Kubernetes operator (`kube-arangodb`).
 
 A JWT is accepted by every part of the data platform, including the endpoints of
