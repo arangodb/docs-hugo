@@ -30,7 +30,7 @@ with an [Analyzer](../../analyzers.md), for instance, to tokenize text into word
 ### Basic definition
 
 For example, you can create an inverted index for the attributes `value1` and
-`value2` with the following command in arangosh:
+`value2` with the following command in _arangosh_:
 
 ```js
 db.<collection>.ensureIndex({
@@ -249,6 +249,12 @@ settings are used in this case:
 See the full list of options in the [HTTP API](../../../develop/http-api/indexes/inverted.md)
 documentation.
 
+Inverted indexes store their data in immutable segments that are created by
+commits and merged by the background consolidation process, governed by
+options like `commitIntervalMsec` and `consolidationPolicy`. To inspect the
+resulting segment layout, see the
+[ArangoSearch statistics HTTP API](../../../develop/http-api/monitoring/arangosearch-statistics.md).
+
 ### Restrictions
 
 - You cannot index the same field twice in a single inverted index. This includes
@@ -313,7 +319,7 @@ Also see [Dealing with eventual consistency](../../arangosearch/_index.md#dealin
 ## Examples
 
 The following examples demonstrate how you can set up and use inverted indexes
-with the JavaScript API of arangosh. See the
+with the JavaScript API of _arangosh_. See the
 [`ensureIndex()` method](_index.md#creating-an-index)
 description for details. 
 

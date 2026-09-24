@@ -71,7 +71,7 @@ specify whether you want to follow edges in the direction they are defined in
 direction (**any**). This means that you do not need to create an opposing edge
 for every edge that you want to be able to follow in both directions.
 
-Aside from basic graph traversal, ArangoDB offers
+Aside from multi-hop graph traversal, ArangoDB offers
 [graph algorithms](../graphs/_index.md#supported-graph-algorithms) to find one
 or multiple shortest paths between two nodes and can return a specified amount
 of paths between two nodes in order of increasing length.

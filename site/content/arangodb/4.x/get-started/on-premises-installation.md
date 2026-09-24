@@ -67,7 +67,7 @@ You should create a database for your application together with a
 user that has access rights to this database. See
 [Managing Users](../operations/administration/user-management/_index.md).
 
-Use the *arangosh* to create a new database and user.
+Use the _arangosh_ to create a new database and user.
 
 ```js
 arangosh> db._useDatabase("_system");

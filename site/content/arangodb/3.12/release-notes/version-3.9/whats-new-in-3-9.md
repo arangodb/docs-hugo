@@ -173,7 +173,7 @@ The timeout value for web interface sessions can be adjusted via the
 
 ### Configurable root redirect
 
-Added two options to `arangod` to allow HTTP redirection customization for
+Added two options to _arangod_ to allow HTTP redirection customization for
 root (`/`) call of the HTTP API:
 
 - `--http.permanently-redirect-root`: if `true` (default), use a permanent
@@ -896,8 +896,8 @@ queueing/dequeuing time (in seconds) as tracked by the server's scheduler.
 This value can be used by client applications and drivers to detect server 
 overload and react on it.
 
-The arangod startup option `--http.return-queue-time-header` can be set to
-`false` to suppress these headers in responses sent by arangod.
+The _arangod_ startup option `--http.return-queue-time-header` can be set to
+`false` to suppress these headers in responses sent by _arangod_.
 
 In a cluster, the value returned in the `x-arango-queue-time-seconds` header
 is the most recent queueing/dequeuing request time of the Coordinator the
@@ -906,13 +906,13 @@ another Coordinator. In that case, the value will indicate the current
 queueing/dequeuing time of the forwarded-to Coordinator.
 
 In addition, client applications and drivers can optionally augment the
-requests they send to arangod with the header `x-arango-queue-time-seconds`.
+requests they send to _arangod_ with the header `x-arango-queue-time-seconds`.
 If set, the value of the header should contain the maximum server-side
 queuing time (in seconds) that the client application is willing to accept.
-If the header is set in an incoming request, arangod will compare the current
+If the header is set in an incoming request, _arangod_ will compare the current
 dequeuing time from its scheduler with the maximum queue time value contained
 in the request header. If the current queueing time exceeds the value set
-in the header, arangod will reject the request and return HTTP 412
+in the header, _arangod_ will reject the request and return HTTP 412
 (precondition failed) with the error code 21004 (queue time violated).
 In a cluster, the `x-arango-queue-time-seconds` request header will be 
 checked on the receiving Coordinator, before any request forwarding.
@@ -962,7 +962,7 @@ See [License Management](../../operations/administration/license-management.md) 
 ### Collection statuses
 
 The previously existing collection statuses "new born", "loading", "unloading"
-and "unloaded" were removed, as they weren't actively used in arangod.
+and "unloaded" were removed, as they weren't actively used in _arangod_.
 
 These statuses were last relevant with the MMFiles storage engine, when it was
 important to differentiate which collections were present in main memory and
@@ -1089,9 +1089,9 @@ The default value for the `--threads` startup parameter was changed from
 2 to the maximum of 2 and the number of available CPU cores for the following
 client tools:
 
-- arangodump
-- arangoimport
-- arangorestore
+- _arangodump_
+- _arangoimport_
+- _arangorestore_
 
 The `--threads` option works dynamically, its value depends on the number of available CPU cores. If the amount of available CPU cores is less than `3`, a threads value of `2` is used. Otherwise the value of threads is set to the number of available CPU cores.
 
@@ -1159,7 +1159,7 @@ If this option is disabled, but other histogram flags are addressed, e.g. `--his
 
 _arangobench_ now prints a short description of the test case started, so
 it is easier to figure out what operations are carried out by a test case.
-Several test cases in arangobench have been deprecated because they do not
+Several test cases in _arangobench_ have been deprecated because they do not
 target real world use cases but were rather writing for some internal testing.
 The deprecated test cases will be removed in a future version to clear up
 the list of test cases.
@@ -1221,13 +1221,13 @@ the behavior of having one Coordinator and one endpoint.
 A new `--enable-revision-trees` option has been added to _arangorestore_, which
 adds the `syncByRevision` and `usesRevisionsAsDocumentIds` attributes to the
 collection structure if they are missing. As a consequence, these collections
-created by arangorestore are able to use revision trees and a faster
+created by _arangorestore_ are able to use revision trees and a faster
 getting-in-sync procedure after a restart.
 
 The option defaults to `true`, meaning that the attributes are added if they are
 missing. If you set the option to `false`, the attributes are not added to the
 collection structure. If the attributes are already present in the dump data, they
-are not modified by arangorestore, irrespective of the setting of this option.
+are not modified by _arangorestore_, irrespective of the setting of this option.
 
 Also see [_arangorestore_ examples](../../components/tools/arangorestore/examples.md).
 

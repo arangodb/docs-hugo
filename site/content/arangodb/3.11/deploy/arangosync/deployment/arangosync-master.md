@@ -2,7 +2,10 @@
 title: Set up the ArangoSync Master for Datacenter-to-Datacenter Replication
 menuTitle: ArangoSync Master
 weight: 10
-description: ''
+description: >-
+  The ArangoSync Master manages the synchronization and assigns tasks to the
+  workers, and you can run it as a systemd service that creates the required
+  certificates on every start
 ---
 The _ArangoSync Master_ is responsible for managing all synchronization, creating
 tasks and assigning those to the _ArangoSync Workers_.

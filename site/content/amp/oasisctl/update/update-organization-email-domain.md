@@ -1,7 +1,8 @@
 ---
-title: Update Organization Email Domain with `oasisctl`
+title: Update Organization Email Domain with _oasisctl_
 menuTitle: Update Organization Email Domain
-weight: 15
+weight: 14
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Update email domain specific information for an organization

@@ -1,7 +1,8 @@
 ---
-title: Get Organization Email with `oasisctl`
+title: Get Organization Email with _oasisctl_
 menuTitle: Get Organization Email
-weight: 18
+weight: 17
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Get email specific information for an organization

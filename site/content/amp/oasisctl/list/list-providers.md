@@ -1,7 +1,8 @@
 ---
-title: List Providers with `oasisctl`
+title: List Providers with _oasisctl_
 menuTitle: List Providers
-weight: 35
+weight: 33
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 List all providers the authenticated user has access to

@@ -1,7 +1,8 @@
 ---
-title: Audit Log Detach with `oasisctl`
+title: Audit Log Detach with _oasisctl_
 menuTitle: Audit Log Detach
 weight: 2
+# This is a generated file, DO NOT MODIFY directly!
 ---
 
 Detach a project from an auditlog

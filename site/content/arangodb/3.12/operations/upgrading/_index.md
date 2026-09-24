@@ -27,8 +27,8 @@ There are two main ways to upgrade ArangoDB:
   return to the old version of your data and ArangoDB.
 
 - **_Logical_ upgrade**: when the data is exported from the old ArangoDB version
-  using [_arangodump_](../../components/tools/arangodump/_index.md) and then restored in
-  the new ArangoDB version using [_arangorestore_](../../components/tools/arangorestore/_index.md).
+  using [arangodump](../../components/tools/arangodump/_index.md) and then restored in
+  the new ArangoDB version using [arangorestore](../../components/tools/arangorestore/_index.md).
 
   Depending on the size of your database, this strategy can be more time consuming,
   but might be necessary under some circumstances.
@@ -43,7 +43,7 @@ Before upgrading, it is recommended to:
   can deal with them.
 - As an extra precaution, and as a requirement if you want to [downgrade](downgrading.md),
   you might want to:
-  - **Take a backup** of the old ArangoDB database using [_arangodump_](../../components/tools/arangodump/_index.md),
+  - **Take a backup** of the old ArangoDB database using [arangodump](../../components/tools/arangodump/_index.md),
     as well as
   - Copy the entire "old" data directory to a safe place, after stopping the ArangoDB Server
     running on it (if you run a Cluster deployment, you will need to take a copy of their

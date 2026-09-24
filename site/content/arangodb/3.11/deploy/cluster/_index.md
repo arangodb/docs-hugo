@@ -3,7 +3,7 @@ title: Cluster deployments
 menuTitle: Cluster
 weight: 15
 description: >-
-  ArangoDB clusters are comprised of DB-Servers, Coordinators, and Agents, with
+  ArangoDB clusters are composed of DB-Servers, Coordinators, and Agents, with
   synchronous data replication between DB-Servers and automatic failover
 ---
 The Cluster architecture of ArangoDB is a _CP_ master/master model with no
@@ -88,23 +88,23 @@ See [Sharding](#sharding) below for more information.
 This architecture is very flexible and thus allows many configurations,
 which are suitable for different usage scenarios:
 
- 1. The default configuration is to run exactly one _Coordinator_ and
-    one _DB-Server_ on each machine. This achieves the classical
-    master/master setup, since there is a perfect symmetry between the
-    different nodes, clients can equally well talk to any one of the
-    _Coordinators_ and all expose the same view to the data store. _Agents_
-    can run on separate, less powerful machines.
- 2. One can deploy more _Coordinators_ than _DB-Servers_. This is a sensible
-    approach if one needs a lot of CPU power for the Foxx services,
-    because they run on the _Coordinators_.
- 3. One can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
-    is needed and the query performance is the lesser bottleneck
- 4. One can deploy a _Coordinator_ on each machine where an application
-    server (e.g. a node.js server) runs, and the _Agents_ and _DB-Servers_
-    on a separate set of machines elsewhere. This avoids a network hop
-    between the application server and the database and thus decreases
-    latency. Essentially, this moves some of the database distribution
-    logic to the machine where the client runs.
+- The default configuration is to run exactly one _Coordinator_ and
+  one _DB-Server_ on each machine. This achieves the classical
+  master/master setup, since there is a perfect symmetry between the
+  different nodes, clients can equally well talk to any one of the
+  _Coordinators_ and all expose the same view to the data store. _Agents_
+  can run on separate, less powerful machines.
+- You can deploy more _Coordinators_ than _DB-Servers_.
+  This is a sensible approach if you need a lot of CPU power for Foxx services,
+  because they run on the _Coordinators_.
+- You can deploy more _DB-Servers_ than _Coordinators_ if more data capacity
+  is needed and the query performance is the lesser bottleneck.
+- You can deploy a _Coordinator_ on each machine where an application
+  server (e.g. a Node.js server) runs, and the _Agents_ and _DB-Servers_
+  on a separate set of machines elsewhere. This avoids a network hop
+  between the application server and the database and thus decreases
+  latency. Essentially, this moves some of the database distribution
+  logic to the machine where the client runs.
 
 As you can see, the _Coordinator_ layer can be scaled and deployed independently
 from the _DB-Server_ layer.
@@ -135,7 +135,7 @@ possible as well. See [Datacenter-to-Datacenter Replication](../arangosync/deplo
 
 Using the roles outlined above an ArangoDB Cluster is able to distribute
 data in so called _shards_ across multiple _DB-Servers_. Sharding
-allows to use multiple machines to run a cluster of ArangoDB
+allows you to use multiple machines to run a cluster of ArangoDB
 instances that together constitute a single database. This enables
 you to store much more data, since ArangoDB distributes the data
 automatically to the different servers. In many situations one can
@@ -201,7 +201,7 @@ are always sent to the _DB-Server_ which happens to hold the _leader_ copy,
 which in turn replicates the changes to all _followers_ before the operation
 is considered to be done and reported back to the _Coordinator_.
 Internally, read operations are all served by the _DB-Server_ holding the _leader_ copy,
-this allows to provide snapshot semantics for complex transactions.
+this allows you to provide snapshot semantics for complex transactions.
 
 Using synchronous replication alone guarantees consistency and high availability
 at the cost of reduced performance: write requests have a higher latency
@@ -214,7 +214,7 @@ The data is always stored on the _DB-Servers_.
 The following example gives you an idea of how synchronous operation
 has been implemented in ArangoDB Cluster:
 
-1. Connect to a _Coordinator_ via [_arangosh_](../../components/tools/arangodb-shell/_index.md)
+1. Connect to a _Coordinator_ via [arangosh](../../components/tools/arangodb-shell/_index.md)
 2. Create a collection: `db._create("test", {"replicationFactor": 2});`
 3. The _Coordinator_ figures out a *leader* and one *follower* and creates
    one *shard* (as this is the default)
@@ -283,7 +283,7 @@ now contact a different _DB-Server_ for requests to this _shard_. Service
 resumes. The other surviving _replicas_ automatically resynchronize their
 data with the new _leader_. 
 
-In addition to the above, one of the following two cases cases can happen:
+In addition to the above, one of the following two cases can happen:
 
 - **A**: If another _DB-Server_ (that does not hold a _replica_ for this _shard_ already)
   is available in the Cluster, a new _follower_ is automatically
@@ -344,11 +344,11 @@ with a timeout error.
 ## Shard movement and resynchronization
 
 All _shard_ data synchronizations are done in an incremental way, such that
-resynchronizations are quick. This technology allows to move shards
+resynchronizations are quick. This technology allows you to move shards
 (_follower_ and _leader_ ones) between _DB-Servers_ without service interruptions.
 Therefore, an ArangoDB Cluster can move all the data on a specific _DB-Server_
 to other _DB-Servers_ and then shut down that server in a controlled way.
-This allows to scale down an ArangoDB Cluster without service interruption,
+This allows you to scale down an ArangoDB Cluster without service interruption,
 loss of fault tolerance or data loss. Furthermore, one can re-balance the
 distribution of the _shards_, either manually or automatically.
 

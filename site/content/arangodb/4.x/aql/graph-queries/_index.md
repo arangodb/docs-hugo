@@ -26,9 +26,10 @@ are supported by the AQL language constructs for graph querying. These construct
 make full use of optimizations and therefore best performance is to be expected:
 
 - [AQL Traversals](traversals.md) to follow edges connected to a start node,
-  up to a variable depth. It can be combined with AQL filter conditions.
+  with multiple hops up to a configured, optionally variable depth. It can be
+  combined with AQL filter conditions.
 
-- [AQL Shortest Path](shortest-path.md) to find one shortest path
+- [AQL Shortest Path](shortest-path.md) to find one shortest (or lightest) path
   between two given documents.
 
 - [AQL All Shortest Paths](all-shortest-paths.md) to find all shortest

@@ -36,11 +36,14 @@ FOR node[, edge[, path]]
     - `edges`: An array of all edges on this path.
     - `weights`: An array of the edge weight sums at each depth of this path.
       See the `"weighted"` setting of the [`order`](#order) traversal option.
-- `IN` `min..max`: the minimal and maximal depth for the traversal:
-  - **min** (number, *optional*): edges and nodes returned by this query
-    start at the traversal depth of *min* (thus edges and nodes below it are
-    not returned). If not specified, it defaults to 1. The minimal
-    possible value is 0.
+- `IN` `min..max`: The minimal and maximal depth for the traversal.
+  Depth values of `2` or higher makes it a multi-hop traversal, and if `min` and
+  `max` differ, it's a variable depth traversal.
+  - **min** (number, *optional*): nodes and edges returned by this query
+    start at the traversal depth of *min* (thus nodes and edges below it are
+    not returned). If not specified, it defaults to `1`. The minimal
+    possible value is `0`, which emits the start node and a `null` edge before
+    emitting anything else.
   - **max** (number, *optional*): up to *max* length paths are traversed.
     If omitted, *max* defaults to *min*. Thus only the nodes and edges in
     the range of *min* are returned. *max* cannot be specified without *min*.
@@ -131,8 +134,8 @@ Specify which traversal algorithm to use (string):
   first returns all paths from *min* depth to *max* depth for one node at
   depth 1, then for the next node at depth 1, and so on.
 
-- `"weighted"`: The traversal is a weighted traversal
-  (introduced in v3.8.0). Paths are enumerated with increasing cost.
+- `"weighted"`: The traversal is a weighted traversal.
+  Paths are enumerated with increasing cost.
   The order of paths having the same cost is non-deterministic.
 
   You can define what attribute to use as the cost of an edge with the
@@ -235,7 +238,7 @@ versus the whole document.
 
 #### `indexHint`
 
-<small>Introduced in v3.12.1</small>
+<small>Introduced in: v3.12.1</small>
 
 You can provide index hints for traversals to let the optimizer prefer
 the [vertex-centric indexes](../../indexes-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
@@ -362,14 +365,18 @@ collection in your traversal.
 
 Due to the nature of graphs, edges may reference nodes from arbitrary
 collections. Following the paths can thus involve documents from various
-collections and it is not possible to predict which are visited in a
-traversal. Which collections need to be loaded by the graph engine can only be
-determined at run time.
+collections and it is not possible to predict which are visited in a path
+search - unless you use named graphs that define all node and edge collections
+that belong to them and the graph data is consistent.
 
-Use the [`WITH` operation](../high-level-operations/with.md) to specify the
-node collections you expect to be involved. This is required for traversals
-using collection sets in cluster deployments. Declare the collection of the
-start node as well if it's not declared already (like by a `FOR` loop).
+If you use anonymous graphs / collection sets for graph queries, which node
+collections need to be loaded by the graph engine can only be determined at
+run time. Edge collections are always declared explicitly in queries, directly
+or via referencing a named graph. Use the [`WITH` operation](../high-level-operations/with.md)
+to declare the node collections upfront. This is required for traversals and
+path searches using collection sets in cluster deployments. Declare the
+collection of the start node as well if it's not declared already
+(like by a `FOR` loop).
 
 {{< tip >}}
 From v3.12.6 onward, node collections are automatically deduced for graph
@@ -774,18 +781,98 @@ FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
 It is guaranteed that at least one, but potentially more edges fulfill the condition.
 All of the above filters can be defined on nodes in the exact same way.
 
+#### Filter a subset of the path
+
+<small>Introduced in: v3.12.11</small>
+
+An array expansion in a path filter can contain an
+[inline `FILTER`](../operators.md#inline-filter) to restrict which nodes or
+edges the array comparison operator applies to. This is useful if a condition
+is only meaningful for some of the path elements, for instance because an
+attribute is optional:
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND startNode GRAPH "myGraph"
+  FILTER p.edges[* FILTER CURRENT.validUntil != null].validUntil ALL > DATE_NOW()
+  RETURN p.edges[*]._key
+```
+
+Only the edges that have a `validUntil` attribute are compared against the
+current date. Without the inline `FILTER`, an edge without this attribute would
+evaluate `null > DATE_NOW()` to `false` and thus reject the entire path.
+
+The optimizer can check such a condition during the traversal instead of
+filtering the emitted paths afterwards. Each node and edge is checked as the
+traversal reaches it, and the elements that the inline `FILTER` excludes are
+skipped. The traversal can thus stop following a path as soon as an element
+violates the condition, and the condition can be taken into account for the
+edge index lookups.
+
+An inline `FILTER` only allows the condition to be evaluated during the
+traversal if all of the following apply. Otherwise, the condition remains a
+post-filter that is applied to the paths the traversal emits:
+
+- The array comparison operator is `ALL` or `NONE`. `ANY` and
+  `AT LEAST (<number>)` need to count the matching elements of the entire path
+  and cannot be expressed as a condition for a single node or edge.
+- The array expansion uses `FILTER` only, without an inline `LIMIT` or a
+  `RETURN` projection. Both of them need the complete array and therefore the
+  complete path.
+- The inline `FILTER` condition doesn't use the path variable, because the path
+  isn't available when the traversal evaluates a single node or edge. It may
+  refer to `CURRENT` and to variables defined before the traversal, however.
+- The inline `FILTER` condition doesn't use the
+  [question mark operator](../operators.md#question-mark-operator).
+
+Conditions that can be evaluated during the traversal:
+
+```aql
+// Only check the edges that have a `weight` attribute
+FILTER p.edges[* FILTER CURRENT.weight != null].weight ALL <= 10
+
+// `NONE` is supported as well, and so are function calls in the inline `FILTER`
+FILTER p.edges[* FILTER HAS(CURRENT, "weight")].weight NONE > 10
+
+// A variable from outside of the traversal can be used in the inline `FILTER`
+FILTER p.edges[* FILTER CURRENT.weight > threshold].weight ALL <= 10
+
+// A nested array expansion in the inline `FILTER` is allowed
+FILTER p.edges[* FILTER LENGTH(CURRENT.tags[* FILTER CURRENT != "draft"]) > 0].weight ALL <= 10
+```
+
+Conditions that remain post-filters:
+
+```aql
+// `ANY` and `AT LEAST` cannot be checked per edge
+FILTER p.edges[* FILTER CURRENT.weight != null].weight ANY <= 10
+FILTER p.edges[* FILTER CURRENT.weight != null].weight AT LEAST (2) <= 10
+
+// An inline `LIMIT` or `RETURN` needs the entire path
+FILTER p.edges[* FILTER CURRENT.weight != null LIMIT 3].weight ALL <= 10
+FILTER p.edges[* FILTER CURRENT.weight != null RETURN CURRENT.weight] ALL <= 10
+
+// The inline `FILTER` cannot use the path variable
+FILTER p.edges[* FILTER CURRENT.weight > LENGTH(p.vertices)].weight ALL <= 10
+```
+
+To check whether a condition is evaluated during the traversal, inspect the
+[execution plan](../execution-and-performance/query-optimization.md#execution-plans).
+If the `optimize-traversals` rule can move the condition into the traversal,
+no `FilterNode` remains for it.
+
 ### Filtering on the path vs. filtering on nodes or edges
 
-Filtering on the path influences the Iteration on your graph. If certain conditions 
-aren't met, the traversal may stop continuing along this path.
+Filters on the emitted path (`p` variable) influence how the graph is traversed.
+If a path doesn't fulfill a condition, the traversal may stop following this
+path and not explore it any further.
 
-In contrast filters on node or edge only express whether you're interested in the actual value of these
-documents. Thus, it influences the list of returned documents (if you return v or e) similar 
-as specifying a non-null `min` value. If you specify a min value of 2, the traversal over the first
-two nodes of these paths has to be executed - you just won't see them in your result array. 
-
-Similar are filters on nodes or edges - the traverser has to walk along these nodes, since 
-you may be interested in documents further down the path.
+Filters on the emitted node (`v` variable) or edge (`e` variable) only
+determine whether the current node and edge become part of the result.
+The traversal walks past them either way, because vertices and edges further
+down the path may still match. This is comparable to setting a minimum traversal
+depth greater than zero. With a minimum depth of `2`, the traversal still has to
+walk over the first two vertices of every path, you just don't see them in the
+result.
 
 ### Examples
 

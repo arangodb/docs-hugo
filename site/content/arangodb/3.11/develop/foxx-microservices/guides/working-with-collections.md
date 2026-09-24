@@ -2,7 +2,9 @@
 title: Working with collections in Foxx services
 menuTitle: Working with collections
 weight: 10
-description: ''
+description: >-
+  Access ArangoDB collections from your Foxx service using prefixed collection
+  objects and share collections between services
 ---
 Foxx provides the [`module.context.collection`](../reference/service-context.md) method
 to provide easy access to ArangoDB collections. These collections are also

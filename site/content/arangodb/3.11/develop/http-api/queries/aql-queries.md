@@ -1,9 +1,9 @@
 ---
-title: HTTP interfaces for AQL queries
+title: AQL query and cursor HTTP API
 menuTitle: AQL queries
 weight: 5
 description: >-
-  The HTTP API for AQL queries lets you to execute, track, kill, explain, and
+  The HTTP interface for AQL queries lets you to execute, track, kill, explain, and
   validate queries written in ArangoDB's query language
 ---
 ## Cursors
@@ -523,7 +523,6 @@ paths:
 
                         Default: Controlled by the [`--query.cache-mode` startup option](../../../components/arangodb-server/options.md#--querycache-mode).
                       type: boolean
-
                     spillOverThresholdMemoryUsage:
                       description: |
                         This option allows queries to store intermediate and final results temporarily
@@ -691,6 +690,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -742,8 +742,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -831,7 +832,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -880,8 +881,8 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              For a human-readable output, you can execute
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -1426,6 +1427,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -1477,8 +1479,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -1566,7 +1569,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -1615,8 +1618,8 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              For a human-readable output, you can execute
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object
@@ -1863,8 +1866,9 @@ paths:
         - `errorNum`: a server error number (if `error` is `true`)
         - `errorMessage`: a descriptive error message (if `error` is `true`)
         - `extra`: an object with additional information about the query result, with
-          the nested objects `stats` and `warnings`. Only delivered as part of the last
-          batch in case of a cursor with the `stream` option enabled.
+          the nested objects `stats` and `warnings`. For cursors with the `stream` option
+          enabled, only delivered as part of the last batch. Otherwise, included in
+          every batch.
 
         Note that even if `hasMore` returns `true`, the next call might
         still return no documents. If, however, `hasMore` is `false`, then
@@ -2041,6 +2045,7 @@ paths:
                 required:
                   - error
                   - code
+                  - result
                   - hasMore
                   - cached
                 properties:
@@ -2092,8 +2097,9 @@ paths:
                     description: |
                       An optional JSON object with extra information about the query result.
 
-                      Only delivered as part of the first batch, or the last batch in case of a cursor
-                      with the `stream` option enabled.
+                      For cursors with the `stream` option enabled, this attribute is only
+                      delivered as part of the last batch. Otherwise, it is included in
+                      every batch.
                     type: object
                     required:
                       - warnings
@@ -2181,7 +2187,7 @@ paths:
                               be served from in-memory caches for indexes of type edge or persistent. This value
                               is only non-zero when reading from indexes that have an in-memory cache enabled, the
                               query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-                              and the looked up values are not present in the cache.
+                              and the looked-up values are not present in the cache.
                             type: integer
                           filtered:
                             description: |
@@ -2230,8 +2236,8 @@ paths:
                             description: |
                               When the query is executed with the `profile` option set to at least `2`,
                               then this attribute contains runtime statistics per query execution node.
-                              For a human readable output, you can execute
-                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                              For a human-readable output, you can execute
+                              `db._profileQuery(<query>, <bind-vars>)` in _arangosh_.
                             type: array
                             items:
                               type: object

@@ -78,9 +78,9 @@ context:
   escaped to `\\` unless the value is wrapped in double quotes and already
   escaped properly)
 - `\\` in bind variables (_JSON_ view mode) and queries in the web interface
-- `\\` in bind variables in arangosh
-- `\\\\` in queries in arangosh
-- Double the amount compared to arangosh in shells that use backslashes for
+- `\\` in bind variables in _arangosh_
+- `\\\\` in queries in _arangosh_
+- Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 {{< /info >}}
 
@@ -239,7 +239,7 @@ search performance.
 ---
 name: analyzer_wildcard_sample
 description: |
-  Create a `wildcard` Analyzer with a small _n_-gram size, for example, in arangosh.
+  Create a `wildcard` Analyzer with a small _n_-gram size, for example, in _arangosh_.
   You can let the Analyzer pre-process the inputs, like with a `norm` Analyzer to
   enable case-insensitive and accent-insensitive wildcard search. Create a matching
   standalone Analyzer so that you can pre-process wildcard search strings in the

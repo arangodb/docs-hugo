@@ -2,7 +2,9 @@
 title: Foxx OAuth 1.0a
 menuTitle: OAuth 1.0a
 weight: 10
-description: ''
+description: >-
+  The OAuth1 module provides abstractions over OAuth 1.0a providers like
+  Twitter, XING, and Tumblr
 ---
 `const createOAuth1Client = require('@arangodb/foxx/oauth1');`
 

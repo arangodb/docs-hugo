@@ -200,7 +200,7 @@ applies the updated key on its next reconciliation cycle.
 
 To check the current license status of a running deployment, use any of the
 interfaces described in [Check the license](../arangodb/4.x/operations/administration/license-management.md#check-the-license)
-on the ArangoDB License Management page (HTTP API, arangosh, or a driver).
+on the ArangoDB License Management page (HTTP API, _arangosh_, or a driver).
 The Contextual Data Platform does not provide a dedicated license view or
 Swagger UI, so use one of those interfaces directly against the ArangoDB
 endpoint.

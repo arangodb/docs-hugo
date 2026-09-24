@@ -7,7 +7,7 @@
       replaceRE `(&lt;.+?&gt;)` `<span class="endpoint-placeholder" title="Replace with actual value">$1</span>`) |
       replaceRE `\{(.+?)\}` `<span class="endpoint-param" title="Replace with actual value">:$1</span>`) | safeHTML
     }}</span>
-    <button class="clipboard-copy" title="Copy to clipboard"></button>
+    <button class="clipboard-copy copy-trigger" title="Copy to clipboard"></button>
   </div>
 {{- else -}}
   {{ errorf "'%s' is not a valid HTTP method for an endpoint" .Method -}}

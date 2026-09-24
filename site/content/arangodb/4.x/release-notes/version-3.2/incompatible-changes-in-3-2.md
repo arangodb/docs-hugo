@@ -130,10 +130,10 @@ description: >-
 
 - It is no longer supported to access the `_users` collection in any way directly, except through the official `@arangodb/users` module or the `/_api/users` REST API.
 
-- The access to the `_users` collection from outside of the arangod server process is now forbidden (Through drivers, arangosh or the REST API). Foxx services are still be able to access the `_users` collection for now, but this might change in future minor releases.
+- The access to the `_users` collection from outside of the _arangod_ server process is now forbidden (Through drivers, _arangosh_ or the REST API). Foxx services are still be able to access the `_users` collection for now, but this might change in future minor releases.
 
 - The internal format of the documents in the `_users` collection has changed from previous versions
 
-- The `_queues` collection only allows read-only access from outside of the arangod server process.
+- The `_queues` collection only allows read-only access from outside of the _arangod_ server process.
 
 - Accessing `_queues` is only supported through the official `@arangodb/queues` module for Foxx apps.
