@@ -2183,6 +2183,15 @@ nav.pagination .next {
     display: flex;
 }
 
+.nav-section-desc {
+    margin: -.1rem 0 .25rem;
+    padding: 0 1rem .1rem;
+    color: var(--gray-500);
+    font-size: .8125rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+}
+
 .nav-section-header-versioned {
     position: sticky;
     top: -0.5rem;
