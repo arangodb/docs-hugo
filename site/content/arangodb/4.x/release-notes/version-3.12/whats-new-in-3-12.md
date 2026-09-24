@@ -3234,6 +3234,20 @@ cluster servers is:
 You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
 in the `--server.endpoint` startup option with all client tools.
 
+### Server errors reported for failed connections
+
+<small>Introduced in: v3.12.12</small>
+
+If the server rejects the initial connection of _arangodump_, _arangorestore_,
+or _arangobackup_, the tools now report the error the server returned in
+addition to the generic message about not being able to connect, for example:
+
+```
+Could not connect to endpoint 'tcp://127.0.0.1:8529', database: '_system', username: 'root': HTTP 401 (Unauthorized): ArangoError 11: User not authenticated
+```
+
+Up to v3.12.11, the reason is dropped and only the generic message is shown.
+
 ### arangodump
 
 #### `--ignore-collection` startup option

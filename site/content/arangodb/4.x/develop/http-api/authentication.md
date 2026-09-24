@@ -156,6 +156,11 @@ startup option.
 
 You can find the expiration date of the JWT token in the `exp` field, encoded as
 Unix timestamp in seconds.
+
+From v3.12.12 onward, session tokens are additionally rejected if the
+user account they have been issued for is deactivated (by setting `active` to
+`false`) with the [User Management API](users.md).
+
 Please note that all JWT tokens must contain the `iss` field with string value
 `arangodb`. As an example the decoded JWT body would look like this:
 
