@@ -147,29 +147,20 @@ function showSidebarHandler() {
 
 var isMobile=false;
 
-function decodeHtmlEntities(text) {
-  var ta = document.createElement("textarea");
-  ta.innerHTML = text;
-  return ta.value;
-}
-
 function replaceArticle(href, newDoc) {
-  var re = /<title>(.*?)<\/title>/;
-  var match = re.exec(newDoc);
+  // Inert document: nothing loads or runs until a node is inserted into ours.
+  var parsed = new DOMParser().parseFromString(newDoc, "text/html");
+  var newContainer = parsed.querySelector(".container-main");
+  var currentContainer = document.querySelector(".container-main");
 
-  /* TODO: Replace with DOMParser?
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = newDoc;
-  const newContainer = tempDiv.querySelector(".container-main");
-  const currentContainer = document.querySelector(".container-main");
-  
   if (newContainer && currentContainer) {
-    currentContainer.parentNode.replaceChild(newContainer, currentContainer);
+    currentContainer.replaceWith(newContainer);
+  } else {
+    console.error("No .container-main to swap in from " + href);
   }
-  */
-  $(".container-main").replaceWith($(".container-main", newDoc));
-  if (match) {
-    document.title = decodeHtmlEntities(match[1]);
+  // Decoded by the parser, unlike a title scraped out of the response text.
+  if (parsed.title) {
+    document.title = parsed.title;
   }
 
   // Avoid `location.hash = ...` even when the value matches: Firefox runs the navigation
@@ -833,6 +824,47 @@ function hideEmptyOpenapiDiv() {
 
 
 /*
+    Code blocks
+
+*/
+
+// Chroma renders the code blocks, so the copy button cannot come from a template.
+// Clicks go through handleDocumentClick via .copy-trigger/.copy-ancestor/.copy-this.
+function initCopyToClipboard() {
+    document.querySelectorAll("article pre > code").forEach(code => {
+        const pre = code.parentElement;
+        if (pre.querySelector(":scope > .copy-trigger")) return; // Already initialized
+
+        pre.classList.add("copy-ancestor");
+        code.classList.add("copy-this");
+
+        const button = document.createElement("button");
+        button.className = "copy-to-clipboard-button copy-trigger";
+        button.setAttribute("type", "button");
+        button.setAttribute("title", "Copy to clipboard");
+        button.setAttribute("aria-label", "Copy to clipboard");
+        code.before(button);
+    });
+}
+
+function addShowMoreButton(parentElem) {
+    const roots = typeof parentElem === "string" ? document.querySelectorAll(parentElem) : [parentElem];
+    roots.forEach(root => {
+        root.querySelectorAll("pre > code").forEach(code => {
+            // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
+            // False for currently collapsed code ("Show output" with display: none)
+            if (!code.classList.contains("code-long") && code.scrollHeight > 20 * 1.8 * 16) {
+                code.classList.add("code-long");
+                const showMore = document.createElement("button");
+                showMore.className = "code-show-more";
+                code.after(showMore);
+            }
+        });
+    });
+}
+
+
+/*
     Common custom functions
 
 */
@@ -866,6 +898,23 @@ function copyURI(evt) {
       return;
     }
     updateHistory(url);
+}
+
+// Copies the .copy-this text within the trigger's .copy-ancestor. CSS shows the checkmark.
+function copyFromScope(trigger) {
+  const scope = trigger.closest(".copy-ancestor");
+  const source = scope && scope.querySelector(".copy-this");
+  if (!source) {
+    console.log("Copy button without a .copy-this element in its .copy-ancestor");
+    return;
+  }
+
+  navigator.clipboard.writeText(source.textContent).then(() => {
+    trigger.classList.add("tooltipped");
+    setTimeout(() => trigger.classList.remove("tooltipped"), 1000);
+  }, () => {
+    console.log("clipboard copy failed");
+  });
 }
 
 function toggleExpandShortcode(event) {
@@ -1014,23 +1063,12 @@ function handleDocumentClick(event) {
         return;
     }
 
-    // Endpoint copy button clicks
-    if (closest('.clipboard-copy')) {
+    // Copy button clicks (endpoint URLs, code blocks)
+    const copyTrigger = closest('.copy-trigger');
+    if (copyTrigger) {
         event.preventDefault();
-        const copyAncestor = target.closest('.copy-ancestor');
-        if (!copyAncestor) {
-            console.log("No copy ancestor found");
-            return;
-        }
-        const copyElement = copyAncestor.querySelector('.copy-this');
-        if (copyElement) {
-            navigator.clipboard.writeText(copyElement.textContent).then(() => {
-                target.classList.add("tooltipped");
-                setTimeout(function() {
-                    target.classList.remove("tooltipped");
-                }, 1000);
-            });
-        }
+        copyFromScope(copyTrigger);
+        return;
     }
   
     // Code show more button clicks
@@ -1074,7 +1112,8 @@ function handleDocumentClick(event) {
     }
   
     // Copy URI clicks
-    if (closest('.header-link')) {
+    if (closest('.header-link, .openapi-property-link')) {
+        if (openInNew) return;
         event.preventDefault();
         copyURI(event);
         return;
