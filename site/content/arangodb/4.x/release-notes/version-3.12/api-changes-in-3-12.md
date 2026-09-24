@@ -369,6 +369,16 @@ anymore, not even if the specification resolves to a matching number. As
 set it explicitly in this case. Alternatively, use the `{}` placeholder as in
 `"IVF{},Flat"` to let the number of centroids be substituted.
 
+#### Sessions of deactivated user accounts
+
+<small>Introduced in: v3.12.12</small>
+
+If you deactivate a user account by setting `active` to `false` using the
+[User Management API](../../develop/http-api/users.md), the
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
+that have been issued for this user account are now rejected. Requests that
+authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
 ### Endpoint return value changes
 
 #### Storage engine API
