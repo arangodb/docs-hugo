@@ -642,9 +642,12 @@ a.section-link {
     background-color: var(--gray-300);
 }
 
-/* No line below the last step */
+.steps .step:last-child {
+    padding-bottom: .5rem;
+}
+
 .steps .step:last-child::before {
-    display: none;
+    border-radius: 1px;
 }
 
 .steps .step-indicator {
