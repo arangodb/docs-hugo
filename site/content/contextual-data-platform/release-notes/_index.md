@@ -7,6 +7,25 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 ---
+## v4.1.1 (September 2026)
+
+This is a maintenance release.
+
+### MLflow
+
+{{< tag "Agentic AI Suite" >}}
+
+Authentication is now enforced on the route of the integrated
+[MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service. As a result,
+the MLflow web interface is only available through the Arango Contextual Data
+Platform web interface, under **AI Tools**. Opening
+`https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in a browser is no longer
+possible.
+
+Programmatic access is unchanged. The official MLflow client and other HTTP
+callers continue to use the same endpoint with a valid JWT, see
+[Programmatic access](../../agentic-ai-suite/private-llms/mlflow.md#programmatic-access).
+
 ## v4.1.0 (August 2026)
 
 ### AutoGraph Studio
