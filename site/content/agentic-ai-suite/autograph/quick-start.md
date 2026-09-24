@@ -74,7 +74,7 @@ interface does not offer these operations in Arango Contextual Data Platform
 {{< /info >}}
 {{< /tab >}}
 
-{{< tab "HTTP API" >}}
+{{< tab "HTTP REST API" >}}
 First, install the AutoGraph service through the
 [Arango Control Plane](../../platform-suite/control-plane-acp/_index.md):
 

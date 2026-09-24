@@ -3,7 +3,7 @@ title: Natural Language to AQL API Reference
 menuTitle: API Reference
 weight: 20
 description: >-
-  HTTP API reference for the Natural Language to AQL service, including
+  REST API reference for the Natural Language to AQL service, including
   endpoints for text processing, AQL generation, and query execution
 ---
 {{< tag "Beta" >}}
