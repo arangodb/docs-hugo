@@ -29,6 +29,34 @@ Programmatic access is unchanged. The official MLflow client and other HTTP
 callers continue to use the same endpoint with a valid JWT, see
 [Programmatic access](../../agentic-ai-suite/private-llms/mlflow.md#programmatic-access).
 
+### AutoGraph
+
+{{< tag "Agentic AI Suite" >}}
+
+- **More accurate answers**: Retrieval no longer matches questions against the
+  wrong passages, content from your documents is no longer left out of the graph
+  along with its connections, and search stays within the boundaries of each
+  project.
+- **More reliable builds**: Large document sets and large file uploads no longer
+  cause timeouts or failures, builds no longer fail while a valid API key is in
+  use, and existing Corpus Graphs can be updated after they have been built.
+- **Visible failure causes**: A failed Knowledge Graph build now shows the
+  strategy execution summary, so you can see why it failed.
+
+{{< info >}}
+The fixes for wrong passages and missing content only apply to new imports.
+Graphs built before this release keep the old behavior. If your graph was built
+from more than one document, import the content again to get the corrected
+result.
+{{< /info >}}
+
+### GraphML
+
+{{< tag "Agentic AI Suite" >}}
+
+Prediction jobs no longer remain in the **Pending** state after featurization,
+training, and model generation have finished successfully.
+
 ## v4.1.0 (August 2026)
 
 ### AutoGraph Studio
