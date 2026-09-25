@@ -591,7 +591,7 @@ for details and usage examples.
 The following APIs have been expanded / changed:
 
 - [Database creation API](../../develop/http-api/databases.md#create-a-database),\
-  HTTP route `POST /_api/database`
+  HTTP endpoint `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
   and `sharding` attributes. All these attributes are optional, and only
@@ -613,26 +613,26 @@ The following APIs have been expanded / changed:
   `--cluster.force-one-shard` is enabled).
 
 - [Database properties API](../../develop/http-api/databases.md#get-information-about-the-current-database),\
-  HTTP route `GET /_api/database/current`
+  HTTP endpoint `GET /_api/database/current`
 
   The database properties endpoint returns the new additional attributes
   `replicationFactor`, `writeConcern` and `sharding` in a cluster.
   A description of these attributes can be found above.
 
 - [Collection](../../develop/http-api/collections.md) / [Graph APIs](../../develop/http-api/graphs/named-graphs.md#management),\
-  HTTP routes `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
+  HTTP endpoints `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
   and various `/_api/gharial/*` endpoints
 
   `minReplicationFactor` has been renamed to `writeConcern` for consistency.
   The old attribute name is still accepted and returned for compatibility.
 
 - [Hot Backup API](../../develop/http-api/hot-backups.md#create-a-backup),\
-  HTTP route `POST /_admin/backup/create`
+  HTTP endpoint `POST /_admin/backup/create`
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
 - New [Metrics API](../../develop/http-api/monitoring/metrics.md#get-the-metrics),\
-  HTTP route `GET /_admin/metrics`
+  HTTP endpoint `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
   document collects all instance metrics, which are measured at any given

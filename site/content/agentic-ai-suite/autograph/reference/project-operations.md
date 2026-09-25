@@ -299,7 +299,7 @@ profile that cannot be resolved:
 ```
 
 The two metadata write faults are the exception. They are server errors, `503`
-and `500`, and they carry the standard error body of the gateway instead of the
+and `500`, and they carry the standard JSON error body instead of the
 response documented above, because nothing was wrong with the request itself.
 
 ### Embedding identity is immutable

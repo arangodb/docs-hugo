@@ -45,11 +45,11 @@ monitoring system.
 The REST endpoint `/_admin/metrics` also returns additional metrics in 3.7,
 compared to the list of metrics that it returned in 3.6.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Privilege changes
 
-The access privileges for the REST API endpoint at `/_admin/cluster/numberOfServers`
+The access privileges for the HTTP API endpoint at `/_admin/cluster/numberOfServers`
 can now be controlled via the `--server.harden` startup option. The behavior is
 as follows:
 
@@ -62,11 +62,11 @@ as follows:
 
 ### Endpoints API return value changes
 
-The REST API endpoint at `/_api/cluster/endpoints` will now return HTTP 501 (Not
+The HTTP API endpoint at `/_api/cluster/endpoints` will now return HTTP 501 (Not
 implemented) on single server instead of HTTP 403 (Forbidden), which it returned
 previously.
 
-When invoked via the PUT HTTP verb with an empty JSON object, the REST API
+When invoked via the PUT HTTP verb with an empty JSON object, the HTTP API
 endpoint at `/_admin/cluster/numberOfServers` will now return with the
 following response body:
 
@@ -79,7 +79,7 @@ the request body returned a JSON response that was just `true`.
 
 ### Precondition failed error message changes
 
-The REST API endpoints for updating, replacing and removing documents using a
+The HTTP API endpoints for updating, replacing and removing documents using a
 revision ID guard value now may return a different error message string in case
 the document exists on the server with a revision ID value other than the
 specified one. The API still returns HTTP 412, and ArangoDB error code 1200 as
@@ -89,17 +89,17 @@ attribute may change from "precondition failed" to "conflict",
 
 ### REST endpoints added
 
-The following REST API endpoints have been added in 3.7:
+The following HTTP API endpoints have been added in 3.7:
 
-- HTTP POST `/_admin/server/tls`: this endpoint can be used to change the 
+- HTTP `POST /_admin/server/tls`: this endpoint can be used to change the 
   TLS keyfile (secret key as well as public certificates) at run time. The API
   basically makes the _arangod_ server reload the keyfile from disk.
-- HTTP POST `/_admin/server/jwt`: can be used to
+- HTTP `POST /_admin/server/jwt`: can be used to
   [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
   of a local _arangod_ process without having to restart it (hot-reload).
   This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
   This endpoint is available only in the Enterprise Edition.
-- HTTP POST `/_admin/server/encryption` can be used to
+- HTTP `POST /_admin/server/encryption` can be used to
   [reload the user-supplied key(s)](../../develop/http-api/security.md#encryption-at-rest)
   used for encryption at rest, after they have been changed on disk.
   This endpoint is available only in the Enterprise Edition.
@@ -108,7 +108,7 @@ Using these endpoints requires superuser privileges.
 
 ### REST endpoints augmented
 
-The REST API endpoint for inserting documents at POST `/_api/document/<collection>`
+The HTTP API endpoint for inserting documents at `POST /_api/document/<collection>`
 will now handle the URL parameter `overwriteMode`.
 
 This URL parameter supports the following values:
@@ -149,31 +149,31 @@ Note that operations with `overwrite` or `overwriteMode` parameter require
 a `_key` attribute in the request payload, therefore they can only be performed
 on collections sharded by `_key`.
 
-The REST API endpoints for creating collections at POST `/_api/collection` as well
+The HTTP API endpoints for creating collections at `POST /_api/collection` as well
 as listing and changing collection properties at PUT/GET
 `/_api/collection/<collection>/properties` will now make use of the additional
 attribute `schema`. The attribute can be used so specify document schema
 validation at collection level. See
 [Schema Validation](../../concepts/data-structure/documents/schema-validation.md).
 
-The REST API endpoint for creating a graph at POST `/_api/gharial` is now able
+The HTTP API endpoint for creating a graph at `POST /_api/gharial` is now able
 to accept the string value `"satellite"` as an option parameter for the
 attribute `replicationFactor`. Only numeric values were allowed before. Setting
 the `replicationFactor` to `"satellite"` will lead to a SatelliteGraph being
 created. SatelliteGraph creation will ignore the option parameters
 `numberOfShards`, `minReplicationFactor` and `writeConcern`, as all of them
-will be set automatically. Additionally, the REST API endpoint for reading the
+will be set automatically. Additionally, the HTTP API endpoint for reading the
 graph definitions of all graphs at GET `GET /_api/gharial` or a graph
 definition of a single graph at `/_api/gharial/{graph}` will include an
 additional boolean attribute called `isSatellite`.
 
-The REST API endpoint for creating a graph at POST `/_api/gharial` accepts a
+The HTTP API endpoint for creating a graph at `POST /_api/gharial` accepts a
 new boolean parameter `isDisjoint`. In combination with `smartGraphAttribute`
 it allows to create the newly introduced graph type **Disjoint SmartGraph**.
 `isDisjoint` defaults to `false`, which will create a regular **SmartGraph**.
-Additionally, the REST API endpoint for reading the graph definitions of all
-graphs at GET `/_api/gharial` or a graph definition of a single graph at
-GET `/_api/gharial/{graph}` will include an additional boolean attribute
+Additionally, the HTTP API endpoint for reading the graph definitions of all
+graphs at `GET /_api/gharial` or a graph definition of a single graph at
+`GET /_api/gharial/{graph}` will include an additional boolean attribute
 called `isDisjoint` in case of **Disjoint SmartGraphs**.
 
 The REST endpoint `/_admin/metrics` also returns additional metrics in 3.7,
@@ -181,7 +181,7 @@ compared to the list of metrics that it returned in 3.6.
 
 ### REST endpoints moved
 
-The following existing REST APIs have moved in ArangoDB 3.7 to improve API
+The following existing HTTP APIs have moved in ArangoDB 3.7 to improve API
 naming consistency:
 
 - the endpoint at `/_admin/clusterNodeVersion` is now merely redirecting requests
@@ -197,16 +197,16 @@ naming consistency:
   to the endpoint `/_admin/cluster/statistics`. The new endpoint will handle
   incoming requests in the same way the old endpoint did.
 
-The above endpoints are part of ArangoDB's exposed REST API, however, they are
+The above endpoints are part of ArangoDB's exposed HTTP API, however, they are
 not supposed to be called directly by drivers or client
 
 ### REST endpoints removed
 
-The REST API endpoint at `/_admin/aql/reload` has been removed in ArangoDB 3.7.
+The HTTP API endpoint at `/_admin/aql/reload` has been removed in ArangoDB 3.7.
 There is no necessity to call this endpoint from a driver or a client application
 directly.
 
-The REST API endpoint at `/_api/collection/<collection>/rotate` has been removed
+The HTTP API endpoint at `/_api/collection/<collection>/rotate` has been removed
 in ArangoDB 3.7. This endpoint was previously only available for the MMFiles
 storage engine, but not for the RocksDB storage engine.
 

@@ -115,11 +115,11 @@ This change was made to put the metrics into the "arangodb" namespace, so
 that metrics from different systems can unambiguously combined into a single
 monitoring system.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Privilege changes
 
-The access privileges for the REST API endpoint at `/_admin/cluster/numberOfServers`
+The access privileges for the HTTP API endpoint at `/_admin/cluster/numberOfServers`
 can now be controlled via the `--server.harden` startup option. The behavior is
 as follows:
 
@@ -132,11 +132,11 @@ as follows:
 
 ### Endpoints API return value changes
 
-The REST API endpoint at `/_api/cluster/endpoints` will now return HTTP 501 (Not
+The HTTP API endpoint at `/_api/cluster/endpoints` will now return HTTP 501 (Not
 implemented) on single server instead of HTTP 403 (Forbidden), which it returned
 previously.
 
-When invoked via the PUT HTTP verb with an empty JSON object, the REST API
+When invoked via the PUT HTTP verb with an empty JSON object, the HTTP API
 endpoint at `/_admin/cluster/numberOfServers` will now return with the
 following response body:
 
@@ -149,7 +149,7 @@ the request body returned a JSON response that was just `true`.
 
 ### Precondition failed error message changes
 
-The REST API endpoints for updating, replacing and removing documents using a
+The HTTP API endpoints for updating, replacing and removing documents using a
 revision ID guard value now may return a different error message string in case
 the document exists on the server with a revision ID value other than the
 specified one. The API still returns HTTP 412, and ArangoDB error code 1200 as
@@ -159,7 +159,7 @@ attribute may change from "precondition failed" to "conflict",
 
 ### Endpoints moved
 
-The following existing REST APIs have moved in ArangoDB 3.7 to improve API
+The following existing HTTP APIs have moved in ArangoDB 3.7 to improve API
 naming consistency:
 
 - the endpoint at `/_admin/clusterNodeVersion` is now merely redirecting requests
@@ -175,16 +175,16 @@ naming consistency:
   to the endpoint `/_admin/cluster/statistics`. The new endpoint will handle
   incoming requests in the same way the old endpoint did.
 
-The above endpoints are part of ArangoDB's exposed REST API, however, they are
+The above endpoints are part of ArangoDB's exposed HTTP API, however, they are
 not supposed to be called directly by drivers or client
 
 ### Endpoints removed
 
-The REST API endpoint at `/_admin/aql/reload` has been removed in ArangoDB 3.7.
+The HTTP API endpoint at `/_admin/aql/reload` has been removed in ArangoDB 3.7.
 There is no necessity to call this endpoint from a driver or a client application
 directly.
 
-The REST API endpoint at `/_api/collection/<collection>/rotate` has been removed 
+The HTTP API endpoint at `/_api/collection/<collection>/rotate` has been removed 
 in ArangoDB 3.7. This endpoint was previously only available for the MMFiles
 storage engine, but not for the RocksDB storage engine.
 

@@ -410,7 +410,7 @@ because otherwise the configuration only takes effect on the next restart.
 **`custom` is a first-class provider**
 
 `custom` identifies any OpenAI-compatible endpoint, such as OpenRouter, Gemini,
-Azure, or a self-hosted gateway, and can be set independently for chat and
+Azure, or a self-hosted LLM gateway, and can be set independently for chat and
 embedding. `chat_api_url` and `embedding_api_url` are required with it. Unknown
 provider strings are rejected rather than silently defaulting to `openai`, and
 configurations already stored as `openai` with a non-default base URL are not
@@ -435,8 +435,8 @@ now always `false` and is retained only for backward compatibility.
 **Credential validation issues a real inference call**
 
 Validation no longer decides model support by looking the model up in the
-provider's model catalog, which produced false negatives on gateways that list
-no embedding models at all, and let a key without remaining credit pass. It
+provider's model catalog, which produced false negatives on LLM gateways that
+list no embedding models at all, and let a key without remaining credit pass. It
 issues one minimal chat completion and one single-input embeddings request
 instead. The `MODEL_INVALID` error code is gone, and failures now map to a fixed
 set of codes such as `INVALID_API_KEY`, `INSUFFICIENT_QUOTA`,
@@ -455,8 +455,8 @@ A `2xx` now means the configuration was accepted and persisted, and
 The two metadata write faults are the exception. The configuration validated but
 could not be stored, so they are server errors — `503`
 `METADATA_WRITE_TIMEOUT`, which is safe to retry, and `500`
-`METADATA_WRITE_FAILED` — and they carry the standard error envelope of the
-gateway instead of the response body above.
+`METADATA_WRITE_FAILED` — and they carry the standard JSON error envelope
+instead of the response body above.
 
 **Model-sensitive endpoints are refused until the model configuration is valid**
 
@@ -706,9 +706,9 @@ applied to the running pod right away, so no restart or reinstall is needed.
 
 - Validation issues one small chat request and one small embeddings request
   instead of looking the model up in the provider's `GET /v1/models` catalog.
-  This detects an expired key and an exhausted quota, and accepts a model that a
-  gateway serves but does not list. The `KEY_*` and `MODEL_INVALID` codes are
-  replaced by the provider's own reason and the field to fix.
+  This detects an expired key and an exhausted quota, and accepts a model that
+  an LLM gateway serves but does not list. The `KEY_*` and `MODEL_INVALID` codes
+  are replaced by the provider's own reason and the field to fix.
 - `custom` is a first-class provider for any OpenAI-compatible endpoint and can
   be set independently for chat and embedding. It requires an explicit
   `chat_api_url` or `embedding_api_url`. Unknown provider strings are rejected

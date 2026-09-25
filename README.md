@@ -119,8 +119,8 @@ place the output into the rendered documentation, for example.
 
   - `` ```js `` for arangosh / JavaScript API examples
   - `` ```aql `` for AQL query examples
-  - `` ```openapi `` for REST HTTP API descriptions
-  - `` ```curl `` for REST HTTP API examples
+  - `` ```openapi `` for HTTP API descriptions
+  - `` ```curl `` for HTTP API examples
 
   There is also a `` ```mermaid `` codeblock for [Diagrams](#diagrams) that does
   not involve _arangoproxy_ at all.
@@ -144,7 +144,7 @@ The following build workflows exist:
 
   Build docs without re-generating examples (using a committed cache file).
 
-  Includes the assembly of the REST HTTP API descriptions (OpenAPI) with
+  Includes the assembly of the HTTP API descriptions (OpenAPI) with
   validation at each run. `` ```curl `` examples require a different workflow.
 
   You may need to specify upstream branches.
@@ -366,7 +366,7 @@ paths:
     post:
       description: |
         {{</* warning */>}}
-        Admonition inside of REST HTTP API description.
+        Admonition inside of HTTP API description.
         {{</* /warning */>}}
         ...
 ```
@@ -854,6 +854,9 @@ The following shortcodes also exist but are rarely used:
     ~~AI Services~~, ~~GenAI Suite~~, or ~~AI Suite~~
   - _Arango Control Plane_, but not ~~GenAI Service~~ or ~~AI Orchestrator~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
+
+- Use _HTTP API_, not ~~REST (HTTP) API~~ or ~~RESTful (HTTP) API~~ unless it
+  truly adheres to the REST principles, especially regarding hypermedia (HATEOAS).
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
@@ -1925,7 +1928,7 @@ FOR doc IN @@coll
 
 ### Add a new OpenAPI endpoint description
 
-Used to describe an HTTP REST API endpoint using the
+Used to describe an HTTP API endpoint using the
 [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
 version 3.1.0.
 

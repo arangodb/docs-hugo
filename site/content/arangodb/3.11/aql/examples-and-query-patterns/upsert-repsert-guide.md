@@ -30,7 +30,7 @@ ArangoDB provides the following options in AQL to achieve this:
 
 - `UPSERT` AQL operation
 - `INSERT` AQL operation with `overwriteMode`
-- Insert operation not using AQL, but the Document REST API
+- Insert operation not using AQL, but the Document HTTP API
 
 These alternatives have different capabilities and performance characteristics.
 
@@ -302,7 +302,7 @@ RETURN NEW
 
 There is the option to execute an insert operation with `overwriteMode` outside
 of AQL. The [`POST /_api/document/{collection}`](../../develop/http-api/documents.md#create-multiple-documents)
-endpoint is a dedicated REST API for insert operations, which can handle one
+endpoint is a dedicated HTTP API for insert operations, which can handle one
 document, or multiple documents at once.
 
 Conceptually this API behaves like the `INSERT` AQL operation, but it can be
@@ -310,9 +310,9 @@ called with a batch of documents at once. This is the most efficient solution,
 and should be preferred if possible.
 
 Most ArangoDB drivers also provide a means to insert multiple documents at once,
-which will internally call this same REST API.
+which will internally call this same HTTP API.
 
-The REST API provides the `returnOld` and `returnNew` options to make it return
+The HTTP API provides the `returnOld` and `returnNew` options to make it return
 the previous versions of documents or the insert/updated/replaced documents, in
 the same way as the `INSERT` AQL operation can do.
 
@@ -330,6 +330,6 @@ update/replace documents in ArangoDB, but it is also the least efficient variant
 The `INSERT` AQL operation with the `overwriteMode` set will outperform
 `UPSERT`, but it can only be used for some use cases.
 
-Using the dedicated REST API for document inserts will be even more efficient,
+Using the dedicated HTTP API for document inserts will be even more efficient,
 and is thus the preferred option for bulk document inserts, but AQL `INSERT`
 queries can be almost as fast.
