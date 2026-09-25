@@ -919,7 +919,7 @@ checked on the receiving Coordinator, before any request forwarding.
 
 ## Support info API
 
-A new HTTP REST API endpoint `GET /_admin/support-info` was added for retrieving
+A new HTTP API endpoint `GET /_admin/support-info` was added for retrieving
 deployment information for support purposes. The endpoint returns data about the
 ArangoDB version used, the host (operating system, server ID, CPU and storage capacity,
 current utilization, a few metrics) and the other servers in the deployment
@@ -951,7 +951,7 @@ db._getLicense();
 db._setLicense("<license-string>");
 ```
 
-There are two new REST API routes to do the same, `GET /_admin/license` and
+There are two new HTTP API routes to do the same, `GET /_admin/license` and
 `PUT /_admin/license`.
 
 See [License Management](../../operations/administration/license-management.md) and the

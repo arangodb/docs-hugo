@@ -26,9 +26,9 @@ Error responses are usually JSON with a `message` field (and sometimes a
 
 {{< info >}}
 **`429 Too Many Requests` and `507 Insufficient Storage` are defined but never
-reached.** The gateway maps a provider rate limit onto `429` and a local storage
-limit onto `507`, but no endpoint raises either of them. Do not write a client
-branch for these two statuses.
+reached.** The gRPC-to-HTTP mapping turns a provider rate limit into `429` and a
+local storage limit into `507`, but no endpoint raises either of them. Do not
+write a client branch for these two statuses.
 
 - **Provider throttling** always happens while a job runs in the background, so
   it is reported on the job as `error_code: LLM_RATE_LIMITED` or

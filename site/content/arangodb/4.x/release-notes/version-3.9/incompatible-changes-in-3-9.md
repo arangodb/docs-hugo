@@ -193,11 +193,11 @@ completely obsolete, and ArangoDB will never create these system collections
 for any new databases. The option can still be specified at startup, but it
 meaningless now.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Endpoint return value changes
 
-- Changed the encoding of revision IDs returned by the below listed REST APIs.
+- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
 
   <small>Introduced in: v3.8.8, v3.9.4</small>
 

@@ -90,7 +90,7 @@ X-Arango-Endpoint: http://[::1]:8531
 ```
 
 Client applications can also detect who the current _Leader_ and the _Followers_
-are by calling the `/_api/cluster/endpoints` REST API. This API is accessible
+are by calling the `/_api/cluster/endpoints` HTTP API. This API is accessible
 on _Leader_ and _Followers_ alike.
 
 ## Reading from Followers

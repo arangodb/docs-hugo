@@ -531,14 +531,14 @@ The following incompatible changes have been made to the HTTP API in ArangoDB 3.
 
 #### General
 
-The HTTP insert operations for single documents and edges (POST `/_api/document`) do 
+The HTTP insert operations for single documents and edges (`POST /_api/document`) do 
 not support the URL parameter "createCollection" anymore. In previous versions of
 ArangoDB this parameter could be used to automatically create a collection upon
 insertion of the first document. It is now required that the target collection already
 exists when using this API, otherwise it will return an HTTP 404 error.
-The same is true for the import API at POST `/_api/import`.
+The same is true for the import API at `POST /_api/import`.
 
-Collections can still be created easily via a separate call to POST `/_api/collection`
+Collections can still be created easily via a separate call to `POST /_api/collection`
 as before.
 
 The "location" HTTP header returned by ArangoDB when inserting a new document or edge
@@ -590,16 +590,16 @@ current revision of the document, regardless of its revision id.
 ### All documents API
 
 The HTTP API for retrieving the ids, keys or URLs of all documents from a collection
-was previously located at GET `/_api/document?collection=...`. This API was moved to
-PUT `/_api/simple/all-keys` and is now executed as an AQL query.
+was previously located at `GET /_api/document?collection=...`. This API was moved to
+`PUT /_api/simple/all-keys` and is now executed as an AQL query.
 The name of the collection must now be passed in the HTTP request body instead of in
 the request URL. The same is true for the "type" parameter, which controls the type of
 the result to be created.
 
 Calls to the previous API can be translated as follows:
 
-- old: GET `/_api/document?collection=<collection>&type=<type>` without HTTP request body
-- 3.0: PUT `/_api/simple/all-keys` with HTTP request body `{"collection":"<collection>","type":"id"}`
+- old: `GET /_api/document?collection=<collection>&type=<type>` without HTTP request body
+- 3.0: `PUT /_api/simple/all-keys` with HTTP request body `{"collection":"<collection>","type":"id"}`
 
 The result format of this API has also changed slightly. In previous versions calls to
 the API returned a JSON object with a `documents` attribute. As the functionality is
@@ -649,7 +649,7 @@ curl -X POST \
 
 #### Querying connected edges
 
-The REST API for querying connected edges at GET `/_api/edges/<collection>` will now
+The HTTP API for querying connected edges at `GET /_api/edges/<collection>` will now
 make the edge ids unique before returning the connected edges. This is probably desired anyway
 as results will now be returned only once per distinct input edge id. However, it may break 
 client applications that rely on the old behavior.
@@ -666,7 +666,7 @@ All it's features can be replaced using `/_api/gharial` and AQL instead.
 
 ### Simple queries API
 
-The REST routes PUT `/_api/simple/first` and `/_api/simple/last` have been removed
+The HTTP endpoints `PUT /_api/simple/first` and `/_api/simple/last` have been removed
 entirely. These APIs were responsible for returning the first-inserted and
 last-inserted documents in a collection. This feature was built on cap constraints
 internally, which have been removed in 3.0.
@@ -677,19 +677,19 @@ Calling one of these endpoints in 3.0 will result in an HTTP 404 error.
 
 It is not supported in 3.0 to create an index with type `cap` (cap constraint) in 
 3.0 as the cap constraints feature has bee removed. Calling the index creation
-endpoint HTTP API POST `/_api/index?collection=...` with an index type `cap` will 
+endpoint HTTP API `POST /_api/index?collection=...` with an index type `cap` will 
 therefore result in an HTTP 400 error.
 
 ### Log entries API
 
-The REST route HTTP GET `/_admin/log` is now accessible from within all databases. In
-previous versions of ArangoDB, this route was accessible from within the `_system`
+The HTTP API endpoint `GET /_admin/log` is now accessible from within all databases. In
+previous versions of ArangoDB, this endpoint was accessible from within the `_system`
 database only, and an HTTP 403 (Forbidden) was thrown by the server for any access
 from within another database.
 
 ### Figures API
 
-The REST route HTTP GET `/_api/collection/<collection>/figures` will not return the 
+The HTTP API endpoint `GET /_api/collection/<collection>/figures` will not return the 
 following result attributes as they became meaningless in 3.0:
 
 - shapefiles.count
@@ -701,7 +701,7 @@ following result attributes as they became meaningless in 3.0:
 
 ### Databases and Collections APIs
 
-When creating a database via the API POST `/_api/database`, ArangoDB will now always
+When creating a database via the API `POST /_api/database`, ArangoDB will now always
 return the HTTP status code 202 (created) if the operation succeeds. Previous versions
 of ArangoDB returned HTTP 202 as well, but this behavior was changeable by sending an
 HTTP header `x-arango-version: 1.4`. When sending this header, previous versions of
@@ -714,7 +714,7 @@ could be overridden by sending the HTTP header `x-arango-version: 1.4`. Clients 
 still send the header, but this will not make the database name in the "location"
 response header disappear.
 
-The result format for querying all collections via the API GET `/_api/collection` 
+The result format for querying all collections via the API `GET /_api/collection` 
 has been changed.
 
 Previous versions of ArangoDB returned an object with an attribute named `collections` 
@@ -753,7 +753,7 @@ in ArangoDB 3.0.
 
 ### Replication APIs
 
-The URL parameter "failOnUnknown" was removed from the REST API GET `/_api/replication/dump`.
+The URL parameter "failOnUnknown" was removed from the HTTP API `GET /_api/replication/dump`.
 This parameter controlled whether dumping or replicating edges should fail if one
 of the vertex collections linked in the edge's `_from` or `_to` attributes was not
 present anymore. In this case the `_from` and `_to` values could not be translated into
@@ -769,7 +769,7 @@ In ArangoDB 3.0 this parameter is obsolete, as `_from` and `_to` are stored as s
 string values all the time, so they cannot get invalid when referenced collections are
 dropped.
 
-The result format of the API GET `/_api/replication/logger-follow` has changed slightly in
+The result format of the API `GET /_api/replication/logger-follow` has changed slightly in
 the following aspects:
 
 - documents and edges are reported in the same way. The type for document insertions/updates
@@ -780,11 +780,11 @@ the following aspects:
   accessed by peeking into the `_key` and `_rev` attributes of the `data` sub-attributes
   of the change record.
 
-The same is true for the collection-specific changes API GET `/_api/replication/dump`.
+The same is true for the collection-specific changes API `GET /_api/replication/dump`.
 
 ### User management APIs
 
-The REST API endpoint POST `/_api/user` for adding new users now requires the request to
+The HTTP API endpoint `POST /_api/user` for adding new users now requires the request to
 contain a JSON object with an attribute named `user`, containing the name of the user to
 be created. Previous versions of ArangoDB also checked this attribute, but additionally 
 looked for an attribute `username` if the `user` attribute did not exist. 
@@ -796,8 +796,8 @@ API:
 
 - `/_open/cerberus` and `/_system/cerberus`: these endpoints were intended for some 
   ArangoDB-internal applications only
-- PUT `/_api/simple/by-example-hash`, PUT `/_api/simple/by-example-skiplist` and
-  PUT `/_api/simple/by-condition-skiplist`: these methods were documented in early
+- `PUT /_api/simple/by-example-hash`, `PUT /_api/simple/by-example-skiplist` and
+  `PUT /_api/simple/by-condition-skiplist`: these methods were documented in early
   versions of ArangoDB but have been marked as not intended to be called by end
   users since ArangoDB version 2.3. These methods should not have been part of any
   ArangoDB manual since version 2.4.
@@ -827,7 +827,7 @@ inspect this header and can allow passing ArangoDB web interface credentials (if
 in the browser) to the requesting site. ArangoDB will not forward or provide any credentials.
 
 Setting this option is only required if applications on other hosts need to access the 
-ArangoDB web interface or other HTTP REST APIs from a web browser with the same credentials 
+ArangoDB web interface or other HTTP APIs from a web browser with the same credentials 
 that the user has entered when logging into the web interface. When a web browser finds 
 the `Access-Control-Allow-Credentials` HTTP response header, it may forward the credentials
 entered into the browser for the ArangoDB web interface login to the other site. 
@@ -1093,7 +1093,7 @@ been renamed to _arangobench_ in 3.0.
 ## Miscellaneous changes
 
 The checksum calculation algorithm for the `collection.checksum()` method and its
-corresponding REST API GET `/_api/collection/<collection</checksum` has changed in 3.0. 
+corresponding HTTP API `GET /_api/collection/<collection</checksum` has changed in 3.0. 
 Checksums calculated in 3.0 will differ from checksums calculated with 2.8 or before.
 
 The ArangoDB server in 3.0 does not read a file `ENDPOINTS` containing a list of 

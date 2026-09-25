@@ -211,12 +211,12 @@ The number of server threads is now configured by the following startup options:
 The actual number of request processing threads is adjusted dynamically at runtime
 and will float between `--server.minimal-threads` and `--server.maximal-threads`.
 
-## HTTP REST API
+## HTTP API
 
 The following incompatible changes were made in context of ArangoDB's HTTP REST
 APIs:
 
-- The following, partly undocumented internal REST APIs have been removed in ArangoDB 3.4:
+- The following, partly undocumented internal HTTP APIs have been removed in ArangoDB 3.4:
 
   - `GET /_admin/test`
   - `GET /_admin/clusterCheckPort`
@@ -250,7 +250,7 @@ APIs:
   }
   ```
 
-  In previous versions, this REST API returned only the list of available
+  In previous versions, this HTTP API returned only the list of available
   AQL user functions on the top level of the response.
   Each AQL user function description now also contains the 'isDeterministic' attribute.
 
@@ -268,7 +268,7 @@ The following APIs have been added or augmented:
 
 - additional `stream` attribute in queries HTTP API
 
-  The REST APIs for retrieving the list of currently running and slow queries
+  The HTTP APIs for retrieving the list of currently running and slow queries
   at `GET /_api/query/current` and `GET /_api/query/slow` are now returning an
   additional attribute `stream` for each query.
   
@@ -350,7 +350,7 @@ The following APIs have been added or augmented:
 
 - APIs for view management have been added at endpoint `/_api/view`.
 
-- The REST APIs for modifying graphs at endpoint `/_api/gharial` now support returning
+- The HTTP APIs for modifying graphs at endpoint `/_api/gharial` now support returning
   the old revision of vertices / edges after modifying them. The APIs also supports 
   returning the just-inserted vertex / edge. This is in line with the already existing 
   single-document functionality provided at endpoint `/_api/document`.
@@ -736,16 +736,16 @@ threads.
 The following features and APIs are deprecated in ArangoDB 3.4, and will be 
 removed in future versions of ArangoDB:
 
-- the JavaScript-based traversal REST API at `/_api/traversal` and the
+- the JavaScript-based traversal HTTP API at `/_api/traversal` and the
   underlying traversal module `@arangodb/graph/traversal`:
 
   This API has several limitations (including low result set sizes) and has 
   effectively been unmaintained since the introduction of native AQL traversal.
 
-  It is recommended to migrate client applications that use the REST API at
+  It is recommended to migrate client applications that use the HTTP API at
   `/_api/traversal` to use AQL-based traversal queries instead.
 
-- the REST API for simple queries at `/_api/simple`:
+- the HTTP API for simple queries at `/_api/simple`:
 
   The simple queries provided by the `/_api/simple` endpoint are limited in
   functionality and will internally resort to AQL queries anyway. It is advised
@@ -753,14 +753,14 @@ removed in future versions of ArangoDB:
   using the simple query API, because that is more flexible and allows greater 
   control of how the queries are executed.
 
-- the REST API for querying endpoints at `/_api/endpoint`:
+- the HTTP API for querying endpoints at `/_api/endpoint`:
 
   The API `/_api/endpoint` is deprecated since ArangoDB version 3.1. 
   For cluster mode there is `/_api/cluster/endpoints` to find all current 
   Coordinator endpoints.
 
 - accessing collections via their numeric IDs instead of their names. This mostly
-  affects the REST APIs at
+  affects the HTTP APIs at
 
   - `/_api/collection/<collection-id>`
   - `/_api/document/<collection-id>`
@@ -770,7 +770,7 @@ removed in future versions of ArangoDB:
   their numeric ID, but the preferred way to access a collections is by its
   user-defined name.
 
-- the REST API for WAL tailing at `/_api/replication/logger-follow`:
+- the HTTP API for WAL tailing at `/_api/replication/logger-follow`:
 
   The `logger-follow` WAL tailing API has several limitations. A better API
   was introduced at endpoint `/_api/wal/tail` in ArangoDB 3.3.
@@ -778,7 +778,7 @@ removed in future versions of ArangoDB:
   Client applications using the old tailing API at `/_api/replication/logger-follow`
   should switch to the new API eventually.
 
-- the result attributes `mode` and `writeOpsEnabled` in the REST API for querying
+- the result attributes `mode` and `writeOpsEnabled` in the HTTP API for querying
   a server's status at `/_admin/status`:
 
   `GET /_admin/status` returns the additional attributes `operationMode` and 

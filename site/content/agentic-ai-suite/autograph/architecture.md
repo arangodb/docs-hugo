@@ -322,7 +322,7 @@ inspection calls that you can make at any time.
 ```mermaid
 flowchart TD
 
-    Client["Client / HTTP REST"]
+    Client["Client / HTTP API"]
 
     %% Entry points
     Client -->|Step 0| HEALTH
@@ -455,7 +455,7 @@ for a project delete.
 ```mermaid
 flowchart LR
 
-    Client["Client / HTTP REST"]
+    Client["Client / HTTP API"]
 
     Client -.->|inspect anytime| OVERVIEW
     Client -.->|configure| MODELCFG

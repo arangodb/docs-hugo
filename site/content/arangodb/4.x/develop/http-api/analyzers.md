@@ -6,12 +6,6 @@ description: >-
   The HTTP interface for Analyzers lets you create and delete Analyzers, as well as
   list all or get specific Analyzers with all their settings
 ---
-The RESTful API for managing ArangoSearch Analyzers is accessible via the
-`/_api/analyzer` endpoint.
-
-See the description of [Analyzers](../../indexes-and-search/analyzers.md) for an
-introduction and the available types, properties and features.
-
 ## Create an Analyzer
 
 ```openapi
@@ -21,6 +15,9 @@ paths:
       operationId: createAnalyzer
       description: |
         Creates a new Analyzer based on the provided configuration.
+
+        See the description of [Analyzers](../../indexes-and-search/analyzers.md)
+        for an introduction and the available types, properties and features.
       parameters:
         - name: database-name
           in: path

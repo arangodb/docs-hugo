@@ -6,7 +6,7 @@ description: >-
   Clients can check if given AQL queries are syntactically valid using an
   HTTP API or JavaScript API
 ---
-ArangoDB provides an [HTTP REST API](../../develop/http-api/queries/aql-queries.md)
+ArangoDB provides an [HTTP API](../../develop/http-api/queries/aql-queries.md)
 for parsing and thus statically validating queries.
 
 A query can also be parsed from the ArangoShell using `ArangoStatement`'s `parse` method. The

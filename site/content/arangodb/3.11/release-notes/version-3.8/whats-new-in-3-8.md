@@ -374,7 +374,7 @@ kept on each instance.
 
 The privileges for accessing server logs in the web interface are identical
 to the privileges required for accessing logs via the `GET /_admin/log` HTTP
-REST API. If security is a concern, in-memory logs buffering can be turned
+HTTP API. If security is a concern, in-memory logs buffering can be turned
 off entirely using the startup option `--log.in-memory false`, plus the log
 API can be turned off or restricted via the `--log.api-enabled false` or
 `--log.api-enabled jwt` startup options.
@@ -655,7 +655,7 @@ usage by using the hardware-accelerated encryption.
 
 ArangoDB 3.8 provides a new startup option `--cluster.api-jwt-policy` that
 allows *additional* checking for valid JWTs in all requests to sub-routes of
-the `/_admin/cluster` REST API endpoint.
+the `/_admin/cluster` HTTP API endpoint.
 This is a security option to restrict access to these cluster APIs to
 operator tools and privileged users.
 
@@ -1044,11 +1044,11 @@ Miscellaneous
 ### Cluster support for two APIs
 
 - Added cluster support for the JavaScript API method `collection.checksum()`
-  and the REST HTTP API endpoint `GET /_api/collection/{collection-name}/checksum`,
+  and the HTTP API endpoint `GET /_api/collection/{collection-name}/checksum`,
   which calculate CRC checksums for collections.
 
 - Added cluster support for the JavaScript API method `db._engineStats()`
-  and the REST HTTP API endpoint `GET /_api/engine/stats`, which provide
+  and the HTTP API endpoint `GET /_api/engine/stats`, which provide
   runtime information about the storage engine state.
 
 ### I/O heartbeat

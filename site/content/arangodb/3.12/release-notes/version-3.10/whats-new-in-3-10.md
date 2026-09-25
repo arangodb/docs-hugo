@@ -1107,7 +1107,7 @@ already be responded to when the instance has not fully started.
 
 You can set the new `--server.early-connections` startup option to `true` to
 let the instance respond to the `/_api/version`, `/_admin/version`, and
-`/_admin/status` REST APIs early.
+`/_admin/status` HTTP APIs early.
 
 See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes).
 
@@ -1467,7 +1467,7 @@ replication factor, network latency, etc.
 
 ### Optimizer rules endpoint
 
-Added the `GET /_api/query/rules` REST API endpoint that returns the available
+Added the `GET /_api/query/rules` HTTP API endpoint that returns the available
 optimizer rules for AQL queries.
 
 ### Additional metrics for caching subsystem

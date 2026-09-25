@@ -6,7 +6,7 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP RESTful API
+## HTTP API
 
 ### Collection API
 
@@ -69,7 +69,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   on the return value being a numeric value need to be adjusted to handle
   a string return value and convert that string into a number.
 
-- Changed the encoding of revision IDs returned by the below listed REST APIs.
+- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
 
   <small>Introduced in: v3.8.8</small>
 
@@ -105,9 +105,9 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   variant of the cursor API as well. This is safe for drivers targeting 3.8
   or higher.
 
-- The new REST endpoint at GET `/_admin/log/entries` can be used to retrieve
+- The new HTTP API endpoint `GET /_admin/log/entries` can be used to retrieve
   server log messages in a more intuitive format than the already existing API
-  at GET `/_admin/log`.
+  at `GET /_admin/log`.
 
   The new API returns all matching log messages in an array, with one array
   entry per log message. Each log message is returned as an object containing
@@ -165,7 +165,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   }
   ```
 
-  The old API endpoint GET `/_admin/log` for retrieving log messages is now
+  The old API endpoint `GET /_admin/log` for retrieving log messages is now
   deprecated, although it will stay available for some time.
 
 - Added endpoint for new version "v2" of the metrics API:
@@ -291,7 +291,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
 
 ### Endpoints augmented
 
-- The REST endpoint at GET `/_api/engine/stats` now returns useful information in cluster
+- The HTTP API endpoint `GET /_api/engine/stats` now returns useful information in cluster
   setups too. Previously calling this API on a Coordinator always produced an empty JSON
   object result, whereas now it will produce a JSON object with one key per DB-Server.
   The mapped value per DB-Server are the engine statistics for this particular server.
@@ -299,7 +299,7 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   The return value structure is different to the return value structure in single server,
   where the return value is a simple JSON object with the statistics at the top level.
 
-- The REST endpoint for creating indexes, POST `/_api/index`, can now handle the attribute
+- The HTTP API endpoint for creating indexes, `POST /_api/index`, can now handle the attribute
   `estimates`, which determines if the to-be-created index should maintain selectivity
   estimates or not. If not specified, the default value for this attribute is `true` for
   indexes of type "persistent", so that selectivity estimates are maintained. They can be
@@ -308,11 +308,11 @@ as a database only. It may have an effect for Foxx applications that use HTTP
   only be picked up for indexes of type "persistent", "hash" and "skiplist" (where the
   latter two are aliases for "persistent" nowadays).
 
-- The REST endpoint at GET `/_api/collection/<collection>/checksum` now also works
+- The HTTP API endpoint `GET /_api/collection/<collection>/checksum` now also works
   in cluster setups. In previous versions, this endpoint was not supported in cluster
   setups and returned HTTP 501 (Not implemented).
 
-- The HTTP REST API endpoint `POST /_api/cursor` can now handle an 
+- The HTTP API endpoint `POST /_api/cursor` can now handle an 
   additional sub-attribute `fillBlockCache` for its `options` attribute.
   `fillBlockCache` controls whether the to-be-executed query should
   populate the RocksDB block cache with the data read by the query.
@@ -336,7 +336,7 @@ endpoints, and will also be augmented with more metrics in the future.
 The statistics endpoints will still be functional in 3.8, but will eventually
 be removed in a future version of ArangoDB.
 
-The REST API endpoint `/_api/export` is also deprecated in ArangoDB 3.8. This
+The HTTP API endpoint `/_api/export` is also deprecated in ArangoDB 3.8. This
 endpoint was previously only present in single server, but never supported in
 cluster deployments. The purpose of the endpoint was to provide the full data
 of a collection without holding collection locks for a long time, which was

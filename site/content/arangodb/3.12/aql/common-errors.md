@@ -66,8 +66,8 @@ for example) or at least sanitize user input with great care.
 
 Below you find a simple query using the [JavaScript API](../develop/javascript-api/_index.md)
 that is fed with some dynamic input value, pretending it's coming from a web form.
-This could be the case in a Foxx service. The route happily picks up the input
-value, and puts it into a query:
+This could be the case in a Foxx service. It happily picks up the input
+value and puts it into a query:
 
 ```js
 var searchValue = ... // User input value from web form

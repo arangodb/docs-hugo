@@ -134,7 +134,7 @@ containing the `preferred_username` field with the username.
 You can either let ArangoDB generate this token for you via an API call
 or you can generate it yourself (only if you know the JWT secret).
 
-ArangoDB offers a RESTful API to generate user tokens for you if you know the
+ArangoDB offers an HTTP API to generate user tokens for you if you know the
 username and password. To do so, send a POST request to this endpoint:
 
 ```
@@ -978,7 +978,7 @@ therefore this feature isn't available.
 {{< /tip >}}
 
 To reload the JWT secrets of a local _arangod_ process without a restart, you
-may use the following RESTful API. A `POST` request reloads the secret, a
+may use the following HTTP API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
 ### Get information about the loaded JWT secrets

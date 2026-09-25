@@ -16,8 +16,8 @@ _ArangoSync_ (_master_ & _worker_) provide metrics that can be used for monitori
 the _Datacenter-to-Datacenter Replication_ solution. These metrics are available
 using the following HTTPS endpoints:
 
-- GET `/metrics`: Provides metrics in a format supported by Prometheus.
-- GET `/metrics.json`: Provides the same metrics in JSON format.
+- `GET /metrics`: Provides metrics in a format supported by Prometheus.
+- `GET /metrics.json`: Provides the same metrics in JSON format.
 
 Both endpoints include help information per metrics.
 
