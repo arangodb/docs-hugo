@@ -38,24 +38,22 @@ through the
 
 ## What maps to what
 
-The SDK is a third way to drive AutoGraph, alongside the web interface and the
-HTTP API. The following table shows the operations it covers next to the action
-and the endpoint that do the same thing, so you can move between the three
-interfaces:
+The SDK is an alternative to the web interface. The following table shows the
+operations it covers next to the action in the web interface that does the same
+thing:
 
-| Operation | Web interface | HTTP API | Arango AI SDK |
-|-----------|---------------|---------------|---------------|
-| Authenticate | Signed in to the platform | [Obtain a Bearer token](../../platform-suite/control-plane-acp/_index.md#obtaining-a-bearer-token) | `ArangoAIClient(...)` |
-| Create a project | AutoGraph Studio, **+ New Project** | [Create a Project](../../platform-suite/control-plane-acp/api.md#create-a-project) | `client.project.create()` |
-| Open an existing project | Pick it from the project list | [Get Project Details](../../platform-suite/control-plane-acp/api.md#get-project-details) | `client.project.get()` |
-| Store a model provider key | Control Panel, **Secrets** | [Secrets Manager API](../../platform-suite/secrets-manager.md#api) | `client.secret_profile.create()` |
-| Upload documents | AutoGraph Studio, upload into a category | [Upload a RAG Input File](../../platform-suite/file-manager/api.md#upload-a-rag-input-file) | `client.files.upload_file()` and friends |
-| Deploy the service | **Start the build** deploys it for you | [Deploy a Service](../../platform-suite/control-plane-acp/api.md#deploy-a-service) | `project.autograph.deploy()` |
-| Remove the service | — | [Uninstall a Service](../../platform-suite/control-plane-acp/api.md#uninstall-a-service) | `project.autograph.undeploy()` |
+| Operation | Web interface | Arango AI SDK |
+|-----------|---------------|---------------|
+| Authenticate | Signed in to the platform | `ArangoAIClient(...)` |
+| Create a project | AutoGraph Studio, **+ New Project** | `client.project.create()` |
+| Open an existing project | Pick it from the project list | `client.project.get()` |
+| Store a model provider key | Control Panel, **Secrets** | `client.secret_profile.create()` |
+| Upload documents | AutoGraph Studio, upload into a category | `client.files.upload_file()` and friends |
+| Deploy the service | **Start the build** deploys it for you | `project.autograph.deploy()` |
+| Remove the service | — | `project.autograph.undeploy()` |
 
-The mapping is not one to one. The web interface folds several API calls into a
-single button, and the SDK groups the platform's endpoints into namespaces on a
-client rather than following the URL structure.
+The mapping is not one to one. The web interface folds several steps into a
+single button, and the SDK groups operations into namespaces on a client.
 
 ## How it relates to the rest of the platform
 
