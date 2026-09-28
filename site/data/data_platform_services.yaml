@@ -43,6 +43,10 @@ arangodb-core-ui:
     - name: Web interface (embedded legacy UI)
       link: arangodb/3.12/components/web-interface/_index.md
 
+arangodb-core-rbac-permissions:
+  features:
+    - name: ArangoDB RBAC Permissions
+
 arango-control-plane:
   features:
     - name: Arango Control Plane (ACP)

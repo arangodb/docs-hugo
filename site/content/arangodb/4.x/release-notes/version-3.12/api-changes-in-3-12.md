@@ -341,6 +341,44 @@ the request now fails with an HTTP `404 Not Found` error and the
 request failed with an HTTP `401 Unauthorized` error and the `ERROR_FORBIDDEN`
 (`11`) error number.
 
+#### Validation of vector index factory strings
+
+<small>Introduced in: v3.12.12</small>
+
+The optional `factory` string of
+[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+is now validated when you create the index. Requests to
+[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
+in the following cases:
+
+- The factory string cannot be parsed by the Faiss library.
+- It doesn't describe an inverted file (IVF) index.
+- It isn't compatible with the `dimension`.
+- It fixes a number of centroids that conflicts with the `nLists` value.
+
+Up to v3.12.11, such index definitions are accepted. The problem only surfaces
+during the training of the index, leaving behind an index with a
+`trainingState` of `"unusable"`.
+
+A consequence of the stricter validation is that a factory string with a fixed
+number of centroids like `"IVF100,Flat"` now requires you to set `nLists` to the
+same number. You cannot combine it with a scaling specification for `nLists`
+anymore, not even if the specification resolves to a matching number. As
+`nLists` defaults to a scaling specification from v3.12.10 onward, you need to
+set it explicitly in this case. Alternatively, use the `{}` placeholder as in
+`"IVF{},Flat"` to let the number of centroids be substituted.
+
+#### Sessions of deactivated user accounts
+
+<small>Introduced in: v3.12.12</small>
+
+If you deactivate a user account by setting `active` to `false` using the
+[User Management API](../../develop/http-api/users.md), the
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
+that have been issued for this user account are now rejected. Requests that
+authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
 ### Endpoint return value changes
 
 #### Storage engine API
@@ -552,6 +590,34 @@ cluster deployment, grouped by server ID. The activities are returned in an
 `activities_per_server` object.
 
 See [Get the activities of all servers](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+for details.
+
+#### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature
+for inspecting the index segments of `arangosearch` Views and inverted indexes.
+It reports the number of segments and files a data store is made up of, its
+size, as well as the document counts and deletion ratios overall and per
+segment. This lets you see how much of a data store is occupied by documents
+that are marked as deleted and whether the background consolidation keeps up
+with the write load.
+
+---
+
+<small>Introduced in: v3.12.12</small>
+
+The endpoint reports the statistics of **all** ArangoSearch data stores of the
+database. The statistics are now returned in an `indexes` array, with the number
+of data stores in a `numIndexes` attribute, and every data store is identified
+by the new `indexName`, `indexType`, and `collection` attributes.
+
+In v3.12.11, the statistics of a single, arbitrary data store were returned as a
+flat object, and an empty object if the database had no `arangosearch` View and
+no inverted index.
+
+See the [HTTP interface for ArangoSearch statistics](../../develop/http-api/monitoring/arangosearch-statistics.md)
 for details.
 
 ### Endpoints augmented

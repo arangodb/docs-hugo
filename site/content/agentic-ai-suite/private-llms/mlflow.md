@@ -54,22 +54,38 @@ MLflow consists of the following core components:
 
 ## Quickstart
 
-The ArangoDB MLflow service is **started by default**.
+The ArangoDB MLflow service is **started by default** and is automatically
+spawned. You can interact with it in two ways:
+- **Web interface**: Through the Arango Contextual Data Platform web interface
+- **Programmatically**: Using the official MLflow client
 
-It is automatically spawned and available at the following URL:
+### Web interface
+
+The MLflow web interface is only available through the Arango Contextual Data
+Platform web interface:
+
+1. Sign in to the Arango Contextual Data Platform web interface with your
+   platform credentials. MLflow does not have a separate login.
+2. Expand **AI Tools** in the main navigation and click **MLFlow**.
+
+{{< security >}}
+The MLflow route requires authentication. Opening
+`https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in your browser is no longer
+possible. Use the **AI Tools** section of the Arango Contextual Data Platform
+web interface instead.
+{{< /security >}}
+
+### Programmatic access
+
+For the official MLflow client, as well as for scripts and other services that
+call MLflow over HTTP, use the following endpoint:
 
 {{< endpoint "" "https://<EXTERNAL_ENDPOINT>:8529/mlflow/" >}}
 
-You can interact with the ArangoDB MLflow service in two ways:
-- **Programmatically**: Using the official MLflow client
-- **Web Interface**: Directly through your browser at the URL above
-
-To use the programmatic API, please use the **official MLflow client**.
-
-{{< info >}}
-The ArangoDB MLflow service requires authentication. You need a valid
-Bearer token to access the service.
-{{< /info >}}
+Every request to this endpoint needs to include a valid JWT, either as an
+`Authorization: Bearer <token>` header or via the `MLFLOW_TRACKING_TOKEN`
+environment variable. Requests without a valid token are rejected with an
+HTTP `401` or `403` status.
 
 ### Obtaining a Bearer Token
 
