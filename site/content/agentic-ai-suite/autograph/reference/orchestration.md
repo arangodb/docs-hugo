@@ -18,9 +18,11 @@ Spawn GraphRAG importer workers for all strategy profiles. Called after RAG stra
 
 ```json
 {
+  "project": "your_project_name",
   "replicas": 3,
   "max_retries": 3,
-  "chat_api_keys": ["sk-key1", "sk-key2"],
+  "chat_secret_profile_ids": ["<chat-profile-id-1>", "<chat-profile-id-2>"],
+  "embedding_secret_profile_id": "<embedding-profile-id>",
   "importer_env": {
     "CUSTOM_ENV": "value"
   },
@@ -32,11 +34,11 @@ Spawn GraphRAG importer workers for all strategy profiles. Called after RAG stra
 
 | Parameter | Type | Required | Description | Recommended value |
 |-----------|------|----------|-------------|-------------------|
+| `project` | string | Yes | Name of the GenAI project. | The project name you used when installing AutoGraph. |
 | `replicas` | integer | Yes | Number of Importer worker replicas (parallelism). Minimum: **1**. | **2–4** for typical jobs. Scale up only if you have many partitions and capacity. |
 | `max_retries` | integer | No | Retries per failed Importer job before giving up. | **3** (default) is appropriate for transient errors. |
-| `chat_api_keys` | string[] | No | Raw chat LLM API keys rotated across replicas. | Prefer **secret profiles** in production; use keys only when your deployment has no secrets manager. |
-| `chat_secret_profile_ids` | string[] | No | Platform secret profile ids for chat keys. Overrides `chat_api_keys` when both are provided. | Provide one or more secret profile IDs. Follow your operator's convention. |
-| `embedding_secret_profile_id` | string | No | Secret profile for embedding key on the Importer. | Set when embedding must come from vault, not env. |
+| `chat_secret_profile_ids` | string[] | No | [Secrets Manager](../../../platform-suite/secrets-manager.md#reference-secrets-in-service-requests) profile IDs of the chat API keys. The keys are rotated across the Importer workers. | Store each key as a separate secret and list all profile IDs to spread the load across multiple keys. |
+| `embedding_secret_profile_id` | string | No | Secrets Manager profile ID of the embedding API key for the Importer workers. | A single profile ID; multiple embedding keys are not supported here. |
 | `importer_env` | map | No | Extra environment variables for Importer pods (e.g. model names, timeouts). | Start **empty**; add only keys documented for your Importer version (often chunk or model overrides). |
 | `partition_ids` | string[] | No | If **non-empty**, only strategies whose **`rag_partition_id`** is listed are orchestrated. | **Omit or `[]`** for full corpus. Use **exact ids** from **`GET /v1/rag-strategizer/strategy`** for targeted reruns. |
 
@@ -76,7 +78,7 @@ Orchestration runs in the background. The counters start at zero in this immedia
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer <token>" \
-  -d '{"replicas": 2, "max_retries": 3}' \
+  -d '{"project": "your_project_name", "replicas": 2, "max_retries": 3, "chat_secret_profile_ids": ["<chat-profile-id>"], "embedding_secret_profile_id": "<embedding-profile-id>"}' \
   https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/orchestrate
 ```
 

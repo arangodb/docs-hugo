@@ -100,6 +100,30 @@ endpoint.
 For a full description of all parameters, see
 [Chat and Embedding Parameters](#chat-and-embedding-parameters).
 
+### Example using secrets from the Secrets Manager
+
+To keep API keys out of the request, store them in the
+[Secrets Manager](../../platform-suite/secrets-manager.md) and reference them
+by profile ID instead of `chat_api_key` and `embedding_api_key`:
+
+```json
+{
+  "env": {
+    "db_name": "your_database_name",
+    "genai_project_name": "your_project_name",
+    "chat_api_provider": "openai",
+    "chat_api_url": "https://api.openai.com/v1",
+    "chat_model": "gpt-5.4-nano",
+    "chat_secret_profile_id": "<chat-profile-id>",
+    "embedding_api_provider": "openai",
+    "embedding_api_url": "https://api.openai.com/v1",
+    "embedding_model_name": "text-embedding-3-small",
+    "embedding_secret_profile_id": "<embedding-profile-id>",
+    "embedding_dimensions": "512"
+  }
+}
+```
+
 ### Using different OpenAI-compatible services for chat and embedding
 
 You can use different OpenAI-compatible services for chat and embedding. For
@@ -261,7 +285,9 @@ Parameter names are also accepted in uppercase (for example, `CHAT_API_URL`).
 Instead of inline API keys, you can use `chat_secret_profile_id` and
 `embedding_secret_profile_id`. These secret profile IDs are resolved to API
 keys at startup and held in memory only; they are never written to environment
-variables, files, or logs.
+variables, files, or logs. See
+[Reference secrets in service requests](../../platform-suite/secrets-manager.md#reference-secrets-in-service-requests)
+for how to get the profile ID of a secret, with examples.
 {{< /tip >}}
 
 ## Chat payload compatibility
