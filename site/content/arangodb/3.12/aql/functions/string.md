@@ -2142,30 +2142,61 @@ FOR i IN 1..3
 
 ## Regular Expression Syntax
 
-A regular expression may consist of literal characters and the following 
+The AQL functions `REGEX_MATCHES()`, `REGEX_SPLIT()`, `REGEX_TEST()`, and
+`REGEX_REPLACE()`, as well as the `=~` and `!~` operators, use the regular
+expression engine of the [ICU library](https://unicode-org.github.io/icu/userguide/strings/regexp.html).
+Its syntax largely follows Perl-compatible regular expressions (PCRE), but a
+few PCRE features are unavailable. See [Limitations](#limitations) below.
+
+Patterns and the strings they are matched against are treated as Unicode text,
+and quantifiers, character classes, and anchors operate on characters rather
+than on bytes.
+
+### Characters and character classes
+
+A regular expression may consist of literal characters and the following
 characters and sequences:
 
 - `.` – the dot matches any single character except line terminators.
   To include line terminators, use `[\s\S]` instead to simulate `.` with *DOTALL* flag.
 - `\d` – matches a single digit, equivalent to `[0-9]`
+- `\D` – negation of `\d`
 - `\s` – matches a single whitespace character
 - `\S` – matches a single non-whitespace character
-- `\b` – matches a word boundary. This match is zero-length
-- `\B` – Negation of `\b`. The match is zero-length
+- `\w` – matches a single word character (a letter, a digit, or an underscore)
+- `\W` – negation of `\w`
+- `\h` – matches a single horizontal whitespace character, such as a space or
+  a tabulation, but not a line feed
+- `\H` – negation of `\h`
+- `\v` – matches a single vertical whitespace character, such as a line feed
+- `\V` – negation of `\v`
+- `\R` – matches any line break sequence, treating a `\r\n` pair as a single unit
+- `\X` – matches a single grapheme cluster, that is, a base character together
+  with any combining marks that follow it
+- `\p{...}` – matches a character with the given Unicode property, for example
+  `\p{L}` for any letter, `\p{Lu}` for any uppercase letter, or `\p{Greek}`
+  for any character of the Greek script
+- `\P{...}` – negation of `\p{...}`
+- `\uFFFF`, `\xFF`, `\x{10FFFF}` – matches the character with the given
+  hexadecimal code point
+- `\Q...\E` – matches the enclosed characters literally, ignoring any special
+  meaning they would otherwise have
 - `[xyz]` – set of characters. Matches any of the enclosed characters
   (here: *x*, *y*, or *z*)
 - `[^xyz]` – negated set of characters. Matches any other character than the
   enclosed ones (i.e. anything but *x*, *y*, or *z* in this case)
-- `[x-z]` – range of characters. Matches any of the characters in the 
+- `[x-z]` – range of characters. Matches any of the characters in the
   specified range, e.g. `[0-9A-F]` to match any character in
   *0123456789ABCDEF*
 - `[^x-z]` – negated range of characters. Matches any other character than the
   ones specified in the range
-- `(xyz)` – defines and matches a pattern group. Also defines a capturing group.
-- `(?:xyz)` – defines and matches a pattern group without capturing the match
-- `(xy|z)` – matches either *xy* or *z*
-- `^` – matches the beginning of the string (e.g. `^xyz`)
-- `$` – matches the end of the string (e.g. `xyz$`)
+- `[:alpha:]` – a named character class, which you can use on its own or as part
+  of a larger set, like `[[:alpha:][:digit:]]`. Negate it with a caret directly
+  after the colon, like `[:^alpha:]`
+- `[[x-z]&&[^y]]` – intersection of two sets. Matches only characters that are
+  in both sets (here: *x* or *z*)
+- `[[x-z]--[y]]` – difference of two sets. Matches the characters of the first
+  set except those in the second set (here: *x* or *z*)
 
 To literally match one of the characters that have a special meaning in regular
 expressions (`.`, `*`, `?`, `[`, `]`, `(`, `)`, `{`, `}`, `^`, `$`, and `\`)
@@ -2176,7 +2207,7 @@ like `\t` (tabulation), `\r` (carriage return), and `\n` (line feed) does not,
 however.
 
 {{< info >}}
-Literal backlashes require different amounts of escaping depending on the
+Literal backslashes require different amounts of escaping depending on the
 context:
 - `\` in bind variables (_Table_ view mode) in the web interface (automatically
   escaped to `\\` unless the value is wrapped in double quotes and already
@@ -2187,6 +2218,56 @@ context:
 - Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 {{< /info >}}
+
+### Groups and back references
+
+- `(xyz)` – defines and matches a pattern group. Also defines a capturing group.
+- `(?:xyz)` – defines and matches a pattern group without capturing the match
+- `(?<name>xyz)` – defines and matches a named capturing group. It is numbered
+  like an unnamed capturing group in addition to being addressable by name
+- `(?>xyz)` – defines and matches an atomic group. Once the group has matched,
+  the engine does not backtrack into it to try alternative ways of matching it
+- `(xy|z)` – matches either *xy* or *z*
+- `\1` to `\9` – back reference. Matches the same text that the capturing group
+  with the respective number matched earlier, for example `(ab)\1` to match *abab*
+- `\k<name>` – back reference to a named capturing group
+
+Capturing groups are numbered by the position of their opening parenthesis,
+starting at `1`, and nested groups are numbered from the outside in. The number
+`0` refers to the entire match. Non-capturing groups are not numbered.
+
+The [`REGEX_MATCHES()`](#regex_matches) function returns the entire match
+followed by the text each capturing group matched. In
+[`REGEX_REPLACE()`](#regex_replace), you can insert the captured text into the
+replacement string, but note that the replacement uses a different syntax than
+the pattern does: `$1` to `$9` and `${name}` in the replacement, versus the back
+references `\1` to `\9` and `\k<name>` within the pattern itself.
+
+### Assertions
+
+Assertions match a position rather than characters, and thus have a length
+of zero:
+
+- `^` – matches the beginning of the string (e.g. `^xyz`)
+- `$` – matches the end of the string (e.g. `xyz$`), as well as the position
+  directly before a line terminator at the very end of the string
+- `\A` – matches the beginning of the string, unaffected by the *MULTILINE* flag
+- `\z` – matches the end of the string, and unlike `$` never the position
+  before a trailing line terminator
+- `\Z` – matches the end of the string or the position before a trailing line
+  terminator, unaffected by the *MULTILINE* flag
+- `\b` – matches a word boundary
+- `\B` – negation of `\b`
+- `(?=xyz)` – positive lookahead. Succeeds if *xyz* matches at the current
+  position, without consuming it
+- `(?!xyz)` – negative lookahead. Succeeds if *xyz* does not match at the
+  current position
+- `(?<=xyz)` – positive lookbehind. Succeeds if *xyz* matches directly before
+  the current position
+- `(?<!xyz)` – negative lookbehind. Succeeds if *xyz* does not match directly
+  before the current position
+
+### Quantifiers
 
 Characters and sequences may optionally be repeated using the following
 quantifiers:
@@ -2200,6 +2281,59 @@ quantifiers:
 - `x{y,z}` – matches between *y* and *z* occurrences of *x*
 - `x{y,}` – matches at least *y* occurrences of *x*
 
+Appending a question mark to a quantifier makes it non-greedy, so that it
+matches as few occurrences as possible, like `x??`, `x{y,z}?`, and `x{y,}?`.
+
+Appending a plus sign makes a quantifier possessive, like `x?+`, `x*+`, `x++`,
+and `x{y,z}+`. A possessive quantifier matches greedily and never gives back
+any of the occurrences it matched, which can avoid expensive backtracking but
+can also make an otherwise matching expression fail.
+
 Note that `xyz+` matches *xyzzz*, but if you want to match *xyzxyz* instead,
 you need to define a pattern group by wrapping the sub-expression in parentheses
-and place the quantifier right behind it, like `(xyz)+`.
+and place the quantifier right behind it, like `(xyz)+`. This also creates a
+capturing group, which adds an element to the result of
+[`REGEX_MATCHES()`](#regex_matches) and shifts the numbering of the groups that
+follow. Use a non-capturing group like `(?:xyz)+` if you only need the grouping.
+
+### Flags
+
+You can enable the following flags for the remainder of the enclosing group by
+placing them in the pattern:
+
+- `(?i)` – *CASE_INSENSITIVE*. Match letters regardless of their case
+- `(?s)` – *DOTALL*. Let `.` match line terminators as well
+- `(?m)` – *MULTILINE*. Let `^` and `$` match at the beginning and end of every
+  line instead of only at the beginning and end of the entire string
+- `(?x)` – *COMMENTS*. Ignore whitespace in the pattern and treat the rest of
+  the line after an unescaped `#` as a comment
+
+All flags are off by default. Combine multiple flags like `(?is)`, turn a flag
+off again with a minus sign like `(?-i)`, and limit a flag to a group by writing
+it like `(?i:xyz)`.
+
+You can also add a comment anywhere in a pattern with `(?#...)`, independent of
+the *COMMENTS* flag.
+
+The `caseInsensitive` parameter of the regular expression functions is
+equivalent to prefixing the pattern with `(?i)`, and therefore applies to the
+entire pattern.
+
+### Limitations
+
+The following PCRE features are unavailable:
+
+- Conditional patterns like `(?(1)yes|no)`
+- Recursion and subroutine calls like `(?R)` and `(?1)`
+- The `\K` escape sequence for resetting the reported match start. It does not
+  raise an error but matches a literal `K` instead
+- The `\N{UNICODE CHARACTER NAME}` escape sequence
+- The `\g{...}` back reference syntax. Use `\1` to `\9` and `\k<name>` instead
+
+The engine matches using backtracking. Patterns that combine nested quantifiers
+with a subject that cannot match, such as `(a+)+$`, can take exponentially long
+to evaluate. There is no upper bound on how long a single match may take, and a
+query that is stuck in such a match cannot be interrupted until the match
+completes, not even by the `maxRuntime` query option or by killing the query.
+Avoid nested quantifiers over overlapping character sets, and consider using
+atomic groups or possessive quantifiers to limit backtracking.
