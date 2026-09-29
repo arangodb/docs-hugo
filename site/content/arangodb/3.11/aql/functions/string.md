@@ -810,7 +810,7 @@ using wildcard matching.
 - `\\%`: A literal percent sign
 
 {{< info >}}
-Literal backlashes require different amounts of escaping depending on the
+Literal backslashes require different amounts of escaping depending on the
 context:
 - `\` in bind variables (_Table_ view mode) in the web interface (automatically
   escaped to `\\` unless the value is wrapped in double quotes and already
@@ -820,6 +820,9 @@ context:
 - `\\\\` in queries in _arangosh_
 - Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
+
+The AQL examples in this documentation use the escaping of the web interface,
+so you can paste them into its query editor and run them unchanged.
 {{< /info >}}
 
 The `LIKE()` function cannot be accelerated by any sort of index. However,
@@ -1058,22 +1061,46 @@ RETURN [
 
 `REGEX_MATCHES(text, regex, caseInsensitive) → stringArray`
 
-Return the matches in the given string `text`, using the `regex`.
+Return the first match of the `regex` in the given string `text`, along with the
+text that each capturing group of the `regex` matched.
 
 - **text** (string): the string to search in
 - **regex** (string): a [regular expression](#regular-expression-syntax)
   to use for matching the `text`
 - **caseInsensitive** (bool, *optional*): if set to `true`, the matching will be
   case-insensitive. The default is `false`.
-- returns **stringArray** (array): an array of strings containing the matches,
-  or `null` and a warning if the expression is invalid
+- returns **stringArray** (array\|null): an array of strings containing the match
+  and the text captured by the groups, `null` if the `regex` does not match the
+  `text`, or `null` and a warning if the expression is invalid
+
+The function reports the first match only, not every match in the `text`. The
+`regex` does not need to match the entire `text` unless you anchor it with `^`
+and `$`.
+
+The first element of the returned array is always the entire match, even if you
+do not define any [capturing group](#groups-and-back-references). Every capturing
+group adds one more element, ordered by the position of the groups' opening
+parentheses. A capturing group that is part of the expression but does not
+participate in the match, such as a skipped optional group, contributes an empty
+string. Non-capturing groups (`(?:...)`) do not add elements.
+
+If the `regex` does not match the `text`, the function returns `null` but does
+**not** raise a warning. A warning is only raised in addition to the `null` value
+if the regular expression itself is invalid.
+
+{{< info >}}
+If the `text` is an empty string and the `regex` is not, `REGEX_MATCHES()`
+returns `[ "" ]` without evaluating the `regex`.
+{{< /info >}}
 
 **Examples**
 
 ```aql
 ---
 name: aqlRegexMatches_1
-description: ''
+description: |
+  An anchored expression without capturing groups. The only element is the
+  entire match, which is the full input string in this case:
 ---
 RETURN REGEX_MATCHES("My-us3r_n4m3", "^[a-z0-9_-]{3,16}$", true)
 ```
@@ -1081,7 +1108,9 @@ RETURN REGEX_MATCHES("My-us3r_n4m3", "^[a-z0-9_-]{3,16}$", true)
 ```aql
 ---
 name: aqlRegexMatches_2
-description: ''
+description: |
+  An expression that doesn't match returns `null` and no warning. The `h` is
+  not a valid hexadecimal digit here:
 ---
 RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 ```
@@ -1089,9 +1118,36 @@ RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 ```aql
 ---
 name: aqlRegexMatches_3
-description: ''
+description: |
+  An anchored expression with three capturing groups. The entire match is
+  followed by the text that each group captured:
 ---
-RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\\\.-]+)@([\\\\da-z-]+)\\\\.([a-z\\\\.]{2,6})$", false)
+RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\.-]+)@([\\da-z-]+)\\.([a-z\\.]{2,6})$", false)
+```
+
+```aql
+---
+name: aqlRegexMatches_4
+description: |
+  An unanchored expression that matches three times in the input string. Only
+  the first match is reported, followed by the text that its two capturing
+  groups matched:
+---
+RETURN REGEX_MATCHES("foo=1, bar=22, baz=333", "(\\w+)=(\\d+)")
+```
+
+```aql
+---
+name: aqlRegexMatches_5
+description: |
+  The third capturing group is optional. It contributes an empty string if it
+  doesn't take part in the match, and the text it captured if it does. The
+  non-capturing group around it adds no element of its own:
+---
+RETURN [
+  REGEX_MATCHES("v2.5", "v(\\d+)\\.(\\d+)(?:\\.(\\d+))?"),
+  REGEX_MATCHES("v2.5.1", "v(\\d+)\\.(\\d+)(?:\\.(\\d+))?")
+]
 ```
 
 ## REGEX_SPLIT()
@@ -1111,28 +1167,39 @@ Split the given string `text` into a list of strings at positions where
 - returns **stringArray** (array): an array of strings, or `null` and a warning
   if the expression is invalid
 
+The matched separators are removed from the result unless you wrap them in a
+[capturing group](#groups-and-back-references), in which case the captured text
+is kept as an element between the surrounding parts.
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexSplit_1
-description: ''
+description: |
+  Split a string at line breaks of the LF, CRLF, and CR styles. The `\r\n`
+  alternative has to come first, or the halves of a CRLF match separately and
+  leave an empty element between them. The `\R` shorthand matches all three.
 ---
-RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n|\\r|\\n")
+RETURN REGEX_SPLIT("This is a line (LF).\nThis is another line (CRLF).\r\nThis again is a line (CR).\rThe last line.", "\r\n|\r|\n")
 ```
 
 ```aql
 ---
 name: aqlRegexSplit_2
-description: ''
+description: |
+  Split at any run of whitespace and commas. The quantifier makes
+  consecutive separators count as one, so that no empty elements are
+  produced:
 ---
-RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
+RETURN REGEX_SPLIT("hypertext language, programming", "[\\s, ]+")
 ```
 
 ```aql
 ---
 name: aqlRegexSplit_3
-description: ''
+description: |
+  The separator is discarded unless a capturing group keeps it:
 ---
 RETURN [
   REGEX_SPLIT("Capture the article", "(the)"),
@@ -1143,7 +1210,9 @@ RETURN [
 ```aql
 ---
 name: aqlRegexSplit_4
-description: ''
+description: |
+  Split case-insensitively, so that the pattern `a,b` also matches `A,B`,
+  and limit the result to three elements:
 ---
 RETURN REGEX_SPLIT("cA,Bc,A,BcA,BcA,Bc", "a,b", true, 3)
 ```
@@ -1163,12 +1232,18 @@ using regular expression matching.
 - returns **bool** (bool): `true` if the pattern is contained in `text`,
   and `false` otherwise, or `null` and a warning if the expression is invalid
 
+A partial match anywhere in the `text` is sufficient. Anchor the pattern with `^`
+and `$` if you want it to match the entire `text`. Capturing groups have no
+effect on the result. Use [`REGEX_MATCHES()`](#regex_matches) if you need the
+matched text.
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexTest_1
-description: ''
+description: |
+  An unanchored pattern only needs to occur somewhere in the string:
 ---
 RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 ```
@@ -1176,17 +1251,20 @@ RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 ```aql
 ---
 name: aqlRegexTest_2
-description: ''
+description: |
+  An anchored pattern has to match the entire string:
 ---
-RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
+RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\s+(quick|slow).*f.x$")
 ```
 
 ```aql
 ---
 name: aqlRegexTest_3
-description: ''
+description: |
+  The dot doesn't match line terminators, but an explicit `\n` does, letting
+  the pattern span multiple lines:
 ---
-RETURN REGEX_TEST("the\\nquick\\nbrown\\nfox", "^the(\\n[a-w]+)+\\nfox$")
+RETURN REGEX_TEST("the\nquick\nbrown\nfox", "^the(\n[a-w]+)+\nfox$")
 ```
 
 ## REGEX_REPLACE()
@@ -1199,19 +1277,39 @@ Replace the pattern `search` with the string `replacement` in the string
 - **text** (string): the string to search in
 - **search** (string): a [regular expression](#regular-expression-syntax)
   search pattern
-- **replacement** (string): the string to replace the `search` pattern with
+- **replacement** (string): the string to replace the `search` pattern with.
+  It may reference [capturing groups](#groups-and-back-references) of the
+  `search` pattern
 - **caseInsensitive** (bool, *optional*): if set to `true`, the matching will be
   case-insensitive. The default is `false`.
 - returns **string** (string): the string `text` with the `search` regex
   pattern replaced with the `replacement` string wherever the pattern exists
   in `text`, or `null` and a warning if the expression is invalid
 
+All occurrences of the pattern are replaced, not just the first one.
+
+In the `replacement`, `$0` refers to the entire match and `$1` to `$9` refer to
+the text captured by the respective capturing group of the `search` pattern.
+You can refer to a named capturing group with `${name}`. Referencing a group
+number that the `search` pattern does not define returns `null` and raises a
+warning. To insert a literal dollar sign, escape it as `\$`.
+
+{{< warning >}}
+The `$1` syntax is only meaningful in the `replacement`. Inside the `search`
+pattern, use the back reference syntax `\1` to `\9` instead, because `$` is the
+end-of-string assertion there. A pattern like `(a[0-9]{2}).*$1` therefore never
+matches anything, whereas `(a[0-9]{2}).*\1` matches a repetition of what the
+first group captured.
+{{< /warning >}}
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexReplace_1
-description: ''
+description: |
+  Replace everything from `the` up to and including `fox` with a fixed
+  string:
 ---
 RETURN REGEX_REPLACE("the quick brown fox", "the.*fox", "jumped over")
 ```
@@ -1219,7 +1317,9 @@ RETURN REGEX_REPLACE("the quick brown fox", "the.*fox", "jumped over")
 ```aql
 ---
 name: aqlRegexReplace_2
-description: ''
+description: |
+  The matching is case-sensitive by default, so only the lower-case `a` is
+  replaced and the upper-case ones are left alone:
 ---
 RETURN REGEX_REPLACE("An Avocado", "a", "_")
 ```
@@ -1227,9 +1327,42 @@ RETURN REGEX_REPLACE("An Avocado", "a", "_")
 ```aql
 ---
 name: aqlRegexReplace_3
-description: ''
+description: |
+  With `caseInsensitive` set to `true`, every occurrence is replaced
+  regardless of its case:
 ---
 RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
+```
+
+```aql
+---
+name: aqlRegexReplace_4
+description: |
+  Reorder the parts of a date by referring to the capturing groups of the
+  `search` pattern with `$1` to `$9` in the `replacement`:
+---
+RETURN REGEX_REPLACE("2024-01-31", "(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1")
+```
+
+```aql
+---
+name: aqlRegexReplace_5
+description: |
+  Collapse doubled words by matching a repetition with the back reference `\1`
+  in the `search` pattern, and keeping a single occurrence with `$1` in the
+  `replacement`:
+---
+RETURN REGEX_REPLACE("the the quick quick fox", "(\\w+) \\1", "$1")
+```
+
+```aql
+---
+name: aqlRegexReplace_6
+description: |
+  A named capturing group can be referred to by name in the `replacement`,
+  using `${name}` instead of a group number:
+---
+RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
 ```
 
 ## REVERSE()
@@ -1954,7 +2087,7 @@ RETURN TRIM("--==[foo-bar]==--", "-=[]")
 name: aqlTrim_4
 description: ''
 ---
-RETURN TRIM("  foobar\\t \\r\\n ")
+RETURN TRIM("  foobar\t \r\n ")
 ```
 
 ```aql
@@ -2007,30 +2140,61 @@ FOR i IN 1..3
 
 ## Regular Expression Syntax
 
-A regular expression may consist of literal characters and the following 
+The AQL functions `REGEX_MATCHES()`, `REGEX_SPLIT()`, `REGEX_TEST()`, and
+`REGEX_REPLACE()`, as well as the `=~` and `!~` operators, use the regular
+expression engine of the [ICU library](https://unicode-org.github.io/icu/userguide/strings/regexp.html).
+Its syntax largely follows Perl-compatible regular expressions (PCRE), but a
+few PCRE features are unavailable. See [Limitations](#limitations) below.
+
+Patterns and the strings they are matched against are treated as Unicode text,
+and quantifiers, character classes, and anchors operate on characters rather
+than on bytes.
+
+### Characters and character classes
+
+A regular expression may consist of literal characters and the following
 characters and sequences:
 
 - `.` – the dot matches any single character except line terminators.
   To include line terminators, use `[\s\S]` instead to simulate `.` with *DOTALL* flag.
 - `\d` – matches a single digit, equivalent to `[0-9]`
+- `\D` – negation of `\d`
 - `\s` – matches a single whitespace character
 - `\S` – matches a single non-whitespace character
-- `\b` – matches a word boundary. This match is zero-length
-- `\B` – Negation of `\b`. The match is zero-length
+- `\w` – matches a single word character (a letter, a digit, or an underscore)
+- `\W` – negation of `\w`
+- `\h` – matches a single horizontal whitespace character, such as a space or
+  a tabulation, but not a line feed
+- `\H` – negation of `\h`
+- `\v` – matches a single vertical whitespace character, such as a line feed
+- `\V` – negation of `\v`
+- `\R` – matches any line break sequence, treating a `\r\n` pair as a single unit
+- `\X` – matches a single grapheme cluster, that is, a base character together
+  with any combining marks that follow it
+- `\p{...}` – matches a character with the given Unicode property, for example
+  `\p{L}` for any letter, `\p{Lu}` for any uppercase letter, or `\p{Greek}`
+  for any character of the Greek script
+- `\P{...}` – negation of `\p{...}`
+- `\uFFFF`, `\xFF`, `\x{10FFFF}` – matches the character with the given
+  hexadecimal code point
+- `\Q...\E` – matches the enclosed characters literally, ignoring any special
+  meaning they would otherwise have
 - `[xyz]` – set of characters. Matches any of the enclosed characters
   (here: *x*, *y*, or *z*)
 - `[^xyz]` – negated set of characters. Matches any other character than the
   enclosed ones (i.e. anything but *x*, *y*, or *z* in this case)
-- `[x-z]` – range of characters. Matches any of the characters in the 
+- `[x-z]` – range of characters. Matches any of the characters in the
   specified range, e.g. `[0-9A-F]` to match any character in
   *0123456789ABCDEF*
 - `[^x-z]` – negated range of characters. Matches any other character than the
   ones specified in the range
-- `(xyz)` – defines and matches a pattern group. Also defines a capturing group.
-- `(?:xyz)` – defines and matches a pattern group without capturing the match
-- `(xy|z)` – matches either *xy* or *z*
-- `^` – matches the beginning of the string (e.g. `^xyz`)
-- `$` – matches the end of the string (e.g. `xyz$`)
+- `[:alpha:]` – a named character class, which you can use on its own or as part
+  of a larger set, like `[[:alpha:][:digit:]]`. Negate it with a caret directly
+  after the colon, like `[:^alpha:]`
+- `[[x-z]&&[^y]]` – intersection of two sets. Matches only characters that are
+  in both sets (here: *x* or *z*)
+- `[[x-z]--[y]]` – difference of two sets. Matches the characters of the first
+  set except those in the second set (here: *x* or *z*)
 
 To literally match one of the characters that have a special meaning in regular
 expressions (`.`, `*`, `?`, `[`, `]`, `(`, `)`, `{`, `}`, `^`, `$`, and `\`)
@@ -2041,7 +2205,7 @@ like `\t` (tabulation), `\r` (carriage return), and `\n` (line feed) does not,
 however.
 
 {{< info >}}
-Literal backlashes require different amounts of escaping depending on the
+Literal backslashes require different amounts of escaping depending on the
 context:
 - `\` in bind variables (_Table_ view mode) in the web interface (automatically
   escaped to `\\` unless the value is wrapped in double quotes and already
@@ -2051,7 +2215,60 @@ context:
 - `\\\\` in queries in _arangosh_
 - Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
+
+The AQL examples in this documentation use the escaping of the web interface,
+so you can paste them into its query editor and run them unchanged.
 {{< /info >}}
+
+### Groups and back references
+
+- `(xyz)` – defines and matches a pattern group. Also defines a capturing group.
+- `(?:xyz)` – defines and matches a pattern group without capturing the match
+- `(?<name>xyz)` – defines and matches a named capturing group. It is numbered
+  like an unnamed capturing group in addition to being addressable by name
+- `(?>xyz)` – defines and matches an atomic group. Once the group has matched,
+  the engine does not backtrack into it to try alternative ways of matching it
+- `(xy|z)` – matches either *xy* or *z*
+- `\1` to `\9` – back reference. Matches the same text that the capturing group
+  with the respective number matched earlier, for example `(ab)\1` to match *abab*
+- `\k<name>` – back reference to a named capturing group
+
+Capturing groups are numbered by the position of their opening parenthesis,
+starting at `1`, and nested groups are numbered from the outside in. The number
+`0` refers to the entire match. Non-capturing groups are not numbered.
+
+The [`REGEX_MATCHES()`](#regex_matches) function returns the entire match
+followed by the text each capturing group matched. In
+[`REGEX_REPLACE()`](#regex_replace), you can insert the captured text into the
+replacement string, but note that the replacement uses a different syntax than
+the pattern does: `$1` to `$9` and `${name}` in the replacement, versus the back
+references `\1` to `\9` and `\k<name>` within the pattern itself.
+
+### Assertions
+
+Assertions match a position rather than characters, and thus have a length
+of zero:
+
+- `^` – matches the beginning of the string (e.g. `^xyz`)
+- `$` – matches the end of the string (e.g. `xyz$`), as well as the position
+  directly before a line terminator at the very end of the string
+- `\A` – matches the beginning of the string, unaffected by the *MULTILINE* flag
+- `\z` – matches the end of the string, and unlike `$` never the position
+  before a trailing line terminator
+- `\Z` – matches the end of the string or the position before a trailing line
+  terminator, unaffected by the *MULTILINE* flag
+- `\b` – matches a word boundary
+- `\B` – negation of `\b`
+- `(?=xyz)` – positive lookahead. Succeeds if *xyz* matches at the current
+  position, without consuming it
+- `(?!xyz)` – negative lookahead. Succeeds if *xyz* does not match at the
+  current position
+- `(?<=xyz)` – positive lookbehind. Succeeds if *xyz* matches directly before
+  the current position
+- `(?<!xyz)` – negative lookbehind. Succeeds if *xyz* does not match directly
+  before the current position
+
+### Quantifiers
 
 Characters and sequences may optionally be repeated using the following
 quantifiers:
@@ -2065,6 +2282,59 @@ quantifiers:
 - `x{y,z}` – matches between *y* and *z* occurrences of *x*
 - `x{y,}` – matches at least *y* occurrences of *x*
 
+Appending a question mark to a quantifier makes it non-greedy, so that it
+matches as few occurrences as possible, like `x??`, `x{y,z}?`, and `x{y,}?`.
+
+Appending a plus sign makes a quantifier possessive, like `x?+`, `x*+`, `x++`,
+and `x{y,z}+`. A possessive quantifier matches greedily and never gives back
+any of the occurrences it matched, which can avoid expensive backtracking but
+can also make an otherwise matching expression fail.
+
 Note that `xyz+` matches *xyzzz*, but if you want to match *xyzxyz* instead,
 you need to define a pattern group by wrapping the sub-expression in parentheses
-and place the quantifier right behind it, like `(xyz)+`.
+and place the quantifier right behind it, like `(xyz)+`. This also creates a
+capturing group, which adds an element to the result of
+[`REGEX_MATCHES()`](#regex_matches) and shifts the numbering of the groups that
+follow. Use a non-capturing group like `(?:xyz)+` if you only need the grouping.
+
+### Flags
+
+You can enable the following flags for the remainder of the enclosing group by
+placing them in the pattern:
+
+- `(?i)` – *CASE_INSENSITIVE*. Match letters regardless of their case
+- `(?s)` – *DOTALL*. Let `.` match line terminators as well
+- `(?m)` – *MULTILINE*. Let `^` and `$` match at the beginning and end of every
+  line instead of only at the beginning and end of the entire string
+- `(?x)` – *COMMENTS*. Ignore whitespace in the pattern and treat the rest of
+  the line after an unescaped `#` as a comment
+
+All flags are off by default. Combine multiple flags like `(?is)`, turn a flag
+off again with a minus sign like `(?-i)`, and limit a flag to a group by writing
+it like `(?i:xyz)`.
+
+You can also add a comment anywhere in a pattern with `(?#...)`, independent of
+the *COMMENTS* flag.
+
+The `caseInsensitive` parameter of the regular expression functions is
+equivalent to prefixing the pattern with `(?i)`, and therefore applies to the
+entire pattern.
+
+### Limitations
+
+The following PCRE features are unavailable:
+
+- Conditional patterns like `(?(1)yes|no)`
+- Recursion and subroutine calls like `(?R)` and `(?1)`
+- The `\K` escape sequence for resetting the reported match start. It does not
+  raise an error but matches a literal `K` instead
+- The `\N{UNICODE CHARACTER NAME}` escape sequence
+- The `\g{...}` back reference syntax. Use `\1` to `\9` and `\k<name>` instead
+
+The engine matches using backtracking. Patterns that combine nested quantifiers
+with a subject that cannot match, such as `(a+)+$`, can take exponentially long
+to evaluate. There is no upper bound on how long a single match may take, and a
+query that is stuck in such a match cannot be interrupted until the match
+completes, not even by the `maxRuntime` query option or by killing the query.
+Avoid nested quantifiers over overlapping character sets, and consider using
+atomic groups or possessive quantifiers to limit backtracking.

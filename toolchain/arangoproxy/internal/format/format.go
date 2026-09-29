@@ -1,6 +1,7 @@
 package format
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -120,8 +121,27 @@ func (formatter CurlFormatter) FormatCurlOutput(arangoOutput, renderOption strin
 
 type AQLFormatter struct{}
 
+// jsStringLiteral encodes s as a JavaScript string literal. A JSON string is
+// also a valid JavaScript string literal, but Go's encoder escapes <, > and &
+// as numeric escapes by default, which would make a named capturing group such
+// as (?<name>...) unreadable in the injected code and in the logs. U+2028 and
+// U+2029 are escaped either way, so the result stays a safe single-line literal.
+func jsStringLiteral(s string) string {
+	var buf bytes.Buffer
+	encoder := json.NewEncoder(&buf)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(s); err != nil {
+		return `""`
+	}
+	return strings.TrimSuffix(buf.String(), "\n")
+}
+
+// The query is passed to arangosh as a JavaScript string literal, not as a
+// template literal, so that the query reaches the server exactly as written in
+// the example: backslashes are the ones AQL sees, and `${...}` and backticks
+// carry no special meaning.
 func (formatter AQLFormatter) FormatRequestCode(code string, bindVars map[string]interface{}) string {
-	commands := fmt.Sprintf("db._query(`%s`", code)
+	commands := fmt.Sprintf("db._query(%s", jsStringLiteral(code))
 	if len(bindVars) != 0 {
 		bindVarsJson, _ := json.Marshal(bindVars)
 		commands = fmt.Sprintf("%s, %s", commands, bindVarsJson)
