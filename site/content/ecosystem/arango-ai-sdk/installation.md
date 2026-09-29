@@ -20,21 +20,7 @@ description: >-
 - **An API key for a model provider**, for example OpenAI, for the chat and
   embedding models AutoGraph uses.
 
-## Authenticate to the package index
-
-`arango-ai-sdk` is published to ArangoDB's private package index on Google
-Artifact Registry. Availability on the public PyPI is a later step. Ask your
-ArangoDB contact for access to the index before you continue.
-
-Installing from that index needs Google Artifact Registry keyring support:
-
-```bash
-pip install keyring keyrings.google-artifactregistry-auth
-gcloud auth login
-```
-
-Instead of `gcloud auth login`, you can supply a service account key, which is
-the usual choice for CI.
+<!-- TODO: link to the open-source repository of the SDK once it is published -->
 
 ## Install the package
 
