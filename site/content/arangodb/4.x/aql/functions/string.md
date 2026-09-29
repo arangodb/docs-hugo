@@ -1281,20 +1281,30 @@ Split the given string `text` into a list of strings at positions where
 - returns **stringArray** (array): an array of strings, or `null` and a warning
   if the expression is invalid
 
+The matched separators are removed from the result unless you wrap them in a
+[capturing group](#groups-and-back-references), in which case the captured text
+is kept as an element between the surrounding parts.
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexSplit_1
-description: ''
+description: |
+  Split a string at line breaks of the LF, CRLF, and CR styles. The `\r\n`
+  alternative has to come first, or the halves of a CRLF match separately and
+  leave an empty element between them. The `\R` shorthand matches all three.
 ---
-RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n|\\r|\\n")
+RETURN REGEX_SPLIT("This is a line (LF).\\nThis is another line (CRLF).\\r\\nThis again is a line (CR).\\rThe last line.", "\\r\\n|\\r|\\n")
 ```
 
 ```aql
 ---
 name: aqlRegexSplit_2
-description: ''
+description: |
+  Split at any run of whitespace and commas. The quantifier makes
+  consecutive separators count as one, so that no empty elements are
+  produced:
 ---
 RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
 ```
@@ -1302,7 +1312,8 @@ RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
 ```aql
 ---
 name: aqlRegexSplit_3
-description: ''
+description: |
+  The separator is discarded unless a capturing group keeps it:
 ---
 RETURN [
   REGEX_SPLIT("Capture the article", "(the)"),
@@ -1313,7 +1324,9 @@ RETURN [
 ```aql
 ---
 name: aqlRegexSplit_4
-description: ''
+description: |
+  Split case-insensitively, so that the pattern `a,b` also matches `A,B`,
+  and limit the result to three elements:
 ---
 RETURN REGEX_SPLIT("cA,Bc,A,BcA,BcA,Bc", "a,b", true, 3)
 ```
@@ -1333,12 +1346,18 @@ using regular expression matching.
 - returns **bool** (bool): `true` if the pattern is contained in `text`,
   and `false` otherwise, or `null` and a warning if the expression is invalid
 
+A partial match anywhere in the `text` is sufficient. Anchor the pattern with `^`
+and `$` if you want it to match the entire `text`. Capturing groups have no
+effect on the result. Use [`REGEX_MATCHES()`](#regex_matches) if you need the
+matched text.
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexTest_1
-description: ''
+description: |
+  An unanchored pattern only needs to occur somewhere in the string:
 ---
 RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 ```
@@ -1346,7 +1365,8 @@ RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 ```aql
 ---
 name: aqlRegexTest_2
-description: ''
+description: |
+  An anchored pattern has to match the entire string:
 ---
 RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
 ```
@@ -1354,7 +1374,9 @@ RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
 ```aql
 ---
 name: aqlRegexTest_3
-description: ''
+description: |
+  The dot doesn't match line terminators, but an explicit `\n` does, letting
+  the pattern span multiple lines:
 ---
 RETURN REGEX_TEST("the\\nquick\\nbrown\\nfox", "^the(\\n[a-w]+)+\\nfox$")
 ```
@@ -1369,19 +1391,39 @@ Replace the pattern `search` with the string `replacement` in the string
 - **text** (string): the string to search in
 - **search** (string): a [regular expression](#regular-expression-syntax)
   search pattern
-- **replacement** (string): the string to replace the `search` pattern with
+- **replacement** (string): the string to replace the `search` pattern with.
+  It may reference [capturing groups](#groups-and-back-references) of the
+  `search` pattern
 - **caseInsensitive** (bool, *optional*): if set to `true`, the matching will be
   case-insensitive. The default is `false`.
 - returns **string** (string): the string `text` with the `search` regex
   pattern replaced with the `replacement` string wherever the pattern exists
   in `text`, or `null` and a warning if the expression is invalid
 
+All occurrences of the pattern are replaced, not just the first one.
+
+In the `replacement`, `$0` refers to the entire match and `$1` to `$9` refer to
+the text captured by the respective capturing group of the `search` pattern.
+You can refer to a named capturing group with `${name}`. Referencing a group
+number that the `search` pattern does not define returns `null` and raises a
+warning. To insert a literal dollar sign, escape it as `\$`.
+
+{{< warning >}}
+The `$1` syntax is only meaningful in the `replacement`. Inside the `search`
+pattern, use the back reference syntax `\1` to `\9` instead, because `$` is the
+end-of-string assertion there. A pattern like `(a[0-9]{2}).*$1` therefore never
+matches anything, whereas `(a[0-9]{2}).*\1` matches a repetition of what the
+first group captured.
+{{< /warning >}}
+
 **Examples**
 
 ```aql
 ---
 name: aqlRegexReplace_1
-description: ''
+description: |
+  Replace everything from `the` up to and including `fox` with a fixed
+  string:
 ---
 RETURN REGEX_REPLACE("the quick brown fox", "the.*fox", "jumped over")
 ```
@@ -1389,7 +1431,9 @@ RETURN REGEX_REPLACE("the quick brown fox", "the.*fox", "jumped over")
 ```aql
 ---
 name: aqlRegexReplace_2
-description: ''
+description: |
+  The matching is case-sensitive by default, so only the lower-case `a` is
+  replaced and the upper-case ones are left alone:
 ---
 RETURN REGEX_REPLACE("An Avocado", "a", "_")
 ```
@@ -1397,9 +1441,39 @@ RETURN REGEX_REPLACE("An Avocado", "a", "_")
 ```aql
 ---
 name: aqlRegexReplace_3
-description: ''
+description: |
+  With `caseInsensitive` set to `true`, every occurrence is replaced
+  regardless of its case:
 ---
 RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
+```
+
+```aql
+---
+name: aqlRegexReplace_4
+description: |
+  Reorder the parts of a date by referring to the capturing groups of the
+  `search` pattern with `$1` to `$9` in the `replacement`:
+---
+RETURN REGEX_REPLACE("2024-01-31", "(\\\\d{4})-(\\\\d{2})-(\\\\d{2})", "$3/$2/$1")
+```
+
+```aql
+---
+name: aqlRegexReplace_5
+description: |
+  Collapse doubled words by matching a repetition with the back reference `\1`
+  in the `search` pattern, and keeping a single occurrence with `$1` in the
+  `replacement`:
+---
+RETURN REGEX_REPLACE("the the quick quick fox", "(\\\\w+) \\\\1", "$1")
+```
+
+You can also refer to a named capturing group by name in the `replacement`:
+
+```aql
+RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
+// [ "Roe, Jane" ]
 ```
 
 ## REPEAT()
