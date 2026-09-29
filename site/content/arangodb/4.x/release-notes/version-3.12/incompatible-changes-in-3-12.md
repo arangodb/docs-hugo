@@ -1266,6 +1266,22 @@ If you deactivate a user account, the
 that have been issued for this user account are now rejected. Requests that
 authenticate with such a token fail with an HTTP `401 Unauthorized` error.
 
+## `REVERSE()` AQL function correctly reverses all characters
+
+<small>Introduced in: v3.12.13</small>
+
+The [`REVERSE()` AQL function](../../aql/functions/string.md#reverse) now
+reverses strings by Unicode code point, keeping characters above U+FFFF like
+most emoji intact.
+
+```aql
+REVERSE("We 🥑 avocado!") // now "!odacova 🥑 eW" instead of "!odacova �� eW"
+```
+
+Up to v3.12.12, every code point above U+FFFF is turned into two U+FFFD
+replacement characters, and everything before a U+FFFF character in the input
+is dropped.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed

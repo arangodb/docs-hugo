@@ -1395,12 +1395,29 @@ Return the reverse of the string `value`.
 - returns **reversedString** (string): a new string with the characters in
   reverse order
 
+The string is reversed by Unicode code point and not by byte. Code points above
+U+FFFF, such as most emoji, are kept intact although they are encoded using
+multiple bytes in UTF-8.
+
+Note that what a reader perceives as a single character can be comprised of
+multiple code points, for example a letter followed by a combining diacritical
+mark, a symbol followed by a variation selector, or emoji joined by zero-width
+joiners. Such sequences are reversed code point by code point like everything
+else, which can change how the string is rendered.
+
+Up to v3.12.12, code points above U+FFFF are each turned into two U+FFFD
+replacement characters, and everything before a U+FFFF character in the input
+is dropped.
+
+To reverse an array, see the [`REVERSE()` array function](array.md#reverse).
+
 **Examples**
 
 ```aql
 ---
 name: aqlReverse_1
-description: ''
+description: |
+  Reverse a string that is comprised of ASCII characters:
 ---
 RETURN REVERSE("foobar")
 ```
@@ -1408,9 +1425,33 @@ RETURN REVERSE("foobar")
 ```aql
 ---
 name: aqlReverse_2
-description: ''
+description: |
+  Reverse a string with characters that are each encoded using multiple bytes
+  in UTF-8:
 ---
 RETURN REVERSE("电脑坏了")
+```
+
+```aql
+---
+name: aqlReverse_3
+description: |
+  Reverse a string that contains an emoji with a code point above U+FFFF
+  (U+1F951 Avocado). It remains a single character:
+---
+RETURN REVERSE("We 🥑 avocado!")
+```
+
+```aql
+---
+name: aqlReverse_4
+description: |
+  The heart emoji is comprised of two code points, the Black Heart Symbol
+  (U+2764) and the Variation Selector-16 (U+FE0F). Reversing the string moves
+  the variation selector in front of the symbol, which can change how the text
+  is displayed:
+---
+RETURN REVERSE("We ❤️ avocado!")
 ```
 
 ## RIGHT()
