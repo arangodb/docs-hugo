@@ -820,6 +820,9 @@ context:
 - `\\\\` in queries in _arangosh_
 - Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
+
+The AQL examples in this documentation use the escaping of the web interface,
+so you can paste them into its query editor and run them unchanged.
 {{< /info >}}
 
 The `LIKE()` function cannot be accelerated by any sort of index. However,
@@ -1119,7 +1122,7 @@ description: |
   An anchored expression with three capturing groups. The entire match is
   followed by the text that each group captured:
 ---
-RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\\\.-]+)@([\\\\da-z-]+)\\\\.([a-z\\\\.]{2,6})$", false)
+RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\.-]+)@([\\da-z-]+)\\.([a-z\\.]{2,6})$", false)
 ```
 
 ```aql
@@ -1130,7 +1133,7 @@ description: |
   the first match is reported, followed by the text that its two capturing
   groups matched:
 ---
-RETURN REGEX_MATCHES("foo=1, bar=22, baz=333", "(\\\\w+)=(\\\\d+)")
+RETURN REGEX_MATCHES("foo=1, bar=22, baz=333", "(\\w+)=(\\d+)")
 ```
 
 ```aql
@@ -1142,8 +1145,8 @@ description: |
   non-capturing group around it adds no element of its own:
 ---
 RETURN [
-  REGEX_MATCHES("v2.5", "v(\\\\d+)\\\\.(\\\\d+)(?:\\\\.(\\\\d+))?"),
-  REGEX_MATCHES("v2.5.1", "v(\\\\d+)\\\\.(\\\\d+)(?:\\\\.(\\\\d+))?")
+  REGEX_MATCHES("v2.5", "v(\\d+)\\.(\\d+)(?:\\.(\\d+))?"),
+  REGEX_MATCHES("v2.5.1", "v(\\d+)\\.(\\d+)(?:\\.(\\d+))?")
 ]
 ```
 
@@ -1178,7 +1181,7 @@ description: |
   alternative has to come first, or the halves of a CRLF match separately and
   leave an empty element between them. The `\R` shorthand matches all three.
 ---
-RETURN REGEX_SPLIT("This is a line (LF).\\nThis is another line (CRLF).\\r\\nThis again is a line (CR).\\rThe last line.", "\\r\\n|\\r|\\n")
+RETURN REGEX_SPLIT("This is a line (LF).\nThis is another line (CRLF).\r\nThis again is a line (CR).\rThe last line.", "\r\n|\r|\n")
 ```
 
 ```aql
@@ -1189,7 +1192,7 @@ description: |
   consecutive separators count as one, so that no empty elements are
   produced:
 ---
-RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
+RETURN REGEX_SPLIT("hypertext language, programming", "[\\s, ]+")
 ```
 
 ```aql
@@ -1251,7 +1254,7 @@ name: aqlRegexTest_2
 description: |
   An anchored pattern has to match the entire string:
 ---
-RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
+RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\s+(quick|slow).*f.x$")
 ```
 
 ```aql
@@ -1261,7 +1264,7 @@ description: |
   The dot doesn't match line terminators, but an explicit `\n` does, letting
   the pattern span multiple lines:
 ---
-RETURN REGEX_TEST("the\\nquick\\nbrown\\nfox", "^the(\\n[a-w]+)+\\nfox$")
+RETURN REGEX_TEST("the\nquick\nbrown\nfox", "^the(\n[a-w]+)+\nfox$")
 ```
 
 ## REGEX_REPLACE()
@@ -1338,7 +1341,7 @@ description: |
   Reorder the parts of a date by referring to the capturing groups of the
   `search` pattern with `$1` to `$9` in the `replacement`:
 ---
-RETURN REGEX_REPLACE("2024-01-31", "(\\\\d{4})-(\\\\d{2})-(\\\\d{2})", "$3/$2/$1")
+RETURN REGEX_REPLACE("2024-01-31", "(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1")
 ```
 
 ```aql
@@ -1349,14 +1352,17 @@ description: |
   in the `search` pattern, and keeping a single occurrence with `$1` in the
   `replacement`:
 ---
-RETURN REGEX_REPLACE("the the quick quick fox", "(\\\\w+) \\\\1", "$1")
+RETURN REGEX_REPLACE("the the quick quick fox", "(\\w+) \\1", "$1")
 ```
 
-You can also refer to a named capturing group by name in the `replacement`:
-
 ```aql
+---
+name: aqlRegexReplace_6
+description: |
+  A named capturing group can be referred to by name in the `replacement`,
+  using `${name}` instead of a group number:
+---
 RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
-// [ "Roe, Jane" ]
 ```
 
 ## REVERSE()
@@ -2081,7 +2087,7 @@ RETURN TRIM("--==[foo-bar]==--", "-=[]")
 name: aqlTrim_4
 description: ''
 ---
-RETURN TRIM("  foobar\\t \\r\\n ")
+RETURN TRIM("  foobar\t \r\n ")
 ```
 
 ```aql
@@ -2209,6 +2215,9 @@ context:
 - `\\\\` in queries in _arangosh_
 - Double the amount compared to _arangosh_ in shells that use backslashes for
 escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
+
+The AQL examples in this documentation use the escaping of the web interface,
+so you can paste them into its query editor and run them unchanged.
 {{< /info >}}
 
 ### Groups and back references

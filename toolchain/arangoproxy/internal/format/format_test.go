@@ -270,3 +270,49 @@ paths:
 		t.Errorf("description\n got: %q\nwant: %q", got, want)
 	}
 }
+
+func TestAQLFormatterRequestCode(t *testing.T) {
+	formatter := AQLFormatter{}
+
+	tests := []struct {
+		name     string
+		code     string
+		bindVars map[string]interface{}
+		want     string
+	}{
+		{
+			name: "plain query",
+			code: "RETURN 1",
+			want: `db._query("RETURN 1").toArray();`,
+		},
+		{
+			name: "backslashes reach AQL unchanged",
+			code: `RETURN REGEX_TEST("a1", "\\d")`,
+			want: `db._query("RETURN REGEX_TEST(\"a1\", \"\\\\d\")").toArray();`,
+		},
+		{
+			name: "dollar brace is not interpolated",
+			code: `RETURN REGEX_REPLACE("Jane Roe", "(?<f>\\w+) (?<l>\\w+)", "${l}, ${f}")`,
+			want: `db._query("RETURN REGEX_REPLACE(\"Jane Roe\", \"(?<f>\\\\w+) (?<l>\\\\w+)\", \"${l}, ${f}\")").toArray();`,
+		},
+		{
+			name: "backtick does not terminate the literal",
+			want: "db._query(\"RETURN `filter`\").toArray();",
+			code: "RETURN `filter`",
+		},
+		{
+			name:     "bind variables are appended",
+			code:     "RETURN @value",
+			bindVars: map[string]interface{}{"value": 1},
+			want:     `db._query("RETURN @value", {"value":1}).toArray();`,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if got := formatter.FormatRequestCode(test.code, test.bindVars); got != test.want {
+				t.Errorf("FormatRequestCode()\n got: %s\nwant: %s", got, test.want)
+			}
+		})
+	}
+}

@@ -1923,6 +1923,55 @@ FOR doc IN @@coll
   RETURN doc.@attr
 ```
 
+#### Backslashes in AQL examples
+
+The query is handed to _arangosh_ as a JavaScript string literal, so the AQL
+parser sees exactly what you write in the example. Escape backslashes by the AQL
+rules alone, the same way you would when typing the query into the query editor
+of the web interface:
+
+- `\\` in an AQL string literal for a single literal backslash. A regular
+  expression shorthand like `\d`, `\s`, or `\b` therefore needs to be written as
+  `\\d`, `\\s`, and `\\b` to survive the string literal
+- `\n`, `\r`, and `\t` for a line feed, carriage return, and tabulation
+
+````yaml
+```aql
+---
+name: regexExample
+description: ''
+---
+RETURN REGEX_MATCHES("foo=1, bar=22", "(\\w+)=(\\d+)")
+```
+````
+
+Do not add a second level of escaping for _arangosh_. An example can be copied
+from the rendered documentation straight into the query editor and run unchanged.
+
+For the same reason, `${...}` and backticks carry no special meaning in the query
+and need no escaping. A named capturing group can be referenced in a replacement
+string as usual:
+
+````yaml
+```aql
+---
+name: namedGroupExample
+description: ''
+---
+RETURN REGEX_REPLACE("Jane Roe", "(?<first>\\w+) (?<last>\\w+)", "${last}, ${first}")
+```
+````
+
+In the generated **output**, _arangosh_ prints strings with JSON-style escaping.
+A single backslash in a result value is therefore displayed as `\\`. A query that
+returns the three-character string `a\b` renders like this:
+
+```
+[
+  "a\\b"
+]
+```
+
 ### Add a new OpenAPI endpoint description
 
 Used to describe an HTTP REST API endpoint using the
