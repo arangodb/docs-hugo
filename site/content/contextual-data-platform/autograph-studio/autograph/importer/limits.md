@@ -151,7 +151,7 @@ ArangoDB's collection naming rules:
 - It must not exceed 256 characters, including suffixes such as `_Documents`.
 
 An invalid name is not caught at startup; collection creation fails at runtime.
-See [Prerequisites](../document-conversion.md#prerequisites).
+See [Prerequisites](_index.md#prerequisites-when-you-install-it-yourself).
 
 ## Related references
 

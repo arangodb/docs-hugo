@@ -3,32 +3,24 @@ title: Document conversion and the File Parser
 menuTitle: Document Conversion
 weight: 30
 description: >-
-  Prerequisites, installation, and first import call for the Importer service
+  How the File Parser turns PDF, Office, and text files into the Markdown that
+  AutoGraph and the Importer work with, what it extracts from each format, and
+  how to size it on a self-hosted cluster
 aliases:
   - /agentic-ai-suite/importer/setup/
   - /agentic-ai-suite/importer/quickstart/
 ---
-The Importer service is available in the Arango Contextual Data Platform
-through two interfaces:
-
-- **Web interface**: A guided workflow for configuring and running the
-  Importer step by step. See
-  [AutoGraph Studio](../web-interface.md).
-- **HTTP API**: Full programmatic control over the Importer pipeline.
-
-{{< tip >}}
-Both interfaces produce the same result: a knowledge graph in your ArangoDB
-database. Choose the web interface for a guided experience or the API for
-automation.
-{{< /tip >}}
+Neither the AutoGraph corpus build nor the [Importer](importer/_index.md) parses
+documents itself. Both hand every input that is not already plain text or
+Markdown to the internal **File Parser service**, which converts it to
+Markdown. This page describes what the parser accepts, what it extracts from
+each format, and how to tune it for a self-hosted deployment.
 
 ## Document conversion and supported formats
 
-The Importer does not parse documents itself. Every input that is not already
-plain text or Markdown is handed to the internal **File Parser service**, which
-converts it to Markdown and, where applicable, extracts the embedded images
-together with the text surrounding each one (if requested). The Importer then
-chunks that Markdown and builds the knowledge graph from it.
+The File Parser converts a document to Markdown and, where applicable, extracts
+the embedded images together with the text surrounding each one (if requested).
+The Importer then chunks that Markdown and builds the knowledge graph from it.
 
 The File Parser is a data platform service installed once per environment.
 It has no web interface and you do not call it directly.
@@ -89,7 +81,8 @@ The worker resource limits are defined at deploy time of the service.
 Changing them in an active system is discouraged as it may have adverse effects
 on other components.
 
-<!-- TODO: Once more tuning options have been tested and are considered public, we can add them here
+{{< comment >}}
+TODO: Once more tuning options have been tested and are considered public, we can add them here
 
 | `FPS_MAX_FILE_SIZE_BYTES` | 104857600 (100 MB) | Raise it if your corpus contains larger single documents. |
 
@@ -98,7 +91,7 @@ everything prefixed with `FPS_` is a service setting, and values for those must 
 overrides:
   config:
     FPS_MAX_FILE_SIZE_BYTES: "..."
--->
+{{< /comment >}}
 
 #### Applying values
 
@@ -149,89 +142,13 @@ If jobs queue for a long time, the fleet is too small: raise `workerPdf.replicas
 / `workerDefault.replicas`, or give the pool more CPU. If jobs fail with resource
 or timeout errors, the per-job limits are too tight for your documents.
 
-## Prerequisites
+## Related
 
-- **Arango Contextual Data Platform**.
-- **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
-  endpoints).
-- **Valid JWT** for the API (`Authorization: Bearer ...`).
-- A **project** in the target database. Projects keep datasets and
-  configurations isolated from each other. For instructions, see the
-  [Projects](../../control-plane-acp/_index.md#projects) section in
-  the Arango Control Plane (ACP) documentation.
-
-{{< warning >}}
-Because the project name is used as a prefix for ArangoDB collection names,
-it must conform to ArangoDB naming rules:
-- Must start with a letter or underscore.
-- May only contain letters, digits, underscores (`_`), or hyphens (`-`).
-- Must not exceed 256 characters (including suffixes such as `_Documents`).
-
-If the project name is not set, the service falls back to `default_project`.
-An invalid name is not validated at startup and causes collection creation
-to fail at runtime.
-{{< /warning >}}
-
-## Installation
-
-To install and start the Importer service, use the following endpoint:
-
-{{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/graphragimporter" >}}
-
-This endpoint is part of the Arango Control Plane (ACP) service, which
-manages the lifecycle of all AI services in the platform. For detailed
-installation, monitoring, and lifecycle management instructions, see the
-[Arango Control Plane (ACP)](../../control-plane-acp/_index.md)
-documentation.
-
-## Get started
-
-{{< tabs "importer-setup" >}}
-
-{{< tab "Web Interface" >}}
-The web interface lets you configure and run the Importer through a guided
-workflow.
-
-1. Navigate to **Agentic AI Suite** > **AutoGraph Studio** in the sidebar.
-2. Create a new project and upload your documents into categories.
-3. Configure your LLM provider, embedding, and multimodal models.
-4. Start the build and inspect the resulting graph.
-
-For the full walkthrough, see the
-[AutoGraph Studio](../web-interface.md) guide.
-{{< /tab >}}
-
-{{< tab "HTTP API" >}}
-You reach the Importer through the platform's API gateway on port `8529`,
-which routes requests to the service (internally listening on port `8080`).
-Always call the public `:8529` endpoint shown in the examples below. The
-recommended call sequence is:
-
-1. **Configure your LLM provider** at install time.
-   See [LLM Configuration](importer/llm-configuration.md).
-2. **Submit an import**:
-   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import" >}}
-   or for a batch:
-   {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/importer/{serviceIdPostfix}/v1/import-multiple" >}}
-3. **Monitor progress** via the platform service status (single-file imports)
-   or by polling `GET /v1/jobs/{job_id}` (multi-file imports).
-4. **Verify the result** in your ArangoDB database.
-
-Authentication uses JWT Bearer tokens. For full endpoint documentation,
-see the [Reference](importer/_index.md).
-{{< /tab >}}
-
-{{< /tabs >}}
-
-## Learn more
-
-- [Architecture](importer/architecture.md): Knowledge graph collections, vector
-  indexes, and the async-job lifecycle.
-- [LLM Configuration](importer/llm-configuration.md): Choose and configure your
-  chat and embedding providers.
-- [Import Files](importer/import-endpoints.md): Single-file and multi-file imports
-  with examples.
-- [AutoGraph Integration](importer/_index.md): How the Importer is
-  driven by AutoGraph for multi-partition builds.
-- [Reference](importer/_index.md): HTTP endpoints, parameters, and
-  error handling.
+- [The AutoGraph service](_index.md#supported-file-formats): The formats the
+  corpus build accepts.
+- [The Importer](importer/_index.md): The worker that consumes the converted
+  Markdown.
+- [Semantic Units](importer/semantic-units.md): What the Importer does with the
+  extracted images.
+- [Install and upgrade](../../install-and-upgrade/_index.md): Where the
+  platform package lives.

@@ -11,7 +11,7 @@ aliases:
 ## Overview
 
 AutoRAG provides intelligent search and retrieval from the knowledge graphs
-built by the [Importer](../autograph/importer/) and [AutoGraph](../). Its
+built by the [Importer](../autograph/importer/_index.md) and [AutoGraph](../_index.md). Its
 search methods rely on the specific structure these services create, with
 entities, relations, and community summaries, so they cannot run against an
 arbitrary graph of your own. AutoRAG offers multiple search methods optimized
@@ -29,23 +29,12 @@ which calls the services it deploys *retrievers*.
 
 ## When to use AutoRAG
 
-AutoRAG serves two usage patterns depending on how your knowledge graph was
-built.
+AutoRAG is the second stage of AutoGraph Studio: it serves questions from the
+Context Graph that [AutoGraph](../autograph/_index.md) built.
 
-### With the Importer (standalone)
+### Against a Context Graph built by AutoGraph
 
-When using the [Importer](../autograph/importer/) directly to build a single knowledge
-graph, you query it with the
-[query API](executing-queries.md), which gives access to all search methods and
-parameters.
-
-The standalone Importer workflow is not available in the web interface.
-[AutoGraph Studio](../web-interface.md) can only query Context Graphs
-that belong to an AutoGraph project.
-
-### With AutoGraph (partitioned)
-
-When [AutoGraph](../) manages your document pipeline, it builds
+When [AutoGraph](../_index.md) manages your document pipeline, it builds
 partitioned knowledge graphs with domain-aware RAG strategies. AutoRAG queries
 across these partitions using `partition_ids` to target specific domains. AutoGraph's two-stage retrieval pattern first identifies relevant
 partitions, then performs deep search within them.
@@ -55,7 +44,19 @@ that choice determines which search methods you can run against it. See
 [VectorRAG and FullGraphRAG partitions](search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 For details on how partitions are created and mapped, see the
-[Importer AutoGraph Integration](../autograph/importer/_index.md) page.
+[How AutoGraph runs the Importer](../autograph/importer/_index.md#how-autograph-runs-the-importer) section.
+
+{{< info >}}
+**Advanced: querying a graph built with the Importer directly.**
+A knowledge graph built with the [Importer](../autograph/importer/_index.md) directly, outside
+AutoGraph, is queried with the
+[query API](executing-queries.md), which gives access to all search methods and
+parameters.
+
+The standalone Importer workflow is not available in the web interface.
+[AutoGraph Studio](../web-interface.md) can only query Context Graphs
+that belong to an AutoGraph project.
+{{< /info >}}
 
 ## Search methods
 
@@ -74,9 +75,10 @@ guidance on choosing the right method.
 
 Before using AutoRAG, you need:
 
-1. **A project** with imported data. If you are using the Importer standalone,
-   follow the [Importer Setup](../autograph/document-conversion.md). If you are using
-   AutoGraph, follow the [AutoGraph Setup](../autograph/_index.md).
+1. **A project with a Context Graph**. Build one with the
+   [AutoGraph Studio quick start](../quick-start.md) or the
+   [AutoGraph service](../autograph/_index.md). A graph built with the
+   Importer directly works too, see the note above.
 
 2. **An LLM provider** configured for AutoRAG. See
    [LLM Configuration](llm-configuration.md) to set up Triton Inference Server

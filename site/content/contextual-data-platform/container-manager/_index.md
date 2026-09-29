@@ -137,5 +137,5 @@ Kubernetes-native scaling and high availability capabilities:
 
 For detailed information about the platform's scaling architecture and
 high availability features, see
-[Operational Features](../platform-suite.md#operational-features).
+[Operational model](../architecture.md#operational-model).
 {{< /comment >}}

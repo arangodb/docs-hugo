@@ -7,16 +7,39 @@ weight: 80
 aliases:
   - /agentic-ai-suite/importer/importing-files/
 ---
-This page covers the import endpoints and how to monitor running imports.
-Before reading it, make sure you've finished the
-[Setup](../document-conversion.md) (project created, service installed) and
-[LLM Configuration](llm-configuration.md) (chat and embedding providers
-configured).
+This page documents the import endpoints of the Importer and how to monitor
+running imports. During an [AutoGraph](../_index.md) orchestration, these calls
+are submitted for you, one per partition. Call them yourself only to re-run a
+partition with custom settings, or to import documents outside AutoGraph, which
+has no web interface. In that case, install the service and configure its
+providers first, see [The Importer](_index.md#prerequisites-when-you-install-it-yourself)
+and [LLM Configuration](llm-configuration.md).
 
 {{< info >}}
 Platform routes require authentication. Include a standard `Authorization`
 header (e.g., `Bearer <token>`) on every request to the Importer.
 {{< /info >}}
+
+## Call sequence
+
+### Single file
+
+1. `GET /v1/health` - confirm the service is ready.
+2. `POST /v1/import` - submit the file. Returns `success: true` and starts
+   processing in the background. **No `job_id` is returned**.
+3. Monitor via the **platform service status** until the status reaches
+   `service_completed` or a terminal failure status.
+4. Query ArangoDB or call [AutoRAG](../../autorag/_index.md) against the
+   resulting knowledge graph.
+
+### Batch
+
+1. `GET /v1/health`
+2. `POST /v1/import-multiple` - save the returned `job_id`.
+3. Poll `GET /v1/jobs/{job_id}` (for example, every 10-30 seconds) until
+   `is_terminal` is `true`.
+4. On `service_completed`, verify the graph; on failure, read
+   `current_status.message` and consult [Error Handling](error-handling.md).
 
 ## Choosing a RAG Mode
 
@@ -103,7 +126,7 @@ The response payload looks like this:
 
 {{< tip >}}
 You can also reference files already uploaded to
-[File Manager](../../../file-manager/) by passing
+[File Manager](../../../file-manager/_index.md) by passing
 `file_ids` instead of inline `files`. When `file_ids` is non-empty, the
 `files` array is ignored. Those files bring their own citation URLs; see
 [Citation URLs](parameters.md#citation-urls).

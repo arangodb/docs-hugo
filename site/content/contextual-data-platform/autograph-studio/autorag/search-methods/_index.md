@@ -66,7 +66,7 @@ For how AutoGraph decides which clusters become VectorRAG and which become
 FullGraphRAG, see the
 [RAG strategizer](../../autograph/rag-strategizer.md). For how the
 resulting partitions are named and imported, see the
-[Importer AutoGraph Integration](../../autograph/importer/_index.md).
+[How AutoGraph runs the Importer](../../autograph/importer/_index.md#how-autograph-runs-the-importer).
 {{< /info >}}
 
 ## Choosing a search method

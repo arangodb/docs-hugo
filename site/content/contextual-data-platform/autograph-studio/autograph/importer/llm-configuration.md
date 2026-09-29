@@ -23,7 +23,7 @@ instead; the Importer detects this and falls back automatically (see
 
 The following models are validated for use with the Importer service. For the full
 list across all services, see
-[Supported LLM and embedding models](../../../_index.md#supported-llm-and-embedding-models).
+[Supported LLM and embedding models](../../../llm-models.md).
 
 The recommended provider is `openai` with the OpenAI models below. That is the
 combination ArangoDB tests, so prefer it where you can; other endpoints can

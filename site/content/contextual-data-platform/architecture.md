@@ -19,25 +19,25 @@ entering through Envoy, which acts as the API gateway and HTTP frontend for
 all services behind it. From there, requests are routed to the
 ArangoDB Platform Services, which group together the core building blocks:
 
-- **Platform Enablers** — the [File Manager](file-manager/)
-  for object storage and the [Secret Manager](secrets-manager/)
+- **Platform Enablers**: the [File Manager](file-manager/_index.md)
+  for object storage and the [Secret Manager](secrets-manager.md)
   for credentials and other sensitive configuration.
-- **ArangoDB** — the distributed multi-model database at the heart of the platform,
+- **ArangoDB**: the distributed multi-model database at the heart of the platform,
   deployed as Coordinators, DB-Servers, and Agents and managed by the
   [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/).
-- **Agentic AI Suite** — the optional AI components (AutoGraph and AutoRAG,
+- **AI services**: the optional AI components (AutoGraph and AutoRAG,
   GraphML, Graph Analytics, and others) that sit alongside ArangoDB and consume
   its data.
 
 Alongside the built-in services, the cluster can also host
-[user-defined services (BYOC)](container-manager/) — your
+[user-defined services (BYOC)](container-manager/_index.md), your
 own containers, deployed and routed through the same Envoy gateway so they
 share authentication, networking, and lifecycle management with the rest of
 the platform.
 
 {{< info >}}
 **Kubernetes Required**: The Arango Contextual Data Platform cannot operate without Kubernetes.
-It relies on Kubernetes orchestration and the 
+It relies on Kubernetes orchestration and the
 [ArangoDB Kubernetes Operator](https://arangodb.github.io/kube-arangodb/)
 (`kube-arangodb`) for all deployment, scaling, and management operations.
 {{< /info >}}
@@ -102,6 +102,44 @@ means you can do the following:
 
 This Kubernetes-native approach ensures the Arango Contextual Data Platform fits naturally
 into modern cloud-native environments and DevOps practices.
+
+## Operational model
+
+- **Scaling Capabilities for Multi-Model Workloads:**
+  The platform supports Kubernetes-native scaling for multi-model workloads,
+  including both horizontal and vertical autoscaling. By integrating with standard
+  Kubernetes primitives such as Deployments and Stateful Sets, as well as with
+  operators that provide availability and shard awareness, the platform enables
+  online scaling operations with minimal service disruption.
+
+  For storage, the platform relies on Persistent Volume Claims (PVCs) and
+  therefore inherits the elasticity and scaling capabilities of the underlying
+  storage provider. The architecture also supports compute-storage decoupling,
+  depending on the workload and storage backend, which enables compute resources
+  to scale independently from persistent storage. Combined with shard-aware
+  orchestration and rolling operational patterns, this helps enable zero-downtime
+  or near-zero-downtime scaling for supported deployments.
+
+- **Multi-AZ and High Availability:**
+  By relying on Kubernetes, the platform natively supports multiple availability
+  zone (multi-AZ) deployments. Workloads can be distributed across zones using
+  built-in scheduling, anti-affinity rules, and topology-aware routing, enabling
+  high availability and fault tolerance. Stateful workloads can also be deployed
+  with replication and shard awareness to maintain resilience across zones.
+
+  Comprehensive health checks, metrics collection, alerting, and automatic
+  failover mechanisms ensure your data platform stays operational. Real-time
+  [monitoring](monitoring.md) dashboards provide visibility into cluster performance,
+  resource utilization, and query patterns.
+
+- **Cloud-Native Architecture:**
+  The platform is fully cloud-native, built on top of Kubernetes, and leverages
+  standard Kubernetes primitives and ecosystem components. This ensures portability
+  across environments, including public cloud, private cloud, and hybrid deployments.
+
+All components are orchestrated through Kubernetes, providing automated deployment,
+scaling, and management with enterprise-grade reliability.
+
 
 ## Third-party components used by the platform
 

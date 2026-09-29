@@ -11,21 +11,10 @@ description: >-
 {{< cards >}}
 
 {{% card title="Arango Contextual Data Platform" link="contextual-data-platform/" %}}
-The full Arango Contextual Data Platform provides entity-aware retrieval,
-graph-based reasoning, temporal state management, and platform-level governance
-to support reliable, stateful agentic AI systems in production environments.
-{{% /card %}}
-
-{{% card title="Agentic AI Suite" link="contextual-data-platform/" icon="avo-full.svg" %}}
-Supercharge your Contextual Data Platform with Ada, AutoGraph, AutoRAG, GraphML,
-Graph Analytics, queries generated from natural language, and machine learning
-infrastructure for AI-powered insights.
-{{% /card %}}
-
-{{% card title="Platform Suite" link="contextual-data-platform/" icon="avo-middle.svg" %}}
-Enterprise-grade services for scalability, reliability, governance with
-Kubernetes orchestration, custom services with Bring Your Own Code, as well as
-a unified web interface with a Graph Visualizer and advanced Query Editor.
+The Kubernetes-native platform on top of ArangoDB. Build Context Graphs with
+AutoGraph Studio, run GraphML and Graph Analytics, query and explore your data
+in the unified web interface, deploy your own services, and operate it all
+with enterprise-grade governance.
 {{% /card %}}
 
 {{% card title="ArangoDB" link="arangodb/" icon="avo-core.svg" %}}
@@ -69,7 +58,7 @@ queries, and more.
 
 You can visually explore and interact with your ArangoDB graphs through an
 intuitive web interface called the [Graph Visualizer](contextual-data-platform/graph-visualizer.md).
-It is part of the [Arango Platform Suite](contextual-data-platform/_index.md) that builds on
+It is part of the [Arango Contextual Data Platform](contextual-data-platform/_index.md) that builds on
 ArangoDB, extending it to a Kubernetes-native environment that unifies
 data management, monitoring, and automation.
 
@@ -93,7 +82,7 @@ Graph analytics can answer questions like\
 **Who are the most connected persons?**
 
 Arango offers a [Graph Analytics](contextual-data-platform/graph-analytics/_index.md)
-solution included in the [Agentic AI Suite](contextual-data-platform/_index.md)
+solution included in the [Arango Contextual Data Platform](contextual-data-platform/_index.md)
 to run algorithms such as connected components, label propagation, and PageRank
 on your data.
 
@@ -109,8 +98,8 @@ GraphML can answer questions like:
 - **Is this particular transaction anomalous?**
 
 Arango's enterprise-ready, graph-powered machine learning capabilities are
-included in the [Agentic AI Suite](contextual-data-platform/_index.md) as part of the
-Arango Contextual Data Platform. See [Arango GraphML](contextual-data-platform/graphml/_index.md).
+included in the [Arango Contextual Data Platform](contextual-data-platform/_index.md).
+See [Arango GraphML](contextual-data-platform/graphml/_index.md).
 
 ### GraphRAG
 
@@ -119,8 +108,8 @@ data is not properly or cleanly represented. GraphRAG is a technique that
 lets you ground GenAI applications in trusted context using the power of graph
 relationships and vector embeddings.
 
-Arango's [GraphRAG](contextual-data-platform/autograph-studio/concepts.md) implementation in the
-[Agentic AI Suite](contextual-data-platform/_index.md) is a turn-key solution to
+Arango's [GraphRAG](contextual-data-platform/autograph-studio/concepts.md) implementation,
+[AutoGraph Studio](contextual-data-platform/autograph-studio/_index.md), is a turn-key solution to
 transform your organization's data into a knowledge graph and let everyone
 utilize the knowledge by asking questions in natural language.
 

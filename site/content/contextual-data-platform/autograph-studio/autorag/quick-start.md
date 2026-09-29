@@ -10,10 +10,8 @@ aliases:
 ---
 ## Prerequisites
 
-- A **project with imported data**. If you haven't built a graph
-  yet, follow the [Importer Quick Start](../quick-start.md) (or the
-  [AutoGraph Quick Start](../quick-start.md) for partitioned
-  corpora).
+- A **Context Graph built with AutoGraph Studio**. If you do not have one
+  yet, follow the [AutoGraph Studio quick start](../quick-start.md) first.
 - An **LLM provider** for AutoRAG (Triton or any OpenAI-compatible
   API). See [LLM Configuration](llm-configuration.md).
 - A **valid JWT** (`Authorization: Bearer ...`).
