@@ -1,7 +1,8 @@
 ---
 title: Install and upgrade the data platform
 menuTitle: Install & Upgrade
-weight: 25
+group: Deploy & operate
+weight: 400
 description: >-
   How to set up and upgrade a self-managed Contextual Data Platform
   online or offline

@@ -213,49 +213,49 @@
 /arangodb/4.x/aql/graphs/*                                                      /arangodb/4.x/aql/graph-queries/:splat                          301
 /arangodb/devel/aql/graphs/*                                                    /arangodb/devel/aql/graph-queries/:splat                        301
 
-/agentic-ai-suite/reference/autograph/                                          /agentic-ai-suite/autograph/reference/                          301
-/agentic-ai-suite/reference/autograph/corpus-build/                             /agentic-ai-suite/autograph/reference/corpus-build/             301
-/agentic-ai-suite/reference/autograph/embeddings/                               /agentic-ai-suite/autograph/reference/embeddings/               301
-/agentic-ai-suite/reference/autograph/importing-files/                          /agentic-ai-suite/autograph/reference/importing-files/          301
-/agentic-ai-suite/reference/autograph/orchestration/                            /agentic-ai-suite/autograph/reference/orchestration/            301
-/agentic-ai-suite/reference/autograph/rag-strategizer/                          /agentic-ai-suite/autograph/reference/rag-strategizer/          301
-/agentic-ai-suite/autograph/quickstart/                                         /agentic-ai-suite/autograph/setup/                              301
-/agentic-ai-suite/graphml/quickstart/                                           /agentic-ai-suite/graphml/setup/                                301
-/agentic-ai-suite/aqlizer/                                                      /agentic-ai-suite/natural-language-to-aql/                      301
-/agentic-ai-suite/reference/natural-language-to-aql/                            /agentic-ai-suite/natural-language-to-aql/api-reference/        301
-/agentic-ai-suite/reference/mlflow/                                             /agentic-ai-suite/private-llms/mlflow/                          301
-/agentic-ai-suite/reference/triton-inference-server/                            /agentic-ai-suite/private-llms/triton-inference-server/         301
-/agentic-ai-suite/reference/                                                    /agentic-ai-suite/private-llms/                                 301
-/agentic-ai-suite/graphrag/web-interface/                                       /agentic-ai-suite/autograph/web-interface/                      301
-/agentic-ai-suite/graphrag/technical-overview/                                  /agentic-ai-suite/autograph/                                    301
-/agentic-ai-suite/graphrag/use-cases/                                           /agentic-ai-suite/autograph/use-cases/                          301
-/agentic-ai-suite/graphrag/quick-start/                                         /agentic-ai-suite/autograph/quick-start/                        301
-/agentic-ai-suite/graphrag/tutorial-notebook/                                   /agentic-ai-suite/autograph/web-interface/                      301
-/agentic-ai-suite/graphrag/                                                     /agentic-ai-suite/autograph/                                    301
-/agentic-ai-suite/graphrag/*                                                    /agentic-ai-suite/autograph/                                    301
-/amp/notebooks/                                                                 /agentic-ai-suite/notebook-servers/                             301
-/arangodb/3.10/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
-/arangodb/3.11/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
-/arangodb/3.12/data-science/arangograph-notebooks/                              /agentic-ai-suite/notebook-servers/                             301
-/arangodb/stable/data-science/arangograph-notebooks/                            /agentic-ai-suite/notebook-servers/                             301
-/arangodb/4.x/data-science/arangograph-notebooks/                               /agentic-ai-suite/notebook-servers/                             301
-/arangodb/devel/data-science/arangograph-notebooks/                             /agentic-ai-suite/notebook-servers/                             301
-/agentic-ai-suite/retriever/                                                    /agentic-ai-suite/autorag/                                      301
-/agentic-ai-suite/retriever/*                                                   /agentic-ai-suite/autorag/:splat                                301
-/agentic-ai-suite/reference/retriever/                                          /agentic-ai-suite/autorag/                                      301
-/agentic-ai-suite/reference/retriever/*                                         /agentic-ai-suite/autorag/:splat                                301
+/agentic-ai-suite/reference/autograph/                                          /contextual-data-platform/autograph-studio/autograph/                          301
+/agentic-ai-suite/reference/autograph/corpus-build/                             /contextual-data-platform/autograph-studio/autograph/corpus-build/             301
+/agentic-ai-suite/reference/autograph/embeddings/                               /contextual-data-platform/autograph-studio/autograph/embeddings/               301
+/agentic-ai-suite/reference/autograph/importing-files/                          /contextual-data-platform/autograph-studio/autograph/importing-files/          301
+/agentic-ai-suite/reference/autograph/orchestration/                            /contextual-data-platform/autograph-studio/autograph/orchestration/            301
+/agentic-ai-suite/reference/autograph/rag-strategizer/                          /contextual-data-platform/autograph-studio/autograph/rag-strategizer/          301
+/agentic-ai-suite/autograph/quickstart/                                         /contextual-data-platform/autograph-studio/autograph/                              301
+/agentic-ai-suite/graphml/quickstart/                                           /contextual-data-platform/graphml/setup/                                301
+/agentic-ai-suite/aqlizer/                                                      /contextual-data-platform/natural-language-to-aql/                      301
+/agentic-ai-suite/reference/natural-language-to-aql/                            /contextual-data-platform/natural-language-to-aql/api-reference/        301
+/agentic-ai-suite/reference/mlflow/                                             /contextual-data-platform/private-llms/mlflow/                          301
+/agentic-ai-suite/reference/triton-inference-server/                            /contextual-data-platform/private-llms/triton-inference-server/         301
+/agentic-ai-suite/reference/                                                    /contextual-data-platform/private-llms/                                 301
+/agentic-ai-suite/graphrag/web-interface/                                       /contextual-data-platform/autograph-studio/web-interface/                      301
+/agentic-ai-suite/graphrag/technical-overview/                                  /contextual-data-platform/autograph-studio/                                    301
+/agentic-ai-suite/graphrag/use-cases/                                           /contextual-data-platform/autograph-studio/use-cases/                          301
+/agentic-ai-suite/graphrag/quick-start/                                         /contextual-data-platform/autograph-studio/quick-start/                        301
+/agentic-ai-suite/graphrag/tutorial-notebook/                                   /contextual-data-platform/autograph-studio/web-interface/                      301
+/agentic-ai-suite/graphrag/                                                     /contextual-data-platform/autograph-studio/                                    301
+/agentic-ai-suite/graphrag/*                                                    /contextual-data-platform/autograph-studio/                                    301
+/amp/notebooks/                                                                 /contextual-data-platform/notebook-servers/                             301
+/arangodb/3.10/data-science/arangograph-notebooks/                              /contextual-data-platform/notebook-servers/                             301
+/arangodb/3.11/data-science/arangograph-notebooks/                              /contextual-data-platform/notebook-servers/                             301
+/arangodb/3.12/data-science/arangograph-notebooks/                              /contextual-data-platform/notebook-servers/                             301
+/arangodb/stable/data-science/arangograph-notebooks/                            /contextual-data-platform/notebook-servers/                             301
+/arangodb/4.x/data-science/arangograph-notebooks/                               /contextual-data-platform/notebook-servers/                             301
+/arangodb/devel/data-science/arangograph-notebooks/                             /contextual-data-platform/notebook-servers/                             301
+/agentic-ai-suite/retriever/                                                    /contextual-data-platform/autograph-studio/autorag/                                      301
+/agentic-ai-suite/retriever/*                                                   /contextual-data-platform/autograph-studio/autorag/:splat                                301
+/agentic-ai-suite/reference/retriever/                                          /contextual-data-platform/autograph-studio/autorag/                                      301
+/agentic-ai-suite/reference/retriever/*                                         /contextual-data-platform/autograph-studio/autorag/:splat                                301
 
-/data-platform/get-started/                                                     /platform-suite/                                                301
+/data-platform/get-started/                                                     /contextual-data-platform/                                                301
 /data-platform/installation/                                                    /contextual-data-platform/install-and-upgrade/                  301
 /data-platform/features/                                                        /contextual-data-platform/                                      301
 /data-platform/release-notes/                                                   /contextual-data-platform/release-notes/                        301
-/data-platform/*                                                                /platform-suite/:splat                                          301
+/data-platform/*                                                                /contextual-data-platform/:splat                                          301
 
 /contextual-data-platform/kubernetes/                                           /contextual-data-platform/architecture/                         301
 
 /ai-suite/release-notes/                                                        /contextual-data-platform/release-notes/                        301
-/ai-suite/reference/ai-orchestrator/                                            /platform-suite/control-plane-acp/                              301
-/ai-suite/*                                                                     /agentic-ai-suite/:splat                                        301
+/ai-suite/reference/ai-orchestrator/                                            /contextual-data-platform/control-plane-acp/                              301
+/ai-suite/*                                                                     /contextual-data-platform/:splat                                        301
 
 /arangodb/4.0/*                                                                 /arangodb/4.x/:splat                                            301
 
@@ -300,7 +300,7 @@
 /docs/3.10/data-science.html                                                               /arangodb/3.10/data-science/                                                              301
 /docs/3.10/graphml.html                                                                    /arangodb/3.10/data-science/arangographml/                                                301
 /docs/3.10/arangographml-getting-started.html                                              /arangodb/3.10/data-science/arangographml/getting-started/                                301
-/docs/3.10/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.10/arangograph-notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.10/graphs-pregel.html                                                              /arangodb/3.10/data-science/pregel/                                                       301
 /docs/3.10/graphs-pregel-algorithms.html                                                   /arangodb/3.10/data-science/pregel/algorithms/                                            301
 /docs/3.10/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
@@ -645,7 +645,7 @@
 /docs/3.10/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.10/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.10/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.10/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.10/arangograph/notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.10/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.10/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.10/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -1034,7 +1034,7 @@
 /docs/stable/data-science.html                                                             /arangodb/3.11/data-science/                                                              301
 /docs/stable/graphml.html                                                                  /arangodb/3.11/data-science/arangographml/                                                301
 /docs/stable/arangographml-getting-started.html                                            /arangodb/3.11/data-science/arangographml/getting-started/                                301
-/docs/stable/arangograph-notebooks.html                                                    /agentic-ai-suite/notebook-servers/                                                       301
+/docs/stable/arangograph-notebooks.html                                                    /contextual-data-platform/notebook-servers/                                                       301
 /docs/stable/graphs-pregel.html                                                            /arangodb/3.11/data-science/pregel/                                                       301
 /docs/stable/graphs-pregel-algorithms.html                                                 /arangodb/3.11/data-science/pregel/algorithms/                                            301
 /docs/stable/data-science-adapters.html                                                    /ecosystem/adapters/                                                                      301
@@ -1391,7 +1391,7 @@
 /docs/stable/arangograph/deployments.html                                                  /amp/deployments/                                                                         301
 /docs/stable/arangograph/private-endpoints.html                                            /amp/deployments/private-endpoints/                                                       301
 /docs/stable/arangograph/upgrades-versioning.html                                          /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/stable/arangograph/notebooks.html                                                    /agentic-ai-suite/notebook-servers/                                                       301
+/docs/stable/arangograph/notebooks.html                                                    /contextual-data-platform/notebook-servers/                                                       301
 /docs/stable/arangograph/cloud-migration-tool.html                                         /amp/                                                                                     301
 /docs/stable/arangograph/my-account.html                                                   /amp/my-account/                                                                          301
 /docs/stable/arangograph/monitoring-metrics.html                                           /amp/monitoring-and-metrics/                                                              301
@@ -1781,7 +1781,7 @@
 /docs/3.11/data-science.html                                                               /arangodb/3.11/data-science/                                                              301
 /docs/3.11/graphml.html                                                                    /arangodb/3.11/data-science/arangographml/                                                301
 /docs/3.11/arangographml-getting-started.html                                              /arangodb/3.11/data-science/arangographml/getting-started/                                301
-/docs/3.11/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.11/arangograph-notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.11/graphs-pregel.html                                                              /arangodb/3.11/data-science/pregel/                                                       301
 /docs/3.11/graphs-pregel-algorithms.html                                                   /arangodb/3.11/data-science/pregel/algorithms/                                            301
 /docs/3.11/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
@@ -2138,7 +2138,7 @@
 /docs/3.11/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.11/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.11/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.11/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.11/arangograph/notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.11/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.11/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.11/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -2523,9 +2523,9 @@
 /docs/devel/graphs-edges.html                                                              /arangodb/3.12/graphs/working-with-edges/                                                 301
 /docs/devel/graphs-traversals-example-data.html                                            /arangodb/3.12/graphs/example-graphs/                                                     301
 /docs/devel/data-science.html                                                              /arangodb/3.12/data-science/                                                              301
-/docs/devel/graphml.html                                                                   /agentic-ai-suite/graphml/                                                                301
-/docs/devel/arangographml-getting-started.html                                             /agentic-ai-suite/graphml/notebooks-api/                                                  301
-/docs/devel/arangograph-notebooks.html                                                     /agentic-ai-suite/notebook-servers/                                                       301
+/docs/devel/graphml.html                                                                   /contextual-data-platform/graphml/                                                                301
+/docs/devel/arangographml-getting-started.html                                             /contextual-data-platform/graphml/notebooks-api/                                                  301
+/docs/devel/arangograph-notebooks.html                                                     /contextual-data-platform/notebook-servers/                                                       301
 /docs/devel/graphs-pregel.html                                                             /arangodb/3.12/data-science/pregel/                                                       301
 /docs/devel/graphs-pregel-algorithms.html                                                  /arangodb/3.12/data-science/pregel/algorithms/                                            301
 /docs/devel/data-science-adapters.html                                                     /ecosystem/adapters/                                                                      301
@@ -2880,7 +2880,7 @@
 /docs/devel/arangograph/deployments.html                                                   /amp/deployments/                                                                         301
 /docs/devel/arangograph/private-endpoints.html                                             /amp/deployments/private-endpoints/                                                       301
 /docs/devel/arangograph/upgrades-versioning.html                                           /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/devel/arangograph/notebooks.html                                                     /agentic-ai-suite/notebook-servers/                                                       301
+/docs/devel/arangograph/notebooks.html                                                     /contextual-data-platform/notebook-servers/                                                       301
 /docs/devel/arangograph/cloud-migration-tool.html                                          /amp/                                                                                     301
 /docs/devel/arangograph/my-account.html                                                    /amp/my-account/                                                                          301
 /docs/devel/arangograph/monitoring-metrics.html                                            /amp/monitoring-and-metrics/                                                              301
@@ -3267,9 +3267,9 @@
 /docs/3.12/graphs-edges.html                                                               /arangodb/3.12/graphs/working-with-edges/                                                 301
 /docs/3.12/graphs-traversals-example-data.html                                             /arangodb/3.12/graphs/example-graphs/                                                     301
 /docs/3.12/data-science.html                                                               /arangodb/3.12/data-science/                                                              301
-/docs/3.12/graphml.html                                                                    /agentic-ai-suite/graphml/                                                                301
-/docs/3.12/arangographml-getting-started.html                                              /agentic-ai-suite/graphml/notebooks-api/                                                  301
-/docs/3.12/arangograph-notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.12/graphml.html                                                                    /contextual-data-platform/graphml/                                                                301
+/docs/3.12/arangographml-getting-started.html                                              /contextual-data-platform/graphml/notebooks-api/                                                  301
+/docs/3.12/arangograph-notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.12/graphs-pregel.html                                                              /arangodb/3.12/data-science/pregel/                                                       301
 /docs/3.12/graphs-pregel-algorithms.html                                                   /arangodb/3.12/data-science/pregel/algorithms/                                            301
 /docs/3.12/data-science-adapters.html                                                      /ecosystem/adapters/                                                                      301
@@ -3624,7 +3624,7 @@
 /docs/3.12/arangograph/deployments.html                                                    /amp/deployments/                                                                         301
 /docs/3.12/arangograph/private-endpoints.html                                              /amp/deployments/private-endpoints/                                                       301
 /docs/3.12/arangograph/upgrades-versioning.html                                            /amp/deployments/upgrades-and-versioning/                                                 301
-/docs/3.12/arangograph/notebooks.html                                                      /agentic-ai-suite/notebook-servers/                                                       301
+/docs/3.12/arangograph/notebooks.html                                                      /contextual-data-platform/notebook-servers/                                                       301
 /docs/3.12/arangograph/cloud-migration-tool.html                                           /amp/                                                                                     301
 /docs/3.12/arangograph/my-account.html                                                     /amp/my-account/                                                                          301
 /docs/3.12/arangograph/monitoring-metrics.html                                             /amp/monitoring-and-metrics/                                                              301
@@ -3972,3 +3972,98 @@
 /docs/3.12/getting-started.html                                                            /arangodb/3.12/get-started/                                                               301
 /docs/3.12/data-modeling.html                                                              /arangodb/3.12/concepts/                                                                  301
 /docs/3.12/scaling.html                                                                    /arangodb/3.12/deploy/architecture/                                                       301
+
+
+# DOC-975: Agentic AI Suite and Platform Suite folded into the Contextual Data Platform
+/agentic-ai-suite/                                                              /contextual-data-platform/                                      301
+/agentic-ai-suite/ada/                                                          /contextual-data-platform/ada/                                  301
+/agentic-ai-suite/ada/artifacts/                                                /contextual-data-platform/ada/artifacts/                        301
+/agentic-ai-suite/ada/llm-configuration/                                        /contextual-data-platform/ada/llm-configuration/                301
+/agentic-ai-suite/ada/quick-start/                                              /contextual-data-platform/ada/quick-start/                      301
+/agentic-ai-suite/ada/start-a-conversation/                                     /contextual-data-platform/ada/start-a-conversation/             301
+/agentic-ai-suite/autograph/                                                    /contextual-data-platform/autograph-studio/                     301
+/agentic-ai-suite/autograph/architecture/                                       /contextual-data-platform/autograph-studio/architecture/        301
+/agentic-ai-suite/autograph/concepts/                                           /contextual-data-platform/autograph-studio/concepts/            301
+/agentic-ai-suite/autograph/design-guide/                                       /contextual-data-platform/autograph-studio/design-guide/        301
+/agentic-ai-suite/autograph/incremental-graph-updates/                          /contextual-data-platform/autograph-studio/autograph/incremental-graph-updates/301
+/agentic-ai-suite/autograph/llm-configuration/                                  /contextual-data-platform/autograph-studio/autograph/llm-configuration/301
+/agentic-ai-suite/autograph/quick-start/                                        /contextual-data-platform/autograph-studio/quick-start/         301
+/agentic-ai-suite/autograph/reference/                                          /contextual-data-platform/autograph-studio/autograph/           301
+/agentic-ai-suite/autograph/reference/corpus-build/                             /contextual-data-platform/autograph-studio/autograph/corpus-build/301
+/agentic-ai-suite/autograph/reference/embeddings/                               /contextual-data-platform/autograph-studio/autograph/embeddings/301
+/agentic-ai-suite/autograph/reference/error-handling/                           /contextual-data-platform/autograph-studio/autograph/error-handling/301
+/agentic-ai-suite/autograph/reference/importing-files/                          /contextual-data-platform/autograph-studio/autograph/importing-files/301
+/agentic-ai-suite/autograph/reference/limitations/                              /contextual-data-platform/autograph-studio/autograph/limitations/301
+/agentic-ai-suite/autograph/reference/orchestration/                            /contextual-data-platform/autograph-studio/autograph/orchestration/301
+/agentic-ai-suite/autograph/reference/project-operations/                       /contextual-data-platform/autograph-studio/autograph/project-operations/301
+/agentic-ai-suite/autograph/reference/rag-strategizer/                          /contextual-data-platform/autograph-studio/autograph/rag-strategizer/301
+/agentic-ai-suite/autograph/setup/                                              /contextual-data-platform/autograph-studio/autograph/           301
+/agentic-ai-suite/autograph/use-cases/                                          /contextual-data-platform/autograph-studio/use-cases/           301
+/agentic-ai-suite/autograph/web-interface/                                      /contextual-data-platform/autograph-studio/web-interface/       301
+/agentic-ai-suite/autorag/                                                      /contextual-data-platform/autograph-studio/autorag/             301
+/agentic-ai-suite/autorag/custom-prompts/                                       /contextual-data-platform/autograph-studio/autorag/custom-prompts/301
+/agentic-ai-suite/autorag/error-handling/                                       /contextual-data-platform/autograph-studio/autorag/error-handling/301
+/agentic-ai-suite/autorag/executing-queries/                                    /contextual-data-platform/autograph-studio/autorag/executing-queries/301
+/agentic-ai-suite/autorag/llm-configuration/                                    /contextual-data-platform/autograph-studio/autorag/llm-configuration/301
+/agentic-ai-suite/autorag/parameters/                                           /contextual-data-platform/autograph-studio/autorag/parameters/  301
+/agentic-ai-suite/autorag/quick-start/                                          /contextual-data-platform/autograph-studio/autorag/quick-start/ 301
+/agentic-ai-suite/autorag/search-methods/                                       /contextual-data-platform/autograph-studio/autorag/search-methods/301
+/agentic-ai-suite/autorag/search-methods/custom-retriever/                      /contextual-data-platform/autograph-studio/autorag/search-methods/custom-retriever/301
+/agentic-ai-suite/autorag/search-methods/deep-search/                           /contextual-data-platform/autograph-studio/autorag/search-methods/deep-search/301
+/agentic-ai-suite/autorag/search-methods/global-search/                         /contextual-data-platform/autograph-studio/autorag/search-methods/global-search/301
+/agentic-ai-suite/autorag/search-methods/local-search/                          /contextual-data-platform/autograph-studio/autorag/search-methods/local-search/301
+/agentic-ai-suite/autorag/search-methods/unified-search/                        /contextual-data-platform/autograph-studio/autorag/search-methods/unified-search/301
+/agentic-ai-suite/autorag/verify-and-monitor/                                   /contextual-data-platform/autograph-studio/autorag/verify-and-monitor/301
+/agentic-ai-suite/graph-analytics/                                              /contextual-data-platform/graph-analytics/                      301
+/agentic-ai-suite/graph-analytics/api/                                          /contextual-data-platform/graph-analytics/api/                  301
+/agentic-ai-suite/graph-analytics/quick-start/                                  /contextual-data-platform/graph-analytics/quick-start/          301
+/agentic-ai-suite/graph-analytics/web-interface/                                /contextual-data-platform/graph-analytics/web-interface/        301
+/agentic-ai-suite/graphml/                                                      /contextual-data-platform/graphml/                              301
+/agentic-ai-suite/graphml/notebooks-api/                                        /contextual-data-platform/graphml/notebooks-api/                301
+/agentic-ai-suite/graphml/quick-start/                                          /contextual-data-platform/graphml/quick-start/                  301
+/agentic-ai-suite/graphml/setup/                                                /contextual-data-platform/graphml/setup/                        301
+/agentic-ai-suite/graphml/ui/                                                   /contextual-data-platform/graphml/ui/                           301
+/agentic-ai-suite/importer/                                                     /contextual-data-platform/autograph-studio/autograph/importer/  301
+/agentic-ai-suite/importer/architecture/                                        /contextual-data-platform/autograph-studio/autograph/importer/architecture/301
+/agentic-ai-suite/importer/autograph-integration/                               /contextual-data-platform/autograph-studio/autograph/importer/  301
+/agentic-ai-suite/importer/importing-files/                                     /contextual-data-platform/autograph-studio/autograph/importer/import-endpoints/301
+/agentic-ai-suite/importer/incremental-updates/                                 /contextual-data-platform/autograph-studio/autograph/importer/incremental-updates/301
+/agentic-ai-suite/importer/llm-configuration/                                   /contextual-data-platform/autograph-studio/autograph/importer/llm-configuration/301
+/agentic-ai-suite/importer/quick-start/                                         /contextual-data-platform/autograph-studio/quick-start/         301
+/agentic-ai-suite/importer/reference/                                           /contextual-data-platform/autograph-studio/autograph/importer/  301
+/agentic-ai-suite/importer/reference/error-handling/                            /contextual-data-platform/autograph-studio/autograph/importer/error-handling/301
+/agentic-ai-suite/importer/reference/limits/                                    /contextual-data-platform/autograph-studio/autograph/importer/limits/301
+/agentic-ai-suite/importer/reference/parameters/                                /contextual-data-platform/autograph-studio/autograph/importer/parameters/301
+/agentic-ai-suite/importer/semantic-units/                                      /contextual-data-platform/autograph-studio/autograph/importer/semantic-units/301
+/agentic-ai-suite/importer/setup/                                               /contextual-data-platform/autograph-studio/autograph/document-conversion/301
+/agentic-ai-suite/importer/verify-and-explore/                                  /contextual-data-platform/autograph-studio/autograph/importer/verify-and-explore/301
+/agentic-ai-suite/natural-language-to-aql/                                      /contextual-data-platform/natural-language-to-aql/              301
+/agentic-ai-suite/natural-language-to-aql/api-reference/                        /contextual-data-platform/natural-language-to-aql/api-reference/301
+/agentic-ai-suite/natural-language-to-aql/quick-start/                          /contextual-data-platform/natural-language-to-aql/quick-start/  301
+/agentic-ai-suite/natural-language-to-aql/setup/                                /contextual-data-platform/natural-language-to-aql/setup/        301
+/agentic-ai-suite/natural-language-to-aql/web-interface/                        /contextual-data-platform/natural-language-to-aql/web-interface/301
+/agentic-ai-suite/notebook-servers/                                             /contextual-data-platform/notebook-servers/                     301
+/agentic-ai-suite/private-llms/                                                 /contextual-data-platform/private-llms/                         301
+/agentic-ai-suite/private-llms/mlflow/                                          /contextual-data-platform/private-llms/mlflow/                  301
+/agentic-ai-suite/private-llms/triton-inference-server/                         /contextual-data-platform/private-llms/triton-inference-server/ 301
+/agentic-ai-suite/reasoner/                                                     /contextual-data-platform/reasoner/                             301
+/agentic-ai-suite/reasoner/api-reference/                                       /contextual-data-platform/reasoner/api-reference/               301
+/agentic-ai-suite/reasoner/quick-start/                                         /contextual-data-platform/reasoner/quick-start/                 301
+/agentic-ai-suite/reasoner/web-interface/                                       /contextual-data-platform/reasoner/web-interface/               301
+/platform-suite/                                                                /contextual-data-platform/                                      301
+/platform-suite/container-manager/                                              /contextual-data-platform/container-manager/                    301
+/platform-suite/container-manager/apps/                                         /contextual-data-platform/container-manager/apps/               301
+/platform-suite/container-manager/deploy-api/                                   /contextual-data-platform/container-manager/deploy-api/         301
+/platform-suite/container-manager/package-code/                                 /contextual-data-platform/container-manager/package-code/       301
+/platform-suite/container-manager/web-interface/                                /contextual-data-platform/container-manager/web-interface/      301
+/platform-suite/control-plane-acp/                                              /contextual-data-platform/control-plane-acp/                    301
+/platform-suite/control-plane-acp/api/                                          /contextual-data-platform/control-plane-acp/api/                301
+/platform-suite/cypher2aql/                                                     /contextual-data-platform/cypher-to-aql/                        301
+/platform-suite/file-manager/                                                   /contextual-data-platform/file-manager/                         301
+/platform-suite/file-manager/api/                                               /contextual-data-platform/file-manager/api/                     301
+/platform-suite/graph-visualizer/                                               /contextual-data-platform/graph-visualizer/                     301
+/platform-suite/monitoring/                                                     /contextual-data-platform/monitoring/                           301
+/platform-suite/query-editor/                                                   /contextual-data-platform/query-editor/                         301
+/platform-suite/secrets-manager/                                                /contextual-data-platform/secrets-manager/                      301
+/agentic-ai-suite/*                                                             /contextual-data-platform/                                      301
+/platform-suite/*                                                               /contextual-data-platform/                                      301

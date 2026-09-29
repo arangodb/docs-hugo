@@ -27,7 +27,7 @@ across that span, not only the newest service release:
 {{< tag "Agentic AI Suite" >}}
 
 This release extends the
-[AutoGraph](../../agentic-ai-suite/autograph/_index.md) HTTP API with endpoints
+[AutoGraph](../autograph-studio/_index.md) HTTP API with endpoints
 for incremental graph updates, project and category management, runtime model
 configuration, and status polling for every asynchronous operation. It also
 removes and renames a number of request fields.
@@ -75,7 +75,7 @@ configuration:
 | `PUT /v1/projects/{project}/model-config/credentials` | Change the chat and embedding configuration at runtime. |
 
 For request and response details, see the
-[AutoGraph Service Reference](../../agentic-ai-suite/autograph/reference/_index.md).
+[AutoGraph Service Reference](../autograph-studio/autograph/_index.md).
 
 #### Incremental graph updates
 
@@ -134,7 +134,7 @@ resolved server-side through the File Manager as the scope
   document that holds the content of the last one. The build used to do this
   silently. Each source document also stores the `source_filenames` and
   `source_file_ids` that mapped onto it. See
-  [Document identity and deduplication](../../agentic-ai-suite/autograph/reference/corpus-build.md#document-identity-and-deduplication).
+  [Document identity and deduplication](../autograph-studio/autograph/corpus-build.md#document-identity-and-deduplication).
 
 **Citable URLs**
 
@@ -182,7 +182,7 @@ An incremental build (`incremental: true`) still accepts a category whose files
 are all gone, because reconciling such removals is what it is for. If the File
 Manager cannot be reached at all, the check reaches no verdict and the build is
 accepted as before, so an outage is never reported as a bad request. See
-[Selector validation](../../agentic-ai-suite/autograph/reference/corpus-build.md#selector-validation).
+[Selector validation](../autograph-studio/autograph/corpus-build.md#selector-validation).
 
 **A staging budget caps how much a build downloads at once**
 
@@ -219,14 +219,14 @@ unusable as the only upload path:
   has to be uploaded twice.
 
 In addition,
-[incremental graph updates](../../agentic-ai-suite/autograph/incremental-graph-updates.md)
+[incremental graph updates](../autograph-studio/autograph/incremental-graph-updates.md)
 identify a document by its File Manager `file_id` and cannot reach a document
 that exists only as a direct upload.
 
 Upload your files to the
-[File Manager](../../platform-suite/file-manager/api.md#upload-a-rag-input-file)
+[File Manager](../file-manager/api.md#upload-a-rag-input-file)
 under the scope `[<project>, <category>]` and build with `categories` instead.
-See [Import Files](../../agentic-ai-suite/autograph/reference/importing-files.md).
+See [Import Files](../autograph-studio/autograph/importing-files.md).
 
 The File Manager is the more convenient way to manage uploads, and it scales
 better. Files are uploaded once and can then be listed, searched, replaced, and
@@ -251,7 +251,7 @@ silently stripped to its basename.
 **`full_graph_rag_strategy` has been replaced by a required `complexity` field**
 
 The `full_graph_rag_strategy` field no longer exists in the
-[`POST /v1/rag-strategizer/analyze`](../../agentic-ai-suite/autograph/reference/rag-strategizer.md)
+[`POST /v1/rag-strategizer/analyze`](../autograph-studio/autograph/rag-strategizer.md)
 request and is silently dropped before it reaches the service. Use the
 `complexity` enum instead. It has **no default**, so a request that omits it
 fails with HTTP `400` and `complexity is required` — including a request that
@@ -303,7 +303,7 @@ dispatched. If a listed category has no matching cluster, the job now ends with
 FullGraphRAG strategy profiles no longer store `enable_semantic_units`,
 `enable_edge_embeddings`, and `community_report_num_findings`, so these keys are
 gone from the `parameters` map returned by
-[`GET /v1/rag-strategizer/strategy`](../../agentic-ai-suite/autograph/reference/rag-strategizer.md).
+[`GET /v1/rag-strategizer/strategy`](../autograph-studio/autograph/rag-strategizer.md).
 Orchestration never forwarded them to the Importer, and
 `community_report_num_findings` is no longer supported by the Importer API at
 all.
@@ -312,7 +312,7 @@ all.
 
 **Removed and added request fields**
 
-The [`POST /v1/orchestrate`](../../agentic-ai-suite/autograph/reference/orchestration.md)
+The [`POST /v1/orchestrate`](../autograph-studio/autograph/orchestration.md)
 request schema has changed:
 
 | Field | Change | What to do instead |
@@ -490,7 +490,7 @@ status endpoint for the outcome.
 `GET /v1/corpus/builds/{id}` reports `error_code` on failure. This release adds
 `REBUILD_NOT_ALLOWED`, `STORAGE_FILE_TOO_LARGE`, and
 `FILE_PARSER_PARTIAL_FAILURE` to the provider-failure codes documented in
-[Error handling](../../agentic-ai-suite/autograph/reference/error-handling.md),
+[Error handling](../autograph-studio/autograph/error-handling.md),
 and documents `UNKNOWN_ERROR` as the fallback for any unclassified failure. The
 list is not closed, so treat an unknown code as a generic failure.
 
@@ -515,7 +515,7 @@ your Helm values and deployment environment **before** you upgrade:
 AutoGraph still reads the old names as a temporary fallback, but orchestration
 and the Importer use the new keys only, so the legacy names do not reach the
 Importer pods. They will be removed in a future release. See
-[LLM configuration](../../agentic-ai-suite/autograph/llm-configuration.md).
+[LLM configuration](../autograph-studio/autograph/llm-configuration.md).
 
 **`fps_recovery_username` is required at install time**
 
@@ -564,7 +564,7 @@ orchestration in two ways:
   fallback lookup by file name encodes the database name differently.
 
 In both cases, run a full corpus build
-([`POST /v1/corpus/builds`](../../agentic-ai-suite/autograph/reference/corpus-build.md))
+([`POST /v1/corpus/builds`](../autograph-studio/autograph/corpus-build.md))
 to stamp the identifiers. Redeploying the service is not sufficient.
 
 ### Importer (v0.0.30 to v0.0.34)
@@ -596,11 +596,11 @@ require you to import data again:
 
 `POST /v1/delete` has been removed. Removing the Layer 3 data of a document is
 handled by
-[`POST /v1/graph/delete`](../../agentic-ai-suite/autograph/reference/orchestration.md#delete-documents)
+[`POST /v1/graph/delete`](../autograph-studio/autograph/orchestration.md#delete-documents)
 in AutoGraph. The Importer keeps
-[`POST /v1/recluster`](../../agentic-ai-suite/importer/incremental-updates.md#reclustering)
+[`POST /v1/recluster`](../autograph-studio/autograph/importer/incremental-updates.md#reclustering)
 for rebuilding the community layer of a single partition. See
-[Incremental Updates](../../agentic-ai-suite/importer/incremental-updates.md).
+[Incremental Updates](../autograph-studio/autograph/importer/incremental-updates.md).
 
 #### Removed image request fields
 
@@ -609,7 +609,7 @@ have been removed. The service does not read them, and a request body that still
 carries them may be rejected instead of being ignored. Image extraction is now
 driven by `enable_semantic_units` and image descriptions by `process_images`.
 See
-[Semantic Units](../../agentic-ai-suite/importer/semantic-units.md#configuration).
+[Semantic Units](../autograph-studio/autograph/importer/semantic-units.md#configuration).
 
 #### Metadata of earlier imports
 
@@ -632,7 +632,7 @@ The fix applies to newly written embeddings only. Partitions whose semantic
 units were built from File Manager images before this release keep the old
 vectors and have to be imported again. Documents whose images are referenced by
 an ordinary HTTP or S3 URL were never affected, and neither were imports without
-[semantic units](../../agentic-ai-suite/importer/semantic-units.md).
+[semantic units](../autograph-studio/autograph/importer/semantic-units.md).
 
 #### Boot-time model configuration gate
 
@@ -641,13 +641,13 @@ the models with a live inference call and reports the outcome as
 `[MODEL_CONFIG]`. A definitive rejection keeps the service up for inspection
 instead of terminating it, and imports are refused until it is redeployed with a
 valid configuration. See
-[Boot-time model configuration gate](../../agentic-ai-suite/importer/reference/error-handling.md#boot-time-model-configuration-gate).
+[Boot-time model configuration gate](../autograph-studio/autograph/importer/error-handling.md#boot-time-model-configuration-gate).
 
 #### Limits and quotas
 
 The limits the Importer enforces on concurrency, request size, chunking, images,
 and timeouts are now documented. See
-[Limits and Quotas](../../agentic-ai-suite/importer/reference/limits.md).
+[Limits and Quotas](../autograph-studio/autograph/importer/limits.md).
 
 ### AutoRAG, formerly Retriever (v0.0.18 to v0.0.20)
 
@@ -678,8 +678,8 @@ The following changes require you to adjust existing clients:
 | `PUT /v1/projects/{project}/model-config/credentials` | Change the chat and embedding configuration of a running service. |
 
 For request and response details, see
-[Verify and monitor](../../agentic-ai-suite/autorag/verify-and-monitor.md) and
-[Configure LLMs](../../agentic-ai-suite/autorag/llm-configuration.md).
+[Verify and monitor](../autograph-studio/autorag/verify-and-monitor.md) and
+[Configure LLMs](../autograph-studio/autorag/llm-configuration.md).
 
 #### Query run history
 
@@ -743,7 +743,7 @@ per-step citations and report them in the `citation_mapping` response metadata.
 A VectorRAG partition still only serves Instant Search and chunk-searching
 Custom Retriever tools, because Global, Local, and Deep Search need the entities
 and communities that VectorRAG does not build. See
-[VectorRAG and FullGraphRAG partitions](../../agentic-ai-suite/autorag/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
+[VectorRAG and FullGraphRAG partitions](../autograph-studio/autorag/search-methods/_index.md#vectorrag-and-fullgraphrag-partitions).
 
 #### Query status and error codes
 
@@ -779,7 +779,7 @@ permission, and model rejections are no longer retried: quota exhaustion arrives
 as a rate-limit error, so a dead key used to be retried for up to an hour. Rate
 limits, timeouts, and connection errors are still retried.
 
-See [Error handling](../../agentic-ai-suite/autorag/error-handling.md).
+See [Error handling](../autograph-studio/autorag/error-handling.md).
 
 ### File Manager (v0.0.19 to v0.0.22)
 
@@ -815,12 +815,12 @@ All paths are below
 | `POST /delete-scope` | Delete every file at a scope and below it. |
 
 For request and response details, see the
-[File Manager API](../../platform-suite/file-manager/api.md).
+[File Manager API](../file-manager/api.md).
 
 #### Files are addressed by scope
 
 A file now belongs to a
-[scope](../../platform-suite/file-manager/api.md#scopes), an ordered list of at
+[scope](../file-manager/api.md#scopes), an ordered list of at
 most five labels that addresses it within a database. A lineage is identified by
 the database, the scope, and the name, so the same name in a different scope is
 a separate file, and re-uploading a name into the same scope adds a version to
@@ -841,7 +841,7 @@ because it looks a lineage up by name.
 #### Custom metadata
 
 An upload can carry
-[`custom_metadata`](../../platform-suite/file-manager/api.md#custom-metadata), a
+[`custom_metadata`](../file-manager/api.md#custom-metadata), a
 string-to-string map that File Manager stores with the file version and returns
 on upload, get, and list. It is opaque to the service: at most 32 pairs, a key
 of up to 64 and a value of up to 2048 characters, and 16 KiB in total.
@@ -849,7 +849,7 @@ Each version carries only the metadata that was sent with it, and nothing is
 merged into the versions that came before.
 
 The reserved
-[`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key)
+[`citable_url`](../file-manager/api.md#the-citable_url-key)
 key is the one other services read: AutoGraph turns it into a link on every
 citation that points at the file.
 
@@ -885,7 +885,7 @@ starts once the request body is fully received.
 #### Locking files against deletion
 
 Every version carries a
-[`safe_to_delete`](../../platform-suite/file-manager/api.md#safe-to-delete)
+[`safe_to_delete`](../file-manager/api.md#safe-to-delete)
 flag. `false` locks the version: a delete request skips it, reports it as
 locked, and leaves it in place, and deleting a single locked version is a `423`.
 A newly uploaded version always starts out unlocked.

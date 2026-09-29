@@ -7,7 +7,7 @@ description: >-
 ---
 This section documents the Importer HTTP API. All endpoints require
 JWT authentication and are served on port `8080`. For the underlying
-collections and the async-job lifecycle, see [Architecture](../architecture.md).
+collections and the async-job lifecycle, see [Architecture](../../../contextual-data-platform/autograph-studio/autograph/importer/architecture.md).
 
 {{< info >}}
 **Field names are lowerCamelCase over HTTP.** This reference uses the
@@ -43,7 +43,7 @@ These status codes apply to the immediate HTTP response of an API call:
 
 Many **business** failures (busy importer, multi-file validation) return
 `HTTP 200` with `"success": false` in the JSON body. See
-[Error Handling](error-handling.md) for the full table.
+[Error Handling](../../../contextual-data-platform/autograph-studio/autograph/importer/error-handling.md) for the full table.
 
 ## Endpoints
 
@@ -51,12 +51,12 @@ Endpoints are served at **`http://<host>:8080`**.
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `GET` | `/v1/health` | Check service readiness | [Import Files](../importing-files.md#health-check) |
-| `POST` | `/v1/import` | Import a single file | [Import Files](../importing-files.md#single-file-import) |
-| `POST` | `/v1/import-multiple` | Import a batch of files | [Import Files](../importing-files.md#multi-file-import) |
-| `POST` | `/v1/recluster` | Rebuild the community layer of one partition | [Incremental Updates](../incremental-updates.md#reclustering) |
-| `GET` | `/v1/jobs/{job_id}` | Get the status of a multi-file import or recluster job | [Import Files](../importing-files.md#monitoring-jobs) |
-| `GET` | `/v1/jobs` | List recent jobs | [Import Files](../importing-files.md#monitoring-jobs) |
+| `GET` | `/v1/health` | Check service readiness | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md#health-check) |
+| `POST` | `/v1/import` | Import a single file | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md#single-file-import) |
+| `POST` | `/v1/import-multiple` | Import a batch of files | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md#multi-file-import) |
+| `POST` | `/v1/recluster` | Rebuild the community layer of one partition | [Incremental Updates](../../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md#reclustering) |
+| `GET` | `/v1/jobs/{job_id}` | Get the status of a multi-file import or recluster job | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md#monitoring-jobs) |
+| `GET` | `/v1/jobs` | List recent jobs | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md#monitoring-jobs) |
 
 {{< info >}}
 A replica can only run one import or recluster job at a time, under a single
@@ -65,12 +65,12 @@ to the other endpoints are rejected. How they are rejected depends on the
 endpoint you call. The import endpoints return `HTTP 200` with
 `"success": false`, whereas `/v1/recluster` returns `HTTP 503` (gRPC
 `UNAVAILABLE`). See
-[Concurrency](../architecture.md#asynchronous-import-lifecycle).
+[Concurrency](../../../contextual-data-platform/autograph-studio/autograph/importer/architecture.md#asynchronous-import-lifecycle).
 
 There is no endpoint for deleting or updating a document. AutoGraph removes and
 replaces documents across all three layers. See
-[Deleting a document](../incremental-updates.md#deleting-a-document) and
-[Updating a document](../incremental-updates.md#updating-a-document).
+[Deleting a document](../../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md#deleting-a-document) and
+[Updating a document](../../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md#updating-a-document).
 {{< /info >}}
 
 ## Recommended call sequence
@@ -82,7 +82,7 @@ replaces documents across all three layers. See
    processing in the background. **No `job_id` is returned**.
 3. Monitor via the **platform service status** until the status reaches
    `service_completed` or a terminal failure status.
-4. Query ArangoDB or call [AutoRAG](../../autorag/) against the
+4. Query ArangoDB or call [AutoRAG](../../../contextual-data-platform/autograph-studio/autorag/) against the
    resulting knowledge graph.
 
 ### Standalone batch
@@ -92,7 +92,7 @@ replaces documents across all three layers. See
 3. Poll `GET /v1/jobs/{job_id}` (for example, every 10-30 seconds) until
    `is_terminal` is `true`.
 4. On `service_completed`, verify the graph; on failure, read
-   `current_status.message` and consult [Error Handling](error-handling.md).
+   `current_status.message` and consult [Error Handling](../../../contextual-data-platform/autograph-studio/autograph/importer/error-handling.md).
 
 ### Via AutoGraph
 
@@ -101,28 +101,28 @@ directly. AutoGraph orchestration submits one import per partition, sets
 `partition_id` from the corpus build, and sets `rag_mode` from the RAG
 Strategizer's assignment. Monitor via the AutoGraph orchestration status and
 the platform service status. See
-[AutoGraph Integration](../autograph-integration.md).
+[AutoGraph Integration](../../../contextual-data-platform/autograph-studio/autograph/importer/_index.md).
 
 ### Reclustering
 
 1. Call `POST /v1/recluster` and save the returned `job_id`.
 2. Poll `GET /v1/jobs/{job_id}` until `is_terminal` is `true`.
 
-See [Incremental Updates](../incremental-updates.md) for the request fields,
+See [Incremental Updates](../../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md) for the request fields,
 what the operation rebuilds, and how to troubleshoot problems. To remove or
 replace a document, use AutoGraph's
-[`POST /v1/graph/delete`](../../autograph/reference/orchestration.md#delete-documents)
+[`POST /v1/graph/delete`](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#delete-documents)
 or
-[`POST /v1/graph/update`](../../autograph/reference/orchestration.md#update-documents).
+[`POST /v1/graph/update`](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#update-documents).
 
 ## Related references
 
-- **[Incremental Updates](../incremental-updates.md)**: Reclustering, and how
+- **[Incremental Updates](../../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md)**: Reclustering, and how
   documents are removed and replaced in Layer 3.
-- **[Parameters](parameters.md)**: Complete request parameter reference.
-- **[Error Handling](error-handling.md)**: Troubleshooting, known
+- **[Parameters](../../../contextual-data-platform/autograph-studio/autograph/importer/parameters.md)**: Complete request parameter reference.
+- **[Error Handling](../../../contextual-data-platform/autograph-studio/autograph/importer/error-handling.md)**: Troubleshooting, known
   limitations, and error markers in job status messages.
-- **[Limits and Quotas](limits.md)**: Concurrency, size, timeout, and provider
+- **[Limits and Quotas](../../../contextual-data-platform/autograph-studio/autograph/importer/limits.md)**: Concurrency, size, timeout, and provider
   limits, and which of them are configurable.
 - **[API Reference](https://apiref.arango.ai/#graphrag_importer)**: Full
   machine-readable API reference.

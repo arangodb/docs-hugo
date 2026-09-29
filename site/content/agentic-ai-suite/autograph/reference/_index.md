@@ -7,7 +7,7 @@ description: >-
 ---
 This section documents the AutoGraph HTTP API. All endpoints require
 JWT authentication and are served on port `8080`. For the pipeline
-architecture, see [Architecture](../architecture.md#complete-pipeline).
+architecture, see [Architecture](../../../contextual-data-platform/autograph-studio/architecture.md#complete-pipeline).
 
 {{< info >}}
 **Field names are lowerCamelCase over HTTP.** This reference spells field names
@@ -37,42 +37,42 @@ Endpoints are served at **`http://<host>:8080`**.
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
 | `GET` | `/v1/health` | Check service readiness | - |
-| `POST` | `/v1/corpus/builds` | Start a corpus build | [Corpus Build](corpus-build.md) |
-| `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](corpus-build.md#monitoring-build-status) |
-| `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](rag-strategizer.md) |
-| `GET` | `/v1/rag-strategizer/jobs/{id}` | Monitor a strategizer run | [RAG Strategizer](rag-strategizer.md#monitor-a-strategizer-job) |
-| `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](rag-strategizer.md#retrieve-rag-strategies) |
-| `PATCH` | `/v1/rag-strategizer/strategy/{cluster_id}` | Override the strategy of one cluster | [RAG Strategizer](rag-strategizer.md#update-a-cluster-strategy) |
-| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](orchestration.md#trigger-orchestration) |
-| `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](orchestration.md#monitor-an-orchestration) |
-| `DELETE` | `/v1/orchestrate/{id}` | Cancel a running orchestration | [Graph Operations](orchestration.md#cancel-an-orchestration) |
-| `POST` | `/v1/import-multiple` | **Deprecated.** Direct upload of documents with module labels, superseded by the File Manager | [Import Files](importing-files.md) |
+| `POST` | `/v1/corpus/builds` | Start a corpus build | [Corpus Build](../../../contextual-data-platform/autograph-studio/autograph/corpus-build.md) |
+| `GET` | `/v1/corpus/builds/{id}` | Monitor build progress | [Corpus Build](../../../contextual-data-platform/autograph-studio/autograph/corpus-build.md#monitoring-build-status) |
+| `POST` | `/v1/rag-strategizer/analyze` | Assign RAG strategies to clusters | [RAG Strategizer](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md) |
+| `GET` | `/v1/rag-strategizer/jobs/{id}` | Monitor a strategizer run | [RAG Strategizer](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#monitor-a-strategizer-job) |
+| `GET` | `/v1/rag-strategizer/strategy` | Inspect assigned strategies | [RAG Strategizer](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#retrieve-rag-strategies) |
+| `PATCH` | `/v1/rag-strategizer/strategy/{cluster_id}` | Override the strategy of one cluster | [RAG Strategizer](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#update-a-cluster-strategy) |
+| `POST` | `/v1/orchestrate` | Build the knowledge graph | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#trigger-orchestration) |
+| `GET` | `/v1/orchestrate/{id}` | Monitor an orchestration and read the partition divergence | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#monitor-an-orchestration) |
+| `DELETE` | `/v1/orchestrate/{id}` | Cancel a running orchestration | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#cancel-an-orchestration) |
+| `POST` | `/v1/import-multiple` | **Deprecated.** Direct upload of documents with module labels, superseded by the File Manager | [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importing-files.md) |
 
 ### Document-level changes
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](orchestration.md#insert-documents) |
-| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](orchestration.md#delete-documents) |
-| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](orchestration.md#update-documents) |
-| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Graph Operations](orchestration.md#trigger-reclustering) |
+| `POST` | `/v1/graph/insert` | Add a document to a knowledge graph that is already built | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#insert-documents) |
+| `POST` | `/v1/graph/delete` | Remove a document from the graph | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#delete-documents) |
+| `POST` | `/v1/graph/update` | Replace the content of an existing document | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#update-documents) |
+| `POST` | `/v1/graph/recluster` | Rebuild the Layer 3 communities of a partition | [Graph Operations](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#trigger-reclustering) |
 
 ### Project operations
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `GET` | `/v1/projects/{project}/overview` | Read the whole project state in one call | [Project Operations](project-operations.md#project-overview) |
-| `PUT` | `/v1/projects/{project}/model-config/credentials` | Set the chat and embedding configuration | [Project Operations](project-operations.md#update-model-config-credentials) |
-| `DELETE` | `/v1/projects/{project}/categories/{category}` | Remove a category and its graph data | [Project Operations](project-operations.md#delete-category) |
-| `DELETE` | `/v1/projects/{project}` | Tear down the whole project | [Project Operations](project-operations.md#delete-project) |
+| `GET` | `/v1/projects/{project}/overview` | Read the whole project state in one call | [Project Operations](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#project-overview) |
+| `PUT` | `/v1/projects/{project}/model-config/credentials` | Set the chat and embedding configuration | [Project Operations](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#update-model-config-credentials) |
+| `DELETE` | `/v1/projects/{project}/categories/{category}` | Remove a category and its graph data | [Project Operations](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#delete-category) |
+| `DELETE` | `/v1/projects/{project}` | Tear down the whole project | [Project Operations](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#delete-project) |
 
 ### Standalone
 
 | Method | Path | Description | Details |
 |--------|------|-------------|---------|
-| `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](embeddings.md) |
+| `POST` | `/v1/embed-field-in-collection` | Add embeddings to an existing collection | [Embeddings](../../../contextual-data-platform/autograph-studio/autograph/embeddings.md) |
 
-For HTTP error codes and troubleshooting, see [Error Handling](error-handling.md).
+For HTTP error codes and troubleshooting, see [Error Handling](../../../contextual-data-platform/autograph-studio/autograph/error-handling.md).
 
 {{< info >}}
 **Asynchronous operations return `202 Accepted`.** `POST /v1/corpus/builds`,
@@ -90,7 +90,7 @@ from the response body.
 
 A **category** is the second scope level of a project and carries the label you
 set as `module` when you imported the files, see
-[Import files](importing-files.md#parameters).
+[Import files](../../../contextual-data-platform/autograph-studio/autograph/importing-files.md#parameters).
 
 Every endpoint that takes a category expects the **bare label**, such as
 `legal`, exactly as `GET /v1/projects/{project}/overview` reports it in
@@ -123,39 +123,39 @@ All calls require a valid **`Authorization: Bearer <token>`** header.
 1. `GET /v1/health` - confirm the service is ready.
 2. Upload the documents to the File Manager under the scope
    `[project, category]`. The direct upload with `POST /v1/import-multiple` is
-   deprecated. See [Import Files](importing-files.md).
+   deprecated. See [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importing-files.md).
 3. `POST /v1/corpus/builds` - start the corpus build, preferably with
    `categories`. Returns `202` with a `corpus_build_id` and the `graph_name`.
-   See [Corpus Build](corpus-build.md).
+   See [Corpus Build](../../../contextual-data-platform/autograph-studio/autograph/corpus-build.md).
 4. Poll `GET /v1/corpus/builds/{corpus_build_id}` until `status` is `completed`.
    Check `error_code` even then, because a non-empty value on a completed build
    means a partial success. See
-   [Monitoring Build Status](corpus-build.md#monitoring-build-status).
+   [Monitoring Build Status](../../../contextual-data-platform/autograph-studio/autograph/corpus-build.md#monitoring-build-status).
 5. `POST /v1/rag-strategizer/analyze` - assign RAG strategies to clusters.
    `project` and `complexity` are required. Returns `202` with a
-   `strategize_job_id`. See [RAG Strategizer](rag-strategizer.md).
+   `strategize_job_id`. See [RAG Strategizer](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md).
 6. Poll `GET /v1/rag-strategizer/jobs/{strategize_job_id}` until `status` is
    `completed`. See
-   [Monitor a strategizer job](rag-strategizer.md#monitor-a-strategizer-job).
+   [Monitor a strategizer job](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#monitor-a-strategizer-job).
 7. *(Optional)* `GET /v1/rag-strategizer/strategy` - inspect the assigned strategies.
-   See [Retrieve RAG Strategies](rag-strategizer.md#retrieve-rag-strategies).
+   See [Retrieve RAG Strategies](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#retrieve-rag-strategies).
 8. *(Optional)* `PATCH /v1/rag-strategizer/strategy/{cluster_id}` - override the
    strategy of a cluster if the assigned one is not suitable. Do this **before**
    you orchestrate. See
-   [Update a cluster strategy](rag-strategizer.md#update-a-cluster-strategy).
+   [Update a cluster strategy](../../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md#update-a-cluster-strategy).
 9. `POST /v1/orchestrate` - spawn Importer workers to build the knowledge graph.
    Returns `202` with an `orchestration_id`. See
-   [Trigger Orchestration](orchestration.md#trigger-orchestration).
+   [Trigger Orchestration](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#trigger-orchestration).
 10. Poll `GET /v1/orchestrate/{orchestration_id}`. Branch on `status`, which
     reaches `completed` only once every job is terminal *and* the imported
     partitions were found in the knowledge graph, and render `phase` as the
     progress. The response also carries the per-partition results, including the
     divergence of each FullGraphRAG partition. Read them before you start another
     orchestration, which evicts this run. See
-    [Monitor an orchestration](orchestration.md#monitor-an-orchestration).
+    [Monitor an orchestration](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#monitor-an-orchestration).
 
 At any point,
-[`GET /v1/projects/{project}/overview`](project-operations.md#project-overview)
+[`GET /v1/projects/{project}/overview`](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#project-overview)
 reports where the project stands: the document and cluster counts, whether the
 corpus, the strategies, or the knowledge graph are stale, and which categories
 still need work.
@@ -169,7 +169,7 @@ build is required.
 1. `GET /v1/health`
 2. `POST /v1/embed-field-in-collection` - add vector embeddings to an
    existing ArangoDB collection. Repeat per `(collection, field)` pair.
-   See [Embeddings](embeddings.md).
+   See [Embeddings](../../../contextual-data-platform/autograph-studio/autograph/embeddings.md).
 
 ### Adding a category to an existing corpus
 
@@ -179,12 +179,12 @@ categories are left untouched.
 
 Use `incremental: true` only to **append documents to a category that already
 exists**. A full rebuild of an already built category is rejected with
-`REBUILD_NOT_ALLOWED`, see [Corpus Build](corpus-build.md#create-corpus-build).
+`REBUILD_NOT_ALLOWED`, see [Corpus Build](../../../contextual-data-platform/autograph-studio/autograph/corpus-build.md#create-corpus-build).
 
 ### Rebuilding a category
 
 There is no in-place rebuild. To rebuild a category from scratch, remove it with
-[`DELETE /v1/projects/{project}/categories/{category}`](project-operations.md#delete-category),
+[`DELETE /v1/projects/{project}/categories/{category}`](../../../contextual-data-platform/autograph-studio/autograph/project-operations.md#delete-category),
 then run a corpus build, the strategizer, and an orchestration again. This is
 also the supported recovery path for a partition that imported incompletely.
 
@@ -192,7 +192,7 @@ also the supported recovery path for a partition that imported incompletely.
 
 Use these calls if the corpus graph is already built and you only want to change
 individual documents. See
-[Incremental Graph Updates](../incremental-graph-updates.md) for the
+[Incremental Graph Updates](../../../contextual-data-platform/autograph-studio/autograph/incremental-graph-updates.md) for the
 prerequisites, a comparison with a rebuild, and the full endpoint reference.
 
 1. Call `POST /v1/graph/insert`, `/v1/graph/delete`, or `/v1/graph/update`,
@@ -223,14 +223,14 @@ prerequisites, a comparison with a rebuild, and the full endpoint reference.
 - `POST /v1/orchestrate` returns `409` when every category with strategies is
   already in the knowledge graph. That is a successful steady state, not a
   failure, see
-  [Telling the three `409` responses apart](orchestration.md#telling-the-three-409-responses-apart).
+  [Telling the three `409` responses apart](../../../contextual-data-platform/autograph-studio/autograph/orchestration.md#telling-the-three-409-responses-apart).
 - `DELETE /v1/projects/{project}/categories/{category}` and
   `PATCH /v1/rag-strategizer/strategy/{cluster_id}` also return `409` while a
   build or an orchestration is running.
 {{< /warning >}}
 
 For guidance on structuring your data with categories, see the
-[Design Guide](../design-guide.md).
+[Design Guide](../../../contextual-data-platform/autograph-studio/design-guide.md).
 
 ## Workflow Examples
 
@@ -238,7 +238,7 @@ For guidance on structuring your data with categories, see the
 
 This example drives the build from File Manager categories. The direct upload
 with `POST /v1/import-multiple`, and a corpus build without a selector, are
-deprecated (see [Import Files](importing-files.md)).
+deprecated (see [Import Files](../../../contextual-data-platform/autograph-studio/autograph/importing-files.md)).
 
 ```bash
 # Step 1: Health check

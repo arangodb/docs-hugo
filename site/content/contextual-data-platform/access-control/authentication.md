@@ -50,8 +50,8 @@ below:
   [ArangoDB authentication methods](../../arangodb/3.12/develop/http-api/authentication.md)
   work.
 - **Other data platform endpoints**: everything else the gateway exposes,
-  including the [Platform Suite](../../platform-suite/_index.md) services and
-  the [Agentic AI Suite](../../agentic-ai-suite/_index.md) services. They only
+  including the [Platform Suite](../_index.md) services and
+  the [Agentic AI Suite](../_index.md) services. They only
   accept JWTs.
 
 A session token is therefore the credential that works everywhere. You can
@@ -88,9 +88,9 @@ the user account you logged in with, see
 ## Authenticate requests to data platform services
 
 The services of the data platform accept **only** `Bearer` tokens. This applies
-to the [Platform Suite](../../platform-suite/_index.md) services such as the
+to the [Platform Suite](../_index.md) services such as the
 Control Plane, File Manager, and Container Manager, to the
-[Agentic AI Suite](../../agentic-ai-suite/_index.md) services such as AutoGraph,
+[Agentic AI Suite](../_index.md) services such as AutoGraph,
 AutoRAG (Retriever), and Graph Analytics, and to built-in services provided by the
 ArangoDB Kubernetes operator (`kube-arangodb`).
 

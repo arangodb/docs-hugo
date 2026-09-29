@@ -122,7 +122,7 @@ to work with ArangoDB from the outside using JavaScript as your language.
 
 If you upgrade to the [Arango Contextual Data Platform](../../../../contextual-data-platform/_index.md),
 you can run custom services in the data platform with the
-[Container Manager](../../../../platform-suite/container-manager/_index.md)
+[Container Manager](../../../../contextual-data-platform/container-manager/_index.md)
 You can think of it as a more powerful incarnation of Foxx because it is a
 microservice architecture but with a clear separation of the core database system
 and the surrounding services. It is also not limited to (synchronous) JavaScript

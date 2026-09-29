@@ -11,11 +11,11 @@ description: >-
 - An **Arango Contextual Data Platform** deployment.
 - A **project** in your target database. The project name prefixes
   the collection names, so it must follow ArangoDB naming rules.
-  See [Projects](../../platform-suite/control-plane-acp/_index.md#projects).
+  See [Projects](../../contextual-data-platform/control-plane-acp/_index.md#projects).
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible).
 - A **valid JWT** (`Authorization: Bearer ...`).
 - A document to import (`.txt`, `.md`, `.pdf`, or a supported Office file such
-  as `.docx`). See [Format support](setup.md#format-support).
+  as `.docx`). See [Format support](../../contextual-data-platform/autograph-studio/autograph/document-conversion.md#format-support).
 
 ## Import your first document
 
@@ -51,20 +51,20 @@ imports, poll the job:
 {{< step "Verify the result" >}}
 Open your ArangoDB database and confirm the knowledge-graph collections
 (prefixed with your project name) were created and populated. See
-[Verify and explore](verify-and-explore.md).
+[Verify and explore](../../contextual-data-platform/autograph-studio/autograph/importer/verify-and-explore.md).
 {{< /step >}}
 
 {{< /steps >}}
 
 {{< tip >}}
 **You now have** a knowledge graph in ArangoDB. Query it with 
-[AutoRAG](../autorag/quick-start.md) or with AQL directly.
+[AutoRAG](../../contextual-data-platform/autograph-studio/autorag/quick-start.md) or with AQL directly.
 {{< /tip >}}
 
 ## Next steps
 
-- [LLM Configuration](llm-configuration.md): Configure chat and embedding
+- [LLM Configuration](../../contextual-data-platform/autograph-studio/autograph/importer/llm-configuration.md): Configure chat and embedding
   providers.
-- [Import Files](importing-files.md): Single-file and multi-file workflows.
-- [Architecture](architecture.md): Collections, vector indexes, and the
+- [Import Files](../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md): Single-file and multi-file workflows.
+- [Architecture](../../contextual-data-platform/autograph-studio/autograph/importer/architecture.md): Collections, vector indexes, and the
   async-job lifecycle.

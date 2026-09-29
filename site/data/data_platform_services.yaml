@@ -26,15 +26,15 @@
 arangodb-platform-ui:
   features:
     - name: Web interface (frontend)
-      link: platform-suite/_index.md
+      link: contextual-data-platform/_index.md
     - name: Graph Visualizer
-      link: platform-suite/graph-visualizer.md
+      link: contextual-data-platform/graph-visualizer.md
     - name: Query Editor
-      link: platform-suite/query-editor.md
+      link: contextual-data-platform/query-editor.md
 arangodb-platform-ui-server:
   features:
     - name: Web interface (backend)
-      link: platform-suite/_index.md
+      link: contextual-data-platform/_index.md
 arangodb-core-ui:
   features:
     # The legacy ArangoDB web interface, embedded in an iframe. It has no
@@ -50,94 +50,94 @@ arangodb-core-rbac-permissions:
 arango-control-plane:
   features:
     - name: Arango Control Plane (ACP)
-      link: platform-suite/control-plane-acp/_index.md
+      link: contextual-data-platform/control-plane-acp/_index.md
     - name: Secrets Manager
-      link: platform-suite/secrets-manager.md
+      link: contextual-data-platform/secrets-manager.md
 arango-user-defined:
   features:
     - name: Container Manager (BYOC)
-      link: platform-suite/container-manager/_index.md
+      link: contextual-data-platform/container-manager/_index.md
 file-manager:
   features:
     - name: File Manager
-      link: platform-suite/file-manager/_index.md
+      link: contextual-data-platform/file-manager/_index.md
 arango-cypher2aql:
   features:
     - name: Cypher to AQL
-      link: platform-suite/cypher2aql.md
+      link: contextual-data-platform/cypher-to-aql.md
 platform-monitoring-grafana:
   features:
     - name: Monitoring (Grafana)
-      link: platform-suite/monitoring.md
+      link: contextual-data-platform/monitoring.md
 platform-monitoring-prometheus:
   features:
     - name: Monitoring (Prometheus)
-      link: platform-suite/monitoring.md
+      link: contextual-data-platform/monitoring.md
 
 arangodb-autograph:
   features:
     - name: AutoGraph
-      link: agentic-ai-suite/autograph/_index.md
+      link: contextual-data-platform/autograph-studio/_index.md
 arangodb-graphrag-importer:
   features:
     - name: Importer
-      link: agentic-ai-suite/importer/_index.md
+      link: contextual-data-platform/autograph-studio/autograph/importer/_index.md
 arangodb-graphrag-retriever:
   features:
     - name: AutoRAG
-      link: agentic-ai-suite/autorag/_index.md
+      link: contextual-data-platform/autograph-studio/autorag/_index.md
 arangodb-file-parser:
   features:
     - name: File Parser
-      link: agentic-ai-suite/importer/setup.md
+      link: contextual-data-platform/autograph-studio/autograph/document-conversion.md
 arangodb-graph-rag:
   features:
     - name: Natural Language to AQL (AQLizer)
-      link: agentic-ai-suite/natural-language-to-aql/_index.md
+      link: contextual-data-platform/natural-language-to-aql/_index.md
 arangodb-reasoner:
   features:
     - name: Reasoner
-      link: agentic-ai-suite/reasoner/_index.md
+      link: contextual-data-platform/reasoner/_index.md
 arangodb-gral:
   features:
     - name: Graph Analytics
-      link: agentic-ai-suite/graph-analytics/_index.md
+      link: contextual-data-platform/graph-analytics/_index.md
 arangodb-ml-api:
   features:
     - name: GraphML (API)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-featurization-cpu:
   features:
     - name: GraphML (featurization, CPU)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-training-cpu:
   features:
     - name: GraphML (training, CPU)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-training-gpu:
   features:
     - name: GraphML (training, GPU)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-prediction-cpu:
   features:
     - name: GraphML (prediction, CPU)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-prediction-gpu:
   features:
     - name: GraphML (prediction, GPU)
-      link: agentic-ai-suite/graphml/_index.md
+      link: contextual-data-platform/graphml/_index.md
 arangodb-notebook-images:
   features:
     - name: Notebook Servers
-      link: agentic-ai-suite/notebook-servers.md
+      link: contextual-data-platform/notebook-servers.md
 arangodb-mlflow:
   features:
     - name: MLflow
-      link: agentic-ai-suite/private-llms/mlflow.md
+      link: contextual-data-platform/private-llms/mlflow.md
 arangodb-llm-host:
   features:
     - name: Triton Inference Server
-      link: agentic-ai-suite/private-llms/triton-inference-server.md
+      link: contextual-data-platform/private-llms/triton-inference-server.md
 arangodb-mcp-server:
   features:
     - name: ArangoDB MCP Server

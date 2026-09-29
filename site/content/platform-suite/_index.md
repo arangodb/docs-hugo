@@ -12,21 +12,21 @@ description: >-
   The multi-model database foundation supporting graphs, documents, key-value,
   vector search, and full-text search capabilities.
 
-- [**Graph Visualizer**](graph-visualizer.md):
+- [**Graph Visualizer**](../contextual-data-platform/graph-visualizer.md):
   A sophisticated web-based interface for graph exploration, smart search, and
   visual layouts.
 
-- [**Query Editor**](query-editor.md):
+- [**Query Editor**](../contextual-data-platform/query-editor.md):
   Write, run, and analyze AQL queries using an IDE-like interface with tabs,
   result history, query management, and more.
 
-- [**Container Manager**](./container-manager/_index.md):
+- [**Container Manager**](../contextual-data-platform/container-manager/_index.md):
   Deploy and manage custom services using your own code packages or container images.
 
-- [**Cypher to AQL Translation Service**](cypher2aql.md) (experimental):
+- [**Cypher to AQL Translation Service**](../contextual-data-platform/cypher-to-aql.md) (experimental):
   Translate Cypher queries to AQL.
 
-- [**Arango Control Plane**](control-plane-acp/_index.md):
+- [**Arango Control Plane**](../contextual-data-platform/control-plane-acp/_index.md):
   Install, manage, and run services in the Contextual Data Platform with the
   Arango Control Plane (ACP).
 
@@ -56,7 +56,7 @@ description: >-
   
   Comprehensive health checks, metrics collection, alerting, and automatic
   failover mechanisms ensure your data platform stays operational. Real-time
-  [monitoring](monitoring.md) dashboards provide visibility into cluster performance,
+  [monitoring](../contextual-data-platform/monitoring.md) dashboards provide visibility into cluster performance,
   resource utilization, and query patterns.
 
 - **Cloud-Native Architecture:** 
@@ -73,7 +73,7 @@ For a detailed breakdown of each component, its architecture and features, see
 ## Extend the Arango Contextual Data Platform with AI capabilities
 
 Extend the Arango Contextual Data Platform and its Platform Suite with the
-[**Agentic AI Suite**](../agentic-ai-suite/_index.md) to get the fully featured
+[**Agentic AI Suite**](../contextual-data-platform/_index.md) to get the fully featured
 data platform with all its services. It offers advanced AI and machine learning
 capabilities that integrate seamlessly into the platform's unified web interface.
 
@@ -108,11 +108,11 @@ to provide automated deployment, scaling, and management capabilities.
 
 {{< cards >}}
 
-{{% card title="Graph Visualizer" link="graph-visualizer/" %}}
+{{% card title="Graph Visualizer" link="../contextual-data-platform/graph-visualizer/" %}}
 Explore your graph data with an intuitive web interface and sophisticated querying capabilities.
 {{% /card %}}
 
-{{% card title="Query Editor" link="query-editor/" %}}
+{{% card title="Query Editor" link="../contextual-data-platform/query-editor/" %}}
 Learn about the Kubernetes-native foundation that the Arango Contextual Data Platform is purpose-built on.
 {{% /card %}}
 

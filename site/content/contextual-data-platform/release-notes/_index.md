@@ -1,7 +1,8 @@
 ---
 title: What's new in the data platform
 menuTitle: Release notes
-weight: 100
+group: Reference
+weight: 510
 description: >-
   Features and improvements released for the Contextual Data Platform
 pageToc:
@@ -19,7 +20,7 @@ It is a maintenance release with bug fixes and security improvements.
 {{< tag "Agentic AI Suite" >}}
 
 Authentication is now enforced on the route of the integrated
-[MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service. As a result,
+[MLflow](../private-llms/mlflow.md) service. As a result,
 the MLflow web interface is only available through the Arango Contextual Data
 Platform web interface, under **AI Tools**. Opening
 `https://<EXTERNAL_ENDPOINT>:8529/mlflow/` directly in a browser is no longer
@@ -27,7 +28,7 @@ possible.
 
 Programmatic access is unchanged. The official MLflow client and other HTTP
 callers continue to use the same endpoint with a valid JWT, see
-[Programmatic access](../../agentic-ai-suite/private-llms/mlflow.md#programmatic-access).
+[Programmatic access](../private-llms/mlflow.md#programmatic-access).
 
 ### AutoGraph
 
@@ -64,7 +65,7 @@ training, and model generation have finished successfully.
 {{< tag "Agentic AI Suite" >}}
 
 The AutoGraph and GraphRAG web interfaces have been unified into
-[AutoGraph Studio](../../agentic-ai-suite/autograph/web-interface.md), a single
+[AutoGraph Studio](../autograph-studio/web-interface.md), a single
 workflow that covers document upload, model configuration, corpus and knowledge
 graph building, retriever deployment, and querying your Context Graph.
 
@@ -73,26 +74,26 @@ The workflow has two stages, and the first one can be your finish line:
 - **AutoGraph**: Analyzes your documents, builds the Corpus Graph, and generates
   the strategies for the Knowledge Graph. If all you need is the Context Graph,
   you can stop here and explore it in the
-  [Graph Visualizer](../../platform-suite/graph-visualizer.md)
+  [Graph Visualizer](../graph-visualizer.md)
   or query it directly.
 - **AutoRAG**: Optionally
-  [deploys retrievers](../../agentic-ai-suite/autograph/web-interface.md#deploy-an-autorag-retriever)
+  [deploys retrievers](../autograph-studio/web-interface.md#deploy-an-autorag-retriever)
   on top of that Context Graph, so your agents and applications can
-  [ask questions](../../agentic-ai-suite/autograph/web-interface.md#ask-questions-against-your-context-graph)
+  [ask questions](../autograph-studio/web-interface.md#ask-questions-against-your-context-graph)
   against it.
 
 The terminology has been aligned across the documentation: **Corpus Graph**,
 **Knowledge Graph**, and **Context Graph** now refer to distinct artifacts of
 the AutoGraph pipeline. The standalone GraphRAG web interface has been removed;
 use AutoGraph and the new AutoGraph Studio web interface instead. You can also
-use the [Importer](../../agentic-ai-suite/importer/_index.md) and
-[AutoRAG](../../agentic-ai-suite/autorag/_index.md) APIs.
+use the [Importer](../autograph-studio/autograph/importer/_index.md) and
+[AutoRAG](../autograph-studio/autorag/_index.md) APIs.
 
 ### Incremental Graph Updates
 
 {{< tag "Agentic AI Suite" >}}
 
-[Incremental Graph Updates](../../agentic-ai-suite/autograph/incremental-graph-updates.md)
+[Incremental Graph Updates](../autograph-studio/autograph/incremental-graph-updates.md)
 keep a Knowledge Graph current after it has been built. It is faster and more
 efficient than to recreate it, and can significantly reduce the LLM cost and
 latency.
@@ -104,19 +105,19 @@ only the documents that actually changed are processed.
 
 AutoGraph also tracks how far a FullGraphRAG partition has drifted since it was
 last clustered and flags it, so you can trigger
-[reclustering](../../agentic-ai-suite/autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
+[reclustering](../autograph-studio/autograph/incremental-graph-updates.md#partition-divergence-and-reclustering)
 when you choose to. Reclustering is never automatic.
 
 In this release, incremental updates are available through the
-[HTTP API](../../agentic-ai-suite/autograph/reference/orchestration.md) only.
+[HTTP API](../autograph-studio/autograph/orchestration.md) only.
 
 ### File Parser Service
 
 {{< tag "Agentic AI Suite" >}}
 
 A new internal service for converting documents has been added. Both
-[AutoGraph](../../agentic-ai-suite/autograph/setup.md#supported-file-formats) and
-the [Importer](../../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats)
+[AutoGraph](../autograph-studio/autograph/_index.md#supported-file-formats) and
+the [Importer](../autograph-studio/autograph/document-conversion.md#document-conversion-and-supported-formats)
 now delegate the conversion of documents into Markdown to the new File Parser
 service.
 
@@ -124,51 +125,51 @@ PDF files, including scanned documents that are read using OCR, and some Office
 document formats (`.docx`, `.pptx`, `.doc`, `.ppt`) are now officially supported.
 The service additionally extracts embedded images together with their
 surrounding text (if requested), so that the Importer can pick them up as
-[semantic units](../../agentic-ai-suite/importer/semantic-units.md). For what each
+[semantic units](../autograph-studio/autograph/importer/semantic-units.md). For what each
 format guarantees, see
-[Document conversion and supported formats](../../agentic-ai-suite/importer/setup.md#document-conversion-and-supported-formats).
+[Document conversion and supported formats](../autograph-studio/autograph/document-conversion.md#document-conversion-and-supported-formats).
 
 The new service is designed for horizontal scalability, using two worker tiers,
 one for PDF documents and one for everything else, with 3 worker pods per tier
 by default. Deployments in AMP run these defaults unchanged. For self-hosted
 clusters, see
-[Tuning the File Parser](../../agentic-ai-suite/importer/setup.md#tuning-the-file-parser-for-self-hosted-deployments).
+[Tuning the File Parser](../autograph-studio/autograph/document-conversion.md#tuning-the-file-parser-for-self-hosted-deployments).
 
 ### File Manager
 
 {{< tag "Platform Suite" >}}
 
 - RAG input files are now organized into
-  [scopes](../../platform-suite/file-manager/_index.md#organizing-files-with-scopes),
+  [scopes](../file-manager/_index.md#organizing-files-with-scopes),
   an ordered list of up to five labels that addresses a file within a database.
   Each service maps its own concepts, such as projects and modules, onto scope
   levels. A file is identified by database, scope, and name, and re-uploading
   the same name into the same scope creates a new version.
 - You can attach
-  [custom metadata](../../platform-suite/file-manager/_index.md#attaching-custom-metadata)
+  [custom metadata](../file-manager/_index.md#attaching-custom-metadata)
   to uploaded files. The reserved
-  [`citable_url`](../../platform-suite/file-manager/api.md#the-citable_url-key) key
+  [`citable_url`](../file-manager/api.md#the-citable_url-key) key
   lets AutoRAG resolve
-  [citations](../../agentic-ai-suite/importer/reference/parameters.md#citation-urls)
+  [citations](../autograph-studio/autograph/importer/parameters.md#citation-urls)
   back to the original source document.
 - You can upload
-  [many files in one request](../../platform-suite/file-manager/api.md#upload-a-batch-of-rag-input-files),
+  [many files in one request](../file-manager/api.md#upload-a-batch-of-rag-input-files),
   up to 100 files and 2 GiB, either with a manifest that places each file
   individually or with one shared scope. The response reports the outcome per
   file, so a batch in which single files fail still stores the rest.
-- Files can be [browsed](../../platform-suite/file-manager/api.md#browse-scopes)
+- Files can be [browsed](../file-manager/api.md#browse-scopes)
   as a folder tree: a scope reports its child scopes with their file counts
   along with the files that sit directly in it. Listing files accepts a scope,
   which covers everything below it, and a case-insensitive name search, and it
   returns the latest version of each file instead of the full history.
 - Files can be
-  [locked](../../platform-suite/file-manager/api.md#safe-to-delete) against
+  [locked](../file-manager/api.md#safe-to-delete) against
   deletion, individually, in bulk, or for a whole scope. Every delete path
   skips a locked file and reports it instead of removing it, which is how
   AutoGraph protects the files that a corpus still references.
 - Files can be deleted
-  [in bulk](../../platform-suite/file-manager/api.md#delete-multiple-files) by
-  id or [by the scope](../../platform-suite/file-manager/api.md#delete-a-scope)
+  [in bulk](../file-manager/api.md#delete-multiple-files) by
+  id or [by the scope](../file-manager/api.md#delete-a-scope)
   that holds them.
 
 For the endpoints and the status code changes, see
@@ -179,11 +180,11 @@ For the endpoints and the status code changes, see
 {{< tag "Platform Suite" >}}
 
 - Services that serve their own HTML interface can be registered as
-  [Apps](../../platform-suite/container-manager/apps.md). An App appears in the
+  [Apps](../container-manager/apps.md). An App appears in the
   platform's Apps catalog and is rendered embedded in the web interface, which
   is useful for custom dashboards, admin panels, and interactive tools next to
   your data.
-- [Node.js 22](../../platform-suite/container-manager/package-code.md#example-nodejs-project)
+- [Node.js 22](../container-manager/package-code.md#example-nodejs-project)
   is now available as a base image (`node22base`) for code-based deployments
   via the API, alongside the Python variants.
 
@@ -195,7 +196,7 @@ This is a maintenance release.
 
 {{< tag "Platform Suite" >}}
 
-The [Container Manager](../../platform-suite/container-manager/_index.md)
+The [Container Manager](../container-manager/_index.md)
 base images (base, PyTorch, and cuGraph variants) have been updated to Python 3.12;
 service packages must now target Python 3.12. The release also includes
 security fixes.
@@ -209,22 +210,22 @@ This release contains improvements and refinements to features introduced in v4.
 {{< tag "Agentic AI Suite" >}}
 
 - Corpus build failures caused by the LLM or embedding provider now surface a
-  machine-readable [`error_code`](../../agentic-ai-suite/autograph/reference/corpus-build.md)
+  machine-readable [`error_code`](../autograph-studio/autograph/corpus-build.md)
   on the build status response (authentication failed, permission denied,
   rate limited, quota exceeded, or API key missing), so clients can react to
   each case instead of parsing free-text messages. The
-  [error reference](../../agentic-ai-suite/autograph/reference/error-handling.md)
+  [error reference](../autograph-studio/autograph/error-handling.md)
   also adds HTTP `429` (provider rate-limited or quota exhausted), expands
   the meanings of `401` and `403` to cover LLM provider auth and permission
   failures, and explains why an accepted (`202`) async job can still fail
   later.
 - The new Known Limitations section in the
-  [error reference](../../agentic-ai-suite/autograph/reference/error-handling.md)
+  [error reference](../autograph-studio/autograph/error-handling.md)
   documents two important behaviors: citation extraction and `SemanticUnits`
   linking are not yet automatic (you provide `citable_url` and run your own
   post-processing); and VectorRAG partitions cannot serve Global or Local
   queries because they skip entity and community extraction.
-- The [RAG Strategizer](../../agentic-ai-suite/autograph/reference/rag-strategizer.md)
+- The [RAG Strategizer](../autograph-studio/autograph/rag-strategizer.md)
   response is documented more precisely: `rag_partition_id` suffixes
   (`_a` = FullGraphRAG, `_b` = VectorRAG), the full list of FullGraphRAG
   importer tunables returned in `parameters`, empty `entity_types` for
@@ -241,13 +242,13 @@ This release contains improvements and refinements to features introduced in v4.
   (`CHAT_MAX_COMPLETION_TOKENS`, `CHAT_MODEL_CONTEXT_TOKENS`,
   `GRAPHRAG_LLM_PROMPT_TOKEN_BUDGET`) let you override the defaults for
   private fine-tunes or sparse graphs. See
-  [LLM configuration](../../agentic-ai-suite/importer/llm-configuration.md#token-budget-for-chat-models).
+  [LLM configuration](../autograph-studio/autograph/importer/llm-configuration.md#token-budget-for-chat-models).
 - Before each chat call, the Importer re-tokenizes the actual prompt and
   truncates it if it would exceed the model's window, so jobs no longer fail
   with `context_length_exceeded` on long prompts.
 - The Importer now auto-detects newer OpenAI models that require
   `/v1/responses` (for example `gpt-5.4-pro`, `o3-pro`), retries the call via
-  the [Responses API](../../agentic-ai-suite/importer/llm-configuration.md#openai-responses-api-fallback),
+  the [Responses API](../autograph-studio/autograph/importer/llm-configuration.md#openai-responses-api-fallback),
   and caches the result so subsequent calls skip the failing chat-completion
   attempt.
 - Provider errors during graph build are mapped to short remediation messages
@@ -256,7 +257,7 @@ This release contains improvements and refinements to features introduced in v4.
   actionable text instead of raw SDK output.
 - The model used for image description during semantic-unit processing is now
   configurable via the
-  [`MULTIMODAL_MODEL`](../../agentic-ai-suite/importer/semantic-units.md#image-description-model)
+  [`MULTIMODAL_MODEL`](../autograph-studio/autograph/importer/semantic-units.md#image-description-model)
   environment variable (default `gpt-4o-mini`), and it honors the same token
   budget and Responses API settings as the rest of the pipeline.
 
@@ -264,10 +265,10 @@ This release contains improvements and refinements to features introduced in v4.
 
 {{< tag "Agentic AI Suite" >}}
 
-- Response [caching](../../agentic-ai-suite/autorag/parameters.md#use_cache)
+- Response [caching](../autograph-studio/autorag/parameters.md#use_cache)
   (`use_cache: true`) now works for every query type (`GLOBAL`, `LOCAL`,
   `UNIFIED`, and `CUSTOM`); previously only some query types could be cached.
-- [`show_citations`](../../agentic-ai-suite/autorag/parameters.md#show_citations)
+- [`show_citations`](../autograph-studio/autorag/parameters.md#show_citations)
   is documented as a no-op in Deep Search (`use_llm_planner=true`) and
   `GLOBAL` queries, because those modes always strip citations regardless of
   the flag. The parameter still applies to `LOCAL`, `UNIFIED`, and `CUSTOM`
@@ -282,11 +283,11 @@ This release contains improvements and refinements to features introduced in v4.
 {{< tag "Agentic AI Suite" >}}
 
 Default OpenAI chat model upgraded from `gpt-4o` to the
-GPT-5.4 family. The [Importer](../../agentic-ai-suite/importer/llm-configuration.md)
-and [Retriever](../../agentic-ai-suite/autorag/llm-configuration.md) now default
+GPT-5.4 family. The [Importer](../autograph-studio/autograph/importer/llm-configuration.md)
+and [Retriever](../autograph-studio/autorag/llm-configuration.md) now default
 to `gpt-5.4-nano`; the
-[Natural Language to AQL](../../agentic-ai-suite/natural-language-to-aql/setup.md)
-service (AQLizer) defaults to `gpt-5.4`. [Ada](../../agentic-ai-suite/ada/_index.md) also
+[Natural Language to AQL](../natural-language-to-aql/setup.md)
+service (AQLizer) defaults to `gpt-5.4`. [Ada](../ada/_index.md) also
 adds **Anthropic**, **OpenRouter**, and **Custom Endpoint** as provider options
 alongside OpenAI.
 
@@ -294,7 +295,7 @@ alongside OpenAI.
 
 {{< tag "Agentic AI Suite" >}}
 
-The integrated [MLflow](../../agentic-ai-suite/private-llms/mlflow.md) service
+The integrated [MLflow](../private-llms/mlflow.md) service
 has been upgraded to MLflow 3.x.
 
 ### License activation
@@ -315,7 +316,7 @@ The minimum required ArangoDB version is the Enterprise Edition v3.12.9.
 
 {{< tag "Agentic AI Suite" >}}
 
-[AutoGraph](../../agentic-ai-suite/autograph/_index.md) is an automation copilot
+[AutoGraph](../autograph-studio/_index.md) is an automation copilot
 that analyzes enterprise documents, discovers natural knowledge domains, and
 automatically builds optimized knowledge graphs for intelligent retrieval at scale.
 
@@ -329,7 +330,7 @@ Key features:
   with entities, relationships, and semantic connections.
 - **Natural language querying**: Chat with your knowledge graph using natural language
   to ask questions and retrieve insights from your documents.
-- **Web interface**: Streamlined [workflow](../../agentic-ai-suite/autograph/web-interface.md)
+- **Web interface**: Streamlined [workflow](../autograph-studio/web-interface.md)
   guides you through document upload, corpus building, strategy generation, knowledge graph
   import, retriever deployment, and chat.
 
@@ -337,7 +338,7 @@ Key features:
 
 {{< tag "Agentic AI Suite" "Beta" >}}
 
-[Ada](../../agentic-ai-suite/ada/_index.md) is a new AI digital assistant integrated into the Arango
+[Ada](../ada/_index.md) is a new AI digital assistant integrated into the Arango
 Contextual Data Platform. It lets you interact with your database using natural language,
 generate and execute AQL queries, explore collections and data structures, and save reusable
 query artifacts through a conversational chat interface.
@@ -346,17 +347,17 @@ query artifacts through a conversational chat interface.
 
 {{< tag "Agentic AI Suite" >}}
 
-[Graph Analytics](../../agentic-ai-suite/graph-analytics/_index.md) now includes a web interface
+[Graph Analytics](../graph-analytics/_index.md) now includes a web interface
 and a new AQL-based data loading API.
 
-- **Web interface**: A new [graphical interface](../../agentic-ai-suite/graph-analytics/web-interface.md)
+- **Web interface**: A new [graphical interface](../graph-analytics/web-interface.md)
   is now available for managing Graph Analytics Engines, loading graphs, running algorithms
   (PageRank, Connected Components, Label Propagation, and more), and monitoring job progress.
   The interface provides an intuitive workflow for engine management, graph loading, algorithm
   execution, job monitoring, and trigger jobs to persist results of algorithms into collections.
 
 - **AQL-based data loading API**: A new API endpoint allows you to import graph data using
-  [custom AQL queries](../../agentic-ai-suite/graph-analytics/api.md#load-data-using-aql-queries).
+  [custom AQL queries](../graph-analytics/api.md#load-data-using-aql-queries).
   Queries are organized into phases that run sequentially, while queries within each phase
   execute in parallel for optimal performance.
 
@@ -364,7 +365,7 @@ and a new AQL-based data loading API.
 
 {{< tag "Platform Suite" >}}
 
-The [Graph Visualizer](../../platform-suite/graph-visualizer.md) now supports exporting
+The [Graph Visualizer](../graph-visualizer.md) now supports exporting
 graph data in CSV format. Export the entire visible canvas, or export nodes and
 edges separately with all document attributes included.
 
@@ -372,7 +373,7 @@ edges separately with all document attributes included.
 
 {{< tag "Platform Suite" >}}
 
-The [Query Editor](../../platform-suite/query-editor.md) has been extended with the following capabilities:
+The [Query Editor](../query-editor.md) has been extended with the following capabilities:
 
 - **Graph visualization**: If a query returns edges or traversal paths, the
   results are shown by an embedded graph visualizer. You can still switch to a JSON
@@ -389,7 +390,7 @@ The [Query Editor](../../platform-suite/query-editor.md) has been extended with 
 {{< tag "Agentic AI Suite" "Beta" >}}
 
 A new **Optimize** button has been added to query tabs for
-[AI-powered query optimization](../../platform-suite/query-editor.md#optimize-queries-reasoner).
+[AI-powered query optimization](../query-editor.md#optimize-queries-reasoner).
 The Reasoner analyzes your AQL query and suggests improvements through a
 streaming chat interface with real-time tool call and validation feedback.
 This feature requires a license.
@@ -398,21 +399,21 @@ This feature requires a license.
 
 {{< tag "Platform Suite" >}}
 
-The [Container Manager](../../platform-suite/container-manager/_index.md) enables you to
+The [Container Manager](../container-manager/_index.md) enables you to
 deploy and manage custom services directly within the Arango Contextual Data Platform,
 running your own applications alongside platform services.
 
 Deploy services by uploading source code packages (`.tar.gz`) or providing Docker
 image URLs, with support for Python 3.12 runtimes (including PyTorch and cuGraph
 variants). Services can be scoped globally or per-database, with version management
-and deployment via [web interface](../../platform-suite/container-manager/web-interface.md)
-or [API](../../platform-suite/container-manager/deploy-api.md).
+and deployment via [web interface](../container-manager/web-interface.md)
+or [API](../container-manager/deploy-api.md).
 
 ### File Manager
 
 {{< tag "Platform Suite" >}}
 
-The [File Manager](../../platform-suite/file-manager/_index.md) provides a centralized interface
+The [File Manager](../file-manager/_index.md) provides a centralized interface
 for viewing and managing data stored by platform services, including container
 service files, RAG content, and AutoGraph files.
 
@@ -420,7 +421,7 @@ service files, RAG content, and AutoGraph files.
 
 {{< tag "Platform Suite" >}}
 
-The [Secrets Manager](../../platform-suite/secrets-manager.md) has been introduced
+The [Secrets Manager](../secrets-manager.md) has been introduced
 for managing API keys and credentials across the platform.
 Secrets are encrypted at rest and accessible to services via sidecar containers,
 with support for bulk operations, import/export, and multiple secret types.
@@ -429,7 +430,7 @@ with support for bulk operations, import/export, and multiple secret types.
 
 {{< tag "Platform Suite" >}}
 
-Integrated [Monitoring](../../platform-suite/monitoring.md) with Grafana and Prometheus
+Integrated [Monitoring](../monitoring.md) with Grafana and Prometheus
 provides observability for the entire deployment. Both tools are embedded in the
 unified web interface with authenticated access for tracking performance metrics,
 cluster health, and resource utilization.
@@ -449,7 +450,7 @@ A new home screen has been added, providing the following information and action
 {{< tag "Platform Suite" >}}
 
 An experimental service for translating Cypher queries to ArangoDB's query
-language AQL has been added. The [`arango-cypher2aql` service](../../platform-suite/cypher2aql.md)
+language AQL has been added. The [`arango-cypher2aql` service](../cypher-to-aql.md)
 provides an API for parser-based translation so that you can reuse existing
 Cypher knowledge.
 
@@ -465,13 +466,13 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 {{< tag "Agentic AI Suite" >}}
 
 - **Instant and Deep Search**: New Retriever (now
-  [AutoRAG](../../agentic-ai-suite/autorag/search-methods/_index.md)) search methods
+  [AutoRAG](../autograph-studio/autorag/search-methods/_index.md)) search methods
   optimized for different use cases. Instant Search provides fast responses with
   streaming support. Deep Search offers detailed, accurate responses for complex queries
   requiring high accuracy. Both methods are accessible via the API or the
-  [AutoGraph web interface](../../agentic-ai-suite/autograph/web-interface.md#ask-questions-against-your-context-graph).
+  [AutoGraph web interface](../autograph-studio/web-interface.md#ask-questions-against-your-context-graph).
 
-- **Update Knowledge Graphs**: [Add additional data sources](../../agentic-ai-suite/autograph/web-interface.md#add-more-documents)
+- **Update Knowledge Graphs**: [Add additional data sources](../autograph-studio/web-interface.md#add-more-documents)
   to existing Knowledge Graphs through the web interface. Upload new files to
   automatically update the Knowledge Graph and underlying collections with new data.
 
@@ -484,18 +485,18 @@ The minimum required ArangoDB version has been raised to Enterprise Edition v3.1
 
 {{< tag "Agentic AI Suite" "Beta" >}}
 
-The [Natural Language to AQL Translation Service](../../agentic-ai-suite/natural-language-to-aql/_index.md)
+The [Natural Language to AQL Translation Service](../natural-language-to-aql/_index.md)
 enables you to query your ArangoDB database using natural language or get
 LLM-powered answers to general questions. 
 
 You can generate AQL queries from natural language directly in the Query Editor using the
-[AQLizer](../../agentic-ai-suite/natural-language-to-aql/_index.md) mode. More advanced features are available via the API.
+[AQLizer](../natural-language-to-aql/_index.md) mode. More advanced features are available via the API.
 
 ### Query Editor
 
 {{< tag "Platform Suite" >}}
 
-A new [Query Editor](../../platform-suite/query-editor.md) has been integrated into the
+A new [Query Editor](../query-editor.md) has been integrated into the
 Arango Contextual Data Platform web interface for writing, executing, and managing AQL queries.
 
 Key features:
@@ -515,7 +516,7 @@ Key features:
 
 {{< tag "Platform Suite" >}}
 
-The [Graph Visualizer](../../platform-suite/graph-visualizer.md) has been significantly enhanced with
+The [Graph Visualizer](../graph-visualizer.md) has been significantly enhanced with
 new visual customization capabilities, improved navigation features, and better
 performance for exploring large-scale graphs.
 
@@ -561,27 +562,27 @@ The minimum required ArangoDB version is the Enterprise Edition v3.12.5.
 
 What's included:
 
-- [**GraphRAG**](../../agentic-ai-suite/autograph/concepts.md):
+- [**GraphRAG**](../autograph-studio/concepts.md):
   Transform unstructured documents into intelligent knowledge graphs and
   natural language querying through the Importer and Retriever (now AutoRAG)
   services.
 
-- [**GraphML**](../../agentic-ai-suite/graphml/_index.md):
+- [**GraphML**](../graphml/_index.md):
   Apply machine learning to graphs with node classification and
   embedding generation, built on GraphSAGE framework.
 
-- [**Graph Analytics**](../../agentic-ai-suite/graph-analytics/_index.md):
+- [**Graph Analytics**](../graph-analytics/_index.md):
   Run algorithms like PageRank, Connected Components, and more.
 
-- [**Jupyter Notebooks**](../../agentic-ai-suite/notebook-servers.md):
+- [**Jupyter Notebooks**](../notebook-servers.md):
   Launch integrated Jupyter notebook servers with pre-installed ArangoDB drivers
   and data science libraries for interactive experimentation.
 
-- [**MLflow Integration**](../../agentic-ai-suite/private-llms/mlflow.md):
+- [**MLflow Integration**](../private-llms/mlflow.md):
   Use MLflow as a model registry for private LLMs and machine learning
   experiment tracking.
 
-- [**Triton Inference Server**](../../agentic-ai-suite/private-llms/triton-inference-server.md):
+- [**Triton Inference Server**](../private-llms/triton-inference-server.md):
   Host private Large Language Models using NVIDIA Triton Inference Server for
   secure, on-premises AI capabilities.
 
@@ -596,16 +597,16 @@ What's included:
   graphs, documents, key-value, vector search, and full-text search capabilities.
 - **Unified web interface**: Single interface for accessing all
    Contextual Data Platform services and components.
-- [**Graph Visualizer**](../../platform-suite/graph-visualizer.md):
+- [**Graph Visualizer**](../graph-visualizer.md):
   Sophisticated web-based interface for interactive graph
   exploration, visual customization, and direct graph editing.
-- [**Query Editor**](../../platform-suite/query-editor.md):
+- [**Query Editor**](../query-editor.md):
   Write, run, and analyze AQL queries using an IDE-like interface with tabs,
   result history, query management, and more.
 - [**Kubernetes orchestration**](../architecture.md):
   Powered by the official ArangoDB Kubernetes
   Operator for automated deployment, scaling, and management.
-- [**Operational features**](../../platform-suite/_index.md):
+- [**Operational features**](../_index.md):
   Enterprise-grade features including high availability and monitoring,
   comprehensive APIs and connectors, and centralized orchestration and
   resource management.

@@ -20,21 +20,21 @@ aliases:
 
 The Agentic AI Suite is composed of the following major components:
 
-- [**Ada**](ada/_index.md): The AI digital assistant, for natural language interaction and development.
-- [**AutoGraph and AutoRAG**](autograph/_index.md): **AutoGraph** organizes
+- [**Ada**](../contextual-data-platform/ada/_index.md): The AI digital assistant, for natural language interaction and development.
+- [**AutoGraph and AutoRAG**](../contextual-data-platform/autograph-studio/_index.md): **AutoGraph** organizes
   enterprise data into a **Context Graph**, assigning each domain the right
   processing depth. **AutoRAG** is the retrieval layer on top: it deploys the
   retrievers that answer questions from that Context Graph. Both stages are
   driven from the **AutoGraph Studio** view of the web interface. See
-  [GraphRAG Concepts](autograph/concepts.md) for the approach behind them.
-- [**Natural Language to AQL/AQLizer**](natural-language-to-aql/_index.md): Generate AQL
+  [GraphRAG Concepts](../contextual-data-platform/autograph-studio/concepts.md) for the approach behind them.
+- [**Natural Language to AQL/AQLizer**](../contextual-data-platform/natural-language-to-aql/_index.md): Generate AQL
   queries from natural language to explore your data and gain insights without having
   to learn the query language first.
-- [**Reasoner**](reasoner/): Automatically analyze and optimize AQL queries
+- [**Reasoner**](../contextual-data-platform/reasoner/): Automatically analyze and optimize AQL queries
   using AI-powered reasoning, with validated performance improvements.
-- [**GraphML**](graphml/_index.md): Apply machine learning to graphs for link prediction,
+- [**GraphML**](../contextual-data-platform/graphml/_index.md): Apply machine learning to graphs for link prediction,
   classification, and computing embeddings.
-- [**Graph Analytics**](graph-analytics/_index.md):
+- [**Graph Analytics**](../contextual-data-platform/graph-analytics/_index.md):
   Run graph algorithms such as PageRank on dedicated compute resources to
   discover influential nodes and patterns.
 
@@ -45,12 +45,12 @@ In the left-hand sidebar, **Agentic AI Suite** groups **AutoGraph Studio**,
 
 Alongside these components, you also get the following additional features:
 
-- [**Jupyter notebooks**](notebook-servers.md): Run a Jupyter kernel in the
+- [**Jupyter notebooks**](../contextual-data-platform/notebook-servers.md): Run a Jupyter kernel in the
   Contextual Data Platform for hosting interactive notebooks for experimentation and
   development of applications that use ArangoDB as their backend.
 - **Public and private LLM support**: Use public large language models (LLMs)
-  such as OpenAI or private LLMs with [Triton Inference Server](private-llms/triton-inference-server.md).  
-- [**MLflow integration**](private-llms/mlflow.md): Use the popular MLflow as a
+  such as OpenAI or private LLMs with [Triton Inference Server](../contextual-data-platform/private-llms/triton-inference-server.md).  
+- [**MLflow integration**](../contextual-data-platform/private-llms/mlflow.md): Use the popular MLflow as a
   model registry for private LLMs or to run machine learning experiments.
 - **Application Programming Interfaces (APIs)**: Use the underlying APIs of the
   Agentic AI Suite and build your own integrations. See the
@@ -69,10 +69,10 @@ binaries) that you upload for Agentic AI processing, such as the documents you
 feed into AutoGraph.
 These are stored in object storage (S3, MinIO, or another blob store) and
 managed through the
-[File Manager](../platform-suite/file-manager/_index.md) service. The same
+[File Manager](../contextual-data-platform/file-manager/_index.md) service. The same
 File Manager also holds the code packages uploaded through the Container
 Manager's
-[Bring Your Own Code](../platform-suite/container-manager/_index.md#bring-your-own-code)
+[Bring Your Own Code](../contextual-data-platform/container-manager/_index.md#bring-your-own-code)
 flow, so its contents are not exclusive to the Agentic AI Suite.
 Any structured data extracted from uploaded files
 (entities, relationships, embeddings) is written back into ArangoDB.
@@ -100,7 +100,7 @@ endpoint that is not the OpenAI API itself, and you should always set
 services, pointing the `openai` provider at a non-OpenAI URL is **not
 supported**. Natural Language to AQL has no `custom` provider and reaches such
 endpoints with `openai` plus a `chat_api_url` — see
-[Natural Language to AQL setup](natural-language-to-aql/setup.md). Models
+[Natural Language to AQL setup](../contextual-data-platform/natural-language-to-aql/setup.md). Models
 beyond the ones listed below are outside ArangoDB's testing, so validate them in
 your own environment.
 
@@ -116,6 +116,6 @@ A model is listed as supported by the suite only if it works seamlessly across
 the Importer, AutoRAG, and AutoGraph services. Individual services may also
 work with additional models — for the full list available to a specific
 service, see that service's own documentation (for example,
-[Importer LLM Configuration](importer/llm-configuration.md#supported-models)).
+[Importer LLM Configuration](../contextual-data-platform/autograph-studio/autograph/importer/llm-configuration.md#supported-models)).
 
 {{% llm-models %}}

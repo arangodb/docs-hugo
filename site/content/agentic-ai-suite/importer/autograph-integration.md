@@ -15,9 +15,9 @@ If you are building a single knowledge graph from your documents and do not
 need multiple partitions or automated domain discovery, use the Importer
 directly. You can call it through:
 
-- [AutoGraph Studio](../autograph/web-interface.md),
+- [AutoGraph Studio](../../contextual-data-platform/autograph-studio/web-interface.md),
   which guides you through configuring and running the Importer step by step.
-- The [Import API](importing-files.md) (`POST /v1/import` or
+- The [Import API](../../contextual-data-platform/autograph-studio/autograph/importer/import-endpoints.md) (`POST /v1/import` or
   `POST /v1/import-multiple`), which gives you full control over all parameters.
 
 In this mode, you manage the Importer lifecycle yourself: you install it,
@@ -26,7 +26,7 @@ submit import requests, and monitor the results.
 ### Automated via AutoGraph (multi-partition, strategy-aware builds)
 
 When you need to process large or heterogeneous document collections,
-[AutoGraph](../autograph/) manages the Importer for you. AutoGraph
+[AutoGraph](../../contextual-data-platform/autograph-studio/) manages the Importer for you. AutoGraph
 automatically discovers knowledge domains in your data, assigns the optimal
 RAG strategy (`full_graphrag` or `vector_rag`) per domain, and spawns
 Importer workers to build partitioned knowledge graphs.
@@ -53,23 +53,23 @@ The Importer builds **Layer 3 only**. All Layer 3 collections carry a
 same collections.
 
 For full details on Layers 1 and 2, see the
-[AutoGraph Architecture](../autograph/architecture.md) documentation.
+[AutoGraph Architecture](../../contextual-data-platform/autograph-studio/architecture.md) documentation.
 
 ## How AutoGraph spawns import jobs
 
 The same module string flows from **files** to **clusters** to **strategies**
 to **Importer partitions**:
 
-1. You [import documents into AutoGraph](../autograph/reference/importing-files.md)
+1. You [import documents into AutoGraph](../../contextual-data-platform/autograph-studio/autograph/importing-files.md)
    with a **module** label (e.g., `"legal"`).
-2. AutoGraph's [corpus build](../autograph/reference/corpus-build.md) clusters
+2. AutoGraph's [corpus build](../../contextual-data-platform/autograph-studio/autograph/corpus-build.md) clusters
    documents within each module using Leiden community detection.
-3. The [RAG strategizer](../autograph/reference/rag-strategizer.md) analyzes
+3. The [RAG strategizer](../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md) analyzes
    each cluster and assigns either `FullGraphRAG` or `VectorRAG`.
 4. Each assignment gets a `rag_partition_id` derived from the cluster key.
    For example, cluster `cluster_legal_0` becomes `legal_0_a` (FullGraphRAG)
    or `legal_0_b` (VectorRAG).
-5. [Orchestration](../autograph/reference/orchestration.md)
+5. [Orchestration](../../contextual-data-platform/autograph-studio/autograph/orchestration.md)
    (`POST /v1/orchestrate`) spawns Importer worker replicas and submits
    **one import job per partition**.
 6. Each job payload includes `partition_id` (set to the `rag_partition_id`)
@@ -106,12 +106,12 @@ the Importer yourself only for standalone imports or advanced scenarios
 (e.g., re-running a single partition with custom settings).
 
 After the initial build, AutoGraph also uses the Importer for
-[Incremental Graph Updates](../autograph/incremental-graph-updates.md) in
+[Incremental Graph Updates](../../contextual-data-platform/autograph-studio/autograph/incremental-graph-updates.md) in
 Layer 3. It submits imports for new and changed files, and it can recluster a
 partition whose communities have drifted, but only if you ask for it. AutoGraph
 flags the drift and never reclusters on its own. Removing a document from
 Layer 3 is not an Importer call, AutoGraph handles it as part of its own delete
-and update operations. See [Incremental Updates](incremental-updates.md).
+and update operations. See [Incremental Updates](../../contextual-data-platform/autograph-studio/autograph/importer/incremental-updates.md).
 
 ## How `partition_id` maps to the Corpus Graph
 
@@ -127,18 +127,18 @@ and update operations. See [Incremental Updates](incremental-updates.md).
 When using the Importer **standalone** (without AutoGraph), you can set
 `partition_id` to any string to logically separate different import batches
 within the same collections. See the
-[`partition_id` parameter reference](reference/parameters.md#partition_id) for details.
+[`partition_id` parameter reference](../../contextual-data-platform/autograph-studio/autograph/importer/parameters.md#partition_id) for details.
 
 ## Related resources
 
-- **[AutoGraph overview](../autograph/)**: What AutoGraph is and why to use it.
-- **[AutoGraph Architecture](../autograph/architecture.md)**: The three-layer
+- **[AutoGraph overview](../../contextual-data-platform/autograph-studio/)**: What AutoGraph is and why to use it.
+- **[AutoGraph Architecture](../../contextual-data-platform/autograph-studio/architecture.md)**: The three-layer
   knowledge graph architecture and ArangoDB collections.
-- **[AutoGraph Design Guide](../autograph/design-guide.md)**: How to structure
+- **[AutoGraph Design Guide](../../contextual-data-platform/autograph-studio/design-guide.md)**: How to structure
   your data with modules and layers.
-- **[Corpus Build](../autograph/reference/corpus-build.md)**: Create and
+- **[Corpus Build](../../contextual-data-platform/autograph-studio/autograph/corpus-build.md)**: Create and
   monitor corpus builds for document clustering.
-- **[RAG Strategizer](../autograph/reference/rag-strategizer.md)**: Analyze
+- **[RAG Strategizer](../../contextual-data-platform/autograph-studio/autograph/rag-strategizer.md)**: Analyze
   clusters and assign RAG strategies.
-- **[Orchestration](../autograph/reference/orchestration.md)**: Spawn Importer
+- **[Orchestration](../../contextual-data-platform/autograph-studio/autograph/orchestration.md)**: Spawn Importer
   workers and execute pipeline builds.

@@ -18,8 +18,8 @@ scalability and reliability.
 
 The Arango Contextual Data Platform is a layered architecture that combines
 powerful components into a unified solution. It always includes the
-[Platform Suite](../platform-suite/_index.md) and you can extend it with the
-[Agentic AI Suite](../agentic-ai-suite/_index.md).
+[Platform Suite](_index.md) and you can extend it with the
+[Agentic AI Suite](_index.md).
 The [ArangoDB](../arangodb/_index.md) multi-model database system is the
 foundation for it all.
 

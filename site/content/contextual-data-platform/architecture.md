@@ -1,7 +1,7 @@
 ---
 title: Data Platform Architecture
 menuTitle: Architecture
-weight: 20
+weight: 5
 description: >-
   The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging
   container orchestration for automated deployment, scaling, and management
@@ -19,8 +19,8 @@ entering through Envoy, which acts as the API gateway and HTTP frontend for
 all services behind it. From there, requests are routed to the
 ArangoDB Platform Services, which group together the core building blocks:
 
-- **Platform Enablers** — the [File Manager](../platform-suite/file-manager/)
-  for object storage and the [Secret Manager](../platform-suite/secrets-manager/)
+- **Platform Enablers** — the [File Manager](file-manager/)
+  for object storage and the [Secret Manager](secrets-manager/)
   for credentials and other sensitive configuration.
 - **ArangoDB** — the distributed multi-model database at the heart of the platform,
   deployed as Coordinators, DB-Servers, and Agents and managed by the
@@ -30,7 +30,7 @@ ArangoDB Platform Services, which group together the core building blocks:
   its data.
 
 Alongside the built-in services, the cluster can also host
-[user-defined services (BYOC)](../platform-suite/container-manager/) — your
+[user-defined services (BYOC)](container-manager/) — your
 own containers, deployed and routed through the same Envoy gateway so they
 share authentication, networking, and lifecycle management with the rest of
 the platform.
