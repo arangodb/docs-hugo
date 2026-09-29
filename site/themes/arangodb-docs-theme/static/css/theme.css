@@ -296,22 +296,35 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link:has(code) {
     border-bottom: 2px solid var(--color-evergreen);
-    font-size: 14px;
-    overflow: auto;
     word-wrap: break-word;
-    margin: 0;
-    padding: 2px;
     word-break: break-word;
-    border-radius: 0;
-    background: var(--gray-100);
-    box-shadow: none;
     color: var(--gray-950);
 }
+
+/* Align bottom with parent <a> and draw own underline over the background */
 .link code {
-    background-color: transparent;
-    border: none !important;
-    position: relative;
-    top: -1px;
+    background: var(--gray-100);
+    color: var(--gray-950);
+    padding: 0 3px;
+    vertical-align: text-bottom;
+    line-height: normal;
+    border: none;
+    border-bottom: 2px solid var(--color-evergreen);
+}
+
+.link:is(:hover, :focus) code {
+    border-bottom-color: var(--color-leaf-green);
+}
+
+/* Navigational links show the plain label, without the code highlight */
+.breadcrumbs code,
+.nav-prev.link code,
+.nav-next.link code {
+    background: transparent;
+    padding: 0;
+    vertical-align: baseline;
+    line-height: inherit;
+    border-bottom: 0;
 }
 
 .link > i {
