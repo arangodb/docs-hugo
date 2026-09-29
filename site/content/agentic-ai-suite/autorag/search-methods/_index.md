@@ -1,8 +1,8 @@
 ---
-title: Retriever Search Methods
+title: AutoRAG Search Methods
 menuTitle: Search Methods
 description: >-
-  Understand the different search methods available in the Retriever service
+  Understand the different search methods available in AutoRAG
 weight: 30
 ---
 {{< info >}}
@@ -11,7 +11,7 @@ weight: 30
 
 ## Overview
 
-The Retriever service provides multiple search methods that leverage the
+AutoRAG provides multiple search methods that leverage the
 structured knowledge graph created by the Importer to deliver accurate and
 contextually relevant responses to your natural language queries.
 

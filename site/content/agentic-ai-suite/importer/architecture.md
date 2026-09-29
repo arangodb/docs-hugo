@@ -8,7 +8,7 @@ description: >-
 ---
 The Importer builds the **Layer 3 Knowledge Graph** in your ArangoDB database:
 the documents, chunks, entities, communities, and relationships that the
-Retriever (and downstream applications) query at runtime. This page describes
+AutoRAG (and downstream applications) query at runtime. This page describes
 the collections it creates, the vector indexes it adds, the asynchronous job
 lifecycle of an import, and the operational rules to keep in mind when
 deploying the service.

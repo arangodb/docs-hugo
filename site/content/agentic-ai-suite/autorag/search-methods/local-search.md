@@ -1,5 +1,5 @@
 ---
-title: Retriever Local Search
+title: AutoRAG Local Search
 menuTitle: Local Search
 description: >-
   Entity-focused retrieval for detailed queries about specific concepts and relationships

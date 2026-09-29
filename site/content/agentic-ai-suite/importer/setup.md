@@ -150,12 +150,11 @@ or timeout errors, the per-job limits are too tight for your documents.
 
 ## Prerequisites
 
-- **Arango Contextual Data Platform 4.0+** (which ships with **ArangoDB
-  3.12.9** or later).
+- **Arango Contextual Data Platform**.
 - **LLM and embedding API access** (OpenAI-compatible or Triton-compatible
   endpoints).
 - **Valid JWT** for the API (`Authorization: Bearer ...`).
-- A **GraphRAG project** in the target database. Projects keep datasets and
+- A **project** in the target database. Projects keep datasets and
   configurations isolated from each other. For instructions, see the
   [Projects](../../platform-suite/control-plane-acp/_index.md#projects) section in
   the Arango Control Plane (ACP) documentation.

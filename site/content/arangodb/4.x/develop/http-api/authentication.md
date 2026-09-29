@@ -8,7 +8,12 @@ description: >-
   user credentials or the JWT secret of the deployment
 ---
 Client authentication can be achieved by using the `Authorization` HTTP header
-in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
+in client requests. ArangoDB supports authentication via the following:
+
+- [**HTTP Basic Authentication**](#http-basic-authentication) with a username
+  and either a password or access token.
+- [**Bearer Token Authentication**](#bearer-token-authentication) using JWT,
+  which can be session tokens for regular users or non-expiring superuser tokens.
 
 Authentication is enabled for all incoming requests to the HTTP API by default.
 The only exception are endpoints that start with the path `/_open` that never
@@ -151,6 +156,11 @@ startup option.
 
 You can find the expiration date of the JWT token in the `exp` field, encoded as
 Unix timestamp in seconds.
+
+From v3.12.12 onward, session tokens are additionally rejected if the
+user account they have been issued for is deactivated (by setting `active` to
+`false`) with the [User Management API](users.md).
+
 Please note that all JWT tokens must contain the `iss` field with string value
 `arangodb`. As an example the decoded JWT body would look like this:
 

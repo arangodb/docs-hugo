@@ -94,7 +94,7 @@ For detailed business scenarios, see [Use Cases](use-cases.md).
 
 ### How GraphRAG works
 
-Arango's GraphRAG solution democratizes the creation and usage of knowledge
+Arango's implementation of GraphRAG democratizes the creation and usage of knowledge
 graphs with a unique combination of vector search, graphs, and LLMs (privately
 or publicly hosted) in a single product.
 

@@ -1,8 +1,8 @@
 ---
-title: Verify and Monitor the Retriever
+title: Verify and Monitor AutoRAG
 menuTitle: Verify and Monitor
 description: >-
-  Check service health, verify the status of your Retriever service, and browse
+  Check service health, verify the status of your AutoRAG service, and browse
   the query history of your project
 weight: 50
 ---
@@ -17,7 +17,7 @@ health endpoint included. A request without one is rejected with `401`.
 
 ## Health Check
 
-You can monitor the Retriever service health using the health endpoint:
+You can monitor the AutoRAG service health using the health endpoint:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/{serviceIdPostfix}/v1/health" >}}
 
@@ -42,7 +42,7 @@ curl https://<EXTERNAL_ENDPOINT>:8529/graphrag/retriever/<SERVICE_ID_POSTFIX>/v1
 
 ## Verify Service Status
 
-You can verify the state of the Retriever service via the project endpoint:
+You can verify the state of the AutoRAG service via the project endpoint:
 
 {{< endpoint "GET" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/{project_name}" >}}
 
@@ -63,7 +63,7 @@ inspect the parameters and responses they used, and delete entries you no longer
 need.
 
 Runs are scoped to the project database, which means everyone querying the same
-project shares one history. The Retriever returns the identifier of the run as
+project shares one history. AutoRAG returns the identifier of the run as
 `runId` in every query response, including the first and last chunk of a
 streaming response.
 
@@ -156,7 +156,7 @@ that other services can still consume the history.
 | `metadata` | string | Response metadata JSON, when `include_metadata` was `true`. |
 | `queryType` | string | `GLOBAL`, `LOCAL`, `UNIFIED`, or `CUSTOM`. |
 | `model` | string | The chat model used for this query. |
-| `retrieverServiceId` | string | Identifier of the Retriever service instance. |
+| `retrieverServiceId` | string | Identifier of the AutoRAG service instance. |
 | `status` | string | `streaming`, `complete`, or `error`. |
 | `error` | string | Error message, populated only when `status` is `error`. |
 | `durationMs` | integer | Total query duration in milliseconds. |

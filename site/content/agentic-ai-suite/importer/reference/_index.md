@@ -82,7 +82,7 @@ replaces documents across all three layers. See
    processing in the background. **No `job_id` is returned**.
 3. Monitor via the **platform service status** until the status reaches
    `service_completed` or a terminal failure status.
-4. Query ArangoDB or call the [Retriever](../../retriever/) against the
+4. Query ArangoDB or call [AutoRAG](../../autorag/) against the
    resulting knowledge graph.
 
 ### Standalone batch

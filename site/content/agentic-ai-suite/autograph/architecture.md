@@ -110,7 +110,7 @@ by label to select specific relationship types (e.g., `FILTER edge.label == "SIM
 
 ### Layer 3
 
-The GraphRAG Importer constructs Layer 3 by processing documents into a detailed knowledge
+The Importer constructs Layer 3 by processing documents into a detailed knowledge
 graph stored in the named graph `{project}_kg`. This layer contains the actual document
 content, text chunks, and optionally extracted entities and communities, depending on
 your chosen RAG strategy.
@@ -322,7 +322,7 @@ inspection calls that you can make at any time.
 ```mermaid
 flowchart TD
 
-    Client["Client / HTTP REST"]
+    Client["Client / HTTP"]
 
     %% Entry points
     Client -->|Step 0| HEALTH
@@ -455,7 +455,7 @@ for a project delete.
 ```mermaid
 flowchart LR
 
-    Client["Client / HTTP REST"]
+    Client["Client / HTTP"]
 
     Client -.->|inspect anytime| OVERVIEW
     Client -.->|configure| MODELCFG

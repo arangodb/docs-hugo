@@ -9,7 +9,7 @@ weight: 80
 
 The Importer supports two distinct usage patterns depending on your needs.
 
-### Standalone Importer (GraphRAG without partitioning)
+### Standalone Importer (without partitioning)
 
 If you are building a single knowledge graph from your documents and do not
 need multiple partitions or automated domain discovery, use the Importer

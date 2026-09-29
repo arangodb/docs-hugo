@@ -1,5 +1,5 @@
 ---
-title: Retriever Custom Prompts Reference
+title: AutoRAG Custom Prompts Reference
 menuTitle: Custom Prompts
 description: >-
   Customize LLM prompts used during query processing for domain-specific behavior
@@ -7,7 +7,7 @@ weight: 55
 ---
 ## Overview
 
-The Retriever service allows you to customize the LLM prompts used during query
+AutoRAG allows you to customize the LLM prompts used during query
 processing. This enables you to:
 - Tailor responses to your domain or use case
 - Adjust the tone, style, or format of responses
@@ -119,11 +119,11 @@ These prompts are used when `use_llm_planner=true` with Custom Retriever
   - Template variables: `{tools_description}`, `{user_query}`.
 
 - **`ds_custom_generate_plan`**: Generates a multi-step execution plan tailored
-  for custom retriever context.
+  for Custom Retriever context.
   - Template variables: `{global_context}`, `{original_query}`.
 
 - **`ds_custom_final_synthesis`**: Synthesizes all step results into a final
-  answer for custom retriever queries.
+  answer for Custom Retriever queries.
   - Template variables: `{original_query}`, `{response_instructions}`,
     `{all_step_results}`.
 
@@ -131,7 +131,7 @@ These prompts are used when `use_llm_planner=true` with Custom Retriever
   after each step. Returns `"SOLVED"` or `"CONTINUE"`.
   - Template variables: `{original_query}`, `{execution_summary}`.
 
-- **`ds_no_tools_available`**: Message returned when no custom retriever tools
+- **`ds_no_tools_available`**: Message returned when no Custom Retriever tools
   are available. Simple string (no template variables).
 
 ## Best practices

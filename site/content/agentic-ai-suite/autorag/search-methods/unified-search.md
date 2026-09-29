@@ -1,5 +1,5 @@
 ---
-title: Retriever Unified Search (Instant Search)
+title: AutoRAG Unified Search (Instant Search)
 menuTitle: Unified Search
 description: >-
   Fast unified retrieval combining chunk and entity search for quick answers

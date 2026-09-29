@@ -8,7 +8,7 @@ description: >-
 ---
 The Arango Control Plane (ACP) service provides an HTTP API for installing,
 inspecting, upgrading, and removing platform services, as well as for managing
-the projects that group AutoGraph and GraphRAG work.
+the projects that group AutoGraph and AutoRAG work.
 
 **Base URL:** `https://<EXTERNAL_ENDPOINT>:8529/_platform/acp`
 
@@ -51,9 +51,9 @@ endpoints.
 | Method | Path | Description |
 | ------ | ---- | ----------- |
 | POST | `/v1/graphanalytics` | Deploy a Graph Analytics service |
-| POST | `/v1/graphrag` | Deploy a GraphRAG service |
-| POST | `/v1/graphragimporter` | Deploy a GraphRAG Importer service |
-| POST | `/v1/graphragretriever` | Deploy a GraphRAG Retriever service |
+| POST | `/v1/graphrag` | Deploy a GraphRAG service (legacy, superseded by AutoGraph) |
+| POST | `/v1/graphragimporter` | Deploy an Importer service |
+| POST | `/v1/graphragretriever` | Deploy an AutoRAG service |
 | POST | `/v1/autograph` | Deploy an AutoGraph service |
 | POST | `/v1/llmhost` | Deploy an LLM Host service |
 | POST | `/v1/notebook` | Deploy a Notebook service |
@@ -85,7 +85,7 @@ All service creation endpoints share the same `env` and `labels` fields:
 - **env**: Service-specific parameters as key-value pairs. The required keys
   depend on the service type; see the corresponding service documentation, such
   as [Importer](../../agentic-ai-suite/importer/_index.md) and
-  [Retriever](../../agentic-ai-suite/retriever/_index.md).
+  [AutoRAG](../../agentic-ai-suite/autorag/_index.md).
 - **labels** (optional): Key-value pairs used to filter and identify services
   in the platform.
 - **profiles** (optional): A comma-separated string inside `env` defining
@@ -335,10 +335,9 @@ An empty request body (`{}`) returns all installed services.
 
 ## Projects
 
-Projects group related AutoGraph and GraphRAG services and keep their data
-separate. They are required for the Importer, Retriever, and AutoGraph
-services. For a conceptual overview, see
-[Projects](_index.md#projects).
+Projects group related AutoGraph, Importer, and AutoRAG services and keep
+their data separate. They are required for all three. For a conceptual
+overview, see [Projects](_index.md#projects).
 
 | Method | Path | Description |
 | ------ | ---- | ----------- |
@@ -353,7 +352,8 @@ services. For a conceptual overview, see
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project" >}}
 
 Creates a project in the specified database. The example below creates a
-GraphRAG project:
+project of type `graphrag`, the type used by the Importer, AutoGraph, and
+AutoRAG services:
 
 ```bash
 curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project \
@@ -363,7 +363,7 @@ curl -X POST https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project \
     "project_name": "docs",
     "project_type": "graphrag",
     "project_db_name": "documentation",
-    "project_description": "A documentation project for GraphRAG."
+    "project_description": "A documentation project."
   }'
 ```
 
@@ -442,7 +442,7 @@ curl -X GET https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project_by_name/<p
 
 The response includes:
 - Project configuration
-- Associated Importer and Retriever services
+- Associated Importer and AutoRAG services
 - Knowledge graph metadata
 - Service status information
 - Last modification timestamp
@@ -471,7 +471,7 @@ curl -X DELETE https://<EXTERNAL_ENDPOINT>:8529/_platform/acp/v1/project/<projec
 {{< warning >}}
 Deleting a project removes the project record itself, but it does **not**
 delete the resources the project referenced:
-- Importer, Retriever, and AutoGraph services
+- Importer, AutoRAG, and AutoGraph services
 - ArangoDB collections created with the project name as prefix
   (for example, `docs_Documents`, `docs_Chunks`)
 - Knowledge graphs stored in ArangoDB
