@@ -1172,22 +1172,49 @@ RETURN [
 
 `REGEX_MATCHES(text, regex, caseInsensitive) → stringArray`
 
-Return the matches in the given string `text`, using the `regex`.
+Return the first match of the `regex` in the given string `text`, along with the
+text that each capturing group of the `regex` matched.
 
 - **text** (string): the string to search in
 - **regex** (string): a [regular expression](#regular-expression-syntax)
   to use for matching the `text`
 - **caseInsensitive** (bool, *optional*): if set to `true`, the matching will be
   case-insensitive. The default is `false`.
-- returns **stringArray** (array): an array of strings containing the matches,
-  or `null` and a warning if the expression is invalid
+- returns **stringArray** (array\|null): an array of strings containing the match
+  and the text captured by the groups, `null` if the `regex` does not match the
+  `text`, or `null` and a warning if the expression is invalid
+
+The function reports the first match only, not every match in the `text`. The
+`regex` does not need to match the entire `text` unless you anchor it with `^`
+and `$`.
+
+The first element of the returned array is always the entire match, even if you
+do not define any [capturing group](#groups-and-back-references). Every capturing
+group adds one more element, ordered by the position of the groups' opening
+parentheses. A capturing group that is part of the expression but does not
+participate in the match, such as a skipped optional group, contributes an empty
+string. Non-capturing groups (`(?:...)`) do not add elements.
+
+If the `regex` does not match the `text`, the function returns `null` but does
+**not** raise a warning. A warning is only raised in addition to the `null` value
+if the regular expression itself is invalid.
+
+{{< info >}}
+Up to v3.12.12, `REGEX_MATCHES()` returns `[ "" ]` for an empty `text` and a
+non-empty `regex` without evaluating the `regex`. From v3.12.13 onward, an empty
+`text` is matched like any other string. A `regex` that can match an empty
+string, such as `^$`, returns `[ "" ]`, whereas one that cannot, such as
+`^[a-z]+$`, returns `null`.
+{{< /info >}}
 
 **Examples**
 
 ```aql
 ---
 name: aqlRegexMatches_1
-description: ''
+description: |
+  An anchored expression without capturing groups. The only element is the
+  entire match, which is the full input string in this case:
 ---
 RETURN REGEX_MATCHES("My-us3r_n4m3", "^[a-z0-9_-]{3,16}$", true)
 ```
@@ -1195,7 +1222,9 @@ RETURN REGEX_MATCHES("My-us3r_n4m3", "^[a-z0-9_-]{3,16}$", true)
 ```aql
 ---
 name: aqlRegexMatches_2
-description: ''
+description: |
+  An expression that doesn't match returns `null` and no warning. The `h` is
+  not a valid hexadecimal digit here:
 ---
 RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 ```
@@ -1203,9 +1232,36 @@ RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 ```aql
 ---
 name: aqlRegexMatches_3
-description: ''
+description: |
+  An anchored expression with three capturing groups. The entire match is
+  followed by the text that each group captured:
 ---
 RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\\\.-]+)@([\\\\da-z-]+)\\\\.([a-z\\\\.]{2,6})$", false)
+```
+
+```aql
+---
+name: aqlRegexMatches_4
+description: |
+  An unanchored expression that matches three times in the input string. Only
+  the first match is reported, followed by the text that its two capturing
+  groups matched:
+---
+RETURN REGEX_MATCHES("foo=1, bar=22, baz=333", "(\\\\w+)=(\\\\d+)")
+```
+
+```aql
+---
+name: aqlRegexMatches_5
+description: |
+  The third capturing group is optional. It contributes an empty string if it
+  doesn't take part in the match, and the text it captured if it does. The
+  non-capturing group around it adds no element of its own:
+---
+RETURN [
+  REGEX_MATCHES("v2.5", "v(\\\\d+)\\\\.(\\\\d+)(?:\\\\.(\\\\d+))?"),
+  REGEX_MATCHES("v2.5.1", "v(\\\\d+)\\\\.(\\\\d+)(?:\\\\.(\\\\d+))?")
+]
 ```
 
 ## REGEX_SPLIT()
