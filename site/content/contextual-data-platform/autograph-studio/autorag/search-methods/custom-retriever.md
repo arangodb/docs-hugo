@@ -8,6 +8,8 @@ weight: 40
 aliases:
   - /agentic-ai-suite/autorag/search-methods/custom-retriever/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Custom Retriever enables domain-specific search and retrieval using

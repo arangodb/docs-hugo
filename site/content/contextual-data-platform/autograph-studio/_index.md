@@ -11,6 +11,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 AutoGraph Studio is **AutoGraph**, which builds your Context Graph, plus
 **AutoRAG**, which answers questions from it.
 

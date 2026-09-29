@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /platform-suite/container-manager/
 ---
+{{< tag "Platform Suite" >}}
+
 The **Container Manager** lets you deploy and run custom services directly within
 the Arango Contextual Data Platform. Run your own applications and workloads alongside
 Arango's services while seamlessly integrating with the platform's existing

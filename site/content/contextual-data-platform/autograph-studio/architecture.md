@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/architecture/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Three-Layer Knowledge Graph
 
 AutoGraph organizes data in ArangoDB across three layers. Each layer has a clear

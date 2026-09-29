@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graph-analytics/quick-start/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Prerequisites
 
 - Access to an Arango Contextual Data Platform deployment.

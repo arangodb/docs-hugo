@@ -7,6 +7,8 @@ weight: 86
 aliases:
   - /agentic-ai-suite/autograph/reference/embeddings/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Embed field in collection
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/embed-field-in-collection" >}}

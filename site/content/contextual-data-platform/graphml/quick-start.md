@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graphml/quick-start/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Prerequisites
 
 - Access to the platform with **GraphML** services enabled.

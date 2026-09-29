@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/ada/start-a-conversation/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 Type your question or instruction in the **Ask about your database...** input
 field at the bottom of the panel and press **Enter** to send. Use

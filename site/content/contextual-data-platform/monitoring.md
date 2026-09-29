@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/monitoring/
 ---
+{{< tag "Platform Suite" >}}
+
 ## Overview
 
 The **Monitoring** section of the Arango Contextual Data Platform provides integrated access

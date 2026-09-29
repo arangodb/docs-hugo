@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/natural-language-to-aql/api-reference/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 This page documents the runtime HTTP endpoints of the Natural Language to AQL
 service. For deployment and configuration, see [Setup](setup.md).

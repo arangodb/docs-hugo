@@ -7,6 +7,8 @@ weight: 92
 aliases:
   - /agentic-ai-suite/autograph/reference/error-handling/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Error Handling
 
 The service returns these HTTP status codes:

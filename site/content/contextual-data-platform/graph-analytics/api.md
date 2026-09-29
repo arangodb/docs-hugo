@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graph-analytics/api/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Workflow
 
 The following list outlines how you can use Graph Analytics Engines (GAEs).

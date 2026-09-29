@@ -11,6 +11,8 @@ aliases:
   - ../../arangodb/4.x/data-science/arangographml/getting-started # 3.10, 3.11
   - ../../arangodb/devel/data-science/arangographml/getting-started # 3.10, 3.11
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Arango Contextual Data Platform provides an easy-to-use & scalable interface
 to run Graph Machine Learning on ArangoDB data. Since all the orchestration and
 Machine Learning logic is managed by the Arango Contextual Data Platform, all

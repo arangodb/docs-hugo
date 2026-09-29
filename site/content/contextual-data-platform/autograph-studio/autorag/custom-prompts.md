@@ -7,6 +7,8 @@ weight: 55
 aliases:
   - /agentic-ai-suite/autorag/custom-prompts/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 AutoRAG allows you to customize the LLM prompts used during query

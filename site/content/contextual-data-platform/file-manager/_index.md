@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /platform-suite/file-manager/
 ---
+{{< tag "Platform Suite" >}}
+
 The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
 the Agentic AI Suite for instance, such as for storing AI models and training-related

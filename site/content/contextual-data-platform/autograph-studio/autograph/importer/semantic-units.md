@@ -7,6 +7,8 @@ weight: 55
 aliases:
   - /agentic-ai-suite/importer/semantic-units/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Semantic units capture the image and web references found in your documents, so

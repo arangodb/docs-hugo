@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/natural-language-to-aql/web-interface/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The AQLizer feature is integrated into the **Query Editor** of the Arango Contextual
 Data Platform. It uses generative AI to translate your plain language descriptions into

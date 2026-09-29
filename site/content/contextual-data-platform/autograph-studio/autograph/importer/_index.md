@@ -11,6 +11,8 @@ aliases:
   - /agentic-ai-suite/importer/autograph-integration/
   - /agentic-ai-suite/importer/reference/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Importer is the worker of the [AutoGraph service](../_index.md). This page
 describes what it writes, how AutoGraph drives it, the cases in which you
 configure or call it yourself, and its HTTP API.

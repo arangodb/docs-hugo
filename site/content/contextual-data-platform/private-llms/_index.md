@@ -9,6 +9,8 @@ weight: 450
 aliases:
   - /agentic-ai-suite/private-llms/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Agentic AI Suite can use either public LLM providers (such as OpenAI) or
 **privately hosted LLMs** that run inside your Arango Contextual Data Platform
 deployment. Private hosting is useful when data residency, network isolation,

@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/natural-language-to-aql/quick-start/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 ## Prerequisites
 

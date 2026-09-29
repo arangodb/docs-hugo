@@ -10,6 +10,8 @@ aliases:
   - /agentic-ai-suite/autograph/setup/
   - /agentic-ai-suite/autograph/reference/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The AutoGraph service is the first stage of [AutoGraph Studio](../_index.md).
 It builds the **Corpus Graph** from your documents, assigns a RAG strategy to
 every knowledge domain it discovers, and orchestrates the

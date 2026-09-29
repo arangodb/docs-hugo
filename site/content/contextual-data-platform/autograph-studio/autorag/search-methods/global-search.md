@@ -7,6 +7,8 @@ weight: 10
 aliases:
   - /agentic-ai-suite/autorag/search-methods/global-search/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Global Search is designed for queries that require understanding and aggregation

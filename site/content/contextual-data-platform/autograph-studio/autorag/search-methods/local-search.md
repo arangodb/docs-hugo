@@ -7,6 +7,8 @@ weight: 20
 aliases:
   - /agentic-ai-suite/autorag/search-methods/local-search/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Local Search focuses on specific entities and their relationships within your

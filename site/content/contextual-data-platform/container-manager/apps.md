@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/container-manager/apps/
 ---
+{{< tag "Platform Suite" >}}
+
 In addition to running headless services and APIs, the Container Manager can
 host services that ship their own **user interface**. A service registered this
 way becomes an **App**: it appears in the platform's **Apps** catalog and its UI

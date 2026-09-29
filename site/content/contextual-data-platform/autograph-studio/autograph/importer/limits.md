@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/importer/reference/limits/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 This page lists the limits the Importer enforces. They fall into three kinds:
 
 - **Hard**: the request is rejected or the job fails. You cannot raise them.

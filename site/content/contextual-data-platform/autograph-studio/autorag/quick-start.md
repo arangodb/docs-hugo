@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autorag/quick-start/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Prerequisites
 
 - A **Context Graph built with AutoGraph Studio**. If you do not have one

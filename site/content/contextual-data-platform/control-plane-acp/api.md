@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/control-plane-acp/api/
 ---
+{{< tag "Platform Suite" >}}
+
 The Arango Control Plane (ACP) service provides an HTTP API for installing,
 inspecting, upgrading, and removing platform services, as well as for managing
 the projects that group AutoGraph and AutoRAG work.

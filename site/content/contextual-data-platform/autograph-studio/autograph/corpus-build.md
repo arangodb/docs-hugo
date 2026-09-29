@@ -7,6 +7,8 @@ weight: 80
 aliases:
   - /agentic-ai-suite/autograph/reference/corpus-build/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Create Corpus Build
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/corpus/builds" >}}

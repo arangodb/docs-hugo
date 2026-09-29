@@ -7,6 +7,8 @@ weight: 40
 aliases:
   - /agentic-ai-suite/autorag/executing-queries/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → **Execute Queries** → [Verify](verify-and-monitor.md)
 {{< /info >}}

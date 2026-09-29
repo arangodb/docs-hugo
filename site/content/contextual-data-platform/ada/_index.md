@@ -9,7 +9,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/ada/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 {{< embed-svg "Ada-Flow" "Ada end-to-end flow." >}}
 

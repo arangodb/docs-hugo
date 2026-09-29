@@ -8,6 +8,8 @@ weight: 30
 aliases:
   - /agentic-ai-suite/private-llms/triton-inference-server/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 The **Triton LLM Host** service provides scalable deployment of Large Language

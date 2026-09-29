@@ -10,6 +10,8 @@ aliases:
   - /agentic-ai-suite/importer/setup/
   - /agentic-ai-suite/importer/quickstart/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 Neither the AutoGraph corpus build nor the [Importer](importer/_index.md) parses
 documents itself. Both hand every input that is not already plain text or
 Markdown to the internal **File Parser service**, which converts it to

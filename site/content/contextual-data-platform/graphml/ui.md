@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graphml/ui/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## The GraphML workflow in the web interface
 
 The entire process is organized into sequential steps within a **Project**,

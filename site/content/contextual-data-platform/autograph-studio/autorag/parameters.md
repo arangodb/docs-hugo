@@ -7,6 +7,8 @@ weight: 60
 aliases:
   - /agentic-ai-suite/autorag/parameters/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< info >}}
 This page provides detailed parameter definitions. For query workflows and examples, 
 see the [Execute Queries guide](executing-queries.md).

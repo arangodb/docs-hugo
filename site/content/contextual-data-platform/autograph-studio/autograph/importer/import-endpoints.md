@@ -7,6 +7,8 @@ weight: 80
 aliases:
   - /agentic-ai-suite/importer/importing-files/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 This page documents the import endpoints of the Importer and how to monitor
 running imports. During an [AutoGraph](../_index.md) orchestration, these calls
 are submitted for you, one per partition. Call them yourself only to re-run a

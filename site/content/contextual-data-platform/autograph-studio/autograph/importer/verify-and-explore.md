@@ -7,6 +7,8 @@ weight: 30
 aliases:
   - /agentic-ai-suite/importer/verify-and-explore/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 After an import finishes, you can confirm success and inspect the resulting
 knowledge graph in two ways: through the Importer / platform APIs, and
 directly in your ArangoDB database.

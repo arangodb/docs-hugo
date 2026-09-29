@@ -8,8 +8,6 @@ description: >-
   governance to support reliable, stateful agentic AI systems in
   production environments
 aliases:
-  - /agentic-ai-suite/
-  - /platform-suite/
   - /arangodb/3.12/data-science/ # 3.10, 3.11
   - /arangodb/stable/data-science/ # 3.10, 3.11
   - /arangodb/4.x/data-science/ # 3.10, 3.11
@@ -138,11 +136,12 @@ to provide automated deployment, scaling, and management capabilities.
 
 ## Licensing
 
-The Arango Contextual Data Platform is licensed, and its AI services are
-licensed on top of it. Pages that require the AI services carry an
-**Agentic AI Suite** badge. Licenses are activated and renewed automatically
-by the ArangoDB Kubernetes Operator, see
-[License Management](license-management.md).
+The Arango Contextual Data Platform is licensed as two suites: the Platform
+Suite, which is always included, and the Agentic AI Suite, which is licensed
+on top of it. See [The Platform Suite and the Agentic AI Suite](suites.md) for
+what each includes. Every page carries a badge with the suite it belongs to.
+Licenses are activated and renewed automatically by the ArangoDB Kubernetes
+Operator, see [License Management](license-management.md).
 
 ## Sample datasets
 

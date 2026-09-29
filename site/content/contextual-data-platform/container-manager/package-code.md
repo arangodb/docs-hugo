@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /platform-suite/container-manager/package-code/
 ---
+{{< tag "Platform Suite" >}}
+
 Before deploying a code-based service via the [Web Interface](web-interface/)
 or [API](deploy-api/), you need to package your application as a `.tar.gz`
 archive containing your code and dependencies.

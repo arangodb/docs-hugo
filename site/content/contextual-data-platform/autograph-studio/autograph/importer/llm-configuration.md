@@ -7,6 +7,8 @@ weight: 10
 aliases:
   - /agentic-ai-suite/importer/llm-configuration/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Importer service can be configured to use either Triton Inference Server or any
 OpenAI-compatible API. That covers the OpenAI API itself, which is the recommended
 setup, as well as any other endpoint implementing the same contract — OpenRouter,

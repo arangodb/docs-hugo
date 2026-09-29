@@ -8,6 +8,8 @@ weight: 84
 aliases:
   - /agentic-ai-suite/autograph/reference/orchestration/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 This page describes the endpoints that build and maintain the Layer 3 knowledge
 graph. `POST /v1/orchestrate` starts the Importer workers for the strategy
 profiles. The `POST /v1/graph/*` endpoints insert, delete, update, and recluster

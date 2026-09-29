@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/graph-visualizer/
 ---
+{{< tag "Platform Suite" >}}
+
 The **Graph Visualizer** is a browser-based tool integrated into the web interface
 of the Arango Contextual Data Platform. It lets you explore the connections of your named graphs
 to visually understand the structure as well as to inspect and edit the attributes

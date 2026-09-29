@@ -8,6 +8,8 @@ weight: 85
 aliases:
   - /agentic-ai-suite/autorag/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 AutoRAG provides intelligent search and retrieval from the knowledge graphs

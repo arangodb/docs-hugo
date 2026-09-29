@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/importer/architecture/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Importer builds the **Layer 3 Knowledge Graph** in your ArangoDB database:
 the documents, chunks, entities, communities, and relationships that the
 AutoRAG (and downstream applications) query at runtime. This page describes

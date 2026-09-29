@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/use-cases/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 AutoGraph enables AI agents and co-pilots across enterprise workflows where contextual 
 retrieval and domain-aware reasoning support human decisions.
 

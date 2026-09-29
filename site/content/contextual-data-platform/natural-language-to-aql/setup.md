@@ -9,7 +9,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/natural-language-to-aql/setup/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 Deploy the Natural Language to AQL service with a single API call to the platform.
 You provide configuration parameters in the request body, and the platform

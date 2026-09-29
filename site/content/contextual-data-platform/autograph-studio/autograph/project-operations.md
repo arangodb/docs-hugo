@@ -8,6 +8,8 @@ weight: 88
 aliases:
   - /agentic-ai-suite/autograph/reference/project-operations/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The endpoints on this page sit outside the sequential pipeline. You can inspect
 and configure a project at any time. The two delete endpoints are guarded
 against a running build or orchestration and return `409` while one is active.

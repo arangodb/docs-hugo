@@ -7,6 +7,8 @@ weight: 30
 aliases:
   - /agentic-ai-suite/autorag/search-methods/unified-search/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Unified Search combines chunk and entity search to provide comprehensive

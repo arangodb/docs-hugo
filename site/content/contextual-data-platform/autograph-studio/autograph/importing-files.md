@@ -8,6 +8,8 @@ weight: 90
 aliases:
   - /agentic-ai-suite/autograph/reference/importing-files/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< warning >}}
 **Do not build new integrations on this endpoint.** `POST /v1/import-multiple`
 is deprecated. It is documented here for integrations that already use it.

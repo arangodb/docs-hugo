@@ -8,6 +8,8 @@ weight: 10
 aliases:
   - /agentic-ai-suite/autograph/llm-configuration/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 AutoGraph uses two kinds of models:
 
 - A **chat (LLM) model**, used by the

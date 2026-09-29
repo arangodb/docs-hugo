@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/web-interface/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 Learn how to use AutoGraph Studio to build a Context Graph from your documents.
 AutoGraph analyzes your content, builds a Corpus Graph, and generates the
 strategies for a Knowledge Graph. AutoRAG then deploys the retrievers that

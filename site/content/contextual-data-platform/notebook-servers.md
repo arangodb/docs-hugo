@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/notebook-servers/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 Notebooks provide a Python-based, Jupyter-compatible interface for building
 and experimenting with graph-powered data, AI, and graph machine learning
 workflows directly connected to ArangoDB databases. The notebook servers are

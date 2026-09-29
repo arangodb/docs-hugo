@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/ada/quick-start/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 {{< steps >}}
 

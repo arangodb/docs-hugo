@@ -7,6 +7,8 @@ weight: 82
 aliases:
   - /agentic-ai-suite/importer/reference/parameters/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< info >}}
 This page provides detailed parameter definitions. For import workflows and examples, see the [Import Files guide](import-endpoints.md).
 {{< /info >}}

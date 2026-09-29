@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/incremental-graph-updates/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 **Incremental Graph Updates (IGU)** keep a knowledge graph up-to-date after it
 has been built. You can add new documents, remove obsolete ones, and replace
 documents whose content has changed, without running the corpus build, the RAG

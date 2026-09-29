@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/secrets-manager/
 ---
+{{< tag "Platform Suite" >}}
+
 If you want to use external services like cloud APIs, you need API keys
 or other means to authenticate and authorize the usage.
 

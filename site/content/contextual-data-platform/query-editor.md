@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /platform-suite/query-editor/
 ---
+{{< tag "Platform Suite" >}}
+
 ## Features
 
 The Query Editor of the Arango Contextual Data Platform offers the following features:

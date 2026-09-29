@@ -10,6 +10,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graph-analytics/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< embed-svg "Graph-Analytics-Flow" "Graph Analytics end-to-end flow." >}}
 
 Graph analytics is a branch of data science that deals with analyzing information

@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /platform-suite/control-plane-acp/
 ---
+{{< tag "Platform Suite" >}}
+
 ## Overview
 
 The Arango Control Plane (ACP) is the main entry point for installing, running, and

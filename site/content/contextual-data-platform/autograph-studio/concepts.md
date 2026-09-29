@@ -12,6 +12,8 @@ aliases:
   - /arangodb/4.x/data-science/llm-knowledge-graphs # 3.10, 3.11
   - /arangodb/devel/data-science/llm-knowledge-graphs # 3.10, 3.11
 ---
+{{< tag "Agentic AI Suite" >}}
+
 AutoGraph builds on a set of foundational ideas: knowledge graphs as a way to
 represent connected information, large language models as a way to read and
 write natural language, and graph-based retrieval-augmented generation

@@ -9,7 +9,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/reasoner/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The Reasoner is an AI-powered query optimization agent for ArangoDB that helps
 improve the performance of AQL queries. Once the service is set up and started,

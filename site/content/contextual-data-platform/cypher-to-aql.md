@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /platform-suite/cypher2aql/
 ---
+{{< tag "Platform Suite" >}}
+
 {{< warning >}}
 The Cypher to AQL service is **experimental**. The API and supported Cypher
 subset may change in future releases.

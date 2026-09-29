@@ -8,6 +8,8 @@ weight: 25
 aliases:
   - /agentic-ai-suite/private-llms/mlflow/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 The ArangoDB MLflow service is a service that hosts the official MLflow

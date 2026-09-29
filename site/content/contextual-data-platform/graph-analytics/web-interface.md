@@ -9,6 +9,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/graph-analytics/web-interface/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The Graph Analytics web interface in the Arango Contextual Data Platform
 provides a graphical way to run graph algorithms on your data. You can start
 engines, load graphs into memory, execute algorithms with custom parameters,

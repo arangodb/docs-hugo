@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/reasoner/api-reference/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The Reasoner exposes an HTTP API for programmatic access. The service listens on
 port `8080`, so the base URL is `https://<EXTERNAL_ENDPOINT>:8080` (or

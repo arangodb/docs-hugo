@@ -8,6 +8,8 @@ weight: 50
 aliases:
   - /agentic-ai-suite/autorag/verify-and-monitor/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< info >}}
 **Getting Started Path:** [Overview](./) → [Configure LLMs](llm-configuration.md) → [Search Methods](search-methods/_index.md) → [Execute Queries](executing-queries.md) → **Verify**
 {{< /info >}}

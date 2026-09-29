@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /platform-suite/container-manager/web-interface/
 ---
+{{< tag "Platform Suite" >}}
+
 The Container Manager web interface provides a visual way to deploy and manage
 services. You can deploy services using a code package with drag-and-drop upload
 or by providing a Docker image URL.

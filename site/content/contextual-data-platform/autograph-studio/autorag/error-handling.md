@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autorag/error-handling/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## How AutoRAG reports failures
 
 AutoRAG reports a failure in one of two ways, depending on how far the

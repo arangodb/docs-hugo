@@ -7,6 +7,8 @@ weight: 25
 aliases:
   - /agentic-ai-suite/autorag/search-methods/deep-search/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Overview
 
 Deep Search uses an LLM planner to break complex queries into multiple steps

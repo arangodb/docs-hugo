@@ -8,6 +8,8 @@ weight: 20
 aliases:
   - /agentic-ai-suite/importer/incremental-updates/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 After the initial build, the [Layer 3 knowledge
 graph](architecture.md#knowledge-graph-collections) has to keep up with
 documents that are added, removed, or replaced. It contains the documents,

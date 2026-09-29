@@ -7,6 +7,8 @@ description: >-
 aliases:
   - /platform-suite/container-manager/deploy-api/
 ---
+{{< tag "Platform Suite" >}}
+
 The Container Manager API enables programmatic deployment and management of
 services, ideal for automation, CI/CD pipelines, and infrastructure-as-code
 workflows.

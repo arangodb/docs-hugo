@@ -8,6 +8,8 @@ description: >-
 aliases:
   - /agentic-ai-suite/autograph/quick-start/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Prerequisites
 
 - An **Arango Contextual Data Platform** deployment.

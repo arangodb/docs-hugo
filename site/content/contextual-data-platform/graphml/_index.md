@@ -12,6 +12,8 @@ aliases:
   - ../arangodb/4.x/data-science/arangographml # 3.10, 3.11
   - ../arangodb/devel/data-science/arangographml # 3.10, 3.11
 ---
+{{< tag "Agentic AI Suite" >}}
+
 {{< embed-svg "GraphML-Flow" "GraphML end-to-end flow." >}}
 
 Traditional Machine Learning (ML) overlooks the connections and relationships

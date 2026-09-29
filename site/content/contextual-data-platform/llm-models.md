@@ -8,6 +8,8 @@ description: >-
   Platform support, how OpenAI-compatible endpoints are reached, and where each
   service is configured
 ---
+{{< tag "Agentic AI Suite" >}}
+
 The AI services of the Arango Contextual Data Platform work with
 OpenAI-compatible APIs as well as self-hosted models served through Triton
 Inference Server. The recommended setup is the `openai` provider with the

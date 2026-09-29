@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/reasoner/quick-start/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 ## Prerequisites
 

@@ -8,7 +8,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/reasoner/web-interface/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 The Reasoner is accessible directly from the **Query Editor** in the Arango
 Contextual Data Platform. It requires the Agentic AI Suite license.

@@ -9,7 +9,7 @@ description: >-
 aliases:
   - /agentic-ai-suite/natural-language-to-aql/
 ---
-{{< tag "Beta" >}}
+{{< tag "Agentic AI Suite" "Beta" >}}
 
 {{< embed-svg "AQLizer-Flow" "Natural Language to AQL flow." >}}
 

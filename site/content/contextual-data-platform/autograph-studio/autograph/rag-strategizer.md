@@ -7,6 +7,8 @@ weight: 82
 aliases:
   - /agentic-ai-suite/autograph/reference/rag-strategizer/
 ---
+{{< tag "Agentic AI Suite" >}}
+
 ## Trigger RAG Strategizer
 
 {{< endpoint "POST" "https://<EXTERNAL_ENDPOINT>:8529/autograph/v1/rag-strategizer/analyze" >}}
