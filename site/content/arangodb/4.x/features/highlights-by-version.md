@@ -7,7 +7,9 @@ description: >-
 ---
 ## Version 4.x
 
-- 
+- [**Improved joins in clusters**](../release-notes/version-4.x/whats-new-in-4-x.md#improved-joins-in-sharded-clusters):
+  Join queries in sharded clusters and SmartGraphs only involve the DB-Servers
+  that hold the relevant documents instead of all of them.
 
 Also see [What's New in 4.x](../release-notes/version-4.x/whats-new-in-4-x.md).
 
