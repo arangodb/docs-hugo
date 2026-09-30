@@ -263,8 +263,9 @@ existing file returns `423`.
 
 ## RAG Input Files
 
-RAG input files are binary files uploaded for GraphRAG processing. They are
-database-scoped and support automatic versioning. Supported file types include
+RAG input files are binary files uploaded for AutoGraph and Importer
+processing. They are database-scoped and support automatic versioning.
+Supported file types include
 images, videos, audio, PDFs, and other binary media.
 
 Every RAG input operation is addressed either by **file** (a file identifier) or

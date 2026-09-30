@@ -69,12 +69,12 @@ Once collections are populated, you can:
 - Run [AQL queries](../../arangodb/3.12/aql/) directly against the collections.
 - Traverse the graph using ArangoDB's graph functions.
 - Filter by `partition_id` to scope queries to a specific partition.
-- Use the [Retriever service](../retriever/) for question-answering with
+- Use [AutoRAG](../autorag/) for question-answering with
   citations against the imported documents.
 
 ## Next steps
 
-- **Query your data**: Use the [Retriever service](../retriever/) for
+- **Query your data**: Use [AutoRAG](../autorag/) for
   semantic search and Q&A.
 - **Visualize relationships**: Explore your graph with the
   [Graph Visualizer](../../platform-suite/graph-visualizer.md).

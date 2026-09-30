@@ -1,8 +1,8 @@
 ---
-title: Retriever Parameter Reference
+title: AutoRAG Parameter Reference
 menuTitle: Parameters
 description: >-
-  Complete reference for all Retriever service query parameters
+  Complete reference for all AutoRAG query parameters
 weight: 60
 ---
 {{< info >}}
@@ -12,7 +12,7 @@ see the [Execute Queries guide](executing-queries.md).
 
 ## Overview
 
-The Retriever service supports a range of parameters to customize how your queries 
+AutoRAG supports a range of parameters to customize how your queries 
 are processed and how responses are generated.
 
 ## Query Parameters

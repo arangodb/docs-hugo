@@ -17,7 +17,7 @@ to support reliable, stateful agentic AI systems in production environments.
 {{% /card %}}
 
 {{% card title="Agentic AI Suite" link="agentic-ai-suite/" icon="avo-full.svg" %}}
-Supercharge your Contextual Data Platform with Ada, AutoGraph, GraphRAG, GraphML,
+Supercharge your Contextual Data Platform with Ada, AutoGraph, AutoRAG, GraphML,
 Graph Analytics, queries generated from natural language, and machine learning
 infrastructure for AI-powered insights.
 {{% /card %}}

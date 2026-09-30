@@ -2,7 +2,8 @@
 title: Triton LLM Host
 menuTitle: Triton LLM Host
 description: >-
-  Enable your GraphRAG pipeline to use private LLMs via Triton Inference Server 
+  Enable the services of the Agentic AI Suite to use private LLMs via Triton
+  Inference Server
 weight: 30
 ---
 ## Overview
@@ -14,14 +15,14 @@ and seamless Kubernetes integration.
 
 ## Workflow
 
-The Triton LLM Host enables your GraphRAG pipeline to use privately hosted
-LLMs directly from the Arango Contextual Data Platform environment. The process involves the
-following steps:
+The Triton LLM Host enables the services of the Agentic AI Suite to use
+privately hosted LLMs directly from the Arango Contextual Data Platform
+environment. The process involves the following steps:
 
 1. Install the Triton LLM Host service.
 2. Register your LLM model to MLflow by uploading the required files.
 3. Configure the Importer service to use your LLM model.
-4. Configure the Retriever service to use your LLM model.
+4. Configure AutoRAG to use your LLM model.
 
 {{< tip >}}
 Check out the dedicated [ArangoDB MLflow](mlflow.md) documentation page to learn

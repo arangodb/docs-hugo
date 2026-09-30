@@ -16,7 +16,7 @@ search strategies, and execute custom graph traversal queries tailored to your
 specific use case.
 
 Custom retrievers can target any collection in the same database, whether it
-was created by the Importer (GraphRAG data) or contains pre-existing
+was created by the Importer (Knowledge Graph data) or contains pre-existing
 domain-specific graph data from structured sources.
 
 Since tools are described in natural language, they can also be used by
@@ -172,7 +172,8 @@ indexes and views are created automatically.
 | Semantic | Vector index | `idx_vector_{collection}_{field}` |
 
 The `cr_` prefix marks resources as Custom Retriever-managed, making them easy
-to identify and clean up separately from GraphRAG or manually created resources.
+to identify and clean up separately from Importer-created or manually created
+resources.
 
 {{< info >}}
 Lexical search requires both an inverted index and a search-alias view. The
@@ -185,7 +186,7 @@ index queryable via AQL.
 
 ### Entity relationship expander
 
-This tool searches GraphRAG entities using hybrid search and expands results
+This tool searches Knowledge Graph entities using hybrid search and expands results
 with graph relationships:
 
 ```json
@@ -215,7 +216,7 @@ with graph relationships:
 
 ### Structured data search
 
-This tool searches structured (non-GraphRAG) data using lexical search:
+This tool searches structured data outside the Knowledge Graph using lexical search:
 
 ```json
 {

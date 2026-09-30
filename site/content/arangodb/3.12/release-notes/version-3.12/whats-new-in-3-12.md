@@ -103,6 +103,57 @@ more become available.
 See [`SEARCH` operation in AQL](../../aql/high-level-operations/search.md#parallelism)
 for details.
 
+### ArangoSearch statistics API (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+A new ArangoSearch statistics API has been added as an observability feature,
+allowing you to inspect the index segments that back `arangosearch` Views and
+inverted indexes. Every View link and every inverted index stores its data in a
+separate ArangoSearch data store. For every data store as a whole, the endpoint
+reports the number of documents, live documents, segments, and files as well as
+the index size, and for every individual segment its name, document counts, and
+size:
+
+```json
+{
+  "numIndexes": 2,
+  "indexes": [
+    {
+      "indexName": "idx_1780862094262272000",
+      "indexType": "arangosearch",
+      "collection": "coll",
+      "numDocs": 6,
+      "numLiveDocs": 5,
+      "deletionRatio": 0.17,
+      "numPrimaryDocs": 6,
+      "numSegments": 2,
+      "numFiles": 12,
+      "indexSize": 4118,
+      "segments": [
+        {
+          "name": "_1",
+          "numDocs": 5,
+          "numLiveDocs": 4,
+          "byteSize": 3562,
+          "deletionRatio": 0.2
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+```
+
+You can use this information to see how a data store is laid out and whether
+the background consolidation keeps up with the write load.
+
+The endpoint is only available on single servers.
+
+See the [`GET /_admin/arangosearch/stats` endpoint](../../develop/http-api/monitoring/arangosearch-statistics.md)
+for details.
+
 ## Analyzers
 
 ### `wildcard` Analyzer
@@ -3134,6 +3185,37 @@ HTTP status codes are used in server responses:
 |:------|:------------|
 | `arangodb_http_response_code_total` | Total number of HTTP responses by response code. |
 
+### Activities of all servers (experimental)
+
+<small>Introduced in: v3.12.10</small>
+
+The [server activities API](../../develop/http-api/monitoring/activities.md)
+has been extended for cluster deployments. The new
+[`GET /_admin/activities/all` endpoint](../../develop/http-api/monitoring/activities.md#get-the-activities-of-all-servers-experimental)
+returns the activities of every server of a cluster, grouped by server ID.
+You need to call it on a Coordinator, which gathers the activities of all
+Coordinators, DB-Servers, and Agents. The response contains an
+`activities_per_server` object with the server IDs as the attribute keys and
+the activities of the respective server as the attribute values.
+
+Activity objects now also have a `threads` attribute that lists the threads
+which currently execute the activity, each with the identifier of the
+light-weight process (`LWPID`) and the thread `name`.
+
+### ArangoSearch consolidation activity (experimental)
+
+<small>Introduced in: v3.12.11</small>
+
+The [server activities API](../../develop/http-api/monitoring/activities.md)
+now reports the background consolidation of `arangosearch` View and inverted
+index data. For every consolidation that is currently running, an activity of
+type `ArangoSearchConsolidation` is listed. Its `data` object holds a `segments`
+array with the name, size, and document counts of every index segment that is
+being merged.
+
+See [ArangoSearch consolidation activities](../../develop/http-api/monitoring/activities.md#arangosearchconsolidation)
+for details.
+
 ### Server health metrics
 
 <small>Introduced in: v3.12.11</small>
@@ -3151,6 +3233,20 @@ cluster servers is:
 
 You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
 in the `--server.endpoint` startup option with all client tools.
+
+### Server errors reported for failed connections
+
+<small>Introduced in: v3.12.12</small>
+
+If the server rejects the initial connection of _arangodump_, _arangorestore_,
+or _arangobackup_, the tools now report the error the server returned in
+addition to the generic message about not being able to connect, for example:
+
+```
+Could not connect to endpoint 'tcp://127.0.0.1:8529', database: '_system', username: 'root': HTTP 401 (Unauthorized): ArangoError 11: User not authenticated
+```
+
+Up to v3.12.11, the reason is dropped and only the generic message is shown.
 
 ### arangodump
 

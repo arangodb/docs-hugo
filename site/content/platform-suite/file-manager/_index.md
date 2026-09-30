@@ -9,7 +9,7 @@ description: >-
 The Contextual Data Platform supports different blob storage solutions for this data
 persistence, such as S3 cloud storage. This storage is used by services of
 the Agentic AI Suite for instance, such as for storing AI models and training-related
-metadata, as well as for user-uploaded GraphRAG content. Custom services make
+metadata, as well as for user-uploaded RAG content. Custom services make
 use of the file manager for application code, too.
 
 ## Organizing files with scopes
@@ -68,8 +68,9 @@ input files from a single place.
      **Actions**. Services with multiple versions show the version count and
      combined size below the service name. Click the expand arrow next to a
      version to see its individual details.
-   - **RAG Input Files**: Files uploaded for GraphRAG processing. Use the
-     **Database** dropdown above the table to filter files by database. The
+   - **RAG Input Files**: Files uploaded for AutoGraph and Importer processing.
+     Use the **Database** dropdown above the table to filter files by database.
+     The
      table columns are **File Name**, **Version**, **Database**,
      **Content Type**, **Storage Location**, **Size**, **Status**, and
      **Actions**.
