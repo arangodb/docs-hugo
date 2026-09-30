@@ -12,7 +12,7 @@ description: >-
 
 #### Graph API (Gharial)
 
-The following changes affect the behavior of the RESTful graph APIs at
+The following changes affect the behavior of the graph HTTP APIs at
 endpoints starting with path `/_api/gharial/`:
 
 The options object now supports a new optional field `satellites` in the
@@ -33,7 +33,7 @@ as a SatelliteCollection. (Disjoint) SmartGraphs using SatelliteCollections are
 then capable of executing all types of graph queries between the regular
 SmartCollections and SatelliteCollections.
 
-The following changes affect the behavior of the RESTful graph APIs at
+The following changes affect the behavior of the graph HTTP APIs at
 endpoints starting with path `/_api/gharial/{graph}/edge` and
 `/_api/gharial/{graph}/vertex`:
 

@@ -6,10 +6,10 @@ description: ''
 ---
 The official ArangoDB C#/.NET driver. Built using .NET Standard 2.0, the library
 provides .NET Core and .NET Framework applications with the complete range of
-features exposed by the ArangoDB REST API.
+features exposed by the ArangoDB HTTP API.
 
 The library provides comprehensive coverage of all of the available options for
-each of ArangoDB's REST API endpoints.
+each of ArangoDB's HTTP API endpoints.
 
 - [C#/.NET Driver Tutorial](https://university.arangodb.com/courses/csharp-dotnet-driver-tutorial/)
 - [Releases](https://github.com/ArangoDB-Community/arangodb-net-standard/releases/)

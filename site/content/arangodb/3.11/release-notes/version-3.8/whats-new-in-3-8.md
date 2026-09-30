@@ -374,7 +374,7 @@ kept on each instance.
 
 The privileges for accessing server logs in the web interface are identical
 to the privileges required for accessing logs via the `GET /_admin/log` HTTP
-HTTP API. If security is a concern, in-memory logs buffering can be turned
+API endpoint. If security is a concern, in-memory logs buffering can be turned
 off entirely using the startup option `--log.in-memory false`, plus the log
 API can be turned off or restricted via the `--log.api-enabled false` or
 `--log.api-enabled jwt` startup options.

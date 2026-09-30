@@ -34,7 +34,7 @@ paths:
       operationId: createUser
       description: |
         Create a new user. You need server access level *Administrate* in order to
-        execute this REST call.
+        execute this action.
       requestBody:
         content:
           application/json:
@@ -113,7 +113,7 @@ paths:
       operationId: replaceUserData
       description: |
         Replaces the data of an existing user. You need server access level
-        *Administrate* in order to execute this REST call. Additionally, users can
+        *Administrate* in order to execute this action. Additionally, users can
         change their own data.
       parameters:
         - name: user
@@ -198,7 +198,7 @@ paths:
       operationId: updateUserData
       description: |
         Partially modifies the data of an existing user. You need server access level
-        *Administrate* in order to execute this REST call. Additionally, users can
+        *Administrate* in order to execute this action. Additionally, users can
         change their own data.
       parameters:
         - name: user
@@ -283,7 +283,7 @@ paths:
         Removes an existing user, identified by `user`.
 
         You need *Administrate* permissions for the server access level in order to
-        execute this REST call.
+        execute this action.
       parameters:
         - name: user
           in: path
@@ -339,7 +339,7 @@ paths:
       description: |
         Fetches data about the specified user. You can fetch information about
         yourself or you need the *Administrate* server access level in order to
-        execute this REST call.
+        execute this action.
       parameters:
         - name: user
           in: path
@@ -395,7 +395,7 @@ paths:
       operationId: listUsers
       description: |
         Fetches data about all users. You need the *Administrate* server access level
-        in order to execute this REST call.  Otherwise, you will only get information
+        in order to execute this action.  Otherwise, you will only get information
         about yourself.
 
         The call will return a JSON object with at least the following
@@ -446,8 +446,7 @@ paths:
       operationId: setUserDatabasePermissions
       description: |
         Sets the database access levels for the database `dbname` of user `user`. You
-        need the *Administrate* server access level in order to execute this REST
-        call.
+        need the *Administrate* server access level in order to execute this action.
       requestBody:
         content:
           application/json:
@@ -527,7 +526,7 @@ paths:
       description: |
         Sets the collection access level for the `collection` in the database `dbname`
         for user `user`. You need the *Administrate* server access level in order to
-        execute this REST call.
+        execute this action.
       requestBody:
         content:
           application/json:
@@ -623,7 +622,7 @@ paths:
         default database access level, it defaults to *No access*.
 
         You need write permissions (*Administrate* access level) for the `_system`
-        database in order to execute this REST call.
+        database in order to execute this action.
       parameters:
         - name: user
           in: path
@@ -686,7 +685,7 @@ paths:
         it defaults to *No access*.
 
         You need write permissions (*Administrate* access level) for the `_system`
-        database in order to execute this REST call.
+        database in order to execute this action.
       parameters:
         - name: user
           in: path
@@ -756,7 +755,7 @@ paths:
         Fetch the list of databases available to the specified `user`.
 
         You need *Administrate* permissions for the server access level in order to
-        execute this REST call.
+        execute this action.
 
         The call will return a JSON object with the per-database access
         privileges for the specified user. The `result` object will contain

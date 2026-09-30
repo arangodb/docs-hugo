@@ -72,7 +72,7 @@ restrictions and includes cluster support.
 - Open source under a permissive license
 - One database core for all graph, document, key-value, and search needs
 - A single composable query language for all data models
-- Extensible through microservices with custom REST APIs and user-definable
+- Extensible through microservices with custom HTTP APIs and user-definable
   query functions
 - Cluster deployments for high availability and resilience
 

@@ -6,7 +6,7 @@ description: >-
   The HTTP API for Analyzers lets you create and delete Analyzers, as well as
   list all or get specific Analyzers with all their settings
 ---
-The RESTful API for managing ArangoSearch Analyzers is accessible via the
+The HTTP API for managing ArangoSearch Analyzers is accessible via the
 `/_api/analyzer` endpoint.
 
 See the description of [Analyzers](../../indexes-and-search/analyzers.md) for an

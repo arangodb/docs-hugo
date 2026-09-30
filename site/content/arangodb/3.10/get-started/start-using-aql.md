@@ -31,7 +31,7 @@ arangosh.
 If you are using Foxx, see [how to write database queries](../develop/foxx-microservices/getting-started.md#writing-database-queries)
 for examples including tagged template strings.
 
-If you want to run AQL queries from your application via the HTTP REST API,
+If you want to run AQL queries from your application via the HTTP API,
 see the full API description at [HTTP interface for AQL queries](../develop/http-api/queries/aql-queries.md).
 
 See the respective [driver](../develop/drivers/_index.md) or

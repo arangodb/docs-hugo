@@ -591,7 +591,7 @@ for details and usage examples.
 The following APIs have been expanded / changed:
 
 - [Database creation API](../../develop/http-api/databases.md#create-a-database),\
-  HTTP route `POST /_api/database`
+  HTTP endpoint `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
   and `sharding` attributes. All these attributes are optional, and only

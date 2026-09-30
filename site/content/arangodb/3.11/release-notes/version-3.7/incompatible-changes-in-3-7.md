@@ -95,7 +95,7 @@ but will continue to work for the valid collections.
 ## Metrics
 
 The following existing metrics for monitoring that are exposed via the HTTP
-REST endpoint `/_admin/metrics` have been renamed in ArangoDB 3.7:
+API endpoint `/_admin/metrics` have been renamed in ArangoDB 3.7:
 
 - `agency_agent_read_no_leader`
 - `agency_agent_read_ok`

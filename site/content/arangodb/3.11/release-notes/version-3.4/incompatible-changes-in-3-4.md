@@ -213,7 +213,7 @@ and will float between `--server.minimal-threads` and `--server.maximal-threads`
 
 ## HTTP API
 
-The following incompatible changes were made in context of ArangoDB's HTTP REST
+The following incompatible changes were made in context of ArangoDB's HTTP
 APIs:
 
 - The following, partly undocumented internal HTTP APIs have been removed in ArangoDB 3.4:
@@ -257,7 +257,7 @@ APIs:
 - if authentication is turned on, requests to databases by users with insufficient 
   access rights will be answered with HTTP 401 (Forbidden) instead of HTTP 404 (Not found).
 
-- the REST handler for user permissions at `/_api/user` will now return HTTP 404
+- the HTTP API for user permissions at `/_api/user` will now return HTTP 404
   (Not found) when trying to grant or revoke user permissions for a non-existing
   collection.
 

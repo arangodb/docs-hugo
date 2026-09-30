@@ -866,7 +866,7 @@ The upload reports per-file results and partially succeeds: `200` when every
 file was stored, `207` when at least one failed. The combined size is checked
 after the whole request body has been received, and exceeding it is a `413`.
 
-An oversized batch could previously exhaust the platform gateway's default
+An oversized batch could previously exhaust the data platform API gateway's default
 one-minute upstream timeout and answer `504` even though every file had been
 stored. The service now sets an explicit 15-minute timeout on its route, which
 starts once the request body is fully received.

@@ -313,7 +313,7 @@ memory-mapped files: `--pregel.memory-mapped-files` and `--pregel.memory-mapped-
 
 For more information on the new options, please refer to [ArangoDB Server Pregel Options](../../components/arangodb-server/options.md#pregel).
 
-## HTTP RESTful API
+## HTTP API
 
 ### Validation of collections in named graphs
 

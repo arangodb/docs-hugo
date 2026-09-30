@@ -114,7 +114,7 @@ the server:
 
 - the HTTP API for dropping collections (DELETE /_api/collection) now accepts an
   optional query string parameter `isSystem`, which can set to `true` in order to
-  drop system collections. If the parameter is not set or not set to true, the REST
+  drop system collections. If the parameter is not set or not set to true, the HTTP
   API will refuse to drop system collections. In previous versions of ArangoDB, the
   `isSystem` parameter did not exist, and there was no distinction between system
   and non-system collections when dropping collections.

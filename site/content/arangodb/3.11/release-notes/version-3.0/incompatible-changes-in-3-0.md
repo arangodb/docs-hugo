@@ -791,7 +791,7 @@ looked for an attribute `username` if the `user` attribute did not exist.
 
 ### Undocumented HTTP APIs
 
-The following undocumented HTTP REST endpoints have been removed from ArangoDB's REST
+The following undocumented HTTP API endpoints have been removed from ArangoDB's HTTP
 API:
 
 - `/_open/cerberus` and `/_system/cerberus`: these endpoints were intended for some 

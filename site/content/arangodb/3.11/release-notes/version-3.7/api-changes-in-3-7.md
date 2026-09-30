@@ -22,7 +22,7 @@ ensure operability until any invalid UTF-8 string data has been fixed.
 ## Metrics
 
 The following existing metrics for monitoring that are exposed via the HTTP
-REST endpoint `/_admin/metrics` have been renamed in ArangoDB 3.7:
+API endpoint `/_admin/metrics` have been renamed in ArangoDB 3.7:
 
 - `agency_agent_read_no_leader`
 - `agency_agent_read_ok`
@@ -42,7 +42,7 @@ This change was made to put the metrics into the "arangodb" namespace, so
 that metrics from different systems can unambiguously combined into a single
 monitoring system.
 
-The REST endpoint `/_admin/metrics` also returns additional metrics in 3.7,
+The HTTP API endpoint `/_admin/metrics` also returns additional metrics in 3.7,
 compared to the list of metrics that it returned in 3.6.
 
 ## HTTP API
@@ -87,7 +87,7 @@ previously, but the error message string in the `errorMessage` return value
 attribute may change from "precondition failed" to "conflict",
 "write-write conflict" or other values.
 
-### REST endpoints added
+### HTTP API endpoints added
 
 The following HTTP API endpoints have been added in 3.7:
 
@@ -106,7 +106,7 @@ The following HTTP API endpoints have been added in 3.7:
 
 Using these endpoints requires superuser privileges.
 
-### REST endpoints augmented
+### HTTP API endpoints augmented
 
 The HTTP API endpoint for inserting documents at `POST /_api/document/<collection>`
 will now handle the URL parameter `overwriteMode`.
@@ -176,10 +176,10 @@ graphs at `GET /_api/gharial` or a graph definition of a single graph at
 `GET /_api/gharial/{graph}` will include an additional boolean attribute
 called `isDisjoint` in case of **Disjoint SmartGraphs**.
 
-The REST endpoint `/_admin/metrics` also returns additional metrics in 3.7,
+The HTTP API endpoint `/_admin/metrics` also returns additional metrics in 3.7,
 compared to the list of metrics that it returned in 3.6.
 
-### REST endpoints moved
+### HTTP API endpoints moved
 
 The following existing HTTP APIs have moved in ArangoDB 3.7 to improve API
 naming consistency:
@@ -200,7 +200,7 @@ naming consistency:
 The above endpoints are part of ArangoDB's exposed HTTP API, however, they are
 not supposed to be called directly by drivers or client
 
-### REST endpoints removed
+### HTTP API endpoints removed
 
 The HTTP API endpoint at `/_admin/aql/reload` has been removed in ArangoDB 3.7.
 There is no necessity to call this endpoint from a driver or a client application

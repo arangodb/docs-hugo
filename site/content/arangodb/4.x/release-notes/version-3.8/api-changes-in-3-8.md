@@ -10,7 +10,7 @@ description: >-
 
 ### Collection API
 
-The following changes affect the behavior of the RESTful collection APIs at
+The following changes affect the behavior of the collection HTTP APIs at
 endpoints starting with path `/_api/collection/`:
 
 The collection properties `indexBuckets`, `journalSize`, `doCompact` and
