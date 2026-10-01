@@ -62,7 +62,7 @@ Upgrading to HTTP 2 is supported according to the ways outlined in
 [RFC 7540 Section 3](https://tools.ietf.org/html/rfc7540#section-3),
 from non-encrypted connections as well as encrypted connections.
 
-On non-encrypted connections with `http` scheme in the URI clients may use
+On non-encrypted connections with `http` scheme in the URL clients may use
 HTTP 1.1 initially until an upgrade is performed. Upgrading the connection is
 initiated by sending a request with the `Upgrade: h2c` header and exactly one
 `HTTP2-Settings` header. The server will then respond with `101 Switching Protocols`
@@ -75,7 +75,7 @@ The server will check the first 24 octets received over the connection and compa
 it to the HTTP 2 connection preface `PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n`, as outlined
 in [Section 5](https://tools.ietf.org/html/rfc7540#section-5).
 
-On TLS encrypted connections with `https` scheme in the URI ArangoDB supports the
+On TLS encrypted connections with `https` scheme in the URL ArangoDB supports the
 ALPN extension with the `h2` protocol identifier. This means the connection may
 switch to using HTTP/2 right away after a successful TLS handshake.
 
