@@ -107,9 +107,9 @@ paths:
       operationId: getReplicationLoggerFollow
       description: |
         {{</* warning */>}}
-        This endpoint should no longer be used.
+        This route should no longer be used.
         It is considered as deprecated from version 3.4.0 on. Client applications
-        should use the HTTP API endpoint `/_api/wal/tail` instead.
+        should use the REST API endpoint `/_api/wal/tail` instead.
         {{</* /warning */>}}
 
         Returns data from the server's replication log. This method can be called

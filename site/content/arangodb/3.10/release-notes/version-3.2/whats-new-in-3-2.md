@@ -186,7 +186,7 @@ are available in the *Enterprise Edition*.
   attribute names inside incoming JSON for some API endpoints, but not
   consistently for all APIs.
 
-- Internal JavaScript actions will now hide their stack traces to the client
+- Internal JavaScript REST actions will now hide their stack traces to the client
   unless in HTTP responses. Instead they will always log to the logfile.
 
 ## JavaScript

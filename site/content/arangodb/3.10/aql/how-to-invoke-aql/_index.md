@@ -8,7 +8,7 @@ AQL queries can be invoked in the following ways:
 
 - Via the web interface
 - Using the `db` object of the JavaScript API, for example, in arangosh or in a Foxx service
-- Via the raw HTTP API
+- Via the raw REST HTTP API
 
 There are always calls to the server's HTTP API under the hood, but the web interface
 and the `db` object abstract away the low-level communication details and are
@@ -26,5 +26,5 @@ arangosh.
 If you use Foxx microservices, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
 for examples including tagged template strings.
 
-If you want to run AQL queries from your application via the HTTP API,
+If you want to run AQL queries from your application via the HTTP REST API,
 see the full API description at [HTTP interface for AQL queries](../../develop/http-api/queries/aql-queries.md).

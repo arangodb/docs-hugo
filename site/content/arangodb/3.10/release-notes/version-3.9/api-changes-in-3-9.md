@@ -6,13 +6,13 @@ description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
 ---
-## HTTP API
+## HTTP RESTful API
 
 ### Behavior changes
 
 #### Graph API (Gharial)
 
-The following changes affect the behavior of the graph HTTP APIs at
+The following changes affect the behavior of the RESTful graph APIs at
 endpoints starting with path `/_api/gharial/`:
 
 The options object now supports a new optional field `satellites` in the
@@ -33,7 +33,7 @@ as a SatelliteCollection. (Disjoint) SmartGraphs using SatelliteCollections are
 then capable of executing all types of graph queries between the regular
 SmartCollections and SatelliteCollections.
 
-The following changes affect the behavior of the graph HTTP APIs at
+The following changes affect the behavior of the RESTful graph APIs at
 endpoints starting with path `/_api/gharial/{graph}/edge` and
 `/_api/gharial/{graph}/vertex`:
 
@@ -70,7 +70,7 @@ it is required that database names are properly URL-encoded in URLs. In addition
 database names containing UTF-8 characters must be 
 [NFC-normalized](https://en.wikipedia.org/wiki/Unicode_equivalence#Normal_forms).
 Non-NFC-normalized names will be rejected by arangod.
-This is true for any HTTP API endpoint in arangod if the extended database naming
+This is true for any REST API endpoint in arangod if the extended database naming
 convention is used.
 
 {{< info >}}
@@ -161,11 +161,11 @@ Now, a request like this succeeds and returns an empty array as response.
   return a collection's status will now return it as `loaded`, unconditionally.
 
 - The HTTP endpoints for loading and unloading collections (i.e. HTTP PUT
-  `/_api/collection/<collection>/load` and HTTP `PUT /_api/collection/<collection>/unload`)
+  `/_api/collection/<collection>/load` and HTTP PUT `/_api/collection/<collection>/unload`)
   have been turned into no-ops. They still exist in ArangoDB 3.9, but do not
   serve any purpose and are deprecated.
 
-- Changed the encoding of revision IDs returned by the below listed HTTP APIs.
+- Changed the encoding of revision IDs returned by the below listed REST APIs.
 
   <small>Introduced in: v3.8.8, v3.9.4</small>
 
@@ -182,7 +182,7 @@ Now, a request like this succeeds and returns an empty array as response.
 
 #### Support Info API
 
-The HTTP API endpoint `GET /_admin/support-info` was added for retrieving
+The HTTP REST API endpoint `GET /_admin/support-info` was added for retrieving
 deployment information for support purposes. The endpoint returns data about the
 ArangoDB version used, the host (operating system, server ID, CPU and storage capacity,
 current utilization, a few metrics) and the other servers in the deployment
@@ -259,7 +259,7 @@ single servers, Coordinators and DB-Servers:
 
 #### Cursor API
 
-The HTTP API endpoint `POST /_api/cursor` can now handle an 
+The HTTP REST API endpoint `POST /_api/cursor` can now handle an 
 additional sub-attribute `fillBlockCache` for its `options` attribute.
 `fillBlockCache` controls whether the to-be-executed query should
 populate the RocksDB block cache with the data read by the query.
@@ -267,7 +267,7 @@ This is an optional attribute, and its default value is `true`, meaning
 that the block cache will be populated. This functionality was also backported
 to v3.8.1.
 
-The HTTP API endpoint `POST /_api/cursor` can also handle the
+The HTTP REST API endpoint `POST /_api/cursor` can also handle the
 sub-attribute `maxNodesPerCallstack`, which controls after how many
 execution nodes in a query a stack split should be performed. This is
 only relevant for very large queries. If this option is not specified,
@@ -277,7 +277,7 @@ and normally does not need any adjustment.
 
 #### Log API
 
-The HTTP API endpoint `PUT /_admin/log/level` can now handle the
+The HTTP REST API endpoint `PUT /_admin/log/level` can now handle the
 pseudo log topic `"all"`. Setting the log level for the "all" log topic will
 adjust the log level for **all existing log topics**.
 For example, sending the JSON object to this API
@@ -290,7 +290,7 @@ will set all log topics to log level "debug".
 
 #### Authentication API
 
-The HTTP API endpoint `POST /_open/auth` now returns JWTs with a shorter
+The HTTP REST API endpoint `POST /_open/auth` now returns JWTs with a shorter
 lifetime of one hour by default. You can adjust the lifetime with the
 `--server.session-timeout` startup option.
 
@@ -432,7 +432,7 @@ to call the new addresses from 3.7 onwards.
 
 ### Endpoints deprecated
 
-The HTTP API endpoint `GET /_api/replication/logger-follow` is deprecated
+The REST API endpoint GET `/_api/replication/logger-follow` is deprecated
 since ArangoDB 3.4.0 and will be removed in a future version. Client
 applications should use the endpoint `/_api/wal/tail` instead, which is
 available since ArangoDB 3.3. This is a reminder to migrate to the other
@@ -451,13 +451,13 @@ caller of these API endpoints should use the updated endpoints:
 - `/_admin/clusterNodeStats`: use `/_admin/cluster/nodeStatistics`
 - `/_admin/clusterStatistics`: use `/_admin/cluster/statistics`
 
-The HTTP API endpoint `/_msg/please-upgrade-handler` has been removed in 
+The REST API endpoint `/_msg/please-upgrade-handler` has been removed in 
 ArangoDB 3.9 as it is no longer needed. Its purpose was to display a static 
 message.
 
 #### Export API
 
-The HTTP API endpoint `/_api/export` has been removed in ArangoDB 3.9.
+The REST API endpoint `/_api/export` has been removed in ArangoDB 3.9.
 This endpoint was previously only present in single server, but never
 supported in cluster deployments.
 

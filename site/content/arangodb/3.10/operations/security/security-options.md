@@ -17,7 +17,7 @@ The following security options are available:
 
 - `--server.harden`
   If this option is set to `true` and authentication is enabled, non-admin users
-  will be denied access to the following HTTP APIs:
+  will be denied access to the following REST APIs:
 
   - `/_admin/cluster/numberOfServers`
   - `/_admin/log`
@@ -27,13 +27,13 @@ The following security options are available:
   - `/_admin/statistics-description`
   - `/_api/engine/stats`
 
-  Additionally, no version details will be revealed by the version HTTP API at 
+  Additionally, no version details will be revealed by the version REST API at 
   `/_api/version`.
 
   The default value for this option is `false`.
 
 - `--server.support-info-api`
-  This option controls access to the HTTP API endpoint `/_admin/support-info` 
+  This option controls access to the REST API endpoint `/_admin/support-info` 
   for retrieving deployment information. It can have the following values:
   - `disabled`: support info API is disabled.
   - `jwt`: support info API can only be accessed via superuser JWT.
@@ -344,7 +344,7 @@ in an ArangoDB server:
   If set to `false`, this option disables access to any user-defined Foxx apps.
   Accessing the URL of any (existing or potentially existing) Foxx app produces an
   HTTP `403 Forbidden` error with this setting.
-  ArangoDB's built-in web interface and all built-in HTTP APIs remain accessible,
+  ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
   except the Foxx service management API, which makes it impossible to install and
   uninstall Foxx applications. Setting the option to `false` also deactivates the
   **SERVICES** section in the web interface.
