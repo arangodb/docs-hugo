@@ -60,7 +60,14 @@ Non-NFC-normalized names are rejected by the server.
 
 ### Get information about the current database
 
+{{< api-versions "v0" "v1" >}}
+
+{{< api-version >}}
+
 ```openapi
+---
+apiVersions: [v0]
+---
 paths:
   /_db/{database-name}/_api/database/current:
     get:
@@ -114,6 +121,67 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 ```
+
+{{< api-version >}}
+
+```openapi
+---
+apiVersions: [v1]
+---
+paths:
+  /_db/{database-name}/_api/database/current:
+    get:
+      operationId: getCurrentDatabase
+      description: |
+        Retrieves the properties of the current database
+
+        The response is a JSON object with the following attributes:
+
+        - `name`: the name of the current database
+        - `id`: the id of the current database
+        - `isSystem`: whether or not the current database is the `_system` database
+        - `sharding`: the default sharding method for collections created in this database
+        - `replicationFactor`: the default replication factor for collections in this database
+        - `writeConcern`: the default write concern for collections in this database
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            is returned if the information was retrieved successfully.
+        '400':
+          description: |
+            is returned if the request is invalid.
+        '404':
+          description: |
+            is returned if the database could not be found.
+      tags:
+        - Databases
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestDatabaseGetInfoApiV1
+---
+var url = "/_arango/v1/_api/database/current";
+var response = logCurlRequest('GET', url);
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+```
+
+{{< api-versions-end >}}
 
 ### List the accessible databases
 
