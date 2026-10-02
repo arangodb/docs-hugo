@@ -1,6 +1,7 @@
 ---
-title: The Platform Suite and the Agentic AI Suite
-menuTitle: Suites
+title: Features and licensing
+menuTitle: Features and licensing
+group: Overview
 weight: 10
 description: >-
   The two suites the Arango Contextual Data Platform is licensed as, and
@@ -20,7 +21,9 @@ which suite a page belongs to, look at the badge below its headline, which
 reads **Platform Suite** or **Agentic AI Suite**. Pages without a badge, such
 as the installation guide, apply to the platform as a whole.
 
-## What makes up the Platform Suite
+{{< embed-svg "Contextual-Data-Platform-Suites" "The three layers of the Arango Contextual Data Platform and how they are licensed." >}}
+
+## What's included in the Platform Suite
 
 - [**ArangoDB Enterprise Edition**](../arangodb/_index.md):
   The multi-model database foundation supporting graphs, documents, key-value,
@@ -54,8 +57,6 @@ as the installation guide, apply to the platform as a whole.
   Grafana and Prometheus dashboards for the deployment.
 
 ## What's included in the Agentic AI Suite
-
-{{< embed-svg "Agentic-AI-Suite-Overview" "Agentic AI Suite at a glance." >}}
 
 The Agentic AI Suite is composed of the following major components:
 

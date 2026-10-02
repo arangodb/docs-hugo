@@ -3975,7 +3975,7 @@
 
 
 # DOC-975: Agentic AI Suite and Platform Suite folded into the Contextual Data Platform
-/agentic-ai-suite/                                                              /contextual-data-platform/suites/                               301
+/agentic-ai-suite/                                                              /contextual-data-platform/features-and-licensing/                               301
 /agentic-ai-suite/ada/                                                          /contextual-data-platform/ada/                                  301
 /agentic-ai-suite/ada/artifacts/                                                /contextual-data-platform/ada/artifacts/                        301
 /agentic-ai-suite/ada/llm-configuration/                                        /contextual-data-platform/ada/llm-configuration/                301
@@ -4050,7 +4050,7 @@
 /agentic-ai-suite/reasoner/api-reference/                                       /contextual-data-platform/reasoner/api-reference/               301
 /agentic-ai-suite/reasoner/quick-start/                                         /contextual-data-platform/reasoner/quick-start/                 301
 /agentic-ai-suite/reasoner/web-interface/                                       /contextual-data-platform/reasoner/web-interface/               301
-/platform-suite/                                                                /contextual-data-platform/suites/                               301
+/platform-suite/                                                                /contextual-data-platform/features-and-licensing/                               301
 /platform-suite/container-manager/                                              /contextual-data-platform/container-manager/                    301
 /platform-suite/container-manager/apps/                                         /contextual-data-platform/container-manager/apps/               301
 /platform-suite/container-manager/deploy-api/                                   /contextual-data-platform/container-manager/deploy-api/         301

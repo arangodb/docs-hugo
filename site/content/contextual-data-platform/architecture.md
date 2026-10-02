@@ -1,6 +1,7 @@
 ---
-title: Data Platform Architecture
+title: Architecture
 menuTitle: Architecture
+group: Overview
 weight: 5
 description: >-
   The Arango Contextual Data Platform is purpose-built for Kubernetes, leveraging

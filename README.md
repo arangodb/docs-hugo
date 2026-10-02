@@ -389,6 +389,28 @@ Inner shortcode
 {{< /details >}}
 ```
 
+#### Navigation group labels
+
+Pages of a section can be grouped under a non-clickable label in the sidebar
+by setting `group` in their front matter:
+
+```yaml
+---
+title: Architecture
+menuTitle: Architecture
+group: Overview
+weight: 5
+---
+```
+
+The label is printed once whenever the `group` value changes while the pages
+of a section are rendered in weight order, so the pages of a group have to be
+contiguous by weight. Use a weight band per group (for example 100 to 199 for
+the first group, 200 to 299 for the second) to keep it that way. Pages without
+`group` are listed without a label. The Contextual Data Platform section uses
+the labels Overview, Build, Query & explore, Develop & extend, Deploy &
+operate, and Reference.
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
