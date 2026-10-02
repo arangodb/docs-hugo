@@ -628,8 +628,8 @@ if err != nil {
 }
 ```
 
-See [`ClientAdminLicense.SetLicense()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientAdminLicense)
-in the _go-driver_ v2 documentation for details.
+See [`ClientAdminLicense.SetLicense()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ClientAdminLicense)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -753,8 +753,8 @@ if err != nil {
 }
 ```
 
-See [`ClientAdminLicense.GetLicense()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientAdminLicense)
-in the _go-driver_ v2 documentation for details.
+See [`ClientAdminLicense.GetLicense()`](https://pkg.go.dev/github.com/arangodb/go-driver/v3/arangodb#ClientAdminLicense)
+in the _go-driver_ v3 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
