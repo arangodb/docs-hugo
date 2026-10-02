@@ -953,3 +953,19 @@ all client-tools because the legacy SSL encryption settings are not supported
 by _arangod_  anymore and the remaining ones are all TLS versions.
 
 You can still use the old startup option name.
+
+## Drivers
+
+### Go driver v3 required
+
+To connect to ArangoDB 4.0 using Go, you need to use the Go driver in version 3
+(`github.com/arangodb/go-driver/v3`). Version 2 of the driver only supports
+ArangoDB 3.x, and version 3 is not compatible with ArangoDB 3.x.
+
+For most applications, switching to driver v3 only requires changing the import
+paths from `github.com/arangodb/go-driver/v2/...` to
+`github.com/arangodb/go-driver/v3/...`. Methods and fields for functionality
+that has been removed in ArangoDB 4.0 are no longer available in driver v3.
+See [Go driver versions](../../../../ecosystem/drivers/go.md#driver-versions)
+and the [migration guide](https://github.com/arangodb/go-driver/blob/master/v3/MIGRATION.md)
+for details.
