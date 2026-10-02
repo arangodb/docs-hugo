@@ -207,7 +207,7 @@ suboptimal query performance due to random data distribution.
 General graphs are the easiest way to get started, no special configuration required.
 {{< /tip >}}
 
-![General Graph Random Distribution](../../../images/general-graph-distribution.png)
+![General Graph Random Distribution](../../../images/general-graph-distribution.svg)
 
 #### When to use SmartGraphs
 
@@ -222,7 +222,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 `smartGraphAttribute`.
 {{< /tip >}}
 
-![SmartGraph Distribution](../../../images/smartgraph-distribution.png)
+![SmartGraph Distribution](../../../images/smartgraph-distribution.svg)
 
 #### When to use EnterpriseGraphs
 
