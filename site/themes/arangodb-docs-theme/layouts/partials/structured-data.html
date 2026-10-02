@@ -1,0 +1,59 @@
+{{- /*
+  Structured data (JSON-LD) for rich snippets / Google rich results.
+
+  - Home page                        -> WebSite
+  - Docs pages & section overviews   -> TechArticle (Google treats this as Article)
+  - Section indexes without own body -> CollectionPage (they only list child pages)
+*/ -}}
+{{- $pageDescription := .Description | default .Site.Params.description | markdownify | plainify | htmlUnescape -}}
+{{- /* Same disambiguated title as <title> and og:title, e.g. "Edge | Arango Contextual Data Platform 4.0". */ -}}
+{{- $documentTitle := partial "title.html" . | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- $publisher := dict
+    "@type" "Organization"
+    "name" "Arango"
+    "url" "https://arango.ai"
+    "logo" (dict "@type" "ImageObject" "url" (absURL "Arango_logo.png")) -}}
+{{- $schema := dict -}}
+
+{{- if .IsHome -}}
+  {{- $schema = dict
+      "@context" "https://schema.org"
+      "@type" "WebSite"
+      "name" .Site.Title
+      "url" .Site.BaseURL
+      "description" $pageDescription
+      "publisher" $publisher -}}
+{{- else if and .IsSection (not (.RawContent | strings.TrimSpace)) -}}
+  {{- /* Pure listing page: describes a collection of pages, not an article. */ -}}
+  {{- $schema = dict
+      "@context" "https://schema.org"
+      "@type" "CollectionPage"
+      "name" $documentTitle
+      "description" $pageDescription
+      "url" .Permalink
+      "inLanguage" (.Language.Lang | default "en")
+      "isPartOf" (dict "@type" "WebSite" "name" .Site.Title "url" .Site.BaseURL)
+      "publisher" $publisher -}}
+{{- else if or .IsPage .IsSection -}}
+  {{- $schema = dict
+      "@context" "https://schema.org"
+      "@type" "TechArticle"
+      "headline" $documentTitle
+      "description" $pageDescription
+      "url" .Permalink
+      "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink)
+      "inLanguage" (.Language.Lang | default "en")
+      "author" $publisher
+      "publisher" $publisher -}}
+{{- end -}}
+
+{{- /* dateModified applies to all of the types above. */ -}}
+{{- if and $schema (not .Lastmod.IsZero) -}}
+  {{- $schema = merge $schema (dict "dateModified" (.Lastmod.Format "2006-01-02T15:04:05-07:00")) -}}
+{{- end -}}
+
+{{- if $schema }}
+<script type="application/ld+json">
+{{ jsonify (dict "indent" "  ") $schema | safeJS }}
+</script>
+{{- end -}}
