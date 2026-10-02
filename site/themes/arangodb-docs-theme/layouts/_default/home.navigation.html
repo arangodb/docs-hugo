@@ -4,7 +4,15 @@
 
 {{- define "main-nav-tree" }}
   {{- $pages := .Pages }}
+  {{- $prevGroup := "" }}
   {{- range $page := $pages.ByWeight }}
+    {{- /* non-clickable group label, printed once when the `group` front matter value changes */}}
+    {{- with $page.Params.group }}
+      {{- if ne . $prevGroup }}
+      <li class="nav-group-label">{{ . | markdownify }}</li>
+        {{- $prevGroup = . }}
+      {{- end }}
+    {{- end }}
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
       <li class="nav-section">

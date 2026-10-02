@@ -389,6 +389,28 @@ Inner shortcode
 {{< /details >}}
 ```
 
+#### Navigation group labels
+
+Pages of a section can be grouped under a non-clickable label in the sidebar
+by setting `group` in their front matter:
+
+```yaml
+---
+title: Architecture
+menuTitle: Architecture
+group: Overview
+weight: 5
+---
+```
+
+The label is printed once whenever the `group` value changes while the pages
+of a section are rendered in weight order, so the pages of a group have to be
+contiguous by weight. Use a weight band per group (for example 100 to 199 for
+the first group, 200 to 299 for the second) to keep it that way. Pages without
+`group` are listed without a label. The Contextual Data Platform section uses
+the labels Overview, Build, Query & explore, Develop & extend, Deploy &
+operate, and Reference.
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
@@ -559,7 +581,7 @@ block, and edit the `xlink:href` value.
 Conventions used in the existing diagrams:
 
 - Internal docs links use an absolute path, e.g. `/arangodb/4.x/deploy/cluster/`
-  or `/platform-suite/container-manager/`.
+  or `/contextual-data-platform/container-manager/`.
 - External links use a full URL and add `target="_blank"`, e.g.
   `<a xlink:href="https://kubernetes.io/" target="_blank">`.
 - Use `class="card-link"` on the `<a>` tag so the link picks up the shared
@@ -799,8 +821,8 @@ The following shortcodes also exist but are rarely used:
 - Avoid overly long link labels, such as entire sentences.
 
 - Use relative links for cross-references to other documentation pages, e.g.
-  `../../platform-suite/_index.md` instead of `/platform-suite/_index.md` or
-  `https://docs.arango.ai/platform-suite/`.
+  `../../contextual-data-platform/_index.md` instead of `/contextual-data-platform/_index.md` or
+  `https://docs.arango.ai/contextual-data-platform/`.
 
 - Avoid **bold** and *italic* markup in headlines. If you have to use it, then
   prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
@@ -1096,10 +1118,13 @@ Pages and sections about features that are only available in certain environment
 such as in ArangoDB Shell should indicate where they are available using the
 `tag` shortcode.
 
-Features exclusive to the Contextual Data Platform, Platform Suite, Agentic AI Suite,
-Arango Managed Platform (AMP), and ArangoDB generally don't need to be tagged
-because they are in dedicated parts of the documentation. However, if there are
-subsections with different procedures, each can be tagged accordingly.
+Features exclusive to the Contextual Data Platform, the Arango Managed Platform
+(AMP), and ArangoDB generally don't need to be tagged because they are in
+dedicated parts of the documentation. Within the Contextual Data Platform
+documentation, the Platform Suite and the Agentic AI Suite are licenses rather
+than chapters, so pages of services that require one of them are tagged.
+If there are subsections with different procedures, each can be tagged
+accordingly.
 
 In the Contextual Data Platform only:
 
@@ -1107,13 +1132,13 @@ In the Contextual Data Platform only:
 {{< tag "Contextual Data Platform" >}}
 ```
 
-In the Platform Suite of the Contextual Data Platform:
+Requires the Platform Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Platform Suite" >}}
 ```
 
-In the Agentic AI Suite of the Contextual Data Platform only:
+Requires the Agentic AI Suite license of the Contextual Data Platform:
 
 ```markdown
 {{< tag "Agentic AI Suite" >}}

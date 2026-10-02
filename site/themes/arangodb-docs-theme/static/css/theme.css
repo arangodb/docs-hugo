@@ -2176,6 +2176,17 @@ nav.pagination .next {
     display: flex;
 }
 
+.nav-group-label {
+    margin: .9rem 0 .15rem;
+    padding: 0 1rem;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    list-style: none;
+}
+
 .nav-section-header-versioned {
     position: sticky;
     top: -0.5rem;
