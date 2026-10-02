@@ -70,7 +70,7 @@ curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/release
 ```
 
 Request credentials with the
-[license key request form](https://arangoaistg.wpenginepowered.com/cdp-license-request/)
+[license key request form](https://arango.ai/cdp-license-request/)
 if you do not have them yet.
 
 ### The cluster cannot reach the license service
@@ -100,7 +100,7 @@ kubectl port-forward --namespace arango service/deployment-ea 8529:8529
 
 ## The installation succeeded but you cannot connect
 
-### Connection refused from the browser or the Python client
+### Connection refused from the browser or the Arango AI SDK
 
 The port-forward has dropped. It is not a background service - it stops when the
 terminal closes, when the network changes, or when the pod restarts. Start it
@@ -118,9 +118,9 @@ Expected for a local installation. The deployment uses a self-signed
 certificate, so the browser cannot verify it. Continue anyway - depending on the
 browser, the option to continue is behind an **Advanced** button.
 
-### The Python client fails with a TLS or certificate error
+### The Arango AI SDK fails with a TLS or certificate error
 
-The client has to accept the same self-signed certificate:
+The SDK has to accept the same self-signed certificate:
 
 ```python
 from arango_ai import ArangoAIClient
@@ -147,7 +147,7 @@ before exposing the deployment beyond your machine.
 ### The build never finishes
 
 `ag.build()` is the long step - a few minutes on the sample documents, longer on
-your own corpus. It streams progress, so enable the SDK logs to see where it is
+your own documents. It streams progress, so enable the SDK logs to see where it is
 instead of watching a blank screen:
 
 ```python

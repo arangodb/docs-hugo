@@ -4,7 +4,7 @@ menuTitle: Arango Contextual Data Platform
 weight: 10
 description: >-
   Install the Arango Contextual Data Platform and run your first graph-powered
-  questions with the Python client
+  questions with the Arango AI SDK
 ---
 ## Prerequisites
 
@@ -23,8 +23,10 @@ description: >-
 - **Resources**: 2+ CPU cores, 8 GB+ RAM, and 50 GB+ free disk space.
 - **Connectivity**: Active internet connection for downloading container images
   and tools.
-- **License key**: An Arango license key. Request one with the
-  [license key request form](https://arangoaistg.wpenginepowered.com/cdp-license-request/).
+- **License key**: An Arango license key. Get one for free with the
+  [license key request form](https://arango.ai/cdp-license-request/) - fill in
+  your name, work email, company, and country, accept the license terms, and
+  select **Generate license key**. No credit card is required.
 - **LLM access**: A valid OpenAI API key. Any other OpenAI-compatible endpoint
   works as well - OpenRouter, Google Gemini, Anthropic, Azure, or a private
   corporate LLM - see
@@ -49,6 +51,8 @@ deployment. Pick the one that matches what you need:
 
 The installation script sets up a complete local evaluation environment. It
 takes about 10 minutes, most of it spent downloading container images.
+Replace `YOUR_LICENSE_KEY` with the key you received from the
+[license key request form](https://arango.ai/cdp-license-request/):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -fsSL https://releases.license.arango.ai/releases/plg/install.sh | bash -s -- --license-key "YOUR_LICENSE_KEY"
@@ -163,18 +167,29 @@ Sample output:
 For common setup issues, see
 [Troubleshooting the installation](troubleshooting.md).
 
-## Install Python Client
+## Install the Arango AI SDK
 
-To interact with your instance programmatically, install the official
-Python client. It requires **Python 3.10 or higher** - note that the Python
-shipped with macOS is older than that, so check your version first:
+AutoGraph and AutoRAG are exposed as HTTP APIs, and you can call them directly -
+the [AutoGraph Service Reference](../../agentic-ai-suite/autograph/reference/_index.md)
+documents every endpoint. Going from documents to answers that way takes more
+than a dozen calls in the right order, though: obtaining and renewing a JWT,
+storing your LLM API key as a secret, creating a project, starting the AutoGraph
+service, running the three build stages one after another while polling each
+one until it finishes, and finally deploying a retriever to query. The Arango AI SDK, the official Python client, wraps that
+whole sequence into a handful of methods - `upload()`, `build()`, and `ask()` -
+and takes care of authentication, waiting on long-running steps, and reconnecting
+to a project you built earlier. It is the quickest way to put the platform to
+work from your own code, and it is what the quick start below uses.
+
+The SDK requires **Python 3.10 or higher** - note that the Python shipped with
+macOS is older than that, so check your version first:
 
 ```bash
 python3 --version
 ```
 
 Create and activate a virtual environment with a supported Python version, then
-install the client into it:
+install the SDK into it:
 
 ```bash
 python3 -m venv .venv
@@ -189,19 +204,49 @@ and create it again with a newer Python, for example
 
 ## Quick Start
 
-The quick start walks you through the steps needed to build a graph and run
-queries with code samples. A complete working Python program is available at the
-end.
+In this quick start, you give AutoGraph a few short texts, let it turn them into
+a graph, and then ask that graph questions in plain English. A complete working
+Python program is available at the end.
+
+The sample data is three short biographies of physicists - Albert Einstein,
+Niels Bohr, and Werner Heisenberg. Each text is about one person, but they
+mention one another: Heisenberg studied under Bohr, Bohr and Einstein debated
+quantum mechanics, and all three won the Nobel Prize in Physics. The point of
+the exercise is to answer questions that no single text answers alone, such as
+which of them won a Nobel Prize and for what. A plain keyword or vector search
+returns individual passages, while a graph connects the facts across documents.
+
+**AutoGraph** is the service that builds that graph. From your documents, it
+creates a **Context Graph** made of two parts:
+
+- The **Corpus Graph** maps how your documents relate to each other. AutoGraph
+  extracts the text, computes embeddings, links similar documents, and groups
+  them into topic clusters.
+- The **Knowledge Graph** holds what the documents say. For each cluster,
+  AutoGraph uses your LLM to pick the entity types worth extracting and a
+  retrieval strategy: a full graph of entities and relationships for complex
+  content, or plain vector retrieval for simpler content. For a full graph, it
+  then extracts entities such as people, institutions, and prizes, along with
+  the relationships between them.
+
+**AutoRAG** then deploys a retriever on top of the Context Graph that answers
+natural-language questions from it. For a closer look at each stage, see
+[AutoGraph](../../agentic-ai-suite/autograph/_index.md).
 
 {{< info >}}
-The client connects through the port-forward that the installer started. If it
-has dropped, re-run
+The Arango AI SDK client connects through the port-forward that the installer
+started. If it has dropped, re-run
 `kubectl port-forward -n arango service/deployment-ea 8529:8529`.
 {{< /info >}}
 
 Follow these steps to connect and run your first graph query.
 
 ### Connect
+
+Connect to the platform, select a database, and open an AutoGraph project. The
+database and the project are created if they do not exist yet. Opening the
+project also stores your LLM API key on the platform and starts the AutoGraph
+service, which can take a minute or two:
 
 ```python
 from arango_ai import ArangoAIClient
@@ -213,8 +258,11 @@ ag = db.autograph('my-project', llm_api_key='YOUR_LLM_API_KEY')
 
 ### Build
 
-Upload three separate documents - each about a different person - and then build
-the graph:
+Upload the three biographies as separate documents, and then build the graph.
+`build()` runs the whole AutoGraph pipeline described above - Corpus Graph,
+per-cluster strategies, and Knowledge Graph extraction - and finally starts the
+retriever. Most steps call your LLM or embedding model, so expect it to take
+several minutes even for this small dataset:
 
 ```python
 ag.upload(
@@ -244,25 +292,55 @@ ag.build()
 
 ### Query
 
-Now the part you built all of this for. Each line below asks the corpus a
-different kind of question, so run them in order - together they show what the
-Context Graph can do that a keyword search cannot.
+With the graph built, you can ask questions about the three biographies.
+`ask()` sends your question to the AutoRAG retriever. The retriever looks up the
+relevant entities, relationships, and text passages in the Context Graph and
+passes them to your LLM, which writes an answer based on that retrieved context
+rather than on its general knowledge.
+
+How the retriever searches depends on the kind of question, and you select it
+with the `mode` and `use_llm_planner` parameters:
+
+- [**Local search**](../../agentic-ai-suite/autorag/search-methods/local-search.md)
+  (the default) starts from the entities your question names, such as
+  Heisenberg, and follows their direct relationships. Use it for questions about
+  a specific person or thing.
+- [**Global search**](../../agentic-ai-suite/autorag/search-methods/global-search.md)
+  (`mode="global"`) works from summaries of groups of closely related entities
+  across the whole graph. Use it for broad questions about overall themes.
+- [**Unified search**](../../agentic-ai-suite/autorag/search-methods/unified-search.md)
+  (`mode="unified"`) combines matching text passages with matching entities in
+  a single fast lookup.
+- [**Deep search**](../../agentic-ai-suite/autorag/search-methods/deep-search.md)
+  (`use_llm_planner=True`) lets the LLM break the question into steps and
+  follow relationships over several hops. Use it for questions that combine
+  facts from several documents. It is the slowest mode.
+
+Try one question with each mode:
 
 ```python
-# Global; Summarizes across the whole graph
-response = ag.ask("What are the big themes across these documents?", mode="global")
+# Local search: one entity and its direct relationships
+print(ag.ask("What did Heisenberg contribute to physics?"))
 
-# Local (the default); One entity and its immediate neighbourhood
-response = ag.ask("What did Heisenberg contribute to physics?")
+# Global search: themes across the whole graph
+print(ag.ask("What are the big themes across these documents?", mode="global"))
 
-# Unified; Combines passages and entities into one answer
-response = ag.ask("Explain the Nobel Prize contributions in quantum mechanics.", mode="unified")
+# Unified search: text passages and entities combined
+print(ag.ask("Explain the Nobel Prize contributions in quantum mechanics.", mode="unified"))
 
-# Deep; Plans several hops across the graph
-response = ag.ask("Which physicists here won Nobel Prizes and what were they for?", use_llm_planner=True)
+# Deep search: multi-step reasoning across documents
+print(ag.ask("Which physicists here won Nobel Prizes and what were they for?", use_llm_planner=True))
 ```
 
+The last question is the one from the start of this quick start. No single
+biography lists all three prizes, so answering it requires connecting facts
+from all three documents.
+
 ### Cleanup
+
+Stop the AutoGraph and retriever services when you are done. The project and
+the graph it built stay in the database, so opening the same project again later
+reconnects to them:
 
 ```python
 ag.stop()
