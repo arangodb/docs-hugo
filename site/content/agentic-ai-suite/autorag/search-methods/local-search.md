@@ -11,7 +11,7 @@ Local Search focuses on specific entities and their relationships within your
 knowledge graph. It is ideal for detailed queries about particular concepts,
 entities, or relationships.
 
-{{< diagram src="/images/retriever-local-search-architecture.png" 
+{{< diagram src="/images/retriever-local-search-architecture.svg" 
            alt="Local Search Architecture showing entity-based retrieval" >}}
 
 ## Configuration

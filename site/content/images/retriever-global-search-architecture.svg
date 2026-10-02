@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1590" width="900" height="1590" role="img" aria-labelledby="gs-title gs-desc">
+  <title id="gs-title">Global Search architecture</title>
+  <desc id="gs-desc">A global query flows through three stages: community retrieval and filtering, community mapping to support points (map), and global context and final answer (reduce).</desc>
+  <style>
+    text { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; fill: #1f2937; }
+    .frame { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; }
+    .ftitle { font-size: 15px; font-weight: 700; fill: #334155; }
+    .box { stroke-width: 2; }
+    .btitle { font-size: 13.5px; font-weight: 700; }
+    .bullet { font-size: 12.5px; }
+    .edge { fill: none; stroke: #64748b; stroke-width: 1.75; }
+    .elabel { font-size: 11px; fill: #475569; }
+    .lbg-page { fill: #ffffff; }
+    .lbg-frame { fill: #f8fafc; }
+  </style>
+  <defs>
+    <marker id="gs-arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,4 L0,8 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="900" height="1590" fill="#ffffff"/>
+  <rect class="frame" x="16" y="96" width="868" height="580" rx="10"/>
+  <text class="ftitle" x="860" y="124" text-anchor="end">1. Community Retrieval &amp; Filtering</text>
+  <rect class="frame" x="16" y="736" width="868" height="580" rx="10"/>
+  <text class="ftitle" x="860" y="764" text-anchor="end">2. Community Mapping to Support Points</text>
+  <rect class="frame" x="16" y="1376" width="868" height="196" rx="10"/>
+  <text class="ftitle" x="860" y="1404" text-anchor="end">3. Global Context &amp; Final Answer</text>
+  <rect class="box" x="47.0" y="20" width="200" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text class="btitle" x="147.0" y="45" text-anchor="middle">Global Query (text)</text>
+  <path class="edge" d="M147.0,60 V139" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="157.0" y="82.0">user input text</text>
+  <path class="edge" d="M250,204.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="196.0" text-anchor="middle">load schema</text>
+  <path class="edge" d="M553,204.0 H649" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="601.0" y="196.0" text-anchor="middle">occurrence</text>
+  <text class="elabel" x="601.0" y="183.0" text-anchor="middle">sorted by</text>
+  <path class="edge" d="M753.0,268 V292.0 Q753.0,300.0 745.0,300.0 H155.0 Q147.0,300.0 147.0,308.0 V331" marker-end="url(#gs-arrow)"/>
+  <rect class="lbg-frame" x="417.6" y="291.0" width="64.9" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="304.0" text-anchor="middle">top-N ids</text>
+  <path class="edge" d="M250,396.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="388.0" text-anchor="middle">full docs</text>
+  <path class="edge" d="M553,396.0 H649" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="601.0" y="388.0" text-anchor="middle">filtered</text>
+  <text class="elabel" x="601.0" y="375.0" text-anchor="middle">rating-</text>
+  <path class="edge" d="M753.0,460 V484.0 Q753.0,492.0 745.0,492.0 H155.0 Q147.0,492.0 147.0,500.0 V523" marker-end="url(#gs-arrow)"/>
+  <rect class="lbg-frame" x="402.3" y="483.0" width="95.4" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="496.0" text-anchor="middle">final ordering</text>
+  <path class="edge" d="M147.0,652 V779" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="157.0" y="719.5">community list</text>
+  <path class="edge" d="M250,844.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="836.0" text-anchor="middle">batches</text>
+  <text class="elabel" x="298.0" y="823.0" text-anchor="middle">token-bounded</text>
+  <path class="edge" d="M553,844.0 H649" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="601.0" y="836.0" text-anchor="middle">batch context</text>
+  <text class="elabel" x="601.0" y="823.0" text-anchor="middle">structured</text>
+  <path class="edge" d="M753.0,908 V932.0 Q753.0,940.0 745.0,940.0 H155.0 Q147.0,940.0 147.0,948.0 V971" marker-end="url(#gs-arrow)"/>
+  <rect class="lbg-frame" x="384.0" y="931.0" width="132.0" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="944.0" text-anchor="middle">mapping instructions</text>
+  <path class="edge" d="M250,1036.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="1028.0" text-anchor="middle">LLM outputs</text>
+  <path class="edge" d="M553,1036.0 H649" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="601.0" y="1028.0" text-anchor="middle">points</text>
+  <text class="elabel" x="601.0" y="1015.0" text-anchor="middle">per-batch</text>
+  <path class="edge" d="M753.0,1100 V1124.0 Q753.0,1132.0 745.0,1132.0 H155.0 Q147.0,1132.0 147.0,1140.0 V1163" marker-end="url(#gs-arrow)"/>
+  <rect class="lbg-frame" x="414.5" y="1123.0" width="71.0" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="1136.0" text-anchor="middle">all points</text>
+  <path class="edge" d="M250,1228.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="1220.0" text-anchor="middle">ranked points</text>
+  <path class="edge" d="M553,1228.0 H649" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="601.0" y="1220.0" text-anchor="middle">list</text>
+  <text class="elabel" x="601.0" y="1207.0" text-anchor="middle">token-bounded</text>
+  <path class="edge" d="M753.0,1292 V1338.0 Q753.0,1346.0 745.0,1346.0 H155.0 Q147.0,1346.0 147.0,1354.0 V1419" marker-end="url(#gs-arrow)"/>
+  <rect class="lbg-page" x="402.3" y="1337.0" width="95.4" height="18" rx="3"/>
+  <text class="elabel" x="450.0" y="1350.0" text-anchor="middle">support points</text>
+  <path class="edge" d="M250,1484.0 H346" marker-end="url(#gs-arrow)"/>
+  <text class="elabel" x="298.0" y="1476.0" text-anchor="middle">global context</text>
+  <text class="elabel" x="298.0" y="1463.0" text-anchor="middle">formatted</text>
+  <rect class="box" x="44" y="140" width="206" height="128" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="56" y="172.0">Load community schema</text>
+  <text class="bullet" x="56" y="195.0">•</text>
+  <text class="bullet" x="66" y="195.0">Read communities up to</text>
+  <text class="bullet" x="66" y="211.0">configured level</text>
+  <text class="bullet" x="56" y="230.0">•</text>
+  <text class="bullet" x="66" y="230.0">Include occurrence</text>
+  <text class="bullet" x="66" y="246.0">metadata</text>
+  <rect class="box" x="347" y="140" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="180.0">Rank by occurrence</text>
+  <text class="bullet" x="359" y="203.0">•</text>
+  <text class="bullet" x="369" y="203.0">Sort communities by how</text>
+  <text class="bullet" x="369" y="219.0">often they appear</text>
+  <text class="bullet" x="359" y="238.0">•</text>
+  <text class="bullet" x="369" y="238.0">Highest occurrence first</text>
+  <rect class="box" x="650" y="140" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="163.5">Limit considered</text>
+  <text class="btitle" x="662" y="180.5">communities</text>
+  <text class="bullet" x="662" y="203.5">•</text>
+  <text class="bullet" x="672" y="203.5">Keep only top-N most</text>
+  <text class="bullet" x="672" y="219.5">frequent</text>
+  <text class="bullet" x="662" y="238.5">•</text>
+  <text class="bullet" x="672" y="238.5">Enforce max communities</text>
+  <text class="bullet" x="672" y="254.5">budget</text>
+  <rect class="box" x="44" y="332" width="206" height="128" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="56" y="355.5">Load full community</text>
+  <text class="btitle" x="56" y="372.5">reports</text>
+  <text class="bullet" x="56" y="395.5">•</text>
+  <text class="bullet" x="66" y="395.5">Fetch full documents for</text>
+  <text class="bullet" x="66" y="411.5">selected IDs</text>
+  <text class="bullet" x="56" y="430.5">•</text>
+  <text class="bullet" x="66" y="430.5">Include report text and</text>
+  <text class="bullet" x="66" y="446.5">rating</text>
+  <rect class="box" x="347" y="332" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="355.5">Filter by rating</text>
+  <text class="btitle" x="359" y="372.5">threshold</text>
+  <text class="bullet" x="359" y="395.5">•</text>
+  <text class="bullet" x="369" y="395.5">Drop communities below</text>
+  <text class="bullet" x="369" y="411.5">minimum rating</text>
+  <text class="bullet" x="359" y="430.5">•</text>
+  <text class="bullet" x="369" y="430.5">Keep only sufficiently</text>
+  <text class="bullet" x="369" y="446.5">strong reports</text>
+  <rect class="box" x="650" y="332" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="364.0">Sort for final priority</text>
+  <text class="bullet" x="662" y="387.0">•</text>
+  <text class="bullet" x="672" y="387.0">Order by occurrence and</text>
+  <text class="bullet" x="672" y="403.0">rating</text>
+  <text class="bullet" x="662" y="422.0">•</text>
+  <text class="bullet" x="672" y="422.0">Highest quality</text>
+  <text class="bullet" x="672" y="438.0">communities first</text>
+  <rect class="box" x="44" y="524" width="206" height="128" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="56" y="556.0">Selected communities</text>
+  <text class="bullet" x="56" y="579.0">•</text>
+  <text class="bullet" x="66" y="579.0">Final ordered list of</text>
+  <text class="bullet" x="66" y="595.0">community nodes</text>
+  <text class="bullet" x="56" y="614.0">•</text>
+  <text class="bullet" x="66" y="614.0">Used as input for point</text>
+  <text class="bullet" x="66" y="630.0">mapping</text>
+  <rect class="box" x="44" y="780" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="812.0">Group by token budget</text>
+  <text class="bullet" x="56" y="835.0">•</text>
+  <text class="bullet" x="66" y="835.0">Split communities into</text>
+  <text class="bullet" x="66" y="851.0">batches</text>
+  <text class="bullet" x="56" y="870.0">•</text>
+  <text class="bullet" x="66" y="870.0">Each batch fits token</text>
+  <text class="bullet" x="66" y="886.0">limit for reports</text>
+  <rect class="box" x="347" y="780" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="811.5">Build tabular context</text>
+  <text class="btitle" x="359" y="828.5">per batch</text>
+  <text class="bullet" x="359" y="851.5">•</text>
+  <text class="bullet" x="369" y="851.5">id, report text, rating,</text>
+  <text class="bullet" x="369" y="867.5">importance</text>
+  <text class="bullet" x="359" y="886.5">•</text>
+  <text class="bullet" x="369" y="886.5">Convert to CSV-like table</text>
+  <rect class="box" x="650" y="780" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="812.0">Build mapping prompt</text>
+  <text class="bullet" x="662" y="835.0">•</text>
+  <text class="bullet" x="672" y="835.0">Insert table into</text>
+  <text class="bullet" x="672" y="851.0">mapping template</text>
+  <text class="bullet" x="662" y="870.0">•</text>
+  <text class="bullet" x="672" y="870.0">Ask for structured</text>
+  <text class="bullet" x="672" y="886.0">global points</text>
+  <rect class="box" x="44" y="972" width="206" height="128" rx="8" fill="#dcfce7" stroke="#15803d"/>
+  <text class="btitle" x="56" y="1004.0">Call mapping LLM</text>
+  <text class="bullet" x="56" y="1027.0">•</text>
+  <text class="bullet" x="66" y="1027.0">Provider-agnostic</text>
+  <text class="bullet" x="66" y="1043.0">(OpenAI / Triton)</text>
+  <text class="bullet" x="56" y="1062.0">•</text>
+  <text class="bullet" x="66" y="1062.0">Return JSON-style points</text>
+  <text class="bullet" x="66" y="1078.0">with scores</text>
+  <rect class="box" x="347" y="972" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1004.0">Parse mapped points</text>
+  <text class="bullet" x="359" y="1027.0">•</text>
+  <text class="bullet" x="369" y="1027.0">Extract descriptions and</text>
+  <text class="bullet" x="369" y="1043.0">scores</text>
+  <text class="bullet" x="359" y="1062.0">•</text>
+  <text class="bullet" x="369" y="1062.0">One list of points per</text>
+  <text class="bullet" x="369" y="1078.0">batch</text>
+  <rect class="box" x="650" y="972" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="662" y="1004.0">Aggregate all batches</text>
+  <text class="bullet" x="662" y="1027.0">•</text>
+  <text class="bullet" x="672" y="1027.0">Flatten lists across</text>
+  <text class="bullet" x="672" y="1043.0">batches</text>
+  <text class="bullet" x="662" y="1062.0">•</text>
+  <text class="bullet" x="672" y="1062.0">Track which batch/analyst</text>
+  <text class="bullet" x="672" y="1078.0">each came from</text>
+  <rect class="box" x="44" y="1164" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1204.0">Filter and rank points</text>
+  <text class="bullet" x="56" y="1227.0">•</text>
+  <text class="bullet" x="66" y="1227.0">Drop non-positive scores</text>
+  <text class="bullet" x="56" y="1246.0">•</text>
+  <text class="bullet" x="66" y="1246.0">Sort support points by</text>
+  <text class="bullet" x="66" y="1262.0">score descending</text>
+  <rect class="box" x="347" y="1164" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="359" y="1196.0">Truncate by token budget</text>
+  <text class="bullet" x="359" y="1219.0">•</text>
+  <text class="bullet" x="369" y="1219.0">Walk ranked points in</text>
+  <text class="bullet" x="369" y="1235.0">order</text>
+  <text class="bullet" x="359" y="1254.0">•</text>
+  <text class="bullet" x="369" y="1254.0">Stop when combined</text>
+  <text class="bullet" x="369" y="1270.0">tokens hit limit</text>
+  <rect class="box" x="650" y="1164" width="206" height="128" rx="8" fill="#fce7f3" stroke="#be185d"/>
+  <text class="btitle" x="662" y="1196.0">Final support points</text>
+  <text class="bullet" x="662" y="1219.0">•</text>
+  <text class="bullet" x="672" y="1219.0">Short, high-value global</text>
+  <text class="bullet" x="672" y="1235.0">summaries</text>
+  <text class="bullet" x="662" y="1254.0">•</text>
+  <text class="bullet" x="672" y="1254.0">Directly used as answer</text>
+  <text class="bullet" x="672" y="1270.0">context</text>
+  <rect class="box" x="44" y="1420" width="206" height="128" rx="8" fill="#f3e8ff" stroke="#7e22ce"/>
+  <text class="btitle" x="56" y="1452.0">Format global context</text>
+  <text class="bullet" x="56" y="1475.0">•</text>
+  <text class="bullet" x="66" y="1475.0">Render analyst sections</text>
+  <text class="bullet" x="66" y="1491.0">with scores</text>
+  <text class="bullet" x="56" y="1510.0">•</text>
+  <text class="bullet" x="66" y="1510.0">Include each support</text>
+  <text class="bullet" x="66" y="1526.0">answer text</text>
+  <rect class="box" x="347" y="1420" width="206" height="128" rx="8" fill="#ccfbf1" stroke="#0f766e"/>
+  <text class="btitle" x="359" y="1452.0">Global response</text>
+  <text class="bullet" x="359" y="1475.0">•</text>
+  <text class="bullet" x="369" y="1475.0">Final summarized global</text>
+  <text class="bullet" x="369" y="1491.0">answer</text>
+  <text class="bullet" x="359" y="1510.0">•</text>
+  <text class="bullet" x="369" y="1510.0">Grounded in formatted</text>
+  <text class="bullet" x="369" y="1526.0">context</text>
+</svg>

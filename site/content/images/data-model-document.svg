@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 180" width="380" height="180" role="img">
+  <title>Two collections: Person with the documents Mary and John, and Book with the document Arango</title>
+  <defs><marker id="a" markerWidth="22" markerHeight="20" refX="21" refY="10" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L22,10 L0,20 z" fill="#783f04"/></marker></defs>
+  <text x="20" y="34" font-size="20" font-weight="700" fill="#8a8a8a" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Person</text>
+  <path d="M14,54 q0,-8 8,-8 h64 l14,14 h76 q8,0 8,8 v106 q0,8 -8,8 h-146 q-8,0 -8,-8 z" fill="#b3b3b3"/>
+  <path d="M26,70 h44 l18,18 v64 h-62 z" fill="#b4c850" stroke="#3b5124" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M70,70 v18 h18" fill="none" stroke="#3b5124" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="35" y="120" font-size="15" fill="#2e4421" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Name:</text>
+  <text x="35" y="139" font-size="15" fill="#2e4421" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Mary</text>
+  <path d="M101,70 h44 l18,18 v64 h-62 z" fill="#ffc13a" stroke="#cb8000" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M145,70 v18 h18" fill="none" stroke="#cb8000" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="110" y="120" font-size="15" fill="#5a3a00" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Name:</text>
+  <text x="110" y="139" font-size="15" fill="#5a3a00" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">John</text>
+  <text x="211" y="34" font-size="20" font-weight="700" fill="#8a8a8a" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Book</text>
+  <path d="M205,54 q0,-8 8,-8 h64 l14,14 h76 q8,0 8,8 v106 q0,8 -8,8 h-146 q-8,0 -8,-8 z" fill="#b3b3b3"/>
+  <path d="M222,70 h44 l18,18 v64 h-62 z" fill="#5dcfb8" stroke="#2ca089" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M266,70 v18 h18" fill="none" stroke="#2ca089" stroke-width="2.5" stroke-linejoin="round"/>
+  <text x="231" y="120" font-size="15" fill="#14463c" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Title:</text>
+  <text x="231" y="139" font-size="15" fill="#14463c" font-family="Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">Arango</text>
+</svg>

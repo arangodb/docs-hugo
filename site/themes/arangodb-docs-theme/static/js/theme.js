@@ -1,11 +1,6 @@
 var theme = true;
 
 let _mermaid = null;
-let _mermaidPanZoom = null;
-let _mermaidDragSvg = null;
-let _mermaidDragRelayReady = false;
-/* How much of a diagram has to stay inside its box while panning, in pixels. */
-const MERMAID_PAN_GUTTER = 60;
 async function renderMermaidDiagrams() {
   var nodes = document.querySelectorAll('.mermaid:not([data-processed])');
   if (!nodes.length) return;
@@ -20,114 +15,13 @@ async function renderMermaidDiagrams() {
     } catch (err) {
       /* Mermaid puts an error graphic in place of the offending diagram. Carry
          on so that a single malformed diagram does not cost the other diagrams
-         on the page their pan and zoom controls. */
+         on the page their image viewer. */
       console.warn('Mermaid rendering failed', err);
     }
-    if (!_mermaidPanZoom) {
-      try {
-        let svgPanZoom = await import('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.2/+esm');
-        _mermaidPanZoom = svgPanZoom.default;
-      } catch (err) {
-        console.warn('svg-pan-zoom failed to load; mermaid diagrams will render without zoom controls', err);
-      }
-    }
-    nodes.forEach(attachMermaidPanZoom);
+    prepareZoomables();
   } catch (err) {
     console.warn('Mermaid rendering failed', err);
   }
-}
-
-function attachMermaidPanZoom(pre) {
-  if (pre.dataset.panzoomReady) return;
-  if (!_mermaidPanZoom) return;
-  let svg = pre.querySelector('svg');
-  if (!svg) return;
-
-  _mermaidPanZoom(svg, {
-    zoomEnabled: true,
-    controlIconsEnabled: true,
-    fit: true,
-    center: true,
-    minZoom: 0.5,
-    maxZoom: 10,
-    /* The library default of 0.1 zooms by only 8% per mouse wheel notch and
-       10% per zoom button click, which feels unresponsive. This gives ~31%
-       and 40% respectively. */
-    zoomScaleSensitivity: 0.4,
-    beforePan: limitPan,
-  });
-
-  setupMermaidDragRelay();
-  svg.addEventListener('mousedown', function (evt) {
-    if (evt.button === 0) _mermaidDragSvg = svg;
-  });
-
-  pre.dataset.panzoomReady = 'true';
-
-  /**
-   * Keeps the diagram from being dragged out of sight: at least
-   * MERMAID_PAN_GUTTER pixels of it stay inside the box on every side. The
-   * limits are derived from the rendered geometry rather than from
-   * getSizes(), whose view box does not account for the padding mermaid
-   * leaves around a diagram, so that they hold at every zoom level.
-   */
-  function limitPan(oldPan, newPan) {
-    let group = svg.querySelector('.svg-pan-zoom_viewport');
-    if (!group) return newPan;
-    let box = svg.getBoundingClientRect();
-    let content = group.getBoundingClientRect();
-    /* Where the diagram sits inside the box with the current pan taken out. */
-    let offsetX = content.left - box.left - oldPan.x;
-    let offsetY = content.top - box.top - oldPan.y;
-
-    return {
-      x: Math.min(
-        box.width - MERMAID_PAN_GUTTER - offsetX,
-        Math.max(MERMAID_PAN_GUTTER - offsetX - content.width, newPan.x)
-      ),
-      y: Math.min(
-        box.height - MERMAID_PAN_GUTTER - offsetY,
-        Math.max(MERMAID_PAN_GUTTER - offsetY - content.height, newPan.y)
-      ),
-    };
-  }
-}
-
-/**
- * svg-pan-zoom listens for mouse events on the SVG only and treats mouseleave
- * as the end of a drag, so panning stopped whenever the pointer left the
- * diagram. Hide that mouseleave from the library and relay the mouse events
- * that happen outside the SVG back to it, so that a drag keeps going wherever
- * the pointer travels. Registered once for all diagrams on the page.
- */
-function setupMermaidDragRelay() {
-  if (_mermaidDragRelayReady) return;
-  _mermaidDragRelayReady = true;
-
-  document.addEventListener('mouseleave', function (evt) {
-    if (_mermaidDragSvg && evt.target === _mermaidDragSvg) {
-      evt.stopPropagation();
-    }
-  }, true);
-
-  document.addEventListener('mousemove', function (evt) {
-    relayToMermaidDrag(evt);
-  }, true);
-
-  document.addEventListener('mouseup', function (evt) {
-    relayToMermaidDrag(evt);
-    _mermaidDragSvg = null;
-  }, true);
-}
-
-function relayToMermaidDrag(evt) {
-  let svg = _mermaidDragSvg;
-  if (!svg || evt.target === svg || svg.contains(evt.target)) return;
-  svg.dispatchEvent(new MouseEvent(evt.type, {
-    clientX: evt.clientX,
-    clientY: evt.clientY,
-    buttons: evt.buttons,
-  }));
 }
 
 function closeAllEntries() {
@@ -581,6 +475,8 @@ function initArticle(url) {
   hideEmptyOpenapiDiv();
   goToTop();
   styleImages();
+  closeImageViewer();
+  prepareZoomables();
   linkToVersionedContent();
   updateActiveNavItem(window.location.pathname, false);
   updateVersionSelector();
@@ -1163,65 +1059,490 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('.main-nav').forEach(el => el.classList.add("mobile"));
     }
 
-    // Initialize custom diagram lightbox
-    initDiagramLightbox();
+    initImageViewer();
 
 });
 
 /*
- * Custom diagram lightbox
- * Simple, clean lightbox implementation for diagrams without external dependencies
+ * Image viewer
+ *
+ * Every illustration in an article opens in the same overlay when clicked,
+ * whatever it is made of: Markdown images (PNG, JPG, WebP, SVG), the diagram
+ * shortcode, SVGs embedded with the embed-svg shortcode, and mermaid diagrams.
+ * In the overlay, the illustration can be zoomed with a trackpad or touch
+ * pinch, Ctrl/Cmd + mouse wheel, double-click, the toolbar, or the keyboard
+ * (+, -, 0), and panned by scrolling, dragging, or with the arrow keys.
  */
-function initDiagramLightbox() {
-    // Create lightbox container if it doesn't exist
-    if (!document.querySelector('.diagram-lightbox')) {
-        const lightbox = document.createElement('div');
-        lightbox.className = 'diagram-lightbox';
-        lightbox.innerHTML = `
-            <button class="diagram-lightbox-close" aria-label="Close">&times;</button>
-            <img src="" alt="">
-        `;
-        document.body.appendChild(lightbox);
 
-        // Close on click
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox || e.target.classList.contains('diagram-lightbox-close')) {
-                closeDiagramLightbox();
-            }
-        });
+const ZOOMABLE_SELECTOR = 'article img, article .svg-figure > svg, article pre.mermaid > svg';
+/* Images rendered smaller than this are treated as inline icons. */
+const ZOOMABLE_MIN_SIZE = 48;
+/* How much of the illustration has to stay inside the overlay while panning, in pixels. */
+const VIEWER_PAN_GUTTER = 80;
+/* Pointer movement in pixels below which a press counts as a click, not a drag. */
+const VIEWER_DRAG_THRESHOLD = 5;
+const VIEWER_ZOOM_STEP = 1.5;
 
-        // Close on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                closeDiagramLightbox();
-            }
-        });
+const VIEWER_ICONS = {
+  'zoom-out': '<path d="M5 12h14"/>',
+  'zoom-in': '<path d="M12 5v14M5 12h14"/>',
+  'fit': '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  'close': '<path d="M6 6l12 12M18 6L6 18"/>',
+  'expand': '<path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/>',
+};
+
+function viewerIcon(name) {
+  return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + VIEWER_ICONS[name] + '</svg>';
+}
+
+let _viewer = null;
+let _zoomHint = null;
+
+/** Marks the illustrations of the current article as zoomable. */
+function prepareZoomables() {
+  document.querySelectorAll(ZOOMABLE_SELECTOR).forEach(el => {
+    if (el.hasAttribute('data-zoomable')) return;
+    // Linked images navigate, and opted-out images stay as they are
+    if (el.closest('a, button, .no-zoom')) return;
+    if (el.tagName === 'IMG' && !el.complete) {
+      el.addEventListener('load', prepareZoomables, { once: true });
+      return;
     }
-
-    // Add click handlers to diagram links
-    document.addEventListener('click', function(e) {
-        const diagramLink = e.target.closest('.diagram-link');
-        if (diagramLink) {
-            e.preventDefault();
-            const src = diagramLink.getAttribute('data-diagram-src');
-            const img = diagramLink.querySelector('img');
-            const alt = img ? img.getAttribute('alt') : '';
-            openDiagramLightbox(src, alt);
-        }
-    });
+    let rect = el.getBoundingClientRect();
+    if (rect.width && rect.width < ZOOMABLE_MIN_SIZE && rect.height < ZOOMABLE_MIN_SIZE) return;
+    el.setAttribute('data-zoomable', '');
+    el.setAttribute('tabindex', '0');
+    if (!el.querySelector('a')) {
+      // An SVG with links in it must not claim to be a single button
+      el.setAttribute('role', 'button');
+    }
+    let label = zoomableCaption(el);
+    el.setAttribute('aria-label', label ? 'Enlarge: ' + label : 'Enlarge illustration');
+  });
 }
 
-function openDiagramLightbox(src, alt) {
-    const lightbox = document.querySelector('.diagram-lightbox');
-    const img = lightbox.querySelector('img');
-    img.src = src;
-    img.alt = alt || '';
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
+function zoomableCaption(el) {
+  let caption = el.closest('figure')?.querySelector('figcaption');
+  let text = caption ? caption.textContent.trim() : '';
+  return text || el.getAttribute('alt') || '';
 }
 
-function closeDiagramLightbox() {
-    const lightbox = document.querySelector('.diagram-lightbox');
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
+function initImageViewer() {
+  document.addEventListener('click', function (e) {
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    // Links inside of an SVG keep working
+    if (e.target.closest('a')) return;
+    let el = e.target.closest('[data-zoomable]');
+    if (!el || el.closest('.image-viewer')) return;
+    e.preventDefault();
+    openImageViewer(el);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    let el = e.target;
+    if (!el.hasAttribute || !el.hasAttribute('data-zoomable')) return;
+    e.preventDefault();
+    openImageViewer(el);
+  });
+
+  /* A button in the corner of the illustration under the pointer, so that it
+     is evident that it can be enlarged. Touch devices without hover open the
+     viewer with a tap on the illustration itself. */
+  _zoomHint = document.createElement('button');
+  _zoomHint.className = 'image-zoom-hint';
+  _zoomHint.type = 'button';
+  _zoomHint.tabIndex = -1;
+  _zoomHint.setAttribute('aria-hidden', 'true');
+  _zoomHint.innerHTML = viewerIcon('expand') + '<span>Enlarge</span>';
+  _zoomHint.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (_zoomHint.target) openImageViewer(_zoomHint.target);
+  });
+  document.body.appendChild(_zoomHint);
+
+  document.addEventListener('mouseover', function (e) {
+    if (e.target === _zoomHint || _zoomHint.contains(e.target)) return;
+    let el = e.target.closest('[data-zoomable]');
+    if (el && !el.closest('.image-viewer')) showZoomHint(el);
+    else hideZoomHint();
+  });
+  window.addEventListener('resize', hideZoomHint);
+}
+
+function showZoomHint(el) {
+  if (_zoomHint.target === el && _zoomHint.classList.contains('visible')) return;
+  let rect = el.getBoundingClientRect();
+  _zoomHint.target = el;
+  _zoomHint.style.top = (rect.top + window.scrollY + 8) + 'px';
+  _zoomHint.style.left = (rect.right + window.scrollX - 8) + 'px';
+  _zoomHint.classList.add('visible');
+}
+
+function hideZoomHint() {
+  if (!_zoomHint) return;
+  _zoomHint.classList.remove('visible');
+  _zoomHint.target = null;
+}
+
+function getImageViewer() {
+  if (_viewer) return _viewer;
+
+  let root = document.createElement('div');
+  root.className = 'image-viewer';
+  root.setAttribute('role', 'dialog');
+  root.setAttribute('aria-modal', 'true');
+  root.setAttribute('aria-label', 'Image viewer');
+  root.hidden = true;
+  // Clicks on the illustration then leave the focus in the dialog for the keyboard shortcuts
+  root.tabIndex = -1;
+  root.innerHTML = `
+    <div class="image-viewer-stage"></div>
+    <div class="image-viewer-toolbar">
+      <button type="button" data-action="zoom-out" aria-label="Zoom out" title="Zoom out (-)">${viewerIcon('zoom-out')}</button>
+      <span class="image-viewer-zoom" aria-live="polite"></span>
+      <button type="button" data-action="zoom-in" aria-label="Zoom in" title="Zoom in (+)">${viewerIcon('zoom-in')}</button>
+      <button type="button" data-action="fit" aria-label="Fit to screen" title="Fit to screen (0)">${viewerIcon('fit')}</button>
+      <button type="button" data-action="close" aria-label="Close" title="Close (Esc)">${viewerIcon('close')}</button>
+    </div>
+    <p class="image-viewer-caption"></p>`;
+  document.body.appendChild(root);
+
+  _viewer = {
+    root,
+    stage: root.querySelector('.image-viewer-stage'),
+    zoomLabel: root.querySelector('.image-viewer-zoom'),
+    caption: root.querySelector('.image-viewer-caption'),
+    content: null,
+    width: 0, height: 0,
+    scale: 1, fitScale: 1, minScale: 1, maxScale: 1,
+    x: 0, y: 0,
+    pointers: new Map(),
+    gesture: null,
+    dragged: false,
+    returnFocus: null,
+  };
+
+  root.querySelector('.image-viewer-toolbar').addEventListener('click', function (e) {
+    let button = e.target.closest('button');
+    if (!button) return;
+    let action = button.dataset.action;
+    if (action === 'close') closeImageViewer();
+    else if (action === 'fit') fitImageViewer();
+    else zoomImageViewer(action === 'zoom-in' ? VIEWER_ZOOM_STEP : 1 / VIEWER_ZOOM_STEP);
+  });
+
+  /* Runs before the document-wide handlers so that the end of a drag is not
+     taken for a click on a link, and so that following a link closes the viewer. */
+  root.addEventListener('click', function (e) {
+    if (_viewer.dragged) {
+      e.preventDefault();
+      e.stopPropagation();
+      _viewer.dragged = false;
+      return;
+    }
+    if (e.target.closest('a')) {
+      closeImageViewer();
+      return;
+    }
+    if (e.target === _viewer.stage || e.target === root) closeImageViewer();
+  }, true);
+
+  root.addEventListener('dblclick', function (e) {
+    if (e.target.closest('.image-viewer-toolbar')) return;
+    let point = stagePoint(e);
+    if (_viewer.scale > _viewer.fitScale * 1.05) fitImageViewer();
+    else zoomImageViewer(2.5, point.x, point.y);
+  });
+
+  root.addEventListener('keydown', handleImageViewerKeydown);
+  _viewer.stage.addEventListener('wheel', handleImageViewerWheel, { passive: false });
+  _viewer.stage.addEventListener('pointerdown', handleImageViewerPointerDown);
+  _viewer.stage.addEventListener('pointermove', handleImageViewerPointerMove);
+  _viewer.stage.addEventListener('pointerup', handleImageViewerPointerUp);
+  _viewer.stage.addEventListener('pointercancel', handleImageViewerPointerUp);
+  // Browsers start dragging images as files otherwise
+  _viewer.stage.addEventListener('dragstart', e => e.preventDefault());
+  window.addEventListener('resize', function () {
+    if (_viewer.root.hidden) return;
+    let atFit = Math.abs(_viewer.scale - _viewer.fitScale) < 1e-6;
+    measureImageViewer();
+    if (atFit) fitImageViewer();
+    else applyImageViewerTransform();
+  });
+
+  return _viewer;
+}
+
+function openImageViewer(el) {
+  let viewer = getImageViewer();
+  hideZoomHint();
+  let rect = el.getBoundingClientRect();
+  let content, width, height, vector;
+
+  if (el.tagName === 'IMG') {
+    content = document.createElement('img');
+    content.src = el.currentSrc || el.src;
+    content.alt = el.alt || '';
+    vector = /\.svg(\?|#|$)/i.test(content.src);
+    // SVG files without a width and height report a made-up intrinsic size,
+    // recognizable by an aspect ratio that differs from the rendered one
+    let natural = el.naturalWidth && el.naturalHeight &&
+      Math.abs(el.naturalWidth / el.naturalHeight - rect.width / rect.height) < 0.02 * rect.width / rect.height;
+    if (!natural) {
+      width = rect.width;
+      height = rect.height;
+    } else {
+      width = el.naturalWidth;
+      height = el.naturalHeight;
+    }
+  } else {
+    content = el.cloneNode(true);
+    vector = true;
+    let viewBox = el.viewBox && el.viewBox.baseVal;
+    if (viewBox && viewBox.width && viewBox.height) {
+      width = viewBox.width;
+      height = viewBox.height;
+    } else {
+      width = rect.width;
+      height = rect.height;
+    }
+    // The ID stays, as mermaid scopes the styles of a diagram to it
+    for (let attr of ['style', 'width', 'height', 'tabindex', 'role', 'aria-label', 'data-zoomable']) {
+      content.removeAttribute(attr);
+    }
+  }
+  if (!width || !height) return;
+
+  content.classList.add('image-viewer-content');
+  content.setAttribute('draggable', 'false');
+  if (viewer.content) viewer.content.remove();
+  viewer.stage.appendChild(content);
+  Object.assign(viewer, { content, width, height, vector, pageScale: rect.width / width });
+
+  let caption = el.closest('figure')?.querySelector('figcaption')?.textContent.trim() || '';
+  viewer.caption.textContent = caption;
+  viewer.caption.hidden = !caption;
+
+  viewer.returnFocus = document.activeElement;
+  viewer.root.hidden = false;
+  document.body.classList.add('image-viewer-open');
+  measureImageViewer();
+  openImageViewerAtPageSize();
+  viewer.root.querySelector('[data-action="close"]').focus();
+}
+
+function closeImageViewer() {
+  if (!_viewer || _viewer.root.hidden) return;
+  _viewer.root.hidden = true;
+  document.body.classList.remove('image-viewer-open');
+  _viewer.pointers.clear();
+  _viewer.gesture = null;
+  if (_viewer.content) {
+    _viewer.content.remove();
+    _viewer.content = null;
+  }
+  let focus = _viewer.returnFocus;
+  _viewer.returnFocus = null;
+  if (focus && document.contains(focus)) focus.focus({ preventScroll: true });
+}
+
+/** The part of the overlay that the toolbar and caption leave free, in stage coordinates. */
+function imageViewerArea() {
+  let viewer = _viewer;
+  let bounds = viewer.stage.getBoundingClientRect();
+  let margin = Math.min(32, bounds.width * 0.04);
+  let toolbar = viewer.root.querySelector('.image-viewer-toolbar').getBoundingClientRect();
+  let top = toolbar.bottom - bounds.top + 12;
+  let bottom = viewer.caption.hidden ? margin : bounds.bottom - viewer.caption.getBoundingClientRect().top + 12;
+  return {
+    left: margin,
+    top,
+    width: bounds.width - 2 * margin,
+    height: bounds.height - top - bottom,
+  };
+}
+
+/** Works out the scale that fits the illustration into the overlay and the zoom range around it. */
+function measureImageViewer() {
+  let viewer = _viewer;
+  let area = imageViewerArea();
+  let fit = Math.min(area.width / viewer.width, area.height / viewer.height);
+  // Vector graphics may grow to fill the screen, but pixel images not beyond their actual size
+  viewer.fitScale = viewer.vector ? fit : Math.min(fit, 1);
+  viewer.minScale = viewer.fitScale / 2;
+  viewer.maxScale = Math.max(viewer.fitScale * 10, 4);
+}
+
+function fitImageViewer() {
+  let viewer = _viewer;
+  let area = imageViewerArea();
+  viewer.scale = viewer.fitScale;
+  viewer.x = area.left + (area.width - viewer.width * viewer.scale) / 2;
+  viewer.y = area.top + (area.height - viewer.height * viewer.scale) / 2;
+  applyImageViewerTransform();
+}
+
+/* Fitting a tall illustration into the screen can make it smaller than it is
+   on the page, which defeats enlarging it. Start at its own size instead, as
+   far as it fits the width, and never smaller than on the page, aligned to the
+   top so that reading starts at the beginning. */
+function openImageViewerAtPageSize() {
+  let viewer = _viewer;
+  let area = imageViewerArea();
+  let scale = Math.max(viewer.pageScale, Math.min(area.width / viewer.width, 1));
+  if (scale <= viewer.fitScale) {
+    fitImageViewer();
+    return;
+  }
+  viewer.scale = Math.min(scale, viewer.maxScale);
+  viewer.x = area.left + (area.width - viewer.width * viewer.scale) / 2;
+  viewer.y = area.top;
+  applyImageViewerTransform();
+}
+
+/** Zooms by the given factor while keeping the point (stage coordinates) under the pointer in place. */
+function zoomImageViewer(factor, originX, originY) {
+  let viewer = _viewer;
+  if (originX === undefined) {
+    let bounds = viewer.stage.getBoundingClientRect();
+    originX = bounds.width / 2;
+    originY = bounds.height / 2;
+  }
+  let scale = Math.min(viewer.maxScale, Math.max(viewer.minScale, viewer.scale * factor));
+  let ratio = scale / viewer.scale;
+  viewer.x = originX - (originX - viewer.x) * ratio;
+  viewer.y = originY - (originY - viewer.y) * ratio;
+  viewer.scale = scale;
+  applyImageViewerTransform();
+}
+
+function panImageViewer(dx, dy) {
+  _viewer.x += dx;
+  _viewer.y += dy;
+  applyImageViewerTransform();
+}
+
+/* The illustration is resized rather than scaled with a CSS transform, so
+   that browsers redraw vector graphics sharply at every zoom level. */
+function applyImageViewerTransform() {
+  let viewer = _viewer;
+  let bounds = viewer.stage.getBoundingClientRect();
+  let width = viewer.width * viewer.scale;
+  let height = viewer.height * viewer.scale;
+  viewer.x = Math.min(bounds.width - VIEWER_PAN_GUTTER, Math.max(VIEWER_PAN_GUTTER - width, viewer.x));
+  viewer.y = Math.min(bounds.height - VIEWER_PAN_GUTTER, Math.max(VIEWER_PAN_GUTTER - height, viewer.y));
+  let content = viewer.content;
+  content.style.width = width + 'px';
+  content.style.height = height + 'px';
+  content.style.transform = `translate(${viewer.x}px, ${viewer.y}px)`;
+  viewer.zoomLabel.textContent = Math.round(viewer.scale / viewer.fitScale * 100) + '%';
+  viewer.root.querySelector('[data-action="zoom-in"]').disabled = viewer.scale >= viewer.maxScale;
+  viewer.root.querySelector('[data-action="zoom-out"]').disabled = viewer.scale <= viewer.minScale;
+}
+
+function stagePoint(e) {
+  let bounds = _viewer.stage.getBoundingClientRect();
+  return { x: e.clientX - bounds.left, y: e.clientY - bounds.top };
+}
+
+/* Scrolling pans, like on a page, so that tall illustrations can be read from
+   top to bottom. Pinching a trackpad (which browsers report as a wheel event
+   with ctrlKey) or holding Ctrl or Cmd while scrolling zooms. */
+function handleImageViewerWheel(e) {
+  e.preventDefault();
+  let unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1;
+  if (e.ctrlKey || e.metaKey) {
+    // Pinches send many small deltas, mouse wheels few large ones: cap each
+    // step at about 30% so that both feel alike
+    let delta = Math.max(-25, Math.min(25, e.deltaY * unit));
+    let factor = Math.exp(-delta * 0.01);
+    let point = stagePoint(e);
+    zoomImageViewer(factor, point.x, point.y);
+    return;
+  }
+  let dx = e.deltaX * unit;
+  let dy = e.deltaY * unit;
+  // Shift turns a mouse wheel into horizontal scrolling
+  if (e.shiftKey && !dx) [dx, dy] = [dy, 0];
+  panImageViewer(-dx, -dy);
+}
+
+function handleImageViewerPointerDown(e) {
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  let viewer = _viewer;
+  viewer.pointers.set(e.pointerId, stagePoint(e));
+  viewer.dragged = false;
+  viewer.gesture = imageViewerGesture();
+}
+
+function handleImageViewerPointerMove(e) {
+  let viewer = _viewer;
+  if (!viewer.pointers.has(e.pointerId) || !viewer.gesture) return;
+  viewer.pointers.set(e.pointerId, stagePoint(e));
+  let gesture = imageViewerGesture();
+  let start = viewer.gesture;
+
+  if (!viewer.dragged) {
+    if (Math.hypot(gesture.x - start.originX, gesture.y - start.originY) < VIEWER_DRAG_THRESHOLD &&
+        Math.abs(gesture.distance - start.originDistance) < VIEWER_DRAG_THRESHOLD) return;
+    viewer.dragged = true;
+    // Only capture once it is a drag, so that clicks still reach links and the backdrop
+    viewer.stage.setPointerCapture(e.pointerId);
+    viewer.root.classList.add('dragging');
+  }
+
+  if (gesture.distance && start.distance) {
+    zoomImageViewer(gesture.distance / start.distance, gesture.x, gesture.y);
+  }
+  panImageViewer(gesture.x - start.x, gesture.y - start.y);
+  gesture.originX = start.originX;
+  gesture.originY = start.originY;
+  gesture.originDistance = start.originDistance;
+  viewer.gesture = gesture;
+}
+
+function handleImageViewerPointerUp(e) {
+  let viewer = _viewer;
+  viewer.pointers.delete(e.pointerId);
+  viewer.gesture = viewer.pointers.size ? imageViewerGesture() : null;
+  if (!viewer.pointers.size) viewer.root.classList.remove('dragging');
+  // pointercancel and touch drags are not followed by a click that would reset this
+  if (e.type === 'pointercancel') viewer.dragged = false;
+}
+
+/** The midpoint of the active pointers and, for a pinch, the distance between the first two. */
+function imageViewerGesture() {
+  let points = Array.from(_viewer.pointers.values());
+  let x = points.reduce((sum, p) => sum + p.x, 0) / points.length;
+  let y = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+  let distance = points.length > 1 ? Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y) : 0;
+  return { x, y, distance, originX: x, originY: y, originDistance: distance };
+}
+
+function handleImageViewerKeydown(e) {
+  let pan = 60;
+  switch (e.key) {
+    case 'Escape': closeImageViewer(); break;
+    case '+': case '=': zoomImageViewer(VIEWER_ZOOM_STEP); break;
+    case '-': case '_': zoomImageViewer(1 / VIEWER_ZOOM_STEP); break;
+    case '0': fitImageViewer(); break;
+    case 'ArrowLeft': panImageViewer(pan, 0); break;
+    case 'ArrowRight': panImageViewer(-pan, 0); break;
+    case 'ArrowUp': panImageViewer(0, pan); break;
+    case 'ArrowDown': panImageViewer(0, -pan); break;
+    case 'Tab': {
+      // Keep the focus inside of the dialog
+      let focusable = Array.from(_viewer.root.querySelectorAll('button:not(:disabled), a'));
+      if (!focusable.length) break;
+      let index = focusable.indexOf(document.activeElement);
+      let next = e.shiftKey ? index - 1 : index + 1;
+      focusable[(next + focusable.length) % focusable.length].focus();
+      break;
+    }
+    default: return;
+  }
+  e.preventDefault();
+  e.stopPropagation();
 }
