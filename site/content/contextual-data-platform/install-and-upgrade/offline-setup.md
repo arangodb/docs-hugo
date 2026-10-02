@@ -89,15 +89,17 @@ system before the setup.
 
   You need at least the image of the ArangoDB Kubernetes Operator
   (`arangodb/kube-arangodb-enterprise`). If you want to use a local MinIO
-  instance for blob storage, make sure to also get this image
-  (e.g. `minio/minio:latest`). The process is the same for any image.
+  instance for blob storage, make sure to also get the MinIO image
+  (`cgr.dev/chainguard/minio:latest`) as well as the MinIO client image
+  (`cgr.dev/chainguard/minio-client:latest`) that creates the storage bucket.
+  The process is the same for any image.
 
   {{< tabs "container-management" >}}
 
   {{< tab "Docker" >}}
   ```sh
-  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.2
-  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.2 -o kube-arangodb-enterprise.tar
+  docker pull docker.io/arangodb/kube-arangodb-enterprise:1.4.5
+  docker save docker.io/arangodb/kube-arangodb-enterprise:1.4.5 -o kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -118,7 +120,7 @@ system before the setup.
   To pull the image and save it to a file as follows:
 
   ```sh
-  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.2 kube-arangodb-enterprise.tar
+  regctl image export docker.io/arangodb/kube-arangodb-enterprise:1.4.5 kube-arangodb-enterprise.tar
   ```
   {{< /tab >}}
 
@@ -138,10 +140,10 @@ image you may need from there without internet access.
 ```sh
 docker load -i kube-arangodb-enterprise.tar
 
-docker tag arangodb/kube-arangodb-enterprise:1.4.2 \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
+docker tag arangodb/kube-arangodb-enterprise:1.4.5 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
 
-docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2
+docker push <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5
 ```
 {{< /tab >}}
 
@@ -151,7 +153,7 @@ opposed to HTTPS:
 
 ```sh
 regctl image import \
-  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.2 \
+  <YOUR_REGISTRY_ADDRESS:5000>/arangodb/kube-arangodb-enterprise:1.4.5 \
   kube-arangodb-enterprise.tar \
   --host "reg=<YOUR_REGISTRY_ADDRESS:5000>,tls=disabled"
 ```
@@ -203,7 +205,7 @@ Make sure to set the options as shown below to enable the gateway feature and
 machine learning feature:
 
 ```sh
-VERSION_OPERATOR='1.4.2' # Use a newer version if available
+VERSION_OPERATOR='1.4.5' # Use a newer version if available
 
 helm upgrade --install operator \
   --namespace arango \
@@ -212,6 +214,13 @@ helm upgrade --install operator \
   --set "operator.args[0]=--deployment.feature.gateway=true" \
   --set "operator.architectures={amd64}"
 ```
+
+{{< tip >}}
+Use `--set "operator.architectures={arm64}"` instead if your Kubernetes nodes
+run on ARM CPUs, such as on Macs with Apple silicon (M1 and later). If the
+configured architecture doesn't match the nodes, the operator cannot start the
+deployment.
+{{< /tip >}}
 
 The output looks similar to the following on success:
 
@@ -225,13 +234,13 @@ REVISION: 1
 DESCRIPTION: Install complete
 TEST SUITE: None
 NOTES:
-You have installed Kubernetes ArangoDB Operator in version 1.4.2
+You have installed Kubernetes ArangoDB Operator in version 1.4.5
 
 To access ArangoDeployments you can use:
 
 kubectl --namespace "arango" get arangodeployments
 
-More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.2/docs
+More details can be found on https://github.com/arangodb/kube-arangodb/tree/1.4.5/docs
 ```
 
 You may use the following commands to wait for the operator to be ready and
@@ -270,7 +279,7 @@ You need to enable the gateway feature by setting `spec.gateway.enabled` and
 required by features such as GraphRAG.<!-- TODO: Default enabled 4.0.0 --> You also need to set `spec.license` to
 a secret that you will create later.
 
-Example for an ArangoDB cluster deployment using version 3.12.9 with three
+Example for an ArangoDB cluster deployment using version 3.12.11 with three
 DB-Servers and two Coordinators with the name `deployment-example`:
 
 ```yaml
@@ -280,7 +289,7 @@ metadata:
   name: "deployment-example"
 spec:
   mode: Cluster
-  image: "arangodb/enterprise:3.12.9"
+  image: "arangodb/enterprise:3.12.11"
   gateway:
     enabled: true
     dynamic: true
@@ -388,7 +397,7 @@ Expected output:
 
 ```
 2026-02-05T17:03:07+01:00 INF Connecting to the server...
-2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.9 (enterprise)
+2026-02-05T17:03:07+01:00 INF Discovered Arango 3.12.11 (enterprise)
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.mode thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=server.info thread=0
 2026-02-05T17:03:07+01:00 INF Starting executor name=aql.timestamp thread=0
@@ -701,7 +710,7 @@ spec:
     spec:
       containers:
       - name: minio
-        image: minio/minio:latest
+        image: cgr.dev/chainguard/minio:latest
         args:
           - server
           - /data
@@ -736,16 +745,18 @@ metadata:
   name: minio-create-bucket
   namespace: minio
 spec:
-  backoffLimit: 1
+  backoffLimit: 6
   template:
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       containers:
         - name: mc
-          image: minio/mc
+          image: cgr.dev/chainguard/minio-client:latest
+          args:
+            - mb
+            - --ignore-existing
+            - local/arango-platform-storage
           env:
-            - name: MINIO_ENDPOINT
-              value: http://minio.minio.svc.cluster.local:9000
             - name: MINIO_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
@@ -756,13 +767,14 @@ spec:
                 secretKeyRef:
                   name: minio-root
                   key: MINIO_ROOT_PASSWORD
-          command:
-            - sh
-            - -c
-            - |
-              mc alias set local $MINIO_ENDPOINT $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
-              mc mb local/arango-platform-storage || true
+            - name: MC_HOST_local
+              value: http://$(MINIO_ACCESS_KEY):$(MINIO_SECRET_KEY)@minio.minio.svc.cluster.local:9000
 ```
+
+{{< info >}}
+The MinIO images come from the Chainguard registry because the `minio/minio`
+and `minio/mc` images have been removed from Docker Hub.
+{{< /info >}}
 
 Set up the MinIO service by applying the configuration file:
 
@@ -794,3 +806,60 @@ Integrate the object storage with the Contextual Data Platform by applying the f
 ```sh
 kubectl apply -f ./platform-storage.yaml
 ```
+
+## Step 13: Verify the installation
+
+{{< tag "Air-gapped system" >}}
+
+The Operator downloads and starts the platform services. Watch the pods until
+they are all up:
+
+```sh
+kubectl get pods --namespace arango --watch
+```
+
+The first run takes several minutes because the service images are large and
+are pulled for the first time. Eventually, every pod reaches the `Running`
+state with all of its containers ready.
+
+The pod list shows the readiness at a glance, but the reliable way to confirm
+that the platform is fully up is to check the platform services. They should
+all report `READY` as `True`:
+
+```sh
+kubectl get arangoplatformservices --namespace arango
+```
+
+If a pod stays in `Pending` or keeps restarting, the nodes most likely ran out
+of resources. To find out why a pod doesn't start, describe it and check its
+events and logs. Most platform pods run multiple containers, so pass
+`--all-containers=true` to get the logs of all of them:
+
+```sh
+kubectl describe pod <pod-name> --namespace arango
+kubectl logs <pod-name> --namespace arango --all-containers=true
+```
+
+## Step 14: Open the web interface
+
+{{< tag "Air-gapped system" >}}
+
+The platform exposes all of its services through the gateway on port `8529`
+inside Kubernetes. Forward that port to your machine:
+
+```sh
+kubectl port-forward --namespace arango \
+  service/deployment-example-ea 8529:8529
+```
+
+Leave that command running and open the unified web interface in your browser:
+
+<https://127.0.0.1:8529/ui/>
+
+Log in with the default user `root` and an empty password. These defaults are
+fine for a local evaluation but are not secure; set a password before you
+expose a deployment beyond your own machine.
+
+For the browser warning about the self-signed certificate, how to stop the port
+forwarding, and how to reach the other interfaces, see
+[Interfaces](_index.md#interfaces).
