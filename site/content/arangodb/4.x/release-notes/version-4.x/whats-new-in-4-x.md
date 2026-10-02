@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 4.x
 menuTitle: What's New in 4.x
 weight: 5
 description: >-
-  TODO
+  A streamlined database core with faster joins in sharded clusters and
+  SmartGraphs
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 4.x. ArangoDB 4.x also contains several bug fixes that are not listed
@@ -174,8 +175,11 @@ accesses a top-level attribute with exactly the specified name.
 
 ### Improved joins in sharded clusters
 
-A new `upgrade-scatter-to-distribute` optimizer rule has been added to utilize
-sharding information for join queries in cluster deployments.
+Join queries in cluster deployments are more efficient because the query
+optimizer now utilizes sharding information to send data only to the DB-Servers
+that need it, instead of to all of them. This reduces the network traffic and
+the load on the uninvolved DB-Servers. The new `upgrade-scatter-to-distribute`
+optimizer rule performs this optimization.
 
 In the execution plan, the optimization upgrades a `ScatterNode` to a
 `DistributeNode` where a join filter already determines the distribution.
@@ -197,8 +201,9 @@ if you filter by them in the join.
 
 ### Improved joins for SmartGraphs
 
-A new `smart-join-smart-edge` optimizer rule has been added to perform joins
-locally when joining edges on nodes that are part of a SmartGraph.
+Joins between the nodes and edges of a SmartGraph are now performed locally
+on the DB-Servers where possible.
+The new `smart-join-smart-edge` optimizer rule performs this optimization.
 
 All incident edges are available locally for the join, so there is no need to
 contact other DB-Servers. For repeated joins, where the adjacent node might not
