@@ -6,6 +6,12 @@ description: >-
   The HTTP API for Views lets you manage `arangosearch` Views, including
   handling the general View properties and View links
 ---
+The data store that backs an `arangosearch` View is made up of segments whose
+creation and merging you can control with the `commitIntervalMsec`,
+`consolidationIntervalMsec`, and `consolidationPolicy` properties. To inspect
+the resulting segment layout, see the
+[ArangoSearch statistics HTTP API](../monitoring/arangosearch-statistics.md).
+
 ## Create an arangosearch View
 
 ```openapi

@@ -89,6 +89,11 @@ data store per linked collection, and one per shard of a linked collection in
 cluster deployments. The View properties described below apply to each of these
 data stores individually.
 
+To inspect how many segments and files a data store consists of, how much of it
+is occupied by documents that are marked as deleted, and whether consolidation
+keeps up with the write load, see the
+[ArangoSearch statistics HTTP API](../../develop/http-api/monitoring/arangosearch-statistics.md).
+
 ### Segments
 
 The index consists of several independent segments, and each index **segment**

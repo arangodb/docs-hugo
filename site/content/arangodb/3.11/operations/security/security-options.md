@@ -451,7 +451,7 @@ in an ArangoDB server:
   If set to `false`, this option disables access to any user-defined Foxx apps.
   Accessing the URL of any (existing or potentially existing) Foxx app produces an
   HTTP `403 Forbidden` error with this setting.
-  ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
+  ArangoDB's built-in web interface and all built-in HTTP APIs remain accessible,
   except the Foxx service management API, which makes it impossible to install and
   uninstall Foxx applications. Setting the option to `false` also deactivates the
   **SERVICES** section in the web interface.

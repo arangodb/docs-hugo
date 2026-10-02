@@ -284,7 +284,7 @@ func init() {
 					info["title"] = "ArangoDB Core API"
 				}
 				if info["summary"] == nil {
-					info["summary"] = "The RESTful HTTP API of the ArangoDB Core Database System"
+					info["summary"] = "The HTTP API of the ArangoDB Core Database System"
 				}
 				if info["contact"] == nil {
 					info["contact"] = map[string]interface{}{"name": "ArangoDB Inc.", "url": "https://arango.ai"}

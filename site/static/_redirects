@@ -207,6 +207,12 @@
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/repositories/queries/query-methods/    /ecosystem/integrations/spring-data-arangodb/repositories/queries/query-methods/    301
 /arangodb/3.11/develop/integrations/spring-data-arangodb/reference-version-4/template/                              /ecosystem/integrations/spring-data-arangodb/template/                              301
 
+/arangodb/3.11/aql/graphs/*                                                     /arangodb/3.11/aql/graph-queries/:splat                         301
+/arangodb/3.12/aql/graphs/*                                                     /arangodb/3.12/aql/graph-queries/:splat                         301
+/arangodb/stable/aql/graphs/*                                                   /arangodb/stable/aql/graph-queries/:splat                       301
+/arangodb/4.x/aql/graphs/*                                                      /arangodb/4.x/aql/graph-queries/:splat                          301
+/arangodb/devel/aql/graphs/*                                                    /arangodb/devel/aql/graph-queries/:splat                        301
+
 /agentic-ai-suite/reference/autograph/                                          /agentic-ai-suite/autograph/reference/                          301
 /agentic-ai-suite/reference/autograph/corpus-build/                             /agentic-ai-suite/autograph/reference/corpus-build/             301
 /agentic-ai-suite/reference/autograph/embeddings/                               /agentic-ai-suite/autograph/reference/embeddings/               301

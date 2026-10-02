@@ -54,7 +54,10 @@
 {{- end -}}
 
 {{- /* Sort the releases by version, newest first. Comparing the version
-       strings directly would order v4.10.0 before v4.9.0, so pad each part. */ -}}
+       strings directly would order v4.10.0 before v4.9.0, so pad each part.
+       A pre-release suffix such as -preview is not numeric; it is kept out
+       of the padded parts and sorts the pre-release below the final release
+       with the same number. */ -}}
 {{- $sorted := slice -}}
 {{- range $file, $release := $releases -}}
   {{- $filePath := printf "%s/%s.yaml" $dataPath $file -}}
@@ -64,8 +67,14 @@
       {{- errorf "<error code=1> Platform config file '%s' has no top-level 'date' key </error>" $filePath -}}
     {{- end -}}
     {{- $key := "" -}}
-    {{- range split $version "." -}}
+    {{- $parts := split $version "-" -}}
+    {{- range split (index $parts 0) "." -}}
       {{- $key = printf "%s%05d" $key (int .) -}}
+    {{- end -}}
+    {{- if gt (len $parts) 1 -}}
+      {{- $key = printf "%s0%s" $key (delimit (after 1 $parts) "-") -}}
+    {{- else -}}
+      {{- $key = printf "%s1" $key -}}
     {{- end -}}
     {{- $sorted = $sorted | append (dict "key" $key "version" $version "date" $release.date "packages" $release.packages) -}}
   {{- else -}}

@@ -294,24 +294,13 @@ ul ul, ul ol, ol ul, ol ol {
     color: var(--gray-950);
 }
 
-.link:has(code) {
-    border-bottom: 2px solid var(--color-evergreen);
-    font-size: 14px;
-    overflow: auto;
-    word-wrap: break-word;
-    margin: 0;
-    padding: 2px;
-    word-break: break-word;
-    border-radius: 0;
-    background: var(--gray-100);
-    box-shadow: none;
-    color: var(--gray-950);
-}
+/* Align bottom with parent <a> and make <code> sit on link underline */
 .link code {
-    background-color: transparent;
-    border: none !important;
+    vertical-align: text-bottom;
+    line-height: normal;
     position: relative;
-    top: -1px;
+    bottom: 1px;
+    padding-bottom: 0;
 }
 
 .link > i {
@@ -642,9 +631,12 @@ a.section-link {
     background-color: var(--gray-300);
 }
 
-/* No line below the last step */
+.steps .step:last-child {
+    padding-bottom: .5rem;
+}
+
 .steps .step:last-child::before {
-    display: none;
+    border-radius: 1px;
 }
 
 .steps .step-indicator {
@@ -1414,10 +1406,11 @@ code, p code {
     overflow: auto;
     word-wrap: break-word;
     margin: 0;
-    padding: 2px;
+    padding: 2px 3px;
     word-break: break-word;
     white-space: pre-wrap;
-    border-radius: 0;
+    border: 1px solid #c6c6c6;
+    border-radius: 5px;
     background: var(--gray-100);
     box-shadow: none;
     color: var(--gray-950);

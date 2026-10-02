@@ -1229,19 +1229,56 @@ results as they do with the optimizer rule disabled.
   cannot be checked per node or edge and the condition therefore remains a
   post-filter that is applied to the emitted paths.
 
-## HTTP RESTful API
+## Validation of vector index factory strings
+
+<small>Introduced in: v3.12.12</small>
+
+The optional `factory` string of
+[vector indexes](../../indexes-and-search/indexing/working-with-indexes/vector-indexes.md#vector-index-properties)
+is now validated when you create the index. Requests to
+[create a vector index](../../develop/http-api/indexes/vector.md) fail with an
+HTTP `400 Bad Request` error and the `ERROR_BAD_PARAMETER` (`10`) error number
+in the following cases:
+
+- The factory string cannot be parsed by the Faiss library.
+- It doesn't describe an inverted file (IVF) index.
+- It isn't compatible with the `dimension`.
+- It fixes a number of centroids that conflicts with the `nLists` value.
+
+Up to v3.12.11, such index definitions are accepted. The problem only surfaces
+during the training of the index, leaving behind an index with a
+`trainingState` of `"unusable"`.
+
+A consequence of the stricter validation is that a factory string with a fixed
+number of centroids like `"IVF100,Flat"` now requires you to set `nLists` to the
+same number. You cannot combine it with a scaling specification for `nLists`
+anymore, not even if the specification resolves to a matching number. As
+`nLists` defaults to a scaling specification from v3.12.10 onward, you need to
+set it explicitly in this case. Alternatively, use the `{}` placeholder as in
+`"IVF{},Flat"` to let the number of centroids be substituted.
+
+## Sessions of deactivated user accounts
+
+<small>Introduced in: v3.12.12</small>
+
+If you deactivate a user account, the
+[JWT session tokens](../../develop/http-api/authentication.md#jwt-user-tokens)
+that have been issued for this user account are now rejected. Requests that
+authenticate with such a token fail with an HTTP `401 Unauthorized` error.
+
+## HTTP API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
 
 The long-deprecated JavaScript-based traversal functionality has been removed
-in v3.12.0, including the REST API endpoint `/_api/traversal`.
+in v3.12.0, including the HTTP API endpoint `/_api/traversal`.
 
 The functionality provided by this API was deprecated and unmaintained since
 v3.4.0. JavaScript-based traversals have been replaced with AQL traversals in
-v2.8.0. Additionally, the JavaScript-based traversal REST API could not handle
+v2.8.0. Additionally, the JavaScript-based traversal HTTP API could not handle
 larger amounts of data and was thus very limited.
 
-Users of the `/_api/traversal` REST API should use
+Users of the `/_api/traversal` HTTP API should use
 [AQL traversal queries](../../aql/graph-queries/traversals.md) instead.
 
 ### HTTP server behavior
