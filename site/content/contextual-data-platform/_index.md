@@ -46,48 +46,13 @@ operational excellence. Read more about the platform's
 
 ## What you can do
 
-{{< cards >}}
-
-{{% card title="Build" link="autograph-studio/" %}}
-Turn documents into a Context Graph and answer questions from it with
-[AutoGraph Studio](autograph-studio/_index.md), apply machine learning to
-graphs with [GraphML](graphml/_index.md), run graph algorithms with
-[Graph Analytics](graph-analytics/_index.md), and pick from the
-[supported LLM providers and models](llm-models.md).
-{{% /card %}}
-
-{{% card title="Query & explore" link="query-editor/" %}}
-Write and analyze AQL in the [Query Editor](query-editor.md), explore graphs
-visually in the [Graph Visualizer](graph-visualizer.md), generate queries from
-[natural language](natural-language-to-aql/_index.md), optimize them with the
-[Reasoner](reasoner/_index.md), chat with your data through
-[Ada](ada/_index.md), and [translate Cypher to AQL](cypher-to-aql.md).
-{{% /card %}}
-
-{{% card title="Develop & extend" link="container-manager/" %}}
-Deploy your own services and apps with the
-[Container Manager](container-manager/_index.md), manage the files they and the
-AI services use with the [File Manager](file-manager/_index.md), and
-experiment in [Jupyter notebooks](notebook-servers.md) next to the database.
-{{% /card %}}
-
-{{% card title="Deploy & operate" link="install-and-upgrade/" %}}
-[Install and upgrade](install-and-upgrade/_index.md) the platform, manage
-[licenses](license-management.md), [access control](access-control/_index.md),
-and [secrets](secrets-manager.md), run services through the
-[Control Plane](control-plane-acp/_index.md), host
-[private LLMs](private-llms/_index.md), and [monitor](monitoring.md) the
-deployment.
-{{% /card %}}
-
-{{% card title="Reference" link="reference/" %}}
-The [HTTP APIs](reference.md) of every service, the
-[release notes](release-notes/_index.md), the
-[API changes](release-notes/api-changes.md), and the
-[service versions](release-notes/service-versions.md) each release bundles.
-{{% /card %}}
-
-{{< /cards >}}
+| Goal | Pages |
+|:-----|:------|
+| **Build** context, retrieval, and models from your data | [AutoGraph Studio](autograph-studio/_index.md), [GraphML](graphml/_index.md), [Graph Analytics](graph-analytics/_index.md), [Supported LLM providers and models](llm-models.md) |
+| **Query & explore** your data in the web interface | [Query Editor](query-editor.md), [Graph Visualizer](graph-visualizer.md), [Natural Language to AQL](natural-language-to-aql/_index.md), [Reasoner](reasoner/_index.md), [Ada](ada/_index.md), [Cypher to AQL](cypher-to-aql.md) |
+| **Develop & extend** the platform with your own code | [Container Manager](container-manager/_index.md), [File Manager](file-manager/_index.md), [Notebook Servers](notebook-servers.md) |
+| **Deploy & operate** the platform | [Install & Upgrade](install-and-upgrade/_index.md), [License Management](license-management.md), [Access control](access-control/_index.md), [Control Plane](control-plane-acp/_index.md), [Secrets Manager](secrets-manager.md), [Private LLM hosting](private-llms/_index.md), [Monitoring](monitoring.md) |
+| **Reference** | [API reference](reference.md), [Release notes](release-notes/_index.md), [API changes](release-notes/api-changes.md), [Service versions](release-notes/service-versions.md) |
 
 ## Where your data lives
 
