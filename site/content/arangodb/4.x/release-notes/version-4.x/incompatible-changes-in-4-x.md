@@ -449,7 +449,7 @@ You should check for the following things in particular:
   You might need to force specific settings in case your provider is not known
   to rclone and therefore doesn't handle specific quirks on its own.
 
-## HTTP RESTful API
+## HTTP API
 
 ### Simple Queries endpoints removed
 

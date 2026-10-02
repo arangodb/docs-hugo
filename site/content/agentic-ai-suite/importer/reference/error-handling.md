@@ -25,7 +25,7 @@ For the immediate response of an API call:
 | Database access denied | `403` | Error detail |
 | Invalid `rag_mode`, `partition_id`, vector params | `400` | Error detail |
 | Importer busy (lock held), on `/v1/import` or `/v1/import-multiple` | `200` | `"success": false`, message about the lock |
-| Importer busy (lock held), on `/v1/recluster` | `503` | gRPC `UNAVAILABLE` mapped by the HTTP gateway, with the message in the body |
+| Importer busy (lock held), on `/v1/recluster` | `503` | gRPC `UNAVAILABLE` from the gRPC-to-HTTP mapping, with the message in the body |
 | Multi-file request validation failure | `200` | `"success": false`, `error_message` set |
 | Unexpected server fault | `500` | Internal error |
 
