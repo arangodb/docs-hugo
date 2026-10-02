@@ -1,0 +1,177 @@
+<svg viewBox="0 0 1100 710"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:1100px;margin:0 auto">
+  <style>
+    .asf .pill-src { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
+    .asf .pill-idx { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .asf .pill-view{ fill: #ecfccb; stroke: #86efac; stroke-width: 1.5; }
+    .asf .cyl      { fill: #0b2e1e; stroke: #22c55e; stroke-width: 2; }
+    .asf .cyl-top  { fill: #134d2e; stroke: #22c55e; stroke-width: 2; }
+    .asf .t13  { font-family: sans-serif; font-size: 13px; font-weight: bold; fill: #14532d; }
+    .asf .t13d { font-family: sans-serif; font-size: 13px; font-weight: bold; fill: #0b2e1e; }
+    .asf .t13w { font-family: sans-serif; font-size: 12px; font-weight: bold; fill: #ffffff; }
+    .asf .t10  { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #14532d; }
+    .asf .t10d { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #0b2e1e; }
+    .asf .t10y { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #b9ff38; }
+    .asf .lane { font-family: sans-serif; font-size: 13px; font-weight: bold; fill: #14532d; }
+    .asf .card:hover .pill-src { fill: #dcfce7; stroke: #22c55e; }
+    .asf .card:hover .pill-idx { fill: #ffffff; stroke: #22c55e; }
+    .asf .card:hover .pill-view{ fill: #d9f99d; stroke: #22c55e; }
+    .asf .card:hover .cyl      { fill: #134d2e; stroke: #b9ff38; }
+    .asf .card:hover .cyl-top  { fill: #1a5e38; stroke: #b9ff38; }
+  </style>
+
+  <g class="asf">
+    <rect width="1100" height="710" fill="#f3f4f6" rx="6"/>
+
+    <rect x="20" y="40" width="1060" height="270" rx="14" fill="#ffffff" fill-opacity="0.55"
+          stroke="#86efac" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="550" y="66" text-anchor="middle" class="lane">One link per linked collection &#183; the View owns the settings</text>
+
+    <rect x="20" y="336" width="1060" height="346" rx="14" fill="#ffffff" fill-opacity="0.55"
+          stroke="#86efac" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="550" y="362" text-anchor="middle" class="lane">Any number of inverted indexes per collection &#183; each index owns its settings</text>
+
+    <path d="M 188 132 L 211 132" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="220,132 209,127.5 209,136.5" fill="#4ade80"/>
+    <path d="M 410 132 L 433 132" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="442,132 431,127.5 431,136.5" fill="#4ade80"/>
+    <path d="M 612 132 L 639 132" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="648,132 637,127.5 637,136.5" fill="#4ade80"/>
+    <path d="M 188 228 L 211 228" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="220,228 209,223.5 209,232.5" fill="#4ade80"/>
+    <path d="M 410 228 L 433 228" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="442,228 431,223.5 431,232.5" fill="#4ade80"/>
+    <path d="M 612 228 L 639 228" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="648,228 637,223.5 637,232.5" fill="#4ade80"/>
+    <path d="M 848 180 L 871 180" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="880,180 869,175.5 869,184.5" fill="#4ade80"/>
+    <path d="M 188 419 L 211 419" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="220,419 209,414.5 209,423.5" fill="#4ade80"/>
+    <path d="M 410 419 L 433 419" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="442,419 431,414.5 431,423.5" fill="#4ade80"/>
+    <path d="M 612 419 L 639 419" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="648,419 637,414.5 637,423.5" fill="#4ade80"/>
+    <path d="M 188 501 L 211 501" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="220,501 209,496.5 209,505.5" fill="#4ade80"/>
+    <path d="M 410 501 L 433 501" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="442,501 431,496.5 431,505.5" fill="#4ade80"/>
+    <path d="M 612 501 L 639 501" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="648,501 637,496.5 637,505.5" fill="#4ade80"/>
+    <path d="M 188 583 L 211 583" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="220,583 209,578.5 209,587.5" fill="#4ade80"/>
+    <path d="M 410 583 L 433 583" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="442,583 431,578.5 431,587.5" fill="#4ade80"/>
+    <path d="M 612 583 L 639 583" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="648,583 637,578.5 637,587.5" fill="#4ade80"/>
+    <path d="M 848 495 L 871 495" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <polygon points="880,495 869,490.5 869,499.5" fill="#4ade80"/>
+    <path d="M 527 617 L 527 640 L 867 640" stroke="#4ade80" stroke-width="2" fill="none"
+          stroke-dasharray="5 3"/>
+    <polygon points="880,640 869,635.5 869,644.5" fill="#4ade80"/>
+    <text x="700" y="634" text-anchor="middle" class="t10">a single index, no View needed</text>
+
+    <g class="card">
+      <rect x="38" y="96" width="150" height="72" rx="12" class="pill-src"/>
+      <text x="113" y="126" text-anchor="middle" class="t13">Collection A</text>
+      <text x="113" y="146" text-anchor="middle" class="t10">documents</text>
+    </g>
+    <g class="card">
+      <rect x="38" y="192" width="150" height="72" rx="12" class="pill-src"/>
+      <text x="113" y="222" text-anchor="middle" class="t13">Collection B</text>
+      <text x="113" y="242" text-anchor="middle" class="t10">documents</text>
+    </g>
+    <g class="card">
+      <rect x="220" y="96" width="190" height="72" rx="12" class="pill-idx"/>
+      <text x="315" y="126" text-anchor="middle" class="t13d">ArangoSearch link</text>
+      <text x="315" y="146" text-anchor="middle" class="t10d">which fields, which Analyzers</text>
+    </g>
+    <g class="card">
+      <rect x="220" y="192" width="190" height="72" rx="12" class="pill-idx"/>
+      <text x="315" y="222" text-anchor="middle" class="t13d">ArangoSearch link</text>
+      <text x="315" y="242" text-anchor="middle" class="t10d">which fields, which Analyzers</text>
+    </g>
+    <g class="card">
+      <path d="M 442 110 L 442 158 A 85 13 0 0 0 612 158 L 612 110" class="cyl"/>
+      <ellipse cx="527" cy="110" rx="85" ry="13" class="cyl-top"/>
+      <text x="527" y="140" text-anchor="middle" class="t13w">Data store</text>
+      <text x="527" y="156" text-anchor="middle" class="t10y">segments on disk</text>
+    </g>
+    <g class="card">
+      <path d="M 442 206 L 442 254 A 85 13 0 0 0 612 254 L 612 206" class="cyl"/>
+      <ellipse cx="527" cy="206" rx="85" ry="13" class="cyl-top"/>
+      <text x="527" y="236" text-anchor="middle" class="t13w">Data store</text>
+      <text x="527" y="252" text-anchor="middle" class="t10y">segments on disk</text>
+    </g>
+    <g class="card">
+      <rect x="648" y="96" width="200" height="168" rx="12" class="pill-view"/>
+      <text x="748" y="158" text-anchor="middle" class="t13">arangosearch View</text>
+      <text x="748" y="178" text-anchor="middle" class="t10">defines primarySort, storedValues</text>
+      <text x="748" y="194" text-anchor="middle" class="t10">and the links, and copies these</text>
+      <text x="748" y="210" text-anchor="middle" class="t10">settings into every link</text>
+    </g>
+    <g class="card">
+      <rect x="880" y="144" width="170" height="72" rx="12" class="pill-src"/>
+      <text x="965" y="174" text-anchor="middle" class="t13">SEARCH query</text>
+      <text x="965" y="194" text-anchor="middle" class="t10">reads all stores at once</text>
+    </g>
+    <g class="card">
+      <rect x="38" y="386" width="150" height="148" rx="12" class="pill-src"/>
+      <text x="113" y="452" text-anchor="middle" class="t13">Collection C</text>
+      <text x="113" y="472" text-anchor="middle" class="t10">documents</text>
+    </g>
+    <g class="card">
+      <rect x="38" y="550" width="150" height="66" rx="12" class="pill-src"/>
+      <text x="113" y="578" text-anchor="middle" class="t13">Collection D</text>
+      <text x="113" y="598" text-anchor="middle" class="t10">documents</text>
+    </g>
+    <g class="card">
+      <rect x="220" y="386" width="190" height="66" rx="12" class="pill-idx"/>
+      <text x="315" y="414" text-anchor="middle" class="t13d">Inverted index 1</text>
+      <text x="315" y="434" text-anchor="middle" class="t10d">fields, Analyzers, primarySort</text>
+    </g>
+    <g class="card">
+      <rect x="220" y="468" width="190" height="66" rx="12" class="pill-idx"/>
+      <text x="315" y="496" text-anchor="middle" class="t13d">Inverted index 2</text>
+      <text x="315" y="516" text-anchor="middle" class="t10d">other fields of collection C</text>
+    </g>
+    <g class="card">
+      <rect x="220" y="550" width="190" height="66" rx="12" class="pill-idx"/>
+      <text x="315" y="578" text-anchor="middle" class="t13d">Inverted index 3</text>
+      <text x="315" y="598" text-anchor="middle" class="t10d">fields, Analyzers, primarySort</text>
+    </g>
+    <g class="card">
+      <path d="M 442 394 L 442 440 A 85 13 0 0 0 612 440 L 612 394" class="cyl"/>
+      <ellipse cx="527" cy="394" rx="85" ry="13" class="cyl-top"/>
+      <text x="527" y="424" text-anchor="middle" class="t13w">Data store</text>
+      <text x="527" y="440" text-anchor="middle" class="t10y">segments on disk</text>
+    </g>
+    <g class="card">
+      <path d="M 442 476 L 442 522 A 85 13 0 0 0 612 522 L 612 476" class="cyl"/>
+      <ellipse cx="527" cy="476" rx="85" ry="13" class="cyl-top"/>
+      <text x="527" y="506" text-anchor="middle" class="t13w">Data store</text>
+      <text x="527" y="522" text-anchor="middle" class="t10y">segments on disk</text>
+    </g>
+    <g class="card">
+      <path d="M 442 558 L 442 604 A 85 13 0 0 0 612 604 L 612 558" class="cyl"/>
+      <ellipse cx="527" cy="558" rx="85" ry="13" class="cyl-top"/>
+      <text x="527" y="588" text-anchor="middle" class="t13w">Data store</text>
+      <text x="527" y="604" text-anchor="middle" class="t10y">segments on disk</text>
+    </g>
+    <g class="card">
+      <rect x="648" y="386" width="200" height="218" rx="12" class="pill-view"/>
+      <text x="748" y="480" text-anchor="middle" class="t13">search-alias View</text>
+      <text x="748" y="500" text-anchor="middle" class="t10">only a list of inverted indexes;</text>
+      <text x="748" y="516" text-anchor="middle" class="t10">no data and no settings of its own</text>
+    </g>
+    <g class="card">
+      <rect x="880" y="459" width="170" height="72" rx="12" class="pill-src"/>
+      <text x="965" y="489" text-anchor="middle" class="t13">SEARCH query</text>
+      <text x="965" y="509" text-anchor="middle" class="t10">reads all stores at once</text>
+    </g>
+    <g class="card">
+      <rect x="880" y="614" width="170" height="52" rx="12" class="pill-src"/>
+      <text x="965" y="645" text-anchor="middle" class="t13">FILTER query</text>
+    </g>
+  </g>
+</svg>

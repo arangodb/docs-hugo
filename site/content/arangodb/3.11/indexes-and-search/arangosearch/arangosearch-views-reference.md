@@ -77,87 +77,6 @@ db._createView("products", "arangosearch", { links: { books: { fields: { title: 
 ~db._drop(coll.name());
 ```
 
-## The View data store
-
-An inverted index is the heart of `arangosearch` Views. It is complemented by
-a column store that holds the attribute values you configure a View to store,
-see the `primarySort` and `storedValues` properties.
-
-A View does not maintain a single index, however. Every link has its own data
-store that is separate from the data of the linked collections. There is one
-data store per linked collection, and one per shard of a linked collection in
-cluster deployments. The View properties described below apply to each of these
-data stores individually.
-
-### Segments
-
-The index consists of several independent segments, and each index **segment**
-is meant to be treated as a standalone index.
-
-With each ArangoDB transaction that inserts documents, one or more internal
-segments get created. Similarly, for removed documents, the segments that
-contain these documents have them marked as deleted. Over time, this approach
-causes a lot of small and sparse segments to be created, which is why segments
-are periodically merged, see [Consolidation](#consolidation).
-
-### Commits
-
-A **commit** is the procedure of accumulating processed data, creating new
-index segments. Documents that you add to or remove from a linked collection
-are not visible to queries until the next commit.
-
-For data retrieval, `arangosearch` Views follow the concept of
-"eventually-consistent", that is, eventually all the data in ArangoDB is
-matched by corresponding query expressions. The commit operation controls the
-upper bound on the time until document additions and removals are actually
-reflected by corresponding query expressions. Once a commit operation is
-complete, all documents added and removed prior to the start of the commit
-operation are reflected by queries invoked in subsequent ArangoDB transactions.
-In-progress ArangoDB transactions still continue to return a repeatable-read
-state.
-
-How often commits occur is governed by the
-[`commitIntervalMsec` property](#view-properties).
-
-### Consolidation
-
-A **consolidation** is the procedure of joining multiple index segments into a
-bigger one and removing garbage documents (for example, documents deleted from
-a collection).
-
-A consolidation operation selects one or more segments and copies all of their
-valid documents into a single new segment, thereby allowing the search
-algorithm to perform more optimally and for extra file handles to be released
-once old segments are no longer used.
-
-For data modification, `arangosearch` Views follow the concept of a
-"versioned data store". Old versions of data may thus be removed once there are
-no longer any users of the old data. How often consolidation occurs is governed
-by the [`consolidationIntervalMsec` property](#view-properties), and the
-candidates for consolidation are selected via the
-[`consolidationPolicy` property](#view-properties).
-
-### Cleanup
-
-A **cleanup** is the procedure of removing unused segments after the release of
-internal resources.
-
-With every commit or consolidation operation, a new state of the View-internal
-data structures is created on disk. Old states/snapshots are released once
-there are no longer any users remaining. However, the files of the released
-states/snapshots are left on disk and only removed by a cleanup operation.
-
-How often cleanups occur is governed by the
-[`cleanupIntervalStep` property](#view-properties).
-
-### Write buffers
-
-ArangoSearch performs operations in its index based on numerous writer objects
-that are mapped to processed segments. To control the memory that is used by
-these writers (in terms of a "writers pool"), you can use the
-`writebufferIdle`, `writebufferActive`, and `writebufferSizeMax`
-[View properties](#view-properties).
-
 ## View Definition/Modification
 
 An `arangosearch` View is configured via an object containing a set of
@@ -430,7 +349,7 @@ During view modification the following directives apply:
   rarely merge segments (i.e. few inserts/deletes). A higher value impacts
   performance without any added benefits.
 
-  Also see [Cleanup](#cleanup).
+  Also see [ArangoSearch cleanup](architecture.md#cleanup).
 
 - **commitIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -444,7 +363,7 @@ During view modification the following directives apply:
   few inserts/updates because of synchronous locking, and it wastes disk space for
   each commit call.
 
-  Also see [Commits](#commits).
+  Also see [ArangoSearch commits](architecture.md#writing-and-commits).
 
 - **consolidationIntervalMsec** (_optional_; type: `integer`; default: `1000`;
   to disable use: `0`)
@@ -458,13 +377,13 @@ During view modification the following directives apply:
   impacts performance due to no segment candidates available for
   consolidation.
 
-  Also see [Consolidation](#consolidation).
+  Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
 - **writebufferIdle** (_optional_; type: `integer`; default: `64`;
   to disable use: `0`; _immutable_)
 
   Maximum number of writers (segments) cached in the pool.
-  Also see [Write buffers](#write-buffers).
+  Also see [ArangoSearch write buffers](architecture.md#write-buffers).
 
 - **writebufferActive** (_optional_; type: `integer`; default: `0`;
   to disable use: `0`; _immutable_)
@@ -483,7 +402,7 @@ During view modification the following directives apply:
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)
 
   The consolidation policy to apply for selecting data store segment merge
-  candidates. Also see [Consolidation](#consolidation).
+  candidates. Also see [ArangoSearch consolidation](architecture.md#removals-and-consolidation).
 
   - **type** (_optional_; type: `string`; default: `"tier"`)
 
@@ -493,7 +412,8 @@ During view modification the following directives apply:
 
     - `"bytes_accum"`: Consolidation is performed based on current memory
       consumption of segments and `threshold` property value.
-    - `"tier"`: Consolidate based on segment byte size and live document count
+    - `"tier"`: Consolidate based on segment byte size and the number of
+      entries that are not marked as deleted
       as dictated by the customization attributes.
 
     {{< warning >}}

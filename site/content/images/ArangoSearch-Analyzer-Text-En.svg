@@ -1,0 +1,38 @@
+<svg viewBox="0 0 600 178"
+     xmlns="http://www.w3.org/2000/svg"
+     style="display:block;width:100%;max-width:600px;margin:0 auto">
+  <style>
+    .asa .inp   { fill: #ffffff; stroke: #86efac; stroke-width: 1.5; }
+    .asa .an    { fill: #b9f5a0; stroke: #4ade80; stroke-width: 1.5; }
+    .asa .chip  { fill: #ecfccb; stroke: #86efac; stroke-width: 1; }
+    .asa .mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; fill: #14532d; }
+    .asa .anl   { font-family: sans-serif; font-size: 12px; font-weight: bold; fill: #0b2e1e; }
+    .asa .cap   { font-family: sans-serif; font-size: 10px; font-style: italic; fill: #14532d; }
+  </style>
+  <g class="asa">
+    <rect width="600" height="178" fill="#f3f4f6" rx="6"/>
+
+    <rect x="156" y="14" width="289" height="42" rx="10" class="inp"/>
+    <text x="300" y="40" text-anchor="middle" class="mono">"ArangoDB is a multi-model database"</text>
+    <text x="150" y="40" text-anchor="end" class="cap">attribute value</text>
+
+    <path d="M 300 56 L 300 68" stroke="#4ade80" stroke-width="2" fill="none"/>
+    <rect x="230" y="68" width="140" height="28" rx="14" class="an"/>
+    <text x="300" y="87" text-anchor="middle" class="anl">text_en Analyzer</text>
+    <path d="M 300 96 L 300 105" stroke="#4ade80" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <polygon points="300,114 295.5,103 304.5,103" fill="#4ade80"/>
+    <rect x="113" y="122" width="78" height="36" rx="8" class="chip"/>
+    <text x="152" y="145" text-anchor="middle" class="mono">arangodb</text>
+    <rect x="201" y="122" width="34" height="36" rx="8" class="chip"/>
+    <text x="218" y="145" text-anchor="middle" class="mono">is</text>
+    <rect x="245" y="122" width="30" height="36" rx="8" class="chip"/>
+    <text x="260" y="145" text-anchor="middle" class="mono">a</text>
+    <rect x="285" y="122" width="56" height="36" rx="8" class="chip"/>
+    <text x="313" y="145" text-anchor="middle" class="mono">multi</text>
+    <rect x="351" y="122" width="56" height="36" rx="8" class="chip"/>
+    <text x="379" y="145" text-anchor="middle" class="mono">model</text>
+    <rect x="417" y="122" width="70" height="36" rx="8" class="chip"/>
+    <text x="452" y="145" text-anchor="middle" class="mono">databas</text>
+    <text x="107" y="145" text-anchor="end" class="cap">tokens</text>
+  </g>
+</svg>

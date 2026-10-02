@@ -16,7 +16,6 @@ low-level network communication.
 The [**Spring Data integration**](spring-data-arangodb/_index.md) for ArangoDB lets you use
 ArangoDB as a database system in Spring-based Java applications.
 
-- Online course: [Spring Data Tutorial](https://university.arangodb.com/courses/spring-data-tutorial)
 - Repository: [github.com/arangodb/spring-data](https://github.com/arangodb/spring-data)
 - [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#readme)
 
