@@ -18,19 +18,19 @@ as well as a fully managed cloud service, the [Arango Managed Platform (AMP)](..
 
 Graphs are information networks composed of nodes and edges.
 
-![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../images/data-model-graph-relation-abstract-edge.png)
+![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../images/data-model-graph-relation-abstract-edge.svg)
 
 A social network is a common example of a graph. People are represented by nodes
 and their friendships by relations.
 
-![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../images/data-model-graph-relation-concrete.png)
+![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../images/data-model-graph-relation-concrete.svg)
 
 Nodes are also called vertices (singular: vertex), and edges are relations that
 connect nodes.
 A node typically represents a specific entity (a person, a book, a sensor
 reading, etc.) and an edge defines how one entity relates to another.
 
-![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../images/data-model-graph-relations.png)
+![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../images/data-model-graph-relations.svg)
 
 This paradigm of storing data feels natural because it closely matches the
 cognitive model of humans. It is an expressive data model that allows you to
@@ -43,7 +43,7 @@ Not everything is a graph use case. ArangoDB lets you equally work with
 structured, semi-structured, and unstructured data in the form of schema-free
 JSON objects, without having to connect these objects to form a graph.
 
-![Person Mary, Book ArangoDB](../images/data-model-document.png)
+![Person Mary, Book ArangoDB](../images/data-model-document.svg)
 
 Depending on your needs, you may mix graphs and unconnected data.
 ArangoDB is designed from the ground up to support multiple data models with a

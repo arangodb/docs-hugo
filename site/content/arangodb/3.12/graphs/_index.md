@@ -15,12 +15,12 @@ causal relationships, flows of information, energy, and material, interactions a
 transactions, dependency and hierarchy, as well as similarity and relatedness of
 any kind.
 
-![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../../images/data-model-graph-relation-abstract-edge.png)
+![An arrow labeled as "Edge" pointing from one circle to another, both labeled "Node"](../../../images/data-model-graph-relation-abstract-edge.svg)
 
 For example, you can represent people by nodes and their friendships by
 edges. This lets you form a graph that is a social network in this case.
 
-![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../../images/data-model-graph-relation-concrete.png)
+![Two circles labeled "Mary" and "John", with an arrow labeled "isFriendOf" pointing from "Mary" to "John"](../../../images/data-model-graph-relation-concrete.svg)
 
 The specific terms to refer to nodes and edges in a graph vary depending
 on the field or context, but they are conceptually the same. In computer science
@@ -40,7 +40,7 @@ relate to one another is a very expressive data model. It lets you represent
 a wide variety of information in a compact and intuitive way. It lets you model
 complex relationships and interactions of basically everything.
 
-![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../../../images/data-model-graph-relations.png)
+![Three circles labeled "Mary", "Book", and "John", with an arrow labeled "bought" from "Mary" to "Book" and an arrow labeled "isFriendOf" from "Mary" to "John"](../../../images/data-model-graph-relations.svg)
 
 Graphs are commonly directed (_digraphs_), which means that each edge goes from
 one node to another node in a specific direction. This lets you model
