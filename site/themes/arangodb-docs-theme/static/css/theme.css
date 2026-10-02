@@ -2324,6 +2324,13 @@ nav.pagination .next {
     transition: opacity 0.15s;
 }
 
+/* nucleus.css gives every inline SVG a top and left margin */
+.image-zoom-hint svg,
+.image-viewer-toolbar svg {
+    margin: 0;
+    flex-shrink: 0;
+}
+
 .image-zoom-hint svg {
     width: 14px;
     height: 14px;
