@@ -515,7 +515,8 @@ jobs:
         default: ""
     machine:
       image: default
-    resource_class: xlarge
+    # About 2.5 GB of memory per version (single server, cluster) and Hugo
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -602,9 +603,12 @@ jobs:
       build-image:
         type: string
         default: "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+      resource-class:
+        type: string
+        default: "xlarge" # for compiling, smaller if it only clones (images)
     docker:
       - image: << parameters.build-image >>
-    resource_class: xlarge
+    resource_class: << parameters.resource-class >>
     environment:
       #GIT_SSH_COMMAND: ssh
       SCCACHE_ERROR_LOG: /tmp/sccache.log

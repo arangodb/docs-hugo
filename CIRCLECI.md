@@ -67,6 +67,12 @@ Commands you can use in GitHub comments on PRs:
 These commands work only if you indicate the upstream PRs or a nightly
 image in the PR description, as they are required for the compile step.
 
+Only members of the `arangodb` GitHub organization can use these commands.
+
+If upstream PRs are indicated, ArangoDB is compiled, which takes a while and is
+costly, so the workflow needs to be approved in CircleCI first. If only images
+are indicated, the workflow starts without approval and without compile jobs.
+
 ### `/generate`
 
 When commenting a PR with the `/generate` command, the following
@@ -149,8 +155,12 @@ behavior changes of _arangod_ that will be visible in documentation examples.
 
 For 3.11, a link to a PR in the `arangodb/arangodb` repository is given. It is
 used by the GitHub integration to determine the feature branch to compile and
-use for generating examples. Do not specify a link when manually triggering a
-pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
+use for generating examples. For a branch without a PR, specify the branch name
+(like `feature/new-aql-function`) or a link to the branch
+(`https://github.com/arangodb/arangodb/tree/feature/new-aql-function`) instead.
+Do not specify a link when manually triggering a pipeline in CircleCI but the
+**branch name**!
+
 Compiled branches are cached as Docker images on Docker Hub, tagged with the
 docs version and the commits that were compiled:
 `arangodb/docs-hugo:<version>-<arangodb commit>-<enterprise commit>`
@@ -182,6 +192,7 @@ if the last part of the repository name is `core` or starts with `core-`, it is
 replaced by `client-tools` (keeping the rest, the registry, and the tag), e.g.
 `gcr.io/gcr-for-testing/arangodb/client-tools-preview:4.0-nightly` for
 `gcr.io/gcr-for-testing/arangodb/core-preview:4.0-nightly`.
+
 ## Release workflow for ArangoDB releases
 
 To run a release job for a new ArangoDB patch release (e.g. 3.11.4),
@@ -201,8 +212,14 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11.4` (the arangodb/arangodb branch to compile) |
+| string | `arangodb-branch` | `arangodb/enterprise:3.11.4` (the release image), or `3.11.4` (the arangodb/arangodb branch to compile) |
 | string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
+
+If the release images are already published, specify the image (e.g.
+`arangodb/enterprise:3.12.13`, or `arangodb/core:4.0.1` for 4.x) to skip compiling
+ArangoDB, which makes the workflow much faster. Specify the branch to compile
+ArangoDB instead, for example, to test the workflow before a release or to prepare
+the documentation before the images are published.
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)

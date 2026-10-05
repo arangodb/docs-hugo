@@ -39,7 +39,7 @@ parser.add_argument(
     "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
 )
 parser.add_argument(
-    "--generators", nargs='+', help="The generators to be used by the toolchain", type=str
+    "--generators", nargs='*', help="The generators to be used by the toolchain (all if empty)", type=str
 )
 parser.add_argument(
     "--commit-generated", help="Whether to use the CircleCI commit step", type=bool
@@ -93,6 +93,7 @@ def workflow_generate(config):
 
     generateRequires = []
     extendedCompileJob = False
+    compiles = False
 
     for i in range(len(versions)):
         version = versions[i]["name"]
@@ -100,6 +101,10 @@ def workflow_generate(config):
             continue # Skip compilation, 3.10 nightly images no longer available and >= 3.11.14-3 non-public
         branch = args.arangodb_branches[i]
         if branch == "undefined":
+            continue
+
+        if not needs_compile_job(branch):
+            print(f"No compile job for version {version}: image {branch}, source not needed")
             continue
 
         print(f"Creating compile job for version {version} branch {branch}")
@@ -114,7 +119,11 @@ def workflow_generate(config):
             }
         }
 
-        if not "/enterprise-preview:" in branch and not "/enterprise:" in branch:
+        if is_image_ref(branch):
+            # Only clones the source code
+            compileJob["compile-linux"]["resource-class"] = "medium"
+        else:
+            compiles = True
 
             openssl = findOpensslVersion(branch)
             compileJob["compile-linux"]["openssl"] = openssl
@@ -172,7 +181,26 @@ def workflow_generate(config):
     jobs.append(generateJob)
     jobs.append(deployJob)
 
+    # Approval only if ArangoDB is compiled (takes long and is costly). The webhook
+    # only lets members of the arangodb organization trigger the generate workflow.
+    if not compiles:
+        print("Nothing to compile, no approval needed")
+        jobs[:] = [j for j in jobs if "approve-workflow" not in j]
+        for job in jobs:
+            for value in job.values():
+                if isinstance(value, dict) and "requires" in value:
+                    value["requires"] = [r for r in value["requires"] if r != "approve-workflow"]
+    if not generateRequires:
+        remove_attach_workspace(config)
+
     return config
+
+
+# The generate job attaches the workspace of the compile jobs, which fails if there
+# are none
+def remove_attach_workspace(config):
+    steps = config["jobs"]["build-with-generated"]["steps"]
+    steps[:] = [step for step in steps if not (isinstance(step, dict) and "attach_workspace" in step)]
 
 
 def workflow_generate_scheduled(config):
@@ -194,7 +222,9 @@ def workflow_generate_scheduled(config):
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
                 "arangodb-branch": nightlyImage(version),
-                "version": version
+                "version": version,
+                # Only clones the source code (nightly images)
+                "resource-class": "medium"
             }
         }
         # TODO: Does the default build image matter here? Defaults to legacy Alpine
@@ -232,8 +262,6 @@ def workflow_release_arangodb(config):
 
     print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
 
-    openssl = findOpensslVersion(args.arangodb_branch)
-
     compileJob = {
         "compile-linux": {
             "context": ["sccache-aws-bucket"],
@@ -243,25 +271,33 @@ def workflow_release_arangodb(config):
         }
     }
 
-    if args.docs_version in ["3.10", "3.11"]:
-        if openssl.startswith("3.0"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
-        elif openssl.startswith("3.1"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
-        elif openssl.startswith("1.1"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
-        else:
-            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
-    else: # build image for 3.12.9 and devel as of 2026-06-29
-        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
+    if is_image_ref(args.arangodb_branch):
+        # The release image (e.g. arangodb/enterprise:3.12.13) is used directly, the
+        # job only clones the source code (of the branch with the version number)
+        # for the generators that read it
+        compileJob["compile-linux"]["resource-class"] = "medium"
+    else:
+        openssl = findOpensslVersion(args.arangodb_branch)
 
-    config["jobs"]["compile-linux"]["steps"].append({
-        "compile-and-dockerize-arangodb": {
-            "branch": args.arangodb_branch,
-            "version": args.docs_version,
-            "openssl": openssl,
-        }
-    })
+        if args.docs_version in ["3.10", "3.11"]:
+            if openssl.startswith("3.0"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+            elif openssl.startswith("3.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+            elif openssl.startswith("1.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+            else:
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:9" # clang-16
+        else: # build image for 3.12.9 and devel as of 2026-06-29
+            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:23" # clang-19
+
+        config["jobs"]["compile-linux"]["steps"].append({
+            "compile-and-dockerize-arangodb": {
+                "branch": args.arangodb_branch,
+                "version": args.docs_version,
+                "openssl": openssl,
+            }
+        })
     generateRequires.append(f"compile-{args.docs_version}")
     jobs.insert(0, compileJob)
 
@@ -469,6 +505,7 @@ def needs_source():
 def needs_compile_job(branch):
     return not is_image_ref(branch) or needs_source()
 
+
 # Split images: the server-only image (repository "core", "core-preview",
 # "core-<suffix>") comes with a separate client tools image ("client-tools...") in
 # the same registry and with the same tag.
@@ -478,6 +515,8 @@ def client_image_for(image):
     if m:
         return f"{m.group(1) or ''}client-tools{m.group(2)}{m.group(3)}"
     return ""
+
+
 def pullImageCmd(branch, version):
     image = imageRef(branch, version)
     pullImage = f"docker pull {image}"
@@ -494,6 +533,7 @@ def imageRef(branch, version):
     if is_image_ref(branch):
         return branch
     return f"$(cat {version}/.docs-hugo-image)"
+
 def findOpensslVersion(branch):
     url = f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS'
     print(f"Find OpenSSL Version for branch {branch}")
