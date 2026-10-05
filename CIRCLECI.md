@@ -303,6 +303,10 @@ Test changes locally first, then merge them into `main` and build from `main`:
 5. To use the new images locally, pull them (e.g.
    `docker pull arangodb/docs-hugo:site-amd64`), as images that exist locally
    aren't updated automatically.
+6. Let the other docs contributors know that they need to pull the new images,
+   too. Otherwise, they keep using their older local images, which may not be
+   compatible with the content anymore (e.g. if it relies on a newer Hugo
+   version). See the [README](README.md#scheduled-and-example-generation-build) for the commands.
 
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|

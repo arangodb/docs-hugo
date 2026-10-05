@@ -340,7 +340,16 @@ docker pull arangodb/client-tools-preview:4.0-nightly
 The same applies to the images of the toolchain itself
 (`arangodb/docs-hugo:toolchain-amd64`, `arangodb/docs-hugo:site-amd64`,
 `arangodb/docs-hugo:arangoproxy-amd64`, or `-arm64`). CI always pulls the latest
-images.
+images. When someone publishes new toolchain images (e.g. with a new Hugo
+version), everyone else keeps using their older local images until they pull the
+new ones. Content that relies on the changes may then fail to build locally, so
+pull the toolchain images after such updates:
+
+```sh
+docker pull arangodb/docs-hugo:toolchain-amd64
+docker pull arangodb/docs-hugo:site-amd64
+docker pull arangodb/docs-hugo:arangoproxy-amd64
+```
 
 **Local builds**
 
